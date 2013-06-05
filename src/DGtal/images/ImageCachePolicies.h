@@ -88,7 +88,7 @@ public:
     typedef typename TImageContainer::Value Value;
     
     ImageCacheReadPolicyLAST(Alias<ImageFactory> anImageFactory):
-      myImageFactory(anImageFactory), myCacheImagesPtr(NULL)
+      myCacheImagesPtr(NULL),  myImageFactory(anImageFactory)
     {
     }
 
