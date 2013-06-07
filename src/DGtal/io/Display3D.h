@@ -330,11 +330,12 @@ namespace DGtal
 	}else{
 	  myTabImage=img.myTabImage;
 	} 
-
 	
       };				       
 
       
+      
+
       
       /** 
        *  Constructor that fills image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
@@ -368,6 +369,13 @@ namespace DGtal
 	myMode=aMode;
 	updateImageDataAndParam(image, aFunctor);
       };
+
+// rotation around the axis rotationDir
+      // centered in the image barycenter
+      
+      void 
+      rotate(double angle, Display3D::ImageDirection rotationDir);
+
       
       /**
        * Update the image direction from a specific normal direction
