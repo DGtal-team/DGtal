@@ -84,6 +84,14 @@ DGtal::Display3D::setFillColor(DGtal::Color aColor)
 }
 
 
+inline 
+void 
+DGtal::Display3D::setFillTransparency(unsigned char alpha)
+{
+  myCurrentFillColor.alpha(alpha);
+}
+
+
 inline
 void
 DGtal::Display3D::setLineColor(DGtal::Color aColor)

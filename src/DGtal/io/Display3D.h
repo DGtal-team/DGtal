@@ -461,6 +461,12 @@ namespace DGtal
      * @param aColor the fill color.
      **/ 
     virtual void setFillColor(DGtal::Color aColor);
+    
+    /**
+     * Used to set the alpha value of the current fill color.
+     * @param alpha the transparency value (from 0 to 255).
+     **/ 
+    virtual void setFillTransparency(unsigned char alpha);
 
 
     /**
