@@ -920,12 +920,14 @@ DGtal::Display3D::updateTextureImage(unsigned int imageIndex,  const TImageType 
   updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
   updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
   updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
-  anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);
-  anImage.rotate(5/180.0, Display3D::zDirection);
-
+  anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);  
+  
   if(anImage.myDrawDomain){
     *this << DGtal::Translate2DDomain(anImage.myIndexDomain, xTranslation, yTranslation, zTranslation); 
   }
+  rotate(anImage, 5.0/180.0, Display3D::zDirection);
+  rotate(myImageDomainList.at(anImage.myIndexDomain), 5.0/180.0, Display3D::zDirection);
+
 }
     
 
@@ -942,12 +944,11 @@ DGtal::Display3D::updateOrientationTextureImage(unsigned int imageIndex,
   updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
   updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
   anImage.updateImageOrientation(newDirection, xPosition, yPosition, zPosition);
-  anImage.rotate(5.0/180.0, Display3D::zDirection);
-    
   if(anImage.myDrawDomain){
     *this << DGtal::Update2DDomainPosition(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
   }
-  
+  rotate(anImage,5.0/180.0, Display3D::zDirection);
+  rotate(myImageDomainList.at(anImage.myIndexDomain), 5.0/180.0, Display3D::zDirection);
 }
     
 
@@ -1216,30 +1217,6 @@ DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslat
 
 
 
-void 
-inline 
-DGtal::Display3D::TextureImage::rotate(double angle, Display3D::ImageDirection rotationDir)
-{
-  trace.info() << "in rotate" << std::endl;
-
-  double xB = (x1+x2+x3+x4)/4.0;
-  double yB = (y1+y2+y3+y4)/4.0;
-  double zB = (z1+z2+z3+z4)/4.0;
-  double dx1 = x1-xB; double dx2 = x2-xB; double dx3 = x3-xB; double dx4 = x4-xB;
-  double dy1 = y1-yB; double dy2 = y2-yB; double dy3 = y3-yB; double dy4 = y4-yB;
-  double dz1 = z1-zB; double dz2 = z2-zB; double dz3 = z3-zB; double dz4 = z4-zB;
-  if(rotationDir  == Display3D::zDirection){
-    x1 = xB+dx1*cos(angle)-dy1*sin(angle); 
-    x2 = xB+dx2*cos(angle)-dy2*sin(angle);
-    x3 = xB+dx3*cos(angle)-dy3*sin(angle);
-    x4 = xB+dx4*cos(angle)-dy4*sin(angle);
-    
-    y1 = yB+dx1*sin(angle)+dy1*cos(angle);
-    y2 = yB+dx2*sin(angle)+dy2*cos(angle);
-    y3 = yB+dx3*sin(angle)+dy3*cos(angle);
-    y4 = yB+dx4*sin(angle)+dy4*cos(angle);
-  }		
-}
 
 
    

@@ -258,6 +258,7 @@ namespace DGtal
 	updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);	
       }
       
+      
       /**
        * Update the domain direction from a specific normal direction
        * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
@@ -370,7 +371,7 @@ namespace DGtal
 	updateImageDataAndParam(image, aFunctor);
       };
 
-// rotation around the axis rotationDir
+      // rotation around the axis rotationDir
       // centered in the image barycenter
       
       void 
@@ -1038,7 +1039,30 @@ namespace DGtal
   operator<< ( std::ostream & out, const DGtal::Display3D & object );
 
 
+template<typename T>
+static 
+void 
+rotate(T &anImageOrDom, double angle, Display3D::ImageDirection rotationDir){
+  double xB = (anImageOrDom.x1+anImageOrDom.x2+anImageOrDom.x3+anImageOrDom.x4)/4.0;
+  double yB = (anImageOrDom.y1+anImageOrDom.y2+anImageOrDom.y3+anImageOrDom.y4)/4.0;
+  double zB = (anImageOrDom.z1+anImageOrDom.z2+anImageOrDom.z3+anImageOrDom.z4)/4.0;
+  double dx1 = anImageOrDom.x1-xB; double dx2 = anImageOrDom.x2-xB; double dx3 = anImageOrDom.x3-xB; double dx4 = anImageOrDom.x4-xB;
+  double dy1 = anImageOrDom.y1-yB; double dy2 = anImageOrDom.y2-yB; double dy3 = anImageOrDom.y3-yB; double dy4 = anImageOrDom.y4-yB;
+  double dz1 = anImageOrDom.z1-zB; double dz2 = anImageOrDom.z2-zB; double dz3 = anImageOrDom.z3-zB; double dz4 = anImageOrDom.z4-zB;
+  if(rotationDir  == Display3D::zDirection){
+    anImageOrDom.x1 = xB+dx1*cos(angle)-dy1*sin(angle); 
+    anImageOrDom.x2 = xB+dx2*cos(angle)-dy2*sin(angle);
+    anImageOrDom.x3 = xB+dx3*cos(angle)-dy3*sin(angle);
+    anImageOrDom.x4 = xB+dx4*cos(angle)-dy4*sin(angle);
+    
+    anImageOrDom.y1 = yB+dx1*sin(angle)+dy1*cos(angle);
+    anImageOrDom.y2 = yB+dx2*sin(angle)+dy2*cos(angle);
+    anImageOrDom.y3 = yB+dx3*sin(angle)+dy3*cos(angle);
+    anImageOrDom.y4 = yB+dx4*sin(angle)+dy4*cos(angle);
+    
+  }
 
+}
 
 
   /**
