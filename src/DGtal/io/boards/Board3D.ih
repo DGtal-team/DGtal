@@ -1,0 +1,80 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file   Board3D.ih
+ * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
+ * @date   mercredi 22 juin 2011
+ * 
+ * @brief
+ *
+ * Implementation of inline methods defined in Board3D.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/io/CDrawableWithDisplay3D.h"
+#include "DGtal/io/Color.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+/**
+   * Set the default color for future drawing.
+   *
+   * @param aColor: a DGtal::Color (allow to set a trasnparency value).
+   *
+   **/ 
+inline
+DGtal::Board3D &
+DGtal::Board3D::operator<<(const DGtal::Color & aColor){
+  myDefaultColor=aColor;
+  return *this;
+}
+
+
+/**
+   * Draws the drawable [object] in this board. It should satisfy
+   * the concept CDrawableWithBoard3D, which requires for instance a
+   * method setStyle( Board3D & ).
+   *
+   * @param object any drawable object.
+   * @return a reference on 'this'.
+   */
+template <typename TDrawableWithDisplay3D>
+inline
+DGtal::Board3D &
+DGtal::Board3D::operator<<( const TDrawableWithDisplay3D & object )
+{
+  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+
+  DGtal::Display3DFactory::draw(*this, object);
+  return *this;
+}
+
+
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
