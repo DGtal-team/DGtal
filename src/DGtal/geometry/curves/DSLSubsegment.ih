@@ -131,7 +131,8 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
   //   return 1;
   // else
   Integer val = num/denom;
-  
+
+  // integer rounding is not equivalent to the floor operation when num/denom is negative
   if((num<0 ||denom <0) && !(num<0 && denom <0))
     val--;
   
@@ -2357,6 +2358,8 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	inf[1] = infL; 
 	inf[2] = infR;
 	inf[3] = prevInfR;
+
+	
 
 	Point sup[4];
 	
