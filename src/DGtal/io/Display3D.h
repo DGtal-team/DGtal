@@ -233,7 +233,7 @@ namespace DGtal
       double x3, y3, z3;
       double x4, y4, z4;
       unsigned int R,G,B,T;
-
+      
       unsigned int myDomainWidth;
       unsigned int myDomainHeight;      
       ImageDirection myDirection;      
@@ -359,6 +359,7 @@ namespace DGtal
 		    TextureMode aMode= Display3D::GrayScaleMode){
        	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
 	BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;    
+
 	myDrawDomain=false;
 	myDirection=normalDir;
 	myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
@@ -446,7 +447,6 @@ namespace DGtal
       myScaleY=1.0;
       myScaleZ=1.0;
       myBoundingPtEmptyTag = true;
-      
     };
 
     // ----------------------- Interface --------------------------------------
@@ -751,7 +751,7 @@ namespace DGtal
     /**
      * Update the  image parameters from std image (image buffer, vertex coordinates) 
      * The new image should be with same dimension than the original.
-     * @param imageIndex corresponds to the chronoloigic index given by the fuction (addTextureImage).
+     * @param imageIndex corresponds to the chronologic index given by the fuction (addTextureImage).
      * @param image the new image containing the new buffer (with same dimensions than the other image).
      * @param xTranslation the image translation in the  x direction (default 0).
      * @param yTranslation the image translation in the  y direction (default 0).
@@ -765,21 +765,25 @@ namespace DGtal
 
 
     /**
-     * Update the  image parameters from std image (image buffer, vertex coordinates) 
-     * The new image should be with same dimension than the original.
-     * @param imageIndex corresponds to the chronoloigic index given by the fuction (addTextureImage).
-     * @param xPosition the image translation in the  x direction (default 0).
-     * @param yPosition the image translation in the  y direction (default 0).
-     * @param zPosition the image translation in the  z direction (default 0).
+     * Update the  image orientation (including position)  
+     * @param imageIndex corresponds to the chronologic index given by the fuction (addTextureImage).
+     * @param xPosition the image position in the  x direction.
+     * @param yPosition the image position in the  y direction.
+     * @param zPosition the image position in the  z direction.
+     * @param newDirection the new direction of the domain.
      **/
 
     void updateOrientationTextureImage(unsigned int imageIndex, 
-					 double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
+				       double xPosition, double yPosition, double zPosition,
+				       ImageDirection newDirection);
     
 
     
     /**
-     *
+     * Add the domain.
+     * @tparam TDomain the type of the domain to be added.
+     * @param mode a string giving the domain mode (grid, intergrid, boundingbox).
+     * @param aColor the color to display the domain (default red).
      */
 
     template<typename TDomain>
@@ -788,14 +792,47 @@ namespace DGtal
     
     
     
-    void updateAn2DDomainOrientation(unsigned int imageIndex, 
+    /**
+     * Update the domain orientation (including position).
+     *
+     * @param domainIndex corresponds to the chronologic index given by the fuction (addImage2DDomainD3D).
+     * @param xPosition the image position in the  x direction.
+     * @param yPosition the image position in the  y direction.
+     * @param zPosition the image position in the  z direction.
+     * @param newDirection the new direction of the domain.
+     **/
+
+    void updateAn2DDomainOrientation(unsigned int domainIndex, 
 				     double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
     
-    
+    /**
+     * Translate the domain of a given index.
+     *
+     * @param domainIndex corresponds to the chronologic index given by the fuction (addImage2DDomainD3D).
+     * @param xTranslation the translation in the x direction.
+     * @param yTranslation the translation in the y direction.
+     * @param zTranslation the translation in the z direction.
+     *
+     **/
     void translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation);
     
-    
+
+    /**
+     * @return the vector containing all the line representing the image domain.
+     * @param anImageDomain the domain.
+     * @param delta the shift to display le line in order to avoid superposition with images.
+     * 
+     **/
+
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
+
+
+    /**
+     * @return the vector containing all the line representing the image domain with two versions (back/front)
+     * @param anImageDomain the domain.
+     * 
+     **/
+    
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
     
     /**

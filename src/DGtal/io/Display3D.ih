@@ -1016,12 +1016,12 @@ DGtal::Display3D::addImage2DDomainD3D(const TDomain &aDomain,
 				      std::string mode, const DGtal::Color &aColor){
   DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain);
   anImageDomain.R = aColor.red();
-  anImageDomain.G =aColor.green();
-  anImageDomain.B =aColor.blue();
-  anImageDomain.T =aColor.alpha();
+  anImageDomain.G = aColor.green();
+  anImageDomain.B = aColor.blue();
+  anImageDomain.T = aColor.alpha();
   
   anImageDomain.myMode =  mode;
-  anImageDomain.myLineSetIndex=myLineSetList.size();
+  anImageDomain.myLineSetIndex = myLineSetList.size();
   
   myImageDomainList.push_back(anImageDomain);
   updateBoundingBox(anImageDomain.x1, anImageDomain.y1, anImageDomain.z1);
@@ -1172,7 +1172,8 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
 inline 
 void 
 DGtal::Display3D::updateAn2DDomainOrientation(unsigned int domainIndex, 
-					      double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
+					      double xPosition, double yPosition, double zPosition,
+					      ImageDirection newDirection){
   Display3D::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex); 
   updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
   updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);

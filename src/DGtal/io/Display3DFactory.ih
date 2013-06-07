@@ -1344,7 +1344,7 @@ inline
 void
 DGtal::Display3DFactory::drawImage2D( Display3D & display, const TImageType2D &anImage, 
 				      const TFunctor &aFunctor, Display3D::TextureMode aTextureMode){
-    std::string mode = display.getMode( anImage.className() );
+  std::string mode = display.getMode( anImage.className() );
     ASSERT( (mode=="BoundingBox" || mode=="InterGrid" ||  mode=="Grid"||  mode=="") || 	 
 	    ("DGtal::Display3DFactory::draw( Display3D & display,const TImageType2D & anImage ): Unknown mode "+mode)=="");
 
