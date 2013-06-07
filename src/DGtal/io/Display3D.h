@@ -299,7 +299,7 @@ namespace DGtal
       unsigned int myImageWidth;
       unsigned int myImageHeight;
       unsigned int * myTabImage;
-      
+      unsigned char myAlpha;
       bool myDrawDomain;
       unsigned int myIndexDomain;
       TextureMode myMode;
@@ -312,15 +312,17 @@ namespace DGtal
        * Copy constructor (needed due to myTabImage)
        **/
       TextureImage(const TextureImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
-						 x2(img.x2), y2(img.y2), z2(img.z2),
-						 x3(img.x3), y3(img.y3), z3(img.z3),
-						 x4(img.x4), y4(img.y4), z4(img.z4),
-						 myDirection(img.myDirection), myImageWidth(img.myImageWidth),
-						 myImageHeight(img.myImageHeight),
-						 myTabImage(img.myTabImage),
-						 myDrawDomain(img.myDrawDomain),
-					         myIndexDomain(img.myIndexDomain),
-					         myMode(img.myMode){
+					    x2(img.x2), y2(img.y2), z2(img.z2),
+					    x3(img.x3), y3(img.y3), z3(img.z3),
+					    x4(img.x4), y4(img.y4), z4(img.z4),
+					    myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+					    myImageHeight(img.myImageHeight),
+					    myTabImage(img.myTabImage),
+					    myDrawDomain(img.myDrawDomain),
+					    myIndexDomain(img.myIndexDomain),
+					    myMode(img.myMode),
+					    myAlpha(img.myAlpha)
+      {
 	
 	if(img.myImageHeight>0 && img.myImageWidth>0){
 	  myTabImage = new  unsigned int [img.myImageWidth*img.myImageHeight];
@@ -356,7 +358,7 @@ namespace DGtal
       TextureImage( const TImageType & image, const TFunctor &aFunctor, 
 		    Display3D::ImageDirection normalDir=zDirection, 
 		    double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
-		    TextureMode aMode= Display3D::GrayScaleMode){
+		    TextureMode aMode= Display3D::GrayScaleMode, unsigned char alpha=255){
        	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
 	BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;    
 
@@ -366,7 +368,8 @@ namespace DGtal
 	myImageHeight = (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1;
 	myTabImage = new  unsigned int [myImageWidth*myImageHeight];
 	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
-	myMode=aMode;
+	myMode = aMode;
+	myAlpha = alpha;
 	updateImageDataAndParam(image, aFunctor);
       };
       

@@ -1349,10 +1349,13 @@ DGtal::Display3DFactory::drawImage2D( Display3D & display, const TImageType2D &a
 	    ("DGtal::Display3DFactory::draw( Display3D & display,const TImageType2D & anImage ): Unknown mode "+mode)=="");
 
   if(mode==""){
-    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection, 0,0,0, aTextureMode);
+    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, 
+					    DGtal::Display3D::zDirection, 0,0,0, aTextureMode,
+					    display.getFillColor().alpha());
     display.addTextureImage(aGSImage);
   }else if(mode=="BoundingBox" || mode == "InterGrid" || mode == "Grid"){
-    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection, 0,0,0, aTextureMode);
+    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection, 
+					    0,0,0, aTextureMode, display.getFillColor().alpha());
     aGSImage.myDrawDomain = true;
     display << SetMode3D( anImage.domain().className(), mode );
     display << anImage.domain();
