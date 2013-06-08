@@ -1553,7 +1553,7 @@ inline
 void 
 DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate ){
   display.updateTextureImage(anUpdate.myIndex, *(anUpdate.myImage),  anUpdate.myFunctor, anUpdate.myTranslateX, 
-			     anUpdate.myTranslateY, anUpdate.myTranslateZ);
+			     anUpdate.myTranslateY, anUpdate.myTranslateZ, anUpdate.myRotationAngle, anUpdate.myRotationDir);
   
 }
 

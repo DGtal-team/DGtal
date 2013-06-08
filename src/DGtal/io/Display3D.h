@@ -51,12 +51,14 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/shapes/Mesh.h"
+#include "DGtal/kernel/PointVector.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+
 
   /////////////////////////////////////////////////////////////////////////////
   // class Display3D
@@ -76,7 +78,7 @@ namespace DGtal
   class Display3D
   {
 
-        
+
     // ------------------------- Private Datas --------------------------------
   private:
     
@@ -93,7 +95,7 @@ namespace DGtal
     /// @see addKSLinel 
     ///
     
-  
+public:  
     struct lineD3D{
       double x1, y1, z1;
       double x2, y2, z2;
@@ -371,12 +373,6 @@ namespace DGtal
 	updateImageDataAndParam(image, aFunctor);
       };
 
-      // rotation around the axis rotationDir
-      // centered in the image barycenter
-      
-      void 
-      rotate(double angle, Display3D::ImageDirection rotationDir);
-
       
       /**
        * Update the image direction from a specific normal direction
@@ -427,11 +423,13 @@ namespace DGtal
 	  pos++;
 	}  
       };
-
+ 
       /**
        * return the class name to implment the CDrawableWithDisplay3D concept.
        **/
       std::string className() const;
+
+
       
     private:
       TextureImage(){
@@ -765,10 +763,13 @@ namespace DGtal
      * @param xTranslation the image translation in the  x direction (default 0).
      * @param yTranslation the image translation in the  y direction (default 0).
      * @param zTranslation the image translation in the  z direction (default 0).
+     * @param rotationAngle: the angle of rotation. 
+     * @param dirRotation: the rotation is applyed arount the given direction. 
      **/
     template <typename TImageType, typename TFunctor>
     void updateTextureImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor, 
-			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+			    double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0,
+			    double rotationAngle=0.0, ImageDirection rotationDir=zDirection);
     
 
 
@@ -807,6 +808,25 @@ namespace DGtal
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
     
+    void  rotateLineD3D(Display3D::lineD3D &aLine, DGtal::PointVector<3, int> pt, DGtal::Display3D::ImageDirection dir, double alpha );        
+
+    template<typename T>
+    void 
+    rotateDomain(T &anDom, double angle, Display3D::ImageDirection rotationDir){
+      DGtal::PointVector<3, int> pt;
+      pt[0] = (int) (anDom.x1+anDom.x2+anDom.x3+anDom.x4)/4.0;
+      pt[1] = (int) (anDom.y1+anDom.y2+anDom.y3+anDom.y4)/4.0;
+      pt[2] = (int) (anDom.z1+anDom.z2+anDom.z3+anDom.z4)/4.0;
+      rotateImageVertex(anDom, angle, rotationDir);
+      
+      std::vector<Display3D::lineD3D> &aVectLine = myLineSetList.at(anDom.myLineSetIndex);
+      for(unsigned int i = 0; i< aVectLine.size();i++){
+	Display3D::lineD3D &aLine = aVectLine.at(i);
+	rotateLineD3D(aLine, pt, rotationDir, angle);
+      }
+      
+    }
+
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
@@ -1029,6 +1049,9 @@ namespace DGtal
   static void normalize (double vec[3]);
 
 
+  
+  
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'Display3D'.
    * @param out the output stream where the object is written.
@@ -1042,7 +1065,7 @@ namespace DGtal
 template<typename T>
 static 
 void 
-rotate(T &anImageOrDom, double angle, Display3D::ImageDirection rotationDir){
+rotateImageVertex(T &anImageOrDom, double angle, Display3D::ImageDirection rotationDir){
   double xB = (anImageOrDom.x1+anImageOrDom.x2+anImageOrDom.x3+anImageOrDom.x4)/4.0;
   double yB = (anImageOrDom.y1+anImageOrDom.y2+anImageOrDom.y3+anImageOrDom.y4)/4.0;
   double zB = (anImageOrDom.z1+anImageOrDom.z2+anImageOrDom.z3+anImageOrDom.z4)/4.0;
@@ -1062,7 +1085,13 @@ rotate(T &anImageOrDom, double angle, Display3D::ImageDirection rotationDir){
     
   }
 
-}
+};
+
+
+
+
+
+
 
 
   /**

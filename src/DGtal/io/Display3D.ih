@@ -76,6 +76,40 @@ DGtal::normalize (double vec[3])
   vec[2] /= sqrt (squaredLen);
 }
 
+
+inline
+void 
+DGtal::Display3D::rotateLineD3D(Display3D::lineD3D &aLine, DGtal::PointVector<3, int> pt, DGtal::Display3D::ImageDirection dir, double alpha ){
+
+  double dx1 = aLine.x1 - pt[0]; double dy1 = aLine.y1 - pt[1]; double dz1 = aLine.z1 - pt[2];
+  double dx2 = aLine.x2 - pt[0]; double dy2 = aLine.y2 - pt[1]; double dz2 = aLine.z2 - pt[2];
+  if(dir==DGtal::Display3D::zDirection){
+     aLine.x1=pt[0]+dx1*std::cos(alpha)-dy1*std::sin(alpha);
+     aLine.y1=pt[1]+dx1*std::sin(alpha)+dy1*std::cos(alpha);
+     
+     aLine.x2=pt[0]+dx2*std::cos(alpha)-dy2*std::sin(alpha);
+     aLine.y2=pt[1]+dx2*std::sin(alpha)+dy2*std::cos(alpha);
+    
+  }else if(dir==DGtal::Display3D::xDirection){
+    aLine.y1=pt[1]+dy1*std::cos(alpha)-dz1*std::sin(alpha);
+    aLine.z1=pt[2]+dy1*std::sin(alpha)+dz1*std::cos(alpha);
+
+    aLine.y2=pt[1]+dy2*std::cos(alpha)-dz2*std::sin(alpha);
+    aLine.z2=pt[2]+dy2*std::sin(alpha)+dz2*std::cos(alpha);
+  }else  if(dir==DGtal::Display3D::yDirection){
+    aLine.x1=pt[0]+dx1*std::cos(alpha)-dz1*std::sin(alpha);
+    aLine.z1=pt[2]+dx1*std::sin(alpha)+dz1*std::cos(alpha);
+
+    aLine.x2=pt[0]+dx2*std::cos(alpha)-dz2*std::sin(alpha);
+    aLine.z2=pt[2]+dx2*std::sin(alpha)+dz2*std::cos(alpha);
+  }else{
+    trace.error() << "No direction!!"<< std::endl;
+  }
+ 
+}
+
+
+
 inline
 void
 DGtal::Display3D::setFillColor(DGtal::Color aColor)
@@ -912,7 +946,8 @@ template <typename TImageType, typename TFunctor>
 inline
 void 
 DGtal::Display3D::updateTextureImage(unsigned int imageIndex,  const TImageType & image, const  TFunctor & aFunctor, 
-				       double xTranslation, double yTranslation, double zTranslation){
+				     double xTranslation, double yTranslation, double zTranslation,
+				     double rotationAngle, ImageDirection rotationDir){
   BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
   Display3D::TextureImage &anImage = myGSImageList.at(imageIndex); 
@@ -921,13 +956,14 @@ DGtal::Display3D::updateTextureImage(unsigned int imageIndex,  const TImageType 
   updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
   updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
   anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);  
-  
+
   if(anImage.myDrawDomain){
     *this << DGtal::Translate2DDomain(anImage.myIndexDomain, xTranslation, yTranslation, zTranslation); 
   }
-  rotate(anImage, 5.0/180.0, Display3D::zDirection);
-  rotate(myImageDomainList.at(anImage.myIndexDomain), 5.0/180.0, Display3D::zDirection);
-
+  if(rotationAngle!=0.0){
+    rotateDomain(myImageDomainList.at(anImage.myIndexDomain), rotationAngle, rotationDir);
+    rotateImageVertex(anImage, rotationAngle, rotationDir);  
+  }
 }
     
 
@@ -947,8 +983,6 @@ DGtal::Display3D::updateOrientationTextureImage(unsigned int imageIndex,
   if(anImage.myDrawDomain){
     *this << DGtal::Update2DDomainPosition(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
   }
-  rotate(anImage,5.0/180.0, Display3D::zDirection);
-  rotate(myImageDomainList.at(anImage.myIndexDomain), 5.0/180.0, Display3D::zDirection);
 }
     
 
@@ -1082,13 +1116,13 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
       //lines align to the x direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++){
 	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1+delta; 
-	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y2+i; aLine.z2 = anImageDomain.z2+delta; 
 	aLineSet.push_back(aLine);
       }
       //lines align to the y direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++){
 	aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta; 
-	aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x4+i; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z4+delta; 
 	aLineSet.push_back(aLine);
       }
     }else  if(anImageDomain.myDirection==xDirection){
@@ -1127,13 +1161,13 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
       //lines align to the x direction 
       for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
 	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1+delta; 
-	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y2+i+0.5; aLine.z2 = anImageDomain.z2+delta; 
 	aLineSet.push_back(aLine);
       }
       //lines align to the y direction 
       for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
 	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta; 
-	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x4+i+0.5; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z4+delta; 
 	aLineSet.push_back(aLine);
       }
     }else  if(anImageDomain.myDirection==xDirection){
@@ -1206,13 +1240,13 @@ DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslat
   updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
   updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
 
-  std::vector<DGtal::Display3D::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);  
-  std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex); 
-  
-  vectLines.clear();
-  for(unsigned int i=0; i<vectNewLines.size(); i++){
-    vectLines.push_back(vectNewLines.at(i));
+  std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex);     
+  for(unsigned int i=0; i<vectLines.size(); i++){
+    DGtal::Display3D::lineD3D &aLine = vectLines.at(i);
+    aLine.x1=aLine.x1+xTranslation; aLine.y1=aLine.y1+yTranslation; aLine.z1=aLine.z1+zTranslation;
+    aLine.x2=aLine.x2+xTranslation; aLine.y2=aLine.y2+yTranslation; aLine.z2=aLine.z2+zTranslation;
   }
+  
 }
 
 
