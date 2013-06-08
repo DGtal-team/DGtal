@@ -78,49 +78,68 @@ DGtal::normalize (double vec[3])
 
 inline
 void 
-DGtal::Display3D::rotateDomain(Display3D::Image2DDomainD3D &anDom, double angle, 
+DGtal::Display3D::rotateDomain(Display3D::Image2DDomainD3D &anDom, double angleRotation, 
 			       Display3D::ImageDirection rotationDir){
   DGtal::PointVector<3, int> pt;
   pt[0] = (int) (anDom.x1+anDom.x2+anDom.x3+anDom.x4)/4.0;
   pt[1] = (int) (anDom.y1+anDom.y2+anDom.y3+anDom.y4)/4.0;
   pt[2] = (int) (anDom.z1+anDom.z2+anDom.z3+anDom.z4)/4.0;
-  rotateImageVertex(anDom, angle, rotationDir);
+  rotateImageVertex(anDom, angleRotation, rotationDir);
   
   std::vector<Display3D::lineD3D> &aVectLine = myLineSetList.at(anDom.myLineSetIndex);
   for(unsigned int i = 0; i< aVectLine.size();i++){
     Display3D::lineD3D &aLine = aVectLine.at(i);
-    rotateLineD3D(aLine, pt, rotationDir, angle);
+    rotateLineD3D(aLine, pt, angleRotation, rotationDir );
   }
   
 }
 
-
+static 
+inline
+void  DGtal::rotatePoint(double &x, double &y, double &z, double cx, double cy, double cz, 
+		  double angleRotation, DGtal::Display3D::ImageDirection rotationDir){
+  double dx = x-cx; double dy = y-cy; double dz = z-cz;
+  if(rotationDir  == DGtal::Display3D::zDirection){
+    x = cx+dx*cos(angleRotation)-dy*sin(angleRotation); 
+    y = cy+dx*sin(angleRotation)+dy*cos(angleRotation);
+  }
+  if(rotationDir  == DGtal::Display3D::yDirection){
+    x = cx+dx*cos(angleRotation)-dz*sin(angleRotation); 
+    z = cz+dx*sin(angleRotation)+dz*cos(angleRotation);
+  }
+  if(rotationDir  == DGtal::Display3D::xDirection){
+    y = cy+dy*cos(angleRotation)-dz*sin(angleRotation); 
+    z = cz+dy*sin(angleRotation)+dz*cos(angleRotation);
+  }
+}
 
 inline
 void 
-DGtal::Display3D::rotateLineD3D(Display3D::lineD3D &aLine, DGtal::PointVector<3, int> pt, DGtal::Display3D::ImageDirection dir, double alpha ){
+DGtal::Display3D::rotateLineD3D(Display3D::lineD3D &aLine, 
+				DGtal::PointVector<3, int> pt, 
+				double angleRotation, DGtal::Display3D::ImageDirection dirRotation){
 
   double dx1 = aLine.x1 - pt[0]; double dy1 = aLine.y1 - pt[1]; double dz1 = aLine.z1 - pt[2];
   double dx2 = aLine.x2 - pt[0]; double dy2 = aLine.y2 - pt[1]; double dz2 = aLine.z2 - pt[2];
-  if(dir==DGtal::Display3D::zDirection){
-     aLine.x1=pt[0]+dx1*std::cos(alpha)-dy1*std::sin(alpha);
-     aLine.y1=pt[1]+dx1*std::sin(alpha)+dy1*std::cos(alpha);
+  if(dirRotation==DGtal::Display3D::zDirection){
+     aLine.x1=pt[0]+dx1*std::cos(angleRotation)-dy1*std::sin(angleRotation);
+     aLine.y1=pt[1]+dx1*std::sin(angleRotation)+dy1*std::cos(angleRotation);
      
-     aLine.x2=pt[0]+dx2*std::cos(alpha)-dy2*std::sin(alpha);
-     aLine.y2=pt[1]+dx2*std::sin(alpha)+dy2*std::cos(alpha);
+     aLine.x2=pt[0]+dx2*std::cos(angleRotation)-dy2*std::sin(angleRotation);
+     aLine.y2=pt[1]+dx2*std::sin(angleRotation)+dy2*std::cos(angleRotation);
     
-  }else if(dir==DGtal::Display3D::xDirection){
-    aLine.y1=pt[1]+dy1*std::cos(alpha)-dz1*std::sin(alpha);
-    aLine.z1=pt[2]+dy1*std::sin(alpha)+dz1*std::cos(alpha);
+  }else if(dirRotation==DGtal::Display3D::xDirection){
+    aLine.y1=pt[1]+dy1*std::cos(angleRotation)-dz1*std::sin(angleRotation);
+    aLine.z1=pt[2]+dy1*std::sin(angleRotation)+dz1*std::cos(angleRotation);
 
-    aLine.y2=pt[1]+dy2*std::cos(alpha)-dz2*std::sin(alpha);
-    aLine.z2=pt[2]+dy2*std::sin(alpha)+dz2*std::cos(alpha);
-  }else  if(dir==DGtal::Display3D::yDirection){
-    aLine.x1=pt[0]+dx1*std::cos(alpha)-dz1*std::sin(alpha);
-    aLine.z1=pt[2]+dx1*std::sin(alpha)+dz1*std::cos(alpha);
+    aLine.y2=pt[1]+dy2*std::cos(angleRotation)-dz2*std::sin(angleRotation);
+    aLine.z2=pt[2]+dy2*std::sin(angleRotation)+dz2*std::cos(angleRotation);
+  }else  if(dirRotation==DGtal::Display3D::yDirection){
+    aLine.x1=pt[0]+dx1*std::cos(angleRotation)-dz1*std::sin(angleRotation);
+    aLine.z1=pt[2]+dx1*std::sin(angleRotation)+dz1*std::cos(angleRotation);
 
-    aLine.x2=pt[0]+dx2*std::cos(alpha)-dz2*std::sin(alpha);
-    aLine.z2=pt[2]+dx2*std::sin(alpha)+dz2*std::cos(alpha);
+    aLine.x2=pt[0]+dx2*std::cos(angleRotation)-dz2*std::sin(angleRotation);
+    aLine.z2=pt[2]+dx2*std::sin(angleRotation)+dz2*std::cos(angleRotation);
   }else{
     trace.error() << "No direction!!"<< std::endl;
   }

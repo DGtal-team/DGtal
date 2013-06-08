@@ -763,8 +763,8 @@ public:
      * @param xTranslation the image translation in the  x direction (default 0).
      * @param yTranslation the image translation in the  y direction (default 0).
      * @param zTranslation the image translation in the  z direction (default 0).
-     * @param rotationAngle: the angle of rotation. 
-     * @param dirRotation: the rotation is applyed arount the given direction. 
+     * @param rotationAngle the angle of rotation. 
+     * @param dirRotation the rotation is applyed arount the given direction. 
      **/
     template <typename TImageType, typename TFunctor>
     void updateTextureImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor, 
@@ -813,11 +813,13 @@ public:
      * Rotate an lineD3D from its two extremity points.   
      *
      * @param aLine the line to be rotated.
-     * @param angle the angle of rotation.
-     * @param rotationDir the rotation will be applied around this direction. 
+     * @param pt the center of rotation.
+     * @param angleRotation the angle of rotation.
+     * @param dirRotation the rotation will be applied around this direction. 
      **/
 
-    void  rotateLineD3D(Display3D::lineD3D &aLine, DGtal::PointVector<3, int> pt, DGtal::Display3D::ImageDirection dir, double alpha );        
+    void  rotateLineD3D(Display3D::lineD3D &aLine, DGtal::PointVector<3, int> pt,
+			double angleRotation, DGtal::Display3D::ImageDirection dirRotation);        
 
 
     /**
@@ -1067,30 +1069,49 @@ public:
   operator<< ( std::ostream & out, const DGtal::Display3D & object );
 
 
-template<typename T>
-static 
-void 
-rotateImageVertex(T &anImageOrDom, double angle, Display3D::ImageDirection rotationDir){
-  double xB = (anImageOrDom.x1+anImageOrDom.x2+anImageOrDom.x3+anImageOrDom.x4)/4.0;
-  double yB = (anImageOrDom.y1+anImageOrDom.y2+anImageOrDom.y3+anImageOrDom.y4)/4.0;
-  double zB = (anImageOrDom.z1+anImageOrDom.z2+anImageOrDom.z3+anImageOrDom.z4)/4.0;
-  double dx1 = anImageOrDom.x1-xB; double dx2 = anImageOrDom.x2-xB; double dx3 = anImageOrDom.x3-xB; double dx4 = anImageOrDom.x4-xB;
-  double dy1 = anImageOrDom.y1-yB; double dy2 = anImageOrDom.y2-yB; double dy3 = anImageOrDom.y3-yB; double dy4 = anImageOrDom.y4-yB;
-  double dz1 = anImageOrDom.z1-zB; double dz2 = anImageOrDom.z2-zB; double dz3 = anImageOrDom.z3-zB; double dz4 = anImageOrDom.z4-zB;
-  if(rotationDir  == Display3D::zDirection){
-    anImageOrDom.x1 = xB+dx1*cos(angle)-dy1*sin(angle); 
-    anImageOrDom.x2 = xB+dx2*cos(angle)-dy2*sin(angle);
-    anImageOrDom.x3 = xB+dx3*cos(angle)-dy3*sin(angle);
-    anImageOrDom.x4 = xB+dx4*cos(angle)-dy4*sin(angle);
-    
-    anImageOrDom.y1 = yB+dx1*sin(angle)+dy1*cos(angle);
-    anImageOrDom.y2 = yB+dx2*sin(angle)+dy2*cos(angle);
-    anImageOrDom.y3 = yB+dx3*sin(angle)+dy3*cos(angle);
-    anImageOrDom.y4 = yB+dx4*sin(angle)+dy4*cos(angle);
-    
-  }
+  
+  /**
+   * Rotate a vertex from a given angle, a center point and a rotation direction. 
+   * @param (return) x the x coordinate of the point to rotated.
+   * @param (return) y the y coordinate of the point to rotated.
+   * @param (return) z the z coordinate of the point to rotated.
+   *
+   * @param anImageOrDom the domain or image to be rotated.
+   * @param angle the angle of the rotation.
+   * @param rotationDir the rotation is applied around this axis direction.
+   **/
+  
+  static  
+  void  rotatePoint(double &x, double &y, double &z, 
+		    double cx, double cy, double cz,
+		    double angle, Display3D::ImageDirection rotationDir);
 
-};
+
+
+  /**
+   * Rotate Image2DDomainD3D or TextureImage  vertex from a given
+   * angle and a rotation direction. The center of rotation is defined
+   * from the image center point.
+   * 
+   * @tparam  TImageORDomain the type object to be rotated (should  be an Image2DDomainD3D or a TextureImage)
+   * @param anImageOrDom the domain or image to be rotated.
+   * @param angle the angle of the rotation.
+   * @param rotationDir the rotation is applied around this axis direction.
+   **/
+  
+  template<typename TImageORDomain>
+  static 
+  void 
+  rotateImageVertex(TImageORDomain &anImageOrDom, double angle, Display3D::ImageDirection rotationDir){
+    double xB = (anImageOrDom.x1+anImageOrDom.x2+anImageOrDom.x3+anImageOrDom.x4)/4.0;
+    double yB = (anImageOrDom.y1+anImageOrDom.y2+anImageOrDom.y3+anImageOrDom.y4)/4.0;
+    double zB = (anImageOrDom.z1+anImageOrDom.z2+anImageOrDom.z3+anImageOrDom.z4)/4.0;
+    rotatePoint( anImageOrDom.x1,  anImageOrDom.y1, anImageOrDom.z1,   xB, yB, zB, angle, rotationDir);
+    rotatePoint( anImageOrDom.x2,  anImageOrDom.y2, anImageOrDom.z2,   xB, yB, zB, angle, rotationDir);
+    rotatePoint( anImageOrDom.x3,  anImageOrDom.y3, anImageOrDom.z3,   xB, yB, zB, angle, rotationDir);
+    rotatePoint( anImageOrDom.x4,  anImageOrDom.y4, anImageOrDom.z4,   xB, yB, zB, angle, rotationDir);
+    
+  };
 
 
 
