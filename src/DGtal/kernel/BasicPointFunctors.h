@@ -200,8 +200,11 @@ namespace DGtal
      * @param  posDimAdded  position of insertion of the new dimension.
      * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
      */
-    SliceRotator2D( Dimension dimAdded, TDomain aDomain3DImg, Integer sliceIndex, double angle, Point center):
-      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg) {};
+    // dimRotated dim of the axis of rotation i.e point[dimRotated] = cst;
+    
+    SliceRotator2D( Dimension dimAdded, TDomain aDomain3DImg, Integer sliceIndex,  Dimension dimRotated, double angle, Point center):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myAngle(angle), myCenter(center) {};
     
     /** 
      * The operator just recover the ND Point associated to the slice parameter.
@@ -215,21 +218,29 @@ namespace DGtal
     {
       Point pt;
       Dimension pos=0;
-      std::vector<Dimension> indexes;
+      std::vector<Dimension> indexesRotate;
       for( Dimension i=0; i<pt.size(); i++){
 	if(i!=myPosDimAdded){
 	  pt[i]= aPoint[pos];
 	  pos++; 
-	  indexes.push_back(pos);
 	}else{
 	  pt[i]=mySliceIndex;
 	}
       }
+      for( Dimension i=0; i<pt.size(); i++){
+	if(i!=myDimRotated)
+	  indexesRotate.push_back(i);
+      }
+      double d1 = pt[indexesRotate[0]] - myCenter[indexesRotate[0]];
+      double d2 = pt[indexesRotate[1]] - myCenter[indexesRotate[1]];
+      
+      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + d1*cos(myAngle)-d2*sin(myAngle) ; 
+      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + d1*sin(myAngle)+d2*cos(myAngle) ; 
       
       if(myDomain.isInside(pt))
 	return pt;
       else
-	return Point(0,0,0);
+	return  Point(0,0,0);
     }
   private:
     // position of insertion of the new dimension
@@ -237,6 +248,9 @@ namespace DGtal
     // the index of the slice associated to the new domain.
     Integer mySliceIndex;
     TDomain myDomain;
+    Point myCenter;
+    double myAngle;
+    Dimension myDimRotated;
   };
 
 
