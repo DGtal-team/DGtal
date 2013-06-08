@@ -177,7 +177,71 @@ namespace DGtal
 
 
 
-} // namespace DGtal
+  /**
+   * Create a special Point Functor that add one dimension to a 2D
+   *  point and apply a rotation of angle alpha to the resulting 3D
+   *  point according a given direction and a center.
+      *
+   * @tparam TSpace type for the space where must lie the projected point
+   *
+   */
+  template <typename TDomain, typename TInteger =  DGtal::int32_t >
+  class SliceRotator2D
+  {
+  public:
+        
+    typedef SpaceND< 3, TInteger>  Space;
+    typedef typename Space::Dimension Dimension; 
+    typedef typename Space::Point Point; 
+    typedef typename Space::Integer Integer; 
+    
+    /** 
+     * Constructor.
+     * @param  posDimAdded  position of insertion of the new dimension.
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     */
+    SliceRotator2D( Dimension dimAdded, TDomain aDomain3DImg, Integer sliceIndex, double angle, Point center):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg) {};
+    
+    /** 
+     * The operator just recover the ND Point associated to the slice parameter.
+     * @param[in] aPoint point of the input domain (of dimension N-1).
+     * 
+     * @return the point of dimension N.
+     */
+    template <typename TPointDimMinus>
+    inline
+    Point  operator()(const TPointDimMinus& aPoint) const
+    {
+      Point pt;
+      Dimension pos=0;
+      std::vector<Dimension> indexes;
+      for( Dimension i=0; i<pt.size(); i++){
+	if(i!=myPosDimAdded){
+	  pt[i]= aPoint[pos];
+	  pos++; 
+	  indexes.push_back(pos);
+	}else{
+	  pt[i]=mySliceIndex;
+	}
+      }
+      
+      if(myDomain.isInside(pt))
+	return pt;
+      else
+	return Point(0,0,0);
+    }
+  private:
+    // position of insertion of the new dimension
+     Dimension myPosDimAdded;
+    // the index of the slice associated to the new domain.
+    Integer mySliceIndex;
+    TDomain myDomain;
+  };
+
+
+
+} // namespace dgtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
