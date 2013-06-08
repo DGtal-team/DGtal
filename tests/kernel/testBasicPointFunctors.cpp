@@ -35,6 +35,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 
 using namespace DGtal;
 using namespace std;
@@ -99,6 +100,19 @@ bool testProjector()
   Projector3D proj4(-1);  
   proj4.init(v4.begin(), v4.end()); 
 
+  //SliceRotator2D
+  //SliceRotator2D sliceRot(
+  PointVector<3, int> pt1(0,0, 0);
+  PointVector<3, int> pt2(10,10, 10);
+  HyperRectDomain<SpaceND<3, int> >  domain (pt1, pt2);
+  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, domain, 6, 0, pt1);
+  PointVector<2, int> pt(5,5);  
+  PointVector<3, int> ptR(5,5,6);  
+ 
+  trace.info() << "pt " << pt << " => " << sliceRot(pt) << " == " << ptR << std::endl;
+  nbok += ( sliceRot(pt) == ptR ) ? 1 : 0; 
+  nb++;
+  
   //comparison
   PointVector<3,int> res1(5,0,2); 
   trace.info() << "p " << p << " => " << proj1(p) << " == " << res1 << std::endl;
