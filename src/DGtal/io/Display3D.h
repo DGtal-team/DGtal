@@ -808,24 +808,29 @@ public:
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
     
+
+    /**
+     * Rotate an lineD3D from its two extremity points.   
+     *
+     * @param aLine the line to be rotated.
+     * @param angle the angle of rotation.
+     * @param rotationDir the rotation will be applied around this direction. 
+     **/
+
     void  rotateLineD3D(Display3D::lineD3D &aLine, DGtal::PointVector<3, int> pt, DGtal::Display3D::ImageDirection dir, double alpha );        
 
-    template<typename T>
-    void 
-    rotateDomain(T &anDom, double angle, Display3D::ImageDirection rotationDir){
-      DGtal::PointVector<3, int> pt;
-      pt[0] = (int) (anDom.x1+anDom.x2+anDom.x3+anDom.x4)/4.0;
-      pt[1] = (int) (anDom.y1+anDom.y2+anDom.y3+anDom.y4)/4.0;
-      pt[2] = (int) (anDom.z1+anDom.z2+anDom.z3+anDom.z4)/4.0;
-      rotateImageVertex(anDom, angle, rotationDir);
-      
-      std::vector<Display3D::lineD3D> &aVectLine = myLineSetList.at(anDom.myLineSetIndex);
-      for(unsigned int i = 0; i< aVectLine.size();i++){
-	Display3D::lineD3D &aLine = aVectLine.at(i);
-	rotateLineD3D(aLine, pt, rotationDir, angle);
-      }
-      
-    }
+
+    /**
+     * Rotate an Image2DDomainD3D from its bounding points and from its grid line.   
+     *
+     * @param anDom the domain to be rotated.
+     * @param angle the angle of rotation.
+     * @param rotationDir the rotation will be applied around this direction. 
+     **/
+    
+    void  rotateDomain(Image2DDomainD3D &anDom, double angle, Display3D::ImageDirection rotationDir);
+
+
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
