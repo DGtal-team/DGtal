@@ -54,8 +54,8 @@
  * @param srcA source vector A.
  * @param srcB source vector B.
  */
-static inline 
-void DGtal::cross (double dst[3], double srcA[3], double srcB[3])
+inline 
+void DGtal::Display3D::cross (double dst[3], double srcA[3], double srcB[3])
 {
   dst[0] = srcA[1]*srcB[2] - srcA[2]*srcB[1];
   dst[1] = srcA[2]*srcB[0] - srcA[0]*srcB[2];
@@ -66,15 +66,16 @@ void DGtal::cross (double dst[3], double srcA[3], double srcB[3])
  * Normalize the input 3d vector.
  * @param vec source & destination vector.
  */
-static inline  
+inline  
 void 
-DGtal::normalize (double vec[3])
+DGtal::Display3D::normalize (double vec[3])
 {
   const double squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
   vec[0] /= sqrt (squaredLen);
   vec[1] /= sqrt (squaredLen);
   vec[2] /= sqrt (squaredLen);
 }
+
 
 inline
 void 
@@ -94,9 +95,10 @@ DGtal::Display3D::rotateDomain(Display3D::Image2DDomainD3D &anDom, double angleR
   
 }
 
-static 
+
 inline
-void  DGtal::rotatePoint(double &x, double &y, double &z, double cx, double cy, double cz, 
+void  
+DGtal::Display3D::rotatePoint(double &x, double &y, double &z, double cx, double cy, double cz, 
 		  double angleRotation, DGtal::Display3D::ImageDirection rotationDir){
   double dx = x-cx; double dy = y-cy; double dz = z-cz;
   if(rotationDir  == DGtal::Display3D::zDirection){
