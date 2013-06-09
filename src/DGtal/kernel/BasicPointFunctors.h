@@ -178,14 +178,35 @@ namespace DGtal
 
 
   /**
-   * Create a special Point Functor that add one dimension to a 2D
-   *  point and apply a rotation of angle alpha to the resulting 3D
-   *  point according a given direction and a center.
-      *
-   * @tparam TSpace type for the space where must lie the projected point
+   * Description of template class 'SliceRotator2D' <p>
+   * \brief Special Point Functor that adds one dimension to a 2D point and
+   *  apply on it a rotation of angle alpha according to a given
+   *  direction and the domain center. It also checks if the resulting
+   *  point is inside the 3D domain, else it returns a particular point (by
+   *  default the point at domain origin lowBound() point).
+   *
+   * Ex: a Point P (10, 9) in the domain (defined (0,0,0) (10,10,10))
+   * given in 3D by adding the dimension in Z (2) with slice num 7: =>
+   * P(10, 9, 7) and after a rotation of PI from center of slice domain (5,5, 7)
+   * will give P(0,1,7). 
+   * To apply this example you can test it with:
+   * @code 
+   // Defining the domain
+   PointVector<3, int> pt1(0,0, 0);
+   PointVector<3, int> pt2(10,10, 10);
+   HyperRectDomain<SpaceND<3, int> >  domain (pt1, pt2);
+   // The functor on axis rotation set to 2 with new Z slice num=7 and angle 3.15: 
+   SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
+   PointVector<2, int> pt_2(10, 9);  
+   trace.info() <<  sliceRot2(pt_2);
+     @endcode
+     *
+   *
+   * @tparam TDomain3D the type of the 3d domain. 
+   * @tparam TInteger specifies the integer number type used to define the space. 
    *
    */
-  template <typename TDomain, typename TInteger =  DGtal::int32_t >
+  template <typename TDomain3D, typename TInteger =  DGtal::int32_t >
   class SliceRotator2D
   {
   public:
@@ -197,20 +218,49 @@ namespace DGtal
     
     /** 
      * Constructor.
-     * @param  posDimAdded  position of insertion of the new dimension.
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
      * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param rotationAngle the angle of rotation (in radians).
+     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
      */
-    // dimRotated dim of the axis of rotation i.e point[dimRotated] = cst;
     
-    SliceRotator2D( Dimension dimAdded, TDomain aDomain3DImg, Integer sliceIndex,  Dimension dimRotated, double angle, Point center):
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, 
+		    const Integer &sliceIndex,  const Dimension &dimRotated,
+		    double rotationAngle, const Point &defautPoint = Point(0,0,0)):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
-      myDimRotated(dimRotated), myAngle(angle), myCenter(center) {};
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defautPoint)
+    {
+      myCenter[0] = ((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
+      myCenter[1] = ((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
+      myCenter[2] = ((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
+      myCenter[dimAdded]=sliceIndex;
+    };
+    /** 
+     * Constructor.
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param ptCenter the rotation center.
+     * @param rotationAngle the angle of rotation (in radians).
+     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     */
+    
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
+		    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defautPoint)
+    {
+      myDefaultPoint = Point(0,0,0);
+    };
     
     /** 
-     * The operator just recover the ND Point associated to the slice parameter.
+     * The operator just recover the 3D Point associated to the SliceRotator2D parameters.
      * @param[in] aPoint point of the input domain (of dimension N-1).
      * 
-     * @return the point of dimension N.
+     * @return the point of dimension 3.
      */
     template <typename TPointDimMinus>
     inline
@@ -234,23 +284,24 @@ namespace DGtal
       double d1 = pt[indexesRotate[0]] - myCenter[indexesRotate[0]];
       double d2 = pt[indexesRotate[1]] - myCenter[indexesRotate[1]];
       
-      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + d1*cos(myAngle)-d2*sin(myAngle) ; 
-      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + d1*sin(myAngle)+d2*cos(myAngle) ; 
+      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + d1*cos(myRotationAngle)-d2*sin(myRotationAngle) ; 
+      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ; 
       
       if(myDomain.isInside(pt))
 	return pt;
       else
-	return  Point(0,0,0);
+	return  myDefaultPoint;
     }
   private:
     // position of insertion of the new dimension
      Dimension myPosDimAdded;
     // the index of the slice associated to the new domain.
     Integer mySliceIndex;
-    TDomain myDomain;
-    Point myCenter;
-    double myAngle;
+    TDomain3D myDomain;
+    PointVector<3, double> myCenter;
+    double myRotationAngle;
     Dimension myDimRotated;
+    Point myDefaultPoint;
   };
 
 

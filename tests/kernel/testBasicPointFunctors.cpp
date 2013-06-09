@@ -104,12 +104,19 @@ bool testProjector()
   PointVector<3, int> pt1(0,0, 0);
   PointVector<3, int> pt2(10,10, 10);
   HyperRectDomain<SpaceND<3, int> >  domain (pt1, pt2);
-  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, domain, 6, 1, 0.1, pt1);
+  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, domain, 6, 1,  pt1, 0.1);
+  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
   PointVector<2, int> pt(5,5);  
+  PointVector<2, int> pt_2(10, 9);  
   PointVector<3, int> ptR(4,5,6);  
+  PointVector<3, int> ptR2(0, 1, 7);  
  
   trace.info() << "pt " << pt << " => " << sliceRot(pt) << " == " << ptR << std::endl;
   nbok += ( sliceRot(pt) == ptR ) ? 1 : 0; 
+  nb++;
+  
+  trace.info() << "pt " << pt_2 << " => " << sliceRot2(pt_2) << " == " << ptR2 << std::endl;
+  nbok += ( sliceRot2(pt_2) == ptR2 ) ? 1 : 0; 
   nb++;
   
   //comparison
