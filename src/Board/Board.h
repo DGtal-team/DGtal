@@ -941,7 +941,19 @@ public:
   Path _clippingPath;
 };
 
+const double Board::Degree =  3.14159265358979323846 / 180.0;
+
+
 } // namespace LibBoard
+
+
+namespace {
+  const float pageSizes[3][2] = { { 0.0f, 0.0f }, // BoundingBox
+          { 210.0f, 297.0f },
+          { 8.5f*25.4f, 11.0f*25.4f } };
+  const float ppmm = 720.0f / 254.0f;
+}
+
 
 #include "Board.ih"
 

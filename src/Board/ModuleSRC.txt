@@ -1,6 +1,5 @@
 
 SET(BOARD_SRC ${BOARD_SRC}
-  Board/Board
   Board/Path
   Board/PSFonts
   Board/Rect
@@ -8,3 +7,5 @@ SET(BOARD_SRC ${BOARD_SRC}
   Board/Shapes
   Board/Tools
   Board/Transforms)
+
+#  Board/Board
