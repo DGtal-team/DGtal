@@ -494,15 +494,20 @@ namespace DGtal
      * @param translateX the x translation value.
      * @param translateY the y translation value.
      * @param translateZ the y translation value.
-     *
+     * @param rotationAngle the angle of rotation. 
+     * @param dirRotation the rotation is applyed arount the given direction (default zDirection). 
      */
     UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
-                    double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
-    myImage(&anImage),
-    myTranslateX (translateX),
-    myTranslateY (translateY),
-    myTranslateZ (translateZ),
-    myFunctor(aFunctor)
+                    double translateY=0, double translateZ=0, double rotationAngle=0.0,
+		    Display3D::ImageDirection dirRotation=Display3D::zDirection,
+		    const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
+							   myImage(&anImage),
+							   myTranslateX (translateX),
+							   myTranslateY (translateY),
+							   myTranslateZ (translateZ),
+							   myFunctor(aFunctor),
+							   myRotationAngle(rotationAngle),
+							   myRotationDir(dirRotation)
     {
       
     }
@@ -510,9 +515,15 @@ namespace DGtal
     int myTranslateX;
     int myTranslateY;
     int myTranslateZ;
+    double myRotationAngle;
+    Display3D::ImageDirection myRotationDir;
     const TImageType *myImage;
     const TFunctor &myFunctor;
   };
+  
+
+
+
   
   
   

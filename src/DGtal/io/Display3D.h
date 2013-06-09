@@ -51,12 +51,14 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/shapes/Mesh.h"
+#include "DGtal/kernel/PointVector.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+
 
   /////////////////////////////////////////////////////////////////////////////
   // class Display3D
@@ -76,7 +78,7 @@ namespace DGtal
   class Display3D
   {
 
-        
+
     // ------------------------- Private Datas --------------------------------
   private:
     
@@ -93,7 +95,7 @@ namespace DGtal
     /// @see addKSLinel 
     ///
     
-  
+  public:  
     struct lineD3D{
       double x1, y1, z1;
       double x2, y2, z2;
@@ -258,6 +260,7 @@ namespace DGtal
 	updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);	
       }
       
+      
       /**
        * Update the domain direction from a specific normal direction
        * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
@@ -312,15 +315,15 @@ namespace DGtal
        * Copy constructor (needed due to myTabImage)
        **/
       TextureImage(const TextureImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
-						 x2(img.x2), y2(img.y2), z2(img.z2),
-						 x3(img.x3), y3(img.y3), z3(img.z3),
-						 x4(img.x4), y4(img.y4), z4(img.z4),
-						 myDirection(img.myDirection), myImageWidth(img.myImageWidth),
-						 myImageHeight(img.myImageHeight),
-						 myTabImage(img.myTabImage),
-						 myDrawDomain(img.myDrawDomain),
-					         myIndexDomain(img.myIndexDomain),
-					         myMode(img.myMode){
+					     x2(img.x2), y2(img.y2), z2(img.z2),
+					     x3(img.x3), y3(img.y3), z3(img.z3),
+					     x4(img.x4), y4(img.y4), z4(img.z4),
+					     myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+					     myImageHeight(img.myImageHeight),
+					     myTabImage(img.myTabImage),
+					     myDrawDomain(img.myDrawDomain),
+					     myIndexDomain(img.myIndexDomain),
+					     myMode(img.myMode){
 	
 	if(img.myImageHeight>0 && img.myImageWidth>0){
 	  myTabImage = new  unsigned int [img.myImageWidth*img.myImageHeight];
@@ -330,11 +333,12 @@ namespace DGtal
 	}else{
 	  myTabImage=img.myTabImage;
 	} 
-
 	
       };				       
 
       
+      
+
       
       /** 
        *  Constructor that fills image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
@@ -368,6 +372,7 @@ namespace DGtal
 	myMode=aMode;
 	updateImageDataAndParam(image, aFunctor);
       };
+
       
       /**
        * Update the image direction from a specific normal direction
@@ -418,11 +423,13 @@ namespace DGtal
 	  pos++;
 	}  
       };
-
+ 
       /**
        * return the class name to implment the CDrawableWithDisplay3D concept.
        **/
       std::string className() const;
+
+
       
     private:
       TextureImage(){
@@ -756,10 +763,13 @@ namespace DGtal
      * @param xTranslation the image translation in the  x direction (default 0).
      * @param yTranslation the image translation in the  y direction (default 0).
      * @param zTranslation the image translation in the  z direction (default 0).
+     * @param rotationAngle the angle of rotation. 
+     * @param rotationDir the rotation is applied around the given direction. 
      **/
     template <typename TImageType, typename TFunctor>
     void updateTextureImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor, 
-			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+			    double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0,
+			    double rotationAngle=0.0, ImageDirection rotationDir=zDirection);
     
 
 
@@ -774,7 +784,7 @@ namespace DGtal
      **/
 
     void updateOrientationTextureImage(unsigned int imageIndex, 
-					 double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
+				       double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
     
 
     
@@ -798,6 +808,32 @@ namespace DGtal
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
     
+
+    /**
+     * Rotate an lineD3D from its two extremity points.   
+     *
+     * @param aLine the line to be rotated.
+     * @param pt the center of rotation.
+     * @param angleRotation the angle of rotation.
+     * @param dirRotation the rotation will be applied around this direction. 
+     **/
+
+    void  rotateLineD3D(Display3D::lineD3D &aLine, DGtal::PointVector<3, int> pt,
+			double angleRotation, DGtal::Display3D::ImageDirection dirRotation);        
+
+
+    /**
+     * Rotate an Image2DDomainD3D from its bounding points and from its grid line.   
+     *
+     * @param anDom the domain to be rotated.
+     * @param angle the angle of rotation.
+     * @param rotationDir the rotation will be applied around this direction. 
+     **/
+    
+    void  rotateDomain(Image2DDomainD3D &anDom, double angle, Display3D::ImageDirection rotationDir);
+
+
+
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
@@ -1001,23 +1037,67 @@ namespace DGtal
   private:
 
 
+  public:
+    /**
+     * Rotate Image2DDomainD3D or TextureImage  vertex from a given
+     * angle and a rotation direction. The center of rotation is defined
+     * from the image center point.
+     * 
+     * @tparam  TImageORDomain the type object to be rotated (should  be an Image2DDomainD3D or a TextureImage)
+     * @param anImageOrDom the domain or image to be rotated.
+     * @param angle the angle of the rotation.
+     * @param rotationDir the rotation is applied around this axis direction.
+     **/
+    
+    template<typename TImageORDomain>
+    static 
+    void 
+    rotateImageVertex(TImageORDomain &anImageOrDom, double angle, Display3D::ImageDirection rotationDir){
+      double xB = (anImageOrDom.x1+anImageOrDom.x2+anImageOrDom.x3+anImageOrDom.x4)/4.0;
+      double yB = (anImageOrDom.y1+anImageOrDom.y2+anImageOrDom.y3+anImageOrDom.y4)/4.0;
+      double zB = (anImageOrDom.z1+anImageOrDom.z2+anImageOrDom.z3+anImageOrDom.z4)/4.0;
+      rotatePoint( anImageOrDom.x1,  anImageOrDom.y1, anImageOrDom.z1,   xB, yB, zB, angle, rotationDir);
+      rotatePoint( anImageOrDom.x2,  anImageOrDom.y2, anImageOrDom.z2,   xB, yB, zB, angle, rotationDir);
+      rotatePoint( anImageOrDom.x3,  anImageOrDom.y3, anImageOrDom.z3,   xB, yB, zB, angle, rotationDir);
+      rotatePoint( anImageOrDom.x4,  anImageOrDom.y4, anImageOrDom.z4,   xB, yB, zB, angle, rotationDir);
+    
+    };
 
+    /**
+     * Rotate a vertex from a given angle, a center point and a rotation direction. 
+     * @param  x the x coordinate of the point to rotated (return).
+     * @param  y the y coordinate of the point to rotated (return).
+     * @param  z the z coordinate of the point to rotated (return).
+     * @param cx the x coordinate of the rotation center.
+     * @param cy the y coordinate of the rotation center.
+     * @param cz the z coordinate of the rotation center.
+     * @param rotationAngle the angle of the rotation.
+     * @param rotationDir the rotation is applied around this axis direction.
+     **/
   
+    static  
+    void  rotatePoint(double &x, double &y, double &z, 
+		      double cx, double cy, double cz,
+		      double rotationAngle, Display3D::ImageDirection rotationDir);
+    
+  
+    
+    /**
+     * Calculate the cross product of two 3d vectors and return it.
+     * @param dst destination vector.
+     * @param srcA source vector A.
+     * @param srcB source vector B.
+     */
+    static void cross (double dst[3], double srcA[3], double srcB[3]);
+
+    /**
+     * Normalize the input 3d vector.
+     * @param vec source & destination vector.
+     */
+    static void normalize (double vec[3]);
+
   }; // end of class Display3D
 
-  /**
-   * Calculate the cross product of two 3d vectors and return it.
-   * @param dst destination vector.
-   * @param srcA source vector A.
-   * @param srcB source vector B.
-   */
-  static void cross (double dst[3], double srcA[3], double srcB[3]);
-
-  /**
-   * Normalize the input 3d vector.
-   * @param vec source & destination vector.
-   */
-  static void normalize (double vec[3]);
 
 
   /**
@@ -1030,9 +1110,7 @@ namespace DGtal
   operator<< ( std::ostream & out, const DGtal::Display3D & object );
 
 
-
-
-
+  
   /**
    * Operator ">>" to export a Display3D into a Mesh
    * 
@@ -1044,8 +1122,6 @@ namespace DGtal
   void
   operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::pointD3D> &aMesh);
   
-  
-
 
   /**
    * Operator ">>" to export a Display3D directly a file
