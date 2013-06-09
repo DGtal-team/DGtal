@@ -62,7 +62,6 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 	  if (aAccumulator.count(i,j) < m) m=aAccumulator.count(i,j);
 	}
     }
-  trace.error()<<" min= "<<m <<" Max="<<M<<std::endl;
   HueShadeColorMap<typename DGtal::SphericalAccumulator<TV>::Quantity> cmap(m,M+1);
   
   for(typename DGtal::SphericalAccumulator<TV>::ConstIterator it = aAccumulator.begin(),
