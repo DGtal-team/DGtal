@@ -21,6 +21,7 @@
  *
  * @brief
  *
+ * Class for OBJ export
  * This is the implementation of methods defined in Board3D.h
  *
  * This file is part of the DGtal library.
@@ -29,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/io/boards/Board3D.h"
 #include <limits>
+//#include <vector>
 
 
 
@@ -36,6 +38,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
+using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 // class Board3D
@@ -80,8 +83,9 @@ DGtal::Board3D::isValid() const
  * Save a OBJ image.
  * @param filename filename of the image to save.
  */
-void saveObj(const char *filename)
+void DGtal::Board3D::saveOBJ(const string & filename)
 {
+    unsigned int j; //id of each elements of a list for the .OBJ identification
     std::ofstream out;
     out.open(filename.c_str());
 
@@ -89,105 +93,178 @@ void saveObj(const char *filename)
     out << "# generated from Board3D from the DGTal library"<< std::endl;
     out << std::endl;
 
-
-
-
-    for(unsigned int i =0; i< myClippingPlaneList.size(); i++)
+    // TODOLP tests unitaires pour chaque partie
+    // OPT changer les unsigned int en size_t
+    for(unsigned int i =0; i< myClippingPlaneList.size();   i++)
         trace.info() << "-> ClippingPlane not implemented in Board3D" << std::endl;
 
     // Draw the shapes
 
     // myPointSetList
-
-    out << "o myPointSetList" << std::endl;
-    out << std::endl;
-    for(unsigned int i=0; i<myPointSetList.size(); i++)
+    ostringstream tmpstream; // checking that points exist before creating an object
+    for (std::vector<std::vector<pointD3D> >::const_iterator it = myPointSetList.begin();
+         it != myPointSetList.end(); it++)
     {
-        for (std::vector<pointD3D>::iterator s_it = myPointSetList.at(i).begin();
-             s_it != myPointSetList.at(i).end();
-             ++s_it)
+        //OPT const_ iterator en serie au lieu de l etrange parcours
+        for (std::vector<pointD3D>::const_iterator s_it = it->begin();
+             s_it != it->end(); s_it++)
         {
-           //TO_DO veérifier si peu importe le mode un point reste un point ?
-            out << "v " << s_it[0] << " " << s_it[1] << " " << s_it[2];
+           // TODO verifier si  un point reste un point
+                //(peu importe le mode )
+            tmpstream << "v " << s_it->x << " " << s_it->y << " " << s_it->z << std::endl;
         }
     }
-
-
+    string tmpstr(tmpstream.str());
+    if (tmpstr.size() > 0)
+           out << "o  myPointSetList" << std::endl<< tmpstr;
 
 
     // myLineSetList
-
-    for(unsigned int i=0; i<myLineSetList.size(); i++)
+    j =0;//id of each LineSetList for the .OBJ identification
+    for(unsigned int i=0; i<myLineSetList.size();   i++)
     {
         for (std::vector<lineD3D>::iterator s_it = myLineSetList.at(i).begin();
              s_it != myLineSetList.at(i).end();
-             ++s_it)
+               ++s_it)
         {
-            // OBJ ne connait pas les courbes il faut faire la liste des points du segment
-            // TO_DO trouver comment representer les lignes ( ou listes de points )
+            out << "o  myLineSetList_" << j << std::endl;
+           // OBJ ne connait pas les courbes il faut faire un pave "plat" de cote width
+           double wid = s_it->width;
 
+           std::cout << "largeur de ligne : " << wid << std::endl;
+           out << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+           out << "v " << s_it->x1     << " " << s_it->y1 +wid  << " " << s_it->z1 << std::endl;
+           out << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 -wid << std::endl;
+           out << "v " << s_it->x1     << " " << s_it->y1 +wid  << " " << s_it->z1 -wid << std::endl;
+
+           out << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+           out << "v " << s_it->x2     << " " << s_it->y2 +wid  << " " << s_it->z2 << std::endl;
+           out << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 -wid << std::endl;
+           out << "v " << s_it->x2     << " " << s_it->y2 +wid  << " " << s_it->z2 -wid << std::endl;
+
+           //OPT factoriser les faces des cubes et paves
+           out << "f -8 -7 -5 -6 " << std::endl; //cote G
+           out << "f -8 -6 -2 -4 " << std::endl; // face
+           out << "f -8 -7 -3 -4 " << std::endl; // dessus
+           out << "f -7 -5 -1 -3 " << std::endl; // derriere
+           out << "f -6 -5 -1 -2 " << std::endl; // dessous
+           out << "f -4 -3 -1 -2 " << std::endl; // cote D
+
+            j++;
         }
     }
 
 
     // myVoxelSetList
-
-    for(unsigned int i=0; i<myVoxelSetList.size(); i++)
+    j  = 0 ; //id of each VoxelSetList for the .OBJ identification
+    for(unsigned int i=0; i<myVoxelSetList.size();   i++)
     {
         for (std::vector<voxelD3D>::iterator s_it = myVoxelSetList.at(i).begin();
              s_it != myVoxelSetList.at(i).end();
-             ++s_it)
+               ++s_it)
         {
+            out << "o  myVoxelSetList_" << j << std::endl;
+            // grid mode not implemented yet
 
-            // pour le moment seul le mode point est implémenté en dur
-            //TO_DO implémenter le mode grid et mettre une condition.
-            {
-                //---------
+            // TODO finir implementer le mode grid et mettre une condition.
+             out << "v " << s_it->x << " " << s_it->y << " " << s_it->z<< std::endl ;
 
 
-            }
+             /*
+             // mode grid : un cube de coin supérieur gauche (x,y,z) et de largeur width
+             double wid = s_it->width;
+             out << "v " << s_it->x     << " " << s_it->y       << " " << s_it->z << std::endl;
+             out << "v " << s_it->x +wid << " " << s_it->y       << " " << s_it->z << std::endl;
+             out << "v " << s_it->x     << " " << s_it->y +wid   << " " << s_it->z << std::endl;
+             out << "v " << s_it->x +wid << " " << s_it->y +wid   << " " << s_it->z << std::endl;
+             out << "v " << s_it->x     << " " << s_it->y       << " " << s_it->z -wid << std::endl;
+             out << "v " << s_it->x +wid << " " << s_it->y       << " " << s_it->z -wid << std::endl;
+             out << "v " << s_it->x     << " " << s_it->y +wid   << " " << s_it->z -wid << std::endl;
+             out << "v " << s_it->x +wid << " " << s_it->y +wid   << " " << s_it->z -wid << std::endl;
+            */
+             j ++;
         }
     }
 
-    DGtal::MeshWriter<TPoint>::export2OBJ(out, myVoxelSetList);
-
-    for(unsigned int i=0; i<myQuadList.size(); i++)
+    j =0; //id of each KSSurfelList for the .OBJ identification
+    for(unsigned int i=0; i<myQuadList.size();   i++)
         trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
 
     // Drawing all Khalimsky Space Cells
 
     // KSSurfel (from updateList)
-    /*
+
     for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
          s_it != myKSSurfelList.end();
-         ++s_it)
+           ++s_it)
     {
-        {
-        //---------
-        }
+        out << "o  myKSSurfelList_" << j << std::endl;
+
+        out << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+        out << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+        out << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+        out << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+
+        double nx = s_it->nx;
+        double ny = s_it->ny;
+        double nz = s_it->nz;
+
+        out << "v " << s_it->x1 +nx     << " " << s_it->y1 +ny      << " " << s_it->z1 +nz << std::endl;
+        out << "v " << s_it->x2 +nx     << " " << s_it->y2 +ny      << " " << s_it->z2 +nz << std::endl;
+        out << "v " << s_it->x3 +nx     << " " << s_it->y3 +ny      << " " << s_it->z3 +nz << std::endl;
+        out << "v " << s_it->x4 +nx     << " " << s_it->y4 +ny      << " " << s_it->z4 +nz << std::endl;
+
+
+        out << "f -8 -7 -5 -6 " << std::endl; //cote G
+        out << "f -8 -6 -2 -4 " << std::endl; // face
+        out << "f -8 -7 -3 -4 " << std::endl; // dessus
+        out << "f -7 -5 -1 -3 " << std::endl; // derriere
+        out << "f -6 -5 -1 -2 " << std::endl; // dessous
+        out << "f -4 -3 -1 -2 " << std::endl; // cote D
+        j++;
     }
-    */
-    DGtal::MeshWriter<TPoint>::export2OBJ(out, myKSSurfelList);
 
 
     // KSLinel
-    /*
-    for(unsigned int i=0; i< myKSLinelList.size();i++)
+    for(unsigned int i=0; i< myKSLinelList.size();  i++)
     {
-        //---------
+        lineD3D KSline = myKSLinelList.at(i);
+
+        out << "o  myKSLinelList_" << i << std::endl;
+        // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of the line's width
+        double wid = KSline.width;
+        out << "v " << KSline.x1     << " " << KSline.y1      << " " << KSline.z1 << std::endl;
+        out << "v " << KSline.x1     << " " << KSline.y1 +wid  << " " << KSline.z1 << std::endl;
+        out << "v " << KSline.x1     << " " << KSline.y1      << " " << KSline.z1 -wid << std::endl;
+        out << "v " << KSline.x1     << " " << KSline.y1 +wid  << " " << KSline.z1 -wid << std::endl;
+
+        out << "v " << KSline.x2     << " " << KSline.y2      << " " << KSline.z2 << std::endl;
+        out << "v " << KSline.x2     << " " << KSline.y2 +wid  << " " << KSline.z2 << std::endl;
+        out << "v " << KSline.x2     << " " << KSline.y2      << " " << KSline.z2 -wid << std::endl;
+        out << "v " << KSline.x2     << " " << KSline.y2 +wid  << " " << KSline.z2 -wid << std::endl;
+
+        //OPT factoriser les faces des cubes et paves
+        out << "f -8 -7 -5 -6 " << std::endl; //cote G
+        out << "f -8 -6 -2 -4 " << std::endl; // face
+        out << "f -8 -7 -3 -4 " << std::endl; // dessus
+        out << "f -7 -5 -1 -3 " << std::endl; // derriere
+        out << "f -6 -5 -1 -2 " << std::endl; // dessous
+        out << "f -4 -3 -1 -2 " << std::endl; // cote D
     }
-    */
-    DGtal::MeshWriter<TPoint>::export2OBJ(out, myKSLinelList);
+
 
     // KSPointel
-    /*
-    for(unsigned int i=0; i< myKSPointelList.size();i++)
-    {
-        //---------
-    }
-    */
-    DGtal::MeshWriter<TPoint>::export2OBJ(out, myKSPointelList);
+    if (myKSPointelList.size() >0)
+        out << "o  myKSPointelList" << std::endl;
 
+    for(unsigned int i=0; i< myKSPointelList.size();  i++)
+    {
+        pointD3D KSPoint = myKSPointelList.at(i);
+
+           // TODO verifier si  un point reste un point
+                //(peu importe le mode )
+            out << "v " << KSPoint.x << " " << KSPoint.y << " " << KSPoint.z << std::endl;
+    }
 
 
     out.close();

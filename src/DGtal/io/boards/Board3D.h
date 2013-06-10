@@ -61,7 +61,7 @@ namespace DGtal
   // class Board3D
   /**
    * Description of class 'Board3D' <p>
-   * @brief
+   * @brief Class for OBJ export
    */
   class Board3D : public Display3D
   {
@@ -73,7 +73,9 @@ namespace DGtal
      */
     Board3D();
   
-  
+    /*!
+     * \brief Destructor.
+     */
     ~Board3D(){};
   
 
@@ -89,7 +91,7 @@ namespace DGtal
      * Save a OBJ image.
      * @param filename filename of the image to save.
      */
-    void saveObj(const char *filename);
+    void saveOBJ(const std::string & filename);
 
 
   
