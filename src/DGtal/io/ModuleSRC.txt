@@ -12,6 +12,7 @@ SET(DGTAL_SRC ${DGTAL_SRC}
 
 SET(DGTALIO_SRC ${DGTALIO_SRC} 
   DGtal/io/boards/Board2D
+  DGtal/io/boards/Board3D
   DGtal/io/Display2DFactory
   DGtal/io/Display3DFactory)
 
