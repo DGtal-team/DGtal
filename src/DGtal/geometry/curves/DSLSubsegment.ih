@@ -1698,6 +1698,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
       inf[1] = fp;
     }
   else
+    //convexHullHarPeled(Vector(fq,fp),0,max(r.x,n-r.x),&inf,&tmpsup);
     convexHullApprox(Vector(fq,fp),0,max(r.x,n-r.x),&inf,&tmpsup);
 
   if(gq <= max(r.x,n-r.x))
@@ -1878,7 +1879,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 
 template <typename TInteger, typename TNumber>
 inline
-DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point A, Point B)
+DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool *locRay)
 {
   Integer n = B[0] - A[0];
   
@@ -1960,10 +1961,15 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
       //trace.info() << "h = " << h << " found = " << found << std::endl;
 
       if(found)
-	r = smartRayOfSmallestSlope(fp,fq,gp,gq,h);
+	{
+	  r = smartRayOfSmallestSlope(fp,fq,gp,gq,h);
+	  *locRay = false;
+	}
       else
-	r = localizeRay(fp,fq,gp,gq,h,a,b,mu,n);      
-      
+	{
+	  r = localizeRay(fp,fq,gp,gq,h,a,b,mu,n);      
+	  *locRay = true;
+	}
       //trace.info() << "Ray =" << r.x << " " << r.y << std::endl;
       
       Integer resAlphaP=0, resAlphaQ=0, resBetaP=0;

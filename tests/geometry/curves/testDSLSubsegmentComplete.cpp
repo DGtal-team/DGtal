@@ -94,7 +94,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
   clock_t timeBeginReversedSmartDSS, timeEndReversedSmartDSS;
   
   
-  int nb = 0;
+  int nb = 0; int nbLocRay = 0;
   int nberrors = 0;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
@@ -104,11 +104,27 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
       
       // Integer b = pow(10.0,p);
       
-       Integer b( random() % modb + 1 );
-       Integer a( random() % b +1);
+      // b between 0 and mod b
+      //Integer b( random() % modb + 1 );
+      
+      Integer var(random()%(modb/2) + 1);
+      
+      Integer b;
+      if(var%2==0)
+	b = modb + var;
+      else
+	b = modb - var;
+      
+      // fixed b
+      //Integer b(modb);
+      
+      Integer a( random() % b +1);
+      
+      while(ic.gcd(a,b) !=1)
+	a = random() %b +1;
+      
        
-       
-       if ( ic.gcd( a, b ) == 1 )
+      //if ( ic.gcd( a, b ) == 1 )
         {
 	  
           for ( unsigned int j = 0; j < 5; ++j )
@@ -144,12 +160,16 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		      //trace.info() << "Points " << A << " " << B << std::endl;
 		      nb++;
 		      
+		      bool locRay;
+		      
 		      // DSLSubsegment with Farey Fan
 		      timeBeginSubseg = clock();
-		      DSLSubseg DSLsub(a,b,mu,A,B);
+		      DSLSubseg DSLsub(a,b,mu,A,B,&locRay);
 		      timeEndSubseg = clock();
 		      timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
 		      
+		      
+		      nbLocRay +=locRay;
 		      //std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
 		      
 		      PointDSL AA = D.lowestY( x1 );
@@ -177,9 +197,10 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		      Point B2 = BB;
 		      B2[0] += B2[1];
 		      
+		      bool aBool;
 		      
 		      timeBeginSubseg4 = clock();
-		      DSLSubseg D2(a,a+b,-mu,A2,B2); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
+		      DSLSubseg D2(a,a+b,-mu,A2,B2,&aBool); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
 		      timeEndSubseg4 = clock();
 		      timeTotalSubseg4 += ((double)timeEndSubseg4-(double)timeBeginSubseg4)/(((double)CLOCKS_PER_SEC)/1000);
 		      
@@ -236,12 +257,17 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 	}
     }
   
-  std::cout << nb ;
-  std::cout << " " << (long double) timeTotalSubseg/(nb);
-  std::cout << " " << (long double) timeTotalReversedSmartDSS/(nb);
-  std::cout << " " << (long double) timeTotalSubseg4/(nb);
-  std::cout << " " << (long double) timeTotalCH/(nb);
   
+  std::cout << nb  << " " << nbLocRay ;
+  if(nb!=0)
+    {
+      std::cout << " " << (long double) timeTotalSubseg/(nb);
+      std::cout << " " << (long double) timeTotalReversedSmartDSS/(nb);
+      std::cout << " " << (long double) timeTotalSubseg4/(nb);
+      std::cout << " " << (long double) timeTotalCH/(nb);
+    }
+  else
+    std::cout << " 0" << " 0" << " 0" << " 0" << std::endl;
   //std::cout << " " << (long double) timeTotalSubsegD/((nb-nberrors));
   
   
@@ -262,14 +288,15 @@ int main( int argc, char** argv )
   typedef LightSternBrocot<Integer,DGtal::int32_t> LSB;
   typedef LSB::Fraction Fraction;
 
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :1000;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :2000;
   
   
   Integer modb = 1000000000;
   
-  for(Integer i = 10; i<modb ;i*=10) 
-    //Integer i = modb;
-  for(Integer modx = 10; modx <=  i;modx+=modx/3)
+  //for(Integer i = 10; i<=modb ;i*=10)
+  //for(Integer i = 10; i<modb ;i+=i/3) 
+  Integer i = modb;
+  for(Integer modx = 10; modx <=  2*i;modx+=modx/3)
     //Integer  modx = 1000;
     {
 	std::cout << i << " " << modx << " ";
