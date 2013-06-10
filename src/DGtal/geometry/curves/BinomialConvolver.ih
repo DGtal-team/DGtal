@@ -88,13 +88,17 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
-void 
+bool
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 ::init( const double h, 
   const ConstIteratorOnPoints& itb, 
   const ConstIteratorOnPoints& ite,
   const bool isClosed )
 {
+    if( myN > 155000 ) /// @bug Jérémy <! Choose a right value
+        return false;
+
+
   myMapIt2Idx.clear();
   myH = h;
   myBegin = itb;
@@ -124,6 +128,8 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
   myDY = myY * Signal<double>::Delta();
   myDDX = myDX * Signal<double>::Delta();
   myDDY = myDY * Signal<double>::Delta();
+
+  return true;
 }
      
 //-----------------------------------------------------------------------------
@@ -288,7 +294,7 @@ DGtal::BinomialConvolverEstimator<TBinomialConvolver,TBinomialConvolverFunctor>
 //-----------------------------------------------------------------------------
 template <typename TBinomialConvolver, typename TBinomialConvolverFunctor>
 inline
-void
+bool
 DGtal::BinomialConvolverEstimator<TBinomialConvolver,TBinomialConvolverFunctor>
 ::init( const double h, 
   const ConstIterator & itb, 
@@ -297,7 +303,7 @@ DGtal::BinomialConvolverEstimator<TBinomialConvolver,TBinomialConvolverFunctor>
 {
   if ( myBC.size() == 0 )
     myBC.setSize( myBC.suggestedSize( h, itb, ite ) );
-  myBC.init( h, itb, ite, isClosed );
+  return myBC.init( h, itb, ite, isClosed );
 }
 
 //-----------------------------------------------------------------------------

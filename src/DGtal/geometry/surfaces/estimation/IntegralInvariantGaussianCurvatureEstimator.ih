@@ -378,7 +378,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
                                                                                         OutputIterator & result )
 {
     std::vector< Quantity > quantities;
-    std::back_insert_iterator< std::vector< double > > quantitiesIterator( quantities );
+    std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
     myConvolver.eval ( itb, ite, quantitiesIterator );
 
     Quantity measure;

@@ -309,8 +309,8 @@ template< typename ConstIteratorOnCells, typename OutputIterator >
 inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, dimension >::eval( const ConstIteratorOnCells & itb,
-                                                                                                   const ConstIteratorOnCells & ite,
-                                                                                                   OutputIterator & result )
+                                                                                           const ConstIteratorOnCells & ite,
+                                                                                           OutputIterator & result )
 {
     trace.error() << "IntegralInvariantMeanCurvatureEstimator@eval() : Not available yet.";
 }
@@ -324,7 +324,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::eva
                                                                                    OutputIterator & result )
 {
     std::vector< Quantity > quantities;
-    std::back_insert_iterator< std::vector< double > > quantitiesIterator( quantities );
+    std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
     myConvolver.eval( itb, ite, quantitiesIterator );
 
     Quantity measure;
@@ -347,21 +347,121 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eva
                                                                                    const ConstIteratorOnCells & ite,
                                                                                    OutputIterator & result )
 {
+
+//    ConstIteratorOnCells current;
+//    current = itb;
+
+//    std::cout << *itb  << std::endl;
+//    std::cout << *current << std::endl;
+
+//    ++current;
+//    ++current;
+//    ++current;
+//    ++current;
+//    ++current;
+//    ++current;
+//    ++current;
+//    ++current;
+
+//    std::cout << *itb  << std::endl;
+//    std::cout << *current << std::endl;
+
+//    return;
+//#ifdef WITH_OPENMP
+
+//    std::cout << "IT OPENMP TIME \\o/" << std::endl;
+//    typedef typename std::pair< ConstIteratorOnCells, ConstIteratorOnCells > ItPair;
+//    ItPair emptyPair;
+//    std::vector< ItPair > arrayIt;
+//    DGtal::Dimension size_array = 0;
+
+//    // Precomputation
+
+//    ConstIteratorOnCells currentit = itb;
+//    ConstIteratorOnCells lastit = itb;
+
+//    arrayIt.push_back( emptyPair );
+//    arrayIt[ size_array ].first = itb;
+
+////    Cell diff;
+//    ++currentit;
+
+//    int x, y, z;
+//    int x2, y2, z2;
+//    int x2y2z2;
+//    int offset;
+
+//    ++currentit;
+
+//    while( currentit != ite )
+//    {
+//        x = (*currentit).myCoordinates[ 0 ] - (*lastit).myCoordinates[ 0 ];
+//        y = (*currentit).myCoordinates[ 1 ] - (*lastit).myCoordinates[ 1 ];
+//        z = (*currentit).myCoordinates[ 2 ] - (*lastit).myCoordinates[ 2 ];
+//        x2 = x * x;
+//        y2 = y * y;
+//        z2 = z * z;
+//        x2y2z2 = x2 + y2 + z2;
+
+//        offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+
+//        if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 ))
+//        {
+//            arrayIt[ size_array ].second = currentit;
+//            arrayIt.push_back( emptyPair );
+//            arrayIt[ ++size_array ].first = currentit;
+//        }
+
+//        lastit = currentit++;
+//    }
+//    arrayIt[ ++size_array ].second = currentit;
+
+
+//    std::vector< std::vector< Quantity > > arrayResult( size_array );
+
+//    // Parallel loop
+//    #pragma omp parallel for schedule(dynamic)
+//    for( DGtal::Dimension i = 0; i < size_array; ++i )
+//    {
+//        std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( arrayResult[ i ] );
+//        myConvolver.eval ( arrayIt[ i ].first, arrayIt[ i ].second, quantitiesIterator );
+//    }
+
+//    // Curvature computation from convolver values
+//    Quantity measure;
+
+//    for( DGtal::Dimension i = 0; i < size_array; ++i )
+//    {
+//        int j = 0;
+//        for( ConstIteratorOnCells it = arrayIt[ i ].first; it != arrayIt[ i ].second; ++it )
+//        {
+//            measure = arrayResult[ i ][ j++ ];
+//            measure *= dh3;
+//            *result = d8_3r - d_4_PIr4 * measure;
+//        }
+//    }
+
+//#else
+//    std::cout << "NOP NOP NOP NOP NOPENMP :@" << std::endl;
+
     std::vector< Quantity > quantities;
-    std::back_insert_iterator< std::vector< double > > quantitiesIterator( quantities );
+    std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
     myConvolver.eval ( itb, ite, quantitiesIterator );
 
     Quantity measure;
 
     DGtal::Dimension qsize = quantities.size();
-    for ( DGtal::Dimension  i = 0; i < qsize; ++i )
+    for( DGtal::Dimension  i = 0; i < qsize; ++i )
     {
         measure = quantities[ i ];
         measure *= dh3;
         *result = d8_3r - d_4_PIr4 * measure;
         ++result;
     }
+//#endif
 }
+
+
 
 
 

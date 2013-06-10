@@ -124,8 +124,10 @@ namespace DGtal
        @param isClosed true if the input range is viewed as closed.
 
        The object is then valid.
+
+       @return if the estimator is well initialized.
     */
-    void init( const double h, 
+    bool init( const double h,
          const ConstIteratorOnPoints& itb, 
          const ConstIteratorOnPoints& ite,
          const bool isClosed );
@@ -339,8 +341,10 @@ namespace DGtal
      * @param itb, begin iterator
      * @param ite, end iterator
      * @param isClosed true if the input range is viewed as closed.
+     *
+     * @return if the estimator is well initialized.
      */
-    void init( const double h, 
+    bool init( const double h,
          const ConstIterator & itb, 
          const ConstIterator & ite,
          const bool isClosed);
