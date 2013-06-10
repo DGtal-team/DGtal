@@ -121,7 +121,7 @@ namespace DGtal
       // Given the parameters of a DSL 0 <= ax -by + mu < b, and two points A and B of this DSL,
       // compute the parameters of the DSS [AB].
       //DSLSubsegment(Integer a, Integer b, Integer mu, Point A, Point B);
-      DSLSubsegment(Number a, Number b, Number mu, Point A, Point B);
+      DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool *locRay);
 
       // Constructor
       // Given a straight line of equation y = alpha x + beta, and two
