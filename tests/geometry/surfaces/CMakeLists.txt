@@ -3,7 +3,7 @@ SET(TESTS_SURFACES_SRC
  testNormalVectorEstimatorEmbedder
  testIntegralInvariantCurvatureEstimator2D
  testIntegralInvariantMeanCurvatureEstimator3D
- testIntegralInvariantMeanCurvatureEstimator3D_multithread
+# testIntegralInvariantMeanCurvatureEstimator3D_multithread
  testIntegralInvariantGaussianCurvatureEstimator3D
 )
 
