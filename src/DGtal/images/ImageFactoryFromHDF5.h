@@ -140,7 +140,7 @@ namespace DGtal
      */
     OutputImage * requestImage(const Domain &aDomain)
     {
-      int ddim = Domain::dimension;
+      const int ddim = Domain::dimension;
       
       // HDF5 handles
       hid_t file, dataset;
@@ -222,19 +222,28 @@ namespace DGtal
       status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_out);
     
       OutputImage* outputImage = new OutputImage(aDomain);
+          
+      typedef SpaceND<ddim> TSpace;
+      typename TSpace::Point a, b;
+      for(d=0; d<ddim; d++)
+      {
+        a[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d];
+        b[d]=a[d]+N_SUB[ddim-d-1]-1;
+      }
+      HyperRectDomain<TSpace> domain(a,b);
 
+      std::vector<typename TSpace::Dimension> v(ddim);
+      for(d=0; d<ddim; d++)
+        v[d]=d;
+      
       int p=0;
-      for (i[0] = 0; i[0] < N_SUB[0]; i[0]++)
-        for (i[1] = 0; i[1] < N_SUB[1]; i[1]++)
-          //for (i[2] = 0; i[2] < N_SUB[2]; i[2]++)
-          {
-            typename OutputImage::Point pt;
-
-            for(d=0; d<ddim; d++)
-              pt[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d]+i[ddim-d-1];
-              
-            outputImage->setValue(pt, data_out[p++]);
-          }
+      for( typename HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
+            it = domain.subRange(v, a).begin(), itend = domain.subRange(v, a).end();
+          it != itend; 
+          ++it)
+      {
+        outputImage->setValue((*it), data_out[ p++ ]);
+      }
       
       H5Sclose(memspace);
       
@@ -258,7 +267,7 @@ namespace DGtal
      */
     void flushImage(OutputImage* outputImage)
     {
-      int ddim = Domain::dimension;
+      const int ddim = Domain::dimension;
       
       // HDF5 handles
       hid_t file, dataset;
@@ -336,18 +345,27 @@ namespace DGtal
         count_in[d] = N_SUB[d];
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
       
+      typedef SpaceND<ddim> TSpace;
+      typename TSpace::Point a, b;
+      for(d=0; d<ddim; d++)
+      {
+        a[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d];
+        b[d]=a[d]+N_SUB[ddim-d-1]-1;
+      }
+      HyperRectDomain<TSpace> domain(a,b);
+
+      std::vector<typename TSpace::Dimension> v(ddim);
+      for(d=0; d<ddim; d++)
+        v[d]=d;
+      
       int p=0;
-      for (i[0] = 0; i[0] < N_SUB[0]; i[0]++)
-        for (i[1] = 0; i[1] < N_SUB[1]; i[1]++)
-          //for (i[2] = 0; i[2] < N_SUB[2]; i[2]++)
-          {
-            typename OutputImage::Point pt;
-            
-            for(d=0; d<ddim; d++)
-              pt[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d]+i[ddim-d-1];
-            
-            data_in[ p++ ] = outputImage->operator()(pt);
-          }
+      for( typename HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
+            it = domain.subRange(v, a).begin(), itend = domain.subRange(v, a).end();
+          it != itend; 
+          ++it)
+      {
+        data_in[ p++ ] = outputImage->operator()((*it));
+      }
       
       // Write data from hyperslab in memory into the hyperslab in the file.
       status = H5Dwrite(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_in);
