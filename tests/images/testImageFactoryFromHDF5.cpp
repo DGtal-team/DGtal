@@ -740,7 +740,7 @@ int main( int argc, char** argv )
     res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D_3.h5", 20, 16) && testTiledImage2D_3();
     res = res && writeHDF5_3D_TILED_for_easy_reading();
     res = res && writeHDF5_3D_TILED();
-    //res = res && testTiledImage3D();
+    res = res && testTiledImage3D();
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
