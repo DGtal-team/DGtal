@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageFactoryFromImage.h"
 #include "DGtal/images/TiledImage.h"
 
 #include "ConfigTest.h"
@@ -69,9 +70,9 @@ bool testSimple()
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
-    typedef TiledImage<VImage, Z2i::Domain, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(image.domain(), imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
@@ -150,9 +151,9 @@ bool test3d()
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
-    typedef TiledImage<VImage, Z3i::Domain, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(image.domain(), imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
     
@@ -203,9 +204,9 @@ bool test3d()
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
-    typedef TiledImage<VImage, Z2i::Domain, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(image.domain(), imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
     // writing values
     const int maximalValue = tiledImage.domain().size(); 

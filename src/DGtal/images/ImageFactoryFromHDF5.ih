@@ -51,7 +51,7 @@ inline
 void
 DGtal::ImageFactoryFromHDF5<TImageContainer>::selfDisplay ( std::ostream & out ) const
 {
-    out << "[ImageFactoryFromHDF5] " << (*myImagePtr);
+    out << "[ImageFactoryFromHDF5] -> Domain: " << (*myDomain);
 }
 
 

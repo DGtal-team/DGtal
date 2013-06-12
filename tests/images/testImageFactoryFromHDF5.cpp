@@ -306,7 +306,7 @@ bool test2D()
   
   // 1) ImageFactoryFromHDF5
   typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-  MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME, DATASETNAME_2D);
+  MyImageFactoryFromHDF5 factImage(image.domain(), H5FILE_NAME, DATASETNAME_2D);
   
   typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -441,7 +441,7 @@ bool testTiledImage2D_1()
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(image, "testImageFactoryFromHDF5_TILED_2D_1.h5", DATASETNAME_2D_TILED);
+    MyImageFactoryFromHDF5 factImage(image.domain(), "testImageFactoryFromHDF5_TILED_2D_1.h5", DATASETNAME_2D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -450,9 +450,9 @@ bool testTiledImage2D_1()
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
     
-    typedef TiledImage<Image, Z2i::Domain, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(image.domain(), factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
@@ -513,7 +513,7 @@ bool testTiledImage2D_2()
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(image, "testImageFactoryFromHDF5_TILED_2D_2.h5", DATASETNAME_2D_TILED);
+    MyImageFactoryFromHDF5 factImage(image.domain(), "testImageFactoryFromHDF5_TILED_2D_2.h5", DATASETNAME_2D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -522,9 +522,9 @@ bool testTiledImage2D_2()
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
     
-    typedef TiledImage<Image, Z2i::Domain, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(image.domain(), factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
@@ -585,7 +585,7 @@ bool testTiledImage2D_3()
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(image, "testImageFactoryFromHDF5_TILED_2D_3.h5", DATASETNAME_2D_TILED);
+    MyImageFactoryFromHDF5 factImage(image.domain(), "testImageFactoryFromHDF5_TILED_2D_3.h5", DATASETNAME_2D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -594,9 +594,9 @@ bool testTiledImage2D_3()
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
     
-    typedef TiledImage<Image, Z2i::Domain, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(image.domain(), factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
@@ -657,7 +657,7 @@ bool testTiledImage3D()
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
+    MyImageFactoryFromHDF5 factImage(image.domain(), H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -666,9 +666,9 @@ bool testTiledImage3D()
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
     
-    typedef TiledImage<Image, Z3i::Domain, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(image.domain(), factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 2);
+    MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 2);
     
     typedef MyTiledImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;

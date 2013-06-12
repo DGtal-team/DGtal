@@ -45,7 +45,7 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Alias.h"
-#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/kernel/CBoundedNumber.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -77,11 +77,13 @@ namespace DGtal
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Domain Domain;
-    typedef typename TImageContainer::Value Value;
+    typedef typename ImageContainer::Domain Domain;
     
     ///New types
-    typedef ImageContainerBySTLVector<Domain, Value> OutputImage;
+    typedef ImageContainer OutputImage;
+    typedef typename OutputImage::Value Value;
+    
+    BOOST_CONCEPT_ASSERT(( CBoundedNumber< Value > ));
 
     // ----------------------- Standard services ------------------------------
 
@@ -93,8 +95,8 @@ namespace DGtal
      * @param aFilename HDF5 filename.
      * @param aDataset datasetname.
      */
-    ImageFactoryFromHDF5(Alias<ImageContainer> anImage, const std::string & aFilename, const std::string & aDataset):
-      myImagePtr(anImage), myFilename(aFilename), myDataset(aDataset)
+    ImageFactoryFromHDF5(ConstAlias<Domain> aDomain, const std::string & aFilename, const std::string & aDataset):
+      myDomain(aDomain), myFilename(aFilename), myDataset(aDataset)
     {
       const int ddim = Domain::dimension;
       
@@ -143,7 +145,16 @@ namespace DGtal
   public:
 
     /////////////////// Domains //////////////////
-
+    
+    /**
+     * Returns a reference to the underlying image domain.
+     *
+     * @return a reference to the domain.
+     */
+    const Domain & domain() const
+    {
+        return *myDomain;
+    }
 
     /////////////////// Accessors //////////////////
 
@@ -162,7 +173,7 @@ namespace DGtal
      */
     bool isValid() const
     {
-      return (myImagePtr->isValid());
+      return (myDomain->isValid());
     }
 
     /**
@@ -203,7 +214,7 @@ namespace DGtal
       
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)
-        offset[d] = aDomain.lowerBound()[ddim-d-1]-myImagePtr->domain().lowerBound()[ddim-d-1];
+        offset[d] = aDomain.lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
       for(d=0; d<ddim; d++)
         count[d] = N_SUB[d];
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
@@ -229,7 +240,7 @@ namespace DGtal
       typename TSpace::Point a, b;
       for(d=0; d<ddim; d++)
       {
-        a[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d];
+        a[d]=offset[ddim-d-1]+myDomain->lowerBound()[d];
         b[d]=a[d]+N_SUB[ddim-d-1]-1;
       }
       HyperRectDomain<TSpace> domain(a,b);
@@ -292,7 +303,7 @@ namespace DGtal
       
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)
-        offset[d] = outputImage->domain().lowerBound()[ddim-d-1]-myImagePtr->domain().lowerBound()[ddim-d-1];
+        offset[d] = outputImage->domain().lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
       for(d=0; d<ddim; d++)
         count[d] = N_SUB[d];
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
@@ -313,7 +324,7 @@ namespace DGtal
       typename TSpace::Point a, b;
       for(d=0; d<ddim; d++)
       {
-        a[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d];
+        a[d]=offset[ddim-d-1]+myDomain->lowerBound()[d];
         b[d]=a[d]+N_SUB[ddim-d-1]-1;
       }
       HyperRectDomain<TSpace> domain(a,b);
@@ -361,8 +372,8 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   protected:
 
-    /// Alias on the image container
-    ImageContainer * myImagePtr;
+    /// Alias on the image domain
+    const Domain *myDomain;
     
     /// HDF5 filename and datasetname
     const std::string myFilename;

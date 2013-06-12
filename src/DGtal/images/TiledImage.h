@@ -49,7 +49,6 @@
 #include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
 
-#include "DGtal/images/ImageFactoryFromImage.h"
 #include "DGtal/images/ImageCache.h"
 
 #include "DGtal/images/DefaultConstImageRange.h"
@@ -62,52 +61,42 @@ namespace DGtal
 // Template class TiledImage
 /**
  * Description of template class 'TiledImage' <p>
- * \brief Aim: implements a tiled image from a "bigger/original" one.
+ * \brief Aim: implements a tiled image from a "bigger/original" one from an ImageFactory.
  * 
- *
- * The tiled image is create here from an existing image and with three parameters.
- * The first parameter is an alias on the image factory (see ImageFactoryFromImage).
- * The second parameter is an alias on a read policy.
- * The third parameter is an alias on a write policy.
- * The fourth parameter is to set how many tiles we want for each dimension.
- * 
- *
  * @tparam TImageContainer an image container type (model of CImage).
- * @tparam TImageFactoryFromImage an image factory type (model of CImageFactory).
- * @tparam TImageCacheReadPolicy an image cache read policy type (model of CImageCacheReadPolicy).
- * @tparam TImageCacheWritePolicy an image cache write policy type (model of CImageCacheWritePolicy).
+ * @tparam TImageFactory an image factory type (model of CImageFactory).
+ * @tparam TImageCacheReadPolicy an image cache read policy class (model of CImageCacheReadPolicy).
+ * @tparam TImageCacheWritePolicy an image cache write policy class (model of CImageCacheWritePolicy).
  */
-template <typename TImageContainer, typename TDomain, typename TImageFactoryFromImage, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 class TiledImage
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef TiledImage<TImageContainer, TDomain, TImageFactoryFromImage, TImageCacheReadPolicy, TImageCacheWritePolicy> Self; 
+    typedef TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactoryFromImage> ));
+    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
     BOOST_CONCEPT_ASSERT(( CImageCacheReadPolicy<TImageCacheReadPolicy> ));
     BOOST_CONCEPT_ASSERT(( CImageCacheWritePolicy<TImageCacheWritePolicy> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    //typedef typename TImageContainer::Domain Domain;
-    typedef typename TImageContainer::Point Point;
-    typedef typename TImageContainer::Value Value;
-    typedef typename TImageContainer::ConstRange ConstRange;
-    typedef typename TImageContainer::Range Range;
+    typedef typename ImageContainer::Domain Domain;
+    typedef typename ImageContainer::Point Point;
+    typedef typename ImageContainer::Value Value;
+    typedef typename ImageContainer::ConstRange ConstRange;
+    typedef typename ImageContainer::Range Range;
     
-    typedef TDomain Domain;
-    
-    typedef TImageFactoryFromImage ImageFactoryFromImage;
-    typedef typename ImageFactoryFromImage::OutputImage OutputImage;
+    typedef TImageFactory ImageFactory;
+    typedef typename ImageFactory::OutputImage OutputImage;
     
     typedef TImageCacheReadPolicy ImageCacheReadPolicy;
     typedef TImageCacheWritePolicy ImageCacheWritePolicy;
-    typedef ImageCache<OutputImage, ImageFactoryFromImage, ImageCacheReadPolicy, ImageCacheWritePolicy > MyImageCache;
+    typedef ImageCache<OutputImage, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy > MyImageCache;
     
     ///New types
 
@@ -117,23 +106,24 @@ public:
   
     /**
      * Constructor.
-     * @param anImage alias on the underlying image container.
-     * @param anImageFactoryFromImage alias on the image factory (see ImageFactoryFromImage).
+     * @param anImageFactory alias on the image factory (see ImageFactoryFromImage or ImageFactoryFromHDF5).
      * @param aReadPolicy alias on a read policy.
      * @param aWritePolicy alias on a write policy.
      * @param N how many tiles we want for each dimension.
      */
-    TiledImage(ConstAlias<Domain> aDomain,
-                        Alias<ImageFactoryFromImage> anImageFactoryFromImage,
+    TiledImage(Alias<ImageFactory> anImageFactory,
                         Alias<ImageCacheReadPolicy> aReadPolicy,
                         Alias<ImageCacheWritePolicy> aWritePolicy,
                         typename Domain::Integer N):
-      myDomain(aDomain),  myN(N), myImageFactoryFromImage(anImageFactoryFromImage)
+      myN(N), myImageFactory(anImageFactory)
     {
-        myImageCache = new MyImageCache(myImageFactoryFromImage, aReadPolicy, aWritePolicy);
+        myImageCache = new MyImageCache(myImageFactory, aReadPolicy, aWritePolicy);    
+        
+        m_lowerBound = myImageFactory->domain().lowerBound();
+        m_upperBound = myImageFactory->domain().upperBound();
         
         for(typename Domain::Integer i=0; i<Domain::dimension; i++)
-          mySize[i] = (myDomain->upperBound()[i]-myDomain->lowerBound()[i]+1)/myN;
+          mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
     }
 
     /**
@@ -156,7 +146,7 @@ public:
      */
     const Domain & domain() const
     {
-        return *myDomain;
+        return myImageFactory->domain();
     }
 
     /**
@@ -198,7 +188,7 @@ public:
      */
      bool isValid() const
     {
-        return (myDomain->isValid() && myImageFactoryFromImage->isValid());
+        return (myImageFactory->isValid() && myImageCache->isValid());
     }
     
     /**
@@ -209,24 +199,24 @@ public:
      */
     const Domain findSubDomain(const Point & aPoint) const
     {
-      ASSERT(myDomain->isInside(aPoint));
+      ASSERT(myImageFactory->domain().isInside(aPoint));
       
       typename Domain::Integer i;
       
       Point low;
       for(i=0; i<Domain::dimension; i++)
       {
-        if ( (aPoint[i]-myDomain->lowerBound()[i]) < mySize[i] )
+        if ( (aPoint[i]-m_lowerBound[i]) < mySize[i] )
           low[i] = 0;
         else
-          low[i] = (aPoint[i]-myDomain->lowerBound()[i])/mySize[i];
+          low[i] = (aPoint[i]-m_lowerBound[i])/mySize[i];
       }
       
       Point dMin, dMax;
       for(i=0; i<Domain::dimension; i++)
       {
-        dMin[i] = (low[i]*mySize[i])+myDomain->lowerBound()[i];
-        dMax[i] = (low[i]*mySize[i])+myDomain->lowerBound()[i]+(mySize[i]-1);
+        dMin[i] = (low[i]*mySize[i])+m_lowerBound[i];
+        dMax[i] = (low[i]*mySize[i])+m_lowerBound[i]+(mySize[i]-1);
       }
       
       Domain di = Domain(dMin, dMax);
@@ -241,7 +231,7 @@ public:
      */
     Value operator()(const Point & aPoint) const
     {
-      ASSERT(myDomain->isInside(aPoint));
+      ASSERT(myImageFactory->domain().isInside(aPoint));
 
       typename OutputImage::Value aValue;
         
@@ -266,7 +256,7 @@ public:
      */
     void setValue(const Point &aPoint, const Value &aValue)
     {
-        ASSERT(myDomain->isInside(aPoint));
+        ASSERT(myImageFactory->domain().isInside(aPoint));
           
         if (myImageCache->write(aPoint, aValue))
           return;
@@ -286,9 +276,6 @@ private:
     
     // ------------------------- Private Datas --------------------------------
 protected:
-
-    /// Alias on the image domain
-    const Domain *myDomain;
     
     /// Number of tiles per dimension
     typename Domain::Integer myN;
@@ -297,10 +284,13 @@ protected:
     Point mySize;
     
     /// ImageFactory pointer
-    ImageFactoryFromImage *myImageFactoryFromImage;
+    ImageFactory *myImageFactory;
     
     /// ImageCache pointer
     MyImageCache *myImageCache;
+    
+    /// domain lower and upper bound
+    Point m_lowerBound, m_upperBound;
     
 private:
 
@@ -317,9 +307,9 @@ private:
  * @param object the object of class 'TiledImage' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer, typename TDomain, typename TImageFactoryFromImage, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 std::ostream&
-operator<< ( std::ostream & out, const TiledImage<TImageContainer, TDomain, TImageFactoryFromImage, TImageCacheReadPolicy, TImageCacheWritePolicy> & object );
+operator<< ( std::ostream & out, const TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy> & object );
 
 } // namespace DGtal
 

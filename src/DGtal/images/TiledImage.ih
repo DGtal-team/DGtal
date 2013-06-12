@@ -46,12 +46,12 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer, typename TDomain, typename TImageFactoryFromImage, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 inline
 void
-DGtal::TiledImage<TImageContainer, TDomain, TImageFactoryFromImage, TImageCacheReadPolicy, TImageCacheWritePolicy>::selfDisplay ( std::ostream & out ) const
+DGtal::TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy>::selfDisplay ( std::ostream & out ) const
 {
-    out << "[TiledImage] -> Domain: " << (*myDomain);
+    out << "[TiledImage] -> Domain: " << myImageFactory->domain();
 }
 
 
@@ -59,11 +59,11 @@ DGtal::TiledImage<TImageContainer, TDomain, TImageFactoryFromImage, TImageCacheR
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer, typename TDomain, typename TImageFactoryFromImage, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const TiledImage<TImageContainer, TDomain, TImageFactoryFromImage, TImageCacheReadPolicy, TImageCacheWritePolicy> & object )
+                    const TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy> & object )
 {
     object.selfDisplay( out );
     return out;
