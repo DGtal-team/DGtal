@@ -75,7 +75,7 @@ bool testSimple()
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
-    /*VImage*/OutputImage::Value aValue;
+    OutputImage::Value aValue;
     
     trace.info() << "Read value for Point 4,2: " << tiledImage(Z2i::Point(4,2)) << endl;
     nbok += (tiledImage(Z2i::Point(4,2)) == 20) ? 1 : 0; 
