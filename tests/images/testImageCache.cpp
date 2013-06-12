@@ -104,7 +104,7 @@ bool testSimple()
     
     typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyImageCache;
     MyImageCache imageCache(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT);
-    /*VImage*/OutputImage::Value aValue;
+    OutputImage::Value aValue;
     
     trace.info() << "READING from cache (empty cache): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 

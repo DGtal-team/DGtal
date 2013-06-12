@@ -95,11 +95,11 @@ namespace DGtal
      * @param aFilename HDF5 filename.
      * @param aDataset datasetname.
      */
-    ImageFactoryFromHDF5(ConstAlias<Domain> aDomain, const std::string & aFilename, const std::string & aDataset):
-      myDomain(aDomain), myFilename(aFilename), myDataset(aDataset)
+    ImageFactoryFromHDF5(const std::string & aFilename, const std::string & aDataset):
+      myFilename(aFilename), myDataset(aDataset)
     {
       const int ddim = Domain::dimension;
-      
+            
       H5T_class_t t_class;                  // data type class
       H5T_order_t order;                    // data order
       size_t      size;                     // size of the data element stored in file
@@ -127,6 +127,20 @@ namespace DGtal
       rank = H5Sget_simple_extent_ndims(dataspace);
       status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
       //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
+      
+      // --
+      
+      typedef SpaceND<ddim> TSpace;
+      typename TSpace::Point low, up;
+      
+      typename Domain::Integer d;
+      for(d=0; d<ddim; d++)
+      {
+        low[d]=0;
+        up[d]=dims_out[ddim-d-1];
+      }
+      
+      myDomain = new Domain(low, up);
     }
 
     /**
@@ -134,6 +148,10 @@ namespace DGtal
      */
     ~ImageFactoryFromHDF5()
     {
+      delete myDomain;
+      
+      // --
+      
       // Close/release resources.
       H5Tclose(datatype);
       H5Dclose(dataset);
@@ -373,7 +391,7 @@ namespace DGtal
   protected:
 
     /// Alias on the image domain
-    const Domain *myDomain;
+    Domain *myDomain;
     
     /// HDF5 filename and datasetname
     const std::string myFilename;
