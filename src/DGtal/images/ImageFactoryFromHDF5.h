@@ -96,6 +96,35 @@ namespace DGtal
     ImageFactoryFromHDF5(Alias<ImageContainer> anImage, const std::string & aFilename, const std::string & aDataset):
       myImagePtr(anImage), myFilename(aFilename), myDataset(aDataset)
     {
+      const int ddim = Domain::dimension;
+      
+      H5T_class_t t_class;                  // data type class
+      H5T_order_t order;                    // data order
+      size_t      size;                     // size of the data element stored in file
+      hsize_t     dims_out[ddim];              // dataset dimensions
+      int         status_n, rank;
+        
+      // Open the file and the dataset.
+      file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
+      dataset = H5Dopen2(file, myDataset.c_str(), H5P_DEFAULT);
+
+      // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
+      datatype = H5Dget_type(dataset); // datatype handle
+      t_class = H5Tget_class(datatype);
+      /*if (t_class == H5T_INTEGER)
+        trace.info() << "Data set has INTEGER type" << std::endl;*/
+      
+      order = H5Tget_order(datatype);
+      /*if (order == H5T_ORDER_LE)
+        trace.info() << "Little endian order" << std::endl;*/
+
+      size  = H5Tget_size(datatype);
+      //trace.info() << "Data size is " << (int)size << std::endl;
+
+      dataspace = H5Dget_space(dataset); // dataspace handle
+      rank = H5Sget_simple_extent_ndims(dataspace);
+      status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
+      //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
     }
 
     /**
@@ -103,6 +132,11 @@ namespace DGtal
      */
     ~ImageFactoryFromHDF5()
     {
+      // Close/release resources.
+      H5Tclose(datatype);
+      H5Dclose(dataset);
+      H5Sclose(dataspace);
+      H5Fclose(file);
     }
 
     // ----------------------- Interface --------------------------------------
@@ -141,38 +175,6 @@ namespace DGtal
     OutputImage * requestImage(const Domain &aDomain)
     {
       const int ddim = Domain::dimension;
-      
-      // HDF5 handles
-      hid_t file, dataset;
-      hid_t datatype, dataspace;
-    
-      H5T_class_t t_class;                  // data type class
-      H5T_order_t order;                    // data order
-      size_t      size;                     // size of the data element stored in file
-      hsize_t     dims_out[ddim];              // dataset dimensions
-      int         status_n, rank;
-        
-      // Open the file and the dataset.
-      file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
-      dataset = H5Dopen2(file, myDataset.c_str(), H5P_DEFAULT);
-
-      // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
-      datatype = H5Dget_type(dataset); // datatype handle
-      t_class = H5Tget_class(datatype);
-      /*if (t_class == H5T_INTEGER)
-        trace.info() << "Data set has INTEGER type" << std::endl;*/
-      
-      order = H5Tget_order(datatype);
-      /*if (order == H5T_ORDER_LE)
-        trace.info() << "Little endian order" << std::endl;*/
-
-      size  = H5Tget_size(datatype);
-      //trace.info() << "Data size is " << (int)size << std::endl;
-
-      dataspace = H5Dget_space(dataset); // dataspace handle
-      rank = H5Sget_simple_extent_ndims(dataspace);
-      status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
-      //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
       
       // --
       
@@ -248,12 +250,6 @@ namespace DGtal
       H5Sclose(memspace);
       
       // --
-
-      // Close/release resources.
-      H5Tclose(datatype);
-      H5Dclose(dataset);
-      H5Sclose(dataspace);
-      H5Fclose(file);
       
       free(data_out);
         
@@ -268,38 +264,6 @@ namespace DGtal
     void flushImage(OutputImage* outputImage)
     {
       const int ddim = Domain::dimension;
-      
-      // HDF5 handles
-      hid_t file, dataset;
-      hid_t datatype, dataspace;
-    
-      H5T_class_t t_class;                  // data type class
-      H5T_order_t order;                    // data order
-      size_t      size;                     // size of the data element stored in file
-      hsize_t     dims_out[ddim];              // dataset dimensions
-      int         status_n, rank;
-        
-      // Open the file and the dataset.
-      file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
-      dataset = H5Dopen2(file, myDataset.c_str(), H5P_DEFAULT);
-
-      // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
-      datatype = H5Dget_type(dataset); // datatype handle
-      t_class = H5Tget_class(datatype);
-      /*if (t_class == H5T_INTEGER)
-        trace.info() << "Data set has INTEGER type" << std::endl;*/
-      
-      order = H5Tget_order(datatype);
-      /*if (order == H5T_ORDER_LE)
-        trace.info() << "Little endian order" << std::endl;*/
-
-      size  = H5Tget_size(datatype);
-      //trace.info() << "Data size is " << (int)size << std::endl;
-
-      dataspace = H5Dget_space(dataset); // dataspace handle
-      rank = H5Sget_simple_extent_ndims(dataspace);
-      status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
-      //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
       
       // --
       
@@ -373,12 +337,6 @@ namespace DGtal
       H5Sclose(memspace);
       
       // --
-
-      // Close/release resources.
-      H5Tclose(datatype);
-      H5Dclose(dataset);
-      H5Sclose(dataspace);
-      H5Fclose(file);
       
       free(data_in);
     }
@@ -411,7 +369,10 @@ namespace DGtal
     const std::string myDataset;
 
   private:
-
+    
+    // HDF5 handles
+    hid_t file, dataset;
+    hid_t datatype, dataspace;
 
     // ------------------------- Internals ------------------------------------
   private:
