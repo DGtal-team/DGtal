@@ -79,7 +79,7 @@ Description of \b concept '\b CImageFactory' <p>
 ### Invariants
 
 ### Models
-ImageFactoryFromImage
+ImageFactoryFromImage ImageFactoryFromHDF5
 
 ### Notes
 

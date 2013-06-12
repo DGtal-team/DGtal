@@ -40,6 +40,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageFactoryFromImage.h"
 #include "DGtal/images/TiledImage.h"
 //! [include]
 
@@ -97,8 +98,8 @@ int main( int argc, char** argv )
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
     // here we create the TiledImage
-    typedef TiledImage<VImage, Z2i::Domain, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    MyTiledImage tiledImage(image.domain(), imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 //! [TiledImage_creation]
     
     trace.info() << "tiledImage image: " << tiledImage << endl;

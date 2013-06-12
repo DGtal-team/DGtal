@@ -48,8 +48,6 @@
 #include "DGtal/images/CImageCacheReadPolicy.h"
 #include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
-
-#include "DGtal/images/ImageFactoryFromImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -65,9 +63,9 @@ namespace DGtal
  * \brief Aim: implements an images cache with 'read and write' policies.
  * 
  * @tparam TImageContainer an image container type (model of CImage).
- * @tparam TImageFactory an image factory.
- * @tparam TReadPolicy a read policy class.
- * @tparam TWritePolicy a write policy class.
+ * @tparam TImageFactory an image factory type (model of CImageFactory).
+ * @tparam TReadPolicy an image cache read policy class (model of CImageCacheReadPolicy).
+ * @tparam TWritePolicy an image cache write policy class (model of CImageCacheWritePolicy).
  * 
  * The cache provides 3 functions:
  * 
@@ -92,9 +90,9 @@ public:
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Domain Domain;
-    typedef typename TImageContainer::Point Point;
-    typedef typename TImageContainer::Value Value;
+    typedef typename ImageContainer::Domain Domain;
+    typedef typename ImageContainer::Point Point;
+    typedef typename ImageContainer::Value Value;
     
     typedef TImageFactory ImageFactory;
     
@@ -107,7 +105,7 @@ public:
   
     /**
      * Constructor.
-     * @param anImageFactory alias on the image factory (see ImageFactoryFromImage).
+     * @param anImageFactory alias on the image factory (see ImageFactoryFromImage or ImageFactoryFromHDF5).
      * @param aReadPolicy alias on a read policy.
      * @param aWritePolicy alias on a write policy.
      */
