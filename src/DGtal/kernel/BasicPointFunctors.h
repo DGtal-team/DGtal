@@ -52,6 +52,11 @@
 #else
 #include <boost/array.hpp>
 #endif
+
+
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/base/CQuantity.h"
+#include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -146,6 +151,39 @@ namespace DGtal
 
   }; // end of class ConstantPointFunctors
 
+
+  template< typename TPointPredicate, typename TDomain, typename TValue=DGtal::int32_t >
+  struct PointFunctorFromPointPredicateAndDomain
+  {
+      typedef TPointPredicate PointPredicate;
+      typedef TDomain Domain;
+      typedef TValue Value;
+      typedef typename Domain::Point Point;
+
+      BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+      BOOST_CONCEPT_ASSERT(( CDomain< Domain > ));
+      BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
+
+      PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain, const Value& aTrueValue, const Value& aFalseValue );
+
+      PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other  );
+
+      Value operator()( const Point& aPoint ) const;
+
+      /**
+       * Assignment.
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       * Forbidden by default.
+       */
+      PointFunctorFromPointPredicateAndDomain & operator= ( const PointFunctorFromPointPredicateAndDomain & other );
+
+  private:
+      const PointPredicate* myPtrPredicate;
+      const Domain& myDomain;
+      Value myTrueValue;
+      Value myFalseValue;
+  };
 
 } // namespace DGtal
 
