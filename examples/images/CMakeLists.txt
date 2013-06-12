@@ -1,6 +1,6 @@
 SET(DGTAL_EXAMPLES_SRC
   exampleConstImageAdapter
-  exampleTiledImageFromImage
+  exampleTiledImage
   extract2DImagesFrom3D
 )
 

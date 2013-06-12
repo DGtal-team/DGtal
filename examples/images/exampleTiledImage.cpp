@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file exampleTiledImageFromImage.cpp
+ * @file exampleTiledImage.cpp
  * @ingroup Examples
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/01/23
  *
- * @brief An example file for tiledImageFromImage.
+ * @brief An example file for tiledImage.
  *
  * This file is part of the DGtal library.
  */
@@ -40,7 +40,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/TiledImageFromImage.h"
+#include "DGtal/images/TiledImage.h"
 //! [include]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,9 +71,9 @@ int main( int argc, char** argv )
         
     aBoard.clear();
     Display2DFactory::drawImage<HueShade>(aBoard, image, (int)0, (int)255);
-    aBoard.saveSVG("tiledImageFromImage-image.svg");
+    aBoard.saveSVG("tiledImage-image.svg");
 #ifdef WITH_CAIRO
-    aBoard.saveCairo("tiledImageFromImage-image.png", Board2D::CairoPNG);
+    aBoard.saveCairo("tiledImage-image.png", Board2D::CairoPNG);
 #endif
     
     trace.info() << "ORIGINAL image: " << image << endl;
@@ -82,9 +82,9 @@ int main( int argc, char** argv )
     
     // ---
     
-    trace.beginBlock("tiledImageFromImage");
+    trace.beginBlock("tiledImage");
  
-//! [TiledImageFromImage_creation]
+//! [TiledImage_creation]
     // here we create an image factory
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
@@ -96,56 +96,55 @@ int main( int argc, char** argv )
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
+    // here we create the TiledImage
+    typedef TiledImage<VImage, Z2i::Domain, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    MyTiledImage tiledImage(image.domain(), imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+//! [TiledImage_creation]
     
-    // here we create the TiledImageFromImage
-    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
-//! [TiledImageFromImage_creation]
+    trace.info() << "tiledImage image: " << tiledImage << endl;
     
-    trace.info() << "tiledImageFromImage image: " << tiledImageFromImage << endl;
-    
-    typedef MyTiledImageFromImage::OutputImage OutputImage;
+    typedef MyTiledImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
     
     trace.endBlock();
     
     // ---
 
-    trace.beginBlock("read and write on MyTiledImageFromImage");
+    trace.beginBlock("read and write on MyTiledImage");
     
-//! [TiledImageFromImage_read42]
-    trace.info() << "Read value for Point 4,2: " << tiledImageFromImage(Z2i::Point(4,2)) << endl;
-//! [TiledImageFromImage_read42]    
+//! [TiledImage_read42]
+    trace.info() << "Read value for Point 4,2: " << tiledImage(Z2i::Point(4,2)) << endl;
+//! [TiledImage_read42]    
     
-//! [TiledImageFromImage_read106]
-    trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10,6)) << endl;
-//! [TiledImageFromImage_read106]
+//! [TiledImage_read106]
+    trace.info() << "Read value for Point 10,6: " << tiledImage(Z2i::Point(10,6)) << endl;
+//! [TiledImage_read106]
     
-//! [TiledImageFromImage_write117]
-    aValue = 1; tiledImageFromImage.setValue(Z2i::Point(11,7), aValue);
+//! [TiledImage_write117]
+    aValue = 1; tiledImage.setValue(Z2i::Point(11,7), aValue);
     trace.info() << "Write value for Point 11,7: " << aValue << endl;
-//! [TiledImageFromImage_write117]
+//! [TiledImage_write117]
     
-//! [TiledImageFromImage_read23]
-    trace.info() << "Read value for Point 2,3: " << tiledImageFromImage(Z2i::Point(2,3)) << endl;
-//! [TiledImageFromImage_read23]
+//! [TiledImage_read23]
+    trace.info() << "Read value for Point 2,3: " << tiledImage(Z2i::Point(2,3)) << endl;
+//! [TiledImage_read23]
     
-//! [TiledImageFromImage_read161]
-    trace.info() << "Read value for Point 16,1: " << tiledImageFromImage(Z2i::Point(16,1)) << endl;
-//! [TiledImageFromImage_read161]
+//! [TiledImage_read161]
+    trace.info() << "Read value for Point 16,1: " << tiledImage(Z2i::Point(16,1)) << endl;
+//! [TiledImage_read161]
     
-//! [TiledImageFromImage_write161]
-    aValue = 128; tiledImageFromImage.setValue(Z2i::Point(16,1), aValue);
+//! [TiledImage_write161]
+    aValue = 128; tiledImage.setValue(Z2i::Point(16,1), aValue);
     trace.info() << "Write value for Point 16,1: " << aValue << endl;
-//! [TiledImageFromImage_write161]
+//! [TiledImage_write161]
     
     trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
     
     aBoard.clear();
     Display2DFactory::drawImage<HueShade>(aBoard, image, (int)0, (int)255);
-    aBoard.saveSVG("tiledImageFromImage-image2.svg");
+    aBoard.saveSVG("tiledImage-image2.svg");
 #ifdef WITH_CAIRO
-    aBoard.saveCairo("tiledImageFromImage-image2.png", Board2D::CairoPNG);
+    aBoard.saveCairo("tiledImage-image2.png", Board2D::CairoPNG);
 #endif
     
     trace.endBlock();

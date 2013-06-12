@@ -2,7 +2,7 @@ SET(DGTAL_TESTS_SRC
   testImageSimple
   testImageAdapter
   testImageCache
-  testTiledImageFromImage
+  testTiledImage
   testConstImageAdapter
   testImage
   testImageSpanIterators
