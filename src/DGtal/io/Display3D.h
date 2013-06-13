@@ -326,28 +326,28 @@ namespace DGtal
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
-     * 
+     * @param s name of the new list
      **/  
 
-    virtual void createNewLineList();
+    virtual void createNewLineList(std::string s= "");
   
 
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
-     * 
+     * @param s name of the new list
      **/  
   
-    virtual void createNewPointList();
+    virtual void createNewPointList(std::string s= "");
 
 
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
-     * 
+     * @param s name of the new list
      **/  
 
-    virtual void createNewVoxelList(bool depthTest=true);
+    virtual void createNewVoxelList(bool depthTest=true, std::string s= "");
 
   
     /**
@@ -630,18 +630,21 @@ namespace DGtal
     /// 
 
     std::vector< std::vector<voxelD3D> > myVoxelSetList;
-  
-  
+
+
+
     /// Used to represent all the list of line primitive
     ///
   
     std::vector< std::vector<lineD3D> > myLineSetList;
+
   
   
     /// Used to represent all the list of point primitive
     /// 
   
     std::vector< std::vector<pointD3D> > myPointSetList;
+
 
   
     /// Represent all the clipping planes added to the scene (of maxSize=5).
@@ -679,6 +682,45 @@ namespace DGtal
 
    // Represents all the polygon drawn in the Display3D
     std::vector<polygonD3D> myPolygonList;
+
+    /// names of the lists in myVoxelSetList
+    ///
+    std::vector<std::string> voxelSetNameList;
+
+    /// names of the lists in myLineSetList
+    ///
+    std::vector<std::string> lineSetNameList;
+
+    /// names of the lists in myPointSetList
+    ///
+    std::vector<std::string> pointSetNameList;
+    /// names of the lists in myClippingPlaneList
+    ///
+    std::vector<std::string> clippingPlaneNameList;
+
+    /// names of the lists in myKSSurfelList
+    ///
+    std::vector<std::string> kSSurfelNameList;
+
+    /// names of the lists in myKSPointeList
+    ///
+    std::vector<std::string> kSPointelNameList;
+
+    /// names of the lists in myKSLinelList
+    ///
+    std::vector<std::string> kSLinelNameList;
+
+    /// names of the lists in myQuadList
+    ///
+    std::vector<std::string> quadNameList;
+
+    /// names of the lists in myTriangleList
+    ///
+    std::vector<std::string> triangleNameList;
+
+    /// names of the lists in myPolygonList
+    ///
+    std::vector<std::string> polygonNameList;
     
     
     /// Used to define if GL_TEST_DEPTH is used. 

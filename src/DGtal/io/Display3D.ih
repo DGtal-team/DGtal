@@ -120,11 +120,13 @@ DGtal::Display3D::getMode( const std::string & objectName ) const
 
 inline
 void
-DGtal::Display3D::createNewVoxelList(bool depthTest)
+DGtal::Display3D::createNewVoxelList(bool depthTest, std::string str)
 {
   std::vector< voxelD3D > v;
   myVoxelSetList.push_back(v);
+  voxelSetNameList.push_back(str);
   myListVoxelDepthTest.push_back(depthTest);
+
   
 }
 
@@ -132,19 +134,22 @@ DGtal::Display3D::createNewVoxelList(bool depthTest)
 
 inline
 void
-DGtal::Display3D::createNewPointList()
+DGtal::Display3D::createNewPointList(std::string str)
 {
   std::vector< pointD3D > v;
   myPointSetList.push_back(v);
+  pointSetNameList.push_back(str);
 }
 
 
 inline
 void
-DGtal::Display3D::createNewLineList()
+DGtal::Display3D::createNewLineList(std::string str)
 {
   std::vector< lineD3D > v;
   myLineSetList.push_back(v);
+  lineSetNameList.push_back(str);
+
 }
 
 
