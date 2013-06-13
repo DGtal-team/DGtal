@@ -46,10 +46,87 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/kernel/CBoundedNumber.h"
+
+#include "hdf5.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // template class H5DSpecializations
+  /**
+   * Description of template class 'H5DSpecializations' <p>
+   * \brief Aim: implements HDF5 reading and writing for specialized type T.
+   * 
+   * @tparam TImageFactory an image factory type (model of CImageFactory).
+   * @tparam T a type.
+   */
+  template <typename TImageFactory, typename T>
+  struct H5DSpecializations
+  {
+    // ----------------------- Standard services ------------------------------
+    
+    typedef TImageFactory ImageFactory;
+    typedef typename ImageFactory::OutputImage::Value Value;
+    
+    static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out);
+    static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in);
+
+  }; // end of class H5DSpecializations
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // template class H5DSpecializations
+  /**
+   * Description of template class 'H5DSpecializations' <p>
+   * \brief Aim:
+   */
+  template <typename TImageFactory>
+  struct H5DSpecializations<TImageFactory, int>
+  {
+    // ----------------------- Standard services ------------------------------
+    
+    typedef TImageFactory ImageFactory;
+    typedef typename ImageFactory::OutputImage::Value Value;
+    
+    static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
+    {
+      return H5Dread(anImageFactory.dataset, H5T_NATIVE_INT, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
+    }
+    
+    static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
+    {
+      return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_INT, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
+    }
+
+  }; // end of class H5DSpecializations
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // template class H5DSpecializations
+  /**
+   * Description of template class 'H5DSpecializations' <p>
+   * \brief Aim:
+   */
+  template <typename TImageFactory>
+  struct H5DSpecializations<TImageFactory, double>
+  {
+    // ----------------------- Standard services ------------------------------
+    
+    typedef TImageFactory ImageFactory;
+    typedef typename ImageFactory::OutputImage::Value Value;
+    
+    static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
+    {
+      return H5Dread(anImageFactory.dataset, H5T_NATIVE_DOUBLE, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
+    }
+    
+    static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
+    {
+      return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_DOUBLE, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
+    }
+
+  }; // end of class H5DSpecializations
+  
   /////////////////////////////////////////////////////////////////////////////
   // Template class ImageFactoryFromHDF5
   /**
@@ -250,7 +327,8 @@ namespace DGtal
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_out, NULL, count_out, NULL);
 
       // Read data from hyperslab in the file into the hyperslab in memory.
-      status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_out);
+      //status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_out);
+      status = H5DSpecializations<Self, Value>::H5DreadS(*this, memspace, data_out);
     
       OutputImage* outputImage = new OutputImage(aDomain);
           
@@ -361,7 +439,8 @@ namespace DGtal
       }
       
       // Write data from hyperslab in memory into the hyperslab in the file.
-      status = H5Dwrite(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_in);
+      //status = H5Dwrite(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_in);
+      status = H5DSpecializations<Self, Value>::H5DwriteS(*this, memspace, data_in);
       
       H5Sclose(memspace);
       
@@ -397,7 +476,7 @@ namespace DGtal
     const std::string myFilename;
     const std::string myDataset;
 
-  private:
+  public://private:
     
     // HDF5 handles
     hid_t file, dataset;

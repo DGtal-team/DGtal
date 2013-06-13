@@ -37,8 +37,6 @@
 #include "DGtal/images/ImageCache.h"
 #include "DGtal/images/TiledImage.h"
 
-#include "hdf5.h"
-
 #include "ConfigTest.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -186,7 +184,7 @@ bool writeHDF5_3D_TILED_for_easy_reading()
     hid_t       datatype, dataspace;                            // handles
     hsize_t     dimsf[RANK_3D_TILED];                           // dataset dimensions
     herr_t      status;
-    int         data[NY_3D_TILED][NX_3D_TILED][NZ_3D_TILED];    // data to write
+    double      data[NY_3D_TILED][NX_3D_TILED][NZ_3D_TILED];    // data to write
     int         i, j, k;
 
     int ii=1;
@@ -213,7 +211,7 @@ bool writeHDF5_3D_TILED_for_easy_reading()
      * Define datatype for the data in the file.
      * We will store little endian INT numbers.
      */
-    datatype = H5Tcopy(H5T_NATIVE_INT);
+    datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
 
     /*
@@ -224,7 +222,7 @@ bool writeHDF5_3D_TILED_for_easy_reading()
                         H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     // Write the data to the dataset using default transfer properties.
-    status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    status = H5Dwrite(dataset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
 
     // Close/release resources.
     H5Sclose(dataspace);
@@ -241,7 +239,7 @@ bool writeHDF5_3D_TILED()
     hid_t       datatype, dataspace;                            // handles
     hsize_t     dimsf[RANK_3D_TILED];                           // dataset dimensions
     herr_t      status;
-    int         data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
+    double      data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
     int         i, j, k;
 
     int ii=1;
@@ -268,7 +266,7 @@ bool writeHDF5_3D_TILED()
      * Define datatype for the data in the file.
      * We will store little endian INT numbers.
      */
-    datatype = H5Tcopy(H5T_NATIVE_INT);
+    datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
 
     /*
@@ -279,7 +277,7 @@ bool writeHDF5_3D_TILED()
                         H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     // Write the data to the dataset using default transfer properties.
-    status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    status = H5Dwrite(dataset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
 
     // Close/release resources.
     H5Sclose(dataspace);
@@ -423,7 +421,7 @@ bool test2D()
   return nbok == nb;
 }
 
-bool testTiledImage2D()
+bool testTiledImage2D_int()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
@@ -492,14 +490,14 @@ bool testTiledImage2D()
     return nbok == nb;
 }
 
-bool testTiledImage3D()
+bool testTiledImage3D_double()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
 
     trace.beginBlock("Testing TiledImage with ImageFactoryFromHDF5 (3D)");
     
-    typedef ImageSelector<Z3i::Domain, int>::Type Image;
+    typedef ImageSelector<Z3i::Domain, double>::Type Image;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
     MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
@@ -536,9 +534,9 @@ bool testTiledImage3D()
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    aValue = 1; tiledImage.setValue(Z3i::Point(3,6,5), aValue);
+    aValue = 1.1; tiledImage.setValue(Z3i::Point(3,6,5), aValue);
     trace.info() << "Write value for Point 3,6,5: " << aValue << endl;
-    nbok += (tiledImage(Z3i::Point(3,6,5)) == 1) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(3,6,5)) == 1.1) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -555,9 +553,9 @@ bool testTiledImage3D()
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    aValue = 128; tiledImage.setValue(Z3i::Point(8,6,3), aValue);
+    aValue = 128.5; tiledImage.setValue(Z3i::Point(8,6,3), aValue);
     trace.info() << "Write value for Point 8,6,3: " << aValue << endl;
-    nbok += (tiledImage(Z3i::Point(8,6,3)) == 128) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(8,6,3)) == 128.5) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -581,11 +579,11 @@ int main( int argc, char** argv )
     bool res = true;
     res = res && writeHDF5_2D() && test2D();
     
-    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D.h5", 16, 16) && testTiledImage2D();
+    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D.h5", 16, 16) && testTiledImage2D_int();
     
     res = res && writeHDF5_3D_TILED_for_easy_reading();
     res = res && writeHDF5_3D_TILED();
-    res = res && testTiledImage3D();
+    res = res && testTiledImage3D_double();
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
