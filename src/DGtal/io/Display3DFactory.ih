@@ -773,13 +773,13 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       mode="BoundingBox";
     display.addImage2DDomainD3D(h, mode);
   }else if (  mode == "BoundingBox"  ){
-    display.createNewLineList();
+    display.createNewLineList(h.className());
     drawAsBoundingBox( display, h );
   }else if(( mode == "" ) ||  (mode == "Grid")){
-    display.createNewLineList();
+    display.createNewLineList(h.className());
     drawAsGrid( display, h );
   } else if ( mode == "Paving" ){
-    display.createNewVoxelList(false);
+    display.createNewVoxelList(false, h.className());
 
     drawAsPaving( display, h );
 

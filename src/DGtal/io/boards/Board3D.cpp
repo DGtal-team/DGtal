@@ -90,12 +90,9 @@ void DGtal::Board3D::saveOBJ(const string & filename)
     size_t mod; // number of vertex per figure
     double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
     //OPT parametrer la resolution ?
+    //OPT quand deux obj ont le meme nom ils fusionnent (danger deux sets differents fusionnes)
 
     //TODOLP mettre des ASSERT
-    /*
-
-     */
-
     //TODOLP faire le .MTL
 
     std::ofstream out; //file where to write
@@ -132,7 +129,12 @@ void DGtal::Board3D::saveOBJ(const string & filename)
 
         if (tmpStream.str().size() > 0)
         {
-            out << "o  myPointSetList_" << k << std::endl;
+            string name= myPointSetNameList.at(k);
+            if ( name== "")
+            {
+              name = "myPointSetList_" ;
+            }
+            out << "o  " << name << k << std::endl;
             out << tmpStream.str();
             std::cout << "point " << k <<std::endl;
         }
@@ -159,10 +161,6 @@ void DGtal::Board3D::saveOBJ(const string & filename)
         for (std::vector<lineD3D>::const_iterator s_it = it->begin();
              s_it != it->end();++s_it)
         {
-            double wid = s_it->width;
-            //DONE dessiner le voxel par rapport a son centre et non pas son cote
-            //DONE ne plus tenir compte du mode pour dessiner
-
             /*
             //obsolete
             if(gridMode)
@@ -205,8 +203,12 @@ void DGtal::Board3D::saveOBJ(const string & filename)
         }
         if (tmpStream.str() != "")
         {
-            out << "o  myLineSetList_" << k << std::endl;
-            std::cout << "line " << k <<std::endl;
+            string name= myLineSetNameList.at(k);
+            if ( name== "")
+            {
+              name = "myLineSetList_" ;
+            }
+            out << "o  " << name << k << std::endl;
             out << tmpStream.str();
             out << tmpStream.str();
         }
@@ -284,9 +286,16 @@ void DGtal::Board3D::saveOBJ(const string & filename)
                 j ++;
             }
 
+
+            //BUG les voxels ne recuperent pas le nom d origine
             if (tmpStream.str() != "")
             {
-                out << "o  myVoxelSetList_" << k << std::endl;
+                string name= myVoxelSetNameList.at(k);
+                if ( name== "")
+                {
+                  name = "myVoxelSetList_" ;
+                }
+                out << "o  " << name << k << std::endl;
                 out << tmpStream.str() ;
                 out << tmpStream.str();
             }
@@ -308,6 +317,7 @@ void DGtal::Board3D::saveOBJ(const string & filename)
     //TODO chercher comment tester
     // KSSurfel (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     j=0;
+
     {
         ostringstream tmpStream;
 
@@ -339,18 +349,26 @@ void DGtal::Board3D::saveOBJ(const string & filename)
             j++;
         }
 
+
         if (tmpStream.str() != "")
         {
-            out << "o myKSSurfelList" << std::endl;
+            string name= myKSSurfelNameList.at(k);
+            if ( name== "")
+            {
+              name = "myKSSurfelList_" ;
+            }
+            out << "o  " << name << std::endl;
             out << tmpStream.str() ;
             out << tmpStream.str();
         }
+
     }
 
 
     //TODO chercher comment tester
     // KSLinel ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     j=0;
+
     {
         ostringstream tmpStream;
 
@@ -381,10 +399,16 @@ void DGtal::Board3D::saveOBJ(const string & filename)
 
         if (tmpStream.str() != "")
         {
-            out << "o myKSLinelList" << std::endl;
+            string name= myKSLinelNameList.at(k);
+            if ( name== "")
+            {
+              name = "myKSLinelList_" ;
+            }
+            out << "o  " << name  << std::endl;
             out << tmpStream.str() ;
             out << tmpStream.str();
         }
+
     }
 
     //TODO chercher comment tester
@@ -399,7 +423,12 @@ void DGtal::Board3D::saveOBJ(const string & filename)
 
         if (tmpStream.str() != "")
         {
-            out << "o myKSLinelList" << std::endl;
+          string name= myKSPointelNameList.at(k);
+          if ( name== "")
+          {
+            name = "myKSPointelList_" ;
+          }
+          out << "o  " << name << std::endl;
             out << tmpStream.str() ;
         }
     }
@@ -438,5 +467,34 @@ DGtal::Board3D::init()
     myDefaultColor= DGtal::Color(255, 255, 255);
 
     myModes["Board3D"]="SolidMode";
+
+    //OPT faire une plus belle presentation de init
+
+    string nameLineSet;
+    myLineSetNameList.push_back(nameLineSet);
+
+    string namePointSet;
+    myPointSetNameList.push_back(namePointSet);
+
+    string nameClippingPlane;
+    myClippingPlaneNameList.push_back(nameClippingPlane);
+
+    string nameKSSurfel;
+    myKSSurfelNameList.push_back(nameKSSurfel);
+
+    string nameKSPointel;
+    myKSPointelNameList.push_back(nameKSPointel);
+
+    string nameKSLinel;
+    myKSLinelNameList.push_back(nameKSLinel);
+
+    string nameQuad;
+    myQuadNameList.push_back(nameQuad);
+
+    string nameTriangle;
+    myTriangleNameList.push_back(nameTriangle);
+
+    string namePolygon;
+    myPolygonNameList.push_back(namePolygon);
 }
 
