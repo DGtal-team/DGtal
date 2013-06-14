@@ -4,6 +4,7 @@ SET(TESTS_SURFACES_SRC
  testIntegralInvariantCurvatureEstimator2D
  testIntegralInvariantMeanCurvatureEstimator3D
  testIntegralInvariantGaussianCurvatureEstimator3D
+ testLocalEstimatorFromFunctorAdapter
 )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
