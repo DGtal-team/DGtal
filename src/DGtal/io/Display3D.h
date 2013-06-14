@@ -965,42 +965,42 @@ namespace DGtal
 
     /// names of the lists in myVoxelSetList
     ///
-    std::vector<std::string> voxelSetNameList;
+    std::vector<std::string> myVoxelSetNameList;
 
     /// names of the lists in myLineSetList
     ///
-    std::vector<std::string> lineSetNameList;
+    std::vector<std::string> myLineSetNameList;
 
     /// names of the lists in myPointSetList
     ///
-    std::vector<std::string> pointSetNameList;
+    std::vector<std::string> myPointSetNameList;
     /// names of the lists in myClippingPlaneList
     ///
-    std::vector<std::string> clippingPlaneNameList;
+    std::vector<std::string> myClippingPlaneNameList;
 
     /// names of the lists in myKSSurfelList
     ///
-    std::vector<std::string> kSSurfelNameList;
+    std::vector<std::string> myKSSurfelNameList;
 
     /// names of the lists in myKSPointeList
     ///
-    std::vector<std::string> kSPointelNameList;
+    std::vector<std::string> myKSPointelNameList;
 
     /// names of the lists in myKSLinelList
     ///
-    std::vector<std::string> kSLinelNameList;
+    std::vector<std::string> myKSLinelNameList;
 
     /// names of the lists in myQuadList
     ///
-    std::vector<std::string> quadNameList;
+    std::vector<std::string> myQuadNameList;
 
     /// names of the lists in myTriangleList
     ///
-    std::vector<std::string> triangleNameList;
+    std::vector<std::string> myTriangleNameList;
 
     /// names of the lists in myPolygonList
     ///
-    std::vector<std::string> polygonNameList;
+    std::vector<std::string> myPolygonNameList;
     
     
     /// Used to define if GL_TEST_DEPTH is used. 
