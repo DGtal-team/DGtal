@@ -744,7 +744,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::HyperRectDomain<TSpace> & h )
 {
   std::string mode = display.getMode( h.className() );
-<<<<<<< HEAD
+
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
     mode=="BoundingBox")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
@@ -758,7 +758,8 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   }
   else if ( mode == "Paving" ){
     display.createNewVoxelList(false, h.className());
-=======
+  }
+
   ASSERT((TSpace::dimension==3)|| (TSpace::dimension==2));
   ASSERT((TSpace::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
 				    mode=="BoundingBox")||
@@ -779,7 +780,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     drawAsGrid( display, h );
   } else if ( mode == "Paving" ){
     display.createNewVoxelList(false);
->>>>>>> cfc7a825e79f97d0deb535b87b298d43e720d164
+
     drawAsPaving( display, h );
 
   } else if ( mode == "PavingPoints" ){

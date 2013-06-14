@@ -451,7 +451,7 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
+
 
  
 
