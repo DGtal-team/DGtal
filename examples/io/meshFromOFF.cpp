@@ -58,7 +58,6 @@ int main( int argc, char** argv )
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
   //! [displayOFFfile]
-  anImportedMesh.invertVertexFaceOrder();  
   viewer.setLineColor(DGtal::Color(150,0,0,254));
   viewer << anImportedMesh;
   viewer << Viewer3D::updateDisplay;

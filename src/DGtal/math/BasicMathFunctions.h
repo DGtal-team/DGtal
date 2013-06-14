@@ -45,6 +45,7 @@
 #include <algorithm>
 #include <functional>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Bits.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -90,8 +91,20 @@ namespace DGtal
 	}
       return result;
     }
-    
-    
+
+
+    /**
+     * Compute the next higher power of two of the given argument n of type T. 
+     * 
+     * @tparam T the type of the element T
+     * @param n an element of type T (casted to unsigned integer).
+     * @return the next higher power of two.
+     **/
+    template<typename T> 
+    T roundToUpperPowerOfTwo(const  T &n){
+      return (T)  1 << (1+DGtal::Bits::mostSignificantBit( (unsigned int) n-1 ) );;
+    };
+
     /** 
      * Return the absolute value of an instance of type T.
      *
@@ -110,9 +123,12 @@ namespace DGtal
       else
 	return a;
     }
-  }
-  
-}
+
+  }  // namespace BasicMathFunctions
+} // namespace DGTal
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined BasicMathFunctions_h
