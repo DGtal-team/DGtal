@@ -36,7 +36,7 @@ example tutorial-examples/freemanChainFromImage.cpp
 
 The digitalSet can be obtained after thresholding a given image. As
 described in the section \ref moduleIO a image can simply be imported
-with readers as for instance in PNMReader: 
+with readers as for instance in PGMReader: 
 
 @snippet freemanChainFromImage.cpp freemanChainFromImage-imageImport
 
@@ -127,12 +127,12 @@ The directory 2dContourTools contains command line program "pgm2freeman"
 allowing to simply extract level set contours from an pgm image:
 
 @code
-./2dContourTools/pgm2freeman --image ../../DGTal/examples/samples/church.pgm --minSize 300 --contourSelect 129 526 300 --thresholdRange 100 5 220 > contours.fc ;
+./converters/pgm2freeman --image ../../DGTal/examples/samples/church.pgm --minSize 300 --contourSelect 129 526 300 --thresholdRangeMin 100 5 220 > contours.fc ;
 @endcode
  
 
 This example will load the pgm source file "church.pgm" and applies
-successive thresholds [100,105], [105, 110]....  [215, 220] and selects
+successive thresholds [100,105], [100, 110]....  [100, 220] and selects
 all the boundary contours with a minimal size equals to 300 and with
 a distance between its barycenter and point (129 526) less than 300.
 
@@ -142,12 +142,11 @@ and can be displayed with the command line program "displayContours":
 
 
 @code 
-./2dContourTools/displayContours --FreemanChain contours.fc --backgroundImage ../../DGtal/examples/samples/church.png --outputEPS levelSetImage.eps --outputPDF levelSetImage.pdf 
+ ./visualisation/displayContours --FreemanChain contours.fc --backgroundImage ../../DGtal/examples/samples/church.png  --outputFile  levelSetImage.eps
 @endcode
 
 
-
-You will obtain the following result in eps and pdf format (if cairo
+You will obtain the following result in eps (you can also use the pdf format if cairo
 is installed on your system). 
 
 @image html images/churchLevelSets.png
