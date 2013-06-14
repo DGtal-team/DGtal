@@ -46,16 +46,22 @@ int main()
 
 
   Point p1( -3, -2, 0 );
-  Point p2( 7, 3 , 0);
-  Point p3( 0, 0 , 0);
-  Domain domain(p1, p2);
+  Point p2( 7, 3 , 6);
+  Point p3( -1, -1, -1);
+  Point p4(-1, -1, 0 );
+  Point p5( 5, 2 , 4);
+
+  Domain domain(p4, p5);
 
 
   
   Board3D board;
 
-  board << domain;
+  board << SetMode3D(domain.className(), "PavingGrids");
   board << p1 << p2 << p3;
+  board << domain;
+  //BUG les voxels ne font plus de liste separee
+  // => probleme pour differentier le domaine des simples voxels
 
   board.saveOBJ("dgtalBoard3D-1-points.obj");
 
