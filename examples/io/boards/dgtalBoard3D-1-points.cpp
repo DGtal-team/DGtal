@@ -50,9 +50,13 @@ int main()
   Point p3( -1, -1, -1);
   Point p4(-1, -1, 0 );
   Point p5( 5, 2 , 4);
+  Point p6(-3, -6, 0 );
+  Point p7( 5, 2 , 3);
 
   Domain domain(p4, p5);
-
+  DigitalSet shape_set( domain );
+  shape_set.insertNew(p6);
+  shape_set.insertNew(p7);
 
   
   Board3D board;
@@ -60,8 +64,8 @@ int main()
   board << SetMode3D(domain.className(), "PavingGrids");
   board << p1 << p2 << p3;
   board << domain;
-  //BUG les voxels ne font plus de liste separee
-  // => probleme pour differentier le domaine des simples voxels
+  board << shape_set;
+
 
   board.saveOBJ("dgtalBoard3D-1-points.obj");
 
