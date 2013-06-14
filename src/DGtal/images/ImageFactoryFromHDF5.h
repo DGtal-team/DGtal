@@ -82,7 +82,7 @@ namespace DGtal
    * \brief Aim:
    */
   template <typename TImageFactory>
-  struct H5DSpecializations<TImageFactory, int>
+  struct H5DSpecializations<TImageFactory, DGtal::uint8_t>
   {
     // ----------------------- Standard services ------------------------------
     
@@ -91,12 +91,64 @@ namespace DGtal
     
     static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
     {
-      return H5Dread(anImageFactory.dataset, H5T_NATIVE_INT, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
+      return H5Dread(anImageFactory.dataset, H5T_NATIVE_UINT8, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
     }
     
     static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
     {
-      return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_INT, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
+      return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_UINT8, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
+    }
+
+  }; // end of class H5DSpecializations
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // template class H5DSpecializations
+  /**
+   * Description of template class 'H5DSpecializations' <p>
+   * \brief Aim:
+   */
+  template <typename TImageFactory>
+  struct H5DSpecializations<TImageFactory, DGtal::int32_t>
+  {
+    // ----------------------- Standard services ------------------------------
+    
+    typedef TImageFactory ImageFactory;
+    typedef typename ImageFactory::OutputImage::Value Value;
+    
+    static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
+    {
+      return H5Dread(anImageFactory.dataset, H5T_NATIVE_INT32, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
+    }
+    
+    static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
+    {
+      return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_INT32, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
+    }
+
+  }; // end of class H5DSpecializations
+  
+  /////////////////////////////////////////////////////////////////////////////
+  // template class H5DSpecializations
+  /**
+   * Description of template class 'H5DSpecializations' <p>
+   * \brief Aim:
+   */
+  template <typename TImageFactory>
+  struct H5DSpecializations<TImageFactory, DGtal::int64_t>
+  {
+    // ----------------------- Standard services ------------------------------
+    
+    typedef TImageFactory ImageFactory;
+    typedef typename ImageFactory::OutputImage::Value Value;
+    
+    static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
+    {
+      return H5Dread(anImageFactory.dataset, H5T_NATIVE_INT64, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
+    }
+    
+    static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
+    {
+      return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_INT64, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
     }
 
   }; // end of class H5DSpecializations
