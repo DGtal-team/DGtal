@@ -56,11 +56,11 @@ using namespace DGtal;
 
 bool writeHDF5_2D()
 {
-    hid_t       file, dataset;          // file and dataset handles
-    hid_t       datatype, dataspace;    // handles
-    hsize_t     dimsf[RANK_2D];         // dataset dimensions
-    herr_t      status;
-    int         data[NY_2D][NX_2D];     // data to write
+    hid_t               file, dataset;          // file and dataset handles
+    hid_t               datatype, dataspace;    // handles
+    hsize_t             dimsf[RANK_2D];         // dataset dimensions
+    herr_t              status;
+    DGtal::int32_t      data[NY_2D][NX_2D];     // data to write
     int         i, j;
 
     // Data  and output buffer initialization.
@@ -91,7 +91,7 @@ bool writeHDF5_2D()
      * Define datatype for the data in the file.
      * We will store little endian INT numbers.
      */
-    datatype = H5Tcopy(H5T_NATIVE_INT);
+    datatype = H5Tcopy(H5T_NATIVE_INT32);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
 
     /*
@@ -102,7 +102,7 @@ bool writeHDF5_2D()
                         H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     // Write the data to the dataset using default transfer properties.
-    status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    status = H5Dwrite(dataset, H5T_NATIVE_INT32, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
 
     // Close/release resources.
     H5Sclose(dataspace);
@@ -118,11 +118,11 @@ bool writeHDF5_2D()
 
 bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TILED, int _NY_2D_TILED)
 {
-    hid_t       file, dataset;                          // file and dataset handles
-    hid_t       datatype, dataspace;                    // handles
-    hsize_t     dimsf[RANK_2D_TILED];                   // dataset dimensions
-    herr_t      status;
-    int         data[_NY_2D_TILED][_NX_2D_TILED];       // data to write
+    hid_t               file, dataset;                          // file and dataset handles
+    hid_t               datatype, dataspace;                    // handles
+    hsize_t             dimsf[RANK_2D_TILED];                   // dataset dimensions
+    herr_t              status;
+    DGtal::int64_t      data[_NY_2D_TILED][_NX_2D_TILED];       // data to write
     int         i, j;
 
     int ii=1;
@@ -147,7 +147,7 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
      * Define datatype for the data in the file.
      * We will store little endian INT numbers.
      */
-    datatype = H5Tcopy(H5T_NATIVE_INT);
+    datatype = H5Tcopy(H5T_NATIVE_INT64);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
 
     /*
@@ -158,7 +158,7 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
                         H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     // Write the data to the dataset using default transfer properties.
-    status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    status = H5Dwrite(dataset, H5T_NATIVE_INT64, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
 
     // Close/release resources.
     H5Sclose(dataspace);
@@ -288,14 +288,14 @@ bool writeHDF5_3D_TILED()
     return true;
 }
 
-bool test2D()
+bool test2D_int32()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;  
   
   trace.beginBlock("Testing ImageFactoryFromHDF5 (2D)");
   
-  typedef ImageSelector<Z2i::Domain, int>::Type Image;
+  typedef ImageSelector<Z2i::Domain, DGtal::int32_t>::Type Image;
   
   // 1) ImageFactoryFromHDF5
   typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
@@ -421,14 +421,14 @@ bool test2D()
   return nbok == nb;
 }
 
-bool testTiledImage2D_int()
+bool testTiledImage2D_int64()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
 
     trace.beginBlock("Testing TiledImage with ImageFactoryFromHDF5 (2D)");
     
-    typedef ImageSelector<Z2i::Domain, int>::Type Image;
+    typedef ImageSelector<Z2i::Domain, DGtal::int64_t>::Type Image;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
     MyImageFactoryFromHDF5 factImage("testImageFactoryFromHDF5_TILED_2D.h5", DATASETNAME_2D_TILED);
@@ -553,9 +553,9 @@ bool testTiledImage3D_double()
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    aValue = 128.5; tiledImage.setValue(Z3i::Point(8,6,3), aValue);
+    aValue = 125.5; tiledImage.setValue(Z3i::Point(8,6,3), aValue);
     trace.info() << "Write value for Point 8,6,3: " << aValue << endl;
-    nbok += (tiledImage(Z3i::Point(8,6,3)) == 128.5) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(8,6,3)) == 125.5) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -577,9 +577,9 @@ int main( int argc, char** argv )
     trace.info() << endl;
 
     bool res = true;
-    res = res && writeHDF5_2D() && test2D();
+    res = res && writeHDF5_2D() && test2D_int32();
     
-    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D.h5", 16, 16) && testTiledImage2D_int();
+    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D.h5", 16, 16) && testTiledImage2D_int64();
     
     res = res && writeHDF5_3D_TILED_for_easy_reading();
     res = res && writeHDF5_3D_TILED();
