@@ -139,13 +139,14 @@ void DGtal::Board3D::saveOBJ(const string & filename)
         k++;
     }
 
-
-
     // myLineSetList+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    string LineMode =this->getMode("HyperRectDomain");
+    /*
+     unused
+     string LineMode =this->getMode("HyperRectDomain");
     ASSERT( (LineMode=="Paving" || LineMode=="PavingPoints" || LineMode=="Grid" || LineMode=="PavingGrids" || LineMode=="BoundingBox" || LineMode=="") );
     bool gridMode =( LineMode=="PavingGrids");
     bool lineMode =(LineMode=="") ;
+    */
 
     //"HyperRectDomain" :  "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
     j =0;
@@ -155,13 +156,15 @@ void DGtal::Board3D::saveOBJ(const string & filename)
         it!= myLineSetList.end();   it++)
     {
         ostringstream tmpStream;
-
-
         for (std::vector<lineD3D>::const_iterator s_it = it->begin();
              s_it != it->end();++s_it)
         {
             double wid = s_it->width;
+            //DONE dessiner le voxel par rapport a son centre et non pas son cote
+            //DONE ne plus tenir compte du mode pour dessiner
 
+            /*
+            //obsolete
             if(gridMode)
             {
                 // grid LineMode
@@ -177,27 +180,26 @@ void DGtal::Board3D::saveOBJ(const string & filename)
                 tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -wid<< std::endl;
                 tmpStream << "f " << "-8" << " " << "-7" << " "<< "-6" << " "<< "-5" << std::endl;
                 tmpStream << "f " << "-4" << " " << "-3" << " "<< "-2" << " "<< "-1" << std::endl;
-            }
-            else if( lineMode )
-            {
-                // line LineMode
-                // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1 -sizePixel << " " << s_it->z1 << std::endl;
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1 +sizePixel << " " << s_it->z1 << std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2 +sizePixel << " " << s_it->z2 << std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2 -sizePixel << " " << s_it->z2 << std::endl;
+            }           
+            esle if( lineMode )
+            */
+            // line LineMode
+            // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
+            tmpStream << "v " << s_it->x1     << " " << s_it->y1 -sizePixel << " " << s_it->z1 << std::endl;
+            tmpStream << "v " << s_it->x1     << " " << s_it->y1 +sizePixel << " " << s_it->z1 << std::endl;
+            tmpStream << "v " << s_it->x2     << " " << s_it->y2 +sizePixel << " " << s_it->z2 << std::endl;
+            tmpStream << "v " << s_it->x2     << " " << s_it->y2 -sizePixel << " " << s_it->z2 << std::endl;
 
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -sizePixel << std::endl;
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +sizePixel<< std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +sizePixel<< std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -sizePixel<< std::endl;
-                tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-                tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-                tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-                tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-                tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-                tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
-            }
+            tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -sizePixel << std::endl;
+            tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +sizePixel<< std::endl;
+            tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +sizePixel<< std::endl;
+            tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -sizePixel<< std::endl;
+            tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+            tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+            tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+            tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+            tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+            tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
 
             j++;
         }
@@ -235,9 +237,32 @@ void DGtal::Board3D::saveOBJ(const string & filename)
             for (std::vector<voxelD3D>::const_iterator s_it = it->begin();
                  s_it != it->end(); ++s_it)
             {
+              /*
+               //obsolete
                 if (vertexGridMode || vertexNone || vertexBothMode)
-                {
-                    // grid LineMode : one cube with (x,y,z) the upper left vertex and wid its width and height
+              */
+                    // grid LineMode :
+                  // this version is  one cube with (x,y,z) the center of it and wid its distance between it and its faces
+                  double wid = s_it->width;
+                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
+                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
+                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
+                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
+                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
+                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
+                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
+                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
+
+                  tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+                  tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+                  tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+                  tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+                  tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+                  tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+
+                  /*
+                   //obsolete
+                    // this version is  one cube with (x,y,z) the upper left vertex and wid its width and height
                     double wid = s_it->width;
                     tmpStream  << "v " << s_it->x     << " " << s_it->y       << " " << s_it->z << std::endl;
                     tmpStream  << "v " << s_it->x +wid << " " << s_it->y       << " " << s_it->z << std::endl;
@@ -254,14 +279,14 @@ void DGtal::Board3D::saveOBJ(const string & filename)
                     tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
                     tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
                     tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
-                }
+                    */
+
                 j ++;
             }
 
             if (tmpStream.str() != "")
             {
                 out << "o  myVoxelSetList_" << k << std::endl;
-
                 out << tmpStream.str() ;
                 out << tmpStream.str();
             }
@@ -391,7 +416,7 @@ void DGtal::Board3D::saveOBJ(const string & filename)
 void
 DGtal::Board3D::init()
 {
-    /*
+
     createNewVoxelList(true);
 
     vector<lineD3D> listeLine;
@@ -399,13 +424,16 @@ DGtal::Board3D::init()
 
     vector<pointD3D> listePoint;
     myPointSetList.push_back(listePoint);
-    */
+
 
     myCurrentFillColor = DGtal::Color (220, 220, 220);
     myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
 
-    /*createNewVoxelList(true);
-    std::vector<voxelD3D> aKSVoxelList;*/
+    /*
+     // what is the meaning of this part ?
+    createNewVoxelList(true);
+    std::vector<voxelD3D> aKSVoxelList;
+    */
 
     myDefaultColor= DGtal::Color(255, 255, 255);
 
