@@ -194,9 +194,6 @@ DGtal::Viewer3D::draw()
 
     
 
-
-    
-
   // Drawing all Khalimsky Space Cells
 
   for ( unsigned int i=0; i< myKSPointelList.size(); i++ )
@@ -209,35 +206,6 @@ DGtal::Viewer3D::draw()
     }
  
   
-
-    
-
-  // Drawing all Khalimsky Space Cells
-
-  for ( unsigned int i=0; i< myKSPointelList.size(); i++ )
-    {
-      glDrawGLPointel ( myKSPointelList.at ( i ) );
-    }
-  for ( unsigned int i=0; i< myKSLinelList.size(); i++ )
-    {
-      glDrawGLLinel ( myKSLinelList.at ( i ) );
-    }
-    
-
-
-    
-
-  // Drawing all Khalimsky Space Cells
-
-  for ( unsigned int i=0; i< myKSPointelList.size(); i++ )
-    {
-      glDrawGLPointel ( myKSPointelList.at ( i ) );
-    }
-  for ( unsigned int i=0; i< myKSLinelList.size(); i++ )
-    {
-      glDrawGLLinel ( myKSLinelList.at ( i ) );
-    }
- 
 
   for(unsigned int i=0; i< myVectTextureImage.size(); i++){
     GLTextureImage &textureImg =  myVectTextureImage.at(i);
