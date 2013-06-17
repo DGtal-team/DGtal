@@ -113,7 +113,7 @@ namespace DGtal
     static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
     
     template <typename TIterator, typename TInteger, int connectivity>
-    static void drawAsPoints( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
+    static void drawAsBalls( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
     
     template <typename TIterator, typename TInteger, int connectivity>
     static void drawAsBoundingBox( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
@@ -182,7 +182,7 @@ namespace DGtal
     static void drawAsGrid( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
     
     template<typename TSpace>
-    static void drawAsPavingPoints( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
+    static void drawAsPavingBalls( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
     
     template<typename TSpace>
     static void drawAsPaving( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
