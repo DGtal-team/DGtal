@@ -18,12 +18,11 @@
 /**
  * @file dgtalBoard2D-1-points.cpp
  * @ingroup Examples
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author Aline MARTIN (\c aline.martin@insa-lyon.fr )
  *
- * @date 2010/11/26
+ * @date 2013/06/16
  *
- * An example file named dgtalBoard2D-1-points.
+ * An example file named dgtalBoard3D-1-points.
  * 
  */
 
