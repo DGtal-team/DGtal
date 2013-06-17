@@ -63,7 +63,7 @@ namespace DGtal
   /**
    * Description of class 'Display3D' <p>
    * \brief Aim:   This semi abstract class  defines the stream mechanism to
-   display 3d primitive (like PointVector, DigitalSetBySTLSet, Object
+   display 3d primitive (like BallVector, DigitalSetBySTLSet, Object
    ...). The class Viewer3D and Board3DTo2D implement two different
    ways to display 3D objects. The first one (Viewer3D), permits an
    interactive visualisation (based on @a  OpenGL ) and the second one
@@ -98,7 +98,7 @@ namespace DGtal
       double x1, y1, z1;
       double x2, y2, z2;
       double width;
-      unsigned int R,G,B,T;
+      unsigned char R,G,B,T;
       bool isSigned;
       bool signPos;
     };
@@ -106,19 +106,19 @@ namespace DGtal
 
 
     /**
-     * Defines the 3D voxel.
+     * Defines the 3D cube.
      */
 
-    struct voxelD3D{      
-      ///  The center coordinate of the voxel.
+    struct cubeD3D{
+      ///  The center coordinate of the cube.
       ///
       int x, y,z;
       
-      ///  The display color of the voxel.
+      ///  The display color of the cube.
       ///
-      unsigned int R,G,B,T;
+      unsigned char R,G,B,T;
       
-      /// The width of a voxel face 
+      /// The width of a cube face
       ///
       double width;
     };
@@ -149,7 +149,7 @@ namespace DGtal
       double x3,y3,z3;
       double x4,y4,z4;    
       double nx, ny, nz;
-      unsigned int R,G,B,T;
+      unsigned char R,G,B,T;
     };
 
 
@@ -164,7 +164,7 @@ namespace DGtal
       double x2,y2,z2;
       double x3,y3,z3;
       double nx, ny, nz;
-      unsigned int R,G,B,T;
+      unsigned char R,G,B,T;
     };
 
 
@@ -177,11 +177,11 @@ namespace DGtal
     enum ImageDirection {xDirection, yDirection, zDirection };
     enum TextureMode {RGBMode, GrayScaleMode };
     
-    /// Structure used to display KSPoint in 3D and MeshFromPoints
-    /// @see addKSPointel 
+    /// Structure used to display KSBall in 3D and MeshFromBalls
+    /// @see addKSBalll
     ///
     
-    struct pointD3D{
+    struct ballD3D{
       const double & operator[]( unsigned int i ) const{
 	assert(i<3);
 	switch (i){
@@ -201,7 +201,7 @@ namespace DGtal
 	return x;
       };
       double  x, y, z;
-      unsigned int R,G,B,T;
+      unsigned char R,G,B,T;
       bool isSigned;
       bool signPos;
       double size;
@@ -215,9 +215,9 @@ namespace DGtal
      **/ 
     
     struct  polygonD3D{
-      std::vector<pointD3D> vectPoints;
+      std::vector<ballD3D> vectBalls;
       double nx, ny, nz;
-      unsigned int R,G,B,T;
+      unsigned char R,G,B,T;
     };
 
     
@@ -232,7 +232,7 @@ namespace DGtal
       double x2, y2, z2;
       double x3, y3, z3;
       double x4, y4, z4;
-      unsigned int R,G,B,T;
+      unsigned char R,G,B,T;
 
       unsigned int myDomainWidth;
       unsigned int myDomainHeight;      
@@ -561,7 +561,7 @@ namespace DGtal
      * @param s name of the new list
      **/  
   
-    virtual void createNewPointList(std::string s= "");
+    virtual void createNewBallList(std::string s= "");
 
 
     /**
@@ -570,7 +570,7 @@ namespace DGtal
      * @param s name of the new list
      **/  
 
-    virtual void createNewVoxelList(bool depthTest=true, std::string s= "");
+    virtual void createNewCubeList(bool depthTest=true, std::string s= "");
 
   
     /**
@@ -597,10 +597,10 @@ namespace DGtal
 
     /**
      * Method to add a specific polygon.
-     * @param vectPointsPolygon a vector containing the polygon vertex.
+     * @param vectBallsPolygon a vector containing the polygon vertex.
      */
     
-    virtual void addPolygon(std::vector<pointD3D> vectPointsPolygon, DGtal::Color aColor);
+    virtual void addPolygon(std::vector<ballD3D> vectBallsPolygon, DGtal::Color aColor);
 
     
 
@@ -618,18 +618,18 @@ namespace DGtal
   
 
     /**
-     * Method to add specific voxel. It includes several modes to
-     * display the voxel with and without the wire visualisation.
+     * Method to add specific cube. It includes several modes to
+     * display the cube with and without the wire visualisation.
      *
-     * @param x voxel center x
-     * @param y voxel center y
-     * @param z voxel center z.
-     * @param color the voxel color.
-     * @param width the voxel width.
+     * @param x cube center x
+     * @param y cube center y
+     * @param z cube center z.
+     * @param color the cube color.
+     * @param width the cube width.
      * @param withWire if true add the wire representation.
      */
 
-    virtual void addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z, 
+    virtual void addCube(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
 			  DGtal::Color color= DGtal::Color(220, 220, 220),
 			  double width=0.5,bool withWire=false);
     
@@ -644,7 +644,7 @@ namespace DGtal
      *
      */
     
-    virtual void addPoint(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
+    virtual void addBall(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
 			  double size=40);
    
   
@@ -656,7 +656,7 @@ namespace DGtal
      *  x,y,z the surfel center.
      *  xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
      *                                     the x-axis, y-axis or z-axis.
-     * @param sizeShiftFactor set the distance between the display of the surfel and potential KSVoxel.
+     * @param sizeShiftFactor set the distance between the display of the surfel and potential KSCube.
      * @param positionShift translate the KSsurfel from the asso 
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
@@ -674,19 +674,19 @@ namespace DGtal
 
 
     /**
-     * Add a KSVoxel from the Kahlimsky space.
+     * Add a KSCube from the Kahlimsky space.
      * 
-     *  x, y, z the center of the KSVoxel.
+     *  x, y, z the center of the KSCube.
      * 
      */
     
-    virtual void addKSVoxel(int x, int y, int z, double sizeFactor=0.94);
+    virtual void addKSCube(int x, int y, int z, double sizeFactor=0.94);
   
     
     /**
-     * Add a KSPoint from the Kahlimsky space.
+     * Add a KSBall from the Kahlimsky space.
      * 
-     *  x, y, z the center of the KSVoxel.
+     *  x, y, z the center of the KSCube.
      * @param size the point size (default= 0.1)
      * @param isSigned to specify if we want to display an signed or unsigned Cell point.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
@@ -694,7 +694,7 @@ namespace DGtal
      *                              (if @a aSign=true display a cross else, display a small cylinder.).     
      */
     
-    virtual void addKSPointel(double x, double y, double z, double size=0.1,
+    virtual void addKSBalll(double x, double y, double z, double size=0.1,
 			      bool isSigned=false, bool aSign=true);
   
 
@@ -738,7 +738,7 @@ namespace DGtal
      *
      **/
     
-    void exportToMesh(Mesh<Display3D::pointD3D> & aMesh ) const;
+    void exportToMesh(Mesh<Display3D::ballD3D> & aMesh ) const;
     
 
     
@@ -900,7 +900,7 @@ namespace DGtal
     DGtal::Color myCurrentLineColor;
 
 
-    /// Used to specialized visualisation with KS surfels/voxels.
+    /// Used to specialized visualisation with KS surfels/cubes.
     ///
 
     double myCurrentfShiftVisuKSSurfels;
@@ -909,7 +909,7 @@ namespace DGtal
     /// Used to represent all the list used in the display.
     /// 
 
-    std::vector< std::vector<voxelD3D> > myVoxelSetList;
+    std::vector< std::vector<cubeD3D> > myCubeSetList;
 
 
 
@@ -923,7 +923,7 @@ namespace DGtal
     /// Used to represent all the list of point primitive
     /// 
   
-    std::vector< std::vector<pointD3D> > myPointSetList;
+    std::vector< std::vector<ballD3D> > myBallSetList;
 
 
   
@@ -943,7 +943,7 @@ namespace DGtal
     /// For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
 
-    std::vector< pointD3D > myKSPointelList;
+    std::vector< ballD3D > myKSBallelList;
 
 
     /// For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
@@ -963,17 +963,17 @@ namespace DGtal
     // Represents all the polygon drawn in the Display3D
     std::vector<polygonD3D> myPolygonList;
 
-    /// names of the lists in myVoxelSetList
+    /// names of the lists in myCubeSetList
     ///
-    std::vector<std::string> myVoxelSetNameList;
+    std::vector<std::string> myCubeSetNameList;
 
     /// names of the lists in myLineSetList
     ///
     std::vector<std::string> myLineSetNameList;
 
-    /// names of the lists in myPointSetList
+    /// names of the lists in myBallSetList
     ///
-    std::vector<std::string> myPointSetNameList;
+    std::vector<std::string> myBallSetNameList;
     /// names of the lists in myClippingPlaneList
     ///
     std::vector<std::string> myClippingPlaneNameList;
@@ -982,9 +982,9 @@ namespace DGtal
     ///
     std::vector<std::string> myKSSurfelNameList;
 
-    /// names of the lists in myKSPointeList
+    /// names of the lists in myKSBalleList
     ///
-    std::vector<std::string> myKSPointelNameList;
+    std::vector<std::string> myKSBallelNameList;
 
     /// names of the lists in myKSLinelList
     ///
@@ -1004,7 +1004,7 @@ namespace DGtal
     
     
     /// Used to define if GL_TEST_DEPTH is used. 
-    std::vector<bool> myListVoxelDepthTest;
+    std::vector<bool> myListCubeDepthTest;
 
     float myMeshDefaultLineWidth;
     
@@ -1086,7 +1086,7 @@ namespace DGtal
    **/
   
   void
-  operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::pointD3D> &aMesh);
+  operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::ballD3D> &aMesh);
   
   
 

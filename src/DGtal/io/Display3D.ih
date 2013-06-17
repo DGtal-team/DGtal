@@ -132,12 +132,12 @@ DGtal::Display3D::getCurrentGLImageNumber(){
 
 inline
 void
-DGtal::Display3D::createNewVoxelList(bool depthTest, std::string str)
+DGtal::Display3D::createNewCubeList(bool depthTest, std::string str)
 {
-  std::vector< voxelD3D > v;
-  myVoxelSetList.push_back(v);
-  myVoxelSetNameList.push_back(str);
-  myListVoxelDepthTest.push_back(depthTest);
+  std::vector< cubeD3D > v;
+  myCubeSetList.push_back(v);
+  myCubeSetNameList.push_back(str);
+  myListCubeDepthTest.push_back(depthTest);
 
   
 }
@@ -146,11 +146,11 @@ DGtal::Display3D::createNewVoxelList(bool depthTest, std::string str)
 
 inline
 void
-DGtal::Display3D::createNewPointList(std::string str)
+DGtal::Display3D::createNewBallList(std::string str)
 {
-  std::vector< pointD3D > v;
-  myPointSetList.push_back(v);
-  myPointSetNameList.push_back(str);
+  std::vector< ballD3D > v;
+  myBallSetList.push_back(v);
+  myBallSetNameList.push_back(str);
 }
 
 
@@ -171,11 +171,11 @@ DGtal::Display3D::createNewLineList(std::string str)
 
 inline
 void
-DGtal::Display3D::addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
+DGtal::Display3D::addCube(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
 			   DGtal::Color aColor, double width, bool withWire)
 {
   updateBoundingBox((double)x, (double)y, (double)z);    
-  voxelD3D v;
+  cubeD3D v;
   v.x=(int)x;
   v.y=(int)y;
   v.z=(int)z;
@@ -202,7 +202,7 @@ DGtal::Display3D::addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
       addLine(x-0.5, y+0.5, z-0.5, x-0.5, y+0.5, z+0.5, DGtal::Color(0,0,0), 2);
     
     }
-  (myVoxelSetList.at(myVoxelSetList.size()-1)).push_back(v);  
+  (myCubeSetList.at(myCubeSetList.size()-1)).push_back(v);
    
 }
 
@@ -210,10 +210,10 @@ DGtal::Display3D::addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
 
 inline
 void
-DGtal::Display3D::addPoint(double x, double y, double z ,const DGtal::Color &aColor, double size)
+DGtal::Display3D::addBall(double x, double y, double z ,const DGtal::Color &aColor, double size)
 {
   updateBoundingBox(x, y, z);
-  pointD3D p;
+  ballD3D p;
   p.x=x;
   p.y=y;
   p.z=z;
@@ -224,7 +224,7 @@ DGtal::Display3D::addPoint(double x, double y, double z ,const DGtal::Color &aCo
   p.isSigned=false;
   p.signPos=false;
   p.size=size;
-  (myPointSetList.at(myPointSetList.size()-1)).push_back(p);  
+  (myBallSetList.at(myBallSetList.size()-1)).push_back(p);
 }
 
 
@@ -350,28 +350,28 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
 
 inline
 void 
-DGtal::Display3D::addPolygon(std::vector<Display3D::pointD3D> vectPointsPolygon, 
+DGtal::Display3D::addPolygon(std::vector<Display3D::ballD3D> vectBallsPolygon,
                              DGtal::Color aColor)
 {
   polygonD3D aPolygon;
-  for(unsigned int i=0; i< vectPointsPolygon.size();i++){
-    aPolygon.vectPoints.push_back(vectPointsPolygon.at(i));
-    updateBoundingBox(vectPointsPolygon.at(i).x, vectPointsPolygon.at(i).y, vectPointsPolygon.at(i).z);
+  for(unsigned int i=0; i< vectBallsPolygon.size();i++){
+    aPolygon.vectBalls.push_back(vectBallsPolygon.at(i));
+    updateBoundingBox(vectBallsPolygon.at(i).x, vectBallsPolygon.at(i).y, vectBallsPolygon.at(i).z);
   } 
 
 
 
-  double x1= vectPointsPolygon.at(0).x;
-  double y1= vectPointsPolygon.at(0).y;
-  double z1= vectPointsPolygon.at(0).z;
+  double x1= vectBallsPolygon.at(0).x;
+  double y1= vectBallsPolygon.at(0).y;
+  double z1= vectBallsPolygon.at(0).z;
 
-  double x2= vectPointsPolygon.at(1).x;
-  double y2= vectPointsPolygon.at(1).y;
-  double z2= vectPointsPolygon.at(1).z;
+  double x2= vectBallsPolygon.at(1).x;
+  double y2= vectBallsPolygon.at(1).y;
+  double z2= vectBallsPolygon.at(1).z;
 
-  double x3= vectPointsPolygon.at(2).x;
-  double y3= vectPointsPolygon.at(2).y;
-  double z3= vectPointsPolygon.at(2).z;
+  double x3= vectBallsPolygon.at(2).x;
+  double y3= vectBallsPolygon.at(2).y;
+  double z3= vectBallsPolygon.at(2).z;
 
   double u[3]; double v [3]; double n [3]; 
   u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
@@ -599,11 +599,11 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
 
 inline
 void 
-DGtal::Display3D::addKSPointel(double x, double y, double z,
+DGtal::Display3D::addKSBalll(double x, double y, double z,
 			       double size, bool isSigned, bool signPos)
 {
   updateBoundingBox(x, y, z);
-  pointD3D pt;
+  ballD3D pt;
   pt.x=x; pt.y=y; pt.z=z; pt.size=size; 
   pt.R=myCurrentFillColor.red();
   pt.G=myCurrentFillColor.green(); 
@@ -611,7 +611,7 @@ DGtal::Display3D::addKSPointel(double x, double y, double z,
   pt.T= myCurrentFillColor.alpha();
   pt.isSigned=isSigned;
   pt.signPos=signPos;
-  myKSPointelList.push_back(pt);
+  myKSBallelList.push_back(pt);
 }
 
 
@@ -619,10 +619,10 @@ DGtal::Display3D::addKSPointel(double x, double y, double z,
 
 inline
 void 
-DGtal::Display3D::addKSVoxel(int x, int y, int z,  double sizeFactor)
+DGtal::Display3D::addKSCube(int x, int y, int z,  double sizeFactor)
 {
   updateBoundingBox(x, y, z);
-  voxelD3D v;
+  cubeD3D v;
   v.x=x;
   v.y=y;
   v.z=z;
@@ -631,7 +631,7 @@ DGtal::Display3D::addKSVoxel(int x, int y, int z,  double sizeFactor)
   v.B=myCurrentFillColor.blue();
   v.T=myCurrentFillColor.alpha();
   v.width=0.5*sizeFactor;  
-  (myVoxelSetList.at(0)).push_back(v);  
+  (myCubeSetList.at(0)).push_back(v);
 }
 
 
@@ -783,14 +783,14 @@ DGtal::Display3D::setScale(float sx, float sy, float sz){
 
 inline
 void 
-DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const { 			       
+DGtal::Display3D::exportToMesh(DGtal::Mesh<ballD3D> &aMesh) const {
 
   unsigned int vertexIndex=0;
   
   // Export of KSSurfel lists (generated from KhalimskyCell or SignedKhalimskyCell (through addKSSurfel))
   for (unsigned int i=0; i< myKSSurfelList.size(); i++){
     quadD3D quad = myKSSurfelList.at(i);
-    pointD3D p1, p2, p3, p4;
+    ballD3D p1, p2, p3, p4;
     p1.x=quad.x1*myScaleX; p1.y=quad.y1*myScaleY ;p1.z=quad.z1*myScaleZ;
     p2.x=quad.x2*myScaleX; p2.y=quad.y2*myScaleY ;p2.z=quad.z2*myScaleZ;
     p3.x=quad.x3*myScaleX; p3.y=quad.y3*myScaleY ;p3.z=quad.z3*myScaleZ;
@@ -808,7 +808,7 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const {
   // Export QuadList
   for (unsigned int i=0; i<myQuadList.size(); i++){
     quadD3D quad = myQuadList.at(i);
-    pointD3D p1, p2, p3, p4;
+    ballD3D p1, p2, p3, p4;
     p1.x=quad.x1*myScaleX; p1.y=quad.y1*myScaleY ;p1.z=quad.z1*myScaleZ;
     p2.x=quad.x2*myScaleX; p2.y=quad.y2*myScaleY ;p2.z=quad.z2*myScaleZ;
     p3.x=quad.x3*myScaleX; p3.y=quad.y3*myScaleY ;p3.z=quad.z3*myScaleZ;
@@ -826,7 +826,7 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const {
   // Export the mesh from TriangleList
   for (unsigned int i=0; i < myTriangleList.size(); i++){
     triangleD3D aTriangle = myTriangleList.at(i);
-    pointD3D p1, p2, p3;
+    ballD3D p1, p2, p3;
     p1.x = aTriangle.x1*myScaleX; p1.y = aTriangle.y1*myScaleY; p1.z = aTriangle.z1*myScaleZ;
     p2.x = aTriangle.x2*myScaleX; p2.y = aTriangle.y2*myScaleY; p2.z = aTriangle.z2*myScaleZ;
     p3.x = aTriangle.x3*myScaleX; p3.y = aTriangle.y3*myScaleY; p3.z = aTriangle.z3*myScaleZ;
@@ -842,22 +842,22 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const {
   
   
   
-  // Export of voxelSet (generated from addVoxel) 
-  for(unsigned int j=0; j<myVoxelSetList.size(); j++){
-    for (unsigned int i=0; i< myVoxelSetList.at(j).size(); i++){
-      voxelD3D voxel = myVoxelSetList.at(j).at(i);
-      pointD3D p1, p2, p3, p4, p5, p6, p7, p8;
-      double width= voxel.width;
+  // Export of cubeSet (generated from addCube)
+  for(unsigned int j=0; j<myCubeSetList.size(); j++){
+    for (unsigned int i=0; i< myCubeSetList.at(j).size(); i++){
+      cubeD3D cube = myCubeSetList.at(j).at(i);
+      ballD3D p1, p2, p3, p4, p5, p6, p7, p8;
+      double width= cube.width;
 
-      p1.x = (voxel.x-width)*myScaleX; p1.y = (voxel.y+width)*myScaleY; p1.z = (voxel.z+width)*myScaleZ;
-      p2.x = (voxel.x+width)*myScaleX; p2.y = (voxel.y+width)*myScaleY; p2.z = (voxel.z+width)*myScaleZ;      
-      p3.x = (voxel.x+width)*myScaleX; p3.y = (voxel.y-width)*myScaleY; p3.z = (voxel.z+width)*myScaleZ;
-      p4.x = (voxel.x-width)*myScaleX; p4.y = (voxel.y-width)*myScaleY; p4.z = (voxel.z+width)*myScaleZ;      
-      p5.x = (voxel.x-width)*myScaleX; p5.y = (voxel.y+width)*myScaleY; p5.z = (voxel.z-width)*myScaleZ;
+      p1.x = (cube.x-width)*myScaleX; p1.y = (cube.y+width)*myScaleY; p1.z = (cube.z+width)*myScaleZ;
+      p2.x = (cube.x+width)*myScaleX; p2.y = (cube.y+width)*myScaleY; p2.z = (cube.z+width)*myScaleZ;
+      p3.x = (cube.x+width)*myScaleX; p3.y = (cube.y-width)*myScaleY; p3.z = (cube.z+width)*myScaleZ;
+      p4.x = (cube.x-width)*myScaleX; p4.y = (cube.y-width)*myScaleY; p4.z = (cube.z+width)*myScaleZ;
+      p5.x = (cube.x-width)*myScaleX; p5.y = (cube.y+width)*myScaleY; p5.z = (cube.z-width)*myScaleZ;
       
-      p6.x = (voxel.x+width)*myScaleX; p6.y = (voxel.y+width)*myScaleY; p6.z = (voxel.z-width)*myScaleZ;     
-      p7.x = (voxel.x+width)*myScaleX; p7.y = (voxel.y-width)*myScaleY; p7.z = (voxel.z-width)*myScaleZ;
-      p8.x = (voxel.x-width)*myScaleX; p8.y = (voxel.y-width)*myScaleY; p8.z = (voxel.z-width)*myScaleZ;
+      p6.x = (cube.x+width)*myScaleX; p6.y = (cube.y+width)*myScaleY; p6.z = (cube.z-width)*myScaleZ;
+      p7.x = (cube.x+width)*myScaleX; p7.y = (cube.y-width)*myScaleY; p7.z = (cube.z-width)*myScaleZ;
+      p8.x = (cube.x-width)*myScaleX; p8.y = (cube.y-width)*myScaleY; p8.z = (cube.z-width)*myScaleZ;
       
       aMesh.addVertex(p1);
       aMesh.addVertex(p2);
@@ -870,27 +870,27 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const {
       
       //z+
       aMesh.addQuadFace(vertexIndex, vertexIndex+3, vertexIndex+2, vertexIndex+1, 
-			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
       
       //z-
       aMesh.addQuadFace(vertexIndex+4, vertexIndex+5, vertexIndex+6, vertexIndex+7,
-			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
       
       //y+
       aMesh.addQuadFace(vertexIndex+1, vertexIndex+2, vertexIndex+6, vertexIndex+5, 
-			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
       
       //y-
       aMesh.addQuadFace(vertexIndex, vertexIndex+4, vertexIndex+7, vertexIndex+3, 
-			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
       
       //x+
       aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+5, vertexIndex+4, 
-			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
       
       //x- 
       aMesh.addQuadFace(vertexIndex+3, vertexIndex+7, vertexIndex+6, vertexIndex+2,
-			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
       
       vertexIndex+=8;
     }
@@ -1257,7 +1257,7 @@ DGtal::operator<< ( std::ostream & out,
 
 inline
 void
-DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::pointD3D> &aMesh)
+DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::ballD3D> &aMesh)
 {
   aDisplay3D.exportToMesh(aMesh);
 }
@@ -1269,7 +1269,7 @@ void
 DGtal::operator>> ( const Display3D &aDisplay3D,  std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
-  DGtal::Mesh<Display3D::pointD3D> mesh(true);
+  DGtal::Mesh<Display3D::ballD3D> mesh(true);
   aDisplay3D >> mesh;
   trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;
