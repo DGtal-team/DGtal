@@ -5,7 +5,7 @@
  *  License, or  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  but WITHOUT ANY WARRANTY; withoutOBJ even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
@@ -52,7 +52,7 @@ using namespace DGtal;
  */
 DGtal::Board3D::Board3D()
 {
-    init();
+  init();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,12 +60,12 @@ DGtal::Board3D::Board3D()
 
 /**
  * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
+ * @param outOBJ the output stream where the object is written.
  */
 void
-DGtal::Board3D::selfDisplay ( std::ostream & out ) const
+DGtal::Board3D::selfDisplay ( std::ostream & outOBJ ) const
 {
-    out << "[Board3D]";
+  outOBJ << "[Board3D]";
 }
 
 /**
@@ -75,7 +75,7 @@ DGtal::Board3D::selfDisplay ( std::ostream & out ) const
 bool
 DGtal::Board3D::isValid() const
 {
-    return true;
+  return true;
 }
 
 
@@ -85,184 +85,189 @@ DGtal::Board3D::isValid() const
  */
 void DGtal::Board3D::saveOBJ(const string & filename)
 {
-    size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
+  size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
+  double red, green, blue , transp; // colors of the elements
+  double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
+  std::ofstream outOBJ; //OBJ file where to write
+  std::ofstream outMTL; //MTL file where to write
 
-    size_t mod; // number of vertex per figure
-    double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
-    //OPT parametrer la resolution ?
-    //OPT quand deux obj ont le meme nom ils fusionnent (danger deux sets differents fusionnes)
+  //OPT parametrer la resolution ?
+  //WARNING quand deux obj ont le meme nom ils fusionnent (danger deux sets differents fusionnes)
+  //TODOLP transferer le cpp dans ih
 
-    //TODOLP mettre des ASSERT
-    //TODOLP faire le .MTL
+  //TODOLP mettre des ASSERT
+  //TODO faire le .MTL
 
-    std::ofstream out; //file where to write
+  string noExt(filename.substr(0, filename.find_first_of("."))); //the filename withoutOBJ any extention
+  stringstream strOBJ;
+  stringstream strMTL;
+  strOBJ << noExt << ".obj";
+  strMTL << noExt << ".mtl";
 
-    out.open(filename.c_str());
-    out << "#  OBJ format"<< std::endl;
-    out << "# generated from Board3D from the DGTal library"<< std::endl;
-    out << std::endl;
+  //OPT identifier les memes materiaux (MTL)
+  //Kd R G B    colors(MTL)
+  // d 0-1    Transparency(MTL)
 
-    // TODOLP tests unitaires pour chaque partie
+  //usemtl Material     (OBJ)
 
-    //myClippingPlaneList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //std::vector< clippingPlaneD3D >::const_iterator
+
+  outOBJ.open(strOBJ.str().c_str());
+  outOBJ << "#  OBJ format"<< std::endl;
+  outOBJ << "# generated from Board3D from the DGTal library"<< std::endl;
+  //outOBJ << "mtllib " <<  strMTL.str() << std::endl;
+  outOBJ << std::endl;
+
+  outMTL.open(strMTL.str().c_str());
+  outMTL << "#  MTL format"<< std::endl;
+  outMTL << "# generated from Board3D from the DGTal library"<< std::endl;
+
+  // TODOLP tests unitaires pour chaque partie
+
+  //myClippingPlaneList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //std::vector< clippingPlaneD3D >::const_iterator
+  {
     if(myClippingPlaneList.size()> 0)
     {
-        trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
-                     << myClippingPlaneList.size() << std::endl;
+      trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
+                   << myClippingPlaneList.size() << std::endl;
     }
+  }
 
-    // Draw the shapes -----------------------------------------------------------------------
+  // Draw the shapes -----------------------------------------------------------------------
 
-    // myPointSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // myPointSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
     k=0;//id of each PointSetList for the .OBJ identification
     for (std::vector<std::vector<pointD3D> >::const_iterator it = myPointSetList.begin();
          it != myPointSetList.end(); it++)
     {
-        ostringstream tmpStream; // checking that points exist before creating an object
-        for (std::vector<pointD3D>::const_iterator s_it = it->begin();
-             s_it != it->end(); s_it++)
+      ostringstream tmpStream; // checking that points exist before creating an object
+      for (std::vector<pointD3D>::const_iterator s_it = it->begin();
+           s_it != it->end(); s_it++)
+      {
+        tmpStream << "v " << s_it->x << " " << s_it->y << " " << s_it->z << std::endl;
+        tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
+        /*
+        if (s_it== it->begin())
         {
-            tmpStream << "v " << s_it->x << " " << s_it->y << " " << s_it->z << std::endl;
-            tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
-        }
+          red= ((double)s_it->R) /255.0;
+          green =  ((double)s_it->G) /255.0;
+          blue =  ((double)s_it->B) /255.0;
+          transp =  ((double)s_it->T) /255.0;  // NOTE note sure
+        }*/
+      }
 
-        if (tmpStream.str().size() > 0)
+      if (tmpStream.str().size() > 0)
+      {
+        stringstream name;
+        name << myPointSetNameList.at(k);
+        if ( name.str() == "")
         {
-            string name= myPointSetNameList.at(k);
-            if ( name== "")
-            {
-              name = "myPointSetList_" ;
-            }
-            out << "o  " << name << k << std::endl;
-            out << tmpStream.str();
-            std::cout << "point " << k <<std::endl;
+          name << "myPointSetList_" << k ;
         }
-        k++;
+        //NOTE up until now one object = one material
+        stringstream matName;
+        matName << name.str() << "MAT";
+
+        outOBJ << "o  " << name.str() << std::endl;
+        //outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << tmpStream.str();
+
+        /* outMTL << "newmtl " << matName.str() <<std::endl;
+        outMTL << "kd " << red << green << blue << std::endl;
+        outMTL << "d "<< transp << std::endl; */
+
+        //TODO a enlever
+        std::cout << "point " << k <<std::endl;
+      }
+      k++;
     }
+  }
 
-    // myLineSetList+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    /*
-     unused
-     string LineMode =this->getMode("HyperRectDomain");
-    ASSERT( (LineMode=="Paving" || LineMode=="PavingPoints" || LineMode=="Grid" || LineMode=="PavingGrids" || LineMode=="BoundingBox" || LineMode=="") );
-    bool gridMode =( LineMode=="PavingGrids");
-    bool lineMode =(LineMode=="") ;
-    */
-
-    //"HyperRectDomain" :  "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  // myLineSetList+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
     j =0;
     k=0;//id of each LineSetList for the .OBJ identification
-    mod = 8;
     for(std::vector<std::vector<lineD3D> >::const_iterator it =myLineSetList.begin();
         it!= myLineSetList.end();   it++)
     {
-        ostringstream tmpStream;
-        for (std::vector<lineD3D>::const_iterator s_it = it->begin();
-             s_it != it->end();++s_it)
+      ostringstream tmpStream;
+      for (std::vector<lineD3D>::const_iterator s_it = it->begin();
+           s_it != it->end();++s_it)
+      {
+        // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1 -sizePixel << " " << s_it->z1 << std::endl;
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1 +sizePixel << " " << s_it->z1 << std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2 +sizePixel << " " << s_it->z2 << std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2 -sizePixel << " " << s_it->z2 << std::endl;
+
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -sizePixel << std::endl;
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +sizePixel<< std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +sizePixel<< std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -sizePixel<< std::endl;
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+        tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+        tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+        tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+
+        j++;
+      }
+      if (tmpStream.str() != "")
+      {
+        stringstream name;
+        name << myLineSetNameList.at(k);
+        if ( name.str()== "")
         {
-            /*
-            //obsolete
-            if(gridMode)
-            {
-                // grid LineMode
-                //one vertical face and one horizontal
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1 -wid << " " << s_it->z1 << std::endl;
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1 +wid << " " << s_it->z1 << std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2 +wid << " " << s_it->z2 << std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2 -wid << " " << s_it->z2 << std::endl;
-
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -wid << std::endl;
-                tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +wid<< std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +wid<< std::endl;
-                tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -wid<< std::endl;
-                tmpStream << "f " << "-8" << " " << "-7" << " "<< "-6" << " "<< "-5" << std::endl;
-                tmpStream << "f " << "-4" << " " << "-3" << " "<< "-2" << " "<< "-1" << std::endl;
-            }           
-            esle if( lineMode )
-            */
-            // line LineMode
-            // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
-            tmpStream << "v " << s_it->x1     << " " << s_it->y1 -sizePixel << " " << s_it->z1 << std::endl;
-            tmpStream << "v " << s_it->x1     << " " << s_it->y1 +sizePixel << " " << s_it->z1 << std::endl;
-            tmpStream << "v " << s_it->x2     << " " << s_it->y2 +sizePixel << " " << s_it->z2 << std::endl;
-            tmpStream << "v " << s_it->x2     << " " << s_it->y2 -sizePixel << " " << s_it->z2 << std::endl;
-
-            tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -sizePixel << std::endl;
-            tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +sizePixel<< std::endl;
-            tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +sizePixel<< std::endl;
-            tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -sizePixel<< std::endl;
-            tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-            tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-            tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-            tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-            tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-            tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
-
-            j++;
+          name << "myLineSetList_" << k ;
         }
-        if (tmpStream.str() != "")
-        {
-            string name= myLineSetNameList.at(k);
-            if ( name== "")
-            {
-              name = "myLineSetList_" ;
-            }
-            out << "o  " << name << k << std::endl;
-            out << tmpStream.str();
-            out << tmpStream.str();
-        }
+        stringstream matName;
+        matName << name.str() << "MAT";
 
-        k++;
+        outOBJ << "o  " << name.str() << std::endl;
+        //outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << tmpStream.str();
+
+        /* outMTL << "newmtl " << matName.str() <<std::endl;
+        outMTL << "kd " << red << green << blue << std::endl;
+        outMTL << "d "<< transp << std::endl; */
+      }
+
+      k++;
     }
+  }
 
-    // myVoxelSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // myVoxelSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
+    j  = 0 ; //id of each Voxel sub list for the .OBJ identification
+    k = 0; // id of each list
+    for(std::vector<std::vector<voxelD3D> >::const_iterator it =myVoxelSetList.begin();
+        it != myVoxelSetList.end();   it++)
     {
+      ostringstream tmpStream;
+      for (std::vector<voxelD3D>::const_iterator s_it = it->begin();
+           s_it != it->end(); ++s_it)
+      {
+        // this version is  one cube with (x,y,z) the center of it and wid its distance between it and its faces
+        double wid = s_it->width;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
 
-        string voxelMode =this->getMode("PointVector");
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+        tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+        tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+        tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
 
-        bool vertexPointMode =(voxelMode=="Grid" );
-        bool vertexGridMode = (voxelMode=="Paving");
-        bool vertexBothMode = (voxelMode=="Both");
-        bool vertexNone =(voxelMode=="") ; // default
-        ASSERT( vertexPointMode || vertexGridMode || vertexBothMode || vertexNone);
-
-        if (vertexBothMode) mod=9;
-        else mod =8;
-
-        j  = 0 ; //id of each Voxel sub list for the .OBJ identification
-        k = 0; // id of each list
-        for(std::vector<std::vector<voxelD3D> >::const_iterator it =myVoxelSetList.begin();
-            it != myVoxelSetList.end();   it++)
-        {
-            ostringstream tmpStream;
-            for (std::vector<voxelD3D>::const_iterator s_it = it->begin();
-                 s_it != it->end(); ++s_it)
-            {
-              /*
-               //obsolete
-                if (vertexGridMode || vertexNone || vertexBothMode)
-              */
-                    // grid LineMode :
-                  // this version is  one cube with (x,y,z) the center of it and wid its distance between it and its faces
-                  double wid = s_it->width;
-                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
-                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
-                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
-                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
-                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
-                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
-                  tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
-                  tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
-
-                  tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-                  tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-                  tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-                  tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-                  tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-                  tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
-
-                  /*
+        /*
                    //obsolete
                     // this version is  one cube with (x,y,z) the upper left vertex and wid its width and height
                     double wid = s_it->width;
@@ -283,158 +288,161 @@ void DGtal::Board3D::saveOBJ(const string & filename)
                     tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
                     */
 
-                j ++;
-            }
+        j ++;
+      }
 
-
-            //BUG les voxels ne recuperent pas le nom d origine
-            if (tmpStream.str() != "")
-            {
-                string name= myVoxelSetNameList.at(k);
-                if ( name== "")
-                {
-                  name = "myVoxelSetList_" ;
-                }
-                out << "o  " << name << k << std::endl;
-                out << tmpStream.str() ;
-                out << tmpStream.str();
-            }
-            k++;
+      if (tmpStream.str() != "")
+      {
+        stringstream name;
+        name << myVoxelSetNameList.at(k);
+        if ( name.str() == "")
+        {
+          name << "myVoxelSetList_" << k ;
         }
+        stringstream matName;
+        matName << name.str() << "MAT";
+
+        outOBJ << "o  " << name.str() << std::endl;
+        //outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << tmpStream.str();
+
+        /* outMTL << "newmtl " << matName.str() <<std::endl;
+        outMTL << "kd " << red << green << blue << std::endl;
+        outMTL << "d "<< transp << std::endl; */
+      }
+      k++;
     }
+  }
 
-    // myQuadList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //std::vector<quadD3D>::const_iterator
-    if(myQuadList.size()> 0)
-    {
-        trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
-                     << myQuadList.size() << std::endl;
-    }
+  // myQuadList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //std::vector<quadD3D>::const_iterator
+  if(myQuadList.size()> 0)
+  {
+    trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
+                 << myQuadList.size() << std::endl;
+  }
 
 
-    // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
+  // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
 
-    //TODO chercher comment tester
-    // KSSurfel (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //TODO chercher comment tester
+  // KSSurfel (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
     j=0;
+    k=0;
+    ostringstream tmpStream;
 
+    for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
+         s_it != myKSSurfelList.end();
+         ++s_it)
     {
-        ostringstream tmpStream;
+      tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+      tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+      tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+      tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
 
-        mod =8;
-        for (std::vector<quadD3D>::iterator s_it = myKSSurfelList.begin();
-             s_it != myKSSurfelList.end();
-             ++s_it)
-        {
-            tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
-            tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
-            tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
-            tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+      double nx = s_it->nx;
+      double ny = s_it->ny;
+      double nz = s_it->nz;
 
-            double nx = s_it->nx;
-            double ny = s_it->ny;
-            double nz = s_it->nz;
+      tmpStream << "v " << s_it->x1 +nx     << " " << s_it->y1 +ny      << " " << s_it->z1 +nz << std::endl;
+      tmpStream << "v " << s_it->x2 +nx     << " " << s_it->y2 +ny      << " " << s_it->z2 +nz << std::endl;
+      tmpStream << "v " << s_it->x3 +nx     << " " << s_it->y3 +ny      << " " << s_it->z3 +nz << std::endl;
+      tmpStream << "v " << s_it->x4 +nx     << " " << s_it->y4 +ny      << " " << s_it->z4 +nz << std::endl;
 
-            tmpStream << "v " << s_it->x1 +nx     << " " << s_it->y1 +ny      << " " << s_it->z1 +nz << std::endl;
-            tmpStream << "v " << s_it->x2 +nx     << " " << s_it->y2 +ny      << " " << s_it->z2 +nz << std::endl;
-            tmpStream << "v " << s_it->x3 +nx     << " " << s_it->y3 +ny      << " " << s_it->z3 +nz << std::endl;
-            tmpStream << "v " << s_it->x4 +nx     << " " << s_it->y4 +ny      << " " << s_it->z4 +nz << std::endl;
-
-            tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-            tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-            tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-            tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-            tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-            tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
-            j++;
-        }
-
-
-        if (tmpStream.str() != "")
-        {
-            string name= myKSSurfelNameList.at(k);
-            if ( name== "")
-            {
-              name = "myKSSurfelList_" ;
-            }
-            out << "o  " << name << std::endl;
-            out << tmpStream.str() ;
-            out << tmpStream.str();
-        }
-
+      tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+      tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+      tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+      tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+      tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+      tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+      j++;
     }
 
+    if (tmpStream.str() != "")
+    {
+      string name= myKSSurfelNameList.at(k);
+      if ( name== "")
+      {
+        name = "myKSSurfelList" ;
+      }
+      outOBJ << "o  " << name << std::endl;
+      outOBJ << tmpStream.str() ;
+      outOBJ << tmpStream.str();
+    }
+  }
 
-    //TODO chercher comment tester
-    // KSLinel ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  //TODO chercher comment tester
+  // KSLinel ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
     j=0;
+    k=0;
+    ostringstream tmpStream;
 
+    for(std::vector<lineD3D>::const_iterator it = myKSLinelList.begin(); it != myKSLinelList.end();  it++)
     {
-        ostringstream tmpStream;
+      double wid = it->width;
+      tmpStream << "v " << it->x1     << " " << it->y1      << " " << it->z1 << std::endl;
+      tmpStream << "v " << it->x1     << " " << it->y1 +wid  << " " << it->z1 << std::endl;
+      tmpStream << "v " << it->x1     << " " << it->y1      << " " << it->z1 -wid << std::endl;
+      tmpStream << "v " << it->x1     << " " << it->y1 +wid  << " " << it->z1 -wid << std::endl;
 
-        for(std::vector<lineD3D>::const_iterator it = myKSLinelList.begin(); it != myKSLinelList.end();  it++)
-        {
+      tmpStream << "v " << it->x2     << " " << it->y2      << " " << it->z2 << std::endl;
+      tmpStream << "v " << it->x2     << " " << it->y2 +wid  << " " << it->z2 << std::endl;
+      tmpStream << "v " << it->x2     << " " << it->y2      << " " << it->z2 -wid << std::endl;
+      tmpStream << "v " << it->x2     << " " << it->y2 +wid  << " " << it->z2 -wid << std::endl;
 
-            double wid = it->width;
-            tmpStream << "v " << it->x1     << " " << it->y1      << " " << it->z1 << std::endl;
-            tmpStream << "v " << it->x1     << " " << it->y1 +wid  << " " << it->z1 << std::endl;
-            tmpStream << "v " << it->x1     << " " << it->y1      << " " << it->z1 -wid << std::endl;
-            tmpStream << "v " << it->x1     << " " << it->y1 +wid  << " " << it->z1 -wid << std::endl;
+      //OPT factoriser les faces des cubes et paves
+      tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+      tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+      tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+      tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+      tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+      tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
 
-            tmpStream << "v " << it->x2     << " " << it->y2      << " " << it->z2 << std::endl;
-            tmpStream << "v " << it->x2     << " " << it->y2 +wid  << " " << it->z2 << std::endl;
-            tmpStream << "v " << it->x2     << " " << it->y2      << " " << it->z2 -wid << std::endl;
-            tmpStream << "v " << it->x2     << " " << it->y2 +wid  << " " << it->z2 -wid << std::endl;
-
-            //OPT factoriser les faces des cubes et paves
-            tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-            tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-            tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-            tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-            tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-            tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
-
-            j++;
-        }
-
-        if (tmpStream.str() != "")
-        {
-            string name= myKSLinelNameList.at(k);
-            if ( name== "")
-            {
-              name = "myKSLinelList_" ;
-            }
-            out << "o  " << name  << std::endl;
-            out << tmpStream.str() ;
-            out << tmpStream.str();
-        }
-
+      j++;
     }
 
-    //TODO chercher comment tester
-    // KSPointel++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    if (tmpStream.str() != "")
     {
-        ostringstream tmpStream;
-        for(std::vector<pointD3D>::const_iterator it= myKSPointelList.begin();
-            it != myKSPointelList.end();  it++)
-        {
-            out << "v " << it->x << " " << it->y << " " << it->z << std::endl;
-        }
-
-        if (tmpStream.str() != "")
-        {
-          string name= myKSPointelNameList.at(k);
-          if ( name== "")
-          {
-            name = "myKSPointelList_" ;
-          }
-          out << "o  " << name << std::endl;
-            out << tmpStream.str() ;
-        }
+      string name= myKSLinelNameList.at(k);
+      if ( name== "")
+      {
+        name = "myKSLinelList" ;
+      }
+      outOBJ << "o  " << name << std::endl;
+      outOBJ << tmpStream.str() ;
+      outOBJ << tmpStream.str();
     }
 
+  }
 
-    out.close();
+  //TODO chercher comment tester
+  // KSPointel++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
+    k=0;
+    ostringstream tmpStream;
+    for(std::vector<pointD3D>::const_iterator it= myKSPointelList.begin();
+        it != myKSPointelList.end();  it++)
+    {
+      outOBJ << "v " << it->x << " " << it->y << " " << it->z << std::endl;
+    }
+
+    if (tmpStream.str() != "")
+    {
+      string name= myKSPointelNameList.at(k);
+      if ( name== "")
+      {
+        name = "myKSPointelList" ;
+      }
+      outOBJ << "o  " << name << std::endl;
+      outOBJ << tmpStream.str() ;
+    }
+  }
+
+  outOBJ.close();
+  outMTL.close();
 }
 
 
@@ -446,55 +454,55 @@ void
 DGtal::Board3D::init()
 {
 
-    createNewVoxelList(true);
+  createNewVoxelList(true);
 
-    vector<lineD3D> listeLine;
-    myLineSetList.push_back(listeLine);
+  vector<lineD3D> listeLine;
+  myLineSetList.push_back(listeLine);
 
-    vector<pointD3D> listePoint;
-    myPointSetList.push_back(listePoint);
+  vector<pointD3D> listePoint;
+  myPointSetList.push_back(listePoint);
 
 
-    myCurrentFillColor = DGtal::Color (220, 220, 220);
-    myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
+  myCurrentFillColor = DGtal::Color (220, 220, 220);
+  myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
 
-    /*
+  /*
      // what is the meaning of this part ?
     createNewVoxelList(true);
     std::vector<voxelD3D> aKSVoxelList;
     */
 
-    myDefaultColor= DGtal::Color(255, 255, 255);
+  myDefaultColor= DGtal::Color(255, 255, 255);
 
-    myModes["Board3D"]="SolidMode";
+  myModes["Board3D"]="SolidMode";
 
-    //OPT faire une plus belle presentation de init
+  //OPT faire une plus belle presentation de init
 
-    string nameLineSet;
-    myLineSetNameList.push_back(nameLineSet);
+  string nameLineSet;
+  myLineSetNameList.push_back(nameLineSet);
 
-    string namePointSet;
-    myPointSetNameList.push_back(namePointSet);
+  string namePointSet;
+  myPointSetNameList.push_back(namePointSet);
 
-    string nameClippingPlane;
-    myClippingPlaneNameList.push_back(nameClippingPlane);
+  string nameClippingPlane;
+  myClippingPlaneNameList.push_back(nameClippingPlane);
 
-    string nameKSSurfel;
-    myKSSurfelNameList.push_back(nameKSSurfel);
+  string nameKSSurfel;
+  myKSSurfelNameList.push_back(nameKSSurfel);
 
-    string nameKSPointel;
-    myKSPointelNameList.push_back(nameKSPointel);
+  string nameKSPointel;
+  myKSPointelNameList.push_back(nameKSPointel);
 
-    string nameKSLinel;
-    myKSLinelNameList.push_back(nameKSLinel);
+  string nameKSLinel;
+  myKSLinelNameList.push_back(nameKSLinel);
 
-    string nameQuad;
-    myQuadNameList.push_back(nameQuad);
+  string nameQuad;
+  myQuadNameList.push_back(nameQuad);
 
-    string nameTriangle;
-    myTriangleNameList.push_back(nameTriangle);
+  string nameTriangle;
+  myTriangleNameList.push_back(nameTriangle);
 
-    string namePolygon;
-    myPolygonNameList.push_back(namePolygon);
+  string namePolygon;
+  myPolygonNameList.push_back(namePolygon);
 }
 
