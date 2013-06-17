@@ -567,7 +567,9 @@ namespace DGtal
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
+     * @param depthTest use to include element in a list to apply a depth test (GL_DEPTH_TEST). 
      * @param s name of the new list
+     * @todo remove this depthTest perhaps no more important in Viewer3D (and perhaps not used in other viewer).
      **/  
 
     virtual void createNewVoxelList(bool depthTest=true, std::string s= "");
