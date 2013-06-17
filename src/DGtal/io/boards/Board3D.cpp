@@ -85,6 +85,8 @@ DGtal::Board3D::isValid() const
  */
 void DGtal::Board3D::saveOBJ(const string & filename)
 {
+
+  std::cout << " [[ ";
   size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
   double red, green, blue , transp; // colors of the elements
   double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
@@ -315,17 +317,18 @@ void DGtal::Board3D::saveOBJ(const string & filename)
   }
 
   // myQuadList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  //std::vector<quadD3D>::const_iterator
-  if(myQuadList.size()> 0)
   {
-    trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
-                 << myQuadList.size() << std::endl;
+    //std::vector<quadD3D>::const_iterator
+    if(myQuadList.size()> 0)
+    {
+      trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
+                   << myQuadList.size() << std::endl;
+    }
   }
 
 
   // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
 
-  //TODO chercher comment tester
   // KSSurfel (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     j=0;
@@ -371,7 +374,6 @@ void DGtal::Board3D::saveOBJ(const string & filename)
       outOBJ << tmpStream.str();
     }
   }
-
 
   //TODO chercher comment tester
   // KSLinel ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

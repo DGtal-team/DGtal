@@ -20,7 +20,7 @@
  * @file   Board3D.h
  * @author Aline Martin
  * @date   vendredi 7 juin 2013
- * 
+ *
  * @brief
  *
  * Header file for module Board3D.cpp
@@ -67,17 +67,17 @@ namespace DGtal
   {
   public:
 
-  
+
     /*!
      * \brief Constructor.
      */
     Board3D();
-  
+
     /*!
      * \brief Destructor.
      */
     ~Board3D(){};
-  
+
 
     /**
      * @return the style name used for drawing this object.
@@ -94,7 +94,7 @@ namespace DGtal
     void saveOBJ(const std::string & filename);
 
 
-  
+
     /**
      * The associated map type for storing possible modes used for
      * displaying for digital objects.
@@ -106,18 +106,18 @@ namespace DGtal
     //    * digital objects.
     //    */
     //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
-  
+
     DGtal::Color myDefaultColor;  //!< default color
 
-  
 
- 
+
+
     /**
      * Set the default color for future drawing.
      *
      * @param aColor a DGtal::Color (allow to set a trasnparency value).
      *
-     **/  
+     **/
     Board3D & operator<<(const DGtal::Color & aColor);
 
 
@@ -134,7 +134,7 @@ namespace DGtal
     Board3D & operator<<( const  TDrawableWithDisplay3D & object );
 
   public:
-  
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -148,13 +148,13 @@ namespace DGtal
     bool isValid() const;
 
   public:
-  
+
 
     // ------------------------- Private Datas --------------------------------
   private:
- 
 
-  
+
+
   protected :
     /**
      *  init function (should be in Constructor).
@@ -165,8 +165,8 @@ namespace DGtal
 
   }; // end of class Board3D
   
- 
- 
+
+
 
   
   /**

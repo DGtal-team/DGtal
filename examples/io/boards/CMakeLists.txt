@@ -5,6 +5,7 @@ SET(DGTAL_TESTS_SRC
    dgtalBoard2D-3-custom-points
    dgtalBoard2D-4-colormaps
    dgtalBoard3D-1-points
+   dgtalBoard3D-2-ks
    logoDGtal
    )
 
