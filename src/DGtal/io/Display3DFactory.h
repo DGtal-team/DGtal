@@ -392,7 +392,7 @@ namespace DGtal
 
     static void draw( Display3D &display, const DGtal::Update2DDomainPosition &anUpdate);
     static void draw(Display3D &display, const DGtal::Translate2DDomain &anTranslation);
-    static void draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel);
+    static void draw( Display3D & display, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
 
 
   }; // end of struct Display3DFactory

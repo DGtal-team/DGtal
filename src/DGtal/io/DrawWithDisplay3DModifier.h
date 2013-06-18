@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Alias.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -251,16 +252,16 @@ namespace DGtal
    * @brief class to modify the position and scale to construct better illustration mode.
    * @todo add a constructor to automatically define the shift and the scale according a given associated SCell.
    */
-  struct TransformedKSSurfel : public DrawWithDisplay3DModifier
+  struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
   {
     /**
      * Constructor.
      *
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aShift the shift distance (positive or negative).
-     * @param aSizeFactor use to change the KSSurfel size (1.0 initial size).
+     * @param aSizeFactor use to change the SurfelPrism size (1.0 initial size).
      */
-    TransformedKSSurfel( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+    TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
                         double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
     {
     }
@@ -272,9 +273,9 @@ namespace DGtal
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aVoxel a  DGtal::Z3i::SCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
      * @param aShift the shift distance (positive or negative (default 0.05)).
-     * @param aSizeFactor use to change the KSSurfel size (default 0.75).
+     * @param aSizeFactor use to change the SurfelPrism size (default 0.75).
      */
-    TransformedKSSurfel( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+    TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
                         const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
                         double aShift=0.05, double aSizeFactor=0.75  )
     {
@@ -423,7 +424,7 @@ namespace DGtal
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
-    
+
     AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
                                  ConstAlias<TFunctor> aFunctor,
                                  Display3D::TextureMode aMode=Display3D::GrayScaleMode): my3DImage(anImage),

@@ -76,7 +76,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
     QApplication application ( argc,argv );
-    Viewer3D viewer;
+    DGtal::Viewer3D viewer;
 
     std::string filename = testPath + "samples/cat10.vol";
 
