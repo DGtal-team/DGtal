@@ -629,7 +629,7 @@ namespace DGtal
      * @param withWire if true add the wire representation.
      */
 
-    virtual void addCube(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
+    virtual void addCube(double x, double y, double z,
 			  DGtal::Color color= DGtal::Color(220, 220, 220),
 			  double width=0.5);
     
@@ -680,7 +680,7 @@ namespace DGtal
      * 
      */
     
-    virtual void addKSCube(int x, int y, int z, double sizeFactor=0.94);
+    virtual void addKSCube(double x, double y, double z, double sizeFactor=0.94);
   
     
     /**
