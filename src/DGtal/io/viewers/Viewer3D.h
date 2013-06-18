@@ -129,7 +129,7 @@ namespace DGtal
     DGtal::Color myDefaultColor;
     bool myIsBackgroundDefault;
     bool myViewWire;
-  
+
     /**
      * Set the default color for future drawing.
      *
@@ -167,14 +167,14 @@ namespace DGtal
      *
      *
      **/
-  
+
     void sortTriangleFromCamera();
     /**
      *  Sort all triangle from the camera.
      *
      *
      **/
-  
+
     void sortQuadFromCamera();
 
 
@@ -184,9 +184,9 @@ namespace DGtal
      *
      **/
     void sortPolygonFromCamera();
-  
 
-  
+
+
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
@@ -216,7 +216,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-  
+
 
 
     // ------------------------- Protected Datas ------------------------------
@@ -233,7 +233,7 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
-  
+
 
     /**
      *  Permit to update the OpenGL list to be displayed.
@@ -258,7 +258,7 @@ namespace DGtal
      *
      *
      **/
-    void glDrawGLPointel ( pointD3D pointel );
+    void glDrawGLPointel ( ballD3D pointel );
 
 
 
@@ -291,7 +291,7 @@ namespace DGtal
     struct compFarthestVoxelFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() ( voxelD3D s1, voxelD3D s2 )
+      bool operator() ( cubeD3D s1, cubeD3D s2 )
       {
         double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
         double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
@@ -310,8 +310,8 @@ namespace DGtal
         qglviewer::Vec center2 ( ( t2.x1+t2.x2+t2.x3 ) /3.0, ( t2.y1+t2.y2+t2.y3 ) /3.0, ( t2.z1+t2.z2+t2.z3 ) /3.0 );
         double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
         double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
-     
-	return dist1>dist2;
+
+        return dist1>dist2;
       }
     };
 
@@ -338,21 +338,21 @@ namespace DGtal
       qglviewer::Vec posCam;
       bool operator() ( polygonD3D q1, polygonD3D q2 )
       {
-	double c1x, c1y, c1z=0.0;
-	double c2x, c2y, c2z=0.0;
-	for(unsigned int i=0; i< q1.vectPoints.size(); i++){
-	  c1x+=q1.vectPoints.at(i).x;
-	  c1y+=q1.vectPoints.at(i).y;
-	  c1z+=q1.vectPoints.at(i).z;
-	}
-	for(unsigned int i=0; i< q2.vectPoints.size(); i++){
-	  c2x+=q2.vectPoints.at(i).x;
-	  c2y+=q2.vectPoints.at(i).y;
-	  c2z+=q2.vectPoints.at(i).z;
-	}
-	
-	qglviewer::Vec center1 ( c1x/(double)q1.vectPoints.size(),c1y/(double)q1.vectPoints.size(), c1z/(double)q1.vectPoints.size() );
-	qglviewer::Vec center2 ( c2x/(double)q2.vectPoints.size(),c2y/(double)q2.vectPoints.size(), c2z/(double)q2.vectPoints.size() );
+        double c1x, c1y, c1z=0.0;
+        double c2x, c2y, c2z=0.0;
+        for(unsigned int i=0; i< q1.vectBalls.size(); i++){
+          c1x+=q1.vectBalls.at(i).x;
+          c1y+=q1.vectBalls.at(i).y;
+          c1z+=q1.vectBalls.at(i).z;
+        }
+        for(unsigned int i=0; i< q2.vectBalls.size(); i++){
+          c2x+=q2.vectBalls.at(i).x;
+          c2y+=q2.vectBalls.at(i).y;
+          c2z+=q2.vectBalls.at(i).z;
+        }
+
+	qglviewer::Vec center1 ( c1x/(double)q1.vectBalls.size(),c1y/(double)q1.vectBalls.size(), c1z/(double)q1.vectBalls.size() );
+	qglviewer::Vec center2 ( c2x/(double)q2.vectBalls.size(),c2y/(double)q2.vectBalls.size(), c2z/(double)q2.vectBalls.size() );
 
 	double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
 	double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
@@ -375,9 +375,9 @@ namespace DGtal
 
 
 
- 
-    
-    
+
+
+
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -385,7 +385,7 @@ namespace DGtal
      * Used to display in OPENGL an image as a textured quad image.
      *
      **/
-    struct GLTextureImage {      
+    struct GLTextureImage {
       double x1, y1, z1;
       double x2, y2, z2;
       double x3, y3, z3;
@@ -393,7 +393,7 @@ namespace DGtal
       ImageDirection myDirection;
       unsigned int myImageWidth;
       unsigned int myImageHeight;
-      
+
       unsigned int myBufferWidth;
       unsigned int myBufferHeight;
       GLuint  myTextureName;
@@ -402,43 +402,43 @@ namespace DGtal
       unsigned char *  myTextureImageBufferRGB;
       double vectNormal[3];
 
-      // By definition in OpenGL the image size of texture should power of 2  
+      // By definition in OpenGL the image size of texture should power of 2
       double myTextureFitX;
       double myTextureFitY;
 
 
       // Destructor
       ~GLTextureImage(){
-	if(myMode==Display3D::GrayScaleMode){
-	  if(myTextureImageBufferGS!=0)
-	    delete [] myTextureImageBufferGS;
-	}	     
-	if(myMode==Display3D::RGBMode){
-	  if(myTextureImageBufferRGB!=0)
-	    delete [] myTextureImageBufferRGB;
-	}
-	
+        if(myMode==Display3D::GrayScaleMode){
+          if(myTextureImageBufferGS!=0)
+            delete [] myTextureImageBufferGS;
+        }
+        if(myMode==Display3D::RGBMode){
+          if(myTextureImageBufferRGB!=0)
+            delete [] myTextureImageBufferRGB;
+        }
+
       }
-    
+
       //Copy constructor from a GLTextureImage
       GLTextureImage(const GLTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
-						    myBufferWidth(aGLImg.myBufferWidth),
-						    myTextureName(aGLImg.myTextureName),
-						    myTextureFitX(aGLImg.myTextureFitX),
-						    myTextureFitY(aGLImg.myTextureFitY),
-						    myMode(aGLImg.myMode)
-								      
+                                                    myBufferWidth(aGLImg.myBufferWidth),
+                                                    myTextureName(aGLImg.myTextureName),
+                                                    myTextureFitX(aGLImg.myTextureFitX),
+                                                    myTextureFitY(aGLImg.myTextureFitY),
+                                                    myMode(aGLImg.myMode)
+
       {
-	x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
-	x2=aGLImg.x2; y2=aGLImg.y2; z2=aGLImg.z2;
-	x3=aGLImg.x3; y3=aGLImg.y3; z3=aGLImg.z3;
-	x4=aGLImg.x4; y4=aGLImg.y4; z4=aGLImg.z4;
-	myImageWidth=aGLImg.myImageWidth; myImageHeight=aGLImg.myImageHeight;
-	myDirection = aGLImg.myDirection;
-	vectNormal[0]=aGLImg.vectNormal[0];
-	vectNormal[1]=aGLImg.vectNormal[1];
-	vectNormal[2]=aGLImg.vectNormal[2];
-	
+        x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
+        x2=aGLImg.x2; y2=aGLImg.y2; z2=aGLImg.z2;
+        x3=aGLImg.x3; y3=aGLImg.y3; z3=aGLImg.z3;
+        x4=aGLImg.x4; y4=aGLImg.y4; z4=aGLImg.z4;
+        myImageWidth=aGLImg.myImageWidth; myImageHeight=aGLImg.myImageHeight;
+        myDirection = aGLImg.myDirection;
+        vectNormal[0]=aGLImg.vectNormal[0];
+        vectNormal[1]=aGLImg.vectNormal[1];
+        vectNormal[2]=aGLImg.vectNormal[2];
+
 	if(myMode==Display3D::GrayScaleMode){
 	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
 	  for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
@@ -452,27 +452,27 @@ namespace DGtal
 	    myTextureImageBufferRGB[i+2]=aGLImg.myTextureImageBufferRGB[i+2];
 	  }
 	}
-	
-	
-	
+
+
+
       }
-      
-      
+
+
       //Copy constructor from a TextureImage
       GLTextureImage(const TextureImage &aGSImage)
       {
-	x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
-	x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
-	x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
-	x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
-	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
-	myDirection = aGSImage.myDirection;
-	myMode= aGSImage.myMode;
-	vectNormal[0]= (myDirection == Display3D::xDirection)? 1.0: 0.0;
-	vectNormal[1]= (myDirection == Display3D::yDirection)? -1.0: 0.0;
-	vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;	
-	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
-	myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight); 
+        x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
+        x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
+        x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
+        x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
+        myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
+        myDirection = aGSImage.myDirection;
+        myMode= aGSImage.myMode;
+        vectNormal[0]= (myDirection == Display3D::xDirection)? 1.0: 0.0;
+        vectNormal[1]= (myDirection == Display3D::yDirection)? -1.0: 0.0;
+        vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;
+        myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
+        myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight);
 
 	if(myMode==Display3D::GrayScaleMode){
 	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];

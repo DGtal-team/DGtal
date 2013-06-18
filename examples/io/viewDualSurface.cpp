@@ -151,13 +151,13 @@ void viewPolygons
   const std::vector< std::vector< unsigned int > > & indices,  
   const std::vector<Vector> & points )
 {
-  typedef typename Viewer::pointD3D pointD3D;
+  typedef typename Viewer::ballD3D ballD3D;
   //DGtal::Color color( 200, 200, 220, 255 );
-  std::vector<pointD3D> pts3d;
+  std::vector<ballD3D> pts3d;
   for ( unsigned int f = 0; f < indices.size(); ++f )
     {
       pts3d.clear();
-      pointD3D P;
+      ballD3D P;
       P.R = color.red();
       P.G = color.green();
       P.B = color.blue();

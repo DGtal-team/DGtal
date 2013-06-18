@@ -138,7 +138,7 @@ namespace DGtal
 
     /**
      * This structure is used to display clipping planes and the
-     * components of the myKSSurfelList (allowing to set normal and
+     * components of the mySurfelPrismList (allowing to set normal and
      * color).
      * @see Display3D, Viewer3D, Board3DTo2D
      **/ 
@@ -177,7 +177,7 @@ namespace DGtal
     enum ImageDirection {xDirection, yDirection, zDirection };
     enum TextureMode {RGBMode, GrayScaleMode };
     
-    /// Structure used to display KSBall in 3D and MeshFromBalls
+    /// Structure used to display KSBall in 3D and MeshFromPoints
     /// @see addKSBalll
     ///
     
@@ -597,10 +597,10 @@ namespace DGtal
 
     /**
      * Method to add a specific polygon.
-     * @param vectBallsPolygon a vector containing the polygon vertex.
+     * @param vectPointsPolygon a vector containing the polygon vertex.
      */
     
-    virtual void addPolygon(std::vector<ballD3D> vectBallsPolygon, DGtal::Color aColor);
+    virtual void addPolygon(std::vector<ballD3D> vectPointsPolygon, DGtal::Color aColor);
 
     
 
@@ -631,7 +631,7 @@ namespace DGtal
 
     virtual void addCube(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
 			  DGtal::Color color= DGtal::Color(220, 220, 220),
-			  double width=0.5,bool withWire=false);
+			  double width=0.5);
     
 
     /**
@@ -650,7 +650,7 @@ namespace DGtal
   
     
     /**
-     * Specific to display a KSSurfel from Kahlimsky space. The display can
+     * Specific to display a SurfelPrism from Kahlimsky space. The display can
      * take into accounts the sign of the cell.
      *
      *  x,y,z the surfel center.
@@ -661,11 +661,11 @@ namespace DGtal
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
      *  according this boolean  parameter  (if @a aSign=true oriented in the direct axis orientation).
-     * @param basicMode if true, a basic mode to display KSSurfel are used (i.e just a simple surfel face).  
+     * @param basicMode if true, a basic mode to display SurfelPrism are used (i.e just a simple surfel face).
      * 
      */
     
-    virtual void addKSSurfel(double x, double y, double z, 
+    virtual void addSurfelPrism(double x, double y, double z,
 			     bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
 			     double positionShift=0.0, double sizeFactor=1.0,
 			     bool isSigned= false, bool aSign=true, bool basicMode=false);
@@ -694,7 +694,7 @@ namespace DGtal
      *                              (if @a aSign=true display a cross else, display a small cylinder.).     
      */
     
-    virtual void addKSBalll(double x, double y, double z, double size=0.1,
+    virtual void addKSBallel(double x, double y, double z, double size=0.1,
 			      bool isSigned=false, bool aSign=true);
   
 
@@ -903,7 +903,7 @@ namespace DGtal
     /// Used to specialized visualisation with KS surfels/cubes.
     ///
 
-    double myCurrentfShiftVisuKSSurfels;
+    double myCurrentfShiftVisuSurfelPrisms;
 
   
     /// Used to represent all the list used in the display.
@@ -937,7 +937,7 @@ namespace DGtal
     /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
 
-    std::vector< quadD3D > myKSSurfelList;
+    std::vector< quadD3D > mySurfelPrismList;
   
   
     /// For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
@@ -978,9 +978,9 @@ namespace DGtal
     ///
     std::vector<std::string> myClippingPlaneNameList;
 
-    /// names of the lists in myKSSurfelList
+    /// names of the lists in mySurfelPrismList
     ///
-    std::vector<std::string> myKSSurfelNameList;
+    std::vector<std::string> mySurfelPrismNameList;
 
     /// names of the lists in myKSBalleList
     ///

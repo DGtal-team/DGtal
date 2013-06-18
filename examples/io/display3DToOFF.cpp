@@ -16,7 +16,9 @@ using namespace DGtal;
 
 int main( int /*argc*/, char** /*argv*/ )
 {
-  std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
+  //TODO this main doesn't seems to work, find why
+
+  std::string inputFilename = examplesPath + "samples/Al.100.vol";
   //! [ExampleDisplay3DToOFF]
   Display3D viewer;
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
@@ -32,6 +34,6 @@ int main( int /*argc*/, char** /*argv*/ )
   // viewer>> out;
   // out.close();
   //! [ExampleDisplay3DToOFF]
-  
+
   return 0;
 }

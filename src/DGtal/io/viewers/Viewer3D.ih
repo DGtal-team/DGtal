@@ -69,11 +69,11 @@ DGtal::Viewer3D::operator<<(const Display3D::StreamKey  & key){
     break;
     
   case Display3D::addNewList:
-    createNewVoxelList();
+    createNewCubeList();
     break;
     
   case Display3D::shiftSurfelVisu:
-    myCurrentfShiftVisuKSSurfels+=0.3;
+    myCurrentfShiftVisuSurfelPrisms+=0.3;
     break;
     
   }
