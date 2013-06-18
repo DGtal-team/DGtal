@@ -354,10 +354,7 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display,
          it != s.end();
          ++it )
     {
-      display.addCube(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                       NumberTraits<Component>::castToInt64_t((*it)[1]),
-                       NumberTraits<Component>::castToInt64_t((*it)[2]),
-                       display.getFillColor());
+      display.addCube((*it)[0], (*it)[1], (*it)[2], display.getFillColor());
     }
 }
 
@@ -377,9 +374,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
          it != s.end();
          ++it )
     {
-      display.addCube(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                       NumberTraits<Component>::castToInt64_t((*it)[1]),
-                       NumberTraits<Component>::castToInt64_t((*it)[2]), display.getFillColor());
+      display.addCube((*it)[0], (*it)[1], (*it)[2], display.getFillColor());
     }
 }
 
@@ -447,9 +442,7 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display,
          it != v.end();
          ++it )
     {
-      display.addCube(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                       NumberTraits<Component>::castToInt64_t((*it)[1]),
-                       NumberTraits<Component>::castToInt64_t((*it)[2]), display.getFillColor());
+      display.addCube((*it)[0], (*it)[1], (*it)[2], display.getFillColor());
     }
 }
 
@@ -469,9 +462,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
          it != v.end();
          ++it )
     {
-      display.addCube(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                       NumberTraits<Component>::castToInt64_t((*it)[1]),
-                       NumberTraits<Component>::castToInt64_t((*it)[2]), display.getFillColor());
+      display.addCube((*it)[0],(*it)[1],(*it)[2], display.getFillColor());
     }
 }
 
@@ -490,9 +481,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
         it != v.end();
         ++it )
     {
-      display.addBall(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                       NumberTraits<Component>::castToInt64_t((*it)[1]),
-                       NumberTraits<Component>::castToInt64_t( (*it)[2]), display.getFillColor());
+      display.addBall((*it)[0], (*it)[1], (*it)[2], display.getFillColor());
     }
 }
 
@@ -858,9 +847,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       display.setFillColor(DGtal::Color(255, 180, 250, 255));
     }
     if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
-      display.addKSCube((int)x, (int) y, (int) z, 0.7);
+      display.addKSCube(x, y, z, 0.7);
     }else{
-      display.addKSCube((int)x, (int) y, (int) z);
+      display.addKSCube(x, y, z);
     }
     break;
   }
@@ -936,9 +925,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       }
     }
     if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
-      display.addKSCube((int)x, (int) y, (int) z, 0.7);
+      display.addKSCube(x, y, z, 0.7);
     }else{
-      display.addKSCube((int)x, (int) y, (int) z);
+      display.addKSCube(x, y, z);
     }
     break;
   }

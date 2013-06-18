@@ -171,7 +171,7 @@ DGtal::Display3D::createNewLineList(std::string str)
 
 inline
 void
-DGtal::Display3D::addCube(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
+DGtal::Display3D::addCube(double x, double y, double z,
                            DGtal::Color aColor, double width)
 {
   updateBoundingBox((double)x, (double)y, (double)z);
@@ -601,7 +601,7 @@ DGtal::Display3D::addKSBallel(double x, double y, double z,
 
 inline
 void
-DGtal::Display3D::addKSCube(int x, int y, int z,  double sizeFactor)
+DGtal::Display3D::addKSCube(double x, double y, double z,  double sizeFactor)
 {
   updateBoundingBox(x, y, z);
   cubeD3D c;
