@@ -36,6 +36,53 @@
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////
+// surcharge of parents methods              //
+inline
+void
+DGtal::Board3DTo2D::addCone(double x1, double y1, double z1,
+                        double x2, double y2, double z2,
+                        double width, bool signPos)
+{
+  updateBoundingBox(x1, y1, z1);
+  updateBoundingBox(x2, y2, z2);
+  lineD3D l;
+  l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2;
+  l.width=width;
+  l.R= myCurrentFillColor.red();
+  l.G= myCurrentFillColor.green();
+  l.B=myCurrentFillColor.blue();
+  l.T=myCurrentFillColor.alpha();
+  l.isSigned=true;
+  l.signPos=signPos;
+  myKSLinelList.push_back(l);
+}
+
+inline
+void
+DGtal::Board3DTo2D::addCylinder(double x1, double y1, double z1,
+                        double x2, double y2, double z2,
+                        double width)
+{
+  updateBoundingBox(x1, y1, z1);
+  updateBoundingBox(x2, y2, z2);
+  lineD3D l;
+  l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2;
+  l.width=width;
+  l.R= myCurrentFillColor.red();
+  l.G= myCurrentFillColor.green();
+  l.B=myCurrentFillColor.blue();
+  l.T=myCurrentFillColor.alpha();
+  l.isSigned=false;
+  l.signPos=false;
+  myKSLinelList.push_back(l);
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
