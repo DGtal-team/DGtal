@@ -70,8 +70,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       aAccumulator.binCoordinates(it, i,j);
       if (aAccumulator.isValidBin(i,j))
 	{
-	  aAccumulator.binCoordinates(it, i,j);
-  	  aAccumulator.getBinGeometry(i,j,a,b,c,d);
+	  aAccumulator.getBinGeometry(i,j,a,b,c,d);
           a+= shift;
           b+= shift;
           c+= shift;
