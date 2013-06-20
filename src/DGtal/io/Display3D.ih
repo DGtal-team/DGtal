@@ -32,11 +32,14 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <cmath>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/writers/MeshWriter.h"
 //////////////////////////////////////////////////////////////////////////////
 
+
+#define PI 3.14159265
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -652,9 +655,97 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
 
-  //TODO addCone
-  // myCurrentFillColor.red();
-  // myCurrentFillColor.alpha();
+  int nbPoints = 6; //the number of point on the base of the cone
+  double degree = 360 / nbPoints; // the angle between two points
+  double radian = degree * PI/180;
+
+  // A(x1,y1,z1) and B(x2,y2,z2) vector AB
+  double xab, yab, zab;
+
+  xab = x2-x1;
+  yab = y2-y1;
+  zab = z2-z1;
+
+  //take a third point M different from A and B
+  double xm = 0;
+  double ym = 0;
+  double zm = 0;
+
+  while (x1 == xm || x2 ==xm) xm++;
+  while (y1 == ym || y2 ==ym) ym++;
+  while (z1 == zm || z2 ==zm) zm++;
+
+  //vector AM
+  double xam, yam, zam;
+
+  xam = xm-x1;
+  yam = ym-y1;
+  zam = zm-z1;
+
+  //normal vector n = AB^AM
+  double xn, yn, zn;
+
+  xn = yab*zam - yam*zab;
+  yn = xam*zab - xab*zam;
+  zn = xab*yam - xam*yab;
+
+  //divide n by its norm
+  double norm;
+  norm = sqrt( xn*xn + yn*yn + zn*zn);
+  assert (norm > 0);
+  xn = xn / norm;
+  yn = yn / norm;
+  zn = zn / norm;
+
+  //the first point of the base
+   double xf, yf, zf;
+
+   xf = x2 + width  * xn;
+   yf = y2 + width  * yn;
+   zf = z2 + width  * zn;
+
+  //two following points of the base
+  double xb1 = xf;
+  double yb1 = yf;
+  double zb1 = zf;
+  double xb2,yb2, zb2;
+
+  //r = AB^n for the future rotation
+  double xr, yr, zr;
+
+  for (int i =0; i <5; i ++)
+  {
+    xr = yab*zn - yn*zab;
+    yr = xn*zab - xab*zn;
+    zr = xab*yn - xn*yab;
+
+    //rotate n by degree
+    xn = cos(radian)*xn + sin(radian)*xr;
+    yn = cos(radian)*yn + sin(radian)*yr;
+    zn = cos(radian)*zn + sin(radian)*zr;
+
+    // calculate one point with the normal vector at a distance width
+    xb2 = x2 + width  * xn;
+    yb2 = y2 + width  * yn;
+    zb2 = z2 + width  * zn;
+
+    //adding the triangle associated with this point
+    //TODO add the triangles
+
+
+    xb1 = xb2;
+    yb1 = yb2;
+    zb1 = zb2;
+
+  }
+
+
+
+
+
+
+
+
 
 
 
