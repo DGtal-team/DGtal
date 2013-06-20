@@ -676,6 +676,7 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
   int nbPoints = 6; //the number of point on the base of the cone
   double degree = 360 / nbPoints; // the angle between two points
   double radian = degree * PI/180;
+  DGtal::Color color(255, 50, 50, 255);
 
   // A(x1,y1,z1) and B(x2,y2,z2) vector AB
   double xab, yab, zab;
@@ -731,6 +732,7 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
   //r = AB^n for the future rotation
   double xr, yr, zr;
 
+  createNewTriangleList("Cone");
   for (int i =0; i <5; i ++)
   {
     xr = yab*zn - yn*zab;
@@ -747,9 +749,13 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
     yb2 = y2 + width  * yn;
     zb2 = z2 + width  * zn;
 
-    //adding the triangle associated with this point
-    //TODO add the triangles
-
+    //adding the triangles associated with this point
+    addTriangle(x1, y1,z1,
+                xb1,yb1,zb1,
+                xb2,yb2,zb2, color);
+    addTriangle(x2, y2,z2,
+                xb1,yb1,zb1,
+                xb2,yb2,zb2, color);
 
     xb1 = xb2;
     yb1 = yb2;
@@ -757,16 +763,13 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
 
   }
 
-
-
-
-
-
-
-
-
-
-
+  //Last part to close the cone
+  addTriangle(x1, y1,z1,
+              xb1,yb1,zb1,
+              xf,yf,zf, color);
+  addTriangle(x2, y2,z2,
+              xb1,yb1,zb1,
+              xf,yf,zf, color);
 
 }
 
@@ -780,7 +783,131 @@ DGtal::Display3D::addCylinder(double x1, double y1, double z1,
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
 
-  //TODO addCylinder
+
+  int nbPoints = 6; //the number of point on the base of the cone
+  double degree = 360 / nbPoints; // the angle between two points
+  double radian = degree * PI/180;
+  DGtal::Color color(255, 50, 50, 255);
+
+  // A(x1,y1,z1) and B(x2,y2,z2) vector AB
+  double xab, yab, zab;
+
+  xab = x2-x1;
+  yab = y2-y1;
+  zab = z2-z1;
+
+  //take a third point M different from A and B
+  double xm = 0;
+  double ym = 0;
+  double zm = 0;
+
+  while (x1 == xm || x2 ==xm) xm++;
+  while (y1 == ym || y2 ==ym) ym++;
+  while (z1 == zm || z2 ==zm) zm++;
+
+  //vector AM
+  double xam, yam, zam;
+
+  xam = xm-x1;
+  yam = ym-y1;
+  zam = zm-z1;
+
+  //normal vector n = AB^AM
+  double xn, yn, zn;
+
+  xn = yab*zam - yam*zab;
+  yn = xam*zab - xab*zam;
+  zn = xab*yam - xam*yab;
+
+  //divide n by its norm
+  double norm;
+  norm = sqrt( xn*xn + yn*yn + zn*zn);
+  assert (norm > 0);
+  xn = xn / norm;
+  yn = yn / norm;
+  zn = zn / norm;
+
+  //the first point of the upper and lower base
+   double xuf, yuf, zuf;
+   double xlf, ylf, zlf;
+
+   xuf = x2 + width  * xn;
+   yuf = y2 + width  * yn;
+   zuf = z2 + width  * zn;
+
+   xlf = xuf - xab;
+   ylf = yuf - yab;
+   zlf = zlf - zab;
+
+  //two following points of the bases
+  double xub1 = xuf;
+  double yub1 = yuf;
+  double zub1 = zuf;
+  double xub2,yub2, zub2;
+
+  double xlb1 = xlf;
+  double ylb1 = ylf;
+  double zlb1 = zlf;
+  double xlb2,ylb2, zlb2;
+
+  //r = AB^n for the future rotation
+  double xr, yr, zr;
+
+  createNewTriangleList("Cylinder");
+  createNewQuadList("Cylinder");
+  for (int i =0; i <5; i ++)
+  {
+    xr = yab*zn - yn*zab;
+    yr = xn*zab - xab*zn;
+    zr = xab*yn - xn*yab;
+
+    //rotate n by degree
+    xn = cos(radian)*xn + sin(radian)*xr;
+    yn = cos(radian)*yn + sin(radian)*yr;
+    zn = cos(radian)*zn + sin(radian)*zr;
+
+    // calculate one point with the normal vector at a distance width
+    xub2 = x2 + width  * xn;
+    yub2 = y2 + width  * yn;
+    zub2 = z2 + width  * zn;
+
+    xlb2 = xub2 - xab;
+    ylb2 = yub2 - yab;
+    zlb2 = zub2 - zab;
+
+    //adding the triangles and the quad associated with those points
+    addTriangle(x1, y1,z1,
+                xlb1,ylb1,zlb1,
+                xlb2,ylb2,zlb2, color);
+    addTriangle(x2, y2,z2,
+                xub1,yub1,zub1,
+                xub2,yub2,zub2, color);
+    addQuad(xub1,yub1,zub1,
+            xub2,yub2,zub2,
+            xlb2,ylb2,zlb2,
+            xlb1,ylb1,zlb1, color);
+
+    xub1 = xub2;
+    yub1 = yub2;
+    zub1 = zub2;
+
+    xlb1 = xlb2;
+    ylb1 = ylb2;
+    zlb1 = zlb2;
+
+  }
+
+  //Last part to close the cylinder
+  addTriangle(x1, y1,z1,
+              xlb1,ylb1,zlb1,
+              xlf,ylf,zlf, color);
+  addTriangle(x2, y2,z2,
+              xub1,yub1,zub1,
+              xuf,yuf,zuf, color);
+  addQuad(xub1,yub1,zub1,
+          xuf,yuf,zuf,
+          xlf,ylf,zlf,
+          xlb1,ylb1,zlb1, color);
 
 }
 
