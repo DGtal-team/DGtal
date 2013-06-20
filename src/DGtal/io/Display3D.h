@@ -572,6 +572,31 @@ namespace DGtal
 
     virtual void createNewCubeList(bool depthTest=true, std::string s= "");
 
+    /**
+     * Used to create a new list containing new 3D objects
+     * (useful to use transparency between different objects).
+     * @param s name of the new list
+     **/
+
+    virtual void createNewQuadList(std::string s= "");
+
+    /**
+     * Used to create a new list containing new 3D objects
+     * (useful to use transparency between different objects).
+     * @param s name of the new list
+     **/
+
+    virtual void createNewTriangleList(std::string s= "");
+
+    /**
+     * Used to create a new list containing new 3D objects
+     * (useful to use transparency between different objects).
+     * @param s name of the new list
+     **/
+
+    virtual void createNewPolygonList(std::string s= "");
+
+
   
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
@@ -984,15 +1009,15 @@ namespace DGtal
   
   
     // Represents all the planes drawn in the Display3D
-    std::vector< quadD3D > myQuadList;
+    std::vector<std::vector< quadD3D > > myQuadSetList;
 
 
-    // Represents all the triangles drawn in the Display3D
-    std::vector< triangleD3D > myTriangleList;
+    /// Represents all the triangles drawn in the Display3D
+    std::vector<std::vector< triangleD3D > > myTriangleSetList;
     
 
     // Represents all the polygon drawn in the Display3D
-    std::vector<polygonD3D> myPolygonList;
+    std::vector<std::vector<polygonD3D> > myPolygonSetList;
 
     /// names of the lists in myCubeSetList
     ///
@@ -1023,15 +1048,15 @@ namespace DGtal
 
     /// names of the lists in myQuadList
     ///
-    std::vector<std::string> myQuadNameList;
+    std::vector<std::string> myQuadSetNameList;
 
     /// names of the lists in myTriangleList
     ///
-    std::vector<std::string> myTriangleNameList;
+    std::vector<std::string> myTriangleSetNameList;
 
     /// names of the lists in myPolygonList
     ///
-    std::vector<std::string> myPolygonNameList;
+    std::vector<std::string> myPolygonSetNameList;
     
     
     /// Used to define if GL_TEST_DEPTH is used. 
