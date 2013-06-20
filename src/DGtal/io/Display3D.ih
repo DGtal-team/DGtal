@@ -141,8 +141,6 @@ DGtal::Display3D::createNewCubeList(bool depthTest, std::string str)
   myCubeSetList.push_back(v);
   myCubeSetNameList.push_back(str);
   myListCubeDepthTest.push_back(depthTest);
-
-
 }
 
 
@@ -164,11 +162,34 @@ DGtal::Display3D::createNewLineList(std::string str)
   std::vector< lineD3D > v;
   myLineSetList.push_back(v);
   myLineSetNameList.push_back(str);
-
 }
 
+inline
+void
+DGtal::Display3D::createNewQuadList(std::string str)
+{
+  std::vector< quadD3D > v;
+  myQuadSetList.push_back(v);
+  myQuadSetNameList.push_back(str);
+}
 
+inline
+void
+DGtal::Display3D::createNewTriangleList(std::string str)
+{
+  std::vector< triangleD3D > v;
+  myTriangleSetList.push_back(v);
+  myTriangleSetNameList.push_back(str);
+}
 
+inline
+void
+DGtal::Display3D::createNewPolygonList(std::string str)
+{
+  std::vector< polygonD3D > v;
+  myPolygonSetList.push_back(v);
+  myPolygonSetNameList.push_back(str);
+}
 
 
 
@@ -244,9 +265,6 @@ DGtal::Display3D::addLine(double x1, double y1, double z1,  double x2, double y2
 }
 
 
-
-
-
 inline
 void
 DGtal::Display3D::addQuad(double x1, double y1, double z1,
@@ -283,7 +301,7 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,
   aQuad.B=aColor.blue();
   aQuad.T=aColor.alpha();
 
-  myQuadList.push_back(aQuad);
+  (myQuadSetList.at(myLineSetList.size()-1)).push_back(aQuad);
 }
 
 
@@ -326,7 +344,7 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
   aTriangle.B=aColor.blue();
   aTriangle.T=aColor.alpha();
 
-  myTriangleList.push_back(aTriangle);
+  (myTriangleSetList.at(myLineSetList.size()-1)).push_back(aTriangle);
 }
 
 
@@ -379,7 +397,7 @@ DGtal::Display3D::addPolygon(std::vector<Display3D::ballD3D> vectBallsPolygon,
   aPolygon.T=aColor.alpha();
 
 
-  myPolygonList.push_back(aPolygon);
+  (myPolygonSetList.at(myLineSetList.size()-1)).push_back(aPolygon);
 
 }
 
@@ -913,37 +931,43 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<ballD3D> &aMesh) const {
 
 
   // Export QuadList
-  for (unsigned int i=0; i<myQuadList.size(); i++){
-    quadD3D quad = myQuadList.at(i);
-    ballD3D p1, p2, p3, p4;
-    p1.x=quad.x1*myScaleX; p1.y=quad.y1*myScaleY ;p1.z=quad.z1*myScaleZ;
-    p2.x=quad.x2*myScaleX; p2.y=quad.y2*myScaleY ;p2.z=quad.z2*myScaleZ;
-    p3.x=quad.x3*myScaleX; p3.y=quad.y3*myScaleY ;p3.z=quad.z3*myScaleZ;
-    p4.x=quad.x4*myScaleX; p4.y=quad.y4*myScaleY ;p4.z=quad.z4*myScaleZ;
-    aMesh.addVertex(p4);
-    aMesh.addVertex(p3);
-    aMesh.addVertex(p2);
-    aMesh.addVertex(p1);
-    aMesh.addQuadFace(vertexIndex,vertexIndex+1, vertexIndex+2, vertexIndex+3,
-                      DGtal::Color(quad.R, quad.G, quad.B, quad.T));
-    vertexIndex+=4;
+  for (std::vector<std::vector<quadD3D> >::const_iterator it = myQuadSetList.begin(); it != myQuadSetList.end(); it++)
+  {
+    for (std::vector<quadD3D>::const_iterator aQuad = it->begin(); aQuad!=it->end();aQuad ++)
+    {
+      ballD3D p1, p2, p3, p4;
+      p1.x=aQuad->x1*myScaleX; p1.y=aQuad->y1*myScaleY ;p1.z=aQuad->z1*myScaleZ;
+      p2.x=aQuad->x2*myScaleX; p2.y=aQuad->y2*myScaleY ;p2.z=aQuad->z2*myScaleZ;
+      p3.x=aQuad->x3*myScaleX; p3.y=aQuad->y3*myScaleY ;p3.z=aQuad->z3*myScaleZ;
+      p4.x=aQuad->x4*myScaleX; p4.y=aQuad->y4*myScaleY ;p4.z=aQuad->z4*myScaleZ;
+      aMesh.addVertex(p4);
+      aMesh.addVertex(p3);
+      aMesh.addVertex(p2);
+      aMesh.addVertex(p1);
+      aMesh.addQuadFace(vertexIndex,vertexIndex+1, vertexIndex+2, vertexIndex+3,
+                        DGtal::Color(aQuad->R, aQuad->G, aQuad->B, aQuad->T));
+      vertexIndex+=4;
+    }
   }
 
 
   // Export the mesh from TriangleList
-  for (unsigned int i=0; i < myTriangleList.size(); i++){
-    triangleD3D aTriangle = myTriangleList.at(i);
-    ballD3D p1, p2, p3;
-    p1.x = aTriangle.x1*myScaleX; p1.y = aTriangle.y1*myScaleY; p1.z = aTriangle.z1*myScaleZ;
-    p2.x = aTriangle.x2*myScaleX; p2.y = aTriangle.y2*myScaleY; p2.z = aTriangle.z2*myScaleZ;
-    p3.x = aTriangle.x3*myScaleX; p3.y = aTriangle.y3*myScaleY; p3.z = aTriangle.z3*myScaleZ;
-    aMesh.addVertex(p1);
-    aMesh.addVertex(p2);
-    aMesh.addVertex(p3);
-    aMesh.addTriangularFace(vertexIndex, vertexIndex+1, vertexIndex+2,
-                            DGtal::Color(aTriangle.R, aTriangle.G,
-                                         aTriangle.B, aTriangle.T));
-    vertexIndex+=3;
+  for (std::vector<std::vector<triangleD3D> >::const_iterator it =myTriangleSetList.begin(); it != myTriangleSetList.end(); it++)
+  {
+    for (std::vector<triangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
+    {
+      ballD3D p1, p2, p3;
+      p1.x = aTriangle->x1*myScaleX; p1.y = aTriangle->y1*myScaleY; p1.z = aTriangle->z1*myScaleZ;
+      p2.x = aTriangle->x2*myScaleX; p2.y = aTriangle->y2*myScaleY; p2.z = aTriangle->z2*myScaleZ;
+      p3.x = aTriangle->x3*myScaleX; p3.y = aTriangle->y3*myScaleY; p3.z = aTriangle->z3*myScaleZ;
+      aMesh.addVertex(p1);
+      aMesh.addVertex(p2);
+      aMesh.addVertex(p3);
+      aMesh.addTriangularFace(vertexIndex, vertexIndex+1, vertexIndex+2,
+                              DGtal::Color(aTriangle->R, aTriangle->G,
+                                           aTriangle->B, aTriangle->T));
+      vertexIndex+=3;
+    }
   }
 
 

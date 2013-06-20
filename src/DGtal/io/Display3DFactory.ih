@@ -107,7 +107,7 @@ template <typename TPoint>
 inline
 void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::Mesh<TPoint> & aMesh )
 {
-
+  display.createNewQuadList(aMesh.className());
   for(unsigned int i=0; i< aMesh.nbFaces(); i++){
     typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);
     unsigned int aNum = aFace.size();
