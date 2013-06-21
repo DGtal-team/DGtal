@@ -272,6 +272,11 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,
                           double x3, double y3, double z3,
                           double x4, double y4, double z4, DGtal::Color aColor)
 {
+    if(myQuadSetList.size() == 0 )
+    {
+        createNewQuadList("quad");
+    }
+
     quadD3D aQuad;
     updateBoundingBox(x1, y1, z1);
     updateBoundingBox(x2, y2, z2);
@@ -301,7 +306,7 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,
     aQuad.B=aColor.blue();
     aQuad.T=aColor.alpha();
 
-    (myQuadSetList.at(myLineSetList.size()-1)).push_back(aQuad);
+    (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
 }
 
 
@@ -344,7 +349,7 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
     aTriangle.B=aColor.blue();
     aTriangle.T=aColor.alpha();
 
-    (myTriangleSetList.at(myLineSetList.size()-1)).push_back(aTriangle);
+    (myTriangleSetList.at(myTriangleSetList.size()-1)).push_back(aTriangle);
 }
 
 
@@ -397,7 +402,7 @@ DGtal::Display3D::addPolygon(std::vector<Display3D::ballD3D> vectBallsPolygon,
     aPolygon.T=aColor.alpha();
 
 
-    (myPolygonSetList.at(myLineSetList.size()-1)).push_back(aPolygon);
+    (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(aPolygon);
 
 }
 

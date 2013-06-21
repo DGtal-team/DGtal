@@ -20,7 +20,7 @@
  * @file   Board3DTo2D.h
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 22 juin 2011
- * 
+ *
  * @brief
  *
  * Header file for module Board3DTo2D.cpp
@@ -57,71 +57,71 @@ namespace DGtal
 {
 
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class Board3DTo2D
-  /**
+/////////////////////////////////////////////////////////////////////////////
+// class Board3DTo2D
+/**
    * Description of class 'Board3DTo2D' <p>
    * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with Cairo with 3D->2D projection.
    */
-  class Board3DTo2D : public Display3D
-  {
-  public:
+class Board3DTo2D : public Display3D
+{
+public:
     /**
      * Cairo type for save files.
      */
     enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
-  
+
     /*!
      * \brief Constructor.
      */
     Board3DTo2D();
-  
-  
+
+
     ~Board3DTo2D(){};
-  
+
 
     /**
      * @return the style name used for drawing this object.
      */
     std::string className() const
     {
-      return "Board3DTo2D";
+        return "Board3DTo2D";
     }
-  
+
     /**
      * Set camera position.
      * @param x x position.
      * @param y y position.
      * @param z z position.
      */
-    void setCameraPosition(double x, double y, double z) 
+    void setCameraPosition(double x, double y, double z)
     { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
-  
+
     /**
      * Set camera direction.
      * @param x x direction.
      * @param y y direction.
      * @param z z direction.
      */
-    void setCameraDirection(double x, double y, double z) 
+    void setCameraDirection(double x, double y, double z)
     { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
-  
+
     /**
      * Set camera up-vector.
      * @param x x coordinate of up-vector.
      * @param y y coordinate of up-vector.
      * @param z z coordinate of up-vector.
      */
-    void setCameraUpVector(double x, double y, double z) 
+    void setCameraUpVector(double x, double y, double z)
     { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
-  
+
     /**
      * Set near and far distance.
      * @param _near near distance.
      * @param _far far distance.
      */
     void setNearFar(double _near, double _far) { ZNear = _near; ZFar = _far; }
-  
+
     /**
      * Save a Cairo image.
      * @param filename filename of the image to save.
@@ -142,8 +142,8 @@ namespace DGtal
      *
      */
     virtual void addCone(double x1, double y1, double z1,
-                            double x2, double y2, double z2,
-                            double width=0.02, bool aSign=true);
+                         double x2, double y2, double z2,
+                         double width=0.02, bool aSign=true);
 
 
     /**
@@ -157,9 +157,9 @@ namespace DGtal
      */
 
     virtual void addCylinder(double x1, double y1, double z1,
-                            double x2, double y2, double z2,
-                            double width=0.02);
-  
+                             double x2, double y2, double z2,
+                             double width=0.02);
+
     /**
      * The associated map type for storing possible modes used for
      * displaying for digital objects.
@@ -171,18 +171,18 @@ namespace DGtal
     //    * digital objects.
     //    */
     //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
-  
+
     DGtal::Color myDefaultColor;  //!< default color
 
-  
 
- 
+
+
     /**
      * Set the default color for future drawing.
      *
      * @param aColor a DGtal::Color (allow to set a trasnparency value).
      *
-     **/  
+     **/
     Board3DTo2D & operator<<(const DGtal::Color & aColor);
 
 
@@ -198,8 +198,8 @@ namespace DGtal
     template <typename TDrawableWithDisplay3D>
     Board3DTo2D & operator<<( const  TDrawableWithDisplay3D & object );
 
-  public:
-  
+public:
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -212,18 +212,18 @@ namespace DGtal
      */
     bool isValid() const;
 
-  public:
-  
+public:
+
 
     // ------------------------- Private Datas --------------------------------
-  private:
- 
+private:
+
     /**
      * Transpose a 4x4 matrix.
      * @param tmat destination matrix.
      * @param mat source matrix.
      */
-    static 
+    static
     void TransposeMt(double tmat[16], double mat[16]);
 
     /**
@@ -232,7 +232,7 @@ namespace DGtal
      * @param mat source matrix.
      * @param b source vector.
      */
-    static 
+    static
     void MulMt(double v[4], double mat[16], double b[4]);
 
     /**
@@ -248,18 +248,18 @@ namespace DGtal
      * @param upy y coordinate of up-vector.
      * @param upz z coordinate of up-vector.
      */
-    static 
+    static
     void LookAtMt(double mat[16],
-                  double eyex, double eyey, double eyez,
-                  double dirx, double diry, double dirz,
-                  double upx, double upy, double upz);
-  
- 
+    double eyex, double eyey, double eyez,
+    double dirx, double diry, double dirz,
+    double upx, double upy, double upz);
+
+
     /**
      * Precompute 4x4 projection matrix for 3D->2D projection.
      */
     void precompute_projection_matrix();
-  
+
     /**
      * Project a 3d point (3D->2D).
      * @param x3d x position of the 3d point.
@@ -269,39 +269,39 @@ namespace DGtal
      * @param y2d y destination projection position of the 2d point.
      */
     void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
-  
+
     int Viewport[4];    //!< 2D viewport
     double matrix[16];     //!< projection matrix
-      
+
     double camera_position[3];  //!< camera position
     double camera_direction[3];  //!< camera direction
     double camera_upVector[3];  //!< camera up-vector
-  
+
     double ZNear;      //!< znear distance
     double ZFar;      //!< zfar distance
-  
-  protected :
+
+protected :
     /**
      *  init function (should be in Constructor).
      */
     virtual void init();
 
-  private:
+private:
 
-  }; // end of class Board3DTo2D
-  
- 
- 
+}; // end of class Board3DTo2D
 
-  
-  /**
+
+
+
+
+/**
    * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
    * @param out the output stream where the object is written.
    * @param object the object of class 'Board3DTo2D' to write.
    * @return the output stream after the writing.
    */
-  std::ostream&
-  operator<< ( std::ostream & out, const Board3DTo2D & object );
+std::ostream&
+operator<< ( std::ostream & out, const Board3DTo2D & object );
 
 } // namespace DGtal
 

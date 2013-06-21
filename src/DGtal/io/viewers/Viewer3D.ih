@@ -67,17 +67,17 @@ DGtal::Viewer3D::operator<<(const Display3D::StreamKey  & key){
   case Display3D::updateDisplay:
     updateList();
     break;
-    
+
   case Display3D::addNewList:
     createNewCubeList();
     break;
-    
+
   case Display3D::shiftSurfelVisu:
     myCurrentfShiftVisuSurfelPrisms+=0.3;
     break;
-    
+
   }
-  
+
   return *this;
 }
 
@@ -88,14 +88,14 @@ DGtal::Viewer3D &
 DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
-  
+
   DGtal::Display3DFactory::draw(*this, object);
   return *this;
 }
 
 
 
-  
+
 
 
 
