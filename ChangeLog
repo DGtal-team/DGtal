@@ -1,6 +1,7 @@
 === DGtal 0.7 ===
 
 *General*
+    - Removing dependencies in compiled library 
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 

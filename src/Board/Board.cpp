@@ -70,16 +70,8 @@
 #endif
 
 
-namespace {
-  const float pageSizes[3][2] = { { 0.0f, 0.0f }, // BoundingBox
-          { 210.0f, 297.0f },
-          { 8.5f*25.4f, 11.0f*25.4f } };
-  const float ppmm = 720.0f / 254.0f;
-}
-
 namespace LibBoard {
 
-const double Board::Degree =  3.14159265358979323846 / 180.0;
 
 Board::State::State()
 {
@@ -1110,87 +1102,6 @@ Board::save( const char * filename, PageSize size, double margin ) const
 {
   save( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
-
-#ifdef WITH_CAIRO
-void
-Board::saveCairo( const char * filename, CairoType type, PageSize size, double margin ) const
-{
-  saveCairo( filename, type, pageSizes[size][0], pageSizes[size][1], margin );
-}
-void
-Board::saveCairo( const char * filename, CairoType type, double pageWidth, double pageHeight, double margin ) const
-{
-  cairo_surface_t *surface;
-  cairo_t *cr;
-  
-  double cairoWidth, cairoHeight;
-  
-  TransformCairo transform;
-  Rect box = boundingBox();
-
-  bool clipping = _clippingPath.size() > 2;
-  if ( clipping )
-    box = box && _clippingPath.boundingBox();
-  transform.setBoundingBox( box, pageWidth, pageHeight, margin );
-  
-  if ( pageWidth > 0 && pageHeight > 0 )
-  {
-    cairoWidth = pageWidth;
-    cairoHeight = pageHeight;
-  }
-  else
-  {
-    cairoWidth = box.width;
-    cairoHeight = box.height;
-  }
-  
-  switch (type)
-  {
-  case CairoPDF:
-      surface = cairo_pdf_surface_create (filename, cairoWidth, cairoHeight); break;
-  case CairoPS:
-      surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); break;
-  case CairoEPS:
-    surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); 
-    cairo_ps_surface_set_eps(surface, true); break;
-  case CairoSVG:
-      surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
-    case CairoPNG:
-    default:
-      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, (int)cairoWidth, (int)cairoHeight);
-  }
-  
-  cr = cairo_create (surface);
-  
-  /* For 1.0 x 1.0 coordinate space */
-  //cairo_scale (cr, cairoWidth, cairoHeight);
-  
-  //temp: http://zetcode.com/tutorials/cairographicstutorial/basicdrawing/
-  //temp: http://www.graphviz.org/pub/scm/graphviz-cairo/plugin/cairo/gvrender_cairo.c
-      
-  // Draw the background color if needed.
-  if ( _backgroundColor != DGtal::Color::None ) { 
-    Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0 );
-    r.flushCairo( cr, transform );
-  }
-  
-  // Draw the shapes.
-  std::vector< Shape* > shapes = _shapes;
-  stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
-  std::vector< Shape* >::const_iterator i = shapes.begin();
-  std::vector< Shape* >::const_iterator end = shapes.end();
-  while ( i != end ) {
-    (*i)->flushCairo( cr, transform );
-    ++i;
-  }
-  
-  if (type==CairoPNG)
-    cairo_surface_write_to_png (surface, filename);
-      
-  cairo_destroy (cr);
-  cairo_surface_destroy (surface);
-}
-#endif
 
 void
 Board::saveTikZ( const char * filename, PageSize size, double margin ) const
