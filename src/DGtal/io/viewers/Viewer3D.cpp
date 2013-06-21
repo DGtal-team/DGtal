@@ -117,13 +117,14 @@ DGtal::Viewer3D::draw()
     glPushMatrix();
     glScalef(myScaleX, myScaleY, myScaleZ);
 
-
+    std::cout << "test clipping plane viewer 3d" <<std::endl;
     unsigned int i = 0;
     vector<clippingPlaneD3D>::const_iterator it = myClippingPlaneList.begin();
 
     // OpenGL can't draw more than GL_MAX_CLIP_PLANES clipping plane
-    while ( i !=GL_MAX_CLIP_PLANES && it !=myClippingPlaneList.end() )
+    while ( i < GL_MAX_CLIP_PLANES && it !=myClippingPlaneList.end() )
     {
+        std::cout << "clip " << i <<std::endl;
         double eq [4];
         eq[0]=it->a;
         eq[1]=it->b;
