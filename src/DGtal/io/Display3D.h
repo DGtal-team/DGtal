@@ -509,7 +509,7 @@ namespace DGtal
      * @param z z coordinate of up-vector.
      */
     virtual void setCameraUpVector(double x, double y, double z ){};
-  
+
     /**
      * Set camera position.
      * @param x x position.
@@ -517,16 +517,14 @@ namespace DGtal
      * @param z z position.
      */
     virtual void setCameraPosition(double x, double y , double z) {  };
-  
+
     /**
      * Set near and far distance.
      * @param near near distance.
      * @param far far distance.
      */
     virtual void setNearFar(double near , double far){};
-  
 
-    
     /**
      * Set camera direction.
      * @param x x direction.
