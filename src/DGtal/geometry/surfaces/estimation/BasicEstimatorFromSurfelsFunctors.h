@@ -69,8 +69,8 @@ namespace DGtal
      *
      * @param anEmbedder any model of CSCellEmbedder
      */
-    DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder ):
-    myEmbedder(anEmbedder)
+    DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder , const double h):
+      myEmbedder(anEmbedder), myH(h)
     {
       myCpt=0;
     }
@@ -92,7 +92,7 @@ namespace DGtal
     /**
      * @return the estimated quantity.
      */
-    Quantity eval(const double h) {return myCpt; } const
+    Quantity eval( ) {return myCpt; } const
     
     /**
      * Reset the estimator.
@@ -111,6 +111,9 @@ namespace DGtal
     
     ///Surfel counter.
     Quantity myCpt;
+
+    ///Grid step
+    double myH;
   };
   
     
