@@ -67,7 +67,8 @@ namespace DGtal
     /**
      * Constructor.
      *
-     * @param anEmbedder any model of CSCellEmbedder
+     * @param [in] anEmbedder any model of CSCellEmbedder.
+     * @param [in] h a grid step
      */
     DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder , const double h):
       myEmbedder(anEmbedder), myH(h)
