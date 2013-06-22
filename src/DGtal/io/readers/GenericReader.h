@@ -164,7 +164,7 @@ namespace DGtal
 	return  VolReader<TContainer>::importVol( filename, aFunctor );
       }else  if(extension=="longvol"){
 	return  LongvolReader<TContainer>::importLongvol( filename, aFunctor  );
-      }else  if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d"){
+      }else  if(extension=="pgm3d"|| extension=="pgm3D" || extension=="p3d" || extension=="pgm"){
 	return PGMReader<TContainer>::importPGM3D(filename, aFunctor);
       } else if(extension=="raw"){
 	ASSERT(x!=0 && y!=0 && z!=0); 
