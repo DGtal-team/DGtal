@@ -847,9 +847,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       display.setFillColor(DGtal::Color(255, 180, 250, 255));
     }
     if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
-      display.addKSCube(x, y, z, 0.7);
+      display.addCube(x, y, z,DGtal::Color(255, 180, 250, 255), 0.7);
     }else{
-      display.addKSCube(x, y, z);
+      display.addCube(x, y, z, DGtal::Color(255, 180, 250, 255));
     }
     break;
   }
@@ -931,9 +931,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       }
     }
     if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
-      display.addKSCube(x, y, z, 0.7);
+      display.addCube(x, y, z, DGtal::Color(20, 200, 20, 255), 0.7);
     }else{
-      display.addKSCube(x, y, z);
+      display.addCube(x, y, z, DGtal::Color(20, 200, 20, 255));
     }
     break;
   }
