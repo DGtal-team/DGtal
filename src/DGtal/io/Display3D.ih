@@ -624,26 +624,6 @@ DGtal::Display3D::addKSBallel(double x, double y, double z,
 
 
 
-
-inline
-void
-DGtal::Display3D::addKSCube(double x, double y, double z,  double sizeFactor)
-{
-    updateBoundingBox(x, y, z);
-    cubeD3D c;
-    c.x=x;
-    c.y=y;
-    c.z=z;
-    c.R=myCurrentFillColor.red();
-    c.G=myCurrentFillColor.green();
-    c.B=myCurrentFillColor.blue();
-    c.T=myCurrentFillColor.alpha();
-    c.width=0.5*sizeFactor;
-    (myCubeSetList.at(0)).push_back(c);
-}
-
-
-
 // add multiple triangular faces which form a hexagonal-based pyramid
 inline
 void
