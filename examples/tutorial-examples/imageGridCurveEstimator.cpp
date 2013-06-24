@@ -117,7 +117,7 @@ int main()
     
     //DSS segmentation display
     typedef Z2i::Curve::PointsRange::ConstCirculator ConstCirculator; 
-    typedef ArithmeticalDSS<ConstCirculator,int,4> SegmentComputer;
+    typedef ArithmeticalDSSComputer<ConstCirculator,int,4> SegmentComputer;
     typedef GreedySegmentation<SegmentComputer> Segmentation;
 
     Segmentation theSegmentation( r.c(), r.c(), SegmentComputer() );

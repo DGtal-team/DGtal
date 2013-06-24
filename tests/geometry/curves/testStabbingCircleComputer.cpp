@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testGeometricalDCA.cpp
+ * @file testStabbingCircleComputer.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/26
  *
- * @brief Functions for testing class GeometricalDCA.
+ * @brief Functions for testing class StabbingCircleComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -46,7 +46,7 @@
 //Segment computer and DCA
 #include "DGtal/geometry/curves/CBidirectionalSegmentComputer.h"
 
-#include "DGtal/geometry/curves/GeometricalDCA.h"
+#include "DGtal/geometry/curves/StabbingCircleComputer.h"
 
 #include "DGtal/geometry/curves/SegmentComputerUtils.h"
 #include "DGtal/geometry/curves/GreedySegmentation.h"
@@ -130,14 +130,14 @@ ballGenerator(double aCx, double aCy, double aR, bool aFlagIsCW)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class GeometricalDCA.
+// Functions for testing class StabbingCircleComputer.
 ///////////////////////////////////////////////////////////////////////////////
 
-void testGeometricalDCAConceptChecking()
+void testStabbingCircleComputerConceptChecking()
 {
    typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
    typedef std::vector<Pair>::const_iterator ConstIterator; 
-   typedef GeometricalDCA<ConstIterator> GeomDSS; 
+   typedef StabbingCircleComputer<ConstIterator> GeomDSS; 
    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
    BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
 }
@@ -146,7 +146,7 @@ void testGeometricalDCAConceptChecking()
 * simple drawing
 */
 template <typename TCurve>
-bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
+bool drawingTestStabbingCircleComputer(const TCurve& curve, const string& suffix)
 {
 
   typedef typename TCurve::IncidentPointsRange Range; //range
@@ -154,25 +154,25 @@ bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
 
   {
     typedef typename Range::ConstIterator ConstIterator; //iterator
-    GeometricalDCA<ConstIterator> s;
+    StabbingCircleComputer<ConstIterator> s;
     longestSegment(s,r.begin(),r.end()); 
 
     Board2D board; 
     board << r << s; 
     std::stringstream ss; 
-    ss << "GeometricalDCADrawingTest" << suffix << ".eps"; 
+    ss << "StabbingCircleComputerDrawingTest" << suffix << ".eps"; 
     board.saveEPS(ss.str().c_str()); 
   }
 
   {
     typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
-    GeometricalDCA<ConstReverseIterator> s;
+    StabbingCircleComputer<ConstReverseIterator> s;
     longestSegment(s,r.rbegin(),r.rend()); 
 
     Board2D board;
     board << r << s;       
     std::stringstream ss; 
-    ss << "GeometricalDCADrawingTest" << suffix << "2.eps"; 
+    ss << "StabbingCircleComputerDrawingTest" << suffix << "2.eps"; 
     board.saveEPS(ss.str().c_str()); 
   }
     
@@ -183,7 +183,7 @@ bool drawingTestGeometricalDCA(const TCurve& curve, const string& suffix)
  * Basic methods
  */
 template <typename TCurve>
-bool testGeometricalDCA(const TCurve& curve)
+bool testStabbingCircleComputer(const TCurve& curve)
 {
 
   typedef typename TCurve::IncidentPointsRange Range; //range
@@ -197,11 +197,11 @@ bool testGeometricalDCA(const TCurve& curve)
   {
     Range r = curve.getIncidentPointsRange(); //range
 
-    GeometricalDCA<ConstIterator> s1, s2, s3;
+    StabbingCircleComputer<ConstIterator> s1, s2, s3;
     longestSegment(s2, r.begin(), r.end()); 
     longestSegment(s3, r.begin()+1, r.end()); 
-    GeometricalDCA<ConstIterator> s4(s2); 
-    GeometricalDCA<ConstIterator> s5(s3);
+    StabbingCircleComputer<ConstIterator> s4(s2); 
+    StabbingCircleComputer<ConstIterator> s5(s3);
     s3 = s1; 
     
     trace.info() << s1.isValid() << s1 << endl; 
@@ -225,7 +225,7 @@ bool testGeometricalDCA(const TCurve& curve)
   {
     Range r = curve.getIncidentPointsRange(); //range
 
-    GeometricalDCA<ConstIterator> s, t;
+    StabbingCircleComputer<ConstIterator> s, t;
 
     trace.info() << "forward extension " << endl; 
     
@@ -244,7 +244,7 @@ bool testGeometricalDCA(const TCurve& curve)
     
     trace.info() << "backward extension " << endl; 
       
-    typename GeometricalDCA<ConstIterator>::Reverse rs = s.getReverse(); 
+    typename StabbingCircleComputer<ConstIterator>::Reverse rs = s.getReverse(); 
     ConstReverseIterator ritBegin ( s.end() ); 
     ConstReverseIterator ritEnd ( itBegin ); 
       
@@ -254,7 +254,7 @@ bool testGeometricalDCA(const TCurve& curve)
     
     ConstReverseIterator ritLast (rs.end()); --ritLast;
       
-    typename GeometricalDCA<ConstIterator>::Reverse rt = t.getReverse(); 
+    typename StabbingCircleComputer<ConstIterator>::Reverse rt = t.getReverse(); 
     rt.init( ritLast ); 
     while ( (rt.begin() != ritBegin) && (rt.extendBackward()) ) {}
     trace.info() << rt << endl; 
@@ -301,7 +301,7 @@ bool testRecognition()
     
     //recognition
     typedef Range::ConstIterator ConstIterator; //iterator
-    GeometricalDCA<ConstIterator> s;
+    StabbingCircleComputer<ConstIterator> s;
     longestSegment(s,r.begin(),r.end()); 
 
     //checking if the circle is separating
@@ -340,7 +340,7 @@ bool testSegmentation(const TCurve& curve)
   Range r = curve.getIncidentPointsRange(); //range
   
   typedef typename Range::ConstIterator ConstIterator; //iterator
-  typedef GeometricalDCA<ConstIterator> SegmentComputer; //segment computer
+  typedef StabbingCircleComputer<ConstIterator> SegmentComputer; //segment computer
   
   unsigned int nbok = 0;
   unsigned int nb = 0;  
@@ -364,7 +364,7 @@ bool testSegmentation(const TCurve& curve)
         suml += 1; 
     }
     
-    board.saveSVG("GeometricalDCAGreedySegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
+    board.saveSVG("StabbingCircleComputerGreedySegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results given by another program
@@ -394,7 +394,7 @@ bool testSegmentation(const TCurve& curve)
         suml += 1; 
     }
     
-    board.saveSVG("GeometricalDCASaturatedSegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
+    board.saveSVG("StabbingCircleComputerSaturatedSegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results given by another program
@@ -411,7 +411,7 @@ bool testSegmentation(const TCurve& curve)
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class GeometricalDCA" );
+  trace.beginBlock ( "Testing class StabbingCircleComputer" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -420,7 +420,7 @@ int main( int argc, char** argv )
   bool res; 
   
   {//concept checking
-    testGeometricalDCAConceptChecking();
+    testStabbingCircleComputerConceptChecking();
   }
   
   {//basic operations
@@ -431,9 +431,9 @@ int main( int argc, char** argv )
     std::vector<PointVector<2,int> > rv; 
     rc = ballGenerator<KSpace>(0,0,6,true); 
 
-    res = testGeometricalDCA(c)
-  && drawingTestGeometricalDCA(c, "CCW")
-  && drawingTestGeometricalDCA(rc, "CW"); 
+    res = testStabbingCircleComputer(c)
+  && drawingTestStabbingCircleComputer(c, "CCW")
+  && drawingTestStabbingCircleComputer(rc, "CW"); 
   }
   
   {//recognition 

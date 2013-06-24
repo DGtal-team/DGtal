@@ -10,8 +10,8 @@ SET(DGTAL_TESTS_SRC
   # testFP
   # testGridCurve
   # testCombinDSS
-  # testGeometricalDSS
-  # testGeometricalDCA
+  # testStabbingLineComputer
+  # testStabbingCircleComputer
   # testBinomialConvolver
   testFrechetShortcut	
   )

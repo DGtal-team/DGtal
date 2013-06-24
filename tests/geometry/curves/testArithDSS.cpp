@@ -29,7 +29,7 @@
 
 /**
  * Description of testArithDSS <p>
- * Aim: simple test of \ref ArithmeticalDSS
+ * Aim: simple test of \ref ArithmeticalDSSComputer
  */
 
 
@@ -46,7 +46,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/io/boards/Board2D.h"
 
 #include "DGtal/geometry/curves/CDynamicBidirectionalSegmentComputer.h"
@@ -57,7 +57,7 @@ using namespace std;
 using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ArithmeticalDSS.
+// Functions for testing class ArithmeticalDSSComputer.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Test for 4-connected points
@@ -68,7 +68,7 @@ bool testDSS4drawing()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4;  
 
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
@@ -128,7 +128,7 @@ bool testDSS8drawing()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,8> DSS8;  
+  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8;  
 
   std::vector<Point> boundary;
   boundary.push_back(Point(0,0));
@@ -191,7 +191,7 @@ bool testExtendretractForward()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4;  
 
 
   std::vector<Point> contour;
@@ -273,7 +273,7 @@ bool testIsInsideForOneQuadrant(const Iterator& k, const Iterator& l, const Iter
   ASSERT(k < l); 
   ASSERT(l < ite); 
 
-  typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4;  
   DSS4 theDSS4;
 
   theDSS4.init( k );
@@ -390,7 +390,7 @@ bool testBIGINTEGER()
   typedef DGtal::BigInteger Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,Coordinate,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> DSS4;  
 
 
 
@@ -441,7 +441,7 @@ bool testCorner()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,8> DSS8;  
+  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8;  
 
   std::vector<Point> boundary;
   boundary.push_back(Point(10,10));
@@ -462,7 +462,7 @@ void testArithDSSConceptChecking()
 {
    typedef PointVector<2,int> Point; 
    typedef std::vector<Point>::iterator Iterator; 
-   typedef ArithmeticalDSS<Iterator,int,8> ArithDSS; 
+   typedef ArithmeticalDSSComputer<Iterator,int,8> ArithDSS; 
    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<ArithDSS> ));
    BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<ArithDSS> ));
 }
@@ -471,7 +471,7 @@ void testArithDSSConceptChecking()
 int main(int argc, char **argv)
 {
 
-  trace.beginBlock ( "Testing class ArithmeticalDSS" );
+  trace.beginBlock ( "Testing class ArithmeticalDSSComputer" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];

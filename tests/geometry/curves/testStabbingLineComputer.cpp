@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testGeometricalDSS.cpp
+ * @file testStabbingLineComputer.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/26
  *
- * @brief Functions for testing class GeometricalDSS.
+ * @brief Functions for testing class StabbingLineComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -36,7 +36,7 @@
 
 #include "DGtal/geometry/curves/CBidirectionalSegmentComputer.h"
 
-#include "DGtal/geometry/curves/GeometricalDSS.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
 
 #include "DGtal/geometry/curves/GreedySegmentation.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
@@ -52,13 +52,13 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class GeometricalDSS.
+// Functions for testing class StabbingLineComputer.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Basic methods
  */
 template <typename TCurve>
-bool testGeometricalDSS(const TCurve& curve)
+bool testStabbingLineComputer(const TCurve& curve)
 {
 
   typedef typename TCurve::IncidentPointsRange Range; //range
@@ -72,11 +72,11 @@ bool testGeometricalDSS(const TCurve& curve)
   {
     Range r = curve.getIncidentPointsRange(); //range
 
-    GeometricalDSS<ConstIterator> s1, s2, s3;
+    StabbingLineComputer<ConstIterator> s1, s2, s3;
     s2.init(r.begin()); 
     s3.init(++r.begin()); 
-    GeometricalDSS<ConstIterator> s4(s2); 
-    GeometricalDSS<ConstIterator> s5(s3);
+    StabbingLineComputer<ConstIterator> s4(s2); 
+    StabbingLineComputer<ConstIterator> s5(s3);
     s3 = s1; 
     
     trace.info() << s1.isValid() << s1 << endl; 
@@ -98,7 +98,7 @@ bool testGeometricalDSS(const TCurve& curve)
   {
     Range r = curve.getIncidentPointsRange(); //range
 
-    GeometricalDSS<ConstIterator> s, t;
+    StabbingLineComputer<ConstIterator> s, t;
 
     trace.info() << "forward extension " << endl; 
     ConstIterator itBegin (r.begin()); 
@@ -116,7 +116,7 @@ bool testGeometricalDSS(const TCurve& curve)
     trace.info() << t << endl; 
 
     trace.info() << "backward extension " << endl; 
-    typename GeometricalDSS<ConstIterator>::Reverse rs = s.getReverse(); 
+    typename StabbingLineComputer<ConstIterator>::Reverse rs = s.getReverse(); 
     ConstReverseIterator ritBegin (t.end()); 
     ConstReverseIterator ritEnd (r.rend()); 
     rs.init( ritBegin );
@@ -126,7 +126,7 @@ bool testGeometricalDSS(const TCurve& curve)
     rs.getParameters(ap,bp,cp); 
     trace.info() << ap << " " << bp << " " << cp << endl; 
 
-    typename GeometricalDSS<ConstIterator>::Reverse rt = t.getReverse(); 
+    typename StabbingLineComputer<ConstIterator>::Reverse rt = t.getReverse(); 
     rt.init( (ritBegin + (ritEnd - ritBegin)/2) ); 
     while ( (rt.begin() != ritBegin) && (rt.extendBackward())
          && (rt.end() != ritEnd) && (rt.extendForward()) ) {}
@@ -156,7 +156,7 @@ bool testGeometricalDSS(const TCurve& curve)
 * simple drawing
 */
 template <typename TCurve>
-bool drawingTestGeometricalDSS(const TCurve& curve)
+bool drawingTestStabbingLineComputer(const TCurve& curve)
 {
 
   typedef typename TCurve::IncidentPointsRange Range; //range
@@ -164,7 +164,7 @@ bool drawingTestGeometricalDSS(const TCurve& curve)
 
   Range r = curve.getIncidentPointsRange(); //range
 
-  GeometricalDSS<ConstIterator> s;
+  StabbingLineComputer<ConstIterator> s;
   ConstIterator itEnd (r.end()); 
   s.init( r.begin() );
   while ( (s.end() != itEnd) && (s.extendForward()) ) {}
@@ -174,15 +174,15 @@ bool drawingTestGeometricalDSS(const TCurve& curve)
 
   Board2D board; 
   board << r << s; 
-  board.saveEPS("GeometricalDSSdrawingTest.eps"); 
+  board.saveEPS("StabbingLineComputerdrawingTest.eps"); 
   return true; 
 }
 
-void testGeometricalDSSConceptChecking()
+void testStabbingLineComputerConceptChecking()
 {
    typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
    typedef std::vector<Pair>::const_iterator ConstIterator; 
-   typedef GeometricalDSS<ConstIterator> GeomDSS; 
+   typedef StabbingLineComputer<ConstIterator> GeomDSS; 
    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<GeomDSS> ));
    BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<GeomDSS> ));
 }
@@ -195,7 +195,7 @@ bool testSegmentation(const TCurve& curve)
   Range r = curve.getIncidentPointsRange(); //range
   
   typedef typename Range::ConstIterator ConstIterator; //iterator
-  typedef GeometricalDSS<ConstIterator> SegmentComputer; //segment computer
+  typedef StabbingLineComputer<ConstIterator> SegmentComputer; //segment computer
   
   unsigned int nbok = 0;
   unsigned int nb = 0;  
@@ -219,7 +219,7 @@ bool testSegmentation(const TCurve& curve)
         suml += 1; 
     }
     
-    board.saveEPS("GeometricalDSSGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+    board.saveEPS("StabbingLineComputerGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results gave by another program
@@ -246,7 +246,7 @@ bool testSegmentation(const TCurve& curve)
         suml += 1; 
     }
     
-    board.saveEPS("GeometricalDSSSaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+    board.saveEPS("StabbingLineComputerSaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results gave by another program
@@ -264,7 +264,7 @@ bool testSegmentation(const TCurve& curve)
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class GeometricalDSS" );
+  trace.beginBlock ( "Testing class StabbingLineComputer" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -273,7 +273,7 @@ int main( int argc, char** argv )
   bool res; 
   
   {//concept checking
-    testGeometricalDSSConceptChecking();
+    testStabbingLineComputerConceptChecking();
   }
   
   {//basic operations
@@ -285,8 +285,8 @@ int main( int argc, char** argv )
     GridCurve<KSpace> c; //grid curve
     c.initFromVectorStream(instream);
 
-    res = testGeometricalDSS(c)
-  && drawingTestGeometricalDSS(c); 
+    res = testStabbingLineComputer(c)
+  && drawingTestStabbingLineComputer(c); 
   }
   
   {//segmentations

@@ -877,7 +877,7 @@ namespace DGtal
   	  {
 	    //separating straight line and normal vector
 	    double a, b, c; 
-	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c);
+	    aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c);
 	    //norm
 	    double n = std::sqrt(a*a + b*b); 
   	    return Value( a/n, b/n ); 
@@ -976,7 +976,7 @@ namespace DGtal
   	  {
 	    //separating straight line
 	    double a, b, c; 
-	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c); 
+	    aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c); 
 	    //norm
 	    double n = std::sqrt(a*a + b*b); 
   	    //points

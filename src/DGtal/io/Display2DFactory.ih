@@ -62,11 +62,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 // AngleLinearMinimizer
 
 
-// ArithmeticalDSS
+// ArithmeticalDSSComputer
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard, 
-           const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
+           const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a )
 {
   typedef DGtal::PointVector<2,double> PointD;
   
@@ -94,7 +94,7 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard, 
-           const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
+           const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
@@ -124,7 +124,7 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
-	   const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
+	   const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a )
 {
   std::string mode = board.getMode( a.className() );
   if ( mode == "BoundingBox" )
@@ -137,10 +137,10 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
       drawAsBoundingBox( board, a );
     }
   else
-    VERIFY(false && ("draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode)==""  );
+    VERIFY(false && ("draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode)==""  );
 
 }
-// ArithmeticalDSS
+// ArithmeticalDSSComputer
 
 
 // CircleFrom2Points
@@ -473,11 +473,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // FreemanChain
 
 
-// GeometricalDSS
+// StabbingLineComputer
 template <typename TConstIterator>
 inline
 void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
-          const DGtal::GeometricalDSS<TConstIterator> & g)
+          const DGtal::StabbingLineComputer<TConstIterator> & g)
 {
   typedef TConstIterator ConstIterator;
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
@@ -512,13 +512,13 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 
   aBoard.drawLine(fx,fy,lx,ly);
 }
-// GeometricalDSS
+// StabbingLineComputer
 
-// GeometricalDCA
+// StabbingCircleComputer
 template <typename TConstIterator>
 inline
 void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
-          const DGtal::GeometricalDCA<TConstIterator> & g)
+          const DGtal::StabbingCircleComputer<TConstIterator> & g)
 {
 
   typedef TConstIterator ConstIterator;
@@ -562,8 +562,8 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 			     PointVector<2,double>(rx,ry) ); 
       
 	  //orientation
-	  VERIFY( g.getGeometricalDSSPtr().get() != 0 ); 
-	  bool orientation = g.getGeometricalDSSPtr()->isClockwiseOriented(); 
+	  VERIFY( g.getStabbingLineComputerPtr().get() != 0 ); 
+	  bool orientation = g.getStabbingLineComputerPtr()->isClockwiseOriented(); 
 
 	  //mode
 	  std::string mode = aBoard.getMode( g.className() );
@@ -576,13 +576,13 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 	}
       else 
 	{
-	  VERIFY( g.getGeometricalDSSPtr().get() != 0 ); 
-	  aBoard << ( *(g.getGeometricalDSSPtr()) );
+	  VERIFY( g.getStabbingLineComputerPtr().get() != 0 ); 
+	  aBoard << ( *(g.getStabbingLineComputerPtr()) );
 	} 
     }
 
 }
-// GeometricalDCA
+// StabbingCircleComputer
 
  
 

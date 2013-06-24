@@ -153,11 +153,11 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
 // Mesh
 
 
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display3DFactory::drawAsPoints( Display3D & display, 
-					    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+					    const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
@@ -197,7 +197,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void 
 DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, 
-					    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+					    const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
   
@@ -322,7 +322,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-				    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+				    const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
   std::string mode = display.getMode( a.className() );
   if ( mode == "BoundingBox" )
@@ -334,7 +334,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       drawAsPoints( display, a );
     }
 }
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 
 
 // DigitalSetBySTLSet

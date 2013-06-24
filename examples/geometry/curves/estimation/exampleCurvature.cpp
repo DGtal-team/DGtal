@@ -43,7 +43,7 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/curves/GeometricalDCA.h"
+#include "DGtal/geometry/curves/StabbingCircleComputer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +101,7 @@ estimatorOnShapeDigitization( const string& name,
       std::vector<double> estimations; 
       if (gridcurve.isOpen())
         { 
-	  typedef GeometricalDCA<ClassicIterator> SegmentComputer;
+	  typedef StabbingCircleComputer<ClassicIterator> SegmentComputer;
 	  typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
 	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
 	  SegmentComputer sc;
@@ -113,7 +113,7 @@ estimatorOnShapeDigitization( const string& name,
         }
       else
         { 
-	  typedef GeometricalDCA<CircularIterator> SegmentComputer;
+	  typedef StabbingCircleComputer<CircularIterator> SegmentComputer;
 	  typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
 	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
 	  SegmentComputer sc;

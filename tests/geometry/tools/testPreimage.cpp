@@ -28,7 +28,7 @@
 
 /**
  * @brief Aim: simple test of Preimage2D
- * @see testGeometricalDSS.cpp
+ * @see testStabbingLineComputer.cpp
  */
 
 #include <cstdio>

@@ -15,15 +15,15 @@
  **/
 
 /**
- * @file exampleGeometricalDCA.cpp
+ * @file exampleStabbingCircleComputer.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/10/06
  *
- * @brief An example file for GeometricalDCA.
- * @see testGeometricalDCA examplePreimage
+ * @brief An example file for StabbingCircleComputer.
+ * @see testStabbingCircleComputer examplePreimage
  *
  * This file is part of the DGtal library.
  */
@@ -35,7 +35,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/curves/GeometricalDCA.h"
+#include "DGtal/geometry/curves/StabbingCircleComputer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ using namespace Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example for GeometricalDCA" );
+  trace.beginBlock ( "Example for StabbingCircleComputer" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -63,16 +63,16 @@ int main( int argc, char** argv )
 
   trace.beginBlock("Simple example");
 
-  //! [GeometricalDCAUsage]
+  //! [StabbingCircleComputerUsage]
   Curve::IncidentPointsRange r = c.getIncidentPointsRange(); 
   Curve::IncidentPointsRange::ConstIterator itEnd (r.end()); 
 
-  GeometricalDCA<Curve::IncidentPointsRange::ConstIterator> s; 
+  StabbingCircleComputer<Curve::IncidentPointsRange::ConstIterator> s; 
   //extension
   s.init( r.begin() );
   while ( ( s.end() != itEnd )
         &&( s.extendForward() ) ) {}
-  //! [GeometricalDCAUsage]
+  //! [StabbingCircleComputerUsage]
 
   trace.info() << s << endl;  
 

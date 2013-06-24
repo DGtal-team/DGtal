@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file ArithmeticalDSS.h 
+ * @file ArithmeticalDSSComputer.h 
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -25,22 +25,22 @@
  *
  * @date 2010/07/01
  *
- * @brief Header file for module ArithmeticalDSS.cpp
+ * @brief Header file for module ArithmeticalDSSComputer.cpp
  *
  * This file is part of the DGtal library.
  *
- * @see ArithmeticalDSS.cpp testArithDSS.cpp
+ * @see ArithmeticalDSSComputer.cpp testArithDSS.cpp
  */
 
-#if defined(ArithmeticalDSS_RECURSES)
-#error Recursive header files inclusion detected in ArithmeticalDSS.h
-#else // defined(ArithmeticalDSS_RECURSES)
+#if defined(ArithmeticalDSSComputer_RECURSES)
+#error Recursive header files inclusion detected in ArithmeticalDSSComputer.h
+#else // defined(ArithmeticalDSSComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ArithmeticalDSS_RECURSES
+#define ArithmeticalDSSComputer_RECURSES
 
-#if !defined ArithmeticalDSS_h
+#if !defined ArithmeticalDSSComputer_h
 /** Prevents repeated inclusion of headers. */
-#define ArithmeticalDSS_h
+#define ArithmeticalDSSComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -63,9 +63,9 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // class ArithmeticalDSS
+  // class ArithmeticalDSSComputer
   /**
-   * Description of class 'ArithmeticalDSS' <p>
+   * Description of class 'ArithmeticalDSSComputer' <p>
    * \brief Aim:
    * Dynamic recognition of a digital straight segment (DSS)
    * defined as the sequence of simply connected points (x,y)
@@ -80,12 +80,12 @@ namespace DGtal
    *
    *
    * Here is a short example of how to use this class:
-   * @snippet geometry/curves/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
+   * @snippet geometry/curves/ArithmeticalDSSComputer.cpp ArithmeticalDSSComputer4Usage
    *
    * You must get: 
    *
    * @code
-[ArithmeticalDSS]
+[ArithmeticalDSSComputer]
 Parameters (a,b,mu,omega)=(2, 5, -4, 7)
 Number of upper patterns: 0
 Number of lower patterns: 1
@@ -98,7 +98,7 @@ Leaning points:
 Steps:
    [PointVector] {1, 0}
    [PointVector] {0, 1}
-[End ArithmeticalDSS]
+[End ArithmeticalDSSComputer]
    * @endcode
    *
    * @tparam TIterator  type ConstIterator on 2D points,
@@ -108,12 +108,12 @@ Steps:
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    *
-   * @see ArithmeticalDSS.cpp testArithDSS.cpp 
+   * @see ArithmeticalDSSComputer.cpp testArithDSS.cpp 
    */
   template <typename TIterator, 
     typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate, 
     int connectivity = 8>
-  class ArithmeticalDSS
+  class ArithmeticalDSSComputer
   {
 
 
@@ -199,8 +199,8 @@ Steps:
 
     //requiered types
     typedef TIterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
-    typedef ArithmeticalDSS<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef ArithmeticalDSSComputer<ConstIterator,TInteger,connectivity> Self; 
+    typedef ArithmeticalDSSComputer<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
 
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
@@ -222,14 +222,14 @@ Steps:
      * Default constructor.
      * not valid
      */
-    ArithmeticalDSS();
+    ArithmeticalDSSComputer();
 
     /**
      * Constructor with initialisation
      * @param it an iterator on 2D points
      * @see init
      */
-    ArithmeticalDSS(const ConstIterator& it);
+    ArithmeticalDSSComputer(const ConstIterator& it);
 
     /**
      * Initialisation.
@@ -242,7 +242,7 @@ Steps:
      * Copy constructor.
      * @param other the object to clone.
      */
-    ArithmeticalDSS ( const Self & other );
+    ArithmeticalDSSComputer ( const Self & other );
 
     /**
      * Assignment.
@@ -283,7 +283,7 @@ Steps:
     /**
      * Destructor.
      */
-    ~ArithmeticalDSS(){};
+    ~ArithmeticalDSSComputer(){};
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -760,18 +760,18 @@ Steps:
     std::string className() const;
 
     
-  }; // end of class ArithmeticalDSS
+  }; // end of class ArithmeticalDSSComputer
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.
+ * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSSComputer'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'ArithmeticalDSS' to write.
+ * @param object the object of class 'ArithmeticalDSSComputer' to write.
  * @return the output stream after the writing.
  */
 template <typename TIterator, typename TInteger, int connectivity>
 std::ostream&
-operator<< ( std::ostream & out,  ArithmeticalDSS<TIterator,TInteger,connectivity> & object )
+operator<< ( std::ostream & out,  ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & object )
 {
   object.selfDisplay( out);
   return out;
@@ -784,12 +784,12 @@ operator<< ( std::ostream & out,  ArithmeticalDSS<TIterator,TInteger,connectivit
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods.
-#include "DGtal/geometry/curves/ArithmeticalDSS.ih"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ArithmeticalDSS_h
+#endif // !defined ArithmeticalDSSComputer_h
 
-#undef ArithmeticalDSS_RECURSES
-#endif // else defined(ArithmeticalDSS_RECURSES)
+#undef ArithmeticalDSSComputer_RECURSES
+#endif // else defined(ArithmeticalDSSComputer_RECURSES)

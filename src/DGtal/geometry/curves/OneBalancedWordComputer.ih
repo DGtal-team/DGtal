@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file CombinatorialDSS.ih
+ * @file OneBalancedWordComputer.ih
  * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/04/29
  *
- * Implementation of inline methods defined in CombinatorialDSS.h
+ * Implementation of inline methods defined in OneBalancedWordComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -42,13 +42,13 @@
 
 template < typename TConstIterator, typename TInteger >
 inline
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::CombinatorialDSS()
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::OneBalancedWordComputer()
 { }
 
 
 template < typename TConstIterator, typename TInteger >
 inline
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::~CombinatorialDSS()
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::~OneBalancedWordComputer()
 { }
 
 
@@ -57,7 +57,7 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::~CombinatorialDSS()
 template < typename TConstIterator, typename TInteger >
 inline
 void 
-DGtal::CombinatorialDSS<TConstIterator, TInteger>::init( 
+DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::init( 
                     const ConstIterator & it,
                     const Point & start,
                     Vector (*displacements) (Code) )
@@ -88,7 +88,7 @@ DGtal::CombinatorialDSS<TConstIterator, TInteger>::init(
 
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const ConstPointIterator & i)
+void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const ConstPointIterator & i)
 {
   *this = *( i.getDSS() );
 }
@@ -97,7 +97,7 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const ConstPointIter
 
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const FreemanChainCode & fc)
+void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const FreemanChainCode & fc)
 {
   init( fc.chain.begin(), fc.firstPoint(), FreemanChainCode::displacement );
 }
@@ -106,7 +106,7 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const FreemanChainCo
 
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const typename FreemanChainCode::ConstIterator& it)
+void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const typename FreemanChainCode::ConstIterator& it)
 {
   std::string::const_iterator string_it = it.getChain()->chain.begin();
   string_it += it.getPosition();
@@ -119,7 +119,7 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const typename Freem
  */
 template < typename TConstIterator, typename TInteger >
 inline
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::CombinatorialDSS ( const Self & other ) :
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::OneBalancedWordComputer ( const Self & other ) :
   myCodeHandler       ( other.myCodeHandler ),
   myBegin             ( other.myBegin ),
   myEnd               ( other.myEnd ),
@@ -143,8 +143,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::CombinatorialDSS ( const Self 
  */
 template < typename TConstIterator, typename TInteger >
 inline
-DGtal::CombinatorialDSS<TConstIterator,TInteger> & 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator= ( const Self & other )
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger> & 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator= ( const Self & other )
 {
   myCodeHandler       = other.myCodeHandler;
   myBegin             = other.myBegin;
@@ -166,10 +166,10 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator= ( const Self & other
 
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Self 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getSelf( ) const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Self 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getSelf( ) const
 {
-  return CombinatorialDSS( );
+  return OneBalancedWordComputer( );
 }
 
 /**
@@ -177,7 +177,7 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getSelf( ) const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator==( const Self & other ) const
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator==( const Self & other ) const
 {
   return ( ( begin() == other.begin() ) && ( end() == other.end() ) );
 }
@@ -190,7 +190,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator==( const Self & 
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator!=( const Self & other ) const
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::operator!=( const Self & other ) const
 {
   return !(*this == other);
 }
@@ -198,8 +198,8 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator!=( const Self & 
 
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Reverse
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getReverse() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Reverse
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getReverse() const
 {
   return Reverse();
 }
@@ -211,7 +211,7 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getReverse() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendForward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendForward()
 {
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
@@ -280,7 +280,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendBackward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendBackward()
 {
   Code letterRead = getCode( myFirstLetter - 1 );
   Code letterExpected = getCode( myNextBefore );
@@ -374,7 +374,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendBackward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractForward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractForward()
 {
 
   if ( myNextBefore != myPatternEnd ) {
@@ -461,7 +461,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractBackward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractBackward()
 {
   if ( myNextAfter != myPatternBegin ) {
     // Normal case
@@ -543,7 +543,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractBackward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableForward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableForward()
 {
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
@@ -573,7 +573,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableBackward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableBackward()
 {
   Code letterRead = getCode( myFirstLetter - 1);
   Code letterExpected = getCode( myNextBefore );
@@ -598,8 +598,8 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableBackward()
 
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TConstIterator,TInteger>::setPosition( 
-   const DGtal::CombinatorialDSS<TConstIterator, TInteger>::Point & p )
+void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::setPosition( 
+   const DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Point & p )
 {
   Vector v = myLastPoint - myFirstPoint;
   myFirstPoint = p;
@@ -609,8 +609,8 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::setPosition(
 
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TConstIterator,TInteger>::translate( 
-   const DGtal::CombinatorialDSS<TConstIterator, TInteger>::Vector & v )
+void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::translate( 
+   const DGtal::OneBalancedWordComputer<TConstIterator, TInteger>::Vector & v )
 {
   myFirstPoint += v;
   myLastPoint  += v;
@@ -622,7 +622,7 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::translate(
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isValid() const
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isValid() const
 {
   return (
       ( myFirstLetter  <= myPatternBegin ) &&
@@ -647,7 +647,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isValid() const
 template < typename TConstIterator, typename TInteger >
 inline
 void
-DGtal::CombinatorialDSS<TConstIterator, TInteger >::selfDisplay ( std::ostream & out ) const
+DGtal::OneBalancedWordComputer<TConstIterator, TInteger >::selfDisplay ( std::ostream & out ) const
 {
   std::string s;
   for (int i=myFirstLetter; i<= myLastLetter; i++) 
@@ -657,7 +657,7 @@ DGtal::CombinatorialDSS<TConstIterator, TInteger >::selfDisplay ( std::ostream &
     s += getCode( i );
   Integer a,b,mu,omega;
   getArithmeticalDescription(a,b,mu,omega);
-  out << "[CombinatorialDSS]\n";
+  out << "[OneBalancedWordComputer]\n";
   out << "myCodes             = " << s << "\n";
   out << "myFirstPoint        = " << myFirstPoint << "\n";
   out << "myLastPoint         = " << myLastPoint << "\n";
@@ -671,7 +671,7 @@ DGtal::CombinatorialDSS<TConstIterator, TInteger >::selfDisplay ( std::ostream &
   out << "myNextAfter         = " << myNextAfter << "\n";
   out << "(a,b,mu,omega)      = (" << a << ", " << b << ", " << mu << ", " <<
     omega << ")\n"; 
-  out << "[End CombinatorialDSS]" << endl;
+  out << "[End OneBalancedWordComputer]" << endl;
 }
 
 
@@ -685,7 +685,7 @@ template < typename TConstIterator, typename TInteger >
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-      const CombinatorialDSS<TConstIterator, TInteger> & object )
+      const OneBalancedWordComputer<TConstIterator, TInteger> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -697,9 +697,9 @@ DGtal::operator<< ( std::ostream & out,
  */
 template < typename TConstIterator, typename TInteger >
 inline
-//DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code 
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getSmallLetter() const
+//DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code 
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getSmallLetter() const
 {
   return getCode( myPatternBegin );
 }
@@ -710,8 +710,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getSmallLetter() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getBigLetter() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getBigLetter() const
 {
   return getCode( myPatternEnd );
 }
@@ -724,8 +724,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getBigLetter() const
 /*
  * template <typename TInteger>
  * inline
- * typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
- * DGtal::CombinatorialDSS<TConstIterator,TInteger>::getCode(Index pos) const
+ * typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
+ * DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getCode(Index pos) const
  * {
  *   int fcSize = (int) myFC->size();
  *   if ( pos < 0 ) 
@@ -738,16 +738,16 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getBigLetter() const
 
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getCode(Index pos)  
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getCode(Index pos)  
 {
   return myCodeHandler.getCode( pos  );
 }
 
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getCode(Index pos)  const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Code
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getCode(Index pos)  const
 {
   return myCodeHandler.getCode( pos  );
 }
@@ -760,8 +760,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getCode(Index pos)  const
 */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Size
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::mainPatternLength() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Size
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mainPatternLength() const
 {
   return myPatternEnd - myPatternBegin + 1;
 }
@@ -772,8 +772,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::mainPatternLength() const
 */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Vector
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::mainPatternVector() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Vector
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mainPatternVector() const
 {
   ConstPointIterator it = pointBegin();
   while ( ! isUL ( it.getIndex() ) )
@@ -795,8 +795,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::mainPatternVector() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Size
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::suffixLength() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Size
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::suffixLength() const
 {
   return ( myPatternEnd - myNextBefore );
 }
@@ -807,8 +807,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::suffixLength() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Size
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::prefixLength() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Size
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::prefixLength() const
 {
   return ( myNextAfter - myPatternBegin );
 }
@@ -820,7 +820,7 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::prefixLength() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isUL ( Index pos ) const
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isUL ( Index pos ) const
 {
   return ( (pos == myPatternBegin) || ( pos == myPatternEnd ) );
 }
@@ -834,7 +834,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isUL ( Index pos ) const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::nextIsLL ( Index pos ) const
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::nextIsLL ( Index pos ) const
 {
   return ( (pos - myPatternBegin) == mainPatternLength() - myLeftPatternLength - 1) ;
 }
@@ -846,7 +846,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::nextIsLL ( Index pos ) co
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::previousIsLL ( Index pos ) const
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::previousIsLL ( Index pos ) const
 {
   return ( (pos - myPatternBegin) == mainPatternLength() - myLeftPatternLength ) ;
 }
@@ -857,7 +857,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::previousIsLL ( Index pos 
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isTrivial() const
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isTrivial() const
 {
   // If there is no left subpattern, then the DSS is trivial.
   return ( myLeftPatternLength == 0 );
@@ -866,16 +866,16 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isTrivial() const
 
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstIterator 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::begin() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstIterator 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::begin() const
 {
   return myBegin;
 }
 
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstIterator 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::end() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstIterator 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::end() const
 {
   return myEnd;
 }
@@ -886,8 +886,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::end() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstPointIterator 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::pointBegin() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstPointIterator 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointBegin() const
 {
   return ConstPointIterator( this, myFirstLetter, myFirstPoint );
 }
@@ -898,8 +898,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::pointBegin() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstPointIterator 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::pointEnd() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::ConstPointIterator 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointEnd() const
 {
   ConstPointIterator it ( this, myLastLetter+1, myLastPoint );
   return ++it;
@@ -913,8 +913,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::pointEnd() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getA() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getA() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega);
@@ -926,8 +926,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getA() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getB() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getB() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega);
@@ -941,8 +941,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getB() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getMu() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getMu() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega );
@@ -955,8 +955,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getMu() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getOmega() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getOmega() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega );
@@ -972,7 +972,7 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getOmega() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TConstIterator,TInteger>::getArithmeticalDescription(
+void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getArithmeticalDescription(
     Integer &a, Integer &b, Integer &mu, Integer &omega ) const
 {
   ConstPointIterator itBegin = pointBegin();
@@ -1001,7 +1001,7 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::getArithmeticalDescriptio
 
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TConstIterator,TInteger>::computeLeaningPoints( 
+void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::computeLeaningPoints( 
               Point & uf, Point & ul, 
               Point & lf, Point & ll ) const
 {
@@ -1036,8 +1036,8 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::computeLeaningPoints(
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getUf() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getUf() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1050,8 +1050,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getUf() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getUl() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getUl() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1064,8 +1064,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getUl() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLf() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getLf() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1078,8 +1078,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLf() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLl() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getLl() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1093,8 +1093,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLl() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Vector 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::displacement( Code c ) const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Vector 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::displacement( Code c ) const
 {
   return this->myDisplacements( c );
 }
@@ -1102,8 +1102,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::displacement( Code c ) const
 
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getRemainder(const Point & aPoint) const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getRemainder(const Point & aPoint) const
 {
   Integer a,b,mu,omega;
   Integer x = aPoint[0];
@@ -1126,8 +1126,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getRemainder(const Point & aPo
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getFirstPoint() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getFirstPoint() const
 {
   return myFirstPoint;
 }
@@ -1139,8 +1139,8 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getFirstPoint() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLastPoint() const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getLastPoint() const
 {
   return myLastPoint;
 }
@@ -1164,7 +1164,7 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLastPoint() const
  */ 
 //template <typename TInteger>
 //bool 
-//CombinatorialDSS<TInteger>::longestChristoffelPrefix(
+//OneBalancedWordComputer<TInteger>::longestChristoffelPrefix(
 //    Iterator it,
 //    const OrderedAlphabet & aAlph)
 //{

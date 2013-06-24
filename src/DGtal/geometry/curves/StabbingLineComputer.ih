@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file GeometricalDSS.ih
+ * @file StabbingLineComputer.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/26
  *
- * Implementation of inline methods defined in GeometricalDSS.h
+ * Implementation of inline methods defined in StabbingLineComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -40,14 +40,14 @@
 
 template <typename TConstIterator>
 inline
-DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS()
+DGtal::StabbingLineComputer<TConstIterator>::StabbingLineComputer()
 :myBegin(), myEnd(), myPreimagePtr(), myFlagIsInit(false), myFlagIsCW(true)
 {
 }
 
 template <typename TConstIterator>
 inline
-DGtal::GeometricalDSS<TConstIterator>::GeometricalDSS( const Self& other )
+DGtal::StabbingLineComputer<TConstIterator>::StabbingLineComputer( const Self& other )
 :myBegin(other.myBegin), myEnd(other.myEnd), myPreimagePtr(other.myPreimagePtr), 
 myFlagIsInit(other.myFlagIsInit), myFlagIsCW(other.myFlagIsCW)
 {
@@ -55,8 +55,8 @@ myFlagIsInit(other.myFlagIsInit), myFlagIsCW(other.myFlagIsCW)
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::Self&
-DGtal::GeometricalDSS<TConstIterator>::operator= ( const Self& other )
+typename DGtal::StabbingLineComputer<TConstIterator>::Self&
+DGtal::StabbingLineComputer<TConstIterator>::operator= ( const Self& other )
 {
   if ( this != &other )
   {
@@ -71,14 +71,14 @@ DGtal::GeometricalDSS<TConstIterator>::operator= ( const Self& other )
 
 template <typename TConstIterator>
 inline
-DGtal::GeometricalDSS<TConstIterator>::~GeometricalDSS()
+DGtal::StabbingLineComputer<TConstIterator>::~StabbingLineComputer()
 {
 }
 
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::operator==( const Self& other ) const
+DGtal::StabbingLineComputer<TConstIterator>::operator==( const Self& other ) const
 {
   if (isValid()&&other.isValid())
   {
@@ -112,15 +112,15 @@ DGtal::GeometricalDSS<TConstIterator>::operator==( const Self& other ) const
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::operator!=( const Self& other ) const
+DGtal::StabbingLineComputer<TConstIterator>::operator!=( const Self& other ) const
 {
   return !(*this == other); 
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::Reverse
-DGtal::GeometricalDSS<TConstIterator>::getReverse() const
+typename DGtal::StabbingLineComputer<TConstIterator>::Reverse
+DGtal::StabbingLineComputer<TConstIterator>::getReverse() const
 {
   return Reverse(); 
 }
@@ -128,8 +128,8 @@ DGtal::GeometricalDSS<TConstIterator>::getReverse() const
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::Self
-DGtal::GeometricalDSS<TConstIterator>::getSelf() const
+typename DGtal::StabbingLineComputer<TConstIterator>::Self
+DGtal::StabbingLineComputer<TConstIterator>::getSelf() const
 {
   return Self(); 
 }
@@ -142,7 +142,7 @@ DGtal::GeometricalDSS<TConstIterator>::getSelf() const
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isValid() const
+DGtal::StabbingLineComputer<TConstIterator>::isValid() const
 {
   if ( myPreimagePtr.get() != 0 )
   {
@@ -156,24 +156,24 @@ DGtal::GeometricalDSS<TConstIterator>::isValid() const
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::ConstIterator
-DGtal::GeometricalDSS<TConstIterator>::begin() const
+typename DGtal::StabbingLineComputer<TConstIterator>::ConstIterator
+DGtal::StabbingLineComputer<TConstIterator>::begin() const
 {
   return myBegin;
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::ConstIterator
-DGtal::GeometricalDSS<TConstIterator>::end() const
+typename DGtal::StabbingLineComputer<TConstIterator>::ConstIterator
+DGtal::StabbingLineComputer<TConstIterator>::end() const
 {
   return myEnd;
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::Point
-DGtal::GeometricalDSS<TConstIterator>::getUf() const
+typename DGtal::StabbingLineComputer<TConstIterator>::Point
+DGtal::StabbingLineComputer<TConstIterator>::getUf() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   return myPreimagePtr->getUf();
@@ -181,8 +181,8 @@ DGtal::GeometricalDSS<TConstIterator>::getUf() const
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::Point
-DGtal::GeometricalDSS<TConstIterator>::getUl() const
+typename DGtal::StabbingLineComputer<TConstIterator>::Point
+DGtal::StabbingLineComputer<TConstIterator>::getUl() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   return myPreimagePtr->getUl();
@@ -190,8 +190,8 @@ DGtal::GeometricalDSS<TConstIterator>::getUl() const
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::Point
-DGtal::GeometricalDSS<TConstIterator>::getLf() const
+typename DGtal::StabbingLineComputer<TConstIterator>::Point
+DGtal::StabbingLineComputer<TConstIterator>::getLf() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   return myPreimagePtr->getLf();
@@ -199,8 +199,8 @@ DGtal::GeometricalDSS<TConstIterator>::getLf() const
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDSS<TConstIterator>::Point
-DGtal::GeometricalDSS<TConstIterator>::getLl() const
+typename DGtal::StabbingLineComputer<TConstIterator>::Point
+DGtal::StabbingLineComputer<TConstIterator>::getLl() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   return myPreimagePtr->getLl();
@@ -209,7 +209,7 @@ DGtal::GeometricalDSS<TConstIterator>::getLl() const
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isClockwiseOriented() const
+DGtal::StabbingLineComputer<TConstIterator>::isClockwiseOriented() const
 {
   return myFlagIsCW;
 }
@@ -218,7 +218,7 @@ DGtal::GeometricalDSS<TConstIterator>::isClockwiseOriented() const
 template <typename TConstIterator>
 inline
 void
-DGtal::GeometricalDSS<TConstIterator>::getParameters(double& alpha, double& beta, double& gamma) const
+DGtal::StabbingLineComputer<TConstIterator>::getParameters(double& alpha, double& beta, double& gamma) const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   myPreimagePtr->getSeparatingStraightLine(alpha, beta, gamma);
@@ -227,7 +227,7 @@ DGtal::GeometricalDSS<TConstIterator>::getParameters(double& alpha, double& beta
 template <typename TConstIterator>
 inline
 void
-DGtal::GeometricalDSS<TConstIterator>::projects(double& x, double& y, 
+DGtal::StabbingLineComputer<TConstIterator>::projects(double& x, double& y, 
                 const double& alpha, const double& beta, const double& gamma) const
 {
   ASSERT( (alpha!=0)||(beta!=0) );
@@ -243,7 +243,7 @@ DGtal::GeometricalDSS<TConstIterator>::projects(double& x, double& y,
 template <typename TConstIterator>
 inline
 void
-DGtal::GeometricalDSS<TConstIterator>::init(const ConstIterator& anIt)
+DGtal::StabbingLineComputer<TConstIterator>::init(const ConstIterator& anIt)
 {
   myBegin = anIt; 
   myEnd = anIt; 
@@ -255,7 +255,7 @@ DGtal::GeometricalDSS<TConstIterator>::init(const ConstIterator& anIt)
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isConcave()
+DGtal::StabbingLineComputer<TConstIterator>::isConcave()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -277,7 +277,7 @@ DGtal::GeometricalDSS<TConstIterator>::isConcave()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isConvex()
+DGtal::StabbingLineComputer<TConstIterator>::isConvex()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -299,7 +299,7 @@ DGtal::GeometricalDSS<TConstIterator>::isConvex()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConcave()
+DGtal::StabbingLineComputer<TConstIterator>::isOppositeEndConcave()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -323,7 +323,7 @@ DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConcave()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConvex()
+DGtal::StabbingLineComputer<TConstIterator>::isOppositeEndConvex()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -348,7 +348,7 @@ DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConvex()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isExtendableForward()
+DGtal::StabbingLineComputer<TConstIterator>::isExtendableForward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -376,7 +376,7 @@ DGtal::GeometricalDSS<TConstIterator>::isExtendableForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::extendForward()
+DGtal::StabbingLineComputer<TConstIterator>::extendForward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -415,7 +415,7 @@ DGtal::GeometricalDSS<TConstIterator>::extendForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isExtendableBackward()
+DGtal::StabbingLineComputer<TConstIterator>::isExtendableBackward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -445,7 +445,7 @@ DGtal::GeometricalDSS<TConstIterator>::isExtendableBackward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::extendBackward()
+DGtal::StabbingLineComputer<TConstIterator>::extendBackward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -489,10 +489,10 @@ DGtal::GeometricalDSS<TConstIterator>::extendBackward()
 template <typename TConstIterator>
 inline
 void
-DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
+DGtal::StabbingLineComputer<TConstIterator>::selfDisplay ( std::ostream & out ) const
 {
   out << std::endl;
-  out << "[GeometricalDSS]" << std::endl;
+  out << "[StabbingLineComputer]" << std::endl;
   if (isValid())
   {
     Pair firstPair( *myBegin ); 
@@ -508,15 +508,15 @@ DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
   {
     out << "\t not valid" << std::endl; 
   }
-  out << "[end of GeometricalDSS]" << std::endl;
+  out << "[end of StabbingLineComputer]" << std::endl;
 }
 
 template <typename TConstIterator>
 inline
 std::string
-DGtal::GeometricalDSS<TConstIterator>::className() const
+DGtal::StabbingLineComputer<TConstIterator>::className() const
 {
-  return "GeometricalDSS";
+  return "StabbingLineComputer";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -526,7 +526,7 @@ template <typename TConstIterator>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const GeometricalDSS<TConstIterator> & object )
+		  const StabbingLineComputer<TConstIterator> & object )
 {
   object.selfDisplay( out );
   return out;

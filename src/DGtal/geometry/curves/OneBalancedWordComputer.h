@@ -17,14 +17,14 @@
 #pragma once
 
 /**
- * @file CombinatorialDSS.h
+ * @file OneBalancedWordComputer.h
  * @brief Dynamical recognition of DSS on FreemanChain code. 
  * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2011/04/29
  *
- * Header file for module CombinatorialDSS.cpp
+ * Header file for module OneBalancedWordComputer.cpp
  *
  * This class is a model of the concept CDynamicBidirectionalSegmentComputer. 
  *
@@ -33,15 +33,15 @@
  * @see testCombinDSS.cpp
  */
 
-#if defined(CombinatorialDSS_RECURSES)
-#error Recursive header files inclusion detected in CombinatorialDSS.h
-#else // defined(CombinatorialDSS_RECURSES)
+#if defined(OneBalancedWordComputer_RECURSES)
+#error Recursive header files inclusion detected in OneBalancedWordComputer.h
+#else // defined(OneBalancedWordComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CombinatorialDSS_RECURSES
+#define OneBalancedWordComputer_RECURSES
 
-#if !defined CombinatorialDSS_h
+#if !defined OneBalancedWordComputer_h
 /** Prevents repeated inclusion of headers. */
-#define CombinatorialDSS_h
+#define OneBalancedWordComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -57,9 +57,9 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class CombinatorialDSS
+  // template class OneBalancedWordComputer
   /**
-   * Description of template class 'CombinatorialDSS' <p>
+   * Description of template class 'OneBalancedWordComputer' <p>
    * \brief Aim:
    *
    * A combinatorial DSS is a specialized type of 4-connected DSS that reads
@@ -84,7 +84,7 @@ namespace DGtal
 
 
   template <typename TConstIterator, typename TInteger>
-    class CombinatorialDSS  
+    class OneBalancedWordComputer  
   {
 
     // ----------------------- Types ------------------------------
@@ -96,8 +96,8 @@ namespace DGtal
 
       //Required types
       typedef FreemanChain<TInteger> FreemanChainCode;
-      typedef CombinatorialDSS<ConstIterator, Integer> Self;
-      typedef CombinatorialDSS<ConstIterator, Integer> Reverse;
+      typedef OneBalancedWordComputer<ConstIterator, Integer> Self;
+      typedef OneBalancedWordComputer<ConstIterator, Integer> Reverse;
 
       //2D points and 2D vectors
       typedef DGtal::PointVector<2,Integer> Point;
@@ -249,7 +249,7 @@ namespace DGtal
           typedef Point * pointer;
           typedef Point & reference;
 
-          const CombinatorialDSS * myDSS;
+          const OneBalancedWordComputer * myDSS;
           Index i;
           Point p;
 
@@ -262,10 +262,10 @@ namespace DGtal
           /**
            * Initialization constructor.
            * @param Index of the first letter.
-           * @param CombinatorialDSS on which the iterator is defined.
+           * @param OneBalancedWordComputer on which the iterator is defined.
            * @param Starting point of the iterator.
            */
-          ConstPointIterator( const CombinatorialDSS * dss, Index ind, Point pt ) :
+          ConstPointIterator( const OneBalancedWordComputer * dss, Index ind, Point pt ) :
             myDSS(dss), i(ind), p(pt) 
           {}
 
@@ -355,7 +355,7 @@ namespace DGtal
 
 
           // Get a reference to the current Combinatorial DSS
-          const CombinatorialDSS * getDSS() const
+          const OneBalancedWordComputer * getDSS() const
             {
               return myDSS;
             }
@@ -378,12 +378,12 @@ namespace DGtal
       /**
        * Default constructor
        */
-      CombinatorialDSS();
+      OneBalancedWordComputer();
 
       /**
        * Destructor.
        */
-      ~CombinatorialDSS();
+      ~OneBalancedWordComputer();
 
 
       /**
@@ -405,7 +405,7 @@ namespace DGtal
 
 
       /**
-       * Initialize from a ConstPointIterator on a CombinatorialDSS.
+       * Initialize from a ConstPointIterator on a OneBalancedWordComputer.
        * @param ConstPointIterator
        */
       void init(const ConstPointIterator & i);
@@ -445,17 +445,17 @@ namespace DGtal
        * Copy constructor.
        * @param other the object to clone.
        */
-      CombinatorialDSS ( const Self & other );
+      OneBalancedWordComputer ( const Self & other );
 
       /**
        * Assignment.
        * @param other the object to copy.
        * @return a reference on 'this'.
        */
-      CombinatorialDSS & operator= ( const Self & other );
+      OneBalancedWordComputer & operator= ( const Self & other );
 
       /**
-       * @returns an uninitialized instance of CombinatorialDSS.
+       * @returns an uninitialized instance of OneBalancedWordComputer.
        */
       Self getSelf( ) const;
 
@@ -512,7 +512,7 @@ namespace DGtal
 
       /**
        * Removes the first point of the DSS (at back). 
-       * NB : Unlike the ArithmeticalDSS, a CombinatorialDSS must
+       * NB : Unlike the ArithmeticalDSSComputer, a OneBalancedWordComputer must
        * containt at least two points since it is defined by a letter in
        * a Freeman Chain code.  
        * @return 'true' if the first point is removed, 'false' otherwise.
@@ -521,7 +521,7 @@ namespace DGtal
 
       /**
        * Removes the last point of the DSS (at front).
-       * NB : Unlike the ArithmeticalDSS, a CombinatorialDSS must
+       * NB : Unlike the ArithmeticalDSSComputer, a OneBalancedWordComputer must
        * containt at least two points since it is defined by a letter in
        * a Freeman Chain code.  
        * @return 'true' if the last point is removed, 'false' otherwise.
@@ -744,7 +744,7 @@ namespace DGtal
       //const FreemanChainCode * myFC;
 
       /**
-       * The array of char on which is defined the CombinatorialDSS
+       * The array of char on which is defined the OneBalancedWordComputer
        */
       CodeHandler<ConstIterator> myCodeHandler;
 
@@ -944,18 +944,18 @@ namespace DGtal
 
 
 
-  }; // end of class CombinatorialDSS
+  }; // end of class OneBalancedWordComputer
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'CombinatorialDSS'.
+   * Overloads 'operator<<' for displaying objects of class 'OneBalancedWordComputer'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'CombinatorialDSS' to write.
+   * @param object the object of class 'OneBalancedWordComputer' to write.
    * @return the output stream after the writing.
    */
   template <typename T1, typename T2>
   std::ostream&
-  operator<< ( std::ostream & out, const CombinatorialDSS<T1,T2> & object );
+  operator<< ( std::ostream & out, const OneBalancedWordComputer<T1,T2> & object );
 
 
 
@@ -964,11 +964,11 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/curves/CombinatorialDSS.ih"
+#include "DGtal/geometry/curves/OneBalancedWordComputer.ih"
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CombinatorialDSS_h
+#endif // !defined OneBalancedWordComputer_h
 
-#undef CombinatorialDSS_RECURSES
-#endif // else defined(CombinatorialDSS_RECURSES)
+#undef OneBalancedWordComputer_RECURSES
+#endif // else defined(OneBalancedWordComputer_RECURSES)

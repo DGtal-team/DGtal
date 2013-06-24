@@ -28,7 +28,7 @@
 
 /**
  * Description of testArithDSS3dViewer <p>
- * Aim: simple test of \ref ArithmeticalDSS3d
+ * Aim: simple test of \ref StandardDSS6Computer
  */
 
 
@@ -48,7 +48,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/StandardDSS6Computer.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
 
@@ -65,7 +65,7 @@ int main( int argc, char** argv )
 
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
+  typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;  
   typedef SaturatedSegmentation<SegmentComputer> Decomposition;
 
   string inputFilename = examplesPath + "samples/sinus.dat"; 

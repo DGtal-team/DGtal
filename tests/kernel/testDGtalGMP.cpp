@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/geometry/curves/GreedySegmentation.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -99,7 +99,7 @@ bool testBIGINTEGERSpace()
   Point p(a,b);
 
   typedef FreemanChain<Coordinate> Contour; 
-  typedef ArithmeticalDSS<Contour::ConstIterator,Coordinate,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Contour::ConstIterator,Coordinate,4> DSS4;  
   typedef GreedySegmentation<DSS4> Decomposition;
  
   // Construct the Freeman chain

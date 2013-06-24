@@ -15,15 +15,15 @@
  **/
 
 /**
- * @file exampleGeometricalDSS.cpp
+ * @file exampleStabbingLineComputer.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/21
  *
- * @brief An example file for GeometricalDSS.
- * @see testGeometricalDSS examplePreimage
+ * @brief An example file for StabbingLineComputer.
+ * @see testStabbingLineComputer examplePreimage
  *
  * This file is part of the DGtal library.
  */
@@ -35,7 +35,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/curves/GeometricalDSS.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ using namespace Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example for GeometricalDSS" );
+  trace.beginBlock ( "Example for StabbingLineComputer" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -63,16 +63,16 @@ int main( int argc, char** argv )
 
   trace.beginBlock("Simple example");
 
-  //! [GeometricalDSSUsage]
+  //! [StabbingLineComputerUsage]
   Curve::IncidentPointsRange r = c.getIncidentPointsRange(); 
   Curve::IncidentPointsRange::ConstIterator itEnd (r.end()); 
 
-  GeometricalDSS<Curve::IncidentPointsRange::ConstIterator> s; 
+  StabbingLineComputer<Curve::IncidentPointsRange::ConstIterator> s; 
   //extension
   s.init( r.begin() );
   while ( ( s.end() != itEnd )
         &&( s.extendForward() ) ) {}
-  //! [GeometricalDSSUsage]
+  //! [StabbingLineComputerUsage]
 
   trace.info() << s << endl;  
 

@@ -59,11 +59,11 @@ namespace DGtal
   // AngleLinearMinimizer
   
   
-  // ArithmeticalDSS
+  // ArithmeticalDSSComputer
   /**
    * Default style for the bounding box mode.
    */
-  struct DefaultDrawStyleBB_ArithmeticalDSS : public DrawableWithBoard2D
+  struct DefaultDrawStyleBB_ArithmeticalDSSComputer : public DrawableWithBoard2D
   {
     /**
      * Draw the DSS on a board
@@ -82,7 +82,7 @@ namespace DGtal
   /**
    * Default style for the points mode.
    */
-  struct DefaultDrawStylePoints_ArithmeticalDSS : public DrawableWithBoard2D
+  struct DefaultDrawStylePoints_ArithmeticalDSSComputer : public DrawableWithBoard2D
   {
     /**
      * Draw the DSS on a board
@@ -97,7 +97,7 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
-  // ArithmeticalDSS
+  // ArithmeticalDSSComputer
 
  
   // DigitalSetBySTLSet
@@ -176,14 +176,14 @@ namespace DGtal
   // FreemanChain
   
   
-  // GeometricalDSS
+  // StabbingLineComputer
   /**
-   * Default drawing style for GeometricalDSS.
+   * Default drawing style for StabbingLineComputer.
    */
-  struct DefaultDrawStyle_GeometricalDSS : public DrawableWithBoard2D
+  struct DefaultDrawStyle_StabbingLineComputer : public DrawableWithBoard2D
   {
     /**
-     * Draw the GeometricalDSS on a board
+     * Draw the StabbingLineComputer on a board
      * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
@@ -194,16 +194,16 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
-  // GeometricalDSS
+  // StabbingLineComputer
 
-  //GeometricalDCA
+  //StabbingCircleComputer
   /**
-   * Default drawing style for GeometricalDCA.
+   * Default drawing style for StabbingCircleComputer.
    */
-  struct DefaultDrawStyle_GeometricalDCA : public DrawableWithBoard2D
+  struct DefaultDrawStyle_StabbingCircleComputer : public DrawableWithBoard2D
   {
     /**
-     * Draw the GeometricalDCA on a board
+     * Draw the StabbingCircleComputer on a board
      * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
@@ -214,7 +214,7 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
-  // GeometricalDCA
+  // StabbingCircleComputer
   
 
   //FrechetShortcut
@@ -430,17 +430,17 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AngleLinearMinimizer & /*a
 // AngleLinearMinimizer
 
 
-// ArithmeticalDSS
+// ArithmeticalDSSComputer
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & /*a*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & /*a*/, std::string mode = "" )
 {
   if ( ( mode == "" ) || ( mode == "BoundingBox" ) ) 
-    return new DGtal::DefaultDrawStyleBB_ArithmeticalDSS;
+    return new DGtal::DefaultDrawStyleBB_ArithmeticalDSSComputer;
   else // mode == "Points"
-    return new DGtal::DefaultDrawStylePoints_ArithmeticalDSS;
+    return new DGtal::DefaultDrawStylePoints_ArithmeticalDSSComputer;
 }
-// ArithmeticalDSS
+// ArithmeticalDSSComputer
 
 
 // CircleFrom2Points
@@ -513,27 +513,27 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FreemanChain<TInteger> & /
 // FreemanChain
 
 
-// GeometricalDSS
+// StabbingLineComputer
 template <typename TConstIterator>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstIterator> & /*g*/, 
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingLineComputer<TConstIterator> & /*g*/, 
                                          std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
-  return new DGtal::DefaultDrawStyle_GeometricalDSS; 
+  return new DGtal::DefaultDrawStyle_StabbingLineComputer; 
 }
-// GeometricalDSS
+// StabbingLineComputer
 
-// GeometricalDCA
+// StabbingCircleComputer
 template <typename TConstIterator>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/,
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingCircleComputer<TConstIterator> & /*g*/,
 					 std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
-  return new DGtal::DefaultDrawStyle_GeometricalDCA; 
+  return new DGtal::DefaultDrawStyle_StabbingCircleComputer; 
 }
-// GeometricalDCA
+// StabbingCircleComputer
 
 // // FrechetShortcut
 template <typename TIterator, typename TInteger>
