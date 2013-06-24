@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file GeometricalDCA.h
+ * @file StabbingCircleComputer.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/26
  *
- * @brief Header file for module GeometricalDCA.cpp
+ * @brief Header file for module StabbingCircleComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(GeometricalDCA_RECURSES)
-#error Recursive header files inclusion detected in GeometricalDCA.h
-#else // defined(GeometricalDCA_RECURSES)
+#if defined(StabbingCircleComputer_RECURSES)
+#error Recursive header files inclusion detected in StabbingCircleComputer.h
+#else // defined(StabbingCircleComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define GeometricalDCA_RECURSES
+#define StabbingCircleComputer_RECURSES
 
-#if !defined GeometricalDCA_h
+#if !defined StabbingCircleComputer_h
 /** Prevents repeated inclusion of headers. */
-#define GeometricalDCA_h
+#define StabbingCircleComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -46,7 +46,7 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/geometry/curves/SegmentComputerUtils.h"
 
-#include "DGtal/geometry/curves/GeometricalDSS.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
@@ -58,7 +58,7 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class GeometricalDCA
+  // template class StabbingCircleComputer
   /**
    * @brief Aim:
    * On-line recognition of a digital circular arcs (DCA)
@@ -74,7 +74,7 @@ namespace DGtal
    * The algorithm may be divided into two steps:
   
   - The first one consists in the on-line recognition of a DSS
-  using GeometricalDSS (using at its turn Preimage2D). 
+  using StabbingLineComputer (using at its turn Preimage2D). 
   Once the recogntion stops, the main routine is run. 
   The two incident pixels of each grid edge are scanned
   a second time in order to compute the whole set of 
@@ -102,22 +102,22 @@ namespace DGtal
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
    *
-   * @snippet geometry/curves/exampleGeometricalDCA.cpp GeometricalDCAUsage
+   * @snippet geometry/curves/exampleStabbingCircleComputer.cpp StabbingCircleComputerUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
   *
-   * @see testGeometricalDCA.cpp  exampleGeometricalDCA.cpp testGeometricalDSS.cpp  exampleGeometricalDSS.cpp 
+   * @see testStabbingCircleComputer.cpp  exampleStabbingCircleComputer.cpp testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp 
    */
   template <typename TConstIterator>
-  class GeometricalDCA
+  class StabbingCircleComputer
   {
 
   public:
 
     //requiered types
     typedef TConstIterator ConstIterator;
-    typedef GeometricalDCA<ConstIterator> Self; 
-    typedef GeometricalDCA<ReverseIterator<ConstIterator> > Reverse;
+    typedef StabbingCircleComputer<ConstIterator> Self; 
+    typedef StabbingCircleComputer<ReverseIterator<ConstIterator> > Reverse;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
@@ -129,7 +129,7 @@ namespace DGtal
   private: 
     
     //other types used for the recognition
-    typedef CowPtr<GeometricalDSS<ConstIterator> > GeometricalDSSPtr; 
+    typedef CowPtr<StabbingLineComputer<ConstIterator> > StabbingLineComputerPtr; 
     typedef CircleFrom3Points<Point> Circle; 
       
     //Predicates used to decide whether the current circle is still seperating or not
@@ -144,13 +144,13 @@ namespace DGtal
     /**
      * Constructor.
      */
-    GeometricalDCA();
+    StabbingCircleComputer();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    GeometricalDCA ( const Self& other );
+    StabbingCircleComputer ( const Self& other );
 
     /**
      * Assignment.
@@ -162,7 +162,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~GeometricalDCA();
+    ~StabbingCircleComputer();
 
     /**
     *  Equality operator
@@ -221,11 +221,11 @@ namespace DGtal
     bool isStraight() const;
 
     /**
-     * @return a cow pointer on the GeometricalDSS used
+     * @return a cow pointer on the StabbingLineComputer used
      * during the initialization step.
      * @see isStraight
      */
-    GeometricalDSSPtr getGeometricalDSSPtr() const;
+    StabbingLineComputerPtr getStabbingLineComputerPtr() const;
     
     /**
      * @return a separating circle.
@@ -297,7 +297,7 @@ namespace DGtal
     /**
      * Pointer to the geometrical DSS.
      */
-    GeometricalDSSPtr mySegPtr; 
+    StabbingLineComputerPtr mySegPtr; 
     /**
      * Separating circle.
      */
@@ -346,30 +346,30 @@ namespace DGtal
   private:
 
 
-  }; // end of class GeometricalDCA
+  }; // end of class StabbingCircleComputer
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'GeometricalDCA'.
+   * Overloads 'operator<<' for displaying objects of class 'StabbingCircleComputer'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'GeometricalDCA' to write.
+   * @param object the object of class 'StabbingCircleComputer' to write.
    * @return the output stream after the writing.
    */
   template <typename TConstIterator>
   std::ostream&
-  operator<< ( std::ostream & out, const GeometricalDCA<TConstIterator> & object );
+  operator<< ( std::ostream & out, const StabbingCircleComputer<TConstIterator> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/curves/GeometricalDCA.ih"
+#include "DGtal/geometry/curves/StabbingCircleComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined GeometricalDCA_h
+#endif // !defined StabbingCircleComputer_h
 
-#undef GeometricalDCA_RECURSES
-#endif // else defined(GeometricalDCA_RECURSES)
+#undef StabbingCircleComputer_RECURSES
+#endif // else defined(StabbingCircleComputer_RECURSES)

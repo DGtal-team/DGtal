@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ArithmeticalDSS.ih
+ * @file ArithmeticalDSSComputer.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/07/01
  *
- * Implementation of inline methods defined in ArithmeticalDSS.h
+ * Implementation of inline methods defined in ArithmeticalDSSComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -46,7 +46,7 @@
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer()
 {
   myUf = Point(0,0);
   myLf = Point(0,0);
@@ -64,14 +64,14 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS()
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS(const ConstIterator& it)
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer(const ConstIterator& it)
 {
   init(it);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
+void DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
 {
 
   myF = it;
@@ -95,8 +95,8 @@ void DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::init(const ConstIt
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS ( 
-									  const ArithmeticalDSS<TIterator,TInteger,connectivity> & other ) : 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer ( 
+									  const ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & other ) : 
   myA(other.myA), myB(other.myB), myMu(other.myMu), myOmega(other.myOmega),
   myNbUpPat(other.myNbUpPat),myNbLowPat(other.myNbLowPat),
   myUf(other.myUf), myUl(other.myUl), myLf(other.myLf), myLl(other.myLl), 
@@ -108,9 +108,9 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS (
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Self&
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
-::operator=( const ArithmeticalDSS<TIterator,TInteger,connectivity> & other )
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Self&
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>
+::operator=( const ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & other )
 {
   if ( this != &other )
     {
@@ -134,16 +134,16 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Reverse
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Reverse
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>
 ::getReverse() const {
   return Reverse(); 
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Self
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Self
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>
 ::getSelf() const {
   return Self(); 
 }
@@ -153,8 +153,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator==( 
-								    const ArithmeticalDSS<TIterator,TInteger,connectivity>& other ) const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::operator==( 
+								    const ArithmeticalDSSComputer<TIterator,TInteger,connectivity>& other ) const {
   return ( ( (myOmega == other.myOmega) &&
 	     (myUf == other.myUf) && 
 	     (myUl == other.myUl) &&  
@@ -174,8 +174,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator==(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator!=( 
-								    const ArithmeticalDSS<TIterator,TInteger,connectivity> & other ) const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::operator!=( 
+								    const ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & other ) const {
   return (!(*this == other));
 }
 
@@ -185,7 +185,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator!=(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>
 ::extendForward( const ConstIterator & it, 
 		 ConstIterator & lastIt, 
 		 const Vector & lastMove,
@@ -345,7 +345,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendForward(const ConstIterator& it)
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::extendForward(const ConstIterator& it)
 {
 
   return extendForward(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
@@ -357,7 +357,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendForward(const Con
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendBackward(const ConstIterator& it)
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::extendBackward(const ConstIterator& it)
 {
 
   return extendForward(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
@@ -369,7 +369,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendBackward(const Co
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendForward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::extendForward()
 {
 
   ConstIterator it(myL); ++it;
@@ -381,7 +381,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendForward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendBackward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::extendBackward()
 {
 
   ConstIterator it(myF); --it;
@@ -394,7 +394,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendBackward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>
 ::retractForward( ConstIterator & firstIt,
 		  ConstIterator & lastIt,
 		  ConstIterator & nextIt,       
@@ -510,7 +510,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractForward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::retractForward()
 {
 
   Vector v = Point(*myL)-Point(*myF);
@@ -527,7 +527,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractForward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractBackward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::retractBackward()
 {
 
   Vector v = Point(*myL)-Point(*myF);
@@ -544,7 +544,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractBackward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(const ConstIterator& it)
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isExtendableForward(const ConstIterator& it)
 {
 
   Point lastPoint(*it);
@@ -615,7 +615,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isExtendableForward()
 {
 
   ConstIterator it(myL); ++it;
@@ -627,7 +627,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableBackward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isExtendableBackward()
 {
 
   ConstIterator it(myF); --it;
@@ -638,7 +638,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableBackward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isExtendableForward(
 									     const Point & lastPoint, 
 									     const Vector & lastMove )
 {
@@ -709,7 +709,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Point & aPoint) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getRemainder(const Point & aPoint) const
 {
   return myA * static_cast<Integer>(aPoint[0])
     - myB * static_cast<Integer>(aPoint[1]);
@@ -719,7 +719,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Poin
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getRemainder(const ConstIterator & it) const
 {
   return getRemainder(*it);
 }
@@ -728,7 +728,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Cons
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Point & aPoint) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getPosition(const Point & aPoint) const
 {
   return myB * static_cast<Integer>(aPoint[0])
     + myA * static_cast<Integer>(aPoint[1]);
@@ -737,7 +737,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Point
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getPosition(const ConstIterator & it) const
 {
   return getPosition(*it);
 }
@@ -746,7 +746,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSL(const Point & aPoint) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isInDSL(const Point & aPoint) const
 {
   Integer r = getRemainder(aPoint);
   return ( (r >= myMu)&&(r < myMu+myOmega) );
@@ -756,7 +756,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSL(const Point & a
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSL(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isInDSL(const ConstIterator & it) const
 {
   return isInDSL(*it);
 }
@@ -765,7 +765,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSL(const ConstIter
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const Point & aPoint) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isInDSS(const Point & aPoint) const
 {
   if (isInDSL(aPoint))
     {
@@ -785,7 +785,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const Point & a
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isInDSS(const ConstIterator & it) const
 {
   return isInDSS(*it);
 }
@@ -796,111 +796,111 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const ConstIter
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getA() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getA() const {
   return myA;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getB() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getB() const {
   return myB;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getMu() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getMu() const {
   return myMu;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TInteger
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getOmega() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getOmega() const {
   return myOmega;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getUf() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getUf() const {
   return myUf;
 }
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getUl() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getUl() const {
   return myUl;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getLf() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getLf() const {
   return myLf;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getLl() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getLl() const {
   return myLl;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getBackPoint() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getBackPoint() const {
   return (*myF);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFrontPoint() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getFrontPoint() const {
   return (*myL);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFirstPoint() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getFirstPoint() const {
   return (*myF);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Point
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getLastPoint() const {
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Point
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getLastPoint() const {
   return (*myL);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getBack() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getBack() const {
   return myF;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFront() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::getFront() const {
   return myL;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::begin() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::begin() const {
   return myF;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::end() const {
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::end() const {
   ConstIterator i(myL); ++i;
   return i;
 }
@@ -909,7 +909,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::end() const {
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isValid() const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::isValid() const
 {
 
   if (Point(*myF) == Point(*myL)) { 
@@ -943,8 +943,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isValid() const
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m ) const
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::PointD
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::project( const Point & m ) const
 {
   //casts
   double a = (double) NumberTraits<TInteger>::castToInt64_t(myA);
@@ -964,8 +964,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m, double r ) const
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::PointD
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::project( const Point & m, double r ) const
 {
   //casts
   double a = (double) NumberTraits<TInteger>::castToInt64_t(myA);
@@ -984,8 +984,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::PointD
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & m, const Point & p ) const
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::PointD
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::project( const Point & m, const Point & p ) const
 {
 
   double r = (double) NumberTraits<TInteger>::castToInt64_t(getRemainder(p));
@@ -996,7 +996,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::project( const Point & 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 double
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::projectedSegmentLength() const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::projectedSegmentLength() const
 {
   PointD v = project( *myL );
   PointD u = project( *myF );
@@ -1008,9 +1008,9 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::projectedSegmentLength(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::string
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::className() const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::className() const
 {
-  return "ArithmeticalDSS";
+  return "ArithmeticalDSSComputer";
 }
 
 /**
@@ -1021,10 +1021,10 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::className() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
 {
   
-  out << "[ArithmeticalDSS]" <<  std::endl;
+  out << "[ArithmeticalDSSComputer]" <<  std::endl;
   out << "Parameters (a,b,mu,omega)=";
   out << "("<< myA << ", " << myB << ", ";
   out << myMu << ", " << myOmega << ")" <<  std::endl;
@@ -1038,7 +1038,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostr
   for (unsigned int i = 0; i < mySteps.size(); i++) {
     out << "   " << mySteps.at(i) << std::endl;
   }
-  out << "[End ArithmeticalDSS]" <<  std::endl;
+  out << "[End ArithmeticalDSSComputer]" <<  std::endl;
   
 }
 
@@ -1046,7 +1046,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostr
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
 									     const Vector& aStep) const
 {
   if ( (aStep == mySteps.at(0)) || 
@@ -1060,8 +1060,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Vector
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::vectorFrom0ToOmega() const
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::Vector
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity>::vectorFrom0ToOmega() const
 {
   Vector v = mySteps.at(1) - mySteps.at(0);
   if ( getRemainder(v) == myOmega) {

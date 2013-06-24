@@ -82,7 +82,7 @@ namespace DGtal
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Sequence;
   typedef Sequence::const_iterator ConstIterator;
-  typedef ArithmeticalDSS<ConstIterator,int,8> DSS;
+  typedef ArithmeticalDSSComputer<ConstIterator,int,8> DSS;
   typedef GreedyDecomposition<DSS> Decomposition;
 
   //sequence of input points

@@ -36,7 +36,7 @@
 #include "DGtal/arithmetic/SternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/arithmetic/StandardDSLQ0.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -58,7 +58,7 @@ bool checkSubArithmeticDSS( const DSL & D,
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;
   typedef typename DSL::Vector2I Vector2I;
-  typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
+  typedef ArithmeticalDSSComputer<ConstIterator, Integer, 4> ADSS;
 
   ConstIterator it = D.begin( A );
   ConstIterator it_end = D.end( B );
@@ -123,7 +123,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;
   typedef typename DSL::Vector2I Vector2I;
-  typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
+  typedef ArithmeticalDSSComputer<ConstIterator, Integer, 4> ADSS;
   IntegerComputer<Integer> ic;
 
   std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;

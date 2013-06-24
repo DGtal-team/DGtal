@@ -38,7 +38,7 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/geometry/curves/GreedySegmentation.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ int main( )
   trace.beginBlock ( "Example dgtalboard-5-greedy-dss" );
 
   typedef FreemanChain<int> Contour4; 
-  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
+  typedef ArithmeticalDSSComputer<Contour4::ConstIterator,int,4> DSS4;
   typedef GreedySegmentation<DSS4> Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
@@ -75,8 +75,8 @@ int main( )
    << SetMode( "PointVector", "Grid" )
    << theContour;
   //for each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string className = "ArithmeticalDSS/BoundingBox";
+  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
+  string className = "ArithmeticalDSSComputer/BoundingBox";
   for ( Decomposition4::SegmentComputerIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ArithmeticalDSS3d.ih
+ * @file StandardDSS6Computer.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/06/01
  *
- * Implementation of inline methods defined in ArithmeticalDSS3d.h
+ * Implementation of inline methods defined in StandardDSS6Computer.h
  *
  * This file is part of the DGtal library.
  */
@@ -49,7 +49,7 @@
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d()
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Computer()
 {
 
   //projections
@@ -72,7 +72,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d()
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d(const ConstIterator& it)
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Computer(const ConstIterator& it)
 {
   //projections
   std::vector<DGtal::Dimension> v1,v2,v3;
@@ -96,7 +96,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d(con
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
+void DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
 {
 
   //begin and end iterators
@@ -124,8 +124,8 @@ void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Const
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d ( 
-									      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::StandardDSS6Computer ( 
+									      const StandardDSS6Computer<TIterator,TInteger,connectivity> & other ) : 
   myProjXY(other.myProjXY), myProjXZ(other.myProjXZ), myProjYZ(other.myProjYZ),
   myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
   myBegin(other.myBegin), myEnd(other.myEnd) {}
@@ -139,9 +139,9 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d (
  */
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> &
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= ( 
-								      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) 
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> &
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator= ( 
+								      const StandardDSS6Computer<TIterator,TInteger,connectivity> & other ) 
 {
 
   myProjXY = other.myProjXY;
@@ -158,16 +158,16 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= (
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::Self
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getSelf() const {
+typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::Self
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::getSelf() const {
   return Self();
 } 
 
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::Reverse
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getReverse() const {
+typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::Reverse
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::getReverse() const {
   return Reverse();
 } 
 
@@ -186,8 +186,8 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getReverse() const {
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==( 
-								      const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const 
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator==( 
+								      const StandardDSS6Computer<TIterator,TInteger,connectivity>& other ) const 
 {
   return (  (	myXYalgo == other.myXYalgo ) &&
             (	myXZalgo == other.myXZalgo ) &&
@@ -205,8 +205,8 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=( 
-								      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const 
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator!=( 
+								      const StandardDSS6Computer<TIterator,TInteger,connectivity> & other ) const 
 {
   return (!(*this == other));
 }
@@ -227,7 +227,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extendForward()
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendForward()
 {
   if( isExtendableForward() ) {
 
@@ -250,7 +250,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extendForward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS3d<TIterator, TInteger,connectivity>::isExtendableForward()
+DGtal::StandardDSS6Computer<TIterator, TInteger,connectivity>::isExtendableForward()
 {
   //projection on xy-plane
   bool XYflag = myXYalgo.isExtendableForward();
@@ -272,14 +272,14 @@ DGtal::ArithmeticalDSS3d<TIterator, TInteger,connectivity>::isExtendableForward(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::begin() const {
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::begin() const {
   return myBegin;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::end() const {
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::end() const {
   return myEnd;
 }
 
@@ -295,7 +295,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::end() const {
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::isValid() const
 {
   return ( (myXYalgo.isValid())&&
            (myXZalgo.isValid())&&
@@ -314,7 +314,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::isValid() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
 ::getParameters(Point3d& direction,
 		PointD3d& intercept,
 		PointD3d& thickness) const
@@ -403,32 +403,32 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 //-----------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2dXY() const
+const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXY() const
 {
   return myXYalgo;
 }
 //-----------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2dXZ() const
+const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dXZ() const
 {
   return myXZalgo;
 }
 //-----------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2dYZ() const
+const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2dYZ() const
 {
   return myYZalgo;
 }
 //-----------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2d( Dimension i ) const
+const typename DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::ArithmeticalDSSComputer2d &
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::arithmeticalDSS2d( Dimension i ) const
 {
   ASSERT( ( 0 <= i ) && ( i < 3 ) );
   switch ( i ) {
@@ -445,9 +445,9 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2d( Di
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::string
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::className() const
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::className() const
 {
-  return "ArithmeticalDSS3d";
+  return "StandardDSS6Computer";
 }
 
 //------------------------------------------------------------------------------
@@ -460,17 +460,17 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::className() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
 {
   
-  out << "[ArithmeticalDSS3d]" <<  std::endl;
+  out << "[StandardDSS6Computer]" <<  std::endl;
   out << "[XYprojection]" <<  std::endl;
   out << myXYalgo <<  std::endl;
   out << "[XZprojection]" <<  std::endl;
   out << myXZalgo <<  std::endl;
   out << "[YZprojection]" <<  std::endl;
   out << myYZalgo <<  std::endl;
-  out << "[End ArithmeticalDSS3d]" <<  std::endl;
+  out << "[End StandardDSS6Computer]" <<  std::endl;
   
 }
 

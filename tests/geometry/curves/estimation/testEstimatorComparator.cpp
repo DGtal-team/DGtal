@@ -42,7 +42,7 @@
 #include "DGtal/geometry/curves/estimation/ParametricShapeTangentFunctor.h"
 #include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -144,7 +144,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       typedef ParametricShapeTangentFunctor< Shape > Tangent;
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  TrueTangent;
 
-      typedef ArithmeticalDSS<ConstIteratorOnPoints,KSpace::Integer,4> 
+      typedef ArithmeticalDSSComputer<ConstIteratorOnPoints,KSpace::Integer,4> 
   SegmentComputer;
       typedef TangentFromDSSEstimator<SegmentComputer> Functor;
       typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> 

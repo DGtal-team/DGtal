@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file GeometricalDSS.h
+ * @file StabbingLineComputer.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/26
  *
- * Header file for module GeometricalDSS.cpp
+ * Header file for module StabbingLineComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(GeometricalDSS_RECURSES)
-#error Recursive header files inclusion detected in GeometricalDSS.h
-#else // defined(GeometricalDSS_RECURSES)
+#if defined(StabbingLineComputer_RECURSES)
+#error Recursive header files inclusion detected in StabbingLineComputer.h
+#else // defined(StabbingLineComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define GeometricalDSS_RECURSES
+#define StabbingLineComputer_RECURSES
 
-#if !defined GeometricalDSS_h
+#if !defined StabbingLineComputer_h
 /** Prevents repeated inclusion of headers. */
-#define GeometricalDSS_h
+#define StabbingLineComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -57,7 +57,7 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class GeometricalDSS
+  // template class StabbingLineComputer
   /**
    * @brief Aim:
    * On-line recognition of a digital straight segment (DSS)
@@ -67,7 +67,7 @@ namespace DGtal
    *
    * @note On either side, the pixels centers are included. 
    * The class of segments considered here is thus larger
-   * than the one considered in ArithmeticalDSS 
+   * than the one considered in ArithmeticalDSSComputer 
    * (the equivalence would be true if the pixels centers 
    * were included on one side but excluded on the other side)
    *
@@ -82,22 +82,22 @@ namespace DGtal
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
-   * @snippet geometry/curves/exampleGeometricalDSS.cpp GeometricalDSSUsage
+   * @snippet geometry/curves/exampleStabbingLineComputer.cpp StabbingLineComputerUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
   *
-   * @see testGeometricalDSS.cpp  exampleGeometricalDSS.cpp  Preimage2D ArithmeticalDSS
+   * @see testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp  Preimage2D ArithmeticalDSSComputer
    */
   template <typename TConstIterator>
-  class GeometricalDSS
+  class StabbingLineComputer
   {
 
   public:
 
     //requiered types
     typedef TConstIterator ConstIterator;
-    typedef GeometricalDSS<ConstIterator> Self; 
-    typedef GeometricalDSS<ReverseIterator<ConstIterator> > Reverse;
+    typedef StabbingLineComputer<ConstIterator> Self; 
+    typedef StabbingLineComputer<ReverseIterator<ConstIterator> > Reverse;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
@@ -119,13 +119,13 @@ namespace DGtal
     /**
      * Constructor.
      */
-    GeometricalDSS();
+    StabbingLineComputer();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    GeometricalDSS ( const Self& other );
+    StabbingLineComputer ( const Self& other );
 
     /**
      * Assignment.
@@ -137,7 +137,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~GeometricalDSS();
+    ~StabbingLineComputer();
 
     /**
     *  Equality operator
@@ -373,30 +373,30 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-  }; // end of class GeometricalDSS
+  }; // end of class StabbingLineComputer
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'GeometricalDSS'.
+   * Overloads 'operator<<' for displaying objects of class 'StabbingLineComputer'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'GeometricalDSS' to write.
+   * @param object the object of class 'StabbingLineComputer' to write.
    * @return the output stream after the writing.
    */
   template <typename TConstIterator>
   std::ostream&
-  operator<< ( std::ostream & out, const GeometricalDSS<TConstIterator> & object );
+  operator<< ( std::ostream & out, const StabbingLineComputer<TConstIterator> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/curves/GeometricalDSS.ih"
+#include "DGtal/geometry/curves/StabbingLineComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined GeometricalDSS_h
+#endif // !defined StabbingLineComputer_h
 
-#undef GeometricalDSS_RECURSES
-#endif // else defined(GeometricalDSS_RECURSES)
+#undef StabbingLineComputer_RECURSES
+#endif // else defined(StabbingLineComputer_RECURSES)

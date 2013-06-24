@@ -47,7 +47,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 
 #include "DGtal/geometry/curves/GridCurve.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
 
 
@@ -71,7 +71,7 @@ bool test(const I& itb, const I& ite)
 {
   typedef I ConstIterator;//constIterator
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
-  typedef ArithmeticalDSS<ConstIterator,typename Point::Coordinate,4> SegmentComputer;//segmentComputer
+  typedef ArithmeticalDSSComputer<ConstIterator,typename Point::Coordinate,4> SegmentComputer;//segmentComputer
   typedef TangentVectorFromDSSEstimator<SegmentComputer> SCEstimator; //functor
   typedef typename SCEstimator::Quantity Value; //value
   typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> Estimator;//estimator

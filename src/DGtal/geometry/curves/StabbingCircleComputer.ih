@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file GeometricalDCA.ih
+ * @file StabbingCircleComputer.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/26
  *
- * Implementation of inline methods defined in GeometricalDCA.h
+ * Implementation of inline methods defined in StabbingCircleComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -40,15 +40,15 @@
 
 template <typename TConstIterator>
 inline
-DGtal::GeometricalDCA<TConstIterator>::GeometricalDCA()
- :myBegin(), myEnd(), mySegPtr(new GeometricalDSS<ConstIterator>()), 
+DGtal::StabbingCircleComputer<TConstIterator>::StabbingCircleComputer()
+ :myBegin(), myEnd(), mySegPtr(new StabbingLineComputer<ConstIterator>()), 
   myCircle(), myFlagIsInit(false)
 {
 }
 
 template <typename TConstIterator>
 inline
-DGtal::GeometricalDCA<TConstIterator>::GeometricalDCA( const Self& other )
+DGtal::StabbingCircleComputer<TConstIterator>::StabbingCircleComputer( const Self& other )
  :myBegin(other.myBegin), myEnd(other.myEnd), mySegPtr(other.mySegPtr), 
   myCircle(other.myCircle), myFlagIsInit(other.myFlagIsInit)
 {
@@ -56,8 +56,8 @@ DGtal::GeometricalDCA<TConstIterator>::GeometricalDCA( const Self& other )
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDCA<TConstIterator>::Self&
-DGtal::GeometricalDCA<TConstIterator>::operator= ( const Self& other )
+typename DGtal::StabbingCircleComputer<TConstIterator>::Self&
+DGtal::StabbingCircleComputer<TConstIterator>::operator= ( const Self& other )
 {
   if ( this != &other )
     {
@@ -72,14 +72,14 @@ DGtal::GeometricalDCA<TConstIterator>::operator= ( const Self& other )
 
 template <typename TConstIterator>
 inline
-DGtal::GeometricalDCA<TConstIterator>::~GeometricalDCA()
+DGtal::StabbingCircleComputer<TConstIterator>::~StabbingCircleComputer()
 {
 }
 
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::operator==( const Self& other ) const
+DGtal::StabbingCircleComputer<TConstIterator>::operator==( const Self& other ) const
 {
   if (isValid()&&other.isValid())
     {
@@ -126,15 +126,15 @@ DGtal::GeometricalDCA<TConstIterator>::operator==( const Self& other ) const
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::operator!=( const Self& other ) const
+DGtal::StabbingCircleComputer<TConstIterator>::operator!=( const Self& other ) const
 {
   return !(*this == other); 
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDCA<TConstIterator>::Reverse
-DGtal::GeometricalDCA<TConstIterator>::getReverse() const
+typename DGtal::StabbingCircleComputer<TConstIterator>::Reverse
+DGtal::StabbingCircleComputer<TConstIterator>::getReverse() const
 {
   return Reverse(); 
 }
@@ -142,8 +142,8 @@ DGtal::GeometricalDCA<TConstIterator>::getReverse() const
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDCA<TConstIterator>::Self
-DGtal::GeometricalDCA<TConstIterator>::getSelf() const
+typename DGtal::StabbingCircleComputer<TConstIterator>::Self
+DGtal::StabbingCircleComputer<TConstIterator>::getSelf() const
 {
   return Self(); 
 }
@@ -156,7 +156,7 @@ DGtal::GeometricalDCA<TConstIterator>::getSelf() const
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::isValid() const
+DGtal::StabbingCircleComputer<TConstIterator>::isValid() const
 {
   if ( mySegPtr.get() != 0 )
     {
@@ -170,16 +170,16 @@ DGtal::GeometricalDCA<TConstIterator>::isValid() const
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDCA<TConstIterator>::ConstIterator
-DGtal::GeometricalDCA<TConstIterator>::begin() const
+typename DGtal::StabbingCircleComputer<TConstIterator>::ConstIterator
+DGtal::StabbingCircleComputer<TConstIterator>::begin() const
 {
   return myBegin;
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDCA<TConstIterator>::ConstIterator
-DGtal::GeometricalDCA<TConstIterator>::end() const
+typename DGtal::StabbingCircleComputer<TConstIterator>::ConstIterator
+DGtal::StabbingCircleComputer<TConstIterator>::end() const
 {
   return myEnd;
 }
@@ -187,23 +187,23 @@ DGtal::GeometricalDCA<TConstIterator>::end() const
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::isStraight() const
+DGtal::StabbingCircleComputer<TConstIterator>::isStraight() const
 {
   return !myFlagIsInit; 
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDCA<TConstIterator>::GeometricalDSSPtr
-DGtal::GeometricalDCA<TConstIterator>::getGeometricalDSSPtr() const
+typename DGtal::StabbingCircleComputer<TConstIterator>::StabbingLineComputerPtr
+DGtal::StabbingCircleComputer<TConstIterator>::getStabbingLineComputerPtr() const
 {
   return mySegPtr; 
 }
 
 template <typename TConstIterator>
 inline
-typename DGtal::GeometricalDCA<TConstIterator>::Circle
-DGtal::GeometricalDCA<TConstIterator>::getSeparatingCircle() const
+typename DGtal::StabbingCircleComputer<TConstIterator>::Circle
+DGtal::StabbingCircleComputer<TConstIterator>::getSeparatingCircle() const
 {
   return myCircle; 
 }
@@ -215,7 +215,7 @@ template <typename TConstIterator>
 template <typename TIterator>
 inline
 bool 
-DGtal::GeometricalDCA<TConstIterator>::isCircularlySeparable(
+DGtal::StabbingCircleComputer<TConstIterator>::isCircularlySeparable(
 							     const TIterator& itb, const TIterator& ite, 
 							     const Point& aPole, 
 							     Point& Pf, Point& Pl, Point& Qf, Point& Ql)
@@ -270,7 +270,7 @@ DGtal::GeometricalDCA<TConstIterator>::isCircularlySeparable(
 template <typename TConstIterator>
 inline
 void
-DGtal::GeometricalDCA<TConstIterator>::init(const ConstIterator& anIt)
+DGtal::StabbingCircleComputer<TConstIterator>::init(const ConstIterator& anIt)
 {
   myFlagIsInit = false; 
 
@@ -290,7 +290,7 @@ DGtal::GeometricalDCA<TConstIterator>::init(const ConstIterator& anIt)
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
+DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -321,7 +321,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
 	      if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendableForward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward(): impossible case") );  
 	}
     
     } else
@@ -341,7 +341,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
 	      if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendableForward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward(): impossible case") ); 
 	}
     }
   
@@ -351,7 +351,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::extendForward()
+DGtal::StabbingCircleComputer<TConstIterator>::extendForward()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -388,7 +388,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendForward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendForward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendForward(): impossible case") );  
 	}
     
     } else
@@ -418,7 +418,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendForward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendForward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendForward(): impossible case") ); 
 	}
     }
   
@@ -432,7 +432,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
+DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBackward()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -469,7 +469,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
 	      if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") );  
 	}
     
     } else
@@ -491,7 +491,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
 	      if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") ); 
 	}
     }
   
@@ -501,7 +501,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::extendBackward()
+DGtal::StabbingCircleComputer<TConstIterator>::extendBackward()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -544,7 +544,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendBackward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") );  
 	}
     
     } else
@@ -576,7 +576,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendBackward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") ); 
 	}
     }
   
@@ -593,10 +593,10 @@ DGtal::GeometricalDCA<TConstIterator>::extendBackward()
 template <typename TConstIterator>
 inline
 void
-DGtal::GeometricalDCA<TConstIterator>::selfDisplay ( std::ostream & out ) const
+DGtal::StabbingCircleComputer<TConstIterator>::selfDisplay ( std::ostream & out ) const
 {
   out << std::endl;
-  out << "[GeometricalDCA]" << std::endl;
+  out << "[StabbingCircleComputer]" << std::endl;
   if (isValid())
     {
       Pair firstPair( *myBegin ); 
@@ -614,15 +614,15 @@ DGtal::GeometricalDCA<TConstIterator>::selfDisplay ( std::ostream & out ) const
     {
       out << "\t not valid" << std::endl; 
     }
-  out << "[end of GeometricalDCA]" << std::endl;
+  out << "[end of StabbingCircleComputer]" << std::endl;
 }
 
 template <typename TConstIterator>
 inline
 std::string
-DGtal::GeometricalDCA<TConstIterator>::className() const
+DGtal::StabbingCircleComputer<TConstIterator>::className() const
 {
-  return "GeometricalDCA";
+  return "StabbingCircleComputer";
 }
 
 
@@ -633,7 +633,7 @@ template <typename TConstIterator>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const GeometricalDCA<TConstIterator> & object )
+		    const StabbingCircleComputer<TConstIterator> & object )
 {
   object.selfDisplay( out );
   return out;

@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/StandardDSS6Computer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -104,23 +104,23 @@ namespace DGtal
 
 
     
-    // ArithmeticalDSS3d
+    // StandardDSS6Computer
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
     template <typename TIterator, typename TInteger, int connectivity>
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & );
     
     template <typename TIterator, typename TInteger, int connectivity>
-    static void drawAsPoints( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
+    static void drawAsPoints( Display3D & display, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & );
     
     template <typename TIterator, typename TInteger, int connectivity>
-    static void drawAsBoundingBox( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
+    static void drawAsBoundingBox( Display3D & display, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & );
 
     template <typename TIterator, typename TInteger, int connectivity>
-    static void draw( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
-    // ArithmeticalDSS3d
+    static void draw( Display3D & display, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & );
+    // StandardDSS6Computer
     
     
     // DigitalSetBySTLSet
