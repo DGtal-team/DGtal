@@ -89,9 +89,9 @@ namespace DGtal
     float myScaleZ;
 
 
-    /// Structure used to display KSLine in 3D
-    /// @see addKSLinel
-    ///
+    /**
+     * Structure used to display line in 3D
+     */
 
 
     struct lineD3D{
@@ -723,48 +723,26 @@ namespace DGtal
 
 
     /**
-     * Add a KSLinel from the Kahlimsky space. If the KSlinel is
-     * signed its display will difffers acoording its sign (display as
-     * a cone) else it will be displayed as simple cylinder.
-     *
-     *  x1, y1, z1 first point of the extremity point of the KSLinel.
-     *  x2, y2, z2 second point of the extremity point of the KSLinel.
-
-     * @param width the width of the KSLinel representation (of its associated cylinder (default= 0.02))
-     * @param isSigned to specify if we want to display an signed or unsigned Cell Linel.
-     * @param aSign if @ref isSigned is true it will add the KSLinel reprensented by a cone oriented in
-     *              the direct axis orientation.
-     *
-     */
-
-    virtual void addKSLinel(double x1, double y1, double z1,
-                double x2, double y2, double z2,
-                double width=0.02, bool isSigned=false, bool aSign=true);
-
-
-
-    /**
      * Add a signed KSLinel from the Kahlimsky space. Display it as a cone.
      *
-     *  x1, y1, z1 first point of the extremity point of the KSLinel.
-     *  x2, y2, z2 second point of the extremity point of the KSLinel.
+     *  x1, y1, z1 first point of the cone.
+     *  x2, y2, z2 second point of the cone..
 
-     * @param width the width of the KSLinel representation (of its associated cylinder (default= 0.02))
-     * @param aSign it will add the KSLinel reprensented by a cone oriented in the direct axis orientation.
+     * @param width the width of the cone (default= 0.02)
      *
      */
     virtual void addCone(double x1, double y1, double z1,
                             double x2, double y2, double z2,
-                            double width=0.02, bool aSign=true);
+                            double width=0.02);
 
 
     /**
      * Add a non signed KSLinel from the Kahlimsky space. Display it as a simple cylinder.
      *
-     *  x1, y1, z1 first point of the extremity point of the KSLinel.
-     *  x2, y2, z2 second point of the extremity point of the KSLinel.
+     *  x1, y1, z1 first point of the extremity point of the cylinder.
+     *  x2, y2, z2 second point of the extremity point of the cylinder.
 
-     * @param width the width of the KSLinel representation (of its associated cylinder (default= 0.02))
+     * @param width the width of the cylinder (default= 0.02))
      *
      */
 
@@ -998,12 +976,6 @@ namespace DGtal
     ///
 
     std::vector< ballD3D > myKSBallelList;
-
-
-    /// For saving all linels of Khalimsky space (used to display Khalimsky Space Cell)
-    ///
-
-    std::vector< lineD3D > myKSLinelList;
 
 
     // Represents all the planes drawn in the Display3D

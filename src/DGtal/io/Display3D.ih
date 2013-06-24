@@ -644,37 +644,13 @@ DGtal::Display3D::addKSCube(double x, double y, double z,  double sizeFactor)
 
 
 
-
-
-inline
-void
-DGtal::Display3D::addKSLinel(double x1, double y1, double z1,
-                             double x2, double y2, double z2,
-                             double width,  bool isSigned, bool signPos)
-{
-    updateBoundingBox(x1, y1, z1);
-    updateBoundingBox(x2, y2, z2);
-    lineD3D l;
-    l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2;
-    l.width=width;
-    l.R= myCurrentFillColor.red();
-    l.G= myCurrentFillColor.green();
-    l.B=myCurrentFillColor.blue();
-    l.T=myCurrentFillColor.alpha();
-    l.isSigned=isSigned;
-    l.signPos=signPos;
-    myKSLinelList.push_back(l);
-}
-
-
 // add multiple triangular faces which form a hexagonal-based pyramid
 inline
 void
 DGtal::Display3D::addCone(double x1, double y1, double z1,
                           double x2, double y2, double z2,
-                          double width, bool signPos)
+                          double width)
 {
-
     updateBoundingBox(x1, y1, z1);
     updateBoundingBox(x2, y2, z2);
 

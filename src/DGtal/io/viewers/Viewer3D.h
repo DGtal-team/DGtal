@@ -114,34 +114,7 @@ namespace DGtal
 
     //---------------overwritting some functions of Display3D -------------------
 
-    /**
-     * Add a signed KSLinel from the Kahlimsky space. Display it as a cone.
-     *
-     *  x1, y1, z1 first point of the extremity point of the KSLinel.
-     *  x2, y2, z2 second point of the extremity point of the KSLinel.
 
-     * @param width the width of the KSLinel representation (of its associated cylinder (default= 0.02))
-     * @param aSign it will add the KSLinel reprensented by a cone oriented in the direct axis orientation.
-     *
-     */
-    virtual void addCone(double x1, double y1, double z1,
-                            double x2, double y2, double z2,
-                            double width=0.02, bool aSign=true);
-
-
-    /**
-     * Add a non signed KSLinel from the Kahlimsky space. Display it as a simple cylinder.
-     *
-     *  x1, y1, z1 first point of the extremity point of the KSLinel.
-     *  x2, y2, z2 second point of the extremity point of the KSLinel.
-
-     * @param width the width of the KSLinel representation (of its associated cylinder (default= 0.02))
-     *
-     */
-
-    virtual void addCylinder(double x1, double y1, double z1,
-                            double x2, double y2, double z2,
-                            double width=0.02);
 
     // ----------------------- Standard services ------------------------------
   public:
