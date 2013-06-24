@@ -79,7 +79,7 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
   string poly_str = "x^2 + y^2 + z^2 - 25";
   double border_min[3] = { -10, -10, -10 };
   double border_max[3] = { 10, 10, 10 };
-  double re_convolution_kernel = 6.217163327;
+  double re_convolution_kernel = 2.3;
   double realValue = 0.04; // = 1/r^2
 
   trace.beginBlock ( "Testing integral invariant 3D Gaussian curvature initialization ..." );
@@ -143,6 +143,11 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
 
   try
   {
+//      while( abegin != aend )
+//      {
+//          resultsIICurvature.push_back( estimator.eval( abegin ));
+//          ++abegin;
+//      }
     estimator.eval( abegin, aend, resultsIICurvatureIterator );
   }
   catch(...)
@@ -163,6 +168,8 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
     mean += resultsIICurvature[ i ];
   }
   mean /= rsize;
+
+  std::cout << "mean " << mean << std::endl;
 
   if ( std::abs ( realValue - mean ) > delta )
   {
@@ -185,7 +192,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testIntegralInvariantGaussianCurvatureEstimator3D( 0.6, 0.007 ); // && ... other tests
+  bool res = testIntegralInvariantGaussianCurvatureEstimator3D( 0.1, 0.007 ); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

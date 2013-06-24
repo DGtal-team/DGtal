@@ -34,6 +34,7 @@
 
 // Shape construction
 #include "DGtal/shapes/parametric/Flower2D.h"
+#include "DGtal/shapes/parametric/NGon2D.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -48,6 +49,9 @@
 // Drawing
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+
+#include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/geometry/volumes/KanungoNoise.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -65,20 +69,24 @@ int main( int argc, char** argv )
     trace.info() << endl;
 
     /// Construction of the shape + digitalization
-    double h = 0.5;
+    double h = 0.1;
 
-    typedef Flower2D< Z2i::Space > MyShape;
+    typedef NGon2D< Z2i::Space > MyShape;
+//    typedef Flower2D< Z2i::Space > MyShape;
     typedef GaussDigitizer< Z2i::Space, MyShape > MyGaussDigitizer;
     typedef Z2i::KSpace::Surfel Surfel;
     typedef Z2i::KSpace::SCell SCell;
-    typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
+    typedef KanungoNoise< MyGaussDigitizer, Z2i::Domain > KanungoPredicate;
+    typedef LightImplicitDigitalSurface< Z2i::KSpace, KanungoPredicate > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
 
-    MyShape shape( 0, 0, 20.00000124, 10.0000123, 4, 3.0 );
+//    MyShape shape( 0, 0, 20, 10, 4, 3.0 );
+    MyShape shape( 0, 0, 20, 6, 0.2 );
 
     MyGaussDigitizer digShape;
     digShape.attach( shape );
     digShape.init( shape.getLowerBound(), shape.getUpperBound(), h );
+    std::cout << shape.getLowerBound() << " " << shape.getUpperBound() << std::endl;
     Z2i::Domain domainShape = digShape.getDomain();
     Z2i::KSpace KSpaceShape;
     bool space_ok = KSpaceShape.init( domainShape.lowerBound(), domainShape.upperBound(), true );
@@ -88,13 +96,17 @@ int main( int argc, char** argv )
         return 2;
     }
 
-    typedef ImageSelector< Z2i::Domain, unsigned int >::Type Image;
-    Image image( domainShape );
-    DGtal::imageFromRangeAndValue( domainShape.begin(), domainShape.end(), image );
+//    typedef ImageSelector< Z2i::Domain, unsigned int >::Type Image;
+//    Image image( domainShape );
+//    DGtal::imageFromRangeAndValue( domainShape.begin(), domainShape.end(), image );
+
+    KanungoPredicate* noisifiedObject = new KanungoPredicate( digShape, domainShape, 0.2 );
+    Surfel bel = Surfaces< Z2i::KSpace >::findABel( KSpaceShape, *noisifiedObject, 10000 );
+
 
     SurfelAdjacency<Z2i::KSpace::dimension> SAdj( true );
-    Surfel bel = Surfaces<Z2i::KSpace>::findABel( KSpaceShape, digShape, 100000 );
-    LightImplicitDigSurface LightImplDigSurf( KSpaceShape, digShape, SAdj, bel );
+//    Surfel bel = Surfaces<Z2i::KSpace>::findABel( KSpaceShape, digShape, 100000 );
+    LightImplicitDigSurface LightImplDigSurf( KSpaceShape, *noisifiedObject, SAdj, bel );
     MyDigitalSurface digSurf( LightImplDigSurf );
 
     typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
@@ -105,8 +117,11 @@ int main( int argc, char** argv )
     SurfelConstIterator abegin = range.begin();
     SurfelConstIterator aend = range.end();
 
-    typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
-    MyPointFunctor pointFunctor( &image, &digShape, 1 );
+    typedef PointFunctorFromPointPredicateAndDomain< KanungoPredicate, Z2i::Domain, unsigned int > MyPointFunctor;
+    MyPointFunctor pointFunctor( noisifiedObject, domainShape, 1, 0 );
+
+//    typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
+//    MyPointFunctor pointFunctor( &image, &digShape, 1 );
 
     /// Integral Invariant stuff
     //! [IntegralInvariantUsage]
@@ -148,6 +163,8 @@ int main( int argc, char** argv )
     cmap_grad.addColor( Color( 255, 0, 0 ) );
     cmap_grad.addColor( Color( 255, 255, 10 ) );
 
+    std::cout << "min: " << min << " , max: " << max << std::endl;
+
     board << SetMode( (*abegin).className(), "Paving" );
     string specificStyle = (*abegin).className() + "/Paving";
     for ( unsigned int i = 0; i < results.size(); ++i )
@@ -157,8 +174,9 @@ int main( int argc, char** argv )
               << currentCell;
         ++abegin;
     }
-    board.saveSVG ( "example-integralinvariant2D.svg" );
+    board.saveSVG ( "example-integralinvariant2Dnoise.svg" );
     trace.endBlock();
+    delete noisifiedObject;
     return 0;
 }
 //                                                                           //
