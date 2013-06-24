@@ -127,7 +127,9 @@ DGtal::operator<< ( std::ostream & out,
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+
 // surcharge of parents methods              //
+/*
 inline
 void
 DGtal::Viewer3D::addCone(double x1, double y1, double z1,
@@ -167,6 +169,7 @@ DGtal::Viewer3D::addCylinder(double x1, double y1, double z1,
   l.signPos=false;
   myKSLinelList.push_back(l);
 }
+*/
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

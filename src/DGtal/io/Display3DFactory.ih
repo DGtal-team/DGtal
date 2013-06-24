@@ -834,7 +834,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     if(mode!=""&& mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(20, 20, 200, 255));
     }
-    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
+    display.addCylinder(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
     if(mode!="" && mode!="IllustrationCustomColor"){
@@ -910,8 +910,14 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     if(mode!="" && mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(20, 200, 200, 255));
     }
-    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ),
-                       0.02, true, sk.myPositive);
+    if (sk.myPositive)
+    {
+        display.addCone(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 0.02);
+    }
+    else
+    {
+        display.addCone(x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ),x-0.5, y-0.5, z-0.5, 0.02);
+    }
     break;
   case 2:
     display.addSurfelPrism(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, true, sk.myPositive,basicMode );

@@ -454,6 +454,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
         }
     }
 
+    /*
     // KSLinel
     for(unsigned int i=0; i< myKSLinelList.size();i++)
     {
@@ -475,6 +476,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
             }
         }
     }
+    */
 
     // KSBallel
     for(std::vector<ballD3D>::iterator it=myKSBallelList.begin(); it != myKSBallelList.end(); it++)
