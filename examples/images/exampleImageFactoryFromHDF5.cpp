@@ -45,12 +45,12 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define H5FILE_NAME_3D_TILED                    "exampleImageFactoryFromHDF5_TILED_3D.h5"
+#define H5FILE_NAME_3D_TILED    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
-#define DATASETNAME_3D_TILED    "Int32Array3D_TILED"
-#define NX_3D_TILED             100             // dataset dimensions
-#define NY_3D_TILED             100
-#define NZ_3D_TILED             100
+#define DATASETNAME_3D_TILED    "UInt8Array3D_TILED"
+#define NX_3D_TILED             1000    // dataset dimensions
+#define NY_3D_TILED             1000
+#define NZ_3D_TILED             1000
 #define RANK_3D_TILED           3
 
 bool writeHDF5_3D_TILED()
@@ -63,11 +63,11 @@ bool writeHDF5_3D_TILED()
       hid_t               datatype, dataspace;                            // handles
       hsize_t             dimsf[RANK_3D_TILED];                           // dataset dimensions
       herr_t              status;
-      //DGtal::int32_t      data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
-      DGtal::int32_t      *data;
+      //DGtal::uint8_t      data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
+      DGtal::uint8_t      *data;
       int                 i, j, k;
       
-      data = (DGtal::int32_t*)malloc(NZ_3D_TILED*NY_3D_TILED*NX_3D_TILED * sizeof(DGtal::int32_t));
+      data = (DGtal::uint8_t*)malloc(NZ_3D_TILED*NY_3D_TILED*NX_3D_TILED * sizeof(DGtal::uint8_t));
 
       // Data  and output buffer initialization.
       for(k = 0; k < NZ_3D_TILED; k++)
@@ -94,7 +94,7 @@ bool writeHDF5_3D_TILED()
       /*
       * Define datatype for the data in the file.
       */
-      datatype = H5Tcopy(H5T_NATIVE_INT32);
+      datatype = H5Tcopy(H5T_NATIVE_UINT8);
       status = H5Tset_order(datatype, H5T_ORDER_LE);
 
       /*
@@ -105,7 +105,7 @@ bool writeHDF5_3D_TILED()
                           H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
       // Write the data to the dataset using default transfer properties.
-      status = H5Dwrite(dataset, H5T_NATIVE_INT32, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+      status = H5Dwrite(dataset, H5T_NATIVE_UINT8, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
 
       // Close/release resources.
       H5Sclose(dataspace);
@@ -128,7 +128,7 @@ bool exampleTiledImage3D()
 
     trace.beginBlock("Example : TiledImage with ImageFactoryFromHDF5 (3D)");
     
-      typedef ImageSelector<Z3i::Domain, DGtal::int32_t>::Type Image;
+      typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
 
       typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
       MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
@@ -136,19 +136,21 @@ bool exampleTiledImage3D()
       typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
       
       typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
+      //typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
       typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
-      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 10);
+      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 100);
+      //MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
       //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-      MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 10);
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 100);
       
       typedef MyTiledImage::OutputImage OutputImage;
       OutputImage::Value aValue;
       
-      trace.info() << "Read value for Point 0,0,0: " << tiledImage(Z3i::Point(0,0,0)) << endl;
-      trace.info() << "Read value for Point 50,50,50: " << tiledImage(Z3i::Point(50,50,50)) << endl;
+      trace.info() << "Read value for Point 0,0,0: " << (int)tiledImage(Z3i::Point(0,0,0)) << endl;
+      trace.info() << "Read value for Point 50,50,50: " << (int)tiledImage(Z3i::Point(50,50,50)) << endl;
       
       int cpt=0;
       for(k = 0; k < NZ_3D_TILED; k++)
