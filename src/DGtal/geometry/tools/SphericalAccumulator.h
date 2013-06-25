@@ -283,6 +283,17 @@ namespace DGtal
                         RealVector &b, 
                         RealVector &c, 
                         RealVector &d) const;
+
+    /** 
+     * From the bin index(posPhi,posTheta), we compute the main
+     * direction (quad geometry midpoint).
+     * 
+     * @param posPhi bin index along the first direction.
+     * @param posTheta bin index along the second direction.
+     * @return the main direction of a bin (quand mid-point). 
+     */
+    RealVector getBinDirection(const Size &posPhi,
+                               const Size &posTheta) const;
     
     // ------------------------- Iterators ------------------------------
     
