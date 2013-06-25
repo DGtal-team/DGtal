@@ -101,7 +101,7 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const s
   
 #ifdef WITH_HDF5
   else if (extension=="h5"){
-    return HDF5Reader::importHDF5(filename, datasetName); 
+    return HDF5Reader<TContainer>::importHDF5(filename, datasetName); 
   }
 #endif
   else if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp"){
