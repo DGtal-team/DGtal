@@ -78,10 +78,6 @@ int main( int argc, char** argv )
 
 
 
-
-
-
-
  Point p1( 14, 14, 14 );
  Point p2( 27, 27, 27 );
  Domain domain( p1, p2 );

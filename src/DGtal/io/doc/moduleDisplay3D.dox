@@ -188,17 +188,22 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
   - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
   - class Object, modes: "" /"Basic" (default), "DrawAdjacencies", "PavingTransp".
-  - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  - class HyperRectDomain 3D, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  - class HyperRectDomain 2D, modes: "" / "BoundingBox"  (default), "Grid", "InterGrid" **.
   - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration",  "IllustrationCustomColor".
   - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
   - class ArithmeticalDSS3d  ,  modes: "" (default) /  "Points", "BoundingBox *".
   - class Mesh, modes:  "" (default) /  "Faces *".
+  - class ImageContainerBySTLVector, ImageContainerBySTLMap 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
+  - class ImageAdapter, ConstImageAdapter 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
 
-Note that for KhalimskyCell and SignedKhalimskyCell the defaul colors
+
+Note that for KhalimskyCell and SignedKhalimskyCell the default colors
 (with CustomColors3D objects) can be changed only with the empty mode
 ("") and the "IllustrationCustomColor" mode.
 
 "*": partially for (Board3DTo2D), see issue <a href="https://github.com/DGtal-team/DGtal/issues/582"> 582</a>. 
+"**":  only for Viewer3D.
 
 \subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
 
@@ -356,14 +361,85 @@ we can add for instance two differents clipping planes:
  \image html  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." 
 \image latex  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
 
-*/
+
 It also possible to remove the visualisation of the transparent clipping plane by adding boolean option:
 
 @code
  viewer << ClippingPlane(0,1,0.3,-10, false);
 @endcode
 
+\section DGtalGLV_Images Adding 2D slice image visualisation
 
+With the Viewer3D class it is possible to display 2D slice image from a volume one. It can be done in few steps (see example of io/viewers/viewer3D-8-2Dimages.cpp) :
+
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImages
+
+And the display them using the classic stream operator:
+
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImages
+
+Finally you can adjust the image setting with the Display3DModifier UpdateImagePosition and UpdateImageData object:
+
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImages
+
+You will obtain such a visualisation:
+ \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation." width=5cm 
+ \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualisation." 
+
+You can also change the default mode by using:
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DChangeMode
+and by changing the "BoundingBox" mode by "InterGrid" you will obtain the following visualisation:
+ \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation with InterGrid mode." width=5cm 
+ \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation." 
+
+
+
+See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualisation/3dImageViewer.cpp viewer. 
+
+
+\section DGtalGLV_Images3D Adding 3D  image visualisation
+
+In the same way a 3D image can be displayed. By following the same stream operator you will obtain such example of display:
+\image html  viewer3D-9.png  "Example of 3D image visualisation with also digital sets." width=5cm 
+\image latex  viewer3D-9.png  "Example of 3D image visualisation with also digital sets."  
+
+See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp 
+
+
+
+\section DGtalGLV_Images3D Adding Custom  Image visualisation in 3D
+
+By default an image is displayed in gray scale levels from its scalar
+values. However it is possible to display color texture image by using
+the object AddTextureImage2DWithFunctor or AddTextureImage3DWithFunctor (of the
+DrawWithDisplay3DModifier class) with the RGBmode which allows to
+interpret the scalar as a color value. A color functor can also be
+specified to generate a given color.
+
+For instance the previous examples can easily displayed with color map:
+
+
+First we generate a color functor to generate unsigned integer interpreted as RGB color:
+- Adding the header to use  hueShadeMap:
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+
+with a functor to transform integer representing grayscale to integer representing color:
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+
+ 
+- Instead to use directly the image and the stream operator we add the AddTextureImage2DWithFunctor object: 
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+
+
+- Note that also can update the image position image data as in the previous example and we need to recall the functor function if we want to keep the same data interpretation :
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
+
+You will obtain such a visualisation:
+ \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualisation." width=5cm 
+ \image latex  viewer3D-8Color.png  "Illustration of the 2D image slice visualisation." 
+
+
+*/
 
 
 /**
@@ -445,6 +521,17 @@ It also possible to remove the visualisation of the transparent clipping plane b
    \image html  view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
 \example io/viewers/viewer3D-4bis-illustrationMode.cpp
 
+*
+*/
+/**
+   \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualisation."
+   \example io/viewers/viewer3D-8-2Dimages.cpp
+
+*
+*/
+/**
+   \image html  viewer3D-9.png  "Illustration of the 3D image visualisation."
+   \example io/viewers/viewer3D-9-3Dimages.cpp
 *
 */
 

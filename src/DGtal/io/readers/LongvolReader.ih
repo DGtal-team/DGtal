@@ -32,12 +32,18 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
+//! Maximum number of fields in a .longvol file header
+template <typename T, typename TFunctor>
+const int DGtal::LongvolReader<T, TFunctor>::MAX_HEADERNUMLINES = 64;
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
-template <typename T>
+template <typename T, typename TFunctor>
 inline
 T
-DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( DGtal::IOException )
+DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
+						  const Functor & aFunctor)   throw( DGtal::IOException )
 {
   FILE * fin;
   DGtal::IOException dgtalexception;
@@ -194,7 +200,7 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
     while (( count < total ) && ( fin ) )
     {
       read_word(fin , val);
-      image.setValue(( *it ), val );
+      image.setValue(( *it ), aFunctor(val) );
       it++;
       count++;
     }
@@ -218,8 +224,8 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
 
 
 
-template <typename T>
-const char *DGtal::LongvolReader<T>::requiredHeaders[] =
+template <typename T, typename TFunctor>
+const char *DGtal::LongvolReader<T, TFunctor>::requiredHeaders[] =
 {
   "X", "Y", "Z", "Lvoxel-Size", "Int-Endian", "Lvoxel-Endian", "Alpha-Color", NULL
 };
@@ -227,10 +233,10 @@ const char *DGtal::LongvolReader<T>::requiredHeaders[] =
 
 
 
-template<typename T>
+template<typename T, typename TFunctor>
 inline
 int
-DGtal::LongvolReader<T>::getHeaderField( const char *type, const HeaderField * header )
+DGtal::LongvolReader<T,TFunctor>::getHeaderField( const char *type, const HeaderField * header )
 {
 
 
@@ -245,10 +251,10 @@ DGtal::LongvolReader<T>::getHeaderField( const char *type, const HeaderField * h
 }
 
 
-template<typename T>
+template<typename T, typename TFunctor>
 inline
 const char *
-DGtal::LongvolReader<T>::getHeaderValue( const char *type, const HeaderField * header )
+DGtal::LongvolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderField * header )
 {
 
   int i = getHeaderField( type, header );
@@ -259,10 +265,10 @@ DGtal::LongvolReader<T>::getHeaderValue( const char *type, const HeaderField * h
 }
 
 
-template<typename T>
+template<typename T, typename TFunctor>
 inline
 int
-DGtal::LongvolReader<T>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )
+DGtal::LongvolReader<T, TFunctor>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )
 {
   int i = getHeaderField( type, header );
   if ( i == -1 )

@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImage.h"
-#include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,7 +52,10 @@ namespace DGtal
   /**
    * Description of template class 'IntervalForegroundPredicate' <p>
    * \brief Aim: Define a simple Foreground predicate thresholding
-   * image values  between two constant values.
+   * image values  between two constant values (the first one being
+   * excluded).
+   *
+   * This class is a model of CPointPredicate.
    *
    * @tparam Image an model of CImageContainer concept. 
    */
@@ -72,10 +75,10 @@ namespace DGtal
      * @param minVal the minimum value (first value excluded).
      * @param maxVal the maximum value (last value considered).
      */
-    IntervalForegroundPredicate(const Image & aImage,
-			      const Value minVal, 
-			      const Value maxVal): 
-      myImage(new Image(aImage)), myMaxVal(maxVal), myMinVal(minVal) {};
+    IntervalForegroundPredicate(ConstAlias<Image> aImage,
+                                const Value minVal, 
+                                const Value maxVal): 
+      myImage(aImage), myMaxVal(maxVal), myMinVal(minVal) {};
     
     /** 
      * @return True if the point belongs to the value interval.
@@ -102,7 +105,7 @@ namespace DGtal
     }
 
   private:
-    CountedPtr<Image> myImage;
+    const Image* myImage;
     Value myMaxVal;
     Value myMinVal;
     

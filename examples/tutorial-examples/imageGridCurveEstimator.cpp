@@ -43,7 +43,7 @@
 //! [imageGridCurveEstimator-imageIncludes]
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 //! [imageGridCurveEstimator-imageIncludes]
 
@@ -70,7 +70,7 @@ int main()
   //image import
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
-  Image image = DGtal::PNMReader<Image>::importPGM(filename); 
+  Image image = DGtal::PGMReader<Image>::importPGM(filename); 
 
   //! [imageGridCurveEstimator-predicate] 
   //predicate from the image

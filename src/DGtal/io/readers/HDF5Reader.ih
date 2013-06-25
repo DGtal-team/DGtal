@@ -48,10 +48,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-template <typename TImageContainer>
+template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer 
-DGtal::HDF5Reader<TImageContainer>::importHDF5(const std::string & aFilename, const std::string & aDataset, bool topbotomOrder) throw(DGtal::IOException)
+DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFilename, const std::string & aDataset, 
+					       const Functor & aFunctor, bool topbotomOrder) throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
     
@@ -134,9 +135,9 @@ DGtal::HDF5Reader<TImageContainer>::importHDF5(const std::string & aFilename, co
           }
           
           if( ((planes==1) && (npals==1)) )
-            image.setValue(pt, imgBuf[ y*width+x ]);
+            image.setValue(pt, aFunctor(imgBuf[ y*width+x ]));
           else if( ((planes==3) && (npals==0) && (strcmp(interlace, "INTERLACE_PIXEL")==0)) )
-            image.setValue(pt, imgBuf[ ( (y*planes*width+x*planes)+(y*planes*width+x*planes+1)+(y*planes*width+x*planes+2) )/3 ]);
+            image.setValue(pt, aFunctor(imgBuf[ ( (y*planes*width+x*planes)+(y*planes*width+x*planes+1)+(y*planes*width+x*planes+2) )/3 ]));
       }
       
   free(imgBuf);

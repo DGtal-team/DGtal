@@ -37,7 +37,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
@@ -58,7 +58,7 @@ int main( int /*argc*/, char** /*argv*/ )
 {
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
   std::string inputFilename = examplesPath + "samples/circleR10modif.pgm"; 
-  Image image = PNMReader<Image>::importPGM( inputFilename ); 
+  Image image = PGMReader<Image>::importPGM( inputFilename ); 
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);

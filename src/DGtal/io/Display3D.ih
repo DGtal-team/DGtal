@@ -33,7 +33,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
-
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/writers/MeshWriter.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -119,12 +118,27 @@ DGtal::Display3D::getMode( const std::string & objectName ) const
 
 
 inline
+unsigned int 
+DGtal::Display3D::getCurrentDomainNumber(){
+  return myImageDomainList.size();
+}
+
+
+inline 
+unsigned int 
+DGtal::Display3D::getCurrentGLImageNumber(){
+  return myGSImageList.size();
+}
+
+inline
 void
-DGtal::Display3D::createNewVoxelList(bool depthTest)
+DGtal::Display3D::createNewVoxelList(bool depthTest, std::string str)
 {
   std::vector< voxelD3D > v;
   myVoxelSetList.push_back(v);
+  myVoxelSetNameList.push_back(str);
   myListVoxelDepthTest.push_back(depthTest);
+
   
 }
 
@@ -132,19 +146,22 @@ DGtal::Display3D::createNewVoxelList(bool depthTest)
 
 inline
 void
-DGtal::Display3D::createNewPointList()
+DGtal::Display3D::createNewPointList(std::string str)
 {
   std::vector< pointD3D > v;
   myPointSetList.push_back(v);
+  myPointSetNameList.push_back(str);
 }
 
 
 inline
 void
-DGtal::Display3D::createNewLineList()
+DGtal::Display3D::createNewLineList(std::string str)
 {
   std::vector< lineD3D > v;
   myLineSetList.push_back(v);
+  myLineSetNameList.push_back(str);
+
 }
 
 
@@ -300,7 +317,7 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
 
   triangleD3D aTriangle;
   double u[3]; double v [3]; double n [3]; 
-    u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
+  u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
   v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
   cross(n, u, v );
   cross(n, u, v );
@@ -366,7 +383,7 @@ DGtal::Display3D::addPolygon(std::vector<Display3D::pointD3D> vectPointsPolygon,
     trace.error()<< "Warning polygin not added due to identical vertex... "<<std::endl;
     return;
   }
-
+  
   aPolygon.nx= n[0];
   aPolygon.ny= n[1];
   aPolygon.nz= n[2];
@@ -461,7 +478,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       x5= 0.6*x5+0.4*xcenter; x6= 0.6*x6+0.4*xcenter; x7= 0.6*x7+0.4*xcenter; x8= 0.6*x8+0.4*xcenter;
       y5= 0.6*y5+0.4*ycenter; y6= 0.6*y6+0.4*ycenter; y7= 0.6*y7+0.4*ycenter; y8= 0.6*y8+0.4*ycenter;
       z5= 0.6*z5+0.4*zcenter; z6= 0.6*z6+0.4*zcenter; z7= 0.6*z7+0.4*zcenter; z8= 0.6*z8+0.4*zcenter;
-  }
+    }
   
   
 
@@ -499,9 +516,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       qFaceDown.ny=  -normaleUp[1];
       qFaceDown.nz=  -normaleUp[2];
       qFaceDown.x1=x5; qFaceDown.y1=y5; qFaceDown.z1= z5;
-      qFaceDown.x2=x6; qFaceDown.y2=y6; qFaceDown.z2= z6;
+      qFaceDown.x2=x8; qFaceDown.y2=y8; qFaceDown.z2= z8;
       qFaceDown.x3=x7; qFaceDown.y3=y7; qFaceDown.z3= z7;
-      qFaceDown.x4=x8; qFaceDown.y4=y8; qFaceDown.z4= z8;
+      qFaceDown.x4=x6; qFaceDown.y4=y6; qFaceDown.z4= z6;
       qFaceDown.R=myCurrentFillColor.red();qFaceDown.G=myCurrentFillColor.green(); qFaceDown.B=myCurrentFillColor.blue();
       qFaceDown.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFaceDown);  
@@ -516,9 +533,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       normalize(n1);
       qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
       qFace1.x1= x1; qFace1.y1 =y1; qFace1.z1=z1;
-      qFace1.x2= x2; qFace1.y2 =y2; qFace1.z2=z2;
+      qFace1.x2= x5; qFace1.y2 =y5; qFace1.z2=z5;
       qFace1.x3= x6; qFace1.y3 =y6; qFace1.z3=z6;
-      qFace1.x4= x5; qFace1.y4 =y5; qFace1.z4=z5;
+      qFace1.x4= x2; qFace1.y4 =y2; qFace1.z4=z2;
       qFace1.R=myCurrentFillColor.red();qFace1.G=myCurrentFillColor.green(); qFace1.B=myCurrentFillColor.blue();
       qFace1.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace1);    
@@ -533,9 +550,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     
       qFace2.nx=n2[0]; qFace2.ny=n2[1]; qFace2.nz=n2[2];
       qFace2.x1= x2; qFace2.y1 =y2; qFace2.z1=z2;
-      qFace2.x2= x3; qFace2.y2 =y3; qFace2.z2=z3;
+      qFace2.x2= x6; qFace2.y2 =y6; qFace2.z2=z6;
       qFace2.x3= x7; qFace2.y3 =y7; qFace2.z3=z7;
-      qFace2.x4= x6; qFace2.y4 =y6; qFace2.z4=z6;
+      qFace2.x4= x3; qFace2.y4 =y3; qFace2.z4=z3;
       qFace2.R=myCurrentFillColor.red();qFace2.G=myCurrentFillColor.green(); qFace2.B=myCurrentFillColor.blue();
       qFace2.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace2);  
@@ -550,9 +567,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       normalize(n3);    
       qFace3.nx=n3[0]; qFace3.ny=n3[1]; qFace3.nz=n3[2];
       qFace3.x1= x3; qFace3.y1 =y3; qFace3.z1=z3;
-      qFace3.x2= x4; qFace3.y2 =y4; qFace3.z2=z4;
+      qFace3.x2= x7; qFace3.y2 =y7; qFace3.z2=z7;
       qFace3.x3= x8; qFace3.y3 =y8; qFace3.z3=z8;
-      qFace3.x4= x7; qFace3.y4 =y7; qFace3.z4=z7;
+      qFace3.x4= x4; qFace3.y4 =y4; qFace3.z4=z4;
       qFace3.R=myCurrentFillColor.red();qFace3.G=myCurrentFillColor.green(); qFace3.B=myCurrentFillColor.blue();
       qFace3.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace3);  
@@ -561,14 +578,14 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       quadD3D qFace4;
       double vF4[3]; double v4 [3]; double n4[3];
       vF4[0]= x1-x4; vF4[1]=y1-y4; vF4[2]= z1-z4;
-      v4[0]= x5-x4; v4[1]= y5-y4; v4[2]=z5-z4;
+      v4[0]= x8-x4; v4[1]= y8-y4; v4[2]=z8-z4;
       cross(n4, v4, vF4);
       normalize(n4);    
       qFace4.nx=n4[0]; qFace4.ny=n4[1]; qFace4.nz=n4[2];
       qFace4.x1= x4; qFace4.y1 =y4; qFace4.z1=z4;
-      qFace4.x2= x1; qFace4.y2 =y1; qFace4.z2=z1;
+      qFace4.x2= x8; qFace4.y2 =y8; qFace4.z2=z8;
       qFace4.x3= x5; qFace4.y3 =y5; qFace4.z3=z5;
-      qFace4.x4= x8; qFace4.y4 =y8; qFace4.z4=z8;
+      qFace4.x4= x1; qFace4.y4 =y1; qFace4.z4=z1;
       qFace4.R=myCurrentFillColor.red();qFace4.G=myCurrentFillColor.green(); qFace4.B=myCurrentFillColor.blue();
       qFace4.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace4);  
@@ -882,6 +899,330 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const {
 
 }
 
+
+inline
+void 
+DGtal::Display3D::addTextureImage(const Display3D::TextureImage &image){
+  myGSImageList.push_back(image);
+  updateBoundingBox(image.x1, image.y1, image.z1);
+  updateBoundingBox(image.x2, image.y2, image.z2);
+  updateBoundingBox(image.x3, image.y3, image.z3);
+  updateBoundingBox(image.x4, image.y4, image.z4);
+}
+
+
+
+
+template <typename TImageType, typename TFunctor>
+inline
+void 
+DGtal::Display3D::updateTextureImage(unsigned int imageIndex,  const TImageType & image, const  TFunctor & aFunctor, 
+				       double xTranslation, double yTranslation, double zTranslation){
+  BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
+  assert ( imageIndex< myGSImageList.size());
+  Display3D::TextureImage &anImage = myGSImageList.at(imageIndex); 
+  updateBoundingBox(anImage.x1+xTranslation, anImage.y1+yTranslation, anImage.z1+zTranslation);
+  updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
+  updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
+  updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
+  anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);
+  if(anImage.myDrawDomain){
+    *this << DGtal::Translate2DDomain(anImage.myIndexDomain, xTranslation, yTranslation, zTranslation); 
+  }
+}
+    
+
+
+inline 
+void 
+DGtal::Display3D::updateOrientationTextureImage(unsigned int imageIndex, 
+						  double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
+  assert ( imageIndex< myGSImageList.size());
+  Display3D::TextureImage &anImage = myGSImageList.at(imageIndex); 
+  updateBoundingBox(anImage.x1, anImage.y1, anImage.z1);
+  updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
+  updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
+  updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
+  anImage.updateImageOrientation(newDirection, xPosition, yPosition, zPosition);
+  if(anImage.myDrawDomain){
+    *this << DGtal::Update2DDomainPosition(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
+  }
+  
+}
+    
+
+
+
+
+inline      
+void
+DGtal::Display3D::TextureImage::updateImageOrientation( DGtal::Display3D::ImageDirection normalDir, 
+							  double xBottomLeft, double yBottomLeft, double zBottomLeft){
+  if(normalDir==zDirection){
+    x1 = xBottomLeft-0.5; y1 = yBottomLeft-0.5; z1 = zBottomLeft;
+    x2 = xBottomLeft+myImageWidth-0.5; y2 = yBottomLeft-0.5; z2 = zBottomLeft; 
+    x3 = xBottomLeft+myImageWidth-0.5; y3 = yBottomLeft+myImageHeight-0.5; z3 = zBottomLeft; 
+    x4 = xBottomLeft-0.5; y4 = yBottomLeft+myImageHeight-0.5; z4 = zBottomLeft; 
+  }else if(normalDir==yDirection){
+    x1 = xBottomLeft-0.5; y1 = yBottomLeft; z1 = zBottomLeft-0.5;
+    x2 = xBottomLeft+myImageWidth-0.5; y2 = yBottomLeft; z2 = zBottomLeft-0.5; 
+    x3 = xBottomLeft+myImageWidth-0.5; y3 = yBottomLeft; z3 = zBottomLeft+myImageHeight-0.5;
+    x4 = xBottomLeft-0.5; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight-0.5; 
+  }else if(normalDir==xDirection){
+    x1 = xBottomLeft; y1 = yBottomLeft-0.5; z1= zBottomLeft-0.5;
+    x2 = xBottomLeft; y2 = yBottomLeft+myImageWidth-0.5; z2 = zBottomLeft-0.5; 
+    x3 = xBottomLeft; y3 = yBottomLeft+myImageWidth-0.5; z3 = zBottomLeft+myImageHeight-0.5; 
+    x4 = xBottomLeft; y4 = yBottomLeft-0.5; z4 = zBottomLeft+myImageHeight-0.5; 
+  }
+  myDirection=normalDir;
+}
+
+
+inline
+void 
+DGtal::Display3D::Image2DDomainD3D::updateDomainOrientation( Display3D::ImageDirection normalDir, 
+							   double xBottomLeft, double yBottomLeft, double zBottomLeft){
+    if(normalDir==zDirection){
+    x1 = xBottomLeft-0.5; y1 = yBottomLeft-0.5; z1 = zBottomLeft;
+    x2 = xBottomLeft+myDomainWidth-0.5; y2 = yBottomLeft-0.5; z2 = zBottomLeft; 
+    x3 = xBottomLeft+myDomainWidth-0.5; y3 = yBottomLeft+myDomainHeight-0.5; z3 = zBottomLeft; 
+    x4 = xBottomLeft-0.5; y4 = yBottomLeft+myDomainHeight-0.5; z4 = zBottomLeft; 
+  }else if(normalDir==yDirection){
+    x1 = xBottomLeft-0.5; y1 = yBottomLeft; z1 = zBottomLeft-0.5;
+    x2 = xBottomLeft+myDomainWidth-0.5; y2 = yBottomLeft; z2 = zBottomLeft-0.5; 
+    x3 = xBottomLeft+myDomainWidth-0.5; y3 = yBottomLeft; z3 = zBottomLeft+myDomainHeight-0.5;
+    x4 = xBottomLeft-0.5; y4 = yBottomLeft; z4 = zBottomLeft+myDomainHeight-0.5; 
+  }else if(normalDir==xDirection){
+    x1 = xBottomLeft; y1 = yBottomLeft-0.5; z1= zBottomLeft-0.5;
+    x2 = xBottomLeft; y2 = yBottomLeft+myDomainWidth-0.5; z2 = zBottomLeft-0.5; 
+    x3 = xBottomLeft; y3 = yBottomLeft+myDomainWidth-0.5; z3 = zBottomLeft+myDomainHeight-0.5; 
+    x4 = xBottomLeft; y4 = yBottomLeft-0.5; z4 = zBottomLeft+myDomainHeight-0.5; 
+  }
+  myDirection=normalDir;
+}
+
+
+
+inline 
+void 
+DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation, 
+						     double yTranslation, double zTranslation){    
+  x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
+  x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
+  x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
+  x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
+}
+
+
+
+template<typename TDomain>
+void 
+DGtal::Display3D::addImage2DDomainD3D(const TDomain &aDomain, 
+				      std::string mode, const DGtal::Color &aColor){
+  DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain);
+  anImageDomain.R = aColor.red();
+  anImageDomain.G =aColor.green();
+  anImageDomain.B =aColor.blue();
+  anImageDomain.T =aColor.alpha();
+  
+  anImageDomain.myMode =  mode;
+  anImageDomain.myLineSetIndex=myLineSetList.size();
+  
+  myImageDomainList.push_back(anImageDomain);
+  updateBoundingBox(anImageDomain.x1, anImageDomain.y1, anImageDomain.z1);
+  updateBoundingBox(anImageDomain.x2, anImageDomain.y2, anImageDomain.z2);
+  updateBoundingBox(anImageDomain.x3, anImageDomain.y3, anImageDomain.z3);
+  updateBoundingBox(anImageDomain.x4, anImageDomain.y4, anImageDomain.z4);
+  
+  std::vector<DGtal::Display3D::lineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
+  myLineSetList.push_back(vectLines);
+  
+  
+}
+
+inline
+std::vector<DGtal::Display3D::lineD3D> 
+DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDomainD3D &anImageDomain ){
+  std::vector<DGtal::Display3D::lineD3D> vectLinesResu= compute2DDomainLineRepresentation(anImageDomain, 0.05);
+  std::vector<DGtal::Display3D::lineD3D> vectLinesVerso= compute2DDomainLineRepresentation(anImageDomain, -0.05);
+  for(unsigned int i=0; i<vectLinesVerso.size(); i++){
+    vectLinesResu.push_back(vectLinesVerso.at(i));
+  }
+  return vectLinesResu;
+}
+
+
+inline
+std::vector<DGtal::Display3D::lineD3D> 
+DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDomainD3D &anImageDomain, double delta ){
+  std::vector<DGtal::Display3D::lineD3D> aLineSet;
+  lineD3D aLine;
+  aLine.R = anImageDomain.R;
+  aLine.G = anImageDomain.G;
+  aLine.B = anImageDomain.B;
+  aLine.T = anImageDomain.T;
+  
+  if( anImageDomain.myMode=="BoundingBox"){
+    aLine.x1=anImageDomain.x1; aLine.y1=anImageDomain.y1; aLine.z1=anImageDomain.z1; 
+    aLine.x2=anImageDomain.x2; aLine.y2=anImageDomain.y2; aLine.z2=anImageDomain.z2;
+    aLineSet.push_back(aLine);
+    aLine.x1=anImageDomain.x2; aLine.y1=anImageDomain.y2; aLine.z1=anImageDomain.z2;
+    aLine.x2=anImageDomain.x3; aLine.y2=anImageDomain.y3; aLine.z2=anImageDomain.z3;
+    aLineSet.push_back(aLine);
+    aLine.x1=anImageDomain.x3; aLine.y1=anImageDomain.y3; aLine.z1=anImageDomain.z3;
+    aLine.x2=anImageDomain.x4; aLine.y2=anImageDomain.y4; aLine.z2=anImageDomain.z4;
+    aLineSet.push_back(aLine);
+    aLine.x1=anImageDomain.x4; aLine.y1=anImageDomain.y4; aLine.z1=anImageDomain.z4;
+    aLine.x2=anImageDomain.x1; aLine.y2=anImageDomain.y1; aLine.z2=anImageDomain.z1;
+    aLineSet.push_back(aLine);
+  }else if(anImageDomain.myMode=="InterGrid"){
+    aLine.width=0.3;
+    if(anImageDomain.myDirection==zDirection){
+      //lines align to the x direction 
+      for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z1+delta; 
+	aLineSet.push_back(aLine);
+      }
+      //lines align to the y direction 
+      for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta; 
+	aLineSet.push_back(aLine);
+      }
+    }else  if(anImageDomain.myDirection==xDirection){
+      //lines align to the y direction 
+      for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i; 
+	aLineSet.push_back(aLine);
+      }
+      
+      //lines align to the z direction 
+      for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z4; 
+	aLineSet.push_back(aLine);
+      }
+    }else  if(anImageDomain.myDirection==yDirection){
+      //lines align to the x direction 
+      for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1+i; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z1+i; 
+	aLineSet.push_back(aLine);
+      }
+      
+      //lines align to the z direction 
+      for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z4; 
+	aLineSet.push_back(aLine);
+      }
+    }
+    
+  }else if(anImageDomain.myMode=="Grid"){
+    aLine.width=0.3;
+    if(anImageDomain.myDirection==zDirection){
+      //lines align to the x direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z1+delta; 
+	aLineSet.push_back(aLine);
+      }
+      //lines align to the y direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta; 
+	aLineSet.push_back(aLine);
+      }
+    }else  if(anImageDomain.myDirection==xDirection){
+      //lines align to the y direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i+0.5; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i+0.5; 
+	aLineSet.push_back(aLine);
+      }
+      
+      //lines align to the z direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z4; 
+	aLineSet.push_back(aLine);
+      }
+    }else  if(anImageDomain.myDirection==yDirection){
+      //lines align to the x direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1+i+0.5; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z1+i+0.5; 
+	aLineSet.push_back(aLine);
+      }
+      
+      //lines align to the z direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z4; 
+	aLineSet.push_back(aLine);
+      }
+    }
+    
+  }
+
+ 
+  return aLineSet;
+}
+
+
+
+
+inline 
+void 
+DGtal::Display3D::updateAn2DDomainOrientation(unsigned int domainIndex, 
+					      double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
+  Display3D::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex); 
+  updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
+  updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
+  updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
+  updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
+  anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
+
+  std::vector<DGtal::Display3D::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);  
+   std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex); 
+  vectLines.clear();
+  for(unsigned int i=0; i<vectNewLines.size(); i++){
+    vectLines.push_back(vectNewLines.at(i));
+  }
+  
+}
+
+inline
+void
+DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation){
+  Display3D::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex); 
+  anDomain.translateDomain(xTranslation, yTranslation, zTranslation);
+  
+  updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
+  updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
+  updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
+  updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
+
+  std::vector<DGtal::Display3D::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);  
+  std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex); 
+  
+  vectLines.clear();
+  for(unsigned int i=0; i<vectNewLines.size(); i++){
+    vectLines.push_back(vectNewLines.at(i));
+  }
+}
+
+    
+
+   
+inline
+std::string 
+DGtal::Display3D::TextureImage::className() const
+{
+  return "TextureImage";
+}
 
 
 

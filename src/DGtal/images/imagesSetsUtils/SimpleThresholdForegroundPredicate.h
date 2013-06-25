@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImage.h"
-#include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,6 +55,8 @@ namespace DGtal
    * image values  given a single thresold.
    * More precisely, the functor operator() returns true if the value
    * is greater than a given threshold.
+   *
+   * This class is a model of CPointPredicate.
    *
    * @tparam Image an model of CImageContainer concept. 
    */
@@ -73,9 +75,9 @@ namespace DGtal
      * 
      * @param value  the threshold value.
      */
-    SimpleThresholdForegroundPredicate(const Image & aImage,
+    SimpleThresholdForegroundPredicate(ConstAlias<Image> aImage,
 				       const Value value):
-      myImage(new Image(aImage)), myVal(value) {};
+      myImage(aImage), myVal(value) {};
     
     /** 
      * @return True if the point belongs to the value interval.
@@ -111,7 +113,7 @@ namespace DGtal
     
 
   private:
-    CountedPtr<Image> myImage;
+    const Image *  myImage;
     Value myVal;
     
   protected:

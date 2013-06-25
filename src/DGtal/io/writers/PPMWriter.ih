@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <fstream>
 #include "DGtal/io/Color.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,8 +49,10 @@ namespace DGtal {
     BOOST_STATIC_ASSERT(I::Domain::dimension == 2);
 
     std::ofstream out;
-    typename I::Domain::Vector ext = aImage.extent();
     typename I::Domain domain = aImage.domain();
+    typename I::Domain::Point p = I::Domain::Point::diagonal(1);
+    typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
+
     typename I::Value val;
     DGtal::Color col;
     out.open(filename.c_str());
@@ -57,7 +60,7 @@ namespace DGtal {
     //PPM format
     out << "P3"<<std::endl;
     out << "#DGtal PNM Writer"<<std::endl<<std::endl;
-    out << ext[0]<<" "<< ext[1]<<std::endl;
+    out << size[0]<<" "<< size[1]<<std::endl;
     out << "255" <<std::endl;
     
     if(!topbotomOrder)
@@ -108,8 +111,10 @@ PPMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
   BOOST_STATIC_ASSERT(I::Domain::dimension == 3);
   
   std::ofstream out;
-  typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
+  typename I::Domain::Point p = I::Domain::Point::diagonal(1);
+  typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
+
   typename I::Value val;
   DGtal::Color col;
   
@@ -118,7 +123,7 @@ PPMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
   //PPM format
   out << "P3-3D"<<std::endl;
   out << "#DGtal PNM Writer"<<std::endl<<std::endl;
-  out << ext[0]<<" "<< ext[1]<<" "<< ext[2]<<std::endl;
+  out << size[0]<<" "<< size[1]<<" "<< size[2]<<std::endl;
   out << "255" <<std::endl;
   
   //We scan the domain instead of the image becaus we cannot

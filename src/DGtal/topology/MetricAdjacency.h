@@ -75,7 +75,7 @@ namespace DGtal
    * @see testAdjacency.cpp
    */
   template <typename TSpace, Dimension maxNorm1, 
-      Dimension dimension = TSpace::dimension >
+	    Dimension dimension = TSpace::dimension >
   class MetricAdjacency
   {
     BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
