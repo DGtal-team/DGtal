@@ -376,7 +376,7 @@ namespace DGtal
     static inline 
     unsigned int mostSignificantBit( DGtal::uint64_t n )
     {
-      return ( n & 0xffffffff00000000 ) 
+      return ( n & 0xffffffff00000000LL ) 
         ? 32 + mostSignificantBit( (DGtal::uint32_t) (n>>32) )
         :  mostSignificantBit((DGtal::uint32_t) (n) );      
     }
