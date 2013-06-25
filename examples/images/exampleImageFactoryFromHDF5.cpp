@@ -45,7 +45,6 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define H5FILE_NAME_3D_TILED_EASY_READING       "exampleImageFactoryFromHDF5_TILED_3D_for_easy_reading.h5"
 #define H5FILE_NAME_3D_TILED                    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
 #define DATASETNAME_3D_TILED    "Int32Array3D_TILED"
@@ -54,114 +53,71 @@ using namespace DGtal;
 #define NZ_3D_TILED             100
 #define RANK_3D_TILED           3
 
-bool writeHDF5_3D_TILED_for_easy_reading()
-{
-    hid_t               file, dataset;                                  // file and dataset handles
-    hid_t               datatype, dataspace;                            // handles
-    hsize_t             dimsf[RANK_3D_TILED];                           // dataset dimensions
-    herr_t              status;
-    DGtal::int32_t      data[NY_3D_TILED][NX_3D_TILED][NZ_3D_TILED];    // data to write
-    int                 i, j, k;
-
-    // Data  and output buffer initialization.
-    for(k = 0; k < NZ_3D_TILED; k++)
-      for(j = 0; j < NY_3D_TILED; j++)
-        for(i = 0; i < NX_3D_TILED; i++)
-          if (i>=25 && j>=25 && k>=25 && i<75 && j<75 && k<75)
-            data[j][i][k] = 1;
-          else
-            data[j][i][k] = 0;
-
-    /*
-     * Create a new file using H5F_ACC_TRUNC access,
-     * default file creation properties, and default file
-     * access properties.
-     */
-    file = H5Fcreate(H5FILE_NAME_3D_TILED_EASY_READING, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
-
-    // Describe the size of the array and create the data space for fixed size dataset.
-    dimsf[0] = NY_3D_TILED;
-    dimsf[1] = NX_3D_TILED;
-    dimsf[2] = NZ_3D_TILED;
-    dataspace = H5Screate_simple(RANK_3D_TILED, dimsf, NULL);
-
-    /*
-     * Define datatype for the data in the file.
-     */
-    datatype = H5Tcopy(H5T_NATIVE_INT32);
-    status = H5Tset_order(datatype, H5T_ORDER_LE);
-
-    /*
-     * Create a new dataset within the file using defined dataspace and
-     * datatype and default dataset creation properties.
-     */
-    dataset = H5Dcreate2(file, DATASETNAME_3D_TILED, datatype, dataspace,
-                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-
-    // Write the data to the dataset using default transfer properties.
-    status = H5Dwrite(dataset, H5T_NATIVE_INT32, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
-
-    // Close/release resources.
-    H5Sclose(dataspace);
-    H5Tclose(datatype);
-    H5Dclose(dataset);
-    H5Fclose(file);
-
-    return true;
-}
-
 bool writeHDF5_3D_TILED()
 {
-    hid_t               file, dataset;                                  // file and dataset handles
-    hid_t               datatype, dataspace;                            // handles
-    hsize_t             dimsf[RANK_3D_TILED];                           // dataset dimensions
-    herr_t              status;
-    DGtal::int32_t      data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
-    int                 i, j, k;
+    trace.beginBlock("Example : writeHDF5_3D (3D)");
+    
+      trace.info() << "begin" << endl;
+      
+      hid_t               file, dataset;                                  // file and dataset handles
+      hid_t               datatype, dataspace;                            // handles
+      hsize_t             dimsf[RANK_3D_TILED];                           // dataset dimensions
+      herr_t              status;
+      //DGtal::int32_t      data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
+      DGtal::int32_t      *data;
+      int                 i, j, k;
+      
+      data = (DGtal::int32_t*)malloc(NZ_3D_TILED*NY_3D_TILED*NX_3D_TILED * sizeof(DGtal::int32_t));
 
-    // Data  and output buffer initialization.
-    for(k = 0; k < NZ_3D_TILED; k++)
-      for(j = 0; j < NY_3D_TILED; j++)
-        for(i = 0; i < NX_3D_TILED; i++)
-          if (i>=25 && j>=25 && k>=25 && i<75 && j<75 && k<75)
-            data[j][i][k] = 1;
-          else
-            data[j][i][k] = 0;
+      // Data  and output buffer initialization.
+      for(k = 0; k < NZ_3D_TILED; k++)
+        for(j = 0; j < NY_3D_TILED; j++)
+          for(i = 0; i < NX_3D_TILED; i++)
+            if (i>=25 && j>=25 && k>=25 && i<75 && j<75 && k<75)
+              data[k*NY_3D_TILED*NX_3D_TILED + j*NX_3D_TILED + i] = 1;
+            else
+              data[k*NY_3D_TILED*NX_3D_TILED + j*NX_3D_TILED + i] = 0;
 
-    /*
-     * Create a new file using H5F_ACC_TRUNC access,
-     * default file creation properties, and default file
-     * access properties.
-     */
-    file = H5Fcreate(H5FILE_NAME_3D_TILED, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+      /*
+      * Create a new file using H5F_ACC_TRUNC access,
+      * default file creation properties, and default file
+      * access properties.
+      */
+      file = H5Fcreate(H5FILE_NAME_3D_TILED, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
-    // Describe the size of the array and create the data space for fixed size dataset.
-    dimsf[0] = NZ_3D_TILED;
-    dimsf[1] = NY_3D_TILED;
-    dimsf[2] = NX_3D_TILED;
-    dataspace = H5Screate_simple(RANK_3D_TILED, dimsf, NULL);
+      // Describe the size of the array and create the data space for fixed size dataset.
+      dimsf[0] = NZ_3D_TILED;
+      dimsf[1] = NY_3D_TILED;
+      dimsf[2] = NX_3D_TILED;
+      dataspace = H5Screate_simple(RANK_3D_TILED, dimsf, NULL);
 
-    /*
-     * Define datatype for the data in the file.
-     */
-    datatype = H5Tcopy(H5T_NATIVE_INT32);
-    status = H5Tset_order(datatype, H5T_ORDER_LE);
+      /*
+      * Define datatype for the data in the file.
+      */
+      datatype = H5Tcopy(H5T_NATIVE_INT32);
+      status = H5Tset_order(datatype, H5T_ORDER_LE);
 
-    /*
-     * Create a new dataset within the file using defined dataspace and
-     * datatype and default dataset creation properties.
-     */
-    dataset = H5Dcreate2(file, DATASETNAME_3D_TILED, datatype, dataspace,
-                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+      /*
+      * Create a new dataset within the file using defined dataspace and
+      * datatype and default dataset creation properties.
+      */
+      dataset = H5Dcreate2(file, DATASETNAME_3D_TILED, datatype, dataspace,
+                          H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
-    // Write the data to the dataset using default transfer properties.
-    status = H5Dwrite(dataset, H5T_NATIVE_INT32, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+      // Write the data to the dataset using default transfer properties.
+      status = H5Dwrite(dataset, H5T_NATIVE_INT32, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
 
-    // Close/release resources.
-    H5Sclose(dataspace);
-    H5Tclose(datatype);
-    H5Dclose(dataset);
-    H5Fclose(file);
+      // Close/release resources.
+      H5Sclose(dataspace);
+      H5Tclose(datatype);
+      H5Dclose(dataset);
+      H5Fclose(file);
+      
+      free(data);
+      
+      trace.info() << "end" << endl;
+    
+    trace.endBlock();
 
     return true;
 }
@@ -181,12 +137,12 @@ bool exampleTiledImage3D()
       
       typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
       typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
-      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
+      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 10);
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
       //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-      MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 2);
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 10);
       
       typedef MyTiledImage::OutputImage OutputImage;
       OutputImage::Value aValue;
@@ -212,8 +168,8 @@ bool exampleTiledImage3D()
 
 int main( int argc, char** argv )
 {
-    writeHDF5_3D_TILED_for_easy_reading();
     writeHDF5_3D_TILED();
+    
     exampleTiledImage3D();
     
     return 0;
