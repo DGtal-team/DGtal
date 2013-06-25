@@ -169,7 +169,7 @@ namespace DGtal
 
     //dimension
     typedef typename Point::Dimension Dimension;
-    static const Dimension dimension = Point::dimension;
+    static const Dimension dimension; 
 
     //distance
     typedef TPointFunctor PointFunctor; 

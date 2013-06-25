@@ -80,6 +80,8 @@ namespace DGtal
     
     Color( const unsigned int aRgb, unsigned char aAlpha = 255 );
 
+  
+  
 
     /**
      * Constructor from R, G, B and Alpha parameter.
@@ -127,6 +129,17 @@ namespace DGtal
 		    const unsigned char aBlueValue,
 		    const unsigned char aAlphaValue );
 
+    /**
+     * Set the color parameter from an unsigned integer coding each canal.
+     *
+     * @param aRGBA an unsigned integer on 32 bits(DGtal::unit32_t)
+     * representing the color coded with 4 bits on each components R, G, B
+     * and Alpha value.
+     * @return a reference on the itself.
+     *
+     */
+    
+    Color& setRGBA( DGtal::uint32_t aRGBA );
     
     void red( const unsigned char aRedValue );
 
@@ -144,6 +157,22 @@ namespace DGtal
 
     unsigned char alpha() const ;
 
+
+    /**
+     * @return the unsigned integer ( DGtal::uint32_t ) coding  each
+     * R, G, B canal on 8 bits starting from least significant bit.
+     **/
+    
+    DGtal::uint32_t getRGB() const;
+
+    /**
+     * @return the unsigned integer ( DGtal::uint32_t ) coding  each
+     * R, G, B, A canal on 8 bits starting from least significant bit.
+     **/
+        
+    DGtal::uint32_t getRGBA() const;
+
+
     bool valid() const;
 
 
@@ -159,7 +188,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-
+    
 
     Color & setRGBf( float red, 
 		     float green,
@@ -255,7 +284,10 @@ namespace DGtal
 
   }; // end of class Color
 
+  
 
+  
+  
   /**
    * Overloads 'operator<<' for displaying objects of class 'Color'.
    * @param out the output stream where the object is written.

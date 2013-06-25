@@ -17,7 +17,8 @@ namespace DGtal {
    associated concepts. Relevant digital models of graph are notably
    found in \ref packageTopology.
 
-   The following programs are related to this documentation: \ref graphTraversal.cpp
+   The following programs are related to this documentation: \ref
+   graph/graphTraversal.cpp, \ref graph/volDistanceTraversal.cpp
 
    @section dgtal_graph_def_1 Graph concepts in DGtal
 
@@ -76,7 +77,7 @@ namespace DGtal {
    dgtal_digsurf_sec3.
 
    Here is a simple example for creating a 2D digital object seen with
-   the (4,8) adjacency (in example \ref graphTraversal.cpp)
+   the (4,8) adjacency (in example \ref graph/graphTraversal.cpp)
 
    @snippet graph/graphTraversal.cpp graphTraversal-graph-instanciation
 
@@ -109,20 +110,31 @@ namespace DGtal {
    graph by adjacencies. In some sense, they trace a tree from the
    initial seed. A vertex is visited at most once. Data may be
    associated to each visited vertex, like its distance to the initial
-   seed. Two (classical) models of visitors are provided:
+   seed. Three models of visitors are provided, two of them implement
+   the classical breadth-first and depth-first traversal:
 
    - model BreadthFirstVisitor performs the traversal of a \b
      connected graph by breadth-first search. If the graph is not
      connected, only the connected component(s) containing the initial
      seed(s) are visited. This visitor also computes the distance to
      the initial seed(s), which is also the topological distance to
-     the seed(s).
+     the seed(s) (see \ref graph/graphTraversal.cpp).
 
    - model DepthFirstVisitor performs the traversal of a \b connected
      graph by depth-first search. If the graph is not connected, only
      the connected component(s) containing the initial seed(s) are
      visited. This visitor also computes the distance to the initial
-     seed(s) as the number of ancestors in the depth search.
+     seed(s) as the number of ancestors in the depth search (see \ref
+     graph/graphTraversal.cpp).
+
+   - model DistanceBreadthFirstVisitor performs the traversal of a \b
+     connected graph by a modified breadth-first search: it is based
+     on a priority queue, the priority of which is given by a distance
+     object (and not by the topological distance as in classical
+     breadth-first traversal). If the graph is not connected, only the
+     connected component(s) containing the initial seed(s) are
+     visited. This visitor also gives the distance given by the
+     distance object (see \ref graph/volDistanceTraversal.cpp).
 
    The snippet below shows how to use a visitor to color vertices
    according to the topological distance to the initial seed (the
@@ -155,8 +167,8 @@ namespace DGtal {
 
    @snippet graph/graphTraversal.cpp graphTraversal-graph-dfs-range
 
-   @image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)."
-   @image latex graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)." width=0.5\textwidth
+   @image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal."
+   @image latex graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal." width=0.5\textwidth
 
 
 */
@@ -174,8 +186,28 @@ $ ./examples/graph/graphTraversal
 
 @image html graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order."
 @image html graphTraversal-bfs.png "Coloring vertices of an object graph according to the topological distance to a seed (breadth-first traversal)."
-@image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)."
+@image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal."
 
 \example graph/graphTraversal.cpp
 */
+
+
+/**
+
+  Displays the Euclidean distance to a starting surfel on the boundary
+  of a vol shape (traversal by mix distance/breadth-first, see
+  \ref DistanceBreadthFirstVisitor).
+
+@see \ref dgtal_graph_def_2_4
+
+@verbatim
+# Commands
+$ ./examples/graph/volDistanceTraversal ../examples/samples/cat10.vol 0 255 100
+@endverbatim
+
+@image html volDistanceTraversal-cat10.png "Coloring vertices of a vol boundary according to the Euclidean distance to a starting surfel (distance breadth-first traversal)."
+
+\example graph/volDistanceTraversal.cpp
+*/
+
 }

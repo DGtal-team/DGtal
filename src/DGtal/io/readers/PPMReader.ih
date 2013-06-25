@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file PNMReader.ih
+ * @file PPMReader.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/04/29
  *
- * Implementation of inline methods defined in PNMReader.h
+ * Implementation of inline methods defined in PPMReader.h
  *
  * This file is part of the DGtal library.
  */
@@ -35,6 +35,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -46,10 +48,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-template <typename TImageContainer>
+
+template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer 
-DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool topbotomOrder ) throw(DGtal::IOException)
+DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFilename,
+						       const TFunctor &aFunctor, 
+						       bool topbotomOrder ) throw(DGtal::IOException)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
@@ -60,7 +65,7 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
     }
   catch( ... )
     {
-      trace.error() << "PNMReader : can't open " << aFilename << std::endl;
+      trace.error() << "PPMReader : can't open " << aFilename << std::endl;
       throw dgtalio;
     }
   bool isASCIImode = false;
@@ -68,15 +73,15 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
   getline( infile, str );
   if ( ! infile.good() )
     {
-      trace.error() << "PNMReader : can't read " << aFilename << std::endl;
+      trace.error() << "PPMReader : can't read " << aFilename << std::endl;
       throw dgtalio;
     }
-  if ( str != "P5" &&  str != "P2")
+  if ( str != "P6" &&  str != "P3")
     {
-      trace.error() << "PNMReader : No P5 or P2 format in " << aFilename << std::endl;
+      trace.error() << "PPMReader : No P6 or P3 format in " << aFilename << std::endl;
       throw dgtalio;
     }
-  if(str== "P2")
+  if(str== "P3")
     {
       isASCIImode=true;
     }
@@ -85,7 +90,7 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
       getline( infile, str );
       if ( ! infile.good() )
 	{
-	  trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
+	  trace.error() << "PPMReader : Invalid format in " << aFilename << std::endl;
 	  throw dgtalio;
 	} 
     }
@@ -112,7 +117,7 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
 
   if ( ! infile.good() )
     {
-      trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
+      trace.error() << "PPMReader : Invalid format in " << aFilename << std::endl;
       throw dgtalio;
     } 
   
@@ -135,116 +140,27 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
 	  
 	  if(!isASCIImode)
 	    {
-	      unsigned char c; 
-	      infile >> c;
+	      unsigned char r,g,b; 
+	      infile >> r; infile >> g; infile >> b;
 	      if ( infile.good() )
 		{ 
-		  ++nb_read;
-		  image.setValue( pt, c);
+		  Color aColor(r,g,b);
+		  nb_read+=3;
+		  image.setValue( pt, aFunctor(aColor) );
 		}
 	    }
 	  else
 	    {
-	      int c; 
-	      infile >> c;
+	      int r,g,b; 
+	      infile >> r; infile >> g; infile >> b;
 	      if ( infile.good() )
 		{
-		  ++nb_read;
-		  image.setValue( pt, c);
+		  Color aColor((unsigned char)r, (unsigned char)g, (unsigned char)b);
+		  nb_read+=3;
+		  image.setValue( pt, aFunctor(aColor) );
 		}
 	    }
       }
-  if ( infile.fail() || infile.bad() )
-    {
-      trace.error() << "# nbread=" << nb_read << std::endl;
-      throw dgtalio;
-    }
-  infile >> std::skipws;
-  return  image;
-}
-
-
-
-template <typename TImageContainer>
-inline
-TImageContainer 
-DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) throw(DGtal::IOException)
-{
-  std::ifstream infile;
-  DGtal::IOException dgtalio;
-  BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 3));
-  try 
-    {
-      infile.open (aFilename.c_str(), std::ifstream::in);
-    }
-  catch( ... )
-    {
-      trace.error() << "PNMReader : can't open " << aFilename << std::endl;
-      throw dgtalio;
-    }
- 
-  std::string str;
-  getline( infile, str );
-  if ( ! infile.good() ) {
-    trace.error() << "PNMReader : can't read " << aFilename << std::endl;
-    throw dgtalio;
-  }
-  if ( str != "P3d" &&  str != "P3D"){
-    trace.error() << "PNMReader : No P3d format in " << aFilename << std::endl;
-    throw dgtalio;
-  }
-  
-  do
-    {
-      getline( infile, str );
-      if ( ! infile.good() ){
-	trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
-	throw dgtalio;
-      } 
-    }
-  while ( str[ 0 ] == '#' || str=="");
-  std::istringstream str_in( str );
-  unsigned int w, h, e;
-  str_in >> w >> h >> e ;
-
-   
-  typename TImageContainer::Point firstPoint;
-  typename TImageContainer::Point lastPoint;
-      
-  firstPoint = TImageContainer::Point::zero;
-  lastPoint[0] = w-1;
-  lastPoint[1] = h-1;
-  lastPoint[2] = e-1;
-
-  typename TImageContainer::Domain domain(firstPoint,lastPoint);
-  TImageContainer image(domain);
-
-  getline( infile, str );
-  std::istringstream str2_in( str );
-  int max_value;
-  str2_in >> max_value;  
-
-  if ( ! infile.good() ){
-    trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
-    throw dgtalio;
-  } 
-  unsigned int nb_read = 0;
-
-  infile >> std::noskipws;
-  for(unsigned int z=0; z <e; z++){
-    for(unsigned int y=0; y <h; y++){
-      for(unsigned int x=0; x <w; x++){
-	typename TImageContainer::Point pt;
-	pt[0]=x; pt[1]=y; pt[2]=z;
-	char c; 
-	infile >> c;
-	if ( infile.good() ){ 
-	  ++nb_read;
-	  image.setValue( pt, c);
-	}
-      }
-    }
-  }
   if ( infile.fail() || infile.bad() )
     {
       trace.error() << "# nbread=" << nb_read << std::endl;

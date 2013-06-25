@@ -12,7 +12,7 @@ This part of the manual describes how to import and export images and main DGtal
 
 [TOC]
 
-\section introio Introductrion
+\section introio Introduction
 
 In DGtal, file readers and writers are located in the "io/readers/"
 and "io/writers/" folders respectively. Most of them are dedicated to
@@ -89,20 +89,79 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |            | Longvol | Volumetric file format  (long)  | the functor should return a DGtal::uint64_t | LongvolWriter | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
 |         nD | Raw8    | raw binary file format on 8bits | the functor should return an unsigned char  | RawWriter     |                                                          |
 
-For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not scpecify any functor. 
+For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not specify any functor. 
 
+
+
+The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to
+automatically export any image (2d, 3d, nd) from its filename. The
+class is templated with a image container type, a dimension value (given by
+default by the image container dimension), a value type, (also given
+by default by the image container) and a functor type (by default set to
+the DefaultFunctor type).
+
+- To use it you need first to include the following header:
+  @code 
+   #include "DGTal/io/writers/GenericWriter.h"
+   #include "DGtal/helpers/StdDefs.h"
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
+   @endcode
+
+- After constructing and filling an image (anImage2D or anImage3D), by default you can  save it with:
+@code
+   GenericWriter<Image3D>::exporFile("aFilename.pgm3d", anImage3D);
+   GenericWriter<Image2D>::exporFile("aFilename.pgm", anImage2D);
+@endcode
+
+As the other export functions, a functor can be used as optional argument (as given in the previous example):
+@code
+   GenericWriter<Image2D, redFunctor>::exporFile("aFilename.pgm", anImage2D, redFunctor);
+@endcode
+
+
+If you don't need to specify special functor and if don't need to change default
+image type, you can use a less generic writer with the stream operator and the string filename:
+
+  @code
+   anImage3D >> "aFilename.pgm3d";
+   anImage3D >> "aFilename.vol";
+   anImage2D >> "aFilename.pgm";
+   @endcode
+
+@note Naturally, the stream operator hide a default functor (c++ cast to a
+given type).
+
+
+  
 
 \subsection imagereaders Image Readers
 
 | Dimension | Name              | Description                                   | Class name    | Comment                                                        |
 |------------|-------------------|-----------------------------------------------|---------------|----------------------------------------------------------------|
-|         2D | PGM               | Grayscale  netpbm image format                | PNMReader     | http://netpbm.sourceforge.net/                                 |
-|            | any Magick format | Any file format in the GraphicsMagick library | MagickReader  | with @a WITH_MAGICK build flag, http://www.graphicsmagick.org/ |
-|         3D | PGM3D             | Grayscale  netpbm image format                | PNMReader     |                                                                |
-|            | Vol               | Volumetric file format                        | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
-|            | Longvol           | Volumetric file format (long)                 | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
-|         nD | Raw8              | raw binary file format on 8bits               | RawReader     |                                                                |
-|         2D | HDF5              | HDF5 file with 2D image dataset(s)            | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
+|         2D | PGM               | Grayscale  netpbm image format                         | PNMReader     | http://netpbm.sourceforge.net/                                 |
+|            | any Magick format | Any file format in the GraphicsMagick library          | MagickReader  | with @a WITH_MAGICK build flag, http://www.graphicsmagick.org/ |
+|         3D | PGM3D             | Grayscale  netpbm image format                         | PNMReader     |                                                                |
+|            | PGM               | Same as PGM3D but with same header as in 2D (P2 or P5) | PNMReader     |                                                                |
+|            | Vol               | Volumetric file format                                 | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
+|            | Longvol           | Volumetric file format (long)                          | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
+|         nD | Raw8              | raw binary file format on 8bits                        | RawReader     |                                                                |
+|         2D | HDF5              | HDF5 file with 2D image dataset(s)                     | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
+
+
+The class GenericReader (DGtal/io/reader/GenericReader.h) allows to automatically import any image (2d, 3d, nd) from its filename:
+  @code 
+   #include "DGTal/io/readers/GenericReader.h"
+   #include "DGtal/helpers/StdDefs.h"
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
+   @endcode
+   - Use the same import function for both 2D or 3D images:
+   @code
+   Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
+   Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
+   @endcode 
+
 
 
 

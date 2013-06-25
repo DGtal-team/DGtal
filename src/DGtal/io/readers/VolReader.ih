@@ -36,12 +36,16 @@
 // Interface - public :
 
 
+template <typename TImageContainer, typename TFunctor>
+const int DGtal::VolReader<TImageContainer,TFunctor>::MAX_HEADERNUMLINES = 64;
 
 
-template <typename T>
+
+template <typename T, typename TFunctor>
 inline
 T
-DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::IOException )
+DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
+					  const Functor & aFunctor)   throw( DGtal::IOException )
 {
   FILE * fin;
   DGtal::IOException dgtalexception;
@@ -207,7 +211,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     while (( count < total ) && ( fin ) )
     {
       val = getc( fin );
-      image.setValue(( *it ), val );
+      image.setValue(( *it ), aFunctor(val) );
       it++;
       count++;
     }
@@ -231,8 +235,8 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
 
 
-template <typename T>
-const char *DGtal::VolReader<T>::requiredHeaders[] =
+template <typename T, typename TFunctor>
+const char *DGtal::VolReader<T, TFunctor>::requiredHeaders[] =
 {
   "X", "Y", "Z", "Voxel-Size", "Int-Endian", "Voxel-Endian", "Alpha-Color", NULL
 };
@@ -240,10 +244,10 @@ const char *DGtal::VolReader<T>::requiredHeaders[] =
 
 
 
-template<typename T>
+template<typename T, typename TFunctor>
 inline
 int
-DGtal::VolReader<T>::getHeaderField( const char *type, const HeaderField * header )
+DGtal::VolReader<T, TFunctor>::getHeaderField( const char *type, const HeaderField * header )
 {
 
 
@@ -258,10 +262,10 @@ DGtal::VolReader<T>::getHeaderField( const char *type, const HeaderField * heade
 }
 
 
-template<typename T>
+template<typename T, typename TFunctor>
 inline
 const char *
-DGtal::VolReader<T>::getHeaderValue( const char *type, const HeaderField * header )
+DGtal::VolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderField * header )
 {
 
   int i = getHeaderField( type, header );
@@ -272,10 +276,10 @@ DGtal::VolReader<T>::getHeaderValue( const char *type, const HeaderField * heade
 }
 
 
-template<typename T>
+template<typename T, typename TFunctor>
 inline
 int
-DGtal::VolReader<T>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )
+DGtal::VolReader<T,  TFunctor>::getHeaderValueAsInt( const char *type, int *dest, const HeaderField * header )
 {
   int i = getHeaderField( type, header );
   if ( i == -1 )
