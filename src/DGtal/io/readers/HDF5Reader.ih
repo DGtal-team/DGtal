@@ -48,7 +48,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-template <typename TImageContainern typename TFunctor>
+template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer 
 DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFilename, const std::string & aDataset, 
