@@ -272,7 +272,7 @@ namespace DGtal
       }
 #ifdef WITH_HDF5
       else if (extension=="h5"){
-	return HDF5Reader::importHDF5(filename, datasetName, aFunctor); 
+	return HDF5Reader<TContainer>::importHDF5(filename, datasetName, aFunctor); 
       }
 #endif
       else{
