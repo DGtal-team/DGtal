@@ -291,7 +291,7 @@ int main( int argc, char** argv )
   unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :2000;
   
   
-  Integer modb = 1000000000;
+  Integer modb = 10000;
   
   //for(Integer i = 10; i<=modb ;i*=10)
   //for(Integer i = 10; i<modb ;i+=i/3) 
