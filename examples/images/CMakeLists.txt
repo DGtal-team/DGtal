@@ -4,6 +4,10 @@ SET(DGTAL_EXAMPLES_SRC
   extract2DImagesFrom3D
 )
 
+if( WITH_HDF5 )
+  SET(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC} 
+  exampleImageFactoryFromHDF5)
+endif( WITH_HDF5 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})

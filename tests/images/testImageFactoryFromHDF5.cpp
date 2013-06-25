@@ -49,7 +49,7 @@ using namespace DGtal;
 
 #define H5FILE_NAME     "testImageFactoryFromHDF5.h5"
 
-#define DATASETNAME_2D  "IntArray2D"
+#define DATASETNAME_2D  "Int32Array2D"
 #define NX_2D           6       // dataset dimensions
 #define NY_2D           5
 #define RANK_2D         2
@@ -89,7 +89,6 @@ bool writeHDF5_2D()
 
     /*
      * Define datatype for the data in the file.
-     * We will store little endian INT numbers.
      */
     datatype = H5Tcopy(H5T_NATIVE_INT32);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
@@ -113,7 +112,7 @@ bool writeHDF5_2D()
     return true;
 }
 
-#define DATASETNAME_2D_TILED    "IntArray2D_TILED"
+#define DATASETNAME_2D_TILED    "Int64Array2D_TILED"
 #define RANK_2D_TILED           2
 
 bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TILED, int _NY_2D_TILED)
@@ -145,7 +144,6 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
 
     /*
      * Define datatype for the data in the file.
-     * We will store little endian INT numbers.
      */
     datatype = H5Tcopy(H5T_NATIVE_INT64);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
@@ -172,7 +170,7 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
 #define H5FILE_NAME_3D_TILED_EASY_READING       "testImageFactoryFromHDF5_TILED_3D_for_easy_reading.h5"
 #define H5FILE_NAME_3D_TILED                    "testImageFactoryFromHDF5_TILED_3D.h5"
 
-#define DATASETNAME_3D_TILED    "IntArray3D_TILED"
+#define DATASETNAME_3D_TILED    "DoubleArray3D_TILED"
 #define NX_3D_TILED             10      // dataset dimensions
 #define NY_3D_TILED             8
 #define NZ_3D_TILED             6
@@ -209,7 +207,6 @@ bool writeHDF5_3D_TILED_for_easy_reading()
 
     /*
      * Define datatype for the data in the file.
-     * We will store little endian INT numbers.
      */
     datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
@@ -264,7 +261,6 @@ bool writeHDF5_3D_TILED()
 
     /*
      * Define datatype for the data in the file.
-     * We will store little endian INT numbers.
      */
     datatype = H5Tcopy(H5T_NATIVE_DOUBLE);
     status = H5Tset_order(datatype, H5T_ORDER_LE);
