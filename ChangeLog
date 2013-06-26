@@ -18,6 +18,7 @@
       ArithmeticDSS3d.
     - New local estimator adapter to make easy implementation of locally defined differential
       estimator on digital surfaces.
+    - Minor improvements in the spherical accumulator. 
 
 *Shape Package*
     - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
