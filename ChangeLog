@@ -1,9 +1,12 @@
 === DGtal 0.7 ===
 
 *General*
+    - Unit tests build is now disabled by default (to turn it on, run
+	cmake with "-DBUILD_TESTING=on"
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 
+	
 *Kernel Package*
     - Two initialisation methods (initRemoveOneDim and initAddOneDim)
       for the Projector Functor from the BasicPointFunctors class in
