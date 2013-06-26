@@ -48,9 +48,9 @@ using namespace DGtal;
 #define H5FILE_NAME_3D_TILED    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
 #define DATASETNAME_3D_TILED    "UInt8Array3D_TILED"
-#define NX_3D_TILED             1000    // dataset dimensions
-#define NY_3D_TILED             1000
-#define NZ_3D_TILED             1000
+#define NX_3D_TILED             500//1980       // dataset dimensions
+#define NY_3D_TILED             500//1980
+#define NZ_3D_TILED             500//400
 #define RANK_3D_TILED           3
 
 bool writeHDF5_3D_TILED()
@@ -73,7 +73,7 @@ bool writeHDF5_3D_TILED()
       for(k = 0; k < NZ_3D_TILED; k++)
         for(j = 0; j < NY_3D_TILED; j++)
           for(i = 0; i < NX_3D_TILED; i++)
-            if (i>=25 && j>=25 && k>=25 && i<75 && j<75 && k<75)
+            if (i>=15 && j>=15 && k>=15 && i<35 && j<35 && k<35)
               data[k*NY_3D_TILED*NX_3D_TILED + j*NX_3D_TILED + i] = 1;
             else
               data[k*NY_3D_TILED*NX_3D_TILED + j*NX_3D_TILED + i] = 0;
@@ -138,19 +138,19 @@ bool exampleTiledImage3D()
       typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
       //typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
       typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
-      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 100);
+      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 10);
       //MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
       //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-      MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 100);
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 10);
       
       typedef MyTiledImage::OutputImage OutputImage;
       OutputImage::Value aValue;
       
       trace.info() << "Read value for Point 0,0,0: " << (int)tiledImage(Z3i::Point(0,0,0)) << endl;
-      trace.info() << "Read value for Point 50,50,50: " << (int)tiledImage(Z3i::Point(50,50,50)) << endl;
+      trace.info() << "Read value for Point 25,25,25: " << (int)tiledImage(Z3i::Point(25,25,25)) << endl;
       
       int cpt=0;
       for(k = 0; k < NZ_3D_TILED; k++)
