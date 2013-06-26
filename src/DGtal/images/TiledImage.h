@@ -206,9 +206,9 @@ public:
       Point low;
       for(i=0; i<Domain::dimension; i++)
       {
-        if ( (aPoint[i]-m_lowerBound[i]) < mySize[i] )
+        /*if ( (aPoint[i]-m_lowerBound[i]) < mySize[i] )
           low[i] = 0;
-        else
+        else*/
           low[i] = (aPoint[i]-m_lowerBound[i])/mySize[i];
       }
       
@@ -216,10 +216,10 @@ public:
       for(i=0; i<Domain::dimension; i++)
       {
         dMin[i] = (low[i]*mySize[i])+m_lowerBound[i];
-        dMax[i] = (low[i]*mySize[i])+m_lowerBound[i]+(mySize[i]-1);
+        dMax[i] = dMin[i] + (mySize[i]-1);
       }
       
-      Domain di = Domain(dMin, dMax);
+      Domain di(dMin, dMax);
       return di;      
     }
     
