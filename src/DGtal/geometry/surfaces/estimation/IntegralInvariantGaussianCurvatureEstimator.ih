@@ -302,13 +302,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
     Matrix3x3 eigenVectors;
     Vector3 eigenValues;
 
-    for( DGtal::Dimension i = 0; i < 3; ++i )
-    {
-        for( DGtal::Dimension j = 0; j < 3; ++j )
-        {
-            covarianceMatrix.setComponent ( i, j, covarianceMatrix( i, j ) * dh5 );
-        }
-    }
+    covarianceMatrix *= dh5;
 
     EigenValues3D< Quantity >::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
 
@@ -336,13 +330,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
     Matrix3x3 eigenVectors;
     Vector3 eigenValues;
 
-    for( DGtal::Dimension i = 0; i < 3; ++i )
-    {
-        for( DGtal::Dimension j = 0; j < 3; ++j )
-        {
-            covarianceMatrix.setComponent ( i, j, covarianceMatrix( i, j ) * dh5 );
-        }
-    }
+    covarianceMatrix *= dh5;
 
     EigenValues3D< Quantity >::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
 
@@ -415,13 +403,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
     for( DGtal::Dimension i = 0; i < cmsize; ++i )
     {
         currentMatrix = vCovarianceMatrix[ i ];
-        for( DGtal::Dimension j = 0; j < 3; ++j )
-        {
-            for( DGtal::Dimension k = 0; k < 3; ++k )
-            {
-                currentMatrix.setComponent( j, k, currentMatrix ( j, k ) * dh5 );
-            }
-        }
+        currentMatrix *= dh5;
 
         EigenValues3D< Quantity >::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
 
@@ -432,9 +414,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
         k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
 
         *result = k1 * k2;
-        *result =
-
-                ++result;
+        ++result;
     }
 }
 
@@ -463,13 +443,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
     for( DGtal::Dimension i = 0; i < cmsize; ++i )
     {
         currentMatrix = vCovarianceMatrix[ i ];
-        for( DGtal::Dimension j = 0; j < 3; ++j )
-        {
-            for( DGtal::Dimension k = 0; k < 3; ++k )
-            {
-                currentMatrix.setComponent( j, k, currentMatrix ( j, k ) * dh5 );
-            }
-        }
+        currentMatrix *= dh5;
 
         EigenValues3D< Quantity >::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
 

@@ -48,6 +48,11 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/FunctorOnCells.h"
+#include "DGtal/images/ImageHelper.h"
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -75,11 +80,52 @@ void usage( int /*argc*/, char** argv )
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape;
   typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
+template < typename TKSpace, typename TShape >
+class NearestPointEmbedder
+{
+public:
+  typedef TKSpace KSpace;
+  typedef TShape Shape;
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::Space Space;
+  typedef typename Space::RealPoint RealPoint;
+  typedef Cell Argument;
+  typedef RealPoint Value;
+
+  NearestPointEmbedder()
+    :shape(0)
+  {}
+
+  ~NearestPointEmbedder(){}
+
+  void init( const KSpace & K, const double h, const Shape & s )
+  {
+    k = K;
+    step = h;
+    shape = &s;
+  }
+
+  RealPoint operator()( const Cell & cell ) const
+  {
+    Point B = k.uKCoords( cell );
+    RealPoint A( B[ 0 ], B[1], B[2] );
+    A /= 2.0;
+    A *= step;
+    A = shape->nearestPoint( A, 0.01 * step, 200, 0.1 * step );
+    return A;
+  }
+
+protected:
+  KSpace k;
+  double step;
+  const Shape* shape;
+};
 
 
 int main( int argc, char** argv )
 {
-  if ( argc < 9 )
+  if ( argc < 10 )
   {
     usage( argc, argv );
     return 1;
@@ -92,6 +138,8 @@ int main( int argc, char** argv )
     p2[ i ] = atof( argv[ 5 + i ] );
   }
   double step = atof( argv[ 8 ] );
+
+  double re = atof( argv[ 9 ] );
 
 
   Polynomial3 P;
@@ -113,7 +161,6 @@ int main( int argc, char** argv )
   dshape.attach( ishape );
   dshape.init( RealPoint( p1 ), RealPoint( p2 ), step );
   Domain domain = dshape.getDomain();
-
 
   KSpace K;
 
@@ -142,7 +189,7 @@ int main( int argc, char** argv )
                                    K, surfAdj,
                                    dshape, bel );
 
-
+  MyDigitalSurface digSurf( theSetOfSurfels );
 
 
   QApplication application( argc, argv );
@@ -150,9 +197,23 @@ int main( int argc, char** argv )
   viewer.show();
   viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
+  typedef typename ImageSelector< Domain, unsigned int >::Type Image;
+  typedef ImageToConstantFunctor< Image, DigitalShape > MyPointFunctor;
+  typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
+  typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
 
 
+  Image image( domain );
+  DGtal::imageFromRangeAndValue( domain.begin(), domain.end(), image );
+  MyPointFunctor pointFunctor( &image, &dshape, 1, true );
+  MyCellFunctor functor ( pointFunctor, K );
+  MyCurvatureEstimator iigaussest ( K, functor );
+  iigaussest.init( step, re );
 
+
+  std::vector< double > resultTrue;
+  std::vector< double > resultII;
+  std::vector< RealPoint > nearestPoints;
   //-----------------------------------------------------------------------
   // Looking for the min and max values
 
@@ -164,24 +225,30 @@ int main( int argc, char** argv )
   {
 
     RealPoint A = midpoint( *it ) * step;
-    A = ishape.nearestPoint (A,0.01,200,0.1*step);
-    double a = ishape.meanCurvature( A );
-//    double a=ishape.gaussianCurvature(A);
+    A = ishape.nearestPoint (A, 0.01 * step, 200, 0.1 * step);
+//    double a = ishape.meanCurvature( A );
+    double a = ishape.gaussianCurvature(A);
+    double b = iigaussest.eval( it );
+
+    resultTrue.push_back( a );
+    resultII.push_back( b );
+    nearestPoints.push_back( A );
+
     if ( boost::math::isnan( a ))
     {
       a = 0;
     }
-    else
-    {
-      if ( a > maxCurv )
+
+    double Linf = std::abs ( a - b );
+    if ( a > maxCurv )
       {
         maxCurv = a;
       }
-      else if ( a < minCurv )
+    else if ( a < minCurv )
       {
-          minCurv = a;
+        minCurv = a;
       }
-    }
+
   }
 
   trace.info() << " Min = " << minCurv << std::endl;
@@ -192,32 +259,38 @@ int main( int argc, char** argv )
   //Specifing a color map
 
   GradientColorMap< double > cmap_grad( minCurv, maxCurv );
-  cmap_grad.addColor( Color( 50, 50, 255 ) );
-  cmap_grad.addColor( Color( 255, 0, 0 ) );
-  cmap_grad.addColor( Color( 255, 255, 10 ) );
+  cmap_grad.addColor( Color::Blue );
+  cmap_grad.addColor( Color::White );
+  cmap_grad.addColor( Color::Red );
+//  cmap_grad.addColor( Color( 50, 50, 255 ) );
+//  cmap_grad.addColor( Color( 255, 0, 0 ) );
+//  cmap_grad.addColor( Color( 255, 255, 10 ) );
 
   //------------------------------------------------------------------------------------
   //drawing
   unsigned int nbSurfels = 0;
 
+//  ofstream out( "rounded2.off" );
+  int i = 0;
   for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(),
         it_end = theSetOfSurfels.end();
-        it != it_end; ++it, ++nbSurfels )
+        it != it_end; ++it, ++nbSurfels, ++i )
   {
-
-
-    RealPoint A = midpoint( *it ) * step;
-    A = ishape.nearestPoint (A,0.01,200,0.1*step);
-//    double a=ishape.gaussianCurvature(A);
-    double a = ishape.meanCurvature( A );
-    if ( boost::math::isnan( a ))
-    {
-      a = 0;
-    }
+    double a = resultTrue[ i ];
+    double b = resultII[ i ];
+    double Linf = std::abs ( a - b );
 
     viewer << CustomColors3D( Color::Black, cmap_grad( a ));
     viewer << *it;
   }
+
+//  typedef NearestPointEmbedder< KSpace, ImplicitShape > NPEmbedder;
+//  NPEmbedder npEmbedder;
+//  npEmbedder.init( K, step, ishape );
+
+//  if ( out.good() )
+//    digSurf.exportEmbeddedSurfaceAs3DOFF( out, npEmbedder );
+//  out.close();
 
   viewer << Viewer3D::updateDisplay;
 
