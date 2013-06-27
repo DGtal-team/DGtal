@@ -297,7 +297,6 @@ DGtal::SphericalAccumulator<T>::getBinDirection(const Size &posPhi,
   ASSERT( isValidBin(posPhi,posTheta) );
   double dphi = M_PI/(double)((double)myNphi-1);
   double phi= (double)posPhi*dphi;
-  double dtheta;
   double Nthetai = floor(2.0*(myNphi)*sin(phi) ); 
   RealVector midpoint;
   double theta;
