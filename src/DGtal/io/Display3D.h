@@ -320,8 +320,8 @@ namespace DGtal
 					    myTabImage(img.myTabImage),
 					    myDrawDomain(img.myDrawDomain),
 					    myIndexDomain(img.myIndexDomain),
-					    myMode(img.myMode),
-					    myAlpha(img.myAlpha)
+					     myAlpha(img.myAlpha),
+					     myMode(img.myMode)
       {
 	
 	if(img.myImageHeight>0 && img.myImageWidth>0){
