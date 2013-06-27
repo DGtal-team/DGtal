@@ -604,26 +604,6 @@ DGtal::Display3D::addSurfelPrism(double x, double y, double z,
 
 
 
-
-inline
-void
-DGtal::Display3D::addKSBallel(double x, double y, double z,
-                              double size, bool isSigned, bool signPos)
-{
-    updateBoundingBox(x, y, z);
-    ballD3D pt;
-    pt.x=x; pt.y=y; pt.z=z; pt.size=size;
-    pt.R=myCurrentFillColor.red();
-    pt.G=myCurrentFillColor.green();
-    pt.B=myCurrentFillColor.blue();
-    pt.T= myCurrentFillColor.alpha();
-    pt.isSigned=isSigned;
-    pt.signPos=signPos;
-    myKSBallelList.push_back(pt);
-}
-
-
-
 // add multiple triangular faces which form a hexagonal-based pyramid
 inline
 void
@@ -721,7 +701,6 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
         xb1 = xb2;
         yb1 = yb2;
         zb1 = zb2;
-
     }
 
     //Last part to close the cone
@@ -731,7 +710,6 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
     addTriangle(x2, y2,z2,
                 xb1,yb1,zb1,
                 xf,yf,zf, color);
-
 }
 
 // add multiple triangular faces which form a hexagonal-based cylinder
@@ -745,10 +723,10 @@ DGtal::Display3D::addCylinder(double x1, double y1, double z1,
     updateBoundingBox(x2, y2, z2);
 
 
-    int nbPoints = 6; //the number of point on the base of the cone
+    int nbPoints = 6; //the number of point on the bases
     double degree = 360 / nbPoints; // the angle between two points
     double radian = degree * PI/180;
-    DGtal::Color color(255, 50, 50, 255);
+    DGtal::Color color(50, 255, 50, 255);
 
     // A(x1,y1,z1) and B(x2,y2,z2) vector AB
     double xab, yab, zab;
@@ -762,9 +740,9 @@ DGtal::Display3D::addCylinder(double x1, double y1, double z1,
     double ym = 0;
     double zm = 0;
 
-    while (x1 == xm || x2 ==xm) xm++;
-    while (y1 == ym || y2 ==ym) ym++;
-    while (z1 == zm || z2 ==zm) zm++;
+    while (x1 == xm || x2 ==xm) xm+= 1;
+    while (y1 == ym || y2 ==ym) ym+= 1;
+    while (z1 == zm || z2 ==zm) zm+= 1;
 
     //vector AM
     double xam, yam, zam;
@@ -788,28 +766,30 @@ DGtal::Display3D::addCylinder(double x1, double y1, double z1,
     yn = yn / norm;
     zn = zn / norm;
 
-    //the first point of the upper and lower base
-    double xuf, yuf, zuf;
-    double xlf, ylf, zlf;
+    //the first point of the bases
+    double xbf, ybf, zbf;
+    double xaf, yaf, zaf;
 
-    xuf = x2 + width  * xn;
-    yuf = y2 + width  * yn;
-    zuf = z2 + width  * zn;
+    xbf = x2 + width  * xn;
+    ybf = y2 + width  * yn;
+    zbf = z2 + width  * zn;
 
-    xlf = xuf - xab;
-    ylf = yuf - yab;
-    zlf = zlf - zab;
+    xaf = x1 + width  * xn; // xb2 - xab;
+    yaf = y1 + width  * yn; // yb2 - yab;
+    zaf = z1 + width  * zn; // zb2 - zab;
 
     //two following points of the bases
-    double xub1 = xuf;
-    double yub1 = yuf;
-    double zub1 = zuf;
-    double xub2,yub2, zub2;
+    double xb1 = xbf;
+    double yb1 = ybf;
+    double zb1 = zbf;
 
-    double xlb1 = xlf;
-    double ylb1 = ylf;
-    double zlb1 = zlf;
-    double xlb2,ylb2, zlb2;
+    double xb2,yb2, zb2;
+
+    double xa1 = xaf;
+    double ya1 = yaf;
+    double za1 = zaf;
+
+    double xa2,ya2, za2;
 
     //r = AB^n for the future rotation
     double xr, yr, zr;
@@ -818,6 +798,7 @@ DGtal::Display3D::addCylinder(double x1, double y1, double z1,
     createNewQuadList("Cylinder");
     for (int i =0; i <nbPoints-1; i ++)
     {
+        // r = AB^n
         xr = yab*zn - yn*zab;
         yr = xn*zab - xab*zn;
         zr = xab*yn - xn*yab;
@@ -828,47 +809,47 @@ DGtal::Display3D::addCylinder(double x1, double y1, double z1,
         zn = cos(radian)*zn + sin(radian)*zr;
 
         // calculate one point with the normal vector at a distance width
-        xub2 = x2 + width  * xn;
-        yub2 = y2 + width  * yn;
-        zub2 = z2 + width  * zn;
+        xb2 = x2 + width  * xn;
+        yb2 = y2 + width  * yn;
+        zb2 = z2 + width  * zn;
 
-        xlb2 = xub2 - xab;
-        ylb2 = yub2 - yab;
-        zlb2 = zub2 - zab;
+        xa2 = x1 + width  * xn;
+        ya2 = y1 + width  * yn;
+        za2 = z1 + width  * zn;
 
         //adding the triangles and the quad associated with those points
-        addTriangle(x1, y1,z1,
-                    xlb1,ylb1,zlb1,
-                    xlb2,ylb2,zlb2, color);
-        addTriangle(x2, y2,z2,
-                    xub1,yub1,zub1,
-                    xub2,yub2,zub2, color);
-        addQuad(xub1,yub1,zub1,
-                xub2,yub2,zub2,
-                xlb2,ylb2,zlb2,
-                xlb1,ylb1,zlb1, color);
+        addTriangle(x1, y1, z1,
+                    xa2, ya2, za2,
+                    xa1, ya1, za1, color);
+        addTriangle(x2, y2, z2,
+                    xb2, yb2, zb2,
+                    xb1, yb1, zb1, color);
+        addQuad(xb1, yb1, zb1,
+                xb2, yb2, zb2,
+                xa2, ya2, za2,
+                xa1, ya1, za1, color);
 
-        xub1 = xub2;
-        yub1 = yub2;
-        zub1 = zub2;
+        xb1 = xb2;
+        yb1 = yb2;
+        zb1 = zb2;
 
-        xlb1 = xlb2;
-        ylb1 = ylb2;
-        zlb1 = zlb2;
+        xa1 = xa2;
+        ya1 = ya2;
+        za1 = za2;
 
     }
 
     //Last part to close the cylinder
-    addTriangle(x1, y1,z1,
-                xlb1,ylb1,zlb1,
-                xlf,ylf,zlf, color);
-    addTriangle(x2, y2,z2,
-                xub1,yub1,zub1,
-                xuf,yuf,zuf, color);
-    addQuad(xub1,yub1,zub1,
-            xuf,yuf,zuf,
-            xlf,ylf,zlf,
-            xlb1,ylb1,zlb1, color);
+    addTriangle(x1, y1, z1,
+                xaf, yaf, zaf,
+                xa1, ya1, za1, color);
+    addTriangle(x2, y2, z2,
+                xbf, ybf, zbf,
+                xb1, yb1, zb1, color);
+    addQuad(xb1, yb1, zb1,
+            xbf, ybf, zbf,
+            xaf, yaf, zaf,
+            xa1, ya1, za1, color);
 
 }
 
@@ -985,6 +966,37 @@ DGtal::Display3D::setScale(float sx, float sy, float sz){
 }
 
 
+inline
+typename DGtal::Z3i::RealPoint
+DGtal::Display3D::embed( const DGtal::Z3i::Point & dp ) const
+{
+    return myEmbedder.embed(dp);
+}
+
+
+inline
+typename DGtal::Z3i::RealPoint
+DGtal::Display3D::embed( const ballD3D & dp ) const
+{
+    DGtal::Z3i::Point pt (dp[0], dp[1], dp[2]);
+    return myEmbedder.embed(pt);
+}
+
+
+inline
+typename DGtal::Z3i::RealPoint
+DGtal::Display3D::embed( const DGtal::Z3i::SCell & scell ) const
+{
+    return mySCellEmbedder.embed(scell);
+}
+
+
+inline
+typename DGtal::CanonicCellEmbedder<DGtal::Z3i::KSpace>::RealPoint
+DGtal::Display3D::embed( const DGtal::Z3i::Cell & cell ) const
+{
+    return myCellEmbedder.embed(cell);
+}
 
 inline
 void
