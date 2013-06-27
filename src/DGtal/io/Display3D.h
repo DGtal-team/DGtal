@@ -52,15 +52,23 @@
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/shapes/Mesh.h"
 
+/// for embedding
+#include "DGtal/topology/CanonicCellEmbedder.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
+#include "DGtal/helpers/StdDefs.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
+
 namespace DGtal
 {
+//TODO up
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class Display3D
-  /**
+/////////////////////////////////////////////////////////////////////////////
+// class Display3D
+/**
    * Description of class 'Display3D' <p>
    * \brief Aim:   This semi abstract class  defines the stream mechanism to
    display 3d primitive (like BallVector, DigitalSetBySTLSet, Object
@@ -73,54 +81,49 @@ namespace DGtal
    @see Viewer3D, Board3DTo2D
 
   */
-  class Display3D
-  {
+
+class Display3D
+{
 
 
     // ------------------------- Private Datas --------------------------------
-  private:
+private:
 
 
-  protected:
+protected:
     // Used to ajust the visualisation for data where scale are not constant in the three axis.
     // Uses in Viewer3D class and on export method.
     float myScaleX;
     float myScaleY;
     float myScaleZ;
 
-
     /**
      * Structure used to display line in 3D
      */
-
-
     struct lineD3D{
-      double x1, y1, z1;
-      double x2, y2, z2;
-      double width;
-      unsigned char R,G,B,T;
-      bool isSigned;
-      bool signPos;
+        double x1, y1, z1;
+        double x2, y2, z2;
+        double width;
+        unsigned char R,G,B,T;
+        bool isSigned;
+        bool signPos;
     };
-
-
 
     /**
      * Defines the 3D cube.
      */
-
     struct cubeD3D{
-      ///  The center coordinate of the cube.
-      ///
-      int x, y,z;
+        ///  The center coordinate of the cube.
+        ///
+        int x, y,z;
 
-      ///  The display color of the cube.
-      ///
-      unsigned char R,G,B,T;
+        ///  The display color of the cube.
+        ///
+        unsigned char R,G,B,T;
 
-      /// The width of a cube face
-      ///
-      double width;
+        /// The width of a cube face
+        ///
+        double width;
     };
 
 
@@ -128,12 +131,9 @@ namespace DGtal
      * Used to define clipping planes (it uses the quadD3D structure)
      * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
      **/
-
     struct clippingPlaneD3D{
-      double a,b,c,d;
+        double a,b,c,d;
     };
-
-
 
 
     /**
@@ -142,82 +142,74 @@ namespace DGtal
      * color).
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-
     struct  quadD3D{
-      double x1,y1,z1;
-      double x2,y2,z2;
-      double x3,y3,z3;
-      double x4,y4,z4;
-      double nx, ny, nz;
-      unsigned char R,G,B,T;
+        double x1,y1,z1;
+        double x2,y2,z2;
+        double x3,y3,z3;
+        double x4,y4,z4;
+        double nx, ny, nz;
+        unsigned char R,G,B,T;
     };
-
 
 
     /**
      * This structure is used to display triangle faces.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-
     struct  triangleD3D{
-      double x1,y1,z1;
-      double x2,y2,z2;
-      double x3,y3,z3;
-      double nx, ny, nz;
-      unsigned char R,G,B,T;
+        double x1,y1,z1;
+        double x2,y2,z2;
+        double x3,y3,z3;
+        double nx, ny, nz;
+        unsigned char R,G,B,T;
     };
 
 
-
-
-
-  public:
+public:
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
     enum ImageDirection {xDirection, yDirection, zDirection };
     enum TextureMode {RGBMode, GrayScaleMode };
 
-    /// Structure used to display KSBall in 3D and MeshFromPoints
-    /// @see addKSBalll
+    /// Structure used to display KSPoint in 3D and MeshFromPoints
+    /// @see addBall
     ///
     //have to be public because of external functions
     struct ballD3D{
-      const double & operator[]( unsigned int i ) const{
-    assert(i<3);
-    switch (i){
-    case 0: {return x;}
-    case 1: {return y;}
-    case 2: {return z;}
-    }
-    return x;
-      };
-      double & operator[]( unsigned int i ) {
-    assert(i<3);
-    switch (i){
-    case 0: {return x;}
-    case 1: {return y;}
-    case 2: {return z;}
-    }
-    return x;
-      };
-      double  x, y, z;
-      unsigned char R,G,B,T;
-      bool isSigned;
-      bool signPos;
-      double size;
+        const double & operator[]( unsigned int i ) const{
+            assert(i<3);
+            switch (i){
+            case 0: {return x;}
+            case 1: {return y;}
+            case 2: {return z;}
+            }
+            return x;
+        };
+        double & operator[]( unsigned int i ) {
+            assert(i<3);
+            switch (i){
+            case 0: {return x;}
+            case 1: {return y;}
+            case 2: {return z;}
+            }
+            return x;
+        };
+        double  x, y, z;
+        unsigned char R,G,B,T;
+        bool isSigned;
+        bool signPos;
+        double size;
     };
 
 
-
-  /**
+    /**
      * This structure is used to display polygonal faces.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-
     struct  polygonD3D{
-      std::vector<ballD3D> vectBalls;
-      double nx, ny, nz;
-      unsigned char R,G,B,T;
+        std::vector<ballD3D> vectBalls;
+        double nx, ny, nz;
+        unsigned char R,G,B,T;
     };
 
 
@@ -227,38 +219,36 @@ namespace DGtal
      **/
     //have to be public because of external functions
     struct Image2DDomainD3D{
-      // The image domain coordinates
-      double x1, y1, z1;
-      double x2, y2, z2;
-      double x3, y3, z3;
-      double x4, y4, z4;
-      unsigned char R,G,B,T;
+        // The image domain coordinates
+        double x1, y1, z1;
+        double x2, y2, z2;
+        double x3, y3, z3;
+        double x4, y4, z4;
+        unsigned char R,G,B,T;
 
-      unsigned int myDomainWidth;
-      unsigned int myDomainHeight;
-      ImageDirection myDirection;
+        unsigned int myDomainWidth;
+        unsigned int myDomainHeight;
+        ImageDirection myDirection;
 
-      std::string myMode;
+        std::string myMode;
 
-      unsigned int myLineSetIndex;
+        unsigned int myLineSetIndex;
 
-      /**
-       * Constructor
-       *
-       **/
+        /**
+        * Constructor
+        **/
+        template<typename TDomain>
+        Image2DDomainD3D( TDomain aDomain, Display3D::ImageDirection normalDir=zDirection,
+                          double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox"){
+            BOOST_CONCEPT_ASSERT(( CDomain < TDomain >));
+            myMode = mode;
+            myDirection=normalDir;
+            myDomainWidth = (aDomain.upperBound())[0]-(aDomain.lowerBound())[0]+1;
+            myDomainHeight = (aDomain.upperBound())[1]-(aDomain.lowerBound())[1]+1;
+            updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
+        }
 
-      template<typename TDomain>
-      Image2DDomainD3D( TDomain aDomain, Display3D::ImageDirection normalDir=zDirection,
-            double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox"){
-    BOOST_CONCEPT_ASSERT(( CDomain < TDomain >));
-    myMode = mode;
-    myDirection=normalDir;
-    myDomainWidth = (aDomain.upperBound())[0]-(aDomain.lowerBound())[0]+1;
-    myDomainHeight = (aDomain.upperBound())[1]-(aDomain.lowerBound())[1]+1;
-    updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
-      }
-
-      /**
+        /**
        * Update the domain direction from a specific normal direction
        * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
        * from the botton left point.
@@ -267,21 +257,18 @@ namespace DGtal
        *  @param yBottomLeft the x coordinate of bottom left image point.
        *  @param zBottomLeft the x coordinate of bottom left image point.
        **/
+        void updateDomainOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
-      void updateDomainOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
-
-      /**
+        /**
        *  Translate domain postion.
        *  @param xTranslation the image translation in the  x direction (default 0).
        *  @param yTranslation the image translation in the  y direction (default 0).
        *  @param zTranslation the image translation in the  z direction (default 0).
        **/
-      void translateDomain(double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+        void translateDomain(double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
 
     };
-
-
 
 
     /**
@@ -290,53 +277,53 @@ namespace DGtal
      **/
     struct TextureImage{
 
-      // The quad coordinates should be given in counter clockwise order
-      double x1, y1, z1;
-      double x2, y2, z2;
-      double x3, y3, z3;
-      double x4, y4, z4;
-      ImageDirection myDirection;
-      unsigned int myImageWidth;
-      unsigned int myImageHeight;
-      unsigned int * myTabImage;
+        // The quad coordinates should be given in counter clockwise order
+        double x1, y1, z1;
+        double x2, y2, z2;
+        double x3, y3, z3;
+        double x4, y4, z4;
+        ImageDirection myDirection;
+        unsigned int myImageWidth;
+        unsigned int myImageHeight;
+        unsigned int * myTabImage;
 
-      bool myDrawDomain;
-      unsigned int myIndexDomain;
-      TextureMode myMode;
+        bool myDrawDomain;
+        unsigned int myIndexDomain;
+        TextureMode myMode;
 
-      ~TextureImage(){
-    delete [] myTabImage;
-      };
+        ~TextureImage(){
+            delete [] myTabImage;
+        };
 
-      /**
+        /**
        * Copy constructor (needed due to myTabImage)
        **/
-      TextureImage(const TextureImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
-                         x2(img.x2), y2(img.y2), z2(img.z2),
-                         x3(img.x3), y3(img.y3), z3(img.z3),
-                         x4(img.x4), y4(img.y4), z4(img.z4),
-                         myDirection(img.myDirection), myImageWidth(img.myImageWidth),
-                         myImageHeight(img.myImageHeight),
-                         myTabImage(img.myTabImage),
-                         myDrawDomain(img.myDrawDomain),
-                             myIndexDomain(img.myIndexDomain),
-                             myMode(img.myMode){
+        TextureImage(const TextureImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
+            x2(img.x2), y2(img.y2), z2(img.z2),
+            x3(img.x3), y3(img.y3), z3(img.z3),
+            x4(img.x4), y4(img.y4), z4(img.z4),
+            myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+            myImageHeight(img.myImageHeight),
+            myTabImage(img.myTabImage),
+            myDrawDomain(img.myDrawDomain),
+            myIndexDomain(img.myIndexDomain),
+            myMode(img.myMode){
 
-    if(img.myImageHeight>0 && img.myImageWidth>0){
-      myTabImage = new  unsigned int [img.myImageWidth*img.myImageHeight];
-      for(unsigned int i=0; i<img.myImageWidth*img.myImageHeight; i++){
-        myTabImage[i] = img.myTabImage[i];
-      }
-    }else{
-      myTabImage=img.myTabImage;
-    }
-
-
-      };
+            if(img.myImageHeight>0 && img.myImageWidth>0){
+                myTabImage = new  unsigned int [img.myImageWidth*img.myImageHeight];
+                for(unsigned int i=0; i<img.myImageWidth*img.myImageHeight; i++){
+                    myTabImage[i] = img.myTabImage[i];
+                }
+            }else{
+                myTabImage=img.myTabImage;
+            }
 
 
+        };
 
-      /**
+
+
+        /**
        *  Constructor that fills image parameters from std image (image buffer, dimensions, vertex coordinates, orientation)
        *
        *  @tparam TImageType the type of the image given for the constructor (should follow the CConstImage concept).
@@ -352,24 +339,24 @@ namespace DGtal
        *  @param yBottomLeft the x coordinate of bottom left image point (default 0).
        *  @param zBottomLeft the x coordinate of bottom left image point (default 0).
        **/
-      template <typename TImageType, typename TFunctor>
-      TextureImage( const TImageType & image, const TFunctor &aFunctor,
-            Display3D::ImageDirection normalDir=zDirection,
-            double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
-            TextureMode aMode= Display3D::GrayScaleMode){
-        BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
-    myDrawDomain=false;
-    myDirection=normalDir;
-    myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
-    myImageHeight = (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1;
-    myTabImage = new  unsigned int [myImageWidth*myImageHeight];
-    updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
-    myMode=aMode;
-    updateImageDataAndParam(image, aFunctor);
-      };
+        template <typename TImageType, typename TFunctor>
+        TextureImage( const TImageType & image, const TFunctor &aFunctor,
+                      Display3D::ImageDirection normalDir=zDirection,
+                      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
+                      TextureMode aMode= Display3D::GrayScaleMode){
+            BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
+            BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
+            myDrawDomain=false;
+            myDirection=normalDir;
+            myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
+            myImageHeight = (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1;
+            myTabImage = new  unsigned int [myImageWidth*myImageHeight];
+            updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
+            myMode=aMode;
+            updateImageDataAndParam(image, aFunctor);
+        };
 
-      /**
+        /**
        * Update the image direction from a specific normal direction
        * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
        * from the botton left point.
@@ -379,10 +366,10 @@ namespace DGtal
        *  @param zBottomLeft the x coordinate of bottom left image point.
        **/
 
-      void updateImageOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
+        void updateImageOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
 
-      /**
+        /**
        *  Update the  image parameters from std image (image buffer, vertex coordinates)
        *  The new image should be with same dimension than the original.
        *
@@ -397,41 +384,54 @@ namespace DGtal
        *  @param yTranslation the image translation in the  y direction (default 0).
        *  @param zTranslation the image translation in the  z direction (default 0).
        **/
-      template <typename TImageType, typename TFunctor>
-      void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0,
-                   double yTranslation=0.0, double zTranslation=0.0){
-    BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
-    assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth &&
-         (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
+        template <typename TImageType, typename TFunctor>
+        void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0,
+                                     double yTranslation=0.0, double zTranslation=0.0){
+            BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
+            BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
+            assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth &&
+                    (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
 
-    x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
-    x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
-    x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
-    x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
+            x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
+            x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
+            x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
+            x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
 
-    unsigned int pos=0;
-    for(typename TImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
-        it!=itend;
-        ++it){
-      myTabImage[pos]= aFunctor(image(*it));
-      pos++;
-    }
-      };
+            unsigned int pos=0;
+            for(typename TImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
+                it!=itend;
+                ++it){
+                myTabImage[pos]= aFunctor(image(*it));
+                pos++;
+            }
+        };
 
-      /**
+        /**
        * return the class name to implment the CDrawableWithDisplay3D concept.
        **/
-      std::string className() const;
+        std::string className() const;
 
     private:
-      TextureImage(){
+        TextureImage(){
 
-      };
+        };
     };
 
+    //TODO here
+
+    CanonicEmbedder< Z3i::Space> myEmbedder;
+
+    CanonicCellEmbedder< Z3i::KSpace> myCellEmbedder;
+
+    CanonicSCellEmbedder< Z3i::KSpace> mySCellEmbedder;
+
+
+
+
+    //----end of private data
+
     // ----------------------- Standard services ------------------------------
-  public:
+public:
 
     /**
      * Destructor.
@@ -440,20 +440,17 @@ namespace DGtal
 
 
     Display3D(){
-      myCurrentFillColor = Color ( 220, 220, 220 );
-      myCurrentLineColor = Color ( 22, 22, 222, 50 );
-      myScaleX=1.0;
-      myScaleY=1.0;
-      myScaleZ=1.0;
-      myBoundingPtEmptyTag = true;
+        myCurrentFillColor = Color ( 220, 220, 220 );
+        myCurrentLineColor = Color ( 22, 22, 222, 50 );
+        myScaleX=1.0;
+        myScaleY=1.0;
+        myScaleZ=1.0;
+        myBoundingPtEmptyTag = true;
 
     };
 
     // ----------------------- Interface --------------------------------------
-  public:
-
-
-
+public:
 
     /**
      * Used to set the current fill color
@@ -549,7 +546,6 @@ namespace DGtal
      * (useful to use transparency between different objects).
      * @param s name of the new list
      **/
-
     virtual void createNewLineList(std::string s= "");
 
 
@@ -558,7 +554,6 @@ namespace DGtal
      * (useful to use transparency between different objects).
      * @param s name of the new list
      **/
-
     virtual void createNewBallList(std::string s= "");
 
 
@@ -567,8 +562,7 @@ namespace DGtal
      * (useful to use transparency between different objects).
      * @param s name of the new list
      * @todo remove this depthTest perhaps no more important in Viewer3D (and perhaps not used in other viewer).
-     **/  
-
+     **/
     virtual void createNewCubeList(bool depthTest=true, std::string s= "");
 
     /**
@@ -576,7 +570,6 @@ namespace DGtal
      * (useful to use transparency between different objects).
      * @param s name of the new list
      **/
-
     virtual void createNewQuadList(std::string s= "");
 
     /**
@@ -584,18 +577,15 @@ namespace DGtal
      * (useful to use transparency between different objects).
      * @param s name of the new list
      **/
-
     virtual void createNewTriangleList(std::string s= "");
 
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
-     * @param depthTest use to include element in a list to apply a depth test (GL_DEPTH_TEST). 
+     * @param depthTest use to include element in a list to apply a depth test (GL_DEPTH_TEST).
      * @param s name of the new list
      **/
-
     virtual void createNewPolygonList(std::string s= "");
-
 
 
     /**
@@ -603,31 +593,24 @@ namespace DGtal
      * x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4 the four coordinates of the quad.
      * @param aColor the quad color.
      */
-
     virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
-             double x3, double y3, double z3,  double x4, double y4, double z4,
-             DGtal::Color aColor);
+                         double x3, double y3, double z3,  double x4, double y4, double z4,
+                         DGtal::Color aColor);
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
      * x1, y1, z1, x2, y2, z2, x3, y3, z3  the four coordinates of the triangle.
      * @param aColor the quad color.
      */
-
     virtual void addTriangle(double x1, double y1, double z1,  double x2, double y2, double z2,
-                 double x3, double y3, double z3, DGtal::Color aColor);
-
-
+                             double x3, double y3, double z3, DGtal::Color aColor);
 
 
     /**
      * Method to add a specific polygon.
      * @param vectPointsPolygon a vector containing the polygon vertex.
      */
-
     virtual void addPolygon(std::vector<ballD3D> vectPointsPolygon, DGtal::Color aColor);
-
-
 
 
     /**
@@ -637,9 +620,8 @@ namespace DGtal
      * @param width the line width
      *
      */
-
     virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2,
-             const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=1.5);
+                         const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=0.03);
 
 
     /**
@@ -653,10 +635,9 @@ namespace DGtal
      * @param width the cube width.
      * @param withWire if true add the wire representation.
      */
-
     virtual void addCube(double x, double y, double z,
-              DGtal::Color color= DGtal::Color(220, 220, 220),
-              double width=0.5);
+                         DGtal::Color color= DGtal::Color(220, 220, 220),
+                         double width=0.5);
 
 
     /**
@@ -668,48 +649,31 @@ namespace DGtal
      * @param size the point width
      *
      */
-
     virtual void addBall(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
-              double size=40);
+                         double size=0.05);
 
 
 
     /**
-     * Specific to display a SurfelPrism from Kahlimsky space. The display can
+     * Specific to display a surfel from Kahlimsky space. The display can
      * take into accounts the sign of the cell.
      *
      *  x,y,z the surfel center.
      *  xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
      *                                     the x-axis, y-axis or z-axis.
-     * @param sizeShiftFactor set the distance between the display of the surfel and potential KSCube.
+     * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
      * @param positionShift translate the KSsurfel from the asso
+     * missing text line 662 in the original document
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
      *  according this boolean  parameter  (if @a aSign=true oriented in the direct axis orientation).
      * @param basicMode if true, a basic mode to display SurfelPrism are used (i.e just a simple surfel face).
      *
      */
-
     virtual void addSurfelPrism(double x, double y, double z,
-                 bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-                 double positionShift=0.0, double sizeFactor=1.0,
-                 bool isSigned= false, bool aSign=true, bool basicMode=false);
-
-
-
-    /**
-     * Add a KSBall from the Kahlimsky space.
-     *
-     *  x, y, z the center of the KSCube.
-     * @param size the point size (default= 0.1)
-     * @param isSigned to specify if we want to display an signed or unsigned Cell point.
-     * @param aSign if @ref isSigned is true it will be used to apply a different displays
-     *                             according this boolean  parameter
-     *                              (if @a aSign=true display a cross else, display a small cylinder.).
-     */
-
-    virtual void addKSBallel(double x, double y, double z, double size=0.1,
-                  bool isSigned=false, bool aSign=true);
+                                bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
+                                double positionShift=0.0, double sizeFactor=1.0,
+                                bool isSigned= false, bool aSign=true, bool basicMode=false);
 
 
 
@@ -723,8 +687,8 @@ namespace DGtal
      *
      */
     virtual void addCone(double x1, double y1, double z1,
-                            double x2, double y2, double z2,
-                            double width=0.02);
+                         double x2, double y2, double z2,
+                         double width=0.02);
 
 
     /**
@@ -736,10 +700,9 @@ namespace DGtal
      * @param width the width of the cylinder (default= 0.02))
      *
      */
-
     virtual void addCylinder(double x1, double y1, double z1,
-                            double x2, double y2, double z2,
-                            double width=0.02);
+                             double x2, double y2, double z2,
+                             double width=0.02);
 
 
     /**
@@ -748,7 +711,6 @@ namespace DGtal
      *  x, y, z the coordinates to be taken into accounts.
      *
      **/
-
     void updateBoundingBox(double x, double y, double z);
 
 
@@ -760,7 +722,6 @@ namespace DGtal
      * @param aMesh : (return)  the mesh containing the elements of the display.
      *
      **/
-
     void exportToMesh(Mesh<Display3D::ballD3D> & aMesh ) const;
 
 
@@ -784,7 +745,7 @@ namespace DGtal
      **/
     template <typename TImageType, typename TFunctor>
     void updateTextureImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor,
-                  double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+                            double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
 
 
 
@@ -797,30 +758,38 @@ namespace DGtal
      * @param yPosition the image translation in the  y direction (default 0).
      * @param zPosition the image translation in the  z direction (default 0).
      **/
-
     void updateOrientationTextureImage(unsigned int imageIndex,
-                     double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
+                                       double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
 
 
 
     /**
      *
      */
-
     template<typename TDomain>
     void addImage2DDomainD3D(const TDomain &anImageDomain, std::string mode,
-                 const DGtal::Color &aColor=DGtal::Color::Red );
+                             const DGtal::Color &aColor=DGtal::Color::Red );
 
 
-
+    /**
+     *
+     */
     void updateAn2DDomainOrientation(unsigned int imageIndex,
-                     double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
+                                     double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
 
-
+    /**
+     *
+     */
     void translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation);
 
-
+    /**
+     *
+     */
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
+
+    /**
+     *
+     */
     std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
 
     /**
@@ -836,22 +805,18 @@ namespace DGtal
 
 
 
-
-
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
 
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-
-
 
 
     /**
@@ -867,7 +832,32 @@ namespace DGtal
     void setScale(float sx, float sy, float sz);
 
 
+    //TODO methods
+    /**
+      * Use to embed a DGtal point into space
+      * @param pt a DGtal Point
+      */
 
+    Z3i::Space::Space::RealPoint embed(const Z3i::Point & dp) const ;
+
+    Z3i::Space::Space::RealPoint embed(const ballD3D & dp) const ;
+
+    /**
+      * Use to embed a signed DGtal kahlimsky cell into space
+      * @param cell a kahlimsky cell
+      */
+    Z3i::KSpace::Space::RealPoint embed( const Z3i::SCell & cell ) const;
+
+    /**
+      * Use to embed an unsigned DGtal kahlimsky cell into space
+      * @param cell kahlimsky cell
+      */
+    Z3i::KSpace::Space::RealPoint embed( const Z3i::Cell & cell ) const;
+
+    //---end interface
+
+    // ------------------------- Protected Datas ------------------------------
+public:
 
     /**
      * The associated map type for storing possible modes used for
@@ -875,19 +865,11 @@ namespace DGtal
      */
     typedef std::map< std::string, std::string > ModeMapping;
 
-
-
     /**
      * The associated map type for storing the default styles of
      * digital objects.
      */
     typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
-
-
-
-
-    // ------------------------- Protected Datas ------------------------------
-  public:
 
 
     ModeMapping myModes;
@@ -903,79 +885,46 @@ namespace DGtal
      */
     StyleMapping myStyles;
 
-
-
     /// True if the bounding box is empty (no objects added)
     bool myBoundingPtEmptyTag;
     double  myBoundingPtUp [3];
     double  myBoundingPtLow [3];
 
-
-
-
-
-
-  protected:
-
+protected:
 
     DGtal::Color myCurrentFillColor;
 
     DGtal::Color myCurrentLineColor;
 
-
     /// Used to specialized visualisation with KS surfels/cubes.
     ///
-
     double myCurrentfShiftVisuSurfelPrisms;
-
 
     /// Used to represent all the list used in the display.
     ///
-
     std::vector< std::vector<cubeD3D> > myCubeSetList;
-
-
 
     /// Used to represent all the list of line primitive
     ///
-
     std::vector< std::vector<lineD3D> > myLineSetList;
-
-
 
     /// Used to represent all the list of point primitive
     ///
-
     std::vector< std::vector<ballD3D> > myBallSetList;
-
-
 
     /// Represent all the clipping planes added to the scene (of maxSize=5).
     ///
-
     std::vector< clippingPlaneD3D > myClippingPlaneList;
-
-
 
     /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
-
     std::vector< quadD3D > mySurfelPrismList;
-
-
-    /// For saving all pointels of Khalimsky space (used to display Khalimsky Space Cell)
-    ///
-
-    std::vector< ballD3D > myKSBallelList;
-
 
     // Represents all the planes drawn in the Display3D
     std::vector<std::vector< quadD3D > > myQuadSetList;
 
-
     /// Represents all the triangles drawn in the Display3D
     std::vector<std::vector< triangleD3D > > myTriangleSetList;
-
 
     // Represents all the polygon drawn in the Display3D
     std::vector<std::vector<polygonD3D> > myPolygonSetList;
@@ -998,14 +947,6 @@ namespace DGtal
     /// names of the lists in mySurfelPrismList
     ///
     std::vector<std::string> mySurfelPrismNameList;
-
-    /// names of the lists in myKSBalleList
-    ///
-    std::vector<std::string> myKSBallelNameList;
-
-    /// names of the lists in myKSLinelList
-    ///
-    std::vector<std::string> myKSLinelNameList;
 
     /// names of the lists in myQuadList
     ///
@@ -1032,6 +973,7 @@ namespace DGtal
     // Used to store all the domain
     std::vector<Image2DDomainD3D> myImageDomainList;
 
+    //----end of protected datas
 
     // ------------------------- Hidden services ------------------------------
 
@@ -1040,8 +982,7 @@ namespace DGtal
      * Forbidden by default (protected to avoid g++ warnings).
      */
 
-
-  private:
+private:
 
     /**
      * Copy constructor.
@@ -1058,43 +999,41 @@ namespace DGtal
      */
     Display3D & operator= ( const Display3D & other );
 
+    //----end of hidden services
+
     // ------------------------- Internals ------------------------------------
-  private:
+private:
+
+}; // end of class Display3D
 
 
 
-
-  }; // end of class Display3D
-
-  /**
+/**
    * Calculate the cross product of two 3d vectors and return it.
    * @param dst destination vector.
    * @param srcA source vector A.
    * @param srcB source vector B.
    */
-  static void cross (double dst[3], double srcA[3], double srcB[3]);
+static void cross (double dst[3], double srcA[3], double srcB[3]);
 
-  /**
+/**
    * Normalize the input 3d vector.
    * @param vec source & destination vector.
    */
-  static void normalize (double vec[3]);
+static void normalize (double vec[3]);
 
 
-  /**
+/**
    * Overloads 'operator<<' for displaying objects of class 'Display3D'.
    * @param out the output stream where the object is written.
    * @param object the object of class 'Display3D' to write.
    * @return the output stream after the writing.
    */
-  std::ostream&
-  operator<< ( std::ostream & out, const DGtal::Display3D & object );
+std::ostream&
+operator<< ( std::ostream & out, const DGtal::Display3D & object );
 
 
-
-
-
-  /**
+/**
    * Operator ">>" to export a Display3D into a Mesh
    *
    * @param aDisplay3D the Display3D to be exported.
@@ -1102,13 +1041,11 @@ namespace DGtal
    *
    **/
 
-  void
-  operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::ballD3D> &aMesh);
+void
+operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::ballD3D> &aMesh);
 
 
-
-
-  /**
+/**
    * Operator ">>" to export a Display3D directly a file
    *
    * @param aDisplay3D the Display3D to be exported.
@@ -1116,10 +1053,8 @@ namespace DGtal
    *
    **/
 
-  void
-  operator>> ( const Display3D &aDisplay3D,  std::string aFilename);
-
-
+void
+operator>> ( const Display3D &aDisplay3D,  std::string aFilename);
 
 
 } // namespace DGtal

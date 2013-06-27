@@ -90,6 +90,7 @@ int main( int argc, char** argv )
   
   
  //viewer << SetMode3D( domain.className(), "Paving" );
+ // if the domain is visible can't see the cubes inside
  // viewer << domain; 
 
 

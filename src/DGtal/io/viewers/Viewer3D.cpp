@@ -146,6 +146,8 @@ DGtal::Viewer3D::draw()
                            ( posCam.z-centerS.z ) * ( posCam.z-centerS.z ) );
 
 
+    /*
+
     for ( unsigned int i=0; i<myBallSetList.size(); i++ )
     {
         if ( myBallSetList.at ( i ).size() !=0 )
@@ -163,6 +165,9 @@ DGtal::Viewer3D::draw()
         }
         glCallList ( GLuint ( myListToAff+myCubeSetList.size() +1+i ) );
     }
+    */
+
+
 
     glCallList ( GLuint ( myListToAff+myCubeSetList.size() ) );
     for ( unsigned int i=0; i<myCubeSetList.size(); i++ )
@@ -201,18 +206,30 @@ DGtal::Viewer3D::draw()
 
 
 
+
+
+
     // Drawing all Khalimsky Space Cells
 
-    for ( unsigned int i=0; i< myKSBallelList.size(); i++ )
+    for ( vector<vector< ballD3D> >::const_iterator it= myBallSetList.begin(); it != myBallSetList.end(); it++ )
     {
-        glDrawGLPointel ( myKSBallelList.at ( i ) );
+        for ( vector< ballD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
+        {
+            glDrawGLPointel ( *it_s );
+        }
     }
-    /*
-    for ( unsigned int i=0; i< myKSLinelList.size(); i++ )
+
+
+    for ( vector<vector< lineD3D> >::const_iterator it= myLineSetList.begin(); it != myLineSetList.end(); it++ )
     {
-        glDrawGLLinel ( myKSLinelList.at ( i ) );
+        for ( vector< lineD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
+        {
+            glDrawGLLinel (*it_s );
+        }
     }
-    */
+
+
+
 
     for(unsigned int i=0; i< myVectTextureImage.size(); i++){
         GLTextureImage &textureImg =  myVectTextureImage.at(i);
@@ -787,8 +804,6 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 
 
 
-
-
 void
 DGtal::Viewer3D::glDrawGLLinel ( lineD3D aLinel )
 {
@@ -804,10 +819,6 @@ DGtal::Viewer3D::glDrawGLLinel ( lineD3D aLinel )
                   dir.norm(),10, 4 );
     glPopMatrix();
 }
-
-
-
-
 
 void
 DGtal::Viewer3D::glDrawGLPointel ( ballD3D ballel )

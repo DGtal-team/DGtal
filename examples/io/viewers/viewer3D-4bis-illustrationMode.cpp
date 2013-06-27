@@ -61,7 +61,8 @@ int main( int argc, char** argv )
   K.init( plow, pup, true ); 
   
   viewer << SetMode3D( domain.className(), "Paving" );
-  viewer << domain;
+  //with the domain can't see the cubes
+  //viewer << domain;
 
   // drawing cells of dimension 3  
 
