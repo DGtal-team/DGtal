@@ -98,11 +98,11 @@ int main( int argc, char** argv )
  Point p3( 30, 30, 30 );
  
  std::string filename =  testPath + "samples/lobsterCroped.vol";
- 
+ viewer.setFillTransparency(150);
  Image3D image3d =  VolReader<Image3D>::importVol(filename); 
  viewer << SetMode3D(image3d.className(), "BoundingBox");
  viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  hueFct >(image3d, hueFct(), Display3D::RGBMode );
-
+ viewer.setFillTransparency(255);
  // Extract some slice images:
  // Get the 2D domain of the slice:
  DGtal::Projector<DGtal::Z2i::Space>  invFunctor; invFunctor.initRemoveOneDim(2);

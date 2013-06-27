@@ -393,7 +393,7 @@ namespace DGtal
       ImageDirection myDirection;
       unsigned int myImageWidth;
       unsigned int myImageHeight;
-      
+      unsigned char myAlpha;
       unsigned int myBufferWidth;
       unsigned int myBufferHeight;
       GLuint  myTextureName;
@@ -426,7 +426,8 @@ namespace DGtal
 						    myTextureName(aGLImg.myTextureName),
 						    myTextureFitX(aGLImg.myTextureFitX),
 						    myTextureFitY(aGLImg.myTextureFitY),
-						    myMode(aGLImg.myMode)
+						    myMode(aGLImg.myMode),
+						    myAlpha(aGLImg.myAlpha)
 								      
       {
 	x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
@@ -465,6 +466,7 @@ namespace DGtal
 	x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
 	x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
 	x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
+	myAlpha= aGSImage.myAlpha;
 	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
 	myDirection = aGSImage.myDirection;
 	myMode= aGSImage.myMode;
