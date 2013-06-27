@@ -128,6 +128,20 @@ bool exampleTiledImage3D()
 
     trace.beginBlock("Example : TiledImage with ImageFactoryFromHDF5 (3D)");
     
+      typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint8_t> ImageV;
+      typedef ImageV::Domain DomainV;
+      typedef ImageV::Point PointV;
+      DomainV domainV(PointV(0,0,0), PointV(NX_3D_TILED-1, NY_3D_TILED-1, NZ_3D_TILED-1));
+      ImageV imageV(domainV);
+      
+      for(k = 0; k < NZ_3D_TILED; k++)
+        for(j = 0; j < NY_3D_TILED; j++)
+          for(i = 0; i < NX_3D_TILED; i++)
+            if (i>=15 && j>=15 && k>=15 && i<35 && j<35 && k<35)
+              imageV.setValue(PointV(i,j,k), 1);
+            else
+              imageV.setValue(PointV(i,j,k), 0);
+
       typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
 
       typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
@@ -144,7 +158,7 @@ bool exampleTiledImage3D()
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
       //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 5);
       
       typedef MyTiledImage::OutputImage OutputImage;
       OutputImage::Value aValue;
@@ -153,12 +167,24 @@ bool exampleTiledImage3D()
       trace.info() << "Read value for Point 25,25,25: " << (int)tiledImage(Z3i::Point(25,25,25)) << endl;
       
       int cpt=0;
-      for(k = 0; k < NZ_3D_TILED; k++)
-        for(j = 0; j < NY_3D_TILED; j++)
-          for(i = 0; i < NX_3D_TILED; i++)
-            if (tiledImage(Z3i::Point(i,j,k)) == 1)
-              cpt++;         
-      trace.info() << "cpt: " << cpt << endl;
+      trace.beginBlock("imageV (3D)");
+        for(k = 0; k < NZ_3D_TILED; k++)
+          for(j = 0; j < NY_3D_TILED; j++)
+            for(i = 0; i < NX_3D_TILED; i++)
+              if (imageV(PointV(i,j,k)) == 1)
+                cpt++;
+        trace.info() << "imageV cpt: " << cpt << endl;
+      trace.endBlock();
+      
+      cpt=0;
+      trace.beginBlock("tiledImage (3D)");
+        for(k = 0; k < NZ_3D_TILED; k++)
+          for(j = 0; j < NY_3D_TILED; j++)
+            for(i = 0; i < NX_3D_TILED; i++)
+              if (tiledImage(Z3i::Point(i,j,k)) == 1)
+                cpt++;         
+        trace.info() << "tiledImage cpt: " << cpt << endl;
+      trace.endBlock();
     
     trace.endBlock();
     
@@ -170,7 +196,8 @@ bool exampleTiledImage3D()
 
 int main( int argc, char** argv )
 {
-    writeHDF5_3D_TILED();
+    if (argc==1)
+      writeHDF5_3D_TILED();
     
     exampleTiledImage3D();
     
