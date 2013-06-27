@@ -48,9 +48,9 @@ using namespace DGtal;
 #define H5FILE_NAME_3D_TILED    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
 #define DATASETNAME_3D_TILED    "UInt8Array3D_TILED"
-#define NX_3D_TILED             500//1980       // dataset dimensions
-#define NY_3D_TILED             500//1980
-#define NZ_3D_TILED             500//400
+#define NX_3D_TILED             50//1980       // dataset dimensions
+#define NY_3D_TILED             50//1980
+#define NZ_3D_TILED             50//400
 #define RANK_3D_TILED           3
 
 bool writeHDF5_3D_TILED()
@@ -135,16 +135,16 @@ bool exampleTiledImage3D()
 
       typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
       
-      typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
-      //typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
+      //typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
+      typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
       typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
-      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 10);
-      //MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
+      //MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 3);
+      MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
-      typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+      typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
       //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-      MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 10);
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
       
       typedef MyTiledImage::OutputImage OutputImage;
       OutputImage::Value aValue;

@@ -68,15 +68,15 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
 
   // Load the library -- not required on most platforms
   hErrVal = H5open();
-  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
 
   // Open an existing file
   fileID = H5Fopen(aFilename.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
-  if (fileID < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if (fileID < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
 
   // Figure out if the data is an image or not
   hErrVal = H5IMis_image(fileID, aDataset.c_str());
-  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
   if(hErrVal != 1) {
     trace.error() << "The data is NOT an image" << std::endl;
     throw dgtalio;
@@ -85,7 +85,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   // Get info about the image
   interlace[0] = 0;
   hErrVal = H5IMget_image_info (fileID, aDataset.c_str(), &width, &height, &planes, interlace, &npals); 
-  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
 
   // If the image is the wrong type, then throw exception
   if( !( ((planes==1) && (npals==1)) || ((planes==3) && (npals==0) && (strcmp(interlace, "INTERLACE_PIXEL")==0)) ) ) {
@@ -102,15 +102,15 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
 
   // Read the data from the file
   hErrVal = H5IMread_image (fileID, aDataset.c_str(), imgBuf);
-  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
   
   // Close the file
   hErrVal = H5Fclose(fileID);
-  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
 
   // Unload the library and free any remaining resources
   hErrVal = H5close();
-  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
   
   // --
   

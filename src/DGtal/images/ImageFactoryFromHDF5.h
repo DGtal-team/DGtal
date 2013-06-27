@@ -266,7 +266,7 @@ namespace DGtal
       for(d=0; d<ddim; d++)
       {
         low[d]=0;
-        up[d]=dims_out[ddim-d-1];
+        up[d]=dims_out[ddim-d-1]-1;
       }
       
       myDomain = new Domain(low, up);
