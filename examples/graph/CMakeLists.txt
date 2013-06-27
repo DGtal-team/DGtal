@@ -9,14 +9,14 @@ FOREACH(FILE ${DGTAL_EXAMPLES_TOPO_SRC})
 ENDFOREACH(FILE)
 
 
-if (  WITH_VISU3D_QGLVIEWER )
+if ( WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
+     volDistanceTraversal
    )
-  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
-   add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} DGtalIO DGtal
-                            ${DGtalLibDependencies})   
-  ENDFOREACH(FILE)
-
+   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
+     add_executable(${FILE} ${FILE})
+     target_link_libraries ( ${FILE} DGtalIO DGtal
+                             ${DGtalLibDependencies})   
+   ENDFOREACH(FILE)
 endif ( WITH_VISU3D_QGLVIEWER   )
 

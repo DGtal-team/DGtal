@@ -41,7 +41,7 @@ int main( int /* argc */, char** /* argv */ )
 {
   //! [graphTraversal-graph-instanciation]
   using namespace Z2i;
-  Point p1( -50, -50 ), p2( 50, 50 );
+  Point p1( -41, -36 ), p2( 18, 18 );
   Domain domain( p1, p2 );
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm2Ball( shape_set, Point( -2, -1 ), 9 );

@@ -67,7 +67,7 @@ upper/lower bounds and to scan all grid points.
 
 @note A digital shaper helper method is available in the Shapes class, e.g.: 
 @code
-#include <helpers/Shapes.h>
+#include <DGtal/shapes/Shapes.h>
 ...
 Shapes<Domain>::digitalShaper( myOutputSet, myInputShape)
 @endcode
@@ -99,7 +99,7 @@ the digitization of an Euclidean shape (@a aShape of type @a Shape):
 
 @note A simpler (but less flexible) possibility is to use the Euclidean shaper helper method is available in the Shapes class, e.g.: 
 @code
-#include <helpers/Shapes.h>
+#include <DGtal/shapes/Shapes.h>
 ...
 Shapes<Domain>::euclideanShaper( myOutputSet, myInputShape, h)
 @endcode

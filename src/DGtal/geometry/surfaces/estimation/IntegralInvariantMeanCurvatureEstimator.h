@@ -455,6 +455,23 @@ public:
                                                                                   OutputIterator & result );
 
     /**
+      * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Return the result on an OutputIterator (param).
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      * @tparam OutputIterator output iterator type
+      *
+      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+      * @param result iterator of the result of the computation.
+      */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape > void eval( const ConstIteratorOnCells & itb,
+                                                                                  const ConstIteratorOnCells & ite,
+                                                                                  Shape & shape,
+                                                                                  OutputIterator & result );
+
+
+    /**
       * @return iterator of the begin spel of the kernel support
       */
     const ConstIteratorKernel & beginKernel() const;

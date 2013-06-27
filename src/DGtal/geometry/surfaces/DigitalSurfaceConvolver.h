@@ -545,6 +545,19 @@ public:
                 OutputIterator & result );
 
     /**
+       * Iterate the convolver between [itbegin, itend[.
+       *
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
+       * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void eval ( const ConstIteratorOnCells & itbegin,
+                const ConstIteratorOnCells & itend,
+                Shape & shape,
+                OutputIterator & result );
+
+    /**
        * Convolve the kernel at a given position and return a covariance matrix.
        *
        * @param it (iterator of a) spel on the surface of the shape where the covariance matrix is computed.

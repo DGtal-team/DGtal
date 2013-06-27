@@ -288,6 +288,7 @@ namespace DGtal
 	}
     }
 
+    
     /**
        @param n any number
        @return the index (0..) of the least significant bit.
@@ -334,7 +335,54 @@ namespace DGtal
         : 32 + leastSignificantBit( (DGtal::uint32_t) (n>>32) );
     }
  
-	  
+    /**
+       @param n any number
+       @return the index (..0) of the most significant bit.
+    */
+    static inline 
+    unsigned int mostSignificantBit( DGtal::uint8_t n )
+    {
+      return myMSB[ n ];
+    }
+
+    /**
+       @param n any number
+       @return the index (..0) of the mot significant bit.
+    */
+    static inline 
+    unsigned int mostSignificantBit( DGtal::uint16_t n )
+    {
+      return ( n & 0xff00 ) 
+        ? 8 + mostSignificantBit( (DGtal::uint8_t) (n>>8) )
+        :  mostSignificantBit((DGtal::uint8_t) (n) );
+    }
+ 
+    /**
+       @param n any number
+       @return the index (..0) of the most significant bit.
+    */
+    static inline 
+    unsigned int mostSignificantBit( DGtal::uint32_t n )
+    {
+      return ( n & 0xffff0000 ) 
+        ? 16 + mostSignificantBit( (DGtal::uint16_t) (n>>16) )
+        :  mostSignificantBit((DGtal::uint16_t) (n) );
+    }
+
+    /**
+       @param n any number
+       @return the index (..0) of the most significant bit.
+    */
+    static inline 
+    unsigned int mostSignificantBit( DGtal::uint64_t n )
+    {
+      return ( n & 0xffffffff00000000LL ) 
+        ? 32 + mostSignificantBit( (DGtal::uint32_t) (n>>32) )
+        :  mostSignificantBit((DGtal::uint32_t) (n) );      
+    }
+    
+
+    	  
     /**
        Lookup table for counting the number of bits set to 1 in a byte.
        ( Taken from STL <bitset> )
@@ -345,6 +393,11 @@ namespace DGtal
        Lookup table for finding the least significant bit.
     */
     static const DGtal::uint8_t myLSB[ 256 ];
+
+    /**
+    Lookup table for finding the least significant bit.
+    */
+    static const DGtal::uint8_t myMSB[ 256 ];
 
     /**
        Usage: myIndexInSetBits[ b ][ n ]

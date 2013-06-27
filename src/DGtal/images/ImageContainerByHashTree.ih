@@ -53,6 +53,33 @@ namespace DGtal
 
   namespace experimental
   {
+    template < typename TDomain, typename TValue, typename THashKey >
+    const typename TDomain::Dimension   ImageContainerByHashTree<TDomain, 
+								 TValue, 
+								 THashKey>::dimension = TDomain::dimension;
+    
+    template < typename TDomain, typename TValue, typename THashKey >
+    const typename TDomain::Dimension   ImageContainerByHashTree<TDomain, 
+								 TValue, 
+								 THashKey>::dim = TDomain::dimension;
+
+    template < typename TDomain, typename TValue, typename THashKey >
+    const unsigned int   ImageContainerByHashTree<TDomain, 
+						  TValue, 
+						  THashKey>::NbChildrenPerNode = POW<2, dimension>::VALUE;
+
+    template < typename TDomain, typename TValue, typename THashKey >
+    const THashKey   ImageContainerByHashTree<TDomain, 
+					     TValue, 
+					     THashKey>::ROOT_KEY = static_cast<THashKey>(1);
+
+    template < typename TDomain, typename TValue, typename THashKey >
+    const unsigned int ImageContainerByHashTree<TDomain, 
+						       TValue, 
+						       THashKey>::myN=POW<2,dim>::VALUE;
+    
+
+
   // ---------------------------------------------------------------------
   // constructor
   // ---------------------------------------------------------------------

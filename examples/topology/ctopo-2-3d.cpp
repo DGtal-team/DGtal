@@ -132,7 +132,8 @@ int main( int argc, char** argv )
   cmap_grad2.addColor( Color( 50, 50, 255 ) );
   cmap_grad2.addColor( Color( 255, 0, 0 ) );
   cmap_grad2.addColor( Color( 255, 255, 10 ) );
-  
+  viewer << Viewer3D::shiftSurfelVisu; 
+
   d=0;
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell.begin(); 
        it!= vectBdrySCell.end(); it++){

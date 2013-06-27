@@ -34,6 +34,10 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/Color.h"
+
+template<typename TSpace>
+const typename TSpace::Dimension DGtal::HyperRectDomain<TSpace>::dimension = TSpace::dimension;
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -103,14 +107,8 @@ DGtal::HyperRectDomain<TSpace>::operator=
   return *this;
 }
 //-----------------------------------------------------------------------------
-/*
-template<typename TSpace>
-inline
-std::size_t
-DGtal::HyperRectDomain<TSpace>::extent() const
-{
-  return extent(myLowerBound, myUpperBound);
-  }*/
+
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline

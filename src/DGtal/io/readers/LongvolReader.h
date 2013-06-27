@@ -46,6 +46,7 @@
 #include "DGtal/base/Common.h"
 #include <boost/static_assert.hpp>
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/base/CUnaryFunctor.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -80,16 +81,21 @@ namespace DGtal
    * @endcode
    *
    * @tparam TImageContainer the image container to use. 
+   * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>). 
    *
    * @see testLongvol.cpp
    */
-  template <typename TImageContainer>
+  template <typename TImageContainer, 
+	    typename TFunctor= CastFunctor< typename TImageContainer::Value > >
   struct LongvolReader
   {
     // ----------------------- Standard services ------------------------------
 
     typedef TImageContainer ImageContainer;
+    typedef typename TImageContainer::Value Value;    
+    typedef TFunctor Functor;
 
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, DGtal::uint64_t, Value > )) ;    
     BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
 
 
@@ -98,9 +104,14 @@ namespace DGtal
      * template parameter ImageContainer.
      * 
      * @param filename the file name to import.
-     * @return an instance of the ImageContainer.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to CastFunctor < TImageContainer::Value > .
+     *
+     *@return an instance of the ImageContainer.
      */
-    static ImageContainer importLongvol(const std::string & filename) throw(DGtal::IOException);
+    static ImageContainer importLongvol(const std::string & filename, 
+					const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
     
    
     
@@ -169,7 +180,7 @@ namespace DGtal
 
 
     //! Maximum number of fields in a .longvol file header
-    static const int MAX_HEADERNUMLINES = 64;
+    static const int MAX_HEADERNUMLINES;
     
     
     //! Internal method which returns the index of a field or -1 if not found.

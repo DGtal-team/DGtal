@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CanonicSCellEmbedder.h
+ * @file CanonicCellEmbedder.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/28
  *
- * Header file for module CanonicSCellEmbedder.cpp
+ * Header file for module CanonicCellEmbedder.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CanonicSCellEmbedder_RECURSES)
-#error Recursive header files inclusion detected in CanonicSCellEmbedder.h
-#else // defined(CanonicSCellEmbedder_RECURSES)
+#if defined(CanonicCellEmbedder_RECURSES)
+#error Recursive header files inclusion detected in CanonicCellEmbedder.h
+#else // defined(CanonicCellEmbedder_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CanonicSCellEmbedder_RECURSES
+#define CanonicCellEmbedder_RECURSES
 
-#if !defined CanonicSCellEmbedder_h
+#if !defined CanonicCellEmbedder_h
 /** Prevents repeated inclusion of headers. */
-#define CanonicSCellEmbedder_h
+#define CanonicCellEmbedder_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,29 +49,29 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CanonicSCellEmbedder
+// class CanonicCellEmbedder
 /**
-   Description of class 'CanonicSCellEmbedder' <p>
+   Description of class 'CanonicCellEmbedder' <p>
 
-   \brief Aim: A trivial embedder for signed cell, which
+   \brief Aim: A trivial embedder for signed and unsigned cell, which
    corresponds to the canonic injection of cell centroids into Rn.
 
-   Model of CSCellEmbedder.
+   Model of CCellEmbedder.
 
    @tparam TKSpace the type of cellular grid space where the embedder works, a model of CCellularGridSpaceND.
  */
   template <typename TKSpace>
-  struct CanonicSCellEmbedder
+  struct CanonicCellEmbedder
   {
   public:
-    typedef CanonicSCellEmbedder<TKSpace> Self;
+    typedef CanonicCellEmbedder<TKSpace> Self;
     BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<TKSpace> ));
 
     typedef TKSpace KSpace;
-    typedef typename KSpace::SCell SCell;
+    typedef typename KSpace::Cell Cell;
     typedef typename KSpace::Space Space;
     typedef typename Space::RealPoint RealPoint;
-    typedef SCell Argument;
+    typedef Cell Argument;
     typedef RealPoint Value;
 
     typedef typename Space::Integer Integer;
@@ -82,23 +82,23 @@ namespace DGtal
     /**
        Destructor. Nothing special.
     */
-    ~CanonicSCellEmbedder();
+    ~CanonicCellEmbedder();
 
     /**
        Default constructor. The object is not valid.
     */
-    CanonicSCellEmbedder();
+    CanonicCellEmbedder();
 
     /**
        Constructor from space. 
     */
-    CanonicSCellEmbedder( const KSpace & aKSpace );
+    CanonicCellEmbedder( const KSpace & aKSpace );
 
     /**
        Copy constructor.
        @param other the object to clone.
     */
-    CanonicSCellEmbedder( const Self & other );
+    CanonicCellEmbedder( const Self & other );
 
     /**
        Assignment.
@@ -113,24 +113,24 @@ namespace DGtal
     const KSpace & space() const;
 
     /**
-       Map a signed cell to its corresponding point in the Euclidean
+       Map a unsigned cell to its corresponding point in the Euclidean
        space.
        
-       @param cell any signed cell in the digital space.
+       @param cell any unsigned cell in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
-    RealPoint embed( const SCell & cell ) const;
+    RealPoint embed( const Cell & cell ) const;
 
     /**
-       Map a signed cell to its corresponding point in the Euclidean
+       Map a unsigned cell to its corresponding point in the Euclidean
        space.
        
-       @param cell any signed cell in the digital space.
+       @param cell any unsigned cell in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
-    RealPoint operator()( const SCell & cell ) const;
+    RealPoint operator()( const Cell & cell ) const;
 
-    // ----------------------- Interface --------------------------------------
+   // ----------------------- Interface --------------------------------------
 public:
 
     /**
@@ -159,18 +159,18 @@ protected:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class CanonicSCellEmbedder
+}; // end of class CanonicCellEmbedder
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'CanonicSCellEmbedder'.
+ * Overloads 'operator<<' for displaying objects of class 'CanonicCellEmbedder'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'CanonicSCellEmbedder' to write.
+ * @param object the object of class 'CanonicCellEmbedder' to write.
  * @return the output stream after the writing.
  */
   template <typename TKSpace>
   std::ostream&
-  operator<< ( std::ostream & out, const CanonicSCellEmbedder<TKSpace> & object );
+  operator<< ( std::ostream & out, const CanonicCellEmbedder<TKSpace> & object );
 
 
 } // namespace DGtal
@@ -178,13 +178,13 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/CanonicSCellEmbedder.ih"
+#include "DGtal/topology/CanonicCellEmbedder.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CanonicSCellEmbedder_h
+#endif // !defined CanonicCellEmbedder_h
 
-#undef CanonicSCellEmbedder_RECURSES
-#endif // else defined(CanonicSCellEmbedder_RECURSES)
+#undef CanonicCellEmbedder_RECURSES
+#endif // else defined(CanonicCellEmbedder_RECURSES)

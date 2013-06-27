@@ -410,15 +410,32 @@ setFromPointsRangeAndPredicate, setFromPointsRangeAndFunctor, setFromImage.
 2. Some of them convert digital sets into images,
 imageFromRangeAndValue assigns a given value in an image to each point of a given range.
 
-3. Lastly, some functions are available to fastly fill images 
+3. Some functions are available to fastly fill images 
 from point functors or other images: imageFromFunctor and imageFromImage.
 
-
+4. Lastly, some functor like the Projector from BasicPointFunctors can be useful to manipulate domain points and permits to extract N-1 images from ND images (see example \ref extract2DImagesFrom3D.cpp).  
 
 
 */
-
 }
+
+/**
+*  Example of 2D images extraction from 3D images.
+
+   \image html lobsterSliceZ_20.png   "Example of resulting 2D slices images of the sample/lobster.vol file."
+
+* \example images/extract2DImagesFrom3D.cpp
+**/
+
+
+/**
+*  Example of 2D images extraction from 3D images and 3D visualisation.
+
+   \image html lobsterVisu3DSlicesZ.png   "Example of 3D visualisation of 2D slices images of the sample/lobster.vol file."
+
+* \example images/extract2DImagesFrom3DandVisu.cpp
+**/
+
 
 
 

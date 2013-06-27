@@ -363,6 +363,30 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eva
     }
 }
 
+template< typename TKSpace, typename TShapeFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+inline
+void
+DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eval( const ConstIteratorOnCells & itb,
+                                                                                   const ConstIteratorOnCells & ite,
+                                                                                   Shape & shape,
+                                                                                   OutputIterator & result )
+{
+    std::vector< Quantity > quantities;
+    std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
+    myConvolver.eval ( itb, ite, shape, quantitiesIterator );
+
+    Quantity measure;
+
+    DGtal::Dimension qsize = quantities.size();
+    for( DGtal::Dimension  i = 0; i < qsize; ++i )
+    {
+        measure = quantities[ i ];
+        measure *= dh3;
+        *result = d8_3r - d_4_PIr4 * measure;
+        ++result;
+    }
+}
 
 
 
