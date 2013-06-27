@@ -499,6 +499,23 @@ public:
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
+      * @tparam OutputIterator iterator of a list of Quantity
+      *
+      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+      * @param result iterator of results of the computation.
+      */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void eval ( const ConstIteratorOnCells & itb,
+                const ConstIteratorOnCells & ite,
+                const Shape & shape,
+                OutputIterator & result );
+
+    /**
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Return the result on an OutputIterator (param).
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
       * @tparam OutputStructIterator iterator of list of CurvInformation
       *
       * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.

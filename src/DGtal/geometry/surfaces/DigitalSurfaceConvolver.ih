@@ -429,11 +429,11 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
             offset = (( x / 2) + 1 ) + ((( y / 2 ) + 1 ) * 3 ); /// x/2 because we are in a KSpace, and we want a digital offset
 
-            if(  x2y2 != 4 && x2y2 != 8 ) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
+            if( x2y2 != 4 && x2y2 != 8 ) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
             {
                 trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
             }
-            else if(  offset == 4 ) /// Full kernel in 2D. Never reached because case already considered before. It's a honeypot.
+            else if( offset == 4 ) /// Full kernel in 2D. Never reached because case already considered before. It's a honeypot.
             {
                 trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
             }
@@ -483,15 +483,15 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                 y2 = y * y;
                 x2y2 = x2 + y2;
 
-                offset = (( x / 2) + 1 ) + ((( y / 2 ) + 1 ) * 3 ); /// x/2 because we are in a KSpace, and we want a digital offset
+                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ); /// x/2 because we are in a KSpace, and we want a digital offset
 
-                if(  x2y2 != 4 && x2y2 != 8 ) /// Previous and current cells aren't adjacent. Compute on the full kernel
+                if( x2y2 != 4 && x2y2 != 8 ) /// Previous and current cells aren't adjacent. Compute on the full kernel
                 {
 #ifdef DEBUG_VERBOSE
                     ++recount;
 #endif
 
-                    for(  KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                     {
                         shiftedPoint = ( *itgcurrent ).myCoordinates;
                         shiftedPoint += shift;
@@ -500,7 +500,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         currentResult += myFFunctor( shiftedCell ) * myGFunctor( *itgcurrent );
                     }
                 }
-                else if(  offset == 4 ) /// Full kernel in 2D. Never reached because case already considered before. It's a honeypot.
+                else if( offset == 4 ) /// Full kernel in 2D. Never reached because case already considered before. It's a honeypot.
                 {
                     trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
                 }
@@ -623,9 +623,9 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     Cell lastCell, lastCell2, currentCell, currentCell2, shiftedCell;
 
-    Quantity currentResult, currentResult2, maskQuantity;
     Quantity lastResult = NumberTraits< Quantity >::ZERO;
     Quantity lastResult2 = NumberTraits< Quantity >::ZERO;
+    Quantity currentResult, currentResult2, maskQuantity;
 
     Point shift, shift2, shiftedPoint, diffLastCurrentCell, diffWithCurrentCell;
 
@@ -670,7 +670,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             z2 = z * z;
             x2y2z2 = x2 + y2 + z2;
 
-            offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3) + ((( z / 2 ) + 1) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+            offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
 
             if(  x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
             {
@@ -684,7 +684,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             {
                 maskQuantity = NumberTraits< Quantity >::ZERO;
 
-                for(  KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = ( *itgcurrent ).myCoordinates - diffWithCurrentCell;
                     shiftedPoint += shift2;
@@ -693,7 +693,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                     maskQuantity -= myFFunctor( shiftedCell ) * myGFunctor( *itgcurrent );
                 }
 
-                for(  KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
+                for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
                 {
                     shiftedPoint = ( *itgcurrent ).myCoordinates;
                     shiftedPoint += shift2;
@@ -728,15 +728,15 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                 z2 = z * z;
                 x2y2z2 = x2 + y2 + z2;
 
-                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3) + ((( z / 2 ) + 1) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
 
-                if(  x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Previous and current cells aren't adjacent. Compute on the full kernel
+                if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Previous and current cells aren't adjacent. Compute on the full kernel
                 {
 #ifdef DEBUG_VERBOSE
                     ++recount;
 #endif
 
-                    for(  KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                     {
                         shiftedPoint = ( *itgcurrent ).myCoordinates;
                         shiftedPoint += shift;
@@ -745,7 +745,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                         currentResult += myFFunctor( shiftedCell ) * myGFunctor( *itgcurrent );
                     }
                 }
-                else if(  offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
+                else if( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
                 {
                     trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
                 }
@@ -798,7 +798,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                 z2 = z * z;
                 x2y2z2 = x2 + y2 + z2;
 
-                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3) + ((( z / 2 ) + 1) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
 
                 if(  x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 ))/// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
                 {
@@ -1025,7 +1025,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     Cell currentCell1, shiftedCell;
     Cell currentCell2;
-    Point shift, shiftedPoint;
+    Point shiftCenter, diff, shiftedPoint;
     FQuantity fShiftedCell;
     Point currentPoint;
 
@@ -1036,12 +1036,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     /// Inner cell
     {
         currentCell1 = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it )); /// Cell on the border, but inside the shape
-        shift = currentCell1.myCoordinates - myKernelCellOrigin.myCoordinates;
+        shiftCenter = currentCell1.myCoordinates - myKernelCellOrigin.myCoordinates;
 
         for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
         {
             shiftedPoint = ( *itgcurrent ).myCoordinates;
-            shiftedPoint += shift;
+            shiftedPoint += shiftCenter;
             shiftedCell.myCoordinates = shiftedPoint;
 
             fShiftedCell = myFFunctor( shiftedCell );
@@ -1094,10 +1094,10 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     /// Outter cell
     {
         currentCell2 = myKSpace.sDirectIncident( *it, *myKSpace.sOrthDirs( *it ));
-        shift = currentCell2.myCoordinates - currentCell1.myCoordinates;
-        x = shift[ 0 ];
-        y = shift[ 1 ];
-        z = shift[ 2 ];
+        diff = currentCell2.myCoordinates - currentCell1.myCoordinates;
+        x = diff[ 0 ];
+        y = diff[ 1 ];
+        z = diff[ 2 ];
         int x2 = x * x;
         int y2 = y * y;
         int z2 = z * z;
@@ -1114,13 +1114,13 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
         }
         else
         {
-            shift = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
+            shiftCenter = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
 
             /// Part to substract from previous result.
             for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                shiftedPoint = ( *itgcurrent ).myCoordinates;
-                shiftedPoint += shift;
+                shiftedPoint = ( *itgcurrent ).myCoordinates - diff;
+                shiftedPoint += shiftCenter;
                 shiftedCell.myCoordinates = shiftedPoint;
 
                 fShiftedCell = myFFunctor( shiftedCell );
@@ -1149,7 +1149,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
                 shiftedPoint = ( *itgcurrent ).myCoordinates;
-                shiftedPoint += shift;
+                shiftedPoint += shiftCenter;
                 shiftedCell.myCoordinates = shiftedPoint;
 
                 fShiftedCell = myFFunctor( shiftedCell );
@@ -1969,7 +1969,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 //    std::cout << "#recount = " << recount << std::endl;
 //#endif
 }
-
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename ConstIteratorOnCells, typename OutputIterator >
 inline
@@ -1977,6 +1976,362 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
+  OutputIterator & result )
+{
+    Dimension total = 0;
+#ifdef DEBUG_VERBOSE
+    Dimension recount = 0;
+#endif
+
+    typedef typename KSpace::Point Point;
+    typedef typename Functor::Quantity FQuantity;
+
+    Quantity m[ 10 ]; /// <! [ m000, m001, m010, m100, m011, m101, m110, m002, m020, m200 ]
+    Quantity lastM1[ 10 ];
+    Quantity lastM2[ 10 ];
+
+    MatrixQuantity A1, A2;
+    double B1, B2;
+    MatrixQuantity C1, C2;
+    CovarianceMatrix Ja1, Ja2;
+    CovarianceMatrix lastJa1, lastJa2;
+
+    Cell currentCell1, shiftedCell;
+    Cell currentCell2;
+    Point shiftCenter, shiftedPoint;
+    Point diff;
+    FQuantity fShiftedCell;
+    Point currentPoint;
+
+    Cell lastCell1;
+    Cell lastCell2;
+
+    SCellToMidPoint< KSpace > midpoint( myKSpace );
+
+    bool bCanUseLastResults = false;
+    bool bComputed = false; /// <! if the cell has already been computed, continue to the next
+
+    int x, y, z;
+    int offset;
+
+    /// Iterate on all cells
+    for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
+    {
+        std::fill( m, m + 10, NumberTraits< Quantity >::ZERO ); /// <! clear array
+
+        /// Inner cell
+        {
+            currentCell1 = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it )); /// Cell on the border, but inside the shape
+
+            /// Check if we can use previous results
+            if( total != 0 )
+            {
+                if(  currentCell1 == lastCell1 )
+                {
+                    memcpy( m, lastM1, 10 * sizeof( Quantity ));
+                    Ja1 = lastJa1;
+                    bComputed = true;
+                }
+                else if(  currentCell1 == lastCell2 )
+                {
+                    memcpy( m, lastM2, 10 * sizeof( Quantity ));
+                    Ja1 = lastJa2;
+                    bComputed = true;
+                }
+
+                diff = currentCell1.myCoordinates - lastCell1.myCoordinates;
+
+                x = diff[ 0 ];
+                y = diff[ 1 ];
+                z = diff[ 2 ];
+                int x2 = x * x;
+                int y2 = y * y;
+                int z2 = z * z;
+                int x2y2z2 = x2 + y2 + z2;
+
+                if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Previous and current cells aren't adjacent. Compute on the full kernel
+                {
+                    bCanUseLastResults = false;
+#ifdef DEBUG_VERBOSE
+                    ++recount;
+#endif
+                }
+                else
+                {
+                    offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1) * 9 );
+                    memcpy( m, lastM1, 10 * sizeof( Quantity ));
+                }
+
+                bComputed = false;
+            }
+
+            if( !bComputed )
+            {
+                if( !bCanUseLastResults ) /// Computation on full kernel, we have no previous results
+                {
+                    std::fill( m, m + 10, NumberTraits< Quantity >::ZERO ); /// <! clear array
+
+                    shiftCenter = currentCell1.myCoordinates - myKernelCellOrigin.myCoordinates;
+
+                    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shiftCenter;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+                            x = currentPoint[ 0 ];
+                            y = currentPoint[ 1 ];
+                            z = currentPoint[ 2 ];
+
+                            m[ 0 ] += 1;
+                            m[ 1 ] += z;
+                            m[ 2 ] += y;
+                            m[ 3 ] += x;
+                            m[ 4 ] += y * z;
+                            m[ 5 ] += x * z;
+                            m[ 6 ] += x * y;
+                            m[ 7 ] += z * z;
+                            m[ 8 ] += y * y;
+                            m[ 9 ] += x * x;
+                        }
+                    }
+                }
+                else /// Using last1
+                {
+                    diff = currentCell1.myCoordinates - lastCell1.myCoordinates;
+
+                    /// Part to substract from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates - diff;
+                        shiftedPoint += shiftCenter;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+                            x = currentPoint[ 0 ];
+                            y = currentPoint[ 1 ];
+                            z = currentPoint[ 2 ];
+
+                            m[ 0 ] -= 1;
+                            m[ 1 ] -= z;
+                            m[ 2 ] -= y;
+                            m[ 3 ] -= x;
+                            m[ 4 ] -= y * z;
+                            m[ 5 ] -= x * z;
+                            m[ 6 ] -= x * y;
+                            m[ 7 ] -= z * z;
+                            m[ 8 ] -= y * y;
+                            m[ 9 ] -= x * x;
+                        }
+                    }
+
+                    /// Part to add from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shiftCenter;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+                            x = currentPoint[ 0 ];
+                            y = currentPoint[ 1 ];
+                            z = currentPoint[ 2 ];
+
+                            m[ 0 ] += 1;
+                            m[ 1 ] += z;
+                            m[ 2 ] += y;
+                            m[ 3 ] += x;
+                            m[ 4 ] += y * z;
+                            m[ 5 ] += x * z;
+                            m[ 6 ] += x * y;
+                            m[ 7 ] += z * z;
+                            m[ 8 ] += y * y;
+                            m[ 9 ] += x * x;
+                        }
+                    }
+                }
+
+                /// Computation of covariance Matrix
+                A1.setComponent( 0, 0, m[ 9 ] );
+                A1.setComponent( 0, 1, m[ 6 ] );
+                A1.setComponent( 0, 2, m[ 5 ] );
+                A1.setComponent( 1, 0, m[ 6 ] );
+                A1.setComponent( 1, 1, m[ 8 ] );
+                A1.setComponent( 1, 2, m[ 4 ] );
+                A1.setComponent( 2, 0, m[ 5 ] );
+                A1.setComponent( 2, 1, m[ 4 ] );
+                A1.setComponent( 2, 2, m[ 7 ] );
+
+                B1 = 1.0 / m[ 0 ];
+
+                C1.setComponent( 0, 0, B1 * m[ 3 ] * m[ 3 ] );
+                C1.setComponent( 0, 1, B1 * m[ 3 ] * m[ 2 ] );
+                C1.setComponent( 0, 2, B1 * m[ 3 ] * m[ 1 ] );
+                C1.setComponent( 1, 0, B1 * m[ 3 ] * m[ 2 ] );
+                C1.setComponent( 1, 1, B1 * m[ 2 ] * m[ 2 ] );
+                C1.setComponent( 1, 2, B1 * m[ 2 ] * m[ 1 ] );
+                C1.setComponent( 2, 0, B1 * m[ 3 ] * m[ 1 ] );
+                C1.setComponent( 2, 1, B1 * m[ 2 ] * m[ 1 ] );
+                C1.setComponent( 2, 2, B1 * m[ 1 ] * m[ 1 ] );
+
+                Ja1 = A1 - C1;
+
+                memcpy( lastM1, m, 10 * sizeof( Quantity ));
+                lastJa1 = Ja1;
+            }
+        }
+
+        /// Outter cell
+        {
+            currentCell2 = myKSpace.sDirectIncident( *it, *myKSpace.sOrthDirs( *it ));
+            diff = currentCell2.myCoordinates - currentCell1.myCoordinates;
+            x = diff[ 0 ];
+            y = diff[ 1 ];
+            z = diff[ 2 ];
+            int x2 = x * x;
+            int y2 = y * y;
+            int z2 = z * z;
+            int x2y2z2 = x2 + y2 + z2;
+            int offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+
+            if(  x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
+            {
+                trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
+            }
+            else if(  offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
+            {
+                trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
+            }
+            else
+            {
+                shiftCenter = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
+
+                /// Part to substract from previous result.
+                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                {
+                    shiftedPoint = ( *itgcurrent ).myCoordinates - diff;
+                    shiftedPoint += shiftCenter;
+                    shiftedCell.myCoordinates = shiftedPoint;
+
+                    fShiftedCell = myFFunctor( shiftedCell );
+
+                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                    {
+                        currentPoint = midpoint( shiftedCell );
+                        x = currentPoint[ 0 ];
+                        y = currentPoint[ 1 ];
+                        z = currentPoint[ 2 ];
+
+                        m[ 0 ] -= 1;
+                        m[ 1 ] -= z;
+                        m[ 2 ] -= y;
+                        m[ 3 ] -= x;
+                        m[ 4 ] -= y * z;
+                        m[ 5 ] -= x * z;
+                        m[ 6 ] -= x * y;
+                        m[ 7 ] -= z * z;
+                        m[ 8 ] -= y * y;
+                        m[ 9 ] -= x * x;
+                    }
+                }
+
+                /// Part to add from previous result.
+                for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                {
+                    shiftedPoint = ( *itgcurrent ).myCoordinates;
+                    shiftedPoint += shiftCenter;
+                    shiftedCell.myCoordinates = shiftedPoint;
+
+                    fShiftedCell = myFFunctor( shiftedCell );
+
+                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                    {
+                        currentPoint = midpoint( shiftedCell );
+                        x = currentPoint[ 0 ];
+                        y = currentPoint[ 1 ];
+                        z = currentPoint[ 2 ];
+
+                        m[ 0 ] += 1;
+                        m[ 1 ] += z;
+                        m[ 2 ] += y;
+                        m[ 3 ] += x;
+                        m[ 4 ] += y * z;
+                        m[ 5 ] += x * z;
+                        m[ 6 ] += x * y;
+                        m[ 7 ] += z * z;
+                        m[ 8 ] += y * y;
+                        m[ 9 ] += x * x;
+                    }
+                }
+            }
+
+            A2.setComponent( 0, 0, m[ 9 ] );
+            A2.setComponent( 0, 1, m[ 6 ] );
+            A2.setComponent( 0, 2, m[ 5 ] );
+            A2.setComponent( 1, 0, m[ 6 ] );
+            A2.setComponent( 1, 1, m[ 8 ] );
+            A2.setComponent( 1, 2, m[ 4 ] );
+            A2.setComponent( 2, 0, m[ 5 ] );
+            A2.setComponent( 2, 1, m[ 4 ] );
+            A2.setComponent( 2, 2, m[ 7 ] );
+
+            B2 = 1.0 / m[ 0 ];
+
+            C2.setComponent( 0, 0, B2 * m[ 3 ] * m[ 3 ] );
+            C2.setComponent( 0, 1, B2 * m[ 3 ] * m[ 2 ] );
+            C2.setComponent( 0, 2, B2 * m[ 3 ] * m[ 1 ] );
+            C2.setComponent( 1, 0, B2 * m[ 3 ] * m[ 2 ] );
+            C2.setComponent( 1, 1, B2 * m[ 2 ] * m[ 2 ] );
+            C2.setComponent( 1, 2, B2 * m[ 2 ] * m[ 1 ] );
+            C2.setComponent( 2, 0, B2 * m[ 3 ] * m[ 1 ] );
+            C2.setComponent( 2, 1, B2 * m[ 2 ] * m[ 1 ] );
+            C2.setComponent( 2, 2, B2 * m[ 1 ] * m[ 1 ] );
+
+            Ja2 = A2 - C2;
+
+            memcpy( lastM1, m, 10 * sizeof( Quantity ));
+            lastJa2 = Ja2;
+        }
+
+        /// Computation of result covariance matrix + moving
+        *result = ( Ja1 + Ja2 ) / 2.0;
+        ++result;
+
+        lastCell1 = currentCell1;
+        lastCell2 = currentCell2;
+
+        ++total;
+    }
+
+#ifdef DEBUG_VERBOSE
+    std::cout << "#total cells = " << total << std::endl;
+    std::cout << "#recount = " << recount << std::endl;
+#endif
+
+}
+
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::evalCovarianceMatrix
+( const ConstIteratorOnCells & itbegin,
+  const ConstIteratorOnCells & itend,
+  const Shape & shape,
   OutputIterator & result )
 {
     Dimension total = 0;
@@ -2307,8 +2662,55 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             lastJa2 = Ja2;
         }
 
+
+
+        ///////////////////////////////
+        SCellToMidPoint< KSpace > midpoint( myKSpace );
+
+        Z3i::RealPoint low = midpoint( currentCell1 );
+        Z3i::RealPoint high = midpoint( currentCell2 );
+        Z3i::RealPoint normal = high - low;
+        double normOriginalNormal = normal.norm();
+
+        unsigned int iter = 0;
+        unsigned int nbIter = 50;
+
+        double lambda = -1.0;
+
+        Z3i::RealPoint test;
+        while ( iter <= nbIter )
+        {
+            test = Z3i::RealPoint( low + normal / 2.0 );
+            DGtal::Orientation inout = shape.orientation( test );
+            if( inout == ON )
+            {
+                lambda = (( test - midpoint( currentCell1 )).norm() / normOriginalNormal );
+                break;
+            }
+            else if( inout == OUTSIDE )
+            {
+                high = test;
+                normal /= 2.0;
+            }
+            else
+            {
+                low = test;
+                normal /= 2.0;
+            }
+
+            ++iter;
+        }
+
+        ASSERT (( lambda <= 1.0 ));
+
+        if( lambda == -1.0 )
+            lambda = (( test - midpoint( currentCell1 )).norm() / normOriginalNormal );
+        ///////////////////////////////
+
+
         /// Computation of result covariance matrix + moving
-        *result = ( Ja1 + Ja2 ) / 2.0;
+//        *result = ( Ja1 + Ja2 ) / 2.0;
+        *result = Ja1 * lambda + Ja2 * ( 1.0 - lambda );
         ++result;
 
         lastCell1 = currentCell1;
@@ -2322,455 +2724,459 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     std::cout << "#recount = " << recount << std::endl;
 #endif
 
-//        return;
-
-//    {
-
-//        ASSERT ( isInitMask == true );
-
-//        typedef typename KSpace::Point Point;
-//        typedef typename Functor::Quantity FQuantity;
-
-//        Cell lastCell, currentCell, shiftedCell;
-//        Cell lastCell2, currentCell2;
-
-//        Quantity lastVa, currentVa, maskVa;
-//        Quantity lastVa2, currentVa2;
-
-//        double dcurrentVa, currentOne_Va, dcurrentJa;
-//        double dcurrentVa2, currentOne_Va2, dcurrentJa2;
-
-//        CovarianceMatrix Ja;
-
-//        MatrixQuantity lastXXT, currentXXT, maskXXT;
-//        MatrixQuantity lastXXT2, currentXXT2;
-
-//        VectorQuantity lastSa, currentSa, maskSa;
-//        VectorQuantity lastSa2, currentSa2;
-
-//        Point shift, shiftedPoint, diffLastCurrentCell; /// @todo change to Cell
-//        Point shift2, diffWithCurrentCell;
-//        Point currentPoint;
-
-//        FQuantity fShiftedCell;
-
-//        int x, y, z, x2, y2, z2, x2y2z2, offset;
-
-//        SCellToMidPoint< KSpace > midpoint( myKSpace );
-
-//        Dimension total = 0;
-//    #ifdef DEBUG_VERBOSE
-//        Dimension recount = 0;
-//    #endif
-
-//        for( ConstIteratorOnCells itcurrent = itbegin; itcurrent != itend; ++itcurrent )
-//        {
-//            Ja.constant( NumberTraits< Quantity >::ZERO );
-//            currentXXT.constant( NumberTraits< Quantity >::ZERO );
-//            currentXXT2.constant( NumberTraits< Quantity >::ZERO );
-//            currentSa.reset();
-//            currentSa2.reset();
-//            currentVa = NumberTraits< Quantity >::ZERO;
-//            currentVa2 = NumberTraits< Quantity >::ZERO;
-
-//            currentCell = myKSpace.sIndirectIncident( *itcurrent, *myKSpace.sOrthDirs( *itcurrent )); /// Cell on the border, but inside the shape
-//            currentCell2 = myKSpace.sDirectIncident( *itcurrent, *myKSpace.sOrthDirs( *itcurrent )); /// Cell on the border, but outside the shape
-
-//            shift = currentCell.myCoordinates - myKernelCellOrigin.myCoordinates;
-//            shift2 = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
-
-//            if( total == 0 ) /// Computation on full kernel, we have no previous results
-//            {
-//                /// Computation for the cell inside the shape. Using full kernel.
-//                for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
-//                {
-//                    shiftedPoint = ( *itgcurrent ).myCoordinates;
-//                    shiftedPoint += shift;
-//                    shiftedCell.myCoordinates = shiftedPoint;
-
-//                    fShiftedCell = myFFunctor( shiftedCell );
-
-//                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                    {
-//                        currentPoint = midpoint( shiftedCell );
-
-//                        for( Dimension line = 0; line < dimension; ++line )
-//                        {
-//                            for( Dimension column = 0; column < dimension; ++column )
-//                            {
-//                                currentXXT.setComponent( line, column, currentXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                            }
-//                            currentSa[ line ] += fShiftedCell * currentPoint[ line ];
-//                        }
-//                        currentVa += fShiftedCell * myGFunctor( *itgcurrent );
-//                    }
-//                }
-
-//                /// Computation for the cell outside the shape. Using previous result and masks.
-//                diffWithCurrentCell = currentCell2.myCoordinates - currentCell.myCoordinates;
-
-//                x = diffWithCurrentCell[ 0 ];
-//                y = diffWithCurrentCell[ 1 ];
-//                z = diffWithCurrentCell[ 2 ];
-//                x2 = x * x;
-//                y2 = y * y;
-//                z2 = z * z;
-//                x2y2z2 = x2 + y2 + z2;
-
-//                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
-
-//                if(  x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
-//                {
-//                    trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
-//                }
-//                else if(  offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
-//                {
-//                    trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
-//                }
-//                else
-//                {
-//                    maskVa = NumberTraits< Quantity >::ZERO;
-//                    maskXXT.constant( NumberTraits< Quantity >::ZERO );
-//                    maskSa.reset();
-
-//                    /// Part to substract from previous result.
-//                    for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
-//                    {
-//                        shiftedPoint = ( *itgcurrent ).myCoordinates - diffWithCurrentCell;
-//                        shiftedPoint += shift2;
-//                        shiftedCell.myCoordinates = shiftedPoint;
-
-//                        fShiftedCell = myFFunctor( shiftedCell );
-
-//                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                        {
-//                            currentPoint = midpoint( shiftedCell );
-
-//                            for( Dimension line = 0; line < dimension; ++line )
-//                            {
-//                                for( Dimension column = 0; column < dimension; ++column )
-//                                {
-//                                    maskXXT.setComponent( line, column, maskXXT( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                                }
-//                                maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
-//                            }
-//                            maskVa -= fShiftedCell * myGFunctor( *itgcurrent );
-//                        }
-//                    }
-
-//                    /// Part to add from previous result.
-//                    for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
-//                    {
-//                        shiftedPoint = ( *itgcurrent ).myCoordinates;
-//                        shiftedPoint += shift2;
-//                        shiftedCell.myCoordinates = shiftedPoint;
-
-//                        fShiftedCell = myFFunctor( shiftedCell );
-
-//                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                        {
-//                            currentPoint = midpoint( shiftedCell );
-
-//                            for( Dimension line = 0; line < dimension; ++line )
-//                            {
-//                                for( Dimension column = 0; column < dimension; ++column )
-//                                {
-//                                    maskXXT.setComponent( line, column, maskXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                                }
-//                                maskSa[ line ] += fShiftedCell * currentPoint[ line ];
-//                            }
-//                            maskVa += fShiftedCell * myGFunctor( *itgcurrent );
-//                        }
-//                    }
-
-//                    for( Dimension line = 0; line < dimension; ++line )
-//                    {
-//                        for( Dimension column = 0; column < dimension; ++column )
-//                        {
-//                            currentXXT2.setComponent( line, column, currentXXT( line, column ) + maskXXT( line, column ));
-//                        }
-//                        currentSa2[ line ] = currentSa[ line ] + maskSa[ line ];
-//                    }
-//                    currentVa2 = currentVa + maskVa;
-//                }
-//            }
-//            else
-//            {
-//                /// Computation for the cell inside the shape
-//                if(  currentCell == lastCell )
-//                {
-//                    currentVa = lastVa;
-//                    currentSa = lastSa;
-//                    currentXXT = lastXXT;
-//                }
-//                else if(  currentCell == lastCell2 )
-//                {
-//                    currentVa = lastVa2;
-//                    currentSa = lastSa2;
-//                    currentXXT = lastXXT2;
-//                }
-//                else
-//                {
-//                    diffLastCurrentCell = currentCell.myCoordinates - lastCell.myCoordinates;
-
-//                    x = diffLastCurrentCell[ 0 ];
-//                    y = diffLastCurrentCell[ 1 ];
-//                    z = diffLastCurrentCell[ 2 ];
-//                    x2 = x * x;
-//                    y2 = y * y;
-//                    z2 = z * z;
-//                    x2y2z2 = x2 + y2 + z2;
-
-//                    offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
-
-//                    if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Previous and current cells aren't adjacent. Compute on the full kernel
-//                    {
-//    #ifdef DEBUG_VERBOSE
-//                        ++recount;
-//    #endif
-
-//                        for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
-//                        {
-//                            shiftedPoint = ( *itgcurrent ).myCoordinates;
-//                            shiftedPoint += shift;
-//                            shiftedCell.myCoordinates = shiftedPoint;
-
-//                            fShiftedCell = myFFunctor( shiftedCell );
-
-//                            if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                            {
-//                                currentPoint = midpoint( shiftedCell );
-
-//                                for( Dimension line = 0; line < dimension; ++line )
-//                                {
-//                                    for( Dimension column = 0; column < dimension; ++column )
-//                                    {
-//                                        currentXXT.setComponent( line, column, currentXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                                    }
-//                                    currentSa[ line ] += fShiftedCell * currentPoint[ line ];
-//                                }
-//                                currentVa += fShiftedCell * myGFunctor( *itgcurrent );
-//                            }
-//                        }
-//                    }
-//                    else if( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
-//                    {
-//                        trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
-//                    }
-//                    else
-//                    {
-//                        maskVa = NumberTraits< Quantity >::ZERO;
-//                        maskXXT.constant( NumberTraits< Quantity >::ZERO );
-//                        maskSa.reset();
-
-//                        /// Part to substract from previous result.
-//                        for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
-//                        {
-//                            shiftedPoint = ( *itgcurrent ).myCoordinates - diffLastCurrentCell;
-//                            shiftedPoint += shift;
-//                            shiftedCell.myCoordinates = shiftedPoint;
-
-//                            fShiftedCell = myFFunctor( shiftedCell );
-
-//                            if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                            {
-//                                currentPoint = midpoint( shiftedCell );
-
-//                                for( Dimension line = 0; line < dimension; ++line )
-//                                {
-//                                    for( Dimension column = 0; column < dimension; ++column )
-//                                    {
-//                                        maskXXT.setComponent( line, column, maskXXT( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                                    }
-//                                    maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
-//                                }
-//                                maskVa -= fShiftedCell * myGFunctor( *itgcurrent );
-//                            }
-//                        }
-
-//                        /// Part to add from previous result.
-//                        for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
-//                        {
-//                            shiftedPoint = ( *itgcurrent ).myCoordinates;
-//                            shiftedPoint += shift;
-//                            shiftedCell.myCoordinates = shiftedPoint;
-
-//                            fShiftedCell = myFFunctor( shiftedCell );
-
-//                            if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                            {
-//                                currentPoint = midpoint( shiftedCell );
-
-//                                for( Dimension line = 0; line < dimension; ++line )
-//                                {
-//                                    for( Dimension column = 0; column < dimension; ++column )
-//                                    {
-//                                        maskXXT.setComponent( line, column, maskXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                                    }
-//                                    maskSa[ line ] += fShiftedCell * currentPoint[ line ];
-//                                }
-//                                maskVa += fShiftedCell * myGFunctor( *itgcurrent );
-//                            }
-
-//                        }
-
-//                        for( Dimension line = 0; line < dimension; ++line )
-//                        {
-//                            for( Dimension column = 0; column < dimension; ++column )
-//                            {
-//                                currentXXT.setComponent( line, column, lastXXT( line, column ) + maskXXT( line, column )); /// @todo check lastXXT
-//                            }
-//                            currentSa[ line ] = lastSa[ line ] + maskSa[ line ];
-//                        }
-//                        currentVa = lastVa + maskVa;
-//                    }
-//                }
-
-//                /// Computation for the cell outside the shape.
-//                if(  currentCell2 == lastCell )
-//                {
-//                    currentVa2 = lastVa;
-//                    currentSa2 = lastSa;
-//                    currentXXT2 = lastXXT;
-//                }
-//                else if(  currentCell2 == lastCell2 )
-//                {
-//                    currentVa2 = lastVa2;
-//                    currentSa2 = lastSa2;
-//                    currentXXT2 = lastXXT2;
-//                }
-//                else
-//                {
-//                    diffWithCurrentCell = currentCell2.myCoordinates - currentCell.myCoordinates;
-
-//                    x = diffWithCurrentCell[ 0 ];
-//                    y = diffWithCurrentCell[ 1 ];
-//                    z = diffWithCurrentCell[ 2 ];
-//                    x2 = x * x;
-//                    y2 = y * y;
-//                    z2 = z * z;
-//                    x2y2z2 = x2 + y2 + z2;
-
-//                    offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
-
-//                    if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
-//                    {
-//                        trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
-//                    }
-//                    else if( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
-//                    {
-//                        trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
-//                    }
-//                    else
-//                    {
-//                        maskVa = NumberTraits< Quantity >::ZERO;
-//                        maskXXT.constant( NumberTraits< Quantity >::ZERO );
-//                        maskSa.reset();
-
-//                        /// Part to substract from previous result.
-//                        for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
-//                        {
-//                            shiftedPoint = ( *itgcurrent ).myCoordinates - diffWithCurrentCell;
-//                            shiftedPoint += shift2;
-//                            shiftedCell.myCoordinates = shiftedPoint;
-
-//                            fShiftedCell = myFFunctor( shiftedCell );
-
-//                            if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                            {
-//                                currentPoint = midpoint( shiftedCell );
-
-//                                for( Dimension line = 0; line < dimension; ++line )
-//                                {
-//                                    for( Dimension column = 0; column < dimension; ++column )
-//                                    {
-//                                        maskXXT.setComponent( line, column, maskXXT( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                                    }
-//                                    maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
-//                                }
-//                                maskVa -= fShiftedCell * myGFunctor( *itgcurrent );
-//                            }
-
-//                        }
-
-//                        /// Part to add from previous result.
-//                        for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
-//                        {
-//                            shiftedPoint = ( *itgcurrent ).myCoordinates;
-//                            shiftedPoint += shift2;
-//                            shiftedCell.myCoordinates = shiftedPoint;
-
-//                            fShiftedCell = myFFunctor( shiftedCell );
-
-//                            if(  fShiftedCell != NumberTraits< FQuantity >::ZERO )
-//                            {
-//                                currentPoint = midpoint( shiftedCell );
-
-//                                for( Dimension line = 0; line < dimension; ++line )
-//                                {
-//                                    for( Dimension column = 0; column < dimension; ++column )
-//                                    {
-//                                        maskXXT.setComponent( line, column, maskXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-//                                    }
-//                                    maskSa[ line ] += fShiftedCell * currentPoint[ line ];
-//                                }
-//                                maskVa += fShiftedCell * myGFunctor( *itgcurrent );
-//                            }
-//                        }
-
-//                        for( Dimension line = 0; line < dimension; ++line )
-//                        {
-//                            for( Dimension column = 0; column < dimension; ++column )
-//                            {
-//                                currentXXT2.setComponent( line, column, currentXXT( line, column ) + maskXXT( line, column ));
-//                            }
-//                            currentSa2[ line ] = currentSa[ line ] + maskSa[ line ];
-//                        }
-//                        currentVa2 = currentVa + maskVa;
-//                    }
-//                }
-//            }
-
-
-//            dcurrentVa = (double) NumberTraits< Quantity >::castToDouble( currentVa );
-//            ASSERT (dcurrentVa != 0.0 ); // Maybe the input shape is too small, check your grid step ?
-//            currentOne_Va = 1.0 / dcurrentVa;
-//            dcurrentVa2 = (double) NumberTraits< Quantity >::castToDouble( currentVa2 );
-//            currentOne_Va2 = 1.0 / dcurrentVa2;
-//            for( Dimension line = 0; line < dimension; ++line )
-//            {
-//                for( Dimension column = 0; column < dimension; ++column )
-//                {
-//                    dcurrentJa = ((double) NumberTraits< Quantity >::castToDouble( currentXXT( line, column ))) - dcurrentVa * ( currentOne_Va * ((double) NumberTraits< Quantity >::castToDouble( currentSa[ line ] ) )) * ( currentOne_Va * ((double) NumberTraits< Quantity >::castToDouble( currentSa[ column ] ) ));
-//                    dcurrentJa2 = ((double) NumberTraits< Quantity >::castToDouble( currentXXT2( line, column ))) - dcurrentVa2 * ( currentOne_Va2 * ((double) NumberTraits< Quantity >::castToDouble( currentSa2[ line ] ) )) * ( currentOne_Va2 * ((double) NumberTraits< Quantity >::castToDouble( currentSa2[ column ] ) ));
-
-//                    Ja.setComponent( line, column, ( dcurrentJa + dcurrentJa2 ) / 2.0 ); /// The result is the mean between inside's and outside's cell lying to the shape border.
-//                }
-//            }
-
-//            *result = Ja; /// Set the current cell result to the output iterator.
-//            ++result;
-
-//            lastVa = currentVa;
-//            lastVa2 = currentVa2;
-//            lastSa = currentSa;
-//            lastSa2 = currentSa2;
-//            lastXXT = currentXXT;
-//            lastXXT2 = currentXXT2;
-//            lastCell = currentCell;
-//            lastCell2 = currentCell2;
-
-//            ++total;
-//        }
-
-//    #ifdef DEBUG_VERBOSE
-//        std::cout << "#total cells = " << total << std::endl;
-//        std::cout << "#recount = " << recount << std::endl;
-//    #endif
-//        }
 }
 
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+template< typename ConstIteratorOnCells, typename OutputIterator >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::deprecated_evalCovarianceMatrix
+( const ConstIteratorOnCells & itbegin,
+  const ConstIteratorOnCells & itend,
+  OutputIterator & result )
+{
+    ASSERT ( isInitMask == true );
 
+    typedef typename KSpace::Point Point;
+    typedef typename Functor::Quantity FQuantity;
+
+    Cell lastCell, currentCell, shiftedCell;
+    Cell lastCell2, currentCell2;
+
+    Quantity lastVa, currentVa, maskVa;
+    Quantity lastVa2, currentVa2;
+
+    double dcurrentVa, currentOne_Va, dcurrentJa;
+    double dcurrentVa2, currentOne_Va2, dcurrentJa2;
+
+    CovarianceMatrix Ja;
+
+    MatrixQuantity lastXXT, currentXXT, maskXXT;
+    MatrixQuantity lastXXT2, currentXXT2;
+
+    VectorQuantity lastSa, currentSa, maskSa;
+    VectorQuantity lastSa2, currentSa2;
+
+    Point shift, shiftedPoint, diffLastCurrentCell; /// @todo change to Cell
+    Point shift2, diffWithCurrentCell;
+    Point currentPoint;
+
+    FQuantity fShiftedCell;
+
+    int x, y, z, x2, y2, z2, x2y2z2, offset;
+
+    SCellToMidPoint< KSpace > midpoint( myKSpace );
+
+    Dimension total = 0;
+#ifdef DEBUG_VERBOSE
+    Dimension recount = 0;
+#endif
+
+    for( ConstIteratorOnCells itcurrent = itbegin; itcurrent != itend; ++itcurrent )
+    {
+        Ja.constant( NumberTraits< Quantity >::ZERO );
+        currentXXT.constant( NumberTraits< Quantity >::ZERO );
+        currentXXT2.constant( NumberTraits< Quantity >::ZERO );
+        currentSa.reset();
+        currentSa2.reset();
+        currentVa = NumberTraits< Quantity >::ZERO;
+        currentVa2 = NumberTraits< Quantity >::ZERO;
+
+        currentCell = myKSpace.sIndirectIncident( *itcurrent, *myKSpace.sOrthDirs( *itcurrent )); /// Cell on the border, but inside the shape
+        currentCell2 = myKSpace.sDirectIncident( *itcurrent, *myKSpace.sOrthDirs( *itcurrent )); /// Cell on the border, but outside the shape
+
+        shift = currentCell.myCoordinates - myKernelCellOrigin.myCoordinates;
+        shift2 = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
+
+        if( total == 0 ) /// Computation on full kernel, we have no previous results
+        {
+            /// Computation for the cell inside the shape. Using full kernel.
+            for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+            {
+                shiftedPoint = ( *itgcurrent ).myCoordinates;
+                shiftedPoint += shift;
+                shiftedCell.myCoordinates = shiftedPoint;
+
+                fShiftedCell = myFFunctor( shiftedCell );
+
+                if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                {
+                    currentPoint = midpoint( shiftedCell );
+
+                    for( Dimension line = 0; line < dimension; ++line )
+                    {
+                        for( Dimension column = 0; column < dimension; ++column )
+                        {
+                            currentXXT.setComponent( line, column, currentXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                        }
+                        currentSa[ line ] += fShiftedCell * currentPoint[ line ];
+                    }
+                    currentVa += fShiftedCell * myGFunctor( *itgcurrent );
+                }
+            }
+
+            /// Computation for the cell outside the shape. Using previous result and masks.
+            diffWithCurrentCell = currentCell2.myCoordinates - currentCell.myCoordinates;
+
+            x = diffWithCurrentCell[ 0 ];
+            y = diffWithCurrentCell[ 1 ];
+            z = diffWithCurrentCell[ 2 ];
+            x2 = x * x;
+            y2 = y * y;
+            z2 = z * z;
+            x2y2z2 = x2 + y2 + z2;
+
+            offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+
+            if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
+            {
+                trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
+            }
+            else if( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
+            {
+                trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
+            }
+            else
+            {
+                maskVa = NumberTraits< Quantity >::ZERO;
+                maskXXT.constant( NumberTraits< Quantity >::ZERO );
+                maskSa.reset();
+
+                /// Part to substract from previous result.
+                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                {
+                    shiftedPoint = ( *itgcurrent ).myCoordinates - diffWithCurrentCell;
+                    shiftedPoint += shift2;
+                    shiftedCell.myCoordinates = shiftedPoint;
+
+                    fShiftedCell = myFFunctor( shiftedCell );
+
+                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                    {
+                        currentPoint = midpoint( shiftedCell );
+
+                        for( Dimension line = 0; line < dimension; ++line )
+                        {
+                            for( Dimension column = 0; column < dimension; ++column )
+                            {
+                                maskXXT.setComponent( line, column, maskXXT( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                            }
+                            maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
+                        }
+                        maskVa -= fShiftedCell * myGFunctor( *itgcurrent );
+                    }
+                }
+
+                /// Part to add from previous result.
+                for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                {
+                    shiftedPoint = ( *itgcurrent ).myCoordinates;
+                    shiftedPoint += shift2;
+                    shiftedCell.myCoordinates = shiftedPoint;
+
+                    fShiftedCell = myFFunctor( shiftedCell );
+
+                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                    {
+                        currentPoint = midpoint( shiftedCell );
+
+                        for( Dimension line = 0; line < dimension; ++line )
+                        {
+                            for( Dimension column = 0; column < dimension; ++column )
+                            {
+                                maskXXT.setComponent( line, column, maskXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                            }
+                            maskSa[ line ] += fShiftedCell * currentPoint[ line ];
+                        }
+                        maskVa += fShiftedCell * myGFunctor( *itgcurrent );
+                    }
+                }
+
+                for( Dimension line = 0; line < dimension; ++line )
+                {
+                    for( Dimension column = 0; column < dimension; ++column )
+                    {
+                        currentXXT2.setComponent( line, column, currentXXT( line, column ) + maskXXT( line, column ));
+                    }
+                    currentSa2[ line ] = currentSa[ line ] + maskSa[ line ];
+                }
+                currentVa2 = currentVa + maskVa;
+            }
+        }
+        else
+        {
+            /// Computation for the cell inside the shape
+            if( currentCell == lastCell )
+            {
+                currentVa = lastVa;
+                currentSa = lastSa;
+                currentXXT = lastXXT;
+            }
+            else if( currentCell == lastCell2 )
+            {
+                currentVa = lastVa2;
+                currentSa = lastSa2;
+                currentXXT = lastXXT2;
+            }
+            else
+            {
+                diffLastCurrentCell = currentCell.myCoordinates - lastCell.myCoordinates;
+
+                x = diffLastCurrentCell[ 0 ];
+                y = diffLastCurrentCell[ 1 ];
+                z = diffLastCurrentCell[ 2 ];
+                x2 = x * x;
+                y2 = y * y;
+                z2 = z * z;
+                x2y2z2 = x2 + y2 + z2;
+
+                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+
+                if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Previous and current cells aren't adjacent. Compute on the full kernel
+                {
+#ifdef DEBUG_VERBOSE
+                    ++recount;
+#endif
+
+                    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shift;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+
+                            for( Dimension line = 0; line < dimension; ++line )
+                            {
+                                for( Dimension column = 0; column < dimension; ++column )
+                                {
+                                    currentXXT.setComponent( line, column, currentXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                }
+                                currentSa[ line ] += fShiftedCell * currentPoint[ line ];
+                            }
+                            currentVa += fShiftedCell * myGFunctor( *itgcurrent );
+                        }
+                    }
+                }
+                else if( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
+                {
+                    trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
+                }
+                else
+                {
+                    maskVa = NumberTraits< Quantity >::ZERO;
+                    maskXXT.constant( NumberTraits< Quantity >::ZERO );
+                    maskSa.reset();
+
+                    /// Part to substract from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates - diffLastCurrentCell;
+                        shiftedPoint += shift;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+
+                            for( Dimension line = 0; line < dimension; ++line )
+                            {
+                                for( Dimension column = 0; column < dimension; ++column )
+                                {
+                                    maskXXT.setComponent( line, column, maskXXT( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                }
+                                maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
+                            }
+                            maskVa -= fShiftedCell * myGFunctor( *itgcurrent );
+                        }
+                    }
+
+                    /// Part to add from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shift;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+
+                            for( Dimension line = 0; line < dimension; ++line )
+                            {
+                                for( Dimension column = 0; column < dimension; ++column )
+                                {
+                                    maskXXT.setComponent( line, column, maskXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                }
+                                maskSa[ line ] += fShiftedCell * currentPoint[ line ];
+                            }
+                            maskVa += fShiftedCell * myGFunctor( *itgcurrent );
+                        }
+
+                    }
+
+                    for( Dimension line = 0; line < dimension; ++line )
+                    {
+                        for( Dimension column = 0; column < dimension; ++column )
+                        {
+                            currentXXT.setComponent( line, column, lastXXT( line, column ) + maskXXT( line, column )); /// @todo check lastXXT
+                        }
+                        currentSa[ line ] = lastSa[ line ] + maskSa[ line ];
+                    }
+                    currentVa = lastVa + maskVa;
+                }
+            }
+
+            /// Computation for the cell outside the shape.
+            if( currentCell2 == lastCell )
+            {
+                currentVa2 = lastVa;
+                currentSa2 = lastSa;
+                currentXXT2 = lastXXT;
+            }
+            else if( currentCell2 == lastCell2 )
+            {
+                currentVa2 = lastVa2;
+                currentSa2 = lastSa2;
+                currentXXT2 = lastXXT2;
+            }
+            else
+            {
+                diffWithCurrentCell = currentCell2.myCoordinates - currentCell.myCoordinates;
+
+                x = diffWithCurrentCell[ 0 ];
+                y = diffWithCurrentCell[ 1 ];
+                z = diffWithCurrentCell[ 2 ];
+                x2 = x * x;
+                y2 = y * y;
+                z2 = z * z;
+                x2y2z2 = x2 + y2 + z2;
+
+                offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+
+                if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
+                {
+                    trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
+                }
+                else if( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
+                {
+                    trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
+                }
+                else
+                {
+                    maskVa = NumberTraits< Quantity >::ZERO;
+                    maskXXT.constant( NumberTraits< Quantity >::ZERO );
+                    maskSa.reset();
+
+                    /// Part to substract from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates - diffWithCurrentCell;
+                        shiftedPoint += shift2;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+
+                            for( Dimension line = 0; line < dimension; ++line )
+                            {
+                                for( Dimension column = 0; column < dimension; ++column )
+                                {
+                                    maskXXT.setComponent( line, column, maskXXT( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                }
+                                maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
+                            }
+                            maskVa -= fShiftedCell * myGFunctor( *itgcurrent );
+                        }
+
+                    }
+
+                    /// Part to add from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ 26 - offset ].first, itgend = myMask[ 26 - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shift2;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+
+                            for( Dimension line = 0; line < dimension; ++line )
+                            {
+                                for( Dimension column = 0; column < dimension; ++column )
+                                {
+                                    maskXXT.setComponent( line, column, maskXXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                }
+                                maskSa[ line ] += fShiftedCell * currentPoint[ line ];
+                            }
+                            maskVa += fShiftedCell * myGFunctor( *itgcurrent );
+                        }
+                    }
+
+                    for( Dimension line = 0; line < dimension; ++line )
+                    {
+                        for( Dimension column = 0; column < dimension; ++column )
+                        {
+                            currentXXT2.setComponent( line, column, currentXXT( line, column ) + maskXXT( line, column ));
+                        }
+                        currentSa2[ line ] = currentSa[ line ] + maskSa[ line ];
+                    }
+                    currentVa2 = currentVa + maskVa;
+                }
+            }
+        }
+
+
+        dcurrentVa = (double) NumberTraits< Quantity >::castToDouble( currentVa );
+        ASSERT (dcurrentVa != 0.0 ); // Maybe the input shape is too small, check your grid step ?
+        currentOne_Va = 1.0 / dcurrentVa;
+        dcurrentVa2 = (double) NumberTraits< Quantity >::castToDouble( currentVa2 );
+        currentOne_Va2 = 1.0 / dcurrentVa2;
+        for( Dimension line = 0; line < dimension; ++line )
+        {
+            for( Dimension column = 0; column < dimension; ++column )
+            {
+                dcurrentJa = ((double) NumberTraits< Quantity >::castToDouble( currentXXT( line, column ))) - dcurrentVa * ( currentOne_Va * ((double) NumberTraits< Quantity >::castToDouble( currentSa[ line ] ) )) * ( currentOne_Va * ((double) NumberTraits< Quantity >::castToDouble( currentSa[ column ] ) ));
+                dcurrentJa2 = ((double) NumberTraits< Quantity >::castToDouble( currentXXT2( line, column ))) - dcurrentVa2 * ( currentOne_Va2 * ((double) NumberTraits< Quantity >::castToDouble( currentSa2[ line ] ) )) * ( currentOne_Va2 * ((double) NumberTraits< Quantity >::castToDouble( currentSa2[ column ] ) ));
+
+                Ja.setComponent( line, column, ( dcurrentJa + dcurrentJa2 ) / 2.0 ); /// The result is the mean between inside's and outside's cell lying to the shape border.
+            }
+        }
+
+        *result = Ja; /// Set the current cell result to the output iterator.
+        ++result;
+
+        lastVa = currentVa;
+        lastVa2 = currentVa2;
+        lastSa = currentSa;
+        lastSa2 = currentSa2;
+        lastXXT = currentXXT;
+        lastXXT2 = currentXXT2;
+        lastCell = currentCell;
+        lastCell2 = currentCell2;
+
+        ++total;
+    }
+
+#ifdef DEBUG_VERBOSE
+    std::cout << "#total cells = " << total << std::endl;
+    std::cout << "#recount = " << recount << std::endl;
+#endif
+}
 
 
 

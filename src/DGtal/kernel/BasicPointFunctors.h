@@ -183,6 +183,7 @@ namespace DGtal
       const Domain& myDomain;
       Value myTrueValue;
       Value myFalseValue;
+
   };
 
 } // namespace DGtal

@@ -163,13 +163,25 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
   double mean = 0.0;
   unsigned int rsize = resultsIICurvature.size();
 
+  if( rsize == 0 )
+  {
+      trace.error() << "ERROR: surface is empty" << std::endl;
+      return false;
+  }
+
   for ( unsigned int i = 0; i < rsize; ++i )
   {
     mean += resultsIICurvature[ i ];
   }
   mean /= rsize;
 
-  std::cout << "mean " << mean << std::endl;
+  std::cout << "mean: "  << mean << std::endl;
+
+  if( mean != mean ) //NaN
+  {
+      trace.error() << "ERROR: result is NaN" << std::endl;
+      return false;
+  }
 
   if ( std::abs ( realValue - mean ) > delta )
   {

@@ -114,7 +114,6 @@ inline
 DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other )
     : myPtrPredicate( other.myPtrPredicate ), myDomain( other.myDomain), myTrueValue( other.myTrueValue ), myFalseValue( other.myFalseValue )
 {
-
 }
 
 template< typename TP, typename TD, typename TV >
