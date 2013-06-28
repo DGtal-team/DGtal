@@ -338,8 +338,10 @@ namespace DGtal
       qglviewer::Vec posCam;
       bool operator() ( polygonD3D q1, polygonD3D q2 )
       {
-	double c1x, c1y, c1z=0.0;
-	double c2x, c2y, c2z=0.0;
+	double c1x, c1y, c1z;
+	c1x=0.0, c1y=0.0; c1z=0.0;
+	double c2x, c2y, c2z;
+	c2x=0.0, c2y=0.0; c2z=0.0;	
 	for(unsigned int i=0; i< q1.vectPoints.size(); i++){
 	  c1x+=q1.vectPoints.at(i).x;
 	  c1y+=q1.vectPoints.at(i).y;
@@ -421,13 +423,13 @@ namespace DGtal
       }
     
       //Copy constructor from a GLTextureImage
-      GLTextureImage(const GLTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
-						    myBufferWidth(aGLImg.myBufferWidth),
+      GLTextureImage(const GLTextureImage &aGLImg): myBufferWidth(aGLImg.myBufferWidth),
+						    myBufferHeight(aGLImg.myBufferHeight),
 						    myTextureName(aGLImg.myTextureName),
-						    myTextureFitX(aGLImg.myTextureFitX),
-						    myTextureFitY(aGLImg.myTextureFitY),
 						    myMode(aGLImg.myMode),
-						    myAlpha(aGLImg.myAlpha)
+						    myAlpha(aGLImg.myAlpha),
+						    myTextureFitX(aGLImg.myTextureFitX),
+						    myTextureFitY(aGLImg.myTextureFitY)
 								      
       {
 	x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
