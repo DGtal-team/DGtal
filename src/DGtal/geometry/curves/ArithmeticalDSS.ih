@@ -1,0 +1,362 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ArithmeticalDSS.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/06/28
+ *
+ * Implementation of inline methods defined in ArithmeticalDSS.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+template <typename TC, typename TI, unsigned short adj>
+inline
+DGtal::ArithmeticalDSS<TC, TI, adj>
+::ArithmeticalDSS(const Integer& aA, const Integer& aB, 
+		  const Integer& aMu, const Integer& aOmega, 
+		  const Point& aF, const Point& aL,
+		  const Point& aUf, const Point& aUl,
+		  const Point& aLf, const Point& aLl)
+:
+  myA(aA), myB(aB), myMu(aMu), myOmega(aOmega),
+  myF(aF), myL(aL),
+  myUf(aUf), myUl(aUl), myLf(aLf), myLl(aLl) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+DGtal::ArithmeticalDSS<TC, TI, adj>
+::ArithmeticalDSS(const ArithmeticalDSS<TC, TI, adj>& aOther)
+: 
+  myA(aOther.myA), myB(aOther.myB), myMu(aOther.myMu), myOmega(aOther.myOmega),
+  myF(aOther.myF), myL(aOther.myL),
+  myUf(aOther.myUf), myUl(aOther.myUl), myLf(aOther.myLf), myLl(aOther.myLl) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+DGtal::ArithmeticalDSS<TC, TI, adj>&
+DGtal::ArithmeticalDSS<TC, TI, adj>
+::operator=(const ArithmeticalDSS<TC, TI, adj>& aOther)
+{
+  if ( this != &aOther )
+    {
+      myA = aOther.myA;
+      myB = aOther.myB;
+      myMu = aOther.myMu;
+      myOmega = aOther.myOmega;
+      myF = aOther.myF;
+      myL = aOther.myL;
+      myUf = aOther.myUf;
+      myLf = aOther.myLf;
+      myUl = aOther.myUl;
+      myLl = aOther.myLl;
+    }
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>
+::operator==(const ArithmeticalDSS<TC, TI, adj>& aOther)
+{
+  return ( ( (myOmega == aOther.myOmega) &&
+	     (myUf == aOther.myUf) && 
+	     (myUl == aOther.myUl) &&  
+	     (myLf == aOther.myLf) &&  
+	     (myLl == aOther.myLl) && 
+	     (myF == aOther.myF) &&  
+	     (myL == aOther.myL) ) || 
+	   ( (myOmega == aOther.myOmega) &&
+	     (myUf == aOther.myLl) && 
+	     (myUl == aOther.myLf) &&  
+	     (myLf == aOther.myUl) &&  
+	     (myLl == aOther.myUf) && 
+	     (myF == aOther.myL) &&  
+	     (myL == aOther.myF) ) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>
+::operator!=(const ArithmeticalDSS<TC, TI, adj>& aOther)
+{
+  return !( (*this) == aOther ); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+DGtal::ArithmeticalDSS<TC, TI, adj>::~ArithmeticalDSS()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename TC, typename TI, unsigned short adj>
+inline
+void
+DGtal::ArithmeticalDSS<TC, TI, adj>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[ArithmeticalDSS] ";
+  out << "(" << myA << "," << myB << "," << myMu << "," << myOmega << ")" << std::endl; 
+  out << "from " << myF << " to " << myL << std::endl; 
+  out << "upper leaning points: " << myUf << " " << myUl << std::endl;  
+  out << "lower leaning points: " << myLf << " " << myLl; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>::isValid() const
+{
+
+  if (myF == myL) { 
+
+    //special case with one point
+    if ( (myA==0)
+  	 &&(myB==0)
+  	 &&(myMu==0)
+  	 &&(myOmega==0)
+  	 &&(myUf==myF)
+  	 &&(myLf==myF)
+  	 &&(myUl==myL)
+  	 &&(myLl==myL) ) 
+      return true;
+    else return false; 
+
+  } else {
+
+    //general case
+    Integer gcd = IntegerComputer<Integer>::staticGcd(myA, myB); 
+    if (gcd != NumberTraits<Integer>::ONE) 
+      return false; //a,b should be relatively prime
+    else
+      {
+	//remainders of leaning points
+	if (r(myUf) != myMu) return false;
+	else if (r(myUl) != myMu) return false;
+	else if (r(myLf) != myMu+myOmega-1) return false;
+	else if (r(myLl) != myMu+myOmega-1) return false;
+	else 
+	  {
+	    //number of patterns
+	    Vector vu = myUl - myUf; 
+	    Coordinate gcdu = IntegerComputer<Coordinate>::staticGcd(vu[0], vu[1]); 
+	    if ( (myB*static_cast<Integer>(gcdu) != static_cast<Coordinate>(vu[0]))
+		 || (myA*static_cast<Integer>(gcdu) != static_cast<Coordinate>(vu[1])) )
+	      return false;  
+	    Vector vl = myLl - myLf; 
+	    Coordinate gcdl = IntegerComputer<Coordinate>::staticGcd(vl[0], vl[1]); 
+	    if ( (myB*static_cast<Integer>(gcdl) != static_cast<Coordinate>(vl[0]))
+		 || (myA*static_cast<Integer>(gcdl) != static_cast<Coordinate>(vl[1])) )
+	      return false; 
+	    return true;
+	  }
+      }
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
+DGtal::ArithmeticalDSS<TC, TI, adj>::a() const
+{
+  return myA; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
+DGtal::ArithmeticalDSS<TC, TI, adj>::b() const
+{
+  return myB; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
+DGtal::ArithmeticalDSS<TC, TI, adj>::mu() const
+{
+  return myMu; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
+DGtal::ArithmeticalDSS<TC, TI, adj>::omega() const
+{
+  return myOmega; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
+DGtal::ArithmeticalDSS<TC, TI, adj>::back() const
+{
+  return myF; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
+DGtal::ArithmeticalDSS<TC, TI, adj>::front() const
+{
+  return myL; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
+DGtal::ArithmeticalDSS<TC, TI, adj>::Uf() const
+{
+  return myUf; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
+DGtal::ArithmeticalDSS<TC, TI, adj>::Ul() const
+{
+  return myUl; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
+DGtal::ArithmeticalDSS<TC, TI, adj>::Lf() const
+{
+  return myLf; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
+DGtal::ArithmeticalDSS<TC, TI, adj>::Ll() const
+{
+  return myLl; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
+DGtal::ArithmeticalDSS<TC, TI, adj>::r(const Point& aPoint) const
+{
+  return myA * static_cast<Integer>(aPoint[0])
+    - myB * static_cast<Integer>(aPoint[1]);
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
+DGtal::ArithmeticalDSS<TC, TI, adj>::orthogonalPosition(const Point& aPoint) const
+{
+  return myB * static_cast<Integer>(aPoint[0])
+    + myA * static_cast<Integer>(aPoint[1]);
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>::isInDSL(const Point& aPoint) const
+{
+  Integer remainder = r(aPoint);
+  return ( (remainder >= myMu)&&(remainder < myMu+myOmega) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>::isInDSS(const Point& aPoint) const
+{
+  if (isInDSL(aPoint))
+    {
+      Integer s = orthogonalPosition(aPoint);
+      Integer s1 = orthogonalPosition(myF);
+      Integer s2 = orthogonalPosition(myL);
+      if (s1 < s2)
+	return ( (s >= s1)&&(s <= s2) );
+      else 
+	return ( (s >= s2)&&(s <= s1) );
+    }
+  else 
+    return false; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>::operator()(const Point& aPoint) const
+{
+  return isInDSS(aPoint); 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TC, typename TI, unsigned short adj>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const ArithmeticalDSS<TC, TI, adj> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
