@@ -71,7 +71,7 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
     return  VolReader<TContainer>::importVol( filename );
   }else  if(extension=="longvol"){
     return  LongvolReader<TContainer>::importLongvol( filename );
-  }else  if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d"){
+  }else  if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="pgm"){
     return PGMReader<TContainer>::importPGM3D(filename);
   } else if(extension=="raw"){
     ASSERT(x!=0 && y!=0 && z!=0); 
