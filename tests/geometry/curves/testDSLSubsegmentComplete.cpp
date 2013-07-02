@@ -278,7 +278,6 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 
 
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -291,12 +290,15 @@ int main( int argc, char** argv )
   unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :2000;
   
   
-  Integer modb = 10000;
+  Integer modb = 1000000000;
   
+  Integer c = 100;
+
   //for(Integer i = 10; i<=modb ;i*=10)
   //for(Integer i = 10; i<modb ;i+=i/3) 
   Integer i = modb;
-  for(Integer modx = 10; modx <=  2*i;modx+=modx/3)
+  // for(Integer modx = 10; modx <=  2*i;modx+=modx/3)
+  for(Integer modx = 10; modx <=  2*i;modx+=(modx/3>100?modx/3:c))
     //Integer  modx = 1000;
     {
 	std::cout << i << " " << modx << " ";

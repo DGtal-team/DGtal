@@ -1,7 +1,7 @@
 add_subdirectory(estimation)
 
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -qstrict")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O5 -qstrict")
 
 SET(DGTAL_TESTS_SRC
   # testArithDSS	
