@@ -1,0 +1,218 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ArithmeticalDSSKernel.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/07/02
+ *
+ * Implementation of inline methods defined in ArithmeticalDSSKernel.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------------------------------------------------------------
+template <typename TCoordinate, unsigned short adjacency>
+template <typename TInteger>
+inline
+typename DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>::Vector 
+DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>
+::shift(const TInteger& a, const TInteger& b) 
+{
+  Vector res; 
+  if (b >= 0)
+    {
+      if (a >= 0)
+	{
+	  if (b >= a)
+	    res = Vector(0,-1); 
+	  else 
+	    res = Vector(1,0); 
+	}
+      else 
+	{ //a < 0
+	  if (b >= -a)
+	    res = Vector(0,-1); 
+	  else 
+	    res = Vector(-1,0); 
+	}	    
+    }
+  else 
+    { //b < 0
+      if (a > 0)
+	{
+	  if (-b >= a)
+	    res = Vector(0,1); 
+	  else 
+	    res = Vector(1,0); 
+	}
+      else 
+	{ //a < 0
+	  if (-b >= -a)
+	    res = Vector(0,1); 
+	  else 
+	    res = Vector(-1,0); 
+	}
+    }
+  return res; 
+}
+
+// ----------------------------------------------------------------------------
+template <typename TCoordinate, unsigned short adjacency>
+template <typename TInteger>
+inline
+typename DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>::Steps 
+DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>
+::steps(const TInteger& a, const TInteger& b) 
+{
+  Steps steps; 
+  if (b >= 0)
+    {
+      if (a >= 0)
+	{
+	  if (b >= a)
+	    {
+	      steps.first = Vector(1,0); 
+	      steps.second = Vector(1,1); 
+	    }
+	  else 
+	    {
+	      steps.second = Vector(0,1); 
+	      steps.first = Vector(1,1); 
+	    }
+	}
+      else 
+	{ //a < 0
+	  if (b >= -a)
+	    {
+	      steps.second = Vector(1,0); 
+	      steps.first = Vector(1,-1); 
+	    }
+	  else 
+	    {
+	      steps.first = Vector(0,-1); 
+	      steps.second = Vector(1,-1); 
+	    }
+	}	    
+    }
+  else 
+    { //b < 0
+      if (a > 0)
+	{
+	  if (-b >= a)
+	    {
+	      steps.second = Vector(-1,0); 
+	      steps.first = Vector(-1,1); 
+	    }
+	  else 
+	    {
+	      steps.first = Vector(0,1); 
+	      steps.second = Vector(-1,1); 
+	    }	    
+	}
+      else 
+	{ //a < 0
+	  if (-b >= -a)
+	    {
+	      steps.first = Vector(-1,0); 
+	      steps.second = Vector(-1,-1); 
+	    }
+	  else 
+	    {
+	      steps.second = Vector(0,-1); 
+	      steps.first = Vector(-1,-1); 
+	    }
+	}
+    }
+  return steps; 
+}
+
+
+// ----------------------------------------------------------------------------
+template <typename TCoordinate>
+template <typename TInteger>
+inline
+typename DGtal::ArithmeticalDSSKernel<TCoordinate,4>::Vector 
+DGtal::ArithmeticalDSSKernel<TCoordinate,4>
+::shift(const TInteger& a, const TInteger& b) 
+{
+  Vector res; 
+  if (b >= 0)
+    {
+      if (a >= 0)
+	res = Vector(1,-1); 
+      else //a < 0
+	res = Vector(-1,-1); 
+    }
+  else 
+    { //b < 0
+      if (a > 0)
+	res = Vector(1,1); 
+      else //a < 0
+	res = Vector(-1,1); 
+    }
+  return res; 
+}
+
+// ----------------------------------------------------------------------------
+template <typename TCoordinate>
+template <typename TInteger>
+inline
+typename DGtal::ArithmeticalDSSKernel<TCoordinate,4>::Steps 
+DGtal::ArithmeticalDSSKernel<TCoordinate,4>
+::steps(const TInteger& a, const TInteger& b) 
+{
+  Steps steps; 
+  if (b >= 0)
+    {
+      if (a >= 0)
+	{
+	  steps.first = Vector(1,0); 
+	  steps.second = Vector(0,1); 
+	}
+      else 
+	{ //a < 0
+	  steps.second = Vector(1,0); 
+	  steps.first = Vector(0,-1); 
+	}	    
+    }
+  else 
+    { //b < 0
+      if (a > 0)
+	{
+	  steps.second = Vector(-1,0); 
+	  steps.first = Vector(0,1); 
+	}
+      else 
+	{ //a < 0
+	  steps.first = Vector(-1,0); 
+	  steps.second = Vector(0,-1); 
+	}
+    }
+  return steps; 
+}
