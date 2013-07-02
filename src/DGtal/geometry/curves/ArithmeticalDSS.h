@@ -45,6 +45,9 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/base/ReverseIterator.h"
+
+#include "DGtal/geometry/curves/ArithmeticalDSSKernel.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,18 +57,24 @@ namespace DGtal
   // template class ArithmeticalDSS
   /**
    * Description of template class 'ArithmeticalDSS' <p>
-   * \brief Aim:
+   * \brief Aim: This class represents a naive (resp. standard) 
+   * digital straight segment (DSS), ie. the sequence of 
+   * simply connected digital points between @a myF and @a myL
+   * and contained in the naive (resp. standard) digital straight
+   * line (DSL) of parameters @a myA @a myB @a myMu @a myOmega.  
+   *
+   * 
    * @tparam TCoordinate a model of integer for the DGtal point coordinate
    * @tparam TInteger a model of integer for the DSS parameters (a, b, mu, omega)
-   * @tparam adajency a integer equal to 8 (default) for 8-connected DSS, 
-   * and 4 for 4-connected DSS. 
+   * @tparam adajency a integer equal to 8 (default) for naive and 8-connected DSS, 
+   * and 4 for standard and 4-connected DSS. 
    */
   template <typename TCoordinate, 
 	    typename TInteger = TCoordinate, 
 	    unsigned short adjacency = 8>
   class ArithmeticalDSS
   {
-    
+
     // ----------------------- Inner types -----------------------------------
   public:
 
@@ -73,6 +82,146 @@ namespace DGtal
     typedef DGtal::PointVector<2, Coordinate> Point; 
     typedef DGtal::PointVector<2, Coordinate> Vector; 
     typedef TInteger Integer; 
+
+  /**
+   * \brief Aim: This class aims at representing an iterator
+   * that provides a way to scan the points of a DSS
+   * It is both a model of readable iterator and of
+   * bidirectional iterator. 
+   */
+  class ConstIterator : public 
+  std::iterator<std::bidirectional_iterator_tag, 
+		Point, int, Point*, Point> 
+  {
+
+    // ------------------------- Inner type -------------------------
+  public:
+    typedef std::pair<Vector,Vector> Steps; 
+
+    // ------------------------- Private data -----------------------
+  private:
+
+    /// Constant aliasing pointer to the DSS visited by the iterator
+    const ArithmeticalDSS* myDSS;
+
+    /// The current point
+    Point  myCurrentPoint;
+
+    /// Pair of vector containing the two steps 
+    /// used to iterate over the DSS points
+    Steps mySteps;
+
+    /// Quantity to add to the current remainder
+    Integer  myQuantityToAdd;
+
+    /// Quantity to remove to the current remainder
+    Integer  myQuantityToRemove;
+
+    /// Upper bound on the remainders
+    Integer  myUpperBound;
+    /// Lower bound on the remainders
+    Integer  myLowerBound;
+
+    /// Remainder of the current point
+    Integer  myCurrentRemainder;
+
+    // ------------------------- Standard services -----------------------
+  public:
+
+    /**
+     * Default constructor (not valid).
+     */
+    ConstIterator();
+
+    /**
+     * Constructor.
+     * @param aDSS an arithmetical DSS
+     * @param aPoint a point of the DSL containing @a aDSS
+     */
+    ConstIterator( const ArithmeticalDSS* aDSS, const Point& aPoint ); 
+
+    /**
+     * Copy constructor.
+     * @param aOther the iterator to clone.
+     */
+    ConstIterator( const ConstIterator & aOther );
+    /**
+     * Assignment.
+     * @param aOther the iterator to copy.
+     * @return a reference on 'this'.
+     */
+    ConstIterator& operator= ( const ConstIterator & aOther );
+
+    /**
+     * Destructor. Does nothing.
+     */
+    ~ConstIterator(); 
+
+    // ------------------------- iteration services -------------------------
+  public:
+
+    /**
+     * @return the current point
+     */
+    Point operator*() const;
+
+    /**
+     * Moves @a myCurrentPoint to the next point of the DSS
+     */
+    void next(); 
+
+    /**
+     * Pre-increment.
+     * Goes to the next point of the DSS.
+     */
+    ConstIterator& operator++(); 
+
+    /**
+     * Post-increment.
+     * Goes to the next point of the DSS.
+     */
+    ConstIterator operator++(int); 
+
+    /**
+     * Moves @a myCurrentPoint to the previous point of the DSS
+     */
+    void previous();
+
+    /**
+     * Pre-decrement.
+     * Goes to the previous point in the DSS.
+     */
+    ConstIterator& operator--();
+
+    /**
+     * Post-decrement.
+     * Goes to the previous point in the DSS.
+     */
+    ConstIterator operator--(int);
+
+    /**
+     * Equality operator.
+     *
+     * @param aOther the iterator to compare with 
+     * (must be defined on the same DSS).
+     *
+     * @return 'true' if their current points coincide.
+     */
+    bool operator== ( const ConstIterator & aOther ) const;
+
+    /**
+     * Inequality operator.
+     *
+     * @param aOther the iterator to compare with 
+     * (must be defined on the same DSS).
+     *
+     * @return 'true' if their current points differ.
+     */
+    bool operator!= ( const ConstIterator & aOther ) const;
+
+  }; //end of inner class ConstIterator
+    
+    typedef DGtal::ReverseIterator<ConstIterator> ConstReverseIterator; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -95,6 +244,31 @@ namespace DGtal
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
+
+    /**
+     * Constructor.
+     * @param aA y-component of the direction vector
+     * @param aB x-component of the direction vector
+     * @param aMu intercept
+     * @param aF the first point
+     * @param aL the last point
+     * @param aUf the first upper point
+     * @param aUl the last upper point
+     * @param aLf the first lower point
+     * @param aLl the last lower point
+     */
+    ArithmeticalDSS(const Integer& aA, const Integer& aB, 
+		    const Integer& aMu,  
+		    const Point& aF, const Point& aL,
+		    const Point& aUf, const Point& aUl,
+		    const Point& aLf, const Point& aLl);
+
+    /**
+     * Constructor of a pattern from the two end points
+     * @param aF the first point
+     * @param aL the last point
+     */
+    ArithmeticalDSS(const Point& aF, const Point& aL);
 
     /**
      * Copy constructor.
@@ -201,7 +375,7 @@ namespace DGtal
      * @return remainder of @a aPoint
      * @param aPoint any point
      */
-    Integer r(const Point& aPoint) const; 
+    Integer remainder(const Point& aPoint) const; 
 
     /**
      * Returns the position of @a aPoint
@@ -234,6 +408,30 @@ namespace DGtal
      * @param aPoint any point
      */
     bool operator()(const Point& aPoint) const; 
+
+    /**
+     * @return begin iterator,
+     * which points to the first point returned by back() 
+     */
+    ConstIterator begin() const; 
+
+    /**
+     * @return end iterator, 
+     * which points after the last point returned by front() 
+     */
+    ConstIterator end() const; 
+
+    /**
+     * @return begin reverse iterator,
+     * which points to the last point returned by front() 
+     */
+    ConstReverseIterator rbegin() const; 
+
+    /**
+     * @return end iterator, 
+     * which points before the first point returned by back() 
+     */
+    ConstReverseIterator rend() const; 
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -281,6 +479,16 @@ namespace DGtal
     * Last point 
     */
     Point myL;
+
+    // -------------------- steps ---------------------------------------------
+    /**
+    * First step
+    */
+    Vector myStep1;
+    /**
+    * Next step 
+    */
+    Vector myStep2;
 
     // ------------------------- Private Datas --------------------------------
   private:
