@@ -338,8 +338,10 @@ namespace DGtal
       qglviewer::Vec posCam;
       bool operator() ( polygonD3D q1, polygonD3D q2 )
       {
-	double c1x, c1y, c1z=0.0;
-	double c2x, c2y, c2z=0.0;
+	double c1x, c1y, c1z;
+	c1x=0.0, c1y=0.0; c1z=0.0;
+	double c2x, c2y, c2z;
+	c2x=0.0, c2y=0.0; c2z=0.0;	
 	for(unsigned int i=0; i< q1.vectPoints.size(); i++){
 	  c1x+=q1.vectPoints.at(i).x;
 	  c1y+=q1.vectPoints.at(i).y;
@@ -393,7 +395,7 @@ namespace DGtal
       ImageDirection myDirection;
       unsigned int myImageWidth;
       unsigned int myImageHeight;
-      
+      unsigned char myAlpha;
       unsigned int myBufferWidth;
       unsigned int myBufferHeight;
       GLuint  myTextureName;
@@ -421,12 +423,13 @@ namespace DGtal
       }
     
       //Copy constructor from a GLTextureImage
-      GLTextureImage(const GLTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
-						    myBufferWidth(aGLImg.myBufferWidth),
+      GLTextureImage(const GLTextureImage &aGLImg): myBufferWidth(aGLImg.myBufferWidth),
+						    myBufferHeight(aGLImg.myBufferHeight),
 						    myTextureName(aGLImg.myTextureName),
+						    myMode(aGLImg.myMode),
+						    myAlpha(aGLImg.myAlpha),
 						    myTextureFitX(aGLImg.myTextureFitX),
-						    myTextureFitY(aGLImg.myTextureFitY),
-						    myMode(aGLImg.myMode)
+						    myTextureFitY(aGLImg.myTextureFitY)
 								      
       {
 	x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
@@ -465,6 +468,7 @@ namespace DGtal
 	x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
 	x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
 	x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
+	myAlpha= aGSImage.myAlpha;
 	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
 	myDirection = aGSImage.myDirection;
 	myMode= aGSImage.myMode;

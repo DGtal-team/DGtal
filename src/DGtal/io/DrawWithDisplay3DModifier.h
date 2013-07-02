@@ -498,11 +498,11 @@ namespace DGtal
      */
     UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
                     double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
-    myImage(&anImage),
-    myTranslateX (translateX),
-    myTranslateY (translateY),
-    myTranslateZ (translateZ),
-    myFunctor(aFunctor)
+												     myTranslateX (translateX),
+												     myTranslateY (translateY),
+												     myTranslateZ (translateZ),
+												     myImage(&anImage),
+												     myFunctor(aFunctor)
     {
       
     }

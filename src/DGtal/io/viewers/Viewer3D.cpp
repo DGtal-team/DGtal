@@ -214,7 +214,7 @@ DGtal::Viewer3D::draw()
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
     glBegin(GL_QUADS);   
-    glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
+    glColor4ub ( 255.0, 255.0, 255.0, textureImg.myAlpha );
     glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
     glTexCoord2f(0, 0);
     glVertex3f(textureImg.x1, textureImg.y1, textureImg.z1);
