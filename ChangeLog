@@ -1,9 +1,12 @@
 === DGtal 0.7 ===
 
 *General*
+    - Unit tests build is now disabled by default (to turn it on, run
+	cmake with "-DBUILD_TESTING=on"
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 
+	
 *Kernel Package*
     - Two initialisation methods (initRemoveOneDim and initAddOneDim)
       for the Projector Functor from the BasicPointFunctors class in
@@ -18,6 +21,7 @@
       ArithmeticDSS3d.
     - New local estimator adapter to make easy implementation of locally defined differential
       estimator on digital surfaces.
+    - Minor improvements in the spherical accumulator. 
 
 *Shape Package*
     - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
