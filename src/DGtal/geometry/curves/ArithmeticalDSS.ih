@@ -46,14 +46,13 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 		  const Point& aF, const Point& aL,
 		  const Point& aUf, const Point& aUl,
 		  const Point& aLf, const Point& aLl)
-:
-  myA(aA), myB(aB), myMu(aMu), myOmega(aOmega),
+  :
   myF(aF), myL(aL),
-  myUf(aUf), myUl(aUl), myLf(aLf), myLl(aLl) 
+  myUf(aUf), myUl(aUl), myLf(aLf), myLl(aLl),
+  mySteps( DGtal::ArithmeticalDSSKernel<TC,adj>::steps(aA, aB) ), 
+  myShift( DGtal::ArithmeticalDSSKernel<TC,adj>::shift(aA, aB) ),
+  myA(aA), myB(aB), myMu(aMu), myOmega(aOmega)
 {
-  //TODO + isValid
-  myStep1 = Vector(0,0); 
-  myStep2 = Vector(0,0); 
 }
 
 //-----------------------------------------------------------------------------
@@ -61,19 +60,17 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::ArithmeticalDSS(const Integer& aA, const Integer& aB, 
-		  const Integer& aMu, 
 		  const Point& aF, const Point& aL,
 		  const Point& aUf, const Point& aUl,
 		  const Point& aLf, const Point& aLl)
-:
-  myA(aA), myB(aB), myMu(aMu), 
-  myOmega( remainder( DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB) ) ),
+  :
   myF(aF), myL(aL),
-  myUf(aUf), myUl(aUl), myLf(aLf), myLl(aLl) 
+  myUf(aUf), myUl(aUl), myLf(aLf), myLl(aLl),
+  mySteps( DGtal::ArithmeticalDSSKernel<TC,adj>::steps(aA, aB) ), 
+  myShift( DGtal::ArithmeticalDSSKernel<TC,adj>::shift(aA, aB) ),
+  myA(aA), myB(aB), myMu( remainder( aUf ) ), 
+  myOmega( remainder( myShift ) )
 {
-  //TODO + isValid
-  myStep1 = Vector(0,0); 
-  myStep2 = Vector(0,0); 
 }
 
 //-----------------------------------------------------------------------------
@@ -88,7 +85,7 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 
   //upper leaning points 
   myUf = myF; 
-  myUl = myF; 
+  myUl = myL; 
 
   //irreductible direction vector
   Vector u2 = aL - aF; 
@@ -96,26 +93,35 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
   Coordinate gcd = computer.gcd(u2[0], u2[1]); 
   Vector u = Vector(u2[0]/gcd, u2[1]/gcd);
 
-  //Bezout
-  Vector v = computer.extendedEuclid(-u[1], u[0], 1); 
+  //shift
+  myShift = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(u[1], u[0]); 
 
-  //Shift
-  Vector s = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(u[1], u[0]); 
+  //steps
+  mySteps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(u[1], u[0]); 
 
   //(a, b, mu, omega) parameters
   myA = u[1]; 
   myB = u[0]; 
-  myMu = remainder( myF ); 
-  myOmega = remainder(s); 
+  myMu = remainder( myUf ); 
+  myOmega = remainder( myShift ); 
 
-  //lower leaning points
-  myLf = myF + v + s; 
-  myLl = myF + (gcd-1)*u + v + s; 
+  if (mySteps.second == Vector(0,0))
+    { //specific case
 
+      //lower leaning points
+      myLf = myF; 
+      myLl = myL; 
 
-  //TODO + isValid
-  myStep1 = Vector(0,0); 
-  myStep2 = Vector(0,0); 
+    }
+  else 
+    { //general case
+      //Bezout
+      Vector v = computer.extendedEuclid(-u[1], u[0], 1); 
+
+      //lower leaning points
+      myLf = myF + v + myShift; 
+      myLl = myF + (gcd-1)*u + v + myShift; 
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -123,11 +129,11 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::ArithmeticalDSS(const ArithmeticalDSS<TC, TI, adj>& aOther)
-: 
-  myA(aOther.myA), myB(aOther.myB), myMu(aOther.myMu), myOmega(aOther.myOmega),
+  : 
   myF(aOther.myF), myL(aOther.myL),
   myUf(aOther.myUf), myUl(aOther.myUl), myLf(aOther.myLf), myLl(aOther.myLl),
-  myStep1(aOther.myStep1), myStep2(aOther.myStep2)
+  mySteps(aOther.mySteps), myShift(aOther.myShift),
+  myA(aOther.myA), myB(aOther.myB), myMu(aOther.myMu), myOmega(aOther.myOmega)
 {}
 
 //-----------------------------------------------------------------------------
@@ -149,8 +155,8 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
       myLf = aOther.myLf;
       myUl = aOther.myUl;
       myLl = aOther.myLl;
-      myStep1 = aOther.myStep1; 
-      myStep2 = aOther.myStep2; 
+      mySteps = aOther.mySteps; 
+      myShift = aOther.myShift; 
     }
   return *this;
 }
@@ -216,7 +222,10 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::isValid() const
   	 &&(myUf==myF)
   	 &&(myLf==myF)
   	 &&(myUl==myL)
-  	 &&(myLl==myL) ) 
+  	 &&(myLl==myL)
+	 &&(myShift==Vector(0,0))
+	 &&(mySteps.first==Vector(0,0))
+	 &&(mySteps.second==Vector(0,0)) ) 
       return true;
     else return false; 
 
@@ -246,6 +255,15 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::isValid() const
 	    if ( (myB*static_cast<Integer>(gcdl) != static_cast<Coordinate>(vl[0]))
 		 || (myA*static_cast<Integer>(gcdl) != static_cast<Coordinate>(vl[1])) )
 	      return false; 
+	    //steps and shift
+	    if (mySteps != DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB))
+	      return false; 
+	    if (myShift != DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB))
+	      return false; 
+	    if ( (mySteps.second != Vector(0,0) )
+		 &&( (mySteps.first - mySteps.second) != myShift ) )
+	      return false; 
+
 	    return true;
 	  }
       }
@@ -340,6 +358,15 @@ typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
 DGtal::ArithmeticalDSS<TC, TI, adj>::Ll() const
 {
   return myLl; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Vector
+DGtal::ArithmeticalDSS<TC, TI, adj>::shift() const
+{
+  return myShift; 
 }
 
 //-----------------------------------------------------------------------------
@@ -448,9 +475,83 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::selfDisplay ( std::ostream & out ) const
   out << "[ArithmeticalDSS] ";
   out << "(" << myA << "," << myB << "," << myMu << "," << myOmega << ")" << std::endl; 
   out << "from " << myF << " to " << myL << std::endl; 
-  out << "by steps " << myStep1 << " " << myStep2 << std::endl; 
+  out << "by steps " << mySteps.first << " " << mySteps.second << std::endl; 
   out << "upper leaning points: " << myUf << " " << myUl << std::endl;  
   out << "lower leaning points: " << myLf << " " << myLl; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+unsigned short int
+DGtal::ArithmeticalDSS<TC, TI, adj>::
+isExtendable( const Point& aNewPoint, 
+	      const Point& aLastPoint )
+{
+  // Vector lastStep = aNewPoint - aLastPoint; 
+  // Integer deviation = remainder(lastStep);
+
+  // //if the two last points are not connected KO 
+  // if (deviation > NumberTraits<Integer>::ONE) 
+  //   return 0;
+
+  // //if the two last points are confounded OK
+  // else if (deviation == NumberTraits<Integer>::ZERO) 
+  //   return 8; 
+
+  // //if the first step does not exist yet OK
+  // else if (mySteps.first == Vector(0,0)) 
+  //   return 1; 
+
+  // //if the first step exists and
+  // //if the second step does not exist
+  // else if (mySteps.second == Vector(0,0))
+  //   {
+  //     //if the first step exists and is repeated OK
+  //     if (lastStep == mySteps.first) 
+  // 	return 2; 
+  //     else 
+  // 	{
+  // 	  //if the two steps are compatible
+  // 	  //return 3;
+  // 	  //else
+  // 	  //return 0; 
+
+  // 	}
+  //   }
+  // //if the two steps are initialized 
+  // else 
+  //   {
+  //     //if there are less than two steps
+  //     if (hasLessThanTwoSteps(lastMove)) 
+  // 	{
+    
+  // 	//remainder
+  // 	Integer r = remainder(lastPoint);
+          
+  // 	//if strongly exterior KO
+  // 	if ( (r < myMu-1)||(r > myMu+myOmega) )
+  // 	  return 0;
+  // 	//otherwise OK
+  // 	else 
+  // 	  { 
+  // 	    if (r == myMu)
+  // 	      return 4; 
+  // 	    else if (r == myMu+myOmega-1)
+  // 	      return 5;
+  // 	    else if (r == myMu-1)
+  // 	      return 6;
+  // 	    else if (r == myMu+myOmega)
+  // 	      return 4;
+  // 	    else 
+  // 	      return 8; 
+  // 	  }
+
+  // 	} 
+  //     //if there are more than two steps KO
+  //     else  
+  // 	return 0;
+  // }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -460,7 +561,7 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::selfDisplay ( std::ostream & out ) const
 template <typename TC, typename TI, unsigned short adj>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>::ConstIterator::ConstIterator()
-  : myDSS(0), myCurrentPoint()
+  : myDSSPtr(0), myCurrentPoint()
 {
 }
 
@@ -469,17 +570,13 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>::ConstIterator
 ::ConstIterator( const ArithmeticalDSS* aDSS, const Point& aPoint )
-  : myDSS(aDSS), myCurrentPoint(aPoint)
+  : myDSSPtr(aDSS), myCurrentPoint(aPoint)
 {
-  mySteps = DGtal::ArithmeticalDSSKernel<TC, adj>
-    ::steps(myDSS->a(), myDSS->b());  
-
-  myQuantityToAdd = myDSS->remainder(mySteps.first);
-  Vector shift = mySteps.second - mySteps.first; 
-  myQuantityToRemove = -myDSS->remainder(shift); 
-  myLowerBound = myDSS->mu();
-  myUpperBound = myDSS->mu() + myDSS->omega();
-  myCurrentRemainder = myDSS->remainder( myCurrentPoint ); 
+  myQuantityToAdd = myDSSPtr->remainder(myDSSPtr->mySteps.first);
+  myQuantityToRemove = myQuantityToAdd - myDSSPtr->remainder(myDSSPtr->mySteps.second); 
+  myLowerBound = myDSSPtr->mu();
+  myUpperBound = myDSSPtr->mu() + myDSSPtr->omega();
+  myCurrentRemainder = myDSSPtr->remainder( myCurrentPoint ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -487,8 +584,7 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>::ConstIterator::
 ConstIterator( const ConstIterator & aOther )
-  : myDSS( aOther.myDSS ), myCurrentPoint( aOther.myCurrentPoint ),
-    mySteps( aOther.mySteps ), 
+  : myDSSPtr( aOther.myDSSPtr ), myCurrentPoint( aOther.myCurrentPoint ),
     myQuantityToAdd( aOther.myQuantityToAdd ), 
     myQuantityToRemove( aOther.myQuantityToRemove ), 
     myUpperBound( aOther.myUpperBound ), 
@@ -506,9 +602,8 @@ operator= ( const ConstIterator & aOther )
 {
   if (this != &aOther)
     {
-      myDSS = aOther.myDSS; 
+      myDSSPtr = aOther.myDSSPtr; 
       myCurrentPoint = aOther.myCurrentPoint; 
-      mySteps = aOther.mySteps; 
       myQuantityToAdd = aOther.myQuantityToAdd; 
       myQuantityToRemove = aOther.myQuantityToRemove; 
       myUpperBound = aOther.myUpperBound; 
@@ -544,12 +639,12 @@ next()
   myCurrentRemainder += myQuantityToAdd; 
   if ( myCurrentRemainder < myUpperBound )
     {
-      myCurrentPoint += mySteps.first; 
+      myCurrentPoint += myDSSPtr->mySteps.first; 
     }
   else
     {
       myCurrentRemainder -= myQuantityToRemove; 
-      myCurrentPoint += mySteps.second; 
+      myCurrentPoint += myDSSPtr->mySteps.second; 
     }
 }
 
@@ -586,12 +681,12 @@ previous()
   myCurrentRemainder -= myQuantityToAdd; 
   if ( myCurrentRemainder >= myLowerBound )
     {
-      myCurrentPoint -= mySteps.first; 
+      myCurrentPoint -= myDSSPtr->mySteps.first; 
     }
   else
     {
       myCurrentRemainder += myQuantityToRemove; 
-      myCurrentPoint -= mySteps.second; 
+      myCurrentPoint -= myDSSPtr->mySteps.second; 
     }
 }
 
@@ -625,7 +720,7 @@ bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::ConstIterator::
 operator==(const ConstIterator& aOther) const
 {
-  ASSERT( myDSS == aOther.myDSS );
+  ASSERT( myDSSPtr == aOther.myDSSPtr );
   return myCurrentPoint == aOther.myCurrentPoint;
 }
 
@@ -636,7 +731,7 @@ bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::ConstIterator::
 operator!=(const ConstIterator& aOther) const
 {
-  ASSERT( myDSS == aOther.myDSS );
+  ASSERT( myDSSPtr == aOther.myDSSPtr );
   return myCurrentPoint != aOther.myCurrentPoint;
 }
 
@@ -647,7 +742,7 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ArithmeticalDSS<TC, TI, adj> & object )
+		    const ArithmeticalDSS<TC, TI, adj> & object )
 {
   object.selfDisplay( out );
   return out;

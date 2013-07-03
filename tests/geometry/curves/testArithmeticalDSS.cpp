@@ -48,6 +48,7 @@ template <typename DSS>
 bool mainTest()
 {
   typedef typename DSS::Point Point; 
+  typedef typename DSS::Vector Vector; 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -57,20 +58,17 @@ bool mainTest()
   //operateur constructeur, copie, affectation
   trace.info() << "constructor, copy, assignement, equality" << std::endl; 
 
-  DSS dss(0, 1, 0,  
+  DSS dss(0, 1,  
 	  Point(0,0), Point(1,0), 
 	  Point(0,0), Point(1,0),
 	  Point(0,0), Point(1,0) ); 
   DSS dss2 = dss; 
-  DSS dss3(1, 1, 0,  
-	  Point(0,0), Point(1,1), 
-	  Point(0,0), Point(1,1),
-	  Point(0,0), Point(1,1) );
+  DSS dss3(Point(0,0), Point(1,1));
   DSS dss4 = dss3; 
   dss3 = dss2 = dss; 
 
   //egalite, difference
-  DSS dss5(0, -1, 0, 
+  DSS dss5(0, -1, 
 	  Point(1,0), Point(0,0), 
 	  Point(1,0), Point(0,0),
 	  Point(1,0), Point(0,0) ); 
@@ -173,6 +171,13 @@ bool mainTest()
     nbok++; 
   nb++; 
 
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << std::endl;
+
+  trace.info() << "shift" << std::endl; 
+  if (dss.remainder(dss.shift()) == dss.omega())
+    nbok++; 
+  nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") "
   	       << std::endl;
             
@@ -290,6 +295,14 @@ int main( int argc, char** argv )
     DSS8 dss5(Point(0,0), Point(-5,-8)); 
     DSS8 dss6(Point(0,0), Point(5,-8)); 
     DSS8 dss7(Point(0,0), Point(8,-5)); 
+    DSS8 dss10(Point(0,0), Point(1,0)); 
+    DSS8 dss11(Point(0,0), Point(-1,0)); 
+    DSS8 dss12(Point(0,0), Point(0,1)); 
+    DSS8 dss13(Point(0,0), Point(0,-1)); 
+    DSS8 dss14(Point(0,0), Point(1,1)); 
+    DSS8 dss15(Point(0,0), Point(-1,1)); 
+    DSS8 dss16(Point(0,0), Point(1,-1)); 
+    DSS8 dss17(Point(0,0), Point(-1,-1)); 
 
     res = res 
       && rangeTest(dss0)
@@ -300,6 +313,14 @@ int main( int argc, char** argv )
       && rangeTest(dss5)
       && rangeTest(dss6)
       && rangeTest(dss7)
+      && rangeTest(dss10)
+      && rangeTest(dss11)
+      && rangeTest(dss12)
+      && rangeTest(dss13)
+      && rangeTest(dss14)
+      && rangeTest(dss15)
+      && rangeTest(dss16)
+      && rangeTest(dss17)
       ;
   }
 
@@ -316,6 +337,10 @@ int main( int argc, char** argv )
     DSS4 dss5(Point(0,0), Point(-5,-8)); 
     DSS4 dss6(Point(0,0), Point(5,-8)); 
     DSS4 dss7(Point(0,0), Point(8,-5)); 
+    DSS4 dss10(Point(0,0), Point(1,0)); 
+    DSS4 dss11(Point(0,0), Point(-1,0)); 
+    DSS4 dss12(Point(0,0), Point(0,1)); 
+    DSS4 dss13(Point(0,0), Point(0,-1)); 
 
     res = res 
       && rangeTest(dss0)
@@ -326,6 +351,10 @@ int main( int argc, char** argv )
       && rangeTest(dss5)
       && rangeTest(dss6)
       && rangeTest(dss7)
+      && rangeTest(dss10)
+      && rangeTest(dss11)
+      && rangeTest(dss12)
+      && rangeTest(dss13)
       ;
   }
 

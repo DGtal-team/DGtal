@@ -44,38 +44,51 @@ typename DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>::Vector
 DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>
 ::shift(const TInteger& a, const TInteger& b) 
 {
-  Vector res; 
-  if (b >= 0)
+  Vector res;
+  if (b == 0)
     {
-      if (a >= 0)
+      if (a == 0)     //no octant
+	res = Vector(0,0); 
+      else if (a > 0) //octant 2
+	res = Vector(1,0); 
+      else // (a < 0) //octant 6
+	res = Vector(-1,0); 
+    }
+  else if (b > 0)
+    {
+      if (a == 0)     //octant 0 
+	res = Vector(0,-1); 
+      else if (a > 0)
 	{
-	  if (b >= a)
+	  if (b > a)  //octant 0
 	    res = Vector(0,-1); 
-	  else 
+	  else        //octant 1
 	    res = Vector(1,0); 
 	}
-      else 
-	{ //a < 0
-	  if (b >= -a)
+      else // (a < 0)
+	{ 
+	  if (b >= -a) //octant 7
 	    res = Vector(0,-1); 
-	  else 
+	  else         //octant 6
 	    res = Vector(-1,0); 
 	}	    
     }
-  else 
-    { //b < 0
-      if (a > 0)
+  else // (b < 0) 
+    { 
+      if (a == 0)      //octant 4
+	res = Vector(0,1); 
+      else if (a > 0)
 	{
-	  if (-b >= a)
+	  if (-b >= a) //octant 3
 	    res = Vector(0,1); 
-	  else 
+	  else         //octant 2
 	    res = Vector(1,0); 
 	}
-      else 
-	{ //a < 0
-	  if (-b >= -a)
+      else // (a < 0) 
+	{
+	  if (-b > -a) //octant 4
 	    res = Vector(0,1); 
-	  else 
+	  else         //octant 5
 	    res = Vector(-1,0); 
 	}
     }
@@ -91,59 +104,107 @@ DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>
 ::steps(const TInteger& a, const TInteger& b) 
 {
   Steps steps; 
-  if (b >= 0)
+  if (b == 0)
     {
-      if (a >= 0)
+      if (a == 0) 
+	{ //no octant
+	  steps.first = Vector(0,0); 
+	  steps.second = Vector(0,0); 
+	}
+      else if (a > 0)
+	{ //octant 2
+	  steps.first = Vector(0,1); 
+	  steps.second = Vector(0,0); 
+	}
+      else // (a < 0)
+	{ //octant 6
+	  steps.first = Vector(0,-1); 
+	  steps.second = Vector(0,0); 
+	}	    
+    }
+  else if (b > 0)
+    {
+      if (a == 0)
+	{ //octant 0
+	  steps.first = Vector(1,0); 
+	  steps.second = Vector(0,0); 
+	}
+      else if (a > 0)
 	{
-	  if (b >= a)
+	  if (b == a)
 	    {
+	      steps.first = Vector(1,1); 
+	      steps.second = Vector(0,0); 
+	    }
+	  else if (b > a)
+	    { //octant 0
 	      steps.first = Vector(1,0); 
 	      steps.second = Vector(1,1); 
 	    }
-	  else 
-	    {
+	  else // (b < a)
+	    { //octant 1
 	      steps.second = Vector(0,1); 
 	      steps.first = Vector(1,1); 
 	    }
 	}
-      else 
-	{ //a < 0
-	  if (b >= -a)
+      else //(a < 0)
+	{ 
+	  if (b == -a)
 	    {
+	      steps.first = Vector(1,-1); 
+	      steps.second = Vector(0,0); 
+	    }
+	  else if (b > -a)
+	    { //octant 7
 	      steps.second = Vector(1,0); 
 	      steps.first = Vector(1,-1); 
 	    }
-	  else 
-	    {
+	  else // (b < -a)
+	    { //octant 6
 	      steps.first = Vector(0,-1); 
 	      steps.second = Vector(1,-1); 
 	    }
 	}	    
     }
-  else 
-    { //b < 0
-      if (a > 0)
+  else // (b < 0)
+    { 
+      if (a == 0)
+	{ //octant 4
+	  steps.first = Vector(-1,0); 
+	  steps.second = Vector(0,0); 
+	}
+      else if (a > 0)
 	{
-	  if (-b >= a)
+	  if (-b == a)
 	    {
+	      steps.first = Vector(-1,1); 
+	      steps.second = Vector(0,0); 
+	    }
+	  else if (-b > a)
+	    { //octant 3
 	      steps.second = Vector(-1,0); 
 	      steps.first = Vector(-1,1); 
 	    }
-	  else 
-	    {
+	  else // (-b < a)
+	    { //octant 2
 	      steps.first = Vector(0,1); 
 	      steps.second = Vector(-1,1); 
 	    }	    
 	}
-      else 
-	{ //a < 0
-	  if (-b >= -a)
+      else // (a < 0)
+	{
+	  if (-b == -a)
 	    {
+	      steps.first = Vector(-1,-1); 
+	      steps.second = Vector(0,0); 
+	    }
+	  else if (-b > -a)
+	    { //octant 4
 	      steps.first = Vector(-1,0); 
 	      steps.second = Vector(-1,-1); 
 	    }
-	  else 
-	    {
+	  else // (-b < -a)
+	    { //octant 5
 	      steps.second = Vector(0,-1); 
 	      steps.first = Vector(-1,-1); 
 	    }
@@ -162,19 +223,42 @@ DGtal::ArithmeticalDSSKernel<TCoordinate,4>
 ::shift(const TInteger& a, const TInteger& b) 
 {
   Vector res; 
-  if (b >= 0)
+  if (b == 0)
+    {
+      if (a == 0)
+	{ //no quadrant
+	  res = Vector(0,0); 
+	}
+      else if (a > 0)
+	{ //quadrant 1
+	  res = Vector(1,1); 
+	}
+      else // (a < 0)
+	{ //quadrant 3
+	  res = Vector(-1,-1); 
+	}	    
+    }
+  else if (b > 0)
     {
       if (a >= 0)
-	res = Vector(1,-1); 
-      else //a < 0
-	res = Vector(-1,-1); 
+	{ //quadrant 0
+	  res = Vector(1,-1); 
+	}
+      else // (a < 0) 
+	{ //quadrant 3
+	  res = Vector(-1,-1); 
+	}	    
     }
-  else 
-    { //b < 0
+  else // (b < 0) 
+    { 
       if (a > 0)
-	res = Vector(1,1); 
-      else //a < 0
-	res = Vector(-1,1); 
+	{ //quadrant 1
+	  res = Vector(1,1); 
+	}
+      else // (a <= 0)
+	{ //quadrant 2
+	  res = Vector(-1,1); 
+	}
     }
   return res; 
 }
@@ -187,29 +271,57 @@ typename DGtal::ArithmeticalDSSKernel<TCoordinate,4>::Steps
 DGtal::ArithmeticalDSSKernel<TCoordinate,4>
 ::steps(const TInteger& a, const TInteger& b) 
 {
-  Steps steps; 
-  if (b >= 0)
+  Steps steps;
+  if (b == 0)
     {
-      if (a >= 0)
+      if (a == 0)
+	{ //no quadrant
+	  steps.first = Vector(0,0); 
+	  steps.second = Vector(0,0); 
+	}
+      else if (a > 0)
+	{ 
+	  steps.first = Vector(0,1); 
+	  steps.second = Vector(0,0); 
+	}
+      else // (a < 0)
+	{ 
+	  steps.first = Vector(0,-1); 
+	  steps.second = Vector(0,0); 
+	}	    
+    }
+  else if (b > 0)
+    {
+      if (a == 0)
 	{
+	  steps.first = Vector(1,0); 
+	  steps.second = Vector(0,0); 
+	}
+      else if (a > 0)
+	{ //quadrant 0
 	  steps.first = Vector(1,0); 
 	  steps.second = Vector(0,1); 
 	}
-      else 
-	{ //a < 0
+      else // (a < 0) 
+	{ //quadrant 3
 	  steps.second = Vector(1,0); 
 	  steps.first = Vector(0,-1); 
 	}	    
     }
-  else 
-    { //b < 0
-      if (a > 0)
+  else // (b < 0) 
+    { 
+      if (a == 0)
 	{
+	  steps.first = Vector(-1,0); 
+	  steps.second = Vector(0,0); 
+	}
+      else if (a > 0)
+	{ //quadrant 1
 	  steps.second = Vector(-1,0); 
 	  steps.first = Vector(0,1); 
 	}
-      else 
-	{ //a < 0
+      else // (a < 0)
+	{ //quadrant 2
 	  steps.first = Vector(-1,0); 
 	  steps.second = Vector(0,-1); 
 	}
