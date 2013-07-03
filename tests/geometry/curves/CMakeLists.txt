@@ -15,6 +15,7 @@ SET(DGTAL_TESTS_SRC
   # testBinomialConvolver
   testFrechetShortcut	
   testArithmeticalDSS
+  testArithmeticalDSSKernel
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

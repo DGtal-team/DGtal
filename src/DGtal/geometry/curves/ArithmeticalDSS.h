@@ -81,6 +81,7 @@ namespace DGtal
     typedef TCoordinate Coordinate; 
     typedef DGtal::PointVector<2, Coordinate> Point; 
     typedef DGtal::PointVector<2, Coordinate> Vector; 
+    typedef std::pair<Vector,Vector> Steps; 
     typedef TInteger Integer; 
 
   /**
@@ -93,23 +94,14 @@ namespace DGtal
   std::iterator<std::bidirectional_iterator_tag, 
 		Point, int, Point*, Point> 
   {
-
-    // ------------------------- Inner type -------------------------
-  public:
-    typedef std::pair<Vector,Vector> Steps; 
-
     // ------------------------- Private data -----------------------
   private:
 
     /// Constant aliasing pointer to the DSS visited by the iterator
-    const ArithmeticalDSS* myDSS;
+    const ArithmeticalDSS* myDSSPtr;
 
     /// The current point
     Point  myCurrentPoint;
-
-    /// Pair of vector containing the two steps 
-    /// used to iterate over the DSS points
-    Steps mySteps;
 
     /// Quantity to add to the current remainder
     Integer  myQuantityToAdd;
@@ -228,6 +220,9 @@ namespace DGtal
 
     /**
      * Constructor.
+     * The user gives all the (redondant) parameters and 
+     * should be sure that the resulting DSS is valid. 
+     *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
      * @param aMu intercept
@@ -247,6 +242,12 @@ namespace DGtal
 
     /**
      * Constructor.
+     * Minimal set of parameters to build the DSS
+     * in constant time. 
+     * The user should be sure that the slope is
+     * consistent with the position of the leaning 
+     * point. 
+     *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
      * @param aMu intercept
@@ -257,14 +258,14 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      */
-    ArithmeticalDSS(const Integer& aA, const Integer& aB, 
-		    const Integer& aMu,  
+    ArithmeticalDSS(const Integer& aA, const Integer& aB,
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
 
     /**
-     * Constructor of a pattern from the two end points
+     * Constructor of a pattern from its two end points.
+     *
      * @param aF the first point
      * @param aL the last point
      */
@@ -370,6 +371,12 @@ namespace DGtal
     Point Ll() const; 
 
     /**
+     * @return the shift vector translating a point
+     * of remainder r to a point of remainder r+omega
+     */
+    Vector shift() const; 
+
+    /**
      * Returns the remainder of @a aPoint
      * (which does not necessarily belong to the DSS)
      * @return remainder of @a aPoint
@@ -409,6 +416,7 @@ namespace DGtal
      */
     bool operator()(const Point& aPoint) const; 
 
+    // ----------------------- Iterator services -------------------------------
     /**
      * @return begin iterator,
      * which points to the first point returned by back() 
@@ -433,8 +441,93 @@ namespace DGtal
      */
     ConstReverseIterator rend() const; 
 
+    // ----------------------- Dynamic methods --------------------------------
+
+    /**
+     * Tests whether the union between a point 
+     * and the DSS is a DSS. 
+     *
+     * @param aNewPoint the point to test
+     * @param aLastPoint last point of the DSS next to which 
+     * @a aNewPoint should be 
+     * 
+     * @return an integer equal to 0 if the union between 
+     * aNewPoint and *this is not a DSS, but strictly greater 
+     * than 0 otherwise. The value gives the way of updating
+     *  the members of *this: 
+     * 1: initialization of the first step
+     * 2: repetition of the first step
+     * 3: initialization of the second step
+     * 4: weakly interior on the left
+     * 5: weakly interior on the right
+     * 6: weakly exterior on the left
+     * 7: weakly exterior on the right
+     * 8: strongly interior
+     * @see extend
+     */
+    unsigned short int isExtendable( const Point& aNewPoint, 
+				     const Point& aLastPoint );
+
+    /**
+     * Tests whether the union between a point 
+     * and the DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     *
+     * @param aNewPoint the point to test
+     * @param aLastPoint last point of the DSS next to which 
+     * @a aNewPoint should be 
+     * @param aFirstLeft first leaning point located on the left side of the DSS
+     * @param aLastLeft last leaning point located on the left side of the DSS  
+     * @param aFirstRight first leaning point located on the right side of the DSS
+     * @param aLastRight last leaning point located on the right side of the DSS 
+     * 
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     * @see isExtendable
+     */
+    unsigned short int extend( const Point& aNewPoint, 
+			       Point& aLastPoint, 
+			       Point& aFirstLeft,  Point& aLastLeft,
+			       Point& aFirstRight,  Point& aLastRight );
+
     // ------------------------- Protected Datas ------------------------------
   private:
+
+    // -------------------- first and last point, leaning points ---------------
+    /**
+    * First point
+    */
+    Point myF;
+    /**
+    * Last point 
+    */
+    Point myL;
+    /**
+    * First upper leaning point ( of remainder @a myMu )
+    */
+    Point myUf;
+    /**
+    * Last upper leaning point ( of remainder @a myMu )
+    */
+    Point myUl;
+    /**
+    * First lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+    */
+    Point myLf;
+    /**
+    * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+    */
+    Point myLl;
+
+    // -------------------- steps ---------------------------------------------
+    /**
+    * Pair of steps used to iterate over the DSS points
+    */
+    Steps mySteps;
+    /**
+    * Shift vector (translating a point of remainder r to a point of remainder r+omega 
+    */
+    Vector myShift;
 
     //------------------------ parameters of the DSS --------------------------
     /**
@@ -453,42 +546,6 @@ namespace DGtal
     * Thickness
     */
     Integer myOmega;
-
-    // -------------------- first and last point, leaning points ---------------
-    /**
-    * First upper leaning point ( of remainder @a myMu )
-    */
-    Point myUf;
-    /**
-    * Last upper leaning point ( of remainder @a myMu )
-    */
-    Point myUl;
-    /**
-    * First lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
-    */
-    Point myLf;
-    /**
-    * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
-    */
-    Point myLl;
-    /**
-    * First point
-    */
-    Point myF;
-    /**
-    * Last point 
-    */
-    Point myL;
-
-    // -------------------- steps ---------------------------------------------
-    /**
-    * First step
-    */
-    Vector myStep1;
-    /**
-    * Next step 
-    */
-    Vector myStep2;
 
     // ------------------------- Private Datas --------------------------------
   private:

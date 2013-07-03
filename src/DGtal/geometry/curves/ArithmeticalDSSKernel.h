@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+
+#include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -76,11 +78,18 @@ namespace DGtal
   public:
     /**
      * Given parameters @a a and @a b, this method computes the shift vector
-     * mapping a point of remainder r to a point of remainder r+omega
+     * translating a point of remainder r to a point of remainder r+omega.
+     *
      * @param a a-parameter
      * @param b b-parameter
      * @tparam TInteger a model of integer for the parameters
      * @return shift vector
+     *
+     * NB: The shift vector is set to (0,0) if @a a and @a b are both null. 
+     * If ( @a a , @a b ) lies between two octant (resp. quadrant) (eg. b>0
+     * and a=0), the shift vector of the next octant (resp. quadrant) is 
+     * chosen with respect to the counter-clockwise orientation.
+     *
      * @see steps
      */
     template <typename TInteger>
@@ -91,9 +100,9 @@ namespace DGtal
      * the two vectors that are used to iterate over the points 
      * of a DSS of slope a/b.
      *
-     * The first vector maps any point to a point of greater remainder, 
-     * whereas the second one maps any point to a point of smaller 
-     * remainder. Moreover, the sum of these two vectors is equal 
+     * The first vector translates any point to a point of greater remainder, 
+     * whereas the second one translates any point to a point of smaller remainder. 
+     * Moreover, the difference between the first and the second vectors is equal 
      * to the shift vector. 
      * @see shift
      *
@@ -101,6 +110,9 @@ namespace DGtal
      * @param b b-parameter
      * @tparam TInteger a model of integer for the parameters
      * @return the pair of steps
+     *
+     * NB: The two vectors are set to (0,0) if @a a and @a b are both null.
+     * The second vector is set to (0,0) if either @a a or @a b is null. 
      */
     template <typename TInteger>
     static Steps steps(const TInteger& a, const TInteger& b); 
