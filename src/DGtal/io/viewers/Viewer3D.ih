@@ -33,6 +33,9 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
+#include "DGtal/io/CDrawableWithViewer3D.h"
+#include "DGtal/io/Viewer3DFactory.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -82,14 +85,14 @@ DGtal::Viewer3D::operator<<(const Display3D::StreamKey  & key){
 }
 
 
-template <typename TDrawableWithDisplay3D>
+template <typename TDrawableWithViewer3D>
 inline
 DGtal::Viewer3D & 
-DGtal::Viewer3D::operator<<( const TDrawableWithDisplay3D & object )
+DGtal::Viewer3D::operator<<( const TDrawableWithViewer3D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+  BOOST_CONCEPT_ASSERT((CDrawableWithViewer3D< TDrawableWithViewer3D >));
 
-  DGtal::Display3DFactory::draw(*this, object);
+  DGtal::Viewer3DFactory::draw(*this, object);
   return *this;
 }
 

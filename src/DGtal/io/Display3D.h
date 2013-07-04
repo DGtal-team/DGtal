@@ -499,37 +499,6 @@ public:
     virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
 
 
-    /**
-     * Set camera up-vector.
-     * @param x x coordinate of up-vector.
-     * @param y y coordinate of up-vector.
-     * @param z z coordinate of up-vector.
-     */
-    virtual void setCameraUpVector(double x, double y, double z ){};
-
-    /**
-     * Set camera position.
-     * @param x x position.
-     * @param y y position.
-     * @param z z position.
-     */
-    virtual void setCameraPosition(double x, double y , double z) {  };
-
-    /**
-     * Set near and far distance.
-     * @param near near distance.
-     * @param far far distance.
-     */
-    virtual void setNearFar(double near , double far){};
-
-    /**
-     * Set camera direction.
-     * @param x x direction.
-     * @param y y direction.
-     * @param z z direction.
-     */
-    virtual void setCameraDirection(double x , double y, double z) { };
-
 
 
     /**
@@ -637,7 +606,7 @@ public:
      */
     virtual void addCube(double x, double y, double z,
                          DGtal::Color color= DGtal::Color(220, 220, 220),
-                         double width=0.5);
+                         double width=1.0);
 
 
     /**
@@ -666,14 +635,25 @@ public:
      * missing text line 662 in the original document
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
-     *  according this boolean  parameter  (if @a aSign=true oriented in the direct axis orientation).
-     * @param basicMode if true, a basic mode to display SurfelPrism are used (i.e just a simple surfel face).
+     *  according this boolean  parameter  (if @a aSign=true oriented in the direct axis orientation)
      *
      */
     virtual void addSurfelPrism(double x, double y, double z,
                                 bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-                                double positionShift=0.0, double sizeFactor=1.0,
-                                bool isSigned= false, bool aSign=true, bool basicMode=false);
+                                double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
+
+    /**
+     * Specific to display a surfel from Kahlimsky space in basic mode.
+     *
+     *  x,y,z the surfel center.
+     *  xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
+     *                                     the x-axis, y-axis or z-axis.
+     * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
+     *
+     */
+    virtual void addQuad(double x, double y, double z,
+                                bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
+                                double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
 
 
@@ -846,13 +826,13 @@ public:
       * Use to embed a signed DGtal kahlimsky cell into space
       * @param cell a kahlimsky cell
       */
-    Z3i::KSpace::Space::RealPoint embed( const Z3i::SCell & cell ) const;
+    Z3i::KSpace::Space::RealPoint embedKS( const Z3i::SCell & cell ) const;
 
     /**
       * Use to embed an unsigned DGtal kahlimsky cell into space
       * @param cell kahlimsky cell
       */
-    Z3i::KSpace::Space::RealPoint embed( const Z3i::Cell & cell ) const;
+    Z3i::KSpace::Space::RealPoint embedK( const Z3i::Cell & cell ) const;
 
     //---end interface
 

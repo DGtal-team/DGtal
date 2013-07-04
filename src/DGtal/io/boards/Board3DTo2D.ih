@@ -33,54 +33,15 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
+#include "DGtal/io/CDrawableWithBoard3DTo2D.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/io/Board3DTo2DFactory.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/*
-// surcharge of parents methods              //
-inline
-void
-DGtal::Board3DTo2D::addCone(double x1, double y1, double z1,
-                        double x2, double y2, double z2,
-                        double width, bool signPos)
-{
-  updateBoundingBox(x1, y1, z1);
-  updateBoundingBox(x2, y2, z2);
-  lineD3D l;
-  l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2;
-  l.width=width;
-  l.R= myCurrentFillColor.red();
-  l.G= myCurrentFillColor.green();
-  l.B=myCurrentFillColor.blue();
-  l.T=myCurrentFillColor.alpha();
-  l.isSigned=true;
-  l.signPos=signPos;
-  myKSLinelList.push_back(l);
-}
 
-
-inline
-void
-DGtal::Board3DTo2D::addCylinder(double x1, double y1, double z1,
-                        double x2, double y2, double z2,
-                        double width)
-{
-  updateBoundingBox(x1, y1, z1);
-  updateBoundingBox(x2, y2, z2);
-  lineD3D l;
-  l.x1=x1; l.y1=y1; l.z1=z1; l.x2=x2; l.y2=y2; l.z2=z2;
-  l.width=width;
-  l.R= myCurrentFillColor.red();
-  l.G= myCurrentFillColor.green();
-  l.B=myCurrentFillColor.blue();
-  l.T=myCurrentFillColor.alpha();
-  l.isSigned=false;
-  l.signPos=false;
-  myKSLinelList.push_back(l);
-}
-*/
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -110,14 +71,14 @@ DGtal::Board3DTo2D::operator<<(const DGtal::Color & aColor){
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
-template <typename TDrawableWithDisplay3D>
+template <typename TDrawableWithBoard3DTo2D>
 inline
 DGtal::Board3DTo2D & 
-DGtal::Board3DTo2D::operator<<( const TDrawableWithDisplay3D & object )
+DGtal::Board3DTo2D::operator<<( const TDrawableWithBoard3DTo2D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+  BOOST_CONCEPT_ASSERT((CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D>));
 
-  DGtal::Display3DFactory::draw(*this, object);
+  DGtal::Board3DTo2DFactory::draw(*this, object);
   return *this;
 }
 
