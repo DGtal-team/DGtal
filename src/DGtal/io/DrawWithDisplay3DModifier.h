@@ -18,10 +18,9 @@
 
 /**
  * @file DrawWithDisplay3DModifier.h
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Aline Martin
  *
- * @date 2011/08/08
+ * @date 2013/07/02
  *
  * Header file for module DrawWithDisplay3DModifier.cpp
  *
@@ -166,87 +165,7 @@ namespace DGtal
     bool myDrawPlane;
   };
   
-  
-  /**
-   * @brief  CameraPosition class to set camera position.
-   */
-  struct CameraPosition : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x position.
-     * @param y y position.
-     * @param z z position.
-     */
-    CameraPosition( const double x, const double y, const double z ):eyex(x), eyey(y), eyez(z)
-    {
-    }
-    
-    double eyex, eyey, eyez;
-  };
-  
-  
-  /**
-   * @brief CameraDirection class to set camera direction.
-   */
-  struct CameraDirection : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x direction.
-     * @param y y direction.
-     * @param z z direction.
-     */
-    CameraDirection( const double x, const double y, const double z ): dirx(x), diry(y), dirz(z)
-    {
-    }
-    
-    double dirx, diry, dirz;
-  };
-  
-  
-  /**
-   * @brief CameraUpVector class to set camera up-vector.
-   */
-  struct CameraUpVector : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param x x coordinate of up-vector.
-     * @param y y coordinate of up-vector.
-     * @param z z coordinate of up-vector.
-     */
-    CameraUpVector( const double x, const double y, const double z ): upx(x), upy(y), upz(z)
-    {
-      upx=x; upy=y; upz=z;
-    }
-    
-    double upx, upy, upz;
-  };
-  
-  
-  
-  /**
-   * @brief CameraZNearFar class to set near and far distance.
-   */
-  struct CameraZNearFar : public DrawWithDisplay3DModifier
-  {
-    /**
-     * Constructor.
-     *
-     * @param near near distance.
-     * @param far far distance.
-     */
-    CameraZNearFar( const double near, const double far ): ZNear(near), ZFar(far)
-    {
-    }
-    double ZNear, ZFar;
-  };
-  
-  
+
   
   /**
    * @brief class to modify the position and scale to construct better illustration mode.

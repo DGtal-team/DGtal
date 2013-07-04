@@ -146,6 +146,46 @@ namespace DGtal
 
   class Display3D;
 
+
+#if defined( Board3DTo2D_h )
+  class Board3DTo2D;
+#endif
+#if defined( Viewer3D_h )
+  class Viewer3D;
+#endif
+
+  //class Board3D;
+
+#if defined( Viewer3D_h )
+  /**
+   * Interface that specifies that an object can draw itself on a
+   *  3D Viewer
+   * (BK)
+   */
+  struct DrawableWithViewer3D {
+    /**
+     * Operation to override. Does nothing by default.
+     */
+    virtual void setStyle( Viewer3D &  ) const {}
+    virtual ~DrawableWithViewer3D() {}
+  };
+#endif
+
+#if defined( Board3DTo2D_h )
+  /**
+   * Interface that specifies that an object can draw itself on a
+   *  3Dto2D Board
+   * (BK)
+   */
+  struct DrawableWithBoard3DTo2D {
+    /**
+     * Operation to override. Does nothing by default.
+     */
+    virtual void setStyle( Board3DTo2D &  ) const {}
+    virtual ~DrawableWithBoard3DTo2D() {}
+  };
+#endif
+
   /**
    * Interface that specifies that an object can draw itself on a
    *  3DDisplay

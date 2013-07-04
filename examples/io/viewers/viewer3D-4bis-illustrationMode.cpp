@@ -51,15 +51,18 @@ int main( int argc, char** argv )
 {
 
   QApplication application(argc,argv);
-  Viewer3D viewer;
-  viewer.show();
 
   KSpace K;
   Point plow(0,0,0);  
   Point pup(1,1,0);
   Domain domain( plow, pup );
   K.init( plow, pup, true ); 
-  
+
+  //Viewer3D<Space,KSpace> viewer(K);
+  Viewer3D viewer;
+  viewer.show();
+
+
   viewer << SetMode3D( domain.className(), "Paving" );
   //with the domain can't see the cubes
   //viewer << domain;

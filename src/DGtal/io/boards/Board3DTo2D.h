@@ -48,8 +48,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Display3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
+
+//#include "DGtal/io/DrawWithBoard3DTo2DModifier.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
