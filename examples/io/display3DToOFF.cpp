@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace Z3i;
 
 
 int main( int /*argc*/, char** /*argv*/ )
@@ -20,7 +21,7 @@ int main( int /*argc*/, char** /*argv*/ )
 
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
   //! [ExampleDisplay3DToOFF]
-  Display3D viewer;
+  Display3D<Space, KSpace> viewer;
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());

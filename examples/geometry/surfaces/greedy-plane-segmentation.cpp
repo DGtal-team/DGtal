@@ -178,7 +178,7 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-segment]
 
   //! [greedy-plane-segmentation-visualization]
-  Viewer3D viewer;
+  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
   viewer.show(); 
   for ( std::map<Vertex,SegmentedPlane*>::const_iterator 
           it = v2plane.begin(), itE = v2plane.end();
@@ -187,7 +187,7 @@ int main( int argc, char** argv )
       viewer << CustomColors3D( it->second->color, it->second->color );
       viewer << ks.unsigns( it->first );
     }
-  viewer << Display3D::updateDisplay;
+  viewer << Display3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
   //! [greedy-plane-segmentation-visualization]
 
   //! [greedy-plane-segmentation-freeMemory]

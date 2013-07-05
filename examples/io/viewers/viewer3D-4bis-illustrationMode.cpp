@@ -59,7 +59,7 @@ int main( int argc, char** argv )
   K.init( plow, pup, true ); 
 
   //Viewer3D<Space,KSpace> viewer(K);
-  Viewer3D viewer;
+  Viewer3D<Space, KSpace> viewer;
   viewer.show();
 
 
@@ -140,7 +140,7 @@ int main( int argc, char** argv )
   
   
   viewer << tsx3 << tsy3 << tsz3 << tsxn3 << tsyn3 << tszn3;
-  viewer  << Display3D::updateDisplay; 
+  viewer  << Display3D<Space, KSpace>::updateDisplay;
 
   return application.exec();
 }

@@ -50,7 +50,7 @@ int main( int argc, char** argv )
 
  QApplication application(argc,argv);
 
- Viewer3D viewer;
+ Viewer3D<Space, KSpace> viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
@@ -64,7 +64,7 @@ int main( int argc, char** argv )
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set << Display3D::updateDisplay; 
+ viewer << shape_set << Display3D<Space, KSpace>::updateDisplay;
  
  return application.exec();
 }
