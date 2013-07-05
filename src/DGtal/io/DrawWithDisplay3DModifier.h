@@ -50,66 +50,66 @@
 
 namespace DGtal
 {
-  
-  /**
+
+/**
    *@brief Base class specifying the methods for classes which intend to
    * modify a Viewer3D stream.
    *
    */
-  struct DrawWithDisplay3DModifier {
-    std::string className() const;
-  };
-  
-  
-  
-  /**
+struct DrawWithDisplay3DModifier {
+  std::string className() const;
+};
+
+
+
+/**
    * @brief Modifier class in a Display3D stream. Useful to choose your
    * own mode for a given class. Realizes the concept
    * CDrawableWithDisplay3D.
    */
-  
-  struct SetMode3D : public DrawWithDisplay3DModifier {
-    /**
+
+struct SetMode3D : public DrawWithDisplay3DModifier {
+  /**
      * @param classname the name of the class to which the style is associated.
      *
      * @param mode the name of the new mode.
      */
-    SetMode3D( std::string classname, std::string mode )
+  SetMode3D( std::string classname, std::string mode )
     : myClassname( classname ), myMode( mode )
-    {}
-    
-    std::string myClassname;
-    std::string myMode;
-  };
-  
-  
-  
-  
-  /**
+  {}
+
+  std::string myClassname;
+  std::string myMode;
+};
+
+
+
+
+/**
    * @brief Modifier class in a Display3D stream. Useful to choose your own
    * style for a given class. Realizes the concept
    * CDrawableWithDisplay3D.
    */
-  struct CustomStyle3D : public DrawWithDisplay3DModifier {
-    /**
+struct CustomStyle3D : public DrawWithDisplay3DModifier {
+  /**
      * @param aClassname the name of the class to which the style is associated.
      *
      * @param style a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
-    CustomStyle3D( std::string aClassname, DrawableWithDisplay3D* style ): myClassname( aClassname ), myStyle( style )
-    {}
-    
-    std::string className() const;
-    
-    std::string myClassname;
-    CountedPtr<DrawableWithDisplay3D> myStyle;
-  };
-  
-  
-  
-  
-  /**
+  CustomStyle3D( std::string aClassname, DrawableWithDisplay3D* style ): myClassname( aClassname ), myStyle( style )
+  {}
+
+  std::string className() const;
+
+  std::string myClassname;
+  CountedPtr<DrawableWithDisplay3D> myStyle;
+};
+
+
+
+
+/**
    * @brief Custom style class redefining the fill color and the
    * gl_LINE/gl_POINT color. You can use DGtal::Color with alpha
    * transparency value but you nedd to take into account the z-buffer
@@ -122,71 +122,71 @@ namespace DGtal
    \endcode
    * @see Display3D
    */
-  struct CustomColors3D : public DrawWithDisplay3DModifier
-  {
-    Color myPenColor;
-    Color myFillColor;
-    
-    /**
+struct CustomColors3D : public DrawWithDisplay3DModifier
+{
+  Color myPenColor;
+  Color myFillColor;
+
+  /**
      * Constructor.
      *
      * @param penColor specifies the pen color.
      * @param fillColor specifies the fill color.
      */
-    CustomColors3D( const Color & penColor,
-                   const Color & fillColor )
+  CustomColors3D( const Color & penColor,
+                  const Color & fillColor )
     : myPenColor( penColor ), myFillColor( fillColor )
-    {}
-    
-    
-  };
-  
-  
-  
-  
-  /**
+  {}
+
+
+};
+
+
+
+
+/**
    * @brief Class for adding a Clipping plane through the Viewer3D
    * stream. Realizes the concept CDrawableWithViewer3D.
    */
-  
-  struct ClippingPlane : public DrawWithDisplay3DModifier {
-    /**
+
+struct ClippingPlane : public DrawWithDisplay3DModifier {
+  /**
      *
      */
-    ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
+  ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
     : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)
-    {}
-    
-    double * getEquation();
-    double myA;
-    double myB;
-    double myC;
-    double myD;
-    bool myDrawPlane;
-  };
-  
+  {}
 
-  
-  /**
+  double * getEquation();
+  double myA;
+  double myB;
+  double myC;
+  double myD;
+  bool myDrawPlane;
+};
+
+
+
+/**
    * @brief class to modify the position and scale to construct better illustration mode.
    * @todo add a constructor to automatically define the shift and the scale according a given associated SCell.
    */
-  struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
-  {
-    /**
+struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
+{
+  /**
      * Constructor.
      *
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aShift the shift distance (positive or negative).
      * @param aSizeFactor use to change the SurfelPrism size (1.0 initial size).
      */
-    TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
-                        double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
-    {
-    }
-    
-    
-    /**
+  TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+                          double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
+  {
+  }
+
+
+  /**
      * Constructor.
      *
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
@@ -194,45 +194,46 @@ namespace DGtal
      * @param aShift the shift distance (positive or negative (default 0.05)).
      * @param aSizeFactor use to change the SurfelPrism size (default 0.75).
      */
-    TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
-                        const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
-                        double aShift=0.05, double aSizeFactor=0.75  )
-    {
-      mySurfel= aSurfel;
-      myShift = aShift;
-      mySizeFactor = aSizeFactor;
-      bool xodd = (mySurfel.myCoordinates[ 0 ] & 1 );
-      bool yodd = (mySurfel.myCoordinates[ 1 ] & 1 );
-      bool zodd = (mySurfel.myCoordinates[ 2 ] & 1 );
-      if(!xodd ){
-        myShift*= ((aVoxel.myCoordinates[ 0 ]-mySurfel.myCoordinates[ 0 ] <0)? -1.0: 1.0);
-      }else if(!yodd ){
-        myShift*=((aVoxel.myCoordinates[ 1 ]-mySurfel.myCoordinates[ 1 ] <0)? -1.0: 1.0);
-      }else if(!zodd ){
-        myShift*=((aVoxel.myCoordinates[ 2 ]-mySurfel.myCoordinates[ 2 ] <0)? -1.0: 1.0);
-      }
+  TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+                          const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
+                          double aShift=0.05, double aSizeFactor=0.75  )
+  {
+    mySurfel= aSurfel;
+    myShift = aShift;
+    mySizeFactor = aSizeFactor;
+    bool xodd = (mySurfel.myCoordinates[ 0 ] & 1 );
+    bool yodd = (mySurfel.myCoordinates[ 1 ] & 1 );
+    bool zodd = (mySurfel.myCoordinates[ 2 ] & 1 );
+    if(!xodd ){
+      myShift*= ((aVoxel.myCoordinates[ 0 ]-mySurfel.myCoordinates[ 0 ] <0)? -1.0: 1.0);
+    }else if(!yodd ){
+      myShift*=((aVoxel.myCoordinates[ 1 ]-mySurfel.myCoordinates[ 1 ] <0)? -1.0: 1.0);
+    }else if(!zodd ){
+      myShift*=((aVoxel.myCoordinates[ 2 ]-mySurfel.myCoordinates[ 2 ] <0)? -1.0: 1.0);
     }
-    
-    ///@todo FIX this member
-    DGtal::KhalimskySpaceND< 3, int >::SCell mySurfel;
-    double myShift;
-    double mySizeFactor;
-  };
-  
-  
-  
-  
-  
-  
-  /**
+  }
+
+  ///@todo FIX this member
+  DGtal::KhalimskySpaceND< 3, int >::SCell mySurfel;
+  double myShift;
+  double mySizeFactor;
+};
+
+
+
+
+
+
+/**
    *
    * @brief class to modify the position and orientation of an textured 2D image.
    *
    */
-  struct UpdateImagePosition : public DrawWithDisplay3DModifier
-  {
-    
-    /**
+template < typename S, typename KS>
+struct UpdateImagePosition : public DrawWithDisplay3DModifier
+{
+
+  /**
      * Constructor given from an specific image index, a new direction
      * (associated to the normal of the image plane), and and a new
      * position of the bottom-left point.
@@ -243,26 +244,26 @@ namespace DGtal
      * @param posZbottomLeft the z position of the bottom left point.
      *
      */
-    UpdateImagePosition(unsigned int anIndex, Display3D::ImageDirection newDir,
-                        double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
+  UpdateImagePosition(unsigned int anIndex,typename Display3D<S,KS>::ImageDirection newDir,
+                      double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
     myPosXBottomLeft(posXbottomLeft),
     myPosYBottomLeft(posYbottomLeft),
     myPosZBottomLeft(posZbottomLeft),
     myNewDirection(newDir)
-    
-    {
-      
-    }
-    unsigned int myIndex;
-    double  myPosXBottomLeft;
-    double  myPosYBottomLeft;
-    double  myPosZBottomLeft;
-    Display3D::ImageDirection myNewDirection;
-  };
-  
-  
-  
-  /**
+
+  {
+
+  }
+  unsigned int myIndex;
+  double  myPosXBottomLeft;
+  double  myPosYBottomLeft;
+  double  myPosZBottomLeft;
+  typename Display3D<S,KS>::ImageDirection myNewDirection;
+};
+
+
+
+/**
    *
    * @brief class to insert a custom 2D textured image by using a
    * conversion functor and allows to change the default mode
@@ -287,30 +288,29 @@ namespace DGtal
    *
    * @see AddTextureImage3DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
    */
-  template <typename TImageType, typename TFunctor>
-  struct AddTextureImage2DWithFunctor : public DrawWithDisplay3DModifier
-  {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
-    
-    /**
+template <typename TImageType, typename TFunctor, typename S, typename KS>
+struct AddTextureImage2DWithFunctor : public DrawWithDisplay3DModifier
+{
+  BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+
+  /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
-    
-    AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
-                                 ConstAlias<TFunctor> aFunctor,
-                                 Display3D::TextureMode aMode=Display3D::GrayScaleMode ): my2DImage(anImage),
+  AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
+                               ConstAlias<TFunctor> aFunctor,
+                               typename Display3D<S,KS>::TextureMode aMode= Display3D<S, KS>::GrayScaleMode ): my2DImage(anImage),
     myFunctor(aFunctor),
     myMode(aMode)
-    {
-      
-    }
-    const TImageType *my2DImage;
-    const TFunctor &myFunctor;
-    Display3D::TextureMode myMode;
-  };
-  
-  /**
+  {
+
+  }
+  const TImageType *my2DImage;
+  const TFunctor &myFunctor;
+  typename Display3D< S, KS>::TextureMode myMode;
+};
+
+/**
    *
    * @brief class to insert a custom 3D textured image by using a
    * conversion functor and allows to change the default mode
@@ -334,40 +334,40 @@ namespace DGtal
    *
    * @see AddTextureImage2DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
    */
-  template <typename TImageType, typename TFunctor>
-  struct AddTextureImage3DWithFunctor : public DrawWithDisplay3DModifier
-  {
-    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
-    
-    /**
+template <typename TImageType, typename TFunctor, typename S, typename KS>
+struct AddTextureImage3DWithFunctor : public DrawWithDisplay3DModifier
+{
+  BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+
+  /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
-
-    AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
-                                 ConstAlias<TFunctor> aFunctor,
-                                 Display3D::TextureMode aMode=Display3D::GrayScaleMode): my3DImage(anImage),
+  AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
+                               ConstAlias<TFunctor> aFunctor,
+                               typename Display3D<S,KS>::TextureMode aMode= Display3D<S,KS>::GrayScaleMode): my3DImage(anImage),
     myFunctor(aFunctor),
     myMode(aMode)
-    {
-      
-    }
-    const TImageType *my3DImage;
-    const TFunctor &myFunctor;
-    Display3D::TextureMode myMode;
-  };
-  
-  
-  
-  /**
+  {
+
+  }
+  const TImageType *my3DImage;
+  const TFunctor &myFunctor;
+  typename Display3D<S, KS>::TextureMode myMode;
+};
+
+
+
+/**
    *
    * @brief class to modify the position and orientation of an textured 2D image.
    *
    */
-  struct UpdateLastImagePosition : public DrawWithDisplay3DModifier
-  {
-    
-    /**
+template < typename S, typename KS>
+struct UpdateLastImagePosition : public DrawWithDisplay3DModifier
+{
+
+  /**
      * Constructor given from an specific image index, a new direction
      * (associated to the normal of the image plane), and and a new
      * position of the bottom-left point.
@@ -377,34 +377,34 @@ namespace DGtal
      * @param posZbottomLeft the z position of the bottom left point.
      *
      */
-    UpdateLastImagePosition( Display3D::ImageDirection newDir,
-                            double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):
+  UpdateLastImagePosition( typename Display3D<S, KS>::ImageDirection newDir,
+                           double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):
     myPosXBottomLeft(posXbottomLeft),
     myPosYBottomLeft(posYbottomLeft),
     myPosZBottomLeft(posZbottomLeft),
     myNewDirection(newDir)
   {
-      
-    }
-    double  myPosXBottomLeft;
-    double  myPosYBottomLeft;
-    double  myPosZBottomLeft;
-    Display3D::ImageDirection myNewDirection;
-  };
-  
-  
-  
-  
-  /**
+
+  }
+  double  myPosXBottomLeft;
+  double  myPosYBottomLeft;
+  double  myPosZBottomLeft;
+  typename Display3D<S, KS>::ImageDirection myNewDirection;
+};
+
+
+
+
+/**
    * @brief class to modify the data of an given image and also the
    * possibility to translate it (optional).
    *
    */
-  template<typename TImageType, typename TFunctor= CastFunctor<unsigned int> >
-  struct UpdateImageData : public DrawWithDisplay3DModifier
-  {
-    
-    /**
+template<typename TImageType, typename TFunctor= CastFunctor<unsigned int> >
+struct UpdateImageData : public DrawWithDisplay3DModifier
+{
+
+  /**
      * Constructor given from an specific image index, a new image
      * (should be of dimension 2 and with the same size than the
      * orginal), and a possible (optional translation).
@@ -416,36 +416,36 @@ namespace DGtal
      * @param translateZ the y translation value.
      *
      */
-    UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
-                    double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
+  UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
+                  double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
     myImage(&anImage),
     myTranslateX (translateX),
     myTranslateY (translateY),
     myTranslateZ (translateZ),
     myFunctor(aFunctor)
-    {
-      
-    }
-    unsigned int myIndex;
-    int myTranslateX;
-    int myTranslateY;
-    int myTranslateZ;
-    const TImageType *myImage;
-    const TFunctor &myFunctor;
-  };
-  
-  
-  
-  
-  /**
+  {
+
+  }
+  unsigned int myIndex;
+  int myTranslateX;
+  int myTranslateY;
+  int myTranslateZ;
+  const TImageType *myImage;
+  const TFunctor &myFunctor;
+};
+
+
+
+
+/**
    * @brief class to modify the data of an given image and also the
    * possibility to translate it (optional).
    *
    */
-  struct Translate2DDomain : public DrawWithDisplay3DModifier
-  {
-    
-    /**
+struct Translate2DDomain : public DrawWithDisplay3DModifier
+{
+
+  /**
      * Constructor given from an specific image index, a new image
      * (should be of dimension 2 and with the same size than the
      * orginal), and a possible (optional translation).
@@ -456,34 +456,35 @@ namespace DGtal
      * @param translateZ the y translation value.
      *
      */
-    Translate2DDomain(unsigned int anIndex, double translateX=0,
-                      double translateY=0, double translateZ=0 ): myIndex(anIndex),
+  Translate2DDomain(unsigned int anIndex, double translateX=0,
+                    double translateY=0, double translateZ=0 ): myIndex(anIndex),
     myTranslateX (translateX),
     myTranslateY (translateY),
     myTranslateZ (translateZ)
-    {
-      
-    }
-    unsigned int myIndex;
-    int myTranslateX;
-    int myTranslateY;
-    int myTranslateZ;
-  };
-  
-  
-  
-  
-  
-  
-  /**
+  {
+
+  }
+  unsigned int myIndex;
+  int myTranslateX;
+  int myTranslateY;
+  int myTranslateZ;
+};
+
+
+
+
+
+
+/**
    *
    * @brief class to modify the position and orientation of an 2D domain.
    *
    */
-  struct Update2DDomainPosition : public DrawWithDisplay3DModifier
-  {
-    
-    /**
+template < typename S, typename KS>
+struct Update2DDomainPosition : public DrawWithDisplay3DModifier
+{
+
+  /**
      * Constructor given from an specific 2D domain index, a new direction
      * (associated to the normal of the 2D domain plane), and and a new
      * position of the bottom-left point.
@@ -494,24 +495,24 @@ namespace DGtal
      * @param posZbottomLeft the z position of the bottom left point.
      *
      */
-    Update2DDomainPosition(unsigned int anIndex, Display3D::ImageDirection newDir,
-                           double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
+  Update2DDomainPosition(unsigned int anIndex, typename Display3D<S,KS>::ImageDirection newDir,
+                         double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
     myPosXBottomLeft(posXbottomLeft),
     myPosYBottomLeft(posYbottomLeft),
     myPosZBottomLeft(posZbottomLeft),
     myNewDirection(newDir)
-    
-    {
-      
-    }
-    unsigned int myIndex;
-    double  myPosXBottomLeft;
-    double  myPosYBottomLeft;
-    double  myPosZBottomLeft;
-    Display3D::ImageDirection myNewDirection;
-  };
-  
-  
+
+  {
+
+  }
+  unsigned int myIndex;
+  double  myPosXBottomLeft;
+  double  myPosYBottomLeft;
+  double  myPosZBottomLeft;
+  typename Display3D<S, KS>::ImageDirection myNewDirection;
+};
+
+
 } // namespace DGtal
 
 

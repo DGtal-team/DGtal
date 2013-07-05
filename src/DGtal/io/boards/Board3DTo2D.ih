@@ -55,9 +55,10 @@
    * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
    **/ 
+template < typename S, typename KS>
 inline
-DGtal::Board3DTo2D & 
-DGtal::Board3DTo2D::operator<<(const DGtal::Color & aColor){
+DGtal::Board3DTo2D<S, KS> &
+DGtal::Board3DTo2D<S, KS>::operator<<(const DGtal::Color & aColor){
   myDefaultColor=aColor;
   return *this;
 }
@@ -71,12 +72,13 @@ DGtal::Board3DTo2D::operator<<(const DGtal::Color & aColor){
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
+template < typename S, typename KS>
 template <typename TDrawableWithBoard3DTo2D>
 inline
-DGtal::Board3DTo2D & 
-DGtal::Board3DTo2D::operator<<( const TDrawableWithBoard3DTo2D & object )
+DGtal::Board3DTo2D<S, KS> &
+DGtal::Board3DTo2D<S, KS>::operator<<( const TDrawableWithBoard3DTo2D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D>));
+  BOOST_CONCEPT_ASSERT((CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D, S, KS>));
 
   DGtal::Board3DTo2DFactory::draw(*this, object);
   return *this;

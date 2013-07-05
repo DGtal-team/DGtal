@@ -81,7 +81,7 @@ namespace DGtal
    @see Viewer3D, Board3DTo2D
 
   */
-
+template < class S, class KS>
 class Display3D
 {
 
@@ -419,11 +419,11 @@ public:
 
     //TODO here
 
-    CanonicEmbedder< Z3i::Space> myEmbedder;
+    CanonicEmbedder< S> myEmbedder;
 
-    CanonicCellEmbedder< Z3i::KSpace> myCellEmbedder;
+    CanonicCellEmbedder< KS> myCellEmbedder;
 
-    CanonicSCellEmbedder< Z3i::KSpace> mySCellEmbedder;
+    CanonicSCellEmbedder< KS> mySCellEmbedder;
 
 
 
@@ -448,6 +448,21 @@ public:
         myBoundingPtEmptyTag = true;
 
     };
+
+
+    Display3D(KS KSEmb){
+        myCurrentFillColor = Color ( 220, 220, 220 );
+        myCurrentLineColor = Color ( 22, 22, 222, 50 );
+        myScaleX=1.0;
+        myScaleY=1.0;
+        myScaleZ=1.0;
+        myBoundingPtEmptyTag = true;
+
+        myCellEmbedder = CanonicCellEmbedder<KS>(KSEmb);
+        mySCellEmbedder = CanonicSCellEmbedder<KS>(KSEmb);
+
+    };
+
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -765,12 +780,12 @@ public:
     /**
      *
      */
-    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
+    std::vector<DGtal::Display3D< S, KS>::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
 
     /**
      *
      */
-    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
+    std::vector<DGtal::Display3D< S, KS>::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
@@ -818,21 +833,21 @@ public:
       * @param pt a DGtal Point
       */
 
-    Z3i::Space::Space::RealPoint embed(const Z3i::Point & dp) const ;
+    typename DGtal::CanonicEmbedder<S>::RealPoint embed(const Z3i::Point & dp) const ;
 
-    Z3i::Space::Space::RealPoint embed(const ballD3D & dp) const ;
+    typename DGtal::CanonicEmbedder<S>::RealPoint embed(const ballD3D & dp) const ;
 
     /**
       * Use to embed a signed DGtal kahlimsky cell into space
       * @param cell a kahlimsky cell
       */
-    Z3i::KSpace::Space::RealPoint embedKS( const Z3i::SCell & cell ) const;
+    typename DGtal::CanonicSCellEmbedder<KS>::RealPoint embedKS( const Z3i::SCell & cell ) const;
 
     /**
       * Use to embed an unsigned DGtal kahlimsky cell into space
       * @param cell kahlimsky cell
       */
-    Z3i::KSpace::Space::RealPoint embedK( const Z3i::Cell & cell ) const;
+    typename DGtal::CanonicCellEmbedder<KS>::RealPoint embedK( const Z3i::Cell & cell ) const;
 
     //---end interface
 
@@ -1009,9 +1024,9 @@ static void normalize (double vec[3]);
    * @param object the object of class 'Display3D' to write.
    * @return the output stream after the writing.
    */
+template <typename S, typename KS>
 std::ostream&
-operator<< ( std::ostream & out, const DGtal::Display3D & object );
-
+operator<< ( std::ostream & out, const DGtal::Display3D<S, KS> & object );
 
 /**
    * Operator ">>" to export a Display3D into a Mesh
@@ -1020,9 +1035,9 @@ operator<< ( std::ostream & out, const DGtal::Display3D & object );
    * @param aMesh (return) the resulting mesh.
    *
    **/
-
+template <typename S, typename KS>
 void
-operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::ballD3D> &aMesh);
+operator>> ( const Display3D<S, KS> &aDisplay3D, DGtal::Mesh< typename Display3D<S, KS>::ballD3D> &aMesh);
 
 
 /**
@@ -1032,9 +1047,9 @@ operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::ballD3D> &aMesh
    * @param aFilename (return) the resulting mesh.
    *
    **/
-
+template < typename S, typename KS>
 void
-operator>> ( const Display3D &aDisplay3D,  std::string aFilename);
+operator>> ( const Display3D< S, KS> &aDisplay3D,  std::string aFilename);
 
 
 } // namespace DGtal

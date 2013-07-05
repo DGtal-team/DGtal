@@ -53,7 +53,8 @@ using namespace std;
 /*!
 * \brief Constructor.
 */
-DGtal::Board3DTo2D::Board3DTo2D()
+template < typename S, typename KS>
+DGtal::Board3DTo2D<S, KS>::Board3DTo2D()
 {
     init();
 }
@@ -65,8 +66,9 @@ DGtal::Board3DTo2D::Board3DTo2D()
 * Writes/Displays the object on an output stream.
 * @param out the output stream where the object is written.
 */
+template < typename S, typename KS>
 void
-DGtal::Board3DTo2D::selfDisplay ( std::ostream & out ) const
+DGtal::Board3DTo2D<S, KS>::selfDisplay ( std::ostream & out ) const
 {
     out << "[Board3DTo2D]";
 }
@@ -75,8 +77,9 @@ DGtal::Board3DTo2D::selfDisplay ( std::ostream & out ) const
 * Checks the validity/consistency of the object.
 * @return 'true' if the object is valid, 'false' otherwise.
 */
+template < typename S, typename KS>
 bool
-DGtal::Board3DTo2D::isValid() const
+DGtal::Board3DTo2D<S, KS>::isValid() const
 {
     return true;
 }
@@ -87,8 +90,9 @@ DGtal::Board3DTo2D::isValid() const
 * @param tmat destination matrix.
 * @param mat source matrix.
 */
+template < typename S, typename KS>
 void
-DGtal::Board3DTo2D::TransposeMt(double tmat[16], double mat[16])
+DGtal::Board3DTo2D<S, KS>::TransposeMt(double tmat[16], double mat[16])
 {
     tmat[0] = mat[0]; tmat[1] = mat[4]; tmat[2] = mat[8]; tmat[3] = mat[12];
     tmat[4] = mat[1]; tmat[5] = mat[5]; tmat[6] = mat[9]; tmat[7] = mat[13];
@@ -102,8 +106,9 @@ DGtal::Board3DTo2D::TransposeMt(double tmat[16], double mat[16])
 * @param mat source matrix.
 * @param b source vector.
 */
+template < typename S, typename KS>
 void
-DGtal::Board3DTo2D::MulMt(double v[4], double mat[16], double b[4])
+DGtal::Board3DTo2D<S, KS>::MulMt(double v[4], double mat[16], double b[4])
 {
     v[0] = mat[0] * b[0] + mat[1] * b[1] + mat[2] * b[2] + mat[3] * b[3];
     v[1] = mat[4] * b[0] + mat[5] * b[1] + mat[6] * b[2] + mat[7] * b[3];
@@ -124,8 +129,9 @@ DGtal::Board3DTo2D::MulMt(double v[4], double mat[16], double b[4])
 * @param upy y coordinate of up-vector.
 * @param upz z coordinate of up-vector.
 */
+template < typename S, typename KS>
 void
-DGtal::Board3DTo2D::LookAtMt(double mat[16],
+DGtal::Board3DTo2D<S, KS>::LookAtMt(double mat[16],
 double eyex, double eyey, double eyez,
 double dirx, double diry, double dirz,
 double upx, double upy, double upz)
@@ -152,7 +158,8 @@ double upx, double upy, double upz)
 /**
 * Precompute 4x4 projection matrix for 3D->2D projection.
 */
-void DGtal::Board3DTo2D::precompute_projection_matrix()
+template < typename S, typename KS>
+void DGtal::Board3DTo2D<S, KS>::precompute_projection_matrix()
 {
     // Projection: from qglviewer
     /*const double f = 1.0/tan(fieldOfView()/2.0);
@@ -199,7 +206,8 @@ projectionMatrix_[15] = 0.0;
 * @param x2d x destination projection position of the 2d point.
 * @param y2d y destination projection position of the 2d point.
 */
-void DGtal::Board3DTo2D::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
+template < typename S, typename KS>
+void DGtal::Board3DTo2D<S, KS>::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 {
     double v[4], vs[4];
     v[0]=x3d; v[1]=y3d; v[2]=z3d; v[3]=1.0;
@@ -231,10 +239,11 @@ void DGtal::Board3DTo2D::project(double x3d, double y3d, double z3d, double &x2d
 * @param bWidth width of the image to save.
 * @param bHeight height of the image to save.
 */
+template < typename S, typename KS>
 void
-DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, int bHeight)
+DGtal::Board3DTo2D<S, KS>::saveCairo(const char *filename, CairoType type, int bWidth, int bHeight)
 {
-    for(unsigned int i =0; i< myClippingPlaneList.size(); i++)
+    for(unsigned int i =0; i< Board3DTo2D<S, KS>::myClippingPlaneList.size(); i++)
         trace.info() << "-> ClippingPlane not implemented in Board3DTo2D" << std::endl;
 
     Viewport[0] = 0; Viewport[1] = 0; Viewport[2] = bWidth; Viewport[3] = bHeight;
@@ -269,10 +278,10 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
     // Draw the shapes
 
     // myBallSetList
-    for(unsigned int i=0; i<myBallSetList.size(); i++)
+    for(unsigned int i=0; i<Board3DTo2D<S, KS>::myBallSetList.size(); i++)
     {
-        for (std::vector<ballD3D>::iterator s_it = myBallSetList.at(i).begin();
-             s_it != myBallSetList.at(i).end();
+        for (typename std::vector<typename Board3DTo2D<S, KS>::ballD3D>::iterator s_it = Board3DTo2D<S, KS>::myBallSetList.at(i).begin();
+             s_it != Board3DTo2D<S, KS>::myBallSetList.at(i).end();
              ++s_it)
         {
             {
@@ -294,37 +303,37 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //z-
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x+
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x-
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y+
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y-
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 
                 cairo_restore (cr);
             }
@@ -332,10 +341,10 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
     }
 
     // myLineSetList
-    for(unsigned int i=0; i<myLineSetList.size(); i++)
+    for(unsigned int i=0; i<Board3DTo2D<S, KS>::myLineSetList.size(); i++)
     {
-        for (std::vector<lineD3D>::iterator s_it = myLineSetList.at(i).begin();
-             s_it != myLineSetList.at(i).end();
+        for (typename std::vector<typename Board3DTo2D<S, KS>::lineD3D>::iterator s_it = Board3DTo2D<S, KS>::myLineSetList.at(i).begin();
+             s_it != Board3DTo2D<S, KS>::myLineSetList.at(i).end();
              ++s_it)
         {
             {
@@ -361,16 +370,16 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
     }
 
     // myCubeSetList
-    for(unsigned int i=0; i<myCubeSetList.size(); i++)
+    for(unsigned int i=0; i<Board3DTo2D<S, KS>::myCubeSetList.size(); i++)
     {
-        for (std::vector<cubeD3D>::iterator s_it = myCubeSetList.at(i).begin();
-             s_it != myCubeSetList.at(i).end();
+        for (typename std::vector< typename Board3DTo2D<S, KS>::cubeD3D>::iterator s_it = Board3DTo2D<S, KS>::myCubeSetList.at(i).begin();
+             s_it != Board3DTo2D<S, KS>::myCubeSetList.at(i).end();
              ++s_it)
         {
             {
                 cairo_save (cr);
 
-                if (myModes["Board3DTo2D"]=="SolidMode")
+                if (Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode")
                     cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*1.75)); // *1.75 arbitraire
                 else
                     cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
@@ -385,57 +394,57 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //z-
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x+
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x-
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y+
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y-
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
                 project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
                 project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 
                 cairo_restore (cr);
             }
         }
     }
 
-    for(std::vector<std::vector<quadD3D> >::iterator it=myQuadSetList.begin(); it != myQuadSetList.end(); it++)
+    for(typename std::vector<std::vector<typename Board3DTo2D<S, KS>::quadD3D> >::iterator it=Board3DTo2D<S, KS>::myQuadSetList.begin(); it != Board3DTo2D<S, KS>::myQuadSetList.end(); it++)
         trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
 
     // Drawing all Khalimsky Space Cells
 
     // SurfelPrism (from updateList)
-    for (std::vector<quadD3D>::iterator s_it = mySurfelPrismList.begin();
-         s_it != mySurfelPrismList.end();
+    for (typename std::vector<typename Board3DTo2D<S, KS>::quadD3D>::iterator s_it =Board3DTo2D<S, KS>:: mySurfelPrismList.begin();
+         s_it != Board3DTo2D<S, KS>::mySurfelPrismList.end();
          ++s_it)
     {
         {
             cairo_save (cr);
 
-            if (myModes["Board3DTo2D"]=="SolidMode")
+            if (Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode")
                 cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*3.75)); // *3.75 arbitraire
             else
                 cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
@@ -448,7 +457,7 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
             project((*s_it).x2,  (*s_it).y2, (*s_it).z2, x2, y2);
             project((*s_it).x3,  (*s_it).y3, (*s_it).z3, x3, y3);
             project((*s_it).x4,  (*s_it).y4, (*s_it).z4, x4, y4);
-            cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+            cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<S, KS>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 
             cairo_restore (cr);
         }
@@ -498,37 +507,37 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
                 project(it->x+width,  it->y+width, it->z+width, x2, y2);
                 project(it->x+width,  it->y-width, it->z+width, x3, y3);
                 project(it->x-width,  it->y-width, it->z+width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //z-
                 project(it->x-width,  it->y+width, it->z-width, x1, y1);
                 project(it->x+width,  it->y+width, it->z-width, x2, y2);
                 project(it->x+width,  it->y-width, it->z-width, x3, y3);
                 project(it->x-width,  it->y-width, it->z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x+
                 project(it->x+width,  it->y-width, it->z+width, x1, y1);
                 project(it->x+width,  it->y+width, it->z+width, x2, y2);
                 project(it->x+width,  it->y+width, it->z-width, x3, y3);
                 project(it->x+width,  it->y-width, it->z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x-
                 project(it->x-width,  it->y-width, it->z+width, x1, y1);
                 project(it->x-width,  it->y+width, it->z+width, x2, y2);
                 project(it->x-width,  it->y+width, it->z-width, x3, y3);
                 project(it->x-width,  it->y-width, it->z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y+
                 project(it->x-width,  it->y+width, it->z+width, x1, y1);
                 project(it->x+width,  it->y+width, it->z+width, x2, y2);
                 project(it->x+width,  it->y+width, it->z-width, x3, y3);
                 project(it->x-width,  it->y+width, it->z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y-
                 project(it->x-width,  it->y-width, it->z+width, x1, y1);
                 project(it->x+width,  it->y-width, it->z+width, x2, y2);
                 project(it->x+width,  it->y-width, it->z-width, x3, y3);
                 project(it->x-width,  it->y-width, it->z-width, x4, y4);
-                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
+                cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 
                 cairo_restore (cr);
             }
@@ -546,24 +555,25 @@ DGtal::Board3DTo2D::saveCairo(const char *filename, CairoType type, int bWidth, 
 /*!
 * \brief init function (should be in Constructor).
 */
+template < typename S, typename KS>
 void
-DGtal::Board3DTo2D::init()
+DGtal::Board3DTo2D<S, KS>::init()
 {
-    createNewCubeList(true);
+    Board3DTo2D<S, KS>::createNewCubeList(true);
 
-    vector<lineD3D> listeLine;
-    myLineSetList.push_back(listeLine);
+    vector<typename Board3DTo2D<S, KS>::lineD3D> listeLine;
+    Board3DTo2D<S, KS>::myLineSetList.push_back(listeLine);
 
-    vector<ballD3D> listeBall;
-    myBallSetList.push_back(listeBall);
+    vector<typename Board3DTo2D<S, KS>::ballD3D> listeBall;
+    Board3DTo2D<S, KS>::myBallSetList.push_back(listeBall);
 
-    myCurrentFillColor = DGtal::Color (220, 220, 220);
-    myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
+    Board3DTo2D<S, KS>::myCurrentFillColor = DGtal::Color (220, 220, 220);
+    Board3DTo2D<S, KS>::myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
 
     /*createNewCubeList(true);
 std::vector<cubeD3D> aKSCubeList;*/
 
-    myDefaultColor= DGtal::Color(255, 255, 255);
+    Board3DTo2D<S, KS>::myDefaultColor= DGtal::Color(255, 255, 255);
 
     //
 
@@ -576,6 +586,6 @@ std::vector<cubeD3D> aKSCubeList;*/
     //ZNear = 4.578200;
     //ZFar = 22.578199;
 
-    myModes["Board3DTo2D"]="SolidMode";
+   Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]="SolidMode";
 }
 

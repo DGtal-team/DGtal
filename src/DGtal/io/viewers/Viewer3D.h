@@ -98,7 +98,7 @@ namespace DGtal
    * Point p2( 5, 5 ,5 );
    * Point p3( 2, 3, 4 );
    * Domain domain( p1, p2 );
-   * Viewer3D viewer;
+   * Viewer3D<S, KS> viewer;
    * viewer.show();
    * viewer << domain;
    * viewer << p1 << p2 << p3;
@@ -110,7 +110,8 @@ namespace DGtal
    *
    * @see Display3D, Board3DTo2D
    */
-class Viewer3D : public QGLViewer, public Display3D
+template < class S, class KS>
+class Viewer3D : public QGLViewer, public Display3D<S, KS>
 {
 
 
@@ -125,7 +126,9 @@ public:
      * Constructor
      */
 
-  Viewer3D() :QGLViewer(), Display3D()
+
+  Viewer3D<S, KS>() :QGLViewer(), Display3D<S, KS>()
+  //Viewer3D() :QGLViewer(), Display3D()
   {
 
   };
@@ -179,7 +182,7 @@ public:
      *
      **/
 
-  Viewer3D & operator<< ( const DGtal::Color & aColor );
+  Viewer3D<S, KS> & operator<< ( const DGtal::Color & aColor );
 
 
 
@@ -190,7 +193,7 @@ public:
      *
      **/
 
-  Viewer3D & operator<< ( const Display3D::StreamKey  & key );
+  Viewer3D<S, KS> & operator<< ( const typename Viewer3D<S, KS>::StreamKey  & key );
 
 
 
@@ -233,13 +236,13 @@ public:
   /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
-     * method setStyle( Viewer3D & ).
+     * method setStyle( Viewer3D<S, KS> & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.
      */
-  template <typename TDrawableWithDisplay3D>
-  Viewer3D & operator<< ( const  TDrawableWithDisplay3D & object );
+  template <typename TDrawableWithViewer3D>
+  Viewer3D<S, KS> & operator<< ( const  TDrawableWithViewer3D & object );
 
 
 
@@ -271,10 +274,9 @@ public:
 
 
 
-public:
 
   // ------------------------- Hidden services ------------------------------
-protected:
+//protected:
 
 
   /**
@@ -290,17 +292,17 @@ protected:
      *
      *
      **/
-  void glDrawGLLinel ( lineD3D aLinel );
+  void glDrawGLLinel ( typename Viewer3D<S,KS>::lineD3D aLinel );
 
 
 
 
   /**
-     * Draw a linel by using the   [gluCSphere] primitive.
+     * Draw a linel by using the   [gluCShere] primitive.
      *
      *
      **/
-  void glDrawGLPointel ( ballD3D pointel );
+  void glDrawGLPointel ( typename Viewer3D<S,KS>::ballD3D pointel );
 
 
 
@@ -333,7 +335,7 @@ protected:
   struct compFarthestVoxelFromCamera
   {
     qglviewer::Vec posCam;
-    bool operator() ( cubeD3D s1, cubeD3D s2 )
+    bool operator() (typename Viewer3D<S,KS>::cubeD3D s1, typename Viewer3D<S,KS>::cubeD3D s2 )
     {
       double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
       double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
@@ -346,7 +348,7 @@ protected:
   struct compFarthestTriangleFromCamera
   {
     qglviewer::Vec posCam;
-    bool operator() ( triangleD3D t1, triangleD3D t2 )
+    bool operator() ( typename Viewer3D<S,KS>::triangleD3D t1, typename Viewer3D<S,KS>::triangleD3D t2 )
     {
       qglviewer::Vec center1 ( ( t1.x1+t1.x2+t1.x3 ) /3.0, ( t1.y1+t1.y2+t1.y3 ) /3.0, ( t1.z1+t1.z2+t1.z3 ) /3.0 );
       qglviewer::Vec center2 ( ( t2.x1+t2.x2+t2.x3 ) /3.0, ( t2.y1+t2.y2+t2.y3 ) /3.0, ( t2.z1+t2.z2+t2.z3 ) /3.0 );
@@ -360,7 +362,7 @@ protected:
   struct compFarthestSurfelFromCamera
   {
     qglviewer::Vec posCam;
-    bool operator() ( quadD3D q1, quadD3D q2 )
+    bool operator() (typename Viewer3D<S,KS>::quadD3D q1, typename Viewer3D<S,KS>::quadD3D q2 )
     {
 
       qglviewer::Vec center1 ( ( q1.x1+q1.x2+q1.x3+q1.x4 ) /4.0, ( q1.y1+q1.y2+q1.y3+q1.y4 ) /4.0, ( q1.z1+q1.z2+q1.z3+q1.z4 ) /4.0 );
@@ -378,7 +380,7 @@ protected:
   struct compFarthestPolygonFromCamera
   {
     qglviewer::Vec posCam;
-    bool operator() ( polygonD3D q1, polygonD3D q2 )
+    bool operator() ( typename Viewer3D<S,KS>::polygonD3D q1, typename Viewer3D<S,KS>::polygonD3D q2 )
     {
       double c1x, c1y, c1z=0.0;
       double c2x, c2y, c2z=0.0;
@@ -404,18 +406,11 @@ protected:
 
 
 
-
-
-
-
-protected :
   virtual void drawWithNames();
   virtual void draw();
   virtual void init();
   virtual QString helpString() const;
   virtual void postSelection ( const QPoint& point );
-
-
 
 
 
@@ -432,14 +427,14 @@ private:
     double x2, y2, z2;
     double x3, y3, z3;
     double x4, y4, z4;
-    ImageDirection myDirection;
+    typename Viewer3D<S, KS>::ImageDirection myDirection;
     unsigned int myImageWidth;
     unsigned int myImageHeight;
 
     unsigned int myBufferWidth;
     unsigned int myBufferHeight;
     GLuint  myTextureName;
-    Display3D::TextureMode myMode;
+    typename Viewer3D<S, KS>::TextureMode myMode;
     unsigned char *  myTextureImageBufferGS;
     unsigned char *  myTextureImageBufferRGB;
     double vectNormal[3];
@@ -452,11 +447,11 @@ private:
 
     // Destructor
     ~GLTextureImage(){
-      if(myMode==Display3D::GrayScaleMode){
+      if(myMode== Viewer3D<S, KS>::GrayScaleMode){
         if(myTextureImageBufferGS!=0)
           delete [] myTextureImageBufferGS;
       }
-      if(myMode==Display3D::RGBMode){
+      if(myMode== Viewer3D<S, KS>::RGBMode){
         if(myTextureImageBufferRGB!=0)
           delete [] myTextureImageBufferRGB;
       }
@@ -482,12 +477,12 @@ private:
       vectNormal[1]=aGLImg.vectNormal[1];
       vectNormal[2]=aGLImg.vectNormal[2];
 
-      if(myMode==Display3D::GrayScaleMode){
+      if(myMode==Viewer3D<S, KS>::GrayScaleMode){
         myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
         for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
           myTextureImageBufferGS[i]=aGLImg.myTextureImageBufferGS[i];
         }
-      }else if(myMode==Display3D::RGBMode){
+      }else if(myMode==Viewer3D<S, KS>::RGBMode){
         myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
         for(unsigned int i=0; i<3*myBufferHeight*myBufferWidth;i+=3){
           myTextureImageBufferRGB[i]=aGLImg.myTextureImageBufferRGB[i];
@@ -502,7 +497,7 @@ private:
 
 
     //Copy constructor from a TextureImage
-    GLTextureImage(const TextureImage &aGSImage)
+    GLTextureImage(const typename Viewer3D<S, KS>::TextureImage &aGSImage)
     {
       x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
       x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
@@ -511,13 +506,13 @@ private:
       myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
       myDirection = aGSImage.myDirection;
       myMode= aGSImage.myMode;
-      vectNormal[0]= (myDirection == Display3D::xDirection)? 1.0: 0.0;
-      vectNormal[1]= (myDirection == Display3D::yDirection)? -1.0: 0.0;
-      vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;
+      vectNormal[0]= (myDirection == Viewer3D<S, KS>::xDirection)? 1.0: 0.0;
+      vectNormal[1]= (myDirection == Viewer3D<S, KS>::yDirection)? -1.0: 0.0;
+      vectNormal[2]= (myDirection == Viewer3D<S, KS>::zDirection)? 1.0: 0.0;
       myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
       myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight);
 
-      if(myMode==Display3D::GrayScaleMode){
+      if(myMode==Viewer3D<S, KS>::GrayScaleMode){
         myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
         unsigned int pos=0;
         for (unsigned int i=0; i<myBufferHeight; i++){
@@ -530,7 +525,7 @@ private:
             pos++;
           }
         }
-      }else if(myMode==Display3D::RGBMode){
+      }else if(myMode==Viewer3D<S, KS>::RGBMode){
         myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
         unsigned int pos=0;
         for (unsigned int i=0; i<myBufferHeight; i++){
@@ -589,8 +584,9 @@ private:
    * @param object the object of class 'Viewer3D' to write.
    * @return the output stream after the writing.
    */
+template < typename S, typename KS>
 std::ostream&
-operator<< ( std::ostream & out, const Viewer3D & object );
+operator<< ( std::ostream & out, const Viewer3D<S, KS> & object );
 
 
 } // namespace DGtal

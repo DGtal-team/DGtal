@@ -54,7 +54,7 @@ int main( int argc, char** argv )
   Domain domain( plow, pup );
   K.init( plow, pup, true );
   
-  Viewer3D viewer;  
+  Viewer3D<Space, KSpace> viewer;
   viewer.show();
   viewer << SetMode3D( domain.className(), "Paving" );
   
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
   Cell vox2 = K.uCell( Point( 1, 1, 3 ) ); // voxel (2*1+1,2*1+1,2*3+1) 
   viewer << vox1 << vox2;
   
-  viewer<< Viewer3D::updateDisplay;
+  viewer<< Viewer3D<Space, KSpace>::updateDisplay;
   return application.exec();
 
 }
