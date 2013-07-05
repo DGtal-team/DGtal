@@ -79,63 +79,66 @@ DGtal::normalize (double vec[3])
   vec[2] /= sqrt (squaredLen);
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::setFillColor(DGtal::Color aColor)
+DGtal::Display3D< S, KS>::setFillColor(DGtal::Color aColor)
 {
   myCurrentFillColor=aColor;
 }
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::setLineColor(DGtal::Color aColor)
+DGtal::Display3D< S, KS>::setLineColor(DGtal::Color aColor)
 {
   myCurrentLineColor=aColor;
 }
 
-
+template < typename S, typename KS>
 inline
 DGtal::Color
-DGtal::Display3D::getLineColor()
+DGtal::Display3D< S, KS>::getLineColor()
 {
   return myCurrentLineColor;
 }
 
+template < typename S, typename KS>
 inline
 DGtal::Color
-DGtal::Display3D::getFillColor()
+DGtal::Display3D< S, KS>::getFillColor()
 {
   return myCurrentFillColor;
 }
 
-
+template < typename S, typename KS>
 inline
 std::string
-DGtal::Display3D::getMode( const std::string & objectName ) const
+DGtal::Display3D< S, KS>::getMode( const std::string & objectName ) const
 {
   ModeMapping::const_iterator itm = myModes.find( objectName );
   return itm == myModes.end() ? "" : itm->second;
 }
 
 
-
+template < typename S, typename KS>
 inline
 unsigned int
-DGtal::Display3D::getCurrentDomainNumber(){
+DGtal::Display3D< S, KS>::getCurrentDomainNumber(){
   return myImageDomainList.size();
 }
 
-
+template < typename S, typename KS>
 inline
 unsigned int
-DGtal::Display3D::getCurrentGLImageNumber(){
+DGtal::Display3D< S, KS>::getCurrentGLImageNumber(){
   return myGSImageList.size();
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::createNewCubeList(bool depthTest, std::string str)
+DGtal::Display3D< S, KS>::createNewCubeList(bool depthTest, std::string str)
 {
   std::vector< cubeD3D > v;
   myCubeSetList.push_back(v);
@@ -144,47 +147,50 @@ DGtal::Display3D::createNewCubeList(bool depthTest, std::string str)
 }
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::createNewBallList(std::string str)
+DGtal::Display3D< S, KS>::createNewBallList(std::string str)
 {
   std::vector< ballD3D > v;
   myBallSetList.push_back(v);
   myBallSetNameList.push_back(str);
 }
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::createNewLineList(std::string str)
+DGtal::Display3D< S, KS>::createNewLineList(std::string str)
 {
   std::vector< lineD3D > v;
   myLineSetList.push_back(v);
   myLineSetNameList.push_back(str);
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::createNewQuadList(std::string str)
+DGtal::Display3D< S, KS>::createNewQuadList(std::string str)
 {
   std::vector< quadD3D > v;
   myQuadSetList.push_back(v);
   myQuadSetNameList.push_back(str);
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::createNewTriangleList(std::string str)
+DGtal::Display3D< S, KS>::createNewTriangleList(std::string str)
 {
   std::vector< triangleD3D > v;
   myTriangleSetList.push_back(v);
   myTriangleSetNameList.push_back(str);
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::createNewPolygonList(std::string str)
+DGtal::Display3D< S, KS>::createNewPolygonList(std::string str)
 {
   std::vector< polygonD3D > v;
   myPolygonSetList.push_back(v);
@@ -192,10 +198,10 @@ DGtal::Display3D::createNewPolygonList(std::string str)
 }
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addCube(double x, double y, double z,
+DGtal::Display3D< S, KS>::addCube(double x, double y, double z,
                           DGtal::Color aColor, double width)
 {
   updateBoundingBox((double)x, (double)y, (double)z);
@@ -213,10 +219,10 @@ DGtal::Display3D::addCube(double x, double y, double z,
 }
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addBall(double x, double y, double z ,const DGtal::Color &aColor, double size)
+DGtal::Display3D< S, KS>::addBall(double x, double y, double z ,const DGtal::Color &aColor, double size)
 {
   updateBoundingBox(x, y, z);
   ballD3D p;
@@ -235,10 +241,10 @@ DGtal::Display3D::addBall(double x, double y, double z ,const DGtal::Color &aCol
 
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
+DGtal::Display3D< S, KS>::addLine(double x1, double y1, double z1,  double x2, double y2, double z2,
                           const DGtal::Color & aColor, double width)
 {
   updateBoundingBox(x1, y1, z1);
@@ -264,10 +270,10 @@ DGtal::Display3D::addLine(double x1, double y1, double z1,  double x2, double y2
 
 }
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addQuad(double x1, double y1, double z1,
+DGtal::Display3D< S, KS>::addQuad(double x1, double y1, double z1,
                           double x2, double y2, double z2,
                           double x3, double y3, double z3,
                           double x4, double y4, double z4, DGtal::Color aColor)
@@ -310,12 +316,10 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,
 }
 
 
-
-
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
+DGtal::Display3D< S, KS>::addTriangle(double x1, double y1, double z1,  double x2,
                               double y2, double z2,
                               double x3, double y3, double z3, DGtal::Color aColor)
 {
@@ -353,12 +357,10 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
 }
 
 
-
-
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addPolygon(std::vector<Display3D::ballD3D> vectBallsPolygon,
+DGtal::Display3D< S, KS>::addPolygon(std::vector<Display3D< S, KS>::ballD3D> vectBallsPolygon,
                              DGtal::Color aColor)
 {
   polygonD3D aPolygon;
@@ -407,9 +409,10 @@ DGtal::Display3D::addPolygon(std::vector<Display3D::ballD3D> vectBallsPolygon,
 }
 
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addSurfelPrism(double x, double y, double z,
+DGtal::Display3D< S, KS>::addSurfelPrism(double x, double y, double z,
                                  bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                                  double sizeFactor, bool isSigned, bool aSign)
 {
@@ -585,9 +588,10 @@ DGtal::Display3D::addSurfelPrism(double x, double y, double z,
 
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addQuad(double x, double y, double z,
+DGtal::Display3D< S, KS>::addQuad(double x, double y, double z,
                           bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                           double sizeFactor, bool isSigned, bool aSign)
 {
@@ -638,9 +642,10 @@ DGtal::Display3D::addQuad(double x, double y, double z,
 
 
 // add multiple triangular faces which form a hexagonal-based pyramid
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addCone(double x1, double y1, double z1,
+DGtal::Display3D< S, KS>::addCone(double x1, double y1, double z1,
                           double x2, double y2, double z2,
                           double width)
 {
@@ -766,9 +771,10 @@ DGtal::Display3D::addCone(double x1, double y1, double z1,
 }
 
 // add multiple triangular faces which form a hexagonal-based cylinder
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addCylinder(double x1, double y1, double z1,
+DGtal::Display3D< S, KS>::addCylinder(double x1, double y1, double z1,
                               double x2, double y2, double z2,
                               double width)
 {
@@ -927,10 +933,10 @@ DGtal::Display3D::addCylinder(double x1, double y1, double z1,
 
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
+DGtal::Display3D< S, KS>::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
 { 
   clippingPlaneD3D cp;
   cp.a=a; cp.b=b; cp.c=c; cp.d=d;
@@ -1002,9 +1008,10 @@ DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool 
   }
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::updateBoundingBox(double x, double y, double z)
+DGtal::Display3D< S, KS>::updateBoundingBox(double x, double y, double z)
 {
   if (myBoundingPtEmptyTag)
   {
@@ -1028,51 +1035,52 @@ DGtal::Display3D::updateBoundingBox(double x, double y, double z)
   }
 }
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::setScale(float sx, float sy, float sz){
+DGtal::Display3D< S, KS>::setScale(float sx, float sy, float sz){
   myScaleX = sx;
   myScaleY = sy;
   myScaleZ = sz;
 }
 
-
+template < typename S, typename KS>
 inline
-typename DGtal::Z3i::RealPoint
-DGtal::Display3D::embed( const DGtal::Z3i::Point & dp ) const
+typename DGtal::CanonicEmbedder<S>::RealPoint
+DGtal::Display3D< S, KS>::embed( const DGtal::Z3i::Point & dp ) const
 {
   return myEmbedder.embed(dp);
 }
 
-
+template < typename S, typename KS>
 inline
-typename DGtal::Z3i::RealPoint
-DGtal::Display3D::embed( const ballD3D & dp ) const
+typename DGtal::CanonicEmbedder<S>::RealPoint
+DGtal::Display3D< S, KS>::embed( const ballD3D & dp ) const
 {
   DGtal::Z3i::Point pt (dp[0], dp[1], dp[2]);
   return myEmbedder.embed(pt);
 }
 
-
+template < typename S, typename KS>
 inline
-typename DGtal::Z3i::RealPoint
-DGtal::Display3D::embedKS( const DGtal::Z3i::SCell & scell ) const
+typename DGtal::CanonicSCellEmbedder<KS>::RealPoint
+DGtal::Display3D< S, KS>::embedKS( const DGtal::Z3i::SCell & scell ) const
 {
   return mySCellEmbedder.embed(scell);
 }
 
-
+template < typename S, typename KS>
 inline
-typename DGtal::CanonicCellEmbedder<DGtal::Z3i::KSpace>::RealPoint
-DGtal::Display3D::embedK( const DGtal::Z3i::Cell & cell ) const
+typename DGtal::CanonicCellEmbedder<KS>::RealPoint
+DGtal::Display3D< S, KS>::embedK( const DGtal::Z3i::Cell & cell ) const
 {
   return myCellEmbedder.embed(cell);
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::exportToMesh(DGtal::Mesh<ballD3D> &aMesh) const {
+DGtal::Display3D< S, KS>::exportToMesh(DGtal::Mesh<ballD3D> &aMesh) const {
 
   unsigned int vertexIndex=0;
 
@@ -1095,9 +1103,9 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<ballD3D> &aMesh) const {
 
 
   // Export QuadList
-  for (std::vector<std::vector<quadD3D> >::const_iterator it = myQuadSetList.begin(); it != myQuadSetList.end(); it++)
+  for (typename std::vector<std::vector<quadD3D> >::const_iterator it = myQuadSetList.begin(); it != myQuadSetList.end(); it++)
   {
-    for (std::vector<quadD3D>::const_iterator aQuad = it->begin(); aQuad!=it->end();aQuad ++)
+    for (typename std::vector<quadD3D>::const_iterator aQuad = it->begin(); aQuad!=it->end();aQuad ++)
     {
       ballD3D p1, p2, p3, p4;
       p1.x=aQuad->x1*myScaleX; p1.y=aQuad->y1*myScaleY ;p1.z=aQuad->z1*myScaleZ;
@@ -1116,9 +1124,9 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<ballD3D> &aMesh) const {
 
 
   // Export the mesh from TriangleList
-  for (std::vector<std::vector<triangleD3D> >::const_iterator it =myTriangleSetList.begin(); it != myTriangleSetList.end(); it++)
+  for ( typename std::vector<std::vector<triangleD3D> >::const_iterator it =myTriangleSetList.begin(); it != myTriangleSetList.end(); it++)
   {
-    for (std::vector<triangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
+    for (typename std::vector<triangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
     {
       ballD3D p1, p2, p3;
       p1.x = aTriangle->x1*myScaleX; p1.y = aTriangle->y1*myScaleY; p1.z = aTriangle->z1*myScaleZ;
@@ -1195,9 +1203,10 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<ballD3D> &aMesh) const {
 }
 
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::addTextureImage(const Display3D::TextureImage &image){
+DGtal::Display3D< S, KS>::addTextureImage(const Display3D< S, KS>::TextureImage &image){
   myGSImageList.push_back(image);
   updateBoundingBox(image.x1, image.y1, image.z1);
   updateBoundingBox(image.x2, image.y2, image.z2);
@@ -1207,15 +1216,15 @@ DGtal::Display3D::addTextureImage(const Display3D::TextureImage &image){
 
 
 
-
-template <typename TImageType, typename TFunctor>
+template < typename S, typename KS >
+template < typename TImageType, typename TFunctor >
 inline
 void
-DGtal::Display3D::updateTextureImage(unsigned int imageIndex,  const TImageType & image, const  TFunctor & aFunctor,
+DGtal::Display3D< S, KS>::updateTextureImage(unsigned int imageIndex,  const TImageType & image, const  TFunctor & aFunctor,
                                      double xTranslation, double yTranslation, double zTranslation){
   BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
-  Display3D::TextureImage &anImage = myGSImageList.at(imageIndex);
+  typename Display3D< S, KS>::TextureImage &anImage = myGSImageList.at(imageIndex);
   updateBoundingBox(anImage.x1+xTranslation, anImage.y1+yTranslation, anImage.z1+zTranslation);
   updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
   updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
@@ -1227,20 +1236,20 @@ DGtal::Display3D::updateTextureImage(unsigned int imageIndex,  const TImageType 
 }
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::updateOrientationTextureImage(unsigned int imageIndex,
+DGtal::Display3D< S, KS>::updateOrientationTextureImage(unsigned int imageIndex,
                                                 double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
   assert ( imageIndex< myGSImageList.size());
-  Display3D::TextureImage &anImage = myGSImageList.at(imageIndex);
+  Display3D< S, KS>::TextureImage &anImage = myGSImageList.at(imageIndex);
   updateBoundingBox(anImage.x1, anImage.y1, anImage.z1);
   updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
   updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
   updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
   anImage.updateImageOrientation(newDirection, xPosition, yPosition, zPosition);
   if(anImage.myDrawDomain){
-    *this << DGtal::Update2DDomainPosition(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
+    *this << DGtal::Update2DDomainPosition<S, KS>(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
   }
 
 }
@@ -1248,10 +1257,10 @@ DGtal::Display3D::updateOrientationTextureImage(unsigned int imageIndex,
 
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::TextureImage::updateImageOrientation( DGtal::Display3D::ImageDirection normalDir,
+DGtal::Display3D< S, KS>::TextureImage::updateImageOrientation( DGtal::Display3D< S, KS>::ImageDirection normalDir,
                                                         double xBottomLeft, double yBottomLeft, double zBottomLeft){
   if(normalDir==zDirection){
     x1 = xBottomLeft-0.5; y1 = yBottomLeft-0.5; z1 = zBottomLeft;
@@ -1272,10 +1281,10 @@ DGtal::Display3D::TextureImage::updateImageOrientation( DGtal::Display3D::ImageD
   myDirection=normalDir;
 }
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::Image2DDomainD3D::updateDomainOrientation( Display3D::ImageDirection normalDir,
+DGtal::Display3D< S, KS>::Image2DDomainD3D::updateDomainOrientation( Display3D< S, KS>::ImageDirection normalDir,
                                                              double xBottomLeft, double yBottomLeft, double zBottomLeft){
   if(normalDir==zDirection){
     x1 = xBottomLeft-0.5; y1 = yBottomLeft-0.5; z1 = zBottomLeft;
@@ -1297,10 +1306,10 @@ DGtal::Display3D::Image2DDomainD3D::updateDomainOrientation( Display3D::ImageDir
 }
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation,
+DGtal::Display3D< S, KS>::Image2DDomainD3D::translateDomain (double xTranslation,
                                                      double yTranslation, double zTranslation){
   x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
   x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
@@ -1309,12 +1318,12 @@ DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation,
 }
 
 
-
-template<typename TDomain>
+template < typename S, typename KS>
+template < typename TDomain>
 void
-DGtal::Display3D::addImage2DDomainD3D(const TDomain &aDomain,
+DGtal::Display3D< S, KS>::addImage2DDomainD3D(const TDomain &aDomain,
                                       std::string mode, const DGtal::Color &aColor){
-  DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain);
+  typename DGtal::Display3D< S, KS>::Image2DDomainD3D anImageDomain(aDomain);
   anImageDomain.R = aColor.red();
   anImageDomain.G =aColor.green();
   anImageDomain.B =aColor.blue();
@@ -1329,28 +1338,29 @@ DGtal::Display3D::addImage2DDomainD3D(const TDomain &aDomain,
   updateBoundingBox(anImageDomain.x3, anImageDomain.y3, anImageDomain.z3);
   updateBoundingBox(anImageDomain.x4, anImageDomain.y4, anImageDomain.z4);
 
-  std::vector<DGtal::Display3D::lineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
   myLineSetList.push_back(vectLines);
 
 
 }
 
+template < typename S, typename KS>
 inline
-std::vector<DGtal::Display3D::lineD3D>
-DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDomainD3D &anImageDomain ){
-  std::vector<DGtal::Display3D::lineD3D> vectLinesResu= compute2DDomainLineRepresentation(anImageDomain, 0.05);
-  std::vector<DGtal::Display3D::lineD3D> vectLinesVerso= compute2DDomainLineRepresentation(anImageDomain, -0.05);
+std::vector<typename  DGtal::Display3D< S, KS>::lineD3D>
+DGtal::Display3D< S, KS>::compute2DDomainLineRepresentation( typename DGtal::Display3D< S, KS>::Image2DDomainD3D &anImageDomain ){
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> vectLinesResu= compute2DDomainLineRepresentation(anImageDomain, 0.05);
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> vectLinesVerso= compute2DDomainLineRepresentation(anImageDomain, -0.05);
   for(unsigned int i=0; i<vectLinesVerso.size(); i++){
     vectLinesResu.push_back(vectLinesVerso.at(i));
   }
   return vectLinesResu;
 }
 
-
+template < typename S, typename KS>
 inline
-std::vector<DGtal::Display3D::lineD3D>
-DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDomainD3D &anImageDomain, double delta ){
-  std::vector<DGtal::Display3D::lineD3D> aLineSet;
+std::vector<typename DGtal::Display3D< S, KS>::lineD3D>
+DGtal::Display3D< S, KS>::compute2DDomainLineRepresentation(typename DGtal::Display3D< S, KS>::Image2DDomainD3D &anImageDomain, double delta ){
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> aLineSet;
   lineD3D aLine;
   aLine.R = anImageDomain.R;
   aLine.G = anImageDomain.G;
@@ -1468,20 +1478,20 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
 
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::updateAn2DDomainOrientation(unsigned int domainIndex,
+DGtal::Display3D< S, KS>::updateAn2DDomainOrientation(unsigned int domainIndex,
                                               double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
-  Display3D::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
+  Display3D< S, KS>::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
   updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
   updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
   updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
   updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
   anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
 
-  std::vector<DGtal::Display3D::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
-  std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex);
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex);
   vectLines.clear();
   for(unsigned int i=0; i<vectNewLines.size(); i++){
     vectLines.push_back(vectNewLines.at(i));
@@ -1489,10 +1499,11 @@ DGtal::Display3D::updateAn2DDomainOrientation(unsigned int domainIndex,
 
 }
 
+template < typename S, typename KS>
 inline
 void
-DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation){
-  Display3D::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
+DGtal::Display3D< S, KS>::translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation){
+  Display3D< S, KS>::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
   anDomain.translateDomain(xTranslation, yTranslation, zTranslation);
 
   updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
@@ -1500,8 +1511,8 @@ DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslat
   updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
   updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
 
-  std::vector<DGtal::Display3D::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
-  std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex);
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
+  std::vector<DGtal::Display3D< S, KS>::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex);
 
   vectLines.clear();
   for(unsigned int i=0; i<vectNewLines.size(); i++){
@@ -1511,10 +1522,10 @@ DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslat
 
 
 
-
+template < typename S, typename KS>
 inline
 std::string
-DGtal::Display3D::TextureImage::className() const
+DGtal::Display3D< S, KS>::TextureImage::className() const
 {
   return "TextureImage";
 }
@@ -1523,10 +1534,11 @@ DGtal::Display3D::TextureImage::className() const
 
 
 
-template <typename TDrawableWithDisplay3D>
+template < typename S, typename KS>
+template<typename TDrawableWithDisplay3D>
 inline
-DGtal::Display3D &
-DGtal::Display3D::operator<<( const TDrawableWithDisplay3D & object )
+DGtal::Display3D< S, KS> &
+DGtal::Display3D< S, KS>::operator <<( const TDrawableWithDisplay3D & object )
 {
   //  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
 
@@ -1540,31 +1552,32 @@ DGtal::Display3D::operator<<( const TDrawableWithDisplay3D & object )
  * @param object the object of class 'Display3D' to write.
  * @return the output stream after the writing.
  */
+template < typename S, typename KS>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const Display3D & object )
+                    const Display3D< S, KS> & object )
 {
   object.selfDisplay ( out );
   return out;
 }
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::ballD3D> &aMesh)
+DGtal::operator>> ( const Display3D< S, KS> &aDisplay3D, DGtal::Mesh< typename Display3D< S, KS>::ballD3D> &aMesh)
 {
   aDisplay3D.exportToMesh(aMesh);
 }
 
 
-
+template < typename S, typename KS>
 inline
 void
-DGtal::operator>> ( const Display3D &aDisplay3D,  std::string aFilename)
+DGtal::operator>> ( const Display3D< S, KS> &aDisplay3D,  std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
-  DGtal::Mesh<Display3D::ballD3D> mesh(true);
+  DGtal::Mesh<typename Display3D< S, KS>::ballD3D> mesh(true);
   aDisplay3D >> mesh;
   trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;

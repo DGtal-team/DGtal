@@ -64,7 +64,8 @@ namespace DGtal
    * Description of class 'Board3DTo2D' <p>
    * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with Cairo with 3D->2D projection.
    */
-class Board3DTo2D : public Display3D
+template < class S, typename KS>
+class Board3DTo2D : public Display3D<S, KS>
 {
 public:
     /**
@@ -274,8 +275,9 @@ private:
    * @param object the object of class 'Board3DTo2D' to write.
    * @return the output stream after the writing.
    */
+template < typename S, typename KS>
 std::ostream&
-operator<< ( std::ostream & out, const Board3DTo2D & object );
+operator<< ( std::ostream & out, const Board3DTo2D<S,KS> & object );
 
 } // namespace DGtal
 

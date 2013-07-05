@@ -54,12 +54,12 @@ int main( int argc, char** argv )
  Point p3( 2, 3, 4 );
  Domain domain( p1, p2 );
 
- Viewer3D viewer;
+ Viewer3D<Space, KSpace> viewer;
  viewer.show();
  viewer << domain;  
  viewer << p1 << p2 << p3;
  
- viewer<< Viewer3D::updateDisplay;
+ viewer<< Viewer3D<Space, KSpace>::updateDisplay;
  return application.exec();
 }
 //                                                                           //

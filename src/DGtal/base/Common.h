@@ -144,14 +144,14 @@ namespace DGtal
 
   class Board2D;
 
-  class Display3D;
+  template < class Space, class KSpace>  class Display3D;
 
 
 #if defined( Board3DTo2D_h )
-  class Board3DTo2D;
+  template < class Space, class KSpace> class Board3DTo2D;
 #endif
 #if defined( Viewer3D_h )
-  class Viewer3D;
+  template < class Space, class KSpace> class Viewer3D;
 #endif
 
   //class Board3D;
@@ -166,7 +166,9 @@ namespace DGtal
     /**
      * Operation to override. Does nothing by default.
      */
-    virtual void setStyle( Viewer3D &  ) const {}
+    template < typename S, typename KS>
+    //virtual
+    void setStyle( Viewer3D< S, KS> &  ) const {}
     virtual ~DrawableWithViewer3D() {}
   };
 #endif
@@ -181,7 +183,9 @@ namespace DGtal
     /**
      * Operation to override. Does nothing by default.
      */
-    virtual void setStyle( Board3DTo2D &  ) const {}
+    template < typename S, typename KS>
+    //virtual
+    void setStyle( Board3DTo2D< S, KS> &  ) const {}
     virtual ~DrawableWithBoard3DTo2D() {}
   };
 #endif
@@ -195,7 +199,9 @@ namespace DGtal
     /**
      * Operation to override. Does nothing by default.
      */
-    virtual void setStyle( Display3D &  ) const {}
+    template < typename Sp, typename KSp>
+    //virtual
+    void setStyle( Display3D< Sp, KSp> &  ) const {}
     virtual ~DrawableWithDisplay3D() {}
   };
 

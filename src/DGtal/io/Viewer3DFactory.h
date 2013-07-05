@@ -75,14 +75,26 @@ namespace DGtal
    * Description of struct 'Viewer3DFactory' <p>
    * \brief Factory for GPL Viewer3D:
    */
+
 struct Viewer3DFactory : public Display3DFactory
 {
 
 
-  static void draw( Viewer3D & board, const DGtal::CameraPosition & );
-  static void draw( Viewer3D & board, const DGtal::CameraDirection & );
-  static void draw( Viewer3D & board, const DGtal::CameraUpVector & );
-  static void draw( Viewer3D & board, const DGtal::CameraZNearFar & );
+  template <typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & board, const DGtal::CameraPosition & );
+
+  template <typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & board, const DGtal::CameraDirection & );
+
+  template <typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & board, const DGtal::CameraUpVector & );
+
+  template <typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & board, const DGtal::CameraZNearFar & );
 
   //----------------------------------------------------------------------------------------------
   // heritage
@@ -98,19 +110,19 @@ struct Viewer3DFactory : public Display3DFactory
      * @param radius scale factor for the unit sphere radius (default:1)
      * @tparam TVector a vector model
      */
-  template <typename TVector>
-  static void draw( Viewer3D & viewer, const  DGtal::SphericalAccumulator<TVector> & accumulator,
+  template <typename TVector,typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const  DGtal::SphericalAccumulator<TVector> & accumulator,
                     const typename DGtal::SphericalAccumulator<TVector>::RealVector & shift =
       typename DGtal::SphericalAccumulator<TVector>::RealVector(0,0,0),
                     const double radius=1.0);
   // SphericalAccumulator
 
   // Mesh
-  template <typename TPoint>
-  static void drawAsFaces( Viewer3D & viewer, const DGtal::Mesh<TPoint> & aMesh );
+  template <typename TPoint, typename S, typename KS>
+  static void drawAsFaces( Viewer3D<S,KS> & viewer, const DGtal::Mesh<TPoint> & aMesh );
 
-  template <typename TPoint>
-  static void draw( Viewer3D & viewer, const  DGtal::Mesh<TPoint> & aMesh );
+  template <typename TPoint, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const  DGtal::Mesh<TPoint> & aMesh );
   // Mesh
 
 
@@ -123,14 +135,14 @@ struct Viewer3DFactory : public Display3DFactory
   template <typename TIterator, typename TInteger, int connectivity>
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
 
-  template <typename TIterator, typename TInteger, int connectivity>
-  static void drawAsBalls( Viewer3D & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  template <typename TIterator, typename TInteger, int connectivity, typename S, typename KS>
+  static void drawAsBalls( Viewer3D<S,KS> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
 
-  template <typename TIterator, typename TInteger, int connectivity>
-  static void drawAsBoundingBox( Viewer3D & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  template <typename TIterator, typename TInteger, int connectivity, typename S, typename KS>
+  static void drawAsBoundingBox( Viewer3D<S,KS> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
 
-  template <typename TIterator, typename TInteger, int connectivity>
-  static void draw( Viewer3D & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  template <typename TIterator, typename TInteger, int connectivity, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
   // ArithmeticalDSS3d
 
 
@@ -142,17 +154,17 @@ struct Viewer3DFactory : public Display3DFactory
   template<typename Domain>
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
 
-  template<typename Domain>
-  static void drawAsPavingTransparent( Viewer3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void drawAsPavingTransparent( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
 
-  template<typename Domain>
-  static void drawAsPaving( Viewer3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void drawAsPaving( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
 
-  template<typename Domain>
-  static void drawAsGrid( Viewer3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void drawAsGrid( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
 
-  template<typename Domain>
-  static void draw( Viewer3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
   // DigitalSetBySTLSet
 
 
@@ -164,17 +176,17 @@ struct Viewer3DFactory : public Display3DFactory
   template<typename Domain>
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
-  template<typename Domain>
-  static void drawAsPavingTransparent( Viewer3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void drawAsPavingTransparent( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
-  template<typename Domain>
-  static void drawAsPaving( Viewer3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void drawAsPaving( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
-  template<typename Domain>
-  static void drawAsGrid( Viewer3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void drawAsGrid( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
-  template<typename Domain>
-  static void draw( Viewer3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
+  template<typename Domain, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
   // DigitalSetBySTLVector
 
 
@@ -186,20 +198,20 @@ struct Viewer3DFactory : public Display3DFactory
   template<typename TSpace>
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::HyperRectDomain<TSpace> & aDomain );
 
-  template<typename TSpace>
-  static void drawAsBoundingBox( Viewer3D & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  template<typename TSpace, typename S, typename KS>
+  static void drawAsBoundingBox( Viewer3D<S,KS> & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
 
-  template<typename TSpace>
-  static void drawAsGrid( Viewer3D & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  template<typename TSpace, typename S, typename KS>
+  static void drawAsGrid( Viewer3D<S,KS> & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
 
-  template<typename TSpace>
-  static void drawAsPavingBalls( Viewer3D & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  template<typename TSpace, typename S, typename KS>
+  static void drawAsPavingBalls( Viewer3D<S,KS> & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
 
-  template<typename TSpace>
-  static void drawAsPaving( Viewer3D & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  template<typename TSpace, typename S, typename KS>
+  static void drawAsPaving( Viewer3D<S,KS> & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
 
-  template<typename TSpace>
-  static void draw( Viewer3D & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  template<typename TSpace, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::HyperRectDomain<TSpace> & aDomain );
   // HyperRectDomain
 
 
@@ -208,11 +220,11 @@ struct Viewer3DFactory : public Display3DFactory
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-  template < Dimension dim, typename TInteger >
+  template < Dimension dim, typename TInteger>
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::KhalimskyCell<dim, TInteger> & aCell );
 
-  template < Dimension dim, typename TInteger >
-  static void draw( Viewer3D & viewer, const DGtal::KhalimskyCell<dim, TInteger> & aCell );
+  template < Dimension dim, typename TInteger, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::KhalimskyCell<dim, TInteger> & aCell );
   // KhalimskyCell
 
 
@@ -220,11 +232,11 @@ struct Viewer3DFactory : public Display3DFactory
   template <typename TDigitalTopology, typename TDigitalSet>
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
 
-  template <typename TDigitalTopology, typename TDigitalSet>
-  static void drawWithAdjacencies( Viewer3D & viewer, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
+  template <typename TDigitalTopology, typename TDigitalSet, typename S, typename KS>
+  static void drawWithAdjacencies( Viewer3D<S,KS> & viewer, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
 
-  template <typename TDigitalTopology, typename TDigitalSet>
-  static void draw( Viewer3D & viewer, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
+  template <typename TDigitalTopology, typename TDigitalSet, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
   // Object
 
 
@@ -236,20 +248,20 @@ struct Viewer3DFactory : public Display3DFactory
   template<Dimension dim, typename TComponent>
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::PointVector<dim,TComponent> & aPoint );
 
-  template<Dimension dim, typename TComponent>
-  static void drawAsGrid( Viewer3D & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+  template<Dimension dim, typename TComponent, typename S, typename KS>
+  static void drawAsGrid( Viewer3D<S,KS> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
 
-  template<Dimension dim, typename TComponent>
-  static void drawAsPaving( Viewer3D & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+  template<Dimension dim, typename TComponent, typename S, typename KS>
+  static void drawAsPaving( Viewer3D<S,KS> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
 
-  template<Dimension dim, typename TComponent>
-  static void drawAsPavingWired( Viewer3D & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+  template<Dimension dim, typename TComponent, typename S, typename KS>
+  static void drawAsPavingWired( Viewer3D<S,KS> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
 
-  template<Dimension dim, typename TComponent>
-  static void draw( Viewer3D & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
+  template<Dimension dim, typename TComponent, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
 
-  template<Dimension dim, typename TComponent>
-  static void draw( Viewer3D & viewer, const DGtal::PointVector<dim,TComponent> & aPoint, const DGtal::PointVector<dim,TComponent> & aPoint2 );
+  template<Dimension dim, typename TComponent, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint, const DGtal::PointVector<dim,TComponent> & aPoint2 );
   // PointVector
 
 
@@ -261,143 +273,168 @@ struct Viewer3DFactory : public Display3DFactory
   template< Dimension dim, typename TInteger >
   static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell );
 
-  template< Dimension dim, typename TInteger >
-  static void draw( Viewer3D & viewer, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell );
+  template< Dimension dim, typename TInteger , typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell );
   // SignedKhalimskyCell
 
   // GridCurve
-  template< typename TKSpace >
-  static void draw( Viewer3D & viewer, const DGtal::GridCurve<TKSpace> & aGrid );
+  template< typename TKSpace , typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const DGtal::GridCurve<TKSpace> & aGrid );
   // GridCurve
 
   // SCellsRange
-  template < typename TIterator, typename TSCell >
-  static void draw( DGtal::Viewer3D & viewer,
+  template < typename TIterator, typename TSCell, typename S, typename KS>
+  static void draw( DGtal::Viewer3D<S, KS> & viewer,
                     const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter );
   // SCellsRange
 
   // PointsRange
-  template <typename TIterator, typename TKSpace>
-  static void draw( Viewer3D & viewer,
+  template <typename TIterator, typename TKSpace, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer,
                     const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
   // PointsRange
 
   // MidPointsRange
-  template <typename TIterator, typename TKSpace>
-  static void draw( Viewer3D & viewer,
+  template <typename TIterator, typename TKSpace, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer,
                     const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, typename TKSpace::Space::RealPoint> & aRangeAdapter );
   // MidPointsRange
 
   // ArrowsRange
-  template <typename TIterator, typename TKSpace>
-  static void draw( Viewer3D & viewer,
+  template <typename TIterator, typename TKSpace, typename S, typename KS>
+  static void draw( Viewer3D<S, KS> & viewer,
                     const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & aRangeAdapter );
   // ArrowsRange
 
   // InnerPointsRange
-  template <typename TIterator, typename TKSpace>
-  static void draw( Viewer3D & viewer,
+  template <typename TIterator, typename TKSpace, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer,
                     const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
   // InnerPointsRange
 
   // OuterPointsRange
-  template <typename TIterator, typename TKSpace>
-  static void draw( Viewer3D & viewer,
+  template <typename TIterator, typename TKSpace, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer,
                     const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
   // OuterPointsRange
 
   // IncidentPointsRange
-  template <typename TIterator, typename TKSpace>
-  static void draw( Viewer3D & viewer,
+  template <typename TIterator, typename TKSpace, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer,
                     const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>,std::pair<typename TKSpace::Point, typename TKSpace::Point > > & aRangeAdapter );
   // IncidentPointsRange
 
 
   // ImageContainerBySTLVector  (2D)
-  template <typename TValue>
-  static void draw( Viewer3D & viewer, const  ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  & anImage );
+  template <typename TValue, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const  ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  & anImage );
   // ImageContainerBySTLVector  (2D)
 
   // ImageContainerBySTLMap  (2D)
-  template <typename TValue>
-  static void draw( Viewer3D & viewer, const  ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  & anImage );
+  template <typename TValue, typename S, typename KS>
+  static void draw( Viewer3D<S, KS> & viewer, const  ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  & anImage );
   // ImageContainerBySTLMap  (2D)
 
   // ConstImageAdapter  (2D)
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
-  static void draw( Viewer3D & viewer, const  ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue>  & anImage );
+  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const  ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue>  & anImage );
   // ConstImageAdapter  (2D)
 
   // ImageAdapter  (2D)
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1>
-  static void draw( Viewer3D & viewer, const  ImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD,
+  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const  ImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD,
                     TNewValue, TFunctorValue, TFunctorValueVm1>  & anImage );
   // ImageAdapter  (2D)
 
 
   // ImageContainerBySTLVector  (3D)
-  template <typename TValue  >
-  static void draw( Viewer3D & viewer, const   ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  & anImage );
+  template <typename TValue, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const   ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  & anImage );
   // ImageContainerBySTLVector (3D)
 
 
   // ImageContainerBySTLMap  (3D)
-  template <typename TValue  >
-  static void draw( Viewer3D & viewer, const   ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  & anImage );
+  template <typename TValue, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const   ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  & anImage );
   // ImageContainerBySTLMap  (3D)
 
   // ConstImageAdapter  (3D)
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
-  static void draw( Viewer3D & viewer, const  ConstImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
+  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const  ConstImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
                     TNewValue, TFunctorValue>  & anImage );
   // ConstImageAdapter  (3D)
 
   // ImageAdapter  (3D)
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1>
-  static void draw( Viewer3D & viewer, const  ImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
+  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1, typename S, typename KS>
+  static void draw( Viewer3D<S,KS> & viewer, const  ImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
                     TNewValue, TFunctorValue, TFunctorValueVm1>  & anImage );
   // ImageAdapter  (3D)
 
 
-  template < typename TImageType2D, typename TFunctor >
+  template < typename TImageType2D, typename TFunctor, typename S, typename KS>
   static void
-  drawImage2D( Viewer3D & viewer, const TImageType2D & anImage, const TFunctor & aFunctor,
-               Display3D::TextureMode aTextureMode=Display3D::GrayScaleMode );
+  drawImage2D( Viewer3D<S,KS> & viewer, const TImageType2D & anImage, const TFunctor & aFunctor,
+               typename Viewer3D<S,KS>::TextureMode aTextureMode=Viewer3D<S,KS>::GrayScaleMode );
 
 
-  template < typename TImageType3D, typename TFunctor >
+  template < typename TImageType3D, typename TFunctor, typename S, typename KS>
   static void
-  drawImage3D( Viewer3D & viewer, const TImageType3D & anImage3D, const TFunctor & aFunctor,
-               Display3D::TextureMode aTextureMode=Display3D::GrayScaleMode );
+  drawImage3D( Viewer3D<S,KS> & viewer, const TImageType3D & anImage3D, const TFunctor & aFunctor,
+               typename Viewer3D<S,KS>::TextureMode aTextureMode=Viewer3D<S,KS>::GrayScaleMode );
 
 
-  static void draw( Viewer3D & viewer, const DGtal::SetMode3D & aMode);
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::SetMode3D & aMode);
 
-  static void draw( Viewer3D & viewer, const DGtal::CustomStyle3D & aStyle);
-  static void draw( Viewer3D & viewer, const DGtal::CustomColors3D & aColor);
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::CustomStyle3D & aStyle);
 
-  static void draw( Viewer3D & viewer, const DGtal::ClippingPlane & aClipping);
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::CustomColors3D & aColor);
+
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::ClippingPlane & aClipping);
 
 
   // AddTextureImage3DWithFunctor
-  template<typename TImageType, typename TFunctor>
-  static void draw( Viewer3D & viewer, const DGtal::AddTextureImage3DWithFunctor<TImageType, TFunctor> & aFunctor );
+  template<typename TImageType, typename TFunctor, typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::AddTextureImage3DWithFunctor<TImageType, TFunctor, S, KS> & aFunctor );
   // AddTextureImage3DWithFunctor
 
   // AddTextureImage2DWithFunctor
-  template<typename TImageType, typename TFunctor>
-  static void draw( Viewer3D & viewer, const DGtal::AddTextureImage2DWithFunctor<TImageType, TFunctor> & aFunctor );
+  template<typename TImageType, typename TFunctor, typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::AddTextureImage2DWithFunctor<TImageType, TFunctor, S, KS> & aFunctor );
   // AddTextureImage2DWithFunctor
 
-  static void draw( Viewer3D & viewer, const DGtal::UpdateImagePosition & anUpdate);
-  static void draw( Viewer3D & viewer, const DGtal::UpdateLastImagePosition & anUpdate );
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::UpdateImagePosition<S, KS> & anUpdate);
 
-  static void draw( Viewer3D &viewer, const DGtal::Update2DDomainPosition & anUpdate);
-  static void draw( Viewer3D &viewer, const DGtal::Translate2DDomain & anTranslation);
-  template<typename TImageType, typename TFunctor>
-  static void draw( Viewer3D & viewer, const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate);
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::UpdateLastImagePosition<S, KS> & anUpdate );
 
-  static void draw( Viewer3D & viewer, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> &viewer, const DGtal::Update2DDomainPosition<S, KS> & anUpdate);
+
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> &viewer, const DGtal::Translate2DDomain & anTranslation);
+
+  template<typename TImageType, typename TFunctor, typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate);
+
+  template < typename S, typename KS>
+  static void
+  draw( Viewer3D<S,KS> & viewer, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
 
   // end heritage
   //----------------------------------------------------------------------------------------------
