@@ -130,6 +130,24 @@ init( InternalInteger diameter,
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
+typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::ConstIterator
+DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+begin() const
+{
+  return myComputers[ active() ].begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::ConstIterator
+DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+end() const
+{
+  return myComputers[ active() ].end();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
 typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
 DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
 size() const

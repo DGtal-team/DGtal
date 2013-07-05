@@ -135,6 +135,25 @@ init( Dimension axis, InternalInteger diameter,
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
+typename DGtal::COBANaivePlane<TSpace, TInternalInteger>::ConstIterator
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+begin() const
+{
+  return myPointSet.begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+typename DGtal::COBANaivePlane<TSpace, TInternalInteger>::ConstIterator
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+end() const
+{
+  return myPointSet.end();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
 typename DGtal::COBANaivePlane<TSpace, TInternalInteger>::Size
 DGtal::COBANaivePlane<TSpace, TInternalInteger>::
 size() const
