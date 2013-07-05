@@ -146,7 +146,7 @@ int main( int argc, char** argv )
 
 
   QApplication application( argc, argv );
-  Viewer3D viewer;
+  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
   viewer.show();
   viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
@@ -219,7 +219,7 @@ int main( int argc, char** argv )
     viewer << *it;
   }
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
 
   return application.exec();
 }

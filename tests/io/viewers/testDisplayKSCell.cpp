@@ -38,9 +38,9 @@ using namespace DGtal;
 
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "DGtal/io/viewers/Viewer3D.h"
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
@@ -79,7 +79,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- Viewer3D viewer;
+ Viewer3D<Space, KSpace> viewer;
  viewer.show();
 
  KSpace K;
@@ -134,7 +134,7 @@ int main( int argc, char** argv )
  SCell linelAC = K.sCell(Point(5, 4, 4), false);
  viewer << pointelA << pointelB << pointelC << linelAC;
  
- viewer <<  Viewer3D::updateDisplay;
+ viewer <<  Viewer3D<Space, KSpace>::updateDisplay;
  application.exec();
 
  

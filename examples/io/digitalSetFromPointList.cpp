@@ -42,6 +42,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +50,7 @@ int main( int argc, char** argv )
 {
   std::string inputFilename = examplesPath + "samples/pointList3d.pl"; 
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<Space, KSpace> viewer;
   viewer.show();     
   // Importing the 3d set of points  contained with the default index (0, 1, 2);
   vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
@@ -68,7 +69,7 @@ int main( int argc, char** argv )
     viewer << vectPoints.at(i);
   }
   
-  viewer   << Viewer3D::updateDisplay;
+  viewer   << Viewer3D<Space, KSpace>::updateDisplay;
   return application.exec();
 }
 ///////////////////////////////////////////////////////////////////////////////

@@ -48,19 +48,19 @@ using namespace DGtal;
 int main( int argc, char** argv )
 {    
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
   viewer.show();     
   //! [ImportOFFfile]
   std::string inputFilename = examplesPath + "samples/tref.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
-  Mesh<Display3D::ballD3D> anImportedMesh;
+  Mesh<Display3D<Z3i::Space, Z3i::KSpace>::ballD3D> anImportedMesh;
   anImportedMesh << inputFilename;
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
   //! [displayOFFfile]
   viewer.setLineColor(DGtal::Color(150,0,0,254));
   viewer << anImportedMesh;
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
   //! [displayOFFfile]
   return application.exec();
 }

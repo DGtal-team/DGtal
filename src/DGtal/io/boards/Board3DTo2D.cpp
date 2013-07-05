@@ -26,7 +26,7 @@
 *
 * This file is part of the DGtal library.
 */
-
+/*
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/io/boards/Board3DTo2D.h"
 #include <limits>
@@ -52,7 +52,7 @@ using namespace std;
 
 /*!
 * \brief Constructor.
-*/
+*
 template < typename S, typename KS>
 DGtal::Board3DTo2D<S, KS>::Board3DTo2D()
 {
@@ -65,7 +65,7 @@ DGtal::Board3DTo2D<S, KS>::Board3DTo2D()
 /**
 * Writes/Displays the object on an output stream.
 * @param out the output stream where the object is written.
-*/
+*
 template < typename S, typename KS>
 void
 DGtal::Board3DTo2D<S, KS>::selfDisplay ( std::ostream & out ) const
@@ -76,7 +76,7 @@ DGtal::Board3DTo2D<S, KS>::selfDisplay ( std::ostream & out ) const
 /**
 * Checks the validity/consistency of the object.
 * @return 'true' if the object is valid, 'false' otherwise.
-*/
+*
 template < typename S, typename KS>
 bool
 DGtal::Board3DTo2D<S, KS>::isValid() const
@@ -89,7 +89,7 @@ DGtal::Board3DTo2D<S, KS>::isValid() const
 * Transpose a 4x4 matrix.
 * @param tmat destination matrix.
 * @param mat source matrix.
-*/
+*
 template < typename S, typename KS>
 void
 DGtal::Board3DTo2D<S, KS>::TransposeMt(double tmat[16], double mat[16])
@@ -105,7 +105,7 @@ DGtal::Board3DTo2D<S, KS>::TransposeMt(double tmat[16], double mat[16])
 * @param v destination vector.
 * @param mat source matrix.
 * @param b source vector.
-*/
+*
 template < typename S, typename KS>
 void
 DGtal::Board3DTo2D<S, KS>::MulMt(double v[4], double mat[16], double b[4])
@@ -128,7 +128,7 @@ DGtal::Board3DTo2D<S, KS>::MulMt(double v[4], double mat[16], double b[4])
 * @param upx x coordinate of up-vector.
 * @param upy y coordinate of up-vector.
 * @param upz z coordinate of up-vector.
-*/
+*
 template < typename S, typename KS>
 void
 DGtal::Board3DTo2D<S, KS>::LookAtMt(double mat[16],
@@ -157,7 +157,7 @@ double upx, double upy, double upz)
 
 /**
 * Precompute 4x4 projection matrix for 3D->2D projection.
-*/
+*
 template < typename S, typename KS>
 void DGtal::Board3DTo2D<S, KS>::precompute_projection_matrix()
 {
@@ -169,7 +169,8 @@ projectionMatrix_[10] = (ZNear + ZFar) / (ZNear - ZFar);
 projectionMatrix_[11] = -1.0;
 projectionMatrix_[14] = 2.0 * ZNear * ZFar / (ZNear - ZFar);
 projectionMatrix_[15] = 0.0;
-// same as gluPerspective( 180.0*fieldOfView()/M_PI, aspectRatio(), zNear(), zFar() );*/
+// same as gluPerspective( 180.0*fieldOfView()/M_PI, aspectRatio(), zNear(), zFar() );
+*
 
     double fieldOfView = M_PI/4.;
     double f = 1.0/tan(fieldOfView/2.0);
@@ -205,7 +206,7 @@ projectionMatrix_[15] = 0.0;
 * @param z3d z position of the 3d point.
 * @param x2d x destination projection position of the 2d point.
 * @param y2d y destination projection position of the 2d point.
-*/
+*
 template < typename S, typename KS>
 void DGtal::Board3DTo2D<S, KS>::project(double x3d, double y3d, double z3d, double &x2d, double &y2d)
 {
@@ -238,7 +239,7 @@ void DGtal::Board3DTo2D<S, KS>::project(double x3d, double y3d, double z3d, doub
 * @param type type of the image to save (CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG).
 * @param bWidth width of the image to save.
 * @param bHeight height of the image to save.
-*/
+*
 template < typename S, typename KS>
 void
 DGtal::Board3DTo2D<S, KS>::saveCairo(const char *filename, CairoType type, int bWidth, int bHeight)
@@ -296,7 +297,8 @@ DGtal::Board3DTo2D<S, KS>::saveCairo(const char *filename, CairoType type, int b
                 // TODO:
                 /*double distCam =sqrt((camera_position[0]-centerS.x)*(camera_position[0]-centerS.x)+
 (camera_position[1]-centerS.y)*(camera_position[1]-centerS.y)+
-(camera_position[2]-centerS.z)*(camera_position[2]-centerS.z));*/
+(camera_position[2]-centerS.z)*(camera_position[2]-centerS.z));
+*
 
                 //z+
                 project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
@@ -543,7 +545,7 @@ DGtal::Board3DTo2D<S, KS>::saveCairo(const char *filename, CairoType type, int b
             }
         }
     }
-     */
+     *
 
     if (type==CairoPNG)
         cairo_surface_write_to_png (surface, filename);
@@ -554,7 +556,7 @@ DGtal::Board3DTo2D<S, KS>::saveCairo(const char *filename, CairoType type, int b
 
 /*!
 * \brief init function (should be in Constructor).
-*/
+*
 template < typename S, typename KS>
 void
 DGtal::Board3DTo2D<S, KS>::init()
@@ -571,7 +573,8 @@ DGtal::Board3DTo2D<S, KS>::init()
     Board3DTo2D<S, KS>::myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
 
     /*createNewCubeList(true);
-std::vector<cubeD3D> aKSCubeList;*/
+std::vector<cubeD3D> aKSCubeList;
+*
 
     Board3DTo2D<S, KS>::myDefaultColor= DGtal::Color(255, 255, 255);
 
@@ -588,4 +591,4 @@ std::vector<cubeD3D> aKSCubeList;*/
 
    Board3DTo2D<S, KS>::myModes ["Board3DTo2D"]="SolidMode";
 }
-
+*/

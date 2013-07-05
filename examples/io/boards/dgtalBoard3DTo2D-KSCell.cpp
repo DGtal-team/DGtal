@@ -43,7 +43,7 @@ using namespace Z3i;
 
 int main()
 {
-  Board3DTo2D board;
+  Board3DTo2D<Space, KSpace> board;
 
   KSpace K;
   Point plow(0,0,0);  
@@ -102,7 +102,7 @@ int main()
     << CameraUpVector(0.516135, -0.84913, -0.112173);
 
   //board << SetMode3D(board.className(), "WireFrameMode");
-  board.saveCairo("dgtalBoard3DTo2D-KSCell.png", Board3DTo2D::CairoPNG, 600, 400);
+  board.saveCairo("dgtalBoard3DTo2D-KSCell.png", Board3DTo2D<Space, KSpace>::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

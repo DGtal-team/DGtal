@@ -95,6 +95,7 @@ An object x satisfying this concept may then be used as:
    */  
   
   template <class S, class KS> class Viewer3D;
+  class DrawableWithViewer3D;
   
   template <typename T, typename S, typename KS>
   struct CDrawableWithViewer3D  : public CDrawableWithDisplay3D<T, S, KS>
