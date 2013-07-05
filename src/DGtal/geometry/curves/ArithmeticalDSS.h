@@ -59,7 +59,7 @@ namespace DGtal
    * Description of template class 'ArithmeticalDSS' <p>
    * \brief Aim: This class represents a naive (resp. standard) 
    * digital straight segment (DSS), ie. the sequence of 
-   * simply connected digital points between @a myF and @a myL
+   * simply 8- (resp. 4-)connected digital points between @a myF and @a myL
    * and contained in the naive (resp. standard) digital straight
    * line (DSL) of parameters @a myA @a myB @a myMu @a myOmega.  
    *
@@ -246,7 +246,7 @@ namespace DGtal
      * in constant time. 
      * The user should be sure that the slope is
      * consistent with the position of the leaning 
-     * point. 
+     * points. 
      *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
@@ -375,6 +375,11 @@ namespace DGtal
      * of remainder r to a point of remainder r+omega
      */
     Vector shift() const; 
+    /**
+     * @return the two vectors used to iterate
+     * over the DSS point. 
+     */
+    Steps steps() const; 
 
     /**
      * Returns the remainder of @a aPoint
@@ -390,7 +395,7 @@ namespace DGtal
      * computed along the direction that is orthogonal 
      * to the direction vector
      * @param aPoint the point whose position is returned 
-     * @return @a myA * @a aPoint[0] + @a myB * @a aPoint[1].
+     * @return the position
      */
     Integer orthogonalPosition(const Point& aPoint) const; 
 
@@ -413,6 +418,7 @@ namespace DGtal
      * @return 'true' if @a aPoint is in the DSS
      * 'false' otherwise. 
      * @param aPoint any point
+     * @see isInDSS
      */
     bool operator()(const Point& aPoint) const; 
 
@@ -441,6 +447,25 @@ namespace DGtal
      */
     ConstReverseIterator rend() const; 
 
+
+    // ----------------------- Setters -----------------------------------------
+    /**
+     * Set the DSS slope (ie. @a myA and @a myB parameters) 
+     * @param aA new a-parameter
+     * @param aB new b-parameter
+     * @see extend
+     */
+    void setSlope(const Integer& aA, const Integer& aB); 
+
+    /**
+     * Set the intercept and the thickness of the DSS
+     * (ie. @a myMu and @a myOmega parameters) 
+     * @param aMu new mu parameter
+     * @param aOmega new omega parameter
+     * @see extend
+     */
+    void setMuOmega(const Integer& aMu, const Integer& aOmega); 
+
     // ----------------------- Dynamic methods --------------------------------
 
     /**
@@ -448,25 +473,29 @@ namespace DGtal
      * and the DSS is a DSS. 
      *
      * @param aNewPoint the point to test
-     * @param aLastPoint last point of the DSS next to which 
+     * @param aStep vector between @a aNewPoint and 
+     * @a aEndPoint oriented from back to front. 
+     * @param aEndPoint end point of the DSS next to which 
      * @a aNewPoint should be 
      * 
      * @return an integer equal to 0 if the union between 
      * aNewPoint and *this is not a DSS, but strictly greater 
      * than 0 otherwise. The value gives the way of updating
-     *  the members of *this: 
+     *  the members of the DSS: 
      * 1: initialization of the first step
      * 2: repetition of the first step
-     * 3: initialization of the second step
-     * 4: weakly interior on the left
-     * 5: weakly interior on the right
-     * 6: weakly exterior on the left
-     * 7: weakly exterior on the right
-     * 8: strongly interior
+     * 3: initialization of the second step on the left
+     * 4: initialization of the second step on the right
+     * 5: weakly interior on the left
+     * 6: weakly interior on the right
+     * 7: weakly exterior on the left
+     * 8: weakly exterior on the right
+     * 9: strongly interior
      * @see extend
      */
-    unsigned short int isExtendable( const Point& aNewPoint, 
-				     const Point& aLastPoint );
+    unsigned short int isExtendable( const Point& aNewPoint,
+				     const Vector& aStep, 
+				     const Point& aEndPoint ) const;
 
     /**
      * Tests whether the union between a point 
@@ -474,8 +503,10 @@ namespace DGtal
      * Computes the parameters of the new DSS 
      * with the adding point if true.
      *
-     * @param aNewPoint the point to test
-     * @param aLastPoint last point of the DSS next to which 
+     * @param aNewPoint the point to add
+     * @param aStep vector between @a aNewPoint and 
+     * @a aEndPoint oriented from back to front. 
+     * @param aEndPoint last point of the DSS next to which 
      * @a aNewPoint should be 
      * @param aFirstLeft first leaning point located on the left side of the DSS
      * @param aLastLeft last leaning point located on the left side of the DSS  
@@ -485,13 +516,55 @@ namespace DGtal
      * @return 'true' if the union is a DSS, 'false' otherwise.
      * @see isExtendable
      */
-    unsigned short int extend( const Point& aNewPoint, 
-			       Point& aLastPoint, 
-			       Point& aFirstLeft,  Point& aLastLeft,
-			       Point& aFirstRight,  Point& aLastRight );
+    bool extend( const Point& aNewPoint, const Vector& aStep, 
+		 Point& aEndPoint, 
+		 Point& aFirstLeft,  Point& aLastLeft,
+		 Point& aFirstRight,  Point& aLastRight );
+
+    /**
+     * Tests whether the union between a point, 
+     * which is located at the front of the DSS,
+     * and the DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     *
+     * @param aNewPoint the point to add
+     * 
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     * @see extend
+     */
+    bool extendForward( const Point& aNewPoint );
+    /**
+     * Tests whether the union between a point, 
+     * which is located at the back of the DSS,
+     * and the DSS is a DSS. 
+     * Computes the parameters of the new DSS 
+     * with the adding point if true.
+     *
+     * @param aNewPoint the point to add
+     * 
+     * @return 'true' if the union is a DSS, 'false' otherwise.
+     * @see extend
+     */
+    bool extendBackward( const Point& aNewPoint );
+
+    // ------------------------- Hidden services ------------------------------
+  protected:
+
+    /**
+     * Tests whether @a aStep is one of the two steps of the DSS, 
+     * stored in @a mySteps. 
+     *
+     * @param aStep any step to test
+     * @pre steps of @a mySteps should not be null
+     * @return 'true' if @a aStep is one of the two steps of the DSS,
+     * 'false' otherwise.
+     * @see isExtendable
+     */
+    bool isOneOfTheTwoSteps( const Vector& aStep ) const; 
 
     // ------------------------- Protected Datas ------------------------------
-  private:
+  protected:
 
     // -------------------- first and last point, leaning points ---------------
     /**
@@ -547,14 +620,7 @@ namespace DGtal
     */
     Integer myOmega;
 
-    // ------------------------- Private Datas --------------------------------
-  private:
 
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class ArithmeticalDSS
 

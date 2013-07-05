@@ -268,6 +268,214 @@ bool rangeTest(const DSS& dss)
   return nbok == nb;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Unit test of the extension service 
+ * @param dss an instance of DSS
+ * @tparam DSS a model of arithmetical DSS, 
+ * either naive or standard 
+ * @param newPointToFront point to add to the dss front
+ * @param newPointToBack point to add to the dss back
+ * @param nbok (returned) number of passed tests
+ * @param nb (returned) number of tests
+ */
+template <typename DSS>
+bool extensionTest(const DSS& dss, 
+		   typename DSS::Point newPointToFront, 
+		   typename DSS::Point newPointToBack, 
+		   unsigned int& nbok, unsigned int& nb, 
+		   const unsigned int& code = 0)
+{
+    trace.info() << dss << std::endl; 
+    if (dss.isValid())
+      nbok++;
+    nb++; 
+    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+    trace.info() << "to front " << newPointToFront << std::endl;
+    if (dss.isExtendable( newPointToFront, (newPointToFront - dss.front()), dss.front() ) == code)
+      nbok++;
+    nb++; 
+    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+    DSS mdss = dss; //local and modifiable copy
+    if (code == 0)
+      {
+    	if ( (!mdss.extendForward(newPointToFront)) )
+    	  nbok++;
+	nb++; 
+      }
+    else
+      {
+    	if ( (mdss.extendForward(newPointToFront))&&(mdss.isValid()) )
+    	  nbok++;
+	nb++; 
+      }
+    trace.info() << mdss << std::endl; 
+    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+    trace.info() << "to back " << newPointToBack << std::endl;
+    if (dss.isExtendable( newPointToBack, (dss.back() - newPointToBack), dss.back() )  == code)
+      nbok++;
+    nb++; 
+    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+    mdss = dss; //local and modifiable copy
+    if (code == 0)
+      {
+    	if ( (!mdss.extendBackward(newPointToBack)) )
+    	  nbok++;
+	nb++; 
+      }
+    else
+      {
+    	if ( (mdss.extendBackward(newPointToBack))&&(mdss.isValid()) )
+    	  nbok++;
+	nb++; 
+	std::cerr << mdss.isValid() << std::endl; 
+      }
+    trace.info() << mdss << std::endl; 
+    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+}
+
+/**
+ * Test of the update services 
+ * @param dss an instance of DSS
+ * @tparam DSS a model of arithmetical DSS, 
+ * either naive or standard 
+ */
+template <typename DSS>
+bool updateTest()
+{
+  typedef typename DSS::Point Point; 
+  typedef typename DSS::Vector Vector; 
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Update services..." );
+
+  {
+    trace.info() << "not connected point" << std::endl;
+    DSS dss(Point(0,0), Point(8,5)); 
+    extensionTest( dss, Point(9,7), Point(-2,1), nbok, nb ); 
+  }
+
+  {
+    trace.info() << "not compatible second step" << std::endl;
+    DSS dss(Point(0,0), Point(1,1)); 
+    extensionTest( dss, Point(0,2), Point(-1,1), nbok, nb ); 
+  }
+
+  {
+    trace.info() << "a third step" << std::endl;
+    DSS dss(Point(0,0), Point(2,1)); 
+    extensionTest( dss, Point(2,2), Point(0,1), nbok, nb ); 
+  }
+
+  {
+    trace.info() << "strongly exterior" << std::endl;
+    DSS dss(Point(0,0), Point(8,5)); 
+    extensionTest( dss, Point(9,6), Point(-1,0), nbok, nb ); 
+  }
+
+  {
+    trace.info() << "confounded points" << std::endl;
+    DSS dss(Point(0,0), Point(8,5)); 
+    extensionTest( dss, Point(8,5), Point(0,0), nbok, nb, 9 ); 
+  }
+
+  {
+    trace.info() << "strongly interior points" << std::endl;
+    DSS dss0(Point(0,0), Point(8,5)); 
+    DSS dss(5, 8, Point(-2,-2), Point(8,5), 
+	    dss0.Uf(), dss0.Ul(), 
+	    dss0.Lf(), dss0.Ll() ); 
+    extensionTest( dss, Point(9,5), Point(-3,-2), nbok, nb, 9 ); 
+  }
+
+  {
+    trace.info() << "weakly interior points on the left" << std::endl;
+    DSS dss0(Point(0,0), Point(8,5)); 
+    DSS dss(5, 8, Point(-7,-5), Point(16,10)-dss0.steps().second, 
+	    dss0.Uf(), dss0.Ul(), 
+	    dss0.Lf()-Vector(8,5), dss0.Ll()+Vector(8,5) ); 
+    extensionTest( dss, Point(16,10), Point(-8,-5), nbok, nb, 5 ); 
+  }
+
+  {
+    trace.info() << "weakly exterior points on the left" << std::endl;
+    DSS dss0(Point(0,0), Point(8,5)); 
+    Point newPointToBack = dss0.Lf()-dss0.shift()-Vector(8,5); 
+    Point newPointToFront = dss0.Ll()-dss0.shift()+Vector(8,5); 
+    DSS dss(5, 8, 
+	    newPointToBack+dss0.steps().first, 
+	    newPointToFront-dss0.steps().second, 
+	    dss0.Uf(), dss0.Ul(), 
+	    dss0.Lf(), dss0.Ll() ); 
+    extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 7 );
+  }
+
+  {
+    trace.info() << "weakly interior points on the right" << std::endl;
+    DSS dss0(Point(0,0), Point(8,5)); 
+    Point newPointToBack = dss0.Lf()-Vector(8,5); 
+    Point newPointToFront = dss0.Ll()+Vector(8,5); 
+    DSS dss(5, 8, 
+	    newPointToBack+dss0.steps().first, 
+	    newPointToFront-dss0.steps().second, 
+	    dss0.Uf(), dss0.Ul(), 
+	    dss0.Lf(), dss0.Ll() ); 
+    extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 6 ); 
+  }
+
+  {
+    trace.info() << "weakly exterior points on the right" << std::endl;
+    DSS dss0(Point(0,0), Point(8,5)); 
+    Point newPointToBack = dss0.Uf()-Vector(8,5)+dss0.shift(); 
+    Point newPointToFront = dss0.Ul()+Vector(8,5)+dss0.shift(); 
+    DSS dss(5, 8, 
+	    newPointToBack+dss0.steps().first, 
+	    newPointToFront-dss0.steps().second, 
+	    dss0.Uf(), dss0.Ul(), 
+	    dss0.Lf()-Vector(8,5), dss0.Ll()+Vector(8,5) ); 
+    extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 8 ); 
+  }
+
+  {
+    trace.info() << "first step" << std::endl;
+    DSS dss( Point(0,0), Point(0,0) ); 
+    extensionTest( dss, Point(1,0), Point(-1,0), nbok, nb, 1 ); 
+  }
+
+  {
+    trace.info() << "first step repetition" << std::endl;
+    DSS dss(Point(0,0), Point(1,0)); 
+    extensionTest( dss, Point(2,0), Point(-1,0), nbok, nb, 2 ); 
+  }
+
+  {
+    trace.info() << "second step (above)" << std::endl;
+    DSS dss0a(Point(0,0), Point(2,1)); 
+    DSS dss0b(Point(0,0), Point(2,-1)); 
+    DSS dss(Point(0,0), Point(2,1) - dss0a.steps().second); 
+    Point newPointToBack = Point(0,0) - dss0b.steps().first;  
+    extensionTest( dss, Point(2,1), newPointToBack, nbok, nb, 3 ); 
+  }
+
+  {
+    trace.info() << "second step (below)" << std::endl;
+    DSS dss0a(Point(0,0), Point(2,-1)); 
+    DSS dss0b(Point(0,0), Point(2,1)); 
+    DSS dss(Point(0,0), Point(2,-1) - dss0a.steps().first); 
+    Point newPointToBack = Point(0,0) - dss0b.steps().second;  
+    extensionTest( dss, Point(2,-1), newPointToBack, nbok, nb, 4 ); 
+  }
+
+  trace.endBlock();
+  
+  return nbok == nb;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
@@ -278,7 +486,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  //main operator
+  //main operators
   bool res = mainTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
     && mainTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >(); 
 
@@ -357,6 +565,11 @@ int main( int argc, char** argv )
       && rangeTest(dss13)
       ;
   }
+
+  res = res
+    && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
+    && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >()
+    ; 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
