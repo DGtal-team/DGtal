@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/math/AngleLinearMinimizer.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
@@ -88,6 +89,19 @@ namespace DGtal
 static void draw( DGtal::Board2D & board, const DGtal::AngleLinearMinimizer & );
 // AngleLinearMinimizer
     
+// ArithmeticalDSS
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+  static void drawAsBoundingBox( DGtal::Board2D & aBoard, 
+			  const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & );
+
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+  static void drawAsDigitalPoints( DGtal::Board2D & aBoard, 
+			    const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & );
+
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+  static void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & );
+// ArithmeticalDSS
+
     
 // ArithmeticalDSSComputer
 template <typename TIterator, typename TInteger, int connectivity>

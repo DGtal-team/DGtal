@@ -42,6 +42,7 @@
 // Inclusions
 
 #include "DGtal/math/AngleLinearMinimizer.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"

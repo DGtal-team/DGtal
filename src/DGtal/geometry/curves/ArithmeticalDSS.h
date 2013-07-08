@@ -84,134 +84,136 @@ namespace DGtal
     typedef std::pair<Vector,Vector> Steps; 
     typedef TInteger Integer; 
 
-  /**
-   * \brief Aim: This class aims at representing an iterator
-   * that provides a way to scan the points of a DSS
-   * It is both a model of readable iterator and of
-   * bidirectional iterator. 
-   */
-  class ConstIterator : public 
-  std::iterator<std::bidirectional_iterator_tag, 
-		Point, int, Point*, Point> 
-  {
-    // ------------------------- Private data -----------------------
-  private:
-
-    /// Constant aliasing pointer to the DSS visited by the iterator
-    const ArithmeticalDSS* myDSSPtr;
-
-    /// The current point
-    Point  myCurrentPoint;
-
-    /// Quantity to add to the current remainder
-    Integer  myQuantityToAdd;
-
-    /// Quantity to remove to the current remainder
-    Integer  myQuantityToRemove;
-
-    /// Upper bound on the remainders
-    Integer  myUpperBound;
-    /// Lower bound on the remainders
-    Integer  myLowerBound;
-
-    /// Remainder of the current point
-    Integer  myCurrentRemainder;
-
-    // ------------------------- Standard services -----------------------
-  public:
+    typedef DGtal::PointVector<2, double> PointD; 
 
     /**
-     * Default constructor (not valid).
+     * \brief Aim: This class aims at representing an iterator
+     * that provides a way to scan the points of a DSS
+     * It is both a model of readable iterator and of
+     * bidirectional iterator. 
      */
-    ConstIterator();
+    class ConstIterator : public 
+    std::iterator<std::bidirectional_iterator_tag, 
+		  Point, int, Point*, Point> 
+    {
+      // ------------------------- Private data -----------------------
+    private:
 
-    /**
-     * Constructor.
-     * @param aDSS an arithmetical DSS
-     * @param aPoint a point of the DSL containing @a aDSS
-     */
-    ConstIterator( const ArithmeticalDSS* aDSS, const Point& aPoint ); 
+      /// Constant aliasing pointer to the DSS visited by the iterator
+      const ArithmeticalDSS* myDSSPtr;
 
-    /**
-     * Copy constructor.
-     * @param aOther the iterator to clone.
-     */
-    ConstIterator( const ConstIterator & aOther );
-    /**
-     * Assignment.
-     * @param aOther the iterator to copy.
-     * @return a reference on 'this'.
-     */
-    ConstIterator& operator= ( const ConstIterator & aOther );
+      /// The current point
+      Point  myCurrentPoint;
 
-    /**
-     * Destructor. Does nothing.
-     */
-    ~ConstIterator(); 
+      /// Quantity to add to the current remainder
+      Integer  myQuantityToAdd;
 
-    // ------------------------- iteration services -------------------------
-  public:
+      /// Quantity to remove to the current remainder
+      Integer  myQuantityToRemove;
 
-    /**
-     * @return the current point
-     */
-    Point operator*() const;
+      /// Upper bound on the remainders
+      Integer  myUpperBound;
+      /// Lower bound on the remainders
+      Integer  myLowerBound;
 
-    /**
-     * Moves @a myCurrentPoint to the next point of the DSS
-     */
-    void next(); 
+      /// Remainder of the current point
+      Integer  myCurrentRemainder;
 
-    /**
-     * Pre-increment.
-     * Goes to the next point of the DSS.
-     */
-    ConstIterator& operator++(); 
+      // ------------------------- Standard services -----------------------
+    public:
 
-    /**
-     * Post-increment.
-     * Goes to the next point of the DSS.
-     */
-    ConstIterator operator++(int); 
+      /**
+       * Default constructor (not valid).
+       */
+      ConstIterator();
 
-    /**
-     * Moves @a myCurrentPoint to the previous point of the DSS
-     */
-    void previous();
+      /**
+       * Constructor.
+       * @param aDSS an arithmetical DSS
+       * @param aPoint a point of the DSL containing @a aDSS
+       */
+      ConstIterator( const ArithmeticalDSS* aDSS, const Point& aPoint ); 
 
-    /**
-     * Pre-decrement.
-     * Goes to the previous point in the DSS.
-     */
-    ConstIterator& operator--();
+      /**
+       * Copy constructor.
+       * @param aOther the iterator to clone.
+       */
+      ConstIterator( const ConstIterator & aOther );
+      /**
+       * Assignment.
+       * @param aOther the iterator to copy.
+       * @return a reference on 'this'.
+       */
+      ConstIterator& operator= ( const ConstIterator & aOther );
 
-    /**
-     * Post-decrement.
-     * Goes to the previous point in the DSS.
-     */
-    ConstIterator operator--(int);
+      /**
+       * Destructor. Does nothing.
+       */
+      ~ConstIterator(); 
 
-    /**
-     * Equality operator.
-     *
-     * @param aOther the iterator to compare with 
-     * (must be defined on the same DSS).
-     *
-     * @return 'true' if their current points coincide.
-     */
-    bool operator== ( const ConstIterator & aOther ) const;
+      // ------------------------- iteration services -------------------------
+    public:
 
-    /**
-     * Inequality operator.
-     *
-     * @param aOther the iterator to compare with 
-     * (must be defined on the same DSS).
-     *
-     * @return 'true' if their current points differ.
-     */
-    bool operator!= ( const ConstIterator & aOther ) const;
+      /**
+       * @return the current point
+       */
+      Point operator*() const;
 
-  }; //end of inner class ConstIterator
+      /**
+       * Moves @a myCurrentPoint to the next point of the DSS
+       */
+      void next(); 
+
+      /**
+       * Pre-increment.
+       * Goes to the next point of the DSS.
+       */
+      ConstIterator& operator++(); 
+
+      /**
+       * Post-increment.
+       * Goes to the next point of the DSS.
+       */
+      ConstIterator operator++(int); 
+
+      /**
+       * Moves @a myCurrentPoint to the previous point of the DSS
+       */
+      void previous();
+
+      /**
+       * Pre-decrement.
+       * Goes to the previous point in the DSS.
+       */
+      ConstIterator& operator--();
+
+      /**
+       * Post-decrement.
+       * Goes to the previous point in the DSS.
+       */
+      ConstIterator operator--(int);
+
+      /**
+       * Equality operator.
+       *
+       * @param aOther the iterator to compare with 
+       * (must be defined on the same DSS).
+       *
+       * @return 'true' if their current points coincide.
+       */
+      bool operator== ( const ConstIterator & aOther ) const;
+
+      /**
+       * Inequality operator.
+       *
+       * @param aOther the iterator to compare with 
+       * (must be defined on the same DSS).
+       *
+       * @return 'true' if their current points differ.
+       */
+      bool operator!= ( const ConstIterator & aOther ) const;
+
+    }; //end of inner class ConstIterator
     
     typedef DGtal::ReverseIterator<ConstIterator> ConstReverseIterator; 
 
@@ -650,6 +652,33 @@ namespace DGtal
      */
     bool retractBackward();
 
+    // ------------------------- Display services ------------------------------
+    /**
+     * Projects the point @a aM onto the straight line whose points have
+     * remainder @a aR.
+     *
+     * @param aM any point (may not be part of the DSS).
+     * @param aR the remainder (may not be an integer).
+     *
+     * @return the projected point.
+     */
+    PointD project( const Point& aM, double aR ) const;
+    
+    /**
+     * Projects the point @a aM onto the straight line going through point @a aP.
+     *
+     * @param aM any point (may not be part of the DSS).
+     * @param aP any point (may not be part of the DSS).
+     *
+     * @return the projected point.
+     */
+    PointD project( const Point & aM, const Point & aP ) const;
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -671,56 +700,56 @@ namespace DGtal
 
     // -------------------- first and last point, leaning points ---------------
     /**
-    * First point
-    */
+     * First point
+     */
     Point myF;
     /**
-    * Last point 
-    */
+     * Last point 
+     */
     Point myL;
     /**
-    * First upper leaning point ( of remainder @a myMu )
-    */
+     * First upper leaning point ( of remainder @a myMu )
+     */
     Point myUf;
     /**
-    * Last upper leaning point ( of remainder @a myMu )
-    */
+     * Last upper leaning point ( of remainder @a myMu )
+     */
     Point myUl;
     /**
-    * First lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
-    */
+     * First lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+     */
     Point myLf;
     /**
-    * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
-    */
+     * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
+     */
     Point myLl;
 
     // -------------------- steps ---------------------------------------------
     /**
-    * Pair of steps used to iterate over the DSS points
-    */
+     * Pair of steps used to iterate over the DSS points
+     */
     Steps mySteps;
     /**
-    * Shift vector (translating a point of remainder r to a point of remainder r+omega 
-    */
+     * Shift vector (translating a point of remainder r to a point of remainder r+omega 
+     */
     Vector myShift;
 
     //------------------------ parameters of the DSS --------------------------
     /**
-    * y-component of the direction vector
-    */
+     * y-component of the direction vector
+     */
     Coordinate myA;
     /**
-    * x-component of the direction vector
-    */
+     * x-component of the direction vector
+     */
     Coordinate myB;
     /**
-    * Intercept
-    */
+     * Intercept
+     */
     Integer myMu;
     /**
-    * Thickness
-    */
+     * Thickness
+     */
     Integer myOmega;
 
 
@@ -746,6 +775,199 @@ namespace DGtal
 #include "DGtal/geometry/curves/ArithmeticalDSS.ih"
 
 //                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Aliases
+namespace DGtal
+{
+  /**
+   * Description of class 'StandardDSS4' <p> Aim: 
+   * represents a sequence of 4-connected digital points
+   * contained in a standard DSL. 
+   *
+   * @tparam  TCoordinate a model of integer for the points coordinates
+   * @tparam  TInteger a model of integer for the DSL parameters
+   *
+   * @see ArithmeticalDSS
+   */
+  template <typename TCoordinate, typename TInteger = TCoordinate>
+  class StandardDSS4: 
+    public ArithmeticalDSS<TCoordinate, TInteger, 4>
+  {
+  public: 
+    typedef ArithmeticalDSS<TCoordinate, TInteger, 4> Super; 
+
+  public: 
+    /**
+     * Constructor.
+     * The user gives all the (redondant) parameters and 
+     * should be sure that the resulting DSS is valid. 
+     *
+     * @param aA y-component of the direction vector
+     * @param aB x-component of the direction vector
+     * @param aMu intercept
+     * @param aOmega thickness
+     * @param aF the first point
+     * @param aL the last point
+     * @param aUf the first upper point
+     * @param aUl the last upper point
+     * @param aLf the first lower point
+     * @param aLl the last lower point
+     */
+    StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
+		 const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
+		 const typename Super::Point& aF, const typename Super::Point& aL,
+		 const typename Super::Point& aUf, const typename Super::Point& aUl,
+		 const typename Super::Point& aLf, const typename Super::Point& aLl)
+      : Super(aA, aB, aMu, aOmega, aF, aL, aUf, aUl, aLf, aLl) {}
+
+    /**
+     * Constructor.
+     * Minimal set of parameters to build the DSS
+     * in constant time. 
+     * The user should be sure that the slope is
+     * consistent with the position of the leaning 
+     * points. 
+     *
+     * @param aA y-component of the direction vector
+     * @param aB x-component of the direction vector
+     * @param aMu intercept
+     * @param aF the first point
+     * @param aL the last point
+     * @param aUf the first upper point
+     * @param aUl the last upper point
+     * @param aLf the first lower point
+     * @param aLl the last lower point
+     */
+    StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
+		 const typename Super::Point& aF, const typename Super::Point& aL,
+		 const typename Super::Point& aUf, const typename Super::Point& aUl,
+		 const typename Super::Point& aLf, const typename Super::Point& aLl)
+      : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) {}
+
+    /**
+     * Constructor of a pattern from its two end points.
+     *
+     * @param aF the first point
+     * @param aL the last point
+     */
+    StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL)
+      : Super(aF, aL) {}
+
+    /**
+     * Copy constructor.
+     * @param aOther the object to clone.
+     */
+    StandardDSS4 ( const StandardDSS4 & aOther ): Super( aOther ) {} 
+
+    /**
+     * Assignment.
+     * @param aOther the object to copy.
+     * @return a reference on 'this'.
+     */
+    StandardDSS4 & operator= ( const StandardDSS4 & aOther ) 
+    {
+      if (this != & aOther)
+	Super::operator=( aOther );
+      return *this;      
+    }
+  }; 
+
+  /**
+   * Description of class 'NaiveDSS8' <p> Aim: 
+   * represents a sequence of 8-connected digital points
+   * contained in a naive DSL. 
+   *
+   * @tparam  TCoordinate a model of integer for the points coordinates
+   * @tparam  TInteger a model of integer for the DSL parameters
+   *
+   * @see ArithmeticalDSS
+   */
+  template <typename TCoordinate, typename TInteger = TCoordinate>
+  class NaiveDSS8: 
+    public ArithmeticalDSS<TCoordinate, TInteger, 8>
+  {
+  public: 
+    typedef ArithmeticalDSS<TCoordinate, TInteger, 8> Super; 
+
+  public: 
+    /**
+     * Constructor.
+     * The user gives all the (redondant) parameters and 
+     * should be sure that the resulting DSS is valid. 
+     *
+     * @param aA y-component of the direction vector
+     * @param aB x-component of the direction vector
+     * @param aMu intercept
+     * @param aOmega thickness
+     * @param aF the first point
+     * @param aL the last point
+     * @param aUf the first upper point
+     * @param aUl the last upper point
+     * @param aLf the first lower point
+     * @param aLl the last lower point
+     */
+    NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
+	      const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
+	      const typename Super::Point& aF, const typename Super::Point& aL,
+	      const typename Super::Point& aUf, const typename Super::Point& aUl,
+	      const typename Super::Point& aLf, const typename Super::Point& aLl)
+      : Super(aA, aB, aMu, aOmega, aF, aL, aUf, aUl, aLf, aLl) {}
+
+    /**
+     * Constructor.
+     * Minimal set of parameters to build the DSS
+     * in constant time. 
+     * The user should be sure that the slope is
+     * consistent with the position of the leaning 
+     * points. 
+     *
+     * @param aA y-component of the direction vector
+     * @param aB x-component of the direction vector
+     * @param aMu intercept
+     * @param aF the first point
+     * @param aL the last point
+     * @param aUf the first upper point
+     * @param aUl the last upper point
+     * @param aLf the first lower point
+     * @param aLl the last lower point
+     */
+    NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
+	      const typename Super::Point& aF, const typename Super::Point& aL,
+	      const typename Super::Point& aUf, const typename Super::Point& aUl,
+	      const typename Super::Point& aLf, const typename Super::Point& aLl)
+      : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) {}
+
+    /**
+     * Constructor of a pattern from its two end points.
+     *
+     * @param aF the first point
+     * @param aL the last point
+     */
+    NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL)
+      : Super(aF, aL) {}
+
+    /**
+     * Copy constructor.
+     * @param aOther the object to clone.
+     */
+    NaiveDSS8 ( const NaiveDSS8 & aOther ): Super( aOther ) {} 
+
+    /**
+     * Assignment.
+     * @param aOther the object to copy.
+     * @return a reference on 'this'.
+     */
+    NaiveDSS8 & operator= ( const NaiveDSS8 & aOther ) 
+    {
+      if (this != & aOther)
+	Super::operator=( aOther );
+      return *this;      
+    }
+
+  }; 
+} // namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined ArithmeticalDSS_h
