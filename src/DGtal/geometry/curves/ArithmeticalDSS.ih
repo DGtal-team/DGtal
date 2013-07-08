@@ -1118,6 +1118,111 @@ operator!=(const ConstIterator& aOther) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+//                        Aliases                                            //
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::StandardDSS4<TC, TI>::
+StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
+	     const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
+	     const typename Super::Point& aF, const typename Super::Point& aL,
+	     const typename Super::Point& aUf, const typename Super::Point& aUl,
+	     const typename Super::Point& aLf, const typename Super::Point& aLl)
+  : Super(aA, aB, aMu, aOmega, aF, aL, aUf, aUl, aLf, aLl) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::StandardDSS4<TC, TI>::
+StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
+	     const typename Super::Point& aF, const typename Super::Point& aL,
+	     const typename Super::Point& aUf, const typename Super::Point& aUl,
+	     const typename Super::Point& aLf, const typename Super::Point& aLl)
+  : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::StandardDSS4<TC, TI>::
+StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL)
+  : Super(aF, aL) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::StandardDSS4<TC, TI>::
+StandardDSS4 ( const StandardDSS4 & aOther )
+  : Super( aOther ) 
+{} 
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::StandardDSS4<TC, TI>& 
+DGtal::StandardDSS4<TC, TI>::
+operator= ( const StandardDSS4 & aOther )
+{
+  if (this != & aOther)
+    Super::operator=( aOther );
+  return *this;      
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::NaiveDSS8<TC, TI>::
+NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
+	     const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
+	     const typename Super::Point& aF, const typename Super::Point& aL,
+	     const typename Super::Point& aUf, const typename Super::Point& aUl,
+	     const typename Super::Point& aLf, const typename Super::Point& aLl)
+  : Super(aA, aB, aMu, aOmega, aF, aL, aUf, aUl, aLf, aLl) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::NaiveDSS8<TC, TI>::
+NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
+	     const typename Super::Point& aF, const typename Super::Point& aL,
+	     const typename Super::Point& aUf, const typename Super::Point& aUl,
+	     const typename Super::Point& aLf, const typename Super::Point& aLl)
+  : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::NaiveDSS8<TC, TI>::
+NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL)
+  : Super(aF, aL) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::NaiveDSS8<TC, TI>::
+NaiveDSS8 ( const NaiveDSS8 & aOther )
+  : Super( aOther ) 
+{} 
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI>
+inline
+DGtal::NaiveDSS8<TC, TI>& 
+DGtal::NaiveDSS8<TC, TI>::
+operator= ( const NaiveDSS8 & aOther )
+{
+  if (this != & aOther)
+    Super::operator=( aOther );
+  return *this;      
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
 template <typename TC, typename TI, unsigned short adj>

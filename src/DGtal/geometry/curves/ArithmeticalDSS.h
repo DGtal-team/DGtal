@@ -252,7 +252,6 @@ namespace DGtal
      *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
-     * @param aMu intercept
      * @param aF the first point
      * @param aL the last point
      * @param aUf the first upper point
@@ -771,13 +770,6 @@ namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/geometry/curves/ArithmeticalDSS.ih"
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
 // Aliases
 namespace DGtal
 {
@@ -819,8 +811,7 @@ namespace DGtal
 		 const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
 		 const typename Super::Point& aF, const typename Super::Point& aL,
 		 const typename Super::Point& aUf, const typename Super::Point& aUl,
-		 const typename Super::Point& aLf, const typename Super::Point& aLl)
-      : Super(aA, aB, aMu, aOmega, aF, aL, aUf, aUl, aLf, aLl) {}
+		 const typename Super::Point& aLf, const typename Super::Point& aLl);
 
     /**
      * Constructor.
@@ -832,7 +823,6 @@ namespace DGtal
      *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
-     * @param aMu intercept
      * @param aF the first point
      * @param aL the last point
      * @param aUf the first upper point
@@ -843,35 +833,28 @@ namespace DGtal
     StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
 		 const typename Super::Point& aF, const typename Super::Point& aL,
 		 const typename Super::Point& aUf, const typename Super::Point& aUl,
-		 const typename Super::Point& aLf, const typename Super::Point& aLl)
-      : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) {}
-
+		 const typename Super::Point& aLf, const typename Super::Point& aLl);
     /**
      * Constructor of a pattern from its two end points.
      *
      * @param aF the first point
      * @param aL the last point
      */
-    StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL)
-      : Super(aF, aL) {}
+    StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL);
 
     /**
      * Copy constructor.
      * @param aOther the object to clone.
      */
-    StandardDSS4 ( const StandardDSS4 & aOther ): Super( aOther ) {} 
+    StandardDSS4 ( const StandardDSS4 & aOther ); 
 
     /**
      * Assignment.
      * @param aOther the object to copy.
      * @return a reference on 'this'.
      */
-    StandardDSS4 & operator= ( const StandardDSS4 & aOther ) 
-    {
-      if (this != & aOther)
-	Super::operator=( aOther );
-      return *this;      
-    }
+    StandardDSS4 & operator= ( const StandardDSS4 & aOther );
+
   }; 
 
   /**
@@ -912,9 +895,7 @@ namespace DGtal
 	      const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
 	      const typename Super::Point& aF, const typename Super::Point& aL,
 	      const typename Super::Point& aUf, const typename Super::Point& aUl,
-	      const typename Super::Point& aLf, const typename Super::Point& aLl)
-      : Super(aA, aB, aMu, aOmega, aF, aL, aUf, aUl, aLf, aLl) {}
-
+	      const typename Super::Point& aLf, const typename Super::Point& aLl);
     /**
      * Constructor.
      * Minimal set of parameters to build the DSS
@@ -925,7 +906,6 @@ namespace DGtal
      *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
-     * @param aMu intercept
      * @param aF the first point
      * @param aL the last point
      * @param aUf the first upper point
@@ -936,8 +916,7 @@ namespace DGtal
     NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB,
 	      const typename Super::Point& aF, const typename Super::Point& aL,
 	      const typename Super::Point& aUf, const typename Super::Point& aUl,
-	      const typename Super::Point& aLf, const typename Super::Point& aLl)
-      : Super(aA, aB, aF, aL, aUf, aUl, aLf, aLl) {}
+	      const typename Super::Point& aLf, const typename Super::Point& aLl);
 
     /**
      * Constructor of a pattern from its two end points.
@@ -945,31 +924,32 @@ namespace DGtal
      * @param aF the first point
      * @param aL the last point
      */
-    NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL)
-      : Super(aF, aL) {}
+    NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL);
 
     /**
      * Copy constructor.
      * @param aOther the object to clone.
      */
-    NaiveDSS8 ( const NaiveDSS8 & aOther ): Super( aOther ) {} 
+    NaiveDSS8 ( const NaiveDSS8 & aOther ); 
 
     /**
      * Assignment.
      * @param aOther the object to copy.
      * @return a reference on 'this'.
      */
-    NaiveDSS8 & operator= ( const NaiveDSS8 & aOther ) 
-    {
-      if (this != & aOther)
-	Super::operator=( aOther );
-      return *this;      
-    }
+    NaiveDSS8 & operator= ( const NaiveDSS8 & aOther );
 
   }; 
 } // namespace DGtal
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
+#include "DGtal/geometry/curves/ArithmeticalDSS.ih"
+//                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
 #endif // !defined ArithmeticalDSS_h
 
 #undef ArithmeticalDSS_RECURSES
