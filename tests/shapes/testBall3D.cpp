@@ -28,6 +28,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <QtGui/QApplication>
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/shapes/parametric/Ball3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <iostream>
@@ -36,7 +37,6 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/topology/SCellsFunctors.h"

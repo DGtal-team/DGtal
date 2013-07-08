@@ -162,7 +162,7 @@ int main( int argc, char** argv )
   //////////////////////////////////////////////////////////////////////////////////
   //visualisation
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
   viewer.show();
 
   //
@@ -185,7 +185,7 @@ int main( int argc, char** argv )
 	       << std::endl;  
   viewer << ClippingPlane(a,b,c,mu); 
   
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
   return application.exec();
 }
 //                                                                           //

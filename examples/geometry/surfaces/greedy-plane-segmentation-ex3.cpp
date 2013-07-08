@@ -34,10 +34,11 @@
 #include <map>
 #include <queue>
 
+#include "DGtal/io/viewers/Viewer3D.h"
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+
 #include "DGtal/io/Display3D.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"

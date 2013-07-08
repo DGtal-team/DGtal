@@ -62,7 +62,7 @@ int main( int argc, char** argv )
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  Viewer3D viewer;  
+  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
   viewer.show(); 
   
   
@@ -115,7 +115,7 @@ int main( int argc, char** argv )
   cmap_grad.addColor( Color( 255, 255, 10 ) );
   
   // Need to avoid surfel superposition (the surfel size in increased)
-  viewer << Viewer3D::shiftSurfelVisu; 
+  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::shiftSurfelVisu;
   viewer << SetMode3D((*(vectBdrySCell2.begin())).className(), "");
   viewer.setFillColor(Color(180, 200, 25, 255));
   
@@ -132,7 +132,7 @@ int main( int argc, char** argv )
   cmap_grad2.addColor( Color( 50, 50, 255 ) );
   cmap_grad2.addColor( Color( 255, 0, 0 ) );
   cmap_grad2.addColor( Color( 255, 255, 10 ) );
-  viewer << Viewer3D::shiftSurfelVisu; 
+  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::shiftSurfelVisu;
 
   d=0;
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell.begin(); 
@@ -144,10 +144,10 @@ int main( int argc, char** argv )
   }
   
   // On need once again to avoid superposition.
-  viewer << Viewer3D::shiftSurfelVisu; 
+  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::shiftSurfelVisu;
   viewer.setFillColor(Color(18, 200, 25, 255));
   viewer << aCell ;
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
     
   return application.exec();
 }

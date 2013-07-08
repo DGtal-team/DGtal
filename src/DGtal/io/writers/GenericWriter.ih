@@ -179,7 +179,7 @@ template <typename TImageContainer >
 inline
 bool
 DGtal::operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException){
-  return DGtal::GenericWriter<TImageContainer>::exportFile(aFilename, aContainer);   
+  return DGtal::GenericWriter<TImageContainer >::exportFile(aFilename, aContainer);
 }
 
 

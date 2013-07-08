@@ -29,8 +29,8 @@
 #include <iostream>
 #include <algorithm>
 #include <QtGui/qapplication.h>
-#include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "ConfigExamples.h"
