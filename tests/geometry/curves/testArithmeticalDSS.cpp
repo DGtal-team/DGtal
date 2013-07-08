@@ -278,9 +278,10 @@ bool rangeTest(const DSS& dss)
  * @param newPointToBack point to add to the dss back
  * @param nbok (returned) number of passed tests
  * @param nb (returned) number of tests
+ * @param code index of the tested configuration
  */
 template <typename DSS>
-bool extensionTest(const DSS& dss, 
+void extensionTest(const DSS& dss, 
 		   typename DSS::Point newPointToFront, 
 		   typename DSS::Point newPointToBack, 
 		   unsigned int& nbok, unsigned int& nb, 
@@ -338,6 +339,76 @@ bool extensionTest(const DSS& dss,
     trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Unit test of the retraction service 
+ * @param dss an instance of DSS
+ * @tparam DSS a model of arithmetical DSS, 
+ * either naive or standard 
+ * @param nbok (returned) number of passed tests
+ * @param nb (returned) number of tests
+ * @param res result of the retraction: 
+ * 'true' if done, 'false' otherwise
+ */
+template <typename DSS>
+void retractionTest(const DSS& dss, 
+		    unsigned int& nbok, 
+		    unsigned int& nb, 
+		    bool res = true)
+{
+  typedef typename DSS::Point Point; 
+
+  trace.info() << dss << std::endl; 
+  if (dss.isValid())
+    nbok++;
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  //local and modifiable copy
+  DSS mdss = dss; 
+
+  //forward test
+  Point first = mdss.back(); 
+  trace.info() << "remove " << first << std::endl; 
+  if ( (mdss.retractForward()==res) 
+       && (mdss.isValid())
+       && (!mdss(first)) )
+    nbok++; 
+  nb++; 
+  trace.info() << mdss << std::endl; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  if (res)
+    {
+      if ( (mdss.extendBackward(first))
+	   && (mdss.isValid()) && (mdss == dss) )
+	nbok++; 
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  //backward test
+  Point last = mdss.front(); 
+  trace.info() << "remove " << last << std::endl; 
+  if ( (mdss.retractBackward()==res) 
+       && (mdss.isValid())
+       && (!mdss(last)) )
+    nbok++; 
+  nb++; 
+  trace.info() << mdss << std::endl; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  if (res) 
+    {
+      if ( (mdss.extendForward(last))
+	   && (mdss.isValid()) && (mdss == dss) )
+	nbok++; 
+      nb++; 
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+}
+
 /**
  * Test of the update services 
  * @param dss an instance of DSS
@@ -353,7 +424,7 @@ bool updateTest()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Update services..." );
+  trace.beginBlock ( "Extension services..." );
 
   {
     trace.info() << "not connected point" << std::endl;
@@ -473,6 +544,68 @@ bool updateTest()
   }
 
   trace.endBlock();
+
+  trace.beginBlock ( "Retraction services..." );
+
+  {
+    trace.info() << "upper leaning points" << std::endl; 
+    DSS dss(Point(0,0), Point(8,5)); 
+    retractionTest( dss, nbok, nb ); 
+  }
+  {
+    trace.info() << "lower leaning points" << std::endl; 
+    DSS dss0(Point(0,0), Point(8,5)); 
+    Point first = dss0.Lf(); 
+    Point last = dss0.Lf() + Vector(8,5); 
+    DSS dss(5, 8, first, last, 
+	    Point(8,5), Point(8,5), 
+	    first, last ); 
+    retractionTest( dss, nbok, nb ); 
+  }
+  {
+    trace.info() << "upper leaning points (repetitions)" << std::endl; 
+    DSS dss(Point(0,0), Point(16,10)); 
+    retractionTest( dss, nbok, nb ); 
+  }
+  {
+    trace.info() << "lower leaning points (repetitions)" << std::endl; 
+    DSS dss0(Point(0,0), Point(16,10)); 
+    Point first = dss0.Lf(); 
+    Point last = dss0.Lf() + Vector(16,10); 
+    DSS dss(5, 8, first, last, 
+	    Point(8,5), Point(16,10), 
+	    first, last ); 
+    retractionTest( dss, nbok, nb ); 
+  }
+  {
+    trace.info() << "no change" << std::endl; 
+    DSS dss0(Point(0,0), Point(21,13));
+    typename DSS::ConstIterator itb = dss0.begin(); 
+    --itb; --itb; --itb;
+    typename DSS::ConstIterator ite = dss0.end(); 
+    ++ite; ++ite; ++ite;
+    DSS dss(dss0.a(), dss0.b(), *itb, *ite,
+	    dss0.Uf(), dss0.Ul(), dss0.Lf(), dss0.Ll() ); 
+    retractionTest( dss, nbok, nb ); 
+  }
+  {
+    trace.info() << "one point" << std::endl; 
+    DSS dss(Point(0,0), Point(0,0));
+    retractionTest( dss, nbok, nb, false ); 
+  }
+  {
+    trace.info() << "two points" << std::endl; 
+    DSS dss(Point(0,0), Point(1,0));
+    retractionTest( dss, nbok, nb ); 
+  }
+  {
+    trace.info() << "from two steps to one step" << std::endl; 
+    DSS dss(Point(0,0), Point(1,1));
+    retractionTest( dss, nbok, nb ); 
+  }
+
+
+  trace.endBlock();
   
   return nbok == nb;
 }
@@ -570,6 +703,29 @@ int main( int argc, char** argv )
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >()
     ; 
+
+  // {
+  //   typedef DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::int32_t, 4> DSS; 
+  //   typedef DSS::Point Point; 
+  //   typedef DSS::Vector Vector; 
+    
+  //   DSS dss(Point(0,0), Point(8,5)); 
+  //   trace.info() << dss << std::endl;
+  //   {
+  //     Point Lf = dss.Lf(); 
+  //     Point Ll = dss.Ll(); 
+  //     Point Uf = dss.Uf(); 
+  //     Point Ul = dss.Ul();
+  //     dss.updateLeaningPoints( Vector(dss.a(),dss.b()), dss.front(), dss.Uf() + dss.shift(), 
+  // 			       Lf, Ll, Uf, Ul ); 
+  //     trace.info() << Uf << Ul << Lf << Ll << std::endl; 
+  //   }
+
+  //   {
+  //     dss.retractForward(); 
+  //     trace.info() << dss << std::endl; 
+  //   }
+  // }
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
