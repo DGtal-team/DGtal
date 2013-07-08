@@ -29,17 +29,19 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/base/Common.h"
-#include "DGtal/io/Color.h"
-#include "ConfigExamples.h"
+
 //! [includeImportOFF]
+//!
+
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/MeshReader.h"
 
 #include <QtGui/qapplication.h>
 #include "DGtal/io/Display3D.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 //! [includeImportOFF]
-
+#include "DGtal/base/Common.h"
+#include "DGtal/io/Color.h"
+#include "ConfigExamples.h"
 ///////////////////////////////////////////////////////////////////////////////
 using namespace std;
 using namespace DGtal;

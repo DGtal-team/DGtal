@@ -1002,7 +1002,9 @@ DGtal::Viewer3D<S, KS>::keyPressEvent ( QKeyEvent *e )
   }
   if( e->key() == Qt::Key_E){
     trace.info() << "Exporting mesh..." ;
-    (*this) >> "exportedMesh.off";
+//    (*this) >> "exportedMesh.off";
+    //because the template operator can't reconise the operator defined in Display3D
+    operator>> <S, KS>(*this, "exportedMesh.off");
     trace.info() << "[done]"<< endl ;
   }
 
