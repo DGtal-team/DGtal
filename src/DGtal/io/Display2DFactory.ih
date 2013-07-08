@@ -61,6 +61,85 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 }
 // AngleLinearMinimizer
 
+// ArithmeticalDSS
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard, 
+	   const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & a )
+{
+  typedef typename DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::PointD PointD;
+  
+  //draw bounding box
+  PointD topLeft = a.project(a.back(), a.Uf());
+  PointD bottomLeft = a.project(a.back(), a.Lf());
+  PointD bottomRight = a.project(a.front(), a.Lf());
+  PointD topRight = a.project(a.front(), a.Uf());
+
+  LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
+  LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
+  LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
+  LibBoard::Point topRightBoard(topRight[0],topRight[1]);
+  
+  std::vector<LibBoard::Point> bb;
+  bb.push_back(topLeftBoard);
+  bb.push_back(bottomLeftBoard);
+  bb.push_back(bottomRightBoard);
+  bb.push_back(topRightBoard);
+  
+  aBoard.drawClosedPolyline(bb);
+}
+  
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard, 
+	   const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & a )
+{
+  typedef typename DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>::ConstIterator ConstIterator;
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
+  
+  // Draw a linking polygonal line if the pixels are drawn as points. 
+  if(aBoard.getMode("PointVector")=="Grid" || aBoard.getMode("PointVector")=="")
+    {
+      std::vector<LibBoard::Point> contour;
+      for (ConstIterator it = a.begin(), itEnd = a.end(); 
+	   it != itEnd; ++it) 
+	{
+	  Point p = *it;
+	  double xp = NumberTraits<TInteger>::castToDouble(p[0]);
+	  double yp = NumberTraits<TInteger>::castToDouble(p[1]);
+	  contour.push_back(LibBoard::Point(xp,yp));
+	}
+      aBoard.drawPolyline(contour);
+    }
+
+  // Draw points
+  for (ConstIterator it = a.begin(), itEnd = a.end(); 
+       it != itEnd; ++it) 
+    {
+      Point p = *it;
+      aBoard << p;
+    }
+}
+  
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
+	   const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & a )
+{
+  std::string mode = board.getMode( a.className() );
+  if ( mode == "BoundingBox" )
+    drawAsBoundingBox( board, a );
+  else if ( mode == "Points" )
+    drawAsDigitalPoints( board, a );
+  else if ( ( mode == "" ) )
+    {
+      drawAsDigitalPoints( board, a );
+      drawAsBoundingBox( board, a );
+    }
+  else
+    VERIFY(false && ("draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & a ): Unknown mode "+mode)==""  );
+}
+// ArithmeticalDSS
 
 // ArithmeticalDSSComputer
 template <typename TIterator, typename TInteger, int connectivity>

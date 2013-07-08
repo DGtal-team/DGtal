@@ -621,7 +621,10 @@ int main( int argc, char** argv )
 
   //main operators
   bool res = mainTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
-    && mainTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >(); 
+    && mainTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >()
+    && mainTest<DGtal::NaiveDSS8<DGtal::int32_t> >()
+    && mainTest<DGtal::StandardDSS4<DGtal::int32_t> >()
+    ; 
 
   //range services for 8 adjacency
   {
@@ -703,29 +706,6 @@ int main( int argc, char** argv )
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >()
     ; 
-
-  // {
-  //   typedef DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::int32_t, 4> DSS; 
-  //   typedef DSS::Point Point; 
-  //   typedef DSS::Vector Vector; 
-    
-  //   DSS dss(Point(0,0), Point(8,5)); 
-  //   trace.info() << dss << std::endl;
-  //   {
-  //     Point Lf = dss.Lf(); 
-  //     Point Ll = dss.Ll(); 
-  //     Point Uf = dss.Uf(); 
-  //     Point Ul = dss.Ul();
-  //     dss.updateLeaningPoints( Vector(dss.a(),dss.b()), dss.front(), dss.Uf() + dss.shift(), 
-  // 			       Lf, Ll, Uf, Ul ); 
-  //     trace.info() << Uf << Ul << Lf << Ll << std::endl; 
-  //   }
-
-  //   {
-  //     dss.retractForward(); 
-  //     trace.info() << dss << std::endl; 
-  //   }
-  // }
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

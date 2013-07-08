@@ -891,6 +891,51 @@ isOneOfTheTwoSteps(const Vector& aStep) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+//                     Drawing services                                      //
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::PointD
+DGtal::ArithmeticalDSS<TC, TI, adj>::
+project( const Point& aM, double aR ) const
+{
+  //casts
+  double aa = (double) NumberTraits<Coordinate>::castToInt64_t(myA);
+  double bb = (double) NumberTraits<Coordinate>::castToInt64_t(myB);
+  double xm = (double) NumberTraits<Integer>::castToInt64_t(aM[0]);
+  double ym = (double) NumberTraits<Integer>::castToInt64_t(aM[1]);
+
+  //computation
+  double d2 = ( aa * aa + bb * bb );
+  double s = bb * xm + aa * ym;
+  double xp = ( bb * s + aa * aR ) / d2;
+  double yp = ( aa * s - bb * aR ) / d2;
+  
+  return PointD( xp, yp );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::PointD
+DGtal::ArithmeticalDSS<TC, TI, adj>::
+project( const Point& aM, const Point& aP ) const
+{
+  double r = (double) NumberTraits<Integer>::castToInt64_t(remainder(aP));
+  return project(aM,r);
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+std::string
+DGtal::ArithmeticalDSS<TC, TI, adj>::
+className() const
+{
+  return "ArithmeticalDSS";
+}
+///////////////////////////////////////////////////////////////////////////////
 //                   Iterators services                                      //
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------

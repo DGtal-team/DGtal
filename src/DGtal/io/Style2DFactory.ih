@@ -59,6 +59,46 @@ namespace DGtal
   // AngleLinearMinimizer
   
   
+  // ArithmeticalDSS
+  /**
+   * Default style for the bounding box mode.
+   */
+  struct DefaultDrawStyleBB_ArithmeticalDSS : public DrawableWithBoard2D
+  {
+    /**
+     * Draw the DSS on a board
+     * @param aBoard the output board where the object is drawn.
+     */
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      // Set board style
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Red);
+      aBoard.setLineWidth(1);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+  /**
+   * Default style for the points mode.
+   */
+  struct DefaultDrawStylePoints_ArithmeticalDSS : public DrawableWithBoard2D
+  {
+    /**
+     * Draw the DSS on a board
+     * @param aBoard the output board where the object is drawn.
+     */
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      // Set board style
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Black);
+      aBoard.setLineWidth(2);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+  // ArithmeticalDSS
+
+
   // ArithmeticalDSSComputer
   /**
    * Default style for the bounding box mode.
@@ -429,6 +469,17 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AngleLinearMinimizer & /*a
 }
 // AngleLinearMinimizer
 
+// ArithmeticalDSS
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency> & /*a*/, std::string mode = "" )
+{
+  if ( ( mode == "" ) || ( mode == "BoundingBox" ) ) 
+    return new DGtal::DefaultDrawStyleBB_ArithmeticalDSS;
+  else // mode == "Points"
+    return new DGtal::DefaultDrawStylePoints_ArithmeticalDSS;
+}
+// ArithmeticalDSS
 
 // ArithmeticalDSSComputer
 template <typename TIterator, typename TInteger, int connectivity>
