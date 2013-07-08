@@ -213,6 +213,49 @@ DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>
   return steps; 
 }
 
+// ----------------------------------------------------------------------------
+template <typename TCoordinate, unsigned short adjacency>
+template <typename TInteger>
+inline
+TInteger 
+DGtal::ArithmeticalDSSKernel<TCoordinate,adjacency>
+::norm(const TInteger& a, const TInteger& b) 
+{
+  if (b >= 0)
+    {
+      if (a >= 0)
+	{
+	  if (b >= a)
+	    return b;
+	  else 
+	    return a; 
+	}
+      else 
+	{
+	  if (b >= -a)
+	    return b;
+	  else 
+	    return -a; 
+	}
+    }
+  else
+    {
+      if (a >= 0)
+	{
+	  if (-b >= a)
+	    return -b;
+	  else 
+	    return a; 
+	}
+      else 
+	{
+	  if (-b >= -a)
+	    return -b;
+	  else 
+	    return -a; 
+	}
+    }
+}
 
 // ----------------------------------------------------------------------------
 template <typename TCoordinate>
@@ -327,4 +370,28 @@ DGtal::ArithmeticalDSSKernel<TCoordinate,4>
 	}
     }
   return steps; 
+}
+
+// ----------------------------------------------------------------------------
+template <typename TCoordinate>
+template <typename TInteger>
+inline
+TInteger 
+DGtal::ArithmeticalDSSKernel<TCoordinate,4>
+::norm(const TInteger& a, const TInteger& b) 
+{
+  if (b >= 0)
+    {
+      if (a >= 0)
+	return b+a; 
+     else 
+       return b-a; 
+    }
+  else
+    {
+      if (a >= 0)
+	return -b+a; 
+      else 
+	return -b-a; 
+    }
 }

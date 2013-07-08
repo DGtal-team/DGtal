@@ -116,7 +116,18 @@ namespace DGtal
      */
     template <typename TInteger>
     static Steps steps(const TInteger& a, const TInteger& b); 
-      
+
+    /**
+     * Returns the Linf (for the 8-adjacency) or L1 norm (for the 4-adjacency) 
+     * of two integers  @a a and @a b, 
+     *
+     * @param a a-parameter
+     * @param b b-parameter
+     * @tparam TInteger a model of integer for the parameters
+     * @return the norm
+     */
+    template<typename TInteger>
+    static TInteger norm(const TInteger& a, const TInteger& b);
   }; 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -136,7 +147,8 @@ namespace DGtal
     static Vector shift(const TInteger& a, const TInteger& b);
     template <typename TInteger>
     static Steps steps(const TInteger& a, const TInteger& b);
-
+    template<typename TInteger>
+    static TInteger norm(const TInteger& a, const TInteger& b);
   }; 
 
 } // namespace DGtal

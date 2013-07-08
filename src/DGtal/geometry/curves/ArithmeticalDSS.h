@@ -234,7 +234,7 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      */
-    ArithmeticalDSS(const Integer& aA, const Integer& aB, 
+    ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
 		    const Integer& aMu, const Integer& aOmega, 
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
@@ -258,7 +258,7 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      */
-    ArithmeticalDSS(const Integer& aA, const Integer& aB,
+    ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB,
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl);
@@ -323,12 +323,12 @@ namespace DGtal
     /**
      * @return a parameter (y-component of the direction vector)
      */
-    Integer a() const; 
+    Coordinate a() const; 
 
     /**
      * @return b parameter (x-component of the direction vector)
      */
-    Integer b() const; 
+    Coordinate b() const; 
 
     /**
      * @return mu parameter, the intercept
@@ -455,7 +455,7 @@ namespace DGtal
      * @param aB new b-parameter
      * @see extend
      */
-    void setSlope(const Integer& aA, const Integer& aB); 
+    void setSlope(const Coordinate& aA, const Coordinate& aB); 
 
     /**
      * Set the intercept and the thickness of the DSS
@@ -548,6 +548,108 @@ namespace DGtal
      */
     bool extendBackward( const Point& aNewPoint );
 
+    /**
+     * Updates the leaning points of the DSS
+     * if the end point is a leaning point
+     * that has to be removed from the DSS. 
+     *
+     * @param aDirection direction vector
+     * @param aFirst new end of the DSS 
+     * @param aLast opposite end of the DSS 
+     * @param aBezout weakly exterior point used to 
+     * compute the new slope and to update the leaning points
+     * @param aFirstAtOppositeSide first leaning point located
+     * at the side that is not affected by the removal
+     * @param aLastAtOppositeSide last leaning point located
+     * at the side that is not affected by the removal but that has 
+     * to be updated
+     * @param aFirstAtRemovalSide first leaning point that 
+     * is removed and has to be updated. 
+     * @param aLastAtRemovalSide last leaning point located
+     * on the same side than @a aFirstAtRemovalSide 
+     *
+     * @return 'true' is the slope has to be updated, 
+     * 'false' otherwise
+     *
+     * @see retract
+     */
+    bool updateLeaningPoints( const Vector& aDirection, 
+			      const Point& aFirst,
+			      const Point& aLast, 
+			      const Point& aBezout, 
+			      const Point& aFirstAtOppositeSide, 
+			      Point& aLastAtOppositeSide, 
+			      Point& aFirstAtRemovalSide,
+			      const Point& aLastAtRemovalSide);
+
+    /**
+     * Removes an end point to retract the DSS.  
+     *
+     * @param aFirst end point to remove, 
+     * viewed as the first point of the DSS
+     * @param aIt iterator used to get the point
+     * following @a aFirst
+     * @tparam TIterator a model of forward iterator
+     * @param aLast opposite end of the DSS
+     * @param aBezout returned weakly exterior point used to 
+     * compute the new slope and to update the leaning points
+     * @param aLeaningPoint returned leaning point used to 
+     * compute the new slope and to update the leaning points
+     * @param aFirstUpper first leaning point after @a aFirst
+     * @param aLastUpper last leaning point close to @a aLast
+     * @param aFirstLower first leaning point after @a aFirst
+     * @param aLastLower last leaning point close to @a aLast
+     *
+     * @return 'true' is the slope has to be updated, 
+     * 'false' otherwise
+     *
+     * @see updateLeaningPoints
+     * @see retractForward retractBackward
+     */
+    template<typename TIterator>
+    bool retract( Point& aFirst, 
+		  TIterator aIt, 
+		  const Point& aLast,
+		  Point& aBezout, 
+		  Point& aLeaningPoint, 
+		  Point& aFirstUpper, 
+		  Point& aLastUpper, 
+		  Point& aFirstLower,
+		  Point& aLastLower);
+
+    /**
+     * Updates the parameters of the DSS
+     * (slope, intercept, thickness, steps, 
+     * shift vector) after the retraction. 
+     *
+     * @param aDirection direction vector
+     *
+     * @see retractForward retractBackward
+     */
+    void updateParameters( const Vector& aNewDirection );
+
+    /**
+     * Removes the first point of the DSS (at the back)
+     * if it remains strictly more than one point
+     *
+     * @return 'true' if the retraction has
+     * been done, 'false' otherwise
+     *
+     * @see retract
+     */
+    bool retractForward();
+
+    /**
+     * Removes the last point of the DSS (at the front),
+     * if it remains strictly more than one point
+     *
+     * @return 'true' if the retraction has
+     * been done, 'false' otherwise
+     *
+     * @see retract
+     */
+    bool retractBackward();
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -562,6 +664,7 @@ namespace DGtal
      * @see isExtendable
      */
     bool isOneOfTheTwoSteps( const Vector& aStep ) const; 
+
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -606,11 +709,11 @@ namespace DGtal
     /**
     * y-component of the direction vector
     */
-    Integer myA;
+    Coordinate myA;
     /**
     * x-component of the direction vector
     */
-    Integer myB;
+    Coordinate myB;
     /**
     * Intercept
     */
