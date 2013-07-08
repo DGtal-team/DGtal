@@ -137,7 +137,7 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 
 	  //lower leaning points
 	  myLf = myF + v + myShift; 
-	  myLl = myF + (gcd-1)*u + v + myShift; 
+	  myLl = myF + u*(gcd-1) + v + myShift; 
 	}
     }
 }
@@ -184,7 +184,7 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>
-::operator==(const ArithmeticalDSS<TC, TI, adj>& aOther)
+::operator==(const ArithmeticalDSS<TC, TI, adj>& aOther) const
 {
   return ( ( (myOmega == aOther.myOmega) &&
 	     (myUf == aOther.myUf) && 
@@ -207,7 +207,7 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>
-::operator!=(const ArithmeticalDSS<TC, TI, adj>& aOther)
+::operator!=(const ArithmeticalDSS<TC, TI, adj>& aOther) const
 {
   return !( (*this) == aOther ); 
 }
@@ -536,8 +536,6 @@ isExtendable( const Point& aNewPoint,
 	      const Vector& aStep, 
 	      const Point& aEndPoint ) const
 {
-  std::cerr << "steps: " << aStep << std::endl; 
-
   //if the two last points are confounded OK
   if (aStep == Vector(0,0)) 
     return 9; 
@@ -559,15 +557,14 @@ isExtendable( const Point& aNewPoint,
   	return 2; 
       else 
   	{
-  	  //if the two steps are compatible
-	  Integer q = remainder(mySteps.first - (aNewPoint-aEndPoint));
-	  //if weakly exterior on the left OK
-	  if (q == myOmega) 
-	    return 3; 
-	  //if weakly exterior on the right OK
-	  else if (-q == myOmega) 
+	  Integer r = remainder(aNewPoint);
+	  //if weakly exterior on the left AND the two steps are compatible OK
+	  if ( (r == myMu-1)&&(aNewPoint != (aEndPoint - myShift)) )
+	    return 3;
+	  //if weakly exterior on the right AND the two steps are compatible OK
+	  else if ( (r == myMu+myOmega)&&(aNewPoint != (aEndPoint + myShift)) )
 	    return 4;
-	  //otherwise KO
+	  //otherwise
   	  else
 	    return 0; 
   	}
@@ -579,10 +576,6 @@ isExtendable( const Point& aNewPoint,
       if (isOneOfTheTwoSteps(aStep)) 
   	{
       	Integer r = remainder(aNewPoint);
-
-	std::cerr << aNewPoint << " : " << r 
-		  << " ["<< myMu << ";" << myMu+myOmega << "]" 
-		  << std::endl; 
 
   	//if strongly exterior KO
   	if ( (r < myMu-1)||(r > myMu+myOmega) )
