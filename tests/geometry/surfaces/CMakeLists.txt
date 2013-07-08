@@ -33,6 +33,7 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 #----------------------
 SET(DGTAL_TESTS_GMP_SRC 
     testCOBANaivePlane
+    testChordNaivePlane
  )
 
 IF(GMP_FOUND)
