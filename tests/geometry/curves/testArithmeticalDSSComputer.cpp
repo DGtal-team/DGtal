@@ -16,7 +16,7 @@
  **/
 
 /**
- * @file testArithDSS.cpp
+ * @file testArithmeticalDSSComputer.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -28,7 +28,7 @@
  */
 
 /**
- * Description of testArithDSS <p>
+ * Description of testArithmeticalDSSComputer <p>
  * Aim: simple test of \ref ArithmeticalDSSComputer
  */
 
@@ -68,7 +68,7 @@ bool testDSS4drawing()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4Computer;  
 
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
@@ -88,28 +88,29 @@ bool testDSS4drawing()
   // Adding step
   trace.beginBlock("Add points while it is possible and draw the result");
 
-  DSS4 theDSS4;  
-  theDSS4.init( contour.begin() );
-  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
+  DSS4Computer theDSS4Computer;  
+  theDSS4Computer.init( contour.begin() );
+  trace.info() << theDSS4Computer << std::endl;
 
-  while ( (theDSS4.end() != contour.end())
-    &&(theDSS4.extendForward()) ) {}
+  while ( (theDSS4Computer.end() != contour.end())
+    &&(theDSS4Computer.extendForward()) ) {}
 
-  trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
+  trace.info() << theDSS4Computer << std::endl;
 
+  DSS4Computer::Primitive theDSS4 = theDSS4Computer.primitive(); 
   HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
 
   Board2D board;
   board.setUnit(Board::UCentimeter);
     
   board << SetMode(domain.className(), "Grid")
-  << domain;    
+	<< domain;    
   board << SetMode("PointVector", "Grid");
 
   board << SetMode(theDSS4.className(), "Points") 
-  << theDSS4;
+	<< theDSS4;
   board << SetMode(theDSS4.className(), "BoundingBox") 
-  << theDSS4;
+	<< theDSS4;
     
   board.saveSVG("DSS4.svg");
   
@@ -128,7 +129,7 @@ bool testDSS8drawing()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8;  
+  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8Computer;  
 
   std::vector<Point> boundary;
   boundary.push_back(Point(0,0));
@@ -142,39 +143,32 @@ bool testDSS8drawing()
 
   // Good Initialisation
   trace.beginBlock("Add points while it is possible and draw the result");
-  DSS8 theDSS8;    
-  theDSS8.init( boundary.begin() );
+  DSS8Computer theDSS8Computer;    
+  theDSS8Computer.init( boundary.begin() );
 
-  trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
+  trace.info() << theDSS8Computer << std::endl;
 
-  {
+  while ( (theDSS8Computer.end()!=boundary.end())
+	  &&(theDSS8Computer.extendForward()) ) {}
 
-    while ( (theDSS8.end()!=boundary.end())
-      &&(theDSS8.extendForward()) ) {}
+  trace.info() << theDSS8Computer << std::endl;
 
-    trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
-
-
-    HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
-
+  DSS8Computer::Primitive theDSS8 = theDSS8Computer.primitive(); 
+  HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
     
-    Board2D board;
-    board.setUnit(Board::UCentimeter);
+  Board2D board;
+  board.setUnit(Board::UCentimeter);
     
+  board << SetMode(domain.className(), "Paving")
+	<< domain;    
+  board << SetMode("PointVector", "Both");
 
-    board << SetMode(domain.className(), "Paving")
-    << domain;    
-    board << SetMode("PointVector", "Both");
-
-    board << SetMode(theDSS8.className(), "Points") 
-    << theDSS8;
-    board << SetMode(theDSS8.className(), "BoundingBox") 
-    << theDSS8;
-    
-    
-    board.saveSVG("DSS8.svg");
-
-  }
+  board << SetMode(theDSS8.className(), "Points") 
+	<< theDSS8;
+  board << SetMode(theDSS8.className(), "BoundingBox") 
+	<< theDSS8;
+        
+  board.saveSVG("DSS8.svg");
 
   trace.endBlock();
 
@@ -185,14 +179,10 @@ bool testDSS8drawing()
  * checking consistency between extension and retractation.
  *
  */
-bool testExtendretractForward()
+bool testExtendRetractForward()
 {
 
-
   typedef PointVector<2,int> Point;
-  typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4;  
-
 
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
@@ -205,62 +195,64 @@ bool testExtendretractForward()
   contour.push_back(Point(5,2));
   contour.push_back(Point(6,2));
   contour.push_back(Point(6,3));
-  contour.push_back(Point(6,4));
 
+  typedef std::vector<Point>::const_iterator Iterator;
+  typedef std::vector<Point>::const_reverse_iterator ReverseIterator;
+  typedef ArithmeticalDSSComputer<Iterator,int,4> Computer;
+  typedef ArithmeticalDSSComputer<ReverseIterator,int,4> ReverseComputer;
+  typedef Computer::Primitive Primitive; 
+
+  std::deque<Primitive> v1,v2;
 
   trace.beginBlock("Checking consistency between adding and removing");
 
-  std::deque<DSS4 > v1,v2;
-  DSS4 newDSS4;
-  newDSS4.init(contour.begin());
-  v1.push_back(newDSS4);   
-
-  //forward scan and store each DSS4
+  //forward scan and store each DSS
   trace.info() << "forward scan" << std::endl;
 
-  while ( (newDSS4.end() != contour.end())
-    &&(newDSS4.extendForward()) ) {
-    v1.push_back(newDSS4);
+  Computer c;
+  c.init( contour.begin() );
+  v1.push_back( c.primitive() );   
+
+  while ( (c.end() != contour.end())
+    &&(c.extendForward()) ) {
+    v1.push_back( c.primitive() );
   }
+  ASSERT(contour.size() == v1.size()); 
 
   //backward scan
   trace.info() << "backward scan" << std::endl;
 
-  Iterator i(newDSS4.end()); 
-  i--; 
-  DSS4 reverseDSS4;
-  reverseDSS4.init(i);
+  ReverseComputer rc; 
+  rc.init( contour.rbegin() ); 
 
-  while ( (reverseDSS4.begin()!=contour.begin())
-          &&(reverseDSS4.extendBackward()) ) {
+  while ( (rc.begin() != contour.rend())
+          &&(rc.extendForward()) ) {
   }
-  reverseDSS4.extendBackward(contour.begin());
 
+  //removing step and store each DSS for comparison
   trace.info() << "removing" << std::endl;
 
-  //removing step, store each DSS4 for comparison
-  v2.push_front(reverseDSS4);
-  while (reverseDSS4.retractBackward()) {
-    v2.push_front(reverseDSS4);
+  v2.push_front( rc.primitive() );
+  while (rc.retractForward()) {
+    v2.push_front( rc.primitive() );
   }    
+  ASSERT(v1.size() == v2.size());
     
-
   //comparison
   trace.info() << "comparison" << std::endl;
-  trace.info() << v1.size() << " == " << v2.size() << std::endl;
-  ASSERT(v1.size() == v2.size());
 
   bool isOk = true;
   for (unsigned int k = 0; k < v1.size(); k++) {
-    if (v1.at(k) != v2.at(k)) isOk = false;
-    trace.info() << "DSS4 :" << k << std::endl;
-
+    if (v1.at(k) != v2.at(k)) 
+      isOk = false;
+    trace.info() << "DSS :" << k << std::endl;
     trace.info() << v1.at(k) << v2.at(k) << std::endl;
   }
 
-
-  if (isOk) trace.info() << "ok for the " << v1.size() << " DSS4" << std::endl;
-  else trace.info() << "failure" << std::endl;
+  if (isOk) 
+    trace.info() << "ok for the " << v1.size() << " DSS" << std::endl;
+  else 
+    trace.info() << "failure" << std::endl;
 
   trace.endBlock();
 
@@ -380,7 +372,7 @@ bool testIsInside()
 #ifdef WITH_BIGINTEGER
 /**
  * Test for 4-connected points
- *
+ * with big coordinates
  */
 bool testBIGINTEGER()
 {
@@ -448,22 +440,28 @@ bool testCorner()
   boundary.push_back(Point(10,11));
   boundary.push_back(Point(11,11));
 
+  trace.beginBlock("test Corner with 8-adjacency");
 
   DSS8 theDSS8;
   theDSS8.init(boundary.begin());
+  std::cerr << theDSS8 << std::endl; 
   theDSS8.extendForward();
-  return ( !theDSS8.extendForward() );
+  std::cerr << theDSS8 << std::endl; 
+  bool res = ( !theDSS8.extendForward() );
+  std::cerr << theDSS8 << std::endl; 
 
+  trace.endBlock();
+ 
+  return res; 
 }
 
 
 
-void testArithDSSConceptChecking()
+void testArithmeticalDSSComputerConceptChecking()
 {
    typedef PointVector<2,int> Point; 
    typedef std::vector<Point>::iterator Iterator; 
    typedef ArithmeticalDSSComputer<Iterator,int,8> ArithDSS; 
-   BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<ArithDSS> ));
    BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<ArithDSS> ));
 }
 
@@ -479,12 +477,12 @@ int main(int argc, char **argv)
 
    
   {//concept checking
-    testArithDSSConceptChecking();
+    testArithmeticalDSSComputerConceptChecking();
   }
   
   bool res = testDSS4drawing() 
     && testDSS8drawing()
-    && testExtendretractForward()
+    && testExtendRetractForward()
     && testCorner()
 #ifdef WITH_BIGINTEGER
     && testBIGINTEGER()

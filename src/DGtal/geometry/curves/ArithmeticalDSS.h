@@ -291,7 +291,7 @@ namespace DGtal
      * @return 'true' the two set of points that are
      * implicitly defined are equal, 'false' otherwise
      */
-    bool operator== ( const ArithmeticalDSS & aOther );
+    bool operator== ( const ArithmeticalDSS & aOther ) const;
 
     /**
      * Difference.
@@ -299,7 +299,7 @@ namespace DGtal
      * @return 'true' the two set of points that are
      * implicitly defined are different, 'false' otherwise
      */
-    bool operator!= ( const ArithmeticalDSS & aOther );
+    bool operator!= ( const ArithmeticalDSS & aOther ) const;
 
     /**
      * Destructor.

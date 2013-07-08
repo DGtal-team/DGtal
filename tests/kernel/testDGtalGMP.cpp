@@ -98,18 +98,12 @@ bool testBIGINTEGERSpace()
   b = "-5678";
   Point p(a,b);
 
-  typedef FreemanChain<Coordinate> Contour; 
-  typedef ArithmeticalDSSComputer<Contour::ConstIterator,Coordinate,4> DSS4;  
-  typedef GreedySegmentation<DSS4> Decomposition;
- 
+  typedef FreemanChain<Coordinate> Contour;
+
   // Construct the Freeman chain
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
   Contour theContour( ss );
-  //Segmentation
-  Decomposition theDecomposition( theContour.begin(),theContour.end(),DSS4() );
-  Decomposition::SegmentComputerIterator i = theDecomposition.begin();
-  DSS4 segment(*i); 
 
   Point p1( 0, 0 );
   Point p2( 31, 31 );
@@ -120,8 +114,7 @@ bool testBIGINTEGERSpace()
   Board2D aBoard;
   aBoard << SetMode( domain.className(), "Grid" )
    << domain
-   << theContour
-   << segment;
+   << theContour;
 
   aBoard.saveSVG("testgmpcontour.svg");
 
