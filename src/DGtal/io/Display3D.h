@@ -581,7 +581,6 @@ public:
     /**
      * Used to create a new list containing new 3D objects
      * (useful to use transparency between different objects).
-     * @param depthTest use to include element in a list to apply a depth test (GL_DEPTH_TEST).
      * @param s name of the new list
      **/
     virtual void createNewPolygonList(std::string s= "");
@@ -632,7 +631,6 @@ public:
      * @param z cube center z.
      * @param color the cube color.
      * @param width the cube width.
-     * @param withWire if true add the wire representation.
      */
     virtual void addCube(double x, double y, double z,
                          DGtal::Color color= DGtal::Color(220, 220, 220),
@@ -661,7 +659,6 @@ public:
      *  xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
      *                                     the x-axis, y-axis or z-axis.
      * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
-     * @param positionShift translate the KSsurfel from the asso
      * missing text line 662 in the original document
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
@@ -844,8 +841,9 @@ public:
 
     /**
       * Use to embed a DGtal point into space
-      * @param pt a DGtal Point
+      * @param dp a DGtal Point
       */
+
 
     typename DGtal::CanonicEmbedder<S>::RealPoint embed(const Z3i::Point & dp) const ;
 
@@ -860,7 +858,7 @@ public:
 
     /**
       * Use to embed a signed DGtal kahlimsky cell into space
-      * @param sTrans a transformed surfel prism
+      * @param aTrans a transformed surfel prism
       */
     typename DGtal::CanonicSCellEmbedder<KS>::RealPoint embedKS( const DGtal::TransformedSurfelPrism& aTrans ) const;
 
