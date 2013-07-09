@@ -5,7 +5,5 @@ CTestConfig.cmake.user
 build/
 cmake/Install.cmake.user
 qtcreatorbuild/
-src/DGtal/io/Display3D.h.orig
-src/DGtal/io/Display3D.ih.orig
-src/DGtal/io/Display3DFactory.ih.orig
+*.orig
 
