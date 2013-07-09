@@ -204,11 +204,14 @@ void
 DGtal::Display3D< S, KS>::addCube(double x, double y, double z,
                           DGtal::Color aColor, double width)
 {
+  //because the width in the cube parameters is actually the distance between the center and the faces
+  width = width/2;
+
   updateBoundingBox((double)x, (double)y, (double)z);
   cubeD3D v;
-  v.x=(int)x;
-  v.y=(int)y;
-  v.z=(int)z;
+  v.x=x;
+  v.y=y;
+  v.z=z;
   v.R=aColor.red();
   v.G=aColor.green();
   v.B=aColor.blue();
@@ -1008,6 +1011,7 @@ DGtal::Display3D< S, KS>::addClippingPlane(double a, double b, double c, double 
   }
 }
 
+
 template < typename S, typename KS>
 inline
 void
@@ -1049,6 +1053,7 @@ inline
 typename DGtal::CanonicEmbedder<S>::RealPoint
 DGtal::Display3D< S, KS>::embed( const DGtal::Z3i::Point & dp ) const
 {
+  ASSERT( myEmbedder.isValid());
   return myEmbedder.embed(dp);
 }
 
@@ -1057,6 +1062,7 @@ inline
 typename DGtal::CanonicEmbedder<S>::RealPoint
 DGtal::Display3D< S, KS>::embed( const ballD3D & dp ) const
 {
+  ASSERT( myEmbedder.isValid());
   DGtal::Z3i::Point pt (dp[0], dp[1], dp[2]);
   return myEmbedder.embed(pt);
 }
@@ -1066,7 +1072,17 @@ inline
 typename DGtal::CanonicSCellEmbedder<KS>::RealPoint
 DGtal::Display3D< S, KS>::embedKS( const DGtal::Z3i::SCell & scell ) const
 {
+  ASSERT( mySCellEmbedder.isValid());
   return mySCellEmbedder.embed(scell);
+}
+
+template < typename S, typename KS>
+inline
+typename DGtal::CanonicSCellEmbedder<KS>::RealPoint
+DGtal::Display3D< S, KS>::embedKS( const TransformedSurfelPrism & aTrans ) const
+{
+  ASSERT( mySCellEmbedder.isValid());
+  return mySCellEmbedder.embed(aTrans.mySurfel);
 }
 
 template < typename S, typename KS>
@@ -1074,6 +1090,7 @@ inline
 typename DGtal::CanonicCellEmbedder<KS>::RealPoint
 DGtal::Display3D< S, KS>::embedK( const DGtal::Z3i::Cell & cell ) const
 {
+  ASSERT( myCellEmbedder.isValid());
   return myCellEmbedder.embed(cell);
 }
 
@@ -1529,8 +1546,6 @@ DGtal::Display3D< S, KS>::TextureImage::className() const
 {
   return "TextureImage";
 }
-
-
 
 
 

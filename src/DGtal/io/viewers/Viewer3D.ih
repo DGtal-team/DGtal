@@ -71,7 +71,7 @@ DGtal::Viewer3D<S, KS>::operator<<(const DGtal::Color & aColor){
 
 
 
-  /**
+/**
    * Set the default color for future drawing.
    *
    * @param aColor: a DGtal::Color (allow to set a transparency value).
@@ -112,6 +112,7 @@ DGtal::Viewer3D<S, KS>::operator<<( const TDrawableWithViewer3D & object )
 }
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
@@ -125,13 +126,22 @@ template <typename S, typename KS>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-        const Viewer3D<S, KS> & object )
+                    const Viewer3D<S, KS> & object )
 {
-    object.selfDisplay ( out );
-    return out;
+  object.selfDisplay ( out );
+  return out;
 }
 
 //                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+// heritage of parents templates methods              //
+
+
+//   end of heritage                                                                        //
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -179,7 +189,7 @@ DGtal::Viewer3D::addCylinder(double x1, double y1, double z1,
 }
 */
 
-//                                                                           //
+//     end of surcharge                                                                      //
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -393,14 +403,14 @@ DGtal::Viewer3D<S, KS>::init()
   myDefaultBackgroundColor = Color ( backgroundColor().red(), backgroundColor().green(),
                                      backgroundColor().blue() );
   myIsBackgroundDefault=true;
-   Viewer3D<S, KS>::myBoundingPtLow[0]=-10.0;//numeric_limits<double>::max( );
-   Viewer3D<S, KS>::myBoundingPtLow[1]=-10.0;//numeric_limits<double>::max( );
-   Viewer3D<S, KS>::myBoundingPtLow[2]=-10.0;//numeric_limits<double>::max( );
+  Viewer3D<S, KS>::myBoundingPtLow[0]=-10.0;//numeric_limits<double>::max( );
+  Viewer3D<S, KS>::myBoundingPtLow[1]=-10.0;//numeric_limits<double>::max( );
+  Viewer3D<S, KS>::myBoundingPtLow[2]=-10.0;//numeric_limits<double>::max( );
 
-   Viewer3D<S, KS>::myBoundingPtUp[0]=-10.0;//numeric_limits<double>::min( );
-   Viewer3D<S, KS>::myBoundingPtUp[1]=-10.0;//numeric_limits<double>::min( );
+  Viewer3D<S, KS>::myBoundingPtUp[0]=-10.0;//numeric_limits<double>::min( );
+  Viewer3D<S, KS>::myBoundingPtUp[1]=-10.0;//numeric_limits<double>::min( );
   Viewer3D<S, KS>:: myBoundingPtUp[2]=-10.0;//numeric_limits<double>::min( );
-   Viewer3D<S, KS>::createNewCubeList ( true );
+  Viewer3D<S, KS>::createNewCubeList ( true );
   typename std::vector< typename Viewer3D<S, KS>::cubeD3D>  aKSCubeList;
 
   Viewer3D<S, KS>::myCurrentfShiftVisuSurfelPrisms=0.0;
@@ -518,17 +528,17 @@ DGtal::Viewer3D<S, KS>::postSelection ( const QPoint& point )
       if ( id<  Viewer3D<S, KS>::myCubeSetList.size() )
       {
         DGtal::trace.info() << "deleting list="<< id<<endl;
-         Viewer3D<S, KS>::myCubeSetList.erase ( Viewer3D<S, KS>::myCubeSetList.begin() +id );
+        Viewer3D<S, KS>::myCubeSetList.erase ( Viewer3D<S, KS>::myCubeSetList.begin() +id );
         updateList ( false );
       }
       else if ( id<  Viewer3D<S, KS>::myCubeSetList.size() + Viewer3D<S, KS>::myLineSetList.size() )
       {
-         Viewer3D<S, KS>::myLineSetList.erase (  Viewer3D<S, KS>::myLineSetList.begin() + ( id- Viewer3D<S, KS>::myCubeSetList.size() ) );
+        Viewer3D<S, KS>::myLineSetList.erase (  Viewer3D<S, KS>::myLineSetList.begin() + ( id- Viewer3D<S, KS>::myCubeSetList.size() ) );
         updateList ( false );
       }
       else if ( id<  Viewer3D<S, KS>::myBallSetList.size() + Viewer3D<S, KS>::myLineSetList.size() + Viewer3D<S, KS>::myCubeSetList.size() )
       {
-         Viewer3D<S, KS>::myBallSetList.erase (  Viewer3D<S, KS>::myBallSetList.begin() + ( id- Viewer3D<S, KS>::myCubeSetList.size()- Viewer3D<S, KS>::myLineSetList.size() ) );
+        Viewer3D<S, KS>::myBallSetList.erase (  Viewer3D<S, KS>::myBallSetList.begin() + ( id- Viewer3D<S, KS>::myCubeSetList.size()- Viewer3D<S, KS>::myLineSetList.size() ) );
         updateList ( false );
       }
 
@@ -862,7 +872,7 @@ DGtal::Viewer3D<S, KS>::updateList ( bool needToUpdateBoundingBox )
     for (typename std::vector<typename Viewer3D<S, KS>::polygonD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
     {
       glColor4ub ( Viewer3D<S, KS>::myCurrentLineColor.red(), Viewer3D<S, KS>::myCurrentLineColor.green(), Viewer3D<S, KS>::myCurrentLineColor.blue() , Viewer3D<S, KS>::myCurrentLineColor.alpha() );
-       vector<typename Viewer3D<S, KS>::ballD3D> vectVertex = it_s->vectBalls;
+      vector<typename Viewer3D<S, KS>::ballD3D> vectVertex = it_s->vectBalls;
       for(unsigned int j=0;j < vectVertex.size();j++){
         glVertex3f ( vectVertex.at(j).x, vectVertex.at(j).y, vectVertex.at ( j ).z );
         glVertex3f ( vectVertex.at((j+1)%vectVertex.size()).x, vectVertex.at((j+1)%vectVertex.size()).y, vectVertex.at ( (j+1)%vectVertex.size() ).z );
@@ -1002,7 +1012,7 @@ DGtal::Viewer3D<S, KS>::keyPressEvent ( QKeyEvent *e )
   }
   if( e->key() == Qt::Key_E){
     trace.info() << "Exporting mesh..." ;
-//    (*this) >> "exportedMesh.off";
+    //    (*this) >> "exportedMesh.off";
     //because the template operator can't reconise the operator defined in Display3D
     operator>> <S, KS>(*this, "exportedMesh.off");
     trace.info() << "[done]"<< endl ;

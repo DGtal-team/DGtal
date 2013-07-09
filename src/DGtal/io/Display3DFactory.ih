@@ -654,9 +654,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<S, KS> & display,
            x <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++)
       {
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
-        rp1[1] -= 0.5;
+        //TODO remove //
+        //rp1[1] -= 0.5;
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, h.myUpperBound[1], z) );
-        rp2[1] += 0.5;
+        //rp2[1] += 0.5;
 
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
       }
@@ -664,9 +665,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<S, KS> & display,
            y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
       {
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], y, z) );
-        rp1[0] -= 0.5;
+        //TODO remove //
+        //rp1[0] -= 0.5;
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], y, z) );
-        rp2[0] += 0.5;
+       // rp2[0] += 0.5;
 
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
       }
@@ -680,9 +682,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<S, KS> & display,
            x <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++)
       {
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
-        rp1[2] -= 0.5;
+        //TODO remove //
+        //rp1[2] -= 0.5;
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
-        rp2[2] += 0.5;
+        //rp2[2] += 0.5;
 
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
       }
@@ -690,9 +693,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<S, KS> & display,
            z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
       {
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], y, z) );
-        rp1[0] -= 0.5;
+        //TODO remove //
+        //rp1[0] -= 0.5;
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], y, z) );
-        rp2[0] += 0.5;
+        //rp2[0] += 0.5;
 
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
       }
@@ -706,9 +710,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<S, KS> & display,
            y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
       {
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
-        rp1[2] -= 0.5;
+        //TODO remove //
+        //rp1[2] -= 0.5;
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, y, h.myUpperBound[2]) );
-        rp2[2] += 0.5;
+        //rp2[2] += 0.5;
 
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
       }
@@ -716,9 +721,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<S, KS> & display,
            z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
       {
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
-        rp1[1] -= 0.5;
+        //TODO remove //
+        //rp1[1] -= 0.5;
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
-        rp2[1] += 0.5;
+        //rp2[1] += 0.5;
 
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
       }
@@ -779,13 +785,12 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<S, KS> & display,
           //TODO remove this line (permit to see something in Kalimsky example)
           display.setFillColor(DGtal::Color(255,255,255,10));
           DGtal::Z3i::RealPoint rp = display.embed( DGtal::Z3i::Point(x, y, z) );
-          /*
-          rp[0] = x;
-          rp[1] = y;
-          rp[2] = z;
-          */
 
-          display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.51);
+          rp[0]-=0.5;
+          rp[1]-=0.5;
+          rp[2]-=0.5;
+
+          display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),1.0);
         }
       }
     }
@@ -876,21 +881,19 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display,
   }else if(mode=="Basic"){
     basicMode=true;
   }
+  /*
   double x = (double) (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
   double y = (double)( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[1] ) >> 1) ;
   double z =(double) (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[2] ) >> 1 );
+  */
   //OPT embed KS taille voxel et figures pb avec les tailles en dur
-  DGtal::Z3i::RealPoint rp = display.embed( k.myCoordinates );
+  DGtal::Z3i::RealPoint rp = display.embedK( k );
 
-/*
-  rp[0] = x;
-  rp[1] = y;
-  rp[2] = z;
-*/
 
   bool xodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 0 ]) & 1 );
   bool yodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 1 ]) & 1 );
   bool zodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 2 ]) & 1 );
+
 
 
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
@@ -910,14 +913,13 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display,
       display.setFillColor(DGtal::Color(20, 20, 200, 255));
     }
 
-    display.addCylinder(rp[0]- (xodd? 1.0:0 ), rp[1]- (yodd? 1.0:0 ), rp[2]- (zodd? 1.0:0 ), rp[0]+ (xodd? 1.0:0 ),rp[1]+ (yodd? 1.0:0 ), rp[2]+ (zodd? 1.0:0 ));
-    //display.addCylinder(rp[0]+0.5, rp[1]+0.5, rp[2]+0.5, rp[0]+ (xodd? 0.5:-0.5 ),rp[1]+ (yodd? 0.5:-0.5 ), rp[2]+ (zodd? 0.5:-0.5 ));
+    display.addCylinder(rp[0]- (xodd? 0.5:0 ), rp[1]- (yodd? 0.5:0 ), rp[2]- (zodd? 0.5:0 ), rp[0]+ (xodd? 0.5:0 ),rp[1]+ (yodd? 0.5:0 ), rp[2]+ (zodd? 0.5:0 ));
     break;
   case 2:
     if(mode!="" && mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(20, 200, 200, 255));
     }
-    display.addSurfelPrism(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 ),! xodd, !yodd, !zodd, factorVolSurfel,2.0, false, false);
+    display.addSurfelPrism(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 ),! xodd, !yodd, !zodd, factorVolSurfel,1.0, false, false);
     break;
   case 3:
     if(mode!="" && mode!="IllustrationCustomColor"){
@@ -927,13 +929,18 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display,
       display.createNewCubeList("KSCube");
       //TODO remove this line
       display.setFillColor(DGtal::Color(100, 20, 60, 55));
-      //OPT 0.5*0.80
-      display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.95);
+      display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.80);
     }else{
+      std::cout << "KSCUBE" <<std::endl;
       display.createNewCubeList("KSCube");
       //TODO remove this line
       display.setFillColor(DGtal::Color(200, 220, 250, 55));
       //OPT 0.5*0.80
+      /*
+      rp[0]+=0.5;
+      rp[1]+=0.5;
+      rp[2]+=0.5;
+      */
       display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.95);
     }
     break;
@@ -973,13 +980,7 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display,
   float z = (float)
             ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[2] ) >> 1 );
   //OPT embed KS pas de diff
-  DGtal::Z3i::RealPoint rps ; //= display.embed( sk.myCoordinates );
-
-
-  rps[0] = x;
-  rps[1] = y;
-  rps[2] = z;
-
+  DGtal::Z3i::RealPoint rps = display.embedKS( sk );
 
   bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
   bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
@@ -997,7 +998,7 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display,
       else
         display.setFillColor(DGtal::Color(20, 20, 150, 255));
     }
-    display.addBall(rps[0]-0.5, rps[1]-0.5, rps[2]-0.5,display.getFillColor(), 0.05);
+    display.addBall(rps[0], rps[1], rps[2],display.getFillColor(), 0.05);
     break;
   case 1:
     if(mode!="" && mode!="IllustrationCustomColor"){
@@ -1005,15 +1006,16 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display,
     }
     if (sk.myPositive)
     {
-      display.addCone(rps[0]-0.5, rps[1]-0.5, rps[2]-0.5, rps[0]+ (xodd? 0.5:-0.5 ),rps[1]+ (yodd? 0.5:-0.5 ), rps[2]+ (zodd? 0.5:-0.5 ), 0.02);
+      display.addCone(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 ), rps[0]+ (xodd? 0.5:0 ),rps[1]+ (yodd? 0.5:0 ), rps[2]+ (zodd? 0.5:0 ));
     }
     else
     {
-      display.addCone(rps[0]+ (xodd? 0.5:-0.5 ),rps[1]+ (yodd? 0.5:-0.5 ), rps[2]+ (zodd? 0.5:-0.5 ),rps[0]-0.5, rps[1]-0.5, rps[2]-0.5, 0.02);
+      display.addCone(rps[0]+ (xodd? 0.5:0 ), rps[1]+ (yodd? 0.5:0 ), rps[2]+ (zodd? 0.5:0 ), rps[0]- (xodd? 0.5:0 ),rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 ));
     }
     break;
   case 2:
-    display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
+    //display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
+    display.addSurfelPrism(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 ),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
     break;
   case 3:
     if(mode!="" && mode!="IllustrationCustomColor"){
@@ -1025,9 +1027,9 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display,
     }
     if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
       //KSCube
-      display.addCube(rps[0], rps[1], rps[2], display.getFillColor(), 0.5*0.80);
+      display.addCube(rps[0], rps[1], rps[2], display.getFillColor(), 0.80);
     }else{
-      display.addCube(rps[0], rps[1], rps[2], display.getFillColor() );
+      display.addCube(rps[0], rps[1], rps[2], display.getFillColor(), 0.80 );
     }
     break;
   }
@@ -1620,15 +1622,14 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display, const DGtal::Tra
     basicMode=true;
   }
   //OPT embed ks
-  DGtal::Z3i::RealPoint rp ; //= display.embed(aTransformedSurfelPrism.mySurfel );
+  DGtal::Z3i::RealPoint rps = display.embedKS(aTransformedSurfelPrism );
 
+  /*
   float x = NumberTraits<DGtal::int32_t>::castToDouble( aTransformedSurfelPrism.mySurfel.myCoordinates[0] >> 1) ;
   float y = NumberTraits<DGtal::int32_t>::castToDouble( aTransformedSurfelPrism.mySurfel.myCoordinates[1] >> 1 );
   float z = NumberTraits<DGtal::int32_t>::castToDouble( aTransformedSurfelPrism.mySurfel.myCoordinates[2] >> 1 );
 
-  rp[0]=x;
-  rp[1]=y;
-  rp[2]=z;
+  */
   bool xodd = ( aTransformedSurfelPrism.mySurfel.myCoordinates[ 0 ] & 1 );
   bool yodd = ( aTransformedSurfelPrism.mySurfel.myCoordinates[ 1 ] & 1 );
   bool zodd = ( aTransformedSurfelPrism.mySurfel.myCoordinates[ 2 ] & 1 );
@@ -1636,8 +1637,8 @@ void DGtal::Display3DFactory::draw( Display3D<S, KS> & display, const DGtal::Tra
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   ASSERT(spaceDim==2);
 
-  display.addSurfelPrism(rp[0], rp[1], rp[2],! xodd, !yodd, !zodd, factorVolSurfel, aTransformedSurfelPrism.mySizeFactor,
-      true, aTransformedSurfelPrism.mySurfel.myPositive );
+  //display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel, aTransformedSurfelPrism.mySizeFactor, true, aTransformedSurfelPrism.mySurfel.myPositive );
+  display.addSurfelPrism(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 ),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, aTransformedSurfelPrism.mySurfel.myPositive );
   display.setFillColor(fillColorSave);
 
 }
