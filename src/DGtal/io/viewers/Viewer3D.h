@@ -127,11 +127,26 @@ public:
      */
 
 
-  Viewer3D<S, KS>() :QGLViewer(), Display3D<S, KS>()
+  Viewer3D() :QGLViewer(), Display3D<S, KS>()
   //Viewer3D() :QGLViewer(), Display3D()
-  {
+  {};
 
-  };
+  /**
+      *Constructor with a khalimsky space
+      * @param kspace the Khalimsky space
+      */
+  Viewer3D(KS KSEmb):QGLViewer(), Display3D<S,KS>(KSEmb)
+  {};
+
+  /**
+      *Constructor with a space and a khalimsky space
+      *@param space a space
+      *@param kspace a khalimsky space
+      **/
+  Viewer3D( S SEmb, KS KSEmb) : QGLViewer(), Display3D<S,KS>(SEmb, KSEmb)
+  {};
+
+
 
   /**
      * Set camera position.
@@ -194,9 +209,6 @@ public:
      **/
 
   Viewer3D<S, KS> & operator<< ( const typename Viewer3D<S, KS>::StreamKey  & key );
-
-
-
 
 
   /**
@@ -276,7 +288,7 @@ public:
 
 
   // ------------------------- Hidden services ------------------------------
-//protected:
+  //protected:
 
 
   /**

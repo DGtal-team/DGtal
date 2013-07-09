@@ -53,8 +53,8 @@ int main( int argc, char** argv )
   Point pup(3,3,2);
   Domain domain( plow, pup );
   K.init( plow, pup, true );
-  
-  Viewer3D<Space, KSpace> viewer;
+  //
+  Viewer3D<Space, KSpace> viewer(K);
   viewer.show();
   viewer << SetMode3D( domain.className(), "Paving" );
   

@@ -59,7 +59,7 @@ int main( int argc, char** argv )
   K.init( plow, pup, true ); 
 
   //Viewer3D<Space,KSpace> viewer(K);
-  Viewer3D<Space, KSpace> viewer;
+  Viewer3D<Space, KSpace> viewer(K);
   viewer.show();
 
 

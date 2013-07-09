@@ -57,6 +57,7 @@
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/kernel/CanonicEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -115,7 +116,7 @@ protected:
     struct cubeD3D{
         ///  The center coordinate of the cube.
         ///
-        int x, y,z;
+        double x, y,z;
 
         ///  The display color of the cube.
         ///
@@ -458,6 +459,20 @@ public:
         myScaleZ=1.0;
         myBoundingPtEmptyTag = true;
 
+        myCellEmbedder = CanonicCellEmbedder<KS>(KSEmb);
+        mySCellEmbedder = CanonicSCellEmbedder<KS>(KSEmb);
+
+    };
+
+    Display3D(S Semb, KS KSEmb){
+        myCurrentFillColor = Color ( 220, 220, 220 );
+        myCurrentLineColor = Color ( 22, 22, 222, 50 );
+        myScaleX=1.0;
+        myScaleY=1.0;
+        myScaleZ=1.0;
+        myBoundingPtEmptyTag = true;
+
+        myEmbedder = CanonicEmbedder<S>(Semb);
         myCellEmbedder = CanonicCellEmbedder<KS>(KSEmb);
         mySCellEmbedder = CanonicSCellEmbedder<KS>(KSEmb);
 
@@ -827,7 +842,6 @@ public:
     void setScale(float sx, float sy, float sz);
 
 
-    //TODO methods
     /**
       * Use to embed a DGtal point into space
       * @param pt a DGtal Point
@@ -842,6 +856,14 @@ public:
       * @param cell a kahlimsky cell
       */
     typename DGtal::CanonicSCellEmbedder<KS>::RealPoint embedKS( const Z3i::SCell & cell ) const;
+
+
+    /**
+      * Use to embed a signed DGtal kahlimsky cell into space
+      * @param sTrans a transformed surfel prism
+      */
+    typename DGtal::CanonicSCellEmbedder<KS>::RealPoint embedKS( const DGtal::TransformedSurfelPrism& aTrans ) const;
+
 
     /**
       * Use to embed an unsigned DGtal kahlimsky cell into space

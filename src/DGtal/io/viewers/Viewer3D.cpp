@@ -25,6 +25,8 @@
  *
  * This file is part of the DGtal library.
  */
+
+///all of this have been moved in viewer 3D.ih
 /*
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef _MSC_VER
