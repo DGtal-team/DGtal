@@ -18,7 +18,6 @@ SET(DGTAL_TESTS_SRC
   # testBinomialConvolver
   # testFrechetShortcut	
   testDSLSubsegment
-  testDSLSubsegmentComplete
   testLrSBreversedSmartDSS
   testSBreversedSmartDSS	
   testArithDSSIterator

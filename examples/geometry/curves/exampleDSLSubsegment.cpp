@@ -73,7 +73,7 @@ int main( int argc, char** argv )
   DSLSubseg D1(2,3,15,A,B,true);
   
   // Display the result
-  std::cout << "aa=" << D1.aa << " bb=" << D1.bb << " Nu=" << D1.Nu << std::endl;
+  std::cout << "a=" << D1.getA() << " b=" << D1.getB() << " mu=" << D1.getMu() << std::endl;
   
   // Define a DSL subsegment with floating-point input
   // characteristics. 
@@ -85,7 +85,7 @@ int main( int argc, char** argv )
   DSLSubsegD D2(0.6666,5,A,B,0.00001);
   
   // Display the result
-  std::cout << "aa=" << D2.aa << " bb=" << D2.bb << " Nu=" << D2.Nu << std::endl;
+  std::cout << "a=" << D2.getA() << " b=" << D2.getB() << " mu=" << D2.getMu() << std::endl;
   
 
   
