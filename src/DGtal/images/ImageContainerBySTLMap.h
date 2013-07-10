@@ -116,7 +116,7 @@ namespace DGtal
 
 
     /// static constants
-    static const typename Domain::Dimension dimension = Domain::Space::dimension;
+    static const typename Domain::Dimension dimension;
 
     /// range of values
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));

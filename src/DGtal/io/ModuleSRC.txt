@@ -36,3 +36,13 @@ SET(DGTALIO_SRC ${DGTALIO_SRC}
     DGtal/io/viewers/Viewer3D)
 endif( WITH_VISU3D_QGLVIEWER )
 
+
+##########################################
+#### readers
+##########################################
+
+if( WITH_HDF5 )
+SET(DGTALIO_SRC ${DGTALIO_SRC} 
+    DGtal/io/readers/HDF5Reader)
+endif( WITH_HDF5 )
+

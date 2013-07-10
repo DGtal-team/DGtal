@@ -84,7 +84,7 @@ namespace DGtal
    *
    * @see testPNMRawWriter.cpp
    */
-  template <typename TImage, typename TFunctor = DefaultFunctor>
+  template <typename TImage, typename TFunctor =  DefaultFunctor>
   struct PGMWriter
   {
     // ----------------------- Standard services ------------------------------
@@ -123,7 +123,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPGM3D(const std::string & filename, const Image &aImage, 
-			    const Functor & aFunctor = Functor());
+			    const Functor & aFunctor = Functor(), bool saveASCII=false);
     
   };
 }//namespace

@@ -149,10 +149,10 @@ namespace DGtal
     typedef Point Vertex;
 
     /// static constants
-    static const typename Domain::Dimension dimension = Domain::dimension;
-    static const typename Domain::Dimension dim = Domain::dimension;
-    static const unsigned int NbChildrenPerNode = POW<2, dimension>::VALUE;
-    static const HashKey ROOT_KEY = static_cast<HashKey>(1);
+    static const typename Domain::Dimension dimension;
+    static const typename Domain::Dimension dim ;
+    static const unsigned int NbChildrenPerNode ;
+    static const HashKey ROOT_KEY;
 
     /// domain should be rectangular 
     //(since constructed from two points as a bounding box)
@@ -775,7 +775,7 @@ namespace DGtal
 
 
     // myN is number of children per node.
-    static const unsigned int myN=POW<2,dim>::VALUE;
+    static const unsigned int myN;
 
 
   public:

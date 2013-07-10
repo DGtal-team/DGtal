@@ -40,6 +40,11 @@
 //////////////////////////////////////////////////////////////////////////////
 
 template <typename TDomain, typename TValue>
+const typename TDomain::Dimension DGtal::ImageContainerBySTLMap<TDomain,
+								TValue>::dimension = TDomain::Space::dimension;
+
+
+template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
 ::ImageContainerBySTLMap(const Domain& aDomain, const Value& aValue)

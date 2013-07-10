@@ -18,11 +18,6 @@
 
 /**
  * @file ImageAdapter.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- *
- * @date 2012/02/07
- *
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -92,10 +87,11 @@ namespace DGtal
  * with a functor g and a functor f-1 given at construction so that 
  * setValue() is img.setValue(g(aPoint), f-1(aValue))
  * 
- * Here is the construction of a simple image adapter that 
+ * The use is the same that for ConstImageAdapter so
+ * here is the construction of a simple ConstImageAdapter that 
  * is a thresholded view of the initial scalar image: 
  *
- * @snippet ../tests/images/testImageAdapter.cpp ImageAdapterConstruction 
+ * @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
  *
  * NB: the underlying image as well as the 3 functors
  * are stored in the adapter as aliasing pointer
@@ -125,7 +121,7 @@ public:
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, typename TImageContainer::Point, Point> ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorVm1, typename TImageContainer::Value, Value> ));
 
     ///Types copied from the container

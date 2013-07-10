@@ -84,7 +84,7 @@ namespace DGtal
    *
    * @code
 
-  PointVector<2,int> p(3,1,5): 
+  PointVector<3,int> p(3,1,5): 
 
   Projector<SpaceND<2,int> > proj; 
   proj( p ) //== (3,1)
@@ -98,20 +98,33 @@ namespace DGtal
    *
    * @tparam S type for the space where must lie the projected point
    */
+
+
+
+   
+
+
+
   template <typename S = SpaceND< 2, DGtal::int32_t > >
   struct Projector
   {
+
+    
     typedef S Space; 
-    typedef typename Space::Dimension Dimension; 
-    static const Dimension dimension = Space::dimension;
+    typedef typename Space::Dimension Dimension;
+    static const Dimension dimension;
     typedef typename Space::Integer Integer; 
     typedef typename Space::Point Point; 
+
+
+
 
     /**
      * Default constructor
      */
     Projector(const Integer& aDefaultInteger = NumberTraits<Integer>::zero());
 
+    
     /**
      * Initialization of the array of relevant dimensions 
      * @param itb begin iterator on dimensions.
@@ -119,6 +132,20 @@ namespace DGtal
      */
     template<typename TIterator>
     void init ( const TIterator& itb, const TIterator& ite );
+
+
+    /**
+     *  Initialisation by removing a given dimension.
+     *  @param dimRemoved the removed dimension.
+     */
+    void initRemoveOneDim ( const Dimension  &dimRemoved );
+
+    /**
+     *  Initialisation by adding a given dimension.
+     *  @param newDim the new dimension.
+     */
+    void initAddOneDim ( const Dimension & newDim );
+
 
     /**
      *  Main operator
@@ -134,9 +161,9 @@ namespace DGtal
      * the input point to its projection (order matters)
      */
 #ifdef CPP11_ARRAY
-    std::array<Dimension,dimension> myDims; 
+    std::array<Dimension, Space::dimension> myDims; 
 #else
-    boost::array<Dimension,dimension> myDims; 
+    boost::array<Dimension, Space::dimension> myDims; 
 #endif
     /**
      * Default integer set to coordinates of the projected point
@@ -145,6 +172,9 @@ namespace DGtal
      Integer myDefaultInteger; 
 
   }; // end of class ConstantPointFunctors
+  
+
+
 
 
 } // namespace DGtal

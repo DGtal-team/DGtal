@@ -45,10 +45,11 @@ RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
 			   const Functor & aFunctor)
 {
   std::ofstream out;
-  typename I::Domain::Vector ext = aImage.extent();
+  
+
   typename I::Domain domain = aImage.domain();
   typename I::Value val;
-  
+
   out.open(filename.c_str(), std::ios_base::binary);
   
   //We scan the domain 

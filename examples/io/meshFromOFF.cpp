@@ -53,12 +53,11 @@ int main( int argc, char** argv )
   //! [ImportOFFfile]
   std::string inputFilename = examplesPath + "samples/tref.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
-  MeshFromPoints<Display3D::pointD3D> anImportedMesh;
+  Mesh<Display3D::pointD3D> anImportedMesh;
   anImportedMesh << inputFilename;
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
   //! [displayOFFfile]
-  anImportedMesh.invertVertexFaceOrder();  
   viewer.setLineColor(DGtal::Color(150,0,0,254));
   viewer << anImportedMesh;
   viewer << Viewer3D::updateDisplay;

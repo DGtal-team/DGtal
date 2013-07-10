@@ -399,6 +399,46 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
   }
 
 }
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2dXY() const
+{
+  return myXYalgo;
+}
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2dXZ() const
+{
+  return myXZalgo;
+}
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2dYZ() const
+{
+  return myYZalgo;
+}
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+const typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS2d &
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::arithmeticalDSS2d( Dimension i ) const
+{
+  ASSERT( ( 0 <= i ) && ( i < 3 ) );
+  switch ( i ) {
+  case 0: return myYZalgo; break;
+  case 1: return myXZalgo; break;
+  default: return myXYalgo; break;
+  }
+}
+
+
 /**
  * @return the style name used for drawing this object.
  */
