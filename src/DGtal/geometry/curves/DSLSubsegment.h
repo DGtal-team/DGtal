@@ -108,30 +108,32 @@ namespace DGtal
       typedef DGtal::PointVector<2,Integer> Vector;
       typedef DGtal::PointVector<2,Number> VectorF;
       
+  protected:
       /**
        * The minimal characteristics of the subsegment AB of the
-       * DSL(a,b,mu) are (aa,bb,nu).
+       * DSL(a,b,mu) are (myA,myB,myMu).
        *
        */
-      Integer aa;
+      Integer myA;
       
       /**
        * The minimal characteristics of the subsegment AB of the
        * DSL(a,b,mu) are (aa,bb,nu).
        *
        */
-      Integer bb;
+      Integer myB;
       
       /**
        * The minimal characteristics of the subsegment AB of the
        * DSL(a,b,mu) are (aa,bb,nu).
        *
        */
-      Integer Nu;
+      Integer myMu;
       
       
       Number myPrecision;
       
+  public:
       /**  
        * Constructor
        * Given the parameters of a DSL 0 <= ax -by + mu < b, and two points A and B of this DSL,
@@ -423,6 +425,26 @@ namespace DGtal
       void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
       
       
+      
+
+      // ------------------------- Accessors ------------------------------
+      
+  public:
+      
+      /**
+       * @return an Integer of value @a myA.
+       */
+      Integer getA() const;
+      /**
+       * @return an Integer of value @a myB.
+       */
+      Integer getB() const;
+      /**
+       * @return an Integer of value @a myMu.
+       */
+      Integer getMu() const;
+
+
   };
   
    

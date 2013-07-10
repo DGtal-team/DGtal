@@ -1274,9 +1274,9 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
   
   if(n >= 2*b)
     {
-      aa = a;
-      bb = b;
-      Nu = mu;
+      myA = a;
+      myB = b;
+      myMu = mu;
       //std::cout << "DSS parameters are DSL parameters." << std::endl;
       ////std::cout << " " << a << " " << b << " " << mu;
     }
@@ -1344,9 +1344,9 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
       //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
       
       
-      aa = resAlphaP;
-      bb = resAlphaQ;
-      Nu = resBetaP - aa*A[0] + bb*A[1];
+      myA = resAlphaP;
+      myB = resAlphaQ;
+      myMu = resBetaP - myA*A[0] + myB*A[1];
       
     }
   
@@ -1456,7 +1456,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
   
   DGtal::IntegerComputer<Integer> ic;
   
-  aa=0, bb=0, Nu=0;
+  myA=0, myB=0, myMu=0;
   
   // we are left with four possible lines given by the couples (prevInfL, infL=infR) (infL = infR,prevInfR)
   // (prevSupL, supL = supR) (supL = supR, prevSupR)
@@ -1493,10 +1493,10 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
 	      g = ic.gcd(btmp,atmp);
 	    btmp = btmp/g;
 	    atmp = atmp/g;
-	    if(btmp > bb)
+	    if(btmp > myB)
 	      {
-		bb =btmp;
-		aa =atmp;
+		myB =btmp;
+		myA =atmp;
 	      }
 	  }
 	
@@ -1512,16 +1512,16 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
 	      g = ic.gcd(btmp,atmp);
 	    btmp = btmp/g;
 	    atmp = atmp/g;
-	    if(btmp > bb)
+	    if(btmp > myB)
 	      {
-		bb =btmp;
-		aa =atmp;
+		myB =btmp;
+		myA =atmp;
 	      }
 	  }
 	
 	
 	
-	Nu = -aa*infL[0] + bb*infL[1];
+	myMu = -myA*infL[0] + myB*infL[1];
 	
 }
 
@@ -1597,9 +1597,38 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
   //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
   
   
-  aa = resAlphaP;
-  bb = resAlphaQ;
-  Nu = resBetaP - aa*A[0] + bb*A[1];
+  myA = resAlphaP;
+  myB = resAlphaQ;
+  myMu = resBetaP - myA*A[0] + myB*A[1];
     
+}
+
+
+
+
+//------------------------- Accessors --------------------------
+
+template <typename TInteger, typename TNumber>
+inline
+TInteger
+DGtal::DSLSubsegment<TInteger,TNumber>::getA() const {
+  return myA;
+}
+
+
+template <typename TInteger, typename TNumber>
+inline
+TInteger
+DGtal::DSLSubsegment<TInteger,TNumber>::getB() const {
+  return myB;
+}
+
+
+
+template <typename TInteger, typename TNumber>
+inline
+TInteger
+DGtal::DSLSubsegment<TInteger,TNumber>::getMu() const {
+  return myMu;
 }
 
