@@ -9,6 +9,7 @@ SET(DGTAL_EXAMPLES_SRC
   exampleGeometricalDCA
   exampleFrechetShortcut 
   exampleDSLSubsegment
+  exampleArithDSSIterator
 )
 
 
