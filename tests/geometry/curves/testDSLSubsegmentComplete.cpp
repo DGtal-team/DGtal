@@ -43,8 +43,6 @@
 #include "DGtal/geometry/curves/ArithDSSIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 
-//#include <gmpxx.h>
-
 using namespace std;
 using namespace DGtal;
 
@@ -57,7 +55,6 @@ using namespace DGtal;
 template <typename Integer,typename Fraction>
 bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 {
-  //typedef mpf_class Number;
   typedef long double Number;
   typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
   typedef DGtal::DSLSubsegment<Integer,Number> DSLSubsegD;
@@ -72,12 +69,6 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
   typedef typename DSL::Point PointDSL;
   
   DGtal::IntegerComputer<Integer> ic;
-  
-  // Point A(1,5);
-  // Point B(6,9);
-  // DSLSubseg DD(2,3,15,A,B);
-
-  // std::cout << "aa=" << DD.aa << " bb=" << DD.bb << " Nu=" << DD.Nu << std::endl;
   
   Integer b;
   
@@ -104,9 +95,8 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
       
       // Integer b = pow(10.0,p);
       
-      // b between 0 and mod b
-      //Integer b( random() % modb + 1 );
-      
+            
+      // Draw random values for b between modb-modb/2 and modb+modb/2
       Integer var(random()%(modb/2) + 1);
       
       Integer b;
@@ -115,128 +105,110 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
       else
 	b = modb - var;
       
-      // fixed b
-      //Integer b(modb);
-      
+      // Draw random values for a in [0,b]
       Integer a( random() % b +1);
       
+      // Draw a new a while a and b are not coprime (do not divide by
+      // the gcd so that b remains in the required interval  
       while(ic.gcd(a,b) !=1)
 	a = random() %b +1;
       
-       
-      //if ( ic.gcd( a, b ) == 1 )
-        {
+      
+      for ( unsigned int j = 0; j < 5; ++j )
+	{
+	  // Draw random values for mu in [0,2modb]
+	  Integer mu = random() % (2*modb);
+	  DSL D( a, b, mu );
 	  
-          for ( unsigned int j = 0; j < 5; ++j )
-            {
-              //Integer mu = random() % (2*(Integer) pow(10.0,m));
+	  for (Integer x = 0; x < 10; ++x )
+	    {
+	      // Draw random values for the subsegment extremities abscissas
+	      Integer x1 = random() % modx;
 	      
-	      Integer mu = random() % (2*modb);
-	      DSL D( a, b, mu );
-	      //Number beta((double) mu/b,500);
+	      // All the segments have a length equal to modx
+	      Integer x2 = x1 + 1+ modx;
 	      
-              for (Integer x = 0; x < 10; ++x )
-                {
-                  //nb ++;
-		  Integer x1 = random() % modx;
-                  //Integer x2 = x1 + 1+ random()%modx;
-		  Integer x2 = x1 + 1+ modx;
-		  //Integer x2 = x1 + 1 + ( random() % modx );
-                  
-		  // typedef typename DSL::Point PointDSL;std::cout << "(" << a << "," << b << "," << mu << ")\n" ; //(" << alpha << "," << beta << ")" << std::endl;
+	      Integer y1 = ic.floorDiv(a*x1+mu,b);
+	      Integer y2 = ic.floorDiv(a*x2+mu,b);
+	      Point A = Point(x1,y1);
+	      Point B = Point(x2,y2);
+	      
+	      
+	      // DSLSubsegment algorithms
+	      
+	      if(B[0]-A[0] < 2*b) // reject easy cases when the segment contains a period of the DSL
+		{
 		  
-                  Integer y1 = ic.floorDiv(a*x1+mu,b);
-                  Integer y2 = ic.floorDiv(a*x2+mu,b);
-                  Point A = Point(x1,y1);
-                  Point B = Point(x2,y2);
+		  nb++;
+		  // DSLSubsegment with Farey Fan
+		  timeBeginSubseg = clock();
+		  DSLSubseg DSLsub(a,b,mu,A,B,true);
+		  timeEndSubseg = clock();
+		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
 		  
-		  //trace.info() << "Points " << A << " " << B << std::endl;
+		  //std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
 		  
-		  // DSLSubsegment algorithm
+		  PointDSL AA = D.lowestY( x1 );
+		  PointDSL BB = D.lowestY( x2 );
 		  
-		  if(B[0]-A[0] < 2*b) // reject easy cases when the segment contains a period of the DSL
-		    {
-		      //std::cout << "(" << a << "," << b << "," << mu << ")\n" ; //(" << alpha << "," << beta << ")" << std::endl;
-		      //trace.info() << "Points " << A << " " << B << std::endl;
-		      nb++;
-		      
-		      bool locRay;
-		      
-		      // DSLSubsegment with Farey Fan
-		      timeBeginSubseg = clock();
-		      DSLSubseg DSLsub(a,b,mu,A,B,&locRay);
-		      timeEndSubseg = clock();
-		      timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
-		      
-		      
-		      nbLocRay +=locRay;
-		      //std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
-		      
-		      PointDSL AA = D.lowestY( x1 );
-		      PointDSL BB = D.lowestY( x2 );
-		      
-		      // // SmartDSS algorithm
-		      
-		      // timeBeginSmartDSS = clock();
-		      // D.smartDSS(AA,BB);
-		      // timeEndSmartDSS = clock();
-		      // timeTotalSmartDSS += ((double)timeEndSmartDSS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  // SmartDSS algorithm
 		  
-		      // ReversedSmartDSS algorithm
+		  // timeBeginSmartDSS = clock();
+		  // D.smartDSS(AA,BB);
+		  // timeEndSmartDSS = clock();
+		  // timeTotalSmartDSS += ((double)timeEndSmartDSS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  
+		  // ReversedSmartDSS algorithm
+		  
+		  timeBeginReversedSmartDSS = clock();
+		  DSL S = D.reversedSmartDSS(AA,BB);
+		  timeEndReversedSmartDSS = clock();
+		  timeTotalReversedSmartDSS += ((double)timeEndReversedSmartDSS-(double)timeBeginReversedSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
 		      
-		      timeBeginReversedSmartDSS = clock();
-		      DSL S = D.reversedSmartDSS(AA,BB);
-		      timeEndReversedSmartDSS = clock();
-		      timeTotalReversedSmartDSS += ((double)timeEndReversedSmartDSS-(double)timeBeginReversedSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  // DSLSubsegment algorithm for 4-connected DSL
+		  
+		  // Application of an horizontal shear transform
+		  Point A2 = AA;
+		  A2[0] += A2[1];
+		  Point B2 = BB;
+		  B2[0] += B2[1];
+		  
+		  bool aBool;
+		  
+		  timeBeginSubseg4 = clock();
+		  DSLSubseg D2(a,a+b,-mu,A2,B2,true); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
+		  timeEndSubseg4 = clock();
+		  timeTotalSubseg4 += ((double)timeEndSubseg4-(double)timeBeginSubseg4)/(((double)CLOCKS_PER_SEC)/1000);
 		      
-		      // DSLSubsegment algorithm for 4-connected DSL
-		      
-		      // Application of an horizontal shear transform
-		      Point A2 = AA;
-		      A2[0] += A2[1];
-		      Point B2 = BB;
-		      B2[0] += B2[1];
-		      
-		      bool aBool;
-		      
-		      timeBeginSubseg4 = clock();
-		      DSLSubseg D2(a,a+b,-mu,A2,B2,&aBool); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
-		      timeEndSubseg4 = clock();
-		      timeTotalSubseg4 += ((double)timeEndSubseg4-(double)timeBeginSubseg4)/(((double)CLOCKS_PER_SEC)/1000);
-		      
-		      // The result is (aa,bb-aa, nu)
-		      // std::cout << "DSLSubseg : a2=" << D2.aa << " b2=" << D2.bb-D2.aa << " Nu=" << D2.Nu << std::endl;
-		      // std::cout << "Reversed  : a =" << S.a() << " b =" << S.b() << " Mu =" << S.mu() << std::endl;
-		      
-		      // Compare results of DSLsubseg4 and reversedSmartDSS
-		      assert(D2.aa==S.a() && (D2.bb-D2.aa)==S.b() && D2.Nu==-S.mu());
-		      
-		      
-		      
-		      // Computation of the local convex hulls
-		      
-		      timeBeginCH = clock();
-		      DSLSubseg DCH(a,b,mu,A,B,1);
-		      timeEndCH = clock();
-		      timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
-		      // Compare results of local convex hull and DSLSubsegment
-		      assert(DSLsub.aa == DCH.aa && DSLsub.bb == DCH.bb && DSLsub.Nu == DCH.Nu);
-		      
-		      
+		  // The result is (aa,bb-aa, nu)
+		  // Compare results of DSLsubseg4 and reversedSmartDSS
+		  assert(D2.aa==S.a() && (D2.bb-D2.aa)==S.b() && D2.Nu==-S.mu());
+		  
+		  
+		  // DSLSubsegment with local convex hulls
+		  
+		  timeBeginCH = clock();
+		  DSLSubseg DCH(a,b,mu,A,B,false);
+		  timeEndCH = clock();
+		  timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
+		  // Compare results of local convex hull and DSLSubsegment
+		  assert(DSLsub.aa == DCH.aa && DSLsub.bb == DCH.bb && DSLsub.Nu == DCH.Nu);
+		  
+		  
 #ifdef CHECK_RES
-		      // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
-		      DSSIterator  it(a,b,-mu,A);
-		      ArithDSS myDSS(it);
-		      
-		      timeBeginDSS = clock();
-		      while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
-			{}
-		      timeEndDSS = clock();
-		      
+		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
+		  DSSIterator  it(a,b,-mu,A);
+		  ArithDSS myDSS(it);
+		  
+		  timeBeginDSS = clock();
+		  while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
+		    {}
+		  timeEndDSS = clock();
+		  
                   //std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
 		  
-		  		  
-		      if(DSLsub.aa != myDSS.getA() || DSLsub.bb != myDSS.getB() || DSLsub.Nu != - myDSS.getMu())
+		  
+		  if(DSLsub.aa != myDSS.getA() || DSLsub.bb != myDSS.getB() || DSLsub.Nu != - myDSS.getMu())
 		    {
 		      std::cout << "ERROR " << std::endl;
 		      std::cout << a << " " << b << " " << mu << " " << x1 << " " << x2 << std::endl;    
@@ -249,16 +221,14 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 #endif CHECK_RES
 		  
 		  
-		    }
-		  
 		}
 	      
 	    }
+	  
 	}
     }
   
-  
-  std::cout << nb  << " " << nbLocRay ;
+  // Display the mean CPU time for each algorithm over the nb tries
   if(nb!=0)
     {
       std::cout << " " << (long double) timeTotalSubseg/(nb);
@@ -268,8 +238,6 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
     }
   else
     std::cout << " 0" << " 0" << " 0" << " 0" << std::endl;
-  //std::cout << " " << (long double) timeTotalSubsegD/((nb-nberrors));
-  
   
   return true;
 }
@@ -289,22 +257,18 @@ int main( int argc, char** argv )
 
   unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :2000;
   
-  
-  Integer modb = 1000000000;
+  Integer modb = 1000000;
   
   Integer c = 100;
-
-  //for(Integer i = 10; i<=modb ;i*=10)
-  //for(Integer i = 10; i<modb ;i+=i/3) 
+  
   Integer i = modb;
-  // for(Integer modx = 10; modx <=  2*i;modx+=modx/3)
+  
   for(Integer modx = 10; modx <=  2*i;modx+=(modx/3>100?modx/3:c))
-    //Integer  modx = 1000;
     {
-	std::cout << i << " " << modx << " ";
-	testDSLSubsegment<Integer,Fraction>( nbtries,  i, modx);
-	std::cout << std::endl;
-      }
+      std::cout << i << " " << modx << " ";
+      testDSLSubsegment<Integer,Fraction>( nbtries,  i, modx);
+      std::cout << std::endl;
+    }
   
   return 1;
 }

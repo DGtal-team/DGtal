@@ -8,6 +8,7 @@ SET(DGTAL_EXAMPLES_SRC
   exampleGeometricalDSS
   exampleGeometricalDCA
   exampleFrechetShortcut 
+  exampleDSLSubsegment
 )
 
 
