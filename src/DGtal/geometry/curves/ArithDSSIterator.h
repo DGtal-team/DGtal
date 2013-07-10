@@ -52,7 +52,9 @@ namespace DGtal
 // class ArithDSSIterator
 /**
  * Description of class 'ArithDSSIterator' <p>
- * \brief Aim:
+ * \brief Aim: An iterator on the points of a Digital Straight
+ * Segment. Template parameters are the integer type and the
+ * connectivity of the DSS (8-connectivity as default value).
  */
   
   template<typename TInteger, int connectivity = 8>
@@ -129,10 +131,10 @@ public:
     
 
     // ------------------------- Protected Datas ------------------------------
-private:
+    private:
     // ------------------------- Private Datas --------------------------------
-private:
-
+    private:
+    
     Integer myA;
     Integer myB;
     Integer myMu;

@@ -165,7 +165,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		  timeEndReversedSmartDSS = clock();
 		  timeTotalReversedSmartDSS += ((double)timeEndReversedSmartDSS-(double)timeBeginReversedSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
 		      
-		  // DSLSubsegment algorithm for 4-connected DSL
+		  // DSLSubsegment algorithm for 4-connected DSL. 
 		  
 		  // Application of an horizontal shear transform
 		  Point A2 = AA;
