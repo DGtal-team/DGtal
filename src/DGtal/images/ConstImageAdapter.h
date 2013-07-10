@@ -18,7 +18,7 @@
 
 /**
  * @file ConstImageAdapter.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/07
@@ -87,10 +87,10 @@ namespace DGtal
  * operator() calls f(img(g(aPoint))), instead of calling directly 
  * operator() of the underlying image img.
  * 
- * Here is the construction of a simple image adapter that 
+ * Here is the construction of a simple ConstImageAdapter that 
  * is a thresholded view of the initial scalar image: 
  *
- * @snippet images/testConstImageAdapter.cpp ConstImageAdapterConstruction
+ * @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
  *
  * NB: the underlying image as well as the 2 functors
  * are stored in the adapter as aliasing pointer
@@ -118,7 +118,8 @@ public:
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, typename TImageContainer::Point, Point> )); 
+  
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> )); 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
 
     ///Types copied from the container
@@ -130,7 +131,7 @@ public:
 
 public:
 
-    ConstImageAdapter(ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV):
+    ConstImageAdapter(const ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV):
             myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV)
     {
 #ifdef DEBUG_VERBOSE
@@ -227,6 +228,12 @@ public:
     {
         return (myImagePtr->isValid() );
     }
+
+  
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
 
 
     /**

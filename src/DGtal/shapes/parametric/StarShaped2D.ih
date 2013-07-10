@@ -42,48 +42,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // ------------------------- star-shaped services -------------------------
 
-
-/**
- * @param p any point in the plane.
- *
- * @return 'true' if the point is inside the shape, 'false' if it
- * is strictly outside.
- */
-template<typename TSpace>
-inline
-bool
-DGtal::StarShaped2D<TSpace>::isInside( const Point & p ) const
-{
-
-  RealPoint prel(NumberTraits<typename Point::Component>::castToDouble(p[0]),
-     NumberTraits<typename Point::Component>::castToDouble(p[1]));
-  
-  return this->isInside(prel);
-}
-
-
-/**
- * @param p any point in the plane.
- *
- * @return 'true' if the point is inside or on the shape, 'false' if it
- * is strictly outside.
- */
-template<typename TSpace>
-inline
-bool
-DGtal::StarShaped2D<TSpace>::isInside( const RealPoint & p ) const
-{
-  double t = parameter( p );
-  RealPoint x_rel = x( t );
-  x_rel -= center();
-  double d_x = x_rel[0]*x_rel[0] + x_rel[1]*x_rel[1];
-  RealPoint p_rel( p );
-  p_rel -= center();
-  double d_p = p_rel[0]*p_rel[0] + p_rel[1]*p_rel[1];
-   
-  return d_p <= d_x;
-}
-
 /**
  * @param p any point in the plane.
  *
@@ -95,21 +53,21 @@ inline
 DGtal::Orientation
 DGtal::StarShaped2D<TSpace>::orientation( const RealPoint & p ) const
 {
-  double t = parameter( p );
-  RealPoint x_rel = x( t );
-  x_rel -= center();
-  double d_x = x_rel[0]*x_rel[0] + x_rel[1]*x_rel[1];
-  RealPoint p_rel( p );
-  p_rel -= center();
-  double d_p = p_rel[0]*p_rel[0] + p_rel[1]*p_rel[1];
+    RealPoint x_rel = x( parameter( p ));
+    x_rel -= center();
+    RealPoint p_rel( p );
+    p_rel -= center();
 
-  if (d_p - d_x > 0.0)
-    return OUTSIDE;
-  else
-    if (d_p - d_x < 0.0)
-      return  INSIDE;
+    double d_x = x_rel.norm();
+    double d_p = p_rel.norm();
+    double diff = d_p - d_x;
+
+    if ( diff > 0.0 )
+        return OUTSIDE;
+    else if ( diff < 0.0 )
+        return INSIDE;
     else
-      return ON;
+        return ON;
 }
 
 

@@ -1,0 +1,135 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file LocalEstimatorFromSurfelFunctorAdapter.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/05/28
+ *
+ * Implementation of inline methods defined in LocalEstimatorFromSurfelFunctorAdapter.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,  typename Functor>
+inline
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric, Functor>::LocalEstimatorFromSurfelFunctorAdapter(ConstAlias<DigitalSurf> aSurf,
+                                                                                                        ConstAlias<Metric> aMetric,
+                                                                                                        Alias<Functor> afunctor):
+mySurface(aSurf),  myFunctor(afunctor), myMetric(aMetric), myEmbedder(Embedder( mySurface->space()))
+{
+  myInit = false;
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,  typename Functor>
+inline
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::~LocalEstimatorFromSurfelFunctorAdapter()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,  typename Functor>
+inline
+void
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[LocalEstimatorFromSurfelFunctorAdapter]";
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,  typename Functor>
+inline
+bool
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::isValid() const
+{
+  return myInit;
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,  typename Functor>
+inline
+void
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::init(const double h,
+                                                                           const Value radius)
+{
+  ASSERT(h>0);
+  ASSERT(radius>0);
+  myH = h;
+  myRadius = radius;
+  myInit = true;
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,   typename Functor>
+inline
+typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::Quantity
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval ( const SurfelConstIterator& it ) const
+{
+  ASSERT_MSG( isValid(), "Missing init() before evaluation" );
+    
+  MetricToPoint metricToPoint( *myMetric, myEmbedder( *it ));
+  VertexFunctor vfunctor( myEmbedder, metricToPoint);
+  Visitor visitor( *mySurface, vfunctor, *it);
+  Value currentRadius = 0;
+    
+  while ( (currentRadius < myRadius) && (! visitor.finished() ))
+  {
+    typename Visitor::Node node = visitor.current();
+    currentRadius = node.second;
+    myFunctor->pushSurfel( node.first );
+    visitor.expand();
+  }
+
+  Quantity val = myFunctor->eval();
+  myFunctor->reset();
+  return val;
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,   typename Functor>
+template <typename OutputIterator>
+inline
+OutputIterator
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval (const SurfelConstIterator& itb,
+                                                                            const SurfelConstIterator& ite,
+                                                                            OutputIterator result ) const
+{
+  for ( SurfelConstIterator it = itb; it != ite; ++it )
+  {
+    Quantity q = eval( it );
+    *result++ = q;
+  }
+  
+  return result;
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename TMetric,  typename Functor>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+                   const LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+///////////////////////////////////////////////////////////////////////////////
+
+

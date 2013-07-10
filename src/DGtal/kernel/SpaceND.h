@@ -91,7 +91,7 @@ Point4Int a= {2, 3 , -5 , 6};
    **/
 
   template < Dimension dim,
-       typename TInteger = DGtal::int32_t >
+	     typename TInteger = DGtal::int32_t >
   class SpaceND
   {
     //Integer must be a model of the concept CInteger.
@@ -129,7 +129,7 @@ Point4Int a= {2, 3 , -5 , 6};
     typedef DGtal::Dimension Dimension;
     
     ///static constants to store the dimension.
-    static const Dimension dimension = dim;
+    static const Dimension dimension=dim;
 
     ///Define the type of a sub co-Space
     template <Dimension codimension>
@@ -187,6 +187,12 @@ Point4Int a= {2, 3 , -5 , 6};
   private:
 
   }; // end of class SpaceND
+
+  // ///static constants to store the dimension.
+  // template < Dimension dim,
+  // 	     typename TInteger >
+  // const Dimension SpaceND<dim, TInteger>::dimension = dim;
+
 
 } // namespace DGtal
 

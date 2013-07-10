@@ -1,12 +1,15 @@
 SET(DGTAL_TESTS_SRC
   testImageSimple
   testImageAdapter
+  testImageCache
+  testTiledImageFromImage
   testConstImageAdapter
   testImage
   testImageSpanIterators
   testCheckImageConcept
   testMorton
   testHashTree
+  testSliceImageFromFunctor
   )
 
 SET(DGTAL_BENCH_SRC

@@ -43,9 +43,6 @@
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/geometric_distribution.hpp>
 #include <boost/random/variate_generator.hpp>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
 
 
 #include "DGtal/base/Common.h"
@@ -840,44 +837,28 @@ void generateStatsMultiMapXY( const string & name,
 
 
 ///////////////////////////////////////////////////////////////////////////////
-namespace po = boost::program_options;
+
 
 int main( int argc, char** argv )
 {
   typedef double Value;
   static const unsigned int L = 16;
+  trace.info()<< "Test several multi-map structures and compute some statistics." <<std::endl << "With parameter: "<<std::endl
+	      << "\t tested image size: 1000  1000"<<std::endl
+	      <<"Probability that there is no data at all at an image position (Bernouilli distribution): 0.5"
+	      << "Probability for the geometric distribution of the number of data per image position (E(Y)=(1-p)/p, Var(Y)=(1-p)/p^2 :0.5"<< std::endl;
+  
+  
 
-  // parse command line ----------------------------------------------
-  po::options_description general_opt("Allowed options are: ");
-  general_opt.add_options()
-    ("help,h", "display this message")
-    ("xsize,x", po::value<int>(), "x-size of tested image map")
-    ("ysize,y", po::value<int>(), "y-size of tested image map")
-    ("prob_no_data,q", po::value<double>(), "Probability that there is no data at all at an image position (Bernouilli distribution).")
-    ("prob_one_data,p", po::value<double>(), "Probability for the geometric distribution of the number of data per image position (E(Y)=(1-p)/p, Var(Y)=(1-p)/p^2.");
-  
-  
-  
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, general_opt), vm);  
-  po::notify(vm);    
-  if(vm.count("help")||argc<=1)
-    {
-      trace.info()<< "Test several multi-map structures and compute some statistics." <<std::endl << "Basic usage: "<<std::endl
-      << "\t testMultiMap-benchmark -x 1000 -y 1000"<<std::endl
-      << general_opt << "\n";
-      return 0;
-    }
-
-  unsigned int X = vm.count("xsize") ? vm["xsize"].as<int>() : 1000;
-  unsigned int Y = vm.count("ysize") ? vm["ysize"].as<int>() : 1000;
+  unsigned int X =  1000;
+  unsigned int Y =  1000;
   /// Probability that there is no data at this location.
-  double PROB_NO_DATA = vm.count("prob_no_data") ? vm["prob_no_data"].as<double>() : 0.5;
+  double PROB_NO_DATA =  0.5;
   /// If there is a possibility to have a data, this probability is
   /// used to define a geometric distribution that defines the number
   /// of data (ie valid labels) at this place. The smaller, the higher
   /// is the expectation. 0.5 means E(X) = 1.
-  double PROB_ONE_DATA = vm.count("prob_one_data") ? vm["prob_one_data"].as<double>() : 0.5;
+  double PROB_ONE_DATA = 0.5;
 
   typedef DynArrayLXY<Value> MyArrayLXY;
   MyArrayLXY* anArrayLXY = new MyArrayLXY( L, X, Y, -1.0 );
@@ -899,45 +880,45 @@ int main( int argc, char** argv )
   delete anArrayXYOfList;
 #endif
 
-  GENERATE_STATS_NM( uint8_t, 1, 2 )
-  GENERATE_STATS_NM( uint8_t, 1, 3 )
-  GENERATE_STATS_NM( uint8_t, 1, 4 )
-  GENERATE_STATS_NM( uint8_t, 1, 5 )
-  GENERATE_STATS_NM( uint8_t, 1, 6 )
-  GENERATE_STATS_NM( uint8_t, 1, 7 )
-  GENERATE_STATS_NM( uint8_t, 1, 8 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 1, 2 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 1, 3 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 1, 4 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 1, 5 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 1, 6 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 1, 7 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 1, 8 )
 
-  GENERATE_STATS_NM( uint8_t, 2, 2 )
-  GENERATE_STATS_NM( uint8_t, 2, 3 )
-  GENERATE_STATS_NM( uint8_t, 2, 4 )
-  GENERATE_STATS_NM( uint8_t, 2, 5 )
-  GENERATE_STATS_NM( uint8_t, 2, 6 )
-  GENERATE_STATS_NM( uint8_t, 2, 7 )
-  GENERATE_STATS_NM( uint8_t, 2, 8 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 2, 2 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 2, 3 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 2, 4 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 2, 5 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 2, 6 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 2, 7 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 2, 8 )
 
-  GENERATE_STATS_NM( uint8_t, 3, 2 )
-  GENERATE_STATS_NM( uint8_t, 3, 3 )
-  GENERATE_STATS_NM( uint8_t, 3, 4 )
-  GENERATE_STATS_NM( uint8_t, 3, 5 )
-  GENERATE_STATS_NM( uint8_t, 3, 6 )
-  GENERATE_STATS_NM( uint8_t, 3, 7 )
-  GENERATE_STATS_NM( uint8_t, 3, 8 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 3, 2 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 3, 3 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 3, 4 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 3, 5 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 3, 6 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 3, 7 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 3, 8 )
 
-  GENERATE_STATS_NM( uint8_t, 4, 2 )
-  GENERATE_STATS_NM( uint8_t, 4, 3 )
-  GENERATE_STATS_NM( uint8_t, 4, 4 )
-  GENERATE_STATS_NM( uint8_t, 4, 5 )
-  GENERATE_STATS_NM( uint8_t, 4, 6 )
-  GENERATE_STATS_NM( uint8_t, 4, 7 )
-  GENERATE_STATS_NM( uint8_t, 4, 8 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 4, 2 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 4, 3 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 4, 4 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 4, 5 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 4, 6 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 4, 7 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 4, 8 )
 
-  GENERATE_STATS_NM( uint8_t, 5, 2 )
-  GENERATE_STATS_NM( uint8_t, 5, 3 )
-  GENERATE_STATS_NM( uint8_t, 5, 4 )
-  GENERATE_STATS_NM( uint8_t, 5, 5 )
-  GENERATE_STATS_NM( uint8_t, 5, 6 )
-  GENERATE_STATS_NM( uint8_t, 5, 7 )
-  GENERATE_STATS_NM( uint8_t, 5, 8 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 5, 2 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 5, 3 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 5, 4 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 5, 5 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 5, 6 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 5, 7 )
+  GENERATE_STATS_NM( DGtal::uint8_t, 5, 8 )
 
 
   return 0;

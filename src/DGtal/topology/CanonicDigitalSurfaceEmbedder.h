@@ -179,7 +179,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/CanonicDigitalSurfaceEmbedder.ih"
+#include "DGtal/topology/CanonicDigitalSurfaceEmbedder.ih"
 
 
 //                                                                           //

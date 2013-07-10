@@ -34,10 +34,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template <typename T>
+template <typename T, typename TFunctor>
 inline
 T 
-DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & extent ) throw(DGtal::IOException)
+DGtal::RawReader<T, TFunctor >::importRaw8 (const std::string & filename, const Vector & extent, 
+				 const Functor & aFunctor ) throw(DGtal::IOException)
 {
   FILE * fin;
   DGtal::IOException dgtalerror;
@@ -72,7 +73,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
   while ((fin) && (it != itend))
     {
       val = getc(fin);  
-      image.setValue( (*it),val);
+      image.setValue( (*it),aFunctor(val));
       it++;
       count++;
     }

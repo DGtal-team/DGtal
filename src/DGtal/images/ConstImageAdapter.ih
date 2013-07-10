@@ -16,7 +16,7 @@
 
 /**
  * @file ConstImageAdapter.ih
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/07
@@ -57,6 +57,15 @@ void
 DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ConstImageAdapter] " << (*myImagePtr);
+}
+
+
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+inline
+std::string
+DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>:: className() const
+{
+  return "ConstImageAdapter";  
 }
 
 

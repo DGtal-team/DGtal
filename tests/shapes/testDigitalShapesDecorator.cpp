@@ -91,25 +91,37 @@ bool testDigitalShapesDecorator()
   typedef DigitalShapesMinus< MyGaussDigitizerA, MyGaussDigitizerA > Minus;
   Minus s_minus ( digShapeA, digShapeC );
 
-  nbok += s_union( Point( -12, 0 )) ? 0 : 1;
-  nbok += s_union( Point( 0, 0 )) ? 1 : 0;
-  nbok += s_union( Point( 10, 0 )) ? 0 : 1;
-  nbok += s_union( Point( 9, 0 )) ? 1 : 0;
-  nbok += s_union( Point( -10, 0 )) ? 1 : 0;
+
+  nbok += (( s_union.orientation( Point( -12, 0 )) == INSIDE )
+          || ( s_union.orientation( Point( -12, 0 )) == ON  ))? 0 : 1;
+  nbok += (( s_union.orientation( Point( 0, 0 )) == INSIDE )
+          || ( s_union.orientation( Point( 0, 0 )) == ON  ))? 1 : 0;
+  nbok += (( s_union.orientation( Point( 10, 0 )) == INSIDE )
+          || ( s_union.orientation( Point( 10, 0 )) == ON  ))? 0 : 1;
+  nbok += (( s_union.orientation( Point( 9, 0 )) == INSIDE )
+          || ( s_union.orientation( Point( 9, 0 )) == ON  ))? 1 : 0;
+  nbok += (( s_union.orientation( Point( -10, 0 )) == INSIDE )
+          || ( s_union.orientation( Point( -10, 0 )) == ON  ))? 1 : 0;
 
 
+  nbok += (( s_intersec.orientation( Point( -6, 0 )) == INSIDE )
+          || ( s_intersec.orientation( Point( -6, 0 )) == ON  ))? 0 : 1;
+  nbok += (( s_intersec.orientation( Point( 4, 0 )) == INSIDE )
+          || ( s_intersec.orientation( Point( 4, 0 )) == ON  ))? 1 : 0;
+  nbok += (( s_intersec.orientation( Point( 6, 0 )) == INSIDE )
+          || ( s_intersec.orientation( Point( 6, 0 )) == ON  ))? 0 : 1;
+  nbok += (( s_intersec.orientation( Point( 0, 5 )) == INSIDE )
+          || ( s_intersec.orientation( Point( 0, 5 )) == ON  ))? 0 : 1;
 
-  nbok += s_intersec( Point( -6, 0 )) ? 0 : 1;
-  nbok += s_intersec( Point( 4, 0 )) ? 1 : 0;
-  nbok += s_intersec( Point( 6, 0 )) ? 0 : 1;
-  nbok += s_intersec( Point( 0, 5 )) ? 0 : 1;
 
-
-
-  nbok += s_minus( Point( -9, 0 )) ? 1 : 0;
-  nbok += s_minus( Point( -2, 0 )) ? 0 : 1;
-  nbok += s_minus( Point( 0, 2 )) ? 0 : 1;
-  nbok += s_minus( Point( -8, 0 )) ? 1 : 0;
+  nbok += (( s_minus.orientation( Point( -9, 0 )) == INSIDE )
+          || ( s_minus.orientation( Point( -9, 0 )) == ON  ))? 1 : 0;
+  nbok += (( s_minus.orientation( Point( -2, 0 )) == INSIDE )
+          || ( s_minus.orientation( Point( -2, 0 )) == ON  ))? 0 : 1;
+  nbok += (( s_minus.orientation( Point( 0, 2 )) == INSIDE )
+          || ( s_minus.orientation( Point( 0, 2 )) == ON  ))? 0 : 1;
+  nbok += (( s_minus.orientation( Point( -8, 0 )) == INSIDE )
+          || ( s_minus.orientation( Point( -8, 0 )) == ON  ))? 1 : 0;
 
   nb = 13;
 

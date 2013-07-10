@@ -58,11 +58,11 @@ namespace DGtal
 #if defined(BOOST_DISABLE_ASSERT) || defined(NDEBUG)
  #define ASSERT_MSG(expr,msg) ((void)0)
 #else
-#define ASSERT_MSG(expr,msg) trace.error()<<msg<<std::endl; BOOST_ASSERT(expr)
+#define ASSERT_MSG(expr,msg) if (!expr) {trace.error()<<msg<<std::endl;} BOOST_ASSERT(expr)
 #endif
  
 #define VERIFY(expr) BOOST_VERIFY(expr)
-#define VERIFY_MSG(expr,msg) trace.error()<<msg<<std::endl; BOOST_VERIFY(expr)
+#define VERIFY_MSG(expr,msg) if (!expr) {trace.error()<<msg<<std::endl;} BOOST_VERIFY(expr)
 
 
 #if defined(CHECK_ALL_PRE)
