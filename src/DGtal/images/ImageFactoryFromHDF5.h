@@ -220,7 +220,6 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param anImage alias on the underlying image container.
      * @param aFilename HDF5 filename.
      * @param aDataset datasetname.
      */
@@ -358,6 +357,11 @@ namespace DGtal
       }
       
       Value *data_out = (Value*) malloc (malloc_size * sizeof(Value)); // output buffer
+      if (data_out == NULL)
+      {
+        trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
+        exit;
+      }
       
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)
@@ -448,6 +452,11 @@ namespace DGtal
       }
       
       Value *data_in = (Value*) malloc (malloc_size * sizeof(Value)); // input buffer
+      if (data_in == NULL)
+      {
+        trace.error() << "data_in malloc error in flushImage: " << (malloc_size * sizeof(Value)) << std::endl;
+        exit;
+      }
       
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)

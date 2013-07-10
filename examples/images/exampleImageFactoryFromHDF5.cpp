@@ -122,11 +122,11 @@ bool writeHDF5_3D_TILED()
     return true;
 }
 
-bool exampleTiledImage3D()
+bool exampleImage3D()
 {
     int i, j, k;
 
-    trace.beginBlock("Example : TiledImage with ImageFactoryFromHDF5 (3D)");
+    trace.beginBlock("Example : ImageV with ImageFactoryFromHDF5 (3D)");
     
       typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint8_t> ImageV;
       typedef ImageV::Domain DomainV;
@@ -141,6 +141,35 @@ bool exampleTiledImage3D()
               imageV.setValue(PointV(i,j,k), 1);
             else
               imageV.setValue(PointV(i,j,k), 0);
+
+      int cpt=0;
+      trace.beginBlock("Counting ones in the original image (domain)");
+      for(ImageV::Domain::ConstIterator it = imageV.domain().begin(), itend = imageV.domain().end();
+          it != itend; ++it)
+        if (imageV( *it ) == 1)
+          cpt++;
+      trace.info() << "imageV cpt: " << cpt << endl;
+      trace.endBlock();
+
+      cpt=0;
+      trace.beginBlock("Counting ones in the original image (range)");
+      for(ImageV::Range::ConstIterator it = imageV.range().begin(), itend = imageV.range().end();
+          it != itend; ++it)
+        if (( *it ) == 1)
+          cpt++;
+      trace.info() << "imageV cpt: " << cpt << endl;
+      trace.endBlock();
+      
+    trace.endBlock();
+    
+    return true;
+}
+
+bool exampleTiledImage_1block3D()
+{
+    int i, j, k;
+
+    trace.beginBlock("Example : TiledImage_1block with ImageFactoryFromHDF5 (3D)");
 
       typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
 
@@ -158,7 +187,6 @@ bool exampleTiledImage3D()
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
       //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 50);
       MyTiledImage tiledImage1block(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
       
       typedef MyTiledImage::OutputImage OutputImage;
@@ -167,24 +195,6 @@ bool exampleTiledImage3D()
       trace.info() << tiledImage1block << std::endl;
 
       int cpt=0;
-      trace.beginBlock("Counting ones in the original image (domain)");
-      for(Image::Domain::ConstIterator it = imageV.domain().begin(), itend = imageV.domain().end();
-          it != itend; ++it)
-        if (imageV( *it ) == 1)
-          cpt++;
-      trace.info() << "imageV cpt: " << cpt << endl;
-      trace.endBlock();
-
-      cpt=0;
-      trace.beginBlock("Counting ones in the original image (range)");
-      for(Image::Range::ConstIterator it = imageV.range().begin(), itend = imageV.range().end();
-          it != itend; ++it)
-        if (( *it ) == 1)
-          cpt++;
-      trace.info() << "imageV cpt: " << cpt << endl;
-      trace.endBlock();
-          
-      cpt=0;
       trace.beginBlock("Counting ones in the tiled image - 1x1x1 blocks - LAST/WT ");
       for(Image::Domain::ConstIterator it = tiledImage1block.domain().begin(), itend = tiledImage1block.domain().end();
           it != itend; ++it)
@@ -193,26 +203,47 @@ bool exampleTiledImage3D()
       trace.info() << "Cpt: " << cpt << endl;
       trace.endBlock();
       
-      cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 5x5x5 blocks - LAST/WT ");
-         for(Image::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
-             it != itend; ++it)
-           if (tiledImage( *it ) == 1)
-                cpt++;         
-         trace.info() << "Cpt: " << cpt << endl;
-      trace.endBlock();
-      
-      /* trace.beginBlock("Counting ones in the tiled image - 5x5x5 blocks - FIFO/WT ");
-        for(k = 0; k < NZ_3D_TILED; k++)
-          for(j = 0; j < NY_3D_TILED; j++)
-            for(i = 0; i < NX_3D_TILED; i++)
-              if (tiledImage(Z3i::Point(i,j,k)) == 1)
-                cpt++;         
-        trace.info() << "Cpt: " << cpt << endl;
-      trace.endBlock();
-      */
-      
+    trace.endBlock();
     
+    return true;
+}
+
+bool exampleTiledImage3D()
+{
+    int i, j, k;
+
+    trace.beginBlock("Example : TiledImage with ImageFactoryFromHDF5 (3D)");
+
+      typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
+
+      typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
+      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
+
+      typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
+      
+      //typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
+      typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
+      typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
+      //MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 3);
+      MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
+      MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
+      
+      typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
+      //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 2);
+      
+      typedef MyTiledImage::OutputImage OutputImage;
+      OutputImage::Value aValue;
+
+      int cpt=0;
+      trace.beginBlock("Counting ones in the tiled image - 2x2x2 blocks - LAST/WT ");
+      for(Image::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
+          it != itend; ++it)
+        if (tiledImage(*it) == 1)
+          cpt++;         
+      trace.info() << "Cpt: " << cpt << endl;
+      trace.endBlock();
+      
     trace.endBlock();
     
     return true;
@@ -226,7 +257,7 @@ int main( int argc, char** argv )
     if (argc==1)
       writeHDF5_3D_TILED();
     
-    exampleTiledImage3D();
+    exampleImage3D() && exampleTiledImage_1block3D() && exampleTiledImage3D();
     
     return 0;
 }
