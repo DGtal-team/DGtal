@@ -71,6 +71,14 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::updateCache(con
   myCacheImagesPtr = myImageFactory->requestImage(aDomain);
 }
 
+template <typename TImageContainer, typename TImageFactory>
+inline
+void
+DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::clearCache()
+{
+  myCacheImagesPtr = NULL;
+}
+
 // ----------------------- Specialization DGtal::CACHE_READ_POLICY_FIFO ------------------------------
 
 template <typename TImageContainer, typename TImageFactory>
@@ -110,6 +118,14 @@ void
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::updateCache(const Domain &aDomain)
 {
   myFIFOCacheImages.push_back(myImageFactory->requestImage(aDomain));
+}
+
+template <typename TImageContainer, typename TImageFactory>
+inline
+void
+DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::clearCache()
+{
+  myFIFOCacheImages.clear();
 }
 
 // ----------------------- Specialization DGtal::CACHE_WRITE_POLICY_WT ------------------------------

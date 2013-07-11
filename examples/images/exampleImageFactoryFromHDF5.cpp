@@ -48,9 +48,9 @@ using namespace DGtal;
 #define H5FILE_NAME_3D_TILED    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
 #define DATASETNAME_3D_TILED    "UInt8Array3D_TILED"
-#define NX_3D_TILED             500//1980       // dataset dimensions
-#define NY_3D_TILED             500//1980
-#define NZ_3D_TILED             500//400
+#define NX_3D_TILED             150//1980       // dataset dimensions
+#define NY_3D_TILED             150//1980
+#define NZ_3D_TILED             150//400
 #define RANK_3D_TILED           3
 
 bool writeHDF5_3D_TILED()
@@ -118,6 +118,7 @@ bool writeHDF5_3D_TILED()
       trace.info() << "end" << endl;
     
     trace.endBlock();
+    trace.info() << endl;
 
     return true;
 }
@@ -161,6 +162,7 @@ bool exampleImage3D()
       trace.endBlock();
       
     trace.endBlock();
+    trace.info() << endl;
     
     return true;
 }
@@ -200,10 +202,11 @@ bool exampleTiledImage_1block3D()
           it != itend; ++it)
         if (tiledImage1block(*it) == 1)
           cpt++;         
-      trace.info() << "Cpt: " << cpt << endl;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.cacheMissRead << " - cacheMissWrite:" << tiledImage1block.cacheMissWrite << endl;
       trace.endBlock();
       
     trace.endBlock();
+    trace.info() << endl;
     
     return true;
 }
@@ -221,6 +224,91 @@ bool exampleTiledImage3D()
 
       typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
       
+      typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
+      typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
+      typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
+      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO_A(factImage, 10);
+      MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO_B(factImage, 5);
+      MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
+      MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
+      
+      typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
+      //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 10);
+      
+      typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFIFO;
+      MyTiledImageFIFO tiledImageFIFO_A(factImage, imageCacheReadPolicyFIFO_A, imageCacheWritePolicyWT, 10);
+      MyTiledImageFIFO tiledImageFIFO_B(factImage, imageCacheReadPolicyFIFO_B, imageCacheWritePolicyWT, 10);
+      
+      typedef MyTiledImage::OutputImage OutputImage;
+      OutputImage::Value aValue;
+      
+      int cpt=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT ");
+      for(Image::Domain::ConstIterator it = tiledImageFIFO_A.domain().begin(), itend = tiledImageFIFO_A.domain().end();
+          it != itend; ++it)
+          {
+            if (tiledImageFIFO_A(*it) == 1)
+              cpt++;
+          }
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.cacheMissRead << " - cacheMissWrite:" << tiledImageFIFO_A.cacheMissWrite << endl;
+      trace.endBlock();
+      
+      cpt=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT ");
+      for(Image::Domain::ConstIterator it = tiledImageFIFO_B.domain().begin(), itend = tiledImageFIFO_B.domain().end();
+          it != itend; ++it)
+          {
+            if (tiledImageFIFO_B(*it) == 1)
+              cpt++;
+          }
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.cacheMissRead << " - cacheMissWrite:" << tiledImageFIFO_B.cacheMissWrite << endl;
+      trace.endBlock();
+
+      cpt=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT ");
+      for(Image::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
+          it != itend; ++it)
+          {
+            if (tiledImage(*it) == 1)
+              cpt++;
+          }
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.cacheMissRead << " - cacheMissWrite:" << tiledImage.cacheMissWrite << endl;
+      trace.endBlock();    
+      
+    trace.endBlock();
+    trace.info() << endl;
+    
+    return true;
+}
+
+bool exampleOLDTiledImage3D()
+{
+    int i, j, k;
+
+    trace.beginBlock("OLD example : ImageFactoryFromHDF5 (3D)");
+    
+      typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint8_t> ImageV;
+      typedef ImageV::Domain DomainV;
+      typedef ImageV::Point PointV;
+      DomainV domainV(PointV(0,0,0), PointV(NX_3D_TILED-1, NY_3D_TILED-1, NZ_3D_TILED-1));
+      ImageV imageV(domainV);
+      
+      for(k = 0; k < NZ_3D_TILED; k++)
+        for(j = 0; j < NY_3D_TILED; j++)
+          for(i = 0; i < NX_3D_TILED; i++)
+            if (i>=15 && j>=15 && k>=15 && i<35 && j<35 && k<35)
+              imageV.setValue(PointV(i,j,k), 1);
+            else
+              imageV.setValue(PointV(i,j,k), 0);
+
+      typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
+
+      typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
+      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
+
+      typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
+      
       //typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
       typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
       typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
@@ -230,21 +318,52 @@ bool exampleTiledImage3D()
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
       //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 2);
+      MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 5);
+      MyTiledImage tiledImage1block(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
       
       typedef MyTiledImage::OutputImage OutputImage;
       OutputImage::Value aValue;
 
       int cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 2x2x2 blocks - LAST/WT ");
+      trace.beginBlock("Counting ones in the original image (domain)");
+      for(Image::Domain::ConstIterator it = imageV.domain().begin(), itend = imageV.domain().end();
+          it != itend; ++it)
+        if (imageV( *it ) == 1)
+          cpt++;
+      trace.info() << "imageV cpt: " << cpt << endl;
+      trace.endBlock();
+
+      cpt=0;
+      trace.beginBlock("Counting ones in the original image (range)");
+      for(Image::Range::ConstIterator it = imageV.range().begin(), itend = imageV.range().end();
+          it != itend; ++it)
+        if (( *it ) == 1)
+          cpt++;
+      trace.info() << "imageV cpt: " << cpt << endl;
+      trace.endBlock();
+      
+      trace.info() << tiledImage1block << std::endl;
+          
+      cpt=0;
+      trace.beginBlock("Counting ones in the tiled image - 1x1x1 blocks - LAST/WT ");
+      for(Image::Domain::ConstIterator it = tiledImage1block.domain().begin(), itend = tiledImage1block.domain().end();
+          it != itend; ++it)
+        if (tiledImage1block(*it) == 1)
+          cpt++;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.cacheMissRead << " - cacheMissWrite:" << tiledImage1block.cacheMissWrite << endl;
+      trace.endBlock();
+      
+      cpt=0;
+      trace.beginBlock("Counting ones in the tiled image - 5x5x5 blocks - LAST/WT ");
       for(Image::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
           it != itend; ++it)
         if (tiledImage(*it) == 1)
-          cpt++;         
-      trace.info() << "Cpt: " << cpt << endl;
+            cpt++;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.cacheMissRead << " - cacheMissWrite:" << tiledImage.cacheMissWrite << endl;
       trace.endBlock();
-      
+    
     trace.endBlock();
+    trace.info() << endl;
     
     return true;
 }
@@ -257,7 +376,7 @@ int main( int argc, char** argv )
     if (argc==1)
       writeHDF5_3D_TILED();
     
-    exampleImage3D() && exampleTiledImage_1block3D() && exampleTiledImage3D();
+    /*exampleOLDTiledImage3D() && */exampleImage3D() && exampleTiledImage_1block3D() && exampleTiledImage3D();
     
     return 0;
 }
