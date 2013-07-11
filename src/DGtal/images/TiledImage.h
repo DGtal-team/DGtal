@@ -124,6 +124,9 @@ public:
         
         for(typename Domain::Integer i=0; i<Domain::dimension; i++)
           mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
+        
+        cacheMissRead = 0;
+        cacheMissWrite = 0;
     }
 
     /**
@@ -219,7 +222,7 @@ public:
         dMax[i] = dMin[i] + (mySize[i]-1);
       }
       
-      Domain di(dMin, dMax);
+      Domain di(dMin, dMax); //trace.info() << "aPoint: " << aPoint << " - di: " << di << std::endl; // TEMP_MT
       return di;      
     }
     
@@ -229,7 +232,7 @@ public:
      * @param aPoint the point.
      * @return the value at aPoint.
      */
-    Value operator()(const Point & aPoint) const
+    Value operator()(const Point & aPoint)// const // TEMP_MT
     {
       ASSERT(myImageFactory->domain().isInside(aPoint));
 
@@ -239,6 +242,7 @@ public:
         return aValue;
       else
         {
+          cacheMissRead++;
           myImageCache->update(findSubDomain(aPoint));
           myImageCache->read(aPoint, aValue);
           return aValue;
@@ -262,6 +266,7 @@ public:
           return;
         else
         {
+          cacheMissWrite++;
           myImageCache->update(findSubDomain(aPoint));
           myImageCache->write(aPoint, aValue);
         }
@@ -292,8 +297,10 @@ protected:
     /// domain lower and upper bound
     Point m_lowerBound, m_upperBound;
     
-private:
-
+public: // TEMP_MT
+    
+    unsigned int cacheMissRead;
+    unsigned int cacheMissWrite;
 
     // ------------------------- Internals ------------------------------------
 private:

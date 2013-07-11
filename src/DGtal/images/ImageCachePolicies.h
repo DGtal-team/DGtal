@@ -65,11 +65,12 @@ namespace DGtal
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
- * The policy is done with 3 functions:
+ * The policy is done with 4 functions:
  * 
  *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
  *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
  *  - updateCache :             for updating the cache according to the cache policy
+ *  - clearCache :              for clearing the cache
  */
 template <typename TImageContainer, typename TImageFactory>
 class ImageCacheReadPolicyLAST
@@ -123,6 +124,11 @@ public:
      */
     void updateCache(const Domain &aDomain);
     
+    /**
+     * Clear the cache.
+     */
+    void clearCache();
+    
 protected:
     
     /// Alias on the images cache
@@ -145,11 +151,12 @@ protected:
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
- * The policy is done with 3 functions:
+ * The policy is done with 4 functions:
  * 
  *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
  *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
  *  - updateCache :             for updating the cache according to the cache policy
+ *  - clearCache :              for clearing the cache
  */
 template <typename TImageContainer, typename TImageFactory>
 class ImageCacheReadPolicyFIFO
@@ -202,6 +209,11 @@ public:
      * @param aDomain the domain.
      */
     void updateCache(const Domain &aDomain);
+    
+    /**
+     * Clear the cache.
+     */
+    void clearCache();
     
 protected:
     

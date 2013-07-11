@@ -106,12 +106,13 @@ public:
     /**
      * Constructor.
      * @param anImageFactory alias on the image factory (see ImageFactoryFromImage or ImageFactoryFromHDF5).
-     * @param aReadPolicy alias on a read policy.
-     * @param aWritePolicy alias on a write policy.
+     * @param aReadPolicy a read policy.
+     * @param aWritePolicy a write policy.
      */
-    ImageCache(Alias<ImageFactory> anImageFactory, Alias<ReadPolicy> aReadPolicy, Alias<WritePolicy> aWritePolicy):
+    ImageCache(Alias<ImageFactory> anImageFactory, ReadPolicy aReadPolicy, WritePolicy aWritePolicy):
       myImageFactoryPtr(anImageFactory), myReadPolicy(aReadPolicy), myWritePolicy(aWritePolicy)
     {
+      myReadPolicy.clearCache();
     }
 
     /**
@@ -155,7 +156,7 @@ public:
     * 
     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
     */
-    bool read(const Point & aPoint, Value &aValue) const;
+    bool read(const Point & aPoint, Value &aValue);// const;
 
     /**
      * Set a value on an image from cache at a given position given
@@ -188,9 +189,9 @@ protected:
     /// Alias on the image factory
     ImageFactory * myImageFactoryPtr;
     
-    /// Alias on the specialized caches
-    ReadPolicy * myReadPolicy;
-    WritePolicy  * myWritePolicy;
+    /// Specialized caches
+    ReadPolicy myReadPolicy;
+    WritePolicy myWritePolicy;
     
 private:
 
