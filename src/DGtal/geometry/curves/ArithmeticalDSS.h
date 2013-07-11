@@ -42,10 +42,12 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Exceptions.h"
+#include "DGtal/base/ReverseIterator.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
-#include "DGtal/base/ReverseIterator.h"
 
 #include "DGtal/geometry/curves/ArithmeticalDSSKernel.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -79,10 +81,14 @@ namespace DGtal
   public:
 
     typedef TCoordinate Coordinate; 
-    typedef DGtal::PointVector<2, Coordinate> Point; 
-    typedef DGtal::PointVector<2, Coordinate> Vector; 
-    typedef std::pair<Vector,Vector> Steps; 
     typedef TInteger Integer; 
+
+    typedef DGtal::PointVector<2, Coordinate> Point; 
+    typedef SpaceND<2, Coordinate> Space; 
+    typedef Point Element; 
+    typedef Point Vector; 
+    typedef std::pair<Vector,Vector> Steps; 
+
 
     typedef DGtal::PointVector<2, double> PointD; 
 
@@ -258,6 +264,8 @@ namespace DGtal
      * @param aUl the last upper point
      * @param aLf the first lower point
      * @param aLl the last lower point
+     *
+     * NB: in O(1)
      */
     ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB,
 		    const Point& aF, const Point& aL,
@@ -265,12 +273,32 @@ namespace DGtal
 		    const Point& aLf, const Point& aLl);
 
     /**
-     * Constructor of a pattern from its two end points.
+     * Construction of a sequence of patterns 
+     * (or reversed patterns) from two end points.
      *
      * @param aF the first point
      * @param aL the last point
+     * @param isOnTheUpperLine boolean equal to 'true' if the
+     * two given end points are upper leaning points (pattern case, default), 
+     * 'false' if they are lower leaning points (reversed pattern case).  
+     *
+     * NB: logarithmic-time in the greatest component of the vector
+     * starting from @a aF and pointing to @a aL
      */
-    ArithmeticalDSS(const Point& aF, const Point& aL);
+    ArithmeticalDSS(const Point& aF, const Point& aL, 
+		    const bool& isOnTheUpperLine = true);
+
+    /**
+     * Construction from a range of iterator on points. 
+     *
+     * @param aItb begin iterator
+     * @param aIte end iterator
+     * @tparam Iterator a model of forward iterator
+     *
+     * NB: linear-time in the size of the range
+     */
+    template <typename Iterator>
+    ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte) throw( InputException );
 
     /**
      * Copy constructor.
@@ -318,8 +346,51 @@ namespace DGtal
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
+     *
+     * NB: in O( log( max( |@a myA |,| @a myB | ) ) )
      */
     bool isValid() const;
+
+    /**
+     * Checks the validity of the DSS when it contains only one point.
+     * @return 'true' if the DSS is valid, 'false' otherwise.
+     * @see isValid
+     */
+    bool checkOnePoint() const;
+
+    /**
+     * Checks the consistency between the parameters and 
+     * the leaning points: upper leaning points should
+     * have a remainder equal to @a myMu while lower 
+     * leaning points should have a remainder equal to 
+     * @a myMu + @a myOmega -1
+     * @return 'true' if this property is fulfilled, 'false' otherwise.
+     * @see isValid
+     */
+    bool checkLeaningPointsRemainder() const;
+
+    /**
+     * Checks whether the difference between two extremal
+     * upper (resp. lower) leaning points is equal to the 
+     * direction vector ( @a myA, @a myB ) scaled by 
+     * an integer. 
+     * @param fromFirstToLast vector starting from the 
+     * first upper (resp. lower) leaning point and 
+     * pointing to the last upper (resp. lower) leaning point. 
+     * @return 'true' if this property if fulfilled, 'false' otherwise.
+     * @see isValid
+     *
+     * NB: in logarithmic time
+     */
+    bool checkLeaningPointsAndSlope(const Vector& fromFirstToLast) const;
+
+    /**
+     * Checks the shift vector and the DSS steps, 
+     * which depend on the octant/quadrant of the DSS.
+     * @return 'true' if this property if fulfilled, 'false' otherwise.
+     * @see isValid
+     */
+    bool checkShiftAndSteps() const;
 
     /**
      * @return a parameter (y-component of the direction vector)
@@ -401,6 +472,15 @@ namespace DGtal
     Integer orthogonalPosition(const Point& aPoint) const; 
 
     /**
+     * Returns the position of @a aPoint
+     * (which does not necessarily belong to the DSS)
+     * computed along the direction given by @a myShift 
+     * @param aPoint the point whose position is returned 
+     * @return the position
+     */
+    Integer directionalPosition(const Point& aPoint) const; 
+
+    /**
      * @return 'true' if @a aPoint is in the DSL
      * of minimal parameters containing (*this), 
      * 'false' otherwise. 
@@ -422,6 +502,7 @@ namespace DGtal
      * @see isInDSS
      */
     bool operator()(const Point& aPoint) const; 
+
 
     // ----------------------- Iterator services -------------------------------
     /**
@@ -447,25 +528,6 @@ namespace DGtal
      * which points before the first point returned by back() 
      */
     ConstReverseIterator rend() const; 
-
-
-    // ----------------------- Setters -----------------------------------------
-    /**
-     * Set the DSS slope (ie. @a myA and @a myB parameters) 
-     * @param aA new a-parameter
-     * @param aB new b-parameter
-     * @see extend
-     */
-    void setSlope(const Coordinate& aA, const Coordinate& aB); 
-
-    /**
-     * Set the intercept and the thickness of the DSS
-     * (ie. @a myMu and @a myOmega parameters) 
-     * @param aMu new mu parameter
-     * @param aOmega new omega parameter
-     * @see extend
-     */
-    void setMuOmega(const Integer& aMu, const Integer& aOmega); 
 
     // ----------------------- Dynamic methods --------------------------------
 
@@ -550,40 +612,6 @@ namespace DGtal
     bool extendBackward( const Point& aNewPoint );
 
     /**
-     * Updates the leaning points of the DSS
-     * if the end point is a leaning point
-     * that has to be removed from the DSS. 
-     *
-     * @param aDirection direction vector
-     * @param aFirst new end of the DSS 
-     * @param aLast opposite end of the DSS 
-     * @param aBezout weakly exterior point used to 
-     * compute the new slope and to update the leaning points
-     * @param aFirstAtOppositeSide first leaning point located
-     * at the side that is not affected by the removal
-     * @param aLastAtOppositeSide last leaning point located
-     * at the side that is not affected by the removal but that has 
-     * to be updated
-     * @param aFirstAtRemovalSide first leaning point that 
-     * is removed and has to be updated. 
-     * @param aLastAtRemovalSide last leaning point located
-     * on the same side than @a aFirstAtRemovalSide 
-     *
-     * @return 'true' is the slope has to be updated, 
-     * 'false' otherwise
-     *
-     * @see retract
-     */
-    bool updateLeaningPoints( const Vector& aDirection, 
-			      const Point& aFirst,
-			      const Point& aLast, 
-			      const Point& aBezout, 
-			      const Point& aFirstAtOppositeSide, 
-			      Point& aLastAtOppositeSide, 
-			      Point& aFirstAtRemovalSide,
-			      const Point& aLastAtRemovalSide);
-
-    /**
      * Removes an end point to retract the DSS.  
      *
      * @param aFirst end point to remove, 
@@ -618,19 +646,9 @@ namespace DGtal
 		  Point& aFirstLower,
 		  Point& aLastLower);
 
-    /**
-     * Updates the parameters of the DSS
-     * (slope, intercept, thickness, steps, 
-     * shift vector) after the retraction. 
-     *
-     * @param aDirection direction vector
-     *
-     * @see retractForward retractBackward
-     */
-    void updateParameters( const Vector& aNewDirection );
 
     /**
-     * Removes the first point of the DSS (at the back)
+     * Removes the front point of the DSS 
      * if it remains strictly more than one point
      *
      * @return 'true' if the retraction has
@@ -641,7 +659,7 @@ namespace DGtal
     bool retractForward();
 
     /**
-     * Removes the last point of the DSS (at the front),
+     * Removes the back point of the DSS
      * if it remains strictly more than one point
      *
      * @return 'true' if the retraction has
@@ -682,6 +700,25 @@ namespace DGtal
   protected:
 
     /**
+     * Returns the bezout vector (u,v) of a given
+     * direction vector of slope @a aA / @a aB
+     * such that u and @a aB (resp. v and @a aA)
+     * have the same sign.  
+     * @return bezout vector 
+     * @param aA y-component of the direction vector
+     * @param aB x-component of the dirention vector
+     * @param aR a remainder equal to either 1 or -1
+     * 
+     * @see setPattern
+     *
+     * NB: this method uses the extended Euclid's algorithm
+     * and runs in logarithmic time. 
+     */
+    Vector bezoutVector(const Coordinate& aA, 
+			const Coordinate& aB, 
+			const Coordinate& aR) const; 
+
+    /**
      * Tests whether @a aStep is one of the two steps of the DSS, 
      * stored in @a mySteps. 
      *
@@ -689,9 +726,101 @@ namespace DGtal
      * @pre steps of @a mySteps should not be null
      * @return 'true' if @a aStep is one of the two steps of the DSS,
      * 'false' otherwise.
+     *
      * @see isExtendable
      */
     bool isOneOfTheTwoSteps( const Vector& aStep ) const; 
+
+
+    // ----------------------- Setters -----------------------------------------
+    /**
+     * Set the DSS slope (ie. @a myA and @a myB parameters) 
+     * @param aA new a-parameter
+     * @param aB new b-parameter
+     * @see extend
+     */
+    void setSlope(const Coordinate& aA, const Coordinate& aB); 
+
+    /**
+     * Set the intercept and the thickness of the DSS
+     * (ie. @a myMu and @a myOmega parameters) 
+     * @param aMu new mu parameter
+     * @param aOmega new omega parameter
+     * @see extend
+     */
+    void setMuOmega(const Integer& aMu, const Integer& aOmega); 
+
+    /**
+     * Initializes a pattern from its two end points, which are
+     * two leaning points, either located on the upper leaning line
+     * or on the lower leaning line. 
+     * Besides the leaning points, this method set the shift vector
+     * the steps and the slope, but neither the intercept nor the 
+     * thickness, which should be set after. 
+     *
+     * @param aFirstLeaningPoint first point of the DSS
+     * @param aFirstLeaningPoint last point of the DSS
+     * @param aFirstOppositeLeaningPoint returned first leaning point 
+     * located on the opposite leaning line
+     * @param aLastOppositeLeaningPoint returned last leaning point 
+     * located on the opposite leaning line
+     * @param sign integer equal to '1' if the two end points are
+     * located on the upper leaning line, '-1' if they are located
+     * on the lower leaning line. It gives the remainder of the 
+     * shorthest Bezout vector starting from @a aFirstLeaningPoint 
+     * and pointing to @a aLastLeaningPoint
+     *
+     * NB: logarithmic in time. 
+     */
+    void setPattern(const Point& aFirstLeaningPoint, 
+		    const Point& aLastLeaningPoint,
+		    Point& aFirstOppositeLeaningPoint, 
+		    Point& aLastOppositeLeaningPoint, 
+		    const short& sign);
+    /**
+     * Updates the parameters of the DSS
+     * (slope, intercept, thickness, steps, 
+     * shift vector) after the retraction. 
+     *
+     * @param aDirection direction vector
+     *
+     * @see retractForward retractBackward
+     */
+    void updateParameters( const Vector& aNewDirection );
+
+    /**
+     * Updates the leaning points of the DSS
+     * if the end point is a leaning point
+     * that has to be removed from the DSS. 
+     *
+     * @param aDirection direction vector
+     * @param aFirst new end of the DSS 
+     * @param aLast opposite end of the DSS 
+     * @param aBezout weakly exterior point used to 
+     * compute the new slope and to update the leaning points
+     * @param aFirstAtOppositeSide first leaning point located
+     * at the side that is not affected by the removal
+     * @param aLastAtOppositeSide last leaning point located
+     * at the side that is not affected by the removal but that has 
+     * to be updated
+     * @param aFirstAtRemovalSide first leaning point that 
+     * is removed and has to be updated. 
+     * @param aLastAtRemovalSide last leaning point located
+     * on the same side than @a aFirstAtRemovalSide 
+     *
+     * @return 'true' is the slope has to be updated, 
+     * 'false' otherwise
+     *
+     * @see retract
+     */
+    bool updateLeaningPoints( const Vector& aDirection, 
+			      const Point& aFirst,
+			      const Point& aLast, 
+			      const Point& aBezout, 
+			      const Point& aFirstAtOppositeSide, 
+			      Point& aLastAtOppositeSide, 
+			      Point& aFirstAtRemovalSide,
+			      const Point& aLastAtRemovalSide);
 
 
     // ------------------------- Protected Datas ------------------------------
@@ -834,13 +963,34 @@ namespace DGtal
 		 const typename Super::Point& aF, const typename Super::Point& aL,
 		 const typename Super::Point& aUf, const typename Super::Point& aUl,
 		 const typename Super::Point& aLf, const typename Super::Point& aLl);
+
     /**
-     * Constructor of a pattern from its two end points.
+     * Construction of a sequence of patterns 
+     * (or reversed patterns) from two end points.
      *
      * @param aF the first point
      * @param aL the last point
+     * @param isOnTheUpperLine boolean equal to 'true' if the
+     * two given end points are upper leaning points (pattern case, default), 
+     * 'false' if they are lower leaning points (reversed pattern case).  
+     *
+     * NB: logarithmic-time in the greatest component of the vector
+     * starting from @a aF and pointing to @a aL
      */
-    StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL);
+    StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL,
+		 const bool& isOnTheUpperLine = true);
+
+    /**
+     * Construction from a range of iterators on points. 
+     *
+     * @param aItb begin iterator
+     * @param aIte end iterator
+     * @tparam Iterator a model of forward iterator
+     *
+     * NB: linear-time in the size of the range
+     */
+    template <typename Iterator>
+    StandardDSS4(const Iterator& aItb, const Iterator& aIte) throw( InputException );
 
     /**
      * Copy constructor.
@@ -918,13 +1068,34 @@ namespace DGtal
 	      const typename Super::Point& aUf, const typename Super::Point& aUl,
 	      const typename Super::Point& aLf, const typename Super::Point& aLl);
 
+
     /**
-     * Constructor of a pattern from its two end points.
+     * Construction of a sequence of patterns 
+     * (or reversed patterns) from two end points.
      *
      * @param aF the first point
      * @param aL the last point
+     * @param isOnTheUpperLine boolean equal to 'true' if the
+     * two given end points are upper leaning points (pattern case, default), 
+     * 'false' if they are lower leaning points (reversed pattern case).  
+     *
+     * NB: logarithmic-time in the greatest component of the vector
+     * starting from @a aF and pointing to @a aL
      */
-    NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL);
+    NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL,
+	      const bool& isOnTheUpperLine = true);
+
+    /**
+     * Construction from a range of iterators on points. 
+     *
+     * @param aItb begin iterator
+     * @param aIte end iterator
+     * @tparam Iterator a model of forward iterator
+     *
+     * NB: linear-time in the size of the range
+     */
+    template <typename Iterator>
+    NaiveDSS8(const Iterator& aItb, const Iterator& aIte) throw( InputException );
 
     /**
      * Copy constructor.

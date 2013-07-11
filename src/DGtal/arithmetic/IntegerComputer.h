@@ -393,6 +393,8 @@ href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
      */
     Vector2I extendedEuclid( IntegerParamType a, IntegerParamType b, 
                              IntegerParamType c ) const;
+    Vector2I extendedEuclid2( IntegerParamType a, IntegerParamType b, 
+                             IntegerParamType c ) const;
 
     /**
        Computes the floor (fl) and the ceiling (ce) value of the real

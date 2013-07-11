@@ -55,8 +55,9 @@ namespace DGtal
    * Description of template struct 'ArithmeticalDSSKernel' <p>
    * \brief Aim: Small tool that provide static methods
    * returning the shift vector (ie. vector translating a point of
-   * remainder to a point of remainder r+omega) and the step vectors
-   * (ie. vectors used to iterate over the points of a DSS).
+   * remainder r to a point of remainder r+omega), the step vectors
+   * (ie. vectors used to iterate over the points of a DSS) and the 
+   * norm of any vector. 
    * These methods are specialized with respect to the chosen adjacency 
    * 8 (default) or 4. 
    *
@@ -74,7 +75,12 @@ namespace DGtal
     typedef DGtal::PointVector<2,TCoordinate> Vector; 
     typedef std::pair<Vector, Vector> Steps; 
 
-    // ----------------------- Interface --------------------------------------
+    // ----------------------- static members ---------------------------------
+  public:
+    static const unsigned short ForegroundAdjacency = 8;  //adjacency
+    static const unsigned short BackgroundAdjacency = 4; //complementary adjacency
+
+    // ----------------------- static methods ---------------------------------
   public:
     /**
      * Given parameters @a a and @a b, this method computes the shift vector
@@ -140,8 +146,12 @@ namespace DGtal
     typedef DGtal::PointVector<2,TCoordinate> Vector; 
     typedef std::pair<Vector, Vector> Steps; 
 
-    // ----------------------- Interface --------------------------------------
-      
+    // ----------------------- static members ---------------------------------
+  public:
+    static const unsigned short ForegroundAdjacency = 4;  //adjacency
+    static const unsigned short BackgroundAdjacency = 8; //complementary adjacency
+
+    // ----------------------- static methods ---------------------------------      
   public: 
     template <typename TInteger>
     static Vector shift(const TInteger& a, const TInteger& b);
