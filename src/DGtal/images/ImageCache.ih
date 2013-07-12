@@ -94,22 +94,22 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::up
 {
     t = clock();
     ImageContainer *myImagePtr = myReadPolicy.getPageToDetach();
-    t = clock() - t; //if (t) trace.info() << "getPageToDetach took " << t <<" clicks.\n";
+    t = clock() - t; //if (t) trace.info() << "getPageToDetach took " << t <<" ticks.\n";
     
     if (myImagePtr)
     {
       t = clock();
       myWritePolicy.flushPage(myImagePtr);
-      t = clock() - t; //if (t) trace.info() << "flushPage took " << t <<" clicks.\n";
+      t = clock() - t; //if (t) trace.info() << "flushPage took " << t <<" ticks.\n";
       
       t = clock();
       myImageFactoryPtr->detachImage(myImagePtr);
-      t = clock() - t; //if (t) trace.info() << "detachImage took " << t <<" clicks.\n";
+      t = clock() - t; //if (t) trace.info() << "detachImage took " << t <<" ticks.\n";
     }
     
     t = clock();
     myReadPolicy.updateCache(aDomain);
-    t = clock() - t; //if (t) trace.info() << "updateCache took " << t <<" clicks.\n";
+    t = clock() - t; //if (t) trace.info() << "updateCache took " << t <<" ticks.\n";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
