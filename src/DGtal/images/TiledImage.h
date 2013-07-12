@@ -251,22 +251,16 @@ public:
         Domain d;
 
         t = clock();
-        //trace.beginBlock("findSubDomain");
         d = findSubDomain(aPoint);
-        //trace.endBlock();
-        t = clock() - t; //if (t) trace.info() << "findSubDomain took " << t <<" clicks.\n";
+        t = clock() - t; //if (t) trace.info() << "findSubDomain took " << t <<" ticks.\n";
         
         t = clock();
-        //trace.beginBlock("update");
         myImageCache->update(d);
-        //trace.endBlock();
-        t = clock() - t; //if (t) trace.info() << "update took " << t <<" clicks.\n";
+        t = clock() - t; //if (t) trace.info() << "update took " << t <<" ticks.\n";
         
         t = clock();
-        //trace.beginBlock("read");
         myImageCache->read(aPoint, aValue);
-        //trace.endBlock();
-        t = clock() - t; //if (t) trace.info() << "read took " << t <<" clicks.\n";
+        t = clock() - t; //if (t) trace.info() << "read took " << t <<" ticks.\n";
         
         return aValue;
       }
