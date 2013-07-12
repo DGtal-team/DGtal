@@ -113,6 +113,8 @@ public:
       myImageFactoryPtr(anImageFactory), myReadPolicy(aReadPolicy), myWritePolicy(aWritePolicy)
     {
       myReadPolicy.clearCache();
+      
+      setbuf(stdout, NULL); // TEMP_MT
     }
 
     /**
@@ -194,6 +196,7 @@ protected:
     WritePolicy myWritePolicy;
     
 private:
+    unsigned t; // TEMP_MT
 
     // ------------------------- Internals ------------------------------------
 private:
