@@ -53,6 +53,8 @@
 
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/images/DefaultImageRange.h"
+
+#include <ctime> // TEMP_MT
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -127,6 +129,8 @@ public:
         
         cacheMissRead = 0;
         cacheMissWrite = 0;
+        
+        setbuf(stdout, NULL); // TEMP_MT
     }
 
     /**
@@ -200,7 +204,7 @@ public:
      * @param aPoint the point.
      * @return the domain containing aPoint.
      */
-    const Domain findSubDomain(const Point & aPoint) const
+    const Domain findSubDomain(const Point & aPoint)// const // TEMP_MT
     {
       ASSERT(myImageFactory->domain().isInside(aPoint));
       
@@ -237,16 +241,35 @@ public:
       ASSERT(myImageFactory->domain().isInside(aPoint));
 
       typename OutputImage::Value aValue;
-        
+
+
       if (myImageCache->read(aPoint, aValue))
         return aValue;
       else
-        {
-          cacheMissRead++;
-          myImageCache->update(findSubDomain(aPoint));
-          myImageCache->read(aPoint, aValue);
-          return aValue;
-        }
+      {
+        cacheMissRead++;
+        Domain d;
+
+        t = clock();
+        //trace.beginBlock("findSubDomain");
+        d = findSubDomain(aPoint);
+        //trace.endBlock();
+        t = clock() - t; //if (t) trace.info() << "findSubDomain took " << t <<" clicks.\n";
+        
+        t = clock();
+        //trace.beginBlock("update");
+        myImageCache->update(d);
+        //trace.endBlock();
+        t = clock() - t; //if (t) trace.info() << "update took " << t <<" clicks.\n";
+        
+        t = clock();
+        //trace.beginBlock("read");
+        myImageCache->read(aPoint, aValue);
+        //trace.endBlock();
+        t = clock() - t; //if (t) trace.info() << "read took " << t <<" clicks.\n";
+        
+        return aValue;
+      }
       
       // Unspecified behavior, returning the default constructed value.
       return aValue;
@@ -304,6 +327,7 @@ public: // TEMP_MT
 
     // ------------------------- Internals ------------------------------------
 private:
+    unsigned t; // TEMP_MT
 
 }; // end of class TiledImage
 

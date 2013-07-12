@@ -274,7 +274,7 @@ bool exampleTiledImage3D()
               cpt++;
           }
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.cacheMissRead << " - cacheMissWrite:" << tiledImage.cacheMissWrite << endl;
-      trace.endBlock();    
+      trace.endBlock(); 
       
     trace.endBlock();
     trace.info() << endl;
