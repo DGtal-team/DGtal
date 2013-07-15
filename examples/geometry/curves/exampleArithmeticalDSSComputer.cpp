@@ -56,7 +56,7 @@ int main()
     typedef PointVector<2,int> Point;
     typedef std::vector<Point> Range;
     typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSSComputer<ConstIterator,int,4> DSS4;  
+    typedef ArithmeticalDSSComputer<ConstIterator,int,4> DSSComputer;  
 
     // Input points
     Range contour;
@@ -71,86 +71,38 @@ int main()
     contour.push_back(Point(6,2));
     contour.push_back(Point(6,3));
     contour.push_back(Point(6,4));
-
     
     // Add points while it is possible
-    DSS4 theDSS4;    
-    theDSS4.init( contour.begin() );
-    while ( ( theDSS4.end() != contour.end() )
-          &&( theDSS4.extendForward() ) ) {}
+    DSSComputer theDSSComputer;    
+    theDSSComputer.init( contour.begin() );
+    while ( ( theDSSComputer.end() != contour.end() )
+          &&( theDSSComputer.extendForward() ) ) {}
 
     // Output parameters
-    cout << theDSS4 << endl;
+    cout << theDSSComputer << endl;
     //! [ArithmeticalDSSComputer4Usage]
-            
-    //! [ArithmeticalDSSComputer4DrawingUsage]
-    // Draw the grid
+
+    DSSComputer::Primitive theDSS = theDSSComputer.primitive();  
+  
+    // Display on board
+    string filename = "DSS.svg"; 
     Board2D board;
   
-    Domain domain( Point(0,0), Point(8,8) );
+    // Draw the grid
+    Domain domain( Point(0,0), Point(8,5) );
     board << SetMode(domain.className(), "Grid")
-    << domain;    
+  	  << domain;    
 
     // Draw the points of the DSS
     board << SetMode("PointVector", "Grid")
-    << SetMode(theDSS4.className(), "Points") 
-    << theDSS4;
+  	  << SetMode(theDSS.className(), "Points") 
+  	  << theDSS;
+
     // Draw the bounding box
-    board << SetMode(theDSS4.className(), "BoundingBox") 
-    << theDSS4;
+    board << SetMode(theDSS.className(), "BoundingBox") 
+  	  << theDSS;
   
-    board.saveSVG("DSS4.svg");
-    //! [ArithmeticalDSSComputer4DrawingUsage]
-  }
-
-  ////////////////////// DSS8 ///////////////////////////////
-  {
-    //! [ArithmeticalDSSComputer8Usage]
-    typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSSComputer<ConstIterator,int,8> DSS8;  
-
-    // Input points
-    Range boundary;
-    boundary.push_back(Point(0,0));
-    boundary.push_back(Point(1,1));
-    boundary.push_back(Point(2,1));
-    boundary.push_back(Point(3,2));
-    boundary.push_back(Point(4,2));
-    boundary.push_back(Point(5,2));
-    boundary.push_back(Point(6,3));
-    boundary.push_back(Point(6,4));
-
-    // Add points while it is possible
-    DSS8 theDSS8;    
-    theDSS8.init( boundary.begin() );
-    while ( ( theDSS8.end() != boundary.end() )
-          &&( theDSS8.extendForward() ) ) {}
-
-
-    // Output parameters
-    cout << theDSS8 << endl;
-    //! [ArithmeticalDSSComputer8Usage]
-    
-    //! [ArithmeticalDSSComputer8DrawingUsage]
-    //Draw the pixels
-    Board2D board;
-    Domain domain( Point(0,0), Point(8,8) );
-    board << SetMode(domain.className(), "Paving")
-    << domain;    
-  
-    //Draw the points of the DSS
-    board << SetMode("PointVector", "Both");
-    board << SetMode(theDSS8.className(), "Points") 
-    << theDSS8;
-
-    //Draw the bounding box of the DSS
-    board << SetMode(theDSS8.className(), "BoundingBox") 
-    << theDSS8;
-    
-    board.saveSVG("DSS8.svg");
-    //! [ArithmeticalDSSComputer8DrawingUsage]
+    board.saveSVG( filename.c_str() );
   }
 
   return 1;

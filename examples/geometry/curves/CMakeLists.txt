@@ -2,13 +2,13 @@ add_subdirectory(estimation)
 
 SET(DGTAL_EXAMPLES_SRC
   greedy-dss-decomposition
-  ArithmeticalDSSComputer
   convex-and-concave-parts
   exampleGridCurve2d
   exampleStabbingLineComputer
   exampleStabbingCircleComputer
   exampleFrechetShortcut 
   exampleArithmeticalDSS
+  exampleArithmeticalDSSComputer
 )
 
 
