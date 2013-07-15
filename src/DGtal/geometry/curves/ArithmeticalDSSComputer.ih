@@ -392,7 +392,7 @@ inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getBackPoint() const 
 {
-  return myDSS.myF();
+  return myDSS.back();
 }
 
 //-------------------------------------------------------------------------
@@ -401,7 +401,7 @@ inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getFrontPoint() const 
 {
-  return myDSS.myL();
+  return myDSS.front();
 }
 
 //-------------------------------------------------------------------------
@@ -410,7 +410,7 @@ inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getFirstPoint() const 
 {
-  return myDSS.myF();
+  return myDSS.back();
 }
 
 //-------------------------------------------------------------------------
@@ -419,7 +419,7 @@ inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLastPoint() const 
 {
-  return myDSS.myL();
+  return myDSS.front();
 }
 
 //-------------------------------------------------------------------------
