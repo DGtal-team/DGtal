@@ -56,7 +56,7 @@ int main( int argc, char** argv )
 
 
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.setWindowTitle("simpleViewer");
   viewer.show();
 
@@ -82,11 +82,11 @@ int main( int argc, char** argv )
     DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
     SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
     viewer << sliceImageZ; 
-    viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(pos, Display3D<Z3i::Space, Z3i::KSpace>::zDirection,  i*20, i*20, i*20 );
+    viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(pos, Viewer3D<>::zDirection,  i*20, i*20, i*20 );
     pos++;
   }
 
-  viewer << DGtal::Display3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << DGtal::Viewer3D<>::updateDisplay;
     
 
   application.exec();

@@ -121,7 +121,7 @@ int main( int argc, char** argv )
   //! [volBreadthFirstTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   viewer << SetMode3D( domain.className(), "BoundingBox" )
          << domain;
@@ -150,7 +150,7 @@ int main( int argc, char** argv )
   trace.info() << "nbSurfels10 = " << nbSurfels10
                << ", nbSurfels20 = " << nbSurfels20
                << ", nbSurfels3 = " << nbSurfels3 << std::endl;
-  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   trace.endBlock();
   return application.exec();
   //! [volBreadthFirstTraversal-DisplayingSurface]

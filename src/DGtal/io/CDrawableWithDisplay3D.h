@@ -113,6 +113,8 @@ An object x satisfying this concept may then be used as:
 
     // ------------------------- Private Datas --------------------------------
   private:
+
+    //TODO desc attributes
     T myT;
     DrawableWithDisplay3D *myD;
 

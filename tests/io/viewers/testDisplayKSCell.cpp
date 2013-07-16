@@ -135,7 +135,7 @@ int main( int argc, char** argv )
  SCell linelAC = K.sCell(Point(5, 4, 4), false);
  viewer << pointelA << pointelB << pointelC << linelAC;
  
- viewer <<  Viewer3D<Space, KSpace>::updateDisplay;
+ viewer <<  Viewer3D<>::updateDisplay;
  application.exec();
 
  

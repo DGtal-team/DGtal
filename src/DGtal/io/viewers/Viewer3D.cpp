@@ -109,7 +109,7 @@ DGtal::Viewer3D<S, KS>::init()
   myNbListe=0;
   myViewWire=true;
   myIsDoubleFaceRendering=true;
-  Viewer3D<S, KS>::createNewCubeList ( true );
+  Viewer3D<S, KS>::createNewCubeList (  );
   vector<typename Viewer3D<S, KS>::lineD3D> listeLine;
   Viewer3D<S, KS>::myLineSetList.push_back ( listeLine );
   vector<typename Viewer3D<S, KS>::ballD3D> listeBall;
@@ -126,7 +126,7 @@ DGtal::Viewer3D<S, KS>::init()
    Viewer3D<S, KS>::myBoundingPtUp[0]=-10.0;//numeric_limits<double>::min( );
    Viewer3D<S, KS>::myBoundingPtUp[1]=-10.0;//numeric_limits<double>::min( );
   Viewer3D<S, KS>:: myBoundingPtUp[2]=-10.0;//numeric_limits<double>::min( );
-   Viewer3D<S, KS>::createNewCubeList ( true );
+   Viewer3D<S, KS>::createNewCubeList ( );
   typename std::vector< typename Viewer3D<S, KS>::cubeD3D>  aKSCubeList;
 
   Viewer3D<S, KS>::myCurrentfShiftVisuSurfelPrisms=0.0;

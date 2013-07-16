@@ -102,7 +102,7 @@
     
 
     QApplication application(argc,argv);
-    Viewer3D<Space, KSpace> viewer;
+    Viewer3D<> viewer;
     viewer.show();
     viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
@@ -165,7 +165,7 @@ it != it_end; ++it, ++nbSurfels )
 
 
 
-  viewer << Viewer3D<Space, KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
 
   return application.exec();
 }

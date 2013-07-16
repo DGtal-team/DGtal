@@ -140,6 +140,7 @@ struct CameraZNearFar : public DrawWithBoard3DTo2DModifier
   CameraZNearFar( const double near, const double far ): ZNear(near), ZFar(far)
   {
   }
+
   double ZNear, ZFar;
 };
 #endif

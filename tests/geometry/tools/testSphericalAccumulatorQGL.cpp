@@ -63,7 +63,7 @@ bool testSphericalViewer(int argc, char **argv)
 				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX,
 				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX));
   
-  Viewer3D<Space, KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show();
   Vector a,b,c,d;
   viewer << accumulator;
@@ -76,7 +76,7 @@ bool testSphericalViewer(int argc, char **argv)
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
 
-  viewer << Viewer3D<Space, KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
@@ -98,7 +98,7 @@ bool testSphericalViewerInteger(int argc, char **argv)
                                       (1+(rand()-RAND_MAX/2)),
                                       (1+(rand()-RAND_MAX/2))));
   
-  Viewer3D<Space, KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show();
   Vector a,b,c,d;
   Display3DFactory::draw(viewer,accumulator, Z3i::RealVector(1.0,1.0,1.0), 3.0);
@@ -111,7 +111,7 @@ bool testSphericalViewerInteger(int argc, char **argv)
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
 
-  viewer << Viewer3D<Space, KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

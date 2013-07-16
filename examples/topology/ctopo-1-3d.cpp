@@ -110,7 +110,7 @@ int main( int argc, char** argv )
   Cell vox2 = K.uCell( Point( 1, 1, 3 ) ); // voxel (2*1+1,2*1+1,2*3+1) 
   viewer << vox1 << vox2;
   
-  viewer<< Viewer3D<Space, KSpace>::updateDisplay;
+  viewer<< Viewer3D<>::updateDisplay;
   return application.exec();
 
 }

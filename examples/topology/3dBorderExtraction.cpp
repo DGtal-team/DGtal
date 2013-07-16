@@ -83,12 +83,12 @@ int main( int argc, char** argv )
  ObjectType bdiamond_clone = diamond_clone.border(); // two components
  
  QApplication application(argc,argv);
- Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+ Viewer3D<> viewer;
  viewer.show(); 
  viewer<<  CustomColors3D(Color(250, 250,250),Color(250, 250,250));
  viewer << bdiamond_clone;
  viewer << bdiamond ;
- viewer << ClippingPlane(1,1,0,5, false) << Display3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+ viewer << ClippingPlane(1,1,0,5, false) << Viewer3D<>::updateDisplay;
  return application.exec();
  
 }

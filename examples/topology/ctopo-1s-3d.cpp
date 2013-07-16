@@ -115,7 +115,7 @@ int main( int argc, char** argv )
    << CameraDirection(0.6, -0.43, 0.65)
    << CameraUpVector(0.32, 0.900, 0.29);
 
-  viewer<< Viewer3D<Space, KSpace>::updateDisplay;
+  viewer<< Viewer3D<>::updateDisplay;
   return application.exec();
  
   return 0;

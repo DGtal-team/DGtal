@@ -98,7 +98,7 @@ int main( int argc, char** argv )
 
   
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.setWindowTitle("simpleViewer");
   viewer.show();
 
@@ -168,7 +168,7 @@ int main( int argc, char** argv )
       viewer << *it ;
     }     
   }
-  viewer<< Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer<< Viewer3D<>::updateDisplay;
  
   return application.exec();
 }

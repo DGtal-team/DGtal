@@ -55,7 +55,7 @@ using namespace DGtal;
 using namespace Z3i;
 
 QApplication application(argc,argv);
-Viewer3D viewer;
+Viewer3D<> viewer;
 viewer.show();
 @endcode
 
@@ -68,7 +68,7 @@ Then we can display some 3D primitives:
 
  viewer << domain;  
  viewer << p1 << p2 << p3; 
- viewer << Viewer3D::updateDisplay;
+ viewer << Viewer3D<>::updateDisplay;
 
 
 * @endcode
@@ -91,7 +91,7 @@ just need to adapt the camera settings (see example: <a href="io_2boards_2dgtalB
 
 
 @code
-Board3DTo2D viewer;
+Board3DTo2D<> viewer;
 viewer << domain;  
 viewer << p1 << p2 << p3;
   
@@ -121,7 +121,7 @@ This example should provides a comparable visualization.
 * @code
 
  QApplication application(argc,argv);
- Viewer3D viewer;
+ Viewer3D<> viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
@@ -135,7 +135,7 @@ This example should provides a comparable visualization.
  
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set << Viewer3D::updateDisplay
+ viewer << shape_set << Viewer3D<>::updateDisplay
  
  @endcode
 *

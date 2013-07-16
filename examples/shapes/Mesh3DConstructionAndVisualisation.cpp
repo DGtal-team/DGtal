@@ -47,7 +47,7 @@ int main( int argc, char** argv )
 
   //! [MeshUseInitDisplay]
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show();     
   //! [MeshUseInitDisplay]
 
@@ -87,7 +87,7 @@ int main( int argc, char** argv )
   //! [MeshUseDisplay]
   viewer.setLineColor(Color(150,0,0,254));
   viewer << aMesh;
-  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   //! [MeshUseDisplay]
   return true;

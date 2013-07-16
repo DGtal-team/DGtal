@@ -50,13 +50,13 @@
 #include "DGtal/io/Display3D.h"
 #include "DGtal/io/Color.h"
 
-//#include "DGtal/io/DrawWithBoard3DTo2DModifier.h"
+#include "DGtal/kernel/CSpace.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
 
 /////////////////////////////////////////////////////////////////////////////
 // class Board3DTo2D
@@ -64,37 +64,37 @@ namespace DGtal
    * Description of class 'Board3DTo2D' <p>
    * @brief Class for PDF, PNG, PS, EPS, SVG export drawings with Cairo with 3D->2D projection.
    */
-template < class S, typename KS>
-class Board3DTo2D : public Display3D<S, KS>
+template < typename  Space = Z3i::Space, typename KSpace = Z3i::KSpace>
+class Board3DTo2D : public Display3D<Space, KSpace>
 {
+
+  BOOST_CONCEPT_ASSERT((CSpace<Space>));
 public:
     /**
      * Cairo type for save files.
      */
     enum CairoType { CairoPDF, CairoPNG, CairoPS, CairoEPS, CairoSVG };
 
-    /*!
-     * \brief Constructor.
+    /**
+     * Constructor.
      */
     Board3DTo2D();
 
     /**
-        *Constructor with a khalimsky space
-        * @param KSEmb the Khalimsky space
-        */
-    Board3DTo2D( KS KSEmb):Display3D<S,KS>(KSEmb)
-    {};
+    * Constructor with a khalimsky space
+    * @param KSEmb the Khalimsky space
+    */
+    Board3DTo2D( KSpace KSEmb):Display3D<Space,KSpace>(KSEmb) {}
 
     /**
         *Constructor with a space and a khalimsky space
         *@param SEmb a space
         *@param KSEmb a khalimsky space
         **/
-    Board3DTo2D( S SEmb, KS KSEmb):Display3D<S,KS>(SEmb, KSEmb)
-    {};
+    Board3DTo2D( Space SEmb, KSpace KSEmb):Display3D<Space,KSpace>(SEmb, KSEmb){}
 
 
-    ~Board3DTo2D(){};
+    ~Board3DTo2D(){}
 
 
     /**
@@ -162,9 +162,8 @@ public:
     //    */
     //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
 
-    DGtal::Color myDefaultColor;  //!< default color
 
-
+    DGtal::Color myDefaultColor; //!< default color
 
 
     /**
@@ -174,7 +173,6 @@ public:
      *
      **/
     Board3DTo2D & operator<<(const DGtal::Color & aColor);
-
 
 
     /**
@@ -188,8 +186,6 @@ public:
     template <typename TDrawableWithDisplay3D>
     Board3DTo2D & operator<<( const  TDrawableWithDisplay3D & object );
 
-public:
-
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -201,8 +197,6 @@ public:
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-public:
 
 
     // ------------------------- Private Datas --------------------------------
@@ -260,6 +254,8 @@ private:
      */
     void project(double x3d, double y3d, double z3d, double &x2d, double &y2d);
 
+
+
     int Viewport[4];    //!< 2D viewport
     double matrix[16];     //!< projection matrix
 
@@ -281,18 +277,15 @@ private:
 }; // end of class Board3DTo2D
 
 
-
-
-
+template < typename Space, typename KSpace>
 /**
    * Overloads 'operator<<' for displaying objects of class 'Board3DTo2D'.
    * @param out the output stream where the object is written.
    * @param object the object of class 'Board3DTo2D' to write.
    * @return the output stream after the writing.
    */
-template < typename S, typename KS>
 std::ostream&
-operator<< ( std::ostream & out, const Board3DTo2D<S,KS> & object );
+operator<< ( std::ostream & out, const Board3DTo2D<Space,KSpace> & object );
 
 } // namespace DGtal
 
@@ -300,7 +293,6 @@ operator<< ( std::ostream & out, const Board3DTo2D<S,KS> & object );
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #include "DGtal/io/boards/Board3DTo2D.ih"
-
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
