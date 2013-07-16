@@ -224,7 +224,7 @@ struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
      */
   AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
                                ConstAlias<TFunctor> aFunctor,
-                               typename Viewer3D<Space,KSpace>::TextureMode aMode= Viewer3D<Space, KSpace>::GrayScaleMode ): my2DImage(anImage),
+                               typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(anImage),
     myFunctor(aFunctor),
     myMode(aMode)
   {
@@ -270,7 +270,7 @@ struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
      */
   AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
                                ConstAlias<TFunctor> aFunctor,
-                               typename Viewer3D<Space,KSpace>::TextureMode aMode= Viewer3D<Space,KSpace>::GrayScaleMode): my3DImage(anImage),
+                               typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(anImage),
     myFunctor(aFunctor),
     myMode(aMode)
   {
