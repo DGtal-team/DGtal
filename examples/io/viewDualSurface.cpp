@@ -401,7 +401,7 @@ int main( int argc, char** argv )
   typedef KSpace::CellSet CellSet;
   QApplication application(argc,argv);
   //! [ExampleDisplay3DToOFF]
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show();
   DGtal::Color fillColor( 200, 200, 220, 255 );
   DGtal::Color surfelColor( 255, 0, 0, 150 );
@@ -419,7 +419,7 @@ int main( int argc, char** argv )
   // naiveConvexHull( indices, pts, false ); // right_handed
 
   // viewPolygons( viewer, fillColor, indices, pts );
-  // viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  // viewer << Viewer3D<>::updateDisplay;
 
   unsigned int cfg = argc > 1 ? atoi( argv[1] ) : 0;
   unsigned int cfg2 = argc > 2 ? atoi( argv[2] ) : 255;
@@ -459,7 +459,7 @@ int main( int argc, char** argv )
             viewPolygons( viewer, fillColor, indices, pts );
           }
       }
-  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   //! [ExampleDisplay3DToOFF]
   return application.exec();
 }

@@ -77,7 +77,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
     QApplication application ( argc,argv );
-    DGtal::Viewer3D<Space, KSpace> viewer;
+    DGtal::Viewer3D<> viewer;
 
     std::string filename = testPath + "samples/cat10.vol";
 
@@ -138,7 +138,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
                          center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2],
                          DGtal::Color ( 200,20,20 ), 1.0 );
     }
-    viewer<< Viewer3D<Space, KSpace>::updateDisplay;
+    viewer<< Viewer3D<>::updateDisplay;
 
     //Convolution kernel
     GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
@@ -165,7 +165,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
                          center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2],
                          DGtal::Color ( 20,200,20 ), 1.0 );
     }
-    viewer<< Viewer3D<Space, KSpace>::updateDisplay;
+    viewer<< Viewer3D<>::updateDisplay;
 
 
     nbok += true ? 1 : 0;

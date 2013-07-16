@@ -141,7 +141,7 @@ int main( int argc, char** argv )
   //! [volDistanceTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
   MyDistanceVisitor visitor2( digSurf, vfunctor, bel );
@@ -157,7 +157,7 @@ int main( int argc, char** argv )
              << ks.unsigns( n.first );
       visitor2.expand();
     }
-  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
   trace.endBlock();
   return application.exec();

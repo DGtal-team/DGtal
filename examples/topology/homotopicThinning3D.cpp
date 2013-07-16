@@ -54,7 +54,7 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Example simple example of 3DViewer" );
   
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.setWindowTitle("simpleExample3DViewer");
   viewer.show();  
   
@@ -114,7 +114,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D(Color(250, 0,0, 25), Color(250, 0,0, 5));
   viewer << shape_set;
 
-  viewer<< Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer<< Viewer3D<>::updateDisplay;
    
   
   trace.endBlock();

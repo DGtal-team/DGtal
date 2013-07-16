@@ -113,6 +113,8 @@ An object x satisfying this concept may then be used as:
 
     // ------------------------- Private Datas --------------------------------
   private:
+
+    //TODO desc attributes
     T myT;
     DrawableWithViewer3D *myD;
 
@@ -120,7 +122,6 @@ An object x satisfying this concept may then be used as:
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of concept CDrawableWithViewer3D
   

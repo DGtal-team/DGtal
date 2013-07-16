@@ -53,14 +53,14 @@ int main( int argc, char** argv )
 {
   std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
   viewer << SetMode3D(image.domain().className(), "BoundingBox");
-  viewer << set3d << image.domain()  << Display3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << set3d << image.domain()  << Viewer3D<>::updateDisplay;
   return application.exec();
 }
 ///////////////////////////////////////////////////////////////////////////////

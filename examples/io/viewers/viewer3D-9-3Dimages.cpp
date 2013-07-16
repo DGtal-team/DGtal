@@ -69,7 +69,7 @@ int main( int argc, char** argv )
   typedef ImageContainerBySTLVector<Z3i::Domain,  unsigned char > Image3D;
   typedef ImageContainerBySTLVector<Z2i::Domain,  unsigned char > Image2D;
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show();
   std::string inputFilename = examplesPath + "samples/lobster.vol"; 
   Image3D imageVol = GenericReader<Image3D>::import(inputFilename);
@@ -102,8 +102,8 @@ int main( int argc, char** argv )
   viewer << imageCrop;  
   viewer << SetMode3D(imageCrop.className(), "BoundingBox");
     //! [ExampleViewer3D3DImagesDisplayImagesColor]
-  viewer << AddTextureImage3DWithFunctor<Image3D, hueFct, Z3i::Space, Z3i::KSpace> (imageCrop2, hueFct(), Display3D<Z3i::Space, Z3i::KSpace>::RGBMode);
-  viewer << Display3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << AddTextureImage3DWithFunctor<Image3D, hueFct, Z3i::Space, Z3i::KSpace> (imageCrop2, hueFct(), Viewer3D<>::RGBMode);
+  viewer << Viewer3D<>::updateDisplay;
   //! [ExampleViewer3D3DImagesDisplayImagesColor]
 
   return application.exec();

@@ -51,7 +51,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- Viewer3D<Space, KSpace> viewer;
+ Viewer3D<> viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
@@ -69,7 +69,7 @@ int main( int argc, char** argv )
  viewer << ClippingPlane(1,0,0,-4.9);
  viewer << ClippingPlane(0,1,0.3,-10); 
  
- viewer << Viewer3D<Space, KSpace>::updateDisplay;
+ viewer << Viewer3D<>::updateDisplay;
  return application.exec();
 }
 //                                                                           //

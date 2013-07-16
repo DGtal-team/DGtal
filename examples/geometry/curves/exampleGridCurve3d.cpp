@@ -83,7 +83,7 @@ int main( int argc, char** argv )
   bool flag = false; 
   #ifdef WITH_VISU3D_QGLVIEWER
   QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, Z3i::KSpace> viewer;
+  Viewer3D<> viewer;
   viewer.show();
 
   if (type == "gridcurve")
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
     {
       trace.info() << "Display type not known. Use option -h" << std::endl; 
     }
-  viewer << Viewer3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   flag = application.exec();
    #endif
   

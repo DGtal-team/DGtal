@@ -70,7 +70,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- Viewer3D<Space, KSpace> viewer;
+ Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  

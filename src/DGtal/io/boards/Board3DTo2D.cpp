@@ -561,7 +561,7 @@ template < typename S, typename KS>
 void
 DGtal::Board3DTo2D<S, KS>::init()
 {
-    Board3DTo2D<S, KS>::createNewCubeList(true);
+    Board3DTo2D<S, KS>::createNewCubeList();
 
     vector<typename Board3DTo2D<S, KS>::lineD3D> listeLine;
     Board3DTo2D<S, KS>::myLineSetList.push_back(listeLine);
@@ -572,7 +572,7 @@ DGtal::Board3DTo2D<S, KS>::init()
     Board3DTo2D<S, KS>::myCurrentFillColor = DGtal::Color (220, 220, 220);
     Board3DTo2D<S, KS>::myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
 
-    /*createNewCubeList(true);
+    /*createNewCubeList();
 std::vector<cubeD3D> aKSCubeList;
 *
 

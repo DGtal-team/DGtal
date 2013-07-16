@@ -219,10 +219,10 @@ Afterwards the set is thresholded in ]0,255[:
 @code
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   viewer << SetMode3D(image.domain().className(), "BoundingBox");
-  viewer << set3d << image.domain()  << Viewer3D::updateDisplay;
+  viewer << set3d << image.domain()  << Viewer3D<>::updateDisplay;
 @endcode
 
 
@@ -254,7 +254,7 @@ We can change the way to select the coordinate field:
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
- viewer   << Viewer3D::updateDisplay;
+ viewer   << Viewer3D<>::updateDisplay;
 @endcode
 
 You may obtain the following visualisation:
