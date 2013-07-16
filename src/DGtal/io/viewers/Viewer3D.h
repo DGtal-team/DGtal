@@ -342,7 +342,7 @@ public:
     TextureImage( const TImageType & image, const TFunctor &aFunctor,
                   Viewer3D::ImageDirection normalDir=zDirection,
                   double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
-                  TextureMode aMode= Viewer3D::GrayScaleMode)
+                  TextureMode aMode= 1)
     {
       BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
       BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
@@ -792,7 +792,7 @@ private:
     // Destructor
     ~GLTextureImage()
     {
-      if(myMode== Viewer3D<Space, KSpace>::GrayScaleMode)
+      if(myMode== 1)
       {
         if(myTextureImageBufferGS!=0)
           delete [] myTextureImageBufferGS;
@@ -824,7 +824,7 @@ private:
       vectNormal[1]=aGLImg.vectNormal[1];
       vectNormal[2]=aGLImg.vectNormal[2];
 
-      if(myMode==Viewer3D<Space, KSpace>::GrayScaleMode)
+      if(myMode== 1)
       {
         myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
         for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++)
@@ -860,7 +860,7 @@ private:
       myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
       myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight);
 
-      if(myMode==Viewer3D<Space, KSpace>::GrayScaleMode)
+      if(myMode== 1)
       {
         myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
         unsigned int pos=0;
