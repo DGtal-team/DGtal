@@ -255,6 +255,8 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
   aLine.B = anImageDomain.B;
   aLine.T = anImageDomain.T;
 
+  aLine.width=0.1;
+
   if( anImageDomain.myMode=="BoundingBox")
   {
     aLine.x1=anImageDomain.x1; aLine.y1=anImageDomain.y1; aLine.z1=anImageDomain.z1;
@@ -271,7 +273,8 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
     aLineSet.push_back(aLine);
   }else if(anImageDomain.myMode=="InterGrid")
   {
-    aLine.width=0.3;
+    /*
+     //mode deleted
     if(anImageDomain.myDirection==zDirection)
     {
       //lines align to the x direction
@@ -323,10 +326,10 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
         aLineSet.push_back(aLine);
       }
     }
+    */
 
   }else if(anImageDomain.myMode=="Grid")
   {
-    aLine.width=0.3;
     if(anImageDomain.myDirection==zDirection)
     {
       //lines align to the x direction

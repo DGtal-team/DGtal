@@ -31,7 +31,7 @@
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithViewer3DModifier.h"
+#include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"

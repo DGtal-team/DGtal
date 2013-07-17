@@ -275,8 +275,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         mu[2] - ( (m1+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl = display.embed( pl );
 
-    display.addLine(rpf[0], rpf[1], rpf[2], rpl[0], rpl[1], rpl[2],
-        display.getLineColor() );
+    display.addLine(rpf[0], rpf[1], rpf[2], rpl[0], rpl[1], rpl[2], display.getLineColor() );
 
     PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n,
         (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n,
@@ -287,8 +286,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl2 = display.embed( pl2 );
 
-    display.addLine(rpf2[0], rpf2[1], rpf2[2], rpl2[0], rpl2[1], rpl2[2],
-        display.getLineColor() );
+    display.addLine(rpf2[0], rpf2[1], rpf2[2], rpl2[0], rpl2[1], rpl2[2], display.getLineColor() );
 
     PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n,
         (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n,
@@ -299,8 +297,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl3 = display.embed( pl3 );
 
-    display.addLine(rpf3[0], rpf3[1], rpf3[2], rpl3[0], rpl3[1], rpl3[2],
-        display.getLineColor() );
+    display.addLine(rpf3[0], rpf3[1], rpf3[2], rpl3[0], rpl3[1], rpl3[2], display.getLineColor() );
 
     PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n,
         (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n,
@@ -311,8 +308,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl4 = display.embed( pl4 );
 
-    display.addLine(rpf4[0], rpf4[1], rpf4[2], rpl4[0], rpl4[1], rpl4[2],
-        display.getLineColor() );
+    display.addLine(rpf4[0], rpf4[1], rpf4[2], rpl4[0], rpl4[1], rpl4[2], display.getLineColor() );
 
     //two end facets
     display.addQuad(rpf[0],rpf[1],rpf[2],
@@ -680,14 +676,12 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
 
-
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
       }
       for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
            z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
       {
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], y, z) );
-
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], y, z) );
 
         display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
@@ -810,7 +804,7 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::
   ASSERT((TSpace::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
                                     mode=="BoundingBox")||
          ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
-  ASSERT((TSpace::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="InterGrid"|| mode=="Grid") ||
+  ASSERT((TSpace::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="Grid") ||
          ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
 
   if(TSpace::dimension == 2)
@@ -884,7 +878,6 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
       display.setFillColor(DGtal::Color(200, 200, 20, 255));
     }
 
-    //display.addBall(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5, display.getFillColor(), 0.05);
     display.addBall(rp[0], rp[1], rp[2], display.getFillColor(), 0.05);
     break;
   case 1:
@@ -985,7 +978,6 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
     }
     break;
   case 2:
-    //display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
     display.addSurfelPrism(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 ),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
     break;
   case 3:
