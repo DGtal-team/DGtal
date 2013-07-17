@@ -80,7 +80,7 @@ int main( int argc, char** argv )
 
  viewer << p13D << p23D << p13Dt << p23Dt << p13Dtt << p23Dtt;
  viewer << dom << dom2 << dom3;
- viewer << SetMode3D( dom4.className(), "InterGrid" );
+ viewer << SetMode3D( dom4.className(), "Grid" );
  viewer << dom4 << dom5 << dom6;
  viewer << SetMode3D( dom4.className(), "Grid" );
  viewer << dom7 << dom8 << dom9;

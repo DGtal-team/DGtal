@@ -183,14 +183,19 @@ public:
     ZNear = _near; ZFar = _far;
   }
 
-  enum ImageDirection {xDirection, yDirection, zDirection }; // the 3 possible axes for the image direction
-  enum TextureMode {RGBMode, GrayScaleMode }; //! the modes of representation of an image
+  /// the 3 possible axes for the image direction
+  enum ImageDirection {xDirection, yDirection, zDirection };
+  /// the modes of representation of an image
+  enum TextureMode {RGBMode, GrayScaleMode };
 
-  DGtal::Color myDefaultBackgroundColor;//! the default background color of the viewer
-  DGtal::Color myDefaultColor; //! the default color of the viewer
-  bool myIsBackgroundDefault; //! true if the background is default
+  /// the default background color of the viewer
+  DGtal::Color myDefaultBackgroundColor;
+  /// the default color of the viewer
+  DGtal::Color myDefaultColor;
+   /// true if the background is default
+  bool myIsBackgroundDefault;
 
-  bool myViewWire;//! objects have shadows which follow the camera if false
+  bool myViewWire;/// objects have shadows which follow the camera if false
 
   /**
      *  Used to display the 2D domain of an image.
@@ -200,16 +205,23 @@ public:
   struct Image2DDomainD3D
   {
 
-    double x1, y1, z1; //! The image domain coordinates
-    double x2, y2, z2; //! The image domain coordinates
-    double x3, y3, z3; //! The image domain coordinates
-    double x4, y4, z4; //! The image domain coordinates
-    unsigned char R,G,B,T; //! The image domain color
-    unsigned int myDomainWidth; //! the width of the image domain
-    unsigned int myDomainHeight; //! the height of the image domain
-    ImageDirection myDirection; //! the direction of the domain (x, y or z axe)
-    std::string myMode;//! the mode of representation of the image domain
-    unsigned int myLineSetIndex; //! the index of the line of the domain in the lineSetList of the viewer
+    /// The image domain coordinates
+    double x1, y1, z1;
+    double x2, y2, z2;
+    double x3, y3, z3;
+    double x4, y4, z4;
+    /// The image domain color
+    unsigned char R,G,B,T;
+     /// the width of the image domain
+    unsigned int myDomainWidth;
+    /// the height of the image domain
+    unsigned int myDomainHeight;
+    /// the direction of the domain (x, y or z axe)
+    ImageDirection myDirection;
+    /// the mode of representation of the image domain
+    std::string myMode;
+     /// the index of the line of the domain in the lineSetList of the viewer
+    unsigned int myLineSetIndex;
 
     /**
         * Constructor
@@ -263,21 +275,21 @@ public:
   {
 
 
-    double x1, y1, z1; //! The quad coordinates should be given in counter clockwise order
-    double x2, y2, z2; //! The quad coordinates should be given in counter clockwise order
-    double x3, y3, z3; //! The quad coordinates should be given in counter clockwise order
-    double x4, y4, z4; //! The quad coordinates should be given in counter clockwise order
+    double x1, y1, z1; /// The quad coordinates should be given in counter clockwise order
+    double x2, y2, z2; /// The quad coordinates should be given in counter clockwise order
+    double x3, y3, z3; /// The quad coordinates should be given in counter clockwise order
+    double x4, y4, z4; /// The quad coordinates should be given in counter clockwise order
 
-    ImageDirection myDirection; //! direction of the image (x, y or z axe)
+    ImageDirection myDirection; /// direction of the image (x, y or z axe)
 
-    unsigned int myImageWidth;//! the width of the image
-    unsigned int myImageHeight;//! the height of the image
+    unsigned int myImageWidth;/// the width of the image
+    unsigned int myImageHeight;/// the height of the image
     //TODO  complete desc attribute
-    unsigned int * myTabImage; //! for each pixel of the image, color or height ?
+    unsigned int * myTabImage; /// for each pixel of the image, color or height ?
 
-    bool myDrawDomain; //! true if the draw have a domain
-    unsigned int myIndexDomain; //! index of the image domain if exist
-    TextureMode myMode; //! the mode of representation of the image
+    bool myDrawDomain; /// true if the draw have a domain
+    unsigned int myIndexDomain; /// index of the image domain if exist
+    TextureMode myMode; /// the mode of representation of the image
 
     /**
     * @brief Destructor
@@ -765,6 +777,7 @@ private:
      **/
   struct GLTextureImage
   {
+    /// coordinates
     double x1, y1, z1;
     double x2, y2, z2;
     double x3, y3, z3;
@@ -907,20 +920,25 @@ private:
   // ------------------------- Private Datas --------------------------------
 private:
 
+   /// lists of the list to draw
+  GLuint myListToAff;
+   /// number of lists in myListToAff
+  unsigned int myNbListe;
+  /// information linked to the navigation in the viewer
+  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
+   /// a point selected with postSelection @see postSelection
+  QPoint myPosSelector;
+  /// list of the images textures in this viewer
+  std::vector<GLTextureImage> myVectTextureImage;
 
-  GLuint myListToAff;   //! lists of the list to draw
-  unsigned int myNbListe;   //! number of lists in myListToAff
-  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint; //! information linked to the navigation in the viewer
-  QPoint myPosSelector;   //! a point selected with postSelection @see postSelection
-  std::vector<GLTextureImage> myVectTextureImage; //! list of the images textures in this viewer
-  bool myIsDoubleFaceRendering; //!< true if is double face rendering
+  bool myIsDoubleFaceRendering; ///< true if is double face rendering
 
-  double camera_position[3];  //!< camera position
-  double camera_direction[3];  //!< camera direction
-  double camera_upVector[3];  //!< camera up-vector
+  double camera_position[3];  ///< camera position
+  double camera_direction[3];  ///< camera direction
+  double camera_upVector[3];  ///< camera up-vector
 
-  double ZNear;      //!< znear distance
-  double ZFar;      //!< zfar distance
+  double ZNear;      ///< znear distance
+  double ZFar;      ///< zfar distance
 
   //the default width of the mesh line
   float myMeshDefaultLineWidth;

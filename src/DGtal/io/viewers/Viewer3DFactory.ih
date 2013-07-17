@@ -233,7 +233,7 @@ inline
 void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const  ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  & anImage )
 {
-  drawImage2D(viewer, anImage, CastFunctor<unsigned int> ());
+  drawImage2D(viewer, anImage, CastFunctor<unsigned int> (), Viewer3D<Space,KSpace>::GrayScaleMode);
 }
 // ImageContainerBySTLVector  (2D)
 
@@ -244,7 +244,7 @@ inline
 void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const  ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  & anImage )
 {
- drawImage2D(viewer, anImage, CastFunctor<unsigned int> ());
+ drawImage2D(viewer, anImage, CastFunctor<unsigned int> (), anImage.myMode);
 }
 // ImageContainerBySTLMap  (2D)
 
@@ -255,7 +255,7 @@ inline
 void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  & anImage3D )
 {
-  drawImage3D(viewer, anImage3D, CastFunctor<unsigned int> ());
+  drawImage3D(viewer, anImage3D, CastFunctor<unsigned int> (), Viewer3D<Space,KSpace>::GrayScaleMode);
 }
 // ImageContainerBySTLVector (3D)
 
@@ -265,7 +265,7 @@ inline
 void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  & anImage3D )
 {
-  drawImage3D(viewer, anImage3D, CastFunctor<unsigned int> ());
+  drawImage3D(viewer, anImage3D, CastFunctor<unsigned int> (), anImage3D.myMode);
 }
 // ImageContainerBySTLMap  (3D)
 
@@ -276,7 +276,7 @@ inline
 void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const  ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue>  & anImage )
 {
-  drawImage2D(viewer, anImage, CastFunctor<unsigned int> ());
+  drawImage2D(viewer, anImage, CastFunctor<unsigned int> (), Viewer3D<Space,KSpace>::GrayScaleMode );
 }
 // ConstImageAdapter  (2D)
 
@@ -286,7 +286,7 @@ inline
 void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const  ImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue, TFunctorValueVm1>  & anImage )
 {
-  drawImage2D(viewer, anImage, CastFunctor<unsigned int> ());
+  drawImage2D(viewer, anImage, CastFunctor<unsigned int> (), anImage.myMode);
 }
 // ImageAdapter  (2D)
 
@@ -298,7 +298,7 @@ void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const  ConstImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
                               TNewValue, TFunctorValue>  & anImage )
 {
-  drawImage3D(viewer, anImage, CastFunctor<unsigned int> ());
+  drawImage3D(viewer, anImage, CastFunctor<unsigned int> (), Viewer3D<Space,KSpace>::GrayScaleMode);
 }
 // ConstImageAdapter  (3D)
 
@@ -309,7 +309,7 @@ void
 DGtal::Viewer3DFactory::draw( Viewer3D<Space, KSpace> & viewer, const  ImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
                               TNewValue, TFunctorValue, TFunctorValueVm1>  & anImage )
 {
-  drawImage3D(viewer, anImage, CastFunctor<unsigned int> ());
+  drawImage3D(viewer, anImage, CastFunctor<unsigned int> (), anImage.myMode);
 }
 // ImageAdapter  (3D)
 
