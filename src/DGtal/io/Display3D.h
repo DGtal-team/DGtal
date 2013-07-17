@@ -414,7 +414,7 @@ public:
    * @param x3 x of the 3rd point
    * @param y3 y of the 3rd point
    * @param z3 z of the 3rd point
-   * @param aColor
+   * @param aColor to remove
    */
   virtual void addTriangle(double x1, double y1, double z1,  double x2, double y2, double z2,
                            double x3, double y3, double z3, DGtal::Color aColor);
@@ -424,7 +424,7 @@ public:
   * Method to add a specific polygon.
   * @param vectPointsPolygon a vector containing the polygon vertex.
   * @param vectPointsPolygon
-  * @param aColor
+  * @param aColor to remove
   */
   virtual void addPolygon(std::vector<ballD3D> vectPointsPolygon, DGtal::Color aColor);
 
@@ -438,7 +438,7 @@ public:
    * @param x2 x of the 2nd point
    * @param y2 y of the 2nd point
    * @param z2 z of the 2nd point
-  * @param color the line color.
+  * @param color the line color. to remove
   * @param width the line width
   *
   */
@@ -454,7 +454,7 @@ public:
      * @param x cube center x
      * @param y cube center y
      * @param z cube center z.
-     * @param color the cube color.
+     * @param color the cube color. to remove
      * @param width the cube width.
      */
   virtual void addCube(double x, double y, double z,
@@ -467,7 +467,7 @@ public:
      * @param x ball center x
      * @param y ball center y
      * @param z ball center z.
-     * @param color the point color.
+     * @param color the point color. to remove
      * @param size the point width
      *
      */

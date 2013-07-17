@@ -119,7 +119,7 @@ struct Display3DFactory
   // ArithmeticalDSS3d
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */

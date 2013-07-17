@@ -448,7 +448,7 @@ struct Update2DDomainPosition : public DrawWithViewer3DModifier
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/DrawWithViewer3DModifier.ih"
+#include "DGtal/io/viewers/DrawWithViewer3DModifier.ih"
 
 
 //                                                                           //

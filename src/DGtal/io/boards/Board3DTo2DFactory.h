@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/Display3DFactory.h"
-#include "DGtal/io/DrawWithBoard3DTo2DModifier.h"
+#include "DGtal/io/boards/DrawWithBoard3DTo2DModifier.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -162,7 +162,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   // ArithmeticalDSS3d
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param arithm the arithm to draw
    *  @return the dyn. alloc. default style for this object.
    */
@@ -202,7 +202,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   // DigitalSetBySTLSet
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aSet the set to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -251,7 +251,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   // DigitalSetBySTLVector
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aSet the set to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -300,7 +300,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   // HyperRectDomain
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aDomain the domain to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -360,7 +360,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   // KhalimskyCell
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aCell the cell to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -382,7 +382,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   // Object
   /**
    * @brief defaultStyle
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -413,7 +413,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   // PointVector
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aPoint the point to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -473,7 +473,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   template< Dimension dim, typename TInteger>
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aSCell the signed cell to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -586,125 +586,6 @@ struct Board3DTo2DFactory : public Display3DFactory
   // IncidentPointsRange
 
 
-  // ImageContainerBySTLVector  (2D)
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   */
-  template <typename TValue, typename Space, typename KSpace>
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const  ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  & anImage );
-  // ImageContainerBySTLVector  (2D)
-
-  // ImageContainerBySTLMap  (2D)
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   */
-  template <typename TValue, typename Space, typename KSpace>
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const  ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  & anImage );
-  // ImageContainerBySTLMap  (2D)
-
-  // ConstImageAdapter  (2D)
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename Space, typename KSpace>
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   */
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const  ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue>  & anImage );
-  // ConstImageAdapter  (2D)
-
-  // ImageAdapter  (2D)
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   */
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1, typename Space, typename KSpace>
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const  ImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD,
-                    TNewValue, TFunctorValue, TFunctorValueVm1>  & anImage );
-  // ImageAdapter  (2D)
-
-
-  // ImageContainerBySTLVector  (3D)
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   */
-  template <typename TValue, typename Space, typename KSpace>
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const   ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  & anImage );
-  // ImageContainerBySTLVector (3D)
-
-
-  // ImageContainerBySTLMap  (3D)
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   */
-  template <typename TValue, typename Space, typename KSpace>
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const   ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  & anImage );
-  // ImageContainerBySTLMap  (3D)
-
-  // ConstImageAdapter  (3D)
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   */
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename Space, typename KSpace>
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const  ConstImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
-                    TNewValue, TFunctorValue>  & anImage );
-  // ConstImageAdapter  (3D)
-
-  // ImageAdapter  (3D)
-  /**
-   * @brief draw
-   * @param board the board where to draw
-   * @param anImage
-   */
-  template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1, typename Space, typename KSpace>
-  static void
-  draw( Board3DTo2D<Space, KSpace> & board, const  ImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
-                    TNewValue, TFunctorValue, TFunctorValueVm1>  & anImage );
-  // ImageAdapter  (3D)
-
-
-  /**
-   * @brief drawImage2D
-   * @param board the board where to draw
-   * @param anImage the image to draw
-   * @param aFunctor the functor to draw
-   * @param aTextureMode the mode to set
-   */
-  template < typename TImageType2D, typename TFunctor, typename Space, typename KSpace>
-  static void
-  drawImage2D( Board3DTo2D<Space, KSpace> & board, const TImageType2D & anImage, const TFunctor & aFunctor,
-               typename Board3DTo2D<Space, KSpace>::TextureMode aTextureMode=Board3DTo2D<Space, KSpace>::GrayScaleMode );
-
-
-  /**
-   * @brief drawImage3D
-   * @param board the board where to draw
-   * @param anImage3D the image to draw
-   * @param aFunctor the functor to draw
-   * @param aTextureMode the mode to set
-   */
-  template < typename TImageType3D, typename TFunctor, typename Space, typename KSpace>
-  static void
-  drawImage3D( Board3DTo2D<Space, KSpace> & board, const TImageType3D & anImage3D, const TFunctor & aFunctor,
-               typename Board3DTo2D<Space, KSpace>::TextureMode aTextureMode=Board3DTo2D<Space, KSpace>::GrayScaleMode );
-
   /**
    * @brief draw
    * @param board the board where to draw
@@ -760,7 +641,7 @@ struct Board3DTo2DFactory : public Display3DFactory
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods
-#include "DGtal/io/Board3DTo2DFactory.ih"
+#include "DGtal/io/boards/Board3DTo2DFactory.ih"
 
 
 //                                                                           //

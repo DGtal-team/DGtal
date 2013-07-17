@@ -27,10 +27,7 @@
  * This file is part of the DGtal library.
  */
 
-//TODO remove iostream
-#include <iostream>
 #include <string>
-
 
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageHelper.h"

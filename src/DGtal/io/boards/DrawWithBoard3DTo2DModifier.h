@@ -153,7 +153,7 @@ struct CameraZNearFar : public DrawWithBoard3DTo2DModifier
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/DrawWithBoard3DTo2DModifier.ih"
+#include "DGtal/io/boards/DrawWithBoard3DTo2DModifier.ih"
 
 
 //                                                                           //

@@ -114,8 +114,7 @@ An object x satisfying this concept may then be used as:
     // ------------------------- Private Datas --------------------------------
   private:
 
-    //TODO desc attributes
-    T myT;
+    T myT; //! the drawable class
     DrawableWithDisplay3D *myD;
 
     Display3D< Sp, KSp> myD3D;

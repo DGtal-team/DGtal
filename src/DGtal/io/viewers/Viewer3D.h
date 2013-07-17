@@ -147,7 +147,9 @@ public:
      * @param z z position.
      */
   void setCameraPosition(double x, double y, double z)
-  { camera_position[0] = x; camera_position[1] = y; camera_position[2] = z; }
+  {
+    camera_position[0] = x; camera_position[1] = y; camera_position[2] = z;
+  }
 
   /**
      * Set camera direction.
@@ -156,7 +158,9 @@ public:
      * @param z z direction.
      */
   void setCameraDirection(double x, double y, double z)
-  { camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z; }
+  {
+    camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z;
+  }
 
   /**
      * Set camera up-vector.
@@ -165,27 +169,28 @@ public:
      * @param z z coordinate of up-vector.
      */
   void setCameraUpVector(double x, double y, double z)
-  { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
+  {
+    camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z;
+  }
 
   /**
-     * Set near and far distance.
+     * Set near and far distance, too near or too far end up not visible.
      * @param _near near distance.
      * @param _far far distance.
      */
-  void setNearFar(double _near, double _far) { ZNear = _near; ZFar = _far; }
+  void setNearFar(double _near, double _far)
+  {
+    ZNear = _near; ZFar = _far;
+  }
 
-  enum ImageDirection {xDirection, yDirection, zDirection };
-  enum TextureMode {RGBMode, GrayScaleMode };
+  enum ImageDirection {xDirection, yDirection, zDirection }; // the 3 possible axes for the image direction
+  enum TextureMode {RGBMode, GrayScaleMode }; //! the modes of representation of an image
 
+  DGtal::Color myDefaultBackgroundColor;//! the default background color of the viewer
+  DGtal::Color myDefaultColor; //! the default color of the viewer
+  bool myIsBackgroundDefault; //! true if the background is default
 
-  //the default background color of the viewer
-  DGtal::Color myDefaultBackgroundColor;
-  //the default color of the viewer
-  DGtal::Color myDefaultColor;
-  // true if the background is default
-  bool myIsBackgroundDefault;
-  //TODO desc attributes
-  bool myViewWire;
+  bool myViewWire;//! objects have shadows which follow the camera if false
 
   /**
      *  Used to display the 2D domain of an image.
@@ -194,34 +199,26 @@ public:
   //have to be public because of external functions
   struct Image2DDomainD3D
   {
-    // The image domain coordinates
-    double x1, y1, z1;
-    double x2, y2, z2;
-    double x3, y3, z3;
-    double x4, y4, z4;
-    unsigned char R,G,B,T;
 
-    // the width and height of the image domain
-    unsigned int myDomainWidth;
-    unsigned int myDomainHeight;
-
-    //TODO uncommented sub attributes
-    ImageDirection myDirection;
-
-    //the mode of the image
-    std::string myMode;
-
-    //TODO uncommented sub attributes
-    unsigned int myLineSetIndex;
+    double x1, y1, z1; //! The image domain coordinates
+    double x2, y2, z2; //! The image domain coordinates
+    double x3, y3, z3; //! The image domain coordinates
+    double x4, y4, z4; //! The image domain coordinates
+    unsigned char R,G,B,T; //! The image domain color
+    unsigned int myDomainWidth; //! the width of the image domain
+    unsigned int myDomainHeight; //! the height of the image domain
+    ImageDirection myDirection; //! the direction of the domain (x, y or z axe)
+    std::string myMode;//! the mode of representation of the image domain
+    unsigned int myLineSetIndex; //! the index of the line of the domain in the lineSetList of the viewer
 
     /**
         * Constructor
-         * @param aDomain
-         * @param normalDir
-         * @param xBottomLeft
-         * @param yBottomLeft
-         * @param zBottomLeft
-         * @param mode
+         * @param aDomain a domain
+         * @param normalDir the normal vector direction
+         * @param xBottomLeft the x coordinate of bottom left image point.
+         * @param yBottomLeft the y coordinate of bottom left image point.
+         * @param zBottomLeft the z coordinate of bottom left image point.
+         * @param mode the mode of representation
          */
     template<typename TDomain>
     Image2DDomainD3D( TDomain aDomain, Viewer3D::ImageDirection normalDir=zDirection,
@@ -265,34 +262,35 @@ public:
   struct TextureImage
   {
 
-    // The quad coordinates should be given in counter clockwise order
-    double x1, y1, z1;
-    double x2, y2, z2;
-    double x3, y3, z3;
-    double x4, y4, z4;
 
-    //TODO uncommented sub attributes
-    ImageDirection myDirection;
+    double x1, y1, z1; //! The quad coordinates should be given in counter clockwise order
+    double x2, y2, z2; //! The quad coordinates should be given in counter clockwise order
+    double x3, y3, z3; //! The quad coordinates should be given in counter clockwise order
+    double x4, y4, z4; //! The quad coordinates should be given in counter clockwise order
 
-    // the width and height of the image
-    unsigned int myImageWidth;
-    unsigned int myImageHeight;
-    unsigned int * myTabImage;
+    ImageDirection myDirection; //! direction of the image (x, y or z axe)
 
-    //TODO uncommented sub attributes
-    bool myDrawDomain;
-    unsigned int myIndexDomain;
-    TextureMode myMode;
+    unsigned int myImageWidth;//! the width of the image
+    unsigned int myImageHeight;//! the height of the image
+    //TODO  complete desc attribute
+    unsigned int * myTabImage; //! for each pixel of the image, color or height ?
 
+    bool myDrawDomain; //! true if the draw have a domain
+    unsigned int myIndexDomain; //! index of the image domain if exist
+    TextureMode myMode; //! the mode of representation of the image
+
+    /**
+    * @brief Destructor
+    */
     ~TextureImage()
     {
       delete [] myTabImage;
     };
 
     /**
-     * Copy constructor (needed due to myTabImage)
-   * @param img
-   */
+    * @brief Copy constructor (needed due to myTabImage)
+    * @param img the image
+    */
     TextureImage(const TextureImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
       x2(img.x2), y2(img.y2), z2(img.z2),
       x3(img.x3), y3(img.y3), z3(img.z3),
@@ -335,7 +333,7 @@ public:
      *  @param xBottomLeft the x coordinate of bottom left image point (default 0).
      *  @param yBottomLeft the x coordinate of bottom left image point (default 0).
      *  @param zBottomLeft the x coordinate of bottom left image point (default 0).
-     *  @param aMode
+     *  @param aMode the mode of representation
 */
     template <typename TImageType, typename TFunctor>
 
@@ -506,7 +504,7 @@ public:
      * The new image should be with same dimension than the original.
      * @param imageIndex corresponds to the chronoloigic index given by the fuction (addTextureImage).
      * @param image the new image containing the new buffer (with same dimensions than the other image).
-     * @param aFunctor
+     * @param aFunctor a functor
      * @param xTranslation the image translation in the  x direction (default 0).
      * @param yTranslation the image translation in the  y direction (default 0).
      * @param zTranslation the image translation in the  z direction (default 0).
@@ -547,9 +545,9 @@ public:
   /**
    * update a 2D domain orientation
    * @param imageIndex index of the image in the list
-   * @param xPosition
-   * @param yPosition
-   * @param zPosition
+   * @param xPosition the x position
+   * @param yPosition the y position
+   * @param zPosition the z position
    * @param newDirection the new direction
    */
   void updateAn2DDomainOrientation(unsigned int imageIndex,
@@ -566,15 +564,15 @@ public:
 
   /**
    * @brief compute2DDomainLineRepresentation
-   * @param anImageDomain
-   * @param delta
+   * @param anImageDomain the image domain
+   * @param delta the delte for computing
    * @return
    */
   std::vector<typename DGtal::Viewer3D< Space , KSpace >::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
 
   /**
    * @brief compute2DDomainLineRepresentation
-   * @param anImageDomain
+   * @param anImageDomain the image domain
    * @return
    */
   std::vector<typename DGtal::Viewer3D< Space , KSpace >::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
@@ -609,7 +607,7 @@ public:
 
   /**
      * Draw a linel by using the   [gluCylinder] primitive.
-     * @param aLinel
+     * @param aLinel the linel to draw
      **/
   void glDrawGLLinel ( typename Viewer3D<Space,KSpace>::lineD3D aLinel );
 
@@ -618,7 +616,7 @@ public:
 
   /**
      * Draw a linel by using the   [gluCShere] primitive.
-   * @param pointel
+   * @param pointel the pointel to draw
    */
   void glDrawGLPointel ( typename Viewer3D<Space,KSpace>::ballD3D pointel );
 
@@ -749,7 +747,7 @@ public:
 
   /**
    * @brief postSelection
-   * @param point
+   * @param point a point
    */
   virtual void postSelection ( const QPoint& point );
 
@@ -909,18 +907,13 @@ private:
   // ------------------------- Private Datas --------------------------------
 private:
 
-  //TODO desc attributes
-  GLuint myListToAff;
-  //TODO desc attributes
-  unsigned int myNbListe;
-  //TODO desc attributes
-  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
-  //TODO desc attributes
-  QPoint myPosSelector;
-  //TODO desc attributes
-  std::vector<GLTextureImage> myVectTextureImage;
-  //TODO desc attributes
-  bool myIsDoubleFaceRendering;
+
+  GLuint myListToAff;   //! lists of the list to draw
+  unsigned int myNbListe;   //! number of lists in myListToAff
+  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint; //! information linked to the navigation in the viewer
+  QPoint myPosSelector;   //! a point selected with postSelection @see postSelection
+  std::vector<GLTextureImage> myVectTextureImage; //! list of the images textures in this viewer
+  bool myIsDoubleFaceRendering; //!< true if is double face rendering
 
   double camera_position[3];  //!< camera position
   double camera_direction[3];  //!< camera direction
