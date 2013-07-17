@@ -41,9 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
-#include "DGtal/io/CDrawableWithBoard3DTo2D.h"
+#include "DGtal/io/boards/CDrawableWithBoard3DTo2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/Board3DTo2DFactory.h"
+#include "DGtal/io/boards/Board3DTo2DFactory.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

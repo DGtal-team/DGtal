@@ -47,7 +47,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/Display3DFactory.h"
-#include "DGtal/io/DrawWithViewer3DModifier.h"
+#include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -160,7 +160,7 @@ struct Viewer3DFactory : public Display3DFactory
   // ArithmeticalDSS3d
   /**
   * Default drawing style object.
-  * @param str
+  * @param str the name of the class
   * @param arithm the arithm to draw
   * @return the dyn. alloc. default style for this object.
   */
@@ -196,7 +196,7 @@ struct Viewer3DFactory : public Display3DFactory
   // DigitalSetBySTLSet
   /**
    * @brief Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aSet the set to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -240,7 +240,7 @@ struct Viewer3DFactory : public Display3DFactory
   // DigitalSetBySTLVector
   /**
   * Default drawing style object.
-  * @param str
+  * @param str the name of the class
   * @param aSet the set to draw
   * @return the dyn. alloc. default style for this object.
   */
@@ -284,7 +284,7 @@ struct Viewer3DFactory : public Display3DFactory
   // HyperRectDomain
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aDomain the domain to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -336,7 +336,7 @@ struct Viewer3DFactory : public Display3DFactory
   // KhalimskyCell
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aCell the cell to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -356,7 +356,7 @@ struct Viewer3DFactory : public Display3DFactory
   // Object
   /**
    * @brief defaultStyle
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return
    */
@@ -384,7 +384,7 @@ struct Viewer3DFactory : public Display3DFactory
   // PointVector
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aPoint the point to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -437,7 +437,7 @@ struct Viewer3DFactory : public Display3DFactory
   // SignedKhalimskyCell
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param aSCell the signed cell to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -637,7 +637,8 @@ struct Viewer3DFactory : public Display3DFactory
   template < typename TImageType2D, typename TFunctor, typename Space, typename KSpace>
   static void
   drawImage2D( Viewer3D<Space,KSpace> & viewer, const TImageType2D & anImage, const TFunctor & aFunctor,
-               typename Viewer3D<Space,KSpace>::TextureMode aTextureMode=1 );
+              typename Viewer3D<Space,KSpace>::TextureMode aTextureMode= Viewer3D<Space,KSpace>::GrayScaleMode );
+   //           typename Viewer3D<Space,KSpace>::TextureMode aTextureMode= 1 );
 
   /**
    * @brief drawImage3D
@@ -649,8 +650,8 @@ struct Viewer3DFactory : public Display3DFactory
   template < typename TImageType3D, typename TFunctor, typename Space, typename KSpace>
   static void
   drawImage3D( Viewer3D<Space,KSpace> & viewer, const TImageType3D & anImage3D, const TFunctor & aFunctor,
-               typename Viewer3D<Space,KSpace>::TextureMode aTextureMode=1 );
-
+               typename Viewer3D<Space,KSpace>::TextureMode aTextureMode=Viewer3D<Space,KSpace>::GrayScaleMode );
+   //            typename Viewer3D<Space,KSpace>::TextureMode aTextureMode= 1 );
 
   /**
    * @brief draw
@@ -775,7 +776,7 @@ struct Viewer3DFactory : public Display3DFactory
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods
-#include "DGtal/io/Viewer3DFactory.ih"
+#include "DGtal/io/viewers/Viewer3DFactory.ih"
 
 
 //                                                                           //

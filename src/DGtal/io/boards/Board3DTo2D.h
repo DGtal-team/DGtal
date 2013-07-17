@@ -133,7 +133,7 @@ public:
     { camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z; }
 
     /**
-     * Set near and far distance.
+     * Set near and far distance, too near or too far end up not visible.
      * @param _near near distance.
      * @param _far far distance.
      */

@@ -17,25 +17,25 @@
 #pragma once
 
 /**
- * @file CDrawableWithBoard3DTo2D.h
+ * @file CDrawableWithViewer3D.h
  * @author Aline Martin
  *
  * @date 2013/07/02
  *
- * Header file for concept CDrawableWithBoard3DTo2D.cpp
+ * Header file for concept CDrawableWithViewer3D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithBoard3DTo2D_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithBoard3DTo2D.h
-#else // defined(CDrawableWithBoard3DTo2D_RECURSES)
+#if defined(CDrawableWithViewer3D_RECURSES)
+#error Recursive header files inclusion detected in CDrawableWithViewer3D.h
+#else // defined(CDrawableWithViewer3D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithBoard3DTo2D_RECURSES
+#define CDrawableWithViewer3D_RECURSES
 
-#if !defined CDrawableWithBoard3DTo2D_h
+#if !defined CDrawableWithViewer3D_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithBoard3DTo2D_h
+#define CDrawableWithViewer3D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,18 +49,18 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithBoard3DTo2D
+  // class CDrawableWithViewer3D
   /**
-Description of \b concept '\b CDrawableWithBoard3DTo2D' <p>
+Description of \b concept '\b CDrawableWithViewer3D' <p>
 @ingroup Concepts
 
-@brief Aim:  The concept CDrawableWithBoard3DTo2D specifies what are the classes
-that admit an export with Board3DTo2D.
+@brief Aim:  The concept CDrawableWithViewer3D specifies what are the classes
+that admit an export with Viewer3D.
     
 An object x satisfying this concept may then be used as:
     
    \code
-   Board3DTo2D display;
+   Viewer3D display;
    display << CustomStyle( x.className(), x.defaultStyle() )
          << x;
    \endcode 
@@ -70,7 +70,7 @@ An object x satisfying this concept may then be used as:
 ### Associated types :
    
 ### Notation
-    - \t X : A type that is a model of CDrawableWithBoard3DTo2DD
+    - \t X : A type that is a model of CDrawableWithViewer3DD
     - \t x, \t y  : Object of type X
     - \t m  : a string of characters
    
@@ -80,9 +80,9 @@ An object x satisfying this concept may then be used as:
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|the default draw style | x.defaultStyle( m = "") | mode \t m: \c std::string | CDrawableWithBoard3DTo2D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
+|the default draw style | x.defaultStyle( m = "") | mode \t m: \c std::string | CDrawableWithViewer3D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
 |the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
-|the way the object \t x is drawn | x.setStyle(CDrawableWithBoard3DTo2D &display) | | | |draws the object \c x on the \c display stream | | |
+|the way the object \t x is drawn | x.setStyle(CDrawableWithViewer3D &display) | | | |draws the object \c x on the \c display stream | | |
 
 ### Invariants
    
@@ -94,13 +94,14 @@ An object x satisfying this concept may then be used as:
     @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */  
   
-  template < class S, class KS> class Board3DTo2D;
+  template <class S, class KS> class Viewer3D;
+  class DrawableWithViewer3D;
   
-  template <typename T, typename S, typename KS >
-  struct CDrawableWithBoard3DTo2D : public CDrawableWithDisplay3D<T, S , KS>
+  template <typename T, typename S, typename KS>
+  struct CDrawableWithViewer3D  : public CDrawableWithDisplay3D<T, S, KS>
   {
 
-  BOOST_CONCEPT_USAGE( CDrawableWithBoard3DTo2D )
+  BOOST_CONCEPT_USAGE( CDrawableWithViewer3D )
     {
       //Drawable model should have a className() returning a string
       ConceptUtils::sameType( myS, myT.className() );
@@ -112,17 +113,16 @@ An object x satisfying this concept may then be used as:
 
     // ------------------------- Private Datas --------------------------------
   private:
-    //TODO desc attributes
-    T myT;
-    DrawableWithBoard3DTo2D *myD;
 
-    Board3DTo2D<S, KS> myD3D;
+    T myT; //! the drawable class
+    DrawableWithViewer3D *myD;
+
+    Viewer3D<S, KS> myD3D;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
-  private:
 
-  }; // end of concept CDrawableWithBoard3DTo2D
+  }; // end of concept CDrawableWithViewer3D
   
 } // namespace DGtal
 
@@ -131,7 +131,7 @@ An object x satisfying this concept may then be used as:
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithBoard3DTo2D_h
+#endif // !defined CDrawableWithViewer3D_h
 
-#undef CDrawableWithBoard3DTo2D_RECURSES
-#endif // else defined(CDrawableWithBoard3DTo2D_RECURSES)
+#undef CDrawableWithViewer3D_RECURSES
+#endif // else defined(CDrawableWithViewer3D_RECURSES)

@@ -47,8 +47,8 @@
 
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
-#include "DGtal/io/CDrawableWithViewer3D.h"
-#include "DGtal/io/Viewer3DFactory.h"
+#include "DGtal/io/viewers/CDrawableWithViewer3D.h"
+#include "DGtal/io/viewers/Viewer3DFactory.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -424,7 +424,6 @@ DGtal::Viewer3D< Space ,KSpace >::translateAn2DDomain(unsigned int domainIndex, 
 
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
 
-  //OPT line et pas cube
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> &vectLines = DGtal::Viewer3D< Space ,KSpace >::myLineSetList.at(anDomain.myLineSetIndex);
 
   vectLines.clear();
