@@ -81,10 +81,10 @@ void
 DGtal::Viewer3D< Space ,KSpace >::addTextureImage(const Viewer3D< Space ,KSpace >::TextureImage &image)
 {
   myGSImageList.push_back(image);
-  updateBoundingBox(image.x1, image.y1, image.z1);
-  updateBoundingBox(image.x2, image.y2, image.z2);
-  updateBoundingBox(image.x3, image.y3, image.z3);
-  updateBoundingBox(image.x4, image.y4, image.z4);
+  Display3D< Space, KSpace>::updateBoundingBox(image.x1, image.y1, image.z1);
+  Display3D< Space, KSpace>::updateBoundingBox(image.x2, image.y2, image.z2);
+  Display3D< Space, KSpace>::updateBoundingBox(image.x3, image.y3, image.z3);
+  Display3D< Space, KSpace>::updateBoundingBox(image.x4, image.y4, image.z4);
 }
 
 
@@ -99,10 +99,10 @@ DGtal::Viewer3D< Space ,KSpace >::updateTextureImage(unsigned int imageIndex,  c
   BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
   typename Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(imageIndex);
-  updateBoundingBox(anImage.x1+xTranslation, anImage.y1+yTranslation, anImage.z1+zTranslation);
-  updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
-  updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
-  updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x1+xTranslation, anImage.y1+yTranslation, anImage.z1+zTranslation);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
   anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);
   if(anImage.myDrawDomain)
   {
@@ -119,10 +119,10 @@ DGtal::Viewer3D< Space ,KSpace >::updateOrientationTextureImage(unsigned int ima
 {
   assert ( imageIndex< myGSImageList.size());
   Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(imageIndex);
-  updateBoundingBox(anImage.x1, anImage.y1, anImage.z1);
-  updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
-  updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
-  updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x1, anImage.y1, anImage.z1);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
+  Display3D< Space, KSpace>::updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
   anImage.updateImageOrientation(newDirection, xPosition, yPosition, zPosition);
   if(anImage.myDrawDomain)
   {
@@ -217,10 +217,10 @@ DGtal::Viewer3D< Space ,KSpace >::addImage2DDomainD3D(const TDomain &aDomain,
   anImageDomain.myLineSetIndex=Viewer3D<Space, KSpace>::myLineSetList.size();
 
   myImageDomainList.push_back(anImageDomain);
-  updateBoundingBox(anImageDomain.x1, anImageDomain.y1, anImageDomain.z1);
-  updateBoundingBox(anImageDomain.x2, anImageDomain.y2, anImageDomain.z2);
-  updateBoundingBox(anImageDomain.x3, anImageDomain.y3, anImageDomain.z3);
-  updateBoundingBox(anImageDomain.x4, anImageDomain.y4, anImageDomain.z4);
+  Display3D< Space, KSpace>::updateBoundingBox(anImageDomain.x1, anImageDomain.y1, anImageDomain.z1);
+  Display3D< Space, KSpace>::updateBoundingBox(anImageDomain.x2, anImageDomain.y2, anImageDomain.z2);
+  Display3D< Space, KSpace>::updateBoundingBox(anImageDomain.x3, anImageDomain.y3, anImageDomain.z3);
+  Display3D< Space, KSpace>::updateBoundingBox(anImageDomain.x4, anImageDomain.y4, anImageDomain.z4);
 
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
   Viewer3D<Space, KSpace>::myLineSetList.push_back(vectLines);
@@ -393,10 +393,10 @@ DGtal::Viewer3D< Space ,KSpace >::updateAn2DDomainOrientation(unsigned int domai
                                                                double xPosition, double yPosition, double zPosition, ImageDirection newDirection)
 {
   Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
-  updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
-  updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
-  updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
-  updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
   anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
 
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
@@ -420,10 +420,10 @@ DGtal::Viewer3D< Space ,KSpace >::translateAn2DDomain(unsigned int domainIndex, 
   Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
   anDomain.translateDomain(xTranslation, yTranslation, zTranslation);
 
-  updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
-  updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
-  updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
-  updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
+  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
 
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
 
