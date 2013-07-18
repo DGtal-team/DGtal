@@ -18,13 +18,18 @@ namespace DGtal {
 
   \section DGtalGLV_Display3D Display3D: a stream mechanism from abstract class Display3D
 
-  The semi abstract class Display3D defines the stream mechanism to
+  The semi abstract template class Display3D defines the stream mechanism to
   display 3d primitive (like PointVector, DigitalSetBySTLSet, Object
   ...). The class Viewer3D and Board3DTo2D implement two different
   ways to display 3D objects. The first one (Viewer3D), permits an
-  interactive visualisation (based on OpenGL) and the second one
-  (Board3DTo2D) provides 3D visualisation from 2D vectorial display
+  interactive visualization (based on OpenGL) and the second one
+  (Board3DTo2D) provides 3D visualization from 2D vectorial display
   (based on the CAIRO library).
+
+  Display3D have two template parameters which correspond to the space and the khalimsky space used to put the figures. 
+  By default it use the Z3i::Space and Z3i::KSpace.
+
+  Viewer3D and Board3DTo2D allow to set and change the camera point of view for the visualization.
   
 
 
@@ -35,6 +40,9 @@ namespace DGtal {
  based on QT allowing to access to simple 3D fonctionalities like
  camera moving, mouse, keyboard interaction, clipping plane
  .... etc.
+
+It possess the additional functionnality to display 2D slice image from a volume one. 
+
  *
  
 First to use the Viewer3D stream, you need to include the following hearders:
@@ -73,7 +81,7 @@ Then we can display some 3D primitives:
 
 * @endcode
 *
-* You should obtain the following visualisation:
+* You should obtain the following visualization:
 *
 * \image html simple3dVisu1.png "Digital point visualization  with Viewer3D." 
 * \image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
@@ -139,7 +147,7 @@ This example should provides a comparable visualization.
  
  @endcode
 *
-* You should obtain the following visualisation (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
+* You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
 * \image html simple3dVisu2.png "Digital point visualization  with Viewer3D." 
 * \image latex simple3dVisu2.png "Digital point visualization  with Viewer3D." width=5cm
@@ -165,7 +173,7 @@ This example should provides a comparable visualization.
  viewer << shape2;
 @endcode
 
-* You should obtain the two following visualisations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
+* You should obtain the two following visualizations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
 
  \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." 
  \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with Viewer3D." width=5cm 
@@ -247,14 +255,14 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 @endcode
 *
 *
-* we obtain the following visualisations:
+* we obtain the following visualizations:
 * 
-\image html visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain "
-\image latex visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain " width=5cm
- \image html  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain."  
- \image latex  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain." width=5cm 
- \image html  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels."
- \image latex  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels." width=5cm 
+\image html visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain "
+\image latex visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain " width=5cm
+ \image html  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain."  
+ \image latex  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain." width=5cm 
+ \image html  visuModeGridVoxel.png "(c) visualization using Paving mode for the voxels."
+ \image latex  visuModeGridVoxel.png "(c) visualization using Paving mode for the voxels." width=5cm 
 
 
 
@@ -354,21 +362,21 @@ we can add for instance two differents clipping planes:
  viewer << ClippingPlane(0,1,0.3,-10);
 @endcode
 
-\image html visuClippingAll.png "(a) Visualisation of the initial set." width=5cm 
-\image latex visuClippingAll.png "(a) Visualisation of the initial set." 
- \image html  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)." 
- \image latex  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)."  width=5cm 
- \image html  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." 
-\image latex  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
+\image html visuClippingAll.png "(a) visualization of the initial set." width=5cm 
+\image latex visuClippingAll.png "(a) visualization of the initial set." 
+ \image html  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)." 
+ \image latex  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."  width=5cm 
+ \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ." 
+\image latex  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
 
 
-It also possible to remove the visualisation of the transparent clipping plane by adding boolean option:
+It also possible to remove the visualization of the transparent clipping plane by adding boolean option:
 
 @code
  viewer << ClippingPlane(0,1,0.3,-10, false);
 @endcode
 
-\section DGtalGLV_Images Adding 2D slice image visualisation
+\section DGtalGLV_Images Adding 2D slice image visualization
 
 With the Viewer3D class it is possible to display 2D slice image from a volume one. It can be done in few steps (see example of io/viewers/viewer3D-8-2Dimages.cpp) :
 
@@ -382,32 +390,32 @@ Finally you can adjust the image setting with the Display3DModifier UpdateImageP
 
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImages
 
-You will obtain such a visualisation:
- \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation." width=5cm 
- \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualisation." 
+You will obtain such a visualization:
+ \image html  viewer3D-8.png  "Illustration of the 2D image slice visualization." width=5cm 
+ \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualization." 
 
 You can also change the default mode by using:
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DChangeMode
-and by changing the "BoundingBox" mode by "InterGrid" you will obtain the following visualisation:
- \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation with InterGrid mode." width=5cm 
- \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation." 
+and by changing the "BoundingBox" mode by "InterGrid" you will obtain the following visualization:
+ \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization with InterGrid mode." width=5cm 
+ \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization." 
 
 
 
-See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualisation/3dImageViewer.cpp viewer. 
+See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer. 
 
 
-\section DGtalGLV_Images3D Adding 3D  image visualisation
+\section DGtalGLV_Images3D Adding 3D  image visualization
 
 In the same way a 3D image can be displayed. By following the same stream operator you will obtain such example of display:
-\image html  viewer3D-9.png  "Example of 3D image visualisation with also digital sets." width=5cm 
-\image latex  viewer3D-9.png  "Example of 3D image visualisation with also digital sets."  
+\image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm 
+\image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets."  
 
 See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp 
 
 
 
-\section DGtalGLV_Images3D Adding Custom  Image visualisation in 3D
+\section DGtalGLV_Images3D Adding Custom  Image visualization in 3D
 
 By default an image is displayed in gray scale levels from its scalar
 values. However it is possible to display color texture image by using
@@ -434,9 +442,9 @@ with a functor to transform integer representing grayscale to integer representi
 - Note that also can update the image position image data as in the previous example and we need to recall the functor function if we want to keep the same data interpretation :
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
 
-You will obtain such a visualisation:
- \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualisation." width=5cm 
- \image latex  viewer3D-8Color.png  "Illustration of the 2D image slice visualisation." 
+You will obtain such a visualization:
+ \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualization." width=5cm 
+ \image latex  viewer3D-8Color.png  "Illustration of the 2D image slice visualization." 
 
 
 */
@@ -524,13 +532,13 @@ You will obtain such a visualisation:
 *
 */
 /**
-   \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualisation."
+   \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualization."
    \example io/viewers/viewer3D-8-2Dimages.cpp
 
 *
 */
 /**
-   \image html  viewer3D-9.png  "Illustration of the 3D image visualisation."
+   \image html  viewer3D-9.png  "Illustration of the 3D image visualization."
    \example io/viewers/viewer3D-9-3Dimages.cpp
 *
 */

@@ -57,7 +57,7 @@ namespace DGtal
  * modify a Viewer3D stream.
  *
  */
-struct DrawWithViewer3DModifier : public DrawableWithDisplay3D
+struct DrawWithViewer3DModifier : public DrawWithDisplay3DModifier
 {
   std::string className() const;
 };
@@ -175,10 +175,8 @@ struct UpdateImagePosition : public DrawWithViewer3DModifier
     myPosYBottomLeft(posYbottomLeft),
     myPosZBottomLeft(posZbottomLeft),
     myNewDirection(newDir)
+  {}
 
-  {
-
-  }
   unsigned int myIndex;
   double  myPosXBottomLeft;
   double  myPosYBottomLeft;
@@ -348,9 +346,8 @@ struct UpdateImageData : public DrawWithViewer3DModifier
     myTranslateY (translateY),
     myTranslateZ (translateZ),
     myFunctor(aFunctor)
-  {
+  {}
 
-  }
   unsigned int myIndex;
   int myTranslateX;
   int myTranslateY;
@@ -386,9 +383,8 @@ struct Translate2DDomain : public DrawWithViewer3DModifier
     myTranslateX (translateX),
     myTranslateY (translateY),
     myTranslateZ (translateZ)
-  {
+  { }
 
-  }
   unsigned int myIndex;
   int myTranslateX;
   int myTranslateY;
@@ -426,10 +422,7 @@ struct Update2DDomainPosition : public DrawWithViewer3DModifier
     myPosYBottomLeft(posYbottomLeft),
     myPosZBottomLeft(posZbottomLeft),
     myNewDirection(newDir)
-
-  {
-
-  }
+  { }
 
   unsigned int myIndex;
   double  myPosXBottomLeft;
