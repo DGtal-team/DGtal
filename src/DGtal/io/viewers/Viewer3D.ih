@@ -128,6 +128,7 @@ DGtal::Viewer3D< Space ,KSpace >::updateOrientationTextureImage(unsigned int ima
   {
     *this << DGtal::Update2DDomainPosition<Space ,KSpace >(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
   }
+
 }
 
 
@@ -273,8 +274,6 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
     aLineSet.push_back(aLine);
   }else if(anImageDomain.myMode=="InterGrid")
   {
-    /*
-     //mode deleted
     if(anImageDomain.myDirection==zDirection)
     {
       //lines align to the x direction
@@ -326,8 +325,6 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
         aLineSet.push_back(aLine);
       }
     }
-    */
-
   }else if(anImageDomain.myMode=="Grid")
   {
     if(anImageDomain.myDirection==zDirection)
@@ -393,6 +390,7 @@ DGtal::Viewer3D< Space ,KSpace >::updateAn2DDomainOrientation(unsigned int domai
                                                                double xPosition, double yPosition, double zPosition, ImageDirection newDirection)
 {
   Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
+
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
@@ -400,14 +398,12 @@ DGtal::Viewer3D< Space ,KSpace >::updateAn2DDomainOrientation(unsigned int domai
   anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
 
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
-
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> &vectLines = Viewer3D<Space, KSpace>::myLineSetList.at(anDomain.myLineSetIndex);
   vectLines.clear();
   for(unsigned int i=0; i<vectNewLines.size(); i++)
   {
     vectLines.push_back(vectNewLines.at(i));
   }
-
 
 }
 
@@ -577,25 +573,30 @@ DGtal::Viewer3D<Space, KSpace>::draw()
                          ( posCam.y-centerS.y ) * ( posCam.y-centerS.y ) +
                          ( posCam.z-centerS.z ) * ( posCam.z-centerS.z ) );
 
-  /*
-    for ( unsigned int i=0; i<myBallSetList.size(); i++ )
+  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
     {
-        if ( myBallSetList.at ( i ).size() !=0 )
+      if ( Viewer3D<Space, KSpace>::myBallSetList.at ( i ).size() !=0 )
         {
-            glPointSize ( ( myBallSetList.at ( i ).at ( 0 ).size ) /distCam );
+    glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( i ).at ( 0 ).size ) /distCam );
         }
-        glCallList ( GLuint ( myListToAff+myCubeSetList.size() +myLineSetList.size() +i+1 ) );
+      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size() + Viewer3D<Space, KSpace>::myLineSetList.size() +i+1 ) );
     }
 
-    for ( unsigned int i=0; i<myLineSetList.size(); i++ )
+  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
     {
-        if ( myLineSetList.at ( i ).size() !=0 )
-        {
-            glLineWidth ( ( myLineSetList.at ( i ).at ( 0 ).width ) );
-        }
-        glCallList ( GLuint ( myListToAff+myCubeSetList.size() +1+i ) );
+      if ( Viewer3D<Space, KSpace>::myLineSetList.at ( i ).size() !=0 )
+  {
+    glLineWidth ( ( Viewer3D<Space, KSpace>::myLineSetList.at ( i ).at ( 0 ).width ) );
+  }
+      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size() +1+i ) );
     }
-    */
+
+  glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size() ) );
+  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myCubeSetList.size(); i++ )
+    {
+      glCallList ( myListToAff+i );
+    }
+
 
   glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size() ) );
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size(); i++ )
@@ -676,10 +677,6 @@ DGtal::Viewer3D<Space, KSpace>::draw()
 }
 
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
 template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::selfDisplay ( std::ostream & out ) const
@@ -687,18 +684,13 @@ DGtal::Viewer3D<Space, KSpace>::selfDisplay ( std::ostream & out ) const
   out << "[Viewer3D]";
 }
 
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
+
 template< typename Space, typename KSpace>
 bool
 DGtal::Viewer3D<Space, KSpace>::isValid() const
 {
   return true;
 }
-
-
 
 
 
@@ -1014,15 +1006,14 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     glEndList();
   }
 
-  /**
-   *  Creation of new lists to display 3D mesh
-   *  First list: quad faces.
-   *  Second list: Wired version of quad face.
-   *  Third list: Triangle faces.
-   *  Fourth list: Wired version of triangle face.
-   *  Fifth list: Polygonal faces.
-   *  Sixth list: Wired version of polygonal face.
-   **/
+
+   //  Creation of new lists to display 3D mesh
+   //  First list: quad faces.
+   //  Second list: Wired version of quad face.
+   //  Third list: Triangle faces.
+   //  Fourth list: Wired version of triangle face.
+   //  Fifth list: Polygonal faces.
+   //  Sixth list: Wired version of polygonal face.
 
   unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size() + Viewer3D<Space, KSpace>::myBallSetList.size();
 
@@ -1316,16 +1307,12 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
     updateGL();
   }
 
-  /*
-   * was used to resize the scale
-   */
+ // was used to resize the scale
+
   if ( ( e->key() ==Qt::Key_R ) )
   {
+    // unused now
 
-    /*
-     * unused now
-     *
-     */
     updateGL();
   }
 
@@ -1443,3 +1430,4 @@ DGtal::Viewer3D<Space, KSpace>::helpString() const
   text += "Press <b>Escape</b> to exit the viewer.";
   return text;
 }
+

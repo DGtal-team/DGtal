@@ -945,7 +945,7 @@ private:
 
   /// Used to store all displayed images
   std::vector<TextureImage> myGSImageList;
-  /// Used to store all the domain
+  /// Used to store all the domains
   std::vector<Image2DDomainD3D> myImageDomainList;
 
 

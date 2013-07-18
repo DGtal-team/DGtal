@@ -58,14 +58,11 @@ int main( int argc, char** argv )
   Domain domain( plow, pup );
   K.init( plow, pup, true ); 
 
-  //Viewer3D<Space,KSpace> viewer(K);
   Viewer3D<Space, KSpace> viewer(K);
   viewer.show();
 
-
   viewer << SetMode3D( domain.className(), "Paving" );
-  //with the domain can't see the cubes
-  //viewer << domain;
+  viewer << domain;
 
   // drawing cells of dimension 3  
 
