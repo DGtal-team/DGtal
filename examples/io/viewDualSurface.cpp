@@ -29,8 +29,8 @@
 #include <iostream>
 #include <algorithm>
 #include <QtGui/qapplication.h>
-#include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "ConfigExamples.h"
@@ -151,13 +151,13 @@ void viewPolygons
   const std::vector< std::vector< unsigned int > > & indices,  
   const std::vector<Vector> & points )
 {
-  typedef typename Viewer::pointD3D pointD3D;
+  typedef typename Viewer::ballD3D ballD3D;
   //DGtal::Color color( 200, 200, 220, 255 );
-  std::vector<pointD3D> pts3d;
+  std::vector<ballD3D> pts3d;
   for ( unsigned int f = 0; f < indices.size(); ++f )
     {
       pts3d.clear();
-      pointD3D P;
+      ballD3D P;
       P.R = color.red();
       P.G = color.green();
       P.B = color.blue();
@@ -401,7 +401,7 @@ int main( int argc, char** argv )
   typedef KSpace::CellSet CellSet;
   QApplication application(argc,argv);
   //! [ExampleDisplay3DToOFF]
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();
   DGtal::Color fillColor( 200, 200, 220, 255 );
   DGtal::Color surfelColor( 255, 0, 0, 150 );
@@ -419,7 +419,7 @@ int main( int argc, char** argv )
   // naiveConvexHull( indices, pts, false ); // right_handed
 
   // viewPolygons( viewer, fillColor, indices, pts );
-  // viewer << Viewer3D::updateDisplay;
+  // viewer << Viewer3D<>::updateDisplay;
 
   unsigned int cfg = argc > 1 ? atoi( argv[1] ) : 0;
   unsigned int cfg2 = argc > 2 ? atoi( argv[2] ) : 255;
@@ -459,7 +459,7 @@ int main( int argc, char** argv )
             viewPolygons( viewer, fillColor, indices, pts );
           }
       }
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   //! [ExampleDisplay3DToOFF]
   return application.exec();
 }

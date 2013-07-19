@@ -29,10 +29,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
+
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -53,9 +54,9 @@ int main( int argc, char** argv )
   Domain domain( plow, pup );
   K.init( plow, pup, true );
   
-  Viewer3D viewer;  
+  Viewer3D<Space, KSpace> viewer(K);
   viewer.show();
-  viewer << SetMode3D( domain.className(), "Paving" );
+  //viewer << SetMode3D( domain.className(), "Paving" );
   
   SCell ptlow = K.sPointel( plow ); // pointel (0*2,0*2, 0*2)
   SCell ptup1 = K.sPointel( pup );  // pointel (3*2,3*2, 2*2)
@@ -106,13 +107,15 @@ int main( int argc, char** argv )
 
   // drawing cells of dimension 3  
   SCell vox1 = K.sCell( Point( 3, 3, 3 ) ); // voxel (2*3+1,2*3+1,2*3+1)
-  SCell vox2 = K.sCell( Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)  
+  SCell vox2 = K.sCell( Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)
   viewer << vox1 << vox2;
   
+
   viewer << CameraPosition(-2.9, 2.96, 2.64)
    << CameraDirection(0.6, -0.43, 0.65)
    << CameraUpVector(0.32, 0.900, 0.29);
-  viewer<< Viewer3D::updateDisplay;
+
+  viewer<< Viewer3D<>::updateDisplay;
   return application.exec();
  
   return 0;
