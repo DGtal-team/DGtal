@@ -29,6 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
@@ -36,7 +38,6 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
@@ -53,7 +54,7 @@ int main( int argc, char** argv )
 
   std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
@@ -64,10 +65,10 @@ int main( int argc, char** argv )
   Z3i::Object18_6 obj3d (Z3i::dt18_6, set3d);
   Z3i::Object18_6 border = obj3d.border();
   viewer << border;
-  viewer << ClippingPlane(0,1,0, -40) << Display3D::updateDisplay;
-  //viewer << ClippingPlane(0,-1,0, 70)<< Viewer3D::updateDisplay;
-  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D::updateDisplay;
-  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D::updateDisplay;
+  viewer << ClippingPlane(0,1,0, -40) << Viewer3D<>::updateDisplay;
+  //viewer << ClippingPlane(0,-1,0, 70)<< Viewer3D<>::updateDisplay;
+  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D<>::updateDisplay;
+  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D<>::updateDisplay;
   
   
 
