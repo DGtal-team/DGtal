@@ -522,18 +522,18 @@ inline
 void
 DGtal::Viewer3D<Space, KSpace>::drawWithNames()
 {
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size(); i++ )
+  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
   {
     glCallList ( myListToAff+i );
   }
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
   {
-    glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size() +i ) );
+    glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i ) );
   }
 
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
   {
-    glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size() +Viewer3D<Space, KSpace>::myLineSetList.size() +i ) );
+    glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+Viewer3D<Space, KSpace>::myLineSetList.size() +i ) );
   }
 }
 
@@ -579,7 +579,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         {
     glPointSize ( ( Viewer3D<Space, KSpace>::myBallSetList.at ( i ).at ( 0 ).size ) /distCam );
         }
-      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size() + Viewer3D<Space, KSpace>::myLineSetList.size() +i+1 ) );
+      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myLineSetList.size() +i+1 ) );
     }
 
   for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
@@ -588,24 +588,24 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   {
     glLineWidth ( ( Viewer3D<Space, KSpace>::myLineSetList.at ( i ).at ( 0 ).width ) );
   }
-      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size() +1+i ) );
+      glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()+1+i ) );
     }
 
-  glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size() ) );
-  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myCubeSetList.size(); i++ )
+  glCallList ( GLuint ( myListToAff+ Viewer3D<Space, KSpace>::myCubeSetList.size()) );
+  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
     {
       glCallList ( myListToAff+i );
     }
 
 
-  glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size() ) );
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size(); i++ )
+  glCallList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()) );
+  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
   {
     glCallList ( myListToAff+i );
   }
 
   // Calling lists associated to Mesh display (see. updateList)
-  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size() + Viewer3D<Space, KSpace>::myBallSetList.size();
+  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
   glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
   glDisable(GL_CULL_FACE);
   glCallList ( GLuint ( myListToAff+nbListOfPrimitives+1 ) );
@@ -765,7 +765,7 @@ DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
 {
   compFarthestVoxelFromCamera comp;
   comp.posCam= camera()->position();
-  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myCubeSetList.size(); i++ )
+  for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
   {
     sort ( Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).begin(), Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).end(), comp );
   }
@@ -839,20 +839,20 @@ DGtal::Viewer3D<Space, KSpace>::postSelection ( const QPoint& point )
     if ( selectedName() !=-1 )
     {
       unsigned int id = abs ( selectedName()-1 );
-      if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size() )
+      if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size())
       {
         DGtal::trace.info() << "deleting list="<< id<<endl;
         Viewer3D<Space, KSpace>::myCubeSetList.erase ( Viewer3D<Space, KSpace>::myCubeSetList.begin() +id );
         updateList ( false );
       }
-      else if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size() + Viewer3D<Space, KSpace>::myLineSetList.size() )
+      else if ( id< Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myLineSetList.size() )
       {
-        Viewer3D<Space, KSpace>::myLineSetList.erase ( Viewer3D<Space, KSpace>::myLineSetList.begin() + ( id- Viewer3D<Space, KSpace>::myCubeSetList.size() ) );
+        Viewer3D<Space, KSpace>::myLineSetList.erase ( Viewer3D<Space, KSpace>::myLineSetList.begin() + ( id- Viewer3D<Space, KSpace>::myCubeSetList.size()) );
         updateList ( false );
       }
-      else if ( id< Viewer3D<Space, KSpace>::myBallSetList.size() + Viewer3D<Space, KSpace>::myLineSetList.size() + Viewer3D<Space, KSpace>::myCubeSetList.size() )
+      else if ( id< Viewer3D<Space, KSpace>::myBallSetList.size() + Viewer3D<Space, KSpace>::myLineSetList.size() + Viewer3D<Space, KSpace>::myCubeSetList.size())
       {
-        Viewer3D<Space, KSpace>::myBallSetList.erase ( Viewer3D<Space, KSpace>::myBallSetList.begin() + ( id- Viewer3D<Space, KSpace>::myCubeSetList.size()- Viewer3D<Space, KSpace>::myLineSetList.size() ) );
+        Viewer3D<Space, KSpace>::myBallSetList.erase ( Viewer3D<Space, KSpace>::myBallSetList.begin() + ( id- Viewer3D<Space, KSpace>::myCubeSetList.size() - Viewer3D<Space, KSpace>::myLineSetList.size() ) );
         updateList ( false );
       }
     }
@@ -867,7 +867,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 {
   // Additionnaly to the primitive list (of myCubeSetList myLineSetList.size() myBallSetList.size()) we add
   // 6 new lists associated to the mesh Display.
-  unsigned int nbList= ( unsigned int ) ( Viewer3D<Space, KSpace>::myCubeSetList.size() + Viewer3D<Space, KSpace>::myLineSetList.size() + Viewer3D<Space, KSpace>::myBallSetList.size() +6 );
+  unsigned int nbList= ( unsigned int ) ( Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myLineSetList.size() + Viewer3D<Space, KSpace>::myBallSetList.size() +6 );
   glDeleteLists ( myListToAff, myNbListe );
   myListToAff = glGenLists ( nbList );
   myNbListe=0;
@@ -876,68 +876,147 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEnable ( GL_MULTISAMPLE_ARB );
   glEnable ( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+  //OPT new
 
+  typedef typename std::vector<typename Viewer3D<Space, KSpace>::cubeD3D> vectorCubes;
+  typedef typename vectorCubes::iterator ItCube;
 
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myCubeSetList.size(); i++ )
+  std::vector<ItCube> listIt;
+  std::vector<ItCube> listEnd;
+  int nbCubes =0;
+  unsigned int i =0; //number of lists in myCubeSetList already added to listToAff
+
+  //adding all the unvoid lists of cubes to draw
+  for (typename std::vector<vectorCubes >::iterator it = Viewer3D<Space, KSpace>::myCubeSetList.begin() ; it != Viewer3D<Space, KSpace>::myCubeSetList.end() ; it++ )
   {
-    glNewList ( myListToAff+i, GL_COMPILE );
+    if ((*it).size() > 0 || (*it).begin() != (*it).end() )
+    {
+      nbCubes += (*it).size();
+      listIt.push_back((*it).begin());
+      listEnd.push_back((*it).end());
+    }
+    else
+    {
+      //create void lists
+      glNewList ( myListToAff+i , GL_COMPILE );
+      myNbListe++;
+      glPushName ( myNbListe );
+      glBegin ( GL_QUADS );
+      glEnd();
+      glEndList();
+      i++;
+    }
+  }
 
+  if (listIt.size() > 0)
+  {
+    glNewList ( myListToAff+i , GL_COMPILE );
     myNbListe++;
     glPushName ( myNbListe );
     glBegin ( GL_QUADS );
-    for ( typename std::vector<typename Viewer3D<Space, KSpace>::cubeD3D>::iterator s_it = Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).begin();
-          s_it != Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).end();
-          ++s_it )
+    i++;
+
+
+    compFarthestVoxelFromCamera comp;
+    comp.posCam= camera()->position();
+
+    while (listIt.size() > 0)
     {
-      glColor4ub ( ( *s_it ).R, ( *s_it ).G, ( *s_it ).B, ( *s_it ).T );
-      double _width= ( *s_it ).width;
+      //searchin the farest cube between the lists
+      typename std::vector<ItCube>::iterator itBest= listIt.begin();
+      typename std::vector<ItCube>::iterator endBest= listEnd.begin();
+
+      typename std::vector<ItCube>::iterator itEnd =  listEnd.begin();
+      for ( typename std::vector<ItCube>::iterator it = listIt.begin(); it != listIt.end(); it++)
+      {
+        qglviewer::Vec posCam = camera()->position();
+        typename Viewer3D<Space, KSpace>::cubeD3D s1 = (**it);
+        typename Viewer3D<Space, KSpace>::cubeD3D s2 = (**itBest);
+        double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
+        double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
+        //check if the if the cube is the farhest or the most included( the most small)
+        if (( it != itBest) and
+            (( dist1-s1.width > dist2 - s2.width) or
+             (( dist1-s1.width == dist2 - s2.width) and dist1 > dist2)or
+             (s1.T > s2.T)
+            )
+           )
+        {
+          itBest= it;
+          endBest= itEnd;
+        }
+        itEnd++;
+      }
+
+      typename Viewer3D<Space, KSpace>::cubeD3D cube = (**itBest);
+      glColor4ub ( cube.R, cube.G, cube.B, cube.T );
+      double _width= cube.width;
 
       //z+
       glNormal3f ( 0.0, 0.0, 1.0 );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
+      glVertex3f ( cube.x-_width, cube.y+_width, cube.z+_width );
+      glVertex3f ( cube.x-_width, cube.y-_width, cube.z+_width );
+      glVertex3f ( cube.x+_width, cube.y-_width, cube.z+_width );
+      glVertex3f ( cube.x+_width, cube.y+_width, cube.z+_width );
 
       //z-
       glNormal3f ( 0.0, 0.0, -1.0 );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
+      glVertex3f ( cube.x-_width, cube.y+_width, cube.z-_width );
+      glVertex3f ( cube.x+_width, cube.y+_width, cube.z-_width );
+      glVertex3f ( cube.x+_width, cube.y-_width, cube.z-_width );
+      glVertex3f ( cube.x-_width, cube.y-_width, cube.z-_width );
 
       //x+
       glNormal3f ( 1.0, 0.0, 0.0 );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
+      glVertex3f ( cube.x+_width, cube.y-_width, cube.z+_width );
+      glVertex3f ( cube.x+_width, cube.y-_width, cube.z-_width );
+      glVertex3f ( cube.x+_width, cube.y+_width, cube.z-_width );
+      glVertex3f ( cube.x+_width, cube.y+_width, cube.z+_width );
 
       //x-
       glNormal3f ( -1.0, 0.0, 0.0 );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
+      glVertex3f ( cube.x-_width, cube.y-_width, cube.z+_width );
+      glVertex3f ( cube.x-_width, cube.y+_width, cube.z+_width );
+      glVertex3f ( cube.x-_width, cube.y+_width, cube.z-_width );
+      glVertex3f ( cube.x-_width, cube.y-_width, cube.z-_width );
 
       //y+
       glNormal3f ( 0.0, 1.0, 0.0 );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
+      glVertex3f ( cube.x-_width, cube.y+_width, cube.z+_width );
+      glVertex3f ( cube.x+_width, cube.y+_width, cube.z+_width );
+      glVertex3f ( cube.x+_width, cube.y+_width, cube.z-_width );
+      glVertex3f ( cube.x-_width, cube.y+_width, cube.z-_width );
 
       //y-
       glNormal3f ( 0.0, -1.0, 0.0 );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
-      glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
-      glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
+      glVertex3f ( cube.x-_width, cube.y-_width, cube.z+_width );
+      glVertex3f ( cube.x-_width, cube.y-_width, cube.z-_width );
+      glVertex3f ( cube.x+_width, cube.y-_width, cube.z-_width );
+      glVertex3f ( cube.x+_width, cube.y-_width, cube.z+_width );
+
+      //increment the list where the farest cube were and remove it if ended
+      (*itBest) ++;
+
+      if ((*itBest) == (*endBest) )
+      {
+        listIt.erase(itBest);
+        listEnd.erase(endBest);
+        glEnd();
+        glEndList();
+
+        if (listIt.size() >0)
+        {
+          glNewList ( myListToAff+i , GL_COMPILE );
+          myNbListe++;
+          glPushName ( myNbListe );
+          glBegin ( GL_QUADS );
+          i++;
+        }
+      }
     }
-    glEnd();
-    glEndList();
   }
-  glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size() ), GL_COMPILE );
+
+  glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_DEPTH_TEST );
@@ -965,7 +1044,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
   {
     listeID++;
-    glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size() +i+1 ), GL_COMPILE );
+    glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i+1 ), GL_COMPILE );
     myNbListe++;
     glDisable ( GL_LIGHTING );
     glPushName ( myNbListe );
@@ -985,7 +1064,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
   for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
   {
-    glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size() +i+1 ), GL_COMPILE );
+    glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+i+1 ), GL_COMPILE );
     myNbListe++;
     glDepthMask ( GL_TRUE );
     glDisable ( GL_TEXTURE_2D );
@@ -1015,7 +1094,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
    // Fifth list: Polygonal faces.
    // Sixth list: Wired version of polygonal face.
 
-  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size() + Viewer3D<Space, KSpace>::myBallSetList.size();
+  unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
 
   // First List (quad faces)
   glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 1 ), GL_COMPILE );

@@ -758,7 +758,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
           rp[1]+=0.5;
           rp[2]+=0.5;
           //a transparent color for the paving
-          display.addCube(rp[0], rp[1], rp[2], Color(255, 255 ,255, 15),1.2);
+          display.addCube(rp[0], rp[1], rp[2], Color(255, 255 ,255, 15),1.0);
         }
       }
     }
@@ -895,11 +895,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
     }
     if(mode=="Illustration"|| mode=="IllustrationCustomColor")
     {
-      display.createNewCubeList("KSCube");
-
+      display.createNewCubeList("khalimsky cell");
      display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.80);
     }else{
-      display.createNewCubeList("KSCube");
+      display.createNewCubeList("khalimsky cell");
       display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.90);
     }
     break;
@@ -986,8 +985,11 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
     if(mode=="Illustration"|| mode=="IllustrationCustomColor")
     {
       //KSCube
+      display.createNewCubeList("signed khalimsky cell");
       display.addCube(rps[0], rps[1], rps[2], display.getFillColor(), 0.80);
-    }else{
+    }else
+    {
+      display.createNewCubeList("signed khalimsky cell");
       display.addCube(rps[0], rps[1], rps[2], display.getFillColor(), 0.90 );
     }
     break;
