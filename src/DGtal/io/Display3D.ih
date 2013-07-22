@@ -37,6 +37,10 @@
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/writers/MeshWriter.h"
 
+
+//tmp
+#include <iostream>
+
 //////////////////////////////////////////////////////////////////////////////
 
 

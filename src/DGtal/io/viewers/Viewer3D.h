@@ -120,7 +120,6 @@ public:
 * Constructor
 */
   Viewer3D() :QGLViewer(), Display3D<Space, KSpace>()
-  //Viewer3D() :QGLViewer(), Display3D()
   {};
 
   /**
