@@ -15,9 +15,9 @@
 //! [frontierAndBoundary-basicIncludes]
 #include <iostream>
 #include <QtGui/qapplication.h>
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
@@ -121,7 +121,7 @@ int main( int argc, char** argv )
   //! [volBreadthFirstTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   viewer << SetMode3D( domain.className(), "BoundingBox" )
          << domain;
@@ -150,7 +150,7 @@ int main( int argc, char** argv )
   trace.info() << "nbSurfels10 = " << nbSurfels10
                << ", nbSurfels20 = " << nbSurfels20
                << ", nbSurfels3 = " << nbSurfels3 << std::endl;
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   trace.endBlock();
   return application.exec();
   //! [volBreadthFirstTraversal-DisplayingSurface]

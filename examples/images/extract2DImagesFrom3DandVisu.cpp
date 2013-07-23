@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <sstream>
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageHelper.h"
@@ -40,13 +41,13 @@
 
 
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +56,7 @@ int main( int argc, char** argv )
 
 
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.setWindowTitle("simpleViewer");
   viewer.show();
 
@@ -81,11 +82,11 @@ int main( int argc, char** argv )
     DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
     SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
     viewer << sliceImageZ; 
-    viewer << DGtal::UpdateImagePosition(pos, Display3D::zDirection,  i*20, i*20, i*20 );
+    viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(pos, Viewer3D<>::zDirection,  i*20, i*20, i*20 );
     pos++;
   }
 
-  viewer << DGtal::Display3D::updateDisplay;
+  viewer << DGtal::Viewer3D<>::updateDisplay;
     
 
   application.exec();

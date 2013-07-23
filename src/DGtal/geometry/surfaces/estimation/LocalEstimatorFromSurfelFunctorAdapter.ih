@@ -99,7 +99,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval
     visitor.expand();
   }
 
-  Quantity val = myFunctor->eval(myH);
+  Quantity val = myFunctor->eval();
   myFunctor->reset();
   return val;
 }
@@ -114,7 +114,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval
 {
   for ( SurfelConstIterator it = itb; it != ite; ++it )
   {
-    Quantity q = eval( *it );
+    Quantity q = eval( it );
     *result++ = q;
   }
   

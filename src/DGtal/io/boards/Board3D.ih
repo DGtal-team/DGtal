@@ -35,6 +35,8 @@
 #include "DGtal/io/CDrawableWithDisplay3D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/writers/MeshWriter.h"
+
+#include <limits>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,9 +48,10 @@
    * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
    **/ 
+template < typename Space, typename KSpace>
 inline
-DGtal::Board3D &
-DGtal::Board3D::operator<<(const DGtal::Color & aColor){
+DGtal::Board3D<Space, KSpace> &
+DGtal::Board3D<Space, KSpace>::operator<<(const DGtal::Color & aColor){
   myDefaultColor=aColor;
   return *this;
 }
@@ -62,12 +65,13 @@ DGtal::Board3D::operator<<(const DGtal::Color & aColor){
    * @param object any drawable object.
    * @return a reference on 'this'.
    */
+template < typename Space, typename KSpace>
 template <typename TDrawableWithDisplay3D>
 inline
-DGtal::Board3D &
-DGtal::Board3D::operator<<( const TDrawableWithDisplay3D & object )
+DGtal::Board3D<Space, KSpace> &
+DGtal::Board3D<Space, KSpace>::operator<<( const TDrawableWithDisplay3D & object )
 {
-  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
+  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D, Space, KSpace>));
 
   DGtal::Display3DFactory::draw(*this, object);
   return *this;
@@ -75,7 +79,391 @@ DGtal::Board3D::operator<<( const TDrawableWithDisplay3D & object )
 
 
 
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+/*!
+ * \brief Constructor.
+ */
+template < typename Space, typename KSpace>
+inline
+DGtal::Board3D<Space, KSpace>::Board3D()
+{
+  Board3D<Space, KSpace>::init();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param outOBJ the output stream where the object is written.
+ */
+template < typename Space, typename KSpace>
+inline
+void
+DGtal::Board3D<Space, KSpace>::selfDisplay ( std::ostream & outOBJ ) const
+{
+  outOBJ << "[Board3D]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template < typename Space, typename KSpace>
+bool
+DGtal::Board3D<Space, KSpace>::isValid() const
+{
+  return true;
+}
+
+
+/**
+ * Save a OBJ image.
+ * @param filename filename of the image to save.
+ */
+template < typename Space, typename KSpace>
+inline
+void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
+{
+
+  std::cout << " [[ ";
+  size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
+  double red, green, blue , transp; // colors of the elements
+  double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
+  std::ofstream outOBJ; //OBJ file where to write
+  std::ofstream outMTL; //MTL file where to write
+
+  //OPT parametrer la resolution ?
+  //WARNING quand deux obj ont le meme nom ils fusionnent (danger deux sets differents fusionnes)
+  //TODOLP transferer le cpp dans ih
+
+  //TODOLP mettre des ASSERT
+  //TODO faire le .MTL
+
+  std::string noExt(filename.substr(0, filename.find_first_of("."))); //the filename withoutOBJ any extention
+  std::stringstream strOBJ;
+  std::stringstream strMTL;
+  strOBJ << noExt << ".obj";
+  strMTL << noExt << ".mtl";
+
+  //Kd R G B    colors(MTL)
+  // d 0-1    Transparency(MTL)
+
+  //usemtl Material     (OBJ)
+
+
+  outOBJ.open(strOBJ.str().c_str());
+  outOBJ << "#  OBJ format"<< std::endl;
+  outOBJ << "# generated from Board3D from the DGTal library"<< std::endl;
+  //outOBJ << "mtllib " <<  strMTL.str() << std::endl;
+  outOBJ << std::endl;
+
+  outMTL.open(strMTL.str().c_str());
+  outMTL << "#  MTL format"<< std::endl;
+  outMTL << "# generated from Board3D from the DGTal library"<< std::endl;
+
+  // TODOLP tests unitaires pour chaque partie
+
+  //myClippingPlaneList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //std::vector< clippingPlaneD3D >::const_iterator
+  {
+    if(Board3D<Space, KSpace>::myClippingPlaneList.size()> 0)
+    {
+      trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
+                   << Board3D<Space, KSpace>::myClippingPlaneList.size() << std::endl;
+    }
+  }
+
+  // Draw the shapes -----------------------------------------------------------------------
+
+  // myBallSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
+    k=0;//id of each BallSetList for the .OBJ identification
+    for ( typename std::vector< std::vector< typename Board3D<Space, KSpace>::ballD3D> >::const_iterator it = Board3D<Space, KSpace>::myBallSetList.begin();
+          it != Board3D<Space, KSpace>::myBallSetList.end(); it++)
+    {
+      std::ostringstream tmpStream; // checking that points exist before creating an object
+      for (typename std::vector<  typename Board3D<Space, KSpace>::ballD3D>::const_iterator s_it = it->begin();
+           s_it != it->end(); s_it++)
+      {
+        tmpStream << "v " << s_it->x << " " << s_it->y << " " << s_it->z << std::endl;
+        tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
+        /*
+        if (s_it== it->begin())
+        {
+          red= ((double)s_it->R) /255.0;
+          green =  ((double)s_it->G) /255.0;
+          blue =  ((double)s_it->B) /255.0;
+          transp =  ((double)s_it->T) /255.0;  // NOTE note sure
+        }*/
+      }
+
+      if (tmpStream.str().size() > 0)
+      {
+        std::stringstream name;
+        name << Board3D<Space, KSpace>::myBallSetNameList.at(k);
+        if ( name.str() == "")
+        {
+          name << "myBallSetList_" << k ;
+        }
+        //NOTE up until now one object = one material
+        std::stringstream matName;
+        matName << name.str() << "MAT";
+
+        outOBJ << "o  " << name.str() << std::endl;
+        //outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << tmpStream.str();
+
+        /* outMTL << "newmtl " << matName.str() <<std::endl;
+        outMTL << "kd " << red << green << blue << std::endl;
+        outMTL << "d "<< transp << std::endl; */
+
+        //TODO a enlever
+        std::cout << "point " << k <<std::endl;
+      }
+      k++;
+    }
+  }
+
+  // myLineSetList+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
+    j =0;
+    k=0;//id of each LineSetList for the .OBJ identification
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::lineD3D> >::const_iterator it =Board3D<Space, KSpace>::myLineSetList.begin();
+        it!= Board3D<Space, KSpace>::myLineSetList.end();   it++)
+    {
+      std::ostringstream tmpStream;
+      for (typename std::vector< typename Board3D<Space, KSpace>::lineD3D>::const_iterator s_it = it->begin();
+           s_it != it->end();++s_it)
+      {
+        // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1 -sizePixel << " " << s_it->z1 << std::endl;
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1 +sizePixel << " " << s_it->z1 << std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2 +sizePixel << " " << s_it->z2 << std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2 -sizePixel << " " << s_it->z2 << std::endl;
+
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -sizePixel << std::endl;
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +sizePixel<< std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +sizePixel<< std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -sizePixel<< std::endl;
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+        tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+        tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+        tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+
+        j++;
+      }
+      if (tmpStream.str() != "")
+      {
+        std::stringstream name;
+        name << Board3D<Space, KSpace>::myLineSetNameList.at(k);
+        if ( name.str()== "")
+        {
+          name << "myLineSetList_" << k ;
+        }
+        std::stringstream matName;
+        matName << name.str() << "MAT";
+
+        outOBJ << "o  " << name.str() << std::endl;
+        //outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << tmpStream.str();
+
+        /* outMTL << "newmtl " << matName.str() <<std::endl;
+        outMTL << "kd " << red << green << blue << std::endl;
+        outMTL << "d "<< transp << std::endl; */
+      }
+
+      k++;
+    }
+  }
+
+  // myCubeSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
+    j  = 0 ; //id of each Cube sub list for the .OBJ identification
+    k = 0; // id of each list
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::cubeD3D> >::const_iterator it =Board3D<Space, KSpace>::myCubeSetList.begin();
+        it != Board3D<Space, KSpace>::myCubeSetList.end();   it++)
+    {
+      std::ostringstream tmpStream;
+      for (typename std::vector< typename Board3D<Space, KSpace>::cubeD3D>::const_iterator s_it = it->begin();
+           s_it != it->end(); ++s_it)
+      {
+        // this version is  one cube with (x,y,z) the center of it and wid its distance between it and its faces
+        double wid = s_it->width;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
+        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
+        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
+
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+        tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+        tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+        tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+        j ++;
+      }
+
+      if (tmpStream.str() != "")
+      {
+        std::stringstream name;
+        name << Board3D<Space, KSpace>::myCubeSetNameList.at(k);
+        if ( name.str() == "")
+        {
+          name << "myCubeSetList_" << k ;
+        }
+        std::stringstream matName;
+        matName << name.str() << "MAT";
+
+        outOBJ << "o  " << name.str() << std::endl;
+        //outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << tmpStream.str();
+
+        /* outMTL << "newmtl " << matName.str() <<std::endl;
+        outMTL << "kd " << red << green << blue << std::endl;
+        outMTL << "d "<< transp << std::endl; */
+      }
+      k++;
+    }
+  }
+
+  // myQuadList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  {
+    //std::vector<quadD3D>::const_iterator
+    k = 0; // id of each list
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::quadD3D> >::const_iterator it =Board3D<Space, KSpace>::myQuadSetList.begin();
+        it != Board3D<Space, KSpace>::myQuadSetList.end();   it++)
+    {
+      std::ostringstream tmpStream;
+      for (typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::const_iterator s_it = it->begin();
+           s_it != it->end(); ++s_it)
+      {
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+        tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+        tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+
+        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;
+      }
+      if (tmpStream.str() != "")
+      {
+        std::stringstream name;
+        name << Board3D<Space, KSpace>::myCubeSetNameList.at(k);
+        if ( name.str() == "")
+        {
+          name << "myCubeSetList_" << k ;
+        }
+        outOBJ << "o  " << name.str() << std::endl;
+        outOBJ << tmpStream.str() ;
+      }
+    }
+
+
+    // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
+
+    // SurfelPrism (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    {
+      j=0;
+      k=0;
+      std::ostringstream tmpStream;
+
+      for (typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::iterator s_it = Board3D<Space, KSpace>::mySurfelPrismList.begin();
+           s_it != Board3D<Space, KSpace>::mySurfelPrismList.end();
+           ++s_it)
+      {
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+        tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+        tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+
+        double nx = s_it->nx;
+        double ny = s_it->ny;
+        double nz = s_it->nz;
+
+        tmpStream << "v " << s_it->x1 +nx     << " " << s_it->y1 +ny      << " " << s_it->z1 +nz << std::endl;
+        tmpStream << "v " << s_it->x2 +nx     << " " << s_it->y2 +ny      << " " << s_it->z2 +nz << std::endl;
+        tmpStream << "v " << s_it->x3 +nx     << " " << s_it->y3 +ny      << " " << s_it->z3 +nz << std::endl;
+        tmpStream << "v " << s_it->x4 +nx     << " " << s_it->y4 +ny      << " " << s_it->z4 +nz << std::endl;
+
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
+        tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
+        tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
+        tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
+        tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
+        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+        j++;
+      }
+
+      if (tmpStream.str() != "")
+      {
+        std::string name= Board3D<Space, KSpace>::mySurfelPrismNameList.at(k);
+        if ( name== "")
+        {
+          name = "mySurfelPrismList" ;
+        }
+        outOBJ << "o  " << name << std::endl;
+        outOBJ << tmpStream.str() ;
+      }
+    }
+  }
+
+  // end SurfelPrism (from updateList)+++++++++++++++++++++++++++++++
+  outOBJ.close();
+  outMTL.close();
+}
+
+
+
+/*!
+ * \brief init function (should be in Constructor).
+ */
+template < typename Space, typename KSpace>
+inline
+void
+DGtal::Board3D<Space, KSpace>::init()
+{
+
+  Board3D<Space, KSpace>::createNewCubeList();
+  Board3D<Space, KSpace>::createNewLineList();
+  Board3D<Space, KSpace>::createNewBallList();
+
+  Board3D<Space, KSpace>::myCurrentFillColor = DGtal::Color (220, 220, 220);
+  Board3D<Space, KSpace>::myCurrentLineColor = DGtal::Color (22, 22, 222, 50);
+  Board3D<Space, KSpace>::myDefaultColor= DGtal::Color(255, 255, 255);
+  Board3D<Space, KSpace>::myModes["Board3D"]="SolidMode";
+
+  std::string nameLineSet;
+  Board3D<Space, KSpace>::myLineSetNameList.push_back(nameLineSet);
+
+  std::string nameBallSet;
+  Board3D<Space, KSpace>::myBallSetNameList.push_back(nameBallSet);
+
+  std::string nameClippingPlane;
+  Board3D<Space, KSpace>:: myClippingPlaneNameList.push_back(nameClippingPlane);
+
+  std::string nameSurfelPrism;
+  Board3D<Space, KSpace>::mySurfelPrismNameList.push_back(nameSurfelPrism);
+
+  std::string nameQuad;
+  Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);
+
+  std::string nameTriangle;
+  Board3D<Space, KSpace>::myTriangleSetNameList.push_back(nameTriangle);
+
+  std::string namePolygon;
+  Board3D<Space, KSpace>::myPolygonSetNameList.push_back(namePolygon);
+}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
 

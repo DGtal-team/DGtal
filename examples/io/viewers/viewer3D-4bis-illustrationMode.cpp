@@ -51,15 +51,16 @@ int main( int argc, char** argv )
 {
 
   QApplication application(argc,argv);
-  Viewer3D viewer;
-  viewer.show();
 
   KSpace K;
   Point plow(0,0,0);  
   Point pup(1,1,0);
   Domain domain( plow, pup );
   K.init( plow, pup, true ); 
-  
+
+  Viewer3D<Space, KSpace> viewer(K);
+  viewer.show();
+
   viewer << SetMode3D( domain.className(), "Paving" );
   viewer << domain;
 
@@ -79,7 +80,7 @@ int main( int argc, char** argv )
   // Surfel of Voxel (0,0)
   //! [KSIllustrationModeTransformed]
   SCell sx = K.sIncident( v, 0, true ); // surfel further along x  
-  DGtal::TransformedKSSurfel tsx (sx, v);
+  DGtal::TransformedSurfelPrism tsx (sx, v);
   //! [KSIllustrationModeTransformed]
   
   SCell sy = K.sIncident( v, 1, true ); // surfel further along y  
@@ -90,11 +91,11 @@ int main( int argc, char** argv )
   
   // Resizing and shifting the surfel towords its associated voxel (v).
   
-  DGtal::TransformedKSSurfel tsy (sy, v);
-  DGtal::TransformedKSSurfel tsz (sz, v);
-  DGtal::TransformedKSSurfel tsxn (sxn, v);
-  DGtal::TransformedKSSurfel tsyn (syn, v);
-  DGtal::TransformedKSSurfel tszn (szn, v);
+  DGtal::TransformedSurfelPrism tsy (sy, v);
+  DGtal::TransformedSurfelPrism tsz (sz, v);
+  DGtal::TransformedSurfelPrism tsxn (sxn, v);
+  DGtal::TransformedSurfelPrism tsyn (syn, v);
+  DGtal::TransformedSurfelPrism tszn (szn, v);
   
   viewer << tsx << tsy << tsz << tsxn << tsyn << tszn;
 
@@ -108,12 +109,12 @@ int main( int argc, char** argv )
   SCell szn2 = K.sIncident( v2, 2, false ); // surfel further along z  
 
   // Resizing and shifting the surfel towords its associated voxel (v2).
-  DGtal::TransformedKSSurfel tsx2 (sx2, v2);
-  DGtal::TransformedKSSurfel tsy2 (sy2, v2);
-  DGtal::TransformedKSSurfel tsz2 (sz2, v2);
-  DGtal::TransformedKSSurfel tsxn2 (sxn2, v2);
-  DGtal::TransformedKSSurfel tsyn2 (syn2, v2);
-  DGtal::TransformedKSSurfel tszn2 (szn2, v2);
+  DGtal::TransformedSurfelPrism tsx2 (sx2, v2);
+  DGtal::TransformedSurfelPrism tsy2 (sy2, v2);
+  DGtal::TransformedSurfelPrism tsz2 (sz2, v2);
+  DGtal::TransformedSurfelPrism tsxn2 (sxn2, v2);
+  DGtal::TransformedSurfelPrism tsyn2 (syn2, v2);
+  DGtal::TransformedSurfelPrism tszn2 (szn2, v2);
   
   viewer << tsx2 << tsy2 << tsz2 << tsxn2 << tsyn2 << tszn2;
 
@@ -127,16 +128,16 @@ int main( int argc, char** argv )
   SCell szn3 = K.sIncident( v3, 2, false ); // surfel further along z  
  
   // Shifting the surfel to its associated voxel (v3).
-  DGtal::TransformedKSSurfel tsx3 (sx3, v3);
-  DGtal::TransformedKSSurfel tsy3 (sy3, v3);
-  DGtal::TransformedKSSurfel tsz3 (sz3, v3);
-  DGtal::TransformedKSSurfel tsxn3 (sxn3, v3);
-  DGtal::TransformedKSSurfel tsyn3 (syn3, v3);
-  DGtal::TransformedKSSurfel tszn3 (szn3, v3);
+  DGtal::TransformedSurfelPrism tsx3 (sx3, v3);
+  DGtal::TransformedSurfelPrism tsy3 (sy3, v3);
+  DGtal::TransformedSurfelPrism tsz3 (sz3, v3);
+  DGtal::TransformedSurfelPrism tsxn3 (sxn3, v3);
+  DGtal::TransformedSurfelPrism tsyn3 (syn3, v3);
+  DGtal::TransformedSurfelPrism tszn3 (szn3, v3);
   
   
   viewer << tsx3 << tsy3 << tsz3 << tsxn3 << tsyn3 << tszn3;
-  viewer  << Display3D::updateDisplay; 
+  viewer  << Display3D<Space, KSpace>::updateDisplay;
 
   return application.exec();
 }
