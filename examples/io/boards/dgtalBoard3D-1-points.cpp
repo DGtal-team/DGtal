@@ -58,7 +58,7 @@ int main()
   shape_set.insertNew(p7);
 
   
-  Board3D board;
+  Board3D<> board;
 
   board << SetMode3D(domain.className(), "PavingGrids");
   board << p1 << p2 << p3;
