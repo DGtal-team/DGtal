@@ -63,7 +63,8 @@ namespace DGtal
    * Description of class 'Board3D' <p>
    * @brief Class for OBJ export
    */
-  class Board3D : public Display3D
+template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
+  class Board3D : public Display3D<Space, KSpace>
   {
   public:
 
@@ -72,6 +73,21 @@ namespace DGtal
      * \brief Constructor.
      */
     Board3D();
+
+    /**
+    * Constructor with a khalimsky space
+    * @param KSEmb the Khalimsky space
+    */
+    Board3D( KSpace KSEmb):Display3D<Space,KSpace>(KSEmb) {}
+
+    /**
+        *Constructor with a space and a khalimsky space
+        *@param SEmb a space
+        *@param KSEmb a khalimsky space
+        **/
+    Board3D( Space SEmb, KSpace KSEmb):Display3D<Space,KSpace>(SEmb, KSEmb){}
+
+
 
     /*!
      * \brief Destructor.
@@ -110,8 +126,6 @@ namespace DGtal
     DGtal::Color myDefaultColor;  //!< default color
 
 
-
-
     /**
      * Set the default color for future drawing.
      *
@@ -119,7 +133,6 @@ namespace DGtal
      *
      **/
     Board3D & operator<<(const DGtal::Color & aColor);
-
 
 
     /**
@@ -133,7 +146,6 @@ namespace DGtal
     template <typename TDrawableWithDisplay3D>
     Board3D & operator<<( const  TDrawableWithDisplay3D & object );
 
-  public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -141,14 +153,12 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const;
 
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-
-  public:
-
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -160,8 +170,6 @@ namespace DGtal
      *  init function (should be in Constructor).
      */
     virtual void init();
-
-  private:
 
   }; // end of class Board3D
   
@@ -175,8 +183,9 @@ namespace DGtal
    * @param object the object of class 'Board3D' to write.
    * @return the output stream after the writing.
    */
+  template < typename Space, typename KSpace>
   std::ostream&
-  operator<< ( std::ostream & out, const Board3D & object );
+  operator<< ( std::ostream & out, const Board3D<Space, KSpace> & object );
 
 } // namespace DGtal
 

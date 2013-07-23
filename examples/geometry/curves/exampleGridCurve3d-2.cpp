@@ -132,7 +132,7 @@ int main( int argc, char** argv )
   // for 3D display with Viewer3D
   QApplication application(argc,argv);
   trace.beginBlock( "Display all with QGLViewer." );
-  Viewer3D viewer;  
+  Viewer3D<> viewer;
   viewer.show(); 
   // Displaying all the surfels in transparent mode
   viewer << SetMode3D( surf.className(), "Transparent");
@@ -142,7 +142,7 @@ int main( int argc, char** argv )
   
 
   // Displaying slice
-  viewer << Viewer3D::shiftSurfelVisu; 
+  viewer << Viewer3D<>::shiftSurfelVisu;
   viewer << SetMode3D( surf.className(), "");
   viewer.setFillColor( Color( 50, 50, 255 ) );  
 
@@ -167,7 +167,7 @@ int main( int argc, char** argv )
       trace.info() << "Display type not known. Use option -h" << std::endl; 
     }
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   trace.endBlock();
     
   return application.exec();

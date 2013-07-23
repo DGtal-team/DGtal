@@ -28,12 +28,13 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include "DGtal/io/viewers/Viewer3D.h"
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -49,7 +50,7 @@ int main( int argc, char** argv )
  
 
  QApplication application(argc,argv);
- Viewer3D viewer;
+ Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
 
@@ -79,22 +80,22 @@ int main( int argc, char** argv )
 
  viewer << p13D << p23D << p13Dt << p23Dt << p13Dtt << p23Dtt;
  viewer << dom << dom2 << dom3;
- viewer << SetMode3D( dom4.className(), "InterGrid" );
+ viewer << SetMode3D( dom4.className(), "Grid" );
  viewer << dom4 << dom5 << dom6;
  viewer << SetMode3D( dom4.className(), "Grid" );
  viewer << dom7 << dom8 << dom9;
 
- viewer << Update2DDomainPosition(0, Display3D::xDirection, 0, 0, 0);
- viewer << Update2DDomainPosition(1, Display3D::yDirection, 0, 0, 0);
- viewer << Update2DDomainPosition(2, Display3D::zDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(0, Viewer3D<Space, KSpace>::xDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(1, Viewer3D<Space, KSpace>::yDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(2, Viewer3D<Space, KSpace>::zDirection, 0, 0, 0);
 
- viewer << Update2DDomainPosition(3, Display3D::xDirection, 0, 0, 0);
- viewer << Update2DDomainPosition(4, Display3D::yDirection, 0, 0, 0);
- viewer << Update2DDomainPosition(5, Display3D::zDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(3, Viewer3D<Space, KSpace>::xDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(4, Viewer3D<Space, KSpace>::yDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(5, Viewer3D<Space, KSpace>::zDirection, 0, 0, 0);
 
- viewer << Update2DDomainPosition(6, Display3D::xDirection, 0, 0, 0);
- viewer << Update2DDomainPosition(7, Display3D::yDirection, 0, 0, 0);
- viewer << Update2DDomainPosition(8, Display3D::zDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(6, Viewer3D<Space, KSpace>::xDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(7, Viewer3D<Space, KSpace>::yDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(8, Viewer3D<Space, KSpace>::zDirection, 0, 0, 0);
 
  viewer << DGtal::Translate2DDomain(3, 20, 20 ,20);  
  viewer << DGtal::Translate2DDomain(4, 20, 20 ,20);  
@@ -104,7 +105,7 @@ int main( int argc, char** argv )
  viewer << DGtal::Translate2DDomain(7, 40, 20 ,20);  
  viewer << DGtal::Translate2DDomain(8, 40, 20 ,20);  
 
- viewer <<  Display3D::updateDisplay;
+ viewer <<  Viewer3D<>::updateDisplay;
 
  bool res = application.exec();
  return res ? 0 : 1;

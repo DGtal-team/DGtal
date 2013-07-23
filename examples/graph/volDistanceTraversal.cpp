@@ -17,6 +17,7 @@
 #include <queue>
 #include <QImageReader>
 #include <QtGui/qapplication.h>
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -25,7 +26,7 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/images/ImageSelector.h"
@@ -140,7 +141,7 @@ int main( int argc, char** argv )
   //! [volDistanceTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
   MyDistanceVisitor visitor2( digSurf, vfunctor, bel );
@@ -156,7 +157,7 @@ int main( int argc, char** argv )
              << ks.unsigns( n.first );
       visitor2.expand();
     }
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
   trace.endBlock();
   return application.exec();

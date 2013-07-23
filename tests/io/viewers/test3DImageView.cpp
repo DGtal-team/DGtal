@@ -31,7 +31,7 @@
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -51,6 +51,7 @@
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
+
 
 
 
@@ -94,7 +95,7 @@ int main( int argc, char** argv )
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, unsigned int>  imageCol;
 
  QApplication application(argc,argv);
- Viewer3D viewer;
+ Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  
@@ -110,15 +111,15 @@ int main( int argc, char** argv )
  imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
  imageCol image3 = DGtal::GenericReader<imageCol>::import(filename3); 
  
- viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct >(image2, hueFct(), Display3D::RGBMode );
+ viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct , Z3i::Space, Z3i::KSpace>(image2, hueFct(), Viewer3D<>::RGBMode );
  viewer << image;
- viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  DefaultFunctor >(image3, DefaultFunctor(), Display3D::RGBMode );
- viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  50, 50, 50 );
- viewer << DGtal::UpdateImagePosition(2, Display3D::yDirection,  0, 0, 0);
+ viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  DefaultFunctor, Z3i::Space, Z3i::KSpace>(image3, DefaultFunctor(), Viewer3D<>::RGBMode );
+ viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection,  50, 50, 50 );
+ viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(2, Viewer3D<>::yDirection,  0, 0, 0);
  
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );
  viewer << image.domain();
- viewer << DGtal::Update2DDomainPosition(0, Display3D::xDirection, 0, 0, 0);
+ viewer << DGtal::Update2DDomainPosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection, 0, 0, 0);
  for(unsigned int i= 0; i< 10; i++){
    if(i%4==0){
      viewer << SetMode3D( image.className(), "" );
@@ -135,7 +136,7 @@ int main( int argc, char** argv )
 
 
  viewer << p1 << p2 << p3;
- viewer << Display3D::updateDisplay;
+ viewer << Viewer3D<>::updateDisplay;
 
 
  bool res = application.exec();

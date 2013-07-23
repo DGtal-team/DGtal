@@ -139,13 +139,14 @@ given type).
 
 | Dimension | Name              | Description                                   | Class name    | Comment                                                        |
 |------------|-------------------|-----------------------------------------------|---------------|----------------------------------------------------------------|
-|         2D | PGM               | Grayscale  netpbm image format                | PNMReader     | http://netpbm.sourceforge.net/                                 |
-|            | any Magick format | Any file format in the GraphicsMagick library | MagickReader  | with @a WITH_MAGICK build flag, http://www.graphicsmagick.org/ |
-|         3D | PGM3D             | Grayscale  netpbm image format                | PNMReader     |                                                                |
-|            | Vol               | Volumetric file format                        | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
-|            | Longvol           | Volumetric file format (long)                 | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
-|         nD | Raw8              | raw binary file format on 8bits               | RawReader     |                                                                |
-|         2D | HDF5              | HDF5 file with 2D image dataset(s)            | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
+|         2D | PGM               | Grayscale  netpbm image format                         | PNMReader     | http://netpbm.sourceforge.net/                                 |
+|            | any Magick format | Any file format in the GraphicsMagick library          | MagickReader  | with @a WITH_MAGICK build flag, http://www.graphicsmagick.org/ |
+|         3D | PGM3D             | Grayscale  netpbm image format                         | PNMReader     |                                                                |
+|            | PGM               | Same as PGM3D but with same header as in 2D (P2 or P5) | PNMReader     |                                                                |
+|            | Vol               | Volumetric file format                                 | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
+|            | Longvol           | Volumetric file format (long)                          | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
+|         nD | Raw8              | raw binary file format on 8bits                        | RawReader     |                                                                |
+|         2D | HDF5              | HDF5 file with 2D image dataset(s)                     | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
 
 
 The class GenericReader (DGtal/io/reader/GenericReader.h) allows to automatically import any image (2d, 3d, nd) from its filename:
@@ -219,10 +220,10 @@ Afterwards the set is thresholded in ]0,255[:
 @code
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   viewer << SetMode3D(image.domain().className(), "BoundingBox");
-  viewer << set3d << image.domain()  << Viewer3D::updateDisplay;
+  viewer << set3d << image.domain()  << Viewer3D<>::updateDisplay;
 @endcode
 
 
@@ -254,7 +255,7 @@ We can change the way to select the coordinate field:
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
- viewer   << Viewer3D::updateDisplay;
+ viewer   << Viewer3D<>::updateDisplay;
 @endcode
 
 You may obtain the following visualisation:

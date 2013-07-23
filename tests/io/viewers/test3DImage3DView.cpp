@@ -88,7 +88,7 @@ int main( int argc, char** argv )
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z3i::Domain, unsigned char>  Image3D;
 
  QApplication application(argc,argv);
- Viewer3D viewer;
+ Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  
@@ -98,11 +98,11 @@ int main( int argc, char** argv )
  Point p3( 30, 30, 30 );
  
  std::string filename =  testPath + "samples/lobsterCroped.vol";
- 
+ viewer.setFillTransparency(150);
  Image3D image3d =  VolReader<Image3D>::importVol(filename); 
  viewer << SetMode3D(image3d.className(), "BoundingBox");
- viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  hueFct >(image3d, hueFct(), Display3D::RGBMode );
-
+ viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  hueFct , Space, KSpace>(image3d, hueFct(),Viewer3D<>::RGBMode );
+ viewer.setFillTransparency(255);
  // Extract some slice images:
  // Get the 2D domain of the slice:
  DGtal::Projector<DGtal::Z2i::Space>  invFunctor; invFunctor.initRemoveOneDim(2);
@@ -116,10 +116,10 @@ int main( int argc, char** argv )
   SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
 
   viewer << sliceImageZ;
-  viewer <<  DGtal::UpdateImagePosition(6, DGtal::Display3D::zDirection, 0.0, 0.0, -10.0);  
+  viewer <<  DGtal::UpdateImagePosition<Space, KSpace>(6, Viewer3D<>::zDirection, 0.0, 0.0, -10.0);
  
  viewer << p1 << p2 << p3;
- viewer << Display3D::updateDisplay;
+ viewer << Viewer3D<>::updateDisplay;
 
 
  bool res = application.exec();

@@ -37,12 +37,12 @@
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
 
+#include "DGtal/io/viewers/Viewer3D.h"
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/Display3D.h"
 
+#include "DGtal/io/Display3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
@@ -178,7 +178,7 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-segment]
 
   //! [greedy-plane-segmentation-visualization]
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   for ( std::map<Vertex,SegmentedPlane*>::const_iterator 
           it = v2plane.begin(), itE = v2plane.end();
@@ -187,7 +187,7 @@ int main( int argc, char** argv )
       viewer << CustomColors3D( it->second->color, it->second->color );
       viewer << ks.unsigns( it->first );
     }
-  viewer << Display3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   //! [greedy-plane-segmentation-visualization]
 
   //! [greedy-plane-segmentation-freeMemory]
