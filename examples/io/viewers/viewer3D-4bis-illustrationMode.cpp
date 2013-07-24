@@ -30,10 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 //!  [SetKSIllustrationMode3DHeader]
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 //!  [SetKSIllustrationMode3DHeader]

@@ -28,7 +28,6 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include "DGtal/io/viewers/Viewer3D.h"
 #include <iostream>
 #include "ConfigTest.h"
 #include "DGtal/base/Common.h"
@@ -47,6 +46,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -54,8 +54,8 @@
 
 
 #include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
-
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

@@ -29,10 +29,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 /////////////////////ddzad//////////////////////////////////////////////////////////
 
 using namespace std;
