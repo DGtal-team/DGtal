@@ -916,9 +916,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     glBegin ( GL_QUADS );
     i++;
 
-
-    compFarthestVoxelFromCamera comp;
-    comp.posCam= camera()->position();
+    qglviewer::Vec posCam = camera()->position();
 
     while (listIt.size() > 0)
     {
@@ -926,26 +924,29 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
       typename std::vector<ItCube>::iterator itBest= listIt.begin();
       typename std::vector<ItCube>::iterator endBest= listEnd.begin();
 
+      int idxBest = 0; int idx =0;
       typename std::vector<ItCube>::iterator itEnd =  listEnd.begin();
       for ( typename std::vector<ItCube>::iterator it = listIt.begin(); it != listIt.end(); it++)
       {
-        qglviewer::Vec posCam = camera()->position();
+
         typename Viewer3D<Space, KSpace>::cubeD3D s1 = (**it);
         typename Viewer3D<Space, KSpace>::cubeD3D s2 = (**itBest);
         double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
         double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
         //check if the if the cube is the farhest or the most included( the most small)
         if (( it != itBest) and
-            (( dist1-s1.width > dist2 - s2.width) or
-             (( dist1-s1.width == dist2 - s2.width) and dist1 > dist2)or
-             (s1.T > s2.T)
+            ((( dist1+(2*s1.width) - (dist2 - (2*s2.width))) < 0)
+             or( ( dist1-s1.width == dist2 - s2.width) and (dist1 > dist2) )
+             or( (( dist1+(2*s1.width) - (dist2 - (2*s2.width))) >0) and (s1.T > s2.T) )
             )
            )
         {
           itBest= it;
           endBest= itEnd;
+          idxBest = idx;
         }
         itEnd++;
+        idx++;
       }
 
       typename Viewer3D<Space, KSpace>::cubeD3D cube = (**itBest);
@@ -1015,6 +1016,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
       }
     }
   }
+
+
 
   glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()), GL_COMPILE );
   myNbListe++;
