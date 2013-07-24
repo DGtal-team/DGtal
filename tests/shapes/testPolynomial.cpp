@@ -31,7 +31,6 @@
 
 #include <iostream>
 #include <QtGui/QApplication>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -44,6 +43,7 @@
 #include "DGtal/topology/SCellsFunctors.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
 #include "DGtal/topology/SetOfSurfels.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
