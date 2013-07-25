@@ -935,9 +935,10 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
         double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
         //check if the if the cube is the farhest or the most included( the most small)
         if (( it != itBest) and
-            ((( dist1+(2*s1.width) - (dist2 - (2*s2.width))) < 0)
+            (
+             (( (dist2 + (2*s2.width)) - (dist1-(2*s1.width)) ) < 0)
              or( ( dist1-s1.width == dist2 - s2.width) and (dist1 > dist2) )
-             or( (( dist1+(2*s1.width) - (dist2 - (2*s2.width))) >0) and (s1.T > s2.T) )
+             or( (( (dist2 + (2*s2.width)) - (dist1 -(2*s1.width)) ) > 0) and (s1.T > s2.T) )
             )
            )
         {

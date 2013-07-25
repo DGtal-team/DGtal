@@ -401,11 +401,9 @@ public:
 * @param x4 x of the 4th point
 * @param y4 y of the 4th point
 * @param z4 z of the 4th point
-* @param aColor the quad color.
 */
   virtual void addQuad(double x1, double y1, double z1, double x2, double y2, double z2,
-                       double x3, double y3, double z3, double x4, double y4, double z4,
-                       DGtal::Color aColor);
+                       double x3, double y3, double z3, double x4, double y4, double z4);
 
   /**
 * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
@@ -418,19 +416,17 @@ public:
 * @param x3 x of the 3rd point
 * @param y3 y of the 3rd point
 * @param z3 z of the 3rd point
-* @param aColor to remove
 */
   virtual void addTriangle(double x1, double y1, double z1, double x2, double y2, double z2,
-                           double x3, double y3, double z3, DGtal::Color aColor);
+                           double x3, double y3, double z3);
 
 
   /**
 * Method to add a specific polygon.
 * @param vectPointsPolygon a vector containing the polygon vertex.
 * @param vectPointsPolygon
-* @param aColor to remove
 */
-  virtual void addPolygon(std::vector<ballD3D> vectPointsPolygon, DGtal::Color aColor);
+  virtual void addPolygon(std::vector<ballD3D> vectPointsPolygon);
 
 
   /**
@@ -442,13 +438,11 @@ public:
 * @param x2 x of the 2nd point
 * @param y2 y of the 2nd point
 * @param z2 z of the 2nd point
-* @param color the line color. to remove
 * @param width the line width
 *
 */
 
-  virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2,
-                       const DGtal::Color &color=DGtal::Color(20,20,20,200), double width=0.03);
+  virtual void addLine(double x1, double y1, double z1, double x2, double y2, double z2, double width=0.03);
 
 
   /**
@@ -458,12 +452,9 @@ public:
 * @param x cube center x
 * @param y cube center y
 * @param z cube center z.
-* @param color the cube color. to remove
 * @param width the cube width.
 */
-  virtual void addCube(double x, double y, double z,
-                       DGtal::Color color= DGtal::Color(220, 220, 220),
-                       double width=1.0);
+  virtual void addCube(double x, double y, double z, double width=1.0);
 
 
   /**
@@ -471,12 +462,10 @@ public:
 * @param x ball center x
 * @param y ball center y
 * @param z ball center z.
-* @param color the point color. to remove
 * @param size the point width
 *
 */
-  virtual void addBall(double x, double y, double z ,const DGtal::Color &color=DGtal::Color(200,20,20),
-                       double size=0.05);
+  virtual void addBall(double x, double y, double z , double size=0.05);
 
 
 
