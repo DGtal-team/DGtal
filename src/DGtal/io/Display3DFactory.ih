@@ -111,11 +111,14 @@ template <typename TPoint, typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, const DGtal::Mesh<TPoint> & aMesh )
 {
+  DGtal::Color fillColorSave = display.getFillColor();
   display.createNewQuadList(aMesh.className());
   for(unsigned int i=0; i< aMesh.nbFaces(); i++)
   {
     typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);
     unsigned int aNum = aFace.size();
+    display.setFillColor(aMesh.getFaceColor(i));
+
     if(aNum==4)
     {
       TPoint p1 = aMesh.getVertex(aFace.at(0));
@@ -126,7 +129,7 @@ void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, c
       display.addQuad(p1[0], p1[1], p1[2],
           p2[0], p2[1], p2[2],
           p3[0], p3[1], p3[2],
-          p4[0], p4[1], p4[2], aMesh.getFaceColor(i));
+          p4[0], p4[1], p4[2]);
     }else if(aNum==3)
     {
       TPoint p1 = aMesh.getVertex(aFace.at(0));
@@ -135,7 +138,7 @@ void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, c
 
       display.addTriangle(p1[0], p1[1], p1[2],
           p2[0], p2[1], p2[2],
-          p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
+          p3[0], p3[1], p3[2]);
     }else if(aNum>4)
     {
       std::vector<typename Display3D<Space, KSpace>::ballD3D> vectPoly;
@@ -147,12 +150,13 @@ void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, c
         ball.z= aMesh.getVertex(aFace.at(j))[2];
         vectPoly.push_back(ball);
       }
-      display.addPolygon(vectPoly, aMesh.getFaceColor(i));
+      display.addPolygon(vectPoly);
     }else
     {
       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< std::endl;
     }
   }
+  display.setFillColor(fillColorSave);
 }
 // Mesh
 
@@ -184,7 +188,7 @@ void DGtal::Display3DFactory::drawAsBalls( Display3D<Space, KSpace> & display,
       Point3d p = *k;
       DGtal::Z3i::RealPoint rp = display.embed( p );
 
-      display.addLine(rprevp[0],rprevp[1],rprevp[2],rp[0],rp[1],rp[2],display.getLineColor() );
+      display.addLine(rprevp[0],rprevp[1],rprevp[2],rp[0],rp[1],rp[2]);
       rprevp = rp;
     }
   }
@@ -196,6 +200,7 @@ void
 DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
                                             const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
+
   typedef TIterator ConstIterator;
 
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
@@ -266,7 +271,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         mu[2] - ( (m1+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl = display.embed( pl );
 
-    display.addLine(rpf[0], rpf[1], rpf[2], rpl[0], rpl[1], rpl[2], display.getLineColor() );
+    display.addLine(rpf[0], rpf[1], rpf[2], rpl[0], rpl[1], rpl[2]);
 
     PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n,
         (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n,
@@ -277,7 +282,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl2 = display.embed( pl2 );
 
-    display.addLine(rpf2[0], rpf2[1], rpf2[2], rpl2[0], rpl2[1], rpl2[2], display.getLineColor() );
+    display.addLine(rpf2[0], rpf2[1], rpf2[2], rpl2[0], rpl2[1], rpl2[2]);
 
     PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n,
         (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n,
@@ -288,7 +293,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl3 = display.embed( pl3 );
 
-    display.addLine(rpf3[0], rpf3[1], rpf3[2], rpl3[0], rpl3[1], rpl3[2], display.getLineColor() );
+    display.addLine(rpf3[0], rpf3[1], rpf3[2], rpl3[0], rpl3[1], rpl3[2]);
 
     PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n,
         (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n,
@@ -299,19 +304,17 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
         (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n );
     DGtal::Z3i::RealPoint rpl4 = display.embed( pl4 );
 
-    display.addLine(rpf4[0], rpf4[1], rpf4[2], rpl4[0], rpl4[1], rpl4[2], display.getLineColor() );
+    display.addLine(rpf4[0], rpf4[1], rpf4[2], rpl4[0], rpl4[1], rpl4[2]);
 
     //two end facets
     display.addQuad(rpf[0],rpf[1],rpf[2],
         rpf2[0],rpf2[1],rpf2[2],
         rpf4[0],rpf4[1],rpf4[2],
-        rpf3[0],rpf3[1],rpf3[2],
-        display.getFillColor() );
+        rpf3[0],rpf3[1],rpf3[2]);
     display.addQuad(rpl[0],rpl[1],rpl[2],
         rpl2[0],rpl2[1],rpl2[2],
         rpl4[0],rpl4[1],rpl4[2],
-        rpl3[0],rpl3[1],rpl3[2],
-        display.getFillColor() );
+        rpl3[0],rpl3[1],rpl3[2]);
   }
 }
 
@@ -351,7 +354,7 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D<Space, KSpace> 
         ++it )
   {
     DGtal::Z3i::RealPoint rp = display.embed((*it) );
-    display.addCube(rp[0], rp[1], rp[2], display.getFillColor());
+    display.addCube(rp[0], rp[1], rp[2]);
   }
 }
 
@@ -372,7 +375,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
         ++it )
   {
     DGtal::Z3i::RealPoint rp = display.embed((*it) );
-    display.addCube(rp[0], rp[1], rp[2], display.getFillColor());
+    display.addCube(rp[0], rp[1], rp[2]);
   }
 }
 
@@ -392,7 +395,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         ++it )
   {
     DGtal::Z3i::RealPoint rp = display.embed((*it) );
-    display.addBall(rp[0], rp[1], rp[2], display.getFillColor());
+    display.addBall(rp[0], rp[1], rp[2]);
   }
 }
 
@@ -439,7 +442,7 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D<Space, KSpace> 
         ++it )
   {
     DGtal::Z3i::RealPoint rp = display.embed((*it) );
-    display.addCube(rp[0], rp[1], rp[2], display.getFillColor());
+    display.addCube(rp[0], rp[1], rp[2]);
   }
 }
 
@@ -460,7 +463,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
         ++it )
   {
     DGtal::Z3i::RealPoint rp = display.embed((*it) );
-    display.addCube(rp[0],rp[1],rp[2], display.getFillColor());
+    display.addCube(rp[0],rp[1],rp[2]);
   }
 }
 
@@ -480,7 +483,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         ++it )
   {
     DGtal::Z3i::RealPoint rp = display.embed((*it) );
-    display.addBall(rp[0], rp[1], rp[2], display.getFillColor());
+    display.addBall(rp[0], rp[1], rp[2]);
   }
 }
 
@@ -515,6 +518,7 @@ inline
 void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
                                                  const DGtal::HyperRectDomain<TSpace> & h )
 {
+  DGtal::Color fillColorSave = display.getFillColor();
   ASSERT(TSpace::dimension == 2 || TSpace::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
 
   DGtal::Z3i::RealPoint upperBound;
@@ -533,7 +537,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
 
   (h.myLowerBound);
 
-  DGtal::Color colDef(250,250,250,10);
+  display.setFillColor(DGtal::Color(250,250,250,10));
   double shiftSize=0.01;
   if (TSpace::dimension == 3)
   {
@@ -549,8 +553,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
         upperBound[2]+(0.5+shiftSize),
         upperBound[0]+(0.5+shiftSize),
         lowerBound[1]-(0.5+shiftSize),
-        upperBound[2]+(0.5+shiftSize),
-        colDef);
+        upperBound[2]+(0.5+shiftSize));
     //Z lower face
     display.addQuad(upperBound[0]+(0.5+shiftSize),
         upperBound[1]+(0.5+shiftSize),
@@ -563,8 +566,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
         lowerBound[2]-(0.5+shiftSize),
         lowerBound[0]-(0.5+shiftSize),
         upperBound[1]+(0.5+shiftSize),
-        lowerBound[2]-(0.5+shiftSize),
-        colDef);
+        lowerBound[2]-(0.5+shiftSize));
     //Y upper face
     display.addQuad(upperBound[0]+(0.5+shiftSize),
         upperBound[1]+(0.5+shiftSize),
@@ -577,8 +579,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
         lowerBound[2]-(0.5+shiftSize),
         lowerBound[0]-(0.5+shiftSize),
         upperBound[1]+(0.5+shiftSize),
-        upperBound[2]+(0.5+shiftSize),
-        colDef);
+        upperBound[2]+(0.5+shiftSize));
     //Y lower face
     display.addQuad(upperBound[0]+(0.5+shiftSize),
         lowerBound[1]-(0.5+shiftSize),
@@ -591,8 +592,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
         lowerBound[2]-(0.5+shiftSize),
         upperBound[0]+(0.5+shiftSize),
         lowerBound[1]-(0.5+shiftSize),
-        lowerBound[2]-(0.5+shiftSize),
-        colDef);
+        lowerBound[2]-(0.5+shiftSize));
     // X upper face
     display.addQuad(upperBound[0]+(0.5+shiftSize),
         upperBound[1]+(0.5+shiftSize),
@@ -605,8 +605,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
         lowerBound[2]-(0.5+shiftSize),
         upperBound[0]+(0.5+shiftSize),
         upperBound[1]+(0.5+shiftSize),
-        lowerBound[2]-(0.5+shiftSize),
-        colDef);
+        lowerBound[2]-(0.5+shiftSize));
     // X lower face
     display.addQuad(lowerBound[0]-(0.5+shiftSize),
         upperBound[1]+(0.5+shiftSize),
@@ -619,9 +618,9 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
         lowerBound[2]-(0.5+shiftSize),
         lowerBound[0]-(0.5+shiftSize),
         lowerBound[1]-(0.5+shiftSize),
-        upperBound[2]+(0.5+shiftSize),
-        colDef);
+        upperBound[2]+(0.5+shiftSize));
   }
+  display.setFillColor( fillColorSave);
 }
 
 template<typename TSpace, typename Space, typename KSpace>
@@ -645,7 +644,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, h.myUpperBound[1], z) );
 
-        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
+        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2]);
       }
       for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
            y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
@@ -653,7 +652,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], y, z) );
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], y, z) );
 
-        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
+        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2] );
       }
     }
 
@@ -667,7 +666,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
 
-        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
+        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2]);
       }
       for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
            z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
@@ -675,7 +674,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], y, z) );
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], y, z) );
 
-        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
+        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2]);
       }
     }
 
@@ -689,7 +688,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, y, h.myLowerBound[2]) );
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, y, h.myUpperBound[2]) );
 
-        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
+        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2]);
       }
       for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
            z <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
@@ -697,7 +696,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
         DGtal::Z3i::RealPoint rp1 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
         DGtal::Z3i::RealPoint rp2 = display.embed( DGtal::Z3i::Point(x, h.myLowerBound[1], z) );
 
-        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2], display.getLineColor() );
+        display.addLine( rp1[0], rp1[1], rp1[2], rp2[0], rp2[1], rp2[2]);
       }
     }
   }
@@ -708,6 +707,7 @@ inline
 void DGtal::Display3DFactory::drawAsPavingBalls( Display3D<Space, KSpace> & display,
                                                  const DGtal::HyperRectDomain<TSpace> & h )
 {
+  DGtal::Color fillColorSave = display.getFillColor();
   typedef typename TSpace::Integer Integer;
 
   ASSERT(TSpace::dimension == 3 || "drawAsPavingPoints-NOT-YET-IMPLEMENTED-in-ND");
@@ -725,11 +725,13 @@ void DGtal::Display3DFactory::drawAsPavingBalls( Display3D<Space, KSpace> & disp
              y <= NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++)
         {
           DGtal::Z3i::RealPoint rp = display.embed( DGtal::Z3i::Point(x, y, z) );
-          display.addBall(rp[0], rp[1], rp[2], DGtal::Color(255, 0 ,0));
+          display.setFillColor(DGtal::Color(255, 0 ,0));
+          display.addBall(rp[0], rp[1], rp[2]);
         }
       }
     }
   }
+  display.setFillColor(fillColorSave);
 }
 
 template<typename TSpace, typename Space, typename KSpace>
@@ -737,6 +739,7 @@ inline
 void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
                                             const DGtal::HyperRectDomain<TSpace> & h )
 {
+  DGtal::Color fillColorSave = display.getFillColor();
   typedef typename TSpace::Integer Integer;
 
   ASSERT(TSpace::dimension == 3 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND");
@@ -758,11 +761,13 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
           rp[1]+=0.5;
           rp[2]+=0.5;
           //a transparent color for the paving
-          display.addCube(rp[0], rp[1], rp[2], Color(255, 255 ,255, 15),1.0);
+          display.setFillColor( Color(255, 255 ,255, 15));
+          display.addCube(rp[0], rp[1], rp[2], 1.0);
         }
       }
     }
   }
+  display.setFillColor(fillColorSave);
 }
 
 
@@ -871,13 +876,14 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
       display.setFillColor(DGtal::Color(200, 200, 20, 255));
     }
 
-    display.addBall(rp[0], rp[1], rp[2], display.getFillColor(), 0.05);
+    display.addBall(rp[0], rp[1], rp[2], 0.05);
     break;
   case 1:
     if(mode!=""&& mode!="IllustrationCustomColor")
     {
-      display.setFillColor(DGtal::Color(20, 20, 200, 255));
+      display.setFillColor(DGtal::Color(255, 255, 50, 255));
     }
+
 
     display.addCylinder(rp[0]- (xodd? 0.5:0 ), rp[1]- (yodd? 0.5:0 ), rp[2]- (zodd? 0.5:0 ), rp[0]+ (xodd? 0.5:0 ),rp[1]+ (yodd? 0.5:0 ), rp[2]+ (zodd? 0.5:0 ));
     break;
@@ -896,10 +902,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
     if(mode=="Illustration"|| mode=="IllustrationCustomColor")
     {
       display.createNewCubeList("khalimsky cell");
-     display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.80);
+     display.addCube(rp[0], rp[1], rp[2],0.80);
     }else{
       display.createNewCubeList("khalimsky cell");
-      display.addCube(rp[0], rp[1], rp[2], display.getFillColor(),0.90);
+      display.addCube(rp[0], rp[1], rp[2],0.90);
     }
     break;
   }
@@ -952,12 +958,12 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
       else
         display.setFillColor(DGtal::Color(20, 20, 150, 255));
     }
-    display.addBall(rps[0], rps[1], rps[2],display.getFillColor(), 0.05);
+    display.addBall(rps[0], rps[1], rps[2], 0.05);
     break;
   case 1:
     if(mode!="" && mode!="IllustrationCustomColor")
     {
-      display.setFillColor(DGtal::Color(200, 20, 200, 255));
+      display.setFillColor(  DGtal::Color(255, 50, 50, 255));
     }
     if (sk.myPositive)
     {
@@ -986,11 +992,11 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
     {
       //KSCube
       display.createNewCubeList("signed khalimsky cell");
-      display.addCube(rps[0], rps[1], rps[2], display.getFillColor(), 0.80);
+      display.addCube(rps[0], rps[1], rps[2], 0.80);
     }else
     {
       display.createNewCubeList("signed khalimsky cell");
-      display.addCube(rps[0], rps[1], rps[2], display.getFillColor(), 0.90 );
+      display.addCube(rps[0], rps[1], rps[2], 0.90 );
     }
     break;
   }
@@ -1061,9 +1067,12 @@ inline
 void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
                                           const DGtal::PointVector<dim,TComponent> & p )
 {
+  DGtal::Color fillColorSave = display.getFillColor();
   ASSERT(dim == 3);
   DGtal::Z3i::RealPoint rp = display.embed( p );
-  display.addBall( rp[0], rp[1], rp[2], display.getLineColor());
+  display.setFillColor(display.getLineColor());
+  display.addBall( rp[0], rp[1], rp[2]);
+  display.setFillColor(fillColorSave);
 }
 
 template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
@@ -1074,7 +1083,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
   ASSERT(dim == 3);
 
   DGtal::Z3i::RealPoint rp = display.embed( p );
-  display.addCube(rp[0], rp[1], rp[2], display.getFillColor());
+  display.addCube(rp[0], rp[1], rp[2]);
 }
 
 template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
@@ -1082,24 +1091,27 @@ inline
 void DGtal::Display3DFactory::drawAsPavingWired( Display3D<Space, KSpace> & display,
                                                  const DGtal::PointVector<dim,TComponent> & p )
 {
+  DGtal::Color fillColorSave = display.getFillColor();
   ASSERT(dim == 3);
 
   DGtal::Z3i::RealPoint rp = display.embed( p );
-  display.addCube(rp[0], rp[1], rp[2], display.getFillColor());
-  display.addLine(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]-0.5, rp[2]-0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]+0.5, rp[2]-0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]+0.5, rp[2]-0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]-0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]-0.5, rp[2]-0.5, DGtal::Color(0,0,0));
+  display.addCube(rp[0], rp[1], rp[2]);
+  display.setFillColor(DGtal::Color(0,0,0));
+  display.addLine(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]-0.5, rp[2]-0.5);
+  display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]+0.5, rp[2]-0.5);
+  display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]+0.5, rp[2]-0.5);
+  display.addLine(rp[0]-0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]-0.5, rp[2]-0.5);
 
-  display.addLine(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5, rp[0]+0.5, rp[1]-0.5, rp[2]+0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]+0.5, rp[0]+0.5, rp[1]+0.5, rp[2]+0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]+0.5, rp[0]-0.5, rp[1]+0.5, rp[2]+0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5, rp[0]-0.5, rp[1]-0.5, rp[2]+0.5, DGtal::Color(0,0,0));
+  display.addLine(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5, rp[0]+0.5, rp[1]-0.5, rp[2]+0.5);
+  display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]+0.5, rp[0]+0.5, rp[1]+0.5, rp[2]+0.5);
+  display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]+0.5, rp[0]-0.5, rp[1]+0.5, rp[2]+0.5);
+  display.addLine(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5, rp[0]-0.5, rp[1]-0.5, rp[2]+0.5);
 
-  display.addLine(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5, rp[0]-0.5, rp[1]-0.5, rp[2]+0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]-0.5, rp[2]+0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]-0.5, rp[0]+0.5, rp[1]+0.5, rp[2]+0.5, DGtal::Color(0,0,0));
-  display.addLine(rp[0]-0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]+0.5, rp[2]+0.5, DGtal::Color(0,0,0));
+  display.addLine(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5, rp[0]-0.5, rp[1]-0.5, rp[2]+0.5);
+  display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]-0.5, rp[2]+0.5);
+  display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]-0.5, rp[0]+0.5, rp[1]+0.5, rp[2]+0.5);
+  display.addLine(rp[0]-0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]+0.5, rp[2]+0.5);
+  display.setFillColor(fillColorSave);
 }
 
 template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
@@ -1107,6 +1119,7 @@ inline
 void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::PointVector<dim,TComponent> & p )
 {
+  DGtal::Color fillColorSave = display.getFillColor();
   ASSERT(dim == 3);
 
   std::string mode = display.getMode( p.className() );
@@ -1125,6 +1138,7 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
   {
     drawAsPavingWired( display, p );
   }
+  display.setFillColor(fillColorSave);
 }
 
 template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
@@ -1332,6 +1346,7 @@ inline
 void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::ClippingPlane & cl )
 {
+  display.setFillColor(DGtal::Color(205,0,0, 30));
   display.addClippingPlane(cl.myA, cl.myB, cl.myC, cl.myD, cl.myDrawPlane);
 }
 
