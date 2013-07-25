@@ -127,8 +127,8 @@ template < typename Space, typename KSpace>
 inline
 void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 {
-
   std::cout << " [[ ";
+
   size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
   double Re, Gr, Bl, Tr; // colors of the elements
   unsigned int nbMat =1;//number of materials created couting the default material
@@ -137,7 +137,6 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   std::ofstream outMTL; //MTL file where to write
   std::stringstream bufMTL; // Buffering what to write in the MTL file
 
-  //OPT parametrer la resolution ?
   //WARNING quand deux obj ont le meme nom ils fusionnent (danger deux sets differents fusionnes)
 
   std::string noExt(filename.substr(0, filename.find_first_of("."))); //the filename withoutOBJ any extention
@@ -146,14 +145,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   nameOBJ << noExt << ".obj";
   nameMTL << noExt << ".mtl";
 
-
-  //usemtl Material     (OBJ)
-
-
   outOBJ.open(nameOBJ.str().c_str());
   outOBJ << "#  OBJ format"<< std::endl;
   outOBJ << "# generated from Board3D from the DGTal library"<< std::endl;
-  //outOBJ << "mtllib " <<  bufMTL.str() << std::endl;
+  outOBJ << "mtllib " <<  nameMTL.str() << std::endl;
   outOBJ << std::endl;
 
   outMTL.open(nameMTL.str().c_str());
@@ -174,7 +169,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   {
     if(Board3D<Space, KSpace>::myClippingPlaneList.size()> 0)
     {
-      trace.info() << "-> Quad not YET implemented in Board3D, number of it: "
+      trace.info() << "number of clipping plane : "
                    << Board3D<Space, KSpace>::myClippingPlaneList.size() << std::endl;
     }
   }
@@ -191,16 +186,21 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
       for (typename std::vector<  typename Board3D<Space, KSpace>::ballD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); s_it++)
       {
-        tmpStream << "v " << s_it->x << " " << s_it->y << " " << s_it->z << std::endl;
-        tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
-        /*
-        if (s_it== it->begin())
+        //test if a clipping plane do not cut it
+        bool notCut =true;
+        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
         {
-          red= ((double)s_it->R) /255.0;
-          green =  ((double)s_it->G) /255.0;
-          blue =  ((double)s_it->B) /255.0;
-          transp =  ((double)s_it->T) /255.0;  // NOTE note sure
-        }*/
+          double d2 = ( itClip->a * s_it->x) + (itClip->b * s_it->y) + ( itClip->c * s_it->z ) + itClip->d;
+          notCut = ( d2 >= 0);
+
+          itClip ++;
+        }
+        if (notCut)
+        {
+          tmpStream << "v " << s_it->x << " " << s_it->y << " " << s_it->z << std::endl;
+          tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
+        }
       }
 
       if (tmpStream.str().size() > 0)
@@ -248,24 +248,66 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
       for (typename std::vector< typename Board3D<Space, KSpace>::lineD3D>::const_iterator s_it = it->begin();
            s_it != it->end();++s_it)
       {
-        // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
-        tmpStream << "v " << s_it->x1     << " " << s_it->y1 -sizePixel << " " << s_it->z1 << std::endl;
-        tmpStream << "v " << s_it->x1     << " " << s_it->y1 +sizePixel << " " << s_it->z1 << std::endl;
-        tmpStream << "v " << s_it->x2     << " " << s_it->y2 +sizePixel << " " << s_it->z2 << std::endl;
-        tmpStream << "v " << s_it->x2     << " " << s_it->y2 -sizePixel << " " << s_it->z2 << std::endl;
 
-        tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -sizePixel << std::endl;
-        tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +sizePixel<< std::endl;
-        tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +sizePixel<< std::endl;
-        tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -sizePixel<< std::endl;
-        tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-        tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-        tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-        tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-        tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+        //test if a clipping plane do not cut it
+        bool notCut =true;
+        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
+        {
+          double a = itClip->a;
+          double b = itClip->b;
+          double c = itClip->c;
+          double d = itClip->d;
+          double d2 ;
+          d2 = ( a * s_it->x1) + (b * (s_it->y1 -sizePixel)) + ( c * s_it->z1 ) + d;
+          notCut = ( d2 >= 0);
+          d2 = ( a * s_it->x1) + (b * (s_it->y1 +sizePixel)) + ( c * s_it->z1 ) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * s_it->x2) + (b * (s_it->y2 +sizePixel)) + ( c * s_it->z2 ) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * s_it->x2) + (b * (s_it->y2 -sizePixel)) + ( c * s_it->z2 ) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * s_it->x1) + (b * s_it->y1) + ( c * (s_it->z1 -sizePixel )) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * s_it->x1) + (b * s_it->y1) + ( c * (s_it->z1 +sizePixel )) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * s_it->x2) + (b * s_it->y2) + ( c * (s_it->z2 +sizePixel )) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * s_it->x2) + (b * s_it->y2) + ( c * (s_it->z2 -sizePixel )) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
 
-        j++;
+          itClip ++;
+        }
+
+        if (notCut)
+        {
+          // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
+          tmpStream << "v " << s_it->x1     << " " << s_it->y1 -sizePixel << " " << s_it->z1 << std::endl;
+          tmpStream << "v " << s_it->x1     << " " << s_it->y1 +sizePixel << " " << s_it->z1 << std::endl;
+          tmpStream << "v " << s_it->x2     << " " << s_it->y2 +sizePixel << " " << s_it->z2 << std::endl;
+          tmpStream << "v " << s_it->x2     << " " << s_it->y2 -sizePixel << " " << s_it->z2 << std::endl;
+          tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 -sizePixel << std::endl;
+          tmpStream << "v " << s_it->x1     << " " << s_it->y1     << " " << s_it->z1 +sizePixel<< std::endl;
+          tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 +sizePixel<< std::endl;
+          tmpStream << "v " << s_it->x2     << " " << s_it->y2     << " " << s_it->z2 -sizePixel<< std::endl;
+
+          tmpStream  << "vn " <<  "-1"  << " " << "0" << " " << "0" << std::endl;//left
+          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "-1" << std::endl;//front
+          tmpStream  << "vn " <<  "0"  << " " << "1" << " " << "0" << std::endl;//up
+          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "1" << std::endl;//back
+          tmpStream  << "vn " <<  "0"  << " " << "-1" << " " << "0" << std::endl;//down
+          tmpStream  << "vn " <<  "1"  << " " << "0" << " " << "0" << std::endl;//right
+
+
+          tmpStream << "f " << "-8//-6" << " " << "-7//-6" << " " << "-5//-6"<< " " << "-6//-6" << std::endl;//left
+          tmpStream << "f " << "-8//-5" << " " << "-6//-5" << " " << "-2//-5"<< " " << "-4//-5"<< std::endl;//front
+          tmpStream << "f " << "-8//-4" << " " << "-7//-4" << " " << "-3//-4"<< " " << "-4//-4"<< std::endl;//up
+          tmpStream << "f " << "-7//-3" << " " << "-5//-3" << " " << "-1//-3"<< " " << "-3//-3"<< std::endl;//back
+          tmpStream << "f " << "-6//-2" << " " << "-5//-2" << " " << "-1//-2"<< " " << "-2//-2"<< std::endl;//down
+          tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-1//-1"<< " " << "-2//-1"<< std::endl;//right
+
+          j++;
+        }
       }
       if (tmpStream.str() != "")
       {
@@ -311,25 +353,77 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
       for (typename std::vector< typename Board3D<Space, KSpace>::cubeD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); ++s_it)
       {
-        // this version is  one cube with (x,y,z) the center of it and wid its distance between it and its faces
         double wid = s_it->width;
-        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
-        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z +wid << std::endl;
-        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
-        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y -wid  << " " << s_it->z -wid << std::endl;
-        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
-        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z +wid << std::endl;
-        tmpStream  << "v " << s_it->x -wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
-        tmpStream  << "v " << s_it->x +wid    << " " << s_it->y +wid  << " " << s_it->z -wid << std::endl;
+        double x = s_it->x;
+        double y = s_it->y;
+        double z = s_it->z;
 
-        tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-        tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-        tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-        tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-        tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
+        double x1 = x - wid;
+        double x2 = x + wid;
+        double y1 = y - wid;
+        double y2 = y + wid;
+        double z1 = z - wid;
+        double z2 = z + wid;
+        //test if a clipping plane do not cut it
+        bool notCut =true;
+        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
+        {
+          double a = itClip->a;
+          double b = itClip->b;
+          double c = itClip->c;
+          double d = itClip->d;
+          double d2 = ( a * x1) + (b * y1) + ( c * z2 ) + d;
+          notCut = ( d2 >= 0);
 
-        j ++;
+          d2 = ( a * x2) + (b * y1) + ( c * z2) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * x1) + (b * y1) + ( c * z1) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * x2) + (b * y1) + ( c * z1) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * x1) + (b * y2) + ( c * z2) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * x2) + (b * y2) + ( c * z2) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * x1) + (b * y2) + ( c * z1) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * x2) + (b * y2) + ( c * z1) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+
+          itClip ++;
+        }
+
+        //OPT cube
+
+        if (notCut)
+        {
+          // this version is  one cube with (x,y,z) the center of it and wid its distance between it and its faces
+          tmpStream  << "v " << x1   << " " << y1 << " " << z2 << std::endl;
+          tmpStream  << "v " << x2   << " " << y1 << " " << z2 << std::endl;
+          tmpStream  << "v " << x1   << " " << y1 << " " << z1 << std::endl;
+          tmpStream  << "v " << x2   << " " << y1 << " " << z1 << std::endl;
+          tmpStream  << "v " << x1   << " " << y2 << " " << z2 << std::endl;
+          tmpStream  << "v " << x2   << " " << y2 << " " << z2 << std::endl;
+          tmpStream  << "v " << x1   << " " << y2 << " " << z1 << std::endl;
+          tmpStream  << "v " << x2   << " " << y2 << " " << z1 << std::endl;
+
+          tmpStream  << "vn " <<  "-1"  << " " << "0" << " " << "0" << std::endl;//left
+          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "-1" << std::endl;//front
+          tmpStream  << "vn " <<  "0"  << " " << "1" << " " << "0" << std::endl;//up
+          tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "1" << std::endl;//back
+          tmpStream  << "vn " <<  "0"  << " " << "-1" << " " << "0" << std::endl;//down
+          tmpStream  << "vn " <<  "1"  << " " << "0" << " " << "0" << std::endl;//right
+
+
+          tmpStream << "f " << "-8//-6" << " " << "-7//-6" << " " << "-5//-6"<< " " << "-6//-6" << std::endl;//left
+          tmpStream << "f " << "-8//-5" << " " << "-6//-5" << " " << "-2//-5"<< " " << "-4//-5"<< std::endl;//front
+          tmpStream << "f " << "-8//-4" << " " << "-7//-4" << " " << "-3//-4"<< " " << "-4//-4"<< std::endl;//up
+          tmpStream << "f " << "-7//-3" << " " << "-5//-3" << " " << "-1//-3"<< " " << "-3//-3"<< std::endl;//back
+          tmpStream << "f " << "-6//-2" << " " << "-5//-2" << " " << "-1//-2"<< " " << "-2//-2"<< std::endl;//down
+          tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-1//-1"<< " " << "-2//-1"<< std::endl;//right
+          j ++;
+        }
       }
 
       if (tmpStream.str() != "")
@@ -365,6 +459,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
     }
   }
 
+  //OPT quad
   // myQuadList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     //std::vector<quadD3D>::const_iterator
@@ -376,12 +471,13 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
       for (typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); ++s_it)
       {
-        tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
-        tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
-        tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
-        tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+        //test if a clipping plane do not cut it
+          tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+          tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+          tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+          tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
 
-        tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;
+          tmpStream << "f " << "-4" << " " << "-3" << " " << "-2"<< " " << "-1"<< std::endl;
       }
       if (tmpStream.str() != "")
       {
@@ -414,6 +510,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
     }
   }
 
+  //OPT triangle
+
   // myTriangleList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     //std::vector<triangleD3D>::const_iterator
@@ -425,12 +523,36 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
       for (typename std::vector< typename Board3D<Space, KSpace>::triangleD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); ++s_it)
       {
-        tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
-        tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
-        tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+        //test if a clipping plane do not cut it
+        bool notCut =true;
+        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
+        {
+          double a = itClip->a;
+          double b = itClip->b;
+          double c = itClip->c;
+          double d = itClip->d;
+          double d2 = ( a * s_it->x1) + (b * s_it->y1) + ( c * s_it->z1 ) + d;
+          notCut = ( d2 >= 0);
+          d2 = ( a * s_it->x2) + (b * s_it->y2) + ( c * s_it->z2) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
+          d2 = ( a * s_it->x3) + (b * s_it->y3) + ( c * s_it->z3) + d;
+          notCut = ( notCut  && ( d2 >= 0) );
 
-        tmpStream << "f " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;
+          itClip ++;
+        }
+        if (notCut)
+        {
+          tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+          tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+          tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+
+          tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
+
+          tmpStream << "f " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
+        }
       }
+
       if (tmpStream.str() != "")
       {
         std::stringstream name;
@@ -462,7 +584,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
     }
   }
 
-
+  //OPT scell
 
   // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
 
@@ -476,33 +598,45 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
          s_it != Board3D<Space, KSpace>::mySurfelPrismList.end();
          ++s_it)
     {
-      tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
-      tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
-      tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
-      tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+      //test if a clipping plane do not cut it
+      bool notCut =true;
+      typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+      while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
+      {
+        double a = itClip->a;
+        double b = itClip->b;
+        double c = itClip->c;
+        double d = itClip->d;
+        double d2 = ( a * s_it->x1) + (b * s_it->y1) + ( c * s_it->z1 ) + d;
+        notCut = ( d2 >= 0);
+        d2 = ( a * s_it->x2) + (b * s_it->y2) + ( c * s_it->z2) + d;
+        notCut = ( notCut  && ( d2 >= 0) );
+        d2 = ( a * s_it->x3) + (b * s_it->y3) + ( c * s_it->z3) + d;
+        notCut = ( notCut  && ( d2 >= 0) );
+        d2 = ( a * s_it->x4) + (b * s_it->y4) + ( c * s_it->z4) + d;
+        notCut = ( notCut  && ( d2 >= 0) );
 
-      double nx = s_it->nx;
-      double ny = s_it->ny;
-      double nz = s_it->nz;
+        itClip ++;
+      }
+      if (notCut)
+      {
+        tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
+        tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
+        tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+        tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
 
-      tmpStream << "v " << s_it->x1 +nx     << " " << s_it->y1 +ny      << " " << s_it->z1 +nz << std::endl;
-      tmpStream << "v " << s_it->x2 +nx     << " " << s_it->y2 +ny      << " " << s_it->z2 +nz << std::endl;
-      tmpStream << "v " << s_it->x3 +nx     << " " << s_it->y3 +ny      << " " << s_it->z3 +nz << std::endl;
-      tmpStream << "v " << s_it->x4 +nx     << " " << s_it->y4 +ny      << " " << s_it->z4 +nz << std::endl;
+        tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
 
-      tmpStream << "f " << "-8" << " " << "-7" << " " << "-5"<< " " << "-6" << std::endl;//left
-      tmpStream << "f " << "-8" << " " << "-6" << " " << "-2"<< " " << "-4"<< std::endl;//front
-      tmpStream << "f " << "-8" << " " << "-7" << " " << "-3"<< " " << "-4"<< std::endl;//up
-      tmpStream << "f " << "-7" << " " << "-5" << " " << "-1"<< " " << "-3"<< std::endl;//back
-      tmpStream << "f " << "-6" << " " << "-5" << " " << "-1"<< " " << "-2"<< std::endl;//down
-      tmpStream << "f " << "-4" << " " << "-3" << " " << "-1"<< " " << "-2"<< std::endl;//right
-      j++;
+        tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1" << std::endl;
+
+        j++;
+      }
     }
 
     if (tmpStream.str() != "")
     {
       std::stringstream name;
-      name << Board3D<Space, KSpace>::mySurfelPrismNameList.at(k);
+      name << Board3D<Space, KSpace>::mySurfelPrismNameList;
       if ( name.str()== "")
       {
         name << "mySurfelPrismList" ;
@@ -529,7 +663,6 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
     }
   }
 
-
   //OPT tail
   // end SurfelPrism (from updateList)+++++++++++++++++++++++++++++++
 
@@ -539,6 +672,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
   outOBJ.close();
   outMTL.close();
+
+  std::cout << " ]] " << std::endl;
 }
 
 
@@ -567,11 +702,6 @@ DGtal::Board3D<Space, KSpace>::init()
   std::string nameBallSet;
   Board3D<Space, KSpace>::myBallSetNameList.push_back(nameBallSet);
 
-  std::string nameClippingPlane;
-  Board3D<Space, KSpace>:: myClippingPlaneNameList.push_back(nameClippingPlane);
-
-  std::string nameSurfelPrism;
-  Board3D<Space, KSpace>::mySurfelPrismNameList.push_back(nameSurfelPrism);
 
   std::string nameQuad;
   Board3D<Space, KSpace>::myQuadSetNameList.push_back(nameQuad);

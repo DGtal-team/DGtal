@@ -247,6 +247,8 @@ public:
     myCurrentLineColor = Color ( 22, 22, 222, 50 );
 
     myBoundingPtEmptyTag = true;
+    myClippingPlaneNameList = "ClippingPlane";
+    mySurfelPrismNameList = "SurfelPrism";
   }
 
   /**
@@ -260,6 +262,8 @@ public:
     myBoundingPtEmptyTag = true;
     myCellEmbedder = CanonicCellEmbedder<KSpace >(KSEmb);
     mySCellEmbedder = CanonicSCellEmbedder<KSpace >(KSEmb);
+    myClippingPlaneNameList = "ClippingPlane";
+    mySurfelPrismNameList = "SurfelPrism";
   };
 
   /**
@@ -275,6 +279,8 @@ public:
     myEmbedder = CanonicEmbedder<Space >(Semb);
     myCellEmbedder = CanonicCellEmbedder<KSpace >(KSEmb);
     mySCellEmbedder = CanonicSCellEmbedder<KSpace >(KSEmb);
+    myClippingPlaneNameList = "ClippingPlane";
+    mySurfelPrismNameList = "SurfelPrism";
   };
 
 
@@ -720,11 +726,11 @@ protected:
   std::vector<std::string> myBallSetNameList;
   /// names of the lists in myClippingPlaneList
   ///
-  std::vector<std::string> myClippingPlaneNameList;
+  std::string myClippingPlaneNameList ;
 
   /// names of the lists in mySurfelPrismList
   ///
-  std::vector<std::string> mySurfelPrismNameList;
+  std::string mySurfelPrismNameList;
 
   /// names of the lists in myQuadList
   ///
