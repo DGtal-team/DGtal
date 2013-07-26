@@ -155,7 +155,7 @@ struct Display3DFactory
   // DigitalSetBySTLSet
   /**
    * @brief defaultStyle
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -199,7 +199,7 @@ struct Display3DFactory
   // DigitalSetBySTLVector
   /**
    * @brief Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -243,7 +243,7 @@ struct Display3DFactory
   // HyperRectDomain
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -298,7 +298,7 @@ struct Display3DFactory
   // KhalimskyCell
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -318,7 +318,7 @@ struct Display3DFactory
   // Object
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -346,7 +346,7 @@ struct Display3DFactory
   // PointVector
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
@@ -398,7 +398,7 @@ struct Display3DFactory
   // SignedKhalimskyCell
   /**
    * Default drawing style object.
-   * @param str
+   * @param str the name of the class
    * @param anObject the object to draw
    * @return the dyn. alloc. default style for this object.
    */
