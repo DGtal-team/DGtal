@@ -47,6 +47,7 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
                                const typename DGtal::SphericalAccumulator<TV>::RealVector &shift,
                                const double radius)
 {
+  DGtal::Color saveFillColor = display.getFillColor();
   typedef typename DGtal::SphericalAccumulator<TV>::Size Size;
   typename DGtal::SphericalAccumulator<TV>::RealVector a,b,c,d;
   Size i,j;
@@ -84,13 +85,14 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
       DGtal::Z3i::RealPoint rpb = display.embed( b );
       DGtal::Z3i::RealPoint rpc = display.embed( c );
       DGtal::Z3i::RealPoint rpd = display.embed( d );
+      display.setFillColor( cmap(aAccumulator.count(i,j)));
       display.addQuad(rpa[0], rpa[1], rpa[2],
           rpb[0], rpb[1], rpb[2],
           rpc[0], rpc[1], rpc[2],
-          rpd[0], rpd[1], rpd[2],
-          cmap(aAccumulator.count(i,j)));
+          rpd[0], rpd[1], rpd[2]);
     }
   }
+  display.setFillColor( saveFillColor);
 }
 // SphericalAccumulator
 
@@ -1091,12 +1093,12 @@ inline
 void DGtal::Display3DFactory::drawAsPavingWired( Display3D<Space, KSpace> & display,
                                                  const DGtal::PointVector<dim,TComponent> & p )
 {
-  DGtal::Color fillColorSave = display.getFillColor();
+  DGtal::Color lineColorSave = display.getLineColor();
   ASSERT(dim == 3);
 
   DGtal::Z3i::RealPoint rp = display.embed( p );
   display.addCube(rp[0], rp[1], rp[2]);
-  display.setFillColor(DGtal::Color(0,0,0));
+  display.setLineColor(DGtal::Color(0,0,0));
   display.addLine(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]-0.5, rp[2]-0.5);
   display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]+0.5, rp[2]-0.5);
   display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]+0.5, rp[2]-0.5);
@@ -1111,7 +1113,7 @@ void DGtal::Display3DFactory::drawAsPavingWired( Display3D<Space, KSpace> & disp
   display.addLine(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5, rp[0]+0.5, rp[1]-0.5, rp[2]+0.5);
   display.addLine(rp[0]+0.5, rp[1]+0.5, rp[2]-0.5, rp[0]+0.5, rp[1]+0.5, rp[2]+0.5);
   display.addLine(rp[0]-0.5, rp[1]+0.5, rp[2]-0.5, rp[0]-0.5, rp[1]+0.5, rp[2]+0.5);
-  display.setFillColor(fillColorSave);
+  display.setLineColor(lineColorSave);
 }
 
 template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
