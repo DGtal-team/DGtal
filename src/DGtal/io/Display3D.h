@@ -325,7 +325,7 @@ public:
 * @param b b
 * @param c c
 * @param d d plane equation.
-* @param drawPlane
+* @param drawPlane true if the plane should be draw
 **/
 
   virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
@@ -424,7 +424,6 @@ public:
   /**
 * Method to add a specific polygon.
 * @param vectPointsPolygon a vector containing the polygon vertex.
-* @param vectPointsPolygon
 */
   virtual void addPolygon(std::vector<ballD3D> vectPointsPolygon);
 

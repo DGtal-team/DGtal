@@ -632,7 +632,7 @@ struct Viewer3DFactory : public Display3DFactory
 * @param viewer the viewer where to draw
 * @param anImage the image to draw
 * @param aFunctor the functor to draw
-* @param aTextureMode
+* @param aTextureMode the mode of the texture to set
 */
   template < typename TImageType2D, typename TFunctor, typename Space, typename KSpace>
   static void
@@ -644,7 +644,7 @@ struct Viewer3DFactory : public Display3DFactory
 * @param viewer the viewer where to draw
 * @param anImage3D the image to draw
 * @param aFunctor the functor to draw
-* @param aTextureMode the mode to set
+* @param aTextureMode the mode of the texture to set
 */
   template < typename TImageType3D, typename TFunctor, typename Space, typename KSpace>
   static void
