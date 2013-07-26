@@ -154,6 +154,7 @@ void viewPolygons
   typedef typename Viewer::ballD3D ballD3D;
   //DGtal::Color color( 200, 200, 220, 255 );
   std::vector<ballD3D> pts3d;
+  DGtal::Color fillColorSave = viewer.getFillColor();
   for ( unsigned int f = 0; f < indices.size(); ++f )
     {
       pts3d.clear();
@@ -173,8 +174,10 @@ void viewPolygons
           P.z = rescale( points[ i ][ 2 ] );
           pts3d.push_back( P );
         }
-      viewer.addPolygon( pts3d, color );
+      viewer.setFillColor(color);
+      viewer.addPolygon( pts3d );
     }
+  viewer.setFillColor( fillColorSave);
 }
 
 template <typename Vector>
