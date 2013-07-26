@@ -213,7 +213,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         }
         //NOTE up until now one object = one material
         std::stringstream matName;
-        matName << name.str() << "MAT";
+        matName << "myBallSetList_" << k << "MAT";
 
         outOBJ << "o  " << name.str() << std::endl;
         outOBJ << "usemtl " << matName.str() << std::endl;
@@ -318,7 +318,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
           name << "myLineSetList_" << k ;
         }
         std::stringstream matName;
-        matName << name.str() << "MAT";
+        matName << "myLineSetList_" << k  << "MAT";
 
         outOBJ << "o " << name.str() << std::endl;
         outOBJ << "usemtl " << matName.str() << std::endl;
@@ -435,7 +435,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
           name << "myCubeSetList_" << k ;
         }
         std::stringstream matName;
-        matName << name.str() << "MAT";
+        matName << "myCubeSetList_" << k << "MAT";
 
         outOBJ << "o  " << name.str() << std::endl;
         outOBJ << "usemtl " << matName.str() << std::endl;
@@ -488,7 +488,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
           name << "myQuadSetList_" << k ;
         }
         std::stringstream matName;
-        matName << name.str() << "MAT";
+        matName << "myQuadSetList_" << k  << "MAT";
 
         outOBJ << "o  " << name.str() << std::endl;
         outOBJ << "usemtl " << matName.str() << std::endl;
@@ -562,7 +562,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
           name << "myTriangleSetList_" << k ;
         }
         std::stringstream matName;
-        matName << name.str() << "MAT";
+        matName << "myTriangleSetList_" << k << "MAT";
 
         outOBJ << "o  " << name.str() << std::endl;
         outOBJ << "usemtl " << matName.str() << std::endl;
@@ -642,7 +642,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         name << "mySurfelPrismList" ;
       }
       std::stringstream matName;
-      matName << name.str() << "MAT";
+      matName << "mySurfelPrismList" << "MAT";
 
       outOBJ << "o  " << name.str() << std::endl;
       outOBJ << "usemtl " << matName.str() << std::endl;
