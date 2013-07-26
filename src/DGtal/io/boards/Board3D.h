@@ -60,7 +60,20 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class Board3D
   /**
-   * Description of class 'Board3D' <p>
+   * The class Board3D is a type of Display3D which export the figures in the format OBJ/MTL
+   * when calling the method saveOBJ.
+   * The format OBJ/MTL is a geometry definition file format, this format has been adopted by many
+   * 3D graphics application vendors (pbrt, blender, etc.).
+   * to learn more about OBJ see <http://en.wikipedia.org/wiki/Wavefront_.obj_file>
+   *
+   * The export regroup objects by they list name. If two list have the same name
+   * they will welt in the same mesh in the end. If a list doesn't have a name the program will try
+   * to give it an unique name so it will become a separate mesh.
+   * Each list have a material description which correspond to its first element color.
+   * If two list have the same name and merge the final mesh will have two materials ( one by list).
+   *
+   *
+   *
    * @brief Class for OBJ export
    */
 template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
