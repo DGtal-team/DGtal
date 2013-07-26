@@ -66,11 +66,11 @@ namespace DGtal
    * 3D graphics application vendors (pbrt, blender, etc.).
    * to learn more about OBJ see <http://en.wikipedia.org/wiki/Wavefront_.obj_file>
    *
-   * The export regroup objects by they list name. If two list have the same name
-   * they will welt in the same mesh in the end. If a list doesn't have a name the program will try
+   * When exporting Board3D regroup objects by they list name. If two lists have the same name
+   * they will melt in the same mesh eventually. If a list doesn't have a name the program will try
    * to give it an unique name so it will become a separate mesh.
    * Each list have a material description which correspond to its first element color.
-   * If two list have the same name and merge the final mesh will have two materials ( one by list).
+   * If two lists have the same name and merge the final mesh will have two materials ( one by list).
    *
    *
    *
