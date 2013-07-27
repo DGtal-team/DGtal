@@ -630,37 +630,39 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1" << std::endl;
 
         j++;
-      }
-    }
 
-    if (tmpStream.str() != "")
-    {
-      std::stringstream name;
-      name << Board3D<Space, KSpace>::mySurfelPrismNameList;
-      if ( name.str()== "")
+      }
+      if (tmpStream.str() != "")
       {
-        name << "mySurfelPrismList" ;
+        std::stringstream name;
+        name << Board3D<Space, KSpace>::mySurfelPrismNameList;
+        if ( name.str()== "")
+        {
+          name << "mySurfelPrismList" << j;
+        }
+        std::stringstream matName;
+        matName << "mySurfelPrismList" << j << "MAT";
+
+        outOBJ << "o  " << name.str() << std::endl;
+        outOBJ << "usemtl " << matName.str() << std::endl;
+        outOBJ << tmpStream.str();
+
+        typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
+        Re = itBegin->R /255.0 ;
+        Gr = itBegin->G /255.0;
+        Bl = itBegin->B /255.0;
+        Tr = itBegin->T /255.0;
+
+        bufMTL << "newmtl " << matName.str()  <<std::endl;
+        bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
+        bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
+        bufMTL << "Ks 0 0 0" << std::endl;
+        bufMTL << "d " << Tr << std::endl;
+        bufMTL << "illum 2" << std::endl << std::endl;
       }
-      std::stringstream matName;
-      matName << "mySurfelPrismList" << "MAT";
-
-      outOBJ << "o  " << name.str() << std::endl;
-      outOBJ << "usemtl " << matName.str() << std::endl;
-      outOBJ << tmpStream.str();
-
-      typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
-      Re = itBegin->R /255.0 ;
-      Gr = itBegin->G /255.0;
-      Bl = itBegin->B /255.0;
-      Tr = itBegin->T /255.0;
-
-      bufMTL << "newmtl " << matName.str()  <<std::endl;
-      bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
-      bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
-      bufMTL << "Ks 0 0 0" << std::endl;
-      bufMTL << "d " << Tr << std::endl;
-      bufMTL << "illum 2" << std::endl << std::endl;
     }
+
+
   }
 
   //OPT tail
