@@ -267,6 +267,7 @@ DGtal::Statistic<TQuantity>::median()
     return myMedian;
   }
   else{
+    ASSERT(myValues.size()>0);
     nth_element( myValues.begin(), myValues.begin()+(myValues.size()/2), 
      myValues.end());
     return *(myValues.begin()+(myValues.size()/2));
