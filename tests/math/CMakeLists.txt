@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC_MATH
        testMeasure
        testSignal 
+       testStatistics 
        testMPolynomial
        testAngleLinearMinimizer
        testBasicMathFunctions)
