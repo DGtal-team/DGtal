@@ -44,9 +44,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Constructor.
- */
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////// nD /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
 inline
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >
@@ -60,41 +62,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
       isInitMask( false )
 {
 }
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-inline
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >
-::DigitalSurfaceConvolver( ConstAlias< Functor > f,
-                           ConstAlias< KernelFunctor > g,
-                           ConstAlias< KSpace > space)
-    : dimension( 2 ),
-      myFFunctor( f ),
-      myGFunctor( g ),
-      myKSpace( space ),
-      isInit( false ),
-      isInitMask( false )
-{
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-inline
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >
-::DigitalSurfaceConvolver( ConstAlias< Functor > f,
-                           ConstAlias< KernelFunctor > g,
-                           ConstAlias< KSpace > space)
-    :   dimension( 3 ),
-      myFFunctor( f ),
-      myGFunctor( g ),
-      myKSpace( space ),
-      isInit( false ),
-      isInitMask( false )
-{
-}
-
-
-
-
-
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
 inline
@@ -112,41 +79,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     isInitMask = false;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-inline
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::init( Clone< KernelConstIterator > itgbegin,
-                                                                                                Clone< KernelConstIterator > itgend,
-                                                                                                Clone< Spel > kOrigin
-                                                                                                )
-{
-    myItKernelBegin = itgbegin;
-    myItKernelEnd = itgend;
-    myKernelSpelOrigin = kOrigin;
-
-    isInit = true;
-    isInitMask = false;
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-inline
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::init( Clone< KernelConstIterator > itgbegin,
-                                                                                                Clone< KernelConstIterator > itgend,
-                                                                                                Clone< Spel > kOrigin
-                                                                                                )
-{
-    myItKernelBegin = itgbegin;
-    myItKernelEnd = itgend;
-    myKernelSpelOrigin = kOrigin;
-
-    isInit = true;
-    isInitMask = false;
-}
-
-
-
-
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
 inline
 void
@@ -163,50 +95,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     isInit = true;
     isInitMask = true;
 }
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-inline
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::init( Clone< KernelConstIterator > itgbegin,
-                                                                                                Clone< KernelConstIterator > itgend,
-                                                                                                Clone< Spel > kOrigin,
-                                                                                                Alias< std::vector< PairIterators > > mask )
-{
-    myItKernelBegin = itgbegin;
-    myItKernelEnd = itgend;
-    myKernelSpelOrigin = kOrigin;
-    myMask = mask;
-
-    ASSERT ( myMask.size () == 9 );
-
-    isInit = true;
-    isInitMask = true;
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-inline
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::init( Clone< KernelConstIterator > itgbegin,
-                                                                                                Clone< KernelConstIterator > itgend,
-                                                                                                Clone< Spel > kOrigin,
-                                                                                                Alias< std::vector< PairIterators > > mask )
-{
-    myItKernelBegin = itgbegin;
-    myItKernelEnd = itgend;
-    myKernelSpelOrigin = kOrigin;
-    myMask = mask;
-
-    ASSERT ( myMask.size () == 27 );
-
-    isInit = true;
-    isInitMask = true;
-}
-
-
-
-
-
-
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
 template< typename ConstIteratorOnCells >
@@ -252,6 +140,216 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     return ( currentResult + currentResult2 ) / Quantity( 2.0 );
 }
 
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
+template<typename ConstIteratorOnCells, typename OutputIterator>
+inline
+void
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::eval
+( const ConstIteratorOnCells & itbegin,
+  const ConstIteratorOnCells & itend,
+  OutputIterator & result )
+{
+    //ASSERT ( isInitMask == true ); //Actually, this don't use the optimization by masks
+
+    for( ConstIteratorOnCells itcurrent = itbegin;
+         itcurrent != itend;
+         ++itcurrent )
+    {
+        *result = eval( itcurrent );
+        ++result;
+    }
+
+    return result;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
+template< typename ConstIteratorOnCells >
+inline
+typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::evalCovarianceMatrix
+( const ConstIteratorOnCells & it )
+{
+    ASSERT ( isInit == true );
+
+    typedef typename KSpace::Point Point;
+    typedef typename Functor::Quantity FQuantity;
+
+    Spel currentCell = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it ));
+    Point shiftedPoint, currentPoint;
+    Point shift = currentCell.myCoordinates - myKernelSpelOrigin.myCoordinates;
+
+    Spel shiftedCell;
+
+    FQuantity fShiftedCell;
+
+    CovarianceMatrix Ja;
+    MatrixQuantity XXT;
+    XXT.constant( NumberTraits< Quantity >::ZERO );
+    VectorQuantity Sa;
+    Sa.reset();
+    Quantity Va = NumberTraits< Quantity >::ZERO;
+
+    SCellToMidPoint< KSpace > midpoint( myKSpace );
+
+    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+    {
+        shiftedPoint = ( *itgcurrent ).myCoordinates;
+        shiftedPoint += shift;
+        shiftedCell.myCoordinates = shiftedPoint;
+
+        fShiftedCell = myFFunctor( shiftedCell );
+
+        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+        {
+            currentPoint = midpoint( shiftedCell );
+
+            for( Dimension line = 0; line < dimension; ++line )
+            {
+                for( Dimension column = 0; column < dimension; ++column )
+                {
+                    XXT.setComponent( line, column, XXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                }
+
+                Sa[ line ] += fShiftedCell * currentPoint[ line ];
+            }
+
+            Va += fShiftedCell * myGFunctor( *itgcurrent );
+        }
+    }
+
+    double dVa = (double) NumberTraits< Quantity >::castToDouble( Va );
+    double One_Va = 1.0 / dVa;
+
+    for( Dimension line = 0; line < dimension; ++line )
+    {
+        for( Dimension column = 0; column < dimension; ++column )
+        {
+            Ja.setComponent( line, column, ((double) NumberTraits< Quantity >::castToDouble( XXT( line, column ))) - dVa * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ line ] ))) * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ column ] ))));
+        }
+    }
+
+    return Ja;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
+template< typename ConstIteratorOnCells, typename OutputIterator >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::evalCovarianceMatrix
+( const ConstIteratorOnCells & itbegin,
+  const ConstIteratorOnCells & itend,
+  OutputIterator & result )
+{
+    for( ConstIteratorOnCells itcurrent = itbegin;
+         itcurrent != itend;
+         ++itcurrent )
+    {
+        *result = evalCovarianceMatrix( itcurrent );
+        ++result;
+    }
+
+    return result;
+}
+
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
+inline
+bool
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::isValid() const
+{
+    return true;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::fillMoments
+( Quantity* aMomentMatrix,
+  const Point & aPoint,
+  double direction )
+{
+
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::computeCovarianceMatrix
+( const Quantity* aMomentMatrix,
+  CovarianceMatrix & aCovarianceMatrix )
+{
+
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
+template< typename Shape >
+double
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::computeShiftFromShape
+( const Shape & shape,
+  const double h,
+  const Spel & aInnerSpel,
+  const Spel & aOutterSpel )
+{
+    double lambda = -1.0;
+    return lambda;
+}
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////// 2D /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+inline
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >
+::DigitalSurfaceConvolver( ConstAlias< Functor > f,
+                           ConstAlias< KernelFunctor > g,
+                           ConstAlias< KSpace > space)
+    : dimension( 2 ),
+      myFFunctor( f ),
+      myGFunctor( g ),
+      myKSpace( space ),
+      isInit( false ),
+      isInitMask( false )
+{
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::init( Clone< KernelConstIterator > itgbegin,
+                                                                                                Clone< KernelConstIterator > itgend,
+                                                                                                Clone< Spel > kOrigin
+                                                                                                )
+{
+    myItKernelBegin = itgbegin;
+    myItKernelEnd = itgend;
+    myKernelSpelOrigin = kOrigin;
+
+    isInit = true;
+    isInitMask = false;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::init( Clone< KernelConstIterator > itgbegin,
+                                                                                                Clone< KernelConstIterator > itgend,
+                                                                                                Clone< Spel > kOrigin,
+                                                                                                Alias< std::vector< PairIterators > > mask )
+{
+    myItKernelBegin = itgbegin;
+    myItKernelEnd = itgend;
+    myKernelSpelOrigin = kOrigin;
+    myMask = mask;
+
+    ASSERT ( myMask.size () == 9 );
+
+    isInit = true;
+    isInitMask = true;
+}
+
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename ConstIteratorOnCells >
 inline
@@ -293,146 +391,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     /// In order to get better results, we compute the convolution kernel centered inside and outside the spel ins the shape border, and divide the result by 2.
     return ( currentResult + currentResult2 ) / Quantity( 2.0 );
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-template< typename ConstIteratorOnCells >
-inline
-typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::eval
-( const ConstIteratorOnCells & it )
-{
-    ASSERT ( isInitMask == true );
-
-    typedef typename KSpace::Point Point;
-    typedef typename Functor::Quantity FQuantity;
-
-    double lambda = 0.5;
-
-    DGtal::Dimension sizeMoments = 10;
-    DGtal::Dimension sizeOfMasks = myMask.size() - 1;
-    DGtal::Dimension positionOfFullKernel = 13;
-
-    Quantity m1;
-    Quantity m2;
-
-    Spel currentSpel1, currentSpel2;
-    Spel shiftedSpel;
-
-    Point shiftSpel1, shiftSpel2;
-    Point diffSpel;
-
-    SCellToInnerPoint< KSpace > SCellToPoint( myKSpace );
-
-    int x, y, z, x2, y2, z2, x2y2z2;
-    int offset;
-
-    m1 = NumberTraits< Quantity >::ZERO; /// <! clear array
-    /// Inner cell
-    {
-        DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
-        currentSpel1 = myKSpace.sDirectIncident( *it, kDim ); /// Spel on the border, but inside the shape
-        shiftSpel1 = myKSpace.sKCoords( currentSpel1 ) - myKSpace.sKCoords( myKernelSpelOrigin );
-
-        for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
-        {
-            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftSpel1 );
-
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 ); /// <! check if shiftedSpel is a spel.
-
-            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
-            {
-                ++m1;
-            }
-        }
-    }
-
-    m2 = m1;
-    /// Outter cell
-    {
-        DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
-        currentSpel2 = myKSpace.sIndirectIncident( *it, kDim );
-        shiftSpel2 = myKSpace.sKCoords( currentSpel2 ) - myKSpace.sKCoords( myKernelSpelOrigin );
-
-        diffSpel = myKSpace.sKCoords( currentSpel2 ) - myKSpace.sKCoords( currentSpel1 );
-        x = diffSpel[ 0 ];
-        y = diffSpel[ 1 ];
-        z = diffSpel[ 2 ];
-        x2 = x * x;
-        y2 = y * y;
-        z2 = z * z;
-        x2y2z2 = x2 + y2 + z2;
-
-
-        if(  x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
-        {
-            trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
-        }
-        else if(  offset == positionOfFullKernel ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
-        {
-            trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
-        }
-        else
-        {
-            offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
-
-            /// Part to substract from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
-            {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftSpel2 );
-
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
-                {
-                    --m2;
-                }
-            }
-
-            /// Part to add from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ sizeOfMasks - offset ].first, itgend = myMask[ sizeOfMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
-            {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftSpel2 );
-
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
-                {
-                    ++m2;
-                }
-            }
-        }
-    }
-
-    /// Computation of result covariance matrix + moving
-    return Quantity( m1 * lambda + m2 * ( 1.0 - lambda ));
-}
-
-
-
-
-
-
-
-
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
-template<typename ConstIteratorOnCells, typename OutputIterator>
-inline
-void
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::eval
-( const ConstIteratorOnCells & itbegin,
-  const ConstIteratorOnCells & itend,
-  OutputIterator & result )
-{
-    //ASSERT ( isInitMask == true ); //Actually, this don't use the optimization by masks
-
-    for( ConstIteratorOnCells itcurrent = itbegin;
-         itcurrent != itend;
-         ++itcurrent )
-    {
-        *result = eval( itcurrent );
-        ++result;
-    }
-
-    return result;
 }
 
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
@@ -922,6 +880,666 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 #endif
 }
 
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+template< typename ConstIteratorOnCells >
+inline
+typename DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::evalCovarianceMatrix
+( const ConstIteratorOnCells & it )
+{
+    ASSERT ( isInit == true );
+
+    typedef typename KSpace::Point Point;
+    typedef typename Functor::Quantity FQuantity;
+
+    Spel currentCell = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it  ));
+    Point shiftedPoint, shift;
+    Point currentPoint;
+
+    shift = currentCell.myCoordinates - myKernelSpelOrigin.myCoordinates;
+
+    Spel shiftedCell;
+
+    FQuantity fShiftedCell;
+
+    CovarianceMatrix Ja;
+    MatrixQuantity XXT;
+    XXT.constant( NumberTraits< Quantity >::ZERO );
+    VectorQuantity Sa;
+    Sa.reset();
+    Quantity Va = NumberTraits< Quantity >::ZERO;
+
+    SCellToMidPoint< KSpace > midpoint( myKSpace );
+
+    for(  KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+    {
+        shiftedPoint = ( *itgcurrent ).myCoordinates;
+        shiftedPoint += shift;
+        shiftedCell.myCoordinates = shiftedPoint;
+
+        fShiftedCell = myFFunctor( shiftedCell );
+
+        if(  fShiftedCell != NumberTraits< FQuantity >::ZERO )
+        {
+            currentPoint = midpoint( shiftedCell );
+
+            for( Dimension line = 0; line < dimension; ++line )
+            {
+                for( Dimension column = 0; column < dimension; ++column )
+                {
+                    XXT.setComponent( line, column, XXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                }
+
+                Sa[ line ] += fShiftedCell * currentPoint[ line ];
+            }
+
+            Va += fShiftedCell * myGFunctor(*itgcurrent);
+        }
+    }
+
+    double dVa = (double) NumberTraits< Quantity >::castToDouble( Va );
+    double One_Va = 1.0 / dVa;
+
+    for( Dimension line = 0; line < dimension; ++line )
+    {
+        for( Dimension column = 0; column < dimension; ++column )
+        {
+            Ja.setComponent( line, column, ((double) NumberTraits< Quantity >::castToDouble( XXT( line, column ))) - dVa * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ line ] ))) * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ column ] ))));
+        }
+    }
+
+    return Ja;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+template< typename ConstIteratorOnCells, typename OutputIterator >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::evalCovarianceMatrix
+( const ConstIteratorOnCells & itbegin,
+  const ConstIteratorOnCells & itend,
+  OutputIterator & result )
+{
+    Dimension total = 0;
+#ifdef DEBUG_VERBOSE
+    Dimension recount = 0;
+#endif
+
+    typedef typename KSpace::Point Point;
+    typedef typename Functor::Quantity FQuantity;
+
+    Dimension nbMoments = 6;
+    Quantity m[ nbMoments ]; /// <! [ m00, m01, m10, m11, m02, m20 ]
+    Quantity lastM1[ nbMoments ];
+    Quantity lastM2[ nbMoments ];
+
+    MatrixQuantity A1, A2;
+    double B1, B2;
+    MatrixQuantity C1, C2;
+    CovarianceMatrix Ja1, Ja2;
+    CovarianceMatrix lastJa1, lastJa2;
+
+    Spel currentCell1, shiftedCell;
+    Spel currentCell2;
+    Point shift, shiftedPoint;
+    Point diff;
+    FQuantity fShiftedCell;
+    Point currentPoint;
+
+    Spel lastCell1;
+    Spel lastCell2;
+
+    SCellToMidPoint< KSpace > midpoint( myKSpace );
+
+    bool bCanUseLastResults = false;
+    bool bComputed = false; /// <! if the cell has already been computed, continue to the next
+
+    int x, y;
+    int offset;
+
+    /// Iterate on all cells
+    for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
+    {
+        std::fill( m, m + nbMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
+
+        /// Inner cell
+        {
+            currentCell1 = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it )); /// Cell on the border, but inside the shape
+
+            /// Check if we can use previous results
+            if( total != 0 )
+            {
+                if(  currentCell1 == lastCell1 )
+                {
+                    memcpy( m, lastM1, nbMoments * sizeof( Quantity ));
+                    Ja1 = lastJa1;
+                    bComputed = true;
+                }
+                else if(  currentCell1 == lastCell2 )
+                {
+                    memcpy( m, lastM2, nbMoments * sizeof( Quantity ));
+                    Ja1 = lastJa2;
+                    bComputed = true;
+                }
+
+                diff = currentCell1.myCoordinates - lastCell1.myCoordinates;
+
+                x = diff[ 0 ];
+                y = diff[ 1 ];
+                int x2 = x * x;
+                int y2 = y * y;
+                int x2y2 = x2 + y2;
+
+                if( x2y2 != 4 && x2y2 != 8 ) /// Previous and current cells aren't adjacent. Compute on the full kernel
+                {
+                    bCanUseLastResults = false;
+#ifdef DEBUG_VERBOSE
+                    ++recount;
+#endif
+                }
+                else
+                {
+                    offset = (( x / 2) + 1 ) + ((( y / 2 ) + 1 ) * 3 );
+                    memcpy( m, lastM1, nbMoments * sizeof( Quantity ));
+                }
+
+                bComputed = false;
+            }
+
+            if( !bComputed )
+            {
+                if( !bCanUseLastResults ) /// Computation on full kernel, we have no previous results
+                {
+                    std::fill( m, m + nbMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
+
+                    shift = currentCell1.myCoordinates - myKernelSpelOrigin.myCoordinates;
+
+                    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shift;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+                            x = currentPoint[ 0 ];
+                            y = currentPoint[ 1 ];
+
+                            m[ 0 ] += 1;
+                            m[ 1 ] += y;
+                            m[ 2 ] += x;
+                            m[ 3 ] += x * y;
+                            m[ 4 ] += y * y;
+                            m[ 5 ] += x * x;
+                        }
+                    }
+                }
+                else /// Using last1
+                {
+                    shift = currentCell1.myCoordinates - lastCell1.myCoordinates;
+
+                    /// Part to substract from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shift;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+                            x = currentPoint[ 0 ];
+                            y = currentPoint[ 1 ];
+
+                            m[ 0 ] -= 1;
+                            m[ 1 ] -= y;
+                            m[ 2 ] -= x;
+                            m[ 3 ] -= x * y;
+                            m[ 4 ] -= y * y;
+                            m[ 5 ] -= x * x;
+                        }
+                    }
+
+                    /// Part to add from previous result.
+                    for( KernelConstIterator itgcurrent = myMask[ 8 - offset ].first, itgend = myMask[ 8 - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                    {
+                        shiftedPoint = ( *itgcurrent ).myCoordinates;
+                        shiftedPoint += shift;
+                        shiftedCell.myCoordinates = shiftedPoint;
+
+                        fShiftedCell = myFFunctor( shiftedCell );
+
+                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                        {
+                            currentPoint = midpoint( shiftedCell );
+                            x = currentPoint[ 0 ];
+                            y = currentPoint[ 1 ];
+
+                            m[ 0 ] += 1;
+                            m[ 1 ] += y;
+                            m[ 2 ] += x;
+                            m[ 3 ] += x * y;
+                            m[ 4 ] += y * y;
+                            m[ 5 ] += x * x;
+                        }
+                    }
+                }
+
+                /// Computation of covariance Matrix
+                A1.setComponent( 0, 0, m[ 5 ] );
+                A1.setComponent( 0, 1, m[ 3 ] );
+                A1.setComponent( 1, 0, m[ 3 ] );
+                A1.setComponent( 1, 1, m[ 4 ] );
+
+                B1 = 1.0 / m[ 0 ];
+
+                C1.setComponent( 0, 0, B1 * m[ 2 ] * m[ 2 ] );
+                C1.setComponent( 0, 1, B1 * m[ 2 ] * m[ 1 ] );
+                C1.setComponent( 0, 2, B1 * m[ 1 ] * m[ 2 ] );
+                C1.setComponent( 1, 0, B1 * m[ 1 ] * m[ 1 ] );
+
+                Ja1 = A1 - C1;
+
+                memcpy( lastM1, m, nbMoments * sizeof( Quantity ));
+                lastJa1 = Ja1;
+            }
+        }
+
+        /// Outter cell
+        {
+            currentCell2 = myKSpace.sDirectIncident( *it, *myKSpace.sOrthDirs( *it ));
+            shift = currentCell2.myCoordinates - currentCell1.myCoordinates;
+            x = shift[ 0 ];
+            y = shift[ 1 ];
+            int x2 = x * x;
+            int y2 = y * y;
+            int x2y2 = x2 + y2;
+            int offset = offset = (( x / 2) + 1 ) + ((( y / 2 ) + 1 ) * 3 ); /// x/2 because we are in a KSpace, and we want a digital offset
+
+            if( x2y2 != 4 && x2y2 != 8 ) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
+            {
+                trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
+            }
+            else if( offset == 4 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
+            {
+                trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
+            }
+            else
+            {
+                shift = currentCell2.myCoordinates - myKernelSpelOrigin.myCoordinates;
+
+                /// Part to substract from previous result.
+                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                {
+                    shiftedPoint = ( *itgcurrent ).myCoordinates;
+                    shiftedPoint += shift;
+                    shiftedCell.myCoordinates = shiftedPoint;
+
+                    fShiftedCell = myFFunctor( shiftedCell );
+
+                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                    {
+                        currentPoint = midpoint( shiftedCell );
+                        x = currentPoint[ 0 ];
+                        y = currentPoint[ 1 ];
+                        m[ 0 ] -= 1;
+                        m[ 1 ] -= y;
+                        m[ 2 ] -= x;
+                        m[ 3 ] -= x * y;
+                        m[ 4 ] -= y * y;
+                        m[ 5 ] -= x * x;
+                    }
+                }
+
+                /// Part to add from previous result.
+                for( KernelConstIterator itgcurrent = myMask[ 8 - offset ].first, itgend = myMask[ 8 - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                {
+                    shiftedPoint = ( *itgcurrent ).myCoordinates;
+                    shiftedPoint += shift;
+                    shiftedCell.myCoordinates = shiftedPoint;
+
+                    fShiftedCell = myFFunctor( shiftedCell );
+
+                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
+                    {
+                        currentPoint = midpoint( shiftedCell );
+                        x = currentPoint[ 0 ];
+                        y = currentPoint[ 1 ];
+
+                        m[ 0 ] += 1;
+                        m[ 1 ] += y;
+                        m[ 2 ] += x;
+                        m[ 3 ] += x * y;
+                        m[ 4 ] += y * y;
+                        m[ 5 ] += x * x;
+                    }
+                }
+            }
+
+            A2.setComponent( 0, 0, m[ 5 ] );
+            A2.setComponent( 0, 1, m[ 3 ] );
+            A2.setComponent( 1, 0, m[ 3 ] );
+            A2.setComponent( 1, 1, m[ 4 ] );
+
+            B2 = 1.0 / m[ 0 ];
+
+            C2.setComponent( 0, 0, B1 * m[ 2 ] * m[ 2 ] );
+            C2.setComponent( 0, 1, B1 * m[ 2 ] * m[ 1 ] );
+            C2.setComponent( 0, 2, B1 * m[ 1 ] * m[ 2 ] );
+            C2.setComponent( 1, 0, B1 * m[ 1 ] * m[ 1 ] );
+
+            Ja2 = A2 - C2;
+
+            memcpy( lastM1, m, nbMoments * sizeof( Quantity ));
+            lastJa2 = Ja2;
+        }
+
+        /// Computation of result covariance matrix + moving
+        *result = ( Ja1 + Ja2 ) / 2.0;
+        ++result;
+
+        lastCell1 = currentCell1;
+        lastCell2 = currentCell2;
+
+        ++total;
+    }
+
+#ifdef DEBUG_VERBOSE
+    std::cout << "#total cells = " << total << std::endl;
+    std::cout << "#recount = " << recount << std::endl;
+#endif
+
+}
+
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
+inline
+bool
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::isValid() const
+{
+    return true;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::fillMoments
+( Quantity* aMomentMatrix,
+  const Point & aPoint,
+  double direction )
+{
+    int x = aPoint[ 0 ];
+    int y = aPoint[ 1 ];
+
+    aMomentMatrix[ 0 ] += direction * 1;
+    aMomentMatrix[ 1 ] += direction * y;
+    aMomentMatrix[ 2 ] += direction * x;
+    aMomentMatrix[ 3 ] += direction * x * y;
+    aMomentMatrix[ 4 ] += direction * y * y;
+    aMomentMatrix[ 5 ] += direction * x * x;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::computeCovarianceMatrix
+( const Quantity* aMomentMatrix,
+  CovarianceMatrix & aCovarianceMatrix )
+{
+    MatrixQuantity A;
+    double B;
+    MatrixQuantity C;
+
+    A.setComponent( 0, 0, aMomentMatrix[ 5 ] );
+    A.setComponent( 0, 1, aMomentMatrix[ 3 ] );
+    A.setComponent( 1, 0, aMomentMatrix[ 3 ] );
+    A.setComponent( 1, 1, aMomentMatrix[ 4 ] );
+
+    B = 1.0 / aMomentMatrix[ 0 ];
+
+    C.setComponent( 0, 0, B * aMomentMatrix[ 2 ] * aMomentMatrix[ 2 ] );
+    C.setComponent( 0, 1, B * aMomentMatrix[ 2 ] * aMomentMatrix[ 1 ] );
+    C.setComponent( 1, 0, B * aMomentMatrix[ 1 ] * aMomentMatrix[ 2 ] );
+    C.setComponent( 1, 1, B * aMomentMatrix[ 1 ] * aMomentMatrix[ 1 ] );
+
+    aCovarianceMatrix = A - C;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+template< typename Shape >
+double
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::computeShiftFromShape
+( const Shape & shape,
+  const double h,
+  const Spel & aInnerSpel,
+  const Spel & aOutterSpel )
+{
+    typedef typename Z2i::RealPoint RealPoint;
+
+    double lambda = -1.0;
+    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
+
+    RealPoint low = ( SCellToRealPoint( aInnerSpel )) * h;
+    RealPoint high = ( SCellToRealPoint( aOutterSpel )) * h;
+
+    unsigned int iter = 0;
+    unsigned int nbIter = 10;
+
+
+    if( shape.orientation( low ) == shape.orientation( high ) )
+    {
+        std::cout <<  "On the same orientation "<< low << " " << high << std::endl;
+    }
+
+    RealPoint test;
+    while ( iter <= nbIter )
+    {
+        test = ( low + high ) / 2.0;
+        DGtal::Orientation inout = shape.orientation( test );
+
+        ASSERT(( high != low ));
+
+        if( inout == ON )
+        {
+            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
+            break;
+        }
+        else if( inout == OUTSIDE )
+        {
+            high = test;
+        }
+        else
+        {
+            low = test;
+        }
+
+        ++iter;
+    }
+
+    if( lambda == -1.0 )
+    {
+        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
+    }
+
+    ASSERT (( lambda <= 1.0 ));
+    ASSERT (( lambda >= 0.0 ));
+
+    return lambda;
+}
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////// 3D /////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+inline
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >
+::DigitalSurfaceConvolver( ConstAlias< Functor > f,
+                           ConstAlias< KernelFunctor > g,
+                           ConstAlias< KSpace > space)
+    :   dimension( 3 ),
+      myFFunctor( f ),
+      myGFunctor( g ),
+      myKSpace( space ),
+      isInit( false ),
+      isInitMask( false )
+{
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::init( Clone< KernelConstIterator > itgbegin,
+                                                                                                Clone< KernelConstIterator > itgend,
+                                                                                                Clone< Spel > kOrigin
+                                                                                                )
+{
+    myItKernelBegin = itgbegin;
+    myItKernelEnd = itgend;
+    myKernelSpelOrigin = kOrigin;
+
+    isInit = true;
+    isInitMask = false;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+inline
+void
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::init( Clone< KernelConstIterator > itgbegin,
+                                                                                                Clone< KernelConstIterator > itgend,
+                                                                                                Clone< Spel > kOrigin,
+                                                                                                Alias< std::vector< PairIterators > > mask )
+{
+    myItKernelBegin = itgbegin;
+    myItKernelEnd = itgend;
+    myKernelSpelOrigin = kOrigin;
+    myMask = mask;
+
+    ASSERT ( myMask.size () == 27 );
+
+    isInit = true;
+    isInitMask = true;
+}
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
+template< typename ConstIteratorOnCells >
+inline
+typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::Quantity
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::eval
+( const ConstIteratorOnCells & it )
+{
+    ASSERT ( isInitMask == true );
+
+    typedef typename KSpace::Point Point;
+    typedef typename Functor::Quantity FQuantity;
+
+    double lambda = 0.5;
+
+    DGtal::Dimension sizeMoments = 10;
+    DGtal::Dimension sizeOfMasks = myMask.size() - 1;
+    DGtal::Dimension positionOfFullKernel = 13;
+
+    Quantity m1;
+    Quantity m2;
+
+    Spel currentSpel1, currentSpel2;
+    Spel shiftedSpel;
+
+    Point shiftSpel1, shiftSpel2;
+    Point diffSpel;
+
+    SCellToInnerPoint< KSpace > SCellToPoint( myKSpace );
+
+    int x, y, z, x2, y2, z2, x2y2z2;
+    int offset;
+
+    m1 = NumberTraits< Quantity >::ZERO; /// <! clear array
+    /// Inner cell
+    {
+        DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
+        currentSpel1 = myKSpace.sDirectIncident( *it, kDim ); /// Spel on the border, but inside the shape
+        shiftSpel1 = myKSpace.sKCoords( currentSpel1 ) - myKSpace.sKCoords( myKernelSpelOrigin );
+
+        for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+        {
+            myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftSpel1 );
+
+            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+            ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 ); /// <! check if shiftedSpel is a spel.
+
+            if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+            {
+                ++m1;
+            }
+        }
+    }
+
+    m2 = m1;
+    /// Outter cell
+    {
+        DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
+        currentSpel2 = myKSpace.sIndirectIncident( *it, kDim );
+        shiftSpel2 = myKSpace.sKCoords( currentSpel2 ) - myKSpace.sKCoords( myKernelSpelOrigin );
+
+        diffSpel = myKSpace.sKCoords( currentSpel2 ) - myKSpace.sKCoords( currentSpel1 );
+        x = diffSpel[ 0 ];
+        y = diffSpel[ 1 ];
+        z = diffSpel[ 2 ];
+        x2 = x * x;
+        y2 = y * y;
+        z2 = z * z;
+        x2y2z2 = x2 + y2 + z2;
+
+
+        if(  x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
+        {
+            trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
+        }
+        else if(  offset == positionOfFullKernel ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
+        {
+            trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
+        }
+        else
+        {
+            offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1 ) * 9 ); /// x/2 because we are in a KSpace, and we want a digital offset
+
+            /// Part to substract from previous result.
+            for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+            {
+                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftSpel2 );
+
+                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                {
+                    --m2;
+                }
+            }
+
+            /// Part to add from previous result.
+            for( KernelConstIterator itgcurrent = myMask[ sizeOfMasks - offset ].first, itgend = myMask[ sizeOfMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+            {
+                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftSpel2 );
+
+                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                {
+                    ++m2;
+                }
+            }
+        }
+    }
+
+    /// Computation of result covariance matrix + moving
+    return Quantity( m1 * lambda + m2 * ( 1.0 - lambda ));
+}
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename ConstIteratorOnCells, typename OutputIterator >
@@ -1618,152 +2236,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 #endif
 }
 
-
-
-
-
-
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
-template< typename ConstIteratorOnCells >
-inline
-typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::evalCovarianceMatrix
-( const ConstIteratorOnCells & it )
-{
-    ASSERT ( isInit == true );
-
-    typedef typename KSpace::Point Point;
-    typedef typename Functor::Quantity FQuantity;
-
-    Spel currentCell = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it ));
-    Point shiftedPoint, currentPoint;
-    Point shift = currentCell.myCoordinates - myKernelSpelOrigin.myCoordinates;
-
-    Spel shiftedCell;
-
-    FQuantity fShiftedCell;
-
-    CovarianceMatrix Ja;
-    MatrixQuantity XXT;
-    XXT.constant( NumberTraits< Quantity >::ZERO );
-    VectorQuantity Sa;
-    Sa.reset();
-    Quantity Va = NumberTraits< Quantity >::ZERO;
-
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
-
-    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
-    {
-        shiftedPoint = ( *itgcurrent ).myCoordinates;
-        shiftedPoint += shift;
-        shiftedCell.myCoordinates = shiftedPoint;
-
-        fShiftedCell = myFFunctor( shiftedCell );
-
-        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-        {
-            currentPoint = midpoint( shiftedCell );
-
-            for( Dimension line = 0; line < dimension; ++line )
-            {
-                for( Dimension column = 0; column < dimension; ++column )
-                {
-                    XXT.setComponent( line, column, XXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-                }
-
-                Sa[ line ] += fShiftedCell * currentPoint[ line ];
-            }
-
-            Va += fShiftedCell * myGFunctor( *itgcurrent );
-        }
-    }
-
-    double dVa = (double) NumberTraits< Quantity >::castToDouble( Va );
-    double One_Va = 1.0 / dVa;
-
-    for( Dimension line = 0; line < dimension; ++line )
-    {
-        for( Dimension column = 0; column < dimension; ++column )
-        {
-            Ja.setComponent( line, column, ((double) NumberTraits< Quantity >::castToDouble( XXT( line, column ))) - dVa * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ line ] ))) * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ column ] ))));
-        }
-    }
-
-    return Ja;
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-template< typename ConstIteratorOnCells >
-inline
-typename DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::evalCovarianceMatrix
-( const ConstIteratorOnCells & it )
-{
-    ASSERT ( isInit == true );
-
-    typedef typename KSpace::Point Point;
-    typedef typename Functor::Quantity FQuantity;
-
-    Spel currentCell = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it  ));
-    Point shiftedPoint, shift;
-    Point currentPoint;
-
-    shift = currentCell.myCoordinates - myKernelSpelOrigin.myCoordinates;
-
-    Spel shiftedCell;
-
-    FQuantity fShiftedCell;
-
-    CovarianceMatrix Ja;
-    MatrixQuantity XXT;
-    XXT.constant( NumberTraits< Quantity >::ZERO );
-    VectorQuantity Sa;
-    Sa.reset();
-    Quantity Va = NumberTraits< Quantity >::ZERO;
-
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
-
-    for(  KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
-    {
-        shiftedPoint = ( *itgcurrent ).myCoordinates;
-        shiftedPoint += shift;
-        shiftedCell.myCoordinates = shiftedPoint;
-
-        fShiftedCell = myFFunctor( shiftedCell );
-
-        if(  fShiftedCell != NumberTraits< FQuantity >::ZERO )
-        {
-            currentPoint = midpoint( shiftedCell );
-
-            for( Dimension line = 0; line < dimension; ++line )
-            {
-                for( Dimension column = 0; column < dimension; ++column )
-                {
-                    XXT.setComponent( line, column, XXT( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
-                }
-
-                Sa[ line ] += fShiftedCell * currentPoint[ line ];
-            }
-
-            Va += fShiftedCell * myGFunctor(*itgcurrent);
-        }
-    }
-
-    double dVa = (double) NumberTraits< Quantity >::castToDouble( Va );
-    double One_Va = 1.0 / dVa;
-
-    for( Dimension line = 0; line < dimension; ++line )
-    {
-        for( Dimension column = 0; column < dimension; ++column )
-        {
-            Ja.setComponent( line, column, ((double) NumberTraits< Quantity >::castToDouble( XXT( line, column ))) - dVa * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ line ] ))) * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ column ] ))));
-        }
-    }
-
-    return Ja;
-}
-
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename ConstIteratorOnCells >
 inline
@@ -1881,336 +2353,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     /// Computation of result covariance matrix + moving
     return CovarianceMatrix( Ja1 * lambda + Ja2 * ( 1.0 - lambda ));
-}
-
-
-
-
-
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
-template< typename ConstIteratorOnCells, typename OutputIterator >
-inline
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::evalCovarianceMatrix
-( const ConstIteratorOnCells & itbegin,
-  const ConstIteratorOnCells & itend,
-  OutputIterator & result )
-{
-    for( ConstIteratorOnCells itcurrent = itbegin;
-         itcurrent != itend;
-         ++itcurrent )
-    {
-        *result = evalCovarianceMatrix( itcurrent );
-        ++result;
-    }
-
-    return result;
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-template< typename ConstIteratorOnCells, typename OutputIterator >
-inline
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::evalCovarianceMatrix
-( const ConstIteratorOnCells & itbegin,
-  const ConstIteratorOnCells & itend,
-  OutputIterator & result )
-{
-    Dimension total = 0;
-#ifdef DEBUG_VERBOSE
-    Dimension recount = 0;
-#endif
-
-    typedef typename KSpace::Point Point;
-    typedef typename Functor::Quantity FQuantity;
-
-    Dimension nbMoments = 6;
-    Quantity m[ nbMoments ]; /// <! [ m00, m01, m10, m11, m02, m20 ]
-    Quantity lastM1[ nbMoments ];
-    Quantity lastM2[ nbMoments ];
-
-    MatrixQuantity A1, A2;
-    double B1, B2;
-    MatrixQuantity C1, C2;
-    CovarianceMatrix Ja1, Ja2;
-    CovarianceMatrix lastJa1, lastJa2;
-
-    Spel currentCell1, shiftedCell;
-    Spel currentCell2;
-    Point shift, shiftedPoint;
-    Point diff;
-    FQuantity fShiftedCell;
-    Point currentPoint;
-
-    Spel lastCell1;
-    Spel lastCell2;
-
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
-
-    bool bCanUseLastResults = false;
-    bool bComputed = false; /// <! if the cell has already been computed, continue to the next
-
-    int x, y;
-    int offset;
-
-    /// Iterate on all cells
-    for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
-    {
-        std::fill( m, m + nbMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
-
-        /// Inner cell
-        {
-            currentCell1 = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it )); /// Cell on the border, but inside the shape
-
-            /// Check if we can use previous results
-            if( total != 0 )
-            {
-                if(  currentCell1 == lastCell1 )
-                {
-                    memcpy( m, lastM1, nbMoments * sizeof( Quantity ));
-                    Ja1 = lastJa1;
-                    bComputed = true;
-                }
-                else if(  currentCell1 == lastCell2 )
-                {
-                    memcpy( m, lastM2, nbMoments * sizeof( Quantity ));
-                    Ja1 = lastJa2;
-                    bComputed = true;
-                }
-
-                diff = currentCell1.myCoordinates - lastCell1.myCoordinates;
-
-                x = diff[ 0 ];
-                y = diff[ 1 ];
-                int x2 = x * x;
-                int y2 = y * y;
-                int x2y2 = x2 + y2;
-
-                if( x2y2 != 4 && x2y2 != 8 ) /// Previous and current cells aren't adjacent. Compute on the full kernel
-                {
-                    bCanUseLastResults = false;
-#ifdef DEBUG_VERBOSE
-                    ++recount;
-#endif
-                }
-                else
-                {
-                    offset = (( x / 2) + 1 ) + ((( y / 2 ) + 1 ) * 3 );
-                    memcpy( m, lastM1, nbMoments * sizeof( Quantity ));
-                }
-
-                bComputed = false;
-            }
-
-            if( !bComputed )
-            {
-                if( !bCanUseLastResults ) /// Computation on full kernel, we have no previous results
-                {
-                    std::fill( m, m + nbMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
-
-                    shift = currentCell1.myCoordinates - myKernelSpelOrigin.myCoordinates;
-
-                    for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
-                    {
-                        shiftedPoint = ( *itgcurrent ).myCoordinates;
-                        shiftedPoint += shift;
-                        shiftedCell.myCoordinates = shiftedPoint;
-
-                        fShiftedCell = myFFunctor( shiftedCell );
-
-                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-                        {
-                            currentPoint = midpoint( shiftedCell );
-                            x = currentPoint[ 0 ];
-                            y = currentPoint[ 1 ];
-
-                            m[ 0 ] += 1;
-                            m[ 1 ] += y;
-                            m[ 2 ] += x;
-                            m[ 3 ] += x * y;
-                            m[ 4 ] += y * y;
-                            m[ 5 ] += x * x;
-                        }
-                    }
-                }
-                else /// Using last1
-                {
-                    shift = currentCell1.myCoordinates - lastCell1.myCoordinates;
-
-                    /// Part to substract from previous result.
-                    for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
-                    {
-                        shiftedPoint = ( *itgcurrent ).myCoordinates;
-                        shiftedPoint += shift;
-                        shiftedCell.myCoordinates = shiftedPoint;
-
-                        fShiftedCell = myFFunctor( shiftedCell );
-
-                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-                        {
-                            currentPoint = midpoint( shiftedCell );
-                            x = currentPoint[ 0 ];
-                            y = currentPoint[ 1 ];
-
-                            m[ 0 ] -= 1;
-                            m[ 1 ] -= y;
-                            m[ 2 ] -= x;
-                            m[ 3 ] -= x * y;
-                            m[ 4 ] -= y * y;
-                            m[ 5 ] -= x * x;
-                        }
-                    }
-
-                    /// Part to add from previous result.
-                    for( KernelConstIterator itgcurrent = myMask[ 8 - offset ].first, itgend = myMask[ 8 - offset ].second; itgcurrent != itgend; ++itgcurrent )
-                    {
-                        shiftedPoint = ( *itgcurrent ).myCoordinates;
-                        shiftedPoint += shift;
-                        shiftedCell.myCoordinates = shiftedPoint;
-
-                        fShiftedCell = myFFunctor( shiftedCell );
-
-                        if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-                        {
-                            currentPoint = midpoint( shiftedCell );
-                            x = currentPoint[ 0 ];
-                            y = currentPoint[ 1 ];
-
-                            m[ 0 ] += 1;
-                            m[ 1 ] += y;
-                            m[ 2 ] += x;
-                            m[ 3 ] += x * y;
-                            m[ 4 ] += y * y;
-                            m[ 5 ] += x * x;
-                        }
-                    }
-                }
-
-                /// Computation of covariance Matrix
-                A1.setComponent( 0, 0, m[ 5 ] );
-                A1.setComponent( 0, 1, m[ 3 ] );
-                A1.setComponent( 1, 0, m[ 3 ] );
-                A1.setComponent( 1, 1, m[ 4 ] );
-
-                B1 = 1.0 / m[ 0 ];
-
-                C1.setComponent( 0, 0, B1 * m[ 2 ] * m[ 2 ] );
-                C1.setComponent( 0, 1, B1 * m[ 2 ] * m[ 1 ] );
-                C1.setComponent( 0, 2, B1 * m[ 1 ] * m[ 2 ] );
-                C1.setComponent( 1, 0, B1 * m[ 1 ] * m[ 1 ] );
-
-                Ja1 = A1 - C1;
-
-                memcpy( lastM1, m, nbMoments * sizeof( Quantity ));
-                lastJa1 = Ja1;
-            }
-        }
-
-        /// Outter cell
-        {
-            currentCell2 = myKSpace.sDirectIncident( *it, *myKSpace.sOrthDirs( *it ));
-            shift = currentCell2.myCoordinates - currentCell1.myCoordinates;
-            x = shift[ 0 ];
-            y = shift[ 1 ];
-            int x2 = x * x;
-            int y2 = y * y;
-            int x2y2 = x2 + y2;
-            int offset = offset = (( x / 2) + 1 ) + ((( y / 2 ) + 1 ) * 3 ); /// x/2 because we are in a KSpace, and we want a digital offset
-
-            if( x2y2 != 4 && x2y2 != 8 ) /// Inside and outside cells aren't adjacent, but should be. It's a honeypot.
-            {
-                trace.error() << "Error - Found that inside and outside cells aren't adjacent. That's not logic.\n";
-            }
-            else if( offset == 4 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
-            {
-                trace.error() << "Error - Ask to compute full kernel at the wrong moment. Maybe it's an offset computation bug ?\n";
-            }
-            else
-            {
-                shift = currentCell2.myCoordinates - myKernelSpelOrigin.myCoordinates;
-
-                /// Part to substract from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
-                {
-                    shiftedPoint = ( *itgcurrent ).myCoordinates;
-                    shiftedPoint += shift;
-                    shiftedCell.myCoordinates = shiftedPoint;
-
-                    fShiftedCell = myFFunctor( shiftedCell );
-
-                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-                    {
-                        currentPoint = midpoint( shiftedCell );
-                        x = currentPoint[ 0 ];
-                        y = currentPoint[ 1 ];
-                        m[ 0 ] -= 1;
-                        m[ 1 ] -= y;
-                        m[ 2 ] -= x;
-                        m[ 3 ] -= x * y;
-                        m[ 4 ] -= y * y;
-                        m[ 5 ] -= x * x;
-                    }
-                }
-
-                /// Part to add from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ 8 - offset ].first, itgend = myMask[ 8 - offset ].second; itgcurrent != itgend; ++itgcurrent )
-                {
-                    shiftedPoint = ( *itgcurrent ).myCoordinates;
-                    shiftedPoint += shift;
-                    shiftedCell.myCoordinates = shiftedPoint;
-
-                    fShiftedCell = myFFunctor( shiftedCell );
-
-                    if( fShiftedCell != NumberTraits< FQuantity >::ZERO )
-                    {
-                        currentPoint = midpoint( shiftedCell );
-                        x = currentPoint[ 0 ];
-                        y = currentPoint[ 1 ];
-
-                        m[ 0 ] += 1;
-                        m[ 1 ] += y;
-                        m[ 2 ] += x;
-                        m[ 3 ] += x * y;
-                        m[ 4 ] += y * y;
-                        m[ 5 ] += x * x;
-                    }
-                }
-            }
-
-            A2.setComponent( 0, 0, m[ 5 ] );
-            A2.setComponent( 0, 1, m[ 3 ] );
-            A2.setComponent( 1, 0, m[ 3 ] );
-            A2.setComponent( 1, 1, m[ 4 ] );
-
-            B2 = 1.0 / m[ 0 ];
-
-            C2.setComponent( 0, 0, B1 * m[ 2 ] * m[ 2 ] );
-            C2.setComponent( 0, 1, B1 * m[ 2 ] * m[ 1 ] );
-            C2.setComponent( 0, 2, B1 * m[ 1 ] * m[ 2 ] );
-            C2.setComponent( 1, 0, B1 * m[ 1 ] * m[ 1 ] );
-
-            Ja2 = A2 - C2;
-
-            memcpy( lastM1, m, nbMoments * sizeof( Quantity ));
-            lastJa2 = Ja2;
-        }
-
-        /// Computation of result covariance matrix + moving
-        *result = ( Ja1 + Ja2 ) / 2.0;
-        ++result;
-
-        lastCell1 = currentCell1;
-        lastCell2 = currentCell2;
-
-        ++total;
-    }
-
-#ifdef DEBUG_VERBOSE
-    std::cout << "#total cells = " << total << std::endl;
-    std::cout << "#recount = " << recount << std::endl;
-#endif
-
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
@@ -3486,30 +3628,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 #endif
 }
 
-
-
-
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
-inline
-bool
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::isValid() const
-{
-    return true;
-}
-
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
-inline
-bool
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::isValid() const
-{
-    return true;
-}
-
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
 inline
 bool
@@ -3517,163 +3635,6 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 {
     return true;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::fillMoments
-( Quantity* aMomentMatrix,
-  const Point & aPoint,
-  double direction )
-{
-
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::computeCovarianceMatrix
-( const Quantity* aMomentMatrix,
-  CovarianceMatrix & aCovarianceMatrix )
-{
-
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension >
-template< typename Shape >
-double
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, dimension >::computeShiftFromShape
-( const Shape & shape,
-  const double h,
-  const Spel & aInnerSpel,
-  const Spel & aOutterSpel )
-{
-    double lambda = -1.0;
-    return lambda;
-}
-
-
-
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::fillMoments
-( Quantity* aMomentMatrix,
-  const Point & aPoint,
-  double direction )
-{
-    int x = aPoint[ 0 ];
-    int y = aPoint[ 1 ];
-
-    aMomentMatrix[ 0 ] += direction * 1;
-    aMomentMatrix[ 1 ] += direction * y;
-    aMomentMatrix[ 2 ] += direction * x;
-    aMomentMatrix[ 3 ] += direction * x * y;
-    aMomentMatrix[ 4 ] += direction * y * y;
-    aMomentMatrix[ 5 ] += direction * x * x;
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-void
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::computeCovarianceMatrix
-( const Quantity* aMomentMatrix,
-  CovarianceMatrix & aCovarianceMatrix )
-{
-    MatrixQuantity A;
-    double B;
-    MatrixQuantity C;
-
-    A.setComponent( 0, 0, aMomentMatrix[ 5 ] );
-    A.setComponent( 0, 1, aMomentMatrix[ 3 ] );
-    A.setComponent( 1, 0, aMomentMatrix[ 3 ] );
-    A.setComponent( 1, 1, aMomentMatrix[ 4 ] );
-
-    B = 1.0 / aMomentMatrix[ 0 ];
-
-    C.setComponent( 0, 0, B * aMomentMatrix[ 2 ] * aMomentMatrix[ 2 ] );
-    C.setComponent( 0, 1, B * aMomentMatrix[ 2 ] * aMomentMatrix[ 1 ] );
-    C.setComponent( 1, 0, B * aMomentMatrix[ 1 ] * aMomentMatrix[ 2 ] );
-    C.setComponent( 1, 1, B * aMomentMatrix[ 1 ] * aMomentMatrix[ 1 ] );
-
-    aCovarianceMatrix = A - C;
-}
-
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-template< typename Shape >
-double
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::computeShiftFromShape
-( const Shape & shape,
-  const double h,
-  const Spel & aInnerSpel,
-  const Spel & aOutterSpel )
-{
-    typedef typename Z2i::RealPoint RealPoint;
-
-    double lambda = -1.0;
-    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
-
-    RealPoint low = ( SCellToRealPoint( aInnerSpel )) * h;
-    RealPoint high = ( SCellToRealPoint( aOutterSpel )) * h;
-
-    unsigned int iter = 0;
-    unsigned int nbIter = 10;
-
-
-    if( shape.orientation( low ) == shape.orientation( high ) )
-    {
-        std::cout <<  "On the same orientation "<< low << " " << high << std::endl;
-    }
-
-    RealPoint test;
-    while ( iter <= nbIter )
-    {
-        test = ( low + high ) / 2.0;
-        DGtal::Orientation inout = shape.orientation( test );
-
-        ASSERT(( high != low ));
-
-        if( inout == ON )
-        {
-            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
-            break;
-        }
-        else if( inout == OUTSIDE )
-        {
-            high = test;
-        }
-        else
-        {
-            low = test;
-        }
-
-        ++iter;
-    }
-
-    if( lambda == -1.0 )
-    {
-        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
-    }
-
-    ASSERT (( lambda <= 1.0 ));
-    ASSERT (( lambda >= 0.0 ));
-
-    return lambda;
-}
-
-
-
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 void
