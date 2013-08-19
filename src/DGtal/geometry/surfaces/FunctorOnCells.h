@@ -66,6 +66,7 @@ namespace DGtal
    *
    * @tparam TFunctorOnPoints a model of functor on Digital Points.
    * @tparam TKSpace Khalimsky space in which the shape is defined.
+   * @bug Jérémy rename to FunctorOnSurfels
    */
   template <typename TFunctorOnPoints, typename TKSpace>
   class FunctorOnCells
@@ -78,7 +79,7 @@ namespace DGtal
     typedef typename FunctorOnPoints::Point Point;
     typedef typename FunctorOnPoints::Value Value;
     typedef TKSpace KSpace;
-    typedef typename KSpace::SCell Cell;
+    typedef typename KSpace::SCell Spel;
 
     BOOST_CONCEPT_ASSERT(( CPointFunctor< FunctorOnPoints > ));
     //BOOST_CONCEPT_ASSERT(( CSpace< KSpace > ));
@@ -103,15 +104,30 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
     /**
-     * Call the functor on Point by converting the Cell to a Point.
+     * Call the functor on Point by converting the given surfel to a digital point.
      *
-     * @param[in] aCell any cell in the Khalimsky space.
+     * @param[in] aSurfel any surfel in the Khalimsky space.
      *
-     * @return 'ONE' if the point is inside the shape, 'ZERO' if it is strictly outside.
+     * @return 'ONE' if the surfel is inside the shape, 'ZERO' if it is strictly outside.
      */
-    Quantity operator()( const Cell & aCell ) const
+    Quantity operator()( const Spel & aSpel ) const
     {
-      return ( f->operator()( myKSpace->sCoords(aCell) ) == NumberTraits< Value >::ZERO ) ? NumberTraits<Quantity>::ZERO : NumberTraits<Quantity>::ONE;
+//        DGtal::Dimension k = myKSpace->sOrthDir( aSurfel );
+//        // checks if the surfel is on the space boundary.
+//        if ( myKSpace->sIsMax( aSurfel, k ) || myKSpace->sIsMin( aSurfel, k ) )
+//        {
+//            return NumberTraits< Value >::ZERO;
+//        }
+
+//        typedef typename KSpace::SCell SCell;
+//        typedef typename KSpace::Point Point;
+
+//        SCell currentSpel = myKSpace->sDirectIncident( aSurfel, k );
+        Point currentPoint = myKSpace->sCoords( aSpel );
+
+        return ( f->operator()( currentPoint ) ) ? NumberTraits< Value >::ONE : NumberTraits< Value >::ZERO;
+
+        //      return ( f->operator()( myKSpace->sCoords( aCell ) ) == NumberTraits< Value >::ZERO ) ? NumberTraits<Quantity>::ZERO : NumberTraits<Quantity>::ONE;
     }
 
     /**

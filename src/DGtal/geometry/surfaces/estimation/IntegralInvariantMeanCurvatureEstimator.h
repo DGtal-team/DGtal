@@ -104,7 +104,7 @@ public:
 
     typedef ImplicitBall< Z3i::Space > KernelSupport;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
     // ----------------------- Standard services ------------------------------
 public:
@@ -249,7 +249,7 @@ public:
 
     typedef ImplicitBall< Z2i::Space > KernelSupport;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
     // ----------------------- Standard services ------------------------------
 public:
@@ -399,7 +399,7 @@ public:
 
     typedef ImplicitBall< Z3i::Space > KernelSupport;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
     // ----------------------- Standard services ------------------------------
 public:

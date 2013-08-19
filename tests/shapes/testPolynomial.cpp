@@ -86,7 +86,7 @@ class NearestPointEmbedder
 public:
   typedef TKSpace KSpace;
   typedef TShape Shape;
-  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::SCell SCell;
   typedef typename KSpace::Point Point;
   typedef typename KSpace::Space Space;
   typedef typename Space::RealPoint RealPoint;
@@ -106,12 +106,14 @@ public:
     shape = &s;
   }
 
-  RealPoint operator()( const Cell & cell ) const
+  RealPoint operator()( const SCell & cell ) const
   {
-    Point B = k.uKCoords( cell );
-    RealPoint A( B[ 0 ], B[1], B[2] );
-    A /= 2.0;
-    A *= step;
+    SCellToMidPoint< KSpace > embedder;
+    RealPoint A = embedder( cell ) * step;
+//    Point B = k.uKCoords( cell );
+//    RealPoint A( B[ 0 ], B[1], B[2] );
+//    A /= 2.0;
+//    A *= step;
     A = shape->nearestPoint( A, 0.01 * step, 200, 0.1 * step );
     return A;
   }
@@ -156,11 +158,11 @@ int main( int argc, char** argv )
   }
 
 
-  ImplicitShape ishape( P );
-  DigitalShape dshape;
-  dshape.attach( ishape );
-  dshape.init( RealPoint( p1 ), RealPoint( p2 ), step );
-  Domain domain = dshape.getDomain();
+  ImplicitShape* ishape = new ImplicitShape( P );
+  DigitalShape* dshape = new DigitalShape();
+  dshape->attach( *ishape );
+  dshape->init( RealPoint( p1 ), RealPoint( p2 ), step );
+  Domain domain = dshape->getDomain();
 
   KSpace K;
 
@@ -184,10 +186,10 @@ int main( int argc, char** argv )
 
 
   MySetOfSurfels theSetOfSurfels( K, surfAdj );
-  Surfel bel = Surfaces< KSpace >::findABel( K, dshape, 100000 );
+  Surfel bel = Surfaces< KSpace >::findABel( K, *dshape, 100000 );
   Surfaces< KSpace >::trackBoundary( theSetOfSurfels.surfelSet(),
                                    K, surfAdj,
-                                   dshape, bel );
+                                   *dshape, bel );
 
   MyDigitalSurface digSurf( theSetOfSurfels );
 
@@ -197,15 +199,11 @@ int main( int argc, char** argv )
   viewer.show();
   viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
-  typedef typename ImageSelector< Domain, unsigned int >::Type Image;
-  typedef ImageToConstantFunctor< Image, DigitalShape > MyPointFunctor;
+  typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Domain, unsigned int > MyPointFunctor;
   typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
   typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
 
-
-  Image image( domain );
-  DGtal::imageFromRangeAndValue( domain.begin(), domain.end(), image );
-  MyPointFunctor pointFunctor( &image, &dshape, 1, true );
+  MyPointFunctor pointFunctor( dshape, domain, 1, 0 );
   MyCellFunctor functor ( pointFunctor, K );
   MyCurvatureEstimator iigaussest ( K, functor );
   iigaussest.init( step, re );
@@ -219,19 +217,26 @@ int main( int argc, char** argv )
 
   double minCurv = 1;
   double maxCurv = 0;
-  SCellToMidPoint< KSpace > midpoint( K );
+//  SCellToMidPoint< KSpace > midpoint( K );
+  NearestPointEmbedder< KSpace, ImplicitShape > ScellToRealPoint;
+  ScellToRealPoint.init( K, step, *ishape );
+
+  std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
+  iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator, *ishape );
+
+  int p = 0;
   for ( std::set< SCell >::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
-        it != it_end; ++it)
+        it != it_end; ++it, ++p)
   {
 
-    RealPoint A = midpoint( *it ) * step;
-    A = ishape.nearestPoint (A, 0.01 * step, 200, 0.1 * step);
+//    RealPoint A = midpoint( *it ) * step;
+//    A = ishape.nearestPoint (A, 0.01 * step, 200, 0.1 * step);
 //    double a = ishape.meanCurvature( A );
-    double a = ishape.gaussianCurvature(A);
-    double b = iigaussest.eval( it );
-
+    RealPoint A = ScellToRealPoint( *it );
+    double a = ishape->gaussianCurvature( A );
+    double b = resultII[ p ];
+    std::cout << b << std::endl;
     resultTrue.push_back( a );
-    resultII.push_back( b );
     nearestPoints.push_back( A );
 
     if ( boost::math::isnan( a ))

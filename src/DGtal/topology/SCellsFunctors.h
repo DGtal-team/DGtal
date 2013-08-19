@@ -207,10 +207,14 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-      ASSERT( myK ); 
-      Output o( myK->sKCoords(s) );
-      o /= 2;
-      return o;
+        ASSERT( myK );
+        Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
+        return Output( myK->sCoords( pixel ) );
+
+//      ASSERT( myK );
+//      Output o( myK->sKCoords( s ));
+//      o /= 2.0;
+//      return o;
     } 
       
   }; // end of class SCellToMidPoint
@@ -362,8 +366,8 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-      ASSERT( myK ); 
-      Input pixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
+      ASSERT( myK );
+      Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
       return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
       

@@ -127,7 +127,7 @@ public:
 
     typedef ImplicitBall< Z2i::Space > KernelSupport;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
     // ----------------------- Standard services ------------------------------
 public:
@@ -271,7 +271,7 @@ public:
 
     typedef ImplicitBall< Z2i::Space > KernelSupport;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
     // ----------------------- Standard services ------------------------------
 public:
@@ -311,6 +311,22 @@ public:
       */
     template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
 
+    /**
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Return the result on an OutputIterator (param).
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      * @tparam OutputIterator iterator of a list of Quantity
+      *
+      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+      * @param result iterator of results of the computation.
+      */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void eval ( const ConstIteratorOnCells & itb,
+                const ConstIteratorOnCells & ite,
+                const Shape & shape,
+                OutputIterator & result );
 
     /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
@@ -426,7 +442,7 @@ public:
 
     typedef ImplicitBall< Z3i::Space > KernelSupport;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
     // ----------------------- Standard services ------------------------------
 public:
@@ -508,8 +524,8 @@ public:
     template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
     void eval ( const ConstIteratorOnCells & itb,
                 const ConstIteratorOnCells & ite,
-                const Shape & shape,
-                OutputIterator & result );
+                OutputIterator & result,
+                const Shape & shape );
 
     /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
@@ -549,6 +565,10 @@ public:
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+protected:
+    void evalk1k2( Matrix3x3 & covarianceMatrix, Quantity & k1, Quantity & k2 );
+    void evalk1k2( Matrix3x3 & covarianceMatrix, Matrix3x3 & eigenVectors, Vector3 & eigenValues, Quantity & k1, Quantity & k2 );
 
     // ------------------------- Private Datas --------------------------------
 private:

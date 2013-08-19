@@ -40,6 +40,7 @@
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
@@ -62,7 +63,8 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
   typedef Z3i::Space::RealPoint::Coordinate Ring;
   typedef MPolynomial< 3, Ring > Polynomial3;
   typedef MPolynomialReader< 3, Ring > Polynomial3Reader;
-  typedef ImplicitPolynomial3Shape< Z3i::Space > MyShape;
+  //typedef ImplicitPolynomial3Shape< Z3i::Space > MyShape;
+  typedef ImplicitBall< Z3i::Space> MyShape;
   typedef GaussDigitizer< Z3i::Space, MyShape > MyGaussDigitizer;
   typedef LightImplicitDigitalSurface< Z3i::KSpace, MyGaussDigitizer > MyLightImplicitDigitalSurface;
   typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
@@ -72,6 +74,7 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator SurfelConstIterator;
+//  typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyIIGaussianEstimator;
   typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyIIGaussianEstimator;
   typedef MyIIGaussianEstimator::Quantity Quantity;
   typedef MyShape::RealPoint RealPoint;
@@ -95,7 +98,8 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
     return 1;
   }
 
-  MyShape shape( poly );
+//  MyShape shape( poly );
+  MyShape shape( RealPoint(0,0,0), 5.05);
 
   MyGaussDigitizer gaussDigShape;
   gaussDigShape.attach( shape );
@@ -148,7 +152,7 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
 //          resultsIICurvature.push_back( estimator.eval( abegin ));
 //          ++abegin;
 //      }
-    estimator.eval( abegin, aend, resultsIICurvatureIterator );
+    estimator.eval( abegin, aend, resultsIICurvatureIterator, shape );
   }
   catch(...)
   {

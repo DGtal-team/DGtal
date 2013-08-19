@@ -52,6 +52,7 @@
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
 #include "DGtal/kernel/CCellFunctor.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -86,7 +87,7 @@ public:
     typedef SimpleMatrix< Quantity, dimension, dimension > MatrixQuantity;
     typedef SimpleMatrix< double, dimension, dimension > CovarianceMatrix;
 
-    typedef typename KSpace::SCell Cell;
+    typedef typename KSpace::SCell Spel;
     typedef typename KSpace::Space::Point Point;
     typedef TKernelConstIterator KernelConstIterator;
 
@@ -125,7 +126,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
+    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin );
 
     /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -141,7 +142,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
+    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin, Alias< std::vector< PairIterators > > mask );
 
     /**
        * Convolve the kernel at a given position.
@@ -199,6 +200,13 @@ public:
        */
     bool isValid () const;
 
+protected:
+
+    void computeCovarianceMatrix( const Quantity* aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+    void fillMoments( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
+    template< typename Shape >
+    double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
+
     // ------------------------- Private Datas --------------------------------
 
 private:
@@ -220,7 +228,7 @@ private:
     /// Copy  of the last iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelEnd;
     /// Copy of the origin cell of the kernel.
-    Cell myKernelCellOrigin;
+    Spel myKernelSpelOrigin;
 
     bool isInit;
     bool isInitMask;
@@ -273,13 +281,13 @@ public:
     typedef SimpleMatrix< Quantity, 2, 2 > MatrixQuantity;
     typedef SimpleMatrix< double, 2, 2 > CovarianceMatrix;
 
-    typedef typename KSpace::SCell Cell;
+    typedef typename KSpace::SCell Spel;
     typedef typename KSpace::Space::Point Point;
     typedef TKernelConstIterator KernelConstIterator;
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
     // ----------------------- Standard services ------------------------------
@@ -312,7 +320,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
+    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin );
 
     /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -328,7 +336,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
+    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin, Alias< std::vector< PairIterators > > mask );
 
     /**
        * Convolve the kernel at a given position.
@@ -341,6 +349,20 @@ public:
        */
     template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
 
+
+    /**
+       * Iterate the convolver between [itbegin, itend[.
+       *
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
+       * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void eval ( const ConstIteratorOnCells & itbegin,
+                const ConstIteratorOnCells & itend,
+                Shape & shape,
+                const double h,
+                OutputIterator & result );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -388,6 +410,13 @@ public:
        */
     bool isValid () const;
 
+protected:
+
+    void computeCovarianceMatrix( const Quantity* aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+    void fillMoments( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
+    template< typename Shape >
+    double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
+
     // ------------------------- Private Datas --------------------------------
 
 private:
@@ -410,7 +439,7 @@ private:
     /// Copy  of the last iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelEnd;
     /// Copy of the origin cell of the kernel.
-    Cell myKernelCellOrigin;
+    Spel myKernelSpelOrigin;
 
     bool isInit;
     bool isInitMask;
@@ -463,13 +492,13 @@ public:
     typedef SimpleMatrix< Quantity, 3, 3 > MatrixQuantity;
     typedef SimpleMatrix< double, 3, 3 > CovarianceMatrix;
 
-    typedef typename KSpace::SCell Cell;
+    typedef typename KSpace::SCell Spel;
     typedef typename KSpace::Space::Point Point;
     typedef TKernelConstIterator KernelConstIterator;
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
-    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
+//    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
     // ----------------------- Standard services ------------------------------
@@ -502,7 +531,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
+    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin );
 
     /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -518,7 +547,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
+    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin, Alias< std::vector< PairIterators > > mask );
 
     /**
        * Convolve the kernel at a given position.
@@ -554,8 +583,16 @@ public:
     template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
+                OutputIterator & result,
                 Shape & shape,
-                OutputIterator & result );
+                const double h = 0.0
+                 );
+
+    template< typename ConstIteratorOnCells, typename OutputIterator >
+    void deprecated_eval ( const ConstIteratorOnCells & itbegin,
+                           const ConstIteratorOnCells & itend,
+                           OutputIterator & result );
+
 
     /**
        * Convolve the kernel at a given position and return a covariance matrix.
@@ -595,8 +632,10 @@ public:
     template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
+                                OutputIterator & result,
                                 const Shape & shape,
-                                OutputIterator & result );
+                                const double h = 0.0
+                                );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -612,7 +651,12 @@ public:
                                 const ConstIteratorOnCells & itend,
                                 OutputIterator & result );
 
+protected:
 
+    void computeCovarianceMatrix( const Quantity* aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+    void fillMoments( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
+    template< typename Shape >
+    double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
 
     /**
        * Checks the validity/consistency of the object.
@@ -642,7 +686,7 @@ private:
     /// Copy  of the last iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelEnd;
     /// Copy of the origin cell of the kernel.
-    Cell myKernelCellOrigin;
+    Spel myKernelSpelOrigin;
 
     bool isInit;
     bool isInitMask;

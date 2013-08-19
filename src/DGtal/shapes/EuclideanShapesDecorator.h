@@ -346,10 +346,10 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
+//    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
+//    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
+//    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
+//    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
     typedef typename ShapeA::RealPoint RealPoint;
@@ -364,14 +364,14 @@ namespace DGtal
       : myShapeA( a ),
         myShapeB( b )
     {
-      RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
-      RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
-      RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
-      RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
-      for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
+//      RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
+//      RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
+//      RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
+//      RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+//      for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
       {
-        myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
-        myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
+//        myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+//        myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
       }
     }
 

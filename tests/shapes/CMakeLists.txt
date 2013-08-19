@@ -42,6 +42,7 @@ ENDFOREACH(FILE)
 SET(QGLVIEWER_SHAPES_TESTS_SRC
   testPolynomial
   testBall3D
+  testPolynomialVsImplicit
   )
 
 if ( WITH_VISU3D_QGLVIEWER )

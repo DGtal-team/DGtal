@@ -101,10 +101,11 @@ typename DGtal::CanonicSCellEmbedder<TKSpace>::RealPoint
 DGtal::CanonicSCellEmbedder<TKSpace>::operator()( const SCell & scell ) const
 {
   ASSERT( this->isValid() );
+
   Point dp = myKSpace->sKCoords( scell );
   RealPoint p;
   for ( Dimension i = 0; i < dp.size(); ++i )
-    p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] ) / 2;
+    p[ i ] = dp[ i ] / 2.0;
   return p;
 }
 //-----------------------------------------------------------------------------
