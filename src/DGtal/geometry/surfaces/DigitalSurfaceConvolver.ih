@@ -1319,10 +1319,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     typedef typename Z2i::RealPoint RealPoint;
 
     double lambda = -1.0;
-    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
+//    CanonicSCellEmbedder< KSpace > SCellToRealPoint( myKSpace );
 
-    RealPoint low = ( SCellToRealPoint( aInnerSpel )) * h;
-    RealPoint high = ( SCellToRealPoint( aOutterSpel )) * h;
+    RealPoint low = RealPoint( myKSpace.sCoords( aInnerSpel )) * h;
+    RealPoint high = RealPoint( myKSpace.sCoords( aOutterSpel )) * h;
+//    RealPoint low = ( SCellToRealPoint( aInnerSpel )) * h;
+//    RealPoint high = ( SCellToRealPoint( aOutterSpel )) * h;
 
     unsigned int iter = 0;
     unsigned int nbIter = 10;
@@ -1343,7 +1345,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
         if( inout == ON )
         {
-            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
+            lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+//            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
             break;
         }
         else if( inout == OUTSIDE )
@@ -1360,7 +1363,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     if( lambda == -1.0 )
     {
-        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
+        lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+//        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
     }
 
     ASSERT (( lambda <= 1.0 ));
@@ -2889,7 +2893,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
 //                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]) , 1.0 );
-                            fillMoments( m, SCellToPoint( shiftedSpel ), 1.0 );
+                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
                             //                            currentPoint = SCellToPoint( shiftedSpel );
                             //                            x = currentPoint[ 0 ];
                             //                            y = currentPoint[ 1 ];
@@ -2920,7 +2924,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
 //                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), -1.0 );
-                            fillMoments( m, SCellToPoint( shiftedSpel ), -1.0 );
+                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
                             //                            currentPoint = SCellToPoint( shiftedSpel );
                             //                            x = currentPoint[ 0 ];
                             //                            y = currentPoint[ 1 ];
@@ -2947,7 +2951,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
 //                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), 1.0 );
-                            fillMoments( m, SCellToPoint( shiftedSpel ), 1.0 );
+                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
                             //                            currentPoint = SCellToPoint( shiftedSpel );
                             //                            x = currentPoint[ 0 ];
                             //                            y = currentPoint[ 1 ];
@@ -3034,7 +3038,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
 //                        fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), -1.0 );
-                        fillMoments( m, SCellToPoint( shiftedSpel ), -1.0 );
+                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
                         //                        currentPoint = SCellToPoint( shiftedSpel );
                         //                        x = currentPoint[ 0 ];
                         //                        y = currentPoint[ 1 ];
@@ -3061,7 +3065,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
 //                        fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), 1.0 );
-                        fillMoments( m, SCellToPoint( shiftedSpel ), 1.0 );
+                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
                         //                        currentPoint = SCellToPoint( shiftedSpel );
                         //                        x = currentPoint[ 0 ];
                         //                        y = currentPoint[ 1 ];
@@ -3713,11 +3717,13 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     typedef typename Z3i::RealPoint RealPoint;
 
     double lambda = -1.0;
-    CanonicSCellEmbedder< KSpace > SCellToRealPoint( myKSpace );
+//    CanonicSCellEmbedder< KSpace > SCellToRealPoint( myKSpace );
 //    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
 
-    RealPoint low = RealPoint( SCellToRealPoint( aInnerSpel )) * h;
-    RealPoint high = RealPoint( SCellToRealPoint( aOutterSpel )) * h;
+    RealPoint low = RealPoint( myKSpace.sCoords( aInnerSpel )) * h;
+    RealPoint high = RealPoint( myKSpace.sCoords( aOutterSpel )) * h;
+//    RealPoint low = RealPoint( SCellToRealPoint( aInnerSpel )) * h;
+//    RealPoint high = RealPoint( SCellToRealPoint( aOutterSpel )) * h;
 
     unsigned int iter = 0;
     unsigned int nbIter = 10;
@@ -3738,7 +3744,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
         if( inout == ON )
         {
-            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
+            lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+//            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
             break;
         }
         else if( inout == OUTSIDE )
@@ -3755,7 +3762,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     if( lambda == -1.0 )
     {
-        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
+        lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+//        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
     }
 
     ASSERT (( lambda <= 1.0 ));

@@ -223,14 +223,15 @@ bool testII2D()
     {
         Dimension kdim = k.sOrthDir( *ibegin );
         SCell currentSCell = k.sIndirectIncident( *ibegin, kdim );
-        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
-        Point currentPoint = ( SCellToPoint( currentSCell ));
+//        SCellToOuterPoint< Z2i::KSpace > SCellToPoint( k );
+//        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
+        Point currentPoint = ( k.sCoords( currentSCell ));
         board << currentPoint;
         ++ibegin;
     }
     board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
           << dcenter;
-    board.saveSVG("testII-outter.svg");
+    board.saveSVG("testII-outer.svg");
 
     board.clear();
 
@@ -241,8 +242,9 @@ bool testII2D()
     {
         Dimension kdim = k.sOrthDir( *ibegin );
         SCell currentSCell = k.sDirectIncident( *ibegin, kdim );
-        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
-        Point currentPoint = ( SCellToPoint( currentSCell ));
+//        SCellToInnerPoint< Z2i::KSpace > SCellToPoint( k );
+//        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
+        Point currentPoint = ( k.sCoords( currentSCell ));
         board << currentPoint;
         ++ibegin;
     }
@@ -266,7 +268,7 @@ int testII3D( int argc, char** argv )
     double p1[ 3 ] = {-10.0,-10.0,-10.0};
     double p2[ 3 ] = {10.0,10.0,10.0};
 
-    double step = 0.05;
+    double step = 0.1;
 
     double re = 3;
 
@@ -432,8 +434,8 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    testII2D( );
-//    testII3D( argc, argv );
+//    testII2D( );
+    testII3D( argc, argv );
     return 1;
     //  bool res = testII3D();
     //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
