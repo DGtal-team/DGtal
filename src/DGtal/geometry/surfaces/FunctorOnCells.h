@@ -106,9 +106,9 @@ namespace DGtal
     /**
      * Call the functor on Point by converting the given surfel to a digital point.
      *
-     * @param[in] aSurfel any surfel in the Khalimsky space.
+     * @param[in] aSpel any spel in the Khalimsky space.
      *
-     * @return 'ONE' if the surfel is inside the shape, 'ZERO' if it is strictly outside.
+     * @return 'ONE' if the spel is inside the shape, 'ZERO' if it is strictly outside.
      */
     Quantity operator()( const Spel & aSpel ) const
     {

@@ -1462,7 +1462,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     int x, y, z, x2, y2, z2, x2y2z2;
     int offset;
 
-    m1 = NumberTraits< Quantity >::ZERO; /// <! clear array
+    m1 = NumberTraits< Quantity >::ZERO; /// <! clear m1
     /// Inner cell
     {
         DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
@@ -1596,7 +1596,9 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             /// Check if we can use previous results
             if( total != 0 )
             {
-                if(  currentSpel1 == lastSpel1 )
+                bComputed = false;
+
+                if( currentSpel1 == lastSpel1 )
                 {
                     m1 = lastM1;
                     bComputed = true;
@@ -1629,8 +1631,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                     offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1) * 9 );
                     bCanUseLastResults = true;
                 }
-
-                bComputed = false;
             }
 
             if( !bComputed )
@@ -1809,6 +1809,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             /// Check if we can use previous results
             if( total != 0 )
             {
+                bComputed = false;
+
                 if(  currentSpel1 == lastSpel1 )
                 {
                     m1 = lastM1;
@@ -1842,8 +1844,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                     offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1) * 9 );
                     bCanUseLastResults = true;
                 }
-
-                bComputed = false;
             }
 
             if( !bComputed )
@@ -2421,6 +2421,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             /// Check if we can use previous results
             if( total != 0 )
             {
+                bComputed = false;
+
                 if(  currentSpel1 == lastSpel1 )
                 {
                     memcpy( m, lastM1, sizeMoments * sizeof( Quantity ));
@@ -2457,7 +2459,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                     bCanUseLastResults = true;
                 }
 
-                bComputed = false;
             }
 
             if( !bComputed )
@@ -2809,7 +2810,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     //    Point currentPoint;
 
 
-    SCellToInnerPoint< KSpace > SCellToPoint( myKSpace );
+    CanonicSCellEmbedder< KSpace > SCellToPoint( myKSpace );
+//    SCellToInnerPoint< KSpace > SCellToPoint( myKSpace );
 
     bool bCanUseLastResults = false;
     bool bComputed = false; /// <! if the cell has already been computed, continue to the next
@@ -2831,6 +2833,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
             /// Check if we can use previous results
             if( total != 0 )
             {
+                bComputed = false;
+
                 if(  currentSpel1 == lastSpel1 )
                 {
                     memcpy( m, lastM1, sizeMoments * sizeof( Quantity ));
@@ -2866,8 +2870,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                     offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 ) + ((( z / 2 ) + 1) * 9 );
                     bCanUseLastResults = true;
                 }
-
-                bComputed = false;
             }
 
             if( !bComputed )
@@ -2886,6 +2888,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
+//                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]) , 1.0 );
                             fillMoments( m, SCellToPoint( shiftedSpel ), 1.0 );
                             //                            currentPoint = SCellToPoint( shiftedSpel );
                             //                            x = currentPoint[ 0 ];
@@ -2916,6 +2919,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
+//                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), -1.0 );
                             fillMoments( m, SCellToPoint( shiftedSpel ), -1.0 );
                             //                            currentPoint = SCellToPoint( shiftedSpel );
                             //                            x = currentPoint[ 0 ];
@@ -2942,6 +2946,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
+//                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), 1.0 );
                             fillMoments( m, SCellToPoint( shiftedSpel ), 1.0 );
                             //                            currentPoint = SCellToPoint( shiftedSpel );
                             //                            x = currentPoint[ 0 ];
@@ -3028,6 +3033,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
+//                        fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), -1.0 );
                         fillMoments( m, SCellToPoint( shiftedSpel ), -1.0 );
                         //                        currentPoint = SCellToPoint( shiftedSpel );
                         //                        x = currentPoint[ 0 ];
@@ -3054,6 +3060,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
+//                        fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), 1.0 );
                         fillMoments( m, SCellToPoint( shiftedSpel ), 1.0 );
                         //                        currentPoint = SCellToPoint( shiftedSpel );
                         //                        x = currentPoint[ 0 ];
@@ -3706,10 +3713,11 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     typedef typename Z3i::RealPoint RealPoint;
 
     double lambda = -1.0;
-    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
+    CanonicSCellEmbedder< KSpace > SCellToRealPoint( myKSpace );
+//    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
 
-    Z3i::RealPoint low = ( SCellToRealPoint( aInnerSpel )) * h;
-    Z3i::RealPoint high = ( SCellToRealPoint( aOutterSpel )) * h;
+    RealPoint low = RealPoint( SCellToRealPoint( aInnerSpel )) * h;
+    RealPoint high = RealPoint( SCellToRealPoint( aOutterSpel )) * h;
 
     unsigned int iter = 0;
     unsigned int nbIter = 10;
