@@ -364,7 +364,7 @@ int testII3D( int argc, char** argv )
         RealPoint A = ScellToRealPoint( *it );
         double a = 0.04;//ishape->gaussianCurvature( A );
         double b = resultII[ p ];
-        std::cout << b << std::endl;
+//        std::cout << b << std::endl;
         resultTrue.push_back( a );
         nearestPoints.push_back( A );
 
@@ -393,12 +393,12 @@ int testII3D( int argc, char** argv )
     //Specifing a color map
 
     GradientColorMap< double > cmap_grad( minCurv, maxCurv );
-    cmap_grad.addColor( Color::Blue );
-    cmap_grad.addColor( Color::White );
-    cmap_grad.addColor( Color::Red );
-    //  cmap_grad.addColor( Color( 50, 50, 255 ) );
-    //  cmap_grad.addColor( Color( 255, 0, 0 ) );
-    //  cmap_grad.addColor( Color( 255, 255, 10 ) );
+//    cmap_grad.addColor( Color::Blue );
+//    cmap_grad.addColor( Color::White );
+//    cmap_grad.addColor( Color::Red );
+      cmap_grad.addColor( Color( 50, 50, 255 ) );
+      cmap_grad.addColor( Color( 255, 0, 0 ) );
+      cmap_grad.addColor( Color( 255, 255, 10 ) );
 
     //------------------------------------------------------------------------------------
     //drawing
@@ -414,7 +414,7 @@ int testII3D( int argc, char** argv )
         double b = resultII[ i ];
         double Linf = std::abs ( a - b );
 
-        viewer << CustomColors3D( Color::Black, cmap_grad( Linf ));
+        viewer << CustomColors3D( Color::Black, cmap_grad( b ));
         viewer << *it;
     }
 

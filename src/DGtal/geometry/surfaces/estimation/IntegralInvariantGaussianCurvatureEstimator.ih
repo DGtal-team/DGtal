@@ -418,7 +418,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
 
     std::vector< Matrix3x3 > vCovarianceMatrix;
     std::back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
-    myConvolver.deprecated_evalCovarianceMatrix( itb, ite, coMatrixIterator );
+    myConvolver.evalCovarianceMatrix( itb, ite, coMatrixIterator );
 
     Matrix3x3 currentMatrix;
 
