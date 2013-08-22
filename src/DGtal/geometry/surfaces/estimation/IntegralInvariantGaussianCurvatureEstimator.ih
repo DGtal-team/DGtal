@@ -79,18 +79,19 @@ void
 DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::init ( const double _h, const double re )
 {
     h = _h;
-    radius =  re;
+    radius = re;
 
-    dh2 = h*h;
+    dh2 = h * h;
     d3_r = 3.0 / radius;
     dPI_2 = M_PI / 2.0;
     d1_r2 = 1.0 / ( radius * radius );
 
-    RealPoint pOrigin = RealPoint ( 0.0, 0.0 );
-    KernelSupport kernel( pOrigin, radius );
+    RealPoint rOrigin = RealPoint ( 0.0, 0.0 );
+    Domain::Point pOrigin = Domain::Point( 0, 0 );
+    KernelSupport kernel( rOrigin, radius );
     KSpace KSpaceKernel;
 
-    kernels = std::vector< SurfelSet >( 9 );
+    kernels = std::vector< SurfelSet > ( 9 );
     kernelsIterators = std::vector< PairIterators > ( 9 );
 
     typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
@@ -111,23 +112,27 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
         return;
     }
 
+    int count = 0;
     for( typename DigitalSet::ConstIterator it = setKernel.begin(), itend = setKernel.end();
          it != itend;
          ++it )
     {
         kernels[ 4 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(11) is 4
+        ++count;
     }
+
+    ASSERT(( count != 0 )); // Error when creating full kernel
 
     kernelsIterators[ 4 ].first = kernels[ 4 ].begin();
     kernelsIterators[ 4 ].second = kernels[ 4 ].end();
     /// End of full kernel
 
-    /// Computation of masks
+    /// Computation of shifting masks
     for( int y = -1; y <= 1; ++y )
     {
         for( int x = -1; x <= 1; ++x )
         {
-            RealPoint shiftPoint = pOrigin + RealPoint( x * h , y * h );
+            RealPoint shiftPoint = rOrigin + RealPoint( x * h , y * h );
             KernelSupport kernelShifted( shiftPoint, radius );
             int offset = ( x + 1 ) + (( y + 1 ) * 3 );
 
@@ -146,12 +151,16 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
                 DigitalSet setCurrentKernel( domainKernel );
                 Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
 
+                int count2 = 0;
                 for( typename DigitalSet::ConstIterator it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                      it != itend;
                      ++it )
                 {
                     kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
+                    ++count2;
                 }
+
+                ASSERT(( count2 != 0 )); // Error when creating masks
 
                 kernelsIterators[ offset ].first = kernels[ offset ].begin();
                 kernelsIterators[ offset ].second = kernels[ offset ].end();
@@ -161,8 +170,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
     /// End of computation of masks
 
     myOrigin = KSpaceKernel.sSpel( pOrigin );
-    myConvolver.init( kernelsIterators[ 4 ].first, kernelsIterators[ 4 ].second, myOrigin, kernelsIterators );
-}
+    myConvolver.init ( kernelsIterators[ 4 ].first, kernelsIterators[ 4 ].second, myOrigin, kernelsIterators );
+    }
 
 template< typename TKSpace, typename TShapeFunctor >
 inline
