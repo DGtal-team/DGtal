@@ -414,6 +414,8 @@ int testII3D( int argc, char** argv )
         double b = resultII[ i ];
         double Linf = std::abs ( a - b );
 
+        std::cout << b << std::endl;
+
         viewer << CustomColors3D( Color::Black, cmap_grad( b ));
         viewer << *it;
     }

@@ -2799,9 +2799,9 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     Quantity lastM1[ sizeMoments ];
     Quantity lastM2[ sizeMoments ];
 
-    //    MatrixQuantity A1, A2;
-    //    double B1, B2;
-    //    MatrixQuantity C1, C2;
+    Quantity tempM1[ sizeMoments ];
+    Quantity tempM2[ sizeMoments ];
+
     CovarianceMatrix Ja1, Ja2;
     CovarianceMatrix lastJa1, lastJa2;
 
@@ -2811,10 +2811,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     Point shiftSpel1, shiftSpel2;
     Point diffSpel;
-    //    Point currentPoint;
 
-
-    CanonicSCellEmbedder< KSpace > SCellToPoint( myKSpace );
+//    CanonicSCellEmbedder< KSpace > SCellToPoint( myKSpace );
 //    SCellToInnerPoint< KSpace > SCellToPoint( myKSpace );
 
     bool bCanUseLastResults = false;
@@ -2892,23 +2890,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-//                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]) , 1.0 );
                             fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
-                            //                            currentPoint = SCellToPoint( shiftedSpel );
-                            //                            x = currentPoint[ 0 ];
-                            //                            y = currentPoint[ 1 ];
-                            //                            z = currentPoint[ 2 ];
-
-                            //                            m[ 0 ] += 1;
-                            //                            m[ 1 ] += z;
-                            //                            m[ 2 ] += y;
-                            //                            m[ 3 ] += x;
-                            //                            m[ 4 ] += y * z;
-                            //                            m[ 5 ] += x * z;
-                            //                            m[ 6 ] += x * y;
-                            //                            m[ 7 ] += z * z;
-                            //                            m[ 8 ] += y * y;
-                            //                            m[ 9 ] += x * x;
                         }
                     }
                 }
@@ -2923,23 +2905,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-//                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), -1.0 );
                             fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
-                            //                            currentPoint = SCellToPoint( shiftedSpel );
-                            //                            x = currentPoint[ 0 ];
-                            //                            y = currentPoint[ 1 ];
-                            //                            z = currentPoint[ 2 ];
-
-                            //                            m[ 0 ] -= 1;
-                            //                            m[ 1 ] -= z;
-                            //                            m[ 2 ] -= y;
-                            //                            m[ 3 ] -= x;
-                            //                            m[ 4 ] -= y * z;
-                            //                            m[ 5 ] -= x * z;
-                            //                            m[ 6 ] -= x * y;
-                            //                            m[ 7 ] -= z * z;
-                            //                            m[ 8 ] -= y * y;
-                            //                            m[ 9 ] -= x * x;
                         }
                     }
 
@@ -2950,54 +2916,16 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-//                            fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), 1.0 );
                             fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
-                            //                            currentPoint = SCellToPoint( shiftedSpel );
-                            //                            x = currentPoint[ 0 ];
-                            //                            y = currentPoint[ 1 ];
-                            //                            z = currentPoint[ 2 ];
-
-                            //                            m[ 0 ] += 1;
-                            //                            m[ 1 ] += z;
-                            //                            m[ 2 ] += y;
-                            //                            m[ 3 ] += x;
-                            //                            m[ 4 ] += y * z;
-                            //                            m[ 5 ] += x * z;
-                            //                            m[ 6 ] += x * y;
-                            //                            m[ 7 ] += z * z;
-                            //                            m[ 8 ] += y * y;
-                            //                            m[ 9 ] += x * x;
                         }
                     }
                 }
 
                 /// Computation of covariance Matrix
                 computeCovarianceMatrix( m, Ja1 );
-                //                A1.setComponent( 0, 0, m[ 9 ] );
-                //                A1.setComponent( 0, 1, m[ 6 ] );
-                //                A1.setComponent( 0, 2, m[ 5 ] );
-                //                A1.setComponent( 1, 0, m[ 6 ] );
-                //                A1.setComponent( 1, 1, m[ 8 ] );
-                //                A1.setComponent( 1, 2, m[ 4 ] );
-                //                A1.setComponent( 2, 0, m[ 5 ] );
-                //                A1.setComponent( 2, 1, m[ 4 ] );
-                //                A1.setComponent( 2, 2, m[ 7 ] );
-
-                //                B1 = 1.0 / m[ 0 ];
-
-                //                C1.setComponent( 0, 0, B1 * m[ 3 ] * m[ 3 ] );
-                //                C1.setComponent( 0, 1, B1 * m[ 3 ] * m[ 2 ] );
-                //                C1.setComponent( 0, 2, B1 * m[ 3 ] * m[ 1 ] );
-                //                C1.setComponent( 1, 0, B1 * m[ 3 ] * m[ 2 ] );
-                //                C1.setComponent( 1, 1, B1 * m[ 2 ] * m[ 2 ] );
-                //                C1.setComponent( 1, 2, B1 * m[ 2 ] * m[ 1 ] );
-                //                C1.setComponent( 2, 0, B1 * m[ 3 ] * m[ 1 ] );
-                //                C1.setComponent( 2, 1, B1 * m[ 2 ] * m[ 1 ] );
-                //                C1.setComponent( 2, 2, B1 * m[ 1 ] * m[ 1 ] );
-
-                //                Ja1 = A1 - C1;
 
                 memcpy( lastM1, m, sizeMoments * sizeof( Quantity ));
+                memcpy( tempM1, m, sizeMoments * sizeof( Quantity ));
                 lastJa1 = Ja1;
             }
         }
@@ -3037,23 +2965,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-//                        fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), -1.0 );
                         fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
-                        //                        currentPoint = SCellToPoint( shiftedSpel );
-                        //                        x = currentPoint[ 0 ];
-                        //                        y = currentPoint[ 1 ];
-                        //                        z = currentPoint[ 2 ];
-
-                        //                        m[ 0 ] -= 1;
-                        //                        m[ 1 ] -= z;
-                        //                        m[ 2 ] -= y;
-                        //                        m[ 3 ] -= x;
-                        //                        m[ 4 ] -= y * z;
-                        //                        m[ 5 ] -= x * z;
-                        //                        m[ 6 ] -= x * y;
-                        //                        m[ 7 ] -= z * z;
-                        //                        m[ 8 ] -= y * y;
-                        //                        m[ 9 ] -= x * x;
                     }
                 }
 
@@ -3064,116 +2976,26 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-//                        fillMoments( m, Point(myKSpace.sKCoords( shiftedSpel )[ 0 ], myKSpace.sKCoords( shiftedSpel )[ 1 ], myKSpace.sKCoords( shiftedSpel )[ 2 ]), 1.0 );
                         fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
-                        //                        currentPoint = SCellToPoint( shiftedSpel );
-                        //                        x = currentPoint[ 0 ];
-                        //                        y = currentPoint[ 1 ];
-                        //                        z = currentPoint[ 2 ];
-
-                        //                        m[ 0 ] += 1;
-                        //                        m[ 1 ] += z;
-                        //                        m[ 2 ] += y;
-                        //                        m[ 3 ] += x;
-                        //                        m[ 4 ] += y * z;
-                        //                        m[ 5 ] += x * z;
-                        //                        m[ 6 ] += x * y;
-                        //                        m[ 7 ] += z * z;
-                        //                        m[ 8 ] += y * y;
-                        //                        m[ 9 ] += x * x;
                     }
                 }
             }
 
             computeCovarianceMatrix( m, Ja2 );
-            //            A2.setComponent( 0, 0, m[ 9 ] );
-            //            A2.setComponent( 0, 1, m[ 6 ] );
-            //            A2.setComponent( 0, 2, m[ 5 ] );
-            //            A2.setComponent( 1, 0, m[ 6 ] );
-            //            A2.setComponent( 1, 1, m[ 8 ] );
-            //            A2.setComponent( 1, 2, m[ 4 ] );
-            //            A2.setComponent( 2, 0, m[ 5 ] );
-            //            A2.setComponent( 2, 1, m[ 4 ] );
-            //            A2.setComponent( 2, 2, m[ 7 ] );
-
-            //            B2 = 1.0 / m[ 0 ];
-
-            //            C2.setComponent( 0, 0, B2 * m[ 3 ] * m[ 3 ] );
-            //            C2.setComponent( 0, 1, B2 * m[ 3 ] * m[ 2 ] );
-            //            C2.setComponent( 0, 2, B2 * m[ 3 ] * m[ 1 ] );
-            //            C2.setComponent( 1, 0, B2 * m[ 3 ] * m[ 2 ] );
-            //            C2.setComponent( 1, 1, B2 * m[ 2 ] * m[ 2 ] );
-            //            C2.setComponent( 1, 2, B2 * m[ 2 ] * m[ 1 ] );
-            //            C2.setComponent( 2, 0, B2 * m[ 3 ] * m[ 1 ] );
-            //            C2.setComponent( 2, 1, B2 * m[ 2 ] * m[ 1 ] );
-            //            C2.setComponent( 2, 2, B2 * m[ 1 ] * m[ 1 ] );
-
-            //            Ja2 = A2 - C2;
 
             memcpy( lastM2, m, sizeMoments * sizeof( Quantity ));
+            memcpy( tempM2, m, sizeMoments * sizeof( Quantity ));
             lastJa2 = Ja2;
         }
 
-
-
-        ///////////////////////////////
         double lambda = computeShiftFromShape( shape, h, currentSpel1, currentSpel2 );
-        //        double lambda = -1.0;
-
-        //        {
-        //            Z3i::RealPoint low = (SCellToRealPoint( currentSpel1 )) * h;
-        //            Z3i::RealPoint high = (SCellToRealPoint( currentSpel2 )) * h;
-
-        //            unsigned int iter = 0;
-        //            unsigned int nbIter = 10;
-
-
-        //            if( shape.orientation( low ) == shape.orientation( high ) )
-        //            {
-        //                std::cout <<  "On the same orientation "<< low << " " << high << std::endl;
-        //            }
-
-        //            Z3i::RealPoint test;
-        //            while ( iter <= nbIter )
-        //            {
-        //                test = ( low + high ) / 2.0;
-        //                DGtal::Orientation inout = shape.orientation( test );
-
-        //                ASSERT(( high != low ));
-
-        //                if( inout == ON )
-        //                {
-        //                    lambda = (( test - ( SCellToRealPoint( currentSpel1 ) * h )).norm() / h );
-        //                    break;
-        //                }
-        //                else if( inout == OUTSIDE )
-        //                {
-        //                    high = test;
-        //                }
-        //                else
-        //                {
-        //                    low = test;
-        //                }
-
-        //                ++iter;
-        //            }
-
-        //            if( lambda == -1.0 )
-        //            {
-        //                lambda = (( test - ( SCellToRealPoint( currentSpel1 ) * h )).norm() / h );
-        //            }
-
-        //            ASSERT (( lambda <= 1.0 ));
-        //            ASSERT (( lambda >= 0.0 ));
-        //        }
-        ///////////////////////////////
-        //        std::cout << lambda << std::endl;
 
         lastSpel1 = currentSpel1;
         lastSpel2 = currentSpel2;
 
+        ASSERT (( lastM1[ 0 ] != lastM2[ 0 ] )); // Maybe a problem here. Can be normal ... but needs to check twice.
+
         /// Computation of result covariance matrix + moving
-        //        *result = ( Ja1 + Ja2 ) / 2.0;
         *result = Ja1 * lambda + Ja2 * ( 1.0 - lambda );
         ++result;
 
@@ -3692,17 +3514,17 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     B = 1.0 / aMomentMatrix[ 0 ];
 
-    C.setComponent( 0, 0, B * aMomentMatrix[ 3 ] * aMomentMatrix[ 3 ] );
-    C.setComponent( 0, 1, B * aMomentMatrix[ 3 ] * aMomentMatrix[ 2 ] );
-    C.setComponent( 0, 2, B * aMomentMatrix[ 3 ] * aMomentMatrix[ 1 ] );
-    C.setComponent( 1, 0, B * aMomentMatrix[ 3 ] * aMomentMatrix[ 2 ] );
-    C.setComponent( 1, 1, B * aMomentMatrix[ 2 ] * aMomentMatrix[ 2 ] );
-    C.setComponent( 1, 2, B * aMomentMatrix[ 2 ] * aMomentMatrix[ 1 ] );
-    C.setComponent( 2, 0, B * aMomentMatrix[ 3 ] * aMomentMatrix[ 1 ] );
-    C.setComponent( 2, 1, B * aMomentMatrix[ 2 ] * aMomentMatrix[ 1 ] );
-    C.setComponent( 2, 2, B * aMomentMatrix[ 1 ] * aMomentMatrix[ 1 ] );
+    C.setComponent( 0, 0, aMomentMatrix[ 3 ] * aMomentMatrix[ 3 ] );
+    C.setComponent( 0, 1, aMomentMatrix[ 3 ] * aMomentMatrix[ 2 ] );
+    C.setComponent( 0, 2, aMomentMatrix[ 3 ] * aMomentMatrix[ 1 ] );
+    C.setComponent( 1, 0, aMomentMatrix[ 2 ] * aMomentMatrix[ 3 ] );
+    C.setComponent( 1, 1, aMomentMatrix[ 2 ] * aMomentMatrix[ 2 ] );
+    C.setComponent( 1, 2, aMomentMatrix[ 2 ] * aMomentMatrix[ 1 ] );
+    C.setComponent( 2, 0, aMomentMatrix[ 1 ] * aMomentMatrix[ 3 ] );
+    C.setComponent( 2, 1, aMomentMatrix[ 1 ] * aMomentMatrix[ 2 ] );
+    C.setComponent( 2, 2, aMomentMatrix[ 1 ] * aMomentMatrix[ 1 ] );
 
-    aCovarianceMatrix = A - C;
+    aCovarianceMatrix = A - C * B;
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
@@ -3712,7 +3534,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 ( const Shape & shape,
   const double h,
   const Spel & aInnerSpel,
-  const Spel & aOutterSpel )
+  const Spel & aOuterSpel )
 {
     typedef typename Z3i::RealPoint RealPoint;
 
@@ -3721,14 +3543,15 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 //    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
 
     RealPoint low = RealPoint( myKSpace.sCoords( aInnerSpel )) * h;
-    RealPoint high = RealPoint( myKSpace.sCoords( aOutterSpel )) * h;
+    RealPoint high = RealPoint( myKSpace.sCoords( aOuterSpel )) * h;
 //    RealPoint low = RealPoint( SCellToRealPoint( aInnerSpel )) * h;
-//    RealPoint high = RealPoint( SCellToRealPoint( aOutterSpel )) * h;
+//    RealPoint high = RealPoint( SCellToRealPoint( aOuterSpel )) * h;
 
     unsigned int iter = 0;
     unsigned int nbIter = 10;
 
 
+    ASSERT(( shape.orientation( low ) != shape.orientation( high ) )); // They can't be on the same side of the shape.
     if( shape.orientation( low ) == shape.orientation( high ) )
     {
         std::cout <<  "On the same orientation "<< low << " " << high << std::endl;
@@ -3769,7 +3592,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     ASSERT (( lambda <= 1.0 ));
     ASSERT (( lambda >= 0.0 ));
 
-    std::cout << lambda << std::endl;
+//    std::cout << lambda << std::endl;
 
     return lambda;
 }

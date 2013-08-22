@@ -205,12 +205,16 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
         return;
     }
 
+    int count = 0;
     for( typename DigitalSet::ConstIterator it = setKernel.begin(), itend = setKernel.end();
          it != itend;
          ++it )
     {
         kernels[ 13 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(111) is 13
+        ++count;
     }
+
+    ASSERT(( count != 0 )); // Error when creating full kernel
 
     kernelsIterators[ 13 ].first = kernels[ 13 ].begin();
     kernelsIterators[ 13 ].second = kernels[ 13 ].end();
@@ -223,7 +227,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
         {
             for( int x = -1; x <= 1; ++x )
             {
-                RealPoint shiftPoint = pOrigin + RealPoint( x * h, y * h, z * h );
+                RealPoint shiftPoint = rOrigin + RealPoint( x * h, y * h, z * h );
                 KernelSupport kernelShifted( shiftPoint, radius );
                 int offset = ( x + 1 ) + (( y + 1 ) * 3 ) + (( z + 1 ) * 9 );
                 if( offset == 13 ) // Full kernel
@@ -241,12 +245,16 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
                     DigitalSet setCurrentKernel( domainKernel );
                     Shapes< Domain>::digitalShaper ( setCurrentKernel, digCurrentKernel );
 
+                    int count2 = 0;
                     for( typename DigitalSet::ConstIterator it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                          it != itend;
                          ++it )
                     {
                         kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
+                        ++count2;
                     }
+
+                    ASSERT(( count2 != 0 )); // Error when creating masks
 
                     kernelsIterators[ offset ].first = kernels[ offset ].begin();
                     kernelsIterators[ offset ].second = kernels[ offset ].end();
