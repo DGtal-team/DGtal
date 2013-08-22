@@ -32,8 +32,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -53,8 +53,8 @@ int main( int argc, char** argv )
   Point pup(3,3,2);
   Domain domain( plow, pup );
   K.init( plow, pup, true );
-  
-  Viewer3D viewer;  
+  //
+  Viewer3D<Space, KSpace> viewer(K);
   viewer.show();
   viewer << SetMode3D( domain.className(), "Paving" );
   
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
   Cell vox2 = K.uCell( Point( 1, 1, 3 ) ); // voxel (2*1+1,2*1+1,2*3+1) 
   viewer << vox1 << vox2;
   
-  viewer<< Viewer3D::updateDisplay;
+  viewer<< Viewer3D<>::updateDisplay;
   return application.exec();
 
 }
