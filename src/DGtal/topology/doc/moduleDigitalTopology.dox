@@ -288,12 +288,12 @@ namespace DGtal {
  The resulting border can be visualized for instance by: 
  (see <a href="3dBorderExtraction_8cpp-example.html" >  3dBorderExtraction.cpp</a>)
 @code 
-Viewer3D viewer;
+Viewer3D<> viewer;
  viewer.show(); 
  viewer<<  CustomColors3D(QColor(250, 250,250),QColor(250, 250,250));
  viewer << bdiamond_clone;
  viewer << bdiamond ;
- viewer << ClippingPlane(1,1,0,5, false)<< Viewer3D::updateDisplay;
+ viewer << ClippingPlane(1,1,0,5, false)<< Viewer3D<>::updateDisplay;
 @endcode
  
 @image html visuBorderExtraction.png  "Border extraction visualisation" 

@@ -30,12 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/base/Common.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,7 +52,7 @@ int main( int argc, char** argv )
 
  QApplication application(argc,argv);
 
- Viewer3D viewer;
+ Viewer3D<> viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
@@ -74,7 +74,7 @@ int main( int argc, char** argv )
  viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
  //viewer << shape2;
  
- viewer<< Viewer3D::updateDisplay;
+ viewer<< Viewer3D<>::updateDisplay;
  return application.exec();
 }
 //                                                                           //

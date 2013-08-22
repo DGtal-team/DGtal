@@ -31,10 +31,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include <QtGui/qapplication.h>
-#include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -84,12 +83,12 @@ int main( int argc, char** argv )
  ObjectType bdiamond_clone = diamond_clone.border(); // two components
  
  QApplication application(argc,argv);
- Viewer3D viewer;
+ Viewer3D<> viewer;
  viewer.show(); 
  viewer<<  CustomColors3D(Color(250, 250,250),Color(250, 250,250));
  viewer << bdiamond_clone;
  viewer << bdiamond ;
- viewer << ClippingPlane(1,1,0,5, false) << Display3D::updateDisplay;
+ viewer << ClippingPlane(1,1,0,5, false) << Viewer3D<>::updateDisplay;
  return application.exec();
  
 }

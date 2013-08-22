@@ -144,7 +144,50 @@ namespace DGtal
 
   class Board2D;
 
-  class Display3D;
+  template < class Space, class KSpace>  class Display3D;
+
+
+#if defined( WITH_CAIRO )
+  template < class Space, class KSpace> class Board3DTo2D;
+#endif
+#if defined( WITH_VISU3D_QGLVIEWER )
+  template < class Space, class KSpace> class Viewer3D;
+#endif
+
+
+#if defined( WITH_CAIRO )
+  /**
+   * Interface that specifies that an object can draw itself on a
+   *  3Dto2D Board
+   * (BK)
+   */
+  struct DrawableWithBoard3DTo2D {
+    /**
+     * Operation to override. Does nothing by default.
+     */
+    template < typename S, typename KS>
+    //virtual
+    void setStyle( Board3DTo2D< S, KS> &  ) const {}
+    virtual ~DrawableWithBoard3DTo2D() {}
+  };
+#endif
+
+#if defined( WITH_VISU3D_QGLVIEWER )
+  /**
+   * Interface that specifies that an object can draw itself on a
+   *  3D Viewer
+   * (BK)
+   */
+  struct DrawableWithViewer3D {
+    /**
+     * Operation to override. Does nothing by default.
+     */
+    template < typename S, typename KS>
+    //virtual
+    void setStyle( Viewer3D< S, KS> &  ) const {}
+    virtual ~DrawableWithViewer3D() {}
+  };
+#endif
 
   /**
    * Interface that specifies that an object can draw itself on a
@@ -155,7 +198,9 @@ namespace DGtal
     /**
      * Operation to override. Does nothing by default.
      */
-    virtual void setStyle( Display3D &  ) const {}
+    template < typename Sp, typename KSp>
+    //virtual
+    void setStyle( Display3D< Sp, KSp> &  ) const {}
     virtual ~DrawableWithDisplay3D() {}
   };
 

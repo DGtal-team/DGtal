@@ -30,12 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +51,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- Viewer3D viewer;
+ Viewer3D<> viewer;
  viewer.show();
 
   
@@ -78,7 +78,7 @@ int main( int argc, char** argv )
 
 
   viewer << SetMode3D(domain.className(), "Paving");
-  viewer << domain << Display3D::updateDisplay;   
+  viewer << domain << Display3D<Space, KSpace>::updateDisplay;
 
 
  return application.exec();
