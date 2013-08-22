@@ -2280,7 +2280,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
         currentSpel1 = myKSpace.sDirectIncident( *it, kDim ); /// Spel on the border, but inside the shape
         shiftSpel1 = myKSpace.sKCoords( currentSpel1 ) - myKSpace.sKCoords( myKernelSpelOrigin );
 
-
         std::fill( m, m + sizeMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
 
         for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
