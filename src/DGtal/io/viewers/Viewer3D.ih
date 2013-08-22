@@ -118,7 +118,7 @@ DGtal::Viewer3D< Space ,KSpace >::updateOrientationTextureImage(unsigned int ima
                                                                  double xPosition, double yPosition, double zPosition, ImageDirection newDirection)
 {
   assert ( imageIndex< myGSImageList.size());
-  Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(imageIndex);
+  typename Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(imageIndex);
   Display3D< Space, KSpace>::updateBoundingBox(anImage.x1, anImage.y1, anImage.z1);
   Display3D< Space, KSpace>::updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
   Display3D< Space, KSpace>::updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
@@ -389,7 +389,7 @@ void
 DGtal::Viewer3D< Space ,KSpace >::updateAn2DDomainOrientation(unsigned int domainIndex,
                                                                double xPosition, double yPosition, double zPosition, ImageDirection newDirection)
 {
-  Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
+  typename Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
 
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
@@ -413,7 +413,7 @@ inline
 void
 DGtal::Viewer3D< Space ,KSpace >::translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation)
 {
-  Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
+  typename Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
   anDomain.translateDomain(xTranslation, yTranslation, zTranslation);
 
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);

@@ -58,7 +58,6 @@ int main( int argc, char** argv )
   viewer.show(); 
   
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
-  // Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);

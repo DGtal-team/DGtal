@@ -158,7 +158,7 @@ int main( int argc, char** argv )
     double valDist= dtL2( (*it) );     
     Color c= gradient(valDist);
    
-    if(dtL2(*it)<=30 ){
+    if(dtL2(*it)<=30 && image(*it)>0){
       viewer << CustomColors3D(Color((float)(c.red()), 
                                      (float)(c.green()),
                                      (float)(c.blue(),205)), 
