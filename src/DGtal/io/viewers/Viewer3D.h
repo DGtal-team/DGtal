@@ -43,7 +43,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-
 #ifdef APPLE
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -58,6 +57,8 @@
 #include <QKeyEvent>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Display3D.h"
 #include "DGtal/math/BasicMathFunctions.h"
@@ -105,11 +106,12 @@ namespace DGtal
 *
 * @see Display3D, Board3DTo2D
 */
-template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
+template < typename Space = SpaceND<3>, 
+           typename KSpace = KhalimskySpaceND<3> >
 class Viewer3D : public QGLViewer, public Display3D<Space, KSpace>
 {
 
-  BOOST_CONCEPT_ASSERT((CSpace<Space>));
+   BOOST_CONCEPT_ASSERT((CSpace<Space>));
 
   //---------------overwritting some functions of Display3D -------------------
 
@@ -117,10 +119,10 @@ class Viewer3D : public QGLViewer, public Display3D<Space, KSpace>
 public:
 
   /**
-* Constructor
-*/
-  Viewer3D() :QGLViewer(), Display3D<Space, KSpace>()
-  {};
+   * Constructor
+   */
+Viewer3D() :QGLViewer(), Display3D<Space, KSpace>()
+{};
 
   /**
 *Constructor with a khalimsky space
@@ -535,7 +537,7 @@ public:
 * @param xPosition the image translation in the x direction (default 0).
 * @param yPosition the image translation in the y direction (default 0).
 * @param zPosition the image translation in the z direction (default 0).
-* @param newDirection
+* @param newDirection a new direction
 */
   void updateOrientationTextureImage(unsigned int imageIndex,
                                      double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
@@ -611,7 +613,7 @@ public:
   /**
 * Permit to update the OpenGL list to be displayed.
 * Need to called after a number of addVoxel or after a sortSurfelFromCamera().
-* @param needToUpdateBoundingBox
+* @param needToUpdateBoundingBox flag to update the bounding box
 */
   void updateList ( bool needToUpdateBoundingBox=true );
 
