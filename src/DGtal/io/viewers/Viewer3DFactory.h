@@ -114,7 +114,7 @@ namespace DGtal
     static void
     draw( Viewer3D<Space,KSpace> & board, const DGtal::CameraZNearFar & aThing );
 
-    //----------------------------------------------------------------------------------------------
+    //---------------------------------------------------
     // heritage
     // SphericalAccumulator
     /**
