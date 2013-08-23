@@ -12,7 +12,7 @@ namespace DGtal {
  * import them from binary file (.obj or pgm3d)
  * 
 
-@author Bertrand Kerautret, Martial Tola
+@author Bertrand Kerautret, Martial Tola, Aline Martin, David Coeurjolly
  
 [TOC]
 
@@ -23,29 +23,34 @@ namespace DGtal {
   ...). The class Viewer3D and Board3DTo2D implement two different
   ways to display 3D objects. The first one (Viewer3D), permits an
   interactive visualization (based on OpenGL) and the second one
-  (Board3DTo2D) provides 3D visualization from 2D vectorial display
+  (Board3DTo2D) provides 3D visualization to 2D vector format
   (based on the CAIRO library).
 
-  Display3D have two template parameters which correspond to the space and the khalimsky space used to put the figures. 
-  By default it use the Z3i::Space and Z3i::KSpace.
+  Display3D have two template parameters which correspond to the
+  digital space and the Khalimsky space used to put the figures. From
+  the Digital Space and Khalimsky Space, we use the associated
+  embedding mechanism to convert digital objects to structures in @f$
+  \mathbb{R}^n@f$.
 
-  Viewer3D and Board3DTo2D allow to set and change the camera point of view for the visualization.
+
+  Viewer3D and Board3DTo2D allow to set and change the camera point of
+  view for the visualization.
   
 
 
-\section DGtalGLV_Viewer3D Interactive visualization from Viewer3D
- The class Viewer3D inherits from the base class QGLViewer (which
- is based on QGLwidget).  It permits to display simple 3D shapes.
- LibQGLViewer ( http://www.libqglviewer.com ) is a C++ library
- based on QT allowing to access to simple 3D fonctionalities like
- camera moving, mouse, keyboard interaction, clipping plane
- .... etc.
+\section DGtalGLV_Viewer3D Interactive visualization from Viewer3D 
 
-It possess the additional functionnality to display 2D slice image from a volume one. 
+The class Viewer3D inherits from the base class QGLViewer (which is
+ based on QGLwidget).  It permits to display simple 3D shapes.
+ LibQGLViewer ( http://www.libqglviewer.com ) is a C++ library based
+ on QT allowing to access to simple 3D features like camera moving,
+ mouse, keyboard interaction, clipping plane .... etc.
+
+It possess the additional functionality to display 2D slice image from a volume one. 
 
  *
  
-First to use the Viewer3D stream, you need to include the following hearders:
+First to use the Viewer3D stream, you need to include the following headers:
  *
 @code
  #include "DGtal/io/3dViewers/Viewer3D.h"
@@ -156,7 +161,10 @@ This example should provides a comparable visualization.
 *
 * \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
 *
-*  As for Board2D, a mode can be choosed to display elements (\c SetMode3D). You just have to specify the classname (the easiest way is to call the method  \c className() on an instance of the correct type and the desired mode (a string).
+*  As for Board2D, a mode can be choosen to display elements (\c
+*  SetMode3D). You just have to specify the classname (the easiest way
+*  is to call the method \c className() on an instance of the correct
+*  type and the desired mode (a string).
 *
 *
 *@code
