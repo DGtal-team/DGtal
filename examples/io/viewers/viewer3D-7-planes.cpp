@@ -104,7 +104,7 @@ int main( int argc, char** argv )
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();
   Color red( 255, 0, 0 );
   Color green( 0, 255, 0 );
@@ -119,7 +119,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D( grey, grey );
   displayPredicate( viewer, domain, plane );
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
 
 
   return application.exec();
