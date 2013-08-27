@@ -109,10 +109,13 @@ public:
      * @param aReadPolicy a read policy.
      * @param aWritePolicy a write policy.
      */
-    ImageCache(Alias<ImageFactory> anImageFactory, ReadPolicy aReadPolicy, WritePolicy aWritePolicy):
+    ImageCache(Alias<ImageFactory> anImageFactory, Alias<ReadPolicy> aReadPolicy, Alias<WritePolicy> aWritePolicy):
       myImageFactoryPtr(anImageFactory), myReadPolicy(aReadPolicy), myWritePolicy(aWritePolicy)
     {
-      myReadPolicy.clearCache();
+      myReadPolicy->clearCache();
+      
+      cacheMissRead = 0;
+      cacheMissWrite = 0;
       
       setbuf(stdout, NULL); // TEMP_MT
     }
@@ -177,6 +180,38 @@ public:
      * @param aDomain the domain.
      */
     void update(const Domain &aDomain);
+    
+    /**
+     * Get the cacheMissRead value.
+     */
+    const unsigned int getCacheMissRead() const
+    {
+        return cacheMissRead;
+    }
+    
+    /**
+     * Get the cacheMissWrite value.
+     */
+    const unsigned int getCacheMissWrite() const
+    {
+        return cacheMissWrite;
+    }
+    
+    /**
+     * Inc the cacheMissRead value.
+     */
+    void incCacheMissRead()
+    {
+        cacheMissRead++;
+    }
+    
+    /**
+     * Inc the cacheMissWrite value.
+     */
+    void incCacheMissWrite()
+    {
+        cacheMissWrite++;
+    }
 
     // ------------------------- Protected Datas ------------------------------
 private:
@@ -192,10 +227,15 @@ protected:
     ImageFactory * myImageFactoryPtr;
     
     /// Specialized caches
-    ReadPolicy myReadPolicy;
-    WritePolicy myWritePolicy;
+    ReadPolicy * myReadPolicy;
+    WritePolicy * myWritePolicy;
     
 private:
+    
+    unsigned int cacheMissRead;
+    unsigned int cacheMissWrite;
+    
+    /// for clock counting
     unsigned t; // TEMP_MT
 
     // ------------------------- Internals ------------------------------------

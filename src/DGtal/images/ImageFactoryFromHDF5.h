@@ -329,7 +329,7 @@ namespace DGtal
      * 
      * @return an ImagePtr.
      */
-    OutputImage * requestImage(const Domain &aDomain)
+    OutputImage * requestImage(const Domain &aDomain) // time consuming
     {
       const int ddim = Domain::dimension;
       
