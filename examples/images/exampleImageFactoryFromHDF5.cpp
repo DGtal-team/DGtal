@@ -202,7 +202,7 @@ bool exampleTiledImage_1block3D()
           it != itend; ++it)
         if (tiledImage1block(*it) == 1)
           cpt++;         
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.cacheMissRead << " - cacheMissWrite:" << tiledImage1block.cacheMissWrite << endl;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.getCacheMissRead() << " - cacheMissWrite:" << tiledImage1block.getCacheMissWrite() << endl;
       trace.endBlock();
       
     trace.endBlock();
@@ -251,7 +251,7 @@ bool exampleTiledImage3D()
             if (tiledImageFIFO_A(*it) == 1)
               cpt++;
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.cacheMissRead << " - cacheMissWrite:" << tiledImageFIFO_A.cacheMissWrite << endl;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_A.getCacheMissWrite() << endl;
       trace.endBlock();
       
       cpt=0;
@@ -262,7 +262,7 @@ bool exampleTiledImage3D()
             if (tiledImageFIFO_B(*it) == 1)
               cpt++;
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.cacheMissRead << " - cacheMissWrite:" << tiledImageFIFO_B.cacheMissWrite << endl;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_B.getCacheMissWrite() << endl;
       trace.endBlock();
 
       cpt=0;
@@ -273,7 +273,7 @@ bool exampleTiledImage3D()
             if (tiledImage(*it) == 1)
               cpt++;
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.cacheMissRead << " - cacheMissWrite:" << tiledImage.cacheMissWrite << endl;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
       trace.endBlock(); 
       
     trace.endBlock();
@@ -350,7 +350,7 @@ bool exampleOLDTiledImage3D()
           it != itend; ++it)
         if (tiledImage1block(*it) == 1)
           cpt++;
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.cacheMissRead << " - cacheMissWrite:" << tiledImage1block.cacheMissWrite << endl;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.getCacheMissRead() << " - cacheMissWrite:" << tiledImage1block.getCacheMissWrite() << endl;
       trace.endBlock();
       
       cpt=0;
@@ -359,7 +359,7 @@ bool exampleOLDTiledImage3D()
           it != itend; ++it)
         if (tiledImage(*it) == 1)
             cpt++;
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.cacheMissRead << " - cacheMissWrite:" << tiledImage.cacheMissWrite << endl;
+      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
       trace.endBlock();
     
     trace.endBlock();

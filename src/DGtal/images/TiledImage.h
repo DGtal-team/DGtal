@@ -69,6 +69,10 @@ namespace DGtal
  * @tparam TImageFactory an image factory type (model of CImageFactory).
  * @tparam TImageCacheReadPolicy an image cache read policy class (model of CImageCacheReadPolicy).
  * @tparam TImageCacheWritePolicy an image cache write policy class (model of CImageCacheWritePolicy).
+ * 
+ * @note It is important to take into account that read and write policies are passed as aliases in the TiledImage constructor,
+ * so for example, if two TiledImage instances are successively created with the same read policy instance,
+ * the state of the cache for a given time is therefore the same for the two TiledImage instances !
  */
 template <typename TImageContainer, typename TImageFactory, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 class TiledImage
@@ -126,9 +130,6 @@ public:
         
         for(typename Domain::Integer i=0; i<Domain::dimension; i++)
           mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
-        
-        cacheMissRead = 0;
-        cacheMissWrite = 0;
         
         setbuf(stdout, NULL); // TEMP_MT
     }
@@ -204,7 +205,7 @@ public:
      * @param aPoint the point.
      * @return the domain containing aPoint.
      */
-    const Domain findSubDomain(const Point & aPoint)// const // TEMP_MT
+    const Domain findSubDomain(const Point & aPoint) const
     {
       ASSERT(myImageFactory->domain().isInside(aPoint));
       
@@ -226,7 +227,7 @@ public:
         dMax[i] = dMin[i] + (mySize[i]-1);
       }
       
-      Domain di(dMin, dMax); //trace.info() << "aPoint: " << aPoint << " - di: " << di << std::endl; // TEMP_MT
+      Domain di(dMin, dMax);
       return di;      
     }
     
@@ -242,12 +243,11 @@ public:
 
       typename OutputImage::Value aValue;
 
-
       if (myImageCache->read(aPoint, aValue))
         return aValue;
       else
       {
-        cacheMissRead++;
+        myImageCache->incCacheMissRead();
         Domain d;
 
         t = clock();
@@ -283,10 +283,26 @@ public:
           return;
         else
         {
-          cacheMissWrite++;
+          myImageCache->incCacheMissWrite();
           myImageCache->update(findSubDomain(aPoint));
           myImageCache->write(aPoint, aValue);
         }
+    }
+    
+    /**
+     * Get the cacheMissRead value.
+     */
+    const unsigned int getCacheMissRead() const
+    {
+        return myImageCache->getCacheMissRead();
+    }
+    
+    /**
+     * Get the cacheMissWrite value.
+     */
+    const unsigned int getCacheMissWrite() const
+    {
+        return myImageCache->getCacheMissWrite();
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -313,14 +329,10 @@ protected:
     
     /// domain lower and upper bound
     Point m_lowerBound, m_upperBound;
-    
-public: // TEMP_MT
-    
-    unsigned int cacheMissRead;
-    unsigned int cacheMissWrite;
 
     // ------------------------- Internals ------------------------------------
 private:
+    /// for clock counting
     unsigned t; // TEMP_MT
 
 }; // end of class TiledImage
