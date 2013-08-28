@@ -658,6 +658,21 @@ protected:
     template< typename Shape >
     double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
 
+    static const DGtal::Dimension sizeMoments = 10;
+    static Spel defaultSpel;
+
+    template< typename SurfelIterator >
+    void core_evalCovarianceMatrix
+    ( const SurfelIterator & it,
+      CovarianceMatrix & innerMatrix,
+      CovarianceMatrix & outerMatrix,
+      bool useLastResults = false,
+      Spel & lastInnerSpel = defaultSpel,
+      Spel & lastOuterSpel = defaultSpel,
+      Quantity * lastInnerMoments = NULL,
+      Quantity * lastOuterMoments = NULL
+      );
+
     /**
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
