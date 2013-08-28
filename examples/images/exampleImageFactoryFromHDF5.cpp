@@ -48,9 +48,12 @@ using namespace DGtal;
 #define H5FILE_NAME_3D_TILED    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
 #define DATASETNAME_3D_TILED    "UInt8Array3D_TILED"
-#define NX_3D_TILED             150//1980       // dataset dimensions
-#define NY_3D_TILED             150//1980
-#define NZ_3D_TILED             150//400
+#define NX_3D_TILED             300//1980       // dataset dimensions
+#define NY_3D_TILED             300//1980
+#define NZ_3D_TILED             300//400
+#define CHUNK_X_3D_TILED        50              // chunk dimensions
+#define CHUNK_Y_3D_TILED        50
+#define CHUNK_Z_3D_TILED        50
 #define RANK_3D_TILED           3
 
 bool writeHDF5_3D_TILED()
@@ -66,6 +69,11 @@ bool writeHDF5_3D_TILED()
       //DGtal::uint8_t      data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
       DGtal::uint8_t      *data;
       int                 i, j, k;
+      
+      // compressed dataset
+        hid_t plist_id;
+        hsize_t cdims[RANK_3D_TILED];
+      // compressed dataset
       
       data = (DGtal::uint8_t*)malloc(NZ_3D_TILED*NY_3D_TILED*NX_3D_TILED * sizeof(DGtal::uint8_t));
 
@@ -90,6 +98,25 @@ bool writeHDF5_3D_TILED()
       dimsf[1] = NY_3D_TILED;
       dimsf[2] = NX_3D_TILED;
       dataspace = H5Screate_simple(RANK_3D_TILED, dimsf, NULL);
+      
+      // compressed dataset
+        plist_id  = H5Pcreate (H5P_DATASET_CREATE);
+
+        // Dataset must be chunked for compression.
+        cdims[0] = CHUNK_Z_3D_TILED;
+        cdims[1] = CHUNK_Y_3D_TILED;
+        cdims[2] = CHUNK_X_3D_TILED;
+        status = H5Pset_chunk (plist_id, RANK_3D_TILED, cdims);
+
+        // --> Compression levels :
+        // 0            No compression
+        // 1            Best compression speed; least compression
+        // 2 through 8  Compression improves; speed degrades
+        // 9            Best compression ratio; slowest speed
+        //
+        // Set ZLIB / DEFLATE Compression using compression level 6.
+        status = H5Pset_deflate (plist_id, 6);
+      // compressed dataset
 
       /*
       * Define datatype for the data in the file.
@@ -102,7 +129,7 @@ bool writeHDF5_3D_TILED()
       * datatype and default dataset creation properties.
       */
       dataset = H5Dcreate2(file, DATASETNAME_3D_TILED, datatype, dataspace,
-                          H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+                          H5P_DEFAULT, /*H5P_DEFAULT*/plist_id, H5P_DEFAULT); // here to activate compressed dataset
 
       // Write the data to the dataset using default transfer properties.
       status = H5Dwrite(dataset, H5T_NATIVE_UINT8, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
@@ -111,6 +138,9 @@ bool writeHDF5_3D_TILED()
       H5Sclose(dataspace);
       H5Tclose(datatype);
       H5Dclose(dataset);
+      // compressed dataset
+        H5Pclose(plist_id);
+      // compressed dataset
       H5Fclose(file);
       
       free(data);
