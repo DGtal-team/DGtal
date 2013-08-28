@@ -75,6 +75,11 @@ bool writeHDF5_3D_TILED()
       // compressed dataset
       
       data = (DGtal::uint8_t*)malloc(NZ_3D_TILED*NY_3D_TILED*NX_3D_TILED * sizeof(DGtal::uint8_t));
+      if (data == NULL)
+      {
+        trace.info() << " malloc error" << endl;
+        return false;
+      }
 
       // Data and output buffer initialization.
       for(k = 0; k < NZ_3D_TILED; k++)
