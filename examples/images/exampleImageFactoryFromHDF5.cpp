@@ -32,7 +32,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/readers/HDF5Reader.h"
 #include "DGtal/images/ImageFactoryFromHDF5.h"
 #include "DGtal/images/ImageCache.h"
 #include "DGtal/images/TiledImage.h"
@@ -77,7 +76,7 @@ bool writeHDF5_3D_TILED()
       
       data = (DGtal::uint8_t*)malloc(NZ_3D_TILED*NY_3D_TILED*NX_3D_TILED * sizeof(DGtal::uint8_t));
 
-      // Data  and output buffer initialization.
+      // Data and output buffer initialization.
       for(k = 0; k < NZ_3D_TILED; k++)
         for(j = 0; j < NY_3D_TILED; j++)
           for(i = 0; i < NX_3D_TILED; i++)
