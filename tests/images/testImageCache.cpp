@@ -74,6 +74,11 @@ bool testSimple()
     OutputImage::ConstRange r1 = image1->constRange();
     cout << "image1: "; std::copy( r1.begin(), r1.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
     
+    Z2i::Domain domain1b(Z2i::Point(0,0), Z2i::Point(1,2));
+    OutputImage *image1b = factImage.requestImage(domain1b);
+    OutputImage::ConstRange r1b = image1b->constRange();
+    cout << "image1b: "; std::copy( r1b.begin(), r1b.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
+    
     Z2i::Domain domain2(Z2i::Point(2,0), Z2i::Point(3,1));
     OutputImage *image2 = factImage.requestImage(domain2);
     OutputImage::ConstRange r2 = image2->constRange();
@@ -99,7 +104,7 @@ bool testSimple()
     
     typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyImageCache;
     MyImageCache imageCache(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT);
-    /*VImage*/OutputImage::Value aValue;
+    OutputImage::Value aValue;
     
     trace.info() << "READING from cache (empty cache): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 

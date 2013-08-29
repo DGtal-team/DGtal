@@ -48,8 +48,6 @@
 #include "DGtal/images/CImageCacheReadPolicy.h"
 #include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
-
-#include "DGtal/images/ImageFactoryFromImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -65,9 +63,9 @@ namespace DGtal
  * \brief Aim: implements an images cache with 'read and write' policies.
  * 
  * @tparam TImageContainer an image container type (model of CImage).
- * @tparam TImageFactory an image factory.
- * @tparam TReadPolicy a read policy class.
- * @tparam TWritePolicy a write policy class.
+ * @tparam TImageFactory an image factory type (model of CImageFactory).
+ * @tparam TReadPolicy an image cache read policy class (model of CImageCacheReadPolicy).
+ * @tparam TWritePolicy an image cache write policy class (model of CImageCacheWritePolicy).
  * 
  * The cache provides 3 functions:
  * 
@@ -92,9 +90,9 @@ public:
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Domain Domain;
-    typedef typename TImageContainer::Point Point;
-    typedef typename TImageContainer::Value Value;
+    typedef typename ImageContainer::Domain Domain;
+    typedef typename ImageContainer::Point Point;
+    typedef typename ImageContainer::Value Value;
     
     typedef TImageFactory ImageFactory;
     
@@ -107,13 +105,19 @@ public:
   
     /**
      * Constructor.
-     * @param anImageFactory alias on the image factory (see ImageFactoryFromImage).
-     * @param aReadPolicy alias on a read policy.
-     * @param aWritePolicy alias on a write policy.
+     * @param anImageFactory alias on the image factory (see ImageFactoryFromImage or ImageFactoryFromHDF5).
+     * @param aReadPolicy a read policy.
+     * @param aWritePolicy a write policy.
      */
     ImageCache(Alias<ImageFactory> anImageFactory, Alias<ReadPolicy> aReadPolicy, Alias<WritePolicy> aWritePolicy):
       myImageFactoryPtr(anImageFactory), myReadPolicy(aReadPolicy), myWritePolicy(aWritePolicy)
     {
+      myReadPolicy->clearCache();
+      
+      cacheMissRead = 0;
+      cacheMissWrite = 0;
+      
+      setbuf(stdout, NULL); // TEMP_MT
     }
 
     /**
@@ -157,7 +161,7 @@ public:
     * 
     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
     */
-    bool read(const Point & aPoint, Value &aValue) const;
+    bool read(const Point & aPoint, Value &aValue);// const;
 
     /**
      * Set a value on an image from cache at a given position given
@@ -176,6 +180,38 @@ public:
      * @param aDomain the domain.
      */
     void update(const Domain &aDomain);
+    
+    /**
+     * Get the cacheMissRead value.
+     */
+    const unsigned int getCacheMissRead() const
+    {
+        return cacheMissRead;
+    }
+    
+    /**
+     * Get the cacheMissWrite value.
+     */
+    const unsigned int getCacheMissWrite() const
+    {
+        return cacheMissWrite;
+    }
+    
+    /**
+     * Inc the cacheMissRead value.
+     */
+    void incCacheMissRead()
+    {
+        cacheMissRead++;
+    }
+    
+    /**
+     * Inc the cacheMissWrite value.
+     */
+    void incCacheMissWrite()
+    {
+        cacheMissWrite++;
+    }
 
     // ------------------------- Protected Datas ------------------------------
 private:
@@ -190,11 +226,17 @@ protected:
     /// Alias on the image factory
     ImageFactory * myImageFactoryPtr;
     
-    /// Alias on the specialized caches
+    /// Specialized caches
     ReadPolicy * myReadPolicy;
-    WritePolicy  * myWritePolicy;
+    WritePolicy * myWritePolicy;
     
 private:
+    
+    unsigned int cacheMissRead;
+    unsigned int cacheMissWrite;
+    
+    /// for clock counting
+    unsigned t; // TEMP_MT
 
     // ------------------------- Internals ------------------------------------
 private:

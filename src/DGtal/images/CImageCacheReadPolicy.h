@@ -76,6 +76,7 @@ Description of \b concept '\b CImageCacheReadPolicy' <p>
 | Get page            | x.getPage(p)            | p of type Point      | ImageContainer    | p should be in a domain of the cache | get the alias on the image that contains the point p |                |            |
 | Get page to detach  | x.getPageToDetach()     |                      | ImageContainer    |                                      | get the alias on the image that we have to detach    |                |            |
 | Update cache        | x.updateCache(d)        | d of type Domain     |                   |                                      | update the cache with a new Domain d                 |                |            |
+| Clear cache         | x.clearCache()          |                      |                   |                                      | clear the cache                                      |                |            |
 
 ### Invariants
 
@@ -99,6 +100,7 @@ public:
         ConceptUtils::sameType( myIC, myT.getPage(myPoint) );
         ConceptUtils::sameType( myIC, myT.getPageToDetach() );
         myT.updateCache(myDomain);
+        myT.clearCache();
 
         // check const methods.
         checkConstConstraints();

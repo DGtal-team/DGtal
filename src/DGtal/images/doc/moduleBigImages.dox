@@ -84,6 +84,8 @@ and returns an ImageContainer pointer on the image that contains the point or NU
   - `updateCache`, which takes a domain as input parameter
 in order to update the cache according to the defined cache policy.
 
+  - `clearCache`, which clears the cache.
+
 \subsubsection dgtalBigImagesCacheWritePolicyConcepts CImageCacheWritePolicy
 
 Any model of the concept CImageCacheWritePolicy must have this nested type:
@@ -137,18 +139,22 @@ until the cache blocks containing the data are about to be modified/replaced by 
 
 \section dgtalBigImagesSamples Sample classes
 
-\subsection dgtalBigImagesTiledImageFromImageSample TiledImageFromImage
+\subsection dgtalBigImagesTiledImageSample TiledImage
 
-The TiledImageFromImage is a simple class that implements a tiled image from a "bigger/original" one.
+The TiledImage is a simple class that implements a tiled image from a "bigger/original" one from an ImageFactory.
 
-The tiled image is created from an existing image and with three parameters.
-The first parameter is an alias on the image factory (see ImageFactoryFromImage).
+The tiled image is created from an existing image and with four parameters.
+The first parameter is an alias on the image factory (see ImageFactoryFromImage or ImageFactoryFromHDF5).
 The second parameter is an alias on a read policy.
 The third parameter is an alias on a write policy.
 The fourth parameter is to set how many tiles we want for each dimension.
 
+--> It is important to take into account that read and write policies are passed as aliases in the TiledImage constructor,
+so for example, if two TiledImage instances are successively created with the same read policy instance,
+the state of the cache for a given time is therefore the same for the two TiledImage instances ! <--
+
 Concerning the cache mechanism explained at the top of this document, the accessor `operator()` (i.e. the getter) and the setter `setValue` are therefore really simple to write
-for the TiledImageFromImage class:
+for the TiledImage class:
 
 - the getter just returns the value of an image (from cache) at a given position given by a point if the image is in the cache.
 If not, the cache is first update with the image that contains that point.
@@ -156,22 +162,22 @@ If not, the cache is first update with the image that contains that point.
 - in the same manner, the setter just write the value of an image (in cache) at a given position given by a point if the image is in the cache.
 If not, the cache is first update with the image that contains that point.
 
-In order to illustrate the next TiledImageFromImage usage sample,
+In order to illustrate the next TiledImage usage sample,
  we are going a) to use these includes:
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp include
+@snippet ../examples/images/exampleTiledImage.cpp include
 
 b) then define these type and variable:
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp def 
+@snippet ../examples/images/exampleTiledImage.cpp def 
 
 c) then define a simple 16x16 (1,1) to (16,16) image (of 'int' type):
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp image_creation 
+@snippet ../examples/images/exampleTiledImage.cpp image_creation 
 
 filled with 1 to 256 values like that:
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp image_filling 
+@snippet ../examples/images/exampleTiledImage.cpp image_filling 
 
 which looks like that with a simple HueShadeColorMap varying from 1 to 256 and with (1,1) the first bottom-left point:
 
@@ -179,13 +185,13 @@ which looks like that with a simple HueShadeColorMap varying from 1 to 256 and w
 \image latex tiledImageFromImage-image.png " (1) simple 16x16 source image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 1 to 256." width=5cm 
 
 Here is now the construction of a simple 4x4 tiled image with therefore 16 subdomains of the initial image domain.
-The tiled image is created from an existing image and with three parameters.
-The first parameter is an alias on an image factory (see ImageFactoryFromImage).
+The tiled image is created from an existing image and with four parameters.
+The first parameter is an alias on the image factory (see ImageFactoryFromImage).
 The second parameter is an alias on a read policy.
 The third parameter is an alias on a write policy.
 The fourth parameter is to set how many tiles we want for each dimension: 
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_creation 
+@snippet ../examples/images/exampleTiledImage.cpp TiledImage_creation 
 
 In this sample, we are going to work only with the 8 bottom subdomains of the original image.
 
@@ -193,7 +199,7 @@ At the beginning the cache is empty.
 
 First we want to read the point 4,2 (which is in domain 1),
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read42 
+@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read42 
 
 so after that the cache is (domain1,empty). Here is the domain1:
 
@@ -202,7 +208,7 @@ so after that the cache is (domain1,empty). Here is the domain1:
 
 Then we want to read the point 10,6 (which is in domain 7),
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read106
+@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read106
 
 so after that the cache is (domain1,domain7). Here is the domain7:
 
@@ -211,7 +217,7 @@ so after that the cache is (domain1,domain7). Here is the domain7:
 
 Then we want to set the value of the point 11,7 to 1 (which is in domain 7),
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_write117
+@snippet ../examples/images/exampleTiledImage.cpp TiledImage_write117
 
 so after that the cache is always (domain1,domain7). Here is the new domain7 after writing:
 
@@ -220,7 +226,7 @@ so after that the cache is always (domain1,domain7). Here is the new domain7 aft
 
 Then we want to read the point 2,3 (which is in domain 1),
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read23
+@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read23
 
 so after that the cache is always (domain1,domain7). Here is the domain1:
 
@@ -229,7 +235,7 @@ so after that the cache is always (domain1,domain7). Here is the domain1:
 
 Then we want to read the point 16,1 (which is in domain 4),
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read161
+@snippet ../examples/images/exampleTiledImage.cpp TiledImage_read161
 
 so after that the cache is (domain7,domain4). Here is the domain4:
 
@@ -238,7 +244,7 @@ so after that the cache is (domain7,domain4). Here is the domain4:
 
 Then we want to set the value of the point 16,1 to 128 (which is in domain 4),
 
-@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_write161
+@snippet ../examples/images/exampleTiledImage.cpp TiledImage_write161
 
 so after that the cache is always (domain7,domain4). Here is the new domain4 after writing:
 
@@ -249,10 +255,6 @@ And finally, here is the modified original image after the two writings.
 
 \image html tiledImageFromImage-image2.png " (9) result image." 
 \image latex tiledImageFromImage-image2.png " (9) result image."  width=5cm </TD>
-
-\subsection dgtalBigImagesHDF5ImageSample HDF5Image
-
-Forthcoming...
 
 */
 
