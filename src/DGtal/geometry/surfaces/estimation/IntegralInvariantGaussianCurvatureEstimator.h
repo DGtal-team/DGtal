@@ -489,6 +489,20 @@ public:
       *
       * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
       *
+      * @return quantity of the result of Integral Invariant estimator at position *it
+      */
+    template< typename ConstIteratorOnCells, typename Shape >
+    Quantity eval ( const ConstIteratorOnCells & it,
+                    const Shape & shape );
+
+
+    /**
+      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      *
+      * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
+      *
       * @return a struct with Gaussian curvature value of Integral Invariant estimator at position *it, and eigenVectors
       * and eigenValues resulting of the PCA (contening principals curvature information)
       */

@@ -268,7 +268,7 @@ int testII3D( int argc, char** argv )
     double p1[ 3 ] = {-10.0,-10.0,-10.0};
     double p2[ 3 ] = {10.0,10.0,10.0};
 
-    double step = 0.1;
+    double step = 0.2;
 
     double re = 3;
 
@@ -350,20 +350,40 @@ int testII3D( int argc, char** argv )
     NearestPointEmbedder< Z3i::KSpace, ImplicitShape > ScellToRealPoint;
     ScellToRealPoint.init( K, step, *ishape );
 
+//    std::vector< double > resultIIShape;
+//    std::back_insert_iterator< std::vector< double > > resultIIShapeIterator( resultIIShape );
+//    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIShapeIterator, *ishape );
+
     std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
-    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator, *ishape );
+    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator );
 
     int p = 0;
+
+//    std::cout << "here"<<std::endl;
     for ( std::set< Z3i::SCell >::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++p)
     {
 
-        //    RealPoint A = midpoint( *it ) * step;
-        //    A = ishape.nearestPoint (A, 0.01 * step, 200, 0.1 * step);
-        //    double a = ishape.meanCurvature( A );
-        RealPoint A = ScellToRealPoint( *it );
+//        std::cout << "p"<<std::endl;
+        /*if ( p != 148 )
+            continue;*/
+
+        // double resultOneShape = iigaussest.eval( it, *ishape );
+        double resultOne = iigaussest.eval( it );
+
+        if( resultII[ p ] != resultOne )
+            std::cout << p << " error without shape " << resultII[p] << " vs " << resultOne << std::endl;
+
+        continue;
+
+        RealPoint A;// = ScellToRealPoint( *it );
         double a = 0.04;//ishape->gaussianCurvature( A );
         double b = resultII[ p ];
+
+
+//        if( resultIIShape[ p ] != resultOneShape )
+//            std::cout << "error with shape " << std::endl;
+
 //        std::cout << b << std::endl;
         resultTrue.push_back( a );
         nearestPoints.push_back( A );
@@ -384,6 +404,7 @@ int testII3D( int argc, char** argv )
         }
 
     }
+    return 0;
 
     trace.info() << " Min = " << minCurv << std::endl;
     trace.info() << " Max = " << maxCurv << std::endl;

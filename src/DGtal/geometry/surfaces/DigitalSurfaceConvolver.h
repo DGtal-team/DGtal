@@ -607,6 +607,20 @@ public:
     CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it );
 
     /**
+       * Convolve the kernel at a given position and return a covariance matrix.
+       *
+       * @param it (iterator of a) spel on the surface of the shape where the covariance matrix is computed.
+       *
+       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       *
+       * @return the covariance matrix at *it
+       */
+    template< typename ConstIteratorOnCells, typename Shape >
+    CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it,
+                                            const Shape & shape,
+                                            const double h = 0.0 );
+
+    /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
        *
        * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
@@ -658,8 +672,11 @@ protected:
     template< typename Shape >
     double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
 
-    static const DGtal::Dimension sizeMoments = 10;
-    static Spel defaultSpel;
+    static const DGtal::Dimension nbMoments;
+    static Spel defaultInnerSpel;
+    static Spel defaultOuterSpel;
+    static Quantity defaultInnerMoments[ nbMoments ];
+    static Quantity defaultOuterMoments[ nbMoments ];
 
     template< typename SurfelIterator >
     void core_evalCovarianceMatrix
@@ -667,10 +684,10 @@ protected:
       CovarianceMatrix & innerMatrix,
       CovarianceMatrix & outerMatrix,
       bool useLastResults = false,
-      Spel & lastInnerSpel = defaultSpel,
-      Spel & lastOuterSpel = defaultSpel,
-      Quantity * lastInnerMoments = NULL,
-      Quantity * lastOuterMoments = NULL
+      Spel & lastInnerSpel = defaultInnerSpel,
+      Spel & lastOuterSpel = defaultOuterSpel,
+      Quantity * lastInnerMoments = defaultInnerMoments,
+      Quantity * lastOuterMoments = defaultOuterMoments
       );
 
     /**
