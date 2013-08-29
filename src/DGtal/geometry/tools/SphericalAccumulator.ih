@@ -205,6 +205,7 @@ bool
 DGtal::SphericalAccumulator<T>::isValidBin(const Size &posPhi, 
 					   const Size &posTheta) const
 {
+  ASSERT( myNphi != 1 );
   double dphi = M_PI/((double)myNphi-1.0);
   double Ntheta_i = floor(2.0*((double)myNphi)*sin((double)posPhi*dphi));  
   
@@ -229,40 +230,87 @@ DGtal::SphericalAccumulator<T>::getBinGeometry(const Size &posPhi,
   double phi= (double)posPhi*dphi;
   double dtheta;
   double Nthetai = floor(2.0*(myNphi)*sin(phi) ); 
-  
-  dtheta = 2.0*M_PI/(Nthetai);
-  
-  double theta=posTheta*dtheta;
+  double theta = 0.0;
 
-  a[0]=cos(theta-dtheta/2.0)*sin(phi -dphi/2.0);
-  a[1]=sin(theta-dtheta/2.0)*sin(phi -dphi/2.0);
-  a[2]=cos(phi -dphi/2.0);
-  
-  
-  if ((double)posTheta -1 >= Nthetai)
+  if ((posPhi == 0) ||(posPhi == (myNphi-1)))
     {
-      b[0]=cos(-dtheta/2.0)*sin(phi -dphi/2.0);
-      b[1]=sin(-dtheta/2.0)*sin(phi -dphi/2.0);
+      a[0]=cos(theta-dphi/2.0)*sin(phi -dphi/2.0);
+      a[1]=sin(theta-dphi/2.0)*sin(phi -dphi/2.0);
+      a[2]=cos(phi -dphi/2.0);
+      
+      b[0]=cos(theta+dphi/2.0)*sin(phi -dphi/2.0);
+      b[1]=sin(theta+dphi/2.0)*sin(phi -dphi/2.0);
       b[2]=cos(phi -dphi/2.0);
       
-      c[0]=cos(- dtheta/2.0)*sin(phi+dphi/2.0);
-      c[1]=sin( - dtheta/2.0)*sin(phi+dphi/2.0);
+      c[0]=cos(theta-dphi/2.0)*sin(phi+dphi/2.0);
+      c[1]=sin(theta-dphi/2.0)*sin(phi+dphi/2.0);
       c[2]=cos(phi+dphi/2.0);      
+      
+      d[0]=cos(theta+dphi/2.0)*sin(phi+dphi/2.0);
+      d[1]=sin(theta+dphi/2.0)*sin(phi+dphi/2.0);
+      d[2]=cos(phi+dphi/2.0);      
     }
+  
   else
-    {
-      b[0]=cos(theta+dtheta/2.0)*sin(phi -dphi/2.0);
-      b[1]=sin(theta+dtheta/2.0)*sin(phi -dphi/2.0);
-      b[2]=cos(phi -dphi/2.0);
-      
-      c[0]=cos(theta+dtheta/2.0)*sin(phi+dphi/2.0);
-      c[1]=sin(theta+dtheta/2.0)*sin(phi+dphi/2.0);
-      c[2]=cos(phi+dphi/2.0);      
-    }
+      {
+        dtheta = 2.0*M_PI/(Nthetai);
+        theta=posTheta*dtheta;
+        
+        a[0]=cos(theta-dtheta/2.0)*sin(phi -dphi/2.0);
+        a[1]=sin(theta-dtheta/2.0)*sin(phi -dphi/2.0);
+        a[2]=cos(phi -dphi/2.0);
   
-  d[0]=cos(theta-dtheta/2.0)*sin(phi+dphi/2.0);
-  d[1]=sin(theta-dtheta/2.0)*sin(phi+dphi/2.0);
-  d[2]=cos(phi+dphi/2.0);      
+  
+        if ((double)posTheta -1 >= Nthetai)
+          {
+            b[0]=cos(-dtheta/2.0)*sin(phi -dphi/2.0);
+            b[1]=sin(-dtheta/2.0)*sin(phi -dphi/2.0);
+            b[2]=cos(phi -dphi/2.0);
+      
+            c[0]=cos(- dtheta/2.0)*sin(phi+dphi/2.0);
+            c[1]=sin( - dtheta/2.0)*sin(phi+dphi/2.0);
+            c[2]=cos(phi+dphi/2.0);      
+          }
+        else
+          {
+            b[0]=cos(theta+dtheta/2.0)*sin(phi -dphi/2.0);
+            b[1]=sin(theta+dtheta/2.0)*sin(phi -dphi/2.0);
+            b[2]=cos(phi -dphi/2.0);
+      
+            c[0]=cos(theta+dtheta/2.0)*sin(phi+dphi/2.0);
+            c[1]=sin(theta+dtheta/2.0)*sin(phi+dphi/2.0);
+            c[2]=cos(phi+dphi/2.0);      
+          }
+  
+        d[0]=cos(theta-dtheta/2.0)*sin(phi+dphi/2.0);
+        d[1]=sin(theta-dtheta/2.0)*sin(phi+dphi/2.0);
+        d[2]=cos(phi+dphi/2.0);      
+      }
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+typename DGtal::SphericalAccumulator<T>::RealVector
+DGtal::SphericalAccumulator<T>::getBinDirection(const Size &posPhi,
+                                                const Size &posTheta) const
+{
+  ASSERT( isValidBin(posPhi,posTheta) );
+  double dphi = M_PI/(double)((double)myNphi-1);
+  double phi= (double)posPhi*dphi;
+  double Nthetai = floor(2.0*(myNphi)*sin(phi) ); 
+  RealVector midpoint;
+  double theta;
+
+  if ((posPhi == 0) || (posPhi == (myNphi-1)))
+    theta = 0;
+  else
+    theta=posTheta*2.0*M_PI/(Nthetai);
+    
+  midpoint[0]=cos(theta)*sin(phi);
+  midpoint[1]=sin(theta)*sin(phi);
+  midpoint[2]=cos(phi);
+  
+  return midpoint;     
 }
 // --------------------------------------------------------
 template <typename T>

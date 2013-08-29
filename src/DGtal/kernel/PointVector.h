@@ -225,7 +225,7 @@ namespace DGtal
 #ifdef CPP11_INITIALIZER_LIST
     /**
      * Constructor from initializer list.
-     * @param the initializer list.
+     * @param init the initializer list.
      */
     PointVector( std::initializer_list<Component> init );
 #endif // CPP11_INITIALIZER_LIST
@@ -282,7 +282,7 @@ namespace DGtal
      * are copied.
      *
      * @param pv the object to copy.
-     * @param dim the dimensions of v to copy
+     * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */
@@ -294,7 +294,7 @@ namespace DGtal
      * in dimensions are copied.
      *
      * @param pv the object to copy.
-     * @param dim the dimensions of v to copy
+     * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */

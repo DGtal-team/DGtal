@@ -118,14 +118,14 @@ namespace DGtal
 
     /**
        @param aPoint any point in the Euclidean space.
-       @return 'true' if the polynomial value is > 0.
+       @return 'true' if the polynomial value is < 0.
     */
     bool isInside(const RealPoint &aPoint) const;
 
     /**
        @param aPoint any point in the Euclidean space.
 
-       @return INSIDE if the polynomial value is > 0, OUTSIDE if < 0,
+       @return INSIDE if the polynomial value is < 0, OUTSIDE if > 0,
        ON otherwise.
     */
     Orientation orientation(const RealPoint &aPoint) const;
