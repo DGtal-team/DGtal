@@ -397,13 +397,13 @@ namespace DGtal
       }
       HyperRectDomain<TSpace> domain(a,b);
 
-      std::vector<typename TSpace::Dimension> v(ddim);
+      /*std::vector<typename TSpace::Dimension> v(ddim);
       for(d=0; d<ddim; d++)
-        v[d]=d;
+        v[d]=d;*/
       
       int p=0;
-      for( typename HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
-            it = domain.subRange(v, a).begin(), itend = domain.subRange(v, a).end();
+      for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator 
+            it = domain/*.subRange(v, a)*/.begin(), itend = domain/*.subRange(v, a)*/.end();
           it != itend; 
           ++it)
       {
