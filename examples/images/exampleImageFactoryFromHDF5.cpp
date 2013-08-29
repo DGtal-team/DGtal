@@ -47,9 +47,9 @@ using namespace DGtal;
 #define H5FILE_NAME_3D_TILED    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
 #define DATASETNAME_3D_TILED    "UInt8Array3D_TILED"
-#define NX_3D_TILED             300//1980       // dataset dimensions
-#define NY_3D_TILED             300//1980
-#define NZ_3D_TILED             300//400
+#define NX_3D_TILED             150//1980       // dataset dimensions
+#define NY_3D_TILED             150//1980
+#define NZ_3D_TILED             150//400
 #define CHUNK_X_3D_TILED        50              // chunk dimensions
 #define CHUNK_Y_3D_TILED        50
 #define CHUNK_Z_3D_TILED        50

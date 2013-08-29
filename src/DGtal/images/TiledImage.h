@@ -225,6 +225,9 @@ public:
       {
         dMin[i] = (low[i]*mySize[i])+m_lowerBound[i];
         dMax[i] = dMin[i] + (mySize[i]-1);
+        
+        if (dMax[i] > m_upperBound[i]) // last tile
+          dMax[i] = m_upperBound[i];
       }
       
       Domain di(dMin, dMax);
@@ -247,6 +250,7 @@ public:
         return aValue;
       else
       {
+        //trace.beginBlock("incCacheMissRead");
         myImageCache->incCacheMissRead();
         Domain d;
 
@@ -261,6 +265,7 @@ public:
         t = clock();
         myImageCache->read(aPoint, aValue);
         t = clock() - t; //if (t) trace.info() << "read took " << t <<" ticks.\n";
+        //trace.endBlock();
         
         return aValue;
       }
