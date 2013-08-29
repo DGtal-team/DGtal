@@ -140,8 +140,12 @@ namespace DGtal
        * compute the parameters of the DSS [AB]. The algorithm used
        * depends on the value of the boolean (Farey fan if true, local
        * convex hull otherwise).
-       * @param Numbers a,b,mu, Points A and B, boolean
-       *
+       * @param Number a
+       * @param Number b
+       * @param Number mu
+       * @param Point A
+       * @param Point B
+       * @param a boolean
        */
       DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool farey);
 
@@ -150,9 +154,12 @@ namespace DGtal
        * Given a straight line of equation y = alpha x + beta, and two
        * points A and B of the OBQ digitization of this line, compute
        * the parameters of the DSS [AB]. The algorithm implemented uses
-       * the Farey fan. 
-       * @param Numbers alpha, beta, Points A and B, precision for
-       * floating-point geometrical predicates
+       * the Farey fan. Requires a precision parameter for floating-point geometrical predicates
+       * @param Number alpha
+       * @param Number beta
+       * @param Point A
+       * @param Point B
+       * @param Number precision
        */
       DSLSubsegment(Number alpha, Number beta, Point A, Point B, Number precision = 1e-10);
        
@@ -193,14 +200,18 @@ namespace DGtal
 	
 	/**
 	 * Constructor of the ray R(alpha,beta): beta = -alpha x0 + y0
-	 * @param two integers x0, y0
+	 * @param Integer x0
+	 * @param Integer y0
 	 */
 	RayC(const Integer x0, const Integer y0);
 	
 	/**
-	   Constructor of the ray passing through the point (p/q,r/q)
-	   and of given slope
-	   * @param three integer p,q,r, and one integer slope
+	 * Constructor of the ray passing through the point (p/q,r/q)
+	 * and of given slope
+	 * @param Integer p
+	 * @param Integer q
+	 * @param Integer r
+	 * @param Integer slope
 	 */
 	RayC(const Integer p, const Integer q, const Integer r, const Integer slope);
 	
@@ -225,7 +236,9 @@ namespace DGtal
        * passing through P and the vertical line x = n.
        * The intersection point is of the form P + \alpha*v and the
        * function returns the value floor(alpha).
-       * @param Point P, Vector v and Integer n
+       * @param Point P
+       * @param Vector v
+       * @param Integer n
        * @return an integer
        */
       Integer intersectionVertical(Point P, Vector v, Integer n);
@@ -236,8 +249,10 @@ namespace DGtal
        * passing through P and the line y = (aL[1]/aL[0])*x +r 
        * The intersection point is of the form P + \alpha*v and the
        * function returns the value floor(alpha).
-       * @param Point P, Vector v, Vector aL defining the slope of the
-       * line, Integer r 
+       * @param Point P 
+       * @param Vector V
+       * @param Vector aL 
+       * @param Integer r
        * @return an integer
        */
       Integer intersection(Point P, Vector v, Vector aL, Integer r);
@@ -247,7 +262,9 @@ namespace DGtal
        * passing through P and the line y = s*x 
        * The intersection point is of the form P + \alpha*v and the
        * function returns the value floor(alpha).
-       * @param Point P, Vector v, Number s
+       * @param Point P
+       * @param Vector v
+       * @param Number s
        * @return an integer
        */
       Integer intersection(Point P, Vector v, Number s);
@@ -318,7 +335,7 @@ namespace DGtal
        * Compute the term following fp/fq in the Farey series of order n. 
        *
        */
-
+      
       Point nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n);
       
 
