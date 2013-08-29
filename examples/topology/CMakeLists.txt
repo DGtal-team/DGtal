@@ -18,7 +18,7 @@ ENDFOREACH(FILE)
 
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
-#     homotopicThinning3D
+     homotopicThinning3D
      3dBorderExtraction
      3dBorderExtractionImg
      ctopo-1-3d
