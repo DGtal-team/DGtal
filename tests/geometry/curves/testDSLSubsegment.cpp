@@ -42,6 +42,7 @@
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/geometry/curves/ArithDSSIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/base/Clock.h"
 
 using namespace std;
 using namespace DGtal;
@@ -84,7 +85,9 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
   clock_t timeBeginSmartDSS, timeEndSmartDSS;
   clock_t timeBeginReversedSmartDSS, timeEndReversedSmartDSS;
   
-  
+  double t;
+  Clock c;
+
   int nb = 0; int nbLocRay = 0;
   int nberrors = 0;
   for ( unsigned int i = 0; i < nbtries; ++i )

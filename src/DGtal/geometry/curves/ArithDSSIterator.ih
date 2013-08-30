@@ -90,13 +90,6 @@ typename DGtal::ArithDSSIterator<TInteger,c>::reference DGtal::ArithDSSIterator<
   return myP;
 }
 
-template<typename TInteger, int c>
-inline
-typename DGtal::ArithDSSIterator<TInteger,c>::pointer DGtal::ArithDSSIterator<TInteger,c>::operator->() const
-{
-  return &myP;
-}
-
 
 template<typename TInteger, int c>
 inline
