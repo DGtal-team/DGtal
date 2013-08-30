@@ -50,14 +50,6 @@ bool checkSubStandardDSLQ0( const DSL & D,
                             const typename DSL::Point & A, 
                             const typename DSL::Point & B ) 
 {
-  // typedef typename DSL::Fraction Fraction;
-  // typedef typename DSL::Integer Integer;
-  // typedef typename DSL::Quotient Quotient;
-  // typedef typename DSL::Point Point;
-  // typedef typename DSL::ConstIterator ConstIterator;
-  // typedef typename DSL::Point2I Point2I;
-  // typedef typename DSL::Vector2I Vector2I;
-
   
   
   DSL S = D.smartDSS( A, B );

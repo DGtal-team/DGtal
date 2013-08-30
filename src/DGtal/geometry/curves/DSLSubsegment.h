@@ -59,7 +59,9 @@ namespace DGtal
  * subsegment [AB] in logarithmic time. Two algorithms are implemented:
  * one is based on the local computation of lower and upper convex
  * hulls, the other is based on a dual transformation and uses the Farey
- * fan.     
+ * fan.
+ * @tparam TInteger is the type of integer used
+ * @tparam TNumber is the type of number used to represent the input DSL characteristics.
  */
 
 
@@ -69,8 +71,6 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
   
-//  TInteger is the type of integer used, TNumber is the type of number
-//  used to represent the input DSL parameters
   template <typename TInteger, typename TNumber>
     class DSLSubsegment
   {
@@ -97,17 +97,47 @@ namespace DGtal
        */
       bool isValid() const;
       
-      
+      /**
+       * Number types
+       */
       typedef TNumber Number;
       typedef TInteger Integer;
-      typedef long double FloatType;
+      typedef long double LongDoubleType;
+      
+      
+      /** 
+       * A ray is defined as a 2D integer vector (x,y) such that
+       * Ray(x,y) is the straight line beta = -x alpha +y  in the (alpha,beta)-space.
+       */
       typedef DGtal::PointVector<2,Integer> Ray;
+      
+      /** 
+       * 2D integer point
+       */
       typedef DGtal::PointVector<2,Integer> Point;
+      
+      /** 
+       * 2D real point
+       */
       typedef DGtal::PointVector<2,Number> PointF;
 
+      /** 
+       * 2D integer vector
+       */
       typedef DGtal::PointVector<2,Integer> Vector;
+      
+      /**
+       * 2D real vector 
+       */
       typedef DGtal::PointVector<2,Number> VectorF;
       
+      /** 
+       * Check that Number type verifies the Euclidean Rign concept and
+       * Integer type verifies the Integer concept 
+       */
+      BOOST_CONCEPT_ASSERT((CEuclideanRing<Number>));
+      BOOST_CONCEPT_ASSERT((CInteger<Integer>));
+
   protected:
       /**
        * The minimal characteristics of the subsegment AB of the
@@ -118,19 +148,22 @@ namespace DGtal
       
       /**
        * The minimal characteristics of the subsegment AB of the
-       * DSL(a,b,mu) are (aa,bb,nu).
+       * DSL(a,b,mu) are (myA,myB,myMu).
        *
        */
       Integer myB;
       
       /**
        * The minimal characteristics of the subsegment AB of the
-       * DSL(a,b,mu) are (aa,bb,nu).
+       * DSL(a,b,mu) are (myA,myB,myMu).
        *
        */
       Integer myMu;
       
-      
+      /** 
+       * Precision used for floating-point geometrical predicates (when
+       * TNumber is not an integer type)
+       */
       Number myPrecision;
       
   public:
@@ -166,15 +199,25 @@ namespace DGtal
        
   protected: 
       /**
-	 Function called by the constructor when the input parameters
-	 are integers and the Farey Fan algorithm is used.
+       * Function called by the constructor when the input parameters
+       * are integers and the Farey Fan algorithm is used.
+       * @param Number a
+       * @param Number b
+       * @param Number mu
+       * @param Point A
+       * @param Point B  
       */
       void DSLSubsegmentFareyFan(Number a, Number b, Number mu, Point A, Point B);
       
       /**
-	 Function called by the constructor when the input parameters
-	 are integers and the local convex hull algorithm is used.
-      */
+       * Function called by the constructor when the input parameters
+       * are integers and the local convex hull algorithm is used.
+       * @param Number a
+       * @param Number b
+       * @param Number mu
+       * @param Point A
+       * @param Point B
+       */
       void DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point A, Point B);
       
       
@@ -185,11 +228,21 @@ namespace DGtal
       DSLSubsegment();
       
       
- 
+      /** 
+       * Class Ray Implements the concept of Ray in the dual space (alpha,beta)
+       */
       class RayC
       {
       public :
+	
+	/** 
+	 * slope of the ray
+	 */
 	Integer x;
+	
+	/** 
+	 * intercept of the ray
+	 */
 	Integer y;
 	
 	/**
@@ -219,16 +272,15 @@ namespace DGtal
 	
       };
       
-      
+      /** 
+       * Position of a point wrt a ray
+       */
       typedef enum Position
       {
 	ABOVE,
 	BELOW,
 	ONTO
       } Position;
-      
-      
-      Integer min (Integer a, Integer b);
       
       
       /**
@@ -272,7 +324,7 @@ namespace DGtal
       /**
        * Update the Bezout vector v according to the new point A in the
        * case of integer parameters
-       * 
+       * @param Vector u for which 
        */
       void update(Vector u, Point A, Vector l, Integer r, Vector *v);
       
@@ -345,52 +397,107 @@ namespace DGtal
        * slope and the order of the Farey fan
        * 
        */
-       RayC rayOfHighestSlope(Integer p, Integer q, Integer r, Integer smallestSlope, Integer n);
+      RayC rayOfHighestSlope(Integer p, Integer q, Integer r, Integer smallestSlope, Integer n);
       
-       /**
-	* Compute the ceil of the slope of the line through (f=p/q,r/q)
-	* and point (a/b,mu/b) -  O(1)
-	*
-	*/
-       Number slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu);
-       
-       /**
-	* Compute the ceil of the slope of the line through (f=p/q,r/q)
-	* and floating-point point (alpha,beta) -  O(1)
-	*
-	*/
-       Number slope(Integer p, Integer q, Integer r, Number alpha, Number beta);
-       
+      /**
+       * Compute the ceil of the slope of the line through (f=p/q,r/q)
+       * and point (a/b,mu/b) -  O(1)
+       *
+       */
+      Number slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu);
       
-       /**
-	* Compute the position of the point (a/b,mu/b) with respect to a
-	* ray r
-	* Return BELOW, ABOVE or ONTO
-	*/
-       Position positionWrtRay(RayC r, Number a, Number b, Number mu);
-       
-       	       
-       /**
-	* Compute the position of the floating-point point(alpha,beta) with respect to a
-	* ray r
-	* Return BELOW, ABOVE or ONTO
-	*/
-       Position positionWrtRay(RayC r, Number alpha, Number beta);
-       
-       /**
-	* Computes the ray of smallest slope emanating from the point (f=p/q,
-	* r/q) using the knowledge of the next fraction g in the Farey Series.
-	* Complexity O(1)
-	*
-	*/ 
+      /**
+       * Compute the ceil of the slope of the line through (f=p/q,r/q)
+       * and floating-point point (alpha,beta) -  O(1)
+       *
+       */
+      Number slope(Integer p, Integer q, Integer r, Number alpha, Number beta);
+      
+      
+      /**
+       * Compute the position of the point (a/b,mu/b) with respect to a
+       * ray r
+       * Return BELOW, ABOVE or ONTO
+       */
+      Position positionWrtRay(RayC r, Number a, Number b, Number mu);
+      
+      
+      /**
+       * Compute the position of the floating-point point(alpha,beta) with respect to a
+       * ray r
+       * Return BELOW, ABOVE or ONTO
+       */
+      Position positionWrtRay(RayC r, Number alpha, Number beta);
+      
+      /**
+       * Computes the ray of smallest slope emanating from the point (f=p/q,
+       * r/q) using the knowledge of the next fraction g in the Farey Series.
+       * Complexity O(1)
+       *
+       */ 
       RayC smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r); 
       
-      
+     
       /** 
-       * 
+       * Performs a dichotomy among the rays of smallest slope passing
+       * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
+       * the point lambda(a/b,mu/b) in the ladder. Implements line 3 of
+       * Algorithm 1 in [Sivignon, DGCI 2013]. Return an integer h such
+       * that either i) lambda is in between the rays passing through
+       * the point (fp/fq,h/fq) and flagRayFound is set to false or ii)
+       * lambda is below all the rays passing through the point
+       * (fp/fq,h+1/fq) and above all the rays passing through the point
+       * (fp/fq,h/fq) and flagRayFound is set to false. In case i),
+       * function localizeRay is used afterwards to localize lambda in
+       * between the rays. In case ii), the
+       * ray under lambda has been found and no further search is
+       * needed. The Number type must verify the CInteger concept
+       * (otherwise, see overloaded function). 
+       * @param integer fp, numerator of the smallest fraction of the ladder
+       * @param integer fq, denominator of the smallest fraction of the
+       * ladder
+       * @param integer gp, numerator of the greatest fraction of the
+       * ladder
+       * @param integer gq, denominator of the greatest fraction of the
+       * ladder
+       * @param number a
+       * @param number b
+       * @param number mu
+       * @param integer n, order of the Farey Fan
+       * @param pointer on a boolean, used to check whether localizeRay
+       * should be called ot not
+       * @return an integer 
        */
       Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number a, Number b, Number mu, Integer n, bool *flagRayFound);
       
+      /**  
+       * Performs a dichotomy among the rays of smallest slope passing
+       * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
+       * the point lambda(alpha,beta) in the ladder. Implements line 3 of
+       * Algorithm 1 in [Sivignon, DGCI 2013]. Return an integer h such
+       * that either i) lambda is in between the rays passing through
+       * the point (fp/fq,h/fq) and flagRayFound is set to false or ii)
+       * lambda is below all the rays passing through the point
+       * (fp/fq,h+1/fq) and above all the rays passing through the point
+       * (fp/fq,h/fq) and flagRayFound is set to false. In case i),
+       * function localizeRay is used afterwards to localize lambda in
+       * between the rays. In case ii), the
+       * ray under lambda has been found and no further search is
+       * needed. 
+       * @param integer fp, numerator of the smallest fraction of the ladder
+       * @param integer fq, denominator of the smallest fraction of the
+       * ladder
+       * @param integer gp, numerator of the greatest fraction of the
+       * ladder
+       * @param integer gq, denominator of the greatest fraction of the
+       * ladder
+       * @param number alpha
+       * @param number beta
+       * @param integer n, order of the Farey Fan
+       * @param pointer on a boolean, used to check whether localizeRay
+       * should be called ot not
+       * @return an integer 
+       */
       Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number alpha, Number beta, Integer n, bool *flagRayFound);
       
       
@@ -399,8 +506,19 @@ namespace DGtal
        * Compute the closest ray below the point (a/b,mu/b) passing
        * through the point (fp/fq,r/fq) in the Farey fan of order n
        *
+       * @param integer fp, numerator of the smallest fraction of the ladder
+       * @param integer fq, denominator of the smallest fraction of the
+       * ladder
+       * @param integer gp, numerator of the greatest fraction of the
+       * ladder
+       * @param integer gq, denominator of the greatest fraction of the
+       * ladder
+       * @param number a
+       * @param number b
+       * @param number mu
+       * @param integer n, order of the Farey Fan
+       * @return a ray
        */
-
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n);
 
       
@@ -408,18 +526,33 @@ namespace DGtal
        * Compute the closest ray below the point (alpha,beta) passing
        * through the point (fp/fq,r/fq) in the Farey fan of order n
        *
+       * @param integer fp, numerator of the smallest fraction of the ladder
+       * @param integer fq, denominator of the smallest fraction of the
+       * ladder
+       * @param integer gp, numerator of the greatest fraction of the
+       * ladder
+       * @param integer gq, denominator of the greatest fraction of the
+       * ladder
+       * @param number alpha
+       * @param number beta
+       * @param integer n, order of the Farey Fan
+       * @return Ray
        */
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number alpha, Number beta, Integer n);
       
       
       /**
-       * Compute the ray passing through from (f=p/q,h/q) just above r
+       * Compute the ray passing through from (f=fp/fq,h/fq) just above
+       * r. The knowledge of h is not necessary.
        * Complexity O(1)
+       * 
+       * @param integer fp
+       * @param integer fq
        */
       
       RayC raySup(Integer fp, Integer fq, RayC r);
       
-  
+      
       /**
        * The two fractions f and g together with the ray r define a segment
        *  PQ. PQ is part of the lower boundary of exactly one cell of the
@@ -431,15 +564,50 @@ namespace DGtal
        *  discrete straight line subsegment" (Isabelle Sivignon, DGCI
        *  2013, Springer LNCS 7749)
        * Complexity of nextTermInFareySeriesEuclid
+       *
+       * @param integer fp, numerator of the smallest fraction of the ladder
+       * @param integer fq, denominator of the smallest fraction of the
+       * ladder
+       * @param integer gp, numerator of the greatest fraction of the
+       * ladder
+       * @param integer gq, denominator of the greatest fraction of the
+       * ladder
+       * @param a ray
+       * @param integer n, order of the Farey Fan
+       * @param Integer*  numerator of the x-coordinate of
+       * the result
+       * @param Integer*  denominator of the x- and y-
+       * coordinates of the result
+       * @param Integer* , numerator of the y-coordinate of
+       * the result
+       * @param Boolean found, used for optimization (true if r is the ray
+       * of smallest slope on point P, false otherwise). Its value comes
+       * from the smartFirstDichotomy function.
        */
       void findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
       
       /**
-       * Corresponds to the algorithm of paper "Walking in the Farey Fan
+       * Corresponds to the algorithm presented in "Walking in the Farey Fan
        * to compute the characteristics of  discrete straight line
        * subsegment" (Isabelle Sivignon, DGCI 2013, Springer LNCS 7749)
+       *
+       * @param integer fp, numerator of the smallest fraction of the ladder
+       * @param integer fq, denominator of the smallest fraction of the
+       * ladder
+       * @param integer gp, numerator of the greatest fraction of the
+       * ladder
+       * @param integer gq, denominator of the greatest fraction of the
+       * ladder
+       * @param a ray
+       * @param integer n, order of the Farey Fan
+       * @param Integer* numerator of the x-coordinate of
+       * the result
+       * @param Integer* denominator of the x- and y-
+       * coordinates of the result
+       * @param Integer* numerator of the y-coordinate of
+       * the result
        */
-      void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
+      void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP);  // resBetaQ = resAlphaQ  
       
       
       

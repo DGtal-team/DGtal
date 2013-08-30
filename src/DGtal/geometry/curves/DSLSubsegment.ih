@@ -69,16 +69,6 @@ DGtal::DSLSubsegment<TInteger,TNumber>::RayC::~RayC()
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::min (Integer a, Integer b)
-{
-  if(a<b)
-    return a;
-  else 
-    return b;
-}
-
-template <typename TInteger, typename TNumber>
-inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersectionVertical(Point P, Vector v, Integer n)
 {
   if(v[0] == 0)
@@ -90,7 +80,6 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 	val--;
       
       return val;
-      //return (Integer) floor((FloatType) (n-P[0])/v[0]);
     }
 } 
 
@@ -647,7 +636,7 @@ inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Number DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu)
 {
   BOOST_CONCEPT_ASSERT((CInteger<TNumber>));
-  return (Integer) ceil((FloatType) (r*b-mu*q)/(-p*b+a*q)); 
+  return (Integer) ceil((LongDoubleType) (r*b-mu*q)/(-p*b+a*q)); 
 }
 
 template <typename TInteger, typename TNumber>
@@ -1074,7 +1063,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found)  // resBetaQ = resAlphaQ  
+void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP)  // resBetaQ = resAlphaQ  
 {
   Point inf, sup , tmpsup, tmpinf;
   
@@ -1341,7 +1330,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
           
       Integer resAlphaP=0, resAlphaQ=0, resBetaP=0;
       findSolutionWithoutFractions(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
-      //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
+      //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP);
       
       
       myA = resAlphaP;
@@ -1594,7 +1583,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
   
   Integer resAlphaP=0, resAlphaQ=0, resBetaP=0;
   findSolutionWithoutFractions(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
-  //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
+  //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP);
   
   
   myA = resAlphaP;

@@ -63,66 +63,95 @@ namespace DGtal
       // ----------------------- Standard services ------------------------------
     public:
     
+    /**
+     * Self type. 
+     */
     typedef ArithDSSIterator Self;
+    
+    /** 
+     * Integer type. 
+     */
     typedef TInteger Integer;
+   
+    /**
+     * 2D integer point type.
+     */
     typedef PointVector<2,Integer> Point;     
     
-    typedef Point Value;
-    
-    // stl iterator types.
+    /**
+     * stl iterator types.
+     */
     typedef std::input_iterator_tag iterator_category;
     typedef Point value_type;
     typedef std::ptrdiff_t difference_type; 
     typedef const Point* pointer;
     typedef const Point& reference;
     
+    /** 
+     * Compute the remainder of a point wrt the DSS characteristics
+     * @param a point Q
+     * @return the remainder as an integer
+     */
     TInteger remainder(Point Q);
-
     
-    
+    /**
+     * Dereference operator.
+     * @return the current point of the DSS
+     */
     reference operator*() const;
-        
-    pointer operator->() const;
-   
+    
+    /**
+     * Increment operator.
+     * @return a reference to self where myP has been set up to the next point of the DSS
+     */
     Self& operator++();
-        
+    
+    /**
+     * Equality operator.
+     * @param other the object to compare with.
+     * @return 'true' if the first point and the DSS parameters match and 'false' otherwise
+     */
     bool operator==(const Self & other) const;
     
+    /** 
+     * Difference operator.
+     * @param other the object to compare with.
+     * @return 'false' if equal, 'true' otherwise
+     */
     bool operator!=(const Self & other) const;
     
     
     /**
-     * Constructor with initialisation of the DSS parameters and begin point
+     * Constructor with initialisation of the DSS parameters and begin point.
      * @param a an integer
      * @param b an integer
      * @param mu an integer
      * @param p a point
      */
-    
     ArithDSSIterator(const Integer a, const Integer b, const Integer mu, const Point & p);
         
-        /**
+    /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
     ArithDSSIterator(){};
-
-
-
+    
+    
+    
     /**
      * Destructor.
      */
     ~ArithDSSIterator(){};
-
+    
     // ----------------------- Interface --------------------------------------
-public:
-
+    public:
+    
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-
+    
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -135,11 +164,26 @@ public:
     // ------------------------- Private Datas --------------------------------
     private:
     
+    /**
+     * y-component of the direction vector
+     */
     Integer myA;
+    
+    /** 
+     * x-component of the direction vector
+     */
     Integer myB;
+    
+    /** 
+     * Intercept
+     */
     Integer myMu;
+    
+    /**
+     * Current point of the DSS visited by the iterator
+     */
     Point myP;
-
+    
     // ------------------------- Hidden services ------------------------------
 protected:
 
@@ -152,15 +196,13 @@ public:
      * Forbidden by default.
      */
     ArithDSSIterator ( const ArithDSSIterator & other );
-
+    
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    //ArithDSSIterator & operator= ( const ArithDSSIterator & other );
-
     
     Self& operator=(const Self & other);
     
