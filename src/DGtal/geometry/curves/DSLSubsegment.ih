@@ -195,14 +195,15 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Intege
        int i=0;
        bool ok = true;
        Integer alpha1, alpha2, alpha;
-       
+       DGtal::IntegerComputer<Integer> ic;
+
        while(ok)
 	 {
 	   if(i%2==0)
 	     {
 	       alpha1 = intersection(A,B,l,0);
 	       alpha2 = intersectionVertical(A,B,n);
-	       alpha = min(alpha1,alpha2); 
+	       alpha = ic.min(alpha1,alpha2); 
 	       A = A + alpha*B;
 	       if(A[0]*l[1]-A[1]*l[0]==0 || alpha == alpha2)
 		 ok = false;
@@ -211,7 +212,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Intege
 	     {
 	       alpha1 = intersection(B,A,l,0);
 	       alpha2 = intersectionVertical(B,A,n);
-	       alpha = min(alpha1,alpha2);
+	       alpha = ic.min(alpha1,alpha2);
 	       B = B + alpha*A;
 	       if(B[0]*l[1]-B[1]*l[0]==0 || alpha == alpha2)
 		 ok = false;
@@ -267,7 +268,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 	bool ok = true;
 	bool found = false;
 	bool first = true;
-	
+	DGtal::IntegerComputer<TInteger> ic;
+
 	while(ok)
 	  {
 	    if(v[0]*normal[0]+v[1]*normal[1] ==0) // should never happen
@@ -278,7 +280,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 	    else
 	      if(v[0]*normal[0]+v[1]*normal[1] < 0)
 		{
-		  alpha = min(intersection(A,v,l,r), intersectionVertical(A,v,n));
+		  alpha = ic.min(intersection(A,v,l,r), intersectionVertical(A,v,n));
 		  
 		  if(alpha >= 1 || first)
 		    {
@@ -296,7 +298,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 	      else
 		if(v[0]*normal[0]+v[1]*normal[1] > 0)
 		  {
-		    alpha = min(intersection(B,v,l,r),intersectionVertical(B,v,n));
+		    alpha = ic.min(intersection(B,v,l,r),intersectionVertical(B,v,n));
 		    if(alpha >= 1)
 		      {
 			Vector vv = v;
@@ -357,12 +359,14 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
   
   bool ok = true;
   bool first = true;
+  DGtal::IntegerComputer<Integer> ic;
+  
   while(ok)
     {
       
       if(v[0]*normal[0]+v[1]*normal[1]< 0)
 	{
-	  alpha = min(intersection(A,v,l,r), intersectionVertical(A,v,n));
+	  alpha = ic.min(intersection(A,v,l,r), intersectionVertical(A,v,n));
 	  
 	  if(alpha >= 1 || first)
 	    {
@@ -389,7 +393,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
       else
 	if(v[0]*normal[0]+v[1]*normal[1]> 0)
 	      {
-		alpha = min(intersection(B,v,l,r),intersectionVertical(B,v,n));
+		alpha = ic.min(intersection(B,v,l,r),intersectionVertical(B,v,n));
 		if(alpha >= 1)
 		  {
 		    Bold = B;
@@ -526,7 +530,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
       else
 	if(v[0]*normal[0]+v[1]*normal[1] < 0)
 	  {
-	    alpha = min(intersection(A,v,s), intersectionVertical(A,v,n));
+	    alpha = ic.min(intersection(A,v,s), intersectionVertical(A,v,n));
 	    if(alpha >= 1)
 	      {
 		Vector vv  = v;
@@ -551,7 +555,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
       else
 	if(v[0]*normal[0]+v[1]*normal[1] > 0)
 	  {
-	    alpha = min(intersection(B,v,s),intersectionVertical(B,v,n));
+	    alpha = ic.min(intersection(B,v,s),intersectionVertical(B,v,n));
 	    if(alpha >= 1)
 	      {
 		Vector vv = v;
