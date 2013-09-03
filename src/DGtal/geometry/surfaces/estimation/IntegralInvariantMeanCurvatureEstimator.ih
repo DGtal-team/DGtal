@@ -101,7 +101,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::ini
     /// Full Kernel computation
     GaussDigitizer< Z2i::Space, KernelSupport > digKernel;
     digKernel.attach( kernel );
-    digKernel.init( kernel.getLowerBound() - Domain::Point( 1, 1 ), kernel.getUpperBound() + Domain::Point( 1, 1 ), h );
+    digKernel.init( kernel.getLowerBound() - RealPoint( h, h ), kernel.getUpperBound() + RealPoint( h, h ), h );
 
     Domain domainKernel = digKernel.getDomain();
     DigitalSet setKernel( domainKernel );
@@ -201,7 +201,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::ini
     /// Full Kernel computation
     GaussDigitizer< Z3i::Space, KernelSupport > digKernel;
     digKernel.attach( kernel );
-    digKernel.init( kernel.getLowerBound() - Domain::Point( 1, 1, 1 ), kernel.getUpperBound() + Domain::Point( 1, 1, 1 ), h );
+    digKernel.init( kernel.getLowerBound() - RealPoint( h, h, h ), kernel.getUpperBound() + RealPoint( h, h, h ), h );
 
     Domain domainKernel = digKernel.getDomain();
     DigitalSet setKernel( domainKernel );

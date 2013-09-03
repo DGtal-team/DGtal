@@ -641,9 +641,9 @@ void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  Shape & shape,
-  const double h,
-  OutputIterator & result )
+  OutputIterator & result,
+  const Shape & shape,
+  const double h )
 {
     ASSERT ( isInitMask == true );
 
@@ -1333,6 +1333,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     if( shape.orientation( low ) == shape.orientation( high ) )
     {
         std::cout <<  "On the same orientation "<< low << " " << high << std::endl;
+        std::cout << shape.orientation( low ) << std::endl;
     }
 
     RealPoint test;

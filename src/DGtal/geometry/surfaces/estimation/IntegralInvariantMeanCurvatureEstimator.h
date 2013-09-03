@@ -50,8 +50,7 @@
 #include "DGtal/geometry/surfaces/DigitalSurfaceConvolver.h"
 #include "DGtal/shapes/EuclideanShapesDecorator.h"
 
-#include "DGtal/shapes/parametric/Ball2D.h"
-#include "DGtal/shapes/parametric/Ball3D.h"
+#include "DGtal/shapes/implicit/ImplicitBall.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -103,9 +102,9 @@ public:
   typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
   typedef typename Convolver::PairIterators PairIterators;
 
-  typedef Ball3D<Z3i::Space> KernelSupport;
+  typedef ImplicitBall<Z3i::Space> KernelSupport;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 public:
@@ -250,9 +249,9 @@ public:
   typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
   typedef typename Convolver::PairIterators PairIterators;
 
-  typedef Ball2D<Z2i::Space> KernelSupport;
+  typedef ImplicitBall<Z2i::Space> KernelSupport;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 public:
@@ -402,9 +401,9 @@ public:
   typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
   typedef typename Convolver::PairIterators PairIterators;
 
-  typedef Ball3D<Z3i::Space> KernelSupport;
+  typedef ImplicitBall<Z3i::Space> KernelSupport;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+//  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 public:

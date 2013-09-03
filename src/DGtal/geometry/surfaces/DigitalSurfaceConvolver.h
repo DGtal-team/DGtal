@@ -360,9 +360,9 @@ public:
     template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                Shape & shape,
-                const double h,
-                OutputIterator & result );
+                OutputIterator & result,
+                const Shape & shape,
+                const double h );
 
     /**
        * Iterate the convolver between [itbegin, itend[.

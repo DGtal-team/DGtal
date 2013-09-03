@@ -99,7 +99,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
     /// Full Kernel computation
     GaussDigitizer< Z2i::Space, KernelSupport > digKernel;
     digKernel.attach( kernel );
-    digKernel.init( kernel.getLowerBound() - Domain::Point( 1, 1 ), kernel.getUpperBound() + Domain::Point( 1, 1 ), h );
+    digKernel.init( kernel.getLowerBound() - RealPoint( h, h ), kernel.getUpperBound() + RealPoint( h, h ), h );
 
     Domain domainKernel = digKernel.getDomain();
     DigitalSet setKernel( domainKernel );
@@ -201,7 +201,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
     /// Full Kernel computation
     GaussDigitizer< Z3i::Space, KernelSupport > digKernel;
     digKernel.attach( kernel );
-    digKernel.init( kernel.getLowerBound() - Domain::Point( 1, 1, 1 ), kernel.getUpperBound() + Domain::Point( 1, 1, 1 ), h );
+    digKernel.init( kernel.getLowerBound() - RealPoint( h, h, h ), kernel.getUpperBound() + RealPoint( h, h, h ), h );
 
     Domain domainKernel = digKernel.getDomain();
     DigitalSet setKernel( domainKernel );
@@ -417,7 +417,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
 {
     std::vector< Quantity > quantities;
     std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
-    myConvolver.eval ( itb, ite, shape, h, quantitiesIterator );
+    myConvolver.eval ( itb, ite, quantitiesIterator, shape, h );
 
     Quantity measure;
 
