@@ -3,7 +3,9 @@ SET(TESTS_SURFACES_SRC
  testNormalVectorEstimatorEmbedder
  testIntegralInvariantCurvatureEstimator2D
  testIntegralInvariantMeanCurvatureEstimator3D
+# testIntegralInvariantMeanCurvatureEstimator3D_multithread
  testIntegralInvariantGaussianCurvatureEstimator3D
+ testNewtonMethod
  testLocalEstimatorFromFunctorAdapter
 )
 
@@ -19,6 +21,8 @@ if (  WITH_VISU3D_QGLVIEWER )
 
 SET(QGLVIEWER_TESTS_SRC
   testLocalConvolutionNormalVectorEstimator
+  testII
+  testII_0memory
   )
 
    FOREACH(FILE ${QGLVIEWER_TESTS_SRC})
