@@ -1691,11 +1691,11 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::defaultInnerMoments[ nbMoments ] = {Quantity(0)};
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::defaultInnerMoments[ 6 ] = {Quantity(0)};
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::defaultOuterMoments[ nbMoments ] = {Quantity(0)};
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::defaultOuterMoments[ 6 ] = {Quantity(0)};
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::Quantity
@@ -3971,11 +3971,11 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::defaultInnerMoments[ nbMoments ] = {Quantity(0)};
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::defaultInnerMoments[ 10 ] = {Quantity(0)};
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::defaultOuterMoments[ nbMoments ] = {Quantity(0)};
+DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::defaultOuterMoments[ 10 ] = {Quantity(0)};
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::Quantity
