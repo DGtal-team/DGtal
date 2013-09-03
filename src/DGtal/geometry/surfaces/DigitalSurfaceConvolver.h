@@ -672,7 +672,7 @@ protected:
     template< typename Shape >
     double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
 
-    static const DGtal::Dimension nbMoments;
+    static const int nbMoments;
     static Spel defaultInnerSpel;
     static Spel defaultOuterSpel;
     static Quantity defaultInnerMoments[ nbMoments ];

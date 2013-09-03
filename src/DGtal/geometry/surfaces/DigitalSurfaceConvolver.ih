@@ -3594,7 +3594,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
-const DGtal::Dimension
+const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::nbMoments = 10;
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >

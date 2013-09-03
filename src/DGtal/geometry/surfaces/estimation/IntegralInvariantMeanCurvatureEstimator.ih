@@ -115,7 +115,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::ini
     }
 
     int count = 0;
-    for( typename DigitalSet::ConstIterator it = setKernel.begin(), itend = setKernel.end();
+    for( auto it = setKernel.begin(), itend = setKernel.end();
          it != itend;
          ++it )
     {
@@ -154,7 +154,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::ini
                 Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
 
                 int count2 = 0;
-                for( typename DigitalSet::ConstIterator it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                      it != itend;
                      ++it )
                 {
@@ -215,7 +215,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::ini
     }
 
     int count = 0;
-    for( typename DigitalSet::ConstIterator it = setKernel.begin(), itend = setKernel.end();
+    for( auto it = setKernel.begin(), itend = setKernel.end();
          it != itend;
          ++it )
     {
@@ -254,7 +254,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::ini
                     Shapes< Domain>::digitalShaper ( setCurrentKernel, digCurrentKernel );
 
                     int count2 = 0;
-                    for( typename DigitalSet::ConstIterator it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                    for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                          it != itend;
                          ++it )
                     {
@@ -385,12 +385,12 @@ inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eval( const ConstIteratorOnCells & itb,
                                                                                    const ConstIteratorOnCells & ite,
-                                                                                   Shape & shape,
-                                                                                   OutputIterator & result )
+                                                                                   OutputIterator & result,
+                                                                                   const Shape & shape )
 {
     std::vector< Quantity > quantities;
     std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
-    myConvolver.eval ( itb, ite, shape, h, quantitiesIterator );
+    myConvolver.eval ( itb, ite, quantitiesIterator, h, shape  );
 
     Quantity measure;
 

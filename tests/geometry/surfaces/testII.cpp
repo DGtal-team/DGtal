@@ -47,7 +47,7 @@
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 
 #include "DGtal/io/boards/Board2D.h"
-
+#include "DGtal/shapes/DigitalShapesDecorator.h"
 
 #include <QtGui/QApplication>
 #include "DGtal/helpers/StdDefs.h"
@@ -65,6 +65,9 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+
+//#define EUCLIDEAN
+#define EXPORT
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -123,6 +126,773 @@ protected:
     double step;
     const Shape* shape;
 };
+
+template < typename TSpace, typename Point >
+typename TSpace::RealPoint RegularPointEmbedder_( const Point & p, const double & h )
+{
+    typedef typename TSpace::Integer Integer;
+    typename TSpace::RealPoint aRealPoint;
+    for ( Dimension i = 0; i < TSpace::dimension; ++i )
+        aRealPoint[ i ] = NumberTraits<Integer>::castToDouble( p[ i ] ) * h;
+    return aRealPoint;
+}
+
+bool testII2D_kernels()
+{
+    typedef ImplicitBall< Z2i::Space > ShapeA;
+    typedef ImplicitBall< Z2i::Space > ShapeB;
+    typedef ImplicitBall< Z2i::Space > ShapeC;
+    typedef GaussDigitizer< Z2i::Space, ShapeA > DigitalShapeA;
+    typedef GaussDigitizer< Z2i::Space, ShapeB > DigitalShapeB;
+    typedef GaussDigitizer< Z2i::Space, ShapeC > DigitalShapeC;
+    typedef EuclideanShapesMinus< ShapeA, ShapeB > EuclideanMinusShapeAB;
+    typedef EuclideanShapesMinus< ShapeB, ShapeC > EuclideanMinusShapeBC;
+    typedef DigitalShapesMinus< DigitalShapeA, DigitalShapeB > DigitalDigitalMinusShapeAB;
+    typedef DigitalShapesMinus< DigitalShapeB, DigitalShapeC > DigitalDigitalMinusShapeBC;
+    typedef GaussDigitizer< Z2i::Space, EuclideanMinusShapeAB > DigitalEuclideanMinusShapeAB;
+    typedef GaussDigitizer< Z2i::Space, EuclideanMinusShapeBC > DigitalEuclideanMinusShapeBC;
+    typedef typename Z2i::DigitalSet DigitalSetA;
+    typedef typename Z2i::DigitalSet DigitalSetB;
+    typedef typename Z2i::DigitalSet DigitalSetC;
+    typedef typename Z2i::DigitalSet DigitalSetDigitalMinusAB;
+    typedef typename Z2i::DigitalSet DigitalSetDigitalMinusBC;
+    typedef typename Z2i::DigitalSet DigitalSetEuclideanMinusAB;
+    typedef typename Z2i::DigitalSet DigitalSetEuclideanMinusBC;
+
+    typedef typename Z2i::Space Space;
+    typedef typename Z2i::Domain Domain;
+    typedef typename Domain::Point Point;
+    typedef typename Space::RealPoint RealPoint;
+
+    double radius = 5.0;
+    double h = 0.1;
+
+    Point pOrigin( 0, 0 );
+
+    RealPoint rOriginA( 0, 0 );
+    Point pOriginA( 0, 0 );
+    ShapeA shapeA( rOriginA, radius );
+
+    RealPoint rOriginB( h, h );
+    Point pOriginB( 1, 1 );
+    ShapeA shapeB( rOriginB, radius );
+
+    RealPoint rOriginC( 2.0 * h, 2.0 * h );
+    Point pOriginC( 2, 2 );
+    ShapeC shapeC( rOriginC, radius );
+
+    //////// Euclidean
+
+    EuclideanMinusShapeAB euclideanMinusShapeAB( shapeA, shapeB );
+    EuclideanMinusShapeAB euclideanMinusShapeBC( shapeB, shapeC );
+
+    RealPoint rBug = RegularPointEmbedder_< Space, Point >( Point( -47, -13 ), h );
+    RealPoint rNormalInside1 = RegularPointEmbedder_< Space, Point >( Point( -47, -14 ), h );
+    RealPoint rNormalInside2 = RegularPointEmbedder_< Space, Point >( Point( -48, -13 ), h );
+
+    std::cout << " //////////// Euclidean " << std::endl;
+
+    std::cout << "Bug:(" << rBug << ") - shapeA.orientation:" << shapeA.orientation( rBug ) << " - shapeB.orientation:" << shapeB.orientation( rBug ) << " - minus.orientation:" << euclideanMinusShapeAB.orientation( rBug ) << std::endl;
+    std::cout << "Bug:(" << rNormalInside1 << ") - shapeA.orientation:" << shapeA.orientation( rNormalInside1 ) << " - shapeB.orientation:" << shapeB.orientation( rNormalInside1 ) << " - minus.orientation:" << euclideanMinusShapeAB.orientation( rNormalInside1 ) << std::endl;
+    std::cout << "Bug:(" << rNormalInside2 << ") - shapeA.orientation:" << shapeA.orientation( rNormalInside2 ) << " - shapeB.orientation:" << shapeB.orientation( rNormalInside2 ) << " - minus.orientation:" << euclideanMinusShapeAB.orientation( rNormalInside2 ) << std::endl;
+
+    //////// Digital
+
+    DigitalShapeA digitalShapeA;
+    digitalShapeA.attach( shapeA );
+    digitalShapeA.init( shapeA.getLowerBound(), shapeA.getUpperBound(), h );
+
+    DigitalShapeB digitalShapeB;
+    digitalShapeB.attach( shapeB );
+    digitalShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
+
+    DigitalShapeC digitalShapeC;
+    digitalShapeC.attach( shapeC );
+    digitalShapeC.init( shapeC.getLowerBound(), shapeC.getUpperBound(), h );
+
+    DigitalDigitalMinusShapeAB digitalDigitalMinusShapeAB( digitalShapeA, digitalShapeB );
+    DigitalDigitalMinusShapeBC digitalDigitalMinusShapeBC( digitalShapeB, digitalShapeC );
+
+    Point pBug( -47, -13 );
+    Point pNormalInside1( -47, -14 );
+    Point pNormalInside2( -48, -13 );
+
+    std::cout << " //////////// Digital " << std::endl;
+
+    std::cout << "Bug:(" << pBug << ") - digitalShapeA.orientation:" << digitalShapeA.orientation( pBug ) << " - digitalShapeB.orientation:" << digitalShapeB.orientation( pBug ) << " - minus.orientation:" << digitalDigitalMinusShapeAB.orientation( pBug ) << std::endl;
+    std::cout << "Bug:(" << pNormalInside1 << ") - digitalShapeA.orientation:" << digitalShapeA.orientation( pNormalInside1 ) << " - digitalShapeB.orientation:" << digitalShapeB.orientation( pNormalInside1 ) << " - minus.orientation:" << digitalDigitalMinusShapeAB.orientation( pNormalInside1 ) << std::endl;
+    std::cout << "Bug:(" << pNormalInside2 << ") - digitalShapeA.orientation:" << digitalShapeA.orientation( pNormalInside2 ) << " - digitalShapeB.orientation:" << digitalShapeB.orientation( pNormalInside2 ) << " - minus.orientation:" << digitalDigitalMinusShapeAB.orientation( pNormalInside2 ) << std::endl;
+
+    std::cout << "Hum ... " << shapeA.orientation( RealPoint( -5.0, 0.0 ) ) << " " << shapeB.orientation( RealPoint( -5.0+h, h ) ) << " " << shapeC.orientation( RealPoint( -5.0+2*h, 2*h ) ) << std::endl;
+    std::cout << "Hum ... " << digitalShapeA.orientation( Point( -50, 0 ) ) << " " << digitalShapeB.orientation( Point( -49, 1 ) ) << " " << digitalShapeC.orientation( Point( -48, 2 ) ) << std::endl;
+
+    std::cout << RegularPointEmbedder_<Space, Point>( Point( -48, 2 ), h ) << " instead of " << RealPoint( -5.0+2*h, 2*h ) << std::endl;
+    std::cout << RegularPointEmbedder_<Space, Point>( Point( -48, 2 ), h ) << " -> " << shapeC.orientation( RegularPointEmbedder_<Space, Point>( Point( -48, 2 ), h ) ) << std::endl;
+    std::cout << RealPoint( -5.0+2*h, 2*h ) << " -> " << shapeC.orientation( RealPoint( -5.0+2*h, 2*h ) ) << std::endl;
+
+#ifdef EXPORT
+    ///////// Export
+
+    Color white( 255, 255, 255, 255 );
+    Color black( 0, 0, 0, 255 );
+    Color red( 255, 0, 0, 255 );
+    Color green( 0, 255, 0, 255 );
+    Color blue( 0, 0, 255, 255 );
+    Color dwhite( 192, 192, 192, 255 );
+    Color dblack( 0, 0, 0, 255 );
+    Color dred( 192, 0, 0, 255 );
+    Color dgreen( 0, 192, 0, 255 );
+    Color dblue( 0, 0, 192, 255 );
+
+    DigitalSetA setA( digitalShapeA.getDomain() );
+    Shapes< Domain >::digitalShaper ( setA, digitalShapeA );
+
+    DigitalSetB setB( digitalShapeB.getDomain() );
+    Shapes< Domain >::digitalShaper ( setB, digitalShapeB );
+
+    DigitalSetB setC( digitalShapeC.getDomain() );
+    Shapes< Domain >::digitalShaper ( setC, digitalShapeC );
+
+    DigitalSetDigitalMinusAB setDigitalMinusAB( digitalShapeA.getDomain() );
+    Shapes< Domain >::digitalShaper ( setDigitalMinusAB, digitalDigitalMinusShapeAB );
+
+    DigitalSetDigitalMinusBC setDigitalMinusBC( digitalShapeB.getDomain() );
+    Shapes< Domain >::digitalShaper ( setDigitalMinusBC, digitalDigitalMinusShapeBC );
+
+    DigitalEuclideanMinusShapeAB digitalEuclideanMinusShapeAB;
+    digitalEuclideanMinusShapeAB.attach( euclideanMinusShapeAB );
+    digitalEuclideanMinusShapeAB.init( digitalShapeA.getLowerBound(), digitalShapeB.getUpperBound(), h );
+    DigitalSetEuclideanMinusAB setEuclideanMinusAB( digitalShapeA.getDomain() );
+    Shapes< Domain >::digitalShaper ( setEuclideanMinusAB, digitalEuclideanMinusShapeAB );
+
+    DigitalEuclideanMinusShapeBC digitalEuclideanMinusShapeBC;
+    digitalEuclideanMinusShapeBC.attach( euclideanMinusShapeBC );
+    digitalEuclideanMinusShapeBC.init( digitalShapeB.getLowerBound(), digitalShapeC.getUpperBound(), h );
+    DigitalSetEuclideanMinusBC setEuclideanMinusBC( digitalShapeB.getDomain() );
+    Shapes< Domain >::digitalShaper ( setEuclideanMinusBC, digitalEuclideanMinusShapeBC );
+
+    Board2D board;
+    board << SetMode( digitalShapeA.getDomain().className(), "Grid" )
+          << digitalShapeA.getDomain();
+
+    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+          << pOrigin;
+
+    for( auto it = setA.begin(), itend = setA.end(); it != itend; ++it )
+    {
+        board << CustomStyle( pOrigin.className(), new CustomColors( black, dblack ) );
+        board << *it;
+    }
+
+    for( auto it = setB.begin(), itend = setB.end(); it != itend; ++it )
+    {
+        board << CustomStyle( pOrigin.className(), new CustomColors( white, dwhite ) );
+        board << *it;
+    }
+
+    for( auto it = setC.begin(), itend = setC.end(); it != itend; ++it )
+    {
+        board << CustomStyle( pOrigin.className(), new CustomColors( black, dblack ) );
+        board << *it;
+    }
+
+    board.saveSVG("testII_old_new.svg");
+
+    board.clear();
+    board << SetMode( digitalShapeA.getDomain().className(), "Grid" )
+          << digitalShapeA.getDomain();
+
+    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+          << pOrigin;
+
+    for( auto it = setEuclideanMinusAB.begin(), itend = setEuclideanMinusAB.end(); it != itend; ++it )
+    {
+        board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
+        board << *it;
+    }
+
+    board.saveSVG("testII_euclideanMinus_AB.svg");
+
+    board.clear();
+    board << SetMode( digitalShapeA.getDomain().className(), "Grid" )
+          << digitalShapeA.getDomain();
+
+    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+          << pOrigin;
+
+    for( auto it = setDigitalMinusAB.begin(), itend = setDigitalMinusAB.end(); it != itend; ++it )
+    {
+        board << CustomStyle( pOrigin.className(), new CustomColors( green, dgreen ) );
+        board << *it;
+    }
+
+    board.saveSVG("testII_digitalMinus_AB.svg");
+
+    board.clear();
+    board << SetMode( digitalShapeB.getDomain().className(), "Grid" )
+          << digitalShapeB.getDomain();
+
+    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+          << pOrigin;
+
+    for( auto it = setEuclideanMinusBC.begin(), itend = setEuclideanMinusBC.end(); it != itend; ++it )
+    {
+        board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
+        board << *it;
+    }
+
+    board.saveSVG("testII_euclideanMinus_BC.svg");
+
+    board.clear();
+    board << SetMode( digitalShapeB.getDomain().className(), "Grid" )
+          << digitalShapeB.getDomain();
+
+    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+          << pOrigin;
+
+    for( auto it = setDigitalMinusBC.begin(), itend = setDigitalMinusBC.end(); it != itend; ++it )
+    {
+        board << CustomStyle( pOrigin.className(), new CustomColors( green, dgreen ) );
+        board << *it;
+    }
+
+    board.saveSVG("testII_digitalMinus_BC.svg");
+
+
+    if( setEuclideanMinusAB.size() != setEuclideanMinusBC.size() )
+    {
+        trace.error() << " ------------------------------------------ " << std::endl;
+        trace.error() << " setEuclideanMinusAB != setEuclideanMinusBC " << std::endl;
+        trace.error() << " setEuclideanMinusAB = " << setEuclideanMinusAB.size() << std::endl;
+        trace.error() << " setEuclideanMinusBC = " << setEuclideanMinusBC.size() << std::endl;
+        trace.error() << " ------------------------------------------ " << std::endl;
+    }
+    if( setDigitalMinusAB.size() != setDigitalMinusBC.size() )
+    {
+        trace.error() << " -------------------------------------- " << std::endl;
+        trace.error() << " setDigitalMinusAB != setDigitalMinusBC " << std::endl;
+        trace.error() << " setDigitalMinusAB = " << setDigitalMinusAB.size() << std::endl;
+        trace.error() << " setDigitalMinusBC = " << setDigitalMinusBC.size() << std::endl;
+        trace.error() << " -------------------------------------- " << std::endl;
+    }
+
+#endif
+    return true;
+}
+
+bool testII2D_kernels_2()
+{
+    typedef Z2i::KSpace KSpace;
+    typedef typename Z2i::Domain Domain;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef ImplicitBall< Z2i::Space > KernelSupport;
+    typedef typename KSpace::SurfelSet SurfelSet;
+    typedef typename Z2i::DigitalSet DigitalSet;
+    typedef typename Domain::Point Point;
+
+
+    //////////////////////////////
+
+    double radius = 5.0;
+    double h = 0.1;
+    RealPoint rOrigin = RealPoint ( 0.0, 0.0 );
+    Point pOrigin = Point( 0, 0 );
+    KernelSupport kernel( rOrigin, radius );
+    KSpace KSpaceKernel;
+
+    std::vector< SurfelSet > kernels = std::vector< SurfelSet > ( 9 );
+    typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShape;
+
+#ifdef EUCLIDEAN
+    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > MinusShape;
+#else
+    typedef DigitalShapesMinus< DigitalShape, DigitalShape > MinusShape;
+#endif
+
+    DigitalShape digKernel;
+    digKernel.attach( kernel );
+    digKernel.init( kernel.getLowerBound() - Domain::Point( 1, 1 ), kernel.getUpperBound() + Domain::Point( 1, 1 ), h );
+
+    Domain domainKernel = digKernel.getDomain();
+    DigitalSet setKernel( domainKernel );
+    Shapes< Domain >::digitalShaper ( setKernel, digKernel );
+
+    bool space_ok = KSpaceKernel.init( domainKernel.lowerBound(), domainKernel.upperBound(), true );
+    if( !space_ok )
+    {
+        trace.error() << "Error in the Khalimsky space construction." << std::endl;
+        return false;
+    }
+
+    Color white( 255, 255, 255, 255 );
+    Color black( 0, 0, 0, 255 );
+    Color red( 255, 0, 0, 255 );
+    Color green( 0, 255, 0, 255 );
+    Color blue( 0, 0, 255, 255 );
+    Color dwhite( 192, 192, 192, 255 );
+    Color dblack( 0, 0, 0, 255 );
+    Color dred( 192, 0, 0, 255 );
+    Color dgreen( 0, 192, 0, 255 );
+    Color dblue( 0, 0, 192, 255 );
+
+    Board2D board;
+    board << SetMode( domainKernel.className(), "Grid" )
+          << domainKernel;
+
+    for( int y = -1; y <= 1; ++y )
+    {
+        for( int x = -1; x <= 1; ++x )
+        {
+            RealPoint shiftPoint = rOrigin + RealPoint( x * h, y * h );
+            KernelSupport kernelShifted( shiftPoint, radius );
+            DigitalShape digCurrentKernel;
+            digCurrentKernel.attach( kernelShifted );
+            digCurrentKernel.init( kernel.getLowerBound(), kernel.getUpperBound(), h );
+
+            DigitalSet setCurrentKernelB( domainKernel );
+            Shapes< Domain >::digitalShaper ( setCurrentKernelB, digCurrentKernel );
+
+            int offset = ( x + 1 ) + (( y + 1 ) * 3 );
+            if( offset == 4 ) // Full kernel
+            {
+
+                DigitalSet setCurrentKernel( domainKernel );
+                Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
+
+                board.clear();
+                board << SetMode( domainKernel.className(), "Grid" )
+                      << domainKernel;
+                board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+                      << pOrigin;
+                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                     it != itend;
+                     ++it  )
+                {
+                    //                                        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) - Point( 2, 2 ) + shiftNewSpel );
+                    board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
+                    board << *it;
+                }
+
+                if (setCurrentKernel.find(Point(-47,-13)) == setCurrentKernel.end())
+                    trace.error()<<" Absent - completA"<<std::endl;
+                else
+                    trace.error()<<" inside/on - completA"<<std::endl;
+
+
+                //                board.saveSVG("testII_decallage_old.svg");
+
+                int count2 = 0;
+                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                     it != itend;
+                     ++it )
+                {
+                    //                    board << *it;
+                    kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
+                    ++count2;
+                }
+                continue;
+            }
+            else
+            {
+#ifdef EUCLIDEAN
+                MinusShape current( kernel, kernelShifted );
+                GaussDigitizer< Z2i::Space, MinusShape > digCurrentKernel;
+                digCurrentKernel.attach( current );
+                digCurrentKernel.init( kernel.getLowerBound(), kernel.getUpperBound(), h );
+#else
+                MinusShape current( digKernel, digCurrentKernel );
+#endif
+
+                DigitalSet setCurrentKernel( domainKernel );
+#ifdef EUCLIDEAN
+                Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
+#else
+                Shapes< Domain >::digitalShaper ( setCurrentKernel, current );
+#endif
+
+                if( offset == 8 )
+                {
+
+                    if (setCurrentKernelB.find(Point(-47,-13)) == setCurrentKernelB.end())
+                        trace.error()<<" Absent - completB"<<std::endl;
+                    else
+                        trace.error()<<" inside/on - completB"<<std::endl;
+
+
+                    if (setCurrentKernel.find(Point(-47,-13)) == setCurrentKernel.end())
+                        trace.error()<<" Absent - completM"<<std::endl;
+                    else
+                        trace.error()<<" inside/on - completM"<<std::endl;
+
+
+#ifdef EUCLIDEAN
+                    RealPoint bug = RegularPointEmbedder_<Z2i::Space, Point>( Point(-47, -13), h);
+                    RealPoint notbug1 = RegularPointEmbedder_<Z2i::Space, Point>( Point(-47, -14), h);
+                    RealPoint notbug2 = RegularPointEmbedder_<Z2i::Space, Point>( Point(-48, -13), h);
+                    std::cout << "Bug point mask:" << current.orientation( bug ) << std::endl;
+                    std::cout << "Bug point kernel:" << kernel.orientation( bug ) << std::endl;
+                    std::cout << "Bug point kernelShifted:" << kernelShifted.orientation( bug ) << std::endl;
+                    std::cout << "Not Bug point1 mask:" << current.orientation( notbug1 ) << std::endl;
+                    std::cout << "Bug point1 kernel:" << kernel.orientation( notbug1 ) << std::endl;
+                    std::cout << "Bug point1 kernelShifted:" << kernelShifted.orientation( notbug1 ) << std::endl;
+                    std::cout << "Not Bug point2 mask:" << current.orientation( notbug2 ) << std::endl;
+                    std::cout << "Bug point2 kernel:" << kernel.orientation( notbug2 ) << std::endl;
+                    std::cout << "Bug point2 kernelShifted:" << kernelShifted.orientation( notbug2 ) << std::endl;
+
+#else
+                    Point bug(-47,-13);
+                    Point notbug1( -47, -14);
+                    Point notbug2( -48, -13);
+                    std::cout << "Bug point mask:" << current.orientation( bug ) << std::endl;
+                    std::cout << "Bug point kernel:" << digKernel.orientation( bug ) << std::endl;
+                    std::cout << "Bug point kernelShifted:" << digCurrentKernel.orientation( bug ) << std::endl;
+                    std::cout << "Not Bug point1 mask:" << current.orientation( notbug1 ) << std::endl;
+                    std::cout << "Bug point1 kernel:" << digKernel.orientation( notbug1 ) << std::endl;
+                    std::cout << "Bug point1 kernelShifted:" << digCurrentKernel.orientation( notbug1 ) << std::endl;
+                    std::cout << "Not Bug point2 mask:" << current.orientation( notbug2 ) << std::endl;
+                    std::cout << "Bug point2 kernel:" << digKernel.orientation( notbug2 ) << std::endl;
+                    std::cout << "Bug point2 kernelShifted:" << digCurrentKernel.orientation( notbug2 ) << std::endl;
+#endif
+
+
+                    //                                    if (setCurrentKernel.find(Point(-46,13)) == setCurrentKernel.end())
+                    //                                        trace.error()<<" Absent"<<std::endl;
+
+                    board.clear();
+                    board << SetMode( domainKernel.className(), "Grid" )
+                          << domainKernel;
+                    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+                          << pOrigin;
+                    for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                         it != itend;
+                         ++it  )
+                    {
+                        //                                        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) - Point( 2, 2 ) + shiftNewSpel );
+                        board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
+                        board << *it;
+                    }
+
+                    //                    board.saveSVG("testII_decallage_minus.svg");
+                }
+
+                int count2 = 0;
+                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                     it != itend;
+                     ++it )
+                {
+                    //                    board << *it;
+                    kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
+                    ++count2;
+                }
+
+                ASSERT(( count2 != 0 )); // Error when creating masks
+
+            }
+
+            //            std::stringstream ss;
+            //            ss << "test_kernel_" << offset << ".svg";
+            //            board.saveSVG(ss.str().c_str());
+        }
+    }
+
+    /// Part to substract from previous result.
+
+    //    typedef Z2i::KSpace::SCell Spel;
+    //    Spel shiftedSpel;
+
+    //    Point oldPos = Point( 1, 0 );
+    //    Point newPos = Point( 2, 1 );
+
+    //    Point shiftOldSpel = KSpaceKernel.sKCoords( KSpaceKernel.sSpel( oldPos ) ) - KSpaceKernel.sKCoords( KSpaceKernel.sSpel( pOrigin ) );
+    //    Point shiftNewSpel = KSpaceKernel.sKCoords( KSpaceKernel.sSpel( newPos ) ) - KSpaceKernel.sKCoords( KSpaceKernel.sSpel( pOrigin ) );
+    //    Point diffSpel = KSpaceKernel.sKCoords( KSpaceKernel.sSpel( newPos ) ) - KSpaceKernel.sKCoords( KSpaceKernel.sSpel( oldPos ) );
+
+    //    int x = diffSpel[ 0 ];
+    //    int y = diffSpel[ 1 ];
+
+    //    int offset = (( x / 2 ) + 1 ) + ((( y / 2 ) + 1 ) * 3 );
+    //    std::cout << offset << std::endl;
+
+    //    board.clear();
+    //    board << SetMode( domainKernel.className(), "Grid" )
+    //          << domainKernel;
+    //    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+    //          << pOrigin;
+
+    //    for( SurfelSet::const_iterator current = kernels[ 4 ].begin(), end = kernels[ 4 ].end(); current != end; ++current )
+    //    {
+    //        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) + shiftOldSpel );
+    //        board << CustomStyle( pOrigin.className(), new CustomColors( black, dblack ) );
+    //        board << KSpaceKernel.sCoords( shiftedSpel );
+    //    }
+    //    board.saveSVG("testII_decallage_full_old.svg");
+
+    //    board.clear();
+    //    board << SetMode( domainKernel.className(), "Grid" )
+    //          << domainKernel;
+    //    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+    //          << pOrigin;
+    //    for( SurfelSet::const_iterator current = kernels[ 4 ].begin(), end = kernels[ 4 ].end(); current != end; ++current )
+    //    {
+    //        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) + shiftNewSpel );
+    //        board << CustomStyle( pOrigin.className(), new CustomColors( white, dwhite ) );
+    //        board << KSpaceKernel.sCoords( shiftedSpel );
+    //    }
+    //    board.saveSVG("testII_decallage_full_new.svg");
+
+    //    board.clear();
+    //    board << SetMode( domainKernel.className(), "Grid" )
+    //          << domainKernel;
+    //    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+    //          << pOrigin;
+    //    for( SurfelSet::const_iterator current = kernels[ offset ].begin(), end = kernels[ offset ].end(); current != end; ++current )
+    //    {
+    //        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) - Point( 2, 2 ) + shiftNewSpel );
+    //        board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
+    //        board << KSpaceKernel.sCoords( shiftedSpel );
+    //    }
+
+    //    board.saveSVG("testII_decallage_minus.svg");
+
+    //    board.clear();
+    //    board << SetMode( domainKernel.className(), "Grid" )
+    //          << domainKernel;
+    //    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+    //          << pOrigin;
+
+    //    /// Part to add from previous result.
+    //    for( SurfelSet::const_iterator current = kernels[ 8 - offset ].begin(), end = kernels[ 8 - offset ].end(); current != end; ++current )
+    //    {
+    //        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) + shiftNewSpel );
+    //        board << CustomStyle( pOrigin.className(), new CustomColors( green, dgreen ) );
+    //        board << KSpaceKernel.sCoords( shiftedSpel );
+    //    }
+    //    board.saveSVG("testII_decallage_plus.svg");
+
+    //    board.clear();
+    //    board << SetMode( domainKernel.className(), "Grid" )
+    //          << domainKernel;
+    //    board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
+    //          << pOrigin;
+
+    //    Point bug(-46, -13);
+    //    Point notbug1( -46, -14);
+    //    Point notbug2( -47, -13);
+    //    board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
+    //    board << bug;
+    //    board << notbug1;
+    //    board << notbug2;
+    //    board.saveSVG("testII_decallage_bug.svg");
+    //    //    board.saveSVG("testII_decallage.svg");
+    //    //////////////////////////////
+
+    return true;
+}
+
+int testII3D_kernels( int argc, char** argv )
+{
+    typedef Z3i::KSpace KSpace;
+    typedef typename Z3i::Domain Domain;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef ImplicitBall< Z3i::Space > KernelSupport;
+    typedef typename KSpace::SurfelSet SurfelSet;
+    typedef typename Z3i::DigitalSet DigitalSet;
+
+
+    //////////////////////////////
+
+    QApplication application( argc, argv );
+    Viewer3D viewer;
+
+    double radius = 5.0;
+    double h = 0.1;
+    RealPoint rOrigin = RealPoint ( 0.0, 0.0, 0.0 );
+    KernelSupport kernel( rOrigin, radius );
+    KSpace KSpaceKernel;
+
+    std::vector< SurfelSet > kernels = std::vector< SurfelSet > ( 27 );
+
+    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
+
+    GaussDigitizer< Z3i::Space, KernelSupport > digKernel;
+    digKernel.attach( kernel );
+    digKernel.init( kernel.getLowerBound() - Domain::Point( 1, 1, 1 ), kernel.getUpperBound() + Domain::Point( 1, 1, 1 ), h );
+
+    Domain domainKernel = digKernel.getDomain();
+    DigitalSet setKernel( domainKernel );
+    Shapes< Domain >::digitalShaper ( setKernel, digKernel );
+
+    viewer.show();
+    viewer << SetMode3D( domainKernel.className(), "BoundingBox" ) << domainKernel;
+
+    bool space_ok = KSpaceKernel.init( domainKernel.lowerBound(), domainKernel.upperBound(), true );
+    if( !space_ok )
+    {
+        trace.error() << "Error in the Khalimsky space construction." << std::endl;
+        return false;
+    }
+
+    int count = 0;
+    for( auto it = setKernel.begin(), itend = setKernel.end();
+         it != itend;
+         ++it )
+    {
+        kernels[ 13 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(11) is 4
+        ++count;
+    }
+
+    ASSERT(( count != 0 )); // Error when creating full kernel
+
+    for( int z = -1; z <= 1; ++z )
+    {
+        for( int y = -1; y <= 1; ++y )
+        {
+            for( int x = -1; x <= 1; ++x )
+            {
+                RealPoint shiftPoint = rOrigin + RealPoint( x * h, y * h, z + h );
+                KernelSupport kernelShifted( shiftPoint, radius );
+                int offset = ( x + 1 ) + (( y + 1 ) * 3 ) + (( z + 1 ) * 9 );
+                if( offset == 13 ) // Full kernel
+                {
+                    continue;
+                }
+                else
+                {
+                    if( offset != 1 )//&& offset != 25 )
+                        continue;
+
+                    EuclideanShape current( kernel, kernelShifted );
+
+                    GaussDigitizer< Z3i::Space, EuclideanShape > digCurrentKernel;
+                    digCurrentKernel.attach( current );
+                    digCurrentKernel.init( kernel.getLowerBound(), kernel.getUpperBound(), h );
+
+                    DigitalSet setCurrentKernel( domainKernel );
+                    Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
+
+                    int count2 = 0;
+                    for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                         it != itend;
+                         ++it )
+                    {
+                        //                    viewer << CustomColors3D( Color::Black, cmap_grad( b ));
+                        viewer << *it;
+
+                        kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
+                        ++count2;
+                    }
+
+                    ASSERT(( count2 != 0 )); // Error when creating masks
+
+                }
+            }
+        }
+    }
+
+
+    //////////////////////////////
+
+    viewer << Viewer3D::updateDisplay;
+
+    return application.exec();
+}
+
+int testII2D_same_results( )
+{
+    typedef ImplicitBall< Z2i::Space > Ball;
+    typedef Z2i::RealPoint RealPoint;
+    typedef Z2i::Domain Domain;
+
+    /// Euclidean shape
+    RealPoint rcenter( 0.0, 0.0 );
+    Ball ball( rcenter, 5.0 );
+
+
+
+    /// Digital shape
+    typedef Z2i::Point Point;
+    Point dcenter( 0, 0 );
+    double h = 0.1;
+
+    typedef GaussDigitizer< Z2i::Space, Ball > Digitizer;
+    Digitizer* gauss = new Digitizer();
+    gauss->attach( ball );
+    gauss->init( RealPoint( -6.0, -6.0 ), RealPoint( 6.0, 6.0 ), h );
+    Domain domain = gauss->getDomain();
+
+    typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
+    MyPointFunctor pointFunctor( gauss, domain, 1, 0 );
+
+    typedef typename DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
+    MySet set( domain );
+    Shapes< Domain >::digitalShaper( set, *gauss );
+
+    /// Khalimsky shape
+
+    Z2i::KSpace k;
+    k.init( domain.lowerBound(), domain.upperBound(), true );
+
+    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
+    MyCellFunctor cellFunctor ( pointFunctor, k );
+
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > Estimator;
+    Estimator estimator( k, cellFunctor );
+    estimator.init( h, 3.0 );
+
+    typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
+    typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
+    typedef typename Z2i::KSpace::SCell SCell;
+    SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
+    SCell bel;
+    try
+    {
+        bel = Surfaces< Z2i::KSpace >::findABel( k, *gauss, 10000 );
+    }
+    catch( ... )
+    {
+        return false;
+    }
+    LightImplicitDigSurface LightImplDigSurf( k, *gauss, SAdj, bel );
+    DigSurface digSurf( LightImplDigSurf );
+
+    typedef DepthFirstVisitor< DigSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef typename VisitorRange::ConstIterator It;
+    VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
+    It ibegin = range.begin();
+    It iend = range.end();
+
+    std::vector< double > results;
+    std::back_insert_iterator< std::vector< double > > insertResults( results );
+    estimator.eval( ibegin, iend, insertResults, ball );
+
+    //    std::vector< double > resultsShape;
+    //    std::back_insert_iterator< std::vector< double > > insertResultsShape( resultsShape );
+    //    estimator.eval( ibegin, iend, insertResultsShape, ball );
+
+    int p = 0;
+    //    std::cout << "here"<<std::endl;
+
+    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
+    ibegin = range2.begin();
+    iend = range2.end();
+    for ( ;
+          ibegin != iend; ++ibegin, ++p)
+    {
+        //        std::cout << "p"<<std::endl;
+        /*if ( p != 148 )
+            continue;*/
+
+        // double resultOneShape = estimator.eval( it, *ishape );
+        double resultOne = estimator.eval( ibegin );
+
+        if( results[ p ] != resultOne )
+            std::cout << p << " error without shape " << results[p] << " vs " << resultOne << std::endl;
+
+    }
+
+    return 1;
+}
 
 bool testII2D()
 {
@@ -192,7 +962,7 @@ bool testII2D()
     It ibegin = range.begin();
     It iend = range.end();
 
-    estimator.eval( ibegin, iend, ball, insertResults );
+    estimator.eval( ibegin, iend, insertResults, ball );
 
 
     /// Board
@@ -223,8 +993,8 @@ bool testII2D()
     {
         Dimension kdim = k.sOrthDir( *ibegin );
         SCell currentSCell = k.sIndirectIncident( *ibegin, kdim );
-//        SCellToOuterPoint< Z2i::KSpace > SCellToPoint( k );
-//        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
+        //        SCellToOuterPoint< Z2i::KSpace > SCellToPoint( k );
+        //        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
         Point currentPoint = ( k.sCoords( currentSCell ));
         board << currentPoint;
         ++ibegin;
@@ -242,8 +1012,8 @@ bool testII2D()
     {
         Dimension kdim = k.sOrthDir( *ibegin );
         SCell currentSCell = k.sDirectIncident( *ibegin, kdim );
-//        SCellToInnerPoint< Z2i::KSpace > SCellToPoint( k );
-//        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
+        //        SCellToInnerPoint< Z2i::KSpace > SCellToPoint( k );
+        //        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
         Point currentPoint = ( k.sCoords( currentSCell ));
         board << currentPoint;
         ++ibegin;
@@ -350,21 +1120,21 @@ int testII3D( int argc, char** argv )
     NearestPointEmbedder< Z3i::KSpace, ImplicitShape > ScellToRealPoint;
     ScellToRealPoint.init( K, step, *ishape );
 
-//    std::vector< double > resultIIShape;
-//    std::back_insert_iterator< std::vector< double > > resultIIShapeIterator( resultIIShape );
-//    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIShapeIterator, *ishape );
+    //    std::vector< double > resultIIShape;
+    //    std::back_insert_iterator< std::vector< double > > resultIIShapeIterator( resultIIShape );
+    //    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIShapeIterator, *ishape );
 
     std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
     iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator );
 
     int p = 0;
 
-//    std::cout << "here"<<std::endl;
-    for ( std::set< Z3i::SCell >::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
+    //    std::cout << "here"<<std::endl;
+    for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++p)
     {
 
-//        std::cout << "p"<<std::endl;
+        //        std::cout << "p"<<std::endl;
         /*if ( p != 148 )
             continue;*/
 
@@ -381,10 +1151,10 @@ int testII3D( int argc, char** argv )
         double b = resultII[ p ];
 
 
-//        if( resultIIShape[ p ] != resultOneShape )
-//            std::cout << "error with shape " << std::endl;
+        //        if( resultIIShape[ p ] != resultOneShape )
+        //            std::cout << "error with shape " << std::endl;
 
-//        std::cout << b << std::endl;
+        //        std::cout << b << std::endl;
         resultTrue.push_back( a );
         nearestPoints.push_back( A );
 
@@ -414,12 +1184,12 @@ int testII3D( int argc, char** argv )
     //Specifing a color map
 
     GradientColorMap< double > cmap_grad( minCurv, maxCurv );
-//    cmap_grad.addColor( Color::Blue );
-//    cmap_grad.addColor( Color::White );
-//    cmap_grad.addColor( Color::Red );
-      cmap_grad.addColor( Color( 50, 50, 255 ) );
-      cmap_grad.addColor( Color( 255, 0, 0 ) );
-      cmap_grad.addColor( Color( 255, 255, 10 ) );
+    //    cmap_grad.addColor( Color::Blue );
+    //    cmap_grad.addColor( Color::White );
+    //    cmap_grad.addColor( Color::Red );
+    cmap_grad.addColor( Color( 50, 50, 255 ) );
+    cmap_grad.addColor( Color( 255, 0, 0 ) );
+    cmap_grad.addColor( Color( 255, 255, 10 ) );
 
     //------------------------------------------------------------------------------------
     //drawing
@@ -427,7 +1197,7 @@ int testII3D( int argc, char** argv )
 
     //  ofstream out( "rounded2.off" );
     int i = 0;
-    for ( std::set<Z3i::SCell>::iterator it = theSetOfSurfels.begin(),
+    for ( auto it = theSetOfSurfels.begin(),
           it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++nbSurfels, ++i )
     {
@@ -446,6 +1216,108 @@ int testII3D( int argc, char** argv )
     return application.exec();
 }
 
+int testII3D_same_results( )
+{
+    typedef Z3i::Space::RealPoint RealPoint;
+    typedef RealPoint::Coordinate Ring;
+    typedef MPolynomial<3, Ring> Polynomial3;
+    typedef MPolynomialReader<3, Ring> Polynomial3Reader;
+    typedef ImplicitPolynomial3Shape<Z3i::Space> ImplicitShape;
+    typedef GaussDigitizer<Z3i::Space,ImplicitShape> DigitalShape;
+    typedef DigitalShape::PointEmbedder DigitalEmbedder;
+
+    double p1[ 3 ] = {-10.0,-10.0,-10.0};
+    double p2[ 3 ] = {10.0,10.0,10.0};
+
+    double step = 0.2;
+
+    double re = 3;
+
+
+    Polynomial3 P;
+    Polynomial3Reader reader;
+    std::string poly_str = "x^2 + y^2 + z^2 - 25.0";
+    std::string::const_iterator iter
+            = reader.read( P, poly_str.begin(), poly_str.end() );
+    if ( iter != poly_str.end() )
+    {
+        std::cerr << "ERROR: I read only <"
+                  << poly_str.substr( 0, iter - poly_str.begin() )
+                  << ">, and I built P=" << P << std::endl;
+        return -1;
+    }
+
+
+    ImplicitShape* ishape = new ImplicitShape( P );
+    DigitalShape* dshape = new DigitalShape();
+    dshape->attach( *ishape );
+    dshape->init( RealPoint( p1 ), RealPoint( p2 ), step );
+    Z3i::Domain domain = dshape->getDomain();
+
+    Z3i::KSpace K;
+
+    bool space_ok = K.init( domain.lowerBound(),
+                            domain.upperBound(), true
+                            );
+    if ( !space_ok )
+    {
+        trace.error() << "Error in the Khamisky space construction." << std::endl;
+        return -2;
+    }
+
+    typedef SurfelAdjacency< Z3i::KSpace::dimension > MySurfelAdjacency;
+    MySurfelAdjacency surfAdj( true ); // interior in all directions.
+
+
+    typedef Z3i::KSpace::Surfel Surfel;
+    typedef Z3i::KSpace::SurfelSet SurfelSet;
+    typedef SetOfSurfels< Z3i::KSpace, SurfelSet > MySetOfSurfels;
+    typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
+
+
+    MySetOfSurfels theSetOfSurfels( K, surfAdj );
+    Surfel bel = Surfaces< Z3i::KSpace >::findABel( K, *dshape, 100000 );
+    Surfaces< Z3i::KSpace >::trackBoundary( theSetOfSurfels.surfelSet(),
+                                            K, surfAdj,
+                                            *dshape, bel );
+
+    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
+
+    MyPointFunctor pointFunctor( dshape, domain, 1, 0 );
+    MyCellFunctor functor ( pointFunctor, K );
+    MyCurvatureEstimator iigaussest ( K, functor );
+    iigaussest.init( step, re );
+
+    std::vector< double > resultII;
+
+    //    std::vector< double > resultIIShape;
+    //    std::back_insert_iterator< std::vector< double > > resultIIShapeIterator( resultIIShape );
+    //    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIShapeIterator, *ishape );
+
+    std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
+    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator );
+
+    int p = 0;
+    //    std::cout << "here"<<std::endl;
+    for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
+          it != it_end; ++it, ++p)
+    {
+
+        //        std::cout << "p"<<std::endl;
+        /*if ( p != 148 )
+            continue;*/
+
+        // double resultOneShape = iigaussest.eval( it, *ishape );
+        double resultOne = iigaussest.eval( it );
+
+        if( resultII[ p ] != resultOne )
+            std::cout << p << " error without shape " << resultII[p] << " vs " << resultOne << std::endl;
+    }
+    return 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -457,8 +1329,13 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-//    testII2D( );
-    testII3D( argc, argv );
+    //    testII2D( );
+//    testII2D_kernels();
+    //    testII2D_kernels_2();
+//    testII2D_same_results();
+    testII3D_same_results();
+    //    testII3D_kernels(argc, argv);
+    //    testII3D( argc, argv );
     return 1;
     //  bool res = testII3D();
     //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

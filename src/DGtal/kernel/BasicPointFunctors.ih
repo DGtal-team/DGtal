@@ -150,7 +150,6 @@ DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
 
 
 
-
 template< typename TP, typename TD, typename TV >
 inline
 DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain, const Value& aTrueValue, const Value& aFalseValue )
@@ -191,27 +190,12 @@ DGtal::PointFunctorFromPointPredicateAndDomain<TP,TD, TV>::operator=( const Poin
     && "This domain should include the domain of the other set in case of assignment." );
 
   myPtrPredicate = other.myPtrPredicate;
-//  myDomain = other.myDomain;
+// myDomain = other.myDomain;
   myTrueValue = other.myTrueValue;
   myFalseValue = other.myFalseValue;
 
   return *this;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
