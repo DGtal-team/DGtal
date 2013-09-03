@@ -271,7 +271,7 @@ int testII3D( int argc, char** argv )
 
     typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
-    double h = 0.0000001;
+    double h = 0.1;
     double re = 3.0;
     double radius = 5.0;
 
@@ -310,20 +310,14 @@ int testII3D( int argc, char** argv )
     MyPointFunctor pointFunctor( dshape, dshape->getDomain(), 1, 0 );
     MyCellFunctor functor ( pointFunctor, K );
 
-    std::cout << "Point functor memory size " << sizeof(pointFunctor) << std::endl;
-    std::cout << "Cell functor memory size " << sizeof(functor) << std::endl;
-
-    std::cout << "----------------------------------" << std::endl;
-
     MyCurvatureEstimator estimator ( K, functor );
-    std::cout << "estimator memory size " << sizeof(estimator) << std::endl;
     estimator.init( h, re );
-    std::cout << "estimator memory size " << sizeof(estimator) << std::endl;
+
+    std:string filename = std::tmpnam(nullptr);
+
+    estimator.eval( boundary.begin(), boundary.end(), filename );
 
 
-
-
-    return true;
     /*DigitalShape* dshape = new DigitalShape();
     dshape->attach( *ishape );
     dshape->init( RealPoint( p1 ), RealPoint( p2 ), step );

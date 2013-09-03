@@ -430,6 +430,20 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    EuclideanShapesMinus & operator= ( const EuclideanShapesMinus & other )
+    {
+        myShapeA = other.myShapeA;
+        myShapeB = other.myShapeB;
+        myLowerBound = other.myLowerBound;
+        myUpperBound = other.myUpperBound;
+    }
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -448,13 +462,6 @@ namespace DGtal
      */
     EuclideanShapesMinus ( const EuclideanShapesMinus & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    EuclideanShapesMinus & operator= ( const EuclideanShapesMinus & other );
 
     // ------------------------- Internals ------------------------------------
   private:
