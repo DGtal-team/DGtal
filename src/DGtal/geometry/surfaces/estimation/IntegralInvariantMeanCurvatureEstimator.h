@@ -91,7 +91,7 @@ public:
   typedef typename Z3i::Domain Domain;
   typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z3i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Cell;
+  typedef typename KSpace::SCell Spel;
   typedef typename KSpace::SurfelSet SurfelSet;
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
@@ -194,7 +194,7 @@ private:
   std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support
-  Cell myOrigin;
+  Spel myOrigin;
 
   /// kernel functor
   const KernelCellFunctor myKernelFunctor;
@@ -238,7 +238,7 @@ public:
   typedef typename Z2i::Domain Domain;
   typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z2i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Cell;
+  typedef typename KSpace::SCell Spel;
   typedef typename KSpace::SurfelSet SurfelSet;
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
@@ -341,7 +341,7 @@ private:
   std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support.
-  Cell myOrigin;
+  Spel myOrigin;
 
   /// kernel functor
   const KernelCellFunctor myKernelFunctor;
@@ -390,7 +390,7 @@ public:
   typedef typename Z3i::Domain Domain;
   typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z3i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Cell;
+  typedef typename KSpace::SCell Spel;
   typedef typename KSpace::SurfelSet SurfelSet;
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
@@ -460,6 +460,24 @@ public:
                                                                                  OutputIterator & result );
 
   /**
+      * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Return the result on an OutputIterator (param).
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      * @tparam OutputIterator output iterator type
+      *
+      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+      * @param result iterator of the result of the computation.
+      */
+  template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape > void eval ( const ConstIteratorOnCells & itb,
+                                                                                                 const ConstIteratorOnCells & ite,
+                                                                                                 OutputIterator & result,
+                                                                                                 const Shape & shape );
+
+
+
+  /**
       * @return iterator of the begin spel of the kernel support
       */
   const ConstIteratorKernel & beginKernel() const;
@@ -490,7 +508,7 @@ private:
   std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support.
-  Cell myOrigin;
+  Spel myOrigin;
 
   /// kernel functor
   const KernelCellFunctor myKernelFunctor;

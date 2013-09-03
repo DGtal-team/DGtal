@@ -5,7 +5,7 @@ SET(TESTS_SURFACES_SRC
  testIntegralInvariantMeanCurvatureEstimator3D
 # testIntegralInvariantMeanCurvatureEstimator3D_multithread
  testIntegralInvariantGaussianCurvatureEstimator3D
- testNewtonMethod
+# testNewtonMethod
  testLocalEstimatorFromFunctorAdapter
 )
 

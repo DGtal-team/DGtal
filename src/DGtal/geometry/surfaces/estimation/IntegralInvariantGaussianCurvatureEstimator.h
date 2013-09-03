@@ -112,7 +112,7 @@ public:
   typedef typename Z2i::Domain Domain;
   typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z2i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Cell;
+  typedef typename KSpace::SCell Spel;
   typedef typename KSpace::SurfelSet SurfelSet;
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
@@ -212,7 +212,7 @@ private:
   std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support
-  Cell myOrigin;
+  Spel myOrigin;
 
   /// kernel functor
   const KernelCellFunctor myKernelFunctor;
@@ -256,7 +256,7 @@ public:
   typedef typename Z2i::Domain Domain;
   typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z2i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Cell;
+  typedef typename KSpace::SCell Spel;
   typedef typename KSpace::SurfelSet SurfelSet;
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
@@ -330,6 +330,23 @@ public:
               OutputIterator & result );
 
   /**
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Return the result on an OutputIterator (param).
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      * @tparam OutputIterator iterator of a list of Quantity
+      *
+      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+      * @param result iterator of results of the computation.
+      */
+  template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+  void eval ( const ConstIteratorOnCells & itb,
+              const ConstIteratorOnCells & ite,
+              OutputIterator & result,
+              const Shape & shape );
+
+  /**
       * @return iterator of the begin spel of the kernel support
       */
   const ConstIteratorKernel & beginKernel() const;
@@ -360,7 +377,7 @@ private:
   std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support.
-  Cell myOrigin;
+  Spel myOrigin;
 
   /// kernel functor
   const KernelCellFunctor myKernelFunctor;
@@ -409,7 +426,7 @@ public:
   typedef typename Z3i::Domain Domain;
   typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z3i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Cell;
+  typedef typename KSpace::SCell Spel;
   typedef typename KSpace::SurfelSet SurfelSet;
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
@@ -476,6 +493,17 @@ public:
       *
       * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
       *
+      * @return quantity of the result of Integral Invariant estimator at position *it
+      */
+  template<typename ConstIteratorOnCells, typename Shape> Quantity eval ( const ConstIteratorOnCells & it, const Shape & shape );
+
+  /**
+      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      *
+      * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
+      *
       * @return a struct with Gaussian curvature value of Integral Invariant estimator at position *it, and eigenVectors
       * and eigenValues resulting of the PCA (contening principals curvature information)
       */
@@ -496,6 +524,23 @@ public:
   void eval ( const ConstIteratorOnCells & itb,
               const ConstIteratorOnCells & ite,
               OutputIterator & result );
+
+  /**
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Return the result on an OutputIterator (param).
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      * @tparam OutputIterator iterator of a list of Quantity
+      *
+      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+      * @param result iterator of results of the computation.
+      */
+  template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+  void eval ( const ConstIteratorOnCells & itb,
+              const ConstIteratorOnCells & ite,
+              OutputIterator & result,
+              const Shape & shape );
 
   /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
@@ -536,6 +581,12 @@ public:
      */
   bool isValid() const;
 
+protected:
+
+  void evalk1k2( Matrix3x3 & matrix, Quantity & k1, Quantity & k2 );
+
+  void evalk1k2( Matrix3x3 & matrix, Matrix3x3 & eigenVectors, Vector3 & eigenValues, Quantity & k1, Quantity & k2 );
+
   // ------------------------- Private Datas --------------------------------
 private:
 
@@ -545,7 +596,7 @@ private:
   std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support.
-  Cell myOrigin;
+  Spel myOrigin;
 
   /// kernel functor
   const KernelCellFunctor myKernelFunctor;

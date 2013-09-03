@@ -864,11 +864,11 @@ int testII2D_same_results( )
 
     std::vector< double > results;
     std::back_insert_iterator< std::vector< double > > insertResults( results );
-    estimator.eval( ibegin, iend, ball, insertResults );
+    estimator.eval( ibegin, iend, insertResults, ball );
 
     //    std::vector< double > resultsShape;
     //    std::back_insert_iterator< std::vector< double > > insertResultsShape( resultsShape );
-    //    estimator.eval( ibegin, iend, ball, insertResultsShape );
+    //    estimator.eval( ibegin, iend, insertResultsShape, ball );
 
     int p = 0;
     //    std::cout << "here"<<std::endl;
@@ -962,7 +962,7 @@ bool testII2D()
     It ibegin = range.begin();
     It iend = range.end();
 
-    estimator.eval( ibegin, iend, ball, insertResults );
+    estimator.eval( ibegin, iend, insertResults, ball );
 
 
     /// Board

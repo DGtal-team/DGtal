@@ -385,12 +385,12 @@ inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eval( const ConstIteratorOnCells & itb,
                                                                                    const ConstIteratorOnCells & ite,
-                                                                                   Shape & shape,
-                                                                                   OutputIterator & result )
+                                                                                   OutputIterator & result,
+                                                                                   const Shape & shape )
 {
     std::vector< Quantity > quantities;
     std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
-    myConvolver.eval ( itb, ite, shape, h, quantitiesIterator );
+    myConvolver.eval ( itb, ite, quantitiesIterator, h, shape  );
 
     Quantity measure;
 

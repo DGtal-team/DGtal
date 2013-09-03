@@ -412,8 +412,8 @@ inline
 void
 DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::eval ( const ConstIteratorOnCells & itb,
                                                                                         const ConstIteratorOnCells & ite,
-                                                                                        const Shape & shape,
-                                                                                        OutputIterator & result )
+                                                                                        OutputIterator & result,
+                                                                                        const Shape & shape )
 {
     std::vector< Quantity > quantities;
     std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
