@@ -86,46 +86,46 @@ template <typename TKSpace, typename TShapeFunctor, Dimension dimension = TKSpac
 class IntegralInvariantMeanCurvatureEstimator
 {
 public:
-  typedef TKSpace KSpace;
-  typedef typename Z3i::Domain Domain;
-  typedef typename KSpace::Space::RealPoint RealPoint;
-  typedef typename Z3i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Spel;
-  typedef typename KSpace::SurfelSet SurfelSet;
-  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+    typedef TKSpace KSpace;
+    typedef typename Z3i::Domain Domain;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef typename Z3i::DigitalSet DigitalSet;
+    typedef typename KSpace::SCell Spel;
+    typedef typename KSpace::SurfelSet SurfelSet;
+    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-  typedef double Quantity;
-  typedef int Value;
+    typedef double Quantity;
+    typedef int Value;
 
-  typedef TShapeFunctor ShapeCellFunctor;
-  typedef ConstValueFunctor<Value> KernelCellFunctor;
-  typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
-  typedef typename Convolver::PairIterators PairIterators;
+    typedef TShapeFunctor ShapeCellFunctor;
+    typedef ConstValueFunctor<Value> KernelCellFunctor;
+    typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+    typedef typename Convolver::PairIterators PairIterators;
 
-  typedef ImplicitBall<Z3i::Space> KernelSupport;
+    typedef ImplicitBall<Z3i::Space> KernelSupport;
 
-//  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+    //  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
-  // ----------------------- Standard services ------------------------------
+    // ----------------------- Standard services ------------------------------
 public:
-  /**
+    /**
      * Constructor.
      *
      * @param space space in which the shape is defined.
      * @param f functor on cell of the shape.
      */
-  IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
+    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
 
-  /**
+    /**
      * Destructor.
      */
-  ~IntegralInvariantMeanCurvatureEstimator()
-  {}
+    ~IntegralInvariantMeanCurvatureEstimator()
+    {}
 
-  // ----------------------- Interface --------------------------------------
+    // ----------------------- Interface --------------------------------------
 public:
 
-  /**
+    /**
       * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param _h precision of the grid
@@ -133,9 +133,9 @@ public:
       *
       * @bug known bug with radius of kernel. Small hack for the moment.
       */
-  void init ( const double _h, const double re );
+    void init ( const double _h, const double re );
 
-  /**
+    /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
@@ -144,9 +144,9 @@ public:
       *
       * @return quantity of the result of Integral Invariant estimator at position *it
       */
-  template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
+    template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
 
-  /**
+    /**
       * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
@@ -157,72 +157,72 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of the result of the computation.
       */
-  template< typename ConstIteratorOnCells, typename OutputIterator >
-  void eval ( const ConstIteratorOnCells & itb,
-              const ConstIteratorOnCells & ite,
-              OutputIterator & result );
+    template< typename ConstIteratorOnCells, typename OutputIterator >
+    void eval ( const ConstIteratorOnCells & itb,
+                const ConstIteratorOnCells & ite,
+                OutputIterator & result );
 
 
-  /**
+    /**
       * @return iterator of the begin spel of the kernel support
       */
-  const ConstIteratorKernel & beginKernel() const;
+    const ConstIteratorKernel & beginKernel() const;
 
-  /**
+    /**
       * @return iterator of the end spel of the kernel support
       */
-  const ConstIteratorKernel & endKernel() const;
+    const ConstIteratorKernel & endKernel() const;
 
-  /**
+    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-  void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const;
 
-  /**
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-  bool isValid() const;
+    bool isValid() const;
 
-  // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Datas --------------------------------
 private:
-  /// array of shifting masks.
-  std::vector< SurfelSet > kernels;
-  /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators > kernelsIterators;
+    /// array of shifting masks.
+    std::vector< SurfelSet > kernels;
+    /// array of begin/end iterator of shifting masks.
+    std::vector< PairIterators > kernelsIterators;
 
-  /// origin spel of the kernel support
-  Spel myOrigin;
+    /// origin spel of the kernel support
+    Spel myOrigin;
 
-  /// kernel functor
-  const KernelCellFunctor myKernelFunctor;
+    /// kernel functor
+    const KernelCellFunctor myKernelFunctor;
 
-  /// convolver
-  Convolver myConvolver;
+    /// convolver
+    Convolver myConvolver;
 
-  /// precision of the grid
-  float h;
+    /// precision of the grid
+    double h;
 
-  /// Euclidean radius of the kernel
-  float radius;
+    /// Euclidean radius of the kernel
+    double radius;
 
 private:
 
-  /**
+    /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-  IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
 
-  /**
+    /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-  IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
 
 }; // end of class IntegralInvariantMeanCurvatureEstimator
 
@@ -233,46 +233,46 @@ template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>
 {
 public:
-  typedef TKSpace KSpace;
-  typedef typename Z2i::Domain Domain;
-  typedef typename KSpace::Space::RealPoint RealPoint;
-  typedef typename Z2i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Spel;
-  typedef typename KSpace::SurfelSet SurfelSet;
-  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+    typedef TKSpace KSpace;
+    typedef typename Z2i::Domain Domain;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef typename Z2i::DigitalSet DigitalSet;
+    typedef typename KSpace::SCell Spel;
+    typedef typename KSpace::SurfelSet SurfelSet;
+    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-  typedef double Quantity;
-  typedef int Value;
+    typedef double Quantity;
+    typedef int Value;
 
-  typedef TShapeFunctor ShapeCellFunctor;
-  typedef ConstValueFunctor<Value> KernelCellFunctor;
-  typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
-  typedef typename Convolver::PairIterators PairIterators;
+    typedef TShapeFunctor ShapeCellFunctor;
+    typedef ConstValueFunctor<Value> KernelCellFunctor;
+    typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+    typedef typename Convolver::PairIterators PairIterators;
 
-  typedef ImplicitBall<Z2i::Space> KernelSupport;
+    typedef ImplicitBall<Z2i::Space> KernelSupport;
 
-//  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+    //  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
-  // ----------------------- Standard services ------------------------------
+    // ----------------------- Standard services ------------------------------
 public:
-  /**
+    /**
      * Constructor.
      *
      * @param space space in which the shape is defined.
      * @param f functor on cell of the shape.
      */
-  IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
+    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
 
-  /**
+    /**
      * Destructor.
      */
-  ~IntegralInvariantMeanCurvatureEstimator()
-  {}
+    ~IntegralInvariantMeanCurvatureEstimator()
+    {}
 
-  // ----------------------- Interface --------------------------------------
+    // ----------------------- Interface --------------------------------------
 public:
 
-  /**
+    /**
       * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param _h precision of the grid
@@ -280,102 +280,132 @@ public:
       *
       * @bug known bug with radius of kernel. Small hack for the moment.
       */
-  void init ( const double _h, const double re );
+    void init ( const double _h, const double re );
 
-  /**
-      * Compute the integral invariant mean curvature to cell *it of a shape.
-      *
-      * @tparam ConstIteratorOnCells iterator on a Cell
-      *
-      * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
-      *
-      * @return quantity of the result of Integral Invariant estimator at position *it
-      */
-  template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
+    /**
+        * Compute the integral invariant Gaussian curvature to cell *it of a shape.
+        *
+        * @tparam ConstIteratorOnCells iterator on a Cell
+        *
+        * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
+        *
+        * @return quantity of the result of Integral Invariant estimator at position *it
+        */
+    template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
 
+    /**
+        * Compute the integral invariant Gaussian curvature to cell *it of a shape.
+        *
+        * @tparam ConstIteratorOnCells iterator on a Cell
+        *
+        * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
+        *
+        * @return quantity of the result of Integral Invariant estimator at position *it
+        */
+    template<typename ConstIteratorOnCells, typename Shape>
+    Quantity eval ( const ConstIteratorOnCells & it,
+                    const Shape & shape );
 
-  /**
-      * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputIterator output iterator type
-      *
-      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
-      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
-      * @param result iterator of the result of the computation.
-      */
-  template< typename ConstIteratorOnCells, typename OutputIterator > void eval ( const ConstIteratorOnCells & itb,
-                                                                                 const ConstIteratorOnCells & ite,
-                                                                                 OutputIterator & result );
+    /**
+        * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+        * Return the result on an OutputIterator (param).
+        *
+        * @tparam ConstIteratorOnCells iterator on a Cell
+        * @tparam OutputIterator iterator of a list of Quantity
+        *
+        * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+        * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+        * @param result iterator of results of the computation.
+        */
+    template< typename ConstIteratorOnCells, typename OutputIterator >
+    void eval ( const ConstIteratorOnCells & itb,
+                const ConstIteratorOnCells & ite,
+                OutputIterator & result );
 
-  /**
+    /**
+        * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+        * Return the result on an OutputIterator (param).
+        *
+        * @tparam ConstIteratorOnCells iterator on a Cell
+        * @tparam OutputIterator iterator of a list of Quantity
+        *
+        * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+        * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+        * @param result iterator of results of the computation.
+        */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void eval ( const ConstIteratorOnCells & itb,
+                const ConstIteratorOnCells & ite,
+                OutputIterator & result,
+                const Shape & shape );
+
+    /**
       * @return iterator of the begin spel of the kernel support
       */
-  const ConstIteratorKernel & beginKernel() const;
+    const ConstIteratorKernel & beginKernel() const;
 
-  /**
+    /**
       * @return iterator of the end spel of the kernel support
       */
-  const ConstIteratorKernel & endKernel() const;
+    const ConstIteratorKernel & endKernel() const;
 
-  /**
+    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-  void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const;
 
-  /**
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-  bool isValid() const;
+    bool isValid() const;
 
-  // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
-  std::vector< SurfelSet > kernels;
-  /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators > kernelsIterators;
+    /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
+    std::vector< SurfelSet > kernels;
+    /// array of begin/end iterator of shifting masks.
+    std::vector< PairIterators > kernelsIterators;
 
-  /// origin spel of the kernel support.
-  Spel myOrigin;
+    /// origin spel of the kernel support.
+    Spel myOrigin;
 
-  /// kernel functor
-  const KernelCellFunctor myKernelFunctor;
+    /// kernel functor
+    const KernelCellFunctor myKernelFunctor;
 
-  /// convolver
-  Convolver myConvolver;
+    /// convolver
+    Convolver myConvolver;
 
-  /// precision of the grid
-  float h;
+    /// precision of the grid
+    double h;
 
-  /// Euclidean radius of the kernel
-  float radius;
+    /// Euclidean radius of the kernel
+    double radius;
 
-  /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
-  Quantity dh2; /// h*h
-  Quantity d3_r; /// 3/r
-  Quantity dPI_2; /// PI/2
-  Quantity d1_r2; /// 1/r^2
+    /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
+    Quantity dh2; /// h*h
+    Quantity d3_r; /// 3/r
+    Quantity dPI_2; /// PI/2
+    Quantity d1_r2; /// 1/r^2
 
 private:
 
-  /**
+    /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-  IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
 
-  /**
+    /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-  IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
 }; // end of class IntegralInvariantMeanCurvatureEstimator for dimension = 2
 
 /**
@@ -385,54 +415,54 @@ template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>
 {
 public:
-  typedef TKSpace KSpace;
-  typedef typename Z3i::Domain Domain;
-  typedef typename KSpace::Space::RealPoint RealPoint;
-  typedef typename Z3i::DigitalSet DigitalSet;
-  typedef typename KSpace::SCell Spel;
-  typedef typename KSpace::SurfelSet SurfelSet;
-  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+    typedef TKSpace KSpace;
+    typedef typename Z3i::Domain Domain;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef typename Z3i::DigitalSet DigitalSet;
+    typedef typename KSpace::SCell Spel;
+    typedef typename KSpace::SurfelSet SurfelSet;
+    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-  typedef double Quantity;
-  typedef int Value;
+    typedef double Quantity;
+    typedef int Value;
 
-  typedef TShapeFunctor ShapeCellFunctor;
-  typedef ConstValueFunctor<Value> KernelCellFunctor;
-  typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
-  typedef typename Convolver::PairIterators PairIterators;
+    typedef TShapeFunctor ShapeCellFunctor;
+    typedef ConstValueFunctor<Value> KernelCellFunctor;
+    typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+    typedef typename Convolver::PairIterators PairIterators;
 
-  typedef ImplicitBall<Z3i::Space> KernelSupport;
+    typedef ImplicitBall<Z3i::Space> KernelSupport;
 
-//  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+    //  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
-  // ----------------------- Standard services ------------------------------
+    // ----------------------- Standard services ------------------------------
 public:
-  /**
+    /**
      * Constructor.
      *
      * @param space space in which the shape is defined.
      * @param f functor on cell of the shape.
      */
-  IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
+    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
 
-  /**
+    /**
      * Destructor.
      */
-  ~IntegralInvariantMeanCurvatureEstimator()
-  {}
+    ~IntegralInvariantMeanCurvatureEstimator()
+    {}
 
-  // ----------------------- Interface --------------------------------------
+    // ----------------------- Interface --------------------------------------
 public:
 
-  /**
+    /**
       * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
       */
-  void init ( const double _h, const double re );
+    void init ( const double _h, const double re );
 
-  /**
+    /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
@@ -441,9 +471,23 @@ public:
       *
       * @return quantity of the result of Integral Invariant estimator at position *it
       */
-  template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
+    template<typename ConstIteratorOnCells>
+    Quantity eval ( const ConstIteratorOnCells & it );
 
-  /**
+    /**
+      * Compute the integral invariant mean curvature to cell *it of a shape.
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      *
+      * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
+      *
+      * @return quantity of the result of Integral Invariant estimator at position *it
+      */
+    template<typename ConstIteratorOnCells, typename Shape>
+    Quantity eval ( const ConstIteratorOnCells & it,
+                    const Shape & shape );
+
+    /**
       * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
@@ -454,11 +498,12 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of the result of the computation.
       */
-  template< typename ConstIteratorOnCells, typename OutputIterator > void eval ( const ConstIteratorOnCells & itb,
-                                                                                 const ConstIteratorOnCells & ite,
-                                                                                 OutputIterator & result );
+    template< typename ConstIteratorOnCells, typename OutputIterator >
+    void eval ( const ConstIteratorOnCells & itb,
+                const ConstIteratorOnCells & ite,
+                OutputIterator & result );
 
-  /**
+    /**
       * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
@@ -469,79 +514,80 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of the result of the computation.
       */
-  template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape > void eval ( const ConstIteratorOnCells & itb,
-                                                                                                 const ConstIteratorOnCells & ite,
-                                                                                                 OutputIterator & result,
-                                                                                                 const Shape & shape );
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void eval ( const ConstIteratorOnCells & itb,
+                const ConstIteratorOnCells & ite,
+                OutputIterator & result,
+                const Shape & shape );
 
 
 
-  /**
+    /**
       * @return iterator of the begin spel of the kernel support
       */
-  const ConstIteratorKernel & beginKernel() const;
+    const ConstIteratorKernel & beginKernel() const;
 
-  /**
+    /**
       * @return iterator of the end spel of the kernel support
       */
-  const ConstIteratorKernel & endKernel() const;
+    const ConstIteratorKernel & endKernel() const;
 
-  /**
+    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-  void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out ) const;
 
-  /**
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-  bool isValid() const;
+    bool isValid() const;
 
-  // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
-  std::vector< SurfelSet > kernels;
-  /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators > kernelsIterators;
+    /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
+    std::vector< SurfelSet > kernels;
+    /// array of begin/end iterator of shifting masks.
+    std::vector< PairIterators > kernelsIterators;
 
-  /// origin spel of the kernel support.
-  Spel myOrigin;
+    /// origin spel of the kernel support.
+    Spel myOrigin;
 
-  /// kernel functor
-  const KernelCellFunctor myKernelFunctor;
+    /// kernel functor
+    const KernelCellFunctor myKernelFunctor;
 
-  /// convolver
-  Convolver myConvolver;
+    /// convolver
+    Convolver myConvolver;
 
-  /// precision of the grid
-  float h;
+    /// precision of the grid
+    double h;
 
-  /// Euclidean radius of the kernel
-  float radius;
+    /// Euclidean radius of the kernel
+    double radius;
 
-  /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
-  Quantity dh3; /// h*h*h
-  Quantity d8_3r; /// 8/3r
-  Quantity d_4_PIr4; /// 4/(PI*r^4)
+    /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
+    Quantity dh3; /// h*h*h
+    Quantity d8_3r; /// 8/3r
+    Quantity d_4_PIr4; /// 4/(PI*r^4)
 
 private:
 
-  /**
+    /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-  IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
 
-  /**
+    /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-  IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
 
 }; // end of specialization for dimension = 3
 

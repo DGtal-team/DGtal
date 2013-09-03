@@ -67,7 +67,7 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
 //#define EUCLIDEAN
-#define EXPORT
+//#define EXPORT
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -904,17 +904,16 @@ bool testII2D()
     RealPoint rcenter( 0.0, 0.0 );
     Ball ball( rcenter, 5.0 );
 
-
-
     /// Digital shape
     typedef Z2i::Point Point;
+    typedef GaussDigitizer< Z2i::Space, Ball > Digitizer;
+
     Point dcenter( 0, 0 );
     double h = 0.1;
-
-    typedef GaussDigitizer< Z2i::Space, Ball > Digitizer;
     Digitizer* gauss = new Digitizer();
     gauss->attach( ball );
     gauss->init( RealPoint( -6.0, -6.0 ), RealPoint( 6.0, 6.0 ), h );
+
     Domain domain = gauss->getDomain();
 
     typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
@@ -925,19 +924,11 @@ bool testII2D()
     Shapes< Domain >::digitalShaper( set, *gauss );
 
     /// Khalimsky shape
-
     Z2i::KSpace k;
     k.init( domain.lowerBound(), domain.upperBound(), true );
 
     typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
     MyCellFunctor cellFunctor ( pointFunctor, k );
-
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > Estimator;
-    Estimator estimator( k, cellFunctor );
-    estimator.init( h, 3.0 );
-
-    std::vector< double > results;
-    std::back_insert_iterator< std::vector< double > > insertResults( results );
 
     typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
@@ -958,12 +949,48 @@ bool testII2D()
     typedef DepthFirstVisitor< DigSurface > Visitor;
     typedef GraphVisitorRange< Visitor > VisitorRange;
     typedef typename VisitorRange::ConstIterator It;
+
+    /// Integral Invariant
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > GaussianEstimator;
+    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MeanEstimator;
+
+    double re = 3.0;
+
+    /////// Mean
+    MeanEstimator meanEstimator( k, cellFunctor );
+    meanEstimator.init( h, re );
+
+    std::vector< double > resultsMean;
+    std::back_insert_iterator< std::vector< double > > insertResultsMean( resultsMean );
+
     VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
     It ibegin = range.begin();
     It iend = range.end();
 
-    estimator.eval( ibegin, iend, insertResults, ball );
+    meanEstimator.eval( ibegin, iend, insertResultsMean, ball );
 
+    /////// Gaussian
+    GaussianEstimator gaussianEstimator( k, cellFunctor );
+    gaussianEstimator.init( h, re );
+
+    std::vector< double > resultsGaussian;
+    std::back_insert_iterator< std::vector< double > > insertResultsGaussian( resultsGaussian );
+
+    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
+    ibegin = range2.begin();
+    iend = range2.end();
+
+    gaussianEstimator.eval( ibegin, iend, insertResultsGaussian, ball );
+
+
+    ASSERT( resultsMean.size() == resultsGaussian.size() );
+
+    for( unsigned int i = 0; i < resultsMean.size(); ++i )
+    {
+        std::cout << i << " " << resultsMean[ i ] << " " << resultsGaussian[ i ] << std::endl;
+    }
+
+#ifdef EXPORT
 
     /// Board
     Board2D board;
@@ -1021,6 +1048,7 @@ bool testII2D()
     board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
           << dcenter;
     board.saveSVG("testII-inner.svg");
+#endif
 
     return true;
 }
@@ -1120,10 +1148,6 @@ int testII3D( int argc, char** argv )
     NearestPointEmbedder< Z3i::KSpace, ImplicitShape > ScellToRealPoint;
     ScellToRealPoint.init( K, step, *ishape );
 
-    //    std::vector< double > resultIIShape;
-    //    std::back_insert_iterator< std::vector< double > > resultIIShapeIterator( resultIIShape );
-    //    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIShapeIterator, *ishape );
-
     std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
     iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator );
 
@@ -1133,19 +1157,6 @@ int testII3D( int argc, char** argv )
     for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++p)
     {
-
-        //        std::cout << "p"<<std::endl;
-        /*if ( p != 148 )
-            continue;*/
-
-        // double resultOneShape = iigaussest.eval( it, *ishape );
-        double resultOne = iigaussest.eval( it );
-
-        if( resultII[ p ] != resultOne )
-            std::cout << p << " error without shape " << resultII[p] << " vs " << resultOne << std::endl;
-
-        continue;
-
         RealPoint A;// = ScellToRealPoint( *it );
         double a = 0.04;//ishape->gaussianCurvature( A );
         double b = resultII[ p ];
@@ -1174,7 +1185,6 @@ int testII3D( int argc, char** argv )
         }
 
     }
-    return 0;
 
     trace.info() << " Min = " << minCurv << std::endl;
     trace.info() << " Max = " << maxCurv << std::endl;
@@ -1329,11 +1339,11 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    //    testII2D( );
-//    testII2D_kernels();
+        testII2D( );
+    //    testII2D_kernels();
     //    testII2D_kernels_2();
-//    testII2D_same_results();
-    testII3D_same_results();
+//        testII2D_same_results();
+    //    testII3D_same_results();
     //    testII3D_kernels(argc, argv);
     //    testII3D( argc, argv );
     return 1;

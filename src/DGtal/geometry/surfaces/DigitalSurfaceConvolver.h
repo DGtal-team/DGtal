@@ -282,12 +282,12 @@ public:
     typedef SimpleMatrix< double, 2, 2 > CovarianceMatrix;
 
     typedef typename KSpace::SCell Spel;
-    typedef typename KSpace::Space::Point Point;
+    typedef typename KSpace::Point Point;
     typedef TKernelConstIterator KernelConstIterator;
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
-//    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
+    //    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
     // ----------------------- Standard services ------------------------------
@@ -320,7 +320,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin );
+    //void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin );
 
     /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -347,22 +347,22 @@ public:
        *
        * @return the estimated quantity at *it : (f*g)(t)
        */
-    template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
-
+    template< typename ConstIteratorOnCells >
+    Quantity eval ( const ConstIteratorOnCells & it );
 
     /**
-       * Iterate the convolver between [itbegin, itend[.
+       * Convolve the kernel at a given position.
        *
-       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
-       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
-       * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       * @param it (iterator of a) spel on the surface of the shape where the convolution is computed.
+       *
+       * @tparam ConstIteratorOnCells iterator of a spel of the shape .
+       *
+       * @return the estimated quantity at *it : (f*g)(t)
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
-    void eval ( const ConstIteratorOnCells & itbegin,
-                const ConstIteratorOnCells & itend,
-                OutputIterator & result,
-                const Shape & shape,
-                const double h );
+    template< typename ConstIteratorOnCells, typename Shape >
+    Quantity eval ( const ConstIteratorOnCells & it,
+                    const Shape & shape,
+                    const double h = 1.0 );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -376,6 +376,25 @@ public:
                 const ConstIteratorOnCells & itend,
                 OutputIterator & result );
 
+    /**
+       * Iterate the convolver between [itbegin, itend[.
+       *
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
+       * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void eval ( const ConstIteratorOnCells & itbegin,
+                const ConstIteratorOnCells & itend,
+                OutputIterator & result,
+                const Shape & shape,
+                const double h = 1.0 );
+
+    template< typename ConstIteratorOnCells, typename OutputIterator >
+    void deprecated_eval ( const ConstIteratorOnCells & itbegin,
+                           const ConstIteratorOnCells & itend,
+                           OutputIterator & result );
+
 
     /**
        * Convolve the kernel at a given position and return a covariance matrix.
@@ -388,6 +407,20 @@ public:
        */
     template< typename ConstIteratorOnCells >
     CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it );
+
+    /**
+       * Convolve the kernel at a given position and return a covariance matrix.
+       *
+       * @param it (iterator of a) spel on the surface of the shape where the covariance matrix is computed.
+       *
+       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       *
+       * @return the covariance matrix at *it
+       */
+    template< typename ConstIteratorOnCells, typename Shape >
+    CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it,
+                                            const Shape & shape,
+                                            const double h = 1.0 );
 
 
     /**
@@ -405,6 +438,27 @@ public:
                                 OutputIterator & result );
 
     /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
+       *
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
+       * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       *
+       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+    void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
+                                const ConstIteratorOnCells & itend,
+                                OutputIterator & result,
+                                const Shape & shape,
+                                const double h = 1.0 );
+
+    template< typename ConstIteratorOnCells, typename OutputIterator >
+    void deprecated_evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
+                                           const ConstIteratorOnCells & itend,
+                                           OutputIterator & result );
+
+    /**
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
@@ -416,6 +470,34 @@ protected:
     void fillMoments( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
     template< typename Shape >
     double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
+
+    static const int nbMoments;
+    static Spel defaultInnerSpel;
+    static Spel defaultOuterSpel;
+    static Quantity defaultInnerMoments[ 6 ];
+    static Quantity defaultOuterMoments[ 6 ];
+    static Quantity defaultInnerSum;
+    static Quantity defaultOuterSum;
+
+    template< typename SurfelIterator >
+    void core_evalCovarianceMatrix ( const SurfelIterator & it,
+                                     CovarianceMatrix & innerMatrix,
+                                     CovarianceMatrix & outerMatrix,
+                                     bool useLastResults = false,
+                                     Spel & lastInnerSpel = defaultInnerSpel,
+                                     Spel & lastOuterSpel = defaultOuterSpel,
+                                     Quantity * lastInnerMoments = defaultInnerMoments,
+                                     Quantity * lastOuterMoments = defaultOuterMoments );
+
+    template< typename SurfelIterator >
+    void core_eval ( const SurfelIterator & it,
+                     Quantity & innerSum,
+                     Quantity & outerSum,
+                     bool useLastResults = false,
+                     Spel & lastInnerSpel = defaultInnerSpel,
+                     Spel & lastOuterSpel = defaultOuterSpel,
+                     Quantity & lastInnerSum = defaultInnerSum,
+                     Quantity & lastOuterSum = defaultOuterSum );
 
     // ------------------------- Private Datas --------------------------------
 
@@ -441,7 +523,6 @@ private:
     /// Copy of the origin cell of the kernel.
     Spel myKernelSpelOrigin;
 
-    bool isInit;
     bool isInitMask;
 
     // ------------------------- Hidden services ------------------------------
@@ -493,12 +574,12 @@ public:
     typedef SimpleMatrix< double, 3, 3 > CovarianceMatrix;
 
     typedef typename KSpace::SCell Spel;
-    typedef typename KSpace::Space::Point Point;
+    typedef typename KSpace::Point Point;
     typedef TKernelConstIterator KernelConstIterator;
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
-//    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
+    //    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
     // ----------------------- Standard services ------------------------------
@@ -531,7 +612,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-    void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin );
+    //void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Spel > kOrigin );
 
     /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -562,6 +643,20 @@ public:
     Quantity eval ( const ConstIteratorOnCells & it );
 
     /**
+       * Convolve the kernel at a given position.
+       *
+       * @param it (iterator of a) spel on the surface of the shape where the convolution is computed.
+       *
+       * @tparam ConstIteratorOnCells iterator of a spel of the shape .
+       *
+       * @return the estimated quantity at *it : (f*g)(t)
+       */
+    template< typename ConstIteratorOnCells, typename Shape >
+    Quantity eval ( const ConstIteratorOnCells & it,
+                    const Shape & shape,
+                    const double h = 1.0 );
+
+    /**
        * Iterate the convolver between [itbegin, itend[.
        *
        * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
@@ -584,9 +679,8 @@ public:
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
                 OutputIterator & result,
-                Shape & shape,
-                const double h = 0.0
-                 );
+                const Shape & shape,
+                const double h = 1.0 );
 
     template< typename ConstIteratorOnCells, typename OutputIterator >
     void deprecated_eval ( const ConstIteratorOnCells & itbegin,
@@ -618,7 +712,7 @@ public:
     template< typename ConstIteratorOnCells, typename Shape >
     CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it,
                                             const Shape & shape,
-                                            const double h = 0.0 );
+                                            const double h = 1.0 );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -648,8 +742,7 @@ public:
                                 const ConstIteratorOnCells & itend,
                                 OutputIterator & result,
                                 const Shape & shape,
-                                const double h = 0.0
-                                );
+                                const double h = 1.0 );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -662,39 +755,51 @@ public:
        */
     template< typename ConstIteratorOnCells, typename OutputIterator >
     void deprecated_evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
-                                const ConstIteratorOnCells & itend,
-                                OutputIterator & result );
-
-protected:
-
-    void computeCovarianceMatrix( const Quantity* aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
-    void fillMoments( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
-    template< typename Shape >
-    double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
-
-    static const int nbMoments;
-    static Spel defaultInnerSpel;
-    static Spel defaultOuterSpel;
-    static Quantity defaultInnerMoments[ nbMoments ];
-    static Quantity defaultOuterMoments[ nbMoments ];
-
-    template< typename SurfelIterator >
-    void core_evalCovarianceMatrix
-    ( const SurfelIterator & it,
-      CovarianceMatrix & innerMatrix,
-      CovarianceMatrix & outerMatrix,
-      bool useLastResults = false,
-      Spel & lastInnerSpel = defaultInnerSpel,
-      Spel & lastOuterSpel = defaultOuterSpel,
-      Quantity * lastInnerMoments = defaultInnerMoments,
-      Quantity * lastOuterMoments = defaultOuterMoments
-      );
+                                           const ConstIteratorOnCells & itend,
+                                           OutputIterator & result );
 
     /**
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
     bool isValid() const;
+
+protected:
+
+    void computeCovarianceMatrix ( const Quantity* aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+    void fillMoments ( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
+    template< typename Shape >
+    double computeShiftFromShape ( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
+
+    static const int nbMoments;
+    static Spel defaultInnerSpel;
+    static Spel defaultOuterSpel;
+    static Quantity defaultInnerMoments[ 10 ];
+    static Quantity defaultOuterMoments[ 10 ];
+    static Quantity defaultInnerSum;
+    static Quantity defaultOuterSum;
+
+    template< typename SurfelIterator >
+    void core_evalCovarianceMatrix ( const SurfelIterator & it,
+                                     CovarianceMatrix & innerMatrix,
+                                     CovarianceMatrix & outerMatrix,
+                                     bool useLastResults = false,
+                                     Spel & lastInnerSpel = defaultInnerSpel,
+                                     Spel & lastOuterSpel = defaultOuterSpel,
+                                     Quantity * lastInnerMoments = defaultInnerMoments,
+                                     Quantity * lastOuterMoments = defaultOuterMoments );
+
+    template< typename SurfelIterator >
+    void core_eval ( const SurfelIterator & it,
+                     Quantity & innerSum,
+                     Quantity & outerSum,
+                     bool useLastResults = false,
+                     Spel & lastInnerSpel = defaultInnerSpel,
+                     Spel & lastOuterSpel = defaultOuterSpel,
+                     Quantity & lastInnerSum = defaultInnerSum,
+                     Quantity & lastOuterSum = defaultOuterSum );
+
+
 
     // ------------------------- Private Datas --------------------------------
 
@@ -720,7 +825,6 @@ private:
     /// Copy of the origin cell of the kernel.
     Spel myKernelSpelOrigin;
 
-    bool isInit;
     bool isInitMask;
 
     // ------------------------- Hidden services ------------------------------

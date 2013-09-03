@@ -318,6 +318,33 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eva
 
 
 
+template< typename TKSpace, typename TShapeFunctor >
+template< typename ConstIteratorOnCells, typename Shape >
+inline
+typename DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::Quantity
+DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::eval ( const ConstIteratorOnCells & it,
+                                                                                    const Shape & shape )
+{
+
+    Quantity measure = ( Quantity )myConvolver.eval( it, shape, h );
+    measure *= dh2;
+
+    return d3_r * ( dPI_2 - d1_r2 * measure );
+}
+
+template< typename TKSpace, typename TShapeFunctor >
+template< typename ConstIteratorOnCells, typename Shape >
+inline
+typename DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::Quantity
+DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eval ( const ConstIteratorOnCells & it,
+                                                                                    const Shape & shape )
+{
+    Quantity measure = ( Quantity )myConvolver.eval( it, shape, h );
+    measure *= dh3;
+
+    return d8_3r - d_4_PIr4 * measure;
+}
+
 
 
 template< typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension >
@@ -378,6 +405,32 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eva
         ++result;
     }
 }
+
+template< typename TKSpace, typename TShapeFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
+inline
+void
+DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 2 >::eval( const ConstIteratorOnCells & itb,
+                                                                                   const ConstIteratorOnCells & ite,
+                                                                                   OutputIterator & result,
+                                                                                   const Shape & shape )
+{
+    std::vector< Quantity > quantities;
+    std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
+    myConvolver.eval( itb, ite, quantitiesIterator, shape, h );
+
+    Quantity measure;
+
+    DGtal::Dimension qsize = quantities.size();
+    for( DGtal::Dimension  i = 0; i < qsize; ++i )
+    {
+        measure = quantities[ i ];
+        measure *= dh2;
+        *result = d3_r * ( dPI_2 - d1_r2 * measure );
+        ++result;
+    }
+}
+
 
 template< typename TKSpace, typename TShapeFunctor >
 template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
