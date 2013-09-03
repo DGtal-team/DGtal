@@ -480,7 +480,7 @@ protected:
     static Quantity defaultOuterSum;
 
     template< typename SurfelIterator >
-    void core_evalCovarianceMatrix ( const SurfelIterator & it,
+    bool core_evalCovarianceMatrix ( const SurfelIterator & it,
                                      CovarianceMatrix & innerMatrix,
                                      CovarianceMatrix & outerMatrix,
                                      bool useLastResults = false,
@@ -490,7 +490,7 @@ protected:
                                      Quantity * lastOuterMoments = defaultOuterMoments );
 
     template< typename SurfelIterator >
-    void core_eval ( const SurfelIterator & it,
+    bool core_eval ( const SurfelIterator & it,
                      Quantity & innerSum,
                      Quantity & outerSum,
                      bool useLastResults = false,
@@ -780,7 +780,7 @@ protected:
     static Quantity defaultOuterSum;
 
     template< typename SurfelIterator >
-    void core_evalCovarianceMatrix ( const SurfelIterator & it,
+    bool core_evalCovarianceMatrix ( const SurfelIterator & it,
                                      CovarianceMatrix & innerMatrix,
                                      CovarianceMatrix & outerMatrix,
                                      bool useLastResults = false,
@@ -790,7 +790,7 @@ protected:
                                      Quantity * lastOuterMoments = defaultOuterMoments );
 
     template< typename SurfelIterator >
-    void core_eval ( const SurfelIterator & it,
+    bool core_eval ( const SurfelIterator & it,
                      Quantity & innerSum,
                      Quantity & outerSum,
                      bool useLastResults = false,

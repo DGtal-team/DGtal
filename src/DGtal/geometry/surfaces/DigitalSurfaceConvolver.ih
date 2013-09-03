@@ -1707,7 +1707,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename SurfelIterator >
-void
+bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::core_evalCovarianceMatrix
 ( const SurfelIterator & it,
   CovarianceMatrix & innerMatrix,
@@ -1720,6 +1720,10 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 {
     ASSERT ( isInitMask == true );
     //    ASSERT ( useLastResults == true && lastInnerMoments != NULL && lastOuterMoments != NULL && lastInnerSpel != lastOuterSpel );
+
+#ifdef DEBUG_VERBOSE
+    Dimension recount = false;
+#endif
 
     typedef typename Functor::Quantity FQuantity;
     DGtal::Dimension nbMasks = myMask.size() - 1;
@@ -1779,7 +1783,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                 {
                     useLastResults = false;
 #ifdef DEBUG_VERBOSE
-                    ++recount;
+                    recount = true;
 #endif
                 }
                 else if( offset == positionOfFullKernel ) /// Full kernel in 2D. Never reached because case already considered before. It's a honeypot.
@@ -1905,11 +1909,17 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;
+
+#ifdef DEBUG_VERBOSE
+    return recount;
+#else
+    return false;
+#endif
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename SurfelIterator >
-void
+bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::core_eval
 ( const SurfelIterator & it,
   Quantity & innerSum,
@@ -1922,6 +1932,10 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 {
     ASSERT ( isInitMask == true );
     //    ASSERT ( useLastResults == true && lastInnerMoments != NULL && lastOuterMoments != NULL && lastInnerSpel != lastOuterSpel );
+
+#ifdef DEBUG_VERBOSE
+    Dimension recount = false;
+#endif
 
     typedef typename Functor::Quantity FQuantity;
     DGtal::Dimension nbMasks = myMask.size() - 1;
@@ -1980,7 +1994,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                 {
                     useLastResults = false;
 #ifdef DEBUG_VERBOSE
-                    ++recount;
+                    recount = true;
 #endif
                 }
                 else if( offset == positionOfFullKernel ) /// Full kernel in 2D. Never reached because case already considered before. It's a honeypot.
@@ -2106,6 +2120,12 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;
+
+#ifdef DEBUG_VERBOSE
+    return recount;
+#else
+    return false;
+#endif
 }
 
 
@@ -3967,7 +3987,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename SurfelIterator >
-void
+bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::core_evalCovarianceMatrix
 ( const SurfelIterator & it,
   CovarianceMatrix & innerMatrix,
@@ -3980,6 +4000,10 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 {
     ASSERT ( isInitMask == true );
     //    ASSERT ( useLastResults == true && lastInnerMoments != NULL && lastOuterMoments != NULL && lastInnerSpel != lastOuterSpel );
+
+#ifdef DEBUG_VERBOSE
+    Dimension recount = false;
+#endif
 
     typedef typename Functor::Quantity FQuantity;
     DGtal::Dimension nbMasks = myMask.size() - 1;
@@ -4041,7 +4065,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                 {
                     useLastResults = false;
 #ifdef DEBUG_VERBOSE
-                    ++recount;
+                    recount = true;
 #endif
                 }
                 else if( offset == positionOfFullKernel ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
@@ -4170,11 +4194,17 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;
+
+#ifdef DEBUG_VERBOSE
+    return recount;
+#else
+    return false;
+#endif
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 template< typename SurfelIterator >
-void
+bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::core_eval
 ( const SurfelIterator & it,
   Quantity & innerSum,
@@ -4187,6 +4217,10 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 {
     ASSERT ( isInitMask == true );
     //    ASSERT ( useLastResults == true && lastInnerMoments != NULL && lastOuterMoments != NULL && lastInnerSpel != lastOuterSpel );
+
+#ifdef DEBUG_VERBOSE
+    Dimension recount = false;
+#endif
 
     typedef typename Functor::Quantity FQuantity;
     DGtal::Dimension nbMasks = myMask.size() - 1;
@@ -4247,7 +4281,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
                 {
                     useLastResults = false;
 #ifdef DEBUG_VERBOSE
-                    ++recount;
+                    recount = true;
 #endif
                 }
                 else if( offset == positionOfFullKernel ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
@@ -4376,4 +4410,10 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;
+
+#ifdef DEBUG_VERBOSE
+    return recount;
+#else
+    return false;
+#endif
 }
