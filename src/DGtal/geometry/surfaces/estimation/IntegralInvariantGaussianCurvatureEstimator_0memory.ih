@@ -299,10 +299,10 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
 
     Quantity measure;
 
-    std::ifstream input( filename );
+    std::ifstream input( filename.c_str() );
     ASSERT( input.is_open() );
 
-    std::ofstream result( file );
+    std::ofstream result( file.c_str() );
     ASSERT( result.is_open() );
 
     std::string line;
@@ -340,10 +340,10 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
 
     Matrix3x3 currentMatrix;
 
-    std::ifstream input( filename );
+    std::ifstream input( filename.c_str() );
     ASSERT( input.is_open() );
 
-    std::ofstream result( file );
+    std::ofstream result( file.c_str() );
     ASSERT( result.is_open() );
 
     std::string line;
@@ -383,10 +383,10 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
 
     Quantity measure;
 
-    std::ifstream input( filename );
+    std::ifstream input( filename.c_str() );
     ASSERT( input.is_open() );
 
-    std::ofstream result( file );
+    std::ofstream result( file.c_str() );
     ASSERT( result.is_open() );
 
     std::string line;
@@ -426,10 +426,10 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
 
     Matrix3x3 currentMatrix;
 
-    std::ifstream input( filename );
+    std::ifstream input( filename.c_str() );
     ASSERT( input.is_open() );
 
-    std::ofstream result( file );
+    std::ofstream result( file.c_str() );
     ASSERT( result.is_open() );
 
     std::string line;

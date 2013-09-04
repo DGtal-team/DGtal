@@ -226,7 +226,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
   const ConstIteratorOnCells & itend,
   const std::string & file )
 {
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     for( ConstIteratorOnCells itcurrent = itbegin;
@@ -398,7 +398,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells
@@ -463,7 +463,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells
@@ -1097,7 +1097,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells
@@ -1161,7 +1161,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells
@@ -2311,7 +2311,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells
@@ -2376,7 +2376,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells
@@ -2748,7 +2748,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells
@@ -2812,7 +2812,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     Spel lastInnerSpel, lastOuterSpel;
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     /// Iterate on all cells

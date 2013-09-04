@@ -171,7 +171,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
 
     myOrigin = KSpaceKernel.sSpel( pOrigin );
     myConvolver.init ( kernelsIterators[ 4 ].first, kernelsIterators[ 4 ].second, myOrigin, kernelsIterators );
-    }
+}
 
 template< typename TKSpace, typename TShapeFunctor >
 inline
