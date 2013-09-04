@@ -327,7 +327,7 @@ int testII3D( )//int argc, char** argv )
     std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
     estimator.eval( boundary.begin(), boundary.end(), resultIIIterator, *ishape );
 
-    std::ifstream input( filename);
+    std::ifstream input( filename.c_str() );
     ASSERT( input.good() );
 
     std::string line;

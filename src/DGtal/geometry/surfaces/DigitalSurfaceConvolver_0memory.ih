@@ -134,7 +134,7 @@ DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelCon
 {
     //ASSERT ( isInitMask == true ); //Actually, this don't use the optimization by masks
 
-    std::ofstream result ( file );
+    std::ofstream result ( file.c_str() );
     ASSERT ( result.is_open() );
 
     for( ConstIteratorOnCells itcurrent = itbegin;
