@@ -1343,7 +1343,7 @@ int main( int argc, char** argv )
     //    testII2D_kernels();
     //    testII2D_kernels_2();
 //        testII2D_same_results();
-    //    testII3D_same_results();
+        testII3D_same_results();
     //    testII3D_kernels(argc, argv);
     //    testII3D( argc, argv );
     return 1;

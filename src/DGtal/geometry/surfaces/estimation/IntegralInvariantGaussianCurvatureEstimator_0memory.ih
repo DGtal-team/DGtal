@@ -78,55 +78,22 @@ inline
 void
 DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 2 >::init ( const double _h, const double re )
 {
-    filename = std::tmpnam( nullptr );
+    gaussFunctor.init( _h, re );
 
     h = _h;
     radius = re;
 
-    dh2 = h * h;
+    /*dh2 = h * h;
     d3_r = 3.0 / radius;
     dPI_2 = M_PI / 2.0;
-    d1_r2 = 1.0 / ( radius * radius );
+    d1_r2 = 1.0 / ( radius * radius );*/
 
     RealPoint rOrigin = RealPoint ( 0.0, 0.0 );
     Domain::Point pOrigin = Domain::Point( 0, 0 );
-    KernelSupport kernel( rOrigin, radius );
-    /*KSpace KSpaceKernel;*/
+    KernelSupport * kernel = new KernelSupport( rOrigin, radius );
 
-    kernels = std::vector< EuclideanMinus* > ( 9 );
-    /*kernelsIterators = std::vector< PairIterators > ( 9 );
+    kernels = std::vector< DigitalShape > ( 9 );
 
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
-
-    /// Full Kernel computation
-    GaussDigitizer< Z2i::Space, KernelSupport > digKernel;
-    digKernel.attach( kernel );
-    digKernel.init( kernel.getLowerBound() - RealPoint( h, h ), kernel.getUpperBound() + RealPoint( h, h ), h );
-
-    Domain domainKernel = digKernel.getDomain();
-    DigitalSet setKernel( domainKernel );
-    Shapes< Domain >::digitalShaper ( setKernel, digKernel );
-
-    bool space_ok = KSpaceKernel.init( domainKernel.lowerBound(), domainKernel.upperBound(), true );
-    if( !space_ok )
-    {
-        trace.error() << "Error in the Khalimsky space construction." << std::endl;
-        return;
-    }
-
-    int count = 0;
-    for( auto it = setKernel.begin(), itend = setKernel.end();
-         it != itend;
-         ++it )
-    {
-        kernels[ 4 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(11) is 4
-        ++count;
-    }
-
-    ASSERT(( count != 0 )); // Error when creating full kernel
-
-    kernelsIterators[ 4 ].first = kernels[ 4 ].begin();
-    kernelsIterators[ 4 ].second = kernels[ 4 ].end();*/
     /// End of full kernel
 
     /// Computation of shifting masks
@@ -135,48 +102,31 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
         for( int x = -1; x <= 1; ++x )
         {
             RealPoint shiftPoint = rOrigin + RealPoint( x * h , y * h );
-            KernelSupport kernelShifted( shiftPoint, radius );
+            KernelSupport * kernelShifted = new KernelSupport( shiftPoint, radius );
             int offset = ( x + 1 ) + (( y + 1 ) * 3 );
 
             if( offset == 4 ) // Full kernel, already done
             {
+                delete kernelShifted;
                 RealPoint shiftPoint2 = rOrigin + RealPoint( 2.0 * radius, 2.0 * radius );
-                KernelSupport kernelShifted2( shiftPoint2, radius );
-                EuclideanMinus * current = new EuclideanMinus( kernel, kernelShifted2 );
-                kernels[ offset ] = current;
+                KernelSupport * kernelShifted2 = new KernelSupport( shiftPoint2, 0.1 );
+                EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted2 );
+
+                kernels[ offset ].attach( *current );
+                kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
             }
             else
             {
-                EuclideanMinus * current = new EuclideanMinus( kernel, kernelShifted );
-                kernels[ offset ] = current;
+                EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted );
 
-                /*GaussDigitizer< Z2i::Space, EuclideanShape > digCurrentKernel;
-                digCurrentKernel.attach( current );
-                digCurrentKernel.init( kernel.getLowerBound(), kernel.getUpperBound(), h );
-
-                DigitalSet setCurrentKernel( domainKernel );
-                Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
-
-                int count2 = 0;
-                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
-                     it != itend;
-                     ++it )
-                {
-                    kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
-                    ++count2;
-                }
-
-                ASSERT(( count2 != 0 )); // Error when creating masks
-
-                kernelsIterators[ offset ].first = kernels[ offset ].begin();
-                kernelsIterators[ offset ].second = kernels[ offset ].end();*/
+                kernels[ offset ].attach( *current );
+                kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
             }
         }
     }
     /// End of computation of masks
 
-//    myOrigin = KSpaceKernel.sSpel( pOrigin );
-    myConvolver.init ( rOrigin, kernels );
+    myConvolver.init ( pOrigin, kernels );
     }
 
 template< typename TKSpace, typename TShapeFunctor >
@@ -184,57 +134,24 @@ inline
 void
 DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::init ( const double _h, const double re )
 {
-    filename = std::tmpnam( nullptr );
+    gaussFunctor.init( _h, re );
 
     h = _h;
     radius = re;
 
-    double r3 = radius * radius * radius;
+    /*double r3 = radius * radius * radius;
     double r6 = r3 * r3;
     d6_PIr6 = 6.0 / ( M_PI * r6 );
     d8_5r = 8.0 / ( 5.0 * radius );
     double h2 = h * h;
-    dh5 = h2 * h2 * h;
+    dh5 = h2 * h2 * h;*/
 
     RealPoint rOrigin = RealPoint ( 0.0, 0.0, 0.0 );
     Domain::Point pOrigin = Domain::Point( 0, 0, 0 );
-    KernelSupport kernel( rOrigin, radius );
-    /*KSpace KSpaceKernel;*/
+    KernelSupport * kernel = new KernelSupport( rOrigin, radius );
 
-    kernels = std::vector< EuclideanMinus* >( 27 );
-    /*kernelsIterators = std::vector< PairIterators > ( 27 );
+    kernels = std::vector< DigitalShape >( 27 );
 
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
-
-    /// Full Kernel computation
-    GaussDigitizer< Z3i::Space, KernelSupport > digKernel;
-    digKernel.attach( kernel );
-    digKernel.init( kernel.getLowerBound() - RealPoint( h, h, h ), kernel.getUpperBound() + RealPoint( h, h, h ), h );
-
-    Domain domainKernel = digKernel.getDomain();
-    DigitalSet setKernel( domainKernel );
-    Shapes< Domain >::digitalShaper( setKernel, digKernel );
-
-    bool space_ok = KSpaceKernel.init( domainKernel.lowerBound(), domainKernel.upperBound(), true );
-    if( !space_ok )
-    {
-        trace.error() << "Error in the Khalimsky space construction." << std::endl;
-        return;
-    }
-
-    int count = 0;
-    for( auto it = setKernel.begin(), itend = setKernel.end();
-         it != itend;
-         ++it )
-    {
-        kernels[ 13 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(111) is 13
-        ++count;
-    }
-
-    ASSERT(( count != 0 )); // Error when creating full kernel
-
-    kernelsIterators[ 13 ].first = kernels[ 13 ].begin();
-    kernelsIterators[ 13 ].second = kernels[ 13 ].end();*/
     /// End of Full Kernel
 
     /// Computation of masks
@@ -245,48 +162,32 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
             for( int x = -1; x <= 1; ++x )
             {
                 RealPoint shiftPoint = rOrigin + RealPoint( x * h, y * h, z * h );
-                KernelSupport kernelShifted( shiftPoint, radius );
+                KernelSupport * kernelShifted = new KernelSupport( shiftPoint, radius );
                 int offset = ( x + 1 ) + (( y + 1 ) * 3 ) + (( z + 1 ) * 9 );
+
                 if( offset == 13 ) // Full kernel
                 {
+                    delete kernelShifted;
                     RealPoint shiftPoint2 = rOrigin + RealPoint( 2.0 * radius, 2.0 * radius, 2.0 * radius );
-                    KernelSupport kernelShifted2( shiftPoint2, radius );
-                    EuclideanMinus * current = new EuclideanMinus( kernel, kernelShifted2 );
-                    kernels[ offset ] = current;
+                    KernelSupport * kernelShifted2 = new KernelSupport( shiftPoint2, 0.1 );
+                    EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted2 );
+
+                    kernels[ offset ].attach( *current );
+                    kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
                 }
                 else
                 {
-                    EuclideanMinus * current = new EuclideanMinus( kernel, kernelShifted );
-                    kernels[ offset ] = current;
-/*
-                    GaussDigitizer< Z3i::Space, EuclideanShape > digCurrentKernel;
-                    digCurrentKernel.attach( current );
-                    digCurrentKernel.init( kernel.getLowerBound(), kernel.getUpperBound(), h );
+                    EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted );
 
-                    DigitalSet setCurrentKernel( domainKernel );
-                    Shapes< Domain>::digitalShaper ( setCurrentKernel, digCurrentKernel );
-
-                    int count2 = 0;
-                    for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
-                         it != itend;
-                         ++it )
-                    {
-                        kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
-                        ++count2;
-                    }
-
-                    ASSERT(( count2 != 0 )); // Error when creating masks
-
-                    kernelsIterators[ offset ].first = kernels[ offset ].begin();
-                    kernelsIterators[ offset ].second = kernels[ offset ].end();*/
+                    kernels[ offset ].attach( *current );
+                    kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
                 }
             }
         }
     }
     /// End of computation of masks
 
-//    myOrigin = KSpaceKernel.sSpel( pOrigin );
-    myConvolver.init( rOrigin, kernels );
+    myConvolver.init( pOrigin, kernels );
 }
 
 
@@ -371,59 +272,6 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
 
 
 
-
-template< typename TKSpace, typename TShapeFunctor >
-template< typename ConstIteratorOnCells >
-inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::CurvInformation
-DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::evalComplete ( const ConstIteratorOnCells & it )
-{
-    double k1, k2;
-
-    Matrix3x3 covarianceMatrix = myConvolver.evalCovarianceMatrix( it );
-    Matrix3x3 eigenVectors;
-    Vector3 eigenValues;
-
-    covarianceMatrix *= dh5;
-
-    EigenValues3D< Quantity >::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
-
-    ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
-
-    k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
-    k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
-
-    return CurvInformation( Quantity( k1 * k2 ), eigenVectors, eigenValues );
-}
-
-template< typename TKSpace, typename TShapeFunctor >
-template< typename ConstIteratorOnCells, typename Shape >
-inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::CurvInformation
-DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::evalComplete ( const ConstIteratorOnCells & it,
-                                                                                                const Shape & shape )
-{
-    double k1, k2;
-
-    Matrix3x3 covarianceMatrix = myConvolver.evalCovarianceMatrix( it, shape, h );
-    Matrix3x3 eigenVectors;
-    Vector3 eigenValues;
-
-    covarianceMatrix *= dh5;
-
-    EigenValues3D< Quantity >::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
-
-    ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
-
-    k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
-    k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
-
-    return CurvInformation( Quantity( k1 * k2 ), eigenVectors, eigenValues );
-}
-
-
-
-
 template< typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension >
 template< typename ConstIteratorOnCells >
 inline
@@ -443,7 +291,9 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
                                                                                         const ConstIteratorOnCells & ite,
                                                                                         std::string & file )
 {
-    std::vector< Quantity > quantities;
+    myConvolver.eval( itb, ite, file, gaussFunctor );
+
+    /*std::vector< Quantity > quantities;
     std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
     myConvolver.eval ( itb, ite, filename );
 
@@ -469,7 +319,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
     }
 
     result.close();
-    input.close();
+    input.close();*/
 }
 
 template< typename TKSpace, typename TShapeFunctor >
@@ -480,7 +330,9 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
                                                                                         const ConstIteratorOnCells & ite,
                                                                                         std::string & file )
 {
-    Quantity k1,k2;
+    myConvolver.evalCovarianceMatrix( itb, ite, file, gaussFunctor );
+
+    /*Quantity k1,k2;
 
     std::vector< Matrix3x3 > vCovarianceMatrix;
     std::back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
@@ -511,7 +363,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
     }
 
     result.close();
-    input.close();
+    input.close();*/
 }
 
 template< typename TKSpace, typename TShapeFunctor >
@@ -523,7 +375,9 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
                                                                                         std::string & file,
                                                                                         const Shape & shape )
 {
-    std::vector< Quantity > quantities;
+    myConvolver.evalCovarianceMatrix( itb, ite, file, shape, h, gaussFunctor );
+
+    /*std::vector< Quantity > quantities;
     std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
     myConvolver.eval ( itb, ite, filename, shape, h );
 
@@ -549,7 +403,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
     }
 
     result.close();
-    input.close();
+    input.close();*/
 }
 
 
@@ -562,7 +416,9 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
                                                                                         std::string & file,
                                                                                         const Shape & shape )
 {
-    Quantity k1,k2;
+    myConvolver.evalCovarianceMatrix( itb, ite, file, shape, h, gaussFunctor );
+
+    /*Quantity k1,k2;
 
     std::vector< Matrix3x3 > vCovarianceMatrix;
     std::back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
@@ -593,139 +449,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
     }
 
     result.close();
-    input.close();
+    input.close();*/
 }
-
-
-
-
-
-template< typename TKSpace, typename TShapeFunctor >
-template< typename ConstIteratorOnCells >
-inline
-void
-DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::evalComplete ( const ConstIteratorOnCells & itb,
-                                                                                                const ConstIteratorOnCells & ite,
-                                                                                                std::string & file )
-{
-    Quantity k1,k2;
-
-    std::vector< Matrix3x3 > vCovarianceMatrix;
-    std::back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
-    myConvolver.evalCovarianceMatrix ( itb, ite, filename );
-
-    Matrix3x3 currentMatrix;
-
-    std::ifstream input( filename );
-    ASSERT( input.is_open() );
-
-    std::ofstream result( file );
-    ASSERT( result.is_open() );
-
-    std::string line;
-
-    DGtal::Dimension cmsize = vCovarianceMatrix.size();
-    for( DGtal::Dimension i = 0; i < cmsize; ++i )
-    {
-        Matrix3x3 eigenVectors;
-        Vector3 eigenValues;
-
-        std::getline( input, line );
-
-        string2Matrix3x3( line, currentMatrix );
-        currentMatrix *= dh5;
-
-        evalk1k2( currentMatrix, eigenVectors, eigenValues, k1, k2 );
-
-        result << CurvInformation( Quantity( k1 * k2 ), eigenVectors, eigenValues );
-        result << '\n';
-    }
-
-    result.close();
-    input.close();
-}
-
-template< typename TKSpace, typename TShapeFunctor >
-template< typename ConstIteratorOnCells, typename Shape >
-inline
-void
-DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::evalComplete ( const ConstIteratorOnCells & itb,
-                                                                                                const ConstIteratorOnCells & ite,
-                                                                                                std::string & file,
-                                                                                                const Shape & shape )
-{
-    Quantity k1,k2;
-
-    std::vector< Matrix3x3 > vCovarianceMatrix;
-    std::back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
-    myConvolver.evalCovarianceMatrix ( itb, ite, filename, shape, h );
-
-    Matrix3x3 currentMatrix;
-
-    std::ifstream input( filename );
-    ASSERT( input.is_open() );
-
-    std::ofstream result( file );
-    ASSERT( result.is_open() );
-
-    std::string line;
-
-    DGtal::Dimension cmsize = vCovarianceMatrix.size();
-    for( DGtal::Dimension i = 0; i < cmsize; ++i )
-    {
-        Matrix3x3 eigenVectors;
-        Vector3 eigenValues;
-
-        std::getline( input, line );
-
-        string2Matrix3x3( line, currentMatrix );
-        currentMatrix *= dh5;
-
-        evalk1k2( currentMatrix, eigenVectors, eigenValues, k1, k2 );
-
-        result << CurvInformation( Quantity( k1 * k2 ), eigenVectors, eigenValues );
-        result << '\n';
-    }
-
-    result.close();
-    input.close();
-}
-
-
-
-template< typename TKSpace, typename TShapeFunctor >
-inline
-void
-DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::evalk1k2(
-        Matrix3x3 & matrix,
-        Quantity & k1,
-        Quantity & k2 )
-{
-    Matrix3x3 eigenVectors;
-    Vector3 eigenValues;
-
-    evalk1k2( matrix, eigenVectors, eigenValues, k1, k2 );
-}
-
-template< typename TKSpace, typename TShapeFunctor >
-inline
-void
-DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::evalk1k2(
-        Matrix3x3 & matrix,
-        Matrix3x3 & eigenVectors,
-        Vector3 & eigenValues,
-        Quantity & k1,
-        Quantity & k2 )
-{
-    EigenValues3D< Quantity >::getEigenDecomposition( matrix, eigenVectors, eigenValues );
-
-    ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
-    ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
-
-    k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
-    k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
-}
-
 
 
 template< typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension >

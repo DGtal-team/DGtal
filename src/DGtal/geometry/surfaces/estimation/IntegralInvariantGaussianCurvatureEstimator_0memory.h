@@ -66,16 +66,106 @@ namespace DGtal
 {
 
 template <typename Quantity, typename EigenVectors, typename EigenValues>
-struct CurvatureInformation
+struct CurvatureInformation_0memory
 {
     Quantity curvature;
     EigenVectors eigenVectors;
     EigenValues eigenValues;
 
-    CurvatureInformation( Quantity q, EigenVectors evec, EigenValues eval )
+    CurvatureInformation_0memory( Quantity q, EigenVectors evec, EigenValues eval )
         :curvature(q), eigenVectors(evec), eigenValues(eval)
     {}
 };
+
+template< typename Matrix3x3 >
+class GaussianCurvatureFunctor3 : std::unary_function <double,double>
+{
+public:
+    typedef double Value;
+    typedef EigenValues3D< Value >::Vector3 Vector3;
+
+    GaussianCurvatureFunctor3(){}
+
+    void init( const double & h, const double & r )
+    {
+        double r3 = r * r * r;
+        double r6 = r3 * r3;
+        d6_PIr6 = 6.0 / ( M_PI * r6 );
+        d8_5r = 8.0 / ( 5.0 * r );
+        double h2 = h * h;
+        dh5 = h2 * h2 * h;
+    }
+
+    Value operator()(const Matrix3x3 & aInput)
+    {
+        Matrix3x3 cp_matrix = aInput;
+//        std::cout << cp_matrix << std::endl;
+        cp_matrix *= dh5;
+        Value k1,k2;
+        Matrix3x3 eigenVectors;
+        Vector3 eigenValues;
+        evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
+        return k1 * k2;
+    }
+
+protected:
+    void evalk1k2(
+            Matrix3x3 & matrix,
+            Matrix3x3 & eigenVectors,
+            Vector3 & eigenValues,
+            Value & k1,
+            Value & k2 )
+    {
+        EigenValues3D< Value >::getEigenDecomposition( matrix, eigenVectors, eigenValues );
+
+        ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
+        ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
+
+        k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
+        k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
+    }
+
+private:
+    Value dh5;
+    Value d6_PIr6;
+    Value d8_5r;
+
+};
+
+template< typename Matrix2x2 >
+class GaussianCurvatureFunctor2 : std::unary_function <double,double>
+{
+public:
+    typedef double Value;
+
+    GaussianCurvatureFunctor2(){}
+
+    void init( const double & h, const double & r )
+    {
+        dh2 = h * h;
+        d3_r = 3.0 / r;
+        dPI_2 = M_PI / 2.0;
+        d1_r2 = 1.0 / ( r * r );
+    }
+
+    Value operator()(const Matrix2x2 & aInput)
+    {
+        Matrix2x2 cp_matrix = aInput;
+//        std::cout << cp_matrix << std::endl;
+        cp_matrix *= dh2;
+        Value k = d3_r * ( dPI_2 - d1_r2 * cp_matrix[ 0 ] );
+
+        return k;
+    }
+
+private:
+    Value dh2; /// h*h
+    Value d3_r; /// 3/r
+    Value dPI_2; /// PI/2
+    Value d1_r2; /// 1/r^2
+
+};
+
 
 /////////////////////////////////////////////////////////////////////////////
 // template class IntegralInvariantGaussianCurvatureEstimator_0memory
@@ -265,11 +355,14 @@ public:
 
     typedef ImplicitBall<Z2i::Space> KernelSupport;
     typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+    typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
 
     typedef TShapeFunctor ShapeCellFunctor;
     typedef ConstValueFunctor<Value> KernelCellFunctor;
-    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, EuclideanMinus> Convolver;
+    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShape> Convolver;
     typedef typename Convolver::PairIterators PairIterators;
+
+    typedef typename Convolver::CovarianceMatrix Matrix2x2;
 
 
 
@@ -313,7 +406,8 @@ public:
       *
       * @return quantity of the result of Integral Invariant estimator at position *it
       */
-    template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
+    template<typename ConstIteratorOnCells>
+    Quantity eval ( const ConstIteratorOnCells & it );
 
     /**
       * Compute the integral invariant Gaussian curvature to cell *it of a shape.
@@ -361,15 +455,6 @@ public:
                 std::string & file,
                 const Shape & shape );
 
-    /**
-      * @return iterator of the begin spel of the kernel support
-      */
-    const ConstIteratorKernel & beginKernel() const;
-
-    /**
-      * @return iterator of the end spel of the kernel support
-      */
-    const ConstIteratorKernel & endKernel() const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -383,17 +468,11 @@ public:
      */
     bool isValid() const;
 
-protected:
-    void string2Quantity( std::string & line, Quantity & quantity )
-    {
-        quantity = ( Quantity )(( double ) std::atof( line.c_str()));
-    }
-
     // ------------------------- Private Datas --------------------------------
 private:
 
     /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
-    std::vector< EuclideanMinus* > kernels;
+    std::vector< DigitalShape > kernels;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -416,7 +495,7 @@ private:
     Quantity dPI_2; /// PI/2
     Quantity d1_r2; /// 1/r^2
 
-    std::string filename;
+    GaussianCurvatureFunctor2< Matrix2x2 > gaussFunctor;
 
 private:
 
@@ -456,10 +535,11 @@ public:
 
     typedef ImplicitBall<Z3i::Space> KernelSupport;
     typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+    typedef GaussDigitizer< Z3i::Space, EuclideanMinus > DigitalShape;
 
     typedef TShapeFunctor ShapeCellFunctor;
     typedef ConstValueFunctor<Value> KernelCellFunctor;
-    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, EuclideanMinus> Convolver;
+    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShape> Convolver;
     typedef typename Convolver::PairIterators PairIterators;
 
     typedef typename Convolver::CovarianceMatrix Matrix3x3;
@@ -523,33 +603,6 @@ public:
                     const Shape & shape );
 
     /**
-      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
-      *
-      * @tparam ConstIteratorOnCells iterator on a Cell
-      *
-      * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
-      *
-      * @return a struct with Gaussian curvature value of Integral Invariant estimator at position *it, and eigenVectors
-      * and eigenValues resulting of the PCA (contening principals curvature information)
-      */
-    template<typename ConstIteratorOnCells>
-    CurvInformation evalComplete ( const ConstIteratorOnCells & it );
-
-    /**
-      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
-      *
-      * @tparam ConstIteratorOnCells iterator on a Cell
-      *
-      * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
-      *
-      * @return a struct with Gaussian curvature value of Integral Invariant estimator at position *it, and eigenVectors
-      * and eigenValues resulting of the PCA (contening principals curvature information)
-      */
-    template<typename ConstIteratorOnCells, typename Shape>
-    CurvInformation evalComplete ( const ConstIteratorOnCells & it,
-                                   const Shape & shape );
-
-    /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
@@ -583,51 +636,6 @@ public:
                 const Shape & shape );
 
     /**
-      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputStructIterator iterator of list of CurvInformation
-      *
-      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
-      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
-      * @param result iterator of a structs with Gaussian curvature value of Integral Invariant estimator, and eigenVectors
-      * and eigenValues resulting of the PCA (contening principals curvature information)
-      */
-    template< typename ConstIteratorOnCells >
-    void evalComplete ( const ConstIteratorOnCells & itb,
-                        const ConstIteratorOnCells & ite,
-                        std::string & file );
-
-    /**
-      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputStructIterator iterator of list of CurvInformation
-      *
-      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
-      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
-      * @param result iterator of a structs with Gaussian curvature value of Integral Invariant estimator, and eigenVectors
-      * and eigenValues resulting of the PCA (contening principals curvature information)
-      */
-    template< typename ConstIteratorOnCells, typename Shape >
-    void evalComplete ( const ConstIteratorOnCells & itb,
-                        const ConstIteratorOnCells & ite,
-                        std::string & file,
-                        const Shape & shape );
-
-    /**
-      * @return iterator of the begin spel of the kernel support
-      */
-    const ConstIteratorKernel & beginKernel() const;
-
-    /**
-      * @return iterator of the end spel of the kernel support
-      */
-    const ConstIteratorKernel & endKernel() const;
-
-    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
@@ -639,27 +647,11 @@ public:
      */
     bool isValid() const;
 
-protected:
-
-    void string2Matrix3x3( std::string & line, Matrix3x3 & matrix )
-    {
-        std::cout << line << std::endl;
-    }
-
-    void string2Quantity( std::string & line, Quantity & quantity )
-    {
-        quantity = ( Quantity )(( double ) std::atof( line.c_str()));
-    }
-
-    void evalk1k2( Matrix3x3 & matrix, Quantity & k1, Quantity & k2 );
-
-    void evalk1k2( Matrix3x3 & matrix, Matrix3x3 & eigenVectors, Vector3 & eigenValues, Quantity & k1, Quantity & k2 );
-
     // ------------------------- Private Datas --------------------------------
 private:
 
     /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
-    std::vector< EuclideanMinus* > kernels;
+    std::vector< DigitalShape > kernels;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -680,7 +672,7 @@ private:
     Quantity d8_5r; /// 8/5r
     Quantity dh5; /// h^5
 
-    std::string filename;
+    GaussianCurvatureFunctor3< Matrix3x3 > gaussFunctor;
 
 private:
 

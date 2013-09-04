@@ -39,8 +39,9 @@
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator_0memory.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator_0memory.h"
 
 #include "DGtal/kernel/BasicPointFunctors.h"
 
@@ -257,7 +258,7 @@ bool testII2D()
     return true;*/
 }
 
-int testII3D( int argc, char** argv )
+int testII3D( )//int argc, char** argv )
 {
     typedef Z3i::Space::RealPoint RealPoint;
     typedef Z3i::Point Point;
@@ -271,7 +272,7 @@ int testII3D( int argc, char** argv )
 
     typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
-    double h = 0.1;
+    double h = 0.2;
     double re = 3.0;
     double radius = 5.0;
 
@@ -305,18 +306,39 @@ int testII3D( int argc, char** argv )
 
     typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
     typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
-    typedef IntegralInvariantGaussianCurvatureEstimator_0memory< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
+    typedef IntegralInvariantGaussianCurvatureEstimator_0memory< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator_0memory; // Gaussian curvature estimator
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
 
     MyPointFunctor pointFunctor( dshape, dshape->getDomain(), 1, 0 );
     MyCellFunctor functor ( pointFunctor, K );
 
+    MyCurvatureEstimator_0memory estimator_0mem ( K, functor );
+    estimator_0mem.init( h, re );
+
+    string filename = "toto.dat";//std::tmpnam(nullptr);
+    std::cout << filename << std::endl;
+
+    estimator_0mem.eval( boundary.begin(), boundary.end(), filename, *ishape );
+
     MyCurvatureEstimator estimator ( K, functor );
     estimator.init( h, re );
 
-    std:string filename = std::tmpnam(nullptr);
+    std::vector< double > resultII;
+    std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
+    estimator.eval( boundary.begin(), boundary.end(), resultIIIterator, *ishape );
 
-    estimator.eval( boundary.begin(), boundary.end(), filename );
+    std::ifstream input( filename);
+    ASSERT( input.good() );
 
+    std::string line;
+    for( unsigned int i = 0; i < resultII.size(); ++i )
+    {
+        std::getline( input, line );
+        std::cout << "FULL MEM: " << resultII[ i ] << "  vs NO MEM: " << line << std::endl;
+    }
+    input.close();
+
+    return 0;
 
     /*DigitalShape* dshape = new DigitalShape();
     dshape->attach( *ishape );
@@ -466,7 +488,7 @@ int main( int argc, char** argv )
     trace.info() << endl;
 
 //    testII2D( );
-    testII3D( argc, argv );
+    testII3D( );//argc, argv );
     return 1;
     //  bool res = testII3D();
     //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

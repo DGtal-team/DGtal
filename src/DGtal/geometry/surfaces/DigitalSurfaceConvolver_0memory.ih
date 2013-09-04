@@ -49,12 +49,12 @@
 ///////////////////////////////////////////////////// nD /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 inline
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >
 ::DigitalSurfaceConvolver_0memory( ConstAlias< Functor > f,
-                           ConstAlias< KernelFunctor > g,
-                           ConstAlias< KSpace > space)
+                                   ConstAlias< KernelFunctor > g,
+                                   ConstAlias< KSpace > space)
     : myFFunctor( f ),
       myGFunctor( g ),
       myKSpace( space ),
@@ -64,11 +64,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::init( Clone< RealPoint > rOrigin,
-                                                                                                        Alias< std::vector< EuclideanMinus* > > mask )
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::init( Clone< RealPoint > rOrigin,
+                                                                                                                                   Alias< std::vector< DigitalShapeMasks* > > mask )
 {
     myKernelRealPointOrigin = rOrigin;
     myMask = mask;
@@ -77,11 +77,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     isInitMask = true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 template< typename ConstIteratorOnCells >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::eval
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::eval
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInit == true );
@@ -91,7 +91,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity currentResult = NumberTraits< Quantity >::ZERO;
     Quantity currentResult2 = NumberTraits< Quantity >::ZERO;
 
-    Spel myKernelSpelOrigin = myKSpace.sSpel( myKernelRealPointOrigin ); ///@bug RealPoint -> Point
+    /*Spel myKernelSpelOrigin = myKSpace.sSpel( myKernelRealPointOrigin ); ///@bug RealPoint -> Point
 
     Spel currentCell = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it )); //nD Cell next to *it (spel)
     Spel currentCell2 = myKSpace.sDirectIncident( *it, *myKSpace.sOrthDirs( *it ));
@@ -116,21 +116,21 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         shiftedCell.myCoordinates = shiftedPoint;
 
         currentResult2 += myFFunctor( shiftedCell ) * myGFunctor( *itgcurrent );
-    }
+    }*/
 
 
     /// In order to get better results, we compute the convolution kernel centered inside and outside the spel ins the shape border, and divide the result by 2.
     return ( currentResult + currentResult2 ) / Quantity( 2.0 );
 }
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension>
 template< typename ConstIteratorOnCells>
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension>::eval
+DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension>::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file )
 {
     //ASSERT ( isInitMask == true ); //Actually, this don't use the optimization by masks
 
@@ -148,28 +148,28 @@ DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelCon
     result.close();
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 template< typename ConstIteratorOnCells >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::evalCovarianceMatrix
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInit == true );
 
-    typedef typename KSpace::Point Point;
+    /*typedef typename KSpace::Point Point;
     typedef typename Functor::Quantity FQuantity;
 
     Spel currentCell = myKSpace.sIndirectIncident( *it, *myKSpace.sOrthDirs( *it ));
     Point shiftedPoint, currentPoint;
-    Point shift = currentCell.myCoordinates - myKernelSpelOrigin.myCoordinates;
+    Point shift; = currentCell.myCoordinates - myKernelSpelOrigin.myCoordinates;
 
     Spel shiftedCell;
 
-    FQuantity fShiftedCell;
+    FQuantity fShiftedCell;*/
 
     CovarianceMatrix Ja;
-    MatrixQuantity XXT;
+    /*MatrixQuantity XXT;
     XXT.constant( NumberTraits< Quantity >::ZERO );
     VectorQuantity Sa;
     Sa.reset();
@@ -212,19 +212,19 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         {
             Ja.setComponent( line, column, ((double) NumberTraits< Quantity >::castToDouble( XXT( line, column ))) - dVa * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ line ] ))) * ( One_Va * ((double) NumberTraits< Quantity >::castToDouble( Sa[ column ] ))));
         }
-    }
+    }*/
 
     return Ja;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 template< typename ConstIteratorOnCells >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file )
 {
     std::ofstream result ( file );
     ASSERT ( result.is_open() );
@@ -240,17 +240,17 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     result.close();
 }
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension>
 inline
 bool
-DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension>::isValid() const
+DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension>::isValid() const
 {
     return true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::fillMoments
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::fillMoments
 ( Quantity* aMomentMatrix,
   const Point & aPoint,
   double direction )
@@ -258,19 +258,19 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::computeCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::computeCovarianceMatrix
 ( const Quantity* aMomentMatrix,
   CovarianceMatrix & aCovarianceMatrix )
 {
 
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus, DGtal::Dimension dimension >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
 template< typename Shape >
 double
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, dimension >::computeShiftFromShape
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::computeShiftFromShape
 ( const Shape & shape,
   const double h,
   const Spel & aInnerSpel,
@@ -289,12 +289,12 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 ///////////////////////////////////////////////////// 2D /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 inline
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >
 ::DigitalSurfaceConvolver_0memory( ConstAlias< Functor > f,
-                           ConstAlias< KernelFunctor > g,
-                           ConstAlias< KSpace > space)
+                                   ConstAlias< KernelFunctor > g,
+                                   ConstAlias< KSpace > space)
     : dimension( 2 ),
       myFFunctor( f ),
       myGFunctor( g ),
@@ -303,10 +303,10 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 {
 }
 
-/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::init( Clone< KernelConstIterator > itgbegin,
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::init( Clone< KernelConstIterator > itgbegin,
                                                                                                 Clone< KernelConstIterator > itgend,
                                                                                                 Clone< Spel > kOrigin
                                                                                                 )
@@ -319,13 +319,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     isInitMask = false;
 }*/
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::init( Clone< RealPoint > rOrigin,
-                                                                                                Alias< std::vector< EuclideanMinus* > > mask )
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::init( Clone< Point > pOrigin,
+                                                                                                                           std::vector< DigitalShapeMasks > mask )
 {
-    myKernelRealPointOrigin = rOrigin;
+    myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
     myMask = mask;
 
     ASSERT ( myMask.size () == 9 );
@@ -333,11 +333,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     isInitMask = true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::eval
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::eval
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInitMask == true );
@@ -351,11 +351,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     return ( sum1 * lambda + sum2 * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells, typename Shape >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::eval
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::eval
 ( const ConstIteratorOnCells & it,
   const Shape & shape,
   const double h )
@@ -373,14 +373,15 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::eval
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -393,6 +394,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterSum;
 
     Quantity innerSum, outerSum;
+    Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -418,7 +420,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
-        result << innerSum * lambda + outerSum * ( 1.0 - lambda );
+        resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
+        result << functor( resultQuantity );
         result << '\n';
 
         ++total;
@@ -433,16 +436,17 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells, typename Shape >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::eval
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file,
+  const std::string & file,
   const Shape & shape,
-  const double h )
+  const double h,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -455,6 +459,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterSum;
 
     Quantity innerSum, outerSum;
+    Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -480,7 +485,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
-        result << innerSum * lambda + outerSum * ( 1.0 - lambda );
+        resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
+        result << functor( resultQuantity );
         result << '\n';
 
         ++total;
@@ -495,11 +501,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::eval
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::eval
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInit == true );
@@ -539,14 +545,14 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 */
 
-/*template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus>
+/*template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks>
 template< typename OutputIterator>
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::deprecated_eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file )
 {
     ASSERT ( isInitMask == true );
 
@@ -780,14 +786,14 @@ DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelCon
 #endif
 }
 */
-/*template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus>
+/*template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks>
 template< typename OutputIterator, typename Shape >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file,
+  const std::string & file,
   const Shape & shape,
   const double h )
 {
@@ -1027,11 +1033,11 @@ DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelCon
 }
 */
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::evalCovarianceMatrix
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInitMask == true );
@@ -1045,11 +1051,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     return ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells, typename Shape >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::evalCovarianceMatrix
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & it,
   const Shape & shape,
   const double h )
@@ -1066,14 +1072,15 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     return ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -1086,6 +1093,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterMoments[ nbMoments ];
 
     CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+    CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -1111,7 +1119,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
-        result << innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        result << functor( resultCovarianceMatrix );
         result << '\n';
 
         ++total;
@@ -1125,16 +1134,17 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells, typename Shape >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file,
+  const std::string & file,
   const Shape & shape,
-  const double h )
+  const double h,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -1147,6 +1157,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterMoments[ nbMoments ];
 
     CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+    CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -1172,7 +1183,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
-        result << innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        result << functor( resultCovarianceMatrix );
         result << '\n';
 
         ++total;
@@ -1187,7 +1199,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 
 inline
 typename DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::CovarianceMatrix
@@ -1259,14 +1271,14 @@ DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelCon
 }
 */
 
-/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::deprecated_evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::deprecated_evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file )
 {
     Dimension total = 0;
 #ifdef DEBUG_VERBOSE
@@ -1564,17 +1576,17 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 }
 */
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks>
 inline
 bool
-DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2>::isValid() const
+DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2>::isValid() const
 {
     return true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::fillMoments
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::fillMoments
 ( Quantity* aMomentMatrix,
   const Point & aPoint,
   double direction )
@@ -1590,9 +1602,9 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     aMomentMatrix[ 5 ] += direction * x * x;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::computeCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::computeCovarianceMatrix
 ( const Quantity* aMomentMatrix,
   CovarianceMatrix & aCovarianceMatrix )
 {
@@ -1615,10 +1627,10 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     aCovarianceMatrix = A - C * B;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename Shape >
 double
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::computeShiftFromShape
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::computeShiftFromShape
 ( const Shape & shape,
   const double h,
   const Spel & aInnerSpel,
@@ -1682,38 +1694,38 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     return lambda;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 const int
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::nbMoments = 6;
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::nbMoments = 6;
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Spel
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::defaultInnerSpel = Spel();
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Spel
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::defaultInnerSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Spel
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::defaultOuterSpel = Spel();
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Spel
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::defaultOuterSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::defaultInnerMoments[ 6 ] = {Quantity(0)};
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::defaultInnerMoments[ 6 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::defaultOuterMoments[ 6 ] = {Quantity(0)};
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::defaultOuterMoments[ 6 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::defaultInnerSum = Quantity(0);
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::defaultInnerSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::defaultOuterSum = Quantity(0);
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::defaultOuterSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename SurfelIterator >
 bool
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::core_evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::core_evalCovarianceMatrix
 ( const SurfelIterator & it,
   CovarianceMatrix & innerMatrix,
   CovarianceMatrix & outerMatrix,
@@ -1745,7 +1757,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     bool bComputed = false; /// <! if the cell has already been computed, continue to the next
 
     int x, y, x2, y2, x2y2;
-    int offset;
+    unsigned int offset;
 
     /// Inner cell
     {
@@ -1808,9 +1820,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
             {
                 std::fill( m, m + nbMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
 
-                for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                Domain domain = myMask[ positionOfFullKernel ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
+                    if( myMask[ positionOfFullKernel ]( *itm ))
+                    {
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
                     ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                     ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -1819,6 +1835,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                     {
                         fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
                     }
+                    }
                 }
             }
             else /// Using lastInnerMoments
@@ -1826,24 +1843,34 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                 memcpy( m, lastInnerMoments, nbMoments * sizeof( Quantity ));
 
                 /// Part to substract from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                Domain domain = myMask[ offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftInnerSpel );
+                    if( myMask[ offset ]( *itm ))
+                    {
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
                     }
+                    }
                 }
 
                 /// Part to add from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                domain = myMask[ nbMasks - offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
+                    if( myMask[ nbMasks - offset ]( *itm ))
+                    {
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                    }
                     }
                 }
             }
@@ -1883,24 +1910,34 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         else
         {
             /// Part to substract from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+            Domain domain = myMask[ offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftOuterSpel );
+                if( myMask[ offset ]( *itm ))
+                {
+                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
                     fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
                 }
+                }
             }
 
             /// Part to add from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+            domain = myMask[ nbMasks - offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftOuterSpel );
+                if( myMask[ nbMasks - offset ]( *itm ))
+                {
+                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
                     fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                }
                 }
             }
         }
@@ -1922,10 +1959,10 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename SurfelIterator >
 bool
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 2 >::core_eval
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::core_eval
 ( const SurfelIterator & it,
   Quantity & innerSum,
   Quantity & outerSum,
@@ -1969,14 +2006,14 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         {
             bComputed = false;
 
-            if(  currentInnerSpel == lastInnerSpel )
+            if( currentInnerSpel == lastInnerSpel )
             {
                 m = lastInnerSum;
                 innerSum = m;
 
                 bComputed = true;
             }
-            else if(  currentInnerSpel == lastOuterSpel )
+            else if( currentInnerSpel == lastOuterSpel )
             {
                 m = lastOuterSum;
                 outerSum = m;
@@ -2019,9 +2056,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
             {
                 m = NumberTraits< Quantity >::ZERO;
 
-                for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                Domain domain = myMask[ positionOfFullKernel ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
+                    if( myMask[ positionOfFullKernel ]( *itm ))
+                    {
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
                     ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                     ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -2030,6 +2071,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                     {
                         m += 1.0;
                     }
+                    }
                 }
             }
             else /// Using lastInnerMoments
@@ -2037,24 +2079,34 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                 m = lastInnerSum;
 
                 /// Part to substract from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                Domain domain = myMask[ offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftInnerSpel );
+                    if( myMask[ offset ]( *itm ))
+                    {
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         m += -1.0;
                     }
+                    }
                 }
 
                 /// Part to add from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                domain = myMask[ nbMasks - offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
+                    if( myMask[ nbMasks - offset ]( *itm ))
+                    {
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         m += 1.0;
+                    }
                     }
                 }
             }
@@ -2094,24 +2146,34 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         else
         {
             /// Part to substract from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+            Domain domain = myMask[ offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftOuterSpel );
+                if( myMask[ offset ]( *itm ))
+                {
+                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
                     m += -1.0;
                 }
+                }
             }
 
             /// Part to add from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+            domain = myMask[ nbMasks - offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftOuterSpel );
+                if( myMask[ nbMasks - offset ]( *itm ))
+                {
+                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
                     m += 1.0;
+                }
                 }
             }
         }
@@ -2140,12 +2202,12 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 ///////////////////////////////////////////////////// 3D /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 inline
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >
 ::DigitalSurfaceConvolver_0memory( ConstAlias< Functor > f,
-                           ConstAlias< KernelFunctor > g,
-                           ConstAlias< KSpace > space)
+                                   ConstAlias< KernelFunctor > g,
+                                   ConstAlias< KSpace > space)
     :   dimension( 3 ),
       myFFunctor( f ),
       myGFunctor( g ),
@@ -2154,10 +2216,10 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 {
 }
 
-/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::init( Clone< KernelConstIterator > itgbegin,
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::init( Clone< KernelConstIterator > itgbegin,
                                                                                                 Clone< KernelConstIterator > itgend,
                                                                                                 Clone< Spel > kOrigin
                                                                                                 )
@@ -2170,13 +2232,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     isInitMask = false;
 }*/
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::init( Clone< RealPoint > rOrigin,
-                                                                                                Alias< std::vector< EuclideanMinus* > > mask )
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::init( Clone< Point > pOrigin,
+                                                                                                                           std::vector< DigitalShapeMasks >  mask )
 {
-    myKernelRealPointOrigin = rOrigin;
+    myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
     myMask = mask;
 
     ASSERT ( myMask.size () == 27 );
@@ -2184,11 +2246,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     isInitMask = true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::eval
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::eval
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInitMask == true );
@@ -2202,11 +2264,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     return ( sum1 * lambda + sum2 * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells, typename Shape >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::eval
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::eval
 ( const ConstIteratorOnCells & it,
   const Shape & shape,
   const double h )
@@ -2224,14 +2286,15 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::eval
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -2244,6 +2307,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterSum;
 
     Quantity innerSum, outerSum;
+    Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -2269,7 +2333,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
-        result << innerSum * lambda + outerSum * ( 1.0 - lambda );
+        resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
+        result << functor( resultQuantity );
         result << '\n';
 
         ++total;
@@ -2284,16 +2349,17 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells, typename Shape >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::eval
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file,
+  const std::string & file,
   const Shape & shape,
-  const double h )
+  const double h,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -2306,6 +2372,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterSum;
 
     Quantity innerSum, outerSum;
+    Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -2331,7 +2398,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
-        result << innerSum * lambda + outerSum * ( 1.0 - lambda );
+        resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
+        result << functor( resultQuantity );
         result << '\n';
 
         ++total;
@@ -2346,14 +2414,14 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename OutputIterator >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::deprecated_eval
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::deprecated_eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file )
 {
     ASSERT ( isInitMask == true );
 
@@ -2615,11 +2683,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 */
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::evalCovarianceMatrix
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInitMask == true );
@@ -2633,11 +2701,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     return ( innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells, typename Shape >
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::evalCovarianceMatrix
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & it,
   const Shape & shape,
   const double h )
@@ -2655,14 +2723,15 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -2675,6 +2744,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterMoments[ nbMoments ];
 
     CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+    CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -2700,7 +2770,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
-        result << innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        result << functor( resultCovarianceMatrix );
         result << '\n';
 
         ++total;
@@ -2714,16 +2785,17 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-template< typename ConstIteratorOnCells, typename Shape >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file,
+  const std::string & file,
   const Shape & shape,
-  const double h )
+  const double h,
+  EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
 
@@ -2736,6 +2808,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity lastOuterMoments[ nbMoments ];
 
     CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+    CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
 
@@ -2761,7 +2834,8 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
-        result << innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+        result << functor( resultCovarianceMatrix );
         result << '\n';
 
         ++total;
@@ -2776,11 +2850,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 /*
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 
 inline
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::CovarianceMatrix
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::evalCovarianceMatrix
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::CovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & it )
 {
     ASSERT ( isInitMask == true );
@@ -2894,14 +2968,14 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     return CovarianceMatrix( Ja1 * lambda + Ja2 * ( 1.0 - lambda ));
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename OutputIterator >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file )
 {
     ASSERT ( isInitMask == true );
 
@@ -3130,14 +3204,14 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename OutputIterator, typename Shape >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file,
+  const std::string & file,
   const Shape & shape,
   const double h )
 {
@@ -3389,14 +3463,14 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 */
 
-/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+/*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename OutputIterator >
 inline
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::deprecated_evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::deprecated_evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  std::string & file )
+  const std::string & file )
 {
     ASSERT ( isInitMask == true );
 
@@ -3842,17 +3916,17 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 */
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks>
 inline
 bool
-DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3>::isValid() const
+DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3>::isValid() const
 {
     return true;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::fillMoments
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::fillMoments
 ( Quantity* aMomentMatrix,
   const Point & aPoint,
   double direction )
@@ -3871,11 +3945,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     aMomentMatrix[ 7 ] += direction * z * z;
     aMomentMatrix[ 8 ] += direction * y * y;
     aMomentMatrix[ 9 ] += direction * x * x;
+
+
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 void
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::computeCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::computeCovarianceMatrix
 ( const Quantity* aMomentMatrix,
   CovarianceMatrix & aCovarianceMatrix )
 {
@@ -3908,10 +3984,10 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     aCovarianceMatrix = A - C * B;
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename Shape >
 double
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::computeShiftFromShape
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::computeShiftFromShape
 ( const Shape & shape,
   const double h,
   const Spel & aInnerSpel,
@@ -3980,38 +4056,38 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 const int
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::nbMoments = 10;
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::nbMoments = 10;
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Spel
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::defaultInnerSpel = Spel();
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Spel
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::defaultInnerSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Spel
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::defaultOuterSpel = Spel();
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Spel
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::defaultOuterSpel = Spel();
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::defaultInnerMoments[ 10 ] = {Quantity(0)};
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::defaultInnerMoments[ 10 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::defaultOuterMoments[ 10 ] = {Quantity(0)};
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::defaultOuterMoments[ 10 ] = {Quantity(0)};
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::defaultInnerSum = Quantity(0);
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::defaultInnerSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
-typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::Quantity
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::defaultOuterSum = Quantity(0);
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+typename DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::Quantity
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::defaultOuterSum = Quantity(0);
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename SurfelIterator >
 bool
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::core_evalCovarianceMatrix
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::core_evalCovarianceMatrix
 ( const SurfelIterator & it,
   CovarianceMatrix & innerMatrix,
   CovarianceMatrix & outerMatrix,
@@ -4043,7 +4119,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     bool bComputed = false; /// <! if the cell has already been computed, continue to the next
 
     int x, y, z, x2, y2, z2, x2y2z2;
-    int offset;
+    unsigned int offset;
 
     /// Inner cell
     {
@@ -4108,17 +4184,22 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
             {
                 std::fill( m, m + nbMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
 
-                for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                Domain domain = myMask[ positionOfFullKernel ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
-
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
-                    ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
-
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    if( myMask[ positionOfFullKernel ]( *itm ))
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+
+                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
+                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
+                        ASSERT( myKSpace.sKCoords( shiftedSpel )[ 2 ] & 0x1 );
+
+                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                        {
+                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        }
                     }
                 }
             }
@@ -4127,24 +4208,35 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                 memcpy( m, lastInnerMoments, nbMoments * sizeof( Quantity ));
 
                 /// Part to substract from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                Domain domain = myMask[ offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                    //                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftInnerSpel );
-
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    if( myMask[ offset ]( *itm ))
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+
+                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                        {
+                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                        }
                     }
                 }
 
                 /// Part to add from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                domain = myMask[ nbMasks - offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                    //                for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
-
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    if( myMask[ nbMasks - offset ]( *itm ))
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+
+                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                        {
+                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        }
+
                     }
                 }
             }
@@ -4186,24 +4278,34 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         else
         {
             /// Part to substract from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+            Domain domain = myMask[ offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftOuterSpel );
-
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                if( myMask[ offset ]( *itm ))
                 {
-                    fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+
+                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    {
+                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                    }
                 }
             }
 
             /// Part to add from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+            domain = myMask[ nbMasks - offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftOuterSpel );
-
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                if( myMask[ nbMasks - offset ]( *itm ))
                 {
-                    fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+
+                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    {
+                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                    }
                 }
             }
         }
@@ -4225,10 +4327,10 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 #endif
 }
 
-template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename EuclideanMinus >
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename SurfelIterator >
 bool
-DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, EuclideanMinus, 3 >::core_eval
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::core_eval
 ( const SurfelIterator & it,
   Quantity & innerSum,
   Quantity & outerSum,
@@ -4259,7 +4361,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     bool bComputed = false; /// <! if the cell has already been computed, continue to the next
 
     int x, y, z, x2, y2, z2, x2y2z2;
-    int offset;
+    unsigned int offset;
 
     /// Inner cell
     {
@@ -4272,14 +4374,14 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         {
             bComputed = false;
 
-            if(  currentInnerSpel == lastInnerSpel )
+            if( currentInnerSpel == lastInnerSpel )
             {
                 m = lastInnerSum;
                 innerSum = m;
 
                 bComputed = true;
             }
-            else if(  currentInnerSpel == lastOuterSpel )
+            else if( currentInnerSpel == lastOuterSpel )
             {
                 m = lastOuterSum;
                 outerSum = m;
@@ -4324,9 +4426,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
             {
                 m = NumberTraits< Quantity >::ZERO;
 
-                for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
+                Domain domain = myMask[ positionOfFullKernel ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+//                for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
+                    if( myMask[ positionOfFullKernel ]( *itm ))
+                    {
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
                     ASSERT( myKSpace.sKCoords( shiftedSpel )[ 0 ] & 0x1 );
                     ASSERT( myKSpace.sKCoords( shiftedSpel )[ 1 ] & 0x1 );
@@ -4336,6 +4442,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                     {
                         m += 1.0;
                     }
+                    }
                 }
             }
             else /// Using lastInnerMoments
@@ -4343,24 +4450,34 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                 m = lastInnerSum;
 
                 /// Part to substract from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                Domain domain = myMask[ offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                    //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftInnerSpel );
-
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    if( myMask[ offset ]( *itm ))
                     {
-                        m += -1.0;
+                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
+
+                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                        {
+                            m += -1.0;
+                        }
                     }
                 }
 
                 /// Part to add from previous result.
-                for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                domain = myMask[ nbMasks - offset ].getDomain();
+                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                    //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftInnerSpel );
-
-                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    if( myMask[ nbMasks - offset ]( *itm ))
                     {
-                        m += 1.0;
+                        myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
+
+                        if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                        {
+                            m += 1.0;
+                        }
                     }
                 }
             }
@@ -4402,24 +4519,34 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         else
         {
             /// Part to substract from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+            Domain domain = myMask[ offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) - diffSpel + shiftOuterSpel );
-
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                if( myMask[ offset ]( *itm ))
                 {
-                    m += -1.0;
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
+
+                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    {
+                        m += -1.0;
+                    }
                 }
             }
 
             /// Part to add from previous result.
-            for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+            domain = myMask[ nbMasks - offset ].getDomain();
+            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
             {
-                myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( *itgcurrent ) + shiftOuterSpel );
-
-                if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                if( myMask[ nbMasks - offset ]( *itm ))
                 {
-                    m += 1.0;
+                    myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
+
+                    if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
+                    {
+                        m += 1.0;
+                    }
                 }
             }
         }

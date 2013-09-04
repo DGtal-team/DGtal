@@ -71,7 +71,7 @@ namespace DGtal
    * @tparam TKSpace space in which the shape is defined.
    * @tparam TKernelConstIterator iterator of cells inside the convolution kernel.
    */
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, typename TEuclideanMinus, Dimension dimension = TKSpace::dimension >
+template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, typename TDigitalShapeMasks, Dimension dimension = TKSpace::dimension >
 class DigitalSurfaceConvolver_0memory
 {
     // ----------------------- Types ------------------------------------------
@@ -94,7 +94,7 @@ public:
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
-    typedef TEuclideanMinus EuclideanMinus;
+    typedef TDigitalShapeMasks DigitalShapeMasks;
 
     BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
@@ -136,7 +136,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-    void init ( Clone< RealPoint > kOrigin, Alias< std::vector< EuclideanMinus* > > mask );
+    void init ( Clone< RealPoint > kOrigin, Alias< std::vector< DigitalShapeMasks* > > mask );
 
     /**
        * Convolve the kernel at a given position.
@@ -159,7 +159,7 @@ public:
     template< typename ConstIteratorOnCells >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                std::string & file );
+                const std::string & file );
 
     /**
        * Convolve the kernel at a given position and return a covariance matrix.
@@ -186,7 +186,7 @@ public:
     template< typename ConstIteratorOnCells >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                std::string & file );
+                                const std::string & file );
 
     /**
        * Checks the validity/consistency of the object.
@@ -215,7 +215,7 @@ private:
     const KSpace & myKSpace;
 
     /// Copy of vector of iterators for kernel partial masks
-    std::vector< EuclideanMinus* > myMask;
+    std::vector< DigitalShapeMasks* > myMask;
 
     /// Copy of the first iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelBegin;
@@ -259,8 +259,8 @@ private:
 
 }; // end of class DigitalSurfaceConvolver_0memory
 
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, typename TEuclideanMinus >
-class DigitalSurfaceConvolver_0memory< TFunctor, TKernelFunctor, TKSpace, TKernelConstIterator, TEuclideanMinus, 2 >
+template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, typename TDigitalShapeMasks >
+class DigitalSurfaceConvolver_0memory< TFunctor, TKernelFunctor, TKSpace, TKernelConstIterator, TDigitalShapeMasks, 2 >
 {
     // ----------------------- Types ------------------------------------------
 
@@ -269,6 +269,7 @@ public:
     typedef TFunctor Functor;
     typedef TKSpace KSpace;
     typedef TKernelFunctor KernelFunctor;
+    typedef Z2i::Domain Domain;
 
     typedef double Quantity;
     typedef PointVector< 2, Quantity > VectorQuantity;
@@ -280,9 +281,9 @@ public:
     typedef typename KSpace::Space::RealPoint RealPoint;
     typedef TKernelConstIterator KernelConstIterator;
 
-    typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef TDigitalShapeMasks DigitalShapeMasks;
 
-    typedef TEuclideanMinus EuclideanMinus;
+    typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
     //    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
@@ -334,7 +335,7 @@ public:
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
 
-    void init ( Clone< RealPoint > rOrigin, Alias< std::vector< EuclideanMinus* > > mask );
+    void init ( Clone< Point > pOrigin, std::vector< DigitalShapeMasks > mask );
 
     /**
        * Convolve the kernel at a given position.
@@ -360,7 +361,7 @@ public:
     template< typename ConstIteratorOnCells, typename Shape >
     Quantity eval ( const ConstIteratorOnCells & it,
                     const Shape & shape,
-                    const double h = 1.0 );
+                    const double h );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -369,10 +370,11 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                std::string & file );
+                const std::string & file,
+                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -381,17 +383,18 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename Shape >
+    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                std::string & file,
+                const std::string & file,
                 const Shape & shape,
-                const double h = 1.0 );
+                const double h,
+                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /*template< typename ConstIteratorOnCells >
     void deprecated_eval ( const ConstIteratorOnCells & itbegin,
                            const ConstIteratorOnCells & itend,
-                           std::string & file );*/
+                           const std::string & file );*/
 
 
     /**
@@ -430,10 +433,11 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                std::string & file );
+                                const std::string & file,
+                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -444,17 +448,18 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename Shape >
+    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                std::string & file,
+                                const std::string & file,
                                 const Shape & shape,
-                                const double h = 1.0 );
+                                const double h,
+                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /*template< typename ConstIteratorOnCells >
     void deprecated_evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                            const ConstIteratorOnCells & itend,
-                                           std::string & file );*/
+                                           const std::string & file );*/
 
     /**
        * Checks the validity/consistency of the object.
@@ -512,14 +517,14 @@ private:
     const KSpace & myKSpace;
 
     /// Copy of vector of iterators for kernel partial masks
-    std::vector< EuclideanMinus* > myMask;
+    std::vector< DigitalShapeMasks > myMask;
 
     /// Copy of the first iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelBegin;
     /// Copy  of the last iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelEnd;
     /// Copy of the origin cell of the kernel.
-    RealPoint myKernelRealPointOrigin;
+    Spel myKernelSpelOrigin;
 
     bool isInitMask;
 
@@ -555,8 +560,8 @@ private:
 
 }; // end of class DigitalSurfaceConvolver_0memory
 
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, typename TEuclideanMinus >
-class DigitalSurfaceConvolver_0memory< TFunctor, TKernelFunctor, TKSpace, TKernelConstIterator, TEuclideanMinus, 3 >
+template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, typename TDigitalShapeMasks >
+class DigitalSurfaceConvolver_0memory< TFunctor, TKernelFunctor, TKSpace, TKernelConstIterator, TDigitalShapeMasks, 3 >
 {
     // ----------------------- Types ------------------------------------------
 
@@ -565,6 +570,7 @@ public:
     typedef TFunctor Functor;
     typedef TKSpace KSpace;
     typedef TKernelFunctor KernelFunctor;
+    typedef Z3i::Domain Domain;
 
     typedef double Quantity;
     typedef PointVector< 3, Quantity > VectorQuantity;
@@ -576,7 +582,7 @@ public:
     typedef typename KSpace::Space::RealPoint RealPoint;
     typedef TKernelConstIterator KernelConstIterator;
 
-    typedef TEuclideanMinus EuclideanMinus;
+    typedef TDigitalShapeMasks DigitalShapeMasks;
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
@@ -630,7 +636,7 @@ public:
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
 
-    void init ( Clone< RealPoint > rOrigin, Alias< std::vector< EuclideanMinus* > > mask );
+    void init ( Clone< Point > pOrigin, std::vector< DigitalShapeMasks > mask );
 
     /**
        * Convolve the kernel at a given position.
@@ -656,7 +662,7 @@ public:
     template< typename ConstIteratorOnCells, typename Shape >
     Quantity eval ( const ConstIteratorOnCells & it,
                     const Shape & shape,
-                    const double h = 1.0 );
+                    const double h );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -665,10 +671,11 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity >  >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                std::string & file );
+                const std::string & file,
+                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -677,17 +684,18 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename Shape >
+    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity >  >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                std::string & file,
+                const std::string & file,
                 const Shape & shape,
-                const double h = 1.0 );
+                const double h,
+                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /*template< typename ConstIteratorOnCells >
     void deprecated_eval ( const ConstIteratorOnCells & itbegin,
                            const ConstIteratorOnCells & itend,
-                           std::string & file );*/
+                           const std::string & file );*/
 
 
     /**
@@ -714,7 +722,7 @@ public:
     template< typename ConstIteratorOnCells, typename Shape >
     CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it,
                                             const Shape & shape,
-                                            const double h = 1.0 );
+                                            const double h );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -725,10 +733,11 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                std::string & file );
+                                const std::string & file,
+                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -739,12 +748,13 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename Shape >
+    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                std::string & file,
+                                const std::string & file,
                                 const Shape & shape,
-                                const double h = 1.0 );
+                                const double h,
+                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -758,7 +768,7 @@ public:
     /*template< typename ConstIteratorOnCells >
     void deprecated_evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                            const ConstIteratorOnCells & itend,
-                                           std::string & file );*/
+                                           const std::string & file );*/
 
     /**
        * Checks the validity/consistency of the object.
@@ -818,14 +828,14 @@ private:
     const KSpace & myKSpace;
 
     /// Copy of vector of iterators for kernel partial masks
-    std::vector< EuclideanMinus* > myMask;
+    std::vector< DigitalShapeMasks > myMask;
 
     /// Copy of the first iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelBegin;
     /// Copy  of the last iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelEnd;
     /// Copy of the origin cell of the kernel.
-    RealPoint myKernelRealPointOrigin;
+    Spel myKernelSpelOrigin;
 
     bool isInitMask;
 
