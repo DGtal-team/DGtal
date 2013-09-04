@@ -113,7 +113,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
     }
 
     int count = 0;
-    for( auto it = setKernel.begin(), itend = setKernel.end();
+    for( typename DigitalSet::ConstIterator it = setKernel.begin(), itend = setKernel.end();
          it != itend;
          ++it )
     {
@@ -152,7 +152,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 2 >:
                 Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
 
                 int count2 = 0;
-                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                for( typename DigitalSet::ConstIterator it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                      it != itend;
                      ++it )
                 {
@@ -215,7 +215,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
     }
 
     int count = 0;
-    for( auto it = setKernel.begin(), itend = setKernel.end();
+    for( typename DigitalSet::ConstIterator it = setKernel.begin(), itend = setKernel.end();
          it != itend;
          ++it )
     {
@@ -255,7 +255,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator< TKSpace, TShapeFunctor, 3 >:
                     Shapes< Domain>::digitalShaper ( setCurrentKernel, digCurrentKernel );
 
                     int count2 = 0;
-                    for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                    for( typename DigitalSet::ConstIterator it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                          it != itend;
                          ++it )
                     {

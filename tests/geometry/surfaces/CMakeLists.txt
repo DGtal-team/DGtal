@@ -22,7 +22,7 @@ if (  WITH_VISU3D_QGLVIEWER )
 SET(QGLVIEWER_TESTS_SRC
   testLocalConvolutionNormalVectorEstimator
   testII
-  testII_0memory
+#  testII_0memory
   )
 
    FOREACH(FILE ${QGLVIEWER_TESTS_SRC})
