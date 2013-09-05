@@ -980,7 +980,7 @@ bool testII2D()
     ibegin = range2.begin();
     iend = range2.end();
 
-    gaussianEstimator.eval( ibegin, iend, insertResultsGaussian, ball );
+    gaussianEstimator.eval( ibegin, iend, insertResultsGaussian );
 
 
     ASSERT( resultsMean.size() == resultsGaussian.size() );
@@ -1073,7 +1073,7 @@ int testII3D( int argc, char** argv )
 
     Polynomial3 P;
     Polynomial3Reader reader;
-    std::string poly_str = "x^2 + y^2 + z^2 - 25.0";
+    std::string poly_str = "x^4 + y^4 + z^4 - 2500.0";//"x^2 + y^2 + z^2 - 25.0";
     std::string::const_iterator iter
             = reader.read( P, poly_str.begin(), poly_str.end() );
     if ( iter != poly_str.end() )
@@ -1136,20 +1136,20 @@ int testII3D( int argc, char** argv )
     iigaussest.init( step, re );
 
 
-    std::vector< double > resultTrue;
+//    std::vector< double > resultTrue;
     std::vector< double > resultII;
-    std::vector< RealPoint > nearestPoints;
+//    std::vector< RealPoint > nearestPoints;
     //-----------------------------------------------------------------------
     // Looking for the min and max values
 
     double minCurv = 1;
     double maxCurv = 0;
     //  SCellToMidPoint< KSpace > midpoint( K );
-    NearestPointEmbedder< Z3i::KSpace, ImplicitShape > ScellToRealPoint;
-    ScellToRealPoint.init( K, step, *ishape );
+//    NearestPointEmbedder< Z3i::KSpace, ImplicitShape > ScellToRealPoint;
+//    ScellToRealPoint.init( K, step, *ishape );
 
     std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
-    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator );
+    iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator, *ishape );
 
     int p = 0;
 
@@ -1157,24 +1157,24 @@ int testII3D( int argc, char** argv )
     for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++p)
     {
-        RealPoint A;// = ScellToRealPoint( *it );
-        double a = 0.04;//ishape->gaussianCurvature( A );
+//        RealPoint A;// = ScellToRealPoint( *it );
+//        double a = 0.04;//ishape->gaussianCurvature( A );
         double b = resultII[ p ];
 
 
-        //        if( resultIIShape[ p ] != resultOneShape )
-        //            std::cout << "error with shape " << std::endl;
+//        //        if( resultIIShape[ p ] != resultOneShape )
+//        //            std::cout << "error with shape " << std::endl;
 
-        //        std::cout << b << std::endl;
-        resultTrue.push_back( a );
-        nearestPoints.push_back( A );
+//        //        std::cout << b << std::endl;
+//        resultTrue.push_back( a );
+//        nearestPoints.push_back( A );
 
         //      if ( boost::math::isnan( a ))
         //      {
         //        a = 0;
         //      }
 
-        double Linf = std::abs ( a - b );
+//        double Linf = std::abs ( a - b );
         if ( b > maxCurv )
         {
             maxCurv = b;
@@ -1211,11 +1211,11 @@ int testII3D( int argc, char** argv )
           it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++nbSurfels, ++i )
     {
-        double a = resultTrue[ i ];
+//        double a = resultTrue[ i ];
         double b = resultII[ i ];
-        double Linf = std::abs ( a - b );
+//        double Linf = std::abs ( a - b );
 
-        std::cout << b << std::endl;
+//        std::cout << b << std::endl;
 
         viewer << CustomColors3D( Color::Black, cmap_grad( b ));
         viewer << *it;
@@ -1339,13 +1339,13 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-        testII2D( );
+//        testII2D( );
     //    testII2D_kernels();
     //    testII2D_kernels_2();
 //        testII2D_same_results();
     //    testII3D_same_results();
     //    testII3D_kernels(argc, argv);
-    //    testII3D( argc, argv );
+        testII3D( argc, argv );
     return 1;
     //  bool res = testII3D();
     //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

@@ -152,7 +152,7 @@ DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
 
 template< typename TP, typename TD, typename TV >
 inline
-DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain, const Value& aTrueValue, const Value& aFalseValue )
+DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain, const Value aTrueValue, const Value aFalseValue )
     : myPtrPredicate( aPtrPredicate ), myDomain( aDomain), myTrueValue( aTrueValue ), myFalseValue( aFalseValue )
 {
 
