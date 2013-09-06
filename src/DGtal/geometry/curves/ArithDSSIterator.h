@@ -72,6 +72,8 @@ namespace DGtal
      * Integer type. 
      */
     typedef TInteger Integer;
+    
+    BOOST_CONCEPT_ASSERT((CInteger<Integer>));
    
     /**
      * 2D integer point type.
