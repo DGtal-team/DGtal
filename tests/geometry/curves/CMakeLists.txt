@@ -12,7 +12,7 @@ SET(DGTAL_TESTS_SRC
    testMaximalSegments
    testFP
    testGridCurve
-//   testCombinDSS
+#   testCombinDSS
    testGeometricalDSS
    testGeometricalDCA
    testBinomialConvolver
