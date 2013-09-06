@@ -125,10 +125,10 @@ namespace DGtal
     
     /**
      * Constructor with initialisation of the DSS parameters and begin point.
-     * @param Integer a 
-     * @param Integer b
-     * @param Integer mu
-     * @param Point p
+     * @param a 
+     * @param b
+     * @param mu
+     * @param p
      */
     ArithDSSIterator(const Integer a, const Integer b, const Integer mu, const Point & p);
         
