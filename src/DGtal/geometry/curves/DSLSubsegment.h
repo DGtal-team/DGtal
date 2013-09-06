@@ -59,7 +59,8 @@ namespace DGtal
  * subsegment [AB] in logarithmic time. Two algorithms are implemented:
  * one is based on the local computation of lower and upper convex
  * hulls, the other is based on a dual transformation and uses the Farey
- * fan.
+ * fan. Implementation requires that the DSL lies in the first octant (0
+ * <= a <= b).
  * @tparam TInteger is the type of integer used
  * @tparam TNumber is the type of number used to represent the input DSL characteristics.
  */
