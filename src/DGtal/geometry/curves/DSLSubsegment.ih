@@ -152,7 +152,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Vector l,
   Integer alpha = intersection(AA,u,l,r);
   
   u *= alpha;
-   (*v) += u;
+  (*v) += u;
 }
 
 
@@ -164,7 +164,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Number s,
   Point AA = A;
   AA +=(*v);
   Integer alpha = intersection(AA,u,s);
- 
+  
   u *= alpha;
   (*v) += u;
 }
@@ -637,7 +637,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Number DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu)
 {
   BOOST_CONCEPT_ASSERT((CInteger<TNumber>));
   return (Integer) ceil((LongDoubleType) (r*b-mu*q)/(-p*b+a*q)); 
@@ -645,7 +645,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Number DGtal::DSLSubsegment<TIn
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Number DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number alpha, Number beta)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number alpha, Number beta)
 {
   
   Number val = (r-beta*q)/(-p+alpha*q);

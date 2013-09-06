@@ -178,7 +178,7 @@ namespace DGtal
        * @param Number mu
        * @param Point A
        * @param Point B
-       * @param a boolean
+       * @param boolean farey
        */
       DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool farey);
 
@@ -291,7 +291,7 @@ namespace DGtal
        * @param Point P
        * @param Vector v
        * @param Integer n
-       * @return an integer
+       * @return Integer
        */
       Integer intersectionVertical(Point P, Vector v, Integer n);
       
@@ -305,7 +305,7 @@ namespace DGtal
        * @param Vector V
        * @param Vector aL 
        * @param Integer r
-       * @return an integer
+       * @return Integer
        */
       Integer intersection(Point P, Vector v, Vector aL, Integer r);
       
@@ -317,21 +317,31 @@ namespace DGtal
        * @param Point P
        * @param Vector v
        * @param Number s
-       * @return an integer
+       * @return Integer
        */
       Integer intersection(Point P, Vector v, Number s);
       
       /**
-       * Update the Bezout vector v according to the new point A in the
-       * case of integer parameters
-       * @param Vector u for which 
+       * Update the Bezout vector v of u according to the new point A in the
+       * case of integer parameters. Follows algorithm presented in
+       * [Charrier,Buzer, 2007]
+       * @param Vector u 
+       * @param Point A
+       * @param Vector l directional vector of the line
+       * @param Integer r intercept of the line
+       * @param Vector* v bezout vector updated in this function
        */
       void update(Vector u, Point A, Vector l, Integer r, Vector *v);
       
       /**
-       * Update the Bezout vector v according to the new point A in the
-       * case of floating-point parameters
+       * Update the Bezout vector v of u according to the new point A in the
+       * case of floating-point parameters. Follows algorithm presented in
+       * [Charrier,Buzer, 2007]
        *
+       * @param Vector u 
+       * @param Point A
+       * @param Number slope of the line
+       * @param Vector* v bezout vector updated in this function
        */
       void update(Vector u, Point A, Number s, Vector *v);
       
@@ -341,7 +351,15 @@ namespace DGtal
        * works in two steps (from left to right and right to left). Each
        * step returns the two closest points, and these four points are
        * returned by the function.
-       * 
+       * @param Vector l directional vector of the straight line
+       * @param Integer mu intercept of the straight line
+       * @param Point A left-most bound of the CH
+       * @param Point B right-most bound of the CH
+       * @param Point* last-but-one point of the CH from left to right
+       * @param Point* last point of the CH from left to right
+       * @param Point* last point of the CH from right to left
+       * @param Point* last-but-one point of the CH from right to left
+       *
        */
       void lowerConvexHull(Vector l, Integer mu, Point A, Point B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR);
       
@@ -351,7 +369,11 @@ namespace DGtal
        * and x=n. Returns the upper and lower closest
        * points. Implementation of Charrier and Buzer algorithm
        * (Discrete Applied Mathematics, 2009) 
-       *
+       * @param Vector l directional vector of the line
+       * @param Integer r intercept of the line
+       * @param Integer n maximal value of x-coordinate
+       * @param Point* inf closest point below the line
+       * @param Point* sup closest point above the line
        */
       void convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup);
       
@@ -359,7 +381,10 @@ namespace DGtal
        * Compute the left part of the upper and lower convex hulls of
        * the line of slope s, between x=0
        * and x=n. Returns the upper and lower closest points. 
-       *
+       * @param Number s slope of the line (interpect is equal to zero here)
+       * @param Integer n maximal value of x-coordinate
+       * @param Point* inf closest point below the line
+       * @param Point* sup closest point above the line
        */
       void convexHullApprox(Number s, Integer n, Point *inf, Point *sup);
       
@@ -369,7 +394,13 @@ namespace DGtal
        * and x=n. Returns the last two points computed.
        * Implementation of Charrier and Buzer algorithm
        * (Discrete Applied Mathematics, 2009)  
-       *
+       * @param Vector l directional vector of the line
+       * @param Integer r intercept of the line
+       * @param Integer n maximal value of x-coordinate
+       * @param Point* inf closest point below the line
+       * @param Point* sup closest point above the line
+       * @param Point* prevInf second-closest point below the line
+       * @param Point* prevSup second-closest point above the line
        */
       void convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv);
       
@@ -380,52 +411,89 @@ namespace DGtal
        * the last two points computed. Implementation of Har-Peled
        * algorithm (Computational Geometry: Theory and Applications, 1998)
        *
+       * @param Vector l directional vector of the line (intercept is zero)
+       * @param Integer n maximal value of x-coordinate
+       * @param Point* inf closest point below the line
+       * @param Point* sup closest point above the line
        */
       void convexHullHarPeled(Vector l, Integer n, Point *inf, Point *sup);
       
+      
       /**
        * Compute the term following fp/fq in the Farey series of order n. 
-       *
+       * @param Integer fp numerator
+       * @param Integer fq denominator
+       * @param Integer n order the the Farey Series
+       * @return Point (q,p) such that p/q follows fp/fq in the Farey Series of order n
        */
-      
       Point nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n);
       
-
       
       /**
-       * Compute the ray of highest slope in O(1) knowing the ray of smallest
+       * Compute the ray of highest slope passing through a given point
+       * (p/q,r/q) in O(1) knowing the ray of smallest  
        * slope and the order of the Farey fan
-       * 
+       * @param Integer p numerator of x-coordinate
+       * @param Integer q denominator of x- and y-coordinates
+       * @param r numerator of y-coordinate
+       * @param Integer smallestSlope of the rays passing through
+       * (p/q,r/q)
+       * @param Integer n order of the Farey fan
+       * @return Ray
        */
       RayC rayOfHighestSlope(Integer p, Integer q, Integer r, Integer smallestSlope, Integer n);
       
       /**
        * Compute the ceil of the slope of the line through (f=p/q,r/q)
-       * and point (a/b,mu/b) -  O(1)
-       *
+       * and point (a/b,mu/b) -  O(1) - Number must be an Integer type.
+       * @param Integer p numerator of x-coordinate of the first point
+       * @param Integer q denominator of x- and y-coordinates of the
+       * first point
+       * @param Integer r numerator of y-coordinate of the first point
+       * @param Number a numerator of x-coordinate of the second point
+       * @param Number b denominator of x- and y-coordinates of the
+       * second point
+       * @param Number mu numerator of y-coordinate of the second point
+       * @return Integer ceil of the slope of the line passing through
+       * the two points
        */
-      Number slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu);
+      Integer slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu);
       
       /**
        * Compute the ceil of the slope of the line through (f=p/q,r/q)
        * and floating-point point (alpha,beta) -  O(1)
        *
+       * @param Integer p numerator of x-coordinate of the first point
+       * @param Integer q denominator of x- and y-coordinates of the
+       * first point
+       * @param Integer r numerator of y-coordinate of the first point
+       * @param Number alpha x-coordinate of the second point
+       * @param Number beta y-coordinate of the second point
+       * @return Integer ceil of the slope of the line passing through
+       * the two points
        */
-      Number slope(Integer p, Integer q, Integer r, Number alpha, Number beta);
+      Integer slope(Integer p, Integer q, Integer r, Number alpha, Number beta);
       
       
       /**
        * Compute the position of the point (a/b,mu/b) with respect to a
-       * ray r
-       * Return BELOW, ABOVE or ONTO
+       * ray r. Number must be an Integer type
+       * @param Ray r
+       * @param Number a numerator of x-coordinate
+       * @param Number b denominator of x- and y-coordinates
+       * @param Number mu numerator of x-coordinate
+       * @return Potision equal to BELOW, ABOVE or ONTO
        */
       Position positionWrtRay(RayC r, Number a, Number b, Number mu);
       
       
       /**
        * Compute the position of the floating-point point(alpha,beta) with respect to a
-       * ray r
-       * Return BELOW, ABOVE or ONTO
+       * ray r. 
+       * @param Ray r
+       * @param Number alpha x-coordinate
+       * @param Number beta y-coordinate
+       * @return Potision equal to BELOW, ABOVE or ONTO
        */
       Position positionWrtRay(RayC r, Number alpha, Number beta);
       
@@ -433,7 +501,15 @@ namespace DGtal
        * Computes the ray of smallest slope emanating from the point (f=p/q,
        * r/q) using the knowledge of the next fraction g in the Farey Series.
        * Complexity O(1)
-       *
+       * @param Integer fp numerator of the point x-coordinate
+       * @param Integer fq denominator of the point x- and
+       * y-coordinates
+       * @param Integer gp numerator of the fraction following fp/fq in
+       * the Farey Series
+       * @param Integer gq denominator of the fraction following fp/fq in
+       * the Farey Series 
+       * @param Integer r numerator of the point y-coordinate
+       * @return Ray of smallest slope passing through the point
        */ 
       RayC smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r); 
       
@@ -496,7 +572,7 @@ namespace DGtal
        * @param integer n, order of the Farey Fan
        * @param pointer on a boolean, used to check whether localizeRay
        * should be called ot not
-       * @return an integer 
+       * @return integer 
        */
       Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number alpha, Number beta, Integer n, bool *flagRayFound);
       
@@ -517,7 +593,7 @@ namespace DGtal
        * @param number b
        * @param number mu
        * @param integer n, order of the Farey Fan
-       * @return a ray
+       * @return ray
        */
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n);
 
@@ -572,7 +648,7 @@ namespace DGtal
        * ladder
        * @param integer gq, denominator of the greatest fraction of the
        * ladder
-       * @param a ray
+       * @param ray r
        * @param integer n, order of the Farey Fan
        * @param Integer*  numerator of the x-coordinate of
        * the result
@@ -598,7 +674,7 @@ namespace DGtal
        * ladder
        * @param integer gq, denominator of the greatest fraction of the
        * ladder
-       * @param a ray
+       * @param ray r
        * @param integer n, order of the Farey Fan
        * @param Integer* numerator of the x-coordinate of
        * the result
