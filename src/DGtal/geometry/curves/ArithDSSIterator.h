@@ -89,8 +89,8 @@ namespace DGtal
     
     /** 
      * Compute the remainder of a point wrt the DSS characteristics
-     * @param a point Q
-     * @return the remainder as an integer
+     * @param Point Q
+     * @return Integer 
      */
     TInteger remainder(Point Q);
     
@@ -123,10 +123,10 @@ namespace DGtal
     
     /**
      * Constructor with initialisation of the DSS parameters and begin point.
-     * @param a an integer
-     * @param b an integer
-     * @param mu an integer
-     * @param p a point
+     * @param Integer a 
+     * @param Integer b
+     * @param Integer mu
+     * @param Point p
      */
     ArithDSSIterator(const Integer a, const Integer b, const Integer mu, const Point & p);
         
