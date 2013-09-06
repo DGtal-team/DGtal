@@ -1951,7 +1951,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     bool bComputed = false; /// <! if the cell has already been computed, continue to the next
 
     int x, y, x2, y2, x2y2;
-    unsigned int offset;
+    int offset;
 
     /// Inner cell
     {

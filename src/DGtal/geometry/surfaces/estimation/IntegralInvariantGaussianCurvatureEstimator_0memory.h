@@ -562,7 +562,12 @@ public:
      * Destructor.
      */
     ~IntegralInvariantGaussianCurvatureEstimator_0memory()
-    {}
+    {
+        for( unsigned int i = 0; i < masks.size(); ++i )
+        {
+            delete masks[ i ];
+        }
+    }
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -652,6 +657,7 @@ private:
 
     /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
+    std::vector< EuclideanMinus* > masks;
 
     /// origin spel of the kernel support.
     Spel myOrigin;

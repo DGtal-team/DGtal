@@ -151,6 +151,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
     KernelSupport * kernel = new KernelSupport( rOrigin, radius );
 
     kernels = std::vector< DigitalShape >( 27 );
+    masks = std::vector< EuclideanMinus* >( 27 );
 
     /// End of Full Kernel
 
@@ -172,6 +173,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
                     KernelSupport * kernelShifted2 = new KernelSupport( shiftPoint2, 0.1 );
                     EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted2 );
 
+                    masks[ offset ] = current;
                     kernels[ offset ].attach( *current );
                     kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
                 }
@@ -179,6 +181,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
                 {
                     EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted );
 
+                    masks[ offset ] = current;
                     kernels[ offset ].attach( *current );
                     kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
                 }

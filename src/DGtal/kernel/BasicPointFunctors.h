@@ -193,7 +193,7 @@ namespace DGtal
       BOOST_CONCEPT_ASSERT(( CDomain< Domain > ));
       BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
 
-      PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain, const Value& aTrueValue, const Value& aFalseValue );
+      PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain, const Value aTrueValue, const Value aFalseValue );
 
       PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other  );
 

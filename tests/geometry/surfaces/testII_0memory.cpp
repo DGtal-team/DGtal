@@ -272,7 +272,7 @@ int testII3D( )//int argc, char** argv )
 
     typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
-    double h = 0.2;
+    double h = 0.5;
     double re = 3.0;
     double radius = 5.0;
 
@@ -312,29 +312,40 @@ int testII3D( )//int argc, char** argv )
     MyPointFunctor pointFunctor( dshape, dshape->getDomain(), 1, 0 );
     MyCellFunctor functor ( pointFunctor, K );
 
+    std::cout << "STEP 0" << std::endl;
     MyCurvatureEstimator_0memory estimator_0mem ( K, functor );
     estimator_0mem.init( h, re );
+    std::cout << "STEP 1" << std::endl;
 
     string filename = "toto.dat";//std::tmpnam(nullptr);
-    std::cout << filename << std::endl;
+//    std::cout << filename << std::endl;
 
     estimator_0mem.eval( boundary.begin(), boundary.end(), filename, *ishape );
 
-    MyCurvatureEstimator estimator ( K, functor );
+    std::cout << "STEP 2" << std::endl;
+
+    /*MyCurvatureEstimator estimator ( K, functor );
     estimator.init( h, re );
 
     std::vector< double > resultII;
     std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
     estimator.eval( boundary.begin(), boundary.end(), resultIIIterator, *ishape );
+*/
+
+    delete ishape;
+    delete dshape;
+    ishape = NULL;
+    dshape = NULL;
 
     std::ifstream input( filename.c_str() );
     ASSERT( input.good() );
 
     std::string line;
-    for( unsigned int i = 0; i < resultII.size(); ++i )
+    //for( unsigned int i = 0; i < resultII.size(); ++i )
     {
         std::getline( input, line );
-        std::cout << "FULL MEM: " << resultII[ i ] << "  vs NO MEM: " << line << std::endl;
+        std::cout << "NO MEM: " << line << std::endl;
+//        std::cout << "FULL MEM: " << resultII[ i ] << "  vs NO MEM: " << line << std::endl;
     }
     input.close();
 

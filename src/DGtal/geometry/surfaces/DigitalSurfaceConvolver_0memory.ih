@@ -1691,7 +1691,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     ASSERT (( lambda <= 1.0 ));
     ASSERT (( lambda >= 0.0 ));
 
-    return lambda;
+    return 1.0 - lambda;
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
@@ -2829,6 +2829,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         }
         else
         {
+            std::cout << "STEP 1.1" << std::endl;
             core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, false, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
         }
 
@@ -4052,7 +4053,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
     //    std::cout << lambda << std::endl;
 
-    return lambda;
+    return 1.0 - lambda;
 }
 
 
