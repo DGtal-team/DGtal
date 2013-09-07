@@ -62,9 +62,6 @@ int main( int argc, char** argv )
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  Viewer3D<> viewer;
-  viewer.show(); 
-  
   
   // Construct the Khalimsky space from the image domain
   Z3i::KSpace ks;
@@ -85,7 +82,7 @@ int main( int argc, char** argv )
   
   //Extract an initial boundary cell
   Z3i::SCell aCell = Surfaces<Z3i::KSpace>::findABel(ks, set3d);
-  
+  trace.info() << "Tracking Boundary.."<<std::endl;
   // Extracting all boundary surfels which are connected to the initial boundary Cell.
   Surfaces<Z3i::KSpace>::trackBoundary( vectBdrySCellALL,
           ks,SAdj, set3d, aCell );
@@ -102,12 +99,16 @@ int main( int argc, char** argv )
   
   
   // Displaying all the surfels in transparent mode
+  Viewer3D <Z3i::Space,Z3i::KSpace> viewer(ks);
+  viewer.show();
+
+  trace.info() << "Displaying the surfels.."<<std::endl;
   viewer << SetMode3D((*(vectBdrySCellALL.begin())).className(), "Transparent");
   for( std::set<Z3i::SCell>::iterator it=vectBdrySCellALL.begin(); 
        it!= vectBdrySCellALL.end(); it++){
     viewer<< *it;
   } 
-  
+  trace.info()<<"done"<<std::endl;
   // Displaying First surfels cut with gradient colors.;
   GradientColorMap<int> cmap_grad(0, (const int)vectBdrySCell2.size());
   cmap_grad.addColor( Color( 50, 50, 255 ) );
@@ -115,7 +116,7 @@ int main( int argc, char** argv )
   cmap_grad.addColor( Color( 255, 255, 10 ) );
   
   // Need to avoid surfel superposition (the surfel size in increased)
-  viewer << Viewer3D<>::shiftSurfelVisu;
+  viewer << Viewer3D<Z3i::Space,Z3i::KSpace>::shiftSurfelVisu;
   viewer << SetMode3D((*(vectBdrySCell2.begin())).className(), "");
   viewer.setFillColor(Color(180, 200, 25, 255));
   
@@ -144,10 +145,10 @@ int main( int argc, char** argv )
   }
   
   // On need once again to avoid superposition.
-  viewer << Viewer3D<>::shiftSurfelVisu;
+  viewer << Viewer3D<Z3i::Space,Z3i::KSpace>::shiftSurfelVisu;
   viewer.setFillColor(Color(18, 200, 25, 255));
   viewer << aCell ;
-  viewer << Viewer3D<>::updateDisplay;
+  viewer << Viewer3D<Z3i::Space,Z3i::KSpace>::updateDisplay;
     
   return application.exec();
 }
