@@ -63,12 +63,11 @@ int main( int argc, char** argv )
  Point p6( 0, 0, 0 );
  Point p0( 0, 2, 1 );
  
- // viewer <<  SetMode3D( p1.className(), "Grid" );
+ viewer <<  SetMode3D( p1.className(), "Paving" );
 
  viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
   
-
- //viewer << SetMode3D(domain.className(), "PavingGrids");
+ viewer << SetMode3D(domain.className(), "Grid");
  viewer << domain << Display3D<Space, KSpace>::updateDisplay;
  
 
