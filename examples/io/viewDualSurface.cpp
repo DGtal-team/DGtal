@@ -404,26 +404,16 @@ int main( int argc, char** argv )
   typedef KSpace::CellSet CellSet;
   QApplication application(argc,argv);
   //! [ExampleDisplay3DToOFF]
-  Viewer3D<> viewer;
+  KSpace KS;
+
+  Viewer3D<Z3i::Space,Z3i::KSpace> viewer(KS);
   viewer.show();
   DGtal::Color fillColor( 200, 200, 220, 255 );
   DGtal::Color surfelColor( 255, 0, 0, 150 );
   DGtal::Color voxelColor( 150, 150, 0, 150 );
 
   std::vector<Vector> pts;
-  // pts.push_back( Vector( 0, 0, 0 ) );
-  // pts.push_back( Vector( 1, 0, 0 ) );
-  // pts.push_back( Vector( 0, 1, 0 ) );
-  // pts.push_back( Vector( 0, 0, 1 ) );
-  // pts.push_back( Vector( 0, 1, 1 ) );
-  // pts.push_back( Vector( 1, 0, 1 ) );
-  // pts.push_back( Vector( 1, 1, 0 ) );
-  // std::vector< std::vector< unsigned int > > indices;
-  // naiveConvexHull( indices, pts, false ); // right_handed
-
-  // viewPolygons( viewer, fillColor, indices, pts );
-  // viewer << Viewer3D<>::updateDisplay;
-
+ 
   unsigned int cfg = argc > 1 ? atoi( argv[1] ) : 0;
   unsigned int cfg2 = argc > 2 ? atoi( argv[2] ) : 255;
   std::map< Vector, bool > f;
