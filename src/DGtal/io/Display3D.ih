@@ -388,7 +388,6 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(std::vector<Display3D< Space ,KSpa
   aPolygon.B=aColor.blue();
   aPolygon.T=aColor.alpha();
 
-
   (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(aPolygon);
 }
 
