@@ -681,7 +681,8 @@ namespace DGtal
     struct compFarthestVoxelFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() (typename Viewer3D<Space,KSpace>::cubeD3D s1, typename Viewer3D<Space,KSpace>::cubeD3D s2 )
+      bool operator() (typename Viewer3D<Space,KSpace>::cubeD3D s1, 
+                       typename Viewer3D<Space,KSpace>::cubeD3D s2 )
       {
         double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
         double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
@@ -696,7 +697,8 @@ namespace DGtal
     struct compFarthestTriangleFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() ( typename Viewer3D<Space,KSpace>::triangleD3D t1, typename Viewer3D<Space,KSpace>::triangleD3D t2 )
+      bool operator() ( typename Viewer3D<Space,KSpace>::triangleD3D t1,
+                        typename Viewer3D<Space,KSpace>::triangleD3D t2 )
       {
         qglviewer::Vec center1 ( ( t1.x1+t1.x2+t1.x3 ) /3.0, ( t1.y1+t1.y2+t1.y3 ) /3.0, ( t1.z1+t1.z2+t1.z3 ) /3.0 );
         qglviewer::Vec center2 ( ( t2.x1+t2.x2+t2.x3 ) /3.0, ( t2.y1+t2.y2+t2.y3 ) /3.0, ( t2.z1+t2.z2+t2.z3 ) /3.0 );
@@ -713,7 +715,8 @@ namespace DGtal
     struct compFarthestSurfelFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() (typename Viewer3D<Space,KSpace>::quadD3D q1, typename Viewer3D<Space,KSpace>::quadD3D q2 )
+      bool operator() (typename Viewer3D<Space,KSpace>::quadD3D q1, 
+                       typename Viewer3D<Space,KSpace>::quadD3D q2 )
       {
 
         qglviewer::Vec center1 ( ( q1.x1+q1.x2+q1.x3+q1.x4 ) /4.0, ( q1.y1+q1.y2+q1.y3+q1.y4 ) /4.0, ( q1.z1+q1.z2+q1.z3+q1.z4 ) /4.0 );
@@ -731,23 +734,24 @@ namespace DGtal
     struct compFarthestPolygonFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() ( typename Viewer3D<Space,KSpace>::polygonD3D q1, typename Viewer3D<Space,KSpace>::polygonD3D q2 )
+      bool operator() ( typename Viewer3D<Space,KSpace>::polygonD3D q1, 
+                        typename Viewer3D<Space,KSpace>::polygonD3D q2 )
       {
         double c1x, c1y, c1z=0.0;
         double c2x, c2y, c2z=0.0;
-        for(unsigned int i=0; i< q1.vectBalls.size(); i++){
-          c1x+=q1.vectBalls.at(i).x;
-          c1y+=q1.vectBalls.at(i).y;
-          c1z+=q1.vectBalls.at(i).z;
+        for(unsigned int i=0; i< q1.vertices.size(); i++){
+          c1x+=q1.vertices.at(i)[0];
+          c1y+=q1.vertices.at(i)[1];
+          c1z+=q1.vertices.at(i)[2];
         }
-        for(unsigned int i=0; i< q2.vectBalls.size(); i++){
-          c2x+=q2.vectBalls.at(i).x;
-          c2y+=q2.vectBalls.at(i).y;
-          c2z+=q2.vectBalls.at(i).z;
+        for(unsigned int i=0; i< q2.vertices.size(); i++){
+          c2x+=q2.vertices.at(i)[0];
+          c2y+=q2.vertices.at(i)[1];
+          c2z+=q2.vertices.at(i)[2];
         }
 
-        qglviewer::Vec center1 ( c1x/(double)q1.vectBalls.size(),c1y/(double)q1.vectBalls.size(), c1z/(double)q1.vectBalls.size() );
-        qglviewer::Vec center2 ( c2x/(double)q2.vectBalls.size(),c2y/(double)q2.vectBalls.size(), c2z/(double)q2.vectBalls.size() );
+        qglviewer::Vec center1 ( c1x/(double)q1.vertices.size(),c1y/(double)q1.vertices.size(), c1z/(double)q1.vertices.size() );
+        qglviewer::Vec center2 ( c2x/(double)q2.vertices.size(),c2y/(double)q2.vertices.size(), c2z/(double)q2.vertices.size() );
 
         double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
         double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );

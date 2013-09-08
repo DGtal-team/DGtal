@@ -356,27 +356,30 @@ DGtal::Display3D< Space ,KSpace >::addTriangle(double x1, double y1, double z1, 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addPolygon(std::vector<Display3D< Space ,KSpace >::ballD3D> vectBallsPolygon)
+DGtal::Display3D< Space ,KSpace >::addPolygon(std::vector<RealPoint> &vertices)
 {
+
+  VERIFY_MSG(vertices.size()>2, "Polygon must have at least two vertices");
+
   DGtal::Color aColor = getFillColor();
-  polygonD3D aPolygon;
-  for(unsigned int i=0; i< vectBallsPolygon.size();i++)
+  polygonD3D polygon;
+  for(unsigned int i=0; i< vertices.size();i++)
   {
-    aPolygon.vectBalls.push_back(vectBallsPolygon.at(i));
-    updateBoundingBox(vectBallsPolygon.at(i).x, vectBallsPolygon.at(i).y, vectBallsPolygon.at(i).z);
+    polygon.vertices.push_back(vertices[i]);
+    updateBoundingBox(vertices[i][0], vertices[i][1], vertices[i][2]);
   }
 
-  double x1= vectBallsPolygon.at(0).x;
-  double y1= vectBallsPolygon.at(0).y;
-  double z1= vectBallsPolygon.at(0).z;
+  double x1= vertices[0][0];
+  double y1= vertices[0][1];
+  double z1= vertices[0][2];
 
-  double x2= vectBallsPolygon.at(1).x;
-  double y2= vectBallsPolygon.at(1).y;
-  double z2= vectBallsPolygon.at(1).z;
+  double x2= vertices[1][0];
+  double y2= vertices[1][1];
+  double z2= vertices[1][2];
 
-  double x3= vectBallsPolygon.at(2).x;
-  double y3= vectBallsPolygon.at(2).y;
-  double z3= vectBallsPolygon.at(2).z;
+  double x3= vertices[2][0];
+  double y3= vertices[2][1];
+  double z3= vertices[2][2];
 
   double u[3]; double v [3]; double n [3];
   u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
@@ -386,23 +389,23 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(std::vector<Display3D< Space ,KSpa
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
   {
-    trace.error()<< "Warning polygin not added due to identical vertex... "<<std::endl;
+    trace.error()<< "Warning polygio not added due to identical vertex... "<<std::endl;
     return;
   }
 
-  aPolygon.nx= n[0];
-  aPolygon.ny= n[1];
-  aPolygon.nz= n[2];
+  polygon.nx= n[0];
+  polygon.ny= n[1];
+  polygon.nz= n[2];
 
-  aPolygon.R=aColor.red();
-  aPolygon.G=aColor.green();
-  aPolygon.B=aColor.blue();
-  aPolygon.T=aColor.alpha();
+  polygon.R=aColor.red();
+  polygon.G=aColor.green();
+  polygon.B=aColor.blue();
+  polygon.T=aColor.alpha();
 
  if (myPolygonSetList.size()== 0)
     createNewPolygonList("Polygon Root");
 
-  (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(aPolygon);
+  (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(polygon);
 }
 
 
