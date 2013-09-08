@@ -450,7 +450,7 @@ int main( int argc, char** argv )
             indices.clear();
             naiveConvexHull( indices, pts, false ); // right_handed
             viewPolygons( viewer, fillColor, indices, pts );
-          }
+            }
       }
   viewer << Viewer3D<>::updateDisplay;
   //! [ExampleDisplay3DToOFF]
