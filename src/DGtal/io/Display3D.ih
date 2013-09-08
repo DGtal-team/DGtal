@@ -405,6 +405,9 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(std::vector<RealPoint> &vertices)
  if (myPolygonSetList.size()== 0)
     createNewPolygonList("Polygon Root");
 
+ //@fixme we force the list creation
+ createNewPolygonList("tmp");
+
   (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(polygon);
 }
 
