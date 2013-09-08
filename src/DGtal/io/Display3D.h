@@ -79,7 +79,15 @@ namespace DGtal
    (Board3DTo2D) provides 3D visualisation from 2D vectorial display
    (based on the CAIRO library)
    @see Viewer3D, Board3DTo2D
-  */
+   *
+   * This class is parametrized by both the Digital and Khalimsky
+   * space used to display object. More precisely, embed methods are
+   * used to compute the Euclidean coordinate of digital
+   * obejects/khalimksy cells.
+   *
+   * @tparam Space any model of Digital 3D Space
+   * @tparam KSpace any mode of Khalimksky 3D space
+   */
   template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
   class Display3D
   {
