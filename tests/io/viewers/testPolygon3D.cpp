@@ -80,6 +80,16 @@ int main( int argc, char** argv )
  
  viewer.addPolygon(polyg1);
 
+ viewer.createNewPolygonList("hop");
+
+ std::vector<Z3i::RealPoint> polyg2;
+ 
+ polyg2.push_back(Z3i::RealPoint(0,10,0));
+ polyg2.push_back(Z3i::RealPoint(0,11,0));
+ polyg2.push_back(Z3i::RealPoint(11,11,0));
+ 
+ viewer.addPolygon(polyg2);
+
  viewer << Viewer3D<>::updateDisplay;
 
  bool res = application.exec();
