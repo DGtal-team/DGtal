@@ -103,7 +103,7 @@ namespace DGtal
 
 
     /**
-     * Structure used to display line in 3D
+     * structure used to display line in 3D
      */
     struct lineD3D{
       double x1, y1, z1;
@@ -171,11 +171,11 @@ namespace DGtal
 
 
   public:
-    
+
     //RealPoint
     typedef typename Space::RealPoint RealPoint;
-    
-    
+
+
     /// Structure used to display point in 3D
     /// @see addBall
     ///
@@ -226,7 +226,7 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
-   
+
     /// an embeder from a dgtal space point to a a real space point
     CanonicEmbedder< Space > myEmbedder;
     /// an embeder from a unsigned khalimsky space point to a a real space point
@@ -263,7 +263,7 @@ namespace DGtal
      * constructor with the Khalimsky Space
      * @param KSEmb the khalimsky space for embedding
      */
-    Display3D(KSpace KSEmb)
+    Display3D(const KSpace &KSEmb)
     {
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
@@ -277,7 +277,7 @@ namespace DGtal
      * @param Semb the space for embedding
      * @param KSEmb the khalimsky space for embedding
      */
-    Display3D(Space Semb, KSpace KSEmb)
+    Display3D(const Space &Semb, const KSpace &KSEmb)
     {
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
@@ -429,13 +429,13 @@ namespace DGtal
      */
     void addTriangle(double x1, double y1, double z1, double x2, double y2, double z2,
                      double x3, double y3, double z3);
-  
-  
+
+
     /**
      * Method to add a specific polygon.
      * @param vertices a vector containing the polygon vertices.
      */
-    void addPolygon(std::vector<RealPoint> &vertices);
+    void addPolygon(const std::vector<RealPoint> &vertices);
 
 
     /**
@@ -451,7 +451,7 @@ namespace DGtal
      *
      */
 
-    void addLine(double x1, double y1, double z1, 
+    void addLine(double x1, double y1, double z1,
                  double x2, double y2, double z2, double width=0.03);
 
 
