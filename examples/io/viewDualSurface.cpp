@@ -151,33 +151,24 @@ void viewPolygons
   const std::vector< std::vector< unsigned int > > & indices,  
   const std::vector<Vector> & points )
 {
-  typedef typename Viewer::ballD3D ballD3D;
-  //DGtal::Color color( 200, 200, 220, 255 );
-  std::vector<ballD3D> pts3d;
+  typedef typename Viewer::RealPoint RealPoint;
+  std::vector<RealPoint> pts3d;
   DGtal::Color fillColorSave = viewer.getFillColor();
   for ( unsigned int f = 0; f < indices.size(); ++f )
     {
       pts3d.clear();
-      ballD3D P;
-      P.R = color.red();
-      P.G = color.green();
-      P.B = color.blue();
-      P.T = color.alpha();
-      P.isSigned = false;
-      P.signPos = false;
-      P.size = 0.1;
+      RealPoint P;
       for ( unsigned int v = 0; v < indices[ f ].size(); ++v )
         {
           unsigned int i = indices[ f ][ v ];
-          P.x = rescale( points[ i ][ 0 ] );
-          P.y = rescale( points[ i ][ 1 ] );
-          P.z = rescale( points[ i ][ 2 ] );
+          P[0] = rescale( points[ i ][ 0 ] );
+          P[1] = rescale( points[ i ][ 1 ] );
+          P[2] = rescale( points[ i ][ 2 ] );
           pts3d.push_back( P );
         }
       viewer.setFillColor(color);
       viewer.addPolygon( pts3d );
     }
-  viewer.setFillColor( fillColorSave);
 }
 
 template <typename Vector>

@@ -111,7 +111,8 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 template <typename TPoint, typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, const DGtal::Mesh<TPoint> & aMesh )
+void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, 
+                                           const DGtal::Mesh<TPoint> & aMesh )
 {
   DGtal::Color fillColorSave = display.getFillColor();
   display.createNewQuadList(aMesh.className());
@@ -143,14 +144,14 @@ void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, c
                               p3[0], p3[1], p3[2]);
         }else if(aNum>4)
         {
-          std::vector<typename Display3D<Space, KSpace>::ballD3D> vectPoly;
+          std::vector<typename Display3D<Space, KSpace>::RealPoint> vectPoly;
           for(unsigned int j=0; j< aFace.size(); j++)
             {
-              typename Display3D<Space, KSpace>::ballD3D ball;
-              ball.x= aMesh.getVertex(aFace.at(j))[0];
-              ball.y= aMesh.getVertex(aFace.at(j))[1];
-              ball.z= aMesh.getVertex(aFace.at(j))[2];
-              vectPoly.push_back(ball);
+              typename Display3D<Space, KSpace>::RealPoint point(aMesh.getVertex(aFace.at(j)));
+              //point.x= aMesh.getVertex(aFace.at(j))[0];
+              //point.y= aMesh.getVertex(aFace.at(j))[1];
+              //point.z= aMesh.getVertex(aFace.at(j))[2];
+              vectPoly.push_back(point);
             }
           display.addPolygon(vectPoly);
         }else

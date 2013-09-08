@@ -56,7 +56,7 @@ int main( int argc, char** argv )
   //! [ImportOFFfile]
   std::string inputFilename = examplesPath + "samples/tref.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
-  Mesh<Viewer3D<>::ballD3D> anImportedMesh;
+  Mesh<Viewer3D<>::RealPoint> anImportedMesh;
   anImportedMesh << inputFilename;
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
