@@ -72,7 +72,6 @@ int main( int argc, char** argv )
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  
- typedef Display3D< Space ,KSpace >::ballD3D Ball3D;
  std::vector<Z3i::RealPoint> polyg1;
  
  polyg1.push_back(Z3i::RealPoint(0,0,0));
