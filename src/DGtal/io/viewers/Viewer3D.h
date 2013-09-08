@@ -115,7 +115,7 @@ namespace DGtal
    *
    * @see Display3D, Board3DTo2D
    */
-  template < typename Space = SpaceND<3>, 
+  template < typename Space = SpaceND<3>,
              typename KSpace = KhalimskySpaceND<3> >
   class Viewer3D : public QGLViewer, public Display3D<Space, KSpace>
   {
@@ -263,7 +263,7 @@ namespace DGtal
        * @param yBottomLeft the x coordinate of bottom left image point.
        * @param zBottomLeft the x coordinate of bottom left image point.
        **/
-      void updateDomainOrientation( Viewer3D::ImageDirection normalDir, 
+      void updateDomainOrientation( Viewer3D::ImageDirection normalDir,
                                     double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
 
@@ -273,7 +273,7 @@ namespace DGtal
        * @param yTranslation the image translation in the y direction (default 0).
        * @param zTranslation the image translation in the z direction (default 0).
        **/
-      void translateDomain(double xTranslation=0.0, 
+      void translateDomain(double xTranslation=0.0,
                            double yTranslation=0.0, double zTranslation=0.0);
 
     };
@@ -389,7 +389,7 @@ namespace DGtal
        * @param yBottomLeft the x coordinate of bottom left image point.
        * @param zBottomLeft the x coordinate of bottom left image point.
        **/
-      void updateImageOrientation( Viewer3D::ImageDirection normalDir, 
+      void updateImageOrientation( Viewer3D::ImageDirection normalDir,
                                    double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
 
@@ -554,7 +554,7 @@ namespace DGtal
      * @param newDirection a new direction
      */
     void updateOrientationTextureImage(unsigned int imageIndex,
-                                       double xPosition, double yPosition, 
+                                       double xPosition, double yPosition,
                                        double zPosition, ImageDirection newDirection);
 
 
@@ -589,7 +589,7 @@ namespace DGtal
      * @param yTranslation y part of the translation vector
      * @param zTranslation z part of the translation vector
      */
-    void translateAn2DDomain(unsigned int domainIndex, double xTranslation, 
+    void translateAn2DDomain(unsigned int domainIndex, double xTranslation,
                              double yTranslation, double zTranslation);
 
     /**
@@ -598,7 +598,7 @@ namespace DGtal
      * @param delta the delte for computing
      * @return
      */
-    std::vector<typename DGtal::Viewer3D< Space , KSpace >::lineD3D>
+    std::vector<typename DGtal::Viewer3D< Space , KSpace >::LineD3D>
     compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
 
     /**
@@ -606,7 +606,7 @@ namespace DGtal
      * @param anImageDomain the image domain
      * @return
      */
-    std::vector<typename DGtal::Viewer3D< Space , KSpace >::lineD3D> 
+    std::vector<typename DGtal::Viewer3D< Space , KSpace >::LineD3D>
     compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
 
 
@@ -641,7 +641,7 @@ namespace DGtal
      * Draw a linel by using the [gluCylinder] primitive.
      * @param aLinel the linel to draw
      **/
-    void glDrawGLLinel ( typename Viewer3D<Space,KSpace>::lineD3D aLinel );
+    void glDrawGLLinel ( typename Viewer3D<Space,KSpace>::LineD3D aLinel );
 
 
 
@@ -650,7 +650,7 @@ namespace DGtal
      * Draw a linel by using the [gluCShere] primitive.
      * @param pointel the pointel to draw
      */
-    void glDrawGLPointel ( typename Viewer3D<Space,KSpace>::ballD3D pointel );
+    void glDrawGLPointel ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
 
 
 
@@ -681,8 +681,8 @@ namespace DGtal
     struct compFarthestVoxelFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() (typename Viewer3D<Space,KSpace>::cubeD3D s1, 
-                       typename Viewer3D<Space,KSpace>::cubeD3D s2 )
+      bool operator() (typename Viewer3D<Space,KSpace>::CubeD3D s1,
+                       typename Viewer3D<Space,KSpace>::CubeD3D s2 )
       {
         double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
         double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
@@ -715,7 +715,7 @@ namespace DGtal
     struct compFarthestSurfelFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() (typename Viewer3D<Space,KSpace>::quadD3D q1, 
+      bool operator() (typename Viewer3D<Space,KSpace>::quadD3D q1,
                        typename Viewer3D<Space,KSpace>::quadD3D q2 )
       {
 
@@ -734,7 +734,7 @@ namespace DGtal
     struct compFarthestPolygonFromCamera
     {
       qglviewer::Vec posCam;
-      bool operator() ( typename Viewer3D<Space,KSpace>::polygonD3D q1, 
+      bool operator() ( typename Viewer3D<Space,KSpace>::polygonD3D q1,
                         typename Viewer3D<Space,KSpace>::polygonD3D q2 )
       {
         double c1x, c1y, c1z=0.0;
