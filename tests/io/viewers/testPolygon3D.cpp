@@ -73,16 +73,11 @@ int main( int argc, char** argv )
  viewer.show();
  
  typedef Display3D< Space ,KSpace >::ballD3D Ball3D;
- std::vector<Ball3D> polyg1;
+ std::vector<Z3i::RealPoint> polyg1;
  
- Ball3D P,Q,R;
- P.x = 0; P.y=0;P.z=0; P.size=1.0;
- Q.x = 0; Q.y=1;Q.z=0; Q.size=5.0;
- R.x = 1; R.y=1;R.z=0; R.size=2.0;
-
- polyg1.push_back(P);
- polyg1.push_back(Q);
- polyg1.push_back(R);
+ polyg1.push_back(Z3i::RealPoint(0,0,0));
+ polyg1.push_back(Z3i::RealPoint(0,1,0));
+ polyg1.push_back(Z3i::RealPoint(1,1,0));
  
  viewer.addPolygon(polyg1);
 

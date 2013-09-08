@@ -131,7 +131,6 @@ namespace DGtal
       double width;
     };
 
-
     /**
      * Used to define clipping planes (it uses the quadD3D structure)
      * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
@@ -157,6 +156,7 @@ namespace DGtal
     };
 
 
+
     /**
      * This structure is used to display triangle faces.
      * @see Display3D, Viewer3D, Board3DTo2D
@@ -171,9 +171,11 @@ namespace DGtal
 
 
   public:
-
-    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
-
+    
+    //RealPoint
+    typedef typename Space::RealPoint RealPoint;
+    
+    
     /// Structure used to display point in 3D
     /// @see addBall
     ///
@@ -216,15 +218,15 @@ namespace DGtal
      **/
     struct polygonD3D
     {
-      std::vector<ballD3D> vectBalls;
+      std::vector<RealPoint> vertices;
       double nx, ny, nz;
       unsigned char R,G,B,T;
     };
 
 
+    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
-
-
+   
     /// an embeder from a dgtal space point to a a real space point
     CanonicEmbedder< Space > myEmbedder;
     /// an embeder from a unsigned khalimsky space point to a a real space point
@@ -431,9 +433,9 @@ namespace DGtal
   
     /**
      * Method to add a specific polygon.
-     * @param vectPointsPolygon a vector containing the polygon vertex.
+     * @param vertices a vector containing the polygon vertices.
      */
-    void addPolygon(std::vector<ballD3D> vectPointsPolygon);
+    void addPolygon(std::vector<RealPoint> &vertices);
 
 
     /**
