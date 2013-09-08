@@ -547,7 +547,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glPushMatrix();
 
   unsigned int i = 0;
-  typename vector< typename Viewer3D<Space, KSpace>::clippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
+  typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
 
   // OpenGL can't draw more than GL_MAX_CLIP_PLANES clipping plane
   while ( i < GL_MAX_CLIP_PLANES && it !=Viewer3D<Space, KSpace>::myClippingPlaneList.end() )
