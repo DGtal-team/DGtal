@@ -188,6 +188,10 @@ DGtal::Display3D< Space ,KSpace >::addCube(double x, double y, double z, double 
   v.B=aColor.blue();
   v.T=aColor.alpha();
   v.width=width;
+
+  if (myCubeSetList.size() ==0)
+    createNewCubeList("Cube Root");
+  
   (myCubeSetList.at(myCubeSetList.size()-1)).push_back(v);
 }
 
@@ -214,9 +218,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(double x, double y, double z, double 
   p.size=size;
 
   if (myBallSetList.size()== 0)
-  {
-    createNewBallList("first ball");
-  }
+    createNewBallList("Ball Root");
 
   (myBallSetList.at(myBallSetList.size()-1)).push_back(p);
 }
@@ -247,6 +249,9 @@ DGtal::Display3D< Space ,KSpace >::addLine(double x1, double y1, double z1, doub
   l.width=width;
   l.isSigned=false;
   l.signPos=false;
+
+  if (myLineSetList.size()== 0)
+    createNewLineList("Line Root");
 
   (myLineSetList.at(myLineSetList.size()-1)).push_back(l);
 }
@@ -295,6 +300,9 @@ DGtal::Display3D< Space ,KSpace >::addQuad(double x1, double y1, double z1,
   aQuad.B=aColor.blue();
   aQuad.T=aColor.alpha();
 
+ if (myQuadSetList.size()== 0)
+    createNewQuadList("Quad Root");
+
   (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
 }
 
@@ -337,6 +345,9 @@ DGtal::Display3D< Space ,KSpace >::addTriangle(double x1, double y1, double z1, 
   aTriangle.G=aColor.green();
   aTriangle.B=aColor.blue();
   aTriangle.T=aColor.alpha();
+
+ if (myTriangleSetList.size()== 0)
+    createNewTriangleList("Triangle Root");
 
   (myTriangleSetList.at(myTriangleSetList.size()-1)).push_back(aTriangle);
 }
@@ -387,6 +398,9 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(std::vector<Display3D< Space ,KSpa
   aPolygon.G=aColor.green();
   aPolygon.B=aColor.blue();
   aPolygon.T=aColor.alpha();
+
+ if (myPolygonSetList.size()== 0)
+    createNewPolygonList("Polygon Root");
 
   (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(aPolygon);
 }
