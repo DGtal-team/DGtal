@@ -223,7 +223,7 @@ DGtal::Viewer3D< Space ,KSpace >::addImage2DDomainD3D(const TDomain &aDomain,
   Display3D< Space, KSpace>::updateBoundingBox(anImageDomain.x3, anImageDomain.y3, anImageDomain.z3);
   Display3D< Space, KSpace>::updateBoundingBox(anImageDomain.x4, anImageDomain.y4, anImageDomain.z4);
 
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
   Viewer3D<Space, KSpace>::myLineSetList.push_back(vectLines);
 
 }
@@ -231,11 +231,11 @@ DGtal::Viewer3D< Space ,KSpace >::addImage2DDomainD3D(const TDomain &aDomain,
 
 template < typename Space ,typename KSpace >
 inline
-std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D>
+std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D>
 DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation( typename DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D &anImageDomain )
 {
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectLinesResu= compute2DDomainLineRepresentation(anImageDomain, 0.05);
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectLinesVerso= compute2DDomainLineRepresentation(anImageDomain, -0.05);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> vectLinesResu= compute2DDomainLineRepresentation(anImageDomain, 0.05);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> vectLinesVerso= compute2DDomainLineRepresentation(anImageDomain, -0.05);
   for(unsigned int i=0; i<vectLinesVerso.size(); i++)
     {
       vectLinesResu.push_back(vectLinesVerso.at(i));
@@ -246,11 +246,11 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation( typename DG
 
 template < typename Space ,typename KSpace >
 inline
-std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D>
+std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D>
 DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D &anImageDomain, double delta )
 {
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> aLineSet;
-  typename Viewer3D<Space, KSpace>::lineD3D aLine;
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> aLineSet;
+  typename Viewer3D<Space, KSpace>::LineD3D aLine;
   aLine.R = anImageDomain.R;
   aLine.G = anImageDomain.G;
   aLine.B = anImageDomain.B;
@@ -397,8 +397,8 @@ DGtal::Viewer3D< Space ,KSpace >::updateAn2DDomainOrientation(unsigned int domai
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
   anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
 
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> &vectLines = Viewer3D<Space, KSpace>::myLineSetList.at(anDomain.myLineSetIndex);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> &vectLines = Viewer3D<Space, KSpace>::myLineSetList.at(anDomain.myLineSetIndex);
   vectLines.clear();
   for(unsigned int i=0; i<vectNewLines.size(); i++)
     {
@@ -421,9 +421,9 @@ DGtal::Viewer3D< Space ,KSpace >::translateAn2DDomain(unsigned int domainIndex, 
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
   Display3D< Space, KSpace>::updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
 
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
 
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::lineD3D> &vectLines = DGtal::Viewer3D< Space ,KSpace >::myLineSetList.at(anDomain.myLineSetIndex);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> &vectLines = DGtal::Viewer3D< Space ,KSpace >::myLineSetList.at(anDomain.myLineSetIndex);
 
   vectLines.clear();
   for(unsigned int i=0; i<vectNewLines.size(); i++)
@@ -635,17 +635,17 @@ DGtal::Viewer3D<Space, KSpace>::draw()
 
   // Drawing all Khalimsky Space Cells
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::ballD3D> >::const_iterator it= Viewer3D<Space, KSpace>::myBallSetList.begin(); it != Viewer3D<Space, KSpace>::myBallSetList.end(); it++ )
+  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator it= Viewer3D<Space, KSpace>::myBallSetList.begin(); it != Viewer3D<Space, KSpace>::myBallSetList.end(); it++ )
     {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::ballD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
         {
           glDrawGLPointel ( *it_s );
         }
     }
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::lineD3D> >::const_iterator it= Viewer3D<Space, KSpace>::myLineSetList.begin(); it != Viewer3D<Space, KSpace>::myLineSetList.end(); it++ )
+  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::LineD3D> >::const_iterator it= Viewer3D<Space, KSpace>::myLineSetList.begin(); it != Viewer3D<Space, KSpace>::myLineSetList.end(); it++ )
     {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::lineD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
+      for ( typename vector< typename Viewer3D<Space, KSpace>::LineD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
         {
           glDrawGLLinel (*it_s );
         }
@@ -713,9 +713,9 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myViewWire=true;
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
-  vector<typename Viewer3D<Space, KSpace>::lineD3D> listeLine;
+  vector<typename Viewer3D<Space, KSpace>::LineD3D> listeLine;
   Viewer3D<Space, KSpace>::myLineSetList.push_back ( listeLine );
-  vector<typename Viewer3D<Space, KSpace>::ballD3D> listeBall;
+  vector<typename Viewer3D<Space, KSpace>::BallD3D> listeBall;
   Viewer3D<Space, KSpace>::myBallSetList.push_back ( listeBall );
   Viewer3D<Space, KSpace>::myCurrentFillColor = Color ( 220, 220, 220 );
   Viewer3D<Space, KSpace>::myCurrentLineColor = Color ( 22, 22, 222, 50 );
@@ -730,7 +730,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   Viewer3D<Space, KSpace>::myBoundingPtUp[1]=-10.0;//numeric_limits<double>::min( );
   Viewer3D<Space, KSpace>:: myBoundingPtUp[2]=-10.0;//numeric_limits<double>::min( );
   Viewer3D<Space, KSpace>::createNewCubeList ( );
-  typename std::vector< typename Viewer3D<Space, KSpace>::cubeD3D> aKSCubeList;
+  typename std::vector< typename Viewer3D<Space, KSpace>::CubeD3D> aKSCubeList;
 
   Viewer3D<Space, KSpace>::myCurrentfShiftVisuSurfelPrisms=0.0;
   Viewer3D<Space, KSpace>::myDefaultColor= Color ( 255, 255, 255 );
@@ -878,7 +878,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
   //OPT new
 
-  typedef typename std::vector<typename Viewer3D<Space, KSpace>::cubeD3D> vectorCubes;
+  typedef typename std::vector<typename Viewer3D<Space, KSpace>::CubeD3D> vectorCubes;
   typedef typename vectorCubes::iterator ItCube;
 
   std::vector<ItCube> listIt;
@@ -929,8 +929,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
           for ( typename std::vector<ItCube>::iterator it = listIt.begin(); it != listIt.end(); it++)
             {
 
-              typename Viewer3D<Space, KSpace>::cubeD3D s1 = (**it);
-              typename Viewer3D<Space, KSpace>::cubeD3D s2 = (**itBest);
+              typename Viewer3D<Space, KSpace>::CubeD3D s1 = (**it);
+              typename Viewer3D<Space, KSpace>::CubeD3D s2 = (**itBest);
               double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
               double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
               //check if the if the cube is the farhest or the most included( the most small)
@@ -950,7 +950,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
               idx++;
             }
 
-          typename Viewer3D<Space, KSpace>::cubeD3D cube = (**itBest);
+          typename Viewer3D<Space, KSpace>::CubeD3D cube = (**itBest);
           glColor4ub ( cube.R, cube.G, cube.B, cube.T );
           double _width= cube.width;
 
@@ -1053,7 +1053,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
       glDisable ( GL_LIGHTING );
       glPushName ( myNbListe );
       glBegin ( GL_LINES );
-      for ( typename std::vector<typename Viewer3D<Space, KSpace>::lineD3D>::iterator s_it = Viewer3D<Space, KSpace>::myLineSetList.at ( i ).begin();
+      for ( typename std::vector<typename Viewer3D<Space, KSpace>::LineD3D>::iterator s_it = Viewer3D<Space, KSpace>::myLineSetList.at ( i ).begin();
             s_it != Viewer3D<Space, KSpace>::myLineSetList.at ( i ).end();
             ++s_it )
         {
@@ -1077,7 +1077,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
       glPushName ( myNbListe );
       glBegin ( GL_POINTS );
-      for ( typename std::vector<typename Viewer3D<Space, KSpace>::ballD3D>::iterator s_it = Viewer3D<Space, KSpace>::myBallSetList.at ( i ).begin();
+      for ( typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D>::iterator s_it = Viewer3D<Space, KSpace>::myBallSetList.at ( i ).begin();
             s_it != Viewer3D<Space, KSpace>::myBallSetList.at ( i ).end();
             ++s_it )
         {
@@ -1225,12 +1225,12 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );
   glBegin ( GL_LINES );
-  for (typename std::vector<std::vector<typename Viewer3D<Space, KSpace>::polygonD3D> >::iterator it = Viewer3D<Space, KSpace>::myPolygonSetList.begin(); 
+  for (typename std::vector<std::vector<typename Viewer3D<Space, KSpace>::polygonD3D> >::iterator it = Viewer3D<Space, KSpace>::myPolygonSetList.begin();
        it != Viewer3D<Space, KSpace>::myPolygonSetList.end(); it++)
     {
       for (typename std::vector<typename Viewer3D<Space, KSpace>::polygonD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
-          glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(), Viewer3D<Space, KSpace>::myCurrentLineColor.green(), 
+          glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(), Viewer3D<Space, KSpace>::myCurrentLineColor.green(),
                        Viewer3D<Space, KSpace>::myCurrentLineColor.blue() , Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
           for(unsigned int j=0;j < (it_s->vertices).size();j++)
             {
@@ -1287,7 +1287,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 template< typename Space, typename KSpace>
 void
-DGtal::Viewer3D<Space, KSpace>::glDrawGLLinel ( typename Viewer3D<Space, KSpace>::lineD3D aLinel )
+DGtal::Viewer3D<Space, KSpace>::glDrawGLLinel ( typename Viewer3D<Space, KSpace>::LineD3D aLinel )
 {
   glPushMatrix();
   glTranslatef ( aLinel.x1, aLinel.y1, aLinel.z1 );
@@ -1305,7 +1305,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLLinel ( typename Viewer3D<Space, KSpace>
 
 template< typename Space, typename KSpace>
 void
-DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpace>::ballD3D ballel )
+DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpace>::BallD3D ballel )
 {
 
   if ( !ballel.isSigned )

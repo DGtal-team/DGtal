@@ -76,7 +76,7 @@ namespace DGtal
    ...). The class Viewer3D and Board3DTo2D implement two different
    ways to display 3D objects. The first one (Viewer3D), permits an
    interactive visualisation (based on @a OpenGL ) and the second one
-   (Board3DTo2D) provides 3D visualisation from 2D vectorial display
+   (Board3dto2d) provides 3D visualisation from 2D vectorial display
    (based on the CAIRO library)
    @see Viewer3D, Board3DTo2D
    *
@@ -105,7 +105,7 @@ namespace DGtal
     /**
      * structure used to display line in 3D
      */
-    struct lineD3D{
+    struct LineD3D{
       double x1, y1, z1;
       double x2, y2, z2;
       double width;
@@ -117,7 +117,7 @@ namespace DGtal
     /**
      * Defines the 3D cube.
      */
-    struct cubeD3D{
+    struct CubeD3D{
       /// The center coordinate of the cube.
       ///
       double x, y,z;
@@ -135,7 +135,7 @@ namespace DGtal
      * Used to define clipping planes (it uses the quadD3D structure)
      * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
      **/
-    struct clippingPlaneD3D{
+    struct ClippingPlaneD3D{
       double a,b,c,d;
     };
 
@@ -180,7 +180,7 @@ namespace DGtal
     /// @see addBall
     ///
     //have to be public because of external functions
-    struct ballD3D
+    struct BallD3D
     {
       const double & operator[]( unsigned int i ) const
       {
@@ -568,7 +568,7 @@ namespace DGtal
      * @param aMesh : (return) the mesh containing the elements of the display.
      *
      **/
-    void exportToMesh(Mesh<Display3D::ballD3D> & aMesh ) const;
+    void exportToMesh(Mesh<Display3D::BallD3D> & aMesh ) const;
 
 
     /**
@@ -679,19 +679,19 @@ namespace DGtal
 
     /// Used to represent all the list used in the display.
     ///
-    std::vector< std::vector<cubeD3D> > myCubeSetList;
+    std::vector< std::vector<CubeD3D> > myCubeSetList;
 
     /// Used to represent all the list of line primitive
     ///
-    std::vector< std::vector<lineD3D> > myLineSetList;
+    std::vector< std::vector<LineD3D> > myLineSetList;
 
     /// Used to represent all the list of point primitive
     ///
-    std::vector< std::vector<ballD3D> > myBallSetList;
+    std::vector< std::vector<BallD3D> > myBallSetList;
 
     /// Represent all the clipping planes added to the scene (of maxSize=5).
     ///
-    std::vector< clippingPlaneD3D > myClippingPlaneList;
+    std::vector< ClippingPlaneD3D > myClippingPlaneList;
 
     /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
@@ -802,7 +802,7 @@ namespace DGtal
    *
    **/
   void
-  operator>> ( const Display3D<Space , KSpace > &aDisplay3D, DGtal::Mesh< typename Display3D<Space , KSpace >::ballD3D> &aMesh);
+  operator>> ( const Display3D<Space , KSpace > &aDisplay3D, DGtal::Mesh< typename Display3D<Space , KSpace >::BallD3D> &aMesh);
 
 
   /**
