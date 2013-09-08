@@ -443,6 +443,7 @@ int main( int argc, char** argv )
         viewer << CustomColors3D( DGtal::Color( 255, 0, 0, 255 ), fillColor );
         std::vector< std::vector< unsigned int > > indices;
         Domain domain2( offset + Vector( 0, 0, 0), offset + Vector( 1, 1, 1 ) );
+
         for ( Domain::ConstIterator it = domain.begin(), itE = domain.end();
               it != itE; ++it )
           {
