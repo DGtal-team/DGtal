@@ -146,7 +146,7 @@ namespace DGtal
      * color).
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-    struct quadD3D{
+    struct QuadD3D{
       double x1,y1,z1;
       double x2,y2,z2;
       double x3,y3,z3;
@@ -161,7 +161,7 @@ namespace DGtal
      * This structure is used to display triangle faces.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-    struct triangleD3D{
+    struct TriangleD3D{
       double x1,y1,z1;
       double x2,y2,z2;
       double x3,y3,z3;
@@ -216,7 +216,7 @@ namespace DGtal
      * This structure is used to display polygonal faces in 3d.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
-    struct polygonD3D
+    struct PolygonD3D
     {
       std::vector<RealPoint> vertices;
       double nx, ny, nz;
@@ -695,16 +695,16 @@ namespace DGtal
 
     /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
-    std::vector< quadD3D > mySurfelPrismList;
+    std::vector< QuadD3D > mySurfelPrismList;
 
     /// Represents all the planes drawn in the Display3D
-    std::vector<std::vector< quadD3D > > myQuadSetList;
+    std::vector<std::vector< QuadD3D > > myQuadSetList;
 
     /// Represents all the triangles drawn in the Display3D
-    std::vector<std::vector< triangleD3D > > myTriangleSetList;
+    std::vector<std::vector< TriangleD3D > > myTriangleSetList;
 
     /// Represents all the polygon drawn in the Display3D
-    std::vector<std::vector<polygonD3D> > myPolygonSetList;
+    std::vector<std::vector<PolygonD3D> > myPolygonSetList;
 
     /// names of the lists in myCubeSetList
     ///
@@ -802,7 +802,8 @@ namespace DGtal
    *
    **/
   void
-  operator>> ( const Display3D<Space , KSpace > &aDisplay3D, DGtal::Mesh< typename Display3D<Space , KSpace >::BallD3D> &aMesh);
+  operator>> ( const Display3D<Space , KSpace > &aDisplay3D,
+               DGtal::Mesh< typename Display3D<Space , KSpace >::BallD3D> &aMesh);
 
 
   /**
