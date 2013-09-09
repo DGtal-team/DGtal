@@ -545,9 +545,9 @@ namespace DGtal
      * @param z2 z coordinates of the 2nd point
      * @param width the width of the cylinder (default= 0.02)
      */
-    void addCylinder(double x1, double y1, double z1,
-                     double x2, double y2, double z2,
-                     double width=0.02);
+    void addCylinder(const double x1, const double y1, const  double z1,
+                     const double x2, const double y2, const double z2,
+                     const double width=0.02);
 
 
     /**
@@ -557,7 +557,7 @@ namespace DGtal
      * @param y the y coordinate to be taken into accounts.
      * @param z the z coordinate to be taken into accounts.
      */
-    void updateBoundingBox(double x, double y, double z);
+    void updateBoundingBox(const double x, const double y, const double z);
 
 
 
