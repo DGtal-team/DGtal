@@ -117,14 +117,18 @@ public:
       cacheMissRead = 0;
       cacheMissWrite = 0;
       
-      setbuf(stdout, NULL); // TEMP_MT
+      clock = new(Clock); // TEMP_MT
+      ticks = 0;
     }
 
     /**
      * Destructor.
      * Does nothing
      */
-    ~ImageCache() {}
+    ~ImageCache()
+    {
+      delete clock; // TEMP_MT
+    }
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -212,6 +216,22 @@ public:
     {
         cacheMissWrite++;
     }
+    
+    /**
+     * Clear the ticks value.
+     */
+    void clearTicks() // TEMP_MT
+    {
+        ticks=0;
+    }
+    
+    /**
+     * Get the ticks value.
+     */
+    const long getTicks() const // TEMP_MT
+    {
+        return ticks;
+    }
 
     // ------------------------- Protected Datas ------------------------------
 private:
@@ -236,7 +256,8 @@ private:
     unsigned int cacheMissWrite;
     
     /// for clock counting
-    unsigned t; // TEMP_MT
+    long ticks;
+    Clock *clock; // TEMP_MT
 
     // ------------------------- Internals ------------------------------------
 private:

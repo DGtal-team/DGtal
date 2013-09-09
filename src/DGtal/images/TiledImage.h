@@ -53,8 +53,6 @@
 
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/images/DefaultImageRange.h"
-
-#include <ctime> // TEMP_MT
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -130,8 +128,6 @@ public:
         
         for(typename Domain::Integer i=0; i<Domain::dimension; i++)
           mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
-        
-        setbuf(stdout, NULL); // TEMP_MT
     }
 
     /**
@@ -251,20 +247,14 @@ public:
       else
       {
         //trace.beginBlock("incCacheMissRead");
-        myImageCache->incCacheMissRead();
-        Domain d;
-
-        t = clock();
-        d = findSubDomain(aPoint);
-        t = clock() - t; //if (t) trace.info() << "findSubDomain took " << t <<" ticks.\n";
-        
-        t = clock();
-        myImageCache->update(d);
-        t = clock() - t; //if (t) trace.info() << "update took " << t <<" ticks.\n";
-        
-        t = clock();
-        myImageCache->read(aPoint, aValue);
-        t = clock() - t; //if (t) trace.info() << "read took " << t <<" ticks.\n";
+          myImageCache->incCacheMissRead();
+          Domain d;
+          
+          d = findSubDomain(aPoint);
+          
+          myImageCache->update(d);
+          
+          myImageCache->read(aPoint, aValue);
         //trace.endBlock();
         
         return aValue;
@@ -309,6 +299,22 @@ public:
     {
         return myImageCache->getCacheMissWrite();
     }
+    
+    /**
+     * Clear the ticks value.
+     */
+    void clearTicks() // TEMP_MT
+    {
+        myImageCache->clearTicks();
+    }
+    
+    /**
+     * Get the ticks value.
+     */
+    const long getTicks() const // TEMP_MT
+    {
+        return myImageCache->getTicks();
+    }
 
     // ------------------------- Protected Datas ------------------------------
 private:
@@ -336,9 +342,6 @@ protected:
     Point m_lowerBound, m_upperBound;
 
     // ------------------------- Internals ------------------------------------
-private:
-    /// for clock counting
-    unsigned t; // TEMP_MT
 
 }; // end of class TiledImage
 
