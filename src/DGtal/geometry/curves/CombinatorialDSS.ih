@@ -671,7 +671,7 @@ DGtal::CombinatorialDSS<TConstIterator, TInteger >::selfDisplay ( std::ostream &
   out << "myNextAfter         = " << myNextAfter << "\n";
   out << "(a,b,mu,omega)      = (" << a << ", " << b << ", " << mu << ", " <<
     omega << ")\n"; 
-  out << "[End CombinatorialDSS]" << endl;
+  out << "[End CombinatorialDSS]" << std::endl;
 }
 
 
