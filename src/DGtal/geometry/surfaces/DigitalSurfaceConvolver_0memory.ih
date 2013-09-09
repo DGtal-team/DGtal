@@ -124,28 +124,23 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension>
-template< typename ConstIteratorOnCells>
+template< typename ConstIteratorOnCells, typename OutputIterator >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory<Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension>::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file )
+  OutputIterator & result )
 {
     //ASSERT ( isInitMask == true ); //Actually, this don't use the optimization by masks
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     for( ConstIteratorOnCells itcurrent = itbegin;
          itcurrent != itend;
          ++itcurrent )
     {
-        result << eval( itcurrent );
-        result << '\n';
+        result = eval( itcurrent );
+        ++result;
     }
-
-    result.close();
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
@@ -218,26 +213,21 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension >
-template< typename ConstIteratorOnCells >
+template< typename ConstIteratorOnCells, typename OutputIterator >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, dimension >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file )
+  OutputIterator & result )
 {
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
-
     for( ConstIteratorOnCells itcurrent = itbegin;
          itcurrent != itend;
          ++itcurrent )
     {
-        result << evalCovarianceMatrix( itcurrent );
-        result << '\n';
+        result = evalCovarianceMatrix( itcurrent );
+        ++result;
     }
-
-    result.close();
 }
 
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks, DGtal::Dimension dimension>
@@ -374,13 +364,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
@@ -397,9 +387,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -421,13 +408,12 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
         resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
-        result << functor( resultQuantity );
-        result << '\n';
+        result = functor( resultQuantity );
+        ++result;
 
         ++total;
     }
 
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;
@@ -437,13 +423,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   const Shape & shape,
   const double h,
   EvalFunctor functor )
@@ -462,9 +448,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -486,13 +469,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
         resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
-        result << functor( resultQuantity );
-        result << '\n';
+        result = functor( resultQuantity );
+        ++result;
 
         ++total;
     }
-
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;
@@ -1073,13 +1054,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
@@ -1096,9 +1077,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -1120,13 +1098,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
         resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
-        result << functor( resultCovarianceMatrix );
-        result << '\n';
+        result = functor( resultCovarianceMatrix );
+        ++result;
 
         ++total;
     }
-
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;
@@ -1135,13 +1111,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 2 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   const Shape & shape,
   const double h,
   EvalFunctor functor )
@@ -1160,9 +1136,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -1184,13 +1157,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
         resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
-        result << functor( resultCovarianceMatrix );
-        result << '\n';
+        result = functor( resultCovarianceMatrix );
+        ++result;
 
         ++total;
     }
-
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;
@@ -2287,13 +2258,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
@@ -2310,9 +2281,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -2334,13 +2302,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
         resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
-        result << functor( resultQuantity );
-        result << '\n';
+        result = functor( resultQuantity );
+        ++result;
 
         ++total;
     }
-
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;
@@ -2350,13 +2316,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::eval
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   const Shape & shape,
   const double h,
   EvalFunctor functor )
@@ -2375,9 +2341,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     Quantity resultQuantity;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -2399,13 +2362,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
         resultQuantity = innerSum * lambda + outerSum * ( 1.0 - lambda );
-        result << functor( resultQuantity );
-        result << '\n';
+        result = functor( resultQuantity );
+        ++result;
 
         ++total;
     }
-
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;
@@ -2724,13 +2685,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   EvalFunctor functor )
 {
     ASSERT ( isInitMask == true );
@@ -2747,9 +2708,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -2771,13 +2729,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = 0.5;
         resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
-        result << functor( resultCovarianceMatrix );
-        result << '\n';
+        result = functor( resultCovarianceMatrix );
+        ++result;
 
         ++total;
     }
-
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;
@@ -2786,13 +2742,13 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
-template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalCovarianceMatrix
 ( const ConstIteratorOnCells & itbegin,
   const ConstIteratorOnCells & itend,
-  const std::string & file,
+  OutputIterator & result,
   const Shape & shape,
   const double h,
   EvalFunctor functor )
@@ -2811,9 +2767,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     CovarianceMatrix resultCovarianceMatrix;
 
     Spel lastInnerSpel, lastOuterSpel;
-
-    std::ofstream result ( file.c_str() );
-    ASSERT ( result.is_open() );
 
     /// Iterate on all cells
     for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
@@ -2836,13 +2789,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         /// Computation of result covariance matrix + moving
         double lambda = computeShiftFromShape( shape, h, lastInnerSpel, lastOuterSpel );
         resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
-        result << functor( resultCovarianceMatrix );
-        result << '\n';
+        result = functor( resultCovarianceMatrix );
+        ++result;
 
         ++total;
     }
-
-    result.close();
 
 #ifdef DEBUG_VERBOSE
     std::cout << "#total cells = " << total << std::endl;

@@ -156,10 +156,10 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename OutputIterator >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                const std::string & file );
+                OutputIterator & result );
 
     /**
        * Convolve the kernel at a given position and return a covariance matrix.
@@ -183,10 +183,10 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename OutputIterator >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                const std::string & file );
+                                OutputIterator & result );
 
     /**
        * Checks the validity/consistency of the object.
@@ -370,10 +370,10 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                const std::string & file,
+                OutputIterator & result,
                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
@@ -383,10 +383,10 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                const std::string & file,
+                OutputIterator & result,
                 const Shape & shape,
                 const double h,
                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
@@ -433,10 +433,10 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                const std::string & file,
+                                OutputIterator & result,
                                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
@@ -448,10 +448,10 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                const std::string & file,
+                                OutputIterator & result,
                                 const Shape & shape,
                                 const double h,
                                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
@@ -671,10 +671,10 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity >  >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity >  >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                const std::string & file,
+                OutputIterator & result,
                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
@@ -684,10 +684,10 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity >  >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity >  >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
-                const std::string & file,
+                OutputIterator & result,
                 const Shape & shape,
                 const double h,
                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
@@ -733,10 +733,10 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                const std::string & file,
+                                OutputIterator & result,
                                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
 
     /**
@@ -748,10 +748,10 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
-                                const std::string & file,
+                                OutputIterator & result,
                                 const Shape & shape,
                                 const double h,
                                 EvalFunctor functor = EvalFunctor( Quantity( 1 )) );

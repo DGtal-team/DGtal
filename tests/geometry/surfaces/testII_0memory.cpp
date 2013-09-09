@@ -41,6 +41,7 @@
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator_0memory.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator_0memory.h"
 
 #include "DGtal/kernel/BasicPointFunctors.h"
@@ -125,7 +126,7 @@ protected:
     const Shape* shape;
 };
 
-bool testII2D()
+bool testII2D_Gaussian()
 {
     return false;
     /*
@@ -258,7 +259,7 @@ bool testII2D()
     return true;*/
 }
 
-int testII3D( )//int argc, char** argv )
+int testII3D_Gaussian( )//int argc, char** argv )
 {
     typedef Z3i::Space::RealPoint RealPoint;
     typedef Z3i::Point Point;
@@ -272,7 +273,7 @@ int testII3D( )//int argc, char** argv )
 
     typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
-    double h = 0.5;
+    double h = 0.1;
     double re = 3.0;
     double radius = 5.0;
 
@@ -317,11 +318,15 @@ int testII3D( )//int argc, char** argv )
     estimator_0mem.init( h, re );
     std::cout << "STEP 1" << std::endl;
 
-    string filename = "toto.dat";//std::tmpnam(nullptr);
+    string filename = "toto_g.dat";//std::tmpnam(nullptr);
+    std::ofstream file( filename );
+    file.flags( std::ios_base::unitbuf );
+    std::ostream_iterator< double > out_it( file, "\n" );
 //    std::cout << filename << std::endl;
 
-    estimator_0mem.eval( boundary.begin(), boundary.end(), filename, *ishape );
+    estimator_0mem.eval( boundary.begin(), boundary.end(), out_it, *ishape );
 
+    file.close();
     std::cout << "STEP 2" << std::endl;
 
     /*MyCurvatureEstimator estimator ( K, functor );
@@ -336,18 +341,6 @@ int testII3D( )//int argc, char** argv )
     delete dshape;
     ishape = NULL;
     dshape = NULL;
-
-    std::ifstream input( filename.c_str() );
-    ASSERT( input.good() );
-
-    std::string line;
-    //for( unsigned int i = 0; i < resultII.size(); ++i )
-    {
-        std::getline( input, line );
-        std::cout << "NO MEM: " << line << std::endl;
-//        std::cout << "FULL MEM: " << resultII[ i ] << "  vs NO MEM: " << line << std::endl;
-    }
-    input.close();
 
     return 0;
 
@@ -487,6 +480,92 @@ int testII3D( )//int argc, char** argv )
     return application.exec();*/
 }
 
+int testII3D_Mean()
+{
+    typedef Z3i::Space::RealPoint RealPoint;
+    typedef Z3i::Point Point;
+    typedef Z3i::KSpace::Surfel Surfel;
+    typedef ImplicitBall<Z3i::Space> ImplicitShape;
+    typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
+    typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
+    typedef typename Boundary::SurfelConstIterator ConstIterator;
+    typedef typename Boundary::Tracker Tracker;
+
+
+    typedef DigitalShape::PointEmbedder DigitalEmbedder;
+
+    double h = 0.1;
+    double re = 3.0;
+    double radius = 5.0;
+
+    ImplicitShape* ishape = new ImplicitShape( RealPoint( 0, 0, 0 ), radius );
+    DigitalShape* dshape = new DigitalShape();
+    dshape->attach( *ishape );
+    dshape->init( RealPoint( Point( -10, -10, -10 ) ), RealPoint( Point( 10, 10, 10 ) ), h );
+
+    Z3i::KSpace K;
+    if ( !K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
+    {
+        std::cout << "Problem" << std::endl;
+        return false;
+    }
+
+    Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, *dshape, 10000 );
+    Boundary boundary( K, *dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
+
+//    std::vector< int > trololo = {1,2,3,4};
+//    trololo.erase(trololo.begin()+1);
+//    std::cout << trololo[0] << " " << trololo[1] << " " << trololo[2] << std::endl;
+//    std::cout << "trololo memory size " << trololo.capacity() * sizeof(int) << std::endl;
+//    std::cout << "trololo memory size " << trololo.size() * sizeof(int) << std::endl;
+//    return false;
+    std::cout << "euclidean shape memory size " << sizeof(*ishape) << std::endl;
+    std::cout << "digital shape memory size " << sizeof(*dshape) << std::endl;
+    std::cout << "KSpace memory size " << sizeof(K) << std::endl;
+    std::cout << "boundary memory size " << sizeof(boundary) << std::endl;
+
+    std::cout << "----------------------------------" << std::endl;
+
+    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
+    typedef IntegralInvariantMeanCurvatureEstimator_0memory< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator_0memory; // Mean curvature estimator
+    typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Mean curvature estimator
+
+    MyPointFunctor pointFunctor( dshape, dshape->getDomain(), 1, 0 );
+    MyCellFunctor functor ( pointFunctor, K );
+
+    std::cout << "STEP 0" << std::endl;
+    MyCurvatureEstimator_0memory estimator_0mem ( K, functor );
+    estimator_0mem.init( h, re );
+    std::cout << "STEP 1" << std::endl;
+
+    string filename = "toto_m.dat";//std::tmpnam(nullptr);
+    std::ofstream file( filename );
+    file.flags( std::ios_base::unitbuf );
+    std::ostream_iterator< double > out_it( file, "\n" );
+//    std::cout << filename << std::endl;
+
+    estimator_0mem.eval( boundary.begin(), boundary.end(), out_it, *ishape );
+
+    file.close();
+    std::cout << "STEP 2" << std::endl;
+
+    /*MyCurvatureEstimator estimator ( K, functor );
+    estimator.init( h, re );
+
+    std::vector< double > resultII;
+    std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
+    estimator.eval( boundary.begin(), boundary.end(), resultIIIterator, *ishape );
+*/
+
+    delete ishape;
+    delete dshape;
+    ishape = NULL;
+    dshape = NULL;
+
+    return 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -498,8 +577,9 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-//    testII2D( );
-    testII3D( );//argc, argv );
+//    testII2D_Gaussian( );
+    testII3D_Gaussian( );//argc, argv );
+    testII3D_Mean();
     return 1;
     //  bool res = testII3D();
     //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

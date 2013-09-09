@@ -17,27 +17,27 @@
 #pragma once
 
 /**
- * @file IntegralInvariantMeanCurvatureEstimator.h
+ * @file IntegralInvariantMeanCurvatureEstimator_0memory.h
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
  * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
  *
  * @date 2012/04/19
  *
- * Header file for module IntegralInvariantMeanCurvatureEstimator.ih
+ * Header file for module IntegralInvariantMeanCurvatureEstimator_0memory.ih
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(IntegralInvariantMeanCurvatureEstimator_RECURSES)
-#error Recursive header files inclusion detected in IntegralInvariantMeanCurvatureEstimator.h
-#else // defined(IntegralInvariantMeanCurvatureEstimator_RECURSES)
+#if defined(IntegralInvariantMeanCurvatureEstimator_0memory_RECURSES)
+#error Recursive header files inclusion detected in IntegralInvariantMeanCurvatureEstimator_0memory.h
+#else // defined(IntegralInvariantMeanCurvatureEstimator_0memory_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define IntegralInvariantMeanCurvatureEstimator_RECURSES
+#define IntegralInvariantMeanCurvatureEstimator_0memory_RECURSES
 
-#if !defined IntegralInvariantMeanCurvatureEstimator_h
+#if !defined IntegralInvariantMeanCurvatureEstimator_0memory_h
 /** Prevents repeated inclusion of headers. */
-#define IntegralInvariantMeanCurvatureEstimator_h
+#define IntegralInvariantMeanCurvatureEstimator_0memory_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,6 +48,7 @@
 #include "DGtal/shapes/Shapes.h"
 
 #include "DGtal/geometry/surfaces/DigitalSurfaceConvolver.h"
+#include "DGtal/geometry/surfaces/DigitalSurfaceConvolver_0memory.h"
 #include "DGtal/shapes/EuclideanShapesDecorator.h"
 
 #include "DGtal/shapes/implicit/ImplicitBall.h"
@@ -57,10 +58,71 @@
 namespace DGtal
 {
 
+template< typename Quantity >
+class MeanCurvatureFunctor3 : std::unary_function <double,double>
+{
+public:
+
+    MeanCurvatureFunctor3(){}
+
+    void init( const double & h, const double & r )
+    {
+        d8_3r = 8.0 / ( 3.0 * r );
+        double r2 = r * r;
+        d_4_PIr4 = 4.0 / ( M_PI * r2 * r2 );
+        dh3 = h * h * h;
+    }
+
+    Quantity operator()(const Quantity & aInput)
+    {
+        Quantity cp_quantity = aInput;
+        cp_quantity *= dh3;
+
+        return d8_3r - d_4_PIr4 * cp_quantity;
+    }
+
+private:
+    Quantity dh3;
+    Quantity d8_3r;
+    Quantity d_4_PIr4;
+
+};
+
+template< typename Quantity >
+class MeanCurvatureFunctor2 : std::unary_function <double,double>
+{
+public:
+
+    MeanCurvatureFunctor2(){}
+
+    void init( const double & h, const double & r )
+    {
+        d1_r2 = 1.0 / ( r * r );
+        dPI_2 = M_PI / 2.0;
+        d3_r = 3.0 / r;
+        dh2 = h * h;
+    }
+
+    Quantity operator()(const Quantity & aInput)
+    {
+        Quantity cp_quantity = aInput;
+        cp_quantity *= dh2;
+
+        return d3_r * ( dPI_2 - d1_r2 * cp_quantity );
+    }
+
+private:
+    Quantity dh2;
+    Quantity d3_r;
+    Quantity dPI_2;
+    Quantity d1_r2;
+
+};
+
 /////////////////////////////////////////////////////////////////////////////
-// template class IntegralInvariantMeanCurvatureEstimator
+// template class IntegralInvariantMeanCurvatureEstimator_0memory
 /**
-   * Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
+   * Description of template class 'IntegralInvariantMeanCurvatureEstimator_0memory' <p>
    * \brief Aim: This class implement a Integral Invariant mean curvature estimation.
    *
    * @see related article:
@@ -83,7 +145,7 @@ namespace DGtal
    * @see exampleIntegralInvariantCurvature2D.cpp testIntegralInvariantMeanCurvature3D.cpp testIntegralInvariantCurvature2D.cpp
    */
 template <typename TKSpace, typename TShapeFunctor, Dimension dimension = TKSpace::dimension>
-class IntegralInvariantMeanCurvatureEstimator
+class IntegralInvariantMeanCurvatureEstimator_0memory
 {
 public:
     typedef TKSpace KSpace;
@@ -114,19 +176,19 @@ public:
      * @param space space in which the shape is defined.
      * @param f functor on cell of the shape.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
+    IntegralInvariantMeanCurvatureEstimator_0memory ( const KSpace & space, const ShapeCellFunctor & f );
 
     /**
      * Destructor.
      */
-    ~IntegralInvariantMeanCurvatureEstimator()
+    ~IntegralInvariantMeanCurvatureEstimator_0memory()
     {}
 
     // ----------------------- Interface --------------------------------------
 public:
 
     /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
+      * Initialise the IntegralInvariantMeanCurvatureEstimator_0memory with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
@@ -207,6 +269,8 @@ private:
     /// Euclidean radius of the kernel
     double radius;
 
+    MeanCurvatureFunctor3< Quantity > meanFunctor;
+
 private:
 
     /**
@@ -214,7 +278,7 @@ private:
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator_0memory ( const IntegralInvariantMeanCurvatureEstimator_0memory & other );
 
     /**
      * Assignment.
@@ -222,15 +286,15 @@ private:
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator_0memory & operator= ( const IntegralInvariantMeanCurvatureEstimator_0memory & other );
 
-}; // end of class IntegralInvariantMeanCurvatureEstimator
+}; // end of class IntegralInvariantMeanCurvatureEstimator_0memory
 
 /**
       * Specialization for dimension = 2
       */
 template <typename TKSpace, typename TShapeFunctor>
-class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>
+class IntegralInvariantMeanCurvatureEstimator_0memory<TKSpace, TShapeFunctor, 2>
 {
 public:
     typedef TKSpace KSpace;
@@ -244,12 +308,15 @@ public:
     typedef double Quantity;
     typedef int Value;
 
+    typedef ImplicitBall<Z2i::Space> KernelSupport;
+    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+    typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
+
     typedef TShapeFunctor ShapeCellFunctor;
     typedef ConstValueFunctor<Value> KernelCellFunctor;
-    typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShape> Convolver;
     typedef typename Convolver::PairIterators PairIterators;
 
-    typedef ImplicitBall<Z2i::Space> KernelSupport;
 
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
@@ -261,19 +328,24 @@ public:
      * @param space space in which the shape is defined.
      * @param f functor on cell of the shape.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
+    IntegralInvariantMeanCurvatureEstimator_0memory ( const KSpace & space, const ShapeCellFunctor & f );
 
     /**
      * Destructor.
      */
-    ~IntegralInvariantMeanCurvatureEstimator()
-    {}
+    ~IntegralInvariantMeanCurvatureEstimator_0memory()
+    {
+        for( unsigned int i = 0; i < masks.size(); ++i )
+        {
+            delete masks[ i ];
+        }
+    }
 
     // ----------------------- Interface --------------------------------------
 public:
 
     /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
+      * Initialise the IntegralInvariantMeanCurvatureEstimator_0memory with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
@@ -291,7 +363,8 @@ public:
         *
         * @return quantity of the result of Integral Invariant estimator at position *it
         */
-    template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
+    template<typename ConstIteratorOnCells>
+    Quantity eval ( const ConstIteratorOnCells & it );
 
     /**
         * Compute the integral invariant Gaussian curvature to cell *it of a shape.
@@ -340,16 +413,6 @@ public:
                 const Shape & shape );
 
     /**
-      * @return iterator of the begin spel of the kernel support
-      */
-    const ConstIteratorKernel & beginKernel() const;
-
-    /**
-      * @return iterator of the end spel of the kernel support
-      */
-    const ConstIteratorKernel & endKernel() const;
-
-    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
@@ -365,9 +428,8 @@ public:
 private:
 
     /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
-    std::vector< SurfelSet > kernels;
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernelsIterators;
+    std::vector< DigitalShape > kernels;
+    std::vector< EuclideanMinus* > masks;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -384,11 +446,7 @@ private:
     /// Euclidean radius of the kernel
     double radius;
 
-    /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
-    Quantity dh2; /// h*h
-    Quantity d3_r; /// 3/r
-    Quantity dPI_2; /// PI/2
-    Quantity d1_r2; /// 1/r^2
+    MeanCurvatureFunctor3< Quantity > meanFunctor;
 
 private:
 
@@ -397,7 +455,7 @@ private:
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator_0memory ( const IntegralInvariantMeanCurvatureEstimator_0memory & other );
 
     /**
      * Assignment.
@@ -405,14 +463,14 @@ private:
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
-}; // end of class IntegralInvariantMeanCurvatureEstimator for dimension = 2
+    IntegralInvariantMeanCurvatureEstimator_0memory & operator= ( const IntegralInvariantMeanCurvatureEstimator_0memory & other );
+}; // end of class IntegralInvariantMeanCurvatureEstimator_0memory for dimension = 2
 
 /**
     * Specialization for dimension = 3
     */
 template <typename TKSpace, typename TShapeFunctor>
-class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>
+class IntegralInvariantMeanCurvatureEstimator_0memory<TKSpace, TShapeFunctor, 3>
 {
 public:
     typedef TKSpace KSpace;
@@ -426,12 +484,15 @@ public:
     typedef double Quantity;
     typedef int Value;
 
+    typedef ImplicitBall<Z3i::Space> KernelSupport;
+    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+    typedef GaussDigitizer< Z3i::Space, EuclideanMinus > DigitalShape;
+
     typedef TShapeFunctor ShapeCellFunctor;
     typedef ConstValueFunctor<Value> KernelCellFunctor;
-    typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShape> Convolver;
     typedef typename Convolver::PairIterators PairIterators;
 
-    typedef ImplicitBall<Z3i::Space> KernelSupport;
 
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
@@ -443,19 +504,24 @@ public:
      * @param space space in which the shape is defined.
      * @param f functor on cell of the shape.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & f );
+    IntegralInvariantMeanCurvatureEstimator_0memory ( const KSpace & space, const ShapeCellFunctor & f );
 
     /**
      * Destructor.
      */
-    ~IntegralInvariantMeanCurvatureEstimator()
-    {}
+    ~IntegralInvariantMeanCurvatureEstimator_0memory()
+    {
+        for( unsigned int i = 0; i < masks.size(); ++i )
+        {
+            delete masks[ i ];
+        }
+    }
 
     // ----------------------- Interface --------------------------------------
 public:
 
     /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
+      * Initialise the IntegralInvariantMeanCurvatureEstimator_0memory with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
@@ -548,9 +614,8 @@ public:
 private:
 
     /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
-    std::vector< SurfelSet > kernels;
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernelsIterators;
+    std::vector< DigitalShape > kernels;
+    std::vector< EuclideanMinus* > masks;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -572,6 +637,8 @@ private:
     Quantity d8_3r; /// 8/3r
     Quantity d_4_PIr4; /// 4/(PI*r^4)
 
+    MeanCurvatureFunctor3< Quantity > meanFunctor;
+
 private:
 
     /**
@@ -579,7 +646,7 @@ private:
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator_0memory ( const IntegralInvariantMeanCurvatureEstimator_0memory & other );
 
     /**
      * Assignment.
@@ -587,7 +654,7 @@ private:
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+    IntegralInvariantMeanCurvatureEstimator_0memory & operator= ( const IntegralInvariantMeanCurvatureEstimator_0memory & other );
 
 }; // end of specialization for dimension = 3
 
@@ -600,34 +667,34 @@ private:
 
 
 /**
-   * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantMeanCurvatureEstimator'.
+   * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantMeanCurvatureEstimator_0memory'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'IntegralInvariantMeanCurvatureEstimator' to write.
+   * @param object the object of class 'IntegralInvariantMeanCurvatureEstimator_0memory' to write.
    * @return the output stream after the writing.
    */
 template <typename TKS, typename TSF, Dimension dimension>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKS, TSF, dimension> & object );
+operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator_0memory<TKS, TSF, dimension> & object );
 
 template <typename TKS, typename TSF>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKS, TSF, 2> & object );
+operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator_0memory<TKS, TSF, 2> & object );
 
 template <typename TKS, typename TSF>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKS, TSF, 3> & object );
+operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator_0memory<TKS, TSF, 3> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.ih"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator_0memory.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined IntegralInvariantMeanCurvatureEstimator_h
+#endif // !defined IntegralInvariantMeanCurvatureEstimator_0memory_h
 
-#undef IntegralInvariantMeanCurvatureEstimator_RECURSES
-#endif // else defined(IntegralInvariantMeanCurvatureEstimator_RECURSES)
+#undef IntegralInvariantMeanCurvatureEstimator_0memory_RECURSES
+#endif // else defined(IntegralInvariantMeanCurvatureEstimator_0memory_RECURSES)

@@ -54,6 +54,7 @@
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/Shapes.h"
 
+#include "DGtal/geometry/surfaces/DigitalSurfaceConvolver.h"
 #include "DGtal/geometry/surfaces/DigitalSurfaceConvolver_0memory.h"
 #include "DGtal/shapes/EuclideanShapesDecorator.h"
 
@@ -254,7 +255,8 @@ public:
       *
       * @return quantity of the result of Integral Invariant estimator at position *it
       */
-    template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
+    template<typename ConstIteratorOnCells>
+    Quantity eval ( const ConstIteratorOnCells & it );
 
     /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
@@ -267,10 +269,10 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of results of the computation.
       */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename OutputIterator >
     void eval ( const ConstIteratorOnCells & itb,
                 const ConstIteratorOnCells & ite,
-                std::string & file );
+                OutputIterator & result );
 
     /**
       * @return iterator of the begin spel of the kernel support
@@ -382,7 +384,12 @@ public:
      * Destructor.
      */
     ~IntegralInvariantGaussianCurvatureEstimator_0memory()
-    {}
+    {
+        for( unsigned int i = 0; i < masks.size(); ++i )
+        {
+            delete masks[ i ];
+        }
+    }
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -433,10 +440,10 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of results of the computation.
       */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename OutputIterator >
     void eval ( const ConstIteratorOnCells & itb,
                 const ConstIteratorOnCells & ite,
-                std::string & file );
+                OutputIterator & result );
 
     /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
@@ -449,10 +456,10 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of results of the computation.
       */
-    template< typename ConstIteratorOnCells, typename Shape >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
     void eval ( const ConstIteratorOnCells & itb,
                 const ConstIteratorOnCells & ite,
-                std::string & file,
+                OutputIterator & result,
                 const Shape & shape );
 
 
@@ -473,6 +480,7 @@ private:
 
     /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
+    std::vector< EuclideanMinus* > masks;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -490,10 +498,10 @@ private:
     double radius;
 
     /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
-    Quantity dh2; /// h*h
+    /*Quantity dh2; /// h*h
     Quantity d3_r; /// 3/r
     Quantity dPI_2; /// PI/2
-    Quantity d1_r2; /// 1/r^2
+    Quantity d1_r2; /// 1/r^2*/
 
     GaussianCurvatureFunctor2< Matrix2x2 > gaussFunctor;
 
@@ -618,10 +626,10 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of results of the computation.
       */
-    template< typename ConstIteratorOnCells >
+    template< typename ConstIteratorOnCells, typename OutputIterator >
     void eval ( const ConstIteratorOnCells & itb,
                 const ConstIteratorOnCells & ite,
-                std::string & file );
+                OutputIterator & result );
 
     /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
@@ -634,10 +642,10 @@ public:
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
       * @param result iterator of results of the computation.
       */
-    template< typename ConstIteratorOnCells, typename Shape >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
     void eval ( const ConstIteratorOnCells & itb,
                 const ConstIteratorOnCells & ite,
-                std::string & file,
+                OutputIterator & result,
                 const Shape & shape );
 
     /**
@@ -674,9 +682,9 @@ private:
     /// Euclidean radius of the kernel
     double radius;
 
-    Quantity d6_PIr6; /// 6/PI*r^6
+    /*Quantity d6_PIr6; /// 6/PI*r^6
     Quantity d8_5r; /// 8/5r
-    Quantity dh5; /// h^5
+    Quantity dh5; /// h^5*/
 
     GaussianCurvatureFunctor3< Matrix3x3 > gaussFunctor;
 
