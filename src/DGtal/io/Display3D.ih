@@ -767,9 +767,9 @@ DGtal::Display3D< Space ,KSpace >::addCone(double x1, double y1, double z1,
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addCylinder(double x1, double y1, double z1,
-                                               double x2, double y2, double z2,
-                                               double width)
+DGtal::Display3D< Space ,KSpace >::addCylinder(const double x1, const double y1, const double z1,
+                                               const double x2, const double y2, const double z2,
+                                               const double width)
 {
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
