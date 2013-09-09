@@ -151,18 +151,18 @@ bool testII2D_kernels()
     typedef DigitalShapesMinus< DigitalShapeB, DigitalShapeC > DigitalDigitalMinusShapeBC;
     typedef GaussDigitizer< Z2i::Space, EuclideanMinusShapeAB > DigitalEuclideanMinusShapeAB;
     typedef GaussDigitizer< Z2i::Space, EuclideanMinusShapeBC > DigitalEuclideanMinusShapeBC;
-    typedef typename Z2i::DigitalSet DigitalSetA;
-    typedef typename Z2i::DigitalSet DigitalSetB;
-    typedef typename Z2i::DigitalSet DigitalSetC;
-    typedef typename Z2i::DigitalSet DigitalSetDigitalMinusAB;
-    typedef typename Z2i::DigitalSet DigitalSetDigitalMinusBC;
-    typedef typename Z2i::DigitalSet DigitalSetEuclideanMinusAB;
-    typedef typename Z2i::DigitalSet DigitalSetEuclideanMinusBC;
+    typedef Z2i::DigitalSet DigitalSetA;
+    typedef Z2i::DigitalSet DigitalSetB;
+    typedef Z2i::DigitalSet DigitalSetC;
+    typedef Z2i::DigitalSet DigitalSetDigitalMinusAB;
+    typedef Z2i::DigitalSet DigitalSetDigitalMinusBC;
+    typedef Z2i::DigitalSet DigitalSetEuclideanMinusAB;
+    typedef Z2i::DigitalSet DigitalSetEuclideanMinusBC;
 
-    typedef typename Z2i::Space Space;
-    typedef typename Z2i::Domain Domain;
-    typedef typename Domain::Point Point;
-    typedef typename Space::RealPoint RealPoint;
+    typedef Z2i::Space Space;
+    typedef Z2i::Domain Domain;
+    typedef Domain::Point Point;
+    typedef Space::RealPoint RealPoint;
 
     double radius = 5.0;
     double h = 0.1;
@@ -383,12 +383,12 @@ bool testII2D_kernels()
 bool testII2D_kernels_2()
 {
     typedef Z2i::KSpace KSpace;
-    typedef typename Z2i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef Z2i::Domain Domain;
+    typedef KSpace::Space::RealPoint RealPoint;
     typedef ImplicitBall< Z2i::Space > KernelSupport;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename Z2i::DigitalSet DigitalSet;
-    typedef typename Domain::Point Point;
+    typedef KSpace::SurfelSet SurfelSet;
+    typedef Z2i::DigitalSet DigitalSet;
+    typedef Domain::Point Point;
 
 
     //////////////////////////////
@@ -692,11 +692,11 @@ bool testII2D_kernels_2()
 int testII3D_kernels( int argc, char** argv )
 {
     typedef Z3i::KSpace KSpace;
-    typedef typename Z3i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef Z3i::Domain Domain;
+    typedef KSpace::Space::RealPoint RealPoint;
     typedef ImplicitBall< Z3i::Space > KernelSupport;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename Z3i::DigitalSet DigitalSet;
+    typedef KSpace::SurfelSet SurfelSet;
+    typedef Z3i::DigitalSet DigitalSet;
 
 
     //////////////////////////////
@@ -823,7 +823,7 @@ int testII2D_same_results( )
     typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
     MyPointFunctor pointFunctor( gauss, domain, 1, 0 );
 
-    typedef typename DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
+    typedef DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
     MySet set( domain );
     Shapes< Domain >::digitalShaper( set, *gauss );
 
@@ -841,7 +841,7 @@ int testII2D_same_results( )
 
     typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
-    typedef typename Z2i::KSpace::SCell SCell;
+    typedef Z2i::KSpace::SCell SCell;
     SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
     SCell bel;
     try
@@ -857,7 +857,7 @@ int testII2D_same_results( )
 
     typedef DepthFirstVisitor< DigSurface > Visitor;
     typedef GraphVisitorRange< Visitor > VisitorRange;
-    typedef typename VisitorRange::ConstIterator It;
+    typedef VisitorRange::ConstIterator It;
     VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
     It ibegin = range.begin();
     It iend = range.end();
@@ -919,7 +919,7 @@ bool testII2D()
     typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
     MyPointFunctor pointFunctor( gauss, domain, 1, 0 );
 
-    typedef typename DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
+    typedef DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
     MySet set( domain );
     Shapes< Domain >::digitalShaper( set, *gauss );
 
@@ -932,7 +932,7 @@ bool testII2D()
 
     typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
-    typedef typename Z2i::KSpace::SCell SCell;
+    typedef Z2i::KSpace::SCell SCell;
     SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
     SCell bel;
     try
@@ -948,7 +948,7 @@ bool testII2D()
 
     typedef DepthFirstVisitor< DigSurface > Visitor;
     typedef GraphVisitorRange< Visitor > VisitorRange;
-    typedef typename VisitorRange::ConstIterator It;
+    typedef VisitorRange::ConstIterator It;
 
     /// Integral Invariant
     typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > GaussianEstimator;
