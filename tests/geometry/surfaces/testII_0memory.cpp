@@ -267,8 +267,8 @@ int testII3D_Gaussian( )//int argc, char** argv )
     typedef ImplicitBall<Z3i::Space> ImplicitShape;
     typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
     typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
-    typedef typename Boundary::SurfelConstIterator ConstIterator;
-    typedef typename Boundary::Tracker Tracker;
+    typedef Boundary::SurfelConstIterator ConstIterator;
+    typedef Boundary::Tracker Tracker;
 
 
     typedef DigitalShape::PointEmbedder DigitalEmbedder;
@@ -319,7 +319,7 @@ int testII3D_Gaussian( )//int argc, char** argv )
     std::cout << "STEP 1" << std::endl;
 
     string filename = "toto_g.dat";//std::tmpnam(nullptr);
-    std::ofstream file( filename );
+    std::ofstream file( filename.c_str() );
     file.flags( std::ios_base::unitbuf );
     std::ostream_iterator< double > out_it( file, "\n" );
 //    std::cout << filename << std::endl;
@@ -488,8 +488,8 @@ int testII3D_Mean()
     typedef ImplicitBall<Z3i::Space> ImplicitShape;
     typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
     typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
-    typedef typename Boundary::SurfelConstIterator ConstIterator;
-    typedef typename Boundary::Tracker Tracker;
+    typedef Boundary::SurfelConstIterator ConstIterator;
+    typedef Boundary::Tracker Tracker;
 
 
     typedef DigitalShape::PointEmbedder DigitalEmbedder;
@@ -540,7 +540,7 @@ int testII3D_Mean()
     std::cout << "STEP 1" << std::endl;
 
     string filename = "toto_m.dat";//std::tmpnam(nullptr);
-    std::ofstream file( filename );
+    std::ofstream file( filename.c_str() );
     file.flags( std::ios_base::unitbuf );
     std::ostream_iterator< double > out_it( file, "\n" );
 //    std::cout << filename << std::endl;
