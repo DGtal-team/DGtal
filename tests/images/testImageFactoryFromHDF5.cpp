@@ -32,7 +32,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/readers/HDF5Reader.h"
 #include "DGtal/images/ImageFactoryFromHDF5.h"
 #include "DGtal/images/ImageCache.h"
 #include "DGtal/images/TiledImage.h"

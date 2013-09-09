@@ -34,6 +34,10 @@
 
 #include <hdf5.h>
 
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/ImageFactoryFromHDF5.h"
+#include "DGtal/io/writers/VolWriter.h"
+
 #include "ConfigExamples.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -42,8 +46,8 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define DATASETNAME_3D_TILED    "UInt8Array3D"
-#define RANK_3D_TILED           3
+#define DATASETNAME_3D    "UInt8Array3D"
+#define RANK_3D           3
 
 bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChunk, char *HDF5Filename)
 {
@@ -51,16 +55,16 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
     
       trace.info() << "begin" << endl;
       
-      hid_t               file, dataset;                                  // file and dataset handles
-      hid_t               datatype, dataspace;                            // handles
-      hsize_t             dimsf[RANK_3D_TILED];                           // dataset dimensions
+      hid_t               file, dataset;                // file and dataset handles
+      hid_t               datatype, dataspace;          // handles
+      hsize_t             dimsf[RANK_3D];               // dataset dimensions
       herr_t              status;
       DGtal::uint8_t      *data;
       int                 i, j, k;
       
       // compressed dataset
       hid_t plist_id;
-      hsize_t cdims[RANK_3D_TILED];
+      hsize_t cdims[RANK_3D];
       // compressed dataset
 
       // Data and output buffer initialization.
@@ -103,7 +107,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       dimsf[0] = sizeZ;
       dimsf[1] = sizeY;
       dimsf[2] = sizeX;
-      dataspace = H5Screate_simple(RANK_3D_TILED, dimsf, NULL);
+      dataspace = H5Screate_simple(RANK_3D, dimsf, NULL);
       
       // compressed dataset
       plist_id  = H5Pcreate (H5P_DATASET_CREATE);
@@ -112,7 +116,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       cdims[0] = sizeChunk;
       cdims[1] = sizeChunk;
       cdims[2] = sizeChunk;
-      status = H5Pset_chunk (plist_id, RANK_3D_TILED, cdims);
+      status = H5Pset_chunk (plist_id, RANK_3D, cdims);
 
       // --> Compression levels :
       // 0            No compression
@@ -134,7 +138,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       * Create a new dataset within the file using defined dataspace and
       * datatype and default dataset creation properties.
       */
-      dataset = H5Dcreate2(file, DATASETNAME_3D_TILED, datatype, dataspace,
+      dataset = H5Dcreate2(file, DATASETNAME_3D, datatype, dataspace,
                           H5P_DEFAULT, /*H5P_DEFAULT*/plist_id, H5P_DEFAULT); // here to activate compressed dataset
 
       // Write the data to the dataset using default transfer properties.
@@ -164,13 +168,36 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
     return true;
 }
 
+bool HDF5_3D2vol(char *rawFilename, char *outputFileName)
+{
+    trace.beginBlock("HDF5_3D2vol");
+    
+    typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
+
+    typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
+    MyImageFactoryFromHDF5 factImage(rawFilename, DATASETNAME_3D);
+
+    typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
+    
+    OutputImage *volImage = factImage.requestImage( factImage.domain() );
+    bool res = VolWriter<OutputImage>::exportVol(outputFileName, *volImage);
+    factImage.detachImage(volImage);
+    
+    trace.endBlock();
+
+    return res;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
 {
     if (argc==7)
+    {
       raw2HDF5_3D(argv[1], atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), argv[6]);
+      HDF5_3D2vol(argv[6], "OutputImage.vol");
+    }
     else
     {
       trace.info() << "A raw to HDF5 converter (first version, restriction: only 3D UInt8 data input file, HDF5 output file with ZLIB compression activated)" << endl;
