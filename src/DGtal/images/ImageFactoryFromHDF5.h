@@ -357,11 +357,11 @@ namespace DGtal
       }
       
       Value *data_out = (Value*) malloc (malloc_size * sizeof(Value)); // output buffer
-      /*if (data_out == NULL)
+      if (data_out == NULL)
       {
         trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
         exit;
-      }*/
+      }
       
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)
@@ -387,6 +387,11 @@ namespace DGtal
       status = H5DSpecializations<Self, Value>::H5DreadS(*this, memspace, data_out);
     
       OutputImage* outputImage = new OutputImage(aDomain);
+      if (outputImage == NULL)
+      {
+        trace.error() << "outputImage new error in requestImage: " << std::endl;
+        exit;
+      }
           
       typedef SpaceND<ddim> TSpace;
       typename TSpace::Point a, b;
