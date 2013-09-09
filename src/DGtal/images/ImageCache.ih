@@ -30,8 +30,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 
-#include <ctime> // TEMP_MT
-
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -92,24 +90,18 @@ inline
 void
 DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::update(const Domain &aDomain)
 {
-    t = clock();
     ImageContainer *myImagePtr = myReadPolicy->getPageToDetach();
-    t = clock() - t; //if (t) trace.info() << "getPageToDetach took " << t <<" ticks.\n";
     
     if (myImagePtr)
     {
-      t = clock();
       myWritePolicy->flushPage(myImagePtr);
-      t = clock() - t; //if (t) trace.info() << "flushPage took " << t <<" ticks.\n";
       
-      t = clock();
       myImageFactoryPtr->detachImage(myImagePtr);
-      t = clock() - t; //if (t) trace.info() << "detachImage took " << t <<" ticks.\n";
     }
     
-    t = clock();
+    clock->startClock();
     myReadPolicy->updateCache(aDomain);
-    t = clock() - t; //if (t) trace.info() << "updateCache took " << t <<" ticks.\n";
+    ticks += clock->stopClock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
