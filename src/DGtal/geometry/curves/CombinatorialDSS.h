@@ -51,6 +51,7 @@
 #include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
