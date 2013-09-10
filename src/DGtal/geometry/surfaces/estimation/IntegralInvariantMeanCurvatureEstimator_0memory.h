@@ -338,7 +338,11 @@ public:
         for( unsigned int i = 0; i < masks.size(); ++i )
         {
             delete masks[ i ];
+            masks[ i ] = NULL;
         }
+
+        delete kernel;
+        kernel = NULL;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -430,6 +434,7 @@ private:
     /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
     std::vector< EuclideanMinus* > masks;
+    KernelSupport * kernel;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -514,7 +519,10 @@ public:
         for( unsigned int i = 0; i < masks.size(); ++i )
         {
             delete masks[ i ];
+            masks[ i ] = NULL;
         }
+        delete kernel;
+        kernel = NULL;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -616,6 +624,7 @@ private:
     /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
     std::vector< EuclideanMinus* > masks;
+    KernelSupport * kernel;
 
     /// origin spel of the kernel support.
     Spel myOrigin;

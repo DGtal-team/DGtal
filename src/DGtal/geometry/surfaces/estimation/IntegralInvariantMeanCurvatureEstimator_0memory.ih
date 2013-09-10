@@ -92,7 +92,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
 
     RealPoint rOrigin = RealPoint ( 0.0, 0.0 );
     Domain::Point pOrigin = Domain::Point( 0, 0 );
-    KernelSupport * kernel = new KernelSupport( rOrigin, radius );
+    kernel = new KernelSupport( rOrigin, radius );
 
     kernels = std::vector< DigitalShape > ( 9 );
     masks = std::vector< EuclideanMinus* >( 9 );
@@ -149,7 +149,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
 
     RealPoint rOrigin = RealPoint ( 0.0, 0.0, 0.0 );
     Domain::Point pOrigin = Domain::Point( 0, 0, 0 );
-    KernelSupport * kernel = new KernelSupport( rOrigin, radius );
+    kernel = new KernelSupport( rOrigin, radius );
 
     kernels = std::vector< DigitalShape >( 27 );
     masks = std::vector< EuclideanMinus* >( 27 );

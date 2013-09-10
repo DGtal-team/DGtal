@@ -66,18 +66,6 @@
 namespace DGtal
 {
 
-template <typename Quantity, typename EigenVectors, typename EigenValues>
-struct CurvatureInformation_0memory
-{
-    Quantity curvature;
-    EigenVectors eigenVectors;
-    EigenValues eigenValues;
-
-    CurvatureInformation_0memory( Quantity q, EigenVectors evec, EigenValues eval )
-        :curvature(q), eigenVectors(evec), eigenValues(eval)
-    {}
-};
-
 template< typename Matrix3x3 >
 class GaussianCurvatureFunctor3 : std::unary_function <double,double>
 {
@@ -388,7 +376,10 @@ public:
         for( unsigned int i = 0; i < masks.size(); ++i )
         {
             delete masks[ i ];
+            masks[ i ] = NULL;
         }
+        delete kernel;
+        kernel = NULL;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -481,6 +472,7 @@ private:
     /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
     std::vector< EuclideanMinus* > masks;
+    KernelSupport * kernel;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -552,7 +544,6 @@ public:
 
     typedef typename Convolver::CovarianceMatrix Matrix3x3;
     typedef EigenValues3D< Quantity >::Vector3 Vector3;
-    typedef CurvatureInformation< Quantity, Matrix3x3, Vector3 > CurvInformation;
 
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
@@ -574,7 +565,10 @@ public:
         for( unsigned int i = 0; i < masks.size(); ++i )
         {
             delete masks[ i ];
+            masks[ i ] = NULL;
         }
+        delete kernel;
+        kernel = NULL;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -666,6 +660,7 @@ private:
     /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
     std::vector< EuclideanMinus* > masks;
+    KernelSupport * kernel;
 
     /// origin spel of the kernel support.
     Spel myOrigin;

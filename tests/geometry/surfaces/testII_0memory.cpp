@@ -268,19 +268,15 @@ int testII3D_Gaussian( )//int argc, char** argv )
     typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
     typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
     typedef Boundary::SurfelConstIterator ConstIterator;
-    typedef Boundary::Tracker Tracker;
 
-
-    typedef DigitalShape::PointEmbedder DigitalEmbedder;
-
-    double h = 0.1;
+    double h = 0.2;
     double re = 3.0;
     double radius = 5.0;
 
     ImplicitShape* ishape = new ImplicitShape( RealPoint( 0, 0, 0 ), radius );
     DigitalShape* dshape = new DigitalShape();
     dshape->attach( *ishape );
-    dshape->init( RealPoint( Point( -10, -10, -10 ) ), RealPoint( Point( 10, 10, 10 ) ), h );
+    dshape->init( RealPoint( -10.0, -10.0, -10.0 ), RealPoint( 10.0, 10.0, 10.0 ), h );
 
     Z3i::KSpace K;
     if ( !K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
@@ -485,7 +481,13 @@ int testII3D_Mean()
     typedef Z3i::Space::RealPoint RealPoint;
     typedef Z3i::Point Point;
     typedef Z3i::KSpace::Surfel Surfel;
-    typedef ImplicitBall<Z3i::Space> ImplicitShape;
+
+    typedef Z3i::Space::RealPoint::Coordinate Ring;
+    typedef MPolynomial< 3, Ring > Polynomial3;
+    typedef MPolynomialReader<3, Ring> Polynomial3Reader;
+    typedef ImplicitPolynomial3Shape<Z3i::Space> ImplicitShape;
+
+//    typedef ImplicitBall<Z3i::Space> ImplicitShape;
     typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
     typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
     typedef Boundary::SurfelConstIterator ConstIterator;
@@ -494,14 +496,32 @@ int testII3D_Mean()
 
     typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
-    double h = 0.1;
+    double h = 0.2;
     double re = 3.0;
     double radius = 5.0;
 
-    ImplicitShape* ishape = new ImplicitShape( RealPoint( 0, 0, 0 ), radius );
+    ///////////////////
+
+
+    std::string poly_str = "x^2 + y^2 + z^2 - 25";
+    Polynomial3 poly;
+    Polynomial3Reader reader;
+    std::string::const_iterator iter = reader.read( poly, poly_str.begin(), poly_str.end() );
+    if ( iter != poly_str.end() )
+    {
+        std::cerr << "ERROR: I read only <"
+                  << poly_str.substr( 0, iter - poly_str.begin() )
+                  << ">, and I built P=" << poly << std::endl;
+        return 1;
+    }
+
+    ImplicitShape* ishape = new ImplicitShape( poly );
+    ///////////////////
+
+//    ImplicitShape* ishape = new ImplicitShape( RealPoint( 0, 0, 0 ), radius );
     DigitalShape* dshape = new DigitalShape();
     dshape->attach( *ishape );
-    dshape->init( RealPoint( Point( -10, -10, -10 ) ), RealPoint( Point( 10, 10, 10 ) ), h );
+    dshape->init( RealPoint( -10.0, -10.0, -10.0 ), RealPoint( 10.0, 10.0, 10.0 ), h );
 
     Z3i::KSpace K;
     if ( !K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
@@ -512,19 +532,6 @@ int testII3D_Mean()
 
     Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, *dshape, 10000 );
     Boundary boundary( K, *dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
-
-//    std::vector< int > trololo = {1,2,3,4};
-//    trololo.erase(trololo.begin()+1);
-//    std::cout << trololo[0] << " " << trololo[1] << " " << trololo[2] << std::endl;
-//    std::cout << "trololo memory size " << trololo.capacity() * sizeof(int) << std::endl;
-//    std::cout << "trololo memory size " << trololo.size() * sizeof(int) << std::endl;
-//    return false;
-    std::cout << "euclidean shape memory size " << sizeof(*ishape) << std::endl;
-    std::cout << "digital shape memory size " << sizeof(*dshape) << std::endl;
-    std::cout << "KSpace memory size " << sizeof(K) << std::endl;
-    std::cout << "boundary memory size " << sizeof(boundary) << std::endl;
-
-    std::cout << "----------------------------------" << std::endl;
 
     typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
     typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
@@ -550,14 +557,6 @@ int testII3D_Mean()
     file.close();
     std::cout << "STEP 2" << std::endl;
 
-    /*MyCurvatureEstimator estimator ( K, functor );
-    estimator.init( h, re );
-
-    std::vector< double > resultII;
-    std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
-    estimator.eval( boundary.begin(), boundary.end(), resultIIIterator, *ishape );
-*/
-
     delete ishape;
     delete dshape;
     ishape = NULL;
@@ -578,12 +577,13 @@ int main( int argc, char** argv )
     trace.info() << endl;
 
 //    testII2D_Gaussian( );
-    testII3D_Gaussian( );//argc, argv );
+//    testII3D_Gaussian( );//argc, argv );
     testII3D_Mean();
+    trace.endBlock();
+
     return 1;
     //  bool res = testII3D();
     //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-    //  trace.endBlock();
     //  return res ? 0 : 1;
 }
 //                                                                           //
