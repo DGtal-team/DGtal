@@ -2,7 +2,7 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 2.6)
 
 # By default, do not warn when built on machines using only VS Express:
 IF(NOT DEFINED CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS)
@@ -39,10 +39,16 @@ INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
 
+IF(BUILD_TESTING)
+MESSAGE(STATUS "still true")
+ENDIF()
+
 # -----------------------------------------------------------------------------
 # Cpack and Ctest settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
+
+MESSAge(STATUS "OK")
 
 # -----------------------------------------------------------------------------
 # Custom command/targets depending on the cmake generator
@@ -63,5 +69,3 @@ ENDIF(BUILD_EXAMPLES)
 # Install settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
-
-

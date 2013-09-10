@@ -51,6 +51,7 @@ ADD_CUSTOM_TARGET(uninstall
 # Parsing cmake options
 # -----------------------------------------------------------------------------
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
 

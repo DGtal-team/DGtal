@@ -1,4 +1,13 @@
 
+MESSAGE(STATUS GLOP)
+
+IF(BUILD_TESTING)
+MESSAGE(STATUS "still true(hop)")
+ELSE()
+MESSAGE(STATUS "----false")
+ENDIF()
+
+
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------
@@ -35,12 +44,16 @@ endif(WIN32)
 
 INCLUDE(CPack)
 
+
+
+IF(BUILD_TESTING)
+MESSAGE(STATUS "still true(bis)")
+ENDIF()
+
+
 # -----------------------------------------------------------------------------
 # CTest options
 # -----------------------------------------------------------------------------
-
-OPTION(BUILD_TESTING "Build testing." OFF)
-
 if (BUILD_TESTING)
   ENABLE_TESTING()
   include(CTest)
