@@ -60,7 +60,6 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       hsize_t             dimsf[RANK_3D];               // dataset dimensions
       herr_t              status;
       DGtal::uint8_t      *data;
-      int                 i, j, k;
       
       // compressed dataset
       hid_t plist_id;
@@ -110,13 +109,13 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       dataspace = H5Screate_simple(RANK_3D, dimsf, NULL);
       
       // compressed dataset
-      plist_id  = H5Pcreate (H5P_DATASET_CREATE);
+      plist_id  = H5Pcreate(H5P_DATASET_CREATE);
 
       // Dataset must be chunked for compression.
       cdims[0] = sizeChunk;
       cdims[1] = sizeChunk;
       cdims[2] = sizeChunk;
-      status = H5Pset_chunk (plist_id, RANK_3D, cdims);
+      status = H5Pset_chunk(plist_id, RANK_3D, cdims);
 
       // --> Compression levels :
       // 0            No compression
@@ -125,7 +124,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       // 9            Best compression ratio; slowest speed
       //
       // Set ZLIB / DEFLATE Compression using compression level 6.
-      status = H5Pset_deflate (plist_id, 6);
+      status = H5Pset_deflate(plist_id, 6);
       // compressed dataset
 
       /*
@@ -145,7 +144,11 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       trace.info() << " begin write hdf5_file: " << HDF5Filename << endl;
       status = H5Dwrite(dataset, H5T_NATIVE_UINT8, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
       if (status)
-        trace.info() << " H5Dwrite error" << endl;
+      {
+        trace.info() << " H5Dwrite error" << std::endl;
+        free(data);
+        return false;
+      }
       else
         trace.info() << " end write hdf5_file" << endl;
 
@@ -193,15 +196,17 @@ bool HDF5_3D2vol(char *rawFilename, char *outputFileName)
 
 int main( int argc, char** argv )
 {
-    if (argc==7)
+    if (argc==7 || argc==8)
     {
       raw2HDF5_3D(argv[1], atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), argv[6]);
-      HDF5_3D2vol(argv[6], "OutputImage.vol");
+      
+      if (argc==8) // temp, just for test
+        HDF5_3D2vol(argv[6], argv[7]);
     }
     else
     {
       trace.info() << "A raw to HDF5 converter (first version, restriction: only 3D UInt8 data input file, HDF5 output file with ZLIB compression activated)" << endl;
-      trace.info() << "Usage: raw2HDF5 <raw_file> <size_X> <size_Y> <size_Z> <size_CHUNK> <hdf5_file> " << endl;
+      trace.info() << "Usage: raw2HDF5 <raw_file> <size_X> <size_Y> <size_Z> <size_CHUNK> <hdf5_file>" << endl;
     }
     
     return 0;

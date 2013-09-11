@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/io/writers/HDF5Writer.h"
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/io/writers/PPMWriter.h"
 #include "DGtal/io/writers/PGMWriter.h"
@@ -74,7 +75,7 @@ DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::str
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
-  if(extension=="vol" || extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="raw" || extension=="pgm"){
+  if(extension=="h5" || extension=="vol" || extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="raw" || extension=="pgm"){
     trace.error() << "Value type of " << extension<< "  file extension should be unsigned char." << std::endl;
     throw dgtalio;   
   }else{
@@ -116,13 +117,15 @@ DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const s
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
-  if(extension=="vol"){
-    return  VolWriter<TContainer,TFunctor>::exportVol( filename, anImage ,aFunctor);
-  }else if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="pgm" ){
+  if (extension=="h5"){
+    return  HDF5Writer<TContainer,TFunctor>::exportHDF5(filename, anImage, aFunctor);
+  } else if(extension=="vol"){
+    return  VolWriter<TContainer,TFunctor>::exportVol(filename, anImage, aFunctor);
+  } else if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="pgm" ){
     return   PGMWriter<TContainer, TFunctor>::exportPGM3D(filename, anImage, aFunctor);
   } else  if(extension=="raw"){
-    return RawWriter< TContainer, TFunctor >::exportRaw8 ( filename, anImage,  aFunctor  );
-  }else{
+    return RawWriter< TContainer, TFunctor >::exportRaw8(filename, anImage, aFunctor);
+  } else {
     trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
     throw dgtalio;
   }
