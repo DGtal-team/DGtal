@@ -78,7 +78,7 @@ bool writeHDF5_3D_TILED()
       data = (DGtal::uint8_t*)malloc(NZ_3D_TILED*NY_3D_TILED*NX_3D_TILED * sizeof(DGtal::uint8_t));
       if (data == NULL)
       {
-        trace.info() << " malloc error" << endl;
+        trace.error() << " malloc error" << endl;
         return false;
       }
 
@@ -140,7 +140,7 @@ bool writeHDF5_3D_TILED()
       status = H5Dwrite(dataset, H5T_NATIVE_UINT8, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
       if (status)
       {
-        trace.info() << " H5Dwrite error" << std::endl;
+        trace.error() << " H5Dwrite error" << std::endl;
         free(data);
         return false;
       }

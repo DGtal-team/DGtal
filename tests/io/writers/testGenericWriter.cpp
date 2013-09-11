@@ -62,9 +62,14 @@ bool testGenericWriter()
   trace.info() << "Testing writing PGM3D ... ";  
   bool ok1 = anImportedImage1>> "testGenericWriter.pgm3d";
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing HDF5 ... ";  
-  bool okh5 = anImportedImage1 >> "testGenericWriter.h5";
+  
+  bool okh5 = true;
+#ifdef WITH_HDF5
+  trace.info() << "Testing writing HDF5 ... ";
+  okh5 = anImportedImage1 >> "testGenericWriter.h5";
   trace.info() <<"[done]"  << std::endl;
+#endif
+  
   trace.info() << "Testing writing vol ... ";  
   bool ok2 = anImportedImage1 >> "testGenericWriter.vol";
   trace.info() <<"[done]"  << std::endl;

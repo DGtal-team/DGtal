@@ -63,6 +63,7 @@ template <typename TContainer>
 inline
 TContainer 
 DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
+                                            const std::string & datasetName,
 					    unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -77,7 +78,13 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
     ASSERT(x!=0 && y!=0 && z!=0); 
     typename TContainer::Point pt (x,y,z);
     return RawReader< TContainer >::importRaw8 ( filename, pt  );
-  }else{
+  }
+#ifdef WITH_HDF5
+  else if (extension=="h5"){
+    return HDF5Reader<TContainer>::importHDF5_3D(filename, datasetName); 
+  }
+#endif
+  else{
     trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
     throw dgtalio;
   }
