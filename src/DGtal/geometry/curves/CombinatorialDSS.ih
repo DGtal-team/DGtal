@@ -671,7 +671,7 @@ DGtal::CombinatorialDSS<TConstIterator, TInteger >::selfDisplay ( std::ostream &
   out << "myNextAfter         = " << myNextAfter << "\n";
   out << "(a,b,mu,omega)      = (" << a << ", " << b << ", " << mu << ", " <<
     omega << ")\n"; 
-  out << "[End CombinatorialDSS]" << endl;
+  out << "[End CombinatorialDSS]" << std::endl;
 }
 
 
@@ -975,6 +975,8 @@ inline
 void DGtal::CombinatorialDSS<TConstIterator,TInteger>::getArithmeticalDescription(
     Integer &a, Integer &b, Integer &mu, Integer &omega ) const
 {
+  DGtal::IntegerComputer<TInteger> ic;
+
   ConstPointIterator itBegin = pointBegin();
   while ( itBegin.getIndex() != myPatternBegin ) 
     itBegin++;
@@ -994,7 +996,7 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::getArithmeticalDescriptio
   b = v[0];
   Integer r1 = a*pb[0] - b*pb[1];
   Integer r2 = a*po[0] - b*po[1];
-  mu = min (r1, r2);
+  mu = ic.min (r1, r2);
   omega = ((a>0) ? a : -a) + ((b>0) ? b : -b );
 }
 
