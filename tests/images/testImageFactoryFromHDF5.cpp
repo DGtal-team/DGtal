@@ -103,7 +103,7 @@ bool writeHDF5_2D()
     status = H5Dwrite(dataset, H5T_NATIVE_INT32, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
     if (status)
     {
-      trace.info() << " H5Dwrite error" << std::endl;
+      trace.error() << " H5Dwrite error" << std::endl;
       return false;
     }
 
@@ -163,7 +163,7 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
     status = H5Dwrite(dataset, H5T_NATIVE_INT64, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
     if (status)
     {
-      trace.info() << " H5Dwrite error" << std::endl;
+      trace.error() << " H5Dwrite error" << std::endl;
       return false;
     }
 
@@ -231,7 +231,7 @@ bool writeHDF5_3D_TILED_for_easy_reading()
     status = H5Dwrite(dataset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
     if (status)
     {
-      trace.info() << " H5Dwrite error" << std::endl;
+      trace.error() << " H5Dwrite error" << std::endl;
       return false;
     }
 
@@ -290,7 +290,7 @@ bool writeHDF5_3D_TILED()
     status = H5Dwrite(dataset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
     if (status)
     {
-      trace.info() << " H5Dwrite error" << std::endl;
+      trace.error() << " H5Dwrite error" << std::endl;
       return false;
     }
 

@@ -92,7 +92,19 @@ bool testGenericReader()
   DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
   nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
   nb++;
-
+#ifdef WITH_HDF5
+  std::string filenameImageh5 = testPath + "samples/cat10.h5";    
+  Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5, "/UInt8Array3D");
+  DGtal::Z3i::Domain domainh5 = anImportedImageh5.domain(); 
+  unsigned int size0Imgh5= domainh5.upperBound()[0]-domainh5.lowerBound()[0]+1;
+  unsigned int size1Imgh5= domainh5.upperBound()[1]-domainh5.lowerBound()[1]+1;
+  unsigned int size2Imgh5= domainh5.upperBound()[2]-domainh5.lowerBound()[2]+1;
+  DGtal::trace.info()<<"HDF5 image read: size[0]:" << size0Imgh5;
+  DGtal::trace.info()<<"size[1]:  " << size1Imgh5;
+  DGtal::trace.info()<<"size[2]:  " << size2Imgh5 << std::endl;;
+  nbok += (size0Imgh5==40 && size1Imgh5==40 && size2Imgh5==40) ? 1 : 0; 
+  nb++;
+#endif
   std::string filenameImage3 = testPath + "samples/contourS.pgm";    
   Image2D anImportedImage3= DGtal::GenericReader<Image2D>::import(filenameImage3);
   DGtal::Z2i::Domain domain3 = anImportedImage3.domain(); 

@@ -135,14 +135,14 @@ namespace DGtal
      *
      **/
 
-    static TContainer import(const std::string &filename,  unsigned int x=0, 
-			     unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
+    static TContainer import(const std::string &filename, const std::string &datasetName="empty",
+                             unsigned int x=0, unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
     
  
     
      /**
      * Import an image file by specifying a value functor
-     *  (used for gray scale image format: vol, longvol, pgm3D, raw). 
+     *  (used for gray scale image format: vol, longvol, pgm3D, raw, h5). 
      * 
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char , TContainer::Value > ).
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
@@ -153,9 +153,9 @@ namespace DGtal
      **/
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
-					     const TFunctor &aFunctor, 
-					     unsigned int x=0, 
-					     unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException){
+					     const TFunctor &aFunctor,
+                                             const std::string &datasetName="empty",
+					     unsigned int x=0, unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException){
       BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ; 
       DGtal::IOException dgtalio;
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -170,7 +170,13 @@ namespace DGtal
 	ASSERT(x!=0 && y!=0 && z!=0); 
 	typename TContainer::Point pt (x,y,z);
 	return RawReader< TContainer >::importRaw8 ( filename, pt, aFunctor  );
-      }else{
+      }
+#ifdef WITH_HDF5
+      else if (extension=="h5"){
+        return HDF5Reader<TContainer>::importHDF5_3D(filename, datasetName, aFunctor); 
+      }
+#endif      
+      else{
 	trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
 	throw dgtalio;
       }
@@ -189,8 +195,7 @@ namespace DGtal
 
     /**
      * Import a volume image file.  For the special format h5 (you need to set WITH_HDF5 of cmake build),
-     *  the default parameter datasetName needs to be updated
-     * according to the dimension if the image.
+     *  the default parameter datasetName needs to be set.
      *
      * @param filename the image filename to be imported.
      * @param datasetName  the name of the dataset contained in the image. 
@@ -205,8 +210,7 @@ namespace DGtal
      *  (used only for color image format ppm, ( gif, jpeg, ... if the
      *  magick image lib is installed) .  For the special format h5
      *  (you need to set WITH_HDF5 of cmake build), the default
-     *  parameter datasetName needs to be updated according to the
-     *  dimension if the image.  
+     *  parameter datasetName needs to be set. 
      * 
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).

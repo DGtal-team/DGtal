@@ -385,6 +385,11 @@ namespace DGtal
       // Read data from hyperslab in the file into the hyperslab in memory.
       //status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_out);
       status = H5DSpecializations<Self, Value>::H5DreadS(*this, memspace, data_out);
+      if (status)
+      {
+        trace.error() << " H5DSpecializations/H5Dread error" << std::endl;
+        exit;
+      }
     
       OutputImage* outputImage = new OutputImage(aDomain);
       if (outputImage == NULL)

@@ -55,6 +55,8 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
 					       const Functor & aFunctor, bool topbotomOrder) throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
+  
+  BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
     
   hid_t         fileID;
   herr_t        hErrVal;
@@ -143,6 +145,164 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   free(imgBuf);
   
   return image;
+}
+
+template <typename TImageContainer, typename TFunctor>
+inline
+TImageContainer 
+DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & aFilename, const std::string & aDataset, 
+                                               const Functor & aFunctor) throw(DGtal::IOException)
+{
+  DGtal::IOException dgtalio;
+  
+  BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 3));
+  
+  const int ddim = ImageContainer::Domain::dimension;
+  
+  // image domain
+  Domain *myDomain;
+  Domain aDomain;
+  
+  // HDF5 handles
+  hid_t file, dataset;
+  hid_t datatype, dataspace;
+            
+  H5T_class_t t_class;                  // data type class
+  H5T_order_t order;                    // data order
+  size_t      size;                     // size of the data element stored in file
+  hsize_t     dims_out[ddim];              // dataset dimensions
+  int         status_n, rank;
+    
+  // Open the file and the dataset.
+  file = H5Fopen(aFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
+  dataset = H5Dopen2(file, aDataset.c_str(), H5P_DEFAULT);
+
+  // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
+  datatype = H5Dget_type(dataset); // datatype handle
+  t_class = H5Tget_class(datatype);
+  /*if (t_class == H5T_INTEGER)
+    trace.info() << "Data set has INTEGER type" << std::endl;*/
+  
+  order = H5Tget_order(datatype);
+  /*if (order == H5T_ORDER_LE)
+    trace.info() << "Little endian order" << std::endl;*/
+
+  size  = H5Tget_size(datatype);
+  //trace.info() << "Data size is " << (int)size << std::endl;
+
+  dataspace = H5Dget_space(dataset); // dataspace handle
+  rank = H5Sget_simple_extent_ndims(dataspace);
+  status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
+  //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
+  
+  // --
+  
+  typedef SpaceND<ddim> TSpace;
+  typename TSpace::Point low, up;
+  
+  typename Domain::Integer d;
+  for(d=0; d<ddim; d++)
+  {
+    low[d]=0;
+    up[d]=dims_out[ddim-d-1]-1;
+  }
+  
+  myDomain = new Domain(low, up);
+  aDomain = *myDomain;          // because here we want the full image
+  
+  /* - reading HDF5- */
+  hsize_t offset[ddim];        // hyperslab offset in the file
+  hsize_t count[ddim];         // size of the hyperslab in the file
+  
+  herr_t status;
+  hsize_t dimsm[ddim];         // memory space dimensions
+  hid_t memspace;
+  
+  hsize_t offset_out[ddim];    // hyperslab offset in memory
+  hsize_t count_out[ddim];     // size of the hyperslab in memory
+  
+  int i[ddim];
+  int N_SUB[ddim];
+  
+  int malloc_size=1;
+  for(d=0; d<ddim; d++)
+  {
+    N_SUB[d] = (aDomain.upperBound()[ddim-d-1]-aDomain.lowerBound()[ddim-d-1])+1;
+    malloc_size = malloc_size*N_SUB[d];
+  }
+  
+  Value *data_out = (Value*) malloc (malloc_size * sizeof(Value)); // output buffer
+  if (data_out == NULL)
+  {
+    trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
+    exit;
+  }
+  
+  // Define hyperslab in the dataset.
+  for(d=0; d<ddim; d++)
+    offset[d] = aDomain.lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
+  for(d=0; d<ddim; d++)
+    count[d] = N_SUB[d];
+  status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+
+  // Define the memory dataspace.
+  for(d=0; d<ddim; d++)
+    dimsm[d] = N_SUB[d];
+  memspace = H5Screate_simple(ddim,dimsm,NULL);
+
+  // Define memory hyperslab.
+  for(d=0; d<ddim; d++)
+    offset_out[d] = 0;
+  for(d=0; d<ddim; d++)
+    count_out[d] = N_SUB[d];
+  status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_out, NULL, count_out, NULL);
+
+  // Read data from hyperslab in the file into the hyperslab in memory.
+  status = H5Dread(dataset, H5T_NATIVE_UINT8, memspace, dataspace, H5P_DEFAULT, data_out);
+  if (status)
+  {
+    trace.error() << " H5Dread error" << std::endl;
+    exit;
+  }
+
+  OutputImage outputImage(aDomain);
+      
+  typedef SpaceND<ddim> TSpace;
+  typename TSpace::Point a, b;
+  for(d=0; d<ddim; d++)
+  {
+    a[d]=offset[ddim-d-1]+myDomain->lowerBound()[d];
+    b[d]=a[d]+N_SUB[ddim-d-1]-1;
+  }
+  HyperRectDomain<TSpace> domain(a,b);
+
+  /*std::vector<typename TSpace::Dimension> v(ddim);
+  for(d=0; d<ddim; d++)
+    v[d]=d;*/
+  
+  int p=0;
+  for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator 
+        it = domain/*.subRange(v, a)*/.begin(), itend = domain/*.subRange(v, a)*/.end();
+      it != itend; 
+      ++it)
+  {
+    outputImage.setValue((*it), data_out[ p++ ]);
+  }
+  
+  H5Sclose(memspace);
+  
+  free(data_out);
+  /* - reading HDF5- */
+  
+  delete myDomain;
+  
+  // Close/release resources.
+  H5Tclose(datatype);
+  H5Dclose(dataset);
+  H5Sclose(dataspace);
+  H5Fclose(file);
+  
+  return outputImage;
 }
 
 //                                                                           //

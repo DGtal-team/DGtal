@@ -71,7 +71,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       fd = fopen(rawFilename, "rb");
       if (fd == NULL)
       {
-        trace.info() << " fopen error" << endl;
+        trace.error() << " fopen error" << endl;
         return false;
       }
       trace.info() << " open raw_file: " << rawFilename << " size_X: " << sizeX << " size_Y: " << sizeY << " size_Z: " << sizeZ << " size_CHUNK: " << sizeChunk << endl;
@@ -79,7 +79,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       data = (DGtal::uint8_t*)malloc(sizeZ*sizeY*sizeX * sizeof(DGtal::uint8_t));
       if (data == NULL)
       {
-        trace.info() << " malloc error" << endl;
+        trace.error() << " malloc error" << endl;
         fclose(fd);
         return false;
       }
@@ -87,7 +87,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       trace.info() << " begin read" << endl;
       if (fread(data, 1, sizeZ*sizeY*sizeX, fd) != sizeZ*sizeY*sizeX)
       {
-        trace.info() << " fread failed" << endl;
+        trace.error() << " fread failed" << endl;
         fclose(fd);
         return false;
       }
@@ -145,7 +145,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       status = H5Dwrite(dataset, H5T_NATIVE_UINT8, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
       if (status)
       {
-        trace.info() << " H5Dwrite error" << std::endl;
+        trace.error() << " H5Dwrite error" << std::endl;
         free(data);
         return false;
       }
@@ -171,19 +171,19 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
     return true;
 }
 
-bool HDF5_3D2vol(char *rawFilename, char *outputFileName)
+bool HDF5_3D2vol(char *HDF5Filename, char *volFileName)
 {
     trace.beginBlock("HDF5_3D2vol");
     
     typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(rawFilename, DATASETNAME_3D);
+    MyImageFactoryFromHDF5 factImage(HDF5Filename, DATASETNAME_3D);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
     OutputImage *volImage = factImage.requestImage( factImage.domain() );
-    bool res = VolWriter<OutputImage>::exportVol(outputFileName, *volImage);
+    bool res = VolWriter<OutputImage>::exportVol(volFileName, *volImage);
     factImage.detachImage(volImage);
     
     trace.endBlock();
@@ -200,7 +200,7 @@ int main( int argc, char** argv )
     {
       raw2HDF5_3D(argv[1], atoi(argv[2]), atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), argv[6]);
       
-      if (argc==8) // temp, just for test
+      if (argc==8) // TEMP_MT, just for test
         HDF5_3D2vol(argv[6], argv[7]);
     }
     else
