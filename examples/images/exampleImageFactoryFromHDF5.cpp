@@ -47,7 +47,7 @@ using namespace DGtal;
 
 #define H5FILE_NAME_3D_TILED    "exampleImageFactoryFromHDF5_TILED_3D.h5"
 
-#define DATASETNAME_3D_TILED    "UInt8Array3D_TILED"
+#define DATASETNAME_3D          "UInt8Array3D"
 #define NX_3D_TILED             300//1980       // dataset dimensions
 #define NY_3D_TILED             300//1980
 #define NZ_3D_TILED             300//400
@@ -133,11 +133,17 @@ bool writeHDF5_3D_TILED()
       * Create a new dataset within the file using defined dataspace and
       * datatype and default dataset creation properties.
       */
-      dataset = H5Dcreate2(file, DATASETNAME_3D_TILED, datatype, dataspace,
+      dataset = H5Dcreate2(file, DATASETNAME_3D, datatype, dataspace,
                           H5P_DEFAULT, /*H5P_DEFAULT*/plist_id, H5P_DEFAULT); // here to activate compressed dataset
 
       // Write the data to the dataset using default transfer properties.
       status = H5Dwrite(dataset, H5T_NATIVE_UINT8, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+      if (status)
+      {
+        trace.info() << " H5Dwrite error" << std::endl;
+        free(data);
+        return false;
+      }
 
       // Close/release resources.
       H5Sclose(dataspace);
@@ -267,7 +273,7 @@ bool exampleTiledImageFromHDF5_1block3D()
       typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
 
       typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
+      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D);
 
       typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
       
@@ -397,7 +403,7 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
 
       typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
+      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D);
 
       typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
       

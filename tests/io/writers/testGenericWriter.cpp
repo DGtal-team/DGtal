@@ -62,6 +62,9 @@ bool testGenericWriter()
   trace.info() << "Testing writing PGM3D ... ";  
   bool ok1 = anImportedImage1>> "testGenericWriter.pgm3d";
   trace.info() <<"[done]"  << std::endl;
+  trace.info() << "Testing writing HDF5 ... ";  
+  bool okh5 = anImportedImage1 >> "testGenericWriter.h5";
+  trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing vol ... ";  
   bool ok2 = anImportedImage1 >> "testGenericWriter.vol";
   trace.info() <<"[done]"  << std::endl;
@@ -86,7 +89,7 @@ bool testGenericWriter()
 
 
 
-  nbok += ok1 && ok2 && ok3 && ok3bis && ok4 & ok5  ? 1 : 0; 
+  nbok += ok1 && okh5 && ok2 && ok3 && ok3bis && ok4 & ok5  ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;

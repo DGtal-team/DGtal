@@ -101,6 +101,11 @@ bool writeHDF5_2D()
 
     // Write the data to the dataset using default transfer properties.
     status = H5Dwrite(dataset, H5T_NATIVE_INT32, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    if (status)
+    {
+      trace.info() << " H5Dwrite error" << std::endl;
+      return false;
+    }
 
     // Close/release resources.
     H5Sclose(dataspace);
@@ -111,7 +116,7 @@ bool writeHDF5_2D()
     return true;
 }
 
-#define DATASETNAME_2D_TILED    "Int64Array2D_TILED"
+#define DATASETNAME_2D_TILED    "Int64Array2D"
 #define RANK_2D_TILED           2
 
 bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TILED, int _NY_2D_TILED)
@@ -156,6 +161,11 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
 
     // Write the data to the dataset using default transfer properties.
     status = H5Dwrite(dataset, H5T_NATIVE_INT64, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    if (status)
+    {
+      trace.info() << " H5Dwrite error" << std::endl;
+      return false;
+    }
 
     // Close/release resources.
     H5Sclose(dataspace);
@@ -169,7 +179,7 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
 #define H5FILE_NAME_3D_TILED_EASY_READING       "testImageFactoryFromHDF5_TILED_3D_for_easy_reading.h5"
 #define H5FILE_NAME_3D_TILED                    "testImageFactoryFromHDF5_TILED_3D.h5"
 
-#define DATASETNAME_3D_TILED    "DoubleArray3D_TILED"
+#define DATASETNAME_3D_TILED    "DoubleArray3D"
 #define NX_3D_TILED             10      // dataset dimensions
 #define NY_3D_TILED             8
 #define NZ_3D_TILED             6
@@ -219,6 +229,11 @@ bool writeHDF5_3D_TILED_for_easy_reading()
 
     // Write the data to the dataset using default transfer properties.
     status = H5Dwrite(dataset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    if (status)
+    {
+      trace.info() << " H5Dwrite error" << std::endl;
+      return false;
+    }
 
     // Close/release resources.
     H5Sclose(dataspace);
@@ -273,6 +288,11 @@ bool writeHDF5_3D_TILED()
 
     // Write the data to the dataset using default transfer properties.
     status = H5Dwrite(dataset, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    if (status)
+    {
+      trace.info() << " H5Dwrite error" << std::endl;
+      return false;
+    }
 
     // Close/release resources.
     H5Sclose(dataspace);
