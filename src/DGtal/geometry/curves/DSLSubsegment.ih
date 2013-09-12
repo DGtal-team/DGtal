@@ -1266,7 +1266,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector &l, Integer mu, Point &A, Point &B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR)
+void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector &l, Integer mu, Point &A, Point &B,
+                                                             Point *prevInfL, Point *infL, Point *infR, Point *prevInfR)
 {
 
   Integer rA = l[1]*A[0]-l[0]*A[1] + mu;
@@ -1356,7 +1357,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
   lowerConvexHull(l,mu,A,B,&prevInfL,&infL,&infR,&prevInfR);
 
   Point pz(0,0);
-  lowerConvexHull(l,l[0]-rB-1,pz,B-A,&prevSupR, &supR, &supL, &prevSupL);
+  Point BA=B-A;
+  lowerConvexHull(l,l[0]-rB-1,pz,BA,&prevSupR, &supR, &supL, &prevSupL);
 
   prevSupR = B+Point(0,1)-prevSupR;
   supR = B+Point(0,1)-supR;
@@ -1438,7 +1440,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
 
 template <typename TInteger, typename TNumber>
 inline
-DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,  Point &A, Point &B, Number precision)
+DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
+                                                      Point &A, Point &B, Number precision)
 {
   Integer n = B[0] - A[0];
 

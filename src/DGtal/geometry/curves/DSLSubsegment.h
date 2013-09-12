@@ -363,7 +363,8 @@ namespace DGtal
        * @param [out] prevInfR last-but-one point of the CH from right to left
        *
        */
-      void lowerConvexHull(Vector &l, Integer mu, Point &A, Point &B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR);
+      void lowerConvexHull(Vector &l, Integer mu, Point &A, Point &B,
+                           Point *prevInfL, Point *infL, Point *infR, Point *prevInfR);
 
       /**
        * Compute the left part of the upper and lower convex hulls of
