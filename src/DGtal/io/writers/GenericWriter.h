@@ -102,7 +102,7 @@ namespace DGtal
 
   /**
    * GenericWriter
-   * Template partial specialisation for volume images of dimension 3 and unsigned char value type (which allows to export vol, pgm3D and raw file format).
+   * Template partial specialisation for volume images of dimension 3 and unsigned char value type (which allows to export vol, pgm3D, h5 and raw file format).
    **/
   template <typename TContainer, typename TFunctor>
   struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
@@ -113,11 +113,12 @@ namespace DGtal
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
-     * @param anImage the image to be saved. 
+     * @param anImage the image to be saved.
+     * @param datasetName the dataset name to export.
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exportFile(const std::string &filename,  const TContainer &anImage,
+    static bool exportFile(const std::string &filename,  const TContainer &anImage, const std::string &datasetName="UInt8Array3D",
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
     
   };
@@ -158,11 +159,12 @@ namespace DGtal
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
-     * @param anImage the image to be saved. 
+     * @param anImage the image to be saved.
+     * @param datasetName the dataset name to export.
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exportFile(const std::string &filename,  const TContainer &anImage,
+    static bool exportFile(const std::string &filename,  const TContainer &anImage, const std::string &datasetName="UInt8Array3D",
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   };

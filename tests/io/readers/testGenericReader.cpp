@@ -99,7 +99,7 @@ bool testGenericReader()
   unsigned int size0Imgh5= domainh5.upperBound()[0]-domainh5.lowerBound()[0]+1;
   unsigned int size1Imgh5= domainh5.upperBound()[1]-domainh5.lowerBound()[1]+1;
   unsigned int size2Imgh5= domainh5.upperBound()[2]-domainh5.lowerBound()[2]+1;
-  DGtal::trace.info()<<"HDF5 image read: size[0]:" << size0Imgh5;
+  DGtal::trace.info()<<"HDF5 3D image read: size[0]:" << size0Imgh5;
   DGtal::trace.info()<<"size[1]:  " << size1Imgh5;
   DGtal::trace.info()<<"size[2]:  " << size2Imgh5 << std::endl;;
   nbok += (size0Imgh5==40 && size1Imgh5==40 && size2Imgh5==40) ? 1 : 0; 

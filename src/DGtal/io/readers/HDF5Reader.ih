@@ -35,6 +35,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+
 #include <hdf5.h>
 #include <hdf5_hl.h>
 //////////////////////////////////////////////////////////////////////////////
