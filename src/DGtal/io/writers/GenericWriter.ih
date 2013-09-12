@@ -72,7 +72,7 @@ template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::string &filename, 
-						      const TContainer &anImage, 
+						      const TContainer &anImage, const std::string & datasetName,
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -122,14 +122,14 @@ template <typename TContainer, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename, 
-						      const TContainer &anImage, 
+						      const TContainer &anImage, const std::string & datasetName,
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
 #ifdef WITH_HDF5
   if (extension=="h5"){
-    return  HDF5Writer<TContainer,TFunctor>::exportHDF5(filename, anImage, aFunctor);
+    return  HDF5Writer<TContainer,TFunctor>::exportHDF5_3D(filename, anImage, datasetName, aFunctor);
   } else
 #endif
   if (extension=="vol"){

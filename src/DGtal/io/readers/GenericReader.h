@@ -125,27 +125,30 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
     /**
      * Import a volume image file.  For the special format of raw
-     * image, the default parameter x,y, z need to be updated
-     * according to the dimension if the image.
+     * image, the default parameter x,y,z need to be updated
+     * according to the dimension of the image.
      *
      * @param filename the image filename to be imported.
+     * @param datasetName the dataset name to import.
      * @param x the size in the x direction. 
      * @param y the size in the y direction. 
      * @param z the size in the z direction. 
      *
      **/
 
-    static TContainer import(const std::string &filename, const std::string &datasetName="empty",
+    static TContainer import(const std::string &filename, const std::string &datasetName="UInt8Array3D",
                              unsigned int x=0, unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
     
  
     
      /**
      * Import an image file by specifying a value functor
-     *  (used for gray scale image format: vol, longvol, pgm3D, raw, h5). 
+     *  (used for gray scale image format: vol, longvol, pgm3D, h5, raw). 
      * 
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char , TContainer::Value > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     * @param datasetName the dataset name to import.
      * @param x x
      * @param y y
      * @param z z
@@ -154,7 +157,7 @@ namespace DGtal
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
 					     const TFunctor &aFunctor,
-                                             const std::string &datasetName="empty",
+                                             const std::string &datasetName="UInt8Array3D",
 					     unsigned int x=0, unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException){
       BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ; 
       DGtal::IOException dgtalio;
@@ -198,7 +201,7 @@ namespace DGtal
      *  the default parameter datasetName needs to be set.
      *
      * @param filename the image filename to be imported.
-     * @param datasetName  the name of the dataset contained in the image. 
+     * @param datasetName the dataset name to import.
      *
      **/
     
@@ -208,20 +211,16 @@ namespace DGtal
     /**
      * Import an image file by specifying a color encoder functor
      *  (used only for color image format ppm, ( gif, jpeg, ... if the
-     *  magick image lib is installed) .  For the special format h5
-     *  (you need to set WITH_HDF5 of cmake build), the default
-     *  parameter datasetName needs to be set. 
+     *  magick image lib is installed).
      * 
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
-     * @param datasetName the name of the dataset contained in the
-     *  image.
      *
      **/
     template<typename TFunctor>
     static TContainer importWithColorFunctor(const std::string &filename, 
-					     const  TFunctor &aFunctor,  
-					     const std::string &datasetName="empty")  throw(DGtal::IOException){
+					     const  TFunctor &aFunctor)  throw(DGtal::IOException){
           
       BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::Color> )) ;    
       DGtal::IOException dgtalio;
@@ -252,13 +251,13 @@ namespace DGtal
      * Import an image file by specifying a value functor used for
      *  grayscale image.  For the special format h5 (you need to set
      *  WITH_HDF5 of cmake build), the default parameter datasetName
-     *  needs to be updated according to the dimension if the image.
+     *  needs to be set.
      *
      *  
-     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, TContainer::Value > ). 
+     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, TContainer::Value > ).
+     * @param filename the image filename to be imported.
      * @param aFunctor to transform input unsigned char of image value into the given image type. 
-     * @param datasetName the name of the dataset contained in the
-     *  image.
+     * @param datasetName the dataset name to import.
      *
      **/
     template<typename TFunctor>

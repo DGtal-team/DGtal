@@ -39,18 +39,13 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-#define DATASETNAME_3D  "UInt8Array3D"
 #define RANK_3D         3
 #define SIZE_CHUNK      10      // for compressed dataset
-
-#define NX_3D_TILED             40       // dataset dimensions
-#define NY_3D_TILED             40
-#define NZ_3D_TILED             40
 
 namespace DGtal {
   template<typename I,typename F>
   bool
-  HDF5Writer<I,F>::exportHDF5(const std::string & filename, const I & aImage,
+  HDF5Writer<I,F>::exportHDF5_3D(const std::string & filename, const I & aImage, const std::string & aDataset,
 			    const Functor & aFunctor) throw(DGtal::IOException)
   {
     DGtal::IOException dgtalio;
@@ -139,7 +134,7 @@ namespace DGtal {
         * Create a new dataset within the file using defined dataspace and
         * datatype and default dataset creation properties.
         */
-        dataset = H5Dcreate2(file, DATASETNAME_3D, datatype, dataspace,
+        dataset = H5Dcreate2(file, aDataset.c_str(), datatype, dataspace,
                             H5P_DEFAULT, /*H5P_DEFAULT*/plist_id, H5P_DEFAULT); // here to activate compressed dataset
 
         // Write the data to the dataset using default transfer properties.

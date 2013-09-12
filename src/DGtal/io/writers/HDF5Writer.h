@@ -56,7 +56,7 @@ namespace DGtal
   // template class HDF5Writer
   /**
    * Description of template struct 'HDF5Writer' <p>
-   * \brief Aim: Export a 3D UInt8 HDF5 output file with ZLIB compression activated.
+   * \brief Aim: Export an Image with the HDF5 format.
    *
    * A functor can be specified to convert image values to
    * unsigned char values.
@@ -76,14 +76,15 @@ namespace DGtal
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
     /** 
-     * Export an Image with the HDF5 format.
+     * Export a 3D UInt8 HDF5 output file with ZLIB compression activated.
      * 
      * @param filename name of the output file
      * @param aImage the image to export
+     * @param aDataset the dataset name to export.
      * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
-    static bool exportHDF5(const std::string & filename, const Image &aImage, 
+    static bool exportHDF5_3D(const std::string & filename, const Image &aImage, const std::string & aDataset,
 			  const Functor & aFunctor = Functor()) throw(DGtal::IOException);
   };
 }//namespace
