@@ -22,7 +22,8 @@
     - New local estimator adapter to make easy implementation of locally defined differential
       estimator on digital surfaces.
     - Minor improvements in the spherical accumulator. 
-
+    - New algorithms to compute the minimal characteristics of a Digital Straight Line subsegment in logarithmic time using local convex hulls or Farey Fan. Also works when the DSL characteristics are not integers. 
+	
 *Shape Package*
     - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
     - Iterator in mesh points and mesh face.
