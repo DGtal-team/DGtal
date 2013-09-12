@@ -50,7 +50,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::RayC::RayC(const Integer x0, const Integ
 {
   x = x0;
   y = y0;
-} 
+}
 
 template <typename TInteger, typename TNumber>
 inline
@@ -69,7 +69,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::RayC::~RayC()
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersectionVertical(Point P, Vector v, Integer n)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersectionVertical(Point &P, Vector &v, Integer n)
 {
   if(v[0] == 0)
     return n;
@@ -78,28 +78,28 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
       Integer val = (n-P[0])/v[0];
       if(((n-P[0])<0 || v[0] <0) && !((n-P[0])<0 && v[0] <0))
 	val--;
-      
+
       return val;
     }
-} 
+}
 
 
 
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point P, Vector v, Vector aL, Integer r)
-{ 
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point &P, Vector &v, Vector &aL, Integer r)
+{
   Number num = P[1]*aL[0]-aL[1]*P[0]-r;
   Number denom = aL[1]*v[0]-v[1]*aL[0];
   // using parametric definition of lines and solving for t -> not more precise than the other computation...
-  
+
   Integer val = num/denom;
-  
+
   // integer rounding is not equivalent to the floor operation when num/denom is negative
   if((num<0 ||denom <0) && !(num<0 && denom <0))
     val--;
-  
+
   return val;
 }
 
@@ -108,10 +108,10 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point P, Vector v, Number s)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point &P, Vector &v, Number s)
 {
   // vector to be approximated = (1,s)
-  
+
   if(v[0]==0)
     {
       Number val = (s*P[0] - P[1])/(v[1]*s);
@@ -125,32 +125,32 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
       Number num = -P[1]*v[0] - P[0]*(v[1] - s*v[0]) + v[1]*P[0];
       Number denom = v[0]*(v[1] - s*v[0]);
       Number val = num/denom;
-      
+
       Number val3;
       PointF Q;
       Q[0] = P[0] + ceil(val)*v[0];
       Q[1] = P[1] + ceil(val)*v[1];
-      
+
       val3 = (Number) Q[0]*s - (Number) Q[1];
-      
+
       if(fabs(val3) <= myPrecision)
 	return (Integer) ceil(val);
       else
 	return (Integer) floor(val);
-	
+
     }
-  
+
 }
 
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Vector l, Integer r, Vector *v)
+void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector &u, Point& A, Vector &l, Integer r, Vector *v)
 {
   Point AA = A;
   AA +=(*v);
   Integer alpha = intersection(AA,u,l,r);
-  
+
   u *= alpha;
   (*v) += u;
 }
@@ -159,12 +159,12 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Vector l,
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Number s, Vector *v)
+void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector &u, Point &A, Number s, Vector *v)
 {
   Point AA = A;
   AA +=(*v);
   Integer alpha = intersection(AA,u,s);
-  
+
   u *= alpha;
   (*v) += u;
 }
@@ -173,14 +173,14 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Number s,
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Integer n, Point *inf, Point *sup)
+void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector &l, Integer n, Point *inf, Point *sup)
 {
    if(n >= l[0])
      {
        *inf = l;
        *sup = l;
      }
-   
+
    if(l[1] == 0)
      {
        *inf = l;
@@ -188,10 +188,10 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Intege
      }
    else
      {
-       
+
        Point A = Point(0,1);
        Point B = Point(1,0);
-       
+
        int i=0;
        bool ok = true;
        Integer alpha1, alpha2, alpha;
@@ -203,7 +203,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Intege
 	     {
 	       alpha1 = intersection(A,B,l,0);
 	       alpha2 = intersectionVertical(A,B,n);
-	       alpha = ic.min(alpha1,alpha2); 
+	       alpha = ic.min(alpha1,alpha2);
 	       A = A + alpha*B;
 	       if(A[0]*l[1]-A[1]*l[0]==0 || alpha == alpha2)
 		 ok = false;
@@ -219,7 +219,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Intege
 	     }
 	   i++;
 	 }
-       
+
        *inf = B;
        *sup = A;
      }
@@ -231,11 +231,11 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Intege
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup)
+void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector &l, Integer r, Integer n, Point *inf, Point *sup)
 {
-  
+
   //std::cout << "In Convex hull approx" << std::endl;
-  
+
   //std::cout << l << " " << n << std::endl;
 
   if(n >= l[0])
@@ -251,20 +251,17 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
       }
     else
       {
-	
-	//std::cout << "main part convexHullApprox" << std::endl;
+
 	Point A = Point(0,1);
 	Point B = Point(1,0);
-	
+
 	Vector u = Vector(1,-1);
 	Vector v = Vector(1,0);
-	
+
 	Vector normal = Vector(-l[1],l[0]);
-	
-	//std::cout << "normal vector " << normal << std::endl;
-	//std::cout << "n = " << n << std::endl;
+
 	Integer alpha;
-	
+
 	bool ok = true;
 	bool found = false;
 	bool first = true;
@@ -281,7 +278,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 	      if(v[0]*normal[0]+v[1]*normal[1] < 0)
 		{
 		  alpha = ic.min(intersection(A,v,l,r), intersectionVertical(A,v,n));
-		  
+
 		  if(alpha >= 1 || first)
 		    {
 		      Vector vv  = v;
@@ -289,7 +286,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 		      A += vv;
 		      u = B - A;
 		      update(u,A,l,r,&v);
-		      
+
 		    }
 		  else
 		    ok = false;
@@ -311,7 +308,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 		      ok = false;
 		  }
 	  }
-	
+
 	if(found)
 	  {
 	    *sup = v;
@@ -328,7 +325,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv)
+void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector &l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv)
 {
   Point A,B,Aold,Bold;
   Vector u,v;
@@ -351,23 +348,23 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
       Aold = A;
       Bold = B;
     }
-  
+
   Vector vv;
   Vector normal = Vector(-l[1],l[0]);
-  
+
   Integer alpha;
-  
+
   bool ok = true;
   bool first = true;
   DGtal::IntegerComputer<Integer> ic;
-  
+
   while(ok)
     {
-      
+
       if(v[0]*normal[0]+v[1]*normal[1]< 0)
 	{
 	  alpha = ic.min(intersection(A,v,l,r), intersectionVertical(A,v,n));
-	  
+
 	  if(alpha >= 1 || first)
 	    {
 	      Aold = A;
@@ -387,7 +384,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 	    }
 	  else
 	    ok = false;
-	  
+
 	  first = false;
 	}
       else
@@ -415,10 +412,10 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 		  ok = false;
 	      }
 	    else
-	      ok = false;	  
+	      ok = false;
 	}
-  
-  
+
+
       if(!inv)
 	{
 	  // if A is on the line, A is a vertex for both the lower and the upper convex hulls
@@ -430,7 +427,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 	      *prevInf = B;
 	    }
 	  else
-	    
+
 	    if(B[0]*l[1]-B[1]*l[0]+r ==0)
 	      {
 		*inf = B;
@@ -495,7 +492,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 
 
 
-  
+
 template <typename TInteger, typename TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer n, Point *inf, Point *sup)
@@ -503,22 +500,22 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
   // slope to be approximated = (1,s)
 
   //std::cout << "In Convex hull approx" << std::endl;
-  
+
   Point A = Point(0,1);
   Point B = Point(1,0);
-  
+
   Vector u = Vector(1,-1);
   Vector v = Vector(1,0);
-  
+
   VectorF normal = VectorF(-s,1);
-  
+
   Integer alpha;
 
   bool ok = true;
   bool found = false;
-  
+
   DGtal::IntegerComputer<Integer> ic;
-      
+
 
   while(ok)
     {
@@ -578,7 +575,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Number s, Integer 
 	      ok = false;
 	  }
     }
-  
+
   if(found)
     {
       Integer g = ic.gcd(v[0],v[1]);
@@ -611,16 +608,16 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Point DGtal::DSLSubsegment<TInt
   DGtal::IntegerComputer<Integer> ic;
   Point p;
   p = ic.extendedEuclid(fp,fq,1);
-  
+
   u = p[0];
   v = p[1];
-  
+
   Integer pp = v;
   Integer qq = -u;
-  
+
   pp = pp + floor((n+u)/fq)*fp;
   qq = qq + floor((n+u)/fq)*fq;
-  
+
   return Point(qq,pp);
 }
 
@@ -640,16 +637,16 @@ inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu)
 {
   BOOST_CONCEPT_ASSERT((CInteger<TNumber>));
-  return (Integer) ceil((LongDoubleType) (r*b-mu*q)/(-p*b+a*q)); 
+  return (Integer) ceil((LongDoubleType) (r*b-mu*q)/(-p*b+a*q));
 }
 
 template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::slope(Integer p, Integer q, Integer r, Number alpha, Number beta)
 {
-  
+
   Number val = (r-beta*q)/(-p+alpha*q);
-  
+
   // if the value is very close to a slightly smaller integer, we round to the close integer
   if(val-floor(val) <= myPrecision)
     return((Integer) floor(val));
@@ -660,30 +657,29 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<TInteger,TNumber>::positionWrtRay(RayC r, Number a, Number b, Number mu)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<TInteger,TNumber>::positionWrtRay(RayC &r, Number a, Number b, Number mu)
 {
   BOOST_CONCEPT_ASSERT((CInteger<TNumber>));
   Integer v = -a*r.x + r.y*b - mu;
-  
+
 
   if(v == 0)
     return ONTO;
   else
     if(v > 0)
       return BELOW;
-    else
-      if(v < 0)
-	return ABOVE;
-  
+
+  return ABOVE;
+
 }
 
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<TInteger,TNumber>::positionWrtRay(RayC r, Number alpha, Number beta)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<TInteger,TNumber>::positionWrtRay(RayC &r, Number alpha, Number beta)
 {
   Number v = -alpha*r.x + r.y - beta;
-  
+
   if(fabs(v) <= myPrecision )
     {
       return ONTO;
@@ -691,16 +687,15 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<T
   else
     if(v > 0)
       return BELOW;
-    else
-      if(v < 0)
-	return ABOVE;
+
+  return ABOVE;
 }
 
 
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r) 
+typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r)
  {
    // Version 1: using floor operator
    Integer rr;
@@ -708,78 +703,39 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
      rr = gq;
    else
      rr = (r*gq)/fq;
-   
-   // Version 2: performing a dichotomy. Integer only version but slightly less performant
-   // We look for r'/q' such that r'/q' <= r/q <= (r'+1)/q', which is equilavent to -q <= r'q-rq' <= 0 
-   // Integer rr = 0;
-   // if(r == fq)
-   //   rr = gq;
-   // else
-   //   {
-       
-   //     Integer lup = gq;
-   //     Integer ldown = 0;
-       
-   //     bool flag = false;
-   //     Integer value;
-   //     while((lup>=2 || ldown >=2) && !flag)
-   // 	 {
-   // 	   value = rr*fq - r*gq;
-   // 	   if(-fq <= value && value <= 0) 
-   // 	     {
-   // 	       flag = true;
-   // 	       if(value == -fq)
-   // 		 rr++;
-   // 	     }
-   // 	   else
-   // 	     if(value < -fq)
-   // 	       // check upper part
-   // 	       {
-   // 		 rr = rr + ((lup%2 == 0)?lup/2:(lup-1)/2);
-   // 		 ldown = ((lup%2 ==0)?lup/2:(lup-1)/2);
-   // 		 lup = ((lup%2==0)?lup/2:(lup+1)/2);
-   // 	       }
-   // 	     else // value > 0 -> check lower part
-   // 	       {
-   // 		 rr = rr - ((ldown%2==0)?ldown/2:(ldown+1)/2);
-   // 		 lup = ((ldown%2==0)?ldown/2:(ldown+1)/2);
-   // 		 ldown = ((ldown%2==0)?ldown/2:(ldown-1)/2);
-   // 	       }
-   // 	 }
-   //  }
-       
+
    // Compute the slope of the line through (f=p/Q,r/q) and
    // (g=p'/q',rr/q')
-   Integer x = (r*gq - rr*fq); 
-   
+   Integer x = (r*gq - rr*fq);
+
    Integer y = r*gp-rr*fp; // after simplification of the above formula
-   
+
    return RayC(x,y);
 
  }
- 
+
 
 template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number a, Number b, Number mu, Integer n, bool *flagRayFound)
 {
   BOOST_CONCEPT_ASSERT((CInteger<Number>));
-    
+
   RayC myRay;
   Position myPosition;
   Integer r = 0;
   Integer lup = fq;
   Integer ldown = 0;
-  
+
   *flagRayFound = false;
-  
+
   while((lup>=2 || ldown >=2) && !*flagRayFound)
     {
       myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
       myPosition = positionWrtRay(myRay,a,b,mu);
-  
-       
-#ifdef DEBUG 
+
+
+#ifdef DEBUG
       trace.info() << "height " << r << " Ray " << myRay.x << " " << myRay.y << std::endl;
       trace.info() << "myPosition " << myPosition << std::endl;
 #endif
@@ -799,44 +755,41 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 	    r = r - ((ldown%2==0)?ldown/2:(ldown+1)/2);
 	    lup = ((ldown%2==0)?ldown/2:(ldown+1)/2);
 	    ldown = ((ldown%2==0)?ldown/2:(ldown-1)/2);
-	  }       
-      
-      
-      // #ifdef DEBUG 
-//       //trace.info() << r << " " << lup << " " << ldown << std::endl;
-// #endif    
+	  }
+
+
     }
-  
+
   // If the point is not on a ray of smallest slope
   if(!*flagRayFound)
      {
        myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
        myPosition = positionWrtRay(myRay,a,b,mu);
-       
+
        if(myPosition != ONTO)
 	 {
 	   if(myPosition == ABOVE)
 	     r++;
-	   
+
 	   RayC SteepestRay = rayOfHighestSlope(fp, fq,r,(smartRayOfSmallestSlope(fp,fq,gp,gq,r)).x,n);
-	   Position pos = positionWrtRay(SteepestRay,a,b,mu);	   
-	   
+	   Position pos = positionWrtRay(SteepestRay,a,b,mu);
+
 	   if(pos==BELOW)
 	     {
 	       r--;
 	       *flagRayFound = true;
-	       
+
 	     }
 	 }
        else
 	 *flagRayFound = true;
-       
+
      }
-   
+
 #ifdef DEBUG
    trace.info() << r << std::endl;
 #endif
-   
+
    return r;
  }
 
@@ -850,24 +803,24 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
   Integer r = 0;
   Integer lup = fq;
   Integer ldown = 0;
-  
+
   *flagRayFound = false;
-  
+
 #ifdef DEBUG
   trace.info() << fp << " " << fq << " " << gp << " " << gq << std::endl;
-#endif  
-  
-  
+#endif
+
+
   while((lup>=2 || ldown >=2) && !*flagRayFound)
     {
       myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
       myPosition = positionWrtRay(myRay,alpha,beta);
-      
-#ifdef DEBUG 
+
+#ifdef DEBUG
       trace.info() << "height " << r << " Ray " << myRay.x << " " << myRay.y << std::endl;
       trace.info() << "myPosition " << myPosition << std::endl;
 #endif
-      
+
       if(myPosition == ONTO)
 	*flagRayFound = true;
       else
@@ -882,28 +835,24 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 	    r = r - ((ldown%2==0)?ldown/2:(ldown+1)/2);
 	    lup = ((ldown%2==0)?ldown/2:(ldown+1)/2);
 	    ldown = ((ldown%2==0)?ldown/2:(ldown-1)/2);
-	  }       
-      
-      
-// #ifdef DEBUG 
-//       //trace.info() << r << " " << lup << " " << ldown << std::endl;
-// #endif    
+	  }
+
     }
-  
+
   // If the point is not on a ray of smallest slope
    if(!*flagRayFound)
      {
        myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
        myPosition = positionWrtRay(myRay,alpha,beta);
-       
+
        if(myPosition != ONTO)
 	 {
 	   if(myPosition == ABOVE)
 	     r++;
-	   
+
 	   RayC SteepestRay = rayOfHighestSlope(fp, fq,r,(smartRayOfSmallestSlope(fp,fq,gp,gq,r)).x,n);
 	   Position pos = positionWrtRay(SteepestRay,alpha,beta);
-	   
+
 	   if(pos == BELOW)
 	     {
 	       r--;
@@ -912,13 +861,13 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 	 }
        else
 	 *flagRayFound = true;
-       
+
      }
-   
+
 #ifdef DEBUG
    trace.info() << r << std::endl;
 #endif
-   
+
    return r;
 }
 
@@ -930,11 +879,11 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 {
   BOOST_CONCEPT_ASSERT((CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
-  
-  
-  Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x; 
-     
-   
+
+
+  Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x;
+
+
   if(alpha%(fq) == smallestSlope)
     {
       return RayC(fp,fq,r,alpha);
@@ -947,71 +896,39 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
     else
       // alphaInt%(f.q()) > smallestSlope
       {
-	return RayC(fp,fq,r,alpha - (alpha%(fq) - smallestSlope) + fq); 
-      }      
+	return RayC(fp,fq,r,alpha - (alpha%(fq) - smallestSlope) + fq);
+      }
  }
-
-
-// template <typename TInteger, typename TNumber>
-// inline
-// typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number alpha, Number beta,  Integer n)
-// {
-  
-//   //std::cout << "fp/fq = " << fp << "/" << fq << " r= " << r <<std::endl;
-//   //std::cout << std::setprecision(15) << "alpha = " << alpha << " beta= " << beta << std::endl;
-   
-// Number alphaF = slope(fp, fq,r,alpha,beta);
-//   //std::cout << "slope = " << alphaF << std::endl;
-//   Integer s = floor(alphaF); // round to the nearest lower integer
-  
-//   Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x; 
-  
-//   if(s%(fq) == smallestSlope)
-//     {
-//       return RayC(fp,fq,r,s);
-//     }
-//   else
-//     if(s%(fq) < smallestSlope)
-//       {
-// 	return RayC(fp,fq,r,s + smallestSlope - s%(fq));
-//       }
-//     else
-//       // alphaInt%(f.q()) > smallestSlope
-//       {
-// 	return RayC(fp,fq,r,s - (s%(fq) - smallestSlope) + fq); 
-//       }      
-  
-// }
 
 // With a dichotomy
 template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number alpha, Number beta,  Integer n)
 {
-  
-  Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x; 
-  
+
+  Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x;
+
   Integer kmax = floor((n-smallestSlope)/fq) +1;
-  
+
   Integer k = 0;
   Integer lup = 0;
   Integer ldown = kmax;
 
   Position myPosition;
-  
+
   RayC aRay;
   bool found;
 
   while((lup>=2 || ldown >=2) && !found)
     {
-      aRay = RayC(fp,fq,r,smallestSlope+k*fq); 
+      aRay = RayC(fp,fq,r,smallestSlope+k*fq);
       myPosition = positionWrtRay(aRay,alpha,beta);
-      
-#ifdef DEBUG 
+
+#ifdef DEBUG
       trace.info() << "k " << k << " Ray " << aRay.x << " " << aRay.y << std::endl;
       trace.info() << "myPosition " << myPosition << std::endl;
 #endif
-      
+
       if(myPosition == ONTO)
 	found = true;
       else
@@ -1026,14 +943,14 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 	    k = k + ((ldown%2==0)?ldown/2:(ldown+1)/2);
 	    lup = ((ldown%2==0)?ldown/2:(ldown+1)/2);
 	    ldown = ((ldown%2==0)?ldown/2:(ldown-1)/2);
-	  }       
+	  }
     }
-  
+
   if(!found)
     {
-      aRay = RayC(fp,fq,r,smallestSlope+k*fq); 
+      aRay = RayC(fp,fq,r,smallestSlope+k*fq);
       myPosition = positionWrtRay(aRay,alpha,beta);
-      
+
       if(myPosition == ABOVE || myPosition == ONTO)
 	return aRay;
       else
@@ -1041,7 +958,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
     }
   else
     return aRay;
-  
+
 }
 
 
@@ -1067,11 +984,11 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP)  // resBetaQ = resAlphaQ  
+void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP)  // resBetaQ = resAlphaQ
 {
   Point inf, sup , tmpsup, tmpinf;
   DGtal::IntegerComputer<Integer> ic;
-  
+
   //Compute the lower edge of the facet
   if(fq <= ic.max(r.x,n-r.x))
     {
@@ -1079,7 +996,6 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
       inf[1] = fp;
     }
   else
-    //convexHullHarPeled(Vector(fq,fp),0,max(r.x,n-r.x),&inf,&tmpsup);
     convexHullApprox(Vector(fq,fp),0,ic.max(r.x,n-r.x),&inf,&tmpsup);
 
   if(gq <= ic.max(r.x,n-r.x))
@@ -1089,8 +1005,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
     }
   else
     convexHullApprox(Vector(gq,gp),0,ic.max(r.x,n-r.x),&tmpinf,&sup);
-  
-  
+
+
   if(r.x-inf[0] < 0) // R is the ray of smallest slope in inf
     {
       *resAlphaP = inf[1];
@@ -1104,7 +1020,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
 	*resAlphaQ = sup[0];
 	*resBetaP = -(*resAlphaP)*r.x+(*resAlphaQ)*r.y;
       }
-    else  //the facet is upper triangular, 
+    else  //the facet is upper triangular,
       {
 	IntegerComputer<Integer> ic;
 	Integer g = ic.gcd(inf[1] + sup[1],inf[0]+sup[0]);
@@ -1112,7 +1028,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
 	*resAlphaQ = (inf[0]+sup[0])/g;
 	*resBetaP = -(*resAlphaP)*r.x+(*resAlphaQ)*r.y;
       }
-  
+
 }
 
 
@@ -1120,19 +1036,19 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found)  // resBetaQ = resAlphaQ  
+void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found)  // resBetaQ = resAlphaQ
 {
   Point inf, sup;
   DGtal::IntegerComputer<Integer> ic;
-  
+
   if(found == false)
     // r is not the highest ray on A
     {
-      
+
       if(gq <= ic.max(r.x,n-r.x))
 	{ // B is a multiple point, r is the lowest ray on B
 	  // (otherwise, there would be an intersection in [AB]
-	  // between the lowest ray on B and the ray above r on A. 
+	  // between the lowest ray on B and the ray above r on A.
 	  // Thus B is the solution
 	  *resAlphaP = gp;
 	  *resAlphaQ = gq;
@@ -1140,10 +1056,9 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 	}
       else
 	{ // compute the ray juste above r
-	  //std::cout << "Neither A (nor B) is the solution, A is the higher left vertex. Find the next Farey term on the ray sup." << std::endl;
 	  RayC rr = raySup(fp,fq,r);
 	  // compute the fraction following f in the Farey Series
-	  // given by the slope of rr 
+	  // given by the slope of rr
 	  if(ic.max(rr.x,n-rr.x)>ic.max(r.x,n-r.x))
 	    {
 	      Point next = nextTermInFareySeriesEuclid(fp,fq,ic.max(rr.x,n-rr.x));
@@ -1162,7 +1077,6 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
     }
   else
     {
-      //std::cout << "the ray is the upper ray" << std::endl;
       if(fq <= ic.max(r.x,n-r.x))
 	{ // A is a multiple point
 	  // A is the solution
@@ -1186,16 +1100,16 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 	    RayC rr = smartRayOfSmallestSlope(fp,fq,gp,gq,h);
 	    if(fq<=ic.max(rr.x,n-rr.x))
 	      {  //the vertex above A is a
-		// multiple point -> A is the solution 
+		// multiple point -> A is the solution
 		*resAlphaP = fp;
 		*resAlphaQ = fq;
 		*resBetaP = -fp*r.x +fq*r.y;
 	      }
 	    else
 	      {
-		//std::cout << "Neither A nor B is the solution " << std::endl;
-		convexHullHarPeled(Vector(fq,fp),ic.max(r.x,n-r.x),&inf,&sup);
-		// Let C be the point on r with abscissa equal to inf. 
+                Vector v(fq,fp);
+		convexHullHarPeled(v,ic.max(r.x,n-r.x),&inf,&sup);
+		// Let C be the point on r with abscissa equal to inf.
 		RayC rr = raySup(inf[1],inf[0],r); // ray above r passing through C
 		if(rr.x == r.x) // r is the highest ray passing through C
 		  { // C is the solution
@@ -1204,19 +1118,18 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 		    *resBetaP = -inf[1]*r.x + inf[0]*r.y;
 		  }
 		else
-		  { 
-		    //std::cout << "r is not the highest ray" << std::endl;
+		  {
 		    if(ic.max(rr.x,n-rr.x)>ic.max(r.x,n-r.x))
 		      {
 			// the solution is given by the fraction following inf
 			// in the Farey Series of order
 			// max(x-inf.q(),n-(x.inf.q())), on the ray rr
-			
+
 			// we compute the mediant on inf and sup: if
 			// the denominator is lower or equal to the
 			// order given by the ray rr, then the
 			// mediant is the solution. Otherwise, sup is
-			// the solution.  
+			// the solution.
 			IntegerComputer<Integer> ic;
 			Integer g = ic.gcd(inf[1] + sup[1],inf[0]+sup[0]);
 			if((inf[0]+sup[0])/g <= ic.max(rr.x,n-rr.x))
@@ -1238,12 +1151,12 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 			*resBetaP = -(*resAlphaP)*r.x+(*resAlphaQ)*r.y;
 		      }
 		  }
-		
-		
+
+
 	      }
-	    
+
 	  }
-      
+
     }
 }
 
@@ -1251,22 +1164,22 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 // Constructor in the case of integer input parameters
 template <typename TInteger, typename TNumber>
 inline
-DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool farey)
+DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, bool farey)
 {
   if(farey)
     this->DSLSubsegmentFareyFan(a,b,mu,A,B);
   else
     this->DSLSubsegmentLocalCH(a,b,mu,A,B);
-  
+
 }
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Number b, Number mu, Point A, Point B)
+void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Number b, Number mu, Point &A, Point &B)
 {
   Integer n = B[0] - A[0];
-  
-  
+
+
   if(n >= 2*b)
     {
       myA = a;
@@ -1280,19 +1193,20 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
       // A becomes the origin // mu must be between 0 and b
       mu += a*A[0] - A[1]*b;
       Point inf, sup;
-      
+
       Point inf2, sup2;
-      
+
       Integer fp,fq,gp,gq;
-    
+
       if(b>n)
 	{
-	  convexHullHarPeled(Vector(b,a),n,&inf,&sup);
+          Vector v(b,a);
+	  convexHullHarPeled(v,n,&inf,&sup);
 	  fp = inf[1];
 	  fq = inf[0];
 	  gp = sup[1];
-	  gq = sup[0];  
-	} 
+	  gq = sup[0];
+	}
       else
       	{
       	  Point next = nextTermInFareySeriesEuclid(a,b,n);
@@ -1300,97 +1214,97 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
       	  fq = b;
       	  gp = next[1];
       	  gq = next[0];
-      	}	
-      
-      
+      	}
+
+
 #ifdef DEBUG
       trace.info() << "fractions = " << fp << " " << fq << " " << gp << " " << gq << std::endl;
-#endif  
+#endif
 
 
       bool found;
-      
+
       // Find the height in the ladder
-      // Returns the height h such that: 
+      // Returns the height h such that:
       // - param is in between the rays passing through the point (inf =
       // p/q, h/q)
       // ==> found is set to false
       // - or param is above the ray of smallest slope passing through
       // (inf = p/q, h/q) but below all the rays passing through (p/q,
       // h+1/q)  ==> found is set to true
-      
+
 
       Integer h = smartFirstDichotomy(fp,fq,gp,gq,a,b,mu,n,&found);
-      
+
       RayC r;
-            
-      
+
+
       if(found)
 	{
 	  r = smartRayOfSmallestSlope(fp,fq,gp,gq,h);
 	}
       else
 	{
-	  r = localizeRay(fp,fq,gp,gq,h,a,b,mu,n);      
+	  r = localizeRay(fp,fq,gp,gq,h,a,b,mu,n);
 	}
-          
+
       Integer resAlphaP=0, resAlphaQ=0, resBetaP=0;
       findSolutionWithoutFractions(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
       //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP);
-      
-      
+
+
       myA = resAlphaP;
       myB = resAlphaQ;
       myMu = resBetaP - myA*A[0] + myB*A[1];
-      
+
     }
-  
-  
+
+
 }
 
 
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector l, Integer mu, Point A, Point B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR)
+void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector &l, Integer mu, Point &A, Point &B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR)
 {
-  
+
   Integer rA = l[1]*A[0]-l[0]*A[1] + mu;
   Integer rB = l[1]*B[0]-l[0]*B[1] + mu;
-  
+
   Point prevSupL,supL,supR,prevSupR;
 
   // from left to right
   convexHullApproxTwoPoints(l,rA,B[0]-A[0],infL,&supL,prevInfL,&prevSupL,0); // computation of the left part of the convex hulls
-  
-  
+
+
   *infL += A;
   supL += A;
-  
+
   *prevInfL +=A;
   prevSupL +=A;
 
-  
+
   // from right to left
   if(rB !=0)
     {
       convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
-      
+
       Point B1 = B + Point(0,1);
-      
+
       *infR = B1 - *infR;
       supR = B1 - supR;
-      
+
       // swap inf and sup
       Point tmp;
       tmp = *infR;
       *infR = supR;
       supR = tmp;
-      
-      
+
+
       *prevInfR = B1 - *prevInfR;
       prevSupR = B1 - prevSupR;
-      
+
       tmp = *prevInfR;
       *prevInfR = prevSupR;
       prevSupR = tmp;
@@ -1398,26 +1312,26 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector l, Integer m
   else
     {
       convexHullApproxTwoPoints(l,0,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
-      
+
       *infR = B - *infR;
       supR = B - supR;
-      
+
       Point tmp;
       tmp = *infR;
       *infR = supR;
       supR = tmp;
-      
-      
+
+
       *prevInfR = B - *prevInfR;
       prevSupR = B - prevSupR;
-      
+
       tmp = *prevInfR;
       *prevInfR = prevSupR;
       prevSupR = tmp;
 
     }
-  
-  
+
+
 
 }
 
@@ -1427,55 +1341,55 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector l, Integer m
 // Contructor calling the localConvexHull approx instead of the walk in the Farey Fan -> should be a new class.
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point A, Point B)
+void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point &A, Point &B)
 {
   Integer n = B[0] - A[0];
-  
-  
+
+
   Integer rA = a*A[0]-b*A[1] + mu;
   Integer rB = a*B[0]-b*B[1] + mu;
-  
+
   Vector l(b,a);
-  
+
   Point infL,supL,infR,supR,prevInfL,prevSupL,prevInfR,prevSupR;
-  
+
   lowerConvexHull(l,mu,A,B,&prevInfL,&infL,&infR,&prevInfR);
-  
-  
-  lowerConvexHull(l,l[0]-rB-1,Point(0,0),B-A,&prevSupR, &supR, &supL, &prevSupL);
-  
+
+  Point pz(0,0);
+  lowerConvexHull(l,l[0]-rB-1,pz,B-A,&prevSupR, &supR, &supL, &prevSupL);
+
   prevSupR = B+Point(0,1)-prevSupR;
   supR = B+Point(0,1)-supR;
   prevSupL = B+Point(0,1)-prevSupL;
   supL = B+Point(0,1)-supL;
-  
+
   DGtal::IntegerComputer<Integer> ic;
-  
+
   myA=0, myB=0, myMu=0;
-  
+
   // we are left with four possible lines given by the couples (prevInfL, infL=infR) (infL = infR,prevInfR)
   // (prevSupL, supL = supR) (supL = supR, prevSupR)
   // the solution is given by the slope with bigger b
-  
-  
+
+
 	Point inf[4];
-	
+
 	inf[0] = prevInfL;
-	inf[1] = infL; 
+	inf[1] = infL;
 	inf[2] = infR;
 	inf[3] = prevInfR;
 
-	
+
 
 	Point sup[4];
-	
+
 	sup[0] = prevSupL;
-	sup[1] = supL; 
+	sup[1] = supL;
 	sup[2] = supR;
 	sup[3] = prevSupR;
 
-	
-	
+
+
 	Integer atmp, btmp;
 	for(int i=0;i<3;i++)
 	  {
@@ -1494,8 +1408,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
 		myA =atmp;
 	      }
 	  }
-	
-	
+
+
 	for(int i=0;i<3;i++)
 	  {
 	    btmp = sup[i+1][0] - sup[i][0];
@@ -1513,89 +1427,88 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Numb
 		myA =atmp;
 	      }
 	  }
-	
-	
-	
+
+
+
 	myMu = -myA*infL[0] + myB*infL[1];
-	
+
 }
 
 
 
 template <typename TInteger, typename TNumber>
 inline
-DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,  Point A, Point B, Number precision)
+DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,  Point &A, Point &B, Number precision)
 {
   Integer n = B[0] - A[0];
-  
+
   myPrecision = precision;
-  
-  // A becomes the origin 
-  
+
+  // A becomes the origin
+
   beta +=alpha*A[0] - A[1];
-  
+
   Point inf, sup;
   Integer fp,fq,gp,gq;
-  
-    
+
+
 #ifdef DEBUG
   trace.info() << "\n \nDSLSubsegment with floats, n=" << n << " precision = " << myPrecision << std::endl;
   trace.info() << std::setprecision(15) << "alpha = " << alpha << " beta = " << beta << std::endl;
-#endif  
-  
-  
+#endif
+
+
   convexHullApprox(alpha,n,&inf,&sup);
   fp = inf[1];
   fq = inf[0];
   gp = sup[1];
-  gq = sup[0];    
-  
-  
+  gq = sup[0];
+
+
 #ifdef DEBUG
   trace.info() << "f and g = " << fp << " " << fq << " " << gp << " " << gq << std::endl;
-#endif  
-  
+#endif
+
 
   if(fp == gp && fq == gq)
     {
       Point next = nextTermInFareySeriesEuclid(fp,fq,n);
       gp = next[1];
       gq = next[0];
-      
+
     }
 
-    
+
   bool found;
-  
+
   // Find the height in the ladder
-  // Returns the height h such that: 
+  // Returns the height h such that:
   // - param is in between the rays passing through the point (inf =
   // p/q, h/q)
   // ==> found is set to false
   // - or param is above the ray of smallest slope passing through
   // (inf = p/q, h/q) but below all the rays passing through (p/q,
   // h+1/q)  ==> found is set to true
-  
-    
+
+
   Integer h = smartFirstDichotomy(fp,fq,gp,gq,alpha,beta,n,&found);
-  
+
   RayC r;
-  
+
   if(found)
     r = smartRayOfSmallestSlope(fp,fq,gp,gq,h);
   else
-    r = localizeRay(fp,fq,gp,gq,h,alpha,beta,n);      
-  
-  
+    r = localizeRay(fp,fq,gp,gq,h,alpha,beta,n);
+
+
   Integer resAlphaP=0, resAlphaQ=0, resBetaP=0;
   findSolutionWithoutFractions(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
-  //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP);
-  
-  
+
+
   myA = resAlphaP;
   myB = resAlphaQ;
   myMu = resBetaP - myA*A[0] + myB*A[1];
-    
+
 }
 
 
@@ -1626,4 +1539,3 @@ TInteger
 DGtal::DSLSubsegment<TInteger,TNumber>::getMu() const {
   return myMu;
 }
-
