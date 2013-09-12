@@ -45,7 +45,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 
-#include <iomanip> 
+#include <iomanip>
 
 namespace DGtal
 {
@@ -71,70 +71,70 @@ namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
-  
+
   template <typename TInteger, typename TNumber>
     class DSLSubsegment
   {
       // ----------------------- Standard services ------------------------------
     public:
-      
+
       /**
        * Destructor.
      */
       ~DSLSubsegment(){};
-      
+
     // ----------------------- Interface --------------------------------------
     public:
-      
+
       /**
        * Writes/Displays the object on an output stream.
        * @param out the output stream where the object is written.
        */
       void selfDisplay ( std::ostream & out ) const;
-      
+
       /**
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
       bool isValid() const;
-      
+
       /**
        * Number types
        */
       typedef TNumber Number;
       typedef TInteger Integer;
       typedef long double LongDoubleType;
-      
-      
-      /** 
+
+
+      /**
        * A ray is defined as a 2D integer vector (x,y) such that
        * Ray(x,y) is the straight line beta = -x alpha +y  in the (alpha,beta)-space.
        */
       typedef DGtal::PointVector<2,Integer> Ray;
-      
-      /** 
+
+      /**
        * 2D integer point
        */
       typedef DGtal::PointVector<2,Integer> Point;
-      
-      /** 
+
+      /**
        * 2D real point
        */
       typedef DGtal::PointVector<2,Number> PointF;
 
-      /** 
+      /**
        * 2D integer vector
        */
       typedef DGtal::PointVector<2,Integer> Vector;
-      
+
       /**
-       * 2D real vector 
+       * 2D real vector
        */
       typedef DGtal::PointVector<2,Number> VectorF;
-      
-      /** 
+
+      /**
        * Check that Number type verifies the Euclidean Rign concept and
-       * Integer type verifies the Integer concept 
+       * Integer type verifies the Integer concept
        */
       BOOST_CONCEPT_ASSERT((CEuclideanRing<Number>));
       BOOST_CONCEPT_ASSERT((CInteger<Integer>));
@@ -146,42 +146,42 @@ namespace DGtal
        *
        */
       Integer myA;
-      
+
       /**
        * The minimal characteristics of the subsegment AB of the
        * DSL(a,b,mu) are (myA,myB,myMu).
        *
        */
       Integer myB;
-      
+
       /**
        * The minimal characteristics of the subsegment AB of the
        * DSL(a,b,mu) are (myA,myB,myMu).
        *
        */
       Integer myMu;
-      
-      /** 
+
+      /**
        * Precision used for floating-point geometrical predicates (when
        * TNumber is not an integer type)
        */
       Number myPrecision;
-      
+
   public:
-      /**  
+      /**
        * Constructor
        * Given the parameters of a DSL 0 <= ax -by + mu < b, and two points A and B of this DSL,
        * compute the parameters of the DSS [AB]. The algorithm used
        * depends on the value of the boolean (Farey fan if true, local
        * convex hull otherwise).
-       * @param [in] a 
-       * @param [in] b
-       * @param [in] mu
+       * @param [in] a DSS a parameter
+       * @param [in] b DSS b parameter
+       * @param [in] mu DSS mu parameter
        * @param [in] A left-most point
        * @param [in] B right-most point
        * @param [in] farey a boolean
        */
-      DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool farey);
+      DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, bool farey);
 
       /**
        * Constructor
@@ -193,73 +193,73 @@ namespace DGtal
        * @param [in] beta intercept of the line
        * @param [in] A left-most point
        * @param [in] B right-most point
-       * @param [in] precision
+       * @param [in] precision precison
        */
-      DSLSubsegment(Number alpha, Number beta, Point A, Point B, Number precision = 1e-10);
-       
-       
-  protected: 
+      DSLSubsegment(Number alpha, Number beta, Point &A, Point &B, Number precision = 1e-10);
+
+
+  protected:
       /**
        * Function called by the constructor when the input parameters
        * are integers and the Farey Fan algorithm is used.
-       * @param a
-       * @param b
-       * @param mu
+       * @param a DSS a parameter
+       * @param b DSS b parameter
+       * @param mu DSS mu parameter
        * @param A left-most point
-       * @param B right-most point 
+       * @param B right-most point
       */
-      void DSLSubsegmentFareyFan(Number a, Number b, Number mu, Point A, Point B);
-      
+      void DSLSubsegmentFareyFan(Number a, Number b, Number mu, Point &A, Point &B);
+
       /**
        * Function called by the constructor when the input parameters
        * are integers and the local convex hull algorithm is used.
-       * @param a
-       * @param b
-       * @param mu
+       * @param a DSS a parameter
+       * @param b DSS b parameter
+       * @param mu DSS mu parameter
        * @param A left-most point
        * @param B right-most point
        */
-      void DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point A, Point B);
-      
-      
+      void DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point &A, Point &B);
+
+
       /**
        * Constructor.
        * Forbidden by default (protected to avoid g++ warnings).
        */
       DSLSubsegment();
-      
-      
-      /** 
+
+
+      /**
        * Class Ray Implements the concept of Ray in the dual space (alpha,beta)
        */
       class RayC
       {
       public :
-	
-	/** 
+
+	/**
 	 * slope of the ray
 
 	 */
 	Integer x;
-	
-	/** 
+
+	/**
 	 * intercept of the ray
 	 */
 	Integer y;
-	
+
 	/**
 	 * Default constructor.
 	 * not valid
 	 */
 	RayC();
-	
+
 	/**
 	 * Constructor of the ray R(alpha,beta): beta = -alpha x0 + y0
 	 * @param x0 slope of the ray
 	 * @param y0 intercept of the ray
 	 */
 	RayC(const Integer x0, const Integer y0);
-	
+
 	/**
 	 * Constructor of the ray passing through the point (p/q,r/q)
 	 * and of given slope
@@ -269,12 +269,12 @@ namespace DGtal
 	 * @param slope slope of the ray
 	 */
 	RayC(const Integer p, const Integer q, const Integer r, const Integer slope);
-	
+
 	~RayC();
-	
+
       };
-      
-      /** 
+
+      /**
        * Position of a point wrt a ray
        */
       typedef enum Position
@@ -283,8 +283,8 @@ namespace DGtal
 	BELOW,
 	ONTO
       } Position;
-      
-      
+
+
       /**
        * Compute the intersection between the line of direction v
        * passing through P and the vertical line x = n.
@@ -295,12 +295,12 @@ namespace DGtal
        * @param n maximal value for x-coordinate
        * @return integer
        */
-      Integer intersectionVertical(Point P, Vector v, Integer n);
-      
-      
+      Integer intersectionVertical(Point &P, Vector &v, Integer n);
+
+
       /**
        * Compute the intersection between the line of direction v
-       * passing through P and the line y = (aL[1]/aL[0])*x +r 
+       * passing through P and the line y = (aL[1]/aL[0])*x +r
        * The intersection point is of the form P + \alpha*v and the
        * function returns the value floor(alpha).
        * @param P a point of the first line
@@ -309,20 +309,20 @@ namespace DGtal
        * @param r intercept of the second line
        * @return integer
        */
-      Integer intersection(Point P, Vector v, Vector aL, Integer r);
-      
+      Integer intersection(Point &P, Vector &v, Vector &aL, Integer r);
+
       /**
        * Compute the intersection between the line of direction v
-       * passing through P and the line y = s*x 
+       * passing through P and the line y = s*x
        * The intersection point is of the form P + \alpha*v and the
        * function returns the value floor(alpha).
        * @param P a point of the first line
-       * @param v directional vector of the first line 
+       * @param v directional vector of the first line
        * @param s slope of the second line
        * @return integer
        */
-      Integer intersection(Point P, Vector v, Number s);
-      
+      Integer intersection(Point &P, Vector &v, Number s);
+
       /**
        * Update the Bezout vector v of u according to the new point A in the
        * case of integer parameters. Follows algorithm presented in
@@ -331,22 +331,22 @@ namespace DGtal
        * @param A a point
        * @param l directional vector of the line
        * @param r intercept of the line
-       * @param [in/out] v bezout vector updated in this function
+       * @param [in,out] v bezout vector updated in this function
        */
-      void update(Vector u, Point A, Vector l, Integer r, Vector *v);
-      
+      void update(Vector &u, Point &A, Vector &l, Integer r, Vector *v);
+
       /**
        * Update the Bezout vector v of u according to the new point A in the
        * case of floating-point parameters. Follows algorithm presented in
        * \cite{CharrierBuzer2009}
        *
-       * @param u a vector 
+       * @param u a vector
        * @param A a point
        * @param s slope of the line
-       * @param [in/out] v bezout vector updated in this function
+       * @param [in,out] v bezout vector updated in this function
        */
-      void update(Vector u, Point A, Number s, Vector *v);
-      
+      void update(Vector &u, Point &A, Number s, Vector *v);
+
       /**
        * Compute the lower integer convex hull of the line of directional vector
        * l and intercept mu between the points A and B. The algorithm
@@ -363,39 +363,39 @@ namespace DGtal
        * @param [out] prevInfR last-but-one point of the CH from right to left
        *
        */
-      void lowerConvexHull(Vector l, Integer mu, Point A, Point B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR);
-      
+      void lowerConvexHull(Vector &l, Integer mu, Point &A, Point &B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR);
+
       /**
        * Compute the left part of the upper and lower convex hulls of
        * the line of directional vector l and intercept r, between x=0
        * and x=n. Returns the upper and lower closest
        * points. Implementation of Charrier and Buzer algorithm
-       * \cite{CharrierBuzer2009} 
+       * \cite{CharrierBuzer2009}
        * @param l directional vector of the line
        * @param r intercept of the line
        * @param n maximal value of x-coordinate
        * @param [out] inf closest point below the line
        * @param [out] sup closest point above the line
        */
-      void convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup);
-      
+      void convexHullApprox(Vector &l, Integer r, Integer n, Point *inf, Point *sup);
+
       /**
        * Compute the left part of the upper and lower convex hulls of
        * the line of slope s, between x=0
-       * and x=n. Returns the upper and lower closest points. 
+       * and x=n. Returns the upper and lower closest points.
        * @param s slope of the line (interpect is equal to zero here)
        * @param n maximal value of x-coordinate
        * @param [out] inf closest point below the line
        * @param [out] sup closest point above the line
        */
       void convexHullApprox(Number s, Integer n, Point *inf, Point *sup);
-      
+
       /**
        * Compute the left part of the upper and lower convex hulls of
        * the line of slope s, between x=0
        * and x=n. Returns the last two points computed.
        * Implementation of Charrier and Buzer algorithm
-       * \cite{CharrierBuzer2009}  
+       * \cite{CharrierBuzer2009}
        * @param l directional vector of the line
        * @param r intercept of the line
        * @param n maximal value of x-coordinate
@@ -406,9 +406,10 @@ namespace DGtal
        * @param inv boolean used to know if the CH is computed from
        * left-to-right (inv=false) or right-to-left (inv = true)
        */
-      void convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv);
-      
-      
+      void convexHullApproxTwoPoints(Vector &l, Integer r, Integer n,
+                                     Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv);
+
+
       /**
        * Compute the left part of the upper and lower convex hulls of
        * the line of directional vector l, between x=0 and x=n. Returns
@@ -420,22 +421,22 @@ namespace DGtal
        * @param [out] inf closest point below the line
        * @param [out] sup closest point above the line
        */
-      void convexHullHarPeled(Vector l, Integer n, Point *inf, Point *sup);
-      
-      
+      void convexHullHarPeled(Vector &l, Integer n, Point *inf, Point *sup);
+
+
       /**
-       * Compute the term following fp/fq in the Farey series of order n. 
+       * Compute the term following fp/fq in the Farey series of order n.
        * @param  fp numerator
        * @param  fq denominator
        * @param  n order the the Farey Series
        * @return a point (q,p) such that p/q follows fp/fq in the Farey Series of order n
        */
       Point nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n);
-      
-      
+
+
       /**
        * Compute the ray of highest slope passing through a given point
-       * (p/q,r/q) in O(1) knowing the ray of smallest  
+       * (p/q,r/q) in O(1) knowing the ray of smallest
        * slope and the order of the Farey fan
        * @param p numerator of x-coordinate
        * @param q denominator of x- and y-coordinates
@@ -446,7 +447,7 @@ namespace DGtal
        * @return a ray
        */
       RayC rayOfHighestSlope(Integer p, Integer q, Integer r, Integer smallestSlope, Integer n);
-      
+
       /**
        * Compute the ceil of the slope of the line through (f=p/q,r/q)
        * and point (a/b,mu/b) -  O(1) - Number must be an Integer type.
@@ -462,7 +463,7 @@ namespace DGtal
        * the two points
        */
       Integer slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu);
-      
+
       /**
        * Compute the ceil of the slope of the line through (f=p/q,r/q)
        * and floating-point point (alpha,beta) -  O(1)
@@ -477,8 +478,8 @@ namespace DGtal
        * the two points
        */
       Integer slope(Integer p, Integer q, Integer r, Number alpha, Number beta);
-      
-      
+
+
       /**
        * Compute the position of the point (a/b,mu/b) with respect to a
        * ray r. Number must be an Integer type
@@ -488,19 +489,19 @@ namespace DGtal
        * @param mu numerator of x-coordinate
        * @return Position equal to BELOW, ABOVE or ONTO
        */
-      Position positionWrtRay(RayC r, Number a, Number b, Number mu);
-      
-      
+      Position positionWrtRay(RayC &r, Number a, Number b, Number mu);
+
+
       /**
        * Compute the position of the floating-point point(alpha,beta) with respect to a
-       * ray r. 
+       * ray r.
        * @param r a ray
        * @param alpha x-coordinate
        * @param beta y-coordinate
        * @return Position equal to BELOW, ABOVE or ONTO
        */
-      Position positionWrtRay(RayC r, Number alpha, Number beta);
-      
+      Position positionWrtRay(RayC &r, Number alpha, Number beta);
+
       /**
        * Computes the ray of smallest slope emanating from the point (f=p/q,
        * r/q) using the knowledge of the next fraction g in the Farey Series.
@@ -511,14 +512,14 @@ namespace DGtal
        * @param  gp numerator of the fraction following fp/fq in
        * the Farey Series
        * @param  gq denominator of the fraction following fp/fq in
-       * the Farey Series 
+       * the Farey Series
        * @param r numerator of the point y-coordinate
        * @return the ray of smallest slope passing through the point
-       */ 
-      RayC smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r); 
-      
-     
-      /** 
+       */
+      RayC smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r);
+
+
+      /**
        * Performs a dichotomy among the rays of smallest slope passing
        * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
        * the point lambda(a/b,mu/b) in the ladder. Implements line 3 of
@@ -532,7 +533,7 @@ namespace DGtal
        * between the rays. In case ii), the
        * ray under lambda has been found and no further search is
        * needed. The Number type must verify the CInteger concept
-       * (otherwise, see overloaded function). 
+       * (otherwise, see overloaded function).
        * @param fp numerator of the smallest fraction of the ladder
        * @param fq denominator of the smallest fraction of the
        * ladder
@@ -540,17 +541,18 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param a
-       * @param b
-       * @param mu
+       * @param a DSS a parameter
+       * @param b DSS b parameter
+       * @param mu DSS mu parameter
        * @param n order of the Farey Fan
        * @param [out] flagRayFound pointer on a boolean, used to check whether localizeRay
        * should be called ot not
-       * @return an integer 
+       * @return an integer
        */
-      Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number a, Number b, Number mu, Integer n, bool *flagRayFound);
-      
-      /**  
+      Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq,
+                                  Number a, Number b, Number mu, Integer n, bool *flagRayFound);
+
+      /**
        * Performs a dichotomy among the rays of smallest slope passing
        * through the points (fp/fq,r/fq), r in [0,fq] in order to locate
        * the point lambda(alpha,beta) in the ladder. Implements line 3 of
@@ -563,7 +565,7 @@ namespace DGtal
        * function localizeRay is used afterwards to localize lambda in
        * between the rays. In case ii), the
        * ray under lambda has been found and no further search is
-       * needed. 
+       * needed.
        * @param fp numerator of the smallest fraction of the ladder
        * @param fq denominator of the smallest fraction of the
        * ladder
@@ -571,17 +573,18 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param alpha
-       * @param beta
+       * @param alpha an alpha
+       * @param beta a beta
        * @param n order of the Farey Fan
        * @param [out] flagRayFound pointer on a boolean, used to check whether localizeRay
        * should be called ot not
-       * @return an integer 
+       * @return an integer
        */
-      Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number alpha, Number beta, Integer n, bool *flagRayFound);
-      
-      
-      
+      Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq,
+                                  Number alpha, Number beta, Integer n, bool *flagRayFound);
+
+
+
       /**
        * Compute the closest ray below the point (a/b,mu/b) passing
        * through the point (fp/fq,r/fq) in the Farey fan of order n
@@ -593,15 +596,16 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param a
-       * @param b
-       * @param mu
+       * @param a DSS a parameter
+       * @param b DSS b parameter
+       * @param mu DSS my parameter
        * @param n order of the Farey Fan
        * @return a ray
        */
-      RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n);
+      RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq,
+                       Integer r, Number a, Number b, Number mu,  Integer n);
 
-      
+
       /**
        * Compute the closest ray below the point (alpha,beta) passing
        * through the point (fp/fq,r/fq) in the Farey fan of order n
@@ -613,26 +617,27 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param alpha
-       * @param beta
+       * @param alpha an alpha(?)
+       * @param beta a beta(?)
        * @param n order of the Farey Fan
        * @return a ray
        */
-      RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number alpha, Number beta, Integer n);
-      
-      
+      RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq,
+                       Integer r, Number alpha, Number beta, Integer n);
+
+
       /**
        * Compute the ray passing through from (f=fp/fq,h/fq) just above
        * r. The knowledge of h is not necessary.
        * Complexity O(1)
-       * 
+       *
        * @param fp numerator
        * @param fq denominator
        */
-      
+
       RayC raySup(Integer fp, Integer fq, RayC r);
-      
-      
+
+
       /**
        * The two fractions f and g together with the ray r define a segment
        *  PQ. PQ is part of the lower boundary of exactly one cell of the
@@ -661,8 +666,10 @@ namespace DGtal
        * of smallest slope on point P, false otherwise). Its value comes
        * from the smartFirstDichotomy function.
        */
-      void findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
-      
+      void findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq,
+                                        RayC r, Integer n, Integer *resAlphaP,
+                                        Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ
+
       /**
        * Corresponds to the algorithm presented in
        * \cite{sivignonDGCI2013}.
@@ -683,15 +690,17 @@ namespace DGtal
        * @param [out] resBetaP numerator of the y-coordinate of
        * the result
        */
-      void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP);  // resBetaQ = resAlphaQ  
-      
-      
-      
+      void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq,
+                             RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ,
+                             Integer *resBetaP);  // resBetaQ = resAlphaQ
+
+
+
 
       // ------------------------- Accessors ------------------------------
-      
+
   public:
-      
+
       /**
        * @return an Integer of value @a myA.
        */
@@ -707,8 +716,8 @@ namespace DGtal
 
 
   };
-  
-   
+
+
 }// namespace DGtal
 
 
