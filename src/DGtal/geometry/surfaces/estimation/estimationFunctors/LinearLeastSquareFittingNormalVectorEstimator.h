@@ -47,6 +47,10 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
 
+#ifndef WITH_CGAL
+#error You need to have activated CGAL (WITH_CGAL) to include this file.
+#endif
+
 //CGAL
 #include <CGAL/Cartesian.h>
 #include <CGAL/linear_least_squares_fitting_3.h>
@@ -64,6 +68,10 @@ namespace DGtal
    * suqares plane fitting.
    *
    * model of CLocalEstimatorFromSurfelFunctor
+   *
+   *
+   * @tparam TSurfel type of surfels
+   * @tparam TEmbedder type of functors which embed surfel to R^3
    */
   template <typename TSurfel, typename TEmbedder>
   class LinearLeastSquareFittingNormalVectorEstimator
@@ -71,7 +79,7 @@ namespace DGtal
   public:
 
     typedef TSurfel Surfel;
-    typedef TEmbedder SCellEmbedder;  
+    typedef TEmbedder SCellEmbedder;
     typedef typename SCellEmbedder::RealPoint RealPoint;
     typedef RealPoint Quantity;
 
@@ -79,35 +87,35 @@ namespace DGtal
     typedef CGALKernel::Point_3  CGALPoint;
     typedef CGALKernel::Plane_3  CGALPlane;
     typedef CGALKernel::Vector_3  CGALVector;
-  
-    /** 
+
+    /**
      * Constructor.
-     * 
+     *
      * @param anEmbedder embedder to map surfel to R^n.
      * @param h gridstep.
      */
     LinearLeastSquareFittingNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h):
-      myEmbedder(anEmbedder), myH(h) 
+      myEmbedder(anEmbedder), myH(h)
     {
     }
 
-    /** 
+    /**
      * Add the geometrical embedding of a surfel to the point list
-     * 
+     *
      * @param aSurf a surfel to add
-     */    
+     */
     void pushSurfel(const Surfel & aSurf)
     {
       RealPoint p = myEmbedder->operator()(aSurf);
       CGALPoint pp(p[0],p[1],p[2]);
       myPoints.push_back(pp);
     }
-    
-    /** 
+
+    /**
      * Evaluate the normal vector from linear least squares fitting.
-     * 
+     *
      * @return the mean curvature
-     */    
+     */
     Quantity eval( )
     {
       CGALPlane plane;
@@ -116,19 +124,19 @@ namespace DGtal
       RealPoint vv(v.x(),v.y(),v.z());
       return vv.getNormalized();
     }
-    
-    /** 
+
+    /**
      * Reset the point list.
-     * 
+     *
      */
     void reset()
     {
       myPoints.clear();
     }
-    
+
 
   private:
-    
+
     ///Alias of the geometrical embedder
     const SCellEmbedder * myEmbedder;
 
@@ -137,8 +145,8 @@ namespace DGtal
 
     ///Grid Step
     double myH;
-    
-    
+
+
 
   }; // end of class LinearLeastSquareFittingNormalVectorEstimator
 

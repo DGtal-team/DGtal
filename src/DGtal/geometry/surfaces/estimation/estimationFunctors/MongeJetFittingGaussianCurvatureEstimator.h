@@ -47,6 +47,10 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
 
+#ifndef WITH_CGAL
+#error You need to have activated CGAL (WITH_CGAL) to include this file.
+#endif
+
 //CGAL
 #include <CGAL/Cartesian.h>
 #include <CGAL/Monge_via_jet_fitting.h>
@@ -62,7 +66,10 @@ namespace DGtal
    * Description of template class 'MongeJetFittingGaussianCurvatureEstimator' <p>
    * \brief Aim: Estimates Gaussian curvature using CGAL Jet Fitting and Monge Form.
    *
-   * model of CLocalEstimatorFromSurfelFunctor
+   * model of CLocalEstimatorFromSurfelFunctor.
+   *
+   * @tparam TSurfel type of surfels
+   * @tparam TEmbedder type of functors which embed surfel to R^3
    */
   template <typename TSurfel, typename TEmbedder>
   class MongeJetFittingGaussianCurvatureEstimator
