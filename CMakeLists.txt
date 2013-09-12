@@ -12,7 +12,7 @@ ENDIF()
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
-SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 7)
 SET(DGtal_VERSION_PATCH beta)
@@ -39,16 +39,15 @@ INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
 
-IF(BUILD_TESTING)
-MESSAGE(STATUS "still true")
-ENDIF()
+# -----------------------------------------------------------------------------
+# We reset the CMAKE_MODULE_PATH (ITK, CGAL,.. overwrite it)
+# -----------------------------------------------------------------------------
+SET(CMAKE_MODULE_PATH  "${PROJECT_SOURCE_DIR}/cmake")
 
 # -----------------------------------------------------------------------------
 # Cpack and Ctest settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
-
-MESSAge(STATUS "OK")
 
 # -----------------------------------------------------------------------------
 # Custom command/targets depending on the cmake generator

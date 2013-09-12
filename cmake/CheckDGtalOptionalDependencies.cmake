@@ -414,6 +414,12 @@ ENDIF(WITH_EIGEN)
 # -----------------------------------------------------------------------------
 SET(CGAL_FOUND_DGTAL 0)
 IF(WITH_CGAL)
+  IF (WITH_GMP AND  WITH_EIGEN)
+    message(STATUS "GMP and Eigen3 detected for CGAL.")
+  ELSE()
+    message(FATAL_ERROR "CGAL needs GMP and Eigen3. You must active WITH_GMP and WITH_EIGEN flags and have the associated package installed.")
+  ENDIF()
+
   find_package(CGAL COMPONENTS Core Eigen3)
   IF(CGAL_FOUND)
     include( ${CGAL_USE_FILE} )

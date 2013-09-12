@@ -47,6 +47,10 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
 
+#ifndef WITH_CGAL
+#error You need to have activated CGAL (WITH_CGAL) to include this file.
+#endif
+
 //CGAL
 #include <CGAL/Cartesian.h>
 #include <CGAL/Monge_via_jet_fitting.h>
@@ -69,12 +73,16 @@ namespace DGtal
    * the estimated normal @f$ n @f$ is such that @f$ n\cdotn_0>0@f$ with
    * @f$ n_0@f$ being the true normal at the point set center,
    * everything is ok.
-   * Otherwise, we have to inverse the princiapl curvature sign: 
+   * Otherwise, we have to inverse the princiapl curvature sign:
    * @f$ k_1=-k_2@f$ and @f$ k_2= -k_1@f$.
    *
    * The mean curvature estimation is thus given up to a sign.
    *
-   * model of CLocalEstimatorFromSurfelFunctor
+   * model of CLocalEstimatorFromSurfelFunctor.
+   *
+   *
+   * @tparam TSurfel type of surfels
+   * @tparam TEmbedder type of functors which embed surfel to R^3
    */
   template <typename TSurfel, typename TEmbedder>
   class MongeJetFittingMeanCurvatureEstimator
@@ -82,7 +90,7 @@ namespace DGtal
   public:
 
     typedef TSurfel Surfel;
-    typedef TEmbedder SCellEmbedder;  
+    typedef TEmbedder SCellEmbedder;
     typedef double Quantity;
     typedef typename SCellEmbedder::RealPoint RealPoint;
 
@@ -91,60 +99,60 @@ namespace DGtal
     typedef CGAL::Monge_via_jet_fitting<CGALKernel>  CGALMongeViaJet;
     typedef CGALMongeViaJet::Monge_form CGALMongeForm;
 
-    /** 
+    /**
      * Constructor.
-     * 
+     *
      * @param anEmbedder embedder to map surfel to R^n.
      * @param h gridstep.
      * @param d degree of the polynomial surface to fit.
      */
     MongeJetFittingMeanCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
-      myEmbedder(anEmbedder), myH(h), myD(d) 
+      myEmbedder(anEmbedder), myH(h), myD(d)
     {
       VERIFY_MSG(d>=2,"Polynomial surface degree must be greater than 2");
     }
 
-    /** 
+    /**
      * Add the geometrical embedding of a surfel to the point list
-     * 
+     *
      * @param aSurf a surfel to add
-     */    
+     */
     void pushSurfel(const Surfel & aSurf)
     {
       RealPoint p = myEmbedder->operator()(aSurf);
       CGALPoint pp(p[0]*myH,p[1]*myH,p[2]*myH);
       myPoints.push_back(pp);
     }
-    
-    /** 
+
+    /**
      * Evaluate the curvature from Monge form.
-     * 
+     *
      * @return the mean curvature
-     */    
+     */
     Quantity eval()
     {
       CGALMongeForm monge_form;
       CGALMongeViaJet monge_fit;
-             
-      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4); 
-      
+
+      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4);
+
       double k1 = monge_form.principal_curvatures ( 0 );
       double k2 = monge_form.principal_curvatures ( 1 );
       return 0.5*(k1+k2);
     }
-    
-    /** 
+
+    /**
      * Reset the point list.
-     * 
+     *
      */
     void reset()
     {
       myPoints.clear();
     }
-    
+
 
   private:
-    
+
     ///Alias of the geometrical embedder
     const SCellEmbedder * myEmbedder;
 
@@ -153,10 +161,10 @@ namespace DGtal
 
     ///Degree of the polynomial surface to fit
     unsigned int myD;
-    
+
     ///Grid step
     double myH;
-    
+
 
   }; // end of class MongeJetFittingMeanCurvatureEstimator
 

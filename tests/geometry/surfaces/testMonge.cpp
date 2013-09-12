@@ -27,13 +27,6 @@
  * This file is part of the DGtal library.
  */
 
-
-#ifdef CGAL_EIGEN3_ENABLED
-deezdzeadaezd
-#else
-pamf
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
