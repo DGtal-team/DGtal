@@ -22,37 +22,32 @@ SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/Common.cmake)
+INCLUDE(Common)
 
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/OSDependentSettings.cmake)
+INCLUDE(OSDependentSettings)
 
 # -----------------------------------------------------------------------------
 # Check Mandatory Dependencies
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
+INCLUDE(CheckDGtalDependencies)
 
 # -----------------------------------------------------------------------------
 # Check Optional Dependencies
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
-
-# -----------------------------------------------------------------------------
-# We reset the CMAKE_MODULE_PATH (ITK, CGAL,.. overwrite it)
-# -----------------------------------------------------------------------------
-SET(CMAKE_MODULE_PATH  "${PROJECT_SOURCE_DIR}/cmake")
+INCLUDE(CheckDGtalOptionalDependencies)
 
 # -----------------------------------------------------------------------------
 # Cpack and Ctest settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
+INCLUDE(CpackCtest)
 
 # -----------------------------------------------------------------------------
 # Custom command/targets depending on the cmake generator
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/GeneratorSpecific.cmake)
+INCLUDE(GeneratorSpecific)
 
 #------------------------------------------------------------------------------
 # Add subdirectories
@@ -67,4 +62,4 @@ ENDIF(BUILD_EXAMPLES)
 # -----------------------------------------------------------------------------
 # Install settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
+INCLUDE(Install)
