@@ -258,9 +258,9 @@ int main( int argc, char** argv )
   typedef LightSternBrocot<Integer,DGtal::int32_t> LSB;
   typedef LSB::Fraction Fraction;
 
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :2000;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :200;
 
-  Integer modb = 1000000;
+  Integer modb = 10000;
 
   Integer c = 100;
 
@@ -273,7 +273,7 @@ int main( int argc, char** argv )
       std::cout << std::endl;
     }
 
-  return 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
