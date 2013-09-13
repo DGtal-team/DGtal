@@ -370,11 +370,11 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
                 OutputIterator & result,
-                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                EvalFunctor functor );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -383,13 +383,13 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
                 OutputIterator & result,
                 const Shape & shape,
                 const double h,
-                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                EvalFunctor functor );
 
     /*template< typename ConstIteratorOnCells >
     void deprecated_eval ( const ConstIteratorOnCells & itbegin,
@@ -433,11 +433,11 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
                                 OutputIterator & result,
-                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                                EvalFunctor functor );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -448,13 +448,13 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
                                 OutputIterator & result,
                                 const Shape & shape,
                                 const double h,
-                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                                EvalFunctor functor );
 
     /*template< typename ConstIteratorOnCells >
     void deprecated_evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
@@ -671,11 +671,11 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity >  >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor  >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
                 OutputIterator & result,
-                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                EvalFunctor functor );
 
     /**
        * Iterate the convolver between [itbegin, itend[.
@@ -684,13 +684,13 @@ public:
        * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity >  >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor  >
     void eval ( const ConstIteratorOnCells & itbegin,
                 const ConstIteratorOnCells & itend,
                 OutputIterator & result,
                 const Shape & shape,
                 const double h,
-                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                EvalFunctor functor );
 
     /*template< typename ConstIteratorOnCells >
     void deprecated_eval ( const ConstIteratorOnCells & itbegin,
@@ -733,11 +733,11 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
                                 OutputIterator & result,
-                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                                EvalFunctor functor );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
@@ -748,13 +748,13 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
-    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor = ConstValueFunctor< Quantity > >
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,
                                 OutputIterator & result,
                                 const Shape & shape,
                                 const double h,
-                                EvalFunctor functor = EvalFunctor( Quantity( 1 )) );
+                                EvalFunctor functor );
 
     /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.

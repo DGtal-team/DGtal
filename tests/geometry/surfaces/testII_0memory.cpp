@@ -489,15 +489,15 @@ int testII3D_Mean()
 //    typedef ImplicitBall<Z3i::Space> ImplicitShape;
     typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
     typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
-    typedef Boundary::SurfelConstIterator ConstIterator;
-    typedef Boundary::Tracker Tracker;
+//    typedef Boundary::SurfelConstIterator ConstIterator;
+//    typedef Boundary::Tracker Tracker;
 
 
-    typedef DigitalShape::PointEmbedder DigitalEmbedder;
+//    typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
     double h = 0.2;
     double re = 3.0;
-    double radius = 5.0;
+//    double radius = 5.0;
 
     ///////////////////
 
@@ -535,7 +535,7 @@ int testII3D_Mean()
     typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
     typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
     typedef IntegralInvariantMeanCurvatureEstimator_0memory< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator_0memory; // Mean curvature estimator
-    typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Mean curvature estimator
+//    typedef IntegraolInvariantMeanCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Mean curvature estimator
 
     MyPointFunctor pointFunctor( dshape, dshape->getDomain(), 1, 0 );
     MyCellFunctor functor ( pointFunctor, K );
@@ -545,7 +545,7 @@ int testII3D_Mean()
     estimator_0mem.init( h, re );
     std::cout << "STEP 1" << std::endl;
 
-    string filename = "toto_m.dat";//std::tmpnam(nullptr);
+    std::string filename = "toto_m.dat";//std::tmpnam(nullptr);
     std::ofstream file( filename.c_str() );
     file.flags( std::ios_base::unitbuf );
     std::ostream_iterator< double > out_it( file, "\n" );

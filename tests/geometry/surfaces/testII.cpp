@@ -464,14 +464,14 @@ bool testII2D_kernels_2()
                       << domainKernel;
                 board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
                       << pOrigin;
-                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                /*for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                      it != itend;
                      ++it  )
                 {
                     //                                        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) - Point( 2, 2 ) + shiftNewSpel );
                     board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
                     board << *it;
-                }
+                }*/
 
                 if (setCurrentKernel.find(Point(-47,-13)) == setCurrentKernel.end())
                     trace.error()<<" Absent - completA"<<std::endl;
@@ -482,14 +482,14 @@ bool testII2D_kernels_2()
                 //                board.saveSVG("testII_decallage_old.svg");
 
                 int count2 = 0;
-                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                /*for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                      it != itend;
                      ++it )
                 {
                     //                    board << *it;
                     kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
                     ++count2;
-                }
+                }*/
                 continue;
             }
             else
@@ -563,27 +563,27 @@ bool testII2D_kernels_2()
                           << domainKernel;
                     board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
                           << pOrigin;
-                    for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                    /*for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                          it != itend;
                          ++it  )
                     {
                         //                                        KSpaceKernel.sSetKCoords( shiftedSpel, KSpaceKernel.sKCoords( *current ) - Point( 2, 2 ) + shiftNewSpel );
                         board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
                         board << *it;
-                    }
+                    }*/
 
                     //                    board.saveSVG("testII_decallage_minus.svg");
                 }
 
                 int count2 = 0;
-                for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                /*for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                      it != itend;
                      ++it )
                 {
                     //                    board << *it;
                     kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
                     ++count2;
-                }
+                }*/
 
                 ASSERT(( count2 != 0 )); // Error when creating masks
 
@@ -733,13 +733,13 @@ int testII3D_kernels( int argc, char** argv )
     }
 
     int count = 0;
-    for( auto it = setKernel.begin(), itend = setKernel.end();
+    /*for( auto it = setKernel.begin(), itend = setKernel.end();
          it != itend;
          ++it )
     {
         kernels[ 13 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(11) is 4
         ++count;
-    }
+    }*/
 
     ASSERT(( count != 0 )); // Error when creating full kernel
 
@@ -771,7 +771,7 @@ int testII3D_kernels( int argc, char** argv )
                     Shapes< Domain >::digitalShaper ( setCurrentKernel, digCurrentKernel );
 
                     int count2 = 0;
-                    for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
+                    /*for( auto it = setCurrentKernel.begin(), itend = setCurrentKernel.end();
                          it != itend;
                          ++it )
                     {
@@ -780,7 +780,7 @@ int testII3D_kernels( int argc, char** argv )
 
                         kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
                         ++count2;
-                    }
+                    }*/
 
                     ASSERT(( count2 != 0 )); // Error when creating masks
 
@@ -1154,7 +1154,7 @@ int testII3D( int argc, char** argv )
     int p = 0;
 
     //    std::cout << "here"<<std::endl;
-    for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
+    /*for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++p)
     {
 //        RealPoint A;// = ScellToRealPoint( *it );
@@ -1184,7 +1184,7 @@ int testII3D( int argc, char** argv )
             minCurv = b;
         }
 
-    }
+    }*/
 
     trace.info() << " Min = " << minCurv << std::endl;
     trace.info() << " Max = " << maxCurv << std::endl;
@@ -1207,7 +1207,7 @@ int testII3D( int argc, char** argv )
 
     //  ofstream out( "rounded2.off" );
     int i = 0;
-    for ( auto it = theSetOfSurfels.begin(),
+    /*for ( auto it = theSetOfSurfels.begin(),
           it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++nbSurfels, ++i )
     {
@@ -1219,7 +1219,7 @@ int testII3D( int argc, char** argv )
 
         viewer << CustomColors3D( Color::Black, cmap_grad( b ));
         viewer << *it;
-    }
+    }*/
 
     viewer << Viewer3D::updateDisplay;
 
@@ -1311,20 +1311,20 @@ int testII3D_same_results( )
 
     int p = 0;
     //    std::cout << "here"<<std::endl;
-    for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
+    /*for ( auto it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
           it != it_end; ++it, ++p)
     {
 
         //        std::cout << "p"<<std::endl;
-        /*if ( p != 148 )
-            continue;*/
+        //if ( p != 148 )
+        //    continue;
 
         // double resultOneShape = iigaussest.eval( it, *ishape );
         double resultOne = iigaussest.eval( it );
 
         if( resultII[ p ] != resultOne )
             std::cout << p << " error without shape " << resultII[p] << " vs " << resultOne << std::endl;
-    }
+    }*/
     return 0;
 }
 
@@ -1343,9 +1343,9 @@ int main( int argc, char** argv )
     //    testII2D_kernels();
     //    testII2D_kernels_2();
 //        testII2D_same_results();
-        testII3D_same_results();
+//        testII3D_same_results();
     //    testII3D_kernels(argc, argv);
-        testII3D( argc, argv );
+//        testII3D( argc, argv );
     return 1;
     //  bool res = testII3D();
     //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

@@ -519,10 +519,8 @@ public:
         for( unsigned int i = 0; i < masks.size(); ++i )
         {
             delete masks[ i ];
-            masks[ i ] = NULL;
         }
         delete kernel;
-        kernel = NULL;
     }
 
     // ----------------------- Interface --------------------------------------
