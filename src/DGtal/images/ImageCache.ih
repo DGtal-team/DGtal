@@ -101,7 +101,7 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::up
     
     clock->startClock();
     myReadPolicy->updateCache(aDomain);
-    ticks += clock->stopClock();
+    myTicksUpdateCache += clock->stopClock();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
