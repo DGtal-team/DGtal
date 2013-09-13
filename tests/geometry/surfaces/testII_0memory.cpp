@@ -31,42 +31,41 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
 
+#include "DGtal/shapes/implicit/ImplicitBall.h"
+#include "DGtal/math/MPolynomial.h"
+#include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
+#include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator_0memory.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator_0memory.h"
+
+
+
+/*#include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator_0memory.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator_0memory.h"
 
-#include "DGtal/kernel/BasicPointFunctors.h"
 
-#include "DGtal/shapes/implicit/ImplicitBall.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
 
-#include <QtGui/QApplication>
-#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/SetOfSurfels.h"
-#include "DGtal/math/MPolynomial.h"
 #include "DGtal/shapes/GaussDigitizer.h"
-#include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
-#include "DGtal/io/readers/MPolynomialReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SCellsFunctors.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/topology/SetOfSurfels.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/topology/SetOfSurfels.h"*/
 
 
 ///////////////////////////////////////////////////////////////////////////////
