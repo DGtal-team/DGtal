@@ -128,6 +128,9 @@ public:
         
         for(typename Domain::Integer i=0; i<Domain::dimension; i++)
           mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
+            
+        clock = new(Clock); // TEMP_MT
+        myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
     }
 
     /**
@@ -136,6 +139,8 @@ public:
     ~TiledImage()
     {
         delete myImageCache;
+        
+        delete clock; // TEMP_MT
     }
 
     // ----------------------- Interface --------------------------------------
@@ -241,8 +246,12 @@ public:
       ASSERT(myImageFactory->domain().isInside(aPoint));
 
       typename OutputImage::Value aValue;
+      bool res;
 
-      if (myImageCache->read(aPoint, aValue))
+      clock->startClock();
+      res = myImageCache->read(aPoint, aValue);
+      myTicksRead += clock->stopClock();
+      if (res)
         return aValue;
       else
       {
@@ -250,11 +259,17 @@ public:
           myImageCache->incCacheMissRead();
           Domain d;
           
+          clock->startClock();
           d = findSubDomain(aPoint);
+          myTicksFindSubDomain += clock->stopClock();
           
+          clock->startClock();
           myImageCache->update(d);
+          myTicksUpdate += clock->stopClock();
           
+          clock->startClock();
           myImageCache->read(aPoint, aValue);
+          myTicksRead += clock->stopClock();
         //trace.endBlock();
         
         return aValue;
@@ -300,20 +315,70 @@ public:
         return myImageCache->getCacheMissWrite();
     }
     
+#if(0)
     /**
      * Clear the ticks value.
      */
-    void clearTicks() // TEMP_MT
+    void clearTicksUpdateCache() // TEMP_MT
     {
-        myImageCache->clearTicks();
+        myImageCache->clearTicksUpdateCache();
     }
     
     /**
      * Get the ticks value.
      */
-    const long getTicks() const // TEMP_MT
+    const long getTicksUpdateCache() const // TEMP_MT
     {
-        return myImageCache->getTicks();
+        return myImageCache->getTicksUpdateCache();
+    }
+#endif
+    
+    /**
+     * Clear the ticks value.
+     */
+    void clearTicksUpdate() // TEMP_MT
+    {
+        myTicksUpdate = 0;
+    }
+    
+    /**
+     * Get the ticks value.
+     */
+    const long getTicksUpdate() const // TEMP_MT
+    {
+        return myTicksUpdate;
+    }
+    
+    /**
+     * Clear the ticks value.
+     */
+    void clearTicksFindSubDomain() // TEMP_MT
+    {
+        myTicksFindSubDomain = 0;
+    }
+    
+    /**
+     * Get the ticks value.
+     */
+    const long getTicksFindSubDomain() const // TEMP_MT
+    {
+        return myTicksFindSubDomain;
+    }
+    
+    /**
+     * Clear the ticks value.
+     */
+    void clearTicksRead() // TEMP_MT
+    {
+        myTicksRead = 0;
+    }
+    
+    /**
+     * Get the ticks value.
+     */
+    const long getTicksRead() const // TEMP_MT
+    {
+        return myTicksRead;
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -322,6 +387,10 @@ private:
      * Default constructor.
      */
     TiledImage() {}
+    
+    /// for clock counting
+    long myTicksUpdate, myTicksFindSubDomain, myTicksRead;
+    Clock *clock; // TEMP_MT
     
     // ------------------------- Private Datas --------------------------------
 protected:

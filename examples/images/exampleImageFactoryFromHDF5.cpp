@@ -361,7 +361,9 @@ bool exampleTiledImageFromImage_10blocks3D()
               cpt++;
           }
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_A.getCacheMissWrite() << endl;
-      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicks() << " ms" << endl; tiledImageFIFO_A.clearTicks();
+      trace.info() << "All read time: " << tiledImageFIFO_A.getTicksRead() << " ms" << endl; tiledImageFIFO_A.clearTicksRead();
+      trace.info() << "All findSubDomain time: " << tiledImageFIFO_A.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_A.clearTicksFindSubDomain();
+      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicksUpdate() << " ms" << endl; tiledImageFIFO_A.clearTicksUpdate();
       trace.endBlock();
       
       cpt=0;
@@ -373,7 +375,9 @@ bool exampleTiledImageFromImage_10blocks3D()
               cpt++;
           }
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_B.getCacheMissWrite() << endl;
-      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicks() << " ms" << endl; tiledImageFIFO_B.clearTicks();
+      trace.info() << "All read time: " << tiledImageFIFO_B.getTicksRead() << " ms" << endl; tiledImageFIFO_B.clearTicksRead();
+      trace.info() << "All findSubDomain time: " << tiledImageFIFO_B.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_B.clearTicksFindSubDomain();
+      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicksUpdate() << " ms" << endl; tiledImageFIFO_B.clearTicksUpdate();
       trace.endBlock();
 
       cpt=0;
@@ -385,7 +389,9 @@ bool exampleTiledImageFromImage_10blocks3D()
               cpt++;
           }
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
-      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImage.getTicks() << " ms" << endl; tiledImage.clearTicks();
+      trace.info() << "All read time: " << tiledImage.getTicksRead() << " ms" << endl; tiledImage.clearTicksRead();
+      trace.info() << "All findSubDomain time: " << tiledImage.getTicksFindSubDomain() << " ms" << endl; tiledImage.clearTicksFindSubDomain();
+      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImage.getTicksUpdate() << " ms" << endl; tiledImage.clearTicksUpdate();
       trace.endBlock(); 
       
     trace.endBlock();
@@ -435,7 +441,9 @@ bool exampleTiledImageFromHDF5_10blocks3D()
               cpt++;
           }
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_A.getCacheMissWrite() << endl;
-      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicks() << " ms" << endl; tiledImageFIFO_A.clearTicks();
+      trace.info() << "All read time: " << tiledImageFIFO_A.getTicksRead() << " ms" << endl; tiledImageFIFO_A.clearTicksRead();
+      trace.info() << "All findSubDomain time: " << tiledImageFIFO_A.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_A.clearTicksFindSubDomain();
+      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicksUpdate() << " ms" << endl; tiledImageFIFO_A.clearTicksUpdate();
       trace.endBlock();
       
       cpt=0;
@@ -447,7 +455,9 @@ bool exampleTiledImageFromHDF5_10blocks3D()
               cpt++;
           }
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_B.getCacheMissWrite() << endl;
-      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicks() << " ms" << endl; tiledImageFIFO_B.clearTicks();
+      trace.info() << "All read time: " << tiledImageFIFO_B.getTicksRead() << " ms" << endl; tiledImageFIFO_B.clearTicksRead();
+      trace.info() << "All findSubDomain time: " << tiledImageFIFO_B.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_B.clearTicksFindSubDomain();
+      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicksUpdate() << " ms" << endl; tiledImageFIFO_B.clearTicksUpdate();
       trace.endBlock();
 
       cpt=0;
@@ -459,7 +469,9 @@ bool exampleTiledImageFromHDF5_10blocks3D()
               cpt++;
           }
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
-      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImage.getTicks() << " ms" << endl; tiledImage.clearTicks();
+      trace.info() << "All read time: " << tiledImage.getTicksRead() << " ms" << endl; tiledImage.clearTicksRead();
+      trace.info() << "All findSubDomain time: " << tiledImage.getTicksFindSubDomain() << " ms" << endl; tiledImage.clearTicksFindSubDomain();
+      trace.info() << "All updateCache (so all requestImage...) time: " << tiledImage.getTicksUpdate() << " ms" << endl; tiledImage.clearTicksUpdate();
       trace.endBlock(); 
       
     trace.endBlock();

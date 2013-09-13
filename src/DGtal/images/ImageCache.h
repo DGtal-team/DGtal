@@ -118,7 +118,7 @@ public:
       cacheMissWrite = 0;
       
       clock = new(Clock); // TEMP_MT
-      ticks = 0;
+      myTicksUpdateCache = 0;
     }
 
     /**
@@ -220,17 +220,17 @@ public:
     /**
      * Clear the ticks value.
      */
-    void clearTicks() // TEMP_MT
+    void clearTicksUpdateCache() // TEMP_MT
     {
-        ticks=0;
+        myTicksUpdateCache=0;
     }
     
     /**
      * Get the ticks value.
      */
-    const long getTicks() const // TEMP_MT
+    const long getTicksUpdateCache() const // TEMP_MT
     {
-        return ticks;
+        return myTicksUpdateCache;
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -256,7 +256,7 @@ private:
     unsigned int cacheMissWrite;
     
     /// for clock counting
-    long ticks;
+    long myTicksUpdateCache;
     Clock *clock; // TEMP_MT
 
     // ------------------------- Internals ------------------------------------
