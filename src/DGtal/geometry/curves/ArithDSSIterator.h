@@ -58,140 +58,140 @@ namespace DGtal
  * Segment. Template parameters are the integer type and the
  * connectivity of the DSS (8-connectivity as default value).
  */
-  
+
   template<typename TInteger, int connectivity = 8>
     class ArithDSSIterator
     {
       // ----------------------- Standard services ------------------------------
     public:
-    
+
     /**
-     * Self type. 
+     * Self type.
      */
     typedef ArithDSSIterator Self;
-    
-    /** 
-     * Integer type. 
+
+    /**
+     * Integer type.
      */
     typedef TInteger Integer;
-    
+
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-   
+
     /**
      * 2D integer point type.
      */
-    typedef PointVector<2,Integer> Point;     
-    
+    typedef PointVector<2,Integer> Point;
+
     /**
      * stl iterator types.
      */
     typedef std::input_iterator_tag iterator_category;
     typedef Point value_type;
-    typedef std::ptrdiff_t difference_type; 
+    typedef std::ptrdiff_t difference_type;
     typedef const Point* pointer;
     typedef const Point& reference;
-    
-    /** 
+
+    /**
      * Compute the remainder of a point wrt the DSS characteristics
-     * @param Point Q
-     * @return Integer 
+     * @param  Q a point
+     * @return Integer its remainder
      */
-    TInteger remainder(Point Q);
-    
+    TInteger remainder(const Point &Q);
+
     /**
      * Dereference operator.
      * @return the current point of the DSS
      */
     reference operator*() const;
-    
+
     /**
      * Increment operator.
      * @return a reference to self where myP has been set up to the next point of the DSS
      */
     Self& operator++();
-    
+
     /**
      * Equality operator.
      * @param other the object to compare with.
      * @return 'true' if the first point and the DSS parameters match and 'false' otherwise
      */
     bool operator==(const Self & other) const;
-    
-    /** 
+
+    /**
      * Difference operator.
      * @param other the object to compare with.
      * @return 'false' if equal, 'true' otherwise
      */
     bool operator!=(const Self & other) const;
-    
-    
+
+
     /**
      * Constructor with initialisation of the DSS parameters and begin point.
-     * @param a 
-     * @param b
-     * @param mu
-     * @param p
+     * @param a DSS a parameter.
+     * @param b DSS b parameter.
+     * @param mu DSS mu parameter.
+     * @param p begin point of the DSS.
      */
     ArithDSSIterator(const Integer a, const Integer b, const Integer mu, const Point & p);
-        
+
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
     ArithDSSIterator(){};
-    
-    
-    
+
+
+
     /**
      * Destructor.
      */
     ~ArithDSSIterator(){};
-    
+
     // ----------------------- Interface --------------------------------------
     public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-    
+
 
     // ------------------------- Protected Datas ------------------------------
     private:
     // ------------------------- Private Datas --------------------------------
     private:
-    
+
     /**
      * y-component of the direction vector
      */
     Integer myA;
-    
-    /** 
+
+    /**
      * x-component of the direction vector
      */
     Integer myB;
-    
-    /** 
+
+    /**
      * Intercept
      */
     Integer myMu;
-    
+
     /**
      * Current point of the DSS visited by the iterator
      */
     Point myP;
-    
+
     // ------------------------- Hidden services ------------------------------
 protected:
 
-    
+
 public:
 
     /**
@@ -200,24 +200,24 @@ public:
      * Forbidden by default.
      */
     ArithDSSIterator ( const ArithDSSIterator & other );
-    
+
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    
+
     Self& operator=(const Self & other);
-    
+
 
 
     // ------------------------- Internals ------------------------------------
 private:
-    
+
     }; // end of class ArithDSSIterator
-  
-  
+
+
 /**
  * Overloads 'operator<<' for displaying objects of class 'ArithDSSIterator'.
  * @param out the output stream where the object is written.
@@ -226,8 +226,8 @@ private:
  */
   // std::ostream&
   //operator<< ( std::ostream & out, const ArithDSSIterator & object );
-  
-  
+
+
 } // namespace DGtal
 
 
