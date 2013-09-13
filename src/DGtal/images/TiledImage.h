@@ -243,7 +243,7 @@ public:
      */
     Value operator()(const Point & aPoint)// const // TEMP_MT
     {
-      ASSERT(myImageFactory->domain().isInside(aPoint));
+      //ASSERT(myImageFactory->domain().isInside(aPoint)); // TEMP_MT
 
       typename OutputImage::Value aValue;
       bool res;
@@ -251,6 +251,7 @@ public:
       clock->startClock();
       res = myImageCache->read(aPoint, aValue);
       myTicksRead += clock->stopClock();
+      
       if (res)
         return aValue;
       else
@@ -315,7 +316,6 @@ public:
         return myImageCache->getCacheMissWrite();
     }
     
-#if(0)
     /**
      * Clear the ticks value.
      */
@@ -331,7 +331,6 @@ public:
     {
         return myImageCache->getTicksUpdateCache();
     }
-#endif
     
     /**
      * Clear the ticks value.
