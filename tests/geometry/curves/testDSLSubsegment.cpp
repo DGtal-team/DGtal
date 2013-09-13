@@ -260,7 +260,7 @@ int main( int argc, char** argv )
 
   unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :200;
 
-  Integer modb = 10000;
+  Integer modb = 1000000;
 
   Integer c = 100;
 
