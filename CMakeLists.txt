@@ -2,7 +2,7 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 2.6)
 
 # By default, do not warn when built on machines using only VS Express:
 IF(NOT DEFINED CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS)
@@ -63,5 +63,3 @@ ENDIF(BUILD_EXAMPLES)
 # Install settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
-
-
