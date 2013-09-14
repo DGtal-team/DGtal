@@ -52,11 +52,11 @@ using namespace DGtal;
 int main( int argc, char** argv )
 {
 
-  std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
+  std::string inputFilename = examplesPath + "samples/Al.100.vol";
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show(); 
-  
+  viewer.show();
+
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
@@ -65,14 +65,8 @@ int main( int argc, char** argv )
   Z3i::Object18_6 border = obj3d.border();
   viewer << border;
   viewer << ClippingPlane(0,1,0, -40) << Viewer3D<>::updateDisplay;
-  //viewer << ClippingPlane(0,-1,0, 70)<< Viewer3D<>::updateDisplay;
-  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D<>::updateDisplay;
-  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D<>::updateDisplay;
-  
-  
 
-  
-  return application.exec();   
+  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
