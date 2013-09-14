@@ -842,7 +842,7 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::
 template < DGtal::Dimension dim, typename TInteger , typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const typename KSpace::KCell & k )
+                                    const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();
