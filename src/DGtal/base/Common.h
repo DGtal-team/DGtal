@@ -166,7 +166,8 @@ namespace DGtal
      * Operation to override. Does nothing by default.
      */
     template < typename S, typename KS>
-    void setStyle( Board3DTo2D< S, KS> &  ) const {}
+
+void setStyle( Board3DTo2D< S, KS> &  ) const {}
     virtual ~DrawableWithBoard3DTo2D() {}
   };
 #endif

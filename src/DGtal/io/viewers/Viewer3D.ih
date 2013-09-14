@@ -763,13 +763,13 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
 {
-  compFarthestVoxelFromCamera comp;
+  CompFarthestVoxelFromCamera comp;
   comp.posCam= camera()->position();
   for ( unsigned int i=0; i< Viewer3D<Space, KSpace>::myCubeSetList.size() ; i++ )
     {
       sort ( Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).begin(), Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).end(), comp );
     }
-  compFarthestSurfelFromCamera compSurf;
+  CompFarthestSurfelFromCamera compSurf;
   DGtal::trace.info() << "sort surfel size" << Viewer3D<Space, KSpace>::mySurfelPrismList.size() << std::endl;
   sort ( Viewer3D<Space, KSpace>::mySurfelPrismList.begin(), Viewer3D<Space, KSpace>::mySurfelPrismList.end(), compSurf );
 
@@ -779,7 +779,7 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::sortTriangleFromCamera()
 {
-  compFarthestTriangleFromCamera comp;
+  CompFarthestTriangleFromCamera comp;
   comp.posCam= camera()->position();
   for (typename std::vector<std::vector< typename Viewer3D<Space, KSpace>::TriangleD3D> >::iterator it = Viewer3D<Space, KSpace>::myTriangleSetList.begin(); it != Viewer3D<Space, KSpace>::myTriangleSetList.end(); it++)
     {
@@ -795,7 +795,7 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::sortQuadFromCamera()
 {
-  compFarthestSurfelFromCamera comp;
+  CompFarthestSurfelFromCamera comp;
   comp.posCam= camera()->position();
 
   for (typename std::vector<std::vector< typename Viewer3D<Space, KSpace>::QuadD3D> >::iterator it = Viewer3D<Space, KSpace>::myQuadSetList.begin(); it != Viewer3D<Space, KSpace>::myQuadSetList.end(); it++)
@@ -811,7 +811,7 @@ template< typename Space, typename KSpace>
 void
 DGtal::Viewer3D<Space, KSpace>::sortPolygonFromCamera()
 {
-  compFarthestPolygonFromCamera comp;
+  CompFarthestPolygonFromCamera comp;
   comp.posCam= camera()->position();
 
   for (typename std::vector<std::vector< typename Viewer3D<Space, KSpace>::PolygonD3D> >::iterator it = Viewer3D<Space, KSpace>::myPolygonSetList.begin(); it != Viewer3D<Space, KSpace>:: myPolygonSetList.end(); it++)

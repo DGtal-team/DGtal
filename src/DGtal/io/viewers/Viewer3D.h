@@ -678,7 +678,7 @@ namespace DGtal
     /**
      * Used to sort pixel from camera
      **/
-    struct compFarthestVoxelFromCamera
+    struct CompFarthestVoxelFromCamera
     {
       qglviewer::Vec posCam;
       bool operator() (typename Viewer3D<Space,KSpace>::CubeD3D s1,
@@ -694,7 +694,7 @@ namespace DGtal
     /**
      * Used to sort pixel from camera
      **/
-    struct compFarthestTriangleFromCamera
+    struct CompFarthestTriangleFromCamera
     {
       qglviewer::Vec posCam;
       bool operator() ( typename Viewer3D<Space,KSpace>::TriangleD3D t1,
@@ -712,7 +712,7 @@ namespace DGtal
     /**
      * Used to sort pixel from camera
      **/
-    struct compFarthestSurfelFromCamera
+    struct CompFarthestSurfelFromCamera
     {
       qglviewer::Vec posCam;
       bool operator() (typename Viewer3D<Space,KSpace>::QuadD3D q1,
@@ -731,7 +731,7 @@ namespace DGtal
     /**
      * Used to sort pixel from camera
      **/
-    struct compFarthestPolygonFromCamera
+    struct CompFarthestPolygonFromCamera
     {
       qglviewer::Vec posCam;
       bool operator() ( typename Viewer3D<Space,KSpace>::PolygonD3D q1,
