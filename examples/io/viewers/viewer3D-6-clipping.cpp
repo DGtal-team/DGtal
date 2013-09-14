@@ -51,7 +51,7 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- typedef Viwer3D<> MyViewer;
+ typedef Viewer3D<> MyViewer;
  MyViewer viewer;
  viewer.show();
 
