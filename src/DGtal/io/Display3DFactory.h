@@ -311,7 +311,7 @@ namespace DGtal
      * @param anObject the object to draw
      */
     template < Dimension dim, typename TInteger, typename Space, typename KSpace>
-    static void draw( Display3D<Space, KSpace> & display, const typename KSpace::KCell & anObject );
+    static void draw( Display3D<Space, KSpace> & display, const DGtal::KhalimskyCell<dim, TInteger> & anObject );
     // KhalimskyCell
 
 
