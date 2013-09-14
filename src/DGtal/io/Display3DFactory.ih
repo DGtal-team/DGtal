@@ -111,7 +111,7 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 template <typename TPoint, typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display, 
+void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display,
                                            const DGtal::Mesh<TPoint> & aMesh )
 {
   DGtal::Color fillColorSave = display.getFillColor();
@@ -842,7 +842,7 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::
 template < DGtal::Dimension dim, typename TInteger , typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::KhalimskyCell<dim, TInteger> & k )
+                                    const typename KSpace::KCell & k )
 {
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();

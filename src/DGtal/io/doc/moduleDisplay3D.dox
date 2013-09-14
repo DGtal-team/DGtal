@@ -1,19 +1,19 @@
 
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
- * @page moduleDisplay3D Display3D: a stream mechanism for displaying 3D DGtal objects 
+ * @page moduleDisplay3D Display3D: a stream mechanism for displaying 3D DGtal objects
  *
- * This part of the manual describes how to visualize 3D objects and how to 
+ * This part of the manual describes how to visualize 3D objects and how to
  * import them from binary file (.obj or pgm3d)
- * 
+ *
 
 @author Bertrand Kerautret, Martial Tola, Aline Martin, David Coeurjolly
- 
+
 [TOC]
 
   \section DGtalGLV_Display3D Display3D: a stream mechanism from abstract class Display3D
@@ -35,10 +35,10 @@ namespace DGtal {
 
   Viewer3D and Board3DTo2D allow to set and change the camera point of
   view for the visualization.
-  
 
 
-\section DGtalGLV_Viewer3D Interactive visualization from Viewer3D 
+
+\section DGtalGLV_Viewer3D Interactive visualization from Viewer3D
 
 The class Viewer3D inherits from the base class QGLViewer (which is
  based on QGLwidget).  It permits to display simple 3D shapes.
@@ -46,23 +46,23 @@ The class Viewer3D inherits from the base class QGLViewer (which is
  on QT allowing to access to simple 3D features like camera moving,
  mouse, keyboard interaction, clipping plane .... etc.
 
-It possess the additional functionality to display 2D slice image from a volume one. 
+It possess the additional functionality to display 2D slice image from a volume one.
 
  *
- 
+
 First to use the Viewer3D stream, you need to include the following headers:
  *
 @code
  #include "DGtal/io/3dViewers/Viewer3D.h"
 @endcode
- *	
+ *
 The following code snippet defines three points and a rectangular
-domain in Z3. It then displays them in a Viewer3D object. The	
+domain in Z3. It then displays them in a Viewer3D object. The
 full code is in <a  href="io_2viewers_2viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
  *
- *	
+ *
 
-The first step to visualize 3D object with Viewer3D is to create a QApplication from the main(): 
+The first step to visualize 3D object with Viewer3D is to create a QApplication from the main():
  @code
 using namespace DGtal;
 using namespace Z3i;
@@ -79,8 +79,8 @@ Then we can display some 3D primitives:
  Point p3( 2, 3, 4 );
  Domain domain( p1, p2 );
 
- viewer << domain;  
- viewer << p1 << p2 << p3; 
+ viewer << domain;
+ viewer << p1 << p2 << p3;
  viewer << Viewer3D<>::updateDisplay;
 
 
@@ -88,14 +88,14 @@ Then we can display some 3D primitives:
 *
 * You should obtain the following visualization:
 *
-* \image html simple3dVisu1.png "Digital point visualization  with Viewer3D." 
+* \image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
 * \image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
 *
 @note Note that you can display the camera settings in the console
 (key C) which can be used in Board2Dto3D described in the following.
 
 
- 
+
 \section DGtalGLV_Boas3DTo2D Static visualization from Board2Dto3D
 
 
@@ -105,9 +105,9 @@ just need to adapt the camera settings (see example: <a href="io_2boards_2dgtalB
 
 @code
 Board3DTo2D<> board;
-board << domain;  
+board << domain;
 board << p1 << p2 << p3;
-  
+
 board << CameraPosition(2.500000, 2.500000, 16.078199)
        << CameraDirection(0.000000, 0.000000, -1.000000)
        << CameraUpVector(0.000000, 1.000000, 0.000000);
@@ -141,25 +141,25 @@ This example should provides a comparable visualization.
  Point p2( 10, 10 , 10 );
  Domain domain( p1, p2 );
  viewer << domain;
- 
+
  DigitalSet shape_set( domain );
  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
- 
+
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set << Viewer3D<>::updateDisplay
- 
+ viewer << shape_set << Viewer3D<>::updateDisplay;
+
  @endcode
 *
 * You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
-* \image html simple3dVisu2.png "Digital point visualization  with Viewer3D." 
+* \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."
 * \image latex simple3dVisu2.png "Digital point visualization  with Viewer3D." width=5cm
 *
 *
 *
-* \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
+* \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D
 *
 *  As for Board2D, a mode can be choosen to display elements (\c
 *  SetMode3D). You just have to specify the classname (the easiest way
@@ -172,7 +172,7 @@ This example should provides a comparable visualization.
  viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
  viewer << shape;
 @endcode
-* 
+*
 *or change the couple of adjacency
 *
 @code
@@ -183,18 +183,18 @@ This example should provides a comparable visualization.
 
 * You should obtain the two following visualizations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
 
- \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." 
- \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with Viewer3D." width=5cm 
- \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."      
+ \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
+ \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with Viewer3D." width=5cm
+ \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."
  \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm
 
 
-* Note that digital set was displayed with transparency by setting a custom colors.   
+* Note that digital set was displayed with transparency by setting a custom colors.
 
 
 
 
-* \section  DGtalGLV_Mode Useful modes for several 3D drawable elements 
+* \section  DGtalGLV_Mode Useful modes for several 3D drawable elements
 
 
 \subsection DGtalGLV_ModeListing Listing of different modes
@@ -218,7 +218,7 @@ Note that for KhalimskyCell and SignedKhalimskyCell the default colors
 (with CustomColors3D objects) can be changed only with the empty mode
 ("") and the "IllustrationCustomColor" mode.
 
-"*": partially for (Board3DTo2D), see issue <a href="https://github.com/DGtal-team/DGtal/issues/582"> 582</a>. 
+"*": partially for (Board3DTo2D), see issue <a href="https://github.com/DGtal-team/DGtal/issues/582"> 582</a>.
 "**":  only for Viewer3D.
 
 \subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
@@ -226,9 +226,9 @@ Note that for KhalimskyCell and SignedKhalimskyCell the default colors
 The file <a href="io_2viewers_2viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cpp </a> illustrates several  possible modes to display these objects:
 
 
-We can display the set of point and the domain 
+We can display the set of point and the domain
 
-@code 
+@code
  Point p1( -1, -1, -2 );
  Point p2( 2, 2, 3 );
  Domain domain( p1, p2 );
@@ -256,7 +256,7 @@ display the domain after the voxel elements included in the domain)
 <BR>
 
 It is also possible to change the mode for displaying the voxels: (see image (c))
-@code 
+@code
 viewer << domain;
 viewer <<  SetMode3D( p1.className(), "Grid" );
 viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
@@ -264,18 +264,18 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 *
 *
 * we obtain the following visualizations:
-* 
+*
 \image html visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain "
 \image latex visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain " width=5cm
- \image html  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain."  
- \image latex  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain." width=5cm 
+ \image html  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain."
+ \image latex  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain." width=5cm
  \image html  visuModeGridVoxel.png "(c) visualization using Paving mode for the voxels."
- \image latex  visuModeGridVoxel.png "(c) visualization using Paving mode for the voxels." width=5cm 
+ \image latex  visuModeGridVoxel.png "(c) visualization using Paving mode for the voxels." width=5cm
 
 
 
 
-\subsection DGtalGLV_ModeOtherExamples Illustrating  KhalimskyCell  with the "Illustration" mode 
+\subsection DGtalGLV_ModeOtherExamples Illustrating  KhalimskyCell  with the "Illustration" mode
 
 
 The "Illustration" mode is defined to construct illustrations composed
@@ -322,7 +322,7 @@ As for Board2D, it is possible to custom the way to display 3D elements by using
 
 The custom color can be applied by an instance of the CustomColors3D as follow:
 
-@code 
+@code
   viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
 @endcode
@@ -340,7 +340,7 @@ The example <a  href="io_2viewers_2viewer3D-5-custom_8cpp-example.html"> viewer3
 
 
 
-\section DGtalGLV_CLipping Adding clipping planes 
+\section DGtalGLV_CLipping Adding clipping planes
 
 It also possible through the stream mechanism to add clipping plane
 with the object \c ClippingPlane. We just have to add the real plane
@@ -365,17 +365,17 @@ From displaying a digital set defined from a Norm2 ball,
 
 we can add for instance two differents clipping planes:
 
-@code 
+@code
  viewer << ClippingPlane(1,0,0,-4.9);
  viewer << ClippingPlane(0,1,0.3,-10);
 @endcode
 
-\image html visuClippingAll.png "(a) visualization of the initial set." width=5cm 
-\image latex visuClippingAll.png "(a) visualization of the initial set." 
- \image html  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)." 
- \image latex  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."  width=5cm 
- \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ." 
-\image latex  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
+\image html visuClippingAll.png "(a) visualization of the initial set." width=5cm
+\image latex visuClippingAll.png "(a) visualization of the initial set."
+ \image html  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."
+ \image latex  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."  width=5cm
+ \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ."
+\image latex  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ." width=5cm
 
 
 It also possible to remove the visualization of the transparent clipping plane by adding boolean option:
@@ -399,27 +399,27 @@ Finally you can adjust the image setting with the Display3DModifier UpdateImageP
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImages
 
 You will obtain such a visualization:
- \image html  viewer3D-8.png  "Illustration of the 2D image slice visualization." width=5cm 
- \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualization." 
+ \image html  viewer3D-8.png  "Illustration of the 2D image slice visualization." width=5cm
+ \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualization."
 
 You can also change the default mode by using:
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DChangeMode
 and by changing the "BoundingBox" mode by "InterGrid" you will obtain the following visualization:
- \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization with InterGrid mode." width=5cm 
- \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization." 
+ \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization with InterGrid mode." width=5cm
+ \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization."
 
 
 
-See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer. 
+See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer.
 
 
 \section DGtalGLV_Images3D Adding 3D  image visualization
 
 In the same way a 3D image can be displayed. By following the same stream operator you will obtain such example of display:
-\image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm 
-\image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets."  
+\image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm
+\image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets."
 
-See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp 
+See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp
 
 
 
@@ -442,8 +442,8 @@ First we generate a color functor to generate unsigned integer interpreted as RG
 with a functor to transform integer representing grayscale to integer representing color:
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
 
- 
-- Instead to use directly the image and the stream operator we add the AddTextureImage2DWithFunctor object: 
+
+- Instead to use directly the image and the stream operator we add the AddTextureImage2DWithFunctor object:
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
 
 
@@ -451,8 +451,8 @@ with a functor to transform integer representing grayscale to integer representi
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
 
 You will obtain such a visualization:
- \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualization." width=5cm 
- \image latex  viewer3D-8Color.png  "Illustration of the 2D image slice visualization." 
+ \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualization." width=5cm
+ \image latex  viewer3D-8Color.png  "Illustration of the 2D image slice visualization."
 
 
 */
@@ -460,75 +460,75 @@ You will obtain such a visualization:
 
 /**
 \example io/viewers/viewer3D-1-points.cpp
-* 
+*
 */
 
 /**
 \example io/viewers/viewer3D-2-sets.cpp
-* 
+*
 */
 /**
 \example io/viewers/viewer3D-3-objects.cpp
-* 
+*
 */
 /**
 \example io/viewers/viewer3D-4-modes.cpp
-* 
+*
 */
 /**
 \example io/viewers/viewer3D-5-custom.cpp
-* 
+*
 */
 /**
 \example io/viewers/viewer3D-6-clipping.cpp
-* 
+*
 */
 
 /**
 \example io/boards/dgtalBoard3DTo2D-1-points.cpp
-* 
+*
 */
 
 /**
 \example io/boards/dgtalBoard3DTo2D-2-sets.cpp
-* 
+*
 */
 
 /**
 \example io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
-* 
+*
 */
 
 /**
 \example io/boards/dgtalBoard3DTo2D-3-objects.cpp
-* 
+*
 */
 
 
 
 /**
 \example io/boards/dgtalBoard3DTo2D-4-modes.cpp
-* 
+*
 */
 
 
 
 /**
 \example io/boards/dgtalBoard3DTo2D-5-custom.cpp
-* 
+*
 */
 
 
 
 /**
 \example io/boards/dgtalBoard3DTo2D-6.cpp
-* 
+*
 */
 
 
 /**
 \example io/boards/dgtalBoard3DTo2D-KSCell.cpp
-* 
+*
 */
 
 
@@ -556,9 +556,7 @@ You will obtain such a visualization:
 
 
 
- 
+
 
 
 }
-
-
