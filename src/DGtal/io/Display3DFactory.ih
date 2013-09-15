@@ -39,10 +39,11 @@
 // Implementation of inline functions and external operators //
 
 // SphericalAccumulator
-template <typename TV , typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TV>
 inline
 void
-DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                const DGtal::SphericalAccumulator<TV> & aAccumulator,
                                const typename DGtal::SphericalAccumulator<TV>::RealVector &shift,
                                const double radius)
@@ -99,9 +100,10 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 
 // Mesh
-template <typename TPoint, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TPoint>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::Mesh<TPoint> & aMesh )
 {
   std::string mode = display.getMode( aMesh.className() );
@@ -109,9 +111,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
     drawAsFaces( display, aMesh );
 }
 
-template <typename TPoint, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TPoint>
 inline
-void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display3D<Space, KSpace> & display,
                                            const DGtal::Mesh<TPoint> & aMesh )
 {
   DGtal::Color fillColorSave = display.getFillColor();
@@ -165,9 +168,10 @@ void DGtal::Display3DFactory::drawAsFaces( Display3D<Space, KSpace> & display,
 
 
 // ArithmeticalDSS3d
-template <typename TIterator, typename TInteger, int connectivity, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::Display3DFactory::drawAsBalls( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsBalls( Display3D<Space, KSpace> & display,
                                            const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
@@ -197,10 +201,11 @@ void DGtal::Display3DFactory::drawAsBalls( Display3D<Space, KSpace> & display,
     }
 }
 
-template <typename TIterator, typename TInteger, int connectivity, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
+DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, KSpace> & display,
                                             const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
 
@@ -321,9 +326,10 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
   }
 }
 
-template <typename TIterator, typename TInteger, int connectivity, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TInteger, int connectivity>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
   std::string mode = display.getMode( a.className() );
@@ -340,9 +346,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 
 // DigitalSetBySTLSet
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display3D<Space, KSpace> & display,
                                                        const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
@@ -361,9 +368,10 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D<Space, KSpace> 
     }
 }
 
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpace> & display,
                                             const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
@@ -382,9 +390,10 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
     }
 }
 
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace> & display,
                                           const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
@@ -402,9 +411,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
     }
 }
 
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   ASSERT(Domain::Space::dimension == 3);
@@ -428,9 +438,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 
 // DigitalSetBySTLVector
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display3D<Space, KSpace> & display,
                                                        const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
@@ -449,9 +460,10 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D<Space, KSpace> 
     }
 }
 
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpace> & display,
                                             const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
@@ -470,9 +482,10 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
     }
 }
 
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace> & display,
                                           const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
@@ -490,9 +503,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
     }
 }
 
-template<typename Domain, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<typename Domain>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   ASSERT(Domain::Space::dimension == 3);
@@ -516,23 +530,24 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 
 // HyperRectDomain
-template<typename TSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename SpaceDom>
 inline
-void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & display,
-                                                 const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, KSpace> & display,
+                                                 const DGtal::HyperRectDomain<SpaceDom> & h )
 {
   DGtal::Color fillColorSave = display.getFillColor();
-  ASSERT(TSpace::dimension == 2 || TSpace::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(Space::dimension == 2 || Space::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
 
   DGtal::Z3i::RealPoint upperBound;
   DGtal::Z3i::RealPoint lowerBound;
 
-  if (TSpace::dimension == 3)
+  if (Space::dimension == 3)
     {
       upperBound = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], h.myUpperBound[1], h.myUpperBound[2]));
       lowerBound = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], h.myLowerBound[1], h.myLowerBound[2]));
     }
-  if (TSpace::dimension == 2)
+  if (Space::dimension == 2)
     {
       upperBound = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], h.myUpperBound[1], 0));
       lowerBound = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], h.myLowerBound[1], 0));
@@ -541,7 +556,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
 
   display.setFillColor(DGtal::Color(250,250,250,10));
   double shiftSize=0.01;
-  if (TSpace::dimension == 3)
+  if (Space::dimension == 3)
     {
       //Z upper face
       display.addQuad(upperBound[0]+(0.5+shiftSize),
@@ -625,16 +640,17 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D<Space, KSpace> & disp
   display.setFillColor( fillColorSave);
 }
 
-template<typename TSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename SpaceDom>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
-                                          const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace> & display,
+                                          const DGtal::HyperRectDomain<SpaceDom> & h )
 {
-  typedef typename TSpace::Integer Integer;
+  typedef typename Space::Integer Integer;
 
-  ASSERT(TSpace::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(Space::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
-  if (TSpace::dimension == 3)
+  if (Space::dimension == 3)
     {
       // Face XY
       for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
@@ -704,16 +720,17 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
     }
 }
 
-template<typename TSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename SpaceDom>
 inline
-void DGtal::Display3DFactory::drawAsPavingBalls( Display3D<Space, KSpace> & display,
-                                                 const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingBalls( Display3D<Space, KSpace> & display,
+                                                 const DGtal::HyperRectDomain<SpaceDom> & h )
 {
   DGtal::Color fillColorSave = display.getFillColor();
-  typedef typename TSpace::Integer Integer;
+  typedef typename Space::Integer Integer;
 
-  ASSERT(TSpace::dimension == 3 || "drawAsPavingPoints-NOT-YET-IMPLEMENTED-in-ND");
-  if (TSpace::dimension == 3)
+  ASSERT(Space::dimension == 3 || "drawAsPavingPoints-NOT-YET-IMPLEMENTED-in-ND");
+  if (Space::dimension == 3)
     {
       // Face XY
       for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
@@ -736,17 +753,18 @@ void DGtal::Display3DFactory::drawAsPavingBalls( Display3D<Space, KSpace> & disp
   display.setFillColor(fillColorSave);
 }
 
-template<typename TSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename SpaceDom>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
-                                            const DGtal::HyperRectDomain<TSpace> & h )
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpace> & display,
+                                            const DGtal::HyperRectDomain<SpaceDom> & h )
 {
   DGtal::Color fillColorSave = display.getFillColor();
-  typedef typename TSpace::Integer Integer;
+  typedef typename Space::Integer Integer;
 
-  ASSERT(TSpace::dimension == 3 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(Space::dimension == 3 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND");
 
-  if (TSpace::dimension == 3)
+  if (Space::dimension == 3)
     {
       // Face XY
       for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
@@ -773,16 +791,17 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
 }
 
 
-template<typename TSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename SpaceDom>
 inline
 void
-DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain )
+DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<SpaceDom> & aDomain )
 {
   std::string mode = display.getMode( aDomain.className() );
 
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
           mode=="BoundingBox")||
-         ("DGtal::Display3DFactory::draw( Display3DD<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3DD<Space, KSpace> & display, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
 
   /*
     if ( mode == "BoundingBox" )
@@ -800,14 +819,14 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::
     }
   */
 
-  ASSERT((TSpace::dimension==3)|| (TSpace::dimension==2));
-  ASSERT((TSpace::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
+  ASSERT((Space::dimension==3)|| (Space::dimension==2));
+  ASSERT((Space::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
                                     mode=="BoundingBox")||
-         ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
-  ASSERT((TSpace::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="Grid") ||
-         ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
+  ASSERT((Space::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="Grid") ||
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
 
-  if(TSpace::dimension == 2)
+  if(Space::dimension == 2)
     {
       if (mode=="")
         mode="BoundingBox";
@@ -839,16 +858,17 @@ DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::
 
 
 // KhalimskyCell
-template < DGtal::Dimension dim, typename TInteger , typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template < DGtal::Dimension dim, typename TInteger>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();
   std::string mode = display.getMode( k.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration"||mode=="IllustrationCustomColor")||
-         ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
   bool basicMode=false;
@@ -917,9 +937,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 
 // SignedKhalimskyCell
-template< DGtal::Dimension dim, typename TInteger , typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template< DGtal::Dimension dim, typename TInteger>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
 {
 
@@ -927,7 +948,7 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
   DGtal::Color fillColorSave = display.getFillColor();
   std::string mode = display.getMode( sk.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration" || mode=="IllustrationCustomColor")||
-         ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
   bool basicMode=false;
@@ -1009,9 +1030,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 
 // Object
-template <typename TDigitalTopology, typename TDigitalSet, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void DGtal::Display3DFactory::drawWithAdjacencies( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawWithAdjacencies( Display3D<Space, KSpace> & display,
                                                    const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   typedef typename TDigitalSet::Point Point;
@@ -1039,9 +1061,10 @@ void DGtal::Display3DFactory::drawWithAdjacencies( Display3D<Space, KSpace> & di
     }
 }
 
-template <typename TDigitalTopology, typename TDigitalSet, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   std::string mode = display.getMode( o.className() );
@@ -1058,15 +1081,16 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
       drawWithAdjacencies( display, o );
     }
   else
-    ASSERT(false && (("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
+    ASSERT(false && (("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
 }
 // Object
 
 
 // PointVector
-template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<DGtal::Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace> & display,
                                           const DGtal::PointVector<dim,TComponent> & p )
 {
   DGtal::Color fillColorSave = display.getFillColor();
@@ -1077,9 +1101,10 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D<Space, KSpace> & display,
   display.setFillColor(fillColorSave);
 }
 
-template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<DGtal::Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpace> & display,
                                             const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 3);
@@ -1088,9 +1113,10 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D<Space, KSpace> & display,
   display.addCube(rp[0], rp[1], rp[2]);
 }
 
-template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<DGtal::Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::drawAsPavingWired( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingWired( Display3D<Space, KSpace> & display,
                                                  const DGtal::PointVector<dim,TComponent> & p )
 {
   DGtal::Color lineColorSave = display.getLineColor();
@@ -1116,9 +1142,10 @@ void DGtal::Display3DFactory::drawAsPavingWired( Display3D<Space, KSpace> & disp
   display.setLineColor(lineColorSave);
 }
 
-template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<DGtal::Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::PointVector<dim,TComponent> & p )
 {
   DGtal::Color fillColorSave = display.getFillColor();
@@ -1143,9 +1170,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
   display.setFillColor(fillColorSave);
 }
 
-template<DGtal::Dimension dim, typename TComponent, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template<DGtal::Dimension dim, typename TComponent>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::PointVector<dim,TComponent> & p,
                                     const DGtal::PointVector<dim,TComponent> & aPoint )
 {
@@ -1159,12 +1187,12 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 
 // GridCurve
-template< typename TKSpace , typename Space, typename KSpace>
+template <typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::GridCurve<TKSpace> & gc)
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
+                                    const DGtal::GridCurve<KSpace> & gc)
 {
-  typedef typename DGtal::GridCurve<TKSpace>::SCellsRange Range;
+  typedef typename DGtal::GridCurve<KSpace>::SCellsRange Range;
   Range r = gc.getSCellsRange();
   for ( typename Range::ConstIterator it = r.begin(), itEnd = r.end();
         it != itEnd; ++it )
@@ -1175,9 +1203,10 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 // GridCurve
 
 // SCellsRange
-template <typename TIterator, typename TSCell, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator, typename TSCell>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & object )
 {
   typedef DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> Range;
@@ -1193,12 +1222,13 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 // SCellsRange
 
 // PointsRange
-template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
+                                    const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename KSpace::Point> & object )
 {
-  typedef ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> Range;
+  typedef ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename KSpace::Point> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );
@@ -1212,14 +1242,15 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 // PointsRange
 
 // MidPointsRange
-template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>,
-                                    typename TKSpace::Space::RealPoint> & object )
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
+                                    const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>,
+                                    typename KSpace::Space::RealPoint> & object )
 {
-  typedef typename TKSpace::Space::RealPoint RPoint;
-  typedef ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, RPoint > Range;
+  typedef typename KSpace::Space::RealPoint RPoint;
+  typedef ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, RPoint > Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );
@@ -1233,16 +1264,17 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 // MidPointsRange
 
 // ArrowsRange
-template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>,
-                                    std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & object )
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
+                                    const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<KSpace>,
+                                    std::pair<typename KSpace::Point, typename KSpace::Vector> > & object )
 {
-  typedef typename TKSpace::Point Point;
-  typedef typename TKSpace::Vector Vector;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::Vector Vector;
   typedef std::pair<Point, Vector> Arrow;
-  typedef ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, Arrow > Range;
+  typedef ConstRangeAdapter<TIterator, SCellToArrow<KSpace>, Arrow > Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );
@@ -1255,12 +1287,13 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 // ArrowsRange
 
 // InnerPointsRange
-template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & object )
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
+                                    const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename KSpace::Point> & object )
 {
-  typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> Range;
+  typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename KSpace::Point> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );
@@ -1275,12 +1308,13 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 // InnerPointsRange
 
 // OuterPointsRange
-template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & object )
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
+                                    const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename KSpace::Point> & object )
 {
-  typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> Range;
+  typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename KSpace::Point> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );
@@ -1295,14 +1329,15 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 // OuterPointsRange
 
 // IncidentPointsRange
-template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+template <typename Space, typename KSpace>
+template <typename TIterator>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>,
-                                    std::pair<typename TKSpace::Point, typename TKSpace::Point > > & object )
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
+                                    const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>,
+                                    std::pair<typename KSpace::Point, typename KSpace::Point > > & object )
 {
-  typedef std::pair<typename TKSpace::Point, typename TKSpace::Point > Pair;
-  typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, Pair> Range;
+  typedef std::pair<typename KSpace::Point, typename KSpace::Point > Pair;
+  typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>, Pair> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );
@@ -1319,9 +1354,9 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 }
 // IncidentPointsRange
 
-template< typename Space, typename KSpace>
+template <typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::SetMode3D & sm3d )
 {
   display.myModes[ sm3d.myClassname ] = sm3d.myMode;
@@ -1329,7 +1364,7 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 template< typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::CustomStyle3D & cs3d )
 {
   display.myStyles[ cs3d.myClassname ] = cs3d.myStyle;
@@ -1337,7 +1372,7 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 template< typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::CustomColors3D & cc3d )
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::CustomColors3D & cc3d )
 {
   display.setFillColor(cc3d.myFillColor);
   display.setLineColor(cc3d.myPenColor);
@@ -1345,7 +1380,7 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DG
 
 template< typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
                                     const DGtal::ClippingPlane & cl )
 {
   display.setFillColor(DGtal::Color(205,0,0, 30));
@@ -1354,13 +1389,13 @@ void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display,
 
 template< typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism)
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism)
 {
 
   DGtal::Color fillColorSave = display.getFillColor();
   std::string mode = display.getMode( aTransformedSurfelPrism.mySurfel.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
-         ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::ShiftedKSSurfel & aTransformedSurfelPrism ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::ShiftedKSSurfel & aTransformedSurfelPrism ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
   bool basicMode=false;

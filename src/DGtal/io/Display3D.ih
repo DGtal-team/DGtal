@@ -1189,7 +1189,7 @@ DGtal::Display3D< Space ,KSpace >::operator <<( const TDrawableWithDisplay3D & o
 {
   // BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
 
-  DGtal::Display3DFactory::draw(*this, object);
+  DGtal::Display3DFactory<Space,KSpace>::draw(*this, object);
   return *this;
 }
 

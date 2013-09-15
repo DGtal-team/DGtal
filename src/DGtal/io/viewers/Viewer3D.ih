@@ -456,7 +456,7 @@ DGtal::Viewer3D<Space, KSpace>::operator<<(const typename Viewer3D<Space, KSpace
 {
   switch (key)
     {
-    case Viewer3D<>::updateDisplay:
+    case Viewer3D<Space, KSpace>::updateDisplay:
       Viewer3D<Space, KSpace>::updateList();
       break;
 
@@ -479,7 +479,7 @@ DGtal::Viewer3D<Space, KSpace>::operator<<( const TDrawableWithViewer3D & object
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithViewer3D< TDrawableWithViewer3D, Space, KSpace >));
 
-  DGtal::Viewer3DFactory::draw(*this, object);
+  DGtal::Viewer3DFactory<Space,KSpace>::draw(*this, object);
   return *this;
 }
 
