@@ -859,12 +859,11 @@ DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
 
 // KhalimskyCell
 template <typename Space, typename KSpace>
-template < DGtal::Dimension dim, typename TInteger>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::KhalimskyCell<dim, TInteger> & k )
+                                                  const typename KSpace::Cell & k )
 {
-  ASSERT(dim == 3);
+  ASSERT(Space::dimension == 3);
   DGtal::Color fillColorSave = display.getFillColor();
   std::string mode = display.getMode( k.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration"||mode=="IllustrationCustomColor")||
@@ -885,9 +884,9 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
     }
 
   DGtal::Z3i::RealPoint rp = display.embedK( k );
-  bool xodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 0 ]) & 1 );
-  bool yodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 1 ]) & 1 );
-  bool zodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 2 ]) & 1 );
+  bool xodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.myCoordinates[ 0 ]) & 1 );
+  bool yodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.myCoordinates[ 1 ]) & 1 );
+  bool zodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(k.myCoordinates[ 2 ]) & 1 );
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
 
   switch (spaceDim) {
@@ -938,13 +937,12 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
 
 // SignedKhalimskyCell
 template <typename Space, typename KSpace>
-template< DGtal::Dimension dim, typename TInteger>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
-                                    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+                                                  const typename KSpace::SCell & sk )
 {
 
-  ASSERT(dim == 3);
+  ASSERT(Space::dimension == 3);
   DGtal::Color fillColorSave = display.getFillColor();
   std::string mode = display.getMode( sk.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration" || mode=="IllustrationCustomColor")||

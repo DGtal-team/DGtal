@@ -307,16 +307,14 @@ namespace DGtal
      * @param anObject the object to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template < Dimension dim, typename TInteger >
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const DGtal::KhalimskyCell<dim, TInteger> & anObject );
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const typename KSpace::Cell & anObject );
 
     /**
      * @brief draw
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template < Dimension dim, typename TInteger>
-    static void draw( Display3D<Space, KSpace> & display, const DGtal::KhalimskyCell<dim, TInteger> & anObject );
+    static void draw( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject );
     // KhalimskyCell
 
 
@@ -407,16 +405,14 @@ namespace DGtal
      * @param anObject the object to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template< Dimension dim, typename TInteger >
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const DGtal::SignedKhalimskyCell<dim, TInteger> & anObject );
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const typename KSpace::SCell & anObject );
 
     /**
      * @brief draw
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template< Dimension dim, typename TInteger>
-    static void draw( Display3D<Space, KSpace> & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & anObject );
+    static void draw( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject );
     // SignedKhalimskyCell
 
     // GridCurve
