@@ -612,19 +612,17 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawAsPaving( Viewer3D<Space, KSpace> & vi
 
 // KhalimskyCell
 template <typename Space, typename KSpace>
-template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithViewer3D *
-DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::KhalimskyCell<dim, TInteger> & aCell )
+DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const typename KSpace::Cell & aCell )
 {
   DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aCell);
 }
 
 template <typename Space, typename KSpace>
-template < DGtal::Dimension dim, typename TInteger>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::KhalimskyCell<dim, TInteger> & aCell )
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const typename KSpace::Cell & aCell )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aCell);
 }
@@ -720,19 +718,17 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 
 // SignedKhalimskyCell
 template <typename Space, typename KSpace>
-template< DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithViewer3D *
-DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell )
+DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const typename KSpace::SCell & aSCell )
 {
   DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aSCell);
 }
 
 template <typename Space, typename KSpace>
-template< DGtal::Dimension dim, typename TInteger >
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell )
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const typename KSpace::SCell & aSCell )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aSCell);
 }

@@ -339,16 +339,14 @@ namespace DGtal
      * @param aCell the cell to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template < Dimension dim, typename TInteger>
-    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::KhalimskyCell<dim, TInteger> & aCell );
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const typename KSpace::Cell & aCell );
 
     /**
      * @brief draw
      * @param viewer the viewer where to draw
      * @param aCell the cell to draw
      */
-    template < Dimension dim, typename TInteger>
-    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::KhalimskyCell<dim, TInteger> & aCell );
+    static void draw( Viewer3D<Space,KSpace> & viewer, const typename KSpace::Cell & aCell );
     // KhalimskyCell
 
 
@@ -440,16 +438,14 @@ namespace DGtal
      * @param aSCell the signed cell to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template< Dimension dim, typename TInteger >
-    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell );
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const typename KSpace::SCell & aSCell );
 
     /**
      * @brief draw
      * @param viewer the viewer where to draw
      * @param aSCell the signed cell to draw
      */
-    template< Dimension dim, typename TInteger >
-    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell );
+    static void draw( Viewer3D<Space,KSpace> & viewer, const typename KSpace::SCell & aSCell );
     // SignedKhalimskyCell
 
     // GridCurve
