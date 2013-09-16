@@ -1,4 +1,4 @@
-
+MESSAGE(STATUS "Generating DGtalConfig files")
 
 export(TARGETS  DGtal FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
 
@@ -16,10 +16,10 @@ set(DGTAL_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 set(DGTAL_LIB_DIR "${PROJECT_BINARY_DIR}/src")
 set(DGTAL_CMAKE_DIR "${PROJECT_BINARY_DIR}")
 
-configure_file(${CMAKE_MODULE_PATH}/DGtalConfig.cmake.in
+configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
   "${PROJECT_BINARY_DIR}/DGtalConfig.cmake" @ONLY)
 
-configure_file(${CMAKE_MODULE_PATH}/DGtalConfigVersion.cmake.in
+configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
   "${PROJECT_BINARY_DIR}/DGtalConfigVersion.cmake" @ONLY)
 
 # Install the export set for use with the install-tree
