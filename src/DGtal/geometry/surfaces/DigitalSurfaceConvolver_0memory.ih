@@ -2784,7 +2784,6 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         }
         else
         {
-            std::cout << "STEP 1.1" << std::endl;
             core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, false, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
         }
 
