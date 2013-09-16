@@ -41,7 +41,7 @@ ENDIF(WITH_OPENMP)
 
 IF(WITH_GMP)
 SET (LIST_OPTION ${LIST_OPTION} [GMP]\ )
-message(STATUS "      WITH_GMP          true    (Egein3Gnu Multiprecision Library)")
+message(STATUS "      WITH_GMP          true    (Gnu Multiprecision Library)")
 ELSE(WITH_GMP)
 message(STATUS "      WITH_GMP          false   (Gnu Multiprecision Library)")
 ENDIF(WITH_GMP)
