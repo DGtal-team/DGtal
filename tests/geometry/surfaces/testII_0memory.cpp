@@ -564,6 +564,20 @@ int testII3D_Mean()
     return 0;
 }
 
+void testMemory()
+{
+    std::ofstream file( "test" );
+    file.flags( std::ios_base::unitbuf );
+
+    for( unsigned int i = 0; i < 100000000; ++i )
+    {
+        file << "coucou" << std::endl;
+    }
+
+    file.close();
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -575,9 +589,11 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
+    testMemory();
+
 //    testII2D_Gaussian( );
 //    testII3D_Gaussian( );//argc, argv );
-    testII3D_Mean();
+//    testII3D_Mean();
     trace.endBlock();
 
     return 1;

@@ -96,6 +96,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
 
     kernels = std::vector< DigitalShape > ( 9 );
     masks = std::vector< EuclideanMinus* >( 9 );
+    kernelsShifted = std::vector< KernelSupport* >( 9 );
 
     /// Computation of shifting masks
     for( int y = -1; y <= 1; ++y )
@@ -114,6 +115,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
                 EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted2 );
 
                 masks[ offset ] = current;
+                kernelsShifted[ offset ] = kernelShifted2;
                 kernels[ offset ].attach( *current );
                 kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
             }
@@ -122,6 +124,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
                 EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted );
 
                 masks[ offset ] = current;
+                kernelsShifted[ offset ] = kernelShifted;
                 kernels[ offset ].attach( *current );
                 kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
             }
@@ -153,6 +156,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
 
     kernels = std::vector< DigitalShape >( 27 );
     masks = std::vector< EuclideanMinus* >( 27 );
+    kernelsShifted = std::vector< KernelSupport* >( 27 );
 
     /// Computation of masks
     for( int z = -1; z <= 1; ++z )
@@ -173,6 +177,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
                     EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted2 );
 
                     masks[ offset ] = current;
+                    kernelsShifted[ offset ] = kernelShifted2;
                     kernels[ offset ].attach( *current );
                     kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
                 }
@@ -181,6 +186,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 
                     EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted );
 
                     masks[ offset ] = current;
+                    kernelsShifted[ offset ] = kernelShifted;
                     kernels[ offset ].attach( *current );
                     kernels[ offset ].init( kernel->getLowerBound(), kernel->getUpperBound(), h );
                 }

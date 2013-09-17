@@ -377,6 +377,12 @@ public:
         {
             delete masks[ i ];
         }
+        for( unsigned int i = 0; i < kernelsShifted.size(); ++i )
+        {
+            delete kernelsShifted[ i ];
+        }
+        kernelsShifted.clear();
+        masks.clear();
         delete kernel;
     }
 
@@ -470,6 +476,7 @@ private:
     /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
     std::vector< EuclideanMinus* > masks;
+    std::vector< KernelSupport* > kernelsShifted;
     KernelSupport * kernel;
 
     /// origin spel of the kernel support.
@@ -564,6 +571,12 @@ public:
         {
             delete masks[ i ];
         }
+        for( unsigned int i = 0; i < kernelsShifted.size(); ++i )
+        {
+            delete kernelsShifted[ i ];
+        }
+        kernelsShifted.clear();
+        masks.clear();
         delete kernel;
     }
 
@@ -656,6 +669,7 @@ private:
     /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
     std::vector< DigitalShape > kernels;
     std::vector< EuclideanMinus* > masks;
+    std::vector< KernelSupport* > kernelsShifted;
     KernelSupport * kernel;
 
     /// origin spel of the kernel support.
