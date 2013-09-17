@@ -59,7 +59,7 @@ namespace DGtal
      be able to estimate tangent and curvature. In particular, it
      smoothes digital contours but could be used for other kind of
      contours.
-     
+
      @tparam TConstIteratorOnPoints the type that represents an
      iterator in a sequence of points. Each component of Point must be
      convertible into a double.
@@ -88,7 +88,7 @@ namespace DGtal
      */
     BinomialConvolver( unsigned int n = 1 );
 
-       
+
     /**
      * Destructor.
      */
@@ -107,26 +107,26 @@ namespace DGtal
     unsigned int size() const;
 
     /**
-       @return the suggested size for the binomial convolver as 
+       @return the suggested size for the binomial convolver as
        ceil( d / pow( h, 1.0/3.0 ) ), with d the diameter of the
        contour.
     */
     static
-    unsigned int suggestedSize( const double h, 
-        const ConstIteratorOnPoints& itb, 
+    unsigned int suggestedSize( const double h,
+        const ConstIteratorOnPoints& itb,
         const ConstIteratorOnPoints& ite );
 
     /**
        Initializes the convolver with some sequence of points.
        @param h grid size (must be >0).
-       @param itb, begin iterator
-       @param ite, end iterator
+       @param itb begin iterator
+       @param ite end iterator
        @param isClosed true if the input range is viewed as closed.
 
        The object is then valid.
     */
-    void init( const double h, 
-         const ConstIteratorOnPoints& itb, 
+    void init( const double h,
+         const ConstIteratorOnPoints& itb,
          const ConstIteratorOnPoints& ite,
          const bool isClosed );
 
@@ -136,7 +136,7 @@ namespace DGtal
        method init should have been called before.
 
        @see init
-       
+
        @param it any valid iterator
        @return its index for accessing geometric data.
     */
@@ -211,7 +211,7 @@ namespace DGtal
 
     ///Copy of the begin iterator
     ConstIteratorOnPoints myBegin;
-    
+
     ///Copy of the end iterator
     ConstIteratorOnPoints myEnd;
 
@@ -250,7 +250,7 @@ namespace DGtal
      Description of template class
      'TangentFromBinomialConvolverFunctor' <p> \brief Aim: This class
      is a functor for getting the tangent vector of a binomial convolver.
-     
+
      @tparam TBinomialConvolver any BinomialConvolver.
 
      @tparam TRealPoint the type for representing the tangent vector.
@@ -258,17 +258,17 @@ namespace DGtal
   template <typename TBinomialConvolver, typename TRealPoint>
   struct TangentFromBinomialConvolverFunctor
   {
-  public: 
+  public:
     // ----------------------- inner type ------------------------------
     typedef TRealPoint Value;
     typedef TRealPoint RealPoint;
     typedef TBinomialConvolver BinomialConvolver;
     typedef typename TBinomialConvolver::Value SignalValue;
     typedef typename TBinomialConvolver::ConstIteratorOnPoints ConstIteratorOnPoints;
-    
+
     /**
-       Operator() 
-       
+       Operator()
+
        @param it any valid iterator in the current BinomialConvolver.
        @return the tangent vector at position [it].
      */
@@ -281,7 +281,7 @@ namespace DGtal
      Description of template class
      'CurvatureFromBinomialConvolverFunctor' <p> \brief Aim: This class
      is a functor for getting the tangent vector of a binomial convolver.
-     
+
      @tparam TBinomialConvolver any BinomialConvolver.
 
      @tparam TReal the type for representing the curvature scalar.
@@ -289,17 +289,17 @@ namespace DGtal
   template <typename TBinomialConvolver, typename TReal>
   struct CurvatureFromBinomialConvolverFunctor
   {
-  public: 
+  public:
     // ----------------------- inner type ------------------------------
     typedef TReal Value;
     typedef TReal Real;
     typedef TBinomialConvolver BinomialConvolver;
     typedef typename TBinomialConvolver::Value SignalValue;
     typedef typename TBinomialConvolver::ConstIteratorOnPoints ConstIteratorOnPoints;
-    
+
     /**
-       Operator() 
-       
+       Operator()
+
        @param it any valid iterator in the current BinomialConvolver.
        @return the tangent vector at position [it].
      */
@@ -313,10 +313,10 @@ namespace DGtal
      \brief Aim: This class encapsulates a BinomialConvolver and a
      functor on BinomialConvolver so as to be a model of
      CLocalGeometricEstimator.
-     
+
      @tparam TBinomialConvolver any BinomialConvolver.
 
-     @tparam TRealPoint the type for representing the tangent vector.
+     @tparam TBinomialConvolverFunctor .
   */
   template <typename TBinomialConvolver, typename TBinomialConvolverFunctor>
   class BinomialConvolverEstimator
@@ -336,28 +336,28 @@ namespace DGtal
     /**
      * Initialisation.
      * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
+     * @param itb begin iterator
+     * @param ite end iterator
      * @param isClosed true if the input range is viewed as closed.
      */
-    void init( const double h, 
-         const ConstIterator & itb, 
+    void init( const double h,
+         const ConstIterator & itb,
          const ConstIterator & ite,
          const bool isClosed);
-    
+
     /**
      * @return the estimated quantity at *it
      */
     Quantity eval( const ConstIterator& it );
-    
+
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
     template <typename OutputIterator>
-    OutputIterator eval( const ConstIterator& itb, 
-       const ConstIterator& ite, 
-       OutputIterator result ); 
+    OutputIterator eval( const ConstIterator& itb,
+       const ConstIterator& ite,
+       OutputIterator result );
 
 
 
@@ -375,7 +375,7 @@ namespace DGtal
    */
   template <typename TConstIteratorOnPoints, typename TValue >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const BinomialConvolver<TConstIteratorOnPoints,TValue> & object );
 
 } // namespace DGtal
