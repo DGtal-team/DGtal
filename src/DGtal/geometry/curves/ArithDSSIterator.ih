@@ -53,7 +53,7 @@ template<typename TInteger, int c>
 inline
 DGtal::ArithDSSIterator<TInteger,c>::ArithDSSIterator(const ArithDSSIterator<TInteger,c> &other):myA(other.myA),myB(other.myB),myMu(other.myMu),myP(other.myP)
 {
- 
+
 }
 
 
@@ -78,7 +78,7 @@ typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TIn
 
 template<typename TInteger, int c>
 inline
-TInteger DGtal::ArithDSSIterator<TInteger,c>::remainder(Point Q)
+TInteger DGtal::ArithDSSIterator<TInteger,c>::remainder(const Point &Q)
 {
   return myA*Q[0] - myB*Q[1];
 }
@@ -109,6 +109,7 @@ typename DGtal::ArithDSSIterator<TInteger,c>::Self & DGtal::ArithDSSIterator<TIn
       else
 	++myP[0];
     }
+  return *this;
 }
 
 template<typename TInteger, int c>
@@ -153,5 +154,3 @@ bool DGtal::ArithDSSIterator<TInteger,c>::operator!=(const ArithDSSIterator<TInt
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
