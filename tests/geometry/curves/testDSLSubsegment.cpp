@@ -224,7 +224,7 @@ int main( int argc, char** argv )
   Integer i = 1000;
   srand(time(NULL));
   
-  bool res = /*testDSLSubsegment<Integer,Fraction>(i) &&*/ testMinRemainder<Integer>();
+  bool res = testDSLSubsegment<Integer,Fraction>(i);
   
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
