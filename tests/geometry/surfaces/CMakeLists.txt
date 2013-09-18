@@ -15,23 +15,30 @@ ENDFOREACH(FILE)
 
 
 
-if (  WITH_VISU3D_QGLVIEWER )
+if (  WITH_CGAL )
+SET(CGAL_TESTS_SRC
+  testMonge )
+   FOREACH(FILE ${CGAL_TESTS_SRC})
+     add_executable(${FILE} ${FILE})
+     target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+   ENDFOREACH(FILE)
+endif ( WITH_CGAL )
 
+
+if (  WITH_VISU3D_QGLVIEWER )
 SET(QGLVIEWER_TESTS_SRC
-  testLocalConvolutionNormalVectorEstimator
-  )
+  testLocalConvolutionNormalVectorEstimator )
 
    FOREACH(FILE ${QGLVIEWER_TESTS_SRC})
      add_executable(${FILE} ${FILE})
      target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
    ENDFOREACH(FILE)
-
 endif ( WITH_VISU3D_QGLVIEWER   )
 
 #-----------------------
 #GMP based tests
 #----------------------
-SET(DGTAL_TESTS_GMP_SRC 
+SET(DGTAL_TESTS_GMP_SRC
     testCOBANaivePlane
  )
 
@@ -52,7 +59,7 @@ SET(DGTAL_BENCH_GMP_SRC
 #Benchmark target
 IF(GMP_FOUND)
   FOREACH(FILE ${DGTAL_BENCH_GMP_SRC})
-    add_executable(${FILE} ${FILE}) 
+    add_executable(${FILE} ${FILE})
     target_link_libraries (${FILE} DGtal DGtalIO)
     add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
     ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
