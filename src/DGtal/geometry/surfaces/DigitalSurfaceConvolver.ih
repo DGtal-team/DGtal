@@ -4190,7 +4190,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
         memcpy( lastOuterMoments, m, nbMoments * sizeof( Quantity ));
     }
 
-    ASSERT (( lastInnerMoments[ 0 ] != lastOuterMoments[ 0 ] )); // Maybe a problem here. Can be normal ... but needs to check twice.
+//    ASSERT (( lastInnerMoments[ 0 ] != lastOuterMoments[ 0 ] )); // Maybe a problem here. Can be normal ... but needs to check twice.
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;
@@ -4406,7 +4406,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
         lastOuterSum = m;
     }
 
-    ASSERT (( lastInnerSum != lastOuterSum )); // Maybe a problem here. Can be normal ... but needs to check twice.
+//    ASSERT (( lastInnerSum != lastOuterSum )); // Maybe a problem here. Can be normal ... but needs to check twice.
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;

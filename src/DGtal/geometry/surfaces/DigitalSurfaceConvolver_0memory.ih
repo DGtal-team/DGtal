@@ -1919,7 +1919,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     }
 
     ASSERT (( lastInnerMoments[ 0 ] != 0 )); // Maybe a problem here. Can be normal ... but needs to check twice.
-    ASSERT (( lastInnerMoments[ 0 ] != lastOuterMoments[ 0 ] )); // Maybe a problem here. Can be normal ... but needs to check twice.
+//    ASSERT (( lastInnerMoments[ 0 ] != lastOuterMoments[ 0 ] )); // Maybe a problem here. Can be normal ... but needs to check twice.
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;
@@ -2156,7 +2156,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
     }
 
     ASSERT (( lastInnerSum != 0 )); // Maybe a problem here. Can be normal ... but needs to check twice.
-    ASSERT (( lastInnerSum != lastOuterSum )); // Maybe a problem here. Can be normal ... but needs to check twice.
+//    ASSERT (( lastInnerSum != lastOuterSum )); // Maybe a problem here. Can be normal ... but needs to check twice.
 
     lastInnerSpel = currentInnerSpel;
     lastOuterSpel = currentOuterSpel;
