@@ -455,7 +455,7 @@ private:
     /// Euclidean radius of the kernel
     double radius;
 
-    MeanCurvatureFunctor3< Quantity > meanFunctor;
+    MeanCurvatureFunctor2< Quantity > meanFunctor;
 
 private:
 
