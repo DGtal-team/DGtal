@@ -224,8 +224,9 @@ bool testDSLSubsegment(Integer modb)
 	DSLSubseg DSLsub(a,b,mu,A,B,"farey");
 	
 	// DSLSubsegment with float-type DSL parameters
+	Number precision = 
 	DSLSubsegD DSLsubD(a/b,mu/b,A,B);
-
+	
 	// If results are different, count an error
 	if(DSLsub.getA() != DSLsubD.getA() || DSLsub.getB() != DSLsubD.getB() || DSLsub.getMu() != DSLsubD.getMu())	
 	  error4 ++;
