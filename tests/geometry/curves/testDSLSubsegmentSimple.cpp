@@ -72,33 +72,13 @@ bool testDSLSubsegment(Integer modb)
   DGtal::IntegerComputer<Integer> ic;
 
 
-  // std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
-
-  long double timeTotalSubseg=0,timeTotalSubseg4=0,timeTotalSubsegD=0, timeTotalDSS = 0, timeTotalCH = 0, timeTotalSmartDSS=0,timeTotalReversedSmartDSS=0;
-
-  clock_t timeBeginSubseg, timeEndSubseg;
-  clock_t timeBeginSubseg4, timeEndSubseg4;
-  clock_t timeBeginSubsegD, timeEndSubsegD;
-  clock_t timeBeginDSS, timeEndDSS;
-  clock_t timeBeginCH, timeEndCH;
-  clock_t timeBeginSmartDSS, timeEndSmartDSS;
-  clock_t timeBeginReversedSmartDSS, timeEndReversedSmartDSS;
-
-  double t;
-  Clock c;
-
-  int nb = 0; int nbLocRay = 0;
-  int nberrors = 0;
-  
-  
-
   // Draw random value for b in [0,modb]
   Integer b( rand() % modb +1);
   
   // Draw random value for a in [0,b]
   Integer a( random() % b +1);
   // Draw a new a while a and b are not coprime (do not divide by
-  // the gcd so that b remains in the required interval
+  // the gcd so that b remains in the required interval)
   while(ic.gcd(a,b) !=1)
     a = rand() %b +1;
 
@@ -132,7 +112,7 @@ bool testDSLSubsegment(Integer modb)
 	Point B = Point(x2,y2);
 	
 	// DSLSubsegment with Farey Fan (O(log(n))
-	DSLSubseg DSLsub(a,b,mu,A,B,true);
+	DSLSubseg DSLsub(a,b,mu,A,B,"farey");
 	
 	
 	// ArithmeticalDSS recognition algorithm (O(n))
@@ -165,7 +145,7 @@ bool testDSLSubsegment(Integer modb)
 	Point B = Point(x2,y2);
 	
 	// DSLSubsegment with local CH (O(log(n))
-	DSLSubseg DSLsub(a,b,mu,A,B,false);
+	DSLSubseg DSLsub(a,b,mu,A,B,"localCH");
 	
 	
 	// ArithmeticalDSS recognition algorithm (O(n))
@@ -208,8 +188,11 @@ bool testDSLSubsegment(Integer modb)
 	
 	bool aBool;
 	
-	DSLSubseg D2(a,a+b,-mu,A2,B2,true); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
+	 // DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
+	 // b whereas reversedSmartDSS uses  mu <= ab-by < mu + b => -mu
+	 // is introduced in order to compare the results  
 	
+	DSLSubseg D2(a,a+b,-mu,A2,B2,"farey");
 	// The result is (aa,getB()-aa, nu)
 	// Compare results of DSLsubseg4 and reversedSmartDSS
 	if(!(D2.getA()==S.a() && (D2.getB()-D2.getA())==S.b() && D2.getMu()==-S.mu()))
@@ -223,6 +206,7 @@ bool testDSLSubsegment(Integer modb)
   return (error1==0 && error2==0 && error3==0);
 
 }
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -240,7 +224,7 @@ int main( int argc, char** argv )
   Integer i = 1000;
   srand(time(NULL));
   
-  bool res = testDSLSubsegment<Integer,Fraction>(i);
+  bool res = /*testDSLSubsegment<Integer,Fraction>(i) &&*/ testMinRemainder<Integer>();
   
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -337,7 +337,7 @@ bool testIsInside()
   contour2.push_back(Point(7,-3));
 
   trace.beginBlock("isInside tests for each of the four quadrants");
-  { //quadrant 1
+  { //Quadrant 1
     Iterator itb = contour.begin() + 1;
     Iterator ite = itb + 8;  
     if (testIsInsideForOneQuadrant(itb, ite, contour.end()) )
@@ -472,7 +472,7 @@ int main(int argc, char **argv)
 {
 
   trace.beginBlock ( "Testing class ArithmeticalDSS" );
-  trace.info() << "Args:";
+  Trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
