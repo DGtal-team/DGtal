@@ -19,6 +19,8 @@ SET(DGTAL_TESTS_GMP_SRC
     testLighterSternBrocot
  )
 
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -qstrict")
+
 IF(GMP_FOUND)
   FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
     add_executable(${FILE} ${FILE})
