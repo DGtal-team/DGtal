@@ -132,7 +132,7 @@ bool testDSLSubsegment(Integer modb)
   trace.info() << std::endl;
 
   int error2 = 0;
-  trace.beginBlock("Compare DSLSubsegment/localCH with ArithmeticalDSS algorithm");
+  trace.beginBlock("Compare DSLSubsegment/localCH with DSLSubsegment/FareyFan");
   for(unsigned int i = 0; i<l; i++)
     for(unsigned int j = i+1; j<l; j++)
       {
@@ -145,18 +145,14 @@ bool testDSLSubsegment(Integer modb)
 	Point B = Point(x2,y2);
 	
 	// DSLSubsegment with local CH (O(log(n))
-	DSLSubseg DSLsub(a,b,mu,A,B,"localCH");
+	DSLSubseg DSLsubCH(a,b,mu,A,B,"localCH");
 	
+	// DSLSubsegment with Farey Fan (O(log(n))
+	DSLSubseg DSLsubF(a,b,mu,A,B,"farey");
 	
-	// ArithmeticalDSS recognition algorithm (O(n))
-	DSSIterator  it(a,b,-mu,A);
-	ArithDSS myDSS(it);
-	
-	while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
-	  {}
 	
 	// If results are different, count an error
-	if(DSLsub.getA() != myDSS.getA() || DSLsub.getB() != myDSS.getB() || DSLsub.getMu() != - myDSS.getMu())	
+	if(DSLsubCH.getA() != DSLsubF.getA() || DSLsubCH.getB() != DSLsubF.getB() || DSLsubCH.getMu() != DSLsubF.getMu())	
 	  error2 ++;
 	
       }
@@ -203,7 +199,45 @@ bool testDSLSubsegment(Integer modb)
   trace.endBlock();
   trace.info() << std::endl;
   
-  return (error1==0 && error2==0 && error3==0);
+
+  trace.beginBlock("Compare DSLSubsegment integer version with DSLSubsegment float-type version");
+  // generate b as a power of 10
+  // the parameters of the DSL can be expressed as (a,b,mu) with a,b,mu integers or (a/b,mu/b) as decimal numbers
+  int p = 3;
+  b = (Integer) pow(10.0,p);
+  
+  trace.info() << "a b mu xf:" << a << " " << b << " " << mu << " " << xf << std::endl; 
+  
+  int error4=0;
+  for(unsigned int i = 0; i<l; i++)
+    for(unsigned int j = i+1; j<l; j++)
+      {
+	Integer x1 = xf+i;
+	Integer x2 = xf+j;
+
+	Integer y1 = ic.floorDiv(a*x1+mu,b);
+	Integer y2 = ic.floorDiv(a*x2+mu,b);
+	Point A = Point(x1,y1);
+	Point B = Point(x2,y2);
+	
+	// DSLSubsegment with Farey Fan (O(log(n))
+	DSLSubseg DSLsub(a,b,mu,A,B,"farey");
+	
+	// DSLSubsegment with float-type DSL parameters
+	DSLSubsegD DSLsubD(a/b,mu/b,A,B);
+
+	// If results are different, count an error
+	if(DSLsub.getA() != DSLsubD.getA() || DSLsub.getB() != DSLsubD.getB() || DSLsub.getMu() != DSLsubD.getMu())	
+	  error4 ++;
+      }
+  
+  trace.info() << error4 << " errors." << std::endl;
+  trace.endBlock();
+  trace.info() << std::endl;
+  
+  
+
+  return (error1==0 && error2==0 && error3==0 && error4==0);
 
 }
 

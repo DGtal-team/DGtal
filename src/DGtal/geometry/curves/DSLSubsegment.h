@@ -181,11 +181,8 @@ namespace DGtal
        * @param [in] B right-most point
        * @param [in] farey a boolean
        */
-<<<<<<< HEAD
-      DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, bool farey);
-=======
+
       DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, std::string type);
->>>>>>> 96ac08d... clean testDSLSubsegment simple
 
       /**
        * Constructor
@@ -224,25 +221,7 @@ namespace DGtal
        * @param B right-most point
        */
       void DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point &A, Point &B);
-<<<<<<< HEAD
 
-
-=======
-      
-         
-      /**	    
-       * Function called by the constructor when the input parameters
-       * are integers and the arithmetical algorithm proposed by
-       * Ouatarra et al. (submitted) is used.
-       * @param a
-       * @param b
-       * @param mu
-       * @param A left-most point
-       * @param B right-most point
-       */
-      void DSLSubsegmentArith(Number a, Number b, Number mu, Point A, Point B);
-      
->>>>>>> 96ac08d... clean testDSLSubsegment simple
       /**
        * Constructor.
        * Forbidden by default (protected to avoid g++ warnings).
