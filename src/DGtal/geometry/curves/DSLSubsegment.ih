@@ -1164,13 +1164,15 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 // Constructor in the case of integer input parameters
 template <typename TInteger, typename TNumber>
 inline
-DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, bool farey)
+DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, std::string type)
 {
-  if(farey)
+  if(type.compare("farey"))
     this->DSLSubsegmentFareyFan(a,b,mu,A,B);
   else
-    this->DSLSubsegmentLocalCH(a,b,mu,A,B);
-
+    if(type.compare("localCH"))
+      this->DSLSubsegmentLocalCH(a,b,mu,A,B);
+    else
+      this->DSLSubsegmentArith(a,b,mu,A,B);
 }
 
 template <typename TInteger, typename TNumber>
@@ -1515,6 +1517,126 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
 }
 
 
+<<<<<<< HEAD
+=======
+template <typename TInteger, typename TNumber>
+inline
+void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentArith(Number a, Number b, Number mu, Point A, Point B)
+{
+  
+  
+}
+
+template <typename TInteger,typename TNumber>
+inline
+TInteger DGtal::DSLSubsegment<TInteger,TNumber>::computeMinRemainder(Number a, Number b, Number mu, Point A, Point B)   
+{
+  Integer aa, bb,atmp,btmp;
+  Integer u,v,uu,vv,utmp,vtmp;
+  bool end = false;
+  Integer yu,yv;
+  Integer mini;
+  
+  u = A[0];
+  v = B[0];
+  aa = a;
+  bb = b;
+  uu = u;
+  vv = v;
+  
+  while(!end)
+    {
+      if(2*aa > bb)
+	{
+	  aa = bb-aa;
+	  Integer vtmp = bb-uu;
+	  uu = bb-vv;
+	  vv = vtmp;
+	}
+      yu = aa*uu/bb;
+      yv = aa*vv/bb;
+      
+      if(yu==yv)
+	{
+	  mini = (aa*uu)%bb;
+	  end = true;
+	}
+      else
+	{
+	  atmp = aa;
+	  btmp = bb;
+	  utmp = uu;
+	  vtmp = vv;
+	  aa = -btmp % atmp;
+	  bb = atmp;
+	  uu = 1+ (atmp*(utmp-1))/btmp;
+	  vv = (atmp*vtmp)/btmp;
+	}
+      
+    }
+  
+  return mini;
+  
+}
+
+
+
+template <typename TInteger,typename TNumber>
+inline
+TInteger DGtal::DSLSubsegment<TInteger,TNumber>::computeMaxRemainder(Number a, Number b, Number mu, Point A, Point B)
+
+{
+  Integer aa, bb, atmp, btmp;
+  Integer u,v,uu,vv, utmp, vtmp;
+  bool end = false;
+  Integer yu,yv;
+  Integer maxi;
+  Integer accum = 0;
+
+  u = A[0];
+  v = B[0];
+  aa = a;
+  bb = b;
+  uu = u;
+  vv = v;
+  
+  while(!end)
+    {
+      if(2*aa > bb)
+	{
+	  aa = bb-aa;
+	  Integer vtmp = bb-uu;
+	  uu = bb-vv;
+	  vv = vtmp;
+	}
+      yu = aa*uu/bb;
+      yv = aa*vv/bb;
+      
+      if(yu==yv)
+	{
+	  maxi =( aa*vv)%bb + accum;
+	  end = true;
+	}
+      else
+	{
+	  atmp = aa;
+	  btmp = bb;
+	  utmp = uu;
+	  vtmp = vv;
+	  aa = -btmp % atmp;
+	  bb = atmp;
+	  uu = 1+ (atmp*utmp)/btmp;
+	  vv = (atmp*(vtmp+1))/btmp;
+	}
+      
+    }
+  
+  return maxi;
+  
+}
+
+
+>>>>>>> 96ac08d... clean testDSLSubsegment simple
 
 
 //------------------------- Accessors --------------------------

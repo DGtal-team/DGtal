@@ -145,7 +145,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		  nb++;
 		  // DSLSubsegment with Farey Fan
 		  timeBeginSubseg = clock();
-		  DSLSubseg DSLsub(a,b,mu,A,B,true);
+		  DSLSubseg DSLsub(a,b,mu,A,B,"farey");
 		  timeEndSubseg = clock();
 		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
 
@@ -179,7 +179,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		  bool aBool;
 
 		  timeBeginSubseg4 = clock();
-		  DSLSubseg D2(a,a+b,-mu,A2,B2,true); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
+		  DSLSubseg D2(a,a+b,-mu,A2,B2,"farey"); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
 		  timeEndSubseg4 = clock();
 		  timeTotalSubseg4 += ((double)timeEndSubseg4-(double)timeBeginSubseg4)/(((double)CLOCKS_PER_SEC)/1000);
 
@@ -191,7 +191,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		  // DSLSubsegment with local convex hulls
 
 		  timeBeginCH = clock();
-		  DSLSubseg DCH(a,b,mu,A,B,false);
+		  DSLSubseg DCH(a,b,mu,A,B,"localCH");
 		  timeEndCH = clock();
 		  timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
 		  // Compare results of local convex hull and DSLSubsegment
