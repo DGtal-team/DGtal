@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testChordNaivePlane.cpp
+ * @file testChordNaivePlaneComputer.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/03/05
  *
- * Functions for testing class ChordNaivePlane.
+ * Functions for testing class ChordNaivePlaneComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -37,15 +37,15 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/geometry/surfaces/ChordNaivePlane.h"
-#include "DGtal/geometry/surfaces/ChordGenericNaivePlane.h"
+#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
+#include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ChordNaivePlane.
+// Functions for testing class ChordNaivePlaneComputer.
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename Integer>
@@ -58,12 +58,12 @@ Integer getRandomInteger( Integer first, Integer after_last )
 /**
  * Checks the naive plane d <= ax+by+cz <= d + max(|a|,|b|,|c|)-1
  */
-template <typename Integer, typename NaivePlane>
+template <typename Integer, typename NaivePlaneComputer>
 bool
 checkPlane( Integer a, Integer b, Integer c, Integer d, 
             int diameter, unsigned int nbtries )
 {
-  typedef typename NaivePlane::Point Point;
+  typedef typename NaivePlaneComputer::Point Point;
   typedef typename Point::Component PointInteger;
   IntegerComputer<Integer> ic;
   Integer absA = ic.abs( a );
@@ -78,7 +78,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   else
     axis = 2;
   Point p;
-  NaivePlane plane;
+  NaivePlaneComputer plane;
   plane.init( axis, 1, 1 );
   // Checks that points within the naive plane are correctly recognized.
   unsigned int nb = 0;
@@ -103,7 +103,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
-          for ( typename NaivePlane::ConstIterator it = plane.begin(), itE = plane.end();
+          for ( typename NaivePlaneComputer::ConstIterator it = plane.begin(), itE = plane.end();
                 it != itE; ++it )
             std::cerr << " " << *it;
           std::cerr << endl;
@@ -164,12 +164,12 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
 /**
  * Checks the naive plane d <= ax+by+cz <= d + max(|a|,|b|,|c|)-1
  */
-template <typename Integer, typename NaivePlane>
+template <typename Integer, typename NaivePlaneComputer>
 bool
 checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d, 
                           int diameter, unsigned int nbtries )
 {
-  typedef typename NaivePlane::Point Point;
+  typedef typename NaivePlaneComputer::Point Point;
   typedef typename Point::Component PointInteger;
   IntegerComputer<Integer> ic;
   Integer absA = ic.abs( a );
@@ -184,7 +184,7 @@ checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d,
   else
     axis = 2;
   Point p;
-  NaivePlane plane;
+  NaivePlaneComputer plane;
   plane.init( axis, 1, 1 );
   // Checks that points within the naive plane are correctly recognized.
   unsigned int nb = 0;
@@ -217,7 +217,7 @@ checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d,
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << points[ 0 ] << " NOT IN plane=" << plane << std::endl;
-          for ( typename NaivePlane::ConstIterator it = plane.begin(), itE = plane.end();
+          for ( typename NaivePlaneComputer::ConstIterator it = plane.begin(), itE = plane.end();
                 it != itE; ++it )
             std::cerr << " " << *it;
           std::cerr << endl;
@@ -280,12 +280,12 @@ checkPlaneGroupExtension( Integer a, Integer b, Integer c, Integer d,
 /**
  * Checks the naive plane d <= ax+by+cz <= d + max(|a|,|b|,|c|)-1
  */
-template <typename Integer, typename GenericNaivePlane>
+template <typename Integer, typename GenericNaivePlaneComputer>
 bool
 checkGenericPlane( Integer a, Integer b, Integer c, Integer d, 
                    int diameter, unsigned int nbtries )
 {
-  typedef typename GenericNaivePlane::Point Point;
+  typedef typename GenericNaivePlaneComputer::Point Point;
   typedef typename Point::Component PointInteger;
   IntegerComputer<Integer> ic;
   Integer absA = ic.abs( a );
@@ -300,7 +300,7 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
   else
     axis = 2;
   Point p;
-  GenericNaivePlane plane;
+  GenericNaivePlaneComputer plane;
   plane.init( 1, 1 );
   // Checks that points within the naive plane are correctly recognized.
   unsigned int nb = 0;
@@ -325,7 +325,7 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
-          for ( typename GenericNaivePlane::ConstIterator it = plane.begin(), itE = plane.end();
+          for ( typename GenericNaivePlaneComputer::ConstIterator it = plane.begin(), itE = plane.end();
                 it != itE; ++it )
             std::cerr << " " << *it;
           std::cerr << endl;
@@ -385,12 +385,12 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
 }
 
 
-template <typename Integer, typename NaivePlane>
+template <typename Integer, typename NaivePlaneComputer>
 bool
 checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbtries )
 {
   //using namespace Z3i;
-  //typedef ChordNaivePlane<Z3, Integer> NaivePlane;
+  //typedef ChordNaivePlaneComputer<Z3, Integer> NaivePlaneComputer;
   unsigned int nb = 0;
   unsigned int nbok = 0;
   for ( unsigned int nbp = 0; nbp < nbplanes; ++nbp )
@@ -401,14 +401,14 @@ checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbtries )
       Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
-          ++nb, nbok += checkPlane<Integer, NaivePlane>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
+          ++nb, nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] (Simple extension) for plane " << a << " * x + " 
                         << b << " * y + " << c << " * z = " << d << std::endl;
               break;
             }
-          ++nb, nbok += checkPlaneGroupExtension<Integer, NaivePlane>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
+          ++nb, nbok += checkPlaneGroupExtension<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] (Group extension) for plane " << a << " * x + " 
@@ -423,13 +423,13 @@ checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbtries )
 /**
  * Checks the naive plane d <= ax+by+cz <= d + max(|a|,|b|,|c|)-1
  */
-template <typename Integer, typename NaivePlane>
+template <typename Integer, typename NaivePlaneComputer>
 bool
 checkWidth( Integer a, Integer b, Integer c, Integer d, 
             int diameter, unsigned int nbtries )
 {
-  typedef typename NaivePlane::Point Point;
-  typedef typename NaivePlane::InternalScalar InternalScalar;
+  typedef typename NaivePlaneComputer::Point Point;
+  typedef typename NaivePlaneComputer::InternalScalar InternalScalar;
   IntegerComputer<Integer> ic;
   Integer absA = ic.abs( a );
   Integer absB = ic.abs( b );
@@ -474,7 +474,7 @@ checkWidth( Integer a, Integer b, Integer c, Integer d,
   for ( unsigned int i = 0; i < 3; ++i )
     {
       std::pair<InternalScalar, InternalScalar> width 
-        = NaivePlane::computeAxisWidth( i, points.begin(), points.end() );
+        = NaivePlaneComputer::computeAxisWidth( i, points.begin(), points.end() );
       double wn = NumberTraits<InternalScalar>::castToDouble( width.first );
       double wd = NumberTraits<InternalScalar>::castToDouble( width.second );
       trace.info() << "  (" << i << ") width=" << (wn/wd) << std::endl;
@@ -491,12 +491,12 @@ checkWidth( Integer a, Integer b, Integer c, Integer d,
   return nb == nbok;
 }
 
-template <typename Integer, typename NaivePlane>
+template <typename Integer, typename NaivePlaneComputer>
 bool
 checkWidths( unsigned int nbplanes, int diameter, unsigned int nbtries )
 {
   //using namespace Z3i;
-  //typedef ChordNaivePlane<Z3, Integer> NaivePlane;
+  //typedef ChordNaivePlaneComputer<Z3, Integer> NaivePlaneComputer;
   unsigned int nb = 0;
   unsigned int nbok = 0;
   for ( unsigned int nbp = 0; nbp < nbplanes; ++nbp )
@@ -507,7 +507,7 @@ checkWidths( unsigned int nbplanes, int diameter, unsigned int nbtries )
       Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
-          ++nb, nbok += checkWidth<Integer, NaivePlane>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
+          ++nb, nbok += checkWidth<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] (checkWidth) for plane " << a << " * x + " 
@@ -524,22 +524,22 @@ checkWidths( unsigned int nbplanes, int diameter, unsigned int nbtries )
  * Example of a test. To be completed.
  *
  */
-bool testChordNaivePlane()
+bool testChordNaivePlaneComputer()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::int64_t Integer;
   typedef DGtal::Z3i::Point Point;
-  typedef ChordNaivePlane<Point, Integer> NaivePlane;
-  typedef ChordGenericNaivePlane<Point, Integer> GenericNaivePlane;
+  typedef ChordNaivePlaneComputer<Point, Integer> NaivePlaneComputer;
+  typedef ChordGenericNaivePlaneComputer<Point, Integer> GenericNaivePlaneComputer;
 
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlane > ));
-  BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlane > ));
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlane > ));
-  BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< GenericNaivePlane > ));
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< GenericNaivePlaneComputer > ));
 
-  trace.beginBlock ( "Testing block: ChordNaivePlane instantiation." );
-  NaivePlane plane;
+  trace.beginBlock ( "Testing block: ChordNaivePlaneComputer instantiation." );
+  NaivePlaneComputer plane;
   Point pt0( 0, 0, 0 );
   plane.init( 2, 1, 1 );
   bool pt0_inside = plane.extend( pt0 );
@@ -580,7 +580,7 @@ bool testChordNaivePlane()
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt6
                << " Plane=" << plane << std::endl;
 
-  NaivePlane plane2;
+  NaivePlaneComputer plane2;
   plane2.init( 2, 1, 1 );
   plane2.extend( Point( 10, 0, 0 ) );
   plane2.extend( Point( 0, 8, 0 ) );
@@ -588,32 +588,32 @@ bool testChordNaivePlane()
   trace.info() << "(" << nbok << "/" << nb << ") "
                << " Plane2=" << plane2 << std::endl;
 
-  ++nb, nbok += checkPlane<Integer,NaivePlane>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
+  ++nb, nbok += checkPlane<Integer,NaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb 
-               << ") checkPlane<Integer,NaivePlane>( 11, 5, 19, 20, 100, 100 )"
+               << ") checkPlane<Integer,NaivePlaneComputer>( 11, 5, 19, 20, 100, 100 )"
                << std::endl;
 
-  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlane>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
+  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb 
-               << ") checkGenericPlane<Integer,GenericNaivePlane>( 11, 5, 19, 20, 100, 100 )"
+               << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 11, 5, 19, 20, 100, 100 )"
                << std::endl;
-  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlane>( 17, 33, 7, 10, 100, 100 ) ? 1 : 0;
+  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 17, 33, 7, 10, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb 
-               << ") checkGenericPlane<Integer,GenericNaivePlane>( 17, 33, 7, 10, 100, 100 )"
+               << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 17, 33, 7, 10, 100, 100 )"
                << std::endl;
-  ++nb, nbok += checkPlane<Integer,NaivePlane>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
+  ++nb, nbok += checkPlane<Integer,NaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb 
-                << ") checkPlane<Integer,NaivePlane>( 15, 8, 13, 15, 100, 100 )"
+                << ") checkPlane<Integer,NaivePlaneComputer>( 15, 8, 13, 15, 100, 100 )"
                 << std::endl;
-  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlane>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
+  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb 
-               << ") checkGenericPlane<Integer,GenericNaivePlane>( 15, 8, 13, 15, 100, 100 )"
+               << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 15, 8, 13, 15, 100, 100 )"
                << std::endl;
   trace.endBlock();
 
   {
-    trace.beginBlock ( "Testing block: ChordNaivePlane vertical instantiation." );
-    NaivePlane plane;
+    trace.beginBlock ( "Testing block: ChordNaivePlaneComputer vertical instantiation." );
+    NaivePlaneComputer plane;
     Point pt0( 0, 0, 0 );
     plane.init( 2, 5, 2 );
     bool pt0_inside = plane.extend( pt0 );
@@ -644,8 +644,8 @@ bool testChordNaivePlane()
   }
 
   {
-    trace.beginBlock ( "Testing block: ChordNaivePlane vertical instantiation 2." );
-    NaivePlane plane;
+    trace.beginBlock ( "Testing block: ChordNaivePlaneComputer vertical instantiation 2." );
+    NaivePlaneComputer plane;
     plane.init( 1, 1, 1 );
     Point pt0( -6, -3, 5 );
     bool pt0_inside = plane.extend( pt0 );
@@ -668,7 +668,7 @@ bool testChordNaivePlane()
   return nbok == nb;
 }
 
-template <typename NaivePlane>
+template <typename NaivePlaneComputer>
 bool 
 checkManyPlanes( unsigned int diameter,
                  unsigned int nbplanes, 
@@ -676,13 +676,13 @@ checkManyPlanes( unsigned int diameter,
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef typename NaivePlane::InternalScalar Scalar;
+  typedef typename NaivePlaneComputer::InternalScalar Scalar;
   stringstream ss (stringstream::out);
   ss << "Testing block: Diameter is " << diameter << ". Check " << nbplanes << " planes with " << nbpoints << " points each.";
   trace.beginBlock ( ss.str() );
-  ++nb, nbok += checkPlanes<Scalar,NaivePlane>( nbplanes, diameter, nbpoints ) ? 1 : 0;
+  ++nb, nbok += checkPlanes<Scalar,NaivePlaneComputer>( nbplanes, diameter, nbpoints ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb 
-               << ") checkPlanes<Scalar,NaivePlane>()"
+               << ") checkPlanes<Scalar,NaivePlaneComputer>()"
                << std::endl;
   trace.endBlock();
   return nbok == nb;
@@ -711,17 +711,17 @@ int main( int argc, char** argv )
   // application.exec();
 
   // Max diameter is ~20 for int32_t, ~500 for int64_t, any with BigInteger.
-  trace.beginBlock ( "Testing class ChordNaivePlane" );
+  trace.beginBlock ( "Testing class ChordNaivePlaneComputer" );
   bool res = true 
-    && testChordNaivePlane()
-    && checkManyPlanes<ChordNaivePlane<Z3i::Point, DGtal::int32_t> >( 4, 100, 200 )
-    && checkManyPlanes<ChordNaivePlane<Z3i::Point, DGtal::int32_t> >( 8, 100, 200 )
-    && checkManyPlanes<ChordNaivePlane<Z3i::Point, DGtal::int32_t> >( 20, 100, 200 )
-    && checkManyPlanes<ChordNaivePlane<Z3i::Point, DGtal::int32_t> >( 100, 100, 200 )
-    && checkManyPlanes<ChordNaivePlane<Z3i::Point, DGtal::int64_t> >( 2000, 100, 200 )
-    && checkWidths<DGtal::int64_t, ChordNaivePlane<Z3i::Point, DGtal::int64_t> >( 1000, 1000000, 1000 );
-    // && checkManyPlanes<ChordNaivePlane<Z3, DGtal::int64_t> >( 500, 100, 200 )
-    // && checkManyPlanes<ChordNaivePlane<Z3, DGtal::BigInteger> >( 10000, 10, 200 );
+    && testChordNaivePlaneComputer()
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 4, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 8, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 20, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 100, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int64_t> >( 2000, 100, 200 )
+    && checkWidths<DGtal::int64_t, ChordNaivePlaneComputer<Z3i::Point, DGtal::int64_t> >( 1000, 1000000, 1000 );
+    // && checkManyPlanes<ChordNaivePlaneComputer<Z3, DGtal::int64_t> >( 500, 100, 200 )
+    // && checkManyPlanes<ChordNaivePlaneComputer<Z3, DGtal::BigInteger> >( 10000, 10, 200 );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

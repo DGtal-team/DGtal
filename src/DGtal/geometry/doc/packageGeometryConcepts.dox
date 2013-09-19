@@ -92,12 +92,24 @@ subgraph cluster_concepts_2 {
      node [style=filled,color=white];
      label="geometry/surfaces (main models)";
 
-     COBANaivePlane [ URL="\ref COBANaivePlane" ];
+     COBANaivePlaneComputer [ URL="\ref COBANaivePlaneComputer" ];
+     COBAGenericNaivePlaneComputer [ URL="\ref COBAGenericNaivePlaneComputer" ];
+     ChordNaivePlaneComputer [ URL="\ref ChordNaivePlaneComputer" ];
+     ChordGenericNaivePlaneComputer [ URL="\ref ChordGenericNaivePlaneComputer" ];
   }
 
-  COBANaivePlane -> boost_CopyConstructible ;
-  COBANaivePlane -> boost_DefaultConstructible;
-  COBANaivePlane -> boost_Assignable;
+  COBANaivePlaneComputer -> boost_CopyConstructible ;
+  COBANaivePlaneComputer -> boost_DefaultConstructible;
+  COBANaivePlaneComputer -> boost_Assignable;
+  COBAGenericNaivePlaneComputer -> boost_CopyConstructible ;
+  COBAGenericNaivePlaneComputer -> boost_DefaultConstructible;
+  COBAGenericNaivePlaneComputer -> boost_Assignable;
+  ChordNaivePlaneComputer -> boost_CopyConstructible ;
+  ChordNaivePlaneComputer -> boost_DefaultConstructible;
+  ChordNaivePlaneComputer -> boost_Assignable;
+  ChordGenericNaivePlaneComputer -> boost_CopyConstructible ;
+  ChordGenericNaivePlaneComputer -> boost_DefaultConstructible;
+  ChordGenericNaivePlaneComputer -> boost_Assignable;
  }
 @enddot
 

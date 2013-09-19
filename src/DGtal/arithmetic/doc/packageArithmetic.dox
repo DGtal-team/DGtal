@@ -62,7 +62,7 @@ Parts of this package are backports from
 IntegerComputer, class SternBrocot (written with Xavier Provençal),
 algorithms StandardDSLQ0::smartDSS and StandardDSLQ0::reversedSmartDSS
 (written with Mouhammad Said), class ConvexIntegerPolygon (written
-with Emilie Charrier), class COBANaivePlane (written with Emilie
+with Emilie Charrier), class COBANaivePlaneComputer (written with Emilie
 Charrier and Lilian Buzer).
 
 @b Modules

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file COBAGenericNaivePlane.ih
+ * @file COBAGenericNaivePlaneComputer.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/09/20
  *
- * Implementation of inline methods defined in COBAGenericNaivePlane.h
+ * Implementation of inline methods defined in COBAGenericNaivePlaneComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,23 +41,23 @@
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-~COBAGenericNaivePlane()
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
+~COBAGenericNaivePlaneComputer()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-COBAGenericNaivePlane()
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
+COBAGenericNaivePlaneComputer()
 { // Object is invalid
   _axesToErase.reserve( 3 );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-COBAGenericNaivePlane( const COBAGenericNaivePlane & other )
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
+COBAGenericNaivePlaneComputer( const COBAGenericNaivePlaneComputer & other )
   : myAxes( other.myAxes )
 {
   for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end();
@@ -68,9 +68,9 @@ COBAGenericNaivePlane( const COBAGenericNaivePlane & other )
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger> &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-operator=( const COBAGenericNaivePlane & other )
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger> &
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
+operator=( const COBAGenericNaivePlaneComputer & other )
 {
   if ( this != &other )
     {
@@ -85,7 +85,7 @@ operator=( const COBAGenericNaivePlane & other )
 template <typename TSpace, typename TInternalInteger>
 inline
 DGtal::Dimension
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 active() const
 {
   ASSERT( myAxes.size() > 0 );
@@ -94,8 +94,8 @@ active() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::MyIntegerComputer &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::MyIntegerComputer &
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 ic() const
 {
   return myComputers[ active() ].ic();
@@ -104,7 +104,7 @@ ic() const
 template <typename TSpace, typename TInternalInteger>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 clear()
 {
   myAxes.clear();
@@ -118,7 +118,7 @@ clear()
 template <typename TSpace, typename TInternalInteger>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 init( InternalInteger diameter, 
       InternalInteger widthNumerator,
       InternalInteger widthDenominator )
@@ -130,8 +130,8 @@ init( InternalInteger diameter,
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::ConstIterator
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::ConstIterator
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 begin() const
 {
   return myComputers[ active() ].begin();
@@ -139,8 +139,8 @@ begin() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::ConstIterator
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::ConstIterator
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 end() const
 {
   return myComputers[ active() ].end();
@@ -148,8 +148,8 @@ end() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Size
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 size() const
 {
   return myComputers[ active() ].size();
@@ -158,7 +158,7 @@ size() const
 template <typename TSpace, typename TInternalInteger>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 empty() const
 {
   return myComputers[ active() ].empty();
@@ -166,8 +166,8 @@ empty() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Size
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 max_size() const
 {
   return myComputers[ active() ].max_size();
@@ -175,8 +175,8 @@ max_size() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Size
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 maxSize() const
 {
   return max_size();
@@ -184,8 +184,8 @@ maxSize() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Size
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 complexity() const
 {
   return myComputers[ active() ].complexity();
@@ -194,7 +194,7 @@ complexity() const
 template <typename TSpace, typename TInternalInteger>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 operator()( const Point & p ) const
 {
   return myComputers[ active() ].operator()( p );
@@ -204,7 +204,7 @@ operator()( const Point & p ) const
 template <typename TSpace, typename TInternalInteger>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 extendAsIs( const Point & p )
 { 
   ASSERT( isValid() );
@@ -235,7 +235,7 @@ extendAsIs( const Point & p )
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 extend( const Point & p )
 {
   ASSERT( isValid() );
@@ -264,7 +264,7 @@ extend( const Point & p )
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 isExtendable( const Point & p ) const
 {
   ASSERT( isValid() );
@@ -280,7 +280,7 @@ isExtendable( const Point & p ) const
 template <typename TSpace, typename TInternalInteger>
 template <typename TInputIterator>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 extend( TInputIterator it, TInputIterator itE )
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -312,7 +312,7 @@ extend( TInputIterator it, TInputIterator itE )
 template <typename TSpace, typename TInternalInteger>
 template <typename TInputIterator>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 isExtendable( TInputIterator it, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -333,7 +333,7 @@ template <typename TSpace, typename TInternalInteger>
 template <typename Vector3D>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 getNormal( Vector3D & normal ) const
 {
   myComputers[ active() ].getNormal( normal );
@@ -344,7 +344,7 @@ template <typename TSpace, typename TInternalInteger>
 template <typename Vector3D>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 getUnitNormal( Vector3D & normal ) const
 {
   myComputers[ active() ].getUnitNormal( normal );
@@ -353,7 +353,7 @@ getUnitNormal( Vector3D & normal ) const
 template <typename TSpace, typename TInternalInteger>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 getBounds( double & min, double & max ) const
 {
   myComputers[ active() ].getBounds( min, max );
@@ -361,8 +361,8 @@ getBounds( double & min, double & max ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-const typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Point &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+const typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Point &
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 minimalPoint() const
 {
   return myComputers[ active() ].minimalPoint();
@@ -370,8 +370,8 @@ minimalPoint() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-const typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Point &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+const typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Point &
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 maximalPoint() const
 {
   return myComputers[ active() ].maximalPoint();
@@ -389,11 +389,11 @@ maximalPoint() const
 template <typename TSpace, typename TInternalInteger>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
   double min, max;
   double N[ 3 ];
-  out << "[COBAGenericNaivePlane";
+  out << "[COBAGenericNaivePlaneComputer";
   for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
         axIt != axItE; ++axIt )
     out << " " << myComputers[ *axIt ];
@@ -407,7 +407,7 @@ DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostre
 template <typename TSpace, typename TInternalInteger>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::isValid() const
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::isValid() const
 {
   return myComputers[ active() ].isValid();
 }
@@ -424,7 +424,7 @@ template <typename TSpace, typename TInternalInteger>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const COBAGenericNaivePlane<TSpace, TInternalInteger> & object )
+		  const COBAGenericNaivePlaneComputer<TSpace, TInternalInteger> & object )
 {
   object.selfDisplay( out );
   return out;

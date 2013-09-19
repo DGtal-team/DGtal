@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ChordGenericNaivePlane.ih
+ * @file ChordGenericNaivePlaneComputer.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/09/20
  *
- * Implementation of inline methods defined in ChordGenericNaivePlane.h
+ * Implementation of inline methods defined in ChordGenericNaivePlaneComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,23 +41,23 @@
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
-~ChordGenericNaivePlane()
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
+~ChordGenericNaivePlaneComputer()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
-ChordGenericNaivePlane()
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
+ChordGenericNaivePlaneComputer()
 { // Object is invalid
   _axesToErase.reserve( 3 );
 }
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
-ChordGenericNaivePlane( const ChordGenericNaivePlane & other )
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
+ChordGenericNaivePlaneComputer( const ChordGenericNaivePlaneComputer & other )
   : myAxes( other.myAxes )
 {
   for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end();
@@ -68,9 +68,9 @@ ChordGenericNaivePlane( const ChordGenericNaivePlane & other )
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar> &
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
-operator=( const ChordGenericNaivePlane & other )
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar> &
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
+operator=( const ChordGenericNaivePlaneComputer & other )
 {
   if ( this != &other )
     {
@@ -85,7 +85,7 @@ operator=( const ChordGenericNaivePlane & other )
 template <typename TPoint, typename TInternalScalar>
 inline
 DGtal::Dimension
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 active() const
 {
   ASSERT( myAxes.size() > 0 );
@@ -95,7 +95,7 @@ active() const
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 clear()
 {
   myAxes.clear();
@@ -109,7 +109,7 @@ clear()
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 init( InternalScalar widthNumerator,
       InternalScalar widthDenominator )
 {
@@ -120,8 +120,8 @@ init( InternalScalar widthNumerator,
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::Size
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::Size
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 size() const
 {
   return myComputers[ active() ].size();
@@ -130,7 +130,7 @@ size() const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 empty() const
 {
   return myComputers[ active() ].empty();
@@ -138,8 +138,8 @@ empty() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::ConstIterator
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::ConstIterator
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 begin() const
 {
   return myComputers[ active() ].begin();
@@ -147,8 +147,8 @@ begin() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::ConstIterator
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::ConstIterator
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 end() const
 {
   return myComputers[ active() ].end();
@@ -157,8 +157,8 @@ end() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::Size
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::Size
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 max_size() const
 {
   return myComputers[ active() ].max_size();
@@ -166,8 +166,8 @@ max_size() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::Size
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::Size
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 maxSize() const
 {
   return max_size();
@@ -176,7 +176,7 @@ maxSize() const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 operator()( const Point & p ) const
 {
   return myComputers[ active() ].operator()( p );
@@ -186,7 +186,7 @@ operator()( const Point & p ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 extendAsIs( const Point & p )
 { 
   ASSERT( isValid() );
@@ -217,7 +217,7 @@ extendAsIs( const Point & p )
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 extend( const Point & p )
 {
   ASSERT( isValid() );
@@ -246,7 +246,7 @@ extend( const Point & p )
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 isExtendable( const Point & p ) const
 {
   ASSERT( isValid() );
@@ -262,7 +262,7 @@ isExtendable( const Point & p ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 extend( TInputIterator it, TInputIterator itE )
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -294,7 +294,7 @@ extend( TInputIterator it, TInputIterator itE )
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 isExtendable( TInputIterator it, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -315,7 +315,7 @@ template <typename TPoint, typename TInternalScalar>
 template <typename Vector3D>
 inline
 void
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 getNormal( Vector3D & normal ) const
 {
   myComputers[ active() ].getNormal( normal );
@@ -326,7 +326,7 @@ template <typename TPoint, typename TInternalScalar>
 template <typename Vector3D>
 inline
 void
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 getUnitNormal( Vector3D & normal ) const
 {
   myComputers[ active() ].getUnitNormal( normal );
@@ -335,7 +335,7 @@ getUnitNormal( Vector3D & normal ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 getBounds( double & min, double & max ) const
 {
   myComputers[ active() ].getBounds( min, max );
@@ -343,8 +343,8 @@ getBounds( double & min, double & max ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-const typename DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::Point &
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+const typename DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::Point &
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 minimalPoint() const
 {
   return myComputers[ active() ].minimalPoint();
@@ -352,8 +352,8 @@ minimalPoint() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-const typename DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::Point &
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::
+const typename DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::Point &
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::
 maximalPoint() const
 {
   return myComputers[ active() ].maximalPoint();
@@ -371,11 +371,11 @@ maximalPoint() const
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::selfDisplay ( std::ostream & out ) const
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::selfDisplay ( std::ostream & out ) const
 {
   double min, max;
   double N[ 3 ];
-  out << "[ChordGenericNaivePlane";
+  out << "[ChordGenericNaivePlaneComputer";
   for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
         axIt != axItE; ++axIt )
     out << " " << myComputers[ *axIt ];
@@ -389,7 +389,7 @@ DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::selfDisplay ( std::ostre
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordGenericNaivePlane<TPoint, TInternalScalar>::isValid() const
+DGtal::ChordGenericNaivePlaneComputer<TPoint, TInternalScalar>::isValid() const
 {
   return myComputers[ active() ].isValid();
 }
@@ -406,7 +406,7 @@ template <typename TPoint, typename TInternalScalar>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ChordGenericNaivePlane<TPoint, TInternalScalar> & object )
+		  const ChordGenericNaivePlaneComputer<TPoint, TInternalScalar> & object )
 {
   object.selfDisplay( out );
   return out;

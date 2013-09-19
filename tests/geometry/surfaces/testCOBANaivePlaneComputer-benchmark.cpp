@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testCOBANaivePlane-benchmark.cpp
+ * @file testCOBANaivePlaneComputer-benchmark.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/03/05
  *
- * Functions for testing class COBANaivePlane.
+ * Functions for testing class COBANaivePlaneComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -34,14 +34,14 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/geometry/surfaces/COBANaivePlane.h"
+#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class COBANaivePlane.
+// Functions for testing class COBANaivePlaneComputer.
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename Integer>
@@ -54,13 +54,13 @@ Integer getRandomInteger( const Integer & first, const Integer & after_last )
 /**
  * Checks the naive plane d <= ax+by+cz <= d + max(|a|,|b|,|c|)-1
  */
-template <typename Integer, typename NaivePlane>
+template <typename Integer, typename NaivePlaneComputer>
 bool
 checkPlane( Integer a, Integer b, Integer c, Integer d, 
             int diameter, unsigned int nbpoints,
             Statistic<double> & stats )
 {
-  typedef typename NaivePlane::Point Point;
+  typedef typename NaivePlaneComputer::Point Point;
   typedef typename Point::Component PointInteger;
   IntegerComputer<Integer> ic;
   Integer absA = ic.abs( a );
@@ -75,7 +75,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   else
     axis = 2;
   Point p;
-  NaivePlane plane;
+  NaivePlaneComputer plane;
   plane.init( axis, diameter, 1, 1 );
   // Checks that points within the naive plane are correctly recognized.
   unsigned int nb = 0;
@@ -112,13 +112,13 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   return nb == nbok;
 }
 
-template <typename NaivePlane>
+template <typename NaivePlaneComputer>
 bool
 checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbpoints,
              Statistic<double> & stats )
 {
   //using namespace Z3i;
-  typedef typename NaivePlane::InternalInteger Integer;
+  typedef typename NaivePlaneComputer::InternalInteger Integer;
   unsigned int nb = 0;
   unsigned int nbok = 0;
   for ( unsigned int nbp = 0; nbp < nbplanes; ++nbp )
@@ -129,7 +129,7 @@ checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbpoints,
       Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
-          ++nb, nbok += checkPlane<Integer, NaivePlane>( a, b, c, d, diameter, nbpoints, stats ) ? 1 : 0;
+          ++nb, nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbpoints, stats ) ? 1 : 0;
           if ( nb != nbok )
             {
               std::cerr << "[ERROR] for plane " << a << " * x + " 
@@ -153,13 +153,13 @@ int main( int argc, char** argv )
   unsigned int nbpoints = ( argc > 2 ) ? atoi( argv[ 2 ] ) : 100;
   unsigned int diameter = ( argc > 3 ) ? atoi( argv[ 3 ] ) : 100;
   std::cout << "# Usage: " << argv[0] << " <nbtries> <nbpoints> <diameter>." << std::endl;
-  std::cout << "# Test class COBANaivePlane. Points are randomly chosen in [-diameter,diameter]^3." << std::endl;
+  std::cout << "# Test class COBANaivePlaneComputer. Points are randomly chosen in [-diameter,diameter]^3." << std::endl;
   std::cout << "# Integer nbtries nbpoints diameter time/plane(ms) E(comp) V(comp)" << std::endl;
   
  // Max diameter is ~20 for int32_t, ~500 for int64_t, any with BigInteger.
-  trace.beginBlock ( "Testing class COBANaivePlane" );
+  trace.beginBlock ( "Testing class COBANaivePlaneComputer" );
   bool res = true 
-    && checkPlanes<COBANaivePlane<Z3, DGtal::BigInteger> >( nbtries, diameter, nbpoints, stats );
+    && checkPlanes<COBANaivePlaneComputer<Z3, DGtal::BigInteger> >( nbtries, diameter, nbpoints, stats );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   long t = trace.endBlock();
   stats.terminate();

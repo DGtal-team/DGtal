@@ -17,28 +17,26 @@
 #pragma once
 
 /**
- * @file COBANaivePlane.h
+ * @file ChordGenericNaivePlaneComputer.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
- * @author Emilie Charrier
- * @author Lilian Buzer
  *
  * @date 2012/09/20
  *
- * Header file for module COBANaivePlane.cpp
+ * Header file for module ChordGenericNaivePlaneComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(COBANaivePlane_RECURSES)
-#error Recursive header files inclusion detected in COBANaivePlane.h
-#else // defined(COBANaivePlane_RECURSES)
+#if defined(ChordGenericNaivePlaneComputer_RECURSES)
+#error Recursive header files inclusion detected in ChordGenericNaivePlaneComputer.h
+#else // defined(ChordGenericNaivePlaneComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define COBANaivePlane_RECURSES
+#define ChordGenericNaivePlaneComputer_RECURSES
 
-#if !defined COBANaivePlane_h
+#if !defined ChordGenericNaivePlaneComputer_h
 /** Prevents repeated inclusion of headers. */
-#define COBANaivePlane_h
+#define ChordGenericNaivePlaneComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,26 +48,27 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
-#include "DGtal/arithmetic/LatticePolytope2D.h"
+#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class COBANaivePlane
+  // template class ChordGenericNaivePlaneComputer
   /**
-   * Description of template class 'COBANaivePlane' <p> \brief Aim: A
-   * class that contains the COBA algorithm (Emilie Charrier, Lilian
-   * Buzer, DGCI2008) for recognizing pieces of digital planes of given axis
-   * width. When the width is 1, it corresponds to naive planes. The
-   * axis is specified at initialization of the object.
+   * Description of template class 'ChordGenericNaivePlaneComputer' <p> \brief
+   * Aim: A class that recognizes pieces of digital planes of given
+   * axis width. When the width is 1, it corresponds to naive
+   * planes. Contrary to ChordNaivePlaneComputer, the axis is \b not specified
+   * at initialization of the object. This class uses three instances
+   * of ChordNaivePlaneComputer, one per axis.
    *
    * As a (3D) geometric primitive, it obeys to a subset of the
    * concept CSegmentComputer. It is copy constructible,
    * assignable. It is iterable (inner type ConstIterator, begin(),
-   * end()). It has methods \ref extend(), extend( InputIterator,
-   * InputIterator) and \ref isExtendable(),
+   * end()). You may clear() it. It has methods \ref extend(), extend(
+   * InputIterator, InputIterator) and \ref isExtendable(),
    * isExtendable(InputIterator, InputIterator).  The object stores
    * all the distinct points \c p such that 'extend( \c p )' was
    * successful. It is thus a model of boost::ForwardContainer (non
@@ -78,41 +77,23 @@ namespace DGtal
    * It is also a model of CPointPredicate (returns 'true' iff a point
    * is within the current bounds).
    *
-   * Note on complexity: The complexity is highly dependent on the way
-   * points are added to the object. Let \a D be the diameter and \a n
-   * be the number of points already added. Assume small
-   * integers. Complexity of adding a point that do not change the
-   * normal of the plane is \f$ O(\log(n)) \f$. When it changes the
-   * normal, the number of cuts is upper bounded by some \f$
-   * O(\log(D)) \f$, each cut costs \f$ O(n+m\log(D) ) \f$, where \a m
-   * is the number of sides of the convex polygon of
-   * constraints. However, when recognizing a piece of naive plane,
-   * the number of times \a K where the normal should be updated is
-   * rather limited to some \f$ O(\log(D)) \f$.
+   * Note on complexity: See ChordNaivePlaneComputer. Although it uses three
+   * instances of ChordNaivePlaneComputer, the recognition is \b not three
+   * times slower. Indeed, recognition stops quickly on bad axes.
    *
-   * Note on execution times: The user should favor int64_t instead of
-   * BigInteger whenever possible (diameter smaller than 500). The
-   * speed-up is between 10 and 20 for these diameters. For greater
-   * diameters, it is necessary to use BigInteger (see below).
+   * @tparam TPoint specifies the type of input points (digital or not). 
    *
-   * @tparam TSpace specifies the type of digital space in which lies
-   * input digital points. A model of CSpace.
-   *
-   * @tparam TInternalInteger specifies the type of integer used in
-   * internal computations. The type should be able to hold integers
-   * of order (2*D^3)^2 if D is the diameter of the set of digital
-   * points. In practice, diameter is limited to 20 for int32_t,
-   * diameter is approximately 500 for int64_t, and whatever with
-   * BigInteger/GMP integers. For huge diameters, the slow-down is
-   * polylogarithmic with the diameter.
-   *
-   * Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   * @tparam TInternalScalar specifies the type of scalar used in
+   * internal computations, generally a more precise type than
+   * TPoint::Component. For instance, for digital points, the type
+   * should be able to hold integers of order (2*D^3) if D is the
+   * diameter of the set of digital points.
    *
    @code
    typedef SpaceND<3,int> Z3;
-   typedef COBANaivePlane< Z3, int64_t > NaivePlane;
-   NaivePlane plane;
-   plane.init( 2, 100, 1, 1 ); // axis is z, diameter is 100, width is 1/1 => naive 
+   typedef ChordGenericNaivePlaneComputer< Z3::Point, int64_t > NaivePlaneComputer;
+   NaivePlaneComputer plane;
+   plane.init( 1, 1 ); // width is 1/1 => naive 
    plane.extend( Point( 10, 0, 0 ) ); // return 'true'
    plane.extend( Point( 0, 8, 0 ) );  // return 'true'
    plane.extend( Point( 0, 0, 6 ) );  // return 'true'
@@ -123,25 +104,27 @@ namespace DGtal
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer, CPointPredicate.
    */
-  template < typename TSpace, 
-             typename TInternalInteger >
-  class COBANaivePlane
+  template < typename TPoint,
+             typename TInternalScalar >
+  class ChordGenericNaivePlaneComputer
   {
-
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( CInteger< TInternalInteger > ));
-    BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
+    // BOOST_CONCEPT_ASSERT(( CPoint< TPoint > ));
+    BOOST_CONCEPT_ASSERT(( CSignedNumber< TInternalScalar > ));
+    BOOST_STATIC_ASSERT(( TPoint::dimension == 3 ));
 
     // ----------------------- public types ------------------------------
   public:
-    typedef TSpace Space;
-    typedef typename Space::Point Point;
+    typedef TPoint Point;
+    typedef TInternalScalar InternalScalar;
+    typedef Point Vector;
+    typedef typename Vector::Component Component;
+    typedef typename Point::Coordinate Coordinate;
+    typedef InternalScalar InternalVector[ 3 ];
+
     typedef std::set< Point > PointSet;
     typedef typename PointSet::size_type Size;
     typedef typename PointSet::const_iterator ConstIterator;
     typedef typename PointSet::iterator Iterator;
-    typedef TInternalInteger InternalInteger;
-    typedef IntegerComputer< InternalInteger > MyIntegerComputer;
 
     // ----------------------- std public types ------------------------------
   public:
@@ -154,58 +137,40 @@ namespace DGtal
 
     // ----------------------- internal types ------------------------------
   private:
-    typedef PointVector< 3, InternalInteger > InternalPoint3;
-    typedef SpaceND< 2, InternalInteger > InternalSpace2;
-    typedef typename InternalSpace2::Point InternalPoint2;
-    typedef LatticePolytope2D< InternalSpace2 > ConvexPolygonZ2;
-    typedef typename ConvexPolygonZ2::HalfSpace HalfSpace;
-
-    /**
-       Defines the state of the algorithm, the part of the data that
-       may change after initialization of the COBANaivePlane
-       object. Only the set of points is not stored here.
-    */
-    struct State {
-      InternalInteger max;     /**< current max dot product. */
-      InternalInteger min;     /**< current min dot product. */
-      Point ptMax;             /**< 3D point giving the max dot product. */
-      Point ptMin;             /**< 3D point giving the min dot product. */
-      ConvexPolygonZ2 cip;     /**< current constraint integer polygon. */
-      InternalPoint3 centroid; /**< current centroid of cip. */
-      InternalPoint3 N;        /**< current normal vector. */
-    };
-
+    typedef ChordNaivePlaneComputer< Point, InternalScalar > ChordComputer;
+    typedef std::vector<Dimension>::iterator AxisIterator;
+    typedef std::vector<Dimension>::const_iterator AxisConstIterator;
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Destructor.
      */
-    ~COBANaivePlane();
+    ~ChordGenericNaivePlaneComputer();
 
     /**
      * Constructor. The object is not valid and should be initialized.
      * @see init
      */
-    COBANaivePlane();
+    ChordGenericNaivePlaneComputer();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    COBANaivePlane ( const COBANaivePlane & other );
+    ChordGenericNaivePlaneComputer ( const ChordGenericNaivePlaneComputer & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    COBANaivePlane & operator= ( const COBANaivePlane & other );
+    ChordGenericNaivePlaneComputer & operator= ( const ChordGenericNaivePlaneComputer & other );
 
     /**
-       @return the object that performs integer calculation.
+       @return an active axis (or the active axis when there is only one).
     */
-    MyIntegerComputer & ic() const;
+    Dimension active() const;
 
     /**
      * Clear the object, free memory. The plane keeps its main axis,
@@ -219,11 +184,6 @@ namespace DGtal
      * accept new points for recognition. Calls clear so that the
      * object is ready to be extended.
      *
-     * @param axis the main axis (0,1,2) for x, y or z.
-     *
-     * @param diameter the diameter for the set of points (maximum
-     * distance between the given points)
-     *
      * @param widthNumerator the maximal axis-width (x,y,or z) for the
      * plane is defined as the rational number \a widthNumerator / \a
      * widthDenominator (default is 1/1, i.e. naive plane).
@@ -232,14 +192,8 @@ namespace DGtal
      * the plane is defined as the rational number \a widthNumerator /
      * \a widthDenominator (default is 1/1, i.e. naive plane).
      */
-    void init( Dimension axis, InternalInteger diameter, 
-               InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE, 
-               InternalInteger widthDenominator = NumberTraits< InternalInteger >::ONE );
-
-    /**
-     * @return the number of vertices/edges of the convex integer polygon of solutions.
-     */
-    Size complexity() const;
+    void init( InternalScalar widthNumerator = NumberTraits< InternalScalar >::ONE, 
+               InternalScalar widthDenominator = NumberTraits< InternalScalar >::ONE );
 
     //-------------------- model of ForwardContainer -----------------------------
   public:
@@ -283,7 +237,7 @@ namespace DGtal
 
     /**
      * Checks if the point \a p is in the current digital
-     * plane. Therefore, a COBANaivePlane is a model of
+     * plane. Therefore, a ChordGenericNaivePlaneComputer is a model of
      * CPointPredicate.
      *
      * @param p any 3D point.
@@ -373,7 +327,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param [in,out] normal  the current normal vector 
+     * @param (updates) the current normal vector 
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
@@ -382,7 +336,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param [in,out] normal (updates) the current unit normal vector 
+     * @param (updates) the current unit normal vector 
      */
     template <typename Vector3D>
     void getUnitNormal( Vector3D & normal ) const;
@@ -429,128 +383,39 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    Dimension myAxis;          /**< the main axis used in all subsequent computations. */
-    InternalInteger myG;       /**< the grid step used in all subsequent computations. */
-    InternalPoint2 myWidth;    /**< the plane width as a positive rational number myWidth[0]/myWidth[1] */
-    PointSet myPointSet;       /**< the set of points within the plane. */ 
-    State myState;             /**< the current state that defines the plane being recognized. */
-    InternalInteger myCst1;    /**<  ( (int) ceil( get_si( myG ) * myWidth ) + 1 ). */
-    InternalInteger myCst2;    /**<  ( (int) floor( get_si( myG ) * myWidth ) - 1 ). */
-    mutable InternalInteger _v;/**< temporary variable used in computations. */
-    mutable State _state;      /**< Temporary state used in computations. */
-    mutable InternalPoint2 _grad; /**< temporary variable to store the current gradient. */
+    std::vector<Dimension> myAxes; /**< The list of active plane axes. Starts with {0,1,2}. At least one. */
+    ChordComputer myComputers[ 3 ]; /**< The three COBA plane computers. */
+    mutable std::vector<Dimension> _axesToErase; /**< Useful when erasing axes. */
     // ------------------------- Hidden services ------------------------------
   protected:
 
 
     // ------------------------- Internals ------------------------------------
   private:
-
-    /**
-     * Recompute centroid of polygon of solution and deduce the
-     * current normal vector.  It is called after any modification of
-     * the convex polygon representing the set of solution.
-     *
-     * @param state (modified) the state where the fields state.cip are used in computation and where
-     * fields state.centroid and state.N are updated.
-     */
-    void computeCentroidAndNormal( State & state ) const;
-
-    /**
-     * Performs the double cut in parameter space according to the
-     * current gradient and width. The centroid and normals are no
-     * more valid (computeCentroidAndNormal should be called
-     * afterwards).
-     *
-     * @param grad (altered, but not modified) the gradient used to
-     * update the polygon of solutions state.cip.
-     *
-     * @param state (modified) the state where the fields
-     * state.indMin, state.indMax, state.cip are used in computation
-     * and where field state.cip is updated.
-     */
-    void doubleCut( InternalPoint2 & grad, State & state ) const;
-
-    /**
-     * Computes the min and max values/arguments of the scalar product
-     * between the normal state.N and the points in the range
-     * [itB,itE). Overwrites state.min, state.max at the start.
-     *
-     * @tparam TInputIterator any model of InputIterator.
-     * @param state (modified) the state where the normal N is used in
-     * computation and where fields state.min, state.max,
-     * state.indMin, state.indMax are updated.
-     *
-     * @param itB an input iterator on the first point of the range.
-     * @param itE an input iterator after the last point of the range.
-     */
-    template <typename TInputIterator>
-    void computeMinMax( State & state, TInputIterator itB, TInputIterator itE ) const;
-
-    /**
-     * Updates the min and max values/arguments of the scalar product
-     * between the normal state.N and the points in the range
-     * [itB,itE). Do not overwrite state.min, state.max at the start.
-     *
-     * @tparam TInputIterator any model of InputIterator.
-     *
-     * @param state (modified) the state where the normal N is used in
-     * computation and where fields state.min, state.max,
-     * state.indMin, state.indMax are updated.
-     *
-     * @param itB an input iterator on the first point of the range.
-     * @param itE an input iterator after the last point of the range.
-     * @return 'true' if any of the fields state.min, state.max,
-     * state.indMin, state.indMax have been updated, 'false'
-     * otherwise.
-     */
-    template <typename TInputIterator>
-    bool updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const;
-
-    /**
-     * @param state the state where the normal state.N, the scalars state.min and state.max are used in
-     * computations.
-     *
-     * @return 'true' if the current width along state.N (computed
-     * from the difference of state.max and state.min) is strictly
-     * inferior to the maximal specified width (in myWidth), 'false'
-     * otherwise.
-     */
-    bool checkPlaneWidth( const State & state ) const;
-
-    /**
-     * @param grad (updated) the value of a gradient used to cut the
-     * polygon of solutions.
-     *
-     * @param state the state where the iterators state.indMin and
-     * state.indMax are used in computations.
-     */
-    void computeGradient( InternalPoint2 & grad, const State & state ) const;
-
-  }; // end of class COBANaivePlane
+  }; // end of class ChordGenericNaivePlaneComputer
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'COBANaivePlane'.
+   * Overloads 'operator<<' for displaying objects of class 'ChordGenericNaivePlaneComputer'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'COBANaivePlane' to write.
+   * @param object the object of class 'ChordGenericNaivePlaneComputer' to write.
    * @return the output stream after the writing.
    */
-  template <typename TSpace, typename TInternalInteger>
+  template <typename TPoint, typename TInternalScalar>
   std::ostream&
-  operator<< ( std::ostream & out, const COBANaivePlane<TSpace, TInternalInteger> & object );
+  operator<< ( std::ostream & out, const ChordGenericNaivePlaneComputer<TPoint, TInternalScalar> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/COBANaivePlane.ih"
+#include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined COBANaivePlane_h
+#endif // !defined ChordGenericNaivePlaneComputer_h
 
-#undef COBANaivePlane_RECURSES
-#endif // else defined(COBANaivePlane_RECURSES)
+#undef ChordGenericNaivePlaneComputer_RECURSES
+#endif // else defined(ChordGenericNaivePlaneComputer_RECURSES)
