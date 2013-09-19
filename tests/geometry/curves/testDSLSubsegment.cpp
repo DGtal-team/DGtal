@@ -206,9 +206,18 @@ bool testDSLSubsegment(Integer modb)
   int p = 3;
   b = (Integer) pow(10.0,p);
   
-  trace.info() << "a b mu xf:" << a << " " << b << " " << mu << " " << xf << std::endl; 
+ 
+  Integer g = ic.gcd(a,b);
+  a = a/g;
+  b = b/g;
   
-  int error4=0;
+  trace.info() << "a b mu xf: " << a << " " << b << " " << mu << " " << xf << std::endl; 
+  Number precision = (double) 1/(2*b);
+  Number alpha = (Number) a/(Number) b;
+  Number beta = (Number) mu/(Number) b;
+  trace.info() << "alpha beta precision: " << alpha << " " << beta << " " << precision << std::endl;
+  
+  int error4=0; int total4 = 0;
   for(unsigned int i = 0; i<l; i++)
     for(unsigned int j = i+1; j<l; j++)
       {
@@ -222,19 +231,23 @@ bool testDSLSubsegment(Integer modb)
 	
 	// DSLSubsegment with Farey Fan (O(log(n))
 	DSLSubseg DSLsub(a,b,mu,A,B,"farey");
-	
+	    
 	// DSLSubsegment with float-type DSL parameters
-	Number precision = (double) 1/(2*b);
-	Number alpha = (Number) a/b;
-	Number beta = (Number) mu/b;
 	DSLSubsegD DSLsubD(alpha,beta,A,B,precision);
 	
 	// If results are different, count an error
 	if(DSLsub.getA() != DSLsubD.getA() || DSLsub.getB() != DSLsubD.getB() || DSLsub.getMu() != DSLsubD.getMu())	
-	  error4 ++;
+	  { 
+	    trace.info() << DSLsub.getA() << " " << DSLsub.getB() << " " << DSLsub.getMu() << " ---- " << DSLsubD.getA() << " " << DSLsubD.getB() << " " << DSLsubD.getMu() << std::endl << std::endl;
+	    
+	    
+	    error4 ++;
+	    
+	  }
+	total4++;
       }
   
-  trace.info() << error4 << " errors." << std::endl;
+  trace.info() << error4 << "/" << total4 << " errors." << std::endl;
   trace.endBlock();
   trace.info() << std::endl;
   
