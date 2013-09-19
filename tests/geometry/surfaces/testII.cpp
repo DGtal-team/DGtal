@@ -45,6 +45,7 @@
 #include "DGtal/kernel/BasicPointFunctors.h"
 
 #include "DGtal/shapes/implicit/ImplicitBall.h"
+#include "DGtal/shapes/ShapeFactory.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/shapes/DigitalShapesDecorator.h"
@@ -135,6 +136,138 @@ typename TSpace::RealPoint RegularPointEmbedder_( const Point & p, const double 
     for ( Dimension i = 0; i < TSpace::dimension; ++i )
         aRealPoint[ i ] = NumberTraits<Integer>::castToDouble( p[ i ] ) * h;
     return aRealPoint;
+}
+
+bool test2DTopology()
+{
+    typedef Z2i::RealPoint RealPoint;
+    typedef Z2i::Space Space;
+    typedef Z2i::Domain Domain;
+    typedef typename Space::Point Point;
+    typedef typename Space::Vector Vector;
+//    typedef AccFlower2D< Space > Shape;
+    typedef Ball2D< Space > Shape;
+
+    typedef GaussDigitizer< Space, Shape > Digitizer;
+
+    typedef Z2i::KSpace KSpace;
+    typedef typename KSpace::SCell SCell;
+
+    typedef typename GridCurve< KSpace >::PointsRange PointsRange;
+
+    typedef LightImplicitDigitalSurface< KSpace, Digitizer > LightImplicitDigSurface;
+    typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
+
+    typedef DepthFirstVisitor< DigSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef typename VisitorRange::ConstIterator SurfelConstIterator;
+
+
+    RealPoint center( 0.0, 0.0 );
+    double radius = 20.0;
+    double varsmallradius = 5.0;
+    int k = 3;
+    double phi = 0.2;
+
+    double h = 1;
+
+//    Shape * aShape = new Shape( center, radius, varsmallradius, k, phi );
+    Shape * aShape = new Shape( center, radius );
+    Digitizer * digShape = new Digitizer();
+    digShape->attach( *aShape );
+    Vector vlow( -1, -1 );
+    Vector vup( 1, 1 );
+    digShape->init( aShape->getLowerBound() + vlow, aShape->getUpperBound() + vup, h );
+    Domain domain = digShape->getDomain();
+
+    KSpace K;
+    K.init( digShape->getLowerBound(), digShape->getUpperBound(), true );
+    SCell bel = Surfaces< KSpace >::findABel( K, *digShape, 10000 );
+    SurfelAdjacency< KSpace::dimension > SAdj( true );
+
+    std::vector< Point > points;
+    Surfaces< KSpace >::track2DBoundaryPoints( points, K, SAdj, *digShape, bel );
+    std::cout << "points: " << points.size() << std::endl;
+    std::cout << points[0] << std::endl;
+    std::cout << points[1] << std::endl;
+    int recount = 0;
+
+    Color white( 255, 255, 255, 255 );
+    Color black( 0, 0, 0, 255 );
+    Color red( 255, 0, 0, 255 );
+    Color green( 0, 255, 0, 255 );
+    Color blue( 0, 0, 255, 255 );
+    Color dwhite( 192, 192, 192, 255 );
+    Color dblack( 0, 0, 0, 255 );
+    Color dred( 192, 0, 0, 255 );
+    Color dgreen( 0, 192, 0, 255 );
+    Color dblue( 0, 0, 192, 255 );
+    Board2D board;
+    board << SetMode( domain.className(), "Grid" )
+          << domain;
+    Point origin(0,0);
+    board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
+          << origin;
+    board << CustomStyle( points[ 0 ].className(), new CustomColors( blue, dblue ) )
+          << points[ 0 ];
+    for( int i = 1; i < points.size() - 1; ++i )
+    {
+        board << CustomStyle( points[ i ].className(), new CustomColors( blue, dblue ) )
+              << points[ i ];
+
+        if( points[ i ] == points[ i - 1 ] )
+        {
+            ++recount;
+        }
+    }
+    board.saveSVG("testII_topology_points.svg");
+    std::cout << "duplicata: " << recount << std::endl;
+    std::cout << "oooooooooooooooooooooo" << std::endl;
+
+    GridCurve< KSpace > gridcurve;
+    gridcurve.initFromVector( points );
+    PointsRange pointsRange = gridcurve.getPointsRange();
+    std::cout << "pointsRange: " << pointsRange.size() << std::endl;
+    PointsRange::ConstIterator prbegin = pointsRange.begin();
+    std::cout << *prbegin << std::endl;
+    ++prbegin;
+    std::cout << *prbegin << std::endl;
+    std::cout << "oooooooooooooooooooooo" << std::endl;
+
+    LightImplicitDigSurface LightImplDigSurf( K, *digShape, SAdj, bel );
+    DigSurface surf( LightImplDigSurf );
+    std::cout << "surf: " << surf.size() << std::endl;
+    DigSurface::ConstIterator sbegin = surf.begin();
+    std::cout << *sbegin << std::endl;
+    ++sbegin;
+    std::cout << *sbegin << std::endl;
+    std::cout << "oooooooooooooooooooooo" << std::endl;
+
+    int count = 0;
+    VisitorRange range( new Visitor( surf, *surf.begin() ) );
+    board.clear();
+    board << SetMode( domain.className(), "Grid" )
+          << domain;
+    board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
+          << origin;
+    for( SurfelConstIterator ibegin = range.begin(), iend = range.end(); ibegin != iend; ++ibegin )
+    {
+        Dimension track = *( K.sDirs( *ibegin ) );
+        SCell pointel = K.sIndirectIncident( *ibegin, track );
+        Point current = K.sCoords( pointel );
+        board << CustomStyle( current.className(), new CustomColors( green, dgreen ) )
+              << current;
+
+        if( count == 0 || count == 1 )
+            std::cout << *ibegin << std::endl;
+
+        ++count;
+    }
+    board.saveSVG("testII_topology_surfel.svg");
+    std::cout << "range: " << count << std::endl;
+
+    delete digShape;
+    delete aShape;
 }
 
 bool testII2D_kernels()
@@ -1339,18 +1472,18 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-//        testII2D( );
-    //    testII2D_kernels();
-    //    testII2D_kernels_2();
-//        testII2D_same_results();
-//        testII3D_same_results();
-    //    testII3D_kernels(argc, argv);
-//        testII3D( argc, argv );
+    test2DTopology();
+//    testII2D( );
+//    testII2D_kernels();
+//    testII2D_kernels_2();
+//    testII2D_same_results();
+//    testII3D_same_results();
+//    testII3D_kernels(argc, argv);
+//    testII3D( argc, argv );
+//    testII3D();
+
+    trace.endBlock();
     return 1;
-    //  bool res = testII3D();
-    //  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-    //  trace.endBlock();
-    //  return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
