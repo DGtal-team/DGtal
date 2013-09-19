@@ -102,7 +102,7 @@ int main( int argc, char** argv )
    string inputFilename =   examplesPath + "samples/Al.100.vol" ;
     trace.info() << "input file used " << inputFilename << std::endl;
   // parameter threshold
-    unsigned int threshold = 1;
+    unsigned int threshold = 0;
     trace.info() << "the value that defines the isosurface in the image (an integer between 0 and 255)= " << threshold<< std::endl;
    // parameter widthNum
    unsigned int widthNum = 1;
