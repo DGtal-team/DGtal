@@ -32,8 +32,8 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 #GMP based tests
 #----------------------
 SET(DGTAL_TESTS_GMP_SRC 
-    testCOBANaivePlane
-    testChordNaivePlane
+    testCOBANaivePlaneComputer
+    testChordNaivePlaneComputer
  )
 
 IF(GMP_FOUND)
@@ -45,8 +45,8 @@ IF(GMP_FOUND)
 ENDIF(GMP_FOUND)
 
 SET(DGTAL_BENCH_GMP_SRC
-   testCOBANaivePlane-benchmark
-   testCOBAGenericNaivePlane-benchmark
+   testCOBANaivePlaneComputer-benchmark
+   testCOBAGenericNaivePlaneComputer-benchmark
 )
 
 

@@ -22,7 +22,7 @@
  *
  * @date 2012/03/05
  *
- * Functions for testing class COBANaivePlane.
+ * Functions for testing class COBANaivePlaneComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -34,7 +34,7 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/surfaces/COBANaivePlane.h"
+#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -60,13 +60,13 @@ int main( int argc, char** argv )
   using namespace Z3i;
 
   QApplication application(argc,argv);
-  trace.beginBlock ( "Testing class COBANaivePlane" );
+  trace.beginBlock ( "Testing class COBANaivePlaneComputer" );
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef BigInteger Integer;
 
-  COBANaivePlane<Z3, BigInteger> plane;
+  COBANaivePlaneComputer<Z3, BigInteger> plane;
   plane.init( 2, 100, 1, 1 );
   Point pt0( 0, 0, 0 );
   bool pt0_inside = plane.extend( pt0 );

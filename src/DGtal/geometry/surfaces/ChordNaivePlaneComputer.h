@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file ChordNaivePlane.h
+ * @file ChordNaivePlaneComputer.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  * @author Yan Gérard
@@ -26,20 +26,20 @@
  *
  * @date 2012/09/20
  *
- * Header file for module ChordNaivePlane.cpp
+ * Header file for module ChordNaivePlaneComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ChordNaivePlane_RECURSES)
-#error Recursive header files inclusion detected in ChordNaivePlane.h
-#else // defined(ChordNaivePlane_RECURSES)
+#if defined(ChordNaivePlaneComputer_RECURSES)
+#error Recursive header files inclusion detected in ChordNaivePlaneComputer.h
+#else // defined(ChordNaivePlaneComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ChordNaivePlane_RECURSES
+#define ChordNaivePlaneComputer_RECURSES
 
-#if !defined ChordNaivePlane_h
+#if !defined ChordNaivePlaneComputer_h
 /** Prevents repeated inclusion of headers. */
-#define ChordNaivePlane_h
+#define ChordNaivePlaneComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -53,9 +53,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class ChordNaivePlane
+  // template class ChordNaivePlaneComputer
   /**
-    Description of template class 'ChordNaivePlane'. \brief Aim: A
+    Description of template class 'ChordNaivePlaneComputer'. \brief Aim: A
     class that contains the chord-based algorithm for recognizing
     pieces of digital planes of given axis width [ Gerard,
     Debled-Rennesson, Zimmermann, 2005 ]. When the width is 1, it
@@ -92,7 +92,7 @@ namespace DGtal
 
     \par What is the best algorithm to check if a set of digital points is some (naive) plane ? 
 
-    We discuss only this question between ChordNaivePlane (1) and COBANaivePlane (2):
+    We discuss only this question between ChordNaivePlaneComputer (1) and COBANaivePlaneComputer (2):
 
     -# Complexity: (2) has a better worst time complexity than (1),
        but neither (1) nor (2) has an easy bound on the number of
@@ -117,8 +117,8 @@ namespace DGtal
     @code
     // Example. Checks that the following four points does not belong to a naive plane.
     typedef SpaceND<3,int> Z3;
-    typedef ChordNaivePlane< Z3::Point, int64_t > NaivePlane;
-    NaivePlane plane;
+    typedef ChordNaivePlaneComputer< Z3::Point, int64_t > NaivePlaneComputer;
+    NaivePlaneComputer plane;
     plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive 
     plane.extend( Point( 10, 0, 0 ) ); // return 'true'
     plane.extend( Point( 0, 8, 0 ) );  // return 'true'
@@ -142,7 +142,7 @@ namespace DGtal
    */
   template < typename TPoint, 
              typename TInternalScalar >
-  class ChordNaivePlane
+  class ChordNaivePlaneComputer
   {
 
     // BOOST_CONCEPT_ASSERT(( CPoint< TPoint > ));
@@ -176,7 +176,7 @@ namespace DGtal
   private:
     /**
        Defines the state of the algorithm, the part of the data that
-       may change after initialization of the ChordNaivePlane
+       may change after initialization of the ChordNaivePlaneComputer
        object. Only the set of points is not stored here.
     */
     struct State {
@@ -196,26 +196,26 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~ChordNaivePlane();
+    ~ChordNaivePlaneComputer();
 
     /**
      * Constructor. The object is not valid and should be initialized.
      * @see init
      */
-    ChordNaivePlane();
+    ChordNaivePlaneComputer();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ChordNaivePlane ( const ChordNaivePlane & other );
+    ChordNaivePlaneComputer ( const ChordNaivePlaneComputer & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ChordNaivePlane & operator= ( const ChordNaivePlane & other );
+    ChordNaivePlaneComputer & operator= ( const ChordNaivePlaneComputer & other );
 
     /**
      * Clear the object, free memory. The plane keeps its main axis,
@@ -301,7 +301,7 @@ namespace DGtal
 
     /**
      * Checks if the point \a p is in the current digital
-     * plane. Therefore, a ChordNaivePlane is a model of
+     * plane. Therefore, a ChordNaivePlaneComputer is a model of
      * CPointPredicate.
      *
      * @param p any 3D point.
@@ -747,30 +747,30 @@ namespace DGtal
     void selfDisplay ( std::ostream & out, const State & state ) const;
 
 
-  }; // end of class ChordNaivePlane
+  }; // end of class ChordNaivePlaneComputer
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ChordNaivePlane'.
+   * Overloads 'operator<<' for displaying objects of class 'ChordNaivePlaneComputer'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ChordNaivePlane' to write.
+   * @param object the object of class 'ChordNaivePlaneComputer' to write.
    * @return the output stream after the writing.
    */
   template <typename TPoint, typename TInternalScalar>
   std::ostream&
-  operator<< ( std::ostream & out, const ChordNaivePlane<TPoint, TInternalScalar> & object );
+  operator<< ( std::ostream & out, const ChordNaivePlaneComputer<TPoint, TInternalScalar> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/ChordNaivePlane.ih"
+#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ChordNaivePlane_h
+#endif // !defined ChordNaivePlaneComputer_h
 
-#undef ChordNaivePlane_RECURSES
-#endif // else defined(ChordNaivePlane_RECURSES)
+#undef ChordNaivePlaneComputer_RECURSES
+#endif // else defined(ChordNaivePlaneComputer_RECURSES)

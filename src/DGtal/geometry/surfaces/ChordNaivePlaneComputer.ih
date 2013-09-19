@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ChordNaivePlane.ih
+ * @file ChordNaivePlaneComputer.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  * @author Yan Gérard
@@ -24,7 +24,7 @@
  *
  * @date 2012/09/20
  *
- * Implementation of inline methods defined in ChordNaivePlane.h
+ * Implementation of inline methods defined in ChordNaivePlaneComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -44,22 +44,22 @@
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
-~ChordNaivePlane()
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
+~ChordNaivePlaneComputer()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
-ChordNaivePlane() : z( -1 )
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
+ChordNaivePlaneComputer() : z( -1 )
 { // Object is invalid
 }
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
-ChordNaivePlane( const ChordNaivePlane & other )
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
+ChordNaivePlaneComputer( const ChordNaivePlaneComputer & other )
   : z( other.z ), x( other.x ), y( other.y ),
     myWidth0( other.myWidth0 ),
     myWidth1( other.myWidth1 ),
@@ -70,9 +70,9 @@ ChordNaivePlane( const ChordNaivePlane & other )
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-DGtal::ChordNaivePlane<TPoint, TInternalScalar> &
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
-operator=( const ChordNaivePlane & other )
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar> &
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
+operator=( const ChordNaivePlaneComputer & other )
 {
   if ( this != &other )
     {
@@ -90,7 +90,7 @@ operator=( const ChordNaivePlane & other )
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 clear()
 {
   myPointSet.clear();
@@ -100,7 +100,7 @@ clear()
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 init( Dimension axis,
       InternalScalar widthNumerator,
       InternalScalar widthDenominator )
@@ -118,8 +118,8 @@ init( Dimension axis,
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::Size
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::Size
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 size() const
 {
   return myPointSet.size();
@@ -128,7 +128,7 @@ size() const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 empty() const
 {
   return myPointSet.empty();
@@ -136,8 +136,8 @@ empty() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::ConstIterator
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::ConstIterator
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 begin() const
 {
   return myPointSet.begin();
@@ -145,8 +145,8 @@ begin() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::ConstIterator
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::ConstIterator
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 end() const
 {
   return myPointSet.end();
@@ -154,8 +154,8 @@ end() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::Size
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::Size
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 max_size() const
 {
   return myPointSet.max_size();
@@ -163,8 +163,8 @@ max_size() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::Size
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::Size
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 maxSize() const
 {
   return max_size();
@@ -173,7 +173,7 @@ maxSize() const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 operator()( const Point & p ) const
 {
   _d = internalDot( myState.N, p );
@@ -183,7 +183,7 @@ operator()( const Point & p ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 extendAsIs( const Point & p )
 { 
   ASSERT( isValid() );
@@ -198,7 +198,7 @@ extendAsIs( const Point & p )
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 extend( const Point & p )
 {
   unsigned int loop;
@@ -256,7 +256,7 @@ extend( const Point & p )
             }
         }
       if (loop>=1000) {
-        std::cerr << "[ChordNaivePlane::extend()]"
+        std::cerr << "[ChordNaivePlaneComputer::extend()]"
                   << " more than 1000 loops, computing error suspected" << std::endl;
         std::cerr << "- Former state: " << *this << std::endl;
         std::cerr << "- Current state: ";
@@ -282,7 +282,7 @@ extend( const Point & p )
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 isExtendable( const Point & p ) const
 {
   unsigned int loop;
@@ -335,7 +335,7 @@ isExtendable( const Point & p ) const
             }
         }
       if (loop>=1000) {
-        std::cerr << "[ChordNaivePlane::isExtendable()]"
+        std::cerr << "[ChordNaivePlaneComputer::isExtendable()]"
                   << " more than 1000 loops, computing error suspected" << std::endl;
         std::cerr << "- Former state: " << *this << std::endl;
         std::cerr << "- Current state: ";
@@ -359,7 +359,7 @@ isExtendable( const Point & p ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 satisfies( State & state, TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -399,7 +399,7 @@ satisfies( State & state, TInputIterator itB, TInputIterator itE ) const
             }
         }
       if (loop>=1000) {
-        std::cerr << "[ChordNaivePlane::satisfies()]"
+        std::cerr << "[ChordNaivePlaneComputer::satisfies()]"
                   << " more than 1000 loops, computing error suspected" << std::endl;
         std::cerr << "- Former state: " << *this << std::endl;
         std::cerr << "- Current state: ";
@@ -419,7 +419,7 @@ template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 satisfies( TInputIterator itB, TInputIterator itE ) const
 {
   return satisfies( _state, itB, itE );
@@ -430,10 +430,10 @@ template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 inline
 std::pair<TInternalScalar, TInternalScalar>
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 computeAxisWidth( Dimension axis, TInputIterator itB, TInputIterator itE )
 {
-  ChordNaivePlane plane;
+  ChordNaivePlaneComputer plane;
   plane.init( axis );
   return plane.axisWidth( itB, itE );
 }
@@ -442,7 +442,7 @@ computeAxisWidth( Dimension axis, TInputIterator itB, TInputIterator itE )
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 std::pair<TInternalScalar, TInternalScalar>
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 axisWidth( State & state, TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -505,7 +505,7 @@ axisWidth( State & state, TInputIterator itB, TInputIterator itE ) const
           formerN[ 0 ] = state.N[ 0 ]; formerN[ 1 ] = state.N[ 1 ]; formerN[ 2 ] = state.N[ 2 ];
         }
       if (loop>=1000) {
-        std::cerr << "[ChordNaivePlane::axisWidth()]"
+        std::cerr << "[ChordNaivePlaneComputer::axisWidth()]"
                   << " more than 1000 loops, computing error suspected" << std::endl;
         std::cerr << "- Former state: " << *this << std::endl;
         std::cerr << "- Current state: ";
@@ -525,7 +525,7 @@ template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 inline
 std::pair<TInternalScalar, TInternalScalar>
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 axisWidth( TInputIterator itB, TInputIterator itE ) const
 {
   return axisWidth( _state, itB, itE );
@@ -536,7 +536,7 @@ axisWidth( TInputIterator itB, TInputIterator itE ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 extend( TInputIterator itB, TInputIterator itE )
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -612,7 +612,7 @@ extend( TInputIterator itB, TInputIterator itE )
             }
         }
       if (loop>=1000) {
-        std::cerr << "[ChordNaivePlane::extend(Iterator,Iterator)]"
+        std::cerr << "[ChordNaivePlaneComputer::extend(Iterator,Iterator)]"
                   << " more than 1000 loops, computing error suspected" << std::endl;
         std::cerr << "- Former state: " << *this << std::endl;
         std::cerr << "- Current state: ";
@@ -644,7 +644,7 @@ extend( TInputIterator itB, TInputIterator itE )
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 isExtendable( TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -706,7 +706,7 @@ isExtendable( TInputIterator itB, TInputIterator itE ) const
             }
         }
       if (loop>=1000) {
-        std::cerr << "[ChordNaivePlane::isExtendable(Iterator,Iterator)]"
+        std::cerr << "[ChordNaivePlaneComputer::isExtendable(Iterator,Iterator)]"
                   << " more than 1000 loops, computing error suspected" << std::endl;
         std::cerr << "- Former state: " << *this << std::endl;
         std::cerr << "- Current state: ";
@@ -734,7 +734,7 @@ template <typename TPoint, typename TInternalScalar>
 template <typename Vector3D>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 getNormal( Vector3D & normal ) const
 {
   for ( Dimension i = 0; i < 3; ++i )
@@ -746,7 +746,7 @@ template <typename TPoint, typename TInternalScalar>
 template <typename Vector3D>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 getUnitNormal( Vector3D & normal ) const
 {
   getNormal( normal );
@@ -761,7 +761,7 @@ getUnitNormal( Vector3D & normal ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 getBounds( double & min, double & max ) const
 {
   double nx = NumberTraits<InternalScalar>::castToDouble( myState.N[ 0 ] );
@@ -774,8 +774,8 @@ getBounds( double & min, double & max ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-const typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::Point &
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+const typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::Point &
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 minimalPoint() const
 {
   ASSERT( ! this->empty() );
@@ -784,8 +784,8 @@ minimalPoint() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 inline
-const typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::Point &
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+const typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::Point &
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 maximalPoint() const
 {
   ASSERT( ! this->empty() );
@@ -796,8 +796,8 @@ maximalPoint() const
 template <typename TPoint, typename TInternalScalar>
 template <typename TVector1, typename TVector2>
 inline
-typename DGtal::ChordNaivePlane<TPoint, TInternalScalar>::InternalScalar
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+typename DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::InternalScalar
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 internalDot( const TVector1 & u, const TVector2 & v )
 {
   return (InternalScalar) u[ 0 ] * (InternalScalar) v[ 0 ]
@@ -809,7 +809,7 @@ template <typename TPoint, typename TInternalScalar>
 template <typename TVector1, typename TVector2>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 internalCross( InternalVector & n, const TVector1 & u, const TVector2 & v )
 {
   n[ 0 ] = (InternalScalar) u[ 1 ] * (InternalScalar) v[ 2 ] - (InternalScalar) u[ 2 ] * (InternalScalar) v[ 1 ];
@@ -824,7 +824,7 @@ internalCross( InternalVector & n, const TVector1 & u, const TVector2 & v )
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::selfDisplay ( std::ostream & out ) const
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::selfDisplay ( std::ostream & out ) const
 {
   selfDisplay( out, myState );
 }
@@ -835,11 +835,11 @@ DGtal::ChordNaivePlane<TPoint, TInternalScalar>::selfDisplay ( std::ostream & ou
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::selfDisplay ( std::ostream & out, const State & state ) const
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::selfDisplay ( std::ostream & out, const State & state ) const
 {
   double min, max;
   double N[ 3 ];
-  out << "[ChordNaivePlane"
+  out << "[ChordNaivePlaneComputer"
       << " axis=" << z << " w=" << myWidth0 << "/" << myWidth1
       << " size=" << size() 
       << " N=(" << state.N[ 0 ] << "," << state.N[ 1 ] << "," << state.N[ 2 ] << ")"  
@@ -866,7 +866,7 @@ DGtal::ChordNaivePlane<TPoint, TInternalScalar>::selfDisplay ( std::ostream & ou
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::isValid() const
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::isValid() const
 {
   return z < 3;
 }
@@ -878,7 +878,7 @@ DGtal::ChordNaivePlane<TPoint, TInternalScalar>::isValid() const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 setUpNormal( State & state ) const
 {
   switch ( state.nbValid ) {
@@ -890,7 +890,7 @@ setUpNormal( State & state ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 setUpNormal1( State & state ) const
 {
   state.A.reset(); 
@@ -902,7 +902,7 @@ setUpNormal1( State & state ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 setUpNormal2( State & state ) const
 { // In this case, we create an imaginary point in the plane 0xy, orthogonal to direction AB.
   state.N[ x ] = state.N[ y ] = NumberTraits<InternalScalar>::ZERO;
@@ -929,7 +929,7 @@ setUpNormal2( State & state ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 setUpNormal3( State & state ) const
 {
   state.A = state.B - state.A; // p2 - p1;
@@ -941,7 +941,7 @@ setUpNormal3( State & state ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 setUp1( const Point & p1 )
 {
   myState.nbValid = 1;
@@ -957,7 +957,7 @@ setUp1( const Point & p1 )
 template <typename TPoint, typename TInternalScalar>
 inline
 int
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 signDelta( const Point & A, const Point & B, const Point & C ) const
 {
   InternalScalar res = 
@@ -970,7 +970,7 @@ signDelta( const Point & A, const Point & B, const Point & C ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 int
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 signDelta( const Point & A, const Point & C ) const
 { // B is zero
   InternalScalar res = 
@@ -984,7 +984,7 @@ signDelta( const Point & A, const Point & C ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -1008,7 +1008,7 @@ updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 computeMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -1033,7 +1033,7 @@ computeMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 unsigned int
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 findTriangle( State & state, TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -1053,7 +1053,7 @@ findTriangle( State & state, TInputIterator itB, TInputIterator itE ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 unsigned int
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 findTriangle1( State & state, TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -1071,7 +1071,7 @@ findTriangle1( State & state, TInputIterator itB, TInputIterator itE ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator>
 unsigned int
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 findTriangle2( State & state, TInputIterator itB, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -1085,7 +1085,7 @@ findTriangle2( State & state, TInputIterator itB, TInputIterator itE ) const
 template <typename TPoint, typename TInternalScalar>
 template <typename TInputIterator1, typename TInputIterator2>
 unsigned int
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 findMixedTriangle( State & state, 
                    TInputIterator1 itB1, TInputIterator1 itE1,
                    TInputIterator2 itB2, TInputIterator2 itE2 ) const
@@ -1109,7 +1109,7 @@ findMixedTriangle( State & state,
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 alignedAlongAxis( const Point & p1, const Point & p2 ) const
 {
  return ( p1[ x ] == p2[ x ] ) && ( p1[ y ] == p2[ y ] );
@@ -1118,7 +1118,7 @@ alignedAlongAxis( const Point & p1, const Point & p2 ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 computeHeight( State & state ) const
 {
   state.height = internalDot( state.A, state.N );
@@ -1127,7 +1127,7 @@ computeHeight( State & state ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 void
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 computeNormal( State & state ) const
 {
   ASSERT( state.nbValid >= 2 );
@@ -1153,7 +1153,7 @@ computeNormal( State & state ) const
 template <typename TPoint, typename TInternalScalar>
 inline
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 checkWidth( const State & state ) const
 {
   // return ( ( state.max - state.min ) * myWidth1 )
@@ -1163,7 +1163,7 @@ checkWidth( const State & state ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint, typename TInternalScalar>
 bool
-DGtal::ChordNaivePlane<TPoint, TInternalScalar>::
+DGtal::ChordNaivePlaneComputer<TPoint, TInternalScalar>::
 newCurrentTriangle( State & state, const Point & M ) const
 {
   ASSERT( state.nbValid >= 2 );
@@ -1195,7 +1195,7 @@ newCurrentTriangle( State & state, const Point & M ) const
     } else
       state.B = M;
   } else {
-    std::cerr << "[ChordNaivePlane::newCurrentTriangle]"
+    std::cerr << "[ChordNaivePlaneComputer::newCurrentTriangle]"
               << " cannot find a triangle cutting the main axis" << std::endl;
     return false;
   }
@@ -1209,7 +1209,7 @@ template <typename TPoint, typename TInternalScalar>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-                    const ChordNaivePlane<TPoint, TInternalScalar> & object )
+                    const ChordNaivePlaneComputer<TPoint, TInternalScalar> & object )
 {
   object.selfDisplay( out );
   return out;

@@ -17,26 +17,28 @@
 #pragma once
 
 /**
- * @file ChordGenericNaivePlane.h
+ * @file COBAGenericNaivePlaneComputer.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ * @author Emilie Charrier
+ * @author Lilian Buzer
  *
  * @date 2012/09/20
  *
- * Header file for module ChordGenericNaivePlane.cpp
+ * Header file for module COBAGenericNaivePlaneComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ChordGenericNaivePlane_RECURSES)
-#error Recursive header files inclusion detected in ChordGenericNaivePlane.h
-#else // defined(ChordGenericNaivePlane_RECURSES)
+#if defined(COBAGenericNaivePlaneComputer_RECURSES)
+#error Recursive header files inclusion detected in COBAGenericNaivePlaneComputer.h
+#else // defined(COBAGenericNaivePlaneComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ChordGenericNaivePlane_RECURSES
+#define COBAGenericNaivePlaneComputer_RECURSES
 
-#if !defined ChordGenericNaivePlane_h
+#if !defined COBAGenericNaivePlaneComputer_h
 /** Prevents repeated inclusion of headers. */
-#define ChordGenericNaivePlane_h
+#define COBAGenericNaivePlaneComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,21 +50,21 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
-#include "DGtal/geometry/surfaces/ChordNaivePlane.h"
+#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class ChordGenericNaivePlane
+  // template class COBAGenericNaivePlaneComputer
   /**
-   * Description of template class 'ChordGenericNaivePlane' <p> \brief
+   * Description of template class 'COBAGenericNaivePlaneComputer' <p> \brief
    * Aim: A class that recognizes pieces of digital planes of given
    * axis width. When the width is 1, it corresponds to naive
-   * planes. Contrary to ChordNaivePlane, the axis is \b not specified
+   * planes. Contrary to COBANaivePlaneComputer, the axis is \b not specified
    * at initialization of the object. This class uses three instances
-   * of ChordNaivePlane, one per axis.
+   * of COBANaivePlaneComputer, one per axis.
    *
    * As a (3D) geometric primitive, it obeys to a subset of the
    * concept CSegmentComputer. It is copy constructible,
@@ -77,23 +79,33 @@ namespace DGtal
    * It is also a model of CPointPredicate (returns 'true' iff a point
    * is within the current bounds).
    *
-   * Note on complexity: See ChordNaivePlane. Although it uses three
-   * instances of ChordNaivePlane, the recognition is \b not three
+   * Note on complexity: See COBANaivePlaneComputer. Although it uses three
+   * instances of COBANaivePlaneComputer, the recognition is \b not three
    * times slower. Indeed, recognition stops quickly on bad axes.
    *
-   * @tparam TPoint specifies the type of input points (digital or not). 
+   * Note on execution times: The user should favor int64_t instead of
+   * BigInteger whenever possible (diameter smaller than 500). The
+   * speed-up is between 10 and 20 for these diameters. For greater
+   * diameters, it is necessary to use BigInteger (see below).
    *
-   * @tparam TInternalScalar specifies the type of scalar used in
-   * internal computations, generally a more precise type than
-   * TPoint::Component. For instance, for digital points, the type
-   * should be able to hold integers of order (2*D^3) if D is the
-   * diameter of the set of digital points.
+   * @tparam TSpace specifies the type of digital space in which lies
+   * input digital points. A model of CSpace.
+   *
+   * @tparam TInternalInteger specifies the type of integer used in
+   * internal computations. The type should be able to hold integers
+   * of order (2*D^3)^2 if D is the diameter of the set of digital
+   * points. In practice, diameter is limited to 20 for int32_t,
+   * diameter is approximately 500 for int64_t, and whatever with
+   * BigInteger/GMP integers. For huge diameters, the slow-down is
+   * polylogarithmic with the diameter.
+   *
+   * Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    *
    @code
    typedef SpaceND<3,int> Z3;
-   typedef ChordGenericNaivePlane< Z3::Point, int64_t > NaivePlane;
-   NaivePlane plane;
-   plane.init( 1, 1 ); // width is 1/1 => naive 
+   typedef COBAGenericNaivePlaneComputer< Z3, int64_t > NaivePlaneComputer;
+   NaivePlaneComputer plane;
+   plane.init( 100, 1, 1 ); // diameter is 100, width is 1/1 => naive 
    plane.extend( Point( 10, 0, 0 ) ); // return 'true'
    plane.extend( Point( 0, 8, 0 ) );  // return 'true'
    plane.extend( Point( 0, 0, 6 ) );  // return 'true'
@@ -104,27 +116,25 @@ namespace DGtal
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer, CPointPredicate.
    */
-  template < typename TPoint,
-             typename TInternalScalar >
-  class ChordGenericNaivePlane
+  template < typename TSpace, 
+             typename TInternalInteger >
+  class COBAGenericNaivePlaneComputer
   {
-    // BOOST_CONCEPT_ASSERT(( CPoint< TPoint > ));
-    BOOST_CONCEPT_ASSERT(( CSignedNumber< TInternalScalar > ));
-    BOOST_STATIC_ASSERT(( TPoint::dimension == 3 ));
+
+    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( CInteger< TInternalInteger > ));
+    BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
 
     // ----------------------- public types ------------------------------
   public:
-    typedef TPoint Point;
-    typedef TInternalScalar InternalScalar;
-    typedef Point Vector;
-    typedef typename Vector::Component Component;
-    typedef typename Point::Coordinate Coordinate;
-    typedef InternalScalar InternalVector[ 3 ];
-
+    typedef TSpace Space;
+    typedef typename Space::Point Point;
     typedef std::set< Point > PointSet;
     typedef typename PointSet::size_type Size;
     typedef typename PointSet::const_iterator ConstIterator;
     typedef typename PointSet::iterator Iterator;
+    typedef TInternalInteger InternalInteger;
+    typedef IntegerComputer< InternalInteger > MyIntegerComputer;
 
     // ----------------------- std public types ------------------------------
   public:
@@ -137,7 +147,7 @@ namespace DGtal
 
     // ----------------------- internal types ------------------------------
   private:
-    typedef ChordNaivePlane< Point, InternalScalar > ChordComputer;
+    typedef COBANaivePlaneComputer< Space, InternalInteger > COBAComputer;
     typedef std::vector<Dimension>::iterator AxisIterator;
     typedef std::vector<Dimension>::const_iterator AxisConstIterator;
     // ----------------------- Standard services ------------------------------
@@ -146,26 +156,31 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~ChordGenericNaivePlane();
+    ~COBAGenericNaivePlaneComputer();
 
     /**
      * Constructor. The object is not valid and should be initialized.
      * @see init
      */
-    ChordGenericNaivePlane();
+    COBAGenericNaivePlaneComputer();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ChordGenericNaivePlane ( const ChordGenericNaivePlane & other );
+    COBAGenericNaivePlaneComputer ( const COBAGenericNaivePlaneComputer & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ChordGenericNaivePlane & operator= ( const ChordGenericNaivePlane & other );
+    COBAGenericNaivePlaneComputer & operator= ( const COBAGenericNaivePlaneComputer & other );
+
+    /**
+       @return the object that performs integer calculation.
+    */
+    MyIntegerComputer & ic() const;
 
     /**
        @return an active axis (or the active axis when there is only one).
@@ -184,6 +199,9 @@ namespace DGtal
      * accept new points for recognition. Calls clear so that the
      * object is ready to be extended.
      *
+     * @param diameter the diameter for the set of points (maximum
+     * distance between the given points)
+     *
      * @param widthNumerator the maximal axis-width (x,y,or z) for the
      * plane is defined as the rational number \a widthNumerator / \a
      * widthDenominator (default is 1/1, i.e. naive plane).
@@ -192,8 +210,14 @@ namespace DGtal
      * the plane is defined as the rational number \a widthNumerator /
      * \a widthDenominator (default is 1/1, i.e. naive plane).
      */
-    void init( InternalScalar widthNumerator = NumberTraits< InternalScalar >::ONE, 
-               InternalScalar widthDenominator = NumberTraits< InternalScalar >::ONE );
+    void init( InternalInteger diameter, 
+               InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE, 
+               InternalInteger widthDenominator = NumberTraits< InternalInteger >::ONE );
+
+    /**
+     * @return the number of vertices/edges of the convex integer polygon of solutions.
+     */
+    Size complexity() const;
 
     //-------------------- model of ForwardContainer -----------------------------
   public:
@@ -237,7 +261,7 @@ namespace DGtal
 
     /**
      * Checks if the point \a p is in the current digital
-     * plane. Therefore, a ChordGenericNaivePlane is a model of
+     * plane. Therefore, a COBAGenericNaivePlaneComputer is a model of
      * CPointPredicate.
      *
      * @param p any 3D point.
@@ -327,7 +351,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param (updates) the current normal vector 
+     * @param [in,out] normal (updates) the current normal vector 
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
@@ -336,7 +360,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param (updates) the current unit normal vector 
+     * @param normal (updates) the current unit normal vector 
      */
     template <typename Vector3D>
     void getUnitNormal( Vector3D & normal ) const;
@@ -384,7 +408,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     std::vector<Dimension> myAxes; /**< The list of active plane axes. Starts with {0,1,2}. At least one. */
-    ChordComputer myComputers[ 3 ]; /**< The three COBA plane computers. */
+    COBAComputer myComputers[ 3 ]; /**< The three COBA plane computers. */
     mutable std::vector<Dimension> _axesToErase; /**< Useful when erasing axes. */
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -392,30 +416,30 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-  }; // end of class ChordGenericNaivePlane
+  }; // end of class COBAGenericNaivePlaneComputer
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ChordGenericNaivePlane'.
+   * Overloads 'operator<<' for displaying objects of class 'COBAGenericNaivePlaneComputer'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ChordGenericNaivePlane' to write.
+   * @param object the object of class 'COBAGenericNaivePlaneComputer' to write.
    * @return the output stream after the writing.
    */
-  template <typename TPoint, typename TInternalScalar>
+  template <typename TSpace, typename TInternalInteger>
   std::ostream&
-  operator<< ( std::ostream & out, const ChordGenericNaivePlane<TPoint, TInternalScalar> & object );
+  operator<< ( std::ostream & out, const COBAGenericNaivePlaneComputer<TSpace, TInternalInteger> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/ChordGenericNaivePlane.ih"
+#include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ChordGenericNaivePlane_h
+#endif // !defined COBAGenericNaivePlaneComputer_h
 
-#undef ChordGenericNaivePlane_RECURSES
-#endif // else defined(ChordGenericNaivePlane_RECURSES)
+#undef COBAGenericNaivePlaneComputer_RECURSES
+#endif // else defined(COBAGenericNaivePlaneComputer_RECURSES)
