@@ -132,7 +132,7 @@ bool
 DGtal::ImplicitPolynomial3Shape<TSpace>::
 isInside(const RealPoint &aPoint) const
 {
-  return (this->operator()(aPoint) > (Ring)0);
+  return orientation( aPoint ) == INSIDE;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
@@ -142,9 +142,9 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::
 orientation(const RealPoint &aPoint) const
 {
   Ring v = this->operator()(aPoint);
-  if ( v > (Ring)0 )
+  if ( v < (Ring)0 )
     return INSIDE;
-  else if ( v < (Ring)0 )
+  else if ( v > (Ring)0 )
     return OUTSIDE;
   else
     return ON;
@@ -186,7 +186,7 @@ meanCurvature( const RealPoint &aPoint ) const
 {
   double temp= myLowPolynome( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   temp = sqrt(temp);
-  double downValue = 2*(temp*temp*temp);
+  double downValue = 2.0*(temp*temp*temp);
   double upValue = myUpPolynome( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
 
