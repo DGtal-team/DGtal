@@ -53,6 +53,45 @@ using namespace DGtal;
 
 //#define CHECK_RES
 
+
+template <typename Integer>
+bool singleTest(Integer a, Integer b, Integer mu, Integer x1, Integer x2)
+{
+  typedef double Number;
+  typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
+  typedef DGtal::DSLSubsegment<Integer,Number> DSLSubsegD;
+  
+  typedef typename DSLSubseg::Point Point;
+  DGtal::IntegerComputer<Integer> ic;
+
+  Integer y1 = ic.floorDiv(a*x1+mu,b);
+  Integer y2 = ic.floorDiv(a*x2+mu,b);
+  Point A = Point(x1,y1);
+  Point B = Point(x2,y2);
+  
+  DSLSubseg D(a,b,mu,A,B,"farey");
+  
+  Number alpha = (Number) a/(Number) b;
+  Number beta = (Number) mu/(Number) b;
+  Number precision = (Number) 1/(2*b);
+
+  DSLSubsegD DD(alpha,beta,A,B, precision);
+
+  std::cout << "(" << a << "," << b << "," << mu << ") (" << alpha << "," << beta << "," << precision << ")" << std::endl;
+  std::cout  << A << " " << B << std::endl;
+
+  std::cout << "res = " << "(" << D.getA() << "," << D.getB() << "," << D.getMu() << ")" << std::endl;
+  std::cout << "res float = " << "(" << DD.getA() << "," << DD.getB() << "," << DD.getMu() << ")" << std::endl;
+
+  assert(D.getA() == DD.getA() && D.getB() == DD.getB() && D.getMu() == DD.getMu());
+  //if(!(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu))
+  //nberrors++;
+		
+
+}
+
+
+
 template <typename Integer,typename Fraction>
 bool testDSLSubsegment(Integer modb)
 {
@@ -278,8 +317,9 @@ int main( int argc, char** argv )
   Integer i = 1000;
   srand(time(NULL));
   
-  bool res = testDSLSubsegment<Integer,Fraction>(i);
-  
+  //bool res = testDSLSubsegment<Integer,Fraction>(i);
+  bool res = singleTest<Integer>(547,1000,930,467,471);
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
