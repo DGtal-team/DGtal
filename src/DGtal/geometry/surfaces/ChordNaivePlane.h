@@ -55,63 +55,90 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ChordNaivePlane
   /**
-   * Description of template class 'ChordNaivePlane'. \brief Aim: A
-   * class that contains the chord-based algorithm for recognizing
-   * pieces of digital planes of given axis width [ Gerard,
-   * Debled-Rennesson, Zimmermann, 2005 ]. When the width is 1, it
-   * corresponds to naive planes. The axis is specified at
-   * initialization of the object. 
-   *
-   * This class is an implementation of Gerard, Debled-Rennesson,
-   * Zimmermann, 2005: An elementary digital plane recognition
-   * algorithm, @cite Gerard_2005_dam.
-   *
-   * As a (3D) geometric primitive, it obeys to a subset of the
-   * concept CSegmentComputer. It is copy constructible,
-   * assignable. It is iterable (inner type ConstIterator, begin(),
-   * end()). It has methods \ref extend(), extend( InputIterator,
-   * InputIterator) and \ref isExtendable(),
-   * isExtendable(InputIterator, InputIterator).  The object stores
-   * all the distinct points \c p such that 'extend( \c p )' was
-   * successful. It is thus a model of boost::ForwardContainer (non
-   * mutable).
-   *
-   * It is also a model of CPointPredicate (returns 'true' iff a point
-   * is within the current bounds).
-   *
-   * \par Note on complexity: 
-   * According to the paper, the worst-case complexity is \f$ O(n^7)
-   * \f$ (in its non-incremental form). However, the observed complexity is quasi-linear. 
-   *
-   * \par Note on execution times: 
-   * The user should favor int32_t or int64_t instead of BigInteger
-   * whenever possible. When the point components are smaller than
-   * 14000, int32_t are sufficient. For point components smaller than
-   * 440000000, int64_t are sufficient. For greater diameters, it is
-   * necessary to use BigInteger.
-   *
-   * @tparam TPoint specifies the type of input points (digital or not). 
-   *
-   * @tparam TInternalScalar specifies the type of scalar used in
-   * internal computations, generally a more precise type than
-   * TPoint::Component. For instance, for digital points, the type
-   * should be able to hold integers of order (2*D^3) if D is the
-   * diameter of the set of digital points.
-   *
-   @code
-   typedef SpaceND<3,int> Z3;
-   typedef ChordNaivePlane< Z3::Point, int64_t > NaivePlane;
-   NaivePlane plane;
-   plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive 
-   plane.extend( Point( 10, 0, 0 ) ); // return 'true'
-   plane.extend( Point( 0, 8, 0 ) );  // return 'true'
-   plane.extend( Point( 0, 0, 6 ) );  // return 'true'
-   plane.extend( Point( 5, 5, 5 ) );  // return 'false'
-   // There is no naive plane going through the 3 first points and the last one.
-   @endcode
-   *
-   * Model of boost::DefaultConstructible, boost::CopyConstructible,
-   * boost::Assignable, boost::ForwardContainer, CPointPredicate.
+    Description of template class 'ChordNaivePlane'. \brief Aim: A
+    class that contains the chord-based algorithm for recognizing
+    pieces of digital planes of given axis width [ Gerard,
+    Debled-Rennesson, Zimmermann, 2005 ]. When the width is 1, it
+    corresponds to naive planes. The axis is specified at
+    initialization of the object. 
+   
+    This class is an implementation of Gerard, Debled-Rennesson,
+    Zimmermann, 2005: An elementary digital plane recognition
+    algorithm, @cite Gerard_2005_dam.
+   
+    As a (3D) geometric primitive, it obeys to a subset of the
+    concept CSegmentComputer. It is copy constructible,
+    assignable. It is iterable (inner type ConstIterator, begin(),
+    end()). It has methods \ref extend(), extend( InputIterator,
+    InputIterator) and \ref isExtendable(),
+    isExtendable(InputIterator, InputIterator).  The object stores
+    all the distinct points \c p such that 'extend( \c p )' was
+    successful. It is thus a model of boost::ForwardContainer (non
+    mutable).
+   
+    It is also a model of CPointPredicate (returns 'true' iff a point
+    is within the current bounds).
+   
+    \par Note on complexity: 
+    According to the paper, the worst-case complexity is \f$ O(n^7)
+    \f$ (in its non-incremental form). However, the observed complexity is quasi-linear. 
+   
+    \par Note on execution times: 
+    The user should favor int32_t or int64_t instead of BigInteger
+    whenever possible. When the point components are smaller than
+    14000, int32_t are sufficient. For point components smaller than
+    440000000, int64_t are sufficient. For greater diameters, it is
+    necessary to use BigInteger.
+
+    \par What is the best algorithm to check if a set of digital points is some (naive) plane ? 
+
+    We discuss only this question between ChordNaivePlane (1) and COBANaivePlane (2):
+
+    -# Complexity: (2) has a better worst time complexity than (1),
+       but neither (1) nor (2) has an easy bound on the number of
+       global recomputation (traversal of all input points to
+       recompute a valid direction).
+    -# Big integers: (1) requires (significantly) smaller integers
+       than (2). For instance, int64_t are required for diameter
+       greater than 25 for (1) instead of 14000 for (2).
+    -# Practice: both algorithms are very comparable. (1) seems
+       slightly faster than (2) on average (but this was not tested on
+       many architecture).
+    -# Exactness: Both algorithms do not return the smallest possible
+       arithmetic parameters for the plane, but only a rational
+       approximation.
+    -# Services: Algorithm (1) can be transformed to find the exact
+       axis width of a given set of points, (2) is not suited for that
+       task.
+
+    \par A small example to show how to check if some points form a
+    subset of a naive plane.
+
+    @code
+    // Example. Checks that the following four points does not belong to a naive plane.
+    typedef SpaceND<3,int> Z3;
+    typedef ChordNaivePlane< Z3::Point, int64_t > NaivePlane;
+    NaivePlane plane;
+    plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive 
+    plane.extend( Point( 10, 0, 0 ) ); // return 'true'
+    plane.extend( Point( 0, 8, 0 ) );  // return 'true'
+    plane.extend( Point( 0, 0, 6 ) );  // return 'true'
+    plane.extend( Point( 5, 5, 5 ) );  // return 'false'
+    // There is no naive plane going through the 3 first points and the last one.
+    @endcode
+   
+    Model of boost::DefaultConstructible, boost::CopyConstructible,
+    boost::Assignable, boost::ForwardContainer, CPointPredicate.
+
+    @tparam TPoint specifies the type of input points (digital or not). 
+   
+    @tparam TInternalScalar specifies the type of scalar used in
+    internal computations, generally a more precise type than
+    TPoint::Component. For instance, for digital points, the type
+    should be able to hold integers of order (2*D^3) if D is the
+    diameter of the set of digital points.
+   
+
    */
   template < typename TPoint, 
              typename TInternalScalar >

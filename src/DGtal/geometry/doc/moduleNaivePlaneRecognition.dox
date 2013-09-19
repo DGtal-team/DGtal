@@ -10,7 +10,7 @@ namespace DGtal {
 
 @writers Jacques-Olivier Lachaud
 
-Part of the \ref GeometryPackage.
+Part of the \ref packageGeometry.
 
 This module gathers classes and functions to recognize piece of naive
 planes, and more generally piece of planes with arbitrary rational
