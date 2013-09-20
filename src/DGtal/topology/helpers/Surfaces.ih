@@ -622,6 +622,8 @@ DGtal::Surfaces<TKSpace>::track2DBoundaryPoints
   const SCell & start_surfel )
 {
   aVectorOfPoints.clear();
+
+  int count = 0;
   
   // Getting the consecutive surfels of the 2D boundary
   std::vector<SCell> vectBdrySCell;
@@ -632,10 +634,37 @@ DGtal::Surfaces<TKSpace>::track2DBoundaryPoints
           it_end = vectBdrySCell.end(); 
         it != it_end; ++it )
     {
-      Dimension track = *( K.sDirs( *it ) );
-      SCell pointel = K.sIndirectIncident( *it, track );
-      aVectorOfPoints.push_back( K.sCoords( pointel ) );
+      Dimension track = K.sOrthDir( *it );
+      SCell spel = K.sDirectIncident( *it, track );
+      Point current = K.sCoords( spel );
+      if( aVectorOfPoints.size() > 0 )
+      {
+          Point last = aVectorOfPoints.back();
+          if( current == last )
+          {
+              continue;
+          }
+
+          Point diff = last - current;
+          if( diff.norm() > 1.0 )
+          {
+
+              Point newone = current;
+              newone[0] += diff[0];
+              if( !pp( newone ))
+              {
+                  newone = current;
+                  newone[1] += diff[1];
+
+              }
+              aVectorOfPoints.push_back( newone );
+              ++count;
+//              std::cout << "here ";// << last[0] << "," << last[1] << "," << last[2] << " & " << current[0] << "," << current[1]  << "," << current[2] << std::cout;
+          }
+      }
+      aVectorOfPoints.push_back( current );
     }
+  std::cout << "MISSING " << count << std::endl;
 }
 
 

@@ -190,8 +190,8 @@ bool test2DTopology()
     std::cout << "points: " << points.size() << std::endl;
     std::cout << points[0] << std::endl;
     std::cout << points[1] << std::endl;
-    int recount = 0;
 
+#ifdef EXPORT
     Color white( 255, 255, 255, 255 );
     Color black( 0, 0, 0, 255 );
     Color red( 255, 0, 0, 255 );
@@ -206,22 +206,48 @@ bool test2DTopology()
     board << SetMode( domain.className(), "Grid" )
           << domain;
     Point origin(0,0);
+    for( Domain::ConstIterator ibegin = domain.begin(), iend = domain.end(); ibegin != iend; ++ibegin )
+    {
+        if( digShape->operator ()( *ibegin ) )
+        {
+            board << CustomStyle( origin.className(), new CustomColors( black, dblack ) )
+                  << *ibegin;
+        }
+    }
     board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
           << origin;
-    board << CustomStyle( points[ 0 ].className(), new CustomColors( blue, dblue ) )
-          << points[ 0 ];
-    for( int i = 1; i < points.size() - 1; ++i )
+    board.saveSVG("testII_topology_full.svg");
+
+    board.clear();
+    board << SetMode( domain.className(), "Grid" )
+          << domain;
+    board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
+          << origin;
+    for( int i = 0; i < points.size(); ++i )
     {
         board << CustomStyle( points[ i ].className(), new CustomColors( blue, dblue ) )
               << points[ i ];
-
-        if( points[ i ] == points[ i - 1 ] )
-        {
-            ++recount;
-        }
     }
     board.saveSVG("testII_topology_points.svg");
-    std::cout << "duplicata: " << recount << std::endl;
+#endif
+    std::cout << "oooooooooooooooooooooo" << std::endl;
+
+    std::vector< SCell > pointsScell;
+    Surfaces< KSpace >::track2DBoundary( pointsScell, K, SAdj, *digShape, bel );
+#ifdef EXPORT
+    board.clear();
+    board << SetMode( domain.className(), "Grid" )
+          << domain;
+    board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
+          << origin;
+    for( int i = 0; i < points.size() - 1; ++i )
+    {
+        board << CustomStyle( pointsScell[ i ].className(), new CustomColors( blue, dblue ) )
+              << pointsScell[ i ];
+    }
+    board.saveSVG("testII_topology_pointsScell.svg");
+#endif
+    std::cout << "pointsScell: " << pointsScell.size() << std::endl;
     std::cout << "oooooooooooooooooooooo" << std::endl;
 
     GridCurve< KSpace > gridcurve;
@@ -245,25 +271,39 @@ bool test2DTopology()
 
     int count = 0;
     VisitorRange range( new Visitor( surf, *surf.begin() ) );
+#ifdef EXPORT
     board.clear();
     board << SetMode( domain.className(), "Grid" )
           << domain;
     board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
           << origin;
+
+    Board2D board2;
+    board2 << SetMode( domain.className(), "Grid" )
+           << domain;
+    board2 << CustomStyle( origin.className(), new CustomColors( red, dred ) )
+          << origin;
+#endif
     for( SurfelConstIterator ibegin = range.begin(), iend = range.end(); ibegin != iend; ++ibegin )
     {
         Dimension track = *( K.sDirs( *ibegin ) );
         SCell pointel = K.sIndirectIncident( *ibegin, track );
         Point current = K.sCoords( pointel );
+#ifdef EXPORT
         board << CustomStyle( current.className(), new CustomColors( green, dgreen ) )
               << current;
-
+        board2 << CustomStyle( (*ibegin).className(), new CustomColors( black, dblack ) )
+              << (*ibegin);
+#endif
         if( count == 0 || count == 1 )
             std::cout << *ibegin << std::endl;
 
         ++count;
     }
+#ifdef EXPORT
     board.saveSVG("testII_topology_surfel.svg");
+    board2.saveSVG("testII_topology_surfel2.svg");
+#endif
     std::cout << "range: " << count << std::endl;
 
     delete digShape;
@@ -1146,9 +1186,9 @@ bool testII2D()
     board << SetMode( domain.className(), "Grid" )
           << domain;
 
-    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
-    ibegin = range2.begin();
-    iend = range2.end();
+    VisitorRange range4( new Visitor( digSurf, *digSurf.begin() ) );
+    ibegin = range4.begin();
+    iend = range4.end();
     while ( ibegin != iend )
     {
         Dimension kdim = k.sOrthDir( *ibegin );
