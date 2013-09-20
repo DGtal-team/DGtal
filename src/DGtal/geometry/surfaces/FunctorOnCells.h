@@ -52,6 +52,8 @@
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/CPointPredicate.h"
 
+#include "DGtal/topology/SCellsFunctors.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -81,6 +83,8 @@ namespace DGtal
     typedef TKSpace KSpace;
     typedef typename KSpace::SCell Spel;
 
+    typedef SCellToMidPoint< KSpace > Embedder;
+
     BOOST_CONCEPT_ASSERT(( CPointFunctor< FunctorOnPoints > ));
     //BOOST_CONCEPT_ASSERT(( CSpace< KSpace > ));
 
@@ -93,7 +97,9 @@ namespace DGtal
     FunctorOnCells (  Alias< FunctorOnPoints > functor, ConstAlias< KSpace > space )
       : f(functor),
         myKSpace(space)
-    {}
+    {
+        embedder = Embedder( *myKSpace );
+    }
 
     /**
      * Destructor.
@@ -123,7 +129,13 @@ namespace DGtal
 //        typedef typename KSpace::Point Point;
 
 //        SCell currentSpel = myKSpace->sDirectIncident( aSurfel, k );
-        Point currentPoint = myKSpace->sCoords( aSpel );
+
+        typename KSpace::Space::RealPoint currentPoint = embedder( aSpel );
+        for( int i = 0; i < currentPoint.dimension; ++i )
+        {
+            Point currPt( currentPoint );
+            ASSERT( currentPoint[ i ] == currPt[ i ] );
+        }
 
         return ( f->operator()( currentPoint ) ) ? NumberTraits< Value >::ONE : NumberTraits< Value >::ZERO;
 
@@ -166,6 +178,8 @@ namespace DGtal
 
     /// Const pointor on Khalimsky Space. Used to convert Cell -> Point
     const KSpace * myKSpace;
+
+    Embedder embedder;
 
     // ------------------------- Hidden services ------------------------------
   protected:

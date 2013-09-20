@@ -68,7 +68,7 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
 //#define EUCLIDEAN
-//#define EXPORT
+#define EXPORT
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -154,6 +154,7 @@ bool test2DTopology()
     typedef typename KSpace::SCell SCell;
 
     typedef typename GridCurve< KSpace >::PointsRange PointsRange;
+    typedef typename GridCurve< KSpace >::MidPointsRange MidPointsRange;
 
     typedef LightImplicitDigitalSurface< KSpace, Digitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
@@ -234,7 +235,35 @@ bool test2DTopology()
 
     std::vector< SCell > pointsScell;
     Surfaces< KSpace >::track2DBoundary( pointsScell, K, SAdj, *digShape, bel );
+    GridCurve< KSpace > gridcurve2;
+    gridcurve2.initFromSCellsVector( pointsScell );
+    MidPointsRange pointsRange2 = gridcurve2.getMidPointsRange();
+
 #ifdef EXPORT
+    board.clear();
+    board << SetMode( domain.className(), "Grid" )
+          << domain;
+    board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
+          << origin;
+    Point last;
+    int recount2 = 0;
+    for( MidPointsRange::ConstIterator ibegin = pointsRange2.begin(), iend = pointsRange2.end(); ibegin != iend; ++ibegin )
+    {
+        if( ibegin != pointsRange2.begin() )
+        {
+            if( last == *ibegin )
+            {
+                recount2++;
+            }
+        }
+        board << CustomStyle( (*ibegin).className(), new CustomColors( blue, dblue ) )
+              << *ibegin;
+
+        last = *ibegin;
+    }
+    std::cout << "RECOUNT2 " << recount2 << std::endl;
+    board.saveSVG("testII_topology_pointRange2.svg");
+
     board.clear();
     board << SetMode( domain.className(), "Grid" )
           << domain;
@@ -246,8 +275,23 @@ bool test2DTopology()
               << pointsScell[ i ];
     }
     board.saveSVG("testII_topology_pointsScell.svg");
+
+    board.clear();
+    board << SetMode( domain.className(), "Grid" )
+          << domain;
+    board << CustomStyle( origin.className(), new CustomColors( red, dred ) )
+          << origin;
+    for( int i = 0; i < points.size() - 1; ++i )
+    {
+        board << CustomStyle( pointsScell[ i ].className(), new CustomColors( blue, dblue ) )
+              << pointsScell[ i ];
+    }
+    board.saveSVG("testII_topology_pointsRange2.svg");
 #endif
     std::cout << "pointsScell: " << pointsScell.size() << std::endl;
+    std::cout << "oooooooooooooooooooooo" << std::endl;
+
+    std::cout << "pointsRange2: " << pointsRange2.size() << std::endl;
     std::cout << "oooooooooooooooooooooo" << std::endl;
 
     GridCurve< KSpace > gridcurve;
@@ -451,19 +495,19 @@ bool testII2D_kernels()
     board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
           << pOrigin;
 
-    for( auto it = setA.begin(), itend = setA.end(); it != itend; ++it )
+    for( DigitalSetA::ConstIterator it = setA.begin(), itend = setA.end(); it != itend; ++it )
     {
         board << CustomStyle( pOrigin.className(), new CustomColors( black, dblack ) );
         board << *it;
     }
 
-    for( auto it = setB.begin(), itend = setB.end(); it != itend; ++it )
+    for( DigitalSetB::ConstIterator it = setB.begin(), itend = setB.end(); it != itend; ++it )
     {
         board << CustomStyle( pOrigin.className(), new CustomColors( white, dwhite ) );
         board << *it;
     }
 
-    for( auto it = setC.begin(), itend = setC.end(); it != itend; ++it )
+    for( DigitalSetC::ConstIterator it = setC.begin(), itend = setC.end(); it != itend; ++it )
     {
         board << CustomStyle( pOrigin.className(), new CustomColors( black, dblack ) );
         board << *it;
@@ -478,7 +522,7 @@ bool testII2D_kernels()
     board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
           << pOrigin;
 
-    for( auto it = setEuclideanMinusAB.begin(), itend = setEuclideanMinusAB.end(); it != itend; ++it )
+    for( DigitalSetEuclideanMinusAB::ConstIterator it = setEuclideanMinusAB.begin(), itend = setEuclideanMinusAB.end(); it != itend; ++it )
     {
         board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
         board << *it;
@@ -493,7 +537,7 @@ bool testII2D_kernels()
     board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
           << pOrigin;
 
-    for( auto it = setDigitalMinusAB.begin(), itend = setDigitalMinusAB.end(); it != itend; ++it )
+    for( DigitalSetDigitalMinusAB::ConstIterator it = setDigitalMinusAB.begin(), itend = setDigitalMinusAB.end(); it != itend; ++it )
     {
         board << CustomStyle( pOrigin.className(), new CustomColors( green, dgreen ) );
         board << *it;
@@ -508,7 +552,7 @@ bool testII2D_kernels()
     board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
           << pOrigin;
 
-    for( auto it = setEuclideanMinusBC.begin(), itend = setEuclideanMinusBC.end(); it != itend; ++it )
+    for( DigitalSetEuclideanMinusBC::ConstIterator it = setEuclideanMinusBC.begin(), itend = setEuclideanMinusBC.end(); it != itend; ++it )
     {
         board << CustomStyle( pOrigin.className(), new CustomColors( red, dred ) );
         board << *it;
@@ -523,7 +567,7 @@ bool testII2D_kernels()
     board << CustomStyle( pOrigin.className(), new CustomColors( blue, dblue ) )
           << pOrigin;
 
-    for( auto it = setDigitalMinusBC.begin(), itend = setDigitalMinusBC.end(); it != itend; ++it )
+    for( DigitalSetDigitalMinusBC::ConstIterator it = setDigitalMinusBC.begin(), itend = setDigitalMinusBC.end(); it != itend; ++it )
     {
         board << CustomStyle( pOrigin.className(), new CustomColors( green, dgreen ) );
         board << *it;
