@@ -131,11 +131,11 @@ namespace DGtal
 //        SCell currentSpel = myKSpace->sDirectIncident( aSurfel, k );
 
         typename KSpace::Space::RealPoint currentPoint = embedder( aSpel );
-        for( int i = 0; i < currentPoint.dimension; ++i )
+        /*for( int i = 0; i < currentPoint.dimension; ++i )
         {
             Point currPt( currentPoint );
             ASSERT( currentPoint[ i ] == currPt[ i ] );
-        }
+        }*/
 
         return ( f->operator()( currentPoint ) ) ? NumberTraits< Value >::ONE : NumberTraits< Value >::ZERO;
 
