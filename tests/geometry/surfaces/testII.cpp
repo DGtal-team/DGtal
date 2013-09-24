@@ -39,6 +39,7 @@
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
+#include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
 
@@ -1545,6 +1546,123 @@ int testII3D_same_results( )
     return 0;
 }
 
+int testII3D_noise( int argc, char** argv )
+{
+    QApplication application( argc, argv );
+    Viewer3D viewer;
+
+    typedef Z3i::Space::RealPoint RealPoint;
+    typedef Z3i::Space::RealPoint::Coordinate Ring;
+    typedef MPolynomial< 3, Ring > Polynomial3;
+    typedef MPolynomialReader<3, Ring> Polynomial3Reader;
+    typedef ImplicitPolynomial3Shape<Z3i::Space> Shape;
+    typedef Z3i::Space Space;
+
+    RealPoint border_min( -10, -10, -10 );
+    RealPoint border_max( 10, 10, 10 );
+
+    double h = 0.2;
+    double noiseLevel = 0.5;
+    double alpha = 0.333333;
+    double radius_kernel = 3;
+    bool lambda_optimized = false;
+
+    std::string poly_str = "x^2 + y^2 + z^2 - 25";
+
+    Polynomial3 poly;
+    Polynomial3Reader reader;
+    std::string::const_iterator iter = reader.read( poly, poly_str.begin(), poly_str.end() );
+    if ( iter != poly_str.end() )
+    {
+        std::cerr << "ERROR: I read only <"
+                  << poly_str.substr( 0, iter - poly_str.begin() )
+                  << ">, and I built P=" << poly << std::endl;
+        return 1;
+    }
+
+    Shape* aShape = new Shape( poly );
+
+    typedef typename Space::RealPoint RealPoint;
+    typedef GaussDigitizer< Z3i::Space, Shape > DigitalShape;
+    typedef Z3i::KSpace KSpace;
+    typedef typename KSpace::SCell SCell;
+    typedef typename KSpace::Surfel Surfel;
+
+    ASSERT (( noiseLevel < 1.0 ));
+    bool withNoise = ( noiseLevel <= 0.0 ) ? false : true;
+    if( withNoise )
+        noiseLevel *= h;
+
+    // Digitizer
+    DigitalShape* dshape = new DigitalShape();
+    dshape->attach( *aShape );
+    dshape->init( border_min, border_max, h );
+
+    KSpace K;
+    if ( ! K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
+    {
+        std::cerr << "[3dLocalEstimators_0memory] error in creating KSpace." << std::endl;
+        return false;
+    }
+
+    typedef KanungoNoise< DigitalShape, Z3i::Domain > KanungoPredicate;
+    typedef LightImplicitDigitalSurface< KSpace, KanungoPredicate > Boundary;
+    typedef DigitalSurface< Boundary > MyDigitalSurface;
+    typedef typename MyDigitalSurface::ConstIterator ConstIterator;
+
+    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+
+    typedef PointFunctorFromPointPredicateAndDomain< KanungoPredicate, Z3i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
+
+    // Extracts shape boundary
+    KanungoPredicate * noisifiedObject = new KanungoPredicate( *dshape, dshape->getDomain(), noiseLevel );
+    SCell bel = Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
+    Boundary * boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
+    MyDigitalSurface surf ( *boundary );
+
+    double minsize = dshape->getUpperBound()[0] - dshape->getLowerBound()[0];
+    unsigned int tries = 0;
+    while( surf.size() < 2 * minsize || tries > 150 )
+    {
+        delete boundary;
+        bel = Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
+        boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
+        surf = MyDigitalSurface( *boundary );
+        ++tries;
+    }
+
+    if( tries > 150 )
+    {
+        std::cerr << "Can't found a proper bel. So .... I ... just ... kill myself." << std::endl;
+        return false;
+    }
+
+    VisitorRange * range;
+    VisitorConstIterator ibegin;
+    VisitorConstIterator iend;
+
+    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
+    ibegin = range->begin();
+    iend = range->end();
+
+    viewer.show();
+    viewer << SetMode3D( dshape->getDomain().className(), "BoundingBox" ) << dshape->getDomain();
+
+    for( ; ibegin != iend; ++ibegin )
+    {
+        //                    viewer << CustomColors3D( Color::Black, cmap_grad( b ));
+        viewer << *ibegin;
+    }
+
+    delete range;
+
+    viewer << Viewer3D::updateDisplay;
+    return application.exec();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -1556,7 +1674,8 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    test2DTopology();
+    testII3D_noise( argc, argv );
+//    test2DTopology();
 //    testII2D( );
 //    testII2D_kernels();
 //    testII2D_kernels_2();

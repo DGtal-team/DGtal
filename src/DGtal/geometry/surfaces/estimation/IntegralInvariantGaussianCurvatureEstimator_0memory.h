@@ -345,11 +345,12 @@ public:
 
     typedef ImplicitBall<Z2i::Space> KernelSupport;
     typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+    typedef GaussDigitizer< Z3i::Space, KernelSupport > DigitalShapeKernel;
     typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
 
     typedef TShapeFunctor ShapeCellFunctor;
     typedef ConstValueFunctor<Value> KernelCellFunctor;
-    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShape> Convolver;
+    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShapeKernel> Convolver;
     typedef typename Convolver::PairIterators PairIterators;
 
     typedef typename Convolver::CovarianceMatrix Matrix2x2;
@@ -373,17 +374,13 @@ public:
      */
     ~IntegralInvariantGaussianCurvatureEstimator_0memory()
     {
-        for( unsigned int i = 0; i < masks.size(); ++i )
+        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
         {
-            delete masks[ i ];
+            delete kernelsSet[ i ];
         }
-        for( unsigned int i = 0; i < kernelsShifted.size(); ++i )
-        {
-            delete kernelsShifted[ i ];
-        }
-        kernelsShifted.clear();
-        masks.clear();
+        kernelsSet.clear();
         delete kernel;
+        delete digKernel;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -474,10 +471,12 @@ public:
 private:
 
     /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
-    std::vector< DigitalShape > kernels;
-    std::vector< EuclideanMinus* > masks;
-    std::vector< KernelSupport* > kernelsShifted;
+    std::vector< PairIterators > kernels;
+    std::vector< DigitalSet* > kernelsSet;
+//    std::vector< EuclideanMinus* > masks;
+//    std::vector< KernelSupport* > kernelsShifted;
     KernelSupport * kernel;
+    DigitalShapeKernel * digKernel;
 
     /// origin spel of the kernel support.
     Spel myOrigin;
@@ -540,11 +539,12 @@ public:
 
     typedef ImplicitBall<Z3i::Space> KernelSupport;
     typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+    typedef GaussDigitizer< Z3i::Space, KernelSupport > DigitalShapeKernel;
     typedef GaussDigitizer< Z3i::Space, EuclideanMinus > DigitalShape;
 
     typedef TShapeFunctor ShapeCellFunctor;
     typedef ConstValueFunctor<Value> KernelCellFunctor;
-    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShape> Convolver;
+    typedef DigitalSurfaceConvolver_0memory<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel, DigitalShapeKernel> Convolver;
     typedef typename Convolver::PairIterators PairIterators;
 
     typedef typename Convolver::CovarianceMatrix Matrix3x3;
@@ -567,7 +567,7 @@ public:
      */
     ~IntegralInvariantGaussianCurvatureEstimator_0memory()
     {
-        for( unsigned int i = 0; i < masks.size(); ++i )
+        /*for( unsigned int i = 0; i < masks.size(); ++i )
         {
             delete masks[ i ];
         }
@@ -576,8 +576,14 @@ public:
             delete kernelsShifted[ i ];
         }
         kernelsShifted.clear();
-        masks.clear();
+        masks.clear();*/
+        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
+        {
+            delete kernelsSet[ i ];
+        }
+        kernelsSet.clear();
         delete kernel;
+        delete digKernel;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -667,10 +673,12 @@ public:
 private:
 
     /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
-    std::vector< DigitalShape > kernels;
-    std::vector< EuclideanMinus* > masks;
-    std::vector< KernelSupport* > kernelsShifted;
+    std::vector< PairIterators > kernels;
+    std::vector< DigitalSet* > kernelsSet;
+//    std::vector< EuclideanMinus* > masks;
+//    std::vector< KernelSupport* > kernelsShifted;
     KernelSupport * kernel;
+    DigitalShapeKernel * digKernel;
 
     /// origin spel of the kernel support.
     Spel myOrigin;

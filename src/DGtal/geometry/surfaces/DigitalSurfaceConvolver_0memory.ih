@@ -2213,9 +2213,11 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Ke
 inline
 void
 DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::init( Clone< Point > pOrigin,
-                                                                                                                           std::vector< DigitalShapeMasks >  mask )
+                                                                                                                           DigitalShapeMasks * fullKernel,
+                                                                                                                           std::vector< PairIterators > mask )
 {
     myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
+    kernel = fullKernel;
     myMask = mask;
 
     ASSERT ( myMask.size () == 27 );
@@ -4142,11 +4144,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
             {
                 std::fill( m, m + nbMoments, NumberTraits< Quantity >::ZERO ); /// <! clear array
 
-                Domain domain = myMask[ positionOfFullKernel ].getDomain();
+                Domain domain = kernel->getDomain();
                 for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
                     //for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                 {
-                    if( myMask[ positionOfFullKernel ]( *itm ))
+                    if( kernel->operator()( *itm ))
                     {
                         myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
@@ -4166,36 +4168,35 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                 memcpy( m, lastInnerMoments, nbMoments * sizeof( Quantity ));
 
                 /// Part to substract from previous result.
-                Domain domain = myMask[ offset ].getDomain();
-                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                    //                for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                //Domain domain = myMask[ offset ].getDomain();
+                //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                for( KernelConstIterator itm = myMask[ offset ].first, itend = myMask[ offset ].second; itm != itend; ++itm )
                 {
-                    if( myMask[ offset ]( *itm ))
-                    {
+                    //if( myMask[ offset ]( *itm ))
+                    //{
                         myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
                             fillMoments( m, shiftedSpel, -1.0 );
                         }
-                    }
+                    //}
                 }
 
                 /// Part to add from previous result.
-                domain = myMask[ nbMasks - offset ].getDomain();
-                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                    //                for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                //domain = myMask[ nbMasks - offset ].getDomain();
+                //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                for( KernelConstIterator itm = myMask[ nbMasks - offset ].first, itend = myMask[ nbMasks - offset ].second; itm != itend; ++itm )
                 {
-                    if( myMask[ nbMasks - offset ]( *itm ))
-                    {
+                    //if( myMask[ nbMasks - offset ]( *itm ))
+                    //{
                         myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
                             fillMoments( m, shiftedSpel, 1.0 );
                         }
-
-                    }
+                    //}
                 }
             }
 
@@ -4236,35 +4237,35 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         else
         {
             /// Part to substract from previous result.
-            Domain domain = myMask[ offset ].getDomain();
-            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+            //Domain domain = myMask[ offset ].getDomain();
+            //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            for( KernelConstIterator itm = myMask[ offset ].first, itend = myMask[ offset ].second; itm != itend; ++itm )
             {
-                if( myMask[ offset ]( *itm ))
-                {
+                //if( myMask[ offset ]( *itm ))
+                //{
                     myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         fillMoments( m, shiftedSpel, -1.0 );
                     }
-                }
+                //}
             }
 
             /// Part to add from previous result.
-            domain = myMask[ nbMasks - offset ].getDomain();
-            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+            //domain = myMask[ nbMasks - offset ].getDomain();
+            //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            for( KernelConstIterator itm = myMask[ nbMasks - offset ].first, itend = myMask[ nbMasks - offset ].second; itm != itend; ++itm )
             {
-                if( myMask[ nbMasks - offset ]( *itm ))
-                {
+                //if( myMask[ nbMasks - offset ]( *itm ))
+                //{
                     myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         fillMoments( m, shiftedSpel, 1.0 );
                     }
-                }
+                //}
             }
         }
 
@@ -4385,11 +4386,11 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
             {
                 m = NumberTraits< Quantity >::ZERO;
 
-                Domain domain = myMask[ positionOfFullKernel ].getDomain();
+                Domain domain = kernel->getDomain();
                 for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
                     //                for( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
                 {
-                    if( myMask[ positionOfFullKernel ]( *itm ))
+                    if( kernel->operator()( *itm ))
                     {
                         myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
@@ -4409,35 +4410,35 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
                 m = lastInnerSum;
 
                 /// Part to substract from previous result.
-                Domain domain = myMask[ offset ].getDomain();
-                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                    //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+                //Domain domain = myMask[ offset ].getDomain();
+                //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                for( KernelConstIterator itm = myMask[ offset ].first, itend = myMask[ offset ].second; itm != itend; ++itm )
                 {
-                    if( myMask[ offset ]( *itm ))
-                    {
+                    //if( myMask[ offset ]( *itm ))
+                    //{
                         myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftInnerSpel );
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
                             m += -1.0;
                         }
-                    }
+                    //}
                 }
 
                 /// Part to add from previous result.
-                domain = myMask[ nbMasks - offset ].getDomain();
-                for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                    //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+                //domain = myMask[ nbMasks - offset ].getDomain();
+                //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+                for( KernelConstIterator itm = myMask[ nbMasks - offset ].first, itend = myMask[ nbMasks - offset ].second; itm != itend; ++itm )
                 {
-                    if( myMask[ nbMasks - offset ]( *itm ))
-                    {
+                    //if( myMask[ nbMasks - offset ]( *itm ))
+                    //{
                         myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftInnerSpel );
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
                             m += 1.0;
                         }
-                    }
+                    //}
                 }
             }
 
@@ -4478,35 +4479,35 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         else
         {
             /// Part to substract from previous result.
-            Domain domain = myMask[ offset ].getDomain();
-            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                //for( KernelConstIterator itgcurrent = myMask[ offset ].first, itgend = myMask[ offset ].second; itgcurrent != itgend; ++itgcurrent )
+            //Domain domain = myMask[ offset ].getDomain();
+            //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            for( KernelConstIterator itm = myMask[ offset ].first, itend = myMask[ offset ].second; itm != itend; ++itm )
             {
-                if( myMask[ offset ]( *itm ))
-                {
+                //if( myMask[ offset ]( *itm ))
+                //{
                     myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) - diffSpel + shiftOuterSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         m += -1.0;
                     }
-                }
+                //}
             }
 
             /// Part to add from previous result.
-            domain = myMask[ nbMasks - offset ].getDomain();
-            for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
-                //for( KernelConstIterator itgcurrent = myMask[ nbMasks - offset ].first, itgend = myMask[ nbMasks - offset ].second; itgcurrent != itgend; ++itgcurrent )
+            //domain = myMask[ nbMasks - offset ].getDomain();
+            //for( typename Domain::ConstIterator itm = domain.begin(), itend = domain.end(); itm != itend; ++itm )
+            for( KernelConstIterator itm = myMask[ nbMasks - offset ].first, itend = myMask[ nbMasks - offset ].second; itm != itend; ++itm )
             {
-                if( myMask[ nbMasks - offset ]( *itm ))
-                {
+                //if( myMask[ nbMasks - offset ]( *itm ))
+                //{
                     myKSpace.sSetKCoords( shiftedSpel, myKSpace.sKCoords( myKSpace.sSpel( *itm )) + shiftOuterSpel );
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
                         m += 1.0;
                     }
-                }
+                //}
             }
         }
 

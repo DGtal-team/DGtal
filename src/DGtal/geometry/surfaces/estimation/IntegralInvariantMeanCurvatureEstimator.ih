@@ -443,7 +443,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator< TKSpace, TShapeFunctor, 3 >::eva
 {
     std::vector< Quantity > quantities;
     std::back_insert_iterator< std::vector< Quantity > > quantitiesIterator( quantities );
-    myConvolver.eval ( itb, ite, quantitiesIterator, h, shape  );
+    myConvolver.eval ( itb, ite, quantitiesIterator, shape, h  );
 
     Quantity measure;
 
