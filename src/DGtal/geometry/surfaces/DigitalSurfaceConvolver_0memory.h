@@ -283,7 +283,7 @@ public:
     typedef typename KSpace::SCell Spel;
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Space::RealPoint RealPoint;
-    typedef TKernelConstIterator KernelConstIterator;
+    typedef Z2i::DigitalSet::ConstIterator KernelConstIterator;
 
     typedef TDigitalShapeMasks DigitalShapeMasks;
 
@@ -340,7 +340,7 @@ public:
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
 
-    void init ( Clone< Point > pOrigin, std::vector< DigitalShapeMasks > mask );
+    void init ( Clone< Point > pOrigin, DigitalShapeMasks * fullKernel, std::vector< PairIterators > mask );
 
     /**
        * Convolve the kernel at a given position.
@@ -524,7 +524,9 @@ private:
     Embedder embedder;
 
     /// Copy of vector of iterators for kernel partial masks
-    std::vector< DigitalShapeMasks > myMask;
+    std::vector< PairIterators > myMask;
+
+    DigitalShapeMasks * kernel;
 
     /// Copy of the first iterator of the kernel support (Used to iterate over it)
     KernelConstIterator myItKernelBegin;
@@ -591,7 +593,7 @@ public:
 
     typedef TDigitalShapeMasks DigitalShapeMasks;
 
-    typedef std::pair< Z3i::DigitalSet::ConstIterator, Z3i::DigitalSet::ConstIterator > PairIterators;
+    typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
     typedef SCellToMidPoint< KSpace > Embedder;
 
     //    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
