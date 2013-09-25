@@ -73,17 +73,17 @@ namespace DGtal
    * Description of struct 'Board3DTo2DFactory' <p>
    * \brief Factory for GPL Display3D:
    */
-
-struct Board3DTo2DFactory : public Display3DFactory
-{
-
+  template <typename TSpace, typename TKSpace>
+  struct Board3DTo2DFactory : public Display3DFactory<TSpace,TKSpace>
+  {
+    typedef TSpace Space;
+    typedef TKSpace KSpace;
 
   /**
    * set the camera position on the board
    * @param board the board where to draw
    * @param aThing the camera position to set
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::CameraPosition & aThing );
 
@@ -92,7 +92,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aThing the camera direction to set
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::CameraDirection & aThing );
 
@@ -101,7 +100,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aThing the camera up vector to set
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::CameraUpVector & aThing );
 
@@ -110,7 +108,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aThing the near and far distance
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::CameraZNearFar & aThing );
 
@@ -129,7 +126,7 @@ struct Board3DTo2DFactory : public Display3DFactory
        * @param radius scale factor for the unit sphere radius (default:1)
        * @tparam TVector a vector model
        */
-  template <typename TVector, typename Space, typename KSpace>
+  template <typename TVector>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const  DGtal::SphericalAccumulator<TVector> & accumulator,
                     const typename DGtal::SphericalAccumulator<TVector>::RealVector & shift =
@@ -143,7 +140,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aMesh the mesh to draw
    */
-  template <typename TPoint, typename Space, typename KSpace>
+    template <typename TPoint>
   static void
   drawAsFaces( Board3DTo2D<Space, KSpace> & board, const DGtal::Mesh<TPoint> & aMesh );
 
@@ -152,7 +149,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aMesh the mesh to draw
    */
-  template <typename TPoint, typename Space, typename KSpace>
+  template <typename TPoint>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const  DGtal::Mesh<TPoint> & aMesh );
   // Mesh
@@ -170,7 +167,7 @@ struct Board3DTo2DFactory : public Display3DFactory
   static DGtal::DrawableWithBoard3DTo2D *
   defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
 
-  template <typename TIterator, typename TInteger, int connectivity, typename Space, typename KSpace>
+  template <typename TIterator, typename TInteger, int connectivity>
   /**
    * @brief drawAsBalls
    * @param board the board where to draw
@@ -184,11 +181,11 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param arithm the arithm to draw
    */
-  template <typename TIterator, typename TInteger, int connectivity, typename Space, typename KSpace>
+  template <typename TIterator, typename TInteger, int connectivity>
   static void
   drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
 
-  template <typename TIterator, typename TInteger, int connectivity, typename Space, typename KSpace>
+  template <typename TIterator, typename TInteger, int connectivity>
   /**
    * @brief draw
    * @param board the board where to draw
@@ -215,7 +212,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
 
@@ -224,7 +221,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
 
@@ -233,7 +230,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
 
@@ -242,7 +239,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
   // DigitalSetBySTLSet
@@ -264,7 +261,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
@@ -273,7 +270,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
@@ -282,7 +279,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
@@ -291,7 +288,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain, typename Space, typename KSpace>
+  template<typename Domain>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
   // DigitalSetBySTLVector
@@ -304,56 +301,54 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param aDomain the domain to draw
    * @return the dyn. alloc. default style for this object.
    */
-  template<typename TSpace>
+  template<typename SpaceDom>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  defaultStyle( std::string str, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
   /**
    * @brief drawAsBoundingBox
    * @param board the board where to draw
    * @param aDomain the domain to draw
    */
-  template<typename TSpace, typename Space, typename KSpace>
+  template<typename SpaceDom>
   static void
-  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
   /**
    * @brief drawAsGrid
    * @param board the board where to draw
    * @param aDomain the domain to draw
    */
-  template<typename TSpace, typename Space, typename KSpace>
+  template<typename SpaceDom>
   static void
-  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
   /**
    * @brief drawAsPavingBalls
    * @param board the board where to draw
    * @param aDomain the domain to draw
    */
-  template<typename TSpace, typename Space, typename KSpace>
+  template<typename SpaceDom>
   static void
-  drawAsPavingBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  drawAsPavingBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
   /**
    * @brief drawAsPaving
    * @param board the board where to draw
    * @param aDomain the domain to draw
    */
-  template<typename TSpace, typename Space, typename KSpace>
+  template<typename SpaceDom>
   static void
-  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<TSpace> & aDomain );
-
-
+  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
   /**
    * @brief draw
    * @param board the board where to draw
    * @param aDomain the domain to draw
    */
-  template<typename TSpace, typename Space, typename KSpace>
+  template<typename SpaceDom>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<TSpace> & aDomain );
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
   // HyperRectDomain
 
 
@@ -364,18 +359,16 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param aCell the cell to draw
    * @return the dyn. alloc. default style for this object.
    */
-  template < Dimension dim, typename TInteger>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::KhalimskyCell<dim, TInteger> & aCell );
+  defaultStyle( std::string str, const typename KSpace::Cell & aCell );
 
   /**
    * @brief draw
    * @param board the board where to draw
    * @param aCell the cell to draw
    */
-  template < Dimension dim, typename TInteger, typename Space, typename KSpace>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::KhalimskyCell<dim, TInteger> & aCell );
+  draw( Board3DTo2D<Space, KSpace> & board, const typename KSpace::Cell & aCell );
   // KhalimskyCell
 
 
@@ -395,7 +388,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param anObject the object to draw
    */
-  template <typename TDigitalTopology, typename TDigitalSet, typename Space, typename KSpace>
+  template <typename TDigitalTopology, typename TDigitalSet>
   static void
   drawWithAdjacencies( Board3DTo2D<Space, KSpace> & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
 
@@ -404,7 +397,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param anObject the object to draw
    */
-  template <typename TDigitalTopology, typename TDigitalSet, typename Space, typename KSpace>
+  template <typename TDigitalTopology, typename TDigitalSet>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
   // Object
@@ -426,7 +419,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent, typename Space, typename KSpace>
+  template<Dimension dim, typename TComponent>
   static void
   drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
 
@@ -435,7 +428,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent, typename Space, typename KSpace>
+  template<Dimension dim, typename TComponent>
   static void
   drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
 
@@ -444,7 +437,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent, typename Space, typename KSpace>
+  template<Dimension dim, typename TComponent>
   static void
   drawAsPavingWired( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
 
@@ -453,7 +446,7 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aPoint the point to draw
    */
-  template<Dimension dim, typename TComponent, typename Space, typename KSpace>
+  template<Dimension dim, typename TComponent>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint );
 
@@ -463,14 +456,13 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param aPoint the point to draw
    * @param aPoint2 the point to draw
    */
-  template<Dimension dim, typename TComponent, typename Space, typename KSpace>
+  template<Dimension dim, typename TComponent>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::PointVector<dim,TComponent> & aPoint, const DGtal::PointVector<dim,TComponent> & aPoint2 );
   // PointVector
 
 
   // SignedKhalimskyCell
-  template< Dimension dim, typename TInteger>
   /**
    * Default drawing style object.
    * @param str the name of the class
@@ -478,16 +470,15 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @return the dyn. alloc. default style for this object.
    */
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell );
+  defaultStyle( std::string str, const typename KSpace::SCell & aSCell );
 
-  template< Dimension dim, typename TInteger, typename Space, typename KSpace>
   /**
    * @brief draw
    * @param board the board where to draw
    * @param aSCell the signed cell to draw
    */
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::SignedKhalimskyCell<dim, TInteger> & aSCell );
+  draw( Board3DTo2D<Space, KSpace> & board, const typename KSpace::SCell & aSCell );
   // SignedKhalimskyCell
 
   // GridCurve
@@ -496,9 +487,8 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aGrid the grid to draw
    */
-  template< typename TKSpace, typename Space, typename KSpace>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::GridCurve<TKSpace> & aGrid );
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::GridCurve<KSpace> & aGrid );
   // GridCurve
 
   // SCellsRange
@@ -507,10 +497,10 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aRangeAdapter the range adapter to draw
    */
-  template < typename TIterator, typename TSCell, typename Space, typename KSpace>
+  template < typename TIterator, typename TSCell>
   static void
-  draw( DGtal::Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter );
+  draw( Board3DTo2D<Space, KSpace> & board,
+        const ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter );
   // SCellsRange
 
   // PointsRange
@@ -519,10 +509,10 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aRangeAdapter the range adapter to draw
    */
-  template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+  template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
   // PointsRange
 
   // MidPointsRange
@@ -531,10 +521,10 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aRangeAdapter the range adapter to draw
    */
-  template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+  template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, typename TKSpace::Space::RealPoint> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter );
   // MidPointsRange
 
   // ArrowsRange
@@ -543,10 +533,10 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aRangeAdapter the range adapter to draw
    */
-  template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+    template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<KSpace>, std::pair<typename KSpace::Point, typename KSpace::Vector > > & aRangeAdapter );
   // ArrowsRange
 
   // InnerPointsRange
@@ -555,10 +545,10 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aRangeAdapter the range adapter to draw
    */
-  template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+  template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
   // InnerPointsRange
 
   // OuterPointsRange
@@ -567,10 +557,10 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aRangeAdapter the range adapter to draw
    */
-  template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+  template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename KSpace::Point> & aRangeAdapter );
   // OuterPointsRange
 
   // IncidentPointsRange
@@ -579,10 +569,10 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aRangeAdapter the range adapter to draw
    */
-  template <typename TIterator, typename TKSpace, typename Space, typename KSpace>
+  template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>,std::pair<typename TKSpace::Point, typename TKSpace::Point > > & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>,std::pair<typename KSpace::Point, typename KSpace::Point > > & aRangeAdapter );
   // IncidentPointsRange
 
 
@@ -591,7 +581,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aMode the mode to set
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::SetMode3D & aMode);
 
@@ -600,7 +589,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aStyle the style to set
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::CustomStyle3D & aStyle);
 
@@ -609,7 +597,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aColor the color to set
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::CustomColors3D & aColor);
 
@@ -618,7 +605,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aClipping the clipping plane to draw
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::ClippingPlane & aClipping);
 
@@ -627,7 +613,6 @@ struct Board3DTo2DFactory : public Display3DFactory
    * @param board the board where to draw
    * @param aTransformedSurfelPrism the transformed surfelprism to draw
    */
-  template <typename Space, typename KSpace>
   static void
   draw( Board3DTo2D<Space, KSpace> & board, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
 

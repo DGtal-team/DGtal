@@ -18,7 +18,7 @@
  * @file   Board3DTo2D.ih
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   mercredi 22 juin 2011
- * 
+ *
  * @brief
  *
  * Implementation of inline methods defined in Board3DTo2D.h
@@ -61,7 +61,7 @@
    * Set the default color for future drawing.
    * @param aColor: a DGtal::Color (allow to set a trasnparency value).
    *
-   **/ 
+   **/
 template < typename Space, typename KSpace>
 inline
 DGtal::Board3DTo2D<Space, KSpace> &
@@ -88,7 +88,7 @@ DGtal::Board3DTo2D<Space, KSpace>::operator<<( const TDrawableWithBoard3DTo2D & 
 {
   BOOST_CONCEPT_ASSERT((CDrawableWithBoard3DTo2D< TDrawableWithBoard3DTo2D, Space, KSpace>));
 
-  DGtal::Board3DTo2DFactory::draw(*this, object);
+  DGtal::Board3DTo2DFactory<Space,KSpace>::draw(*this, object);
   return *this;
 }
 
@@ -331,7 +331,7 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
     // myBallSetList
     for(unsigned int i=0; i<Board3DTo2D<Space, KSpace>::myBallSetList.size(); i++)
     {
-        for (typename std::vector<typename Board3DTo2D<Space, KSpace>::ballD3D>::iterator s_it = Board3DTo2D<Space, KSpace>::myBallSetList.at(i).begin();
+        for (typename std::vector<typename Board3DTo2D<Space, KSpace>::BallD3D>::iterator s_it = Board3DTo2D<Space, KSpace>::myBallSetList.at(i).begin();
              s_it != Board3DTo2D<Space, KSpace>::myBallSetList.at(i).end();
              ++s_it)
         {
@@ -394,7 +394,7 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
     // myLineSetList
     for(unsigned int i=0; i<Board3DTo2D<Space, KSpace>::myLineSetList.size(); i++)
     {
-        for (typename std::vector<typename Board3DTo2D<Space, KSpace>::lineD3D>::iterator s_it = Board3DTo2D<Space, KSpace>::myLineSetList.at(i).begin();
+        for (typename std::vector<typename Board3DTo2D<Space, KSpace>::LineD3D>::iterator s_it = Board3DTo2D<Space, KSpace>::myLineSetList.at(i).begin();
              s_it != Board3DTo2D<Space, KSpace>::myLineSetList.at(i).end();
              ++s_it)
         {
@@ -423,7 +423,7 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
     // myCubeSetList
     for(unsigned int i=0; i<Board3DTo2D<Space, KSpace>::myCubeSetList.size(); i++)
     {
-        for (typename std::vector< typename Board3DTo2D<Space, KSpace>::cubeD3D>::iterator s_it = Board3DTo2D<Space, KSpace>::myCubeSetList.at(i).begin();
+        for (typename std::vector< typename Board3DTo2D<Space, KSpace>::CubeD3D>::iterator s_it = Board3DTo2D<Space, KSpace>::myCubeSetList.at(i).begin();
              s_it != Board3DTo2D<Space, KSpace>::myCubeSetList.at(i).end();
              ++s_it)
         {
@@ -482,13 +482,13 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
         }
     }
 
-    for(typename std::vector<std::vector<typename Board3DTo2D<Space, KSpace>::quadD3D> >::iterator it=Board3DTo2D<Space, KSpace>::myQuadSetList.begin(); it != Board3DTo2D<Space, KSpace>::myQuadSetList.end(); it++)
+    for(typename std::vector<std::vector<typename Board3DTo2D<Space, KSpace>::QuadD3D> >::iterator it=Board3DTo2D<Space, KSpace>::myQuadSetList.begin(); it != Board3DTo2D<Space, KSpace>::myQuadSetList.end(); it++)
         trace.info() << "-> Quad not YET implemented in Board3DTo2D" << std::endl;
 
     // Drawing all Khalimsky Space Cells
 
     // SurfelPrism (from updateList)
-    for (typename std::vector<typename Board3DTo2D<Space, KSpace>::quadD3D>::iterator s_it =Board3DTo2D<Space, KSpace>:: mySurfelPrismList.begin();
+    for (typename std::vector<typename Board3DTo2D<Space, KSpace>::QuadD3D>::iterator s_it =Board3DTo2D<Space, KSpace>:: mySurfelPrismList.begin();
          s_it != Board3DTo2D<Space, KSpace>::mySurfelPrismList.end();
          ++s_it)
     {
@@ -612,10 +612,10 @@ DGtal::Board3DTo2D<Space, KSpace>::init()
 {
     Board3DTo2D<Space, KSpace>::createNewCubeList();
 
-    std::vector<typename Board3DTo2D<Space, KSpace>::lineD3D> listeLine;
+    std::vector<typename Board3DTo2D<Space, KSpace>::LineD3D> listeLine;
     Board3DTo2D<Space, KSpace>::myLineSetList.push_back(listeLine);
 
-    std::vector<typename Board3DTo2D<Space, KSpace>::ballD3D> listeBall;
+    std::vector<typename Board3DTo2D<Space, KSpace>::BallD3D> listeBall;
     Board3DTo2D<Space, KSpace>::myBallSetList.push_back(listeBall);
 
     Board3DTo2D<Space, KSpace>::myCurrentFillColor = DGtal::Color (220, 220, 220);

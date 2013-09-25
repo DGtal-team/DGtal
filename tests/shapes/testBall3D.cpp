@@ -28,7 +28,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <QtGui/QApplication>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/shapes/parametric/Ball3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <iostream>
@@ -40,6 +39,7 @@
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/topology/SCellsFunctors.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
  using namespace std;

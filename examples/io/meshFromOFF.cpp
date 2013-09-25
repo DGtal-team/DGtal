@@ -33,11 +33,12 @@
 //! [includeImportOFF]
 //!
 
-#include "DGtal/io/viewers/Viewer3D.h"
+
 #include "DGtal/io/readers/MeshReader.h"
 
 #include <QtGui/qapplication.h>
 #include "DGtal/io/Display3D.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 //! [includeImportOFF]
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
@@ -55,7 +56,7 @@ int main( int argc, char** argv )
   //! [ImportOFFfile]
   std::string inputFilename = examplesPath + "samples/tref.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
-  Mesh<Viewer3D<>::ballD3D> anImportedMesh;
+  Mesh<Viewer3D<>::RealPoint> anImportedMesh;
   anImportedMesh << inputFilename;
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
