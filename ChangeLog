@@ -27,8 +27,10 @@
     - New possibility to access the 3 2D ArithmeticDSS object within an
       ArithmeticDSS3d.
 
-    - New local estimator adapter to make easy implementation of
-      locally defined differential estimator on digital surfaces.
+    - With an optional binding with CGAL and Eigen3, new curvature and
+      normal vector estimators have been added. For instance, you can
+      now estimate curvature from polyonomial surface fitting (Jet
+      Fitting) and Monge forms.
 
     - Minor improvements in the spherical accumulator.
 
@@ -36,7 +38,6 @@
       Digital Straight Line subsegment in logarithmic time using local
       convex hulls or Farey Fan. Also works when the DSL
       characteristics are not integers.
-
 
 *Shape Package*
 
