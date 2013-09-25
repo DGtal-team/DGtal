@@ -118,7 +118,7 @@ namespace DGtal
    *
    * @tparam TDomain type of domains
    * @tparam TValue type for image values
-   * @taparam THashKey  type to store Morton keys
+   * @tparam THashKey  type to store Morton keys
    * (default: DGtal::uint64_t)
    * 
    * @see testImageContainerByHashTree.cpp

@@ -23,7 +23,7 @@
  * @date 2013/06/16
  *
  * An example file named dgtalBoard3D-1-points.
- * 
+ *
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,19 +57,23 @@ int main()
   shape_set.insertNew(p6);
   shape_set.insertNew(p7);
 
-  
+
   Board3D<> board;
-
-  board << SetMode3D(domain.className(), "PavingGrids");
+  board << SetMode3D(domain.className(), "Paving");
   board << p1 << p2 << p3;
-  board << domain;
   board << shape_set;
-
-
   board.saveOBJ("dgtalBoard3D-1-points.obj");
 
+  Board3D<> board2;
+  board2 << SetMode3D(domain.className(), "Paving");
+  board2 << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  board2 << p1 ;
+  board2 << CustomColors3D(Color(0, 255,0),Color(0, 0,255));
+  board2 << p2 << p3;
+  board2.saveOBJ("dgtalBoard3D-1bis-points.obj");
 
-  
+
+
   trace.endBlock();
   return 0;
 }
