@@ -44,7 +44,7 @@ using namespace DGtal;
 // Standard services - public :
 template <typename Viewer3D, typename Domain, typename Predicate>
 void
-displayPredicate( Viewer3D & viewer, 
+displayPredicate( Viewer3D & viewer,
                   const Domain & domain, const Predicate & pred )
 {
   for ( typename Domain::ConstIterator itB = domain.begin(), itE = domain.end();
@@ -54,7 +54,7 @@ displayPredicate( Viewer3D & viewer,
         viewer << *itB;
     }
 }
- 
+
 int main( int argc, char** argv )
 {
   using namespace Z3i;
@@ -75,12 +75,12 @@ int main( int argc, char** argv )
   Point pt1( 8, 1, 3 );
   bool pt1_inside = plane.extend( pt1 );
   ++nb, nbok += pt1_inside == true ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") add " << pt1 
+  trace.info() << "(" << nbok << "/" << nb << ") add " << pt1
                << " Plane=" << plane << std::endl;
   Point pt2( 2, 7, 1 );
   bool pt2_inside = plane.extend( pt2 );
   ++nb, nbok += pt2_inside == true ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") add " << pt2 
+  trace.info() << "(" << nbok << "/" << nb << ") add " << pt2
                << " Plane=" << plane << std::endl;
 
   Point pt3( 0, 5, 12 );
@@ -104,7 +104,8 @@ int main( int argc, char** argv )
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  Viewer3D viewer;
+  typedef Viewer3D<> MyViewer;
+  MyViewer viewer;
   viewer.show();
   Color red( 255, 0, 0 );
   Color green( 0, 255, 0 );
@@ -119,7 +120,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D( grey, grey );
   displayPredicate( viewer, domain, plane );
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << MyViewer::updateDisplay;
 
 
   return application.exec();

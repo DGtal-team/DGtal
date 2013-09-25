@@ -29,11 +29,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
-
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 
   #ifdef WITH_VISU3D_QGLVIEWER

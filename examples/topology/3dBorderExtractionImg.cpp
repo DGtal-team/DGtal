@@ -30,13 +30,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
@@ -52,13 +52,12 @@ using namespace DGtal;
 int main( int argc, char** argv )
 {
 
-  std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
+  std::string inputFilename = examplesPath + "samples/Al.100.vol";
   QApplication application(argc,argv);
   Viewer3D<> viewer;
-  viewer.show(); 
-  
+  viewer.show();
+
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
-  // Image image = VolReader<Image>::VolReader<Image>::importVol(inputFilename);
   Image image = VolReader<Image>::importVol(inputFilename);
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
@@ -66,14 +65,8 @@ int main( int argc, char** argv )
   Z3i::Object18_6 border = obj3d.border();
   viewer << border;
   viewer << ClippingPlane(0,1,0, -40) << Viewer3D<>::updateDisplay;
-  //viewer << ClippingPlane(0,-1,0, 70)<< Viewer3D<>::updateDisplay;
-  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D<>::updateDisplay;
-  //viewer << ClippingPlane(1,0.1,0, -50)<< Viewer3D<>::updateDisplay;
-  
-  
 
-  
-  return application.exec();   
+  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

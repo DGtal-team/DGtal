@@ -30,7 +30,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <sstream>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageHelper.h"
@@ -38,6 +37,7 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/ConstImageAdapter.h"
 #include "ConfigExamples.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 
 #include <QtGui/qapplication.h>

@@ -17,8 +17,6 @@ using namespace Z3i;
 
 int main( int /*argc*/, char** /*argv*/ )
 {
-  //TODO this main doesn't seems to work, find why
-
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
   //! [ExampleDisplay3DToOFF]
   Display3D<Space, KSpace> viewer;
@@ -27,14 +25,9 @@ int main( int /*argc*/, char** /*argv*/ )
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
 
-  viewer << set3d ;  
+  viewer << set3d ;
   viewer >> "exportMeshToOFF.off";
-  // Alternatively the viewer can be exported also towards an output stream but exclusively in OFF format:
-  // ofstream out;
-  // out.open( "exportMeshToOFF.off");
-  // viewer>> out;
-  // out.close();
-  //! [ExampleDisplay3DToOFF]
+ //! [ExampleDisplay3DToOFF]
 
   return 0;
 }

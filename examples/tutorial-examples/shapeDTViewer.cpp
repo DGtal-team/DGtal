@@ -36,7 +36,6 @@
 
 //! [shapeDTViewer-basicIncludes]
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
@@ -44,6 +43,7 @@
 #include "DGtal/shapes/Shapes.h" 
 #include "DGtal/shapes/ShapeFactory.h" 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
