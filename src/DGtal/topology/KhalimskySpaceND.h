@@ -225,7 +225,7 @@ namespace DGtal
               const SignedKhalimskyCell< dim, TInteger > & object );
 
   /**
-     @bried This class is useful for looping on all "interesting" coordinates of a
+     This class is useful for looping on all "interesting" coordinates of a
      cell. For instance, surfels in Z3 have two interesting coordinates (the
      ones spanned by the surfel).
      @code

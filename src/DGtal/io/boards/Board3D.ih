@@ -179,16 +179,16 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   // myBallSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     k=0;//id of each BallSetList for the .OBJ identification
-    for ( typename std::vector< std::vector< typename Board3D<Space, KSpace>::ballD3D> >::const_iterator it = Board3D<Space, KSpace>::myBallSetList.begin();
+    for ( typename std::vector< std::vector< typename Board3D<Space, KSpace>::BallD3D> >::const_iterator it = Board3D<Space, KSpace>::myBallSetList.begin();
           it != Board3D<Space, KSpace>::myBallSetList.end(); it++)
     {
       std::ostringstream tmpStream; // checking that points exist before creating an object
-      for (typename std::vector<  typename Board3D<Space, KSpace>::ballD3D>::const_iterator s_it = it->begin();
+      for (typename std::vector<  typename Board3D<Space, KSpace>::BallD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); s_it++)
       {
         //test if a clipping plane do not cut it
         bool notCut =true;
-        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
         while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
         {
           double d2 = ( itClip->a * s_it->x) + (itClip->b * s_it->y) + ( itClip->c * s_it->z ) + itClip->d;
@@ -219,7 +219,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << "usemtl " << matName.str() << std::endl;
         outOBJ << tmpStream.str();
 
-        typename std::vector< typename Board3D<Space, KSpace>::ballD3D>::const_iterator itBegin = it->begin();
+        typename std::vector< typename Board3D<Space, KSpace>::BallD3D>::const_iterator itBegin = it->begin();
         Re = itBegin->R /255.0 ;
         Gr = itBegin->G /255.0;
         Bl = itBegin->B /255.0;
@@ -241,17 +241,17 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   {
     j =0;
     k=0;//id of each LineSetList for the .OBJ identification
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::lineD3D> >::const_iterator it =Board3D<Space, KSpace>::myLineSetList.begin();
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::LineD3D> >::const_iterator it =Board3D<Space, KSpace>::myLineSetList.begin();
         it!= Board3D<Space, KSpace>::myLineSetList.end();   it++)
     {
       std::ostringstream tmpStream;
-      for (typename std::vector< typename Board3D<Space, KSpace>::lineD3D>::const_iterator s_it = it->begin();
+      for (typename std::vector< typename Board3D<Space, KSpace>::LineD3D>::const_iterator s_it = it->begin();
            s_it != it->end();++s_it)
       {
 
         //test if a clipping plane do not cut it
         bool notCut =true;
-        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
         while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
         {
           double a = itClip->a;
@@ -324,7 +324,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << "usemtl " << matName.str() << std::endl;
         outOBJ << tmpStream.str();
 
-        typename std::vector< typename Board3D<Space, KSpace>::lineD3D>::const_iterator itBegin = it->begin();
+        typename std::vector< typename Board3D<Space, KSpace>::LineD3D>::const_iterator itBegin = it->begin();
         Re = itBegin->R /255.0 ;
         Gr = itBegin->G /255.0;
         Bl = itBegin->B /255.0;
@@ -346,11 +346,11 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   {
     j  = 0 ; //id of each Cube sub list for the .OBJ identification
     k = 0; // id of each list
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::cubeD3D> >::const_iterator it =Board3D<Space, KSpace>::myCubeSetList.begin();
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::CubeD3D> >::const_iterator it =Board3D<Space, KSpace>::myCubeSetList.begin();
         it != Board3D<Space, KSpace>::myCubeSetList.end();   it++)
     {
       std::ostringstream tmpStream;
-      for (typename std::vector< typename Board3D<Space, KSpace>::cubeD3D>::const_iterator s_it = it->begin();
+      for (typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); ++s_it)
       {
         double wid = s_it->width;
@@ -366,7 +366,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         double z2 = z + wid;
         //test if a clipping plane do not cut it
         bool notCut =true;
-        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
         while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
         {
           double a = itClip->a;
@@ -441,7 +441,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << "usemtl " << matName.str() << std::endl;
         outOBJ << tmpStream.str();
 
-        typename std::vector< typename Board3D<Space, KSpace>::cubeD3D>::const_iterator itBegin = it->begin();
+        typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator itBegin = it->begin();
         Re = itBegin->R /255.0 ;
         Gr = itBegin->G /255.0;
         Bl = itBegin->B /255.0;
@@ -464,11 +464,11 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   {
     //std::vector<quadD3D>::const_iterator
     k = 0; // id of each list
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::quadD3D> >::const_iterator it =Board3D<Space, KSpace>::myQuadSetList.begin();
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::QuadD3D> >::const_iterator it =Board3D<Space, KSpace>::myQuadSetList.begin();
         it != Board3D<Space, KSpace>::myQuadSetList.end();   it++)
     {
       std::ostringstream tmpStream;
-      for (typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::const_iterator s_it = it->begin();
+      for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); ++s_it)
       {
         //test if a clipping plane do not cut it
@@ -494,7 +494,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << "usemtl " << matName.str() << std::endl;
         outOBJ << tmpStream.str();
 
-        typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::const_iterator itBegin = it->begin();
+        typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->begin();
         Re = itBegin->R /255.0 ;
         Gr = itBegin->G /255.0;
         Bl = itBegin->B /255.0;
@@ -516,16 +516,17 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   {
     //std::vector<triangleD3D>::const_iterator
     k = 0; // id of each list
-    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::triangleD3D> >::const_iterator it =Board3D<Space, KSpace>::myTriangleSetList.begin();
+    for(typename std::vector<std::vector< typename Board3D<Space, KSpace>::TriangleD3D> >::const_iterator it =Board3D<Space, KSpace>::myTriangleSetList.begin();
         it != Board3D<Space, KSpace>::myTriangleSetList.end();   it++)
     {
       std::ostringstream tmpStream;
-      for (typename std::vector< typename Board3D<Space, KSpace>::triangleD3D>::const_iterator s_it = it->begin();
+      for (typename std::vector< typename Board3D<Space, KSpace>::TriangleD3D>::const_iterator s_it = it->begin();
            s_it != it->end(); ++s_it)
       {
         //test if a clipping plane do not cut it
         bool notCut =true;
-        typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+        typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip =
+          Board3D<Space, KSpace>::myClippingPlaneList.begin();
         while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
         {
           double a = itClip->a;
@@ -568,7 +569,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << "usemtl " << matName.str() << std::endl;
         outOBJ << tmpStream.str();
 
-        typename std::vector< typename Board3D<Space, KSpace>::triangleD3D>::const_iterator itBegin = it->begin();
+        typename std::vector< typename Board3D<Space, KSpace>::TriangleD3D>::const_iterator itBegin = it->begin();
         Re = itBegin->R /255.0 ;
         Gr = itBegin->G /255.0;
         Bl = itBegin->B /255.0;
@@ -594,13 +595,13 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
     k=0;
     std::ostringstream tmpStream;
 
-    for (typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::iterator s_it = Board3D<Space, KSpace>::mySurfelPrismList.begin();
+    for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::iterator s_it = Board3D<Space, KSpace>::mySurfelPrismList.begin();
          s_it != Board3D<Space, KSpace>::mySurfelPrismList.end();
          ++s_it)
     {
       //test if a clipping plane do not cut it
       bool notCut =true;
-      typename std::vector< typename Board3D<Space, KSpace>::clippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
+      typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
       while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
       {
         double a = itClip->a;
@@ -635,11 +636,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
       if (tmpStream.str() != "")
       {
         std::stringstream name;
-        name << Board3D<Space, KSpace>::mySurfelPrismNameList;
-        if ( name.str()== "")
-        {
-          name << "mySurfelPrismList" << j;
-        }
+        name << "mySurfelPrismList" << j;
         std::stringstream matName;
         matName << "mySurfelPrismList" << j << "MAT";
 
@@ -647,7 +644,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << "usemtl " << matName.str() << std::endl;
         outOBJ << tmpStream.str();
 
-        typename std::vector< typename Board3D<Space, KSpace>::quadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
+        typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
         Re = itBegin->R /255.0 ;
         Gr = itBegin->G /255.0;
         Bl = itBegin->B /255.0;

@@ -823,7 +823,7 @@ DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
   ASSERT((Space::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
                                     mode=="BoundingBox")||
          ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
-  ASSERT((TSpace::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="Grid") ||
+  ASSERT((Space::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="Grid") ||
          ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
 
   if(Space::dimension == 2)
@@ -1373,6 +1373,14 @@ template< typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::CustomColors3D & cc3d )
 {
+  //We reset the lists
+  display.createNewLineList();
+  display.createNewBallList();
+  display.createNewCubeList();
+  display.createNewQuadList();
+  display.createNewTriangleList();
+  display.createNewPolygonList();
+
   display.setFillColor(cc3d.myFillColor);
   display.setLineColor(cc3d.myPenColor);
 }

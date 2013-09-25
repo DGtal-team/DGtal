@@ -124,7 +124,7 @@ namespace DGtal
   public:
 
     /**
-     * Computes the signed distance of @aP to the circle
+     * Computes the signed distance of aP to the circle
      * @param aP the point to be tested.
      * @return the signed distance.
      */
