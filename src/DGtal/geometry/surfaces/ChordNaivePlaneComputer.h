@@ -132,7 +132,8 @@ namespace DGtal
     Model of boost::DefaultConstructible, boost::CopyConstructible,
     boost::Assignable, boost::ForwardContainer, CPointPredicate.
 
-    @tparam TSpace specifies the digital space (provides dimension and types for the primitive)
+    @tparam TSpace specifies the digital space (provides dimension and
+    types for the primitive)
 
     @tparam TInputPoint specifies the type of the input points
     (digital or not). Usually, you may choose TInputPoint =
