@@ -135,6 +135,8 @@ namespace DGtal
     typedef typename PointSet::iterator Iterator;
     typedef TInternalInteger InternalInteger;
     typedef IntegerComputer< InternalInteger > MyIntegerComputer;
+    typedef COBANaivePlaneComputer< Space, InternalInteger > COBAComputer;
+    typedef typename COBAComputer::Primitive Primitive;
 
     // ----------------------- std public types ------------------------------
   public:
@@ -147,7 +149,6 @@ namespace DGtal
 
     // ----------------------- internal types ------------------------------
   private:
-    typedef COBANaivePlaneComputer< Space, InternalInteger > COBAComputer;
     typedef std::vector<Dimension>::iterator AxisIterator;
     typedef std::vector<Dimension>::const_iterator AxisConstIterator;
     // ----------------------- Standard services ------------------------------
@@ -343,6 +344,16 @@ namespace DGtal
      */
     template <typename TInputIterator>
     bool isExtendable( TInputIterator it, TInputIterator itE ) const;
+
+    //-------------------- Primitive services -----------------------------
+  public:
+
+    /**
+       @return the current primitive recognized by this computer,
+       which is a ParallelStrip of axis width smaller than the one
+       specified at instanciation.
+    */
+    Primitive primitive() const;
 
     //-------------------- Parameters services -----------------------------
   public:

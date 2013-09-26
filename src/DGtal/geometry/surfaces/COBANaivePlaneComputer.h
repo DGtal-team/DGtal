@@ -51,6 +51,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
+#include "DGtal/geometry/surfaces/ParallelStrip.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -142,6 +143,7 @@ namespace DGtal
     typedef typename PointSet::iterator Iterator;
     typedef TInternalInteger InternalInteger;
     typedef IntegerComputer< InternalInteger > MyIntegerComputer;
+    typedef ParallelStrip<Space> Primitive;
 
     // ----------------------- std public types ------------------------------
   public:
@@ -365,6 +367,16 @@ namespace DGtal
      */
     template <typename TInputIterator>
     bool isExtendable( TInputIterator it, TInputIterator itE ) const;
+
+    //-------------------- Primitive services -----------------------------
+  public:
+
+    /**
+       @return the current primitive recognized by this computer,
+       which is a ParallelStrip of axis width smaller than the one
+       specified at instanciation.
+    */
+    Primitive primitive() const;
 
     //-------------------- Parameters services -----------------------------
   public:
