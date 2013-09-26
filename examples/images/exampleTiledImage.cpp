@@ -113,18 +113,6 @@ int main( int argc, char** argv )
     
     int cpt, sumC, sumT;
     
-    cpt=sumC=0;
-    trace.beginBlock("test ConstIterator");
-    for(VImage::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
-        it != itend; ++it)
-        {
-          trace.info() << tiledImage(*it) << ",";
-          sumC += tiledImage(*it);
-          cpt++;
-        }
-    trace.info() << "Cpt: " << cpt << " - sumC: " << sumC << endl;
-    trace.endBlock();
-    
     cpt=sumT=0;
     trace.beginBlock("test TiledIterator");
     for(MyTiledImage::TiledIterator it = tiledImage.begin(), itend = tiledImage.end();
@@ -135,6 +123,18 @@ int main( int argc, char** argv )
           cpt++;
         }
     trace.info() << "Cpt: " << cpt << " - sumT: " << sumT << endl;
+    trace.endBlock();
+    
+    cpt=sumC=0;
+    trace.beginBlock("test ConstIterator");
+    for(VImage::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
+        it != itend; ++it)
+        {
+          trace.info() << tiledImage(*it) << ",";
+          sumC += tiledImage(*it);
+          cpt++;
+        }
+    trace.info() << "Cpt: " << cpt << " - sumC: " << sumC << endl;
     trace.endBlock();
     
     // ---

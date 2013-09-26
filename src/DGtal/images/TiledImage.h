@@ -402,7 +402,7 @@ public:
      */
     Value operator()(const Point & aPoint)// const // TEMP_MT
     {
-      //ASSERT(myImageFactory->domain().isInside(aPoint)); // TEMP_MT
+      ASSERT(myImageFactory->domain().isInside(aPoint)); // TEMP_MT
 
       typename OutputImage::Value aValue;
       bool res;
