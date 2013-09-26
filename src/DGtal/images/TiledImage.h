@@ -50,9 +50,6 @@
 #include "DGtal/base/Alias.h"
 
 #include "DGtal/images/ImageCache.h"
-
-#include "DGtal/images/DefaultConstImageRange.h"
-#include "DGtal/images/DefaultImageRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -146,7 +143,7 @@ public:
     // ----------------------- Interface --------------------------------------
 public:
 
-    /////////////////// Domains //////////////////
+    /////////////////// Domains ///////////////////
     
     /**
      * Returns a reference to the underlying image domain.
@@ -157,6 +154,8 @@ public:
     {
         return myImageFactory->domain();
     }
+    
+    /////////////////////////// Ranges //////////////////////
 
     /**
      * Returns the range of the underlying image
@@ -179,11 +178,171 @@ public:
     {
         //return myImagePtr->range();
     }*/
-
-    /////////////////// Accessors //////////////////
-
     
-    /////////////////// API //////////////////
+    /////////////////////////// Custom Iterator /////////////
+    
+    /**
+     * Specific TiledIterator on TiledImage.
+     */
+
+    class TiledIterator
+    {
+
+      friend class TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy>;
+
+    public:
+      
+      /**
+       * Constructor.
+       *
+       * @param p starting point of the TiledIterator
+       * @param aTiledImage pointer to the TiledImage
+       */
+      TiledIterator ( const Point & p,
+                     TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) : myPos ( p ),  myTiledImage ( aTiledImage )
+      {
+        d = myTiledImage->findSubDomain(myPos);
+      }
+      
+      /**
+       * operator *
+       *
+       * @return the value associated to the current TiledIterator position.
+       */
+      inline
+      const Value operator*()
+      {
+        return ( *myTiledImage ) ( myPos );
+      }
+      
+      /**
+       * Operator ==
+       *
+       * @return true if this and it are equals.
+       */
+      inline
+      bool operator== ( const TiledIterator &it ) const
+      {
+        return ( myPos == it.myPos );
+      }
+
+      /**
+       * Operator !=
+       *
+       * @return true if this and it are different.
+       */
+      inline
+      bool operator!= ( const TiledIterator &it ) const
+      {
+        return ( myPos != it.myPos );
+      }
+      
+      /**
+       * Implements the next() method: we move on step forward.
+       *
+       **/
+      inline
+      void next()
+      {
+        typename Domain::Integer i,j,k;
+        bool upper;
+        
+        for(i=0; i<Domain::dimension; i++)
+        {
+          if (myPos[i] < d.upperBound()[i])
+          {
+            myPos[i]++;
+            return;
+          }
+          else
+          {
+            upper = true;
+            for(j=0; j<Domain::dimension; j++)
+            {
+              if (myPos[j] != d.upperBound()[j])
+              {
+                upper = false;
+                break;
+              }
+            }
+              
+            if (upper)
+            {
+              for(j=0; j<Domain::dimension; j++)
+              {
+                if (d.upperBound()[j] < myTiledImage->m_upperBound[j])
+                {
+                  myPos[j]=d.upperBound()[j]+1;
+                  
+                  for(k=j+1; k<Domain::dimension; k++)
+                    myPos[k] = d.lowerBound()[k];
+                  
+                  d = myTiledImage->findSubDomain(myPos);
+                  return;
+                }
+                else
+                  myPos[j]=myTiledImage->m_lowerBound[j];
+              }
+            }
+            else
+              for(j=0; j<=i; j++)
+                myPos[j] = d.lowerBound()[j];
+          }
+        }
+      }
+      
+      /**
+       * Operator ++ (++it)
+       *
+       */
+      inline
+      TiledIterator &operator++()
+      {
+        /*typename Domain::Integer i;
+        
+        for(i=0; i<Domain::dimension; i++)
+          trace.info() << myPos[i] << ",";
+        trace.info() << " - ";*/
+        
+        next();
+        return *this;
+      }
+      
+      /**
+       * Operator ++ (it++)
+       *
+       */
+      inline
+      TiledIterator operator++ ( int )
+      {
+        TiledIterator tmp = *this;
+        next();
+        return tmp;
+      }
+
+    private:
+      /// TiledImage pointer
+      TiledImage *myTiledImage;
+      
+      /// Current TiledIterator position
+      Point myPos;
+
+      /// Current domain
+      Domain d;
+
+    };
+    
+    TiledIterator begin()
+    {
+      return TiledIterator( m_lowerBound, this );
+    }
+    
+    TiledIterator end()
+    {
+      return TiledIterator( m_upperBound, this );
+    }
+
+    /////////////////// API ///////////////////////
 
     /**
      * Writes/Displays the object on an output stream.
