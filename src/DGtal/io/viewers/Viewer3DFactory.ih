@@ -313,11 +313,13 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 
 // ImageAdapter (3D)
 template <typename Space, typename KSpace>
-template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1>
+template <typename TImageContainer, typename TFunctorD, typename TNewValue,
+          typename TFunctorValue, typename TFunctorValueVm1>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const ImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
-                              TNewValue, TFunctorValue, TFunctorValueVm1> & anImage )
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
+                                            const ImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
+                                            TNewValue, TFunctorValue, TFunctorValueVm1> & anImage )
 {
   drawImage3D(viewer, anImage, CastFunctor<unsigned int> (), anImage.myMode);
 }
@@ -328,7 +330,8 @@ template <typename Space, typename KSpace>
 template <typename SpaceDom>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::HyperRectDomain<SpaceDom> & aDomain )
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
+                                            const DGtal::HyperRectDomain<SpaceDom> & aDomain )
 {
   std::string mode = viewer.getMode( aDomain.className() );
 
