@@ -40,11 +40,10 @@
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SCellsFunctors.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SetOfSurfels.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
@@ -146,7 +145,7 @@ int main( int argc, char** argv )
 
 
   QApplication application( argc, argv );
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();
   viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
@@ -219,7 +218,7 @@ int main( int argc, char** argv )
     viewer << *it;
   }
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
 
   return application.exec();
 }
