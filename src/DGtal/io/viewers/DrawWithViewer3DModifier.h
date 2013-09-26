@@ -52,96 +52,96 @@
 namespace DGtal
 {
 
-/**
- *@brief Base class specifying the methods for classes which intend to
- * modify a Viewer3D stream.
- *
- */
-struct DrawWithViewer3DModifier : public DrawWithDisplay3DModifier
-{
-  std::string className() const;
-};
+  /**
+   *@brief Base class specifying the methods for classes which intend to
+   * modify a Viewer3D stream.
+   *
+   */
+  struct DrawWithViewer3DModifier : public DrawWithDisplay3DModifier
+  {
+    std::string className() const;
+  };
 
 
 #ifndef DrawWithBoard3DTo2DModifier_h
-/**
+  /**
    * @brief  CameraPosition class to set camera position.
    */
-struct CameraPosition : public DrawWithViewer3DModifier
-{
-  /**
+  struct CameraPosition : public DrawWithViewer3DModifier
+  {
+    /**
      * Constructor.
      *
      * @param x x position.
      * @param y y position.
      * @param z z position.
      */
-  CameraPosition( const double x, const double y, const double z ):eyex(x), eyey(y), eyez(z)
-  {
-  }
+    CameraPosition( const double x, const double y, const double z ):eyex(x), eyey(y), eyez(z)
+    {
+    }
 
-  double eyex, eyey, eyez;
-};
+    double eyex, eyey, eyez;
+  };
 
 
-/**
+  /**
    * @brief CameraDirection class to set camera direction.
    */
-struct CameraDirection : public DrawWithViewer3DModifier
-{
-  /**
+  struct CameraDirection : public DrawWithViewer3DModifier
+  {
+    /**
      * Constructor.
      *
      * @param x x direction.
      * @param y y direction.
      * @param z z direction.
      */
-  CameraDirection( const double x, const double y, const double z ): dirx(x), diry(y), dirz(z)
-  {
-  }
+    CameraDirection( const double x, const double y, const double z ): dirx(x), diry(y), dirz(z)
+    {
+    }
 
-  double dirx, diry, dirz;
-};
+    double dirx, diry, dirz;
+  };
 
 
-/**
+  /**
    * @brief CameraUpVector class to set camera up-vector.
    */
-struct CameraUpVector : public DrawWithViewer3DModifier
-{
-  /**
+  struct CameraUpVector : public DrawWithViewer3DModifier
+  {
+    /**
      * Constructor.
      *
      * @param x x coordinate of up-vector.
      * @param y y coordinate of up-vector.
      * @param z z coordinate of up-vector.
      */
-  CameraUpVector( const double x, const double y, const double z ): upx(x), upy(y), upz(z)
-  {
-    upx=x; upy=y; upz=z;
-  }
+    CameraUpVector( const double x, const double y, const double z ): upx(x), upy(y), upz(z)
+    {
+      upx=x; upy=y; upz=z;
+    }
 
-  double upx, upy, upz;
-};
+    double upx, upy, upz;
+  };
 
 
 
-/**
+  /**
    * @brief CameraZNearFar class to set near and far distance.
    */
-struct CameraZNearFar : public DrawWithViewer3DModifier
-{
-  /**
+  struct CameraZNearFar : public DrawWithViewer3DModifier
+  {
+    /**
      * Constructor.
      *
      * @param near near distance.
      * @param far far distance.
      */
-  CameraZNearFar( const double near, const double far ): ZNear(near), ZFar(far)
-  {
-  }
-  double ZNear, ZFar;
-};
+    CameraZNearFar( const double near, const double far ): ZNear(near), ZFar(far)
+    {
+    }
+    double ZNear, ZFar;
+  };
 
 #endif
 
@@ -149,16 +149,16 @@ struct CameraZNearFar : public DrawWithViewer3DModifier
 
 
 
-/**
+  /**
    *
    * @brief class to modify the position and orientation of an textured 2D image.
    *
    */
-template < typename Space, typename KSpace>
-struct UpdateImagePosition : public DrawWithViewer3DModifier
-{
+  template < typename Space, typename KSpace>
+  struct UpdateImagePosition : public DrawWithViewer3DModifier
+  {
 
-  /**
+    /**
      * Constructor given from an specific image index, a new direction
      * (associated to the normal of the image plane), and and a new
      * position of the bottom-left point.
@@ -169,24 +169,24 @@ struct UpdateImagePosition : public DrawWithViewer3DModifier
      * @param posZbottomLeft the z position of the bottom left point.
      *
      */
-  UpdateImagePosition(unsigned int anIndex,typename Viewer3D<Space,KSpace>::ImageDirection newDir,
-                      double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
-    myPosXBottomLeft(posXbottomLeft),
-    myPosYBottomLeft(posYbottomLeft),
-    myPosZBottomLeft(posZbottomLeft),
-    myNewDirection(newDir)
-  {}
+    UpdateImagePosition(unsigned int anIndex,typename Viewer3D<Space,KSpace>::ImageDirection newDir,
+                        double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
+                                                                                                myPosXBottomLeft(posXbottomLeft),
+                                                                                                myPosYBottomLeft(posYbottomLeft),
+                                                                                                myPosZBottomLeft(posZbottomLeft),
+      myNewDirection(newDir)
+    {}
 
-  unsigned int myIndex;
-  double  myPosXBottomLeft;
-  double  myPosYBottomLeft;
-  double  myPosZBottomLeft;
-  typename Viewer3D<Space,KSpace>::ImageDirection myNewDirection;
-};
+    unsigned int myIndex;
+    double  myPosXBottomLeft;
+    double  myPosYBottomLeft;
+    double  myPosZBottomLeft;
+    typename Viewer3D<Space,KSpace>::ImageDirection myNewDirection;
+  };
 
 
 
-/**
+  /**
    *
    * @brief class to insert a custom 2D textured image by using a
    * conversion functor and allows to change the default mode
@@ -211,29 +211,29 @@ struct UpdateImagePosition : public DrawWithViewer3DModifier
    *
    * @see AddTextureImage3DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
    */
-template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
-struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
-{
-  BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+  template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
+  struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
+  {
+    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
 
-  /**
+    /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
-  AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
-                               ConstAlias<TFunctor> aFunctor,
-                               typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(anImage),
-    myFunctor(aFunctor),
-    myMode(aMode)
-  {
+    AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
+                                 ConstAlias<TFunctor> aFunctor,
+                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(anImage),
+                                                                                         myFunctor(aFunctor),
+                                                                                         myMode(aMode)
+    {
 
-  }
-  const TImageType *my2DImage;
-  const TFunctor &myFunctor;
-  typename Viewer3D< Space, KSpace>::TextureMode myMode;
-};
+    }
+    const TImageType *my2DImage;
+    const TFunctor &myFunctor;
+    typename Viewer3D< Space, KSpace>::TextureMode myMode;
+  };
 
-/**
+  /**
    *
    * @brief class to insert a custom 3D textured image by using a
    * conversion functor and allows to change the default mode
@@ -257,40 +257,40 @@ struct AddTextureImage2DWithFunctor : public DrawWithViewer3DModifier
    *
    * @see AddTextureImage2DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
    */
-template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
-struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
-{
-  BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
+  template <typename TImageType, typename TFunctor, typename Space, typename KSpace>
+  struct AddTextureImage3DWithFunctor : public DrawWithViewer3DModifier
+  {
+    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;
 
-  /**
+    /**
      * Constructor given from an 2D image and a Functor to apply specific conversion.
      *
      */
-  AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
-                               ConstAlias<TFunctor> aFunctor,
-                               typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(anImage),
-    myFunctor(aFunctor),
-    myMode(aMode)
-  {
+    AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
+                                 ConstAlias<TFunctor> aFunctor,
+                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(anImage),
+                                                                                         myFunctor(aFunctor),
+                                                                                         myMode(aMode)
+    {
 
-  }
-  const TImageType *my3DImage;
-  const TFunctor &myFunctor;
-  typename Viewer3D<Space, KSpace>::TextureMode myMode;
-};
+    }
+    const TImageType *my3DImage;
+    const TFunctor &myFunctor;
+    typename Viewer3D<Space, KSpace>::TextureMode myMode;
+  };
 
 
 
-/**
+  /**
    *
    * @brief class to modify the position and orientation of an textured 2D image.
    *
    */
-template < typename Space, typename KSpace>
-struct UpdateLastImagePosition : public DrawWithViewer3DModifier
-{
+  template < typename Space, typename KSpace>
+  struct UpdateLastImagePosition : public DrawWithViewer3DModifier
+  {
 
-  /**
+    /**
      * Constructor given from an specific image index, a new direction
      * (associated to the normal of the image plane), and and a new
      * position of the bottom-left point.
@@ -300,34 +300,34 @@ struct UpdateLastImagePosition : public DrawWithViewer3DModifier
      * @param posZbottomLeft the z position of the bottom left point.
      *
      */
-  UpdateLastImagePosition( typename Viewer3D<Space, KSpace>::ImageDirection newDir,
-                           double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):
-    myPosXBottomLeft(posXbottomLeft),
-    myPosYBottomLeft(posYbottomLeft),
-    myPosZBottomLeft(posZbottomLeft),
-    myNewDirection(newDir)
-  {
+    UpdateLastImagePosition( typename Viewer3D<Space, KSpace>::ImageDirection newDir,
+                             double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):
+      myPosXBottomLeft(posXbottomLeft),
+      myPosYBottomLeft(posYbottomLeft),
+      myPosZBottomLeft(posZbottomLeft),
+      myNewDirection(newDir)
+    {
 
-  }
-  double  myPosXBottomLeft;
-  double  myPosYBottomLeft;
-  double  myPosZBottomLeft;
-  typename Viewer3D<Space, KSpace>::ImageDirection myNewDirection;
-};
-
-
+    }
+    double  myPosXBottomLeft;
+    double  myPosYBottomLeft;
+    double  myPosZBottomLeft;
+    typename Viewer3D<Space, KSpace>::ImageDirection myNewDirection;
+  };
 
 
-/**
+
+
+  /**
    * @brief class to modify the data of an given image and also the
    * possibility to translate it (optional).
    *
    */
-template<typename TImageType, typename TFunctor= CastFunctor<unsigned int> >
-struct UpdateImageData : public DrawWithViewer3DModifier
-{
+  template<typename TImageType, typename TFunctor= CastFunctor<unsigned int> >
+  struct UpdateImageData : public DrawWithViewer3DModifier
+  {
 
-  /**
+    /**
      * Constructor given from an specific image index, a new image
      * (should be of dimension 2 and with the same size than the
      * orginal), and a possible (optional translation).
@@ -339,35 +339,35 @@ struct UpdateImageData : public DrawWithViewer3DModifier
      * @param translateZ the y translation value.
      *
      */
-  UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
-                  double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
-    myImage(&anImage),
-    myTranslateX (translateX),
-    myTranslateY (translateY),
-    myTranslateZ (translateZ),
-    myFunctor(aFunctor)
-  {}
+    UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
+                    double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
+                                                                                                     myImage(&anImage),
+                                                                                                     myTranslateX (translateX),
+                                                                                                     myTranslateY (translateY),
+      myTranslateZ (translateZ),
+      myFunctor(aFunctor)
+    {}
 
-  unsigned int myIndex;
-  int myTranslateX;
-  int myTranslateY;
-  int myTranslateZ;
-  const TImageType *myImage;
-  const TFunctor &myFunctor;
-};
-
-
+    unsigned int myIndex;
+    int myTranslateX;
+    int myTranslateY;
+    int myTranslateZ;
+    const TImageType *myImage;
+    const TFunctor &myFunctor;
+  };
 
 
-/**
+
+
+  /**
    * @brief class to modify the data of an given image and also the
    * possibility to translate it (optional).
    *
    */
-struct Translate2DDomain : public DrawWithViewer3DModifier
-{
+  struct Translate2DDomain : public DrawWithViewer3DModifier
+  {
 
-  /**
+    /**
      * Constructor given from an specific image index, a new image
      * (should be of dimension 2 and with the same size than the
      * orginal), and a possible (optional translation).
@@ -378,34 +378,34 @@ struct Translate2DDomain : public DrawWithViewer3DModifier
      * @param translateZ the y translation value.
      *
      */
-  Translate2DDomain(unsigned int anIndex, double translateX=0,
-                    double translateY=0, double translateZ=0 ): myIndex(anIndex),
-    myTranslateX (translateX),
-    myTranslateY (translateY),
-    myTranslateZ (translateZ)
-  { }
+    Translate2DDomain(unsigned int anIndex, double translateX=0,
+                      double translateY=0, double translateZ=0 ): myIndex(anIndex),
+                                                                  myTranslateX (translateX),
+                                                                  myTranslateY (translateY),
+                                                                  myTranslateZ (translateZ)
+    { }
 
-  unsigned int myIndex;
-  int myTranslateX;
-  int myTranslateY;
-  int myTranslateZ;
-};
-
-
+    unsigned int myIndex;
+    int myTranslateX;
+    int myTranslateY;
+    int myTranslateZ;
+  };
 
 
 
 
-/**
+
+
+  /**
    *
    * @brief class to modify the position and orientation of an 2D domain.
    *
    */
-template < typename Space, typename KSpace>
-struct Update2DDomainPosition : public DrawWithViewer3DModifier
-{
+  template < typename Space, typename KSpace>
+  struct Update2DDomainPosition : public DrawWithViewer3DModifier
+  {
 
-  /**
+    /**
      * Constructor given from an specific 2D domain index, a new direction
      * (associated to the normal of the 2D domain plane), and and a new
      * position of the bottom-left point.
@@ -416,32 +416,25 @@ struct Update2DDomainPosition : public DrawWithViewer3DModifier
      * @param posZbottomLeft the z position of the bottom left point.
      *
      */
-  Update2DDomainPosition(unsigned int anIndex, typename Viewer3D<Space,KSpace>::ImageDirection newDir,
-                         double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
-    myPosXBottomLeft(posXbottomLeft),
-    myPosYBottomLeft(posYbottomLeft),
-    myPosZBottomLeft(posZbottomLeft),
-    myNewDirection(newDir)
-  { }
+    Update2DDomainPosition(unsigned int anIndex, typename Viewer3D<Space,KSpace>::ImageDirection newDir,
+                           double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex),
+                                                                                                   myPosXBottomLeft(posXbottomLeft),
+                                                                                                   myPosYBottomLeft(posYbottomLeft),
+                                                                                                   myPosZBottomLeft(posZbottomLeft),
+      myNewDirection(newDir)
+    { }
 
-  unsigned int myIndex;
-  double  myPosXBottomLeft;
-  double  myPosYBottomLeft;
-  double  myPosZBottomLeft;
-  typename Viewer3D<Space, KSpace>::ImageDirection myNewDirection;
-};
+    unsigned int myIndex;
+    double  myPosXBottomLeft;
+    double  myPosYBottomLeft;
+    double  myPosZBottomLeft;
+    typename Viewer3D<Space, KSpace>::ImageDirection myNewDirection;
+  };
 
 
 
 
 } // namespace DGtal
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/io/viewers/DrawWithViewer3DModifier.ih"
 
 
 //                                                                           //
