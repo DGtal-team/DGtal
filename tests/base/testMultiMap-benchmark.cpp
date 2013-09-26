@@ -844,14 +844,14 @@ int main( int argc, char** argv )
   typedef double Value;
   static const unsigned int L = 16;
   trace.info()<< "Test several multi-map structures and compute some statistics." <<std::endl << "With parameter: "<<std::endl
-	      << "\t tested image size: 1000  1000"<<std::endl
+	      << "\t tested image size: 500  500"<<std::endl
 	      <<"Probability that there is no data at all at an image position (Bernouilli distribution): 0.5"
 	      << "Probability for the geometric distribution of the number of data per image position (E(Y)=(1-p)/p, Var(Y)=(1-p)/p^2 :0.5"<< std::endl;
   
   
 
-  unsigned int X =  1000;
-  unsigned int Y =  1000;
+  unsigned int X =  500;
+  unsigned int Y =  500;
   /// Probability that there is no data at this location.
   double PROB_NO_DATA =  0.5;
   /// If there is a possibility to have a data, this probability is
