@@ -283,9 +283,11 @@ public:
 
     typedef typename KSpace::SCell Spel;
     typedef typename KSpace::Point Point;
+    typedef typename KSpace::Space::RealPoint RealPoint;
     typedef TKernelConstIterator KernelConstIterator;
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef SCellToMidPoint< KSpace > Embedder;
 
     //    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
@@ -467,7 +469,7 @@ public:
 protected:
 
     void computeCovarianceMatrix( const Quantity* aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
-    void fillMoments( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
+    void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double orientation );
     template< typename Shape >
     double computeShiftFromShape( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
 
@@ -512,6 +514,8 @@ private:
 
     /// Const ref of the shape Kspace
     const KSpace & myKSpace;
+
+    Embedder embedder;
 
     /// Copy of vector of iterators for kernel partial masks
     std::vector< PairIterators > myMask;
@@ -575,9 +579,11 @@ public:
 
     typedef typename KSpace::SCell Spel;
     typedef typename KSpace::Point Point;
+    typedef typename KSpace::Space::RealPoint RealPoint;
     typedef TKernelConstIterator KernelConstIterator;
 
     typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef SCellToMidPoint< KSpace > Embedder;
 
     //    BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
@@ -767,7 +773,7 @@ public:
 protected:
 
     void computeCovarianceMatrix ( const Quantity* aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
-    void fillMoments ( Quantity* aMomentMatrix, const Point & aPoint, double orientation );
+    void fillMoments ( Quantity* aMomentMatrix, const Spel & aSpel, double orientation );
     template< typename Shape >
     double computeShiftFromShape ( const Shape & shape, const double h, const Spel & aInnerSpel, const Spel & aOutterSpel );
 
@@ -814,6 +820,8 @@ private:
 
     /// Const ref of the shape Kspace
     const KSpace & myKSpace;
+
+    Embedder embedder;
 
     /// Copy of vector of iterators for kernel partial masks
     std::vector< PairIterators > myMask;

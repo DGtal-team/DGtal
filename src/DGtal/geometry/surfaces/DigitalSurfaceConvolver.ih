@@ -1571,11 +1571,12 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Ke
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 2 >::fillMoments
 ( Quantity* aMomentMatrix,
-  const Point & aPoint,
+  const Spel & aSpel,
   double direction )
 {
-    int x = aPoint[ 0 ];
-    int y = aPoint[ 1 ];
+    RealPoint current = embedder( aSpel );
+    double x = current[ 0 ];
+    double y = current[ 1 ];
 
     aMomentMatrix[ 0 ] += direction * 1;
     aMomentMatrix[ 1 ] += direction * y;
@@ -1624,8 +1625,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     double lambda = -1.0;
     //    CanonicSCellEmbedder< KSpace > SCellToRealPoint( myKSpace );
 
-    RealPoint low = RealPoint( myKSpace.sCoords( aInnerSpel )) * h;
-    RealPoint high = RealPoint( myKSpace.sCoords( aOutterSpel )) * h;
+    RealPoint low = embedder( aInnerSpel ) * h;
+    RealPoint high = embedder( aOutterSpel ) * h;
     //    RealPoint low = ( SCellToRealPoint( aInnerSpel )) * h;
     //    RealPoint high = ( SCellToRealPoint( aOutterSpel )) * h;
 
@@ -1649,7 +1650,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
         if( inout == ON )
         {
-            lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+            lambda = (( test - ( embedder( aInnerSpel ) * h )).norm() / h );
             //            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
             break;
         }
@@ -1667,14 +1668,14 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     if( lambda == -1.0 )
     {
-        lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+        lambda = (( test - ( embedder( aInnerSpel ) * h )).norm() / h );
         //        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
     }
 
     ASSERT (( lambda <= 1.0 ));
     ASSERT (( lambda >= 0.0 ));
 
-    return lambda;
+    return 1.0 - lambda;
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
@@ -1812,7 +1813,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        fillMoments( m, shiftedSpel, 1.0 );
                     }
                 }
             }
@@ -1827,7 +1828,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                        fillMoments( m, shiftedSpel, -1.0 );
                     }
                 }
 
@@ -1838,7 +1839,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        fillMoments( m, shiftedSpel, 1.0 );
                     }
                 }
             }
@@ -1884,7 +1885,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
-                    fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                    fillMoments( m, shiftedSpel, -1.0 );
                 }
             }
 
@@ -1895,7 +1896,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
-                    fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                    fillMoments( m, shiftedSpel, 1.0 );
                 }
             }
         }
@@ -2147,6 +2148,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
       myKSpace( space ),
       isInitMask( false )
 {
+    embedder = Embedder( myKSpace );
 }
 
 /*template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
@@ -2990,7 +2992,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                            fillMoments( m, shiftedSpel, 1.0 );
                         }
                     }
                 }
@@ -3005,7 +3007,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                            fillMoments( m, shiftedSpel, -1.0 );
                         }
                     }
 
@@ -3016,7 +3018,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                            fillMoments( m, shiftedSpel, 1.0 );
                         }
                     }
                 }
@@ -3065,7 +3067,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                        fillMoments( m, shiftedSpel, -1.0 );
                     }
                 }
 
@@ -3076,7 +3078,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        fillMoments( m, shiftedSpel, 1.0 );
                     }
                 }
             }
@@ -3237,7 +3239,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                            fillMoments( m, shiftedSpel, 1.0 );
                         }
                     }
                 }
@@ -3252,7 +3254,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                            fillMoments( m, shiftedSpel, -1.0 );
                         }
                     }
 
@@ -3263,7 +3265,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                         if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                         {
-                            fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                            fillMoments( m, shiftedSpel, 1.0 );
                         }
                     }
                 }
@@ -3312,7 +3314,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                        fillMoments( m, shiftedSpel, -1.0 );
                     }
                 }
 
@@ -3323,7 +3325,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        fillMoments( m, shiftedSpel, 1.0 );
                     }
                 }
             }
@@ -3831,12 +3833,13 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Ke
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstIterator, 3 >::fillMoments
 ( Quantity* aMomentMatrix,
-  const Point & aPoint,
+  const Spel & aSpel,
   double direction )
 {
-    int x = aPoint[ 0 ];
-    int y = aPoint[ 1 ];
-    int z = aPoint[ 2 ];
+    RealPoint current = embedder( aSpel );
+    double x = current[ 0 ];
+    double y = current[ 1 ];
+    double z = current[ 2 ];
 
     aMomentMatrix[ 0 ] += direction * 1;
     aMomentMatrix[ 1 ] += direction * z;
@@ -3848,6 +3851,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     aMomentMatrix[ 7 ] += direction * z * z;
     aMomentMatrix[ 8 ] += direction * y * y;
     aMomentMatrix[ 9 ] += direction * x * x;
+
+
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
@@ -3900,8 +3905,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
     //    CanonicSCellEmbedder< KSpace > SCellToRealPoint( myKSpace );
     //    SCellToMidPoint< KSpace > SCellToRealPoint( myKSpace );
 
-    RealPoint low = RealPoint( myKSpace.sCoords( aInnerSpel )) * h;
-    RealPoint high = RealPoint( myKSpace.sCoords( aOuterSpel )) * h;
+    RealPoint low = embedder( aInnerSpel ) * h;
+    RealPoint high = embedder( aOuterSpel ) * h;
     //    RealPoint low = RealPoint( SCellToRealPoint( aInnerSpel )) * h;
     //    RealPoint high = RealPoint( SCellToRealPoint( aOuterSpel )) * h;
 
@@ -3926,7 +3931,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
         if( inout == ON )
         {
-            lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+            lambda = (( test - ( embedder( aInnerSpel ) * h )).norm() / h );
             //            lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
             break;
         }
@@ -3944,7 +3949,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     if( lambda == -1.0 )
     {
-        lambda = (( test - ( RealPoint( myKSpace.sCoords( aInnerSpel )) * h )).norm() / h );
+        lambda = (( test - ( embedder( aInnerSpel ) * h )).norm() / h );
         //        lambda = (( test - ( SCellToRealPoint( aInnerSpel ) * h )).norm() / h );
     }
 
@@ -3953,9 +3958,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
     //    std::cout << lambda << std::endl;
 
-    return lambda;
+    return 1.0 - lambda;
 }
-
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator >
 const int
@@ -4095,7 +4099,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        fillMoments( m, shiftedSpel, 1.0 );
                     }
                 }
             }
@@ -4110,7 +4114,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                        fillMoments( m, shiftedSpel, -1.0 );
                     }
                 }
 
@@ -4121,7 +4125,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                     if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                     {
-                        fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                        fillMoments( m, shiftedSpel, 1.0 );
                     }
                 }
             }
@@ -4169,7 +4173,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
-                    fillMoments( m, myKSpace.sCoords( shiftedSpel ), -1.0 );
+                    fillMoments( m, shiftedSpel, -1.0 );
                 }
             }
 
@@ -4180,7 +4184,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
                 if( myFFunctor( shiftedSpel ) != NumberTraits< FQuantity >::ZERO )
                 {
-                    fillMoments( m, myKSpace.sCoords( shiftedSpel ), 1.0 );
+                    fillMoments( m, shiftedSpel, 1.0 );
                 }
             }
         }
@@ -4189,7 +4193,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
         computeCovarianceMatrix( m, outerMatrix );
         memcpy( lastOuterMoments, m, nbMoments * sizeof( Quantity ));
     }
-
+    ASSERT (( lastInnerMoments[ 0 ] != 0 )); // Maybe a problem here. Can be normal ... but needs to check twice.
 //    ASSERT (( lastInnerMoments[ 0 ] != lastOuterMoments[ 0 ] )); // Maybe a problem here. Can be normal ... but needs to check twice.
 
     lastInnerSpel = currentInnerSpel;
