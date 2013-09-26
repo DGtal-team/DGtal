@@ -529,9 +529,10 @@ bool testChordNaivePlaneComputer()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::int64_t Integer;
+  typedef DGtal::Z3i::Z3 Space;
   typedef DGtal::Z3i::Point Point;
-  typedef ChordNaivePlaneComputer<Point, Integer> NaivePlaneComputer;
-  typedef ChordGenericNaivePlaneComputer<Point, Integer> GenericNaivePlaneComputer;
+  typedef ChordNaivePlaneComputer<Space, Point, Integer> NaivePlaneComputer;
+  typedef ChordGenericNaivePlaneComputer<Space, Point, Integer> GenericNaivePlaneComputer;
 
   BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlaneComputer > ));
@@ -714,14 +715,12 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Testing class ChordNaivePlaneComputer" );
   bool res = true 
     && testChordNaivePlaneComputer()
-    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 4, 100, 200 )
-    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 8, 100, 200 )
-    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 20, 100, 200 )
-    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int32_t> >( 100, 100, 200 )
-    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Point, DGtal::int64_t> >( 2000, 100, 200 )
-    && checkWidths<DGtal::int64_t, ChordNaivePlaneComputer<Z3i::Point, DGtal::int64_t> >( 1000, 1000000, 1000 );
-    // && checkManyPlanes<ChordNaivePlaneComputer<Z3, DGtal::int64_t> >( 500, 100, 200 )
-    // && checkManyPlanes<ChordNaivePlaneComputer<Z3, DGtal::BigInteger> >( 10000, 10, 200 );
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Space, Z3i::Point, DGtal::int32_t> >( 4, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Space, Z3i::Point, DGtal::int32_t> >( 8, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Space, Z3i::Point, DGtal::int32_t> >( 20, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Space, Z3i::Point, DGtal::int32_t> >( 100, 100, 200 )
+    && checkManyPlanes<ChordNaivePlaneComputer<Z3i::Space, Z3i::Point, DGtal::int64_t> >( 2000, 100, 200 )
+    && checkWidths<DGtal::int64_t, ChordNaivePlaneComputer<Z3i::Space, Z3i::Point, DGtal::int64_t> >( 1000, 1000000, 1000 );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
