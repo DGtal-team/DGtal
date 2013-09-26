@@ -46,7 +46,7 @@ using namespace Z3i;
 
 int main()
 {
-  Board3DTo2D board;
+  Board3DTo2D<Space, KSpace> board;
 
   Point p1( 0, 0, 0 );
   Point p2( 10, 10 , 10 );
@@ -68,7 +68,7 @@ int main()
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  board.saveCairo("dgtalBoard3DTo2D-2bis-sets-wireframe.png", Board3DTo2D::CairoPNG, 600, 400);
+  board.saveCairo("dgtalBoard3DTo2D-2bis-sets-wireframe.png", Board3DTo2D<Space, KSpace>::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
