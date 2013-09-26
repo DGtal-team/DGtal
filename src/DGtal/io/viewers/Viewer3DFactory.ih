@@ -334,60 +334,44 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
                                             const DGtal::HyperRectDomain<SpaceDom> & aDomain )
 {
   std::string mode = viewer.getMode( aDomain.className() );
-
-  ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
-          mode=="BoundingBox")||
-         ("DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3DD<Space, KSpace> & viewer, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
-
-  if ( mode == "BoundingBox" )
-    {
-      viewer.createNewLineList(aDomain.className());
-      drawAsBoundingBox( viewer, aDomain );
-    }else if( ( mode == "" ) || (mode == "Grid"))
-    {
-      viewer.createNewLineList(aDomain.className());
-      drawAsGrid( viewer, aDomain );
-    }
-  else if ( mode == "Paving" )
-    {
-      viewer.createNewCubeList( aDomain.className());
-    }
-
-  ASSERT((Space::dimension==3)|| (Space::dimension==2));
-  ASSERT((Space::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
+  ASSERT((SpaceDom::dimension==3)|| (SpaceDom::dimension==2));
+  
+  ASSERT((SpaceDom::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
                                     mode=="BoundingBox")||
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & viewer, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
-  ASSERT((Space::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="InterGrid"|| mode=="Grid") ||
-         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & viewer, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
 
-  if(Space::dimension == 2)
+    
+  ASSERT((SpaceDom::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="InterGrid"|| mode=="Grid") ||
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & viewer, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
+  
+  if(SpaceDom::dimension == 3){
+    if ( mode == "BoundingBox" )
+      {
+	viewer.createNewLineList(aDomain.className());
+	drawAsBoundingBox( viewer, aDomain );
+      }else if( ( mode == "" ) || (mode == "Grid"))
+      {
+	viewer.createNewLineList(aDomain.className());
+	drawAsGrid( viewer, aDomain );
+      }
+    else if ( mode == "Paving" )
+      {
+	viewer.createNewCubeList( aDomain.className());
+	drawAsPaving( viewer, aDomain );
+      }else if ( mode == "PavingGrids" )
+      {
+	viewer.createNewLineList(aDomain.className());
+	viewer.createNewCubeList( aDomain.className());
+	drawAsGrid( viewer, aDomain );
+	drawAsPaving( viewer, aDomain );
+      }
+  }else if(SpaceDom::dimension == 2)
     {
       if (mode=="")
         mode="BoundingBox";
       viewer.addImage2DDomainD3D(aDomain, mode);
-    }else if ( mode == "BoundingBox" )
-    {
-      viewer.createNewLineList();
-      drawAsBoundingBox( viewer, aDomain );
-    }else if(( mode == "" ) || (mode == "Grid"))
-    {
-      viewer.createNewLineList();
-      drawAsGrid( viewer, aDomain );
-    } else if ( mode == "Paving" )
-    {
-      viewer.createNewCubeList();
-      drawAsPaving( viewer, aDomain );
-    } else if ( mode == "PavingPoints" )
-    {
-      viewer.createNewBallList(aDomain.className());
-      drawAsPavingBalls( viewer, aDomain );
-    }else if ( mode == "PavingGrids" )
-    {
-      viewer.createNewLineList(aDomain.className());
-      viewer.createNewCubeList( aDomain.className());
-      drawAsGrid( viewer, aDomain );
-      drawAsPaving( viewer, aDomain );
-    }
+    }  
+
 }
 //end HyperRectDomain
 
