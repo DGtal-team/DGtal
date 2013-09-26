@@ -17,7 +17,7 @@
 /**
  * @file Viewer3D.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRSpace, UMR 7503), University of Nancy, France
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/01/03
  *
@@ -1005,7 +1005,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
           glVertex3f ( cube.x+_width, cube.y-_width, cube.z-_width );
           glVertex3f ( cube.x+_width, cube.y-_width, cube.z+_width );
 
-          //increment the list where the farest cube were and remove it if ended
+          //increment the list where the farthest cube were and remove it if ended
           (*itBest) ++;
 
           if ((*itBest) == (*endBest) )
