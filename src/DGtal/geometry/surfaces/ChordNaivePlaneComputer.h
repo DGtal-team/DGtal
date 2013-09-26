@@ -46,7 +46,8 @@
 #include <iostream>
 #include <set>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CSignedNumber.h"
+#include "DGtal/kernel/CSpace.h"
 #include "DGtal/geometry/surfaces/ParallelStrip.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -118,7 +119,7 @@ namespace DGtal
     @code
     // Example. Checks that the following four points does not belong to a naive plane.
     typedef SpaceND<3,int> Z3;
-    typedef ChordNaivePlaneComputer< Z3::Point, int64_t > NaivePlaneComputer;
+    typedef ChordNaivePlaneComputer< Z3, Z3::Point, int64_t > NaivePlaneComputer;
     NaivePlaneComputer plane;
     plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive 
     plane.extend( Point( 10, 0, 0 ) ); // return 'true'
@@ -131,47 +132,57 @@ namespace DGtal
     Model of boost::DefaultConstructible, boost::CopyConstructible,
     boost::Assignable, boost::ForwardContainer, CPointPredicate.
 
-    @tparam TPoint specifies the type of input points (digital or not). 
+    @tparam TSpace specifies the digital space (provides dimension and types for the primitive)
+
+    @tparam TInputPoint specifies the type of the input points
+    (digital or not). Usually, you may choose TInputPoint =
+    TSpace::Point, but this is not compulsory. You may for instance
+    wish to manipulate floating-point value points. This is possible,
+    but you have to choose the type TInternalScalar accordingly.
    
     @tparam TInternalScalar specifies the type of scalar used in
     internal computations, generally a more precise type than
-    TPoint::Component. For instance, for digital points, the type
+    TInputPoint::Component. For instance, for digital points, the type
     should be able to hold integers of order (2*D^3) if D is the
     diameter of the set of digital points.
    
-
    */
-  template < typename TPoint, 
+  template < typename TSpace, 
+             typename TInputPoint,
              typename TInternalScalar >
   class ChordNaivePlaneComputer
   {
 
-    // BOOST_CONCEPT_ASSERT(( CPoint< TPoint > ));
+    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CSignedNumber< TInternalScalar > ));
-    BOOST_STATIC_ASSERT(( TPoint::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
+    BOOST_STATIC_ASSERT(( TInputPoint::dimension == 3 ));
 
     // ----------------------- public types ------------------------------
   public:
-    typedef TPoint Point;
+    typedef TSpace Space;
+    typedef TInputPoint InputPoint;
     typedef TInternalScalar InternalScalar;
-    typedef Point Vector;
-    typedef typename Vector::Component Component;
-    typedef typename Point::Coordinate Coordinate;
+    typedef InputPoint InputVector;
+    typedef typename InputVector::Component Component;
+    typedef typename InputPoint::Coordinate Coordinate;
     typedef InternalScalar InternalVector[ 3 ];
 
-    typedef std::set< Point > PointSet;
-    typedef typename PointSet::size_type Size;
-    typedef typename PointSet::const_iterator ConstIterator;
-    typedef typename PointSet::iterator Iterator;
+    typedef std::set< InputPoint > InputPointSet;
+    typedef typename InputPointSet::size_type Size;
+    typedef typename InputPointSet::const_iterator ConstIterator;
+    typedef typename InputPointSet::iterator Iterator;
+    typedef typename Space::Point Point;
+    typedef ParallelStrip<Space> Primitive;
 
     // ----------------------- std public types ------------------------------
   public:
-    typedef typename PointSet::const_iterator const_iterator;
-    typedef typename PointSet::const_pointer const_pointer;
-    typedef typename PointSet::const_reference const_reference;
-    typedef typename PointSet::value_type value_type;
-    typedef typename PointSet::difference_type difference_type;
-    typedef typename PointSet::size_type size_type;
+    typedef typename InputPointSet::const_iterator const_iterator;
+    typedef typename InputPointSet::const_pointer const_pointer;
+    typedef typename InputPointSet::const_reference const_reference;
+    typedef typename InputPointSet::value_type value_type;
+    typedef typename InputPointSet::difference_type difference_type;
+    typedef typename InputPointSet::size_type size_type;
 
     // ----------------------- internal types ------------------------------
   private:
@@ -182,10 +193,10 @@ namespace DGtal
     */
     struct State {
       InternalScalar height;   /**< current height of the topmost point. */
-      Point A,B,C;             /**< current triangle, A topmost. */
+      InputPoint A,B,C;        /**< current triangle, A topmost. */
       InternalVector N;        /**< current normal vector, i.e. (a,b,c). */
-      Point ptMax;             /**< 3D point giving the max dot product. */
-      Point ptMin;             /**< 3D point giving the min dot product. */
+      InputPoint ptMax;        /**< 3D point giving the max dot product. */
+      InputPoint ptMin;        /**< 3D point giving the min dot product. */
       InternalScalar max;      /**< current max dot product value, i.e. <= mu + c. */
       InternalScalar min;      /**< current min dot product value, i.e. mu by convention. */
       unsigned int nbValid;    /**< 0 when object is initialized, 1 when points are aligned with main axis, 2 when points form a triangle containing the main axis direction, 3 when there are at least 3 points that form a triangle not aligned with the main axis direction. */
@@ -247,7 +258,7 @@ namespace DGtal
     /**
        Useful to compute the axis width of a given range of points (public static version).
 
-       @tparam TInputIterator any model of InputIterator on Point.
+       @tparam TInputIterator any model of InputIterator on InputPoint.
        
        @param[in] axis the main axis (0,1,2) for x, y or z.
        @param[in] itB an iterator on the first element of the range of 3D points.
@@ -323,7 +334,7 @@ namespace DGtal
      * @return 'true' if \a p is in the plane, 'false' otherwise (the
      * object is then in its original state).
      */
-    bool extendAsIs( const Point & p );
+    bool extendAsIs( const InputPoint & p );
 
     /**
      * Adds the point \a p and checks if we have still a digital plane
@@ -335,7 +346,7 @@ namespace DGtal
      * @return 'true' if it is still a plane, 'false' otherwise (the
      * object is then in its original state).
      */
-    bool extend( const Point & p );
+    bool extend( const InputPoint & p );
 
     /**
      * Checks if we have still a digital plane of specified width when
@@ -347,7 +358,7 @@ namespace DGtal
      *
      * @return 'true' if this is still a plane, 'false' otherwise.
      */
-    bool isExtendable( const Point & p ) const;
+    bool isExtendable( const InputPoint & p ) const;
 
     //-------------------- model of CAdditivePrimitiveComputer -----------------------------
   public:
@@ -358,7 +369,7 @@ namespace DGtal
      * may be updated so as to include all the new points. All points
      * pointed by iterators should be in the diameter of this object.
      *
-     * @tparam TInputIterator any model of InputIterator on Point.
+     * @tparam TInputIterator any model of InputIterator on InputPoint.
      * @param[in] itB an iterator on the first element of the range of 3D points.
      * @param[in] itE an iterator after the last element of the range of 3D points.
      *
@@ -376,7 +387,7 @@ namespace DGtal
      * invariant is 'this->isExtendable( it, itE ) == true <=>
      * this->extend( it, itE ) == true'.
      *
-     * @tparam TInputIterator any model of InputIterator on Point.
+     * @tparam TInputIterator any model of InputIterator on InputPoint.
      * @param[in] itB an iterator on the first element of the range of 3D points.
      * @param[in] itE an iterator after the last element of the range of 3D points.
      *
@@ -388,7 +399,7 @@ namespace DGtal
     /**
        Useful to check if a given set of points has a valid axis width (public version).
 
-       @tparam TInputIterator any model of InputIterator on Point.
+       @tparam TInputIterator any model of InputIterator on InputPoint.
        
        @param[in] itB an iterator on the first element of the range of 3D points.
        @param[in] itE an iterator after the last element of the range of 3D points.
@@ -401,7 +412,7 @@ namespace DGtal
     /**
        Useful to compute the axis width of a given range of points (public version).
 
-       @tparam TInputIterator any model of InputIterator on Point.
+       @tparam TInputIterator any model of InputIterator on InputPoint.
        
        @param[in] itB an iterator on the first element of the range of 3D points.
        @param[in] itE an iterator after the last element of the range of 3D points.
@@ -411,6 +422,15 @@ namespace DGtal
     std::pair<InternalScalar, InternalScalar>
     axisWidth( TInputIterator itB, TInputIterator itE ) const;
 
+    //-------------------- Primitive services -----------------------------
+  public:
+
+    /**
+       @return the current primitive recognized by this computer,
+       which is a ParallelStrip of axis width smaller than the one
+       specified at instanciation.
+    */
+    Primitive primitive() const;
 
     //-------------------- Parameters services -----------------------------
   public:
@@ -448,7 +468,7 @@ namespace DGtal
      * with the smallest scalar product with the current normal
      * vector. Note that other points may also have a minimum value.
      */
-    const Point & minimalPoint() const;
+    const InputPoint & minimalPoint() const;
 
     /**
      * @pre ! empty()
@@ -456,7 +476,7 @@ namespace DGtal
      * with the highest scalar product with the current normal
      * vector. Note that other points may also have a maximum value.
      */
-    const Point & maximalPoint() const;
+    const InputPoint & maximalPoint() const;
 
     // ----------------------- Utilities --------------------------------------
   public:
@@ -499,7 +519,7 @@ namespace DGtal
     Dimension x,y;             /**< the two other axes used in all subsequent computations. */
     InternalScalar myWidth0;   /**< the plane width as a positive rational number myWidth0/myWidth1 */
     InternalScalar myWidth1;   /**< the plane width as a positive rational number myWidth0/myWidth1 */
-    mutable PointSet myPointSet;/**< the set of points within the plane, mutable since its state may temporarily be changed during some computations. */ 
+    mutable InputPointSet myPointSet;/**< the set of points within the plane, mutable since its state may temporarily be changed during some computations. */ 
     State myState;             /**< the current state that defines the plane being recognized. */
     mutable State _state;      /**< Temporary state used in computations. */
     mutable InternalScalar _d; /**< temporary variable used in some computations. */
@@ -561,7 +581,7 @@ namespace DGtal
        Sets up a consistent state with only one point.
        @param p1 any point.
     */
-    bool setUp1( const Point & p1 );
+    bool setUp1( const InputPoint & p1 );
 
     /**
        Sets up a consistent initial normal direction given the output
@@ -606,7 +626,7 @@ namespace DGtal
        @return the sign of det(ab,ac), where a,b,c are the 2d
        projections of A,B,C along main axis.
     */
-    int signDelta( const Point & A, const Point & B, const Point & C ) const;
+    int signDelta( const InputPoint & A, const InputPoint & B, const InputPoint & C ) const;
 
     /**
        Computes the orientation of vectors AO and AC viewed from the
@@ -618,7 +638,7 @@ namespace DGtal
        @return the sign of det(ao,ac), where a,o,c are the 2d
        projections of A,O,C along main axis.
     */
-    int signDelta( const Point & A, const Point & C ) const;
+    int signDelta( const InputPoint & A, const InputPoint & C ) const;
 
     /**
        Puts in (A,B,C) the new current triangle. We choose the
@@ -638,10 +658,10 @@ namespace DGtal
        @pre state.nbValid >= 2
 
     */
-    bool newCurrentTriangle( State & state, const Point & M ) const;
+    bool newCurrentTriangle( State & state, const InputPoint & M ) const;
 
     /**
-       @tparam TInputIterator any model of boost::InputIterator on Point.
+       @tparam TInputIterator any model of boost::InputIterator on InputPoint.
 
        Initializes the Chord algorithm by determining an initial
        triangle of the convex chord set (S+(-S)) if S is the set of
@@ -679,7 +699,7 @@ namespace DGtal
        @param p2 any point.
        @return 'true' iff the two points form a vector aligned with the main axis.
      */
-    bool alignedAlongAxis( const Point & p1, const Point & p2 ) const;
+    bool alignedAlongAxis( const InputPoint & p1, const InputPoint & p2 ) const;
 
     /**
        @param[in,out] state the field state.height is updated and
@@ -700,7 +720,7 @@ namespace DGtal
     /**
        Useful to check if a given set of points has a valid axis width.
 
-       @tparam TInputIterator any model of InputIterator on Point.
+       @tparam TInputIterator any model of InputIterator on InputPoint.
        
        @param[out] the resulting state, if you need to have a look.
        @param[in] itB an iterator on the first element of the range of 3D points.
@@ -715,7 +735,7 @@ namespace DGtal
     /**
        Useful to compute the axis width of a given range of points.
 
-       @tparam TInputIterator any model of InputIterator on Point.
+       @tparam TInputIterator any model of InputIterator on InputPoint.
        
        @param[out] the resulting state, if you need to have a look.
        @param[in] itB an iterator on the first element of the range of 3D points.
@@ -757,9 +777,10 @@ namespace DGtal
    * @param object the object of class 'ChordNaivePlaneComputer' to write.
    * @return the output stream after the writing.
    */
-  template <typename TPoint, typename TInternalScalar>
+  template <typename TSpace, typename TInputPoint, typename TInternalScalar>
   std::ostream&
-  operator<< ( std::ostream & out, const ChordNaivePlaneComputer<TPoint, TInternalScalar> & object );
+  operator<< ( std::ostream & out, 
+               const ChordNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar> & object );
 
 } // namespace DGtal
 

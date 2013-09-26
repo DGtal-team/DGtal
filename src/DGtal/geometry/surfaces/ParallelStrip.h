@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,6 +79,8 @@ namespace DGtal
   template <typename TSpace>
   class ParallelStrip
   {
+    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+
     // ----------------------- public types ------------------------------
   public:
     typedef TSpace Space;
