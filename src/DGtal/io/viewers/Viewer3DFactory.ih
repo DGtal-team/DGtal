@@ -334,7 +334,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
                                             const DGtal::HyperRectDomain<SpaceDom> & aDomain )
 {
   std::string mode = viewer.getMode( aDomain.className() );
-  ASSERT((SpaceDom::dimension==3)|| (Space::dimension==2));
+  ASSERT((SpaceDom::dimension==3)|| (SpaceDom::dimension==2));
   
   ASSERT((SpaceDom::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
                                     mode=="BoundingBox")||
