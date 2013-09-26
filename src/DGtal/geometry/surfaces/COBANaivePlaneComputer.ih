@@ -553,6 +553,23 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   return false;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::Primitive
+DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
+primitive() const
+{
+  typedef typename Space::RealVector RealVector;
+  typedef typename RealVector::Component Scalar;
+  RealVector N;
+  N[ 0 ] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ] );
+  N[ 1 ] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ] );
+  N[ 2 ] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ] );
+  Scalar min = NumberTraits<InternalInteger>::castToDouble( myState.min );
+  Scalar max = NumberTraits<InternalInteger>::castToDouble( myState.max );
+  return Primitive( min, N, max - min );
+}
 
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>

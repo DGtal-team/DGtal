@@ -65,8 +65,10 @@ int main( int argc, char** argv )
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef BigInteger Integer;
+  typedef COBANaivePlaneComputer<Z3, BigInteger> PlaneComputer;
+  typedef PlaneComputer::Primitive Primitive;
+  PlaneComputer plane;
 
-  COBANaivePlaneComputer<Z3, BigInteger> plane;
   plane.init( 2, 100, 1, 1 );
   Point pt0( 0, 0, 0 );
   bool pt0_inside = plane.extend( pt0 );
@@ -101,6 +103,15 @@ int main( int argc, char** argv )
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt5
                << " Plane=" << plane << std::endl;
 
+  
+  Primitive strip = plane.primitive();
+  trace.info() << "strip=" << strip 
+               << " axis=" << strip.mainAxis()
+               << " axiswidth=" << strip.axisWidth()
+               << std::endl;
+  ++nb, nbok += strip.axisWidth() < 1.0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") axiswidth < 1 "
+               << std::endl;
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
@@ -117,7 +128,7 @@ int main( int argc, char** argv )
   viewer << ( pt4_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt4;
   viewer << ( pt5_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt5;
   viewer << CustomColors3D( grey, grey );
-  displayPredicate( viewer, domain, plane );
+  displayPredicate( viewer, domain, strip );
 
   viewer << Viewer3D::updateDisplay;
 

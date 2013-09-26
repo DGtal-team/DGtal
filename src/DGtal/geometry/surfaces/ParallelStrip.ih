@@ -1,0 +1,239 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ParallelStrip.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2013/09/26
+ *
+ * Implementation of inline methods defined in ParallelStrip.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <cmath>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ParallelStrip<TSpace>::~ParallelStrip()
+{}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ParallelStrip<TSpace>::ParallelStrip()
+{}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ParallelStrip<TSpace>::ParallelStrip
+( Scalar mu, const RealVector & N, Scalar nu )
+  : myMu( mu ), myN( N ), myNu( nu )
+{
+  Scalar l = myN.norm();
+  if ( l != 1.0 ) {
+    myMu /= l;
+    myN  /= l;
+    myNu /= l;
+  }
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ParallelStrip<TSpace>::ParallelStrip
+( const ParallelStrip& other )
+  : myMu( other.myMu ), myN( other.myN ), myNu( other.myNu )
+{
+  ASSERT( myNu != NumberTraits<Scalar>::ZERO );
+  ASSERT( myN.norm1() != NumberTraits<Scalar>::ZERO );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ParallelStrip<TSpace>& 
+DGtal::ParallelStrip<TSpace>::operator=( const ParallelStrip & other )
+{
+  if ( this != &other )
+    {
+      myMu = other.myMu;
+      myN = other.myN;
+      myNu = other.myNu;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::ParallelStrip<TSpace>::Scalar
+DGtal::ParallelStrip<TSpace>::mu() const
+{
+  return myMu;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+const typename DGtal::ParallelStrip<TSpace>::RealVector& 
+DGtal::ParallelStrip<TSpace>::normal() const
+{
+  return myN;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::ParallelStrip<TSpace>::Scalar
+DGtal::ParallelStrip<TSpace>::nu() const
+{
+  return myNu;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::ParallelStrip<TSpace>::Scalar
+DGtal::ParallelStrip<TSpace>::width() const
+{
+  return nu();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::Dimension
+DGtal::ParallelStrip<TSpace>::mainAxis() const
+{
+  Dimension i = 0;
+  for ( Dimension k = 1; k < Space::dimension; ++k )
+    if ( std::abs( myN[ k ] ) > std::abs( myN[ i ] ) )
+      i = k;
+  return i;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::ParallelStrip<TSpace>::Scalar
+DGtal::ParallelStrip<TSpace>::axisWidth() const
+{
+  Dimension i = mainAxis();
+  return std::abs( nu() / myN[ i ] );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::Dimension
+DGtal::ParallelStrip<TSpace>::mainDiagonal() const
+{
+  Dimension d = 0;
+  Dimension i = 1;
+  for ( Dimension k = 0; k < Space::dimension; ++k )
+    {
+      if ( myN[ k ] < NumberTraits<Scalar>::ZERO )
+        d += i;
+      i <<= 1;
+    }
+  return d;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::ParallelStrip<TSpace>::Scalar
+DGtal::ParallelStrip<TSpace>::diagonalWidth() const
+{
+  return nu() * sqrt( Space::dimension ) / myN.norm1();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+void
+DGtal::ParallelStrip<TSpace>::getBounds( Scalar & mu, Scalar & mu_plus_nu ) const
+{
+  mu = myMu;
+  mu_plus_nu = myMu + myNu;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+bool
+DGtal::ParallelStrip<TSpace>::operator()( const Point & p ) const
+{
+  Scalar s = NumberTraits<Scalar>::ZERO;
+  for ( Dimension i = 0; i < Space::dimension; ++i )
+    s += myN[ i ] * NumberTraits<typename Point::Coordinate>::castToDouble( p[ i ] );
+  return ( mu() <= s ) && ( s <= mu() + nu() );
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSpace>
+inline
+void
+DGtal::ParallelStrip<TSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[ParallelStrip " << mu() << " <= ( " << myN[ 0 ];
+  for ( Dimension i = 1; i < Space::dimension; ++i )
+    out << ", " << myN[ i ];
+  out << " ).X <= " << (mu()+nu()) << "]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSpace>
+inline
+bool
+DGtal::ParallelStrip<TSpace>::isValid() const
+{
+  return ( nu() >= NumberTraits<Scalar>::ZERO )
+    && ( normal().norm1() > NumberTraits<Scalar>::ZERO );
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const ParallelStrip<TSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

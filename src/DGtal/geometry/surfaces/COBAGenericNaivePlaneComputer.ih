@@ -326,8 +326,15 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
     }
   return nbok != 0;
 }
-
-
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Primitive
+DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
+primitive() const
+{
+  myComputers[ active() ].primitive();
+}
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 template <typename Vector3D>
