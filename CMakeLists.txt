@@ -2,7 +2,7 @@
 # Project definition
 # -----------------------------------------------------------------------------
 project (DGtal)
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 2.6)
 
 # By default, do not warn when built on machines using only VS Express:
 IF(NOT DEFINED CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS)
@@ -12,7 +12,7 @@ ENDIF()
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
-SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 7)
 SET(DGtal_VERSION_PATCH beta)
@@ -22,46 +22,44 @@ SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/Common.cmake)
+INCLUDE(Common)
 
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/OSDependentSettings.cmake)
+INCLUDE(OSDependentSettings)
 
 # -----------------------------------------------------------------------------
 # Check Mandatory Dependencies
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
+INCLUDE(CheckDGtalDependencies)
 
 # -----------------------------------------------------------------------------
 # Check Optional Dependencies
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
+INCLUDE(CheckDGtalOptionalDependencies)
 
 # -----------------------------------------------------------------------------
 # Cpack and Ctest settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
+INCLUDE(CpackCtest)
 
 # -----------------------------------------------------------------------------
 # Custom command/targets depending on the cmake generator
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/GeneratorSpecific.cmake)
+INCLUDE(GeneratorSpecific)
 
 #------------------------------------------------------------------------------
 # Add subdirectories
 #------------------------------------------------------------------------------
-add_subdirectory(src)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 
 OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
-  add_subdirectory (examples)
+  add_subdirectory (${PROJECT_SOURCE_DIR}/examples)
 ENDIF(BUILD_EXAMPLES)
 
 # -----------------------------------------------------------------------------
 # Install settings
 # -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
-
-
+INCLUDE(Install)

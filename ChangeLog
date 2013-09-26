@@ -1,31 +1,49 @@
 === DGtal 0.7 ===
 
 *General*
-    - Unit tests build is now disabled by default (to turn it on, run
-	cmake with "-DBUILD_TESTING=on"
+
+    - Unit tests build is now disabled by default (to turn it on, run cmake with "-DBUILD_TESTING=on"
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 
 
 *Kernel Package*
+
     - Two initialisation methods (initRemoveOneDim and initAddOneDim)
       for the Projector Functor from the BasicPointFunctors class in
       order to simplify the slice images (with example and test in 2D
       slice image extraction from 3D volume file).
 
 *Geometry Package*
-    - Generic adapter to transform a metric (model of CMetric) with monotonic (see doc)
-      properties to a separable metric (model of CSeparableMetric)
-      which can be used in VoronoiMap/DistanceTransformation algorithms.
+
+    - Generic adapter to transform a metric (model of CMetric) with
+      monotonic (see doc) properties to a separable metric (model of
+      CSeparableMetric) which can be used in
+      VoronoiMap/DistanceTransformation algorithms.
+
     - New possibility to access the 3 2D ArithmeticDSS object within an
       ArithmeticDSS3d.
     - New local estimator adapter to make easy implementation of locally defined differential
       estimator on digital surfaces.
     - Minor improvements in the spherical accumulator.
 
+    - With an optional binding with CGAL and Eigen3, new curvature and
+      normal vector estimators have been added. For instance, you can
+      now estimate curvature from polyonomial surface fitting (Jet
+      Fitting) and Monge forms.
+
+    - Minor improvements in the spherical accumulator.
+
+    - New algorithms to compute the minimal characteristics of a
+      Digital Straight Line subsegment in logarithmic time using local
+      convex hulls or Farey Fan. Also works when the DSL
+      characteristics are not integers.
+
 *Shape Package*
-    - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
-    - Iterator in mesh points and mesh face.
+
+    - The class MeshFromPoints was transformed into Mesh (more from
+      shapes/fromPoints to shapes/ directory), iterators on mesh
+      points and mesh face.
 
 *IO Package*
     - Complete refactoring of 3D viewers and boards (Viewer3D, Board3DTo2D).
@@ -35,13 +53,19 @@
     - Adding missing PPM Reader.
 
 *Image Package*
-    - New concepts : CImageFactory to define the concept describing an image factory and
-      CImageCacheReadPolicy/CImageCacheWritePolicy to define the concept describing cache read/write policies.
-    - New classes : ImageFactoryFromImage to implement a factory to produce images from a "bigger/original" one
-      according to a given domain, ImageCache to implement an images cache with 'read and write' policies,
-      TiledImageFromImage to implement a tiled image from a "bigger/original" one.
+
+    - New concepts : CImageFactory to define the concept describing an
+      image factory and CImageCacheReadPolicy/CImageCacheWritePolicy
+      to define the concept describing cache read/write policies.
+
+    - New classes : ImageFactoryFromImage to implement a factory to
+      produce images from a "bigger/original" one according to a given
+      domain, ImageCache to implement an images cache with 'read and
+      write' policies, TiledImageFromImage to implement a tiled image
+      from a "bigger/original" one.
 
 *Graph Package*
+
     - New graph visitor, which allows to visit a graph according to
       any distance object (like the Euclidean distance to some point).
 
