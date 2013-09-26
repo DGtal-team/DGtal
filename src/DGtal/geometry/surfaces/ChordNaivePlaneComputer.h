@@ -47,6 +47,7 @@
 #include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/geometry/surfaces/ParallelStrip.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

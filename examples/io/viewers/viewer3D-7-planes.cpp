@@ -108,9 +108,14 @@ int main( int argc, char** argv )
   trace.info() << "strip=" << strip 
                << " axis=" << strip.mainAxis()
                << " axiswidth=" << strip.axisWidth()
+               << " diag=" << strip.mainDiagonal()
+               << " diagwidth=" << strip.diagonalWidth()
                << std::endl;
   ++nb, nbok += strip.axisWidth() < 1.0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") axiswidth < 1 "
+               << std::endl;
+  ++nb, nbok += strip.diagonalWidth() < sqrt(3.0) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") axiswidth < sqrt(3) "
                << std::endl;
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
