@@ -476,6 +476,14 @@ public:
     }
     
     /**
+     * Clear the cache and reset the cache misses
+     */
+    void clearCacheAndResetCacheMisses()
+    {
+      myImageCache->clearCacheAndResetCacheMisses();
+    }
+    
+    /**
      * Clear the ticks value.
      */
     void clearTicksUpdateCache() // TEMP_MT

@@ -259,7 +259,7 @@ bool exampleTiledImageFromImage_1block3D()
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.getCacheMissRead() << " - cacheMissWrite:" << tiledImage1block.getCacheMissWrite() << endl;
       trace.endBlock();
       
-      cpt=0; imageCacheReadPolicyLAST.clearCache();
+      cpt=0; tiledImage1block.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 1x1x1 blocks - LAST/WT");
       for(ImageV::Domain::ConstIterator it = tiledImage1block.domain().begin(), itend = tiledImage1block.domain().end();
           it != itend; ++it)
@@ -312,7 +312,7 @@ bool exampleTiledImageFromHDF5_1block3D()
       trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage1block.getCacheMissRead() << " - cacheMissWrite:" << tiledImage1block.getCacheMissWrite() << endl;
       trace.endBlock();
          
-      cpt=0; imageCacheReadPolicyLAST.clearCache();
+      cpt=0; tiledImage1block.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 1x1x1 blocks - LAST/WT");
       for(Image::Domain::ConstIterator it = tiledImage1block.domain().begin(), itend = tiledImage1block.domain().end();
           it != itend; ++it)
@@ -390,7 +390,7 @@ bool exampleTiledImageFromImage_10blocks3D()
       trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
-      cpt=0; imageCacheReadPolicyFIFO_A.clearCache();
+      cpt=0; tiledImageFIFO_A.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT"); clock.startClock(); myTicks_op=0;
       for(ImageV::Domain::ConstIterator it = tiledImageFIFO_A.domain().begin(), itend = tiledImageFIFO_A.domain().end();
           it != itend; ++it)
@@ -426,7 +426,7 @@ bool exampleTiledImageFromImage_10blocks3D()
       trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
-      cpt=0; imageCacheReadPolicyFIFO_B.clearCache();
+      cpt=0; tiledImageFIFO_B.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT"); clock.startClock(); myTicks_op=0;
       for(ImageV::Domain::ConstIterator it = tiledImageFIFO_B.domain().begin(), itend = tiledImageFIFO_B.domain().end();
           it != itend; ++it)
@@ -462,7 +462,7 @@ bool exampleTiledImageFromImage_10blocks3D()
       trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
-      cpt=0; imageCacheReadPolicyLAST.clearCache();
+      cpt=0; tiledImage.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT"); clock.startClock(); myTicks_op=0;
       for(ImageV::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
           it != itend; ++it)
@@ -536,7 +536,7 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
-      cpt=0; imageCacheReadPolicyFIFO_A.clearCache();
+      cpt=0; tiledImageFIFO_A.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT"); clock.startClock(); myTicks_op=0;
       for(Image::Domain::ConstIterator it = tiledImageFIFO_A.domain().begin(), itend = tiledImageFIFO_A.domain().end();
           it != itend; ++it)
@@ -572,7 +572,7 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
-      cpt=0;  imageCacheReadPolicyFIFO_B.clearCache();
+      cpt=0; tiledImageFIFO_B.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT"); clock.startClock(); myTicks_op=0;
       for(Image::Domain::ConstIterator it = tiledImageFIFO_B.domain().begin(), itend = tiledImageFIFO_B.domain().end();
           it != itend; ++it)
@@ -608,7 +608,7 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
-      cpt=0; imageCacheReadPolicyLAST.clearCache();
+      cpt=0; tiledImage.clearCacheAndResetCacheMisses();
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT"); clock.startClock(); myTicks_op=0;
       for(Image::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
           it != itend; ++it)

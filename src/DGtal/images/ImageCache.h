@@ -218,6 +218,17 @@ public:
     }
     
     /**
+     * Clear the cache and reset the cache misses
+     */
+    void clearCacheAndResetCacheMisses()
+    {
+      myReadPolicy->clearCache();
+      
+      cacheMissRead = 0;
+      cacheMissWrite = 0;
+    }
+    
+    /**
      * Clear the ticks value.
      */
     void clearTicksUpdateCache() // TEMP_MT
