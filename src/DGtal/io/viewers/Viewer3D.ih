@@ -387,18 +387,20 @@ template < typename Space ,typename KSpace >
 inline
 void
 DGtal::Viewer3D< Space ,KSpace >::updateAn2DDomainOrientation(unsigned int domainIndex,
-                                                              double xPosition, double yPosition, double zPosition, ImageDirection newDirection)
+                                                              double xPosition, double yPosition,
+                                                              double zPosition, ImageDirection newDirection)
 {
-  typename Viewer3D< Space ,KSpace >::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex);
+  ASSERT( domainIndex < myImageDomainList.size());
+  typename Viewer3D< Space ,KSpace >::Image2DDomainD3D &aDomain = myImageDomainList.at(domainIndex);
 
-  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
-  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
-  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
-  Display3D< Space, KSpace>::updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
-  anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
+  Display3D< Space, KSpace>::updateBoundingBox(aDomain.x1, aDomain.y1, aDomain.z1);
+  Display3D< Space, KSpace>::updateBoundingBox(aDomain.x2, aDomain.y2, aDomain.z2);
+  Display3D< Space, KSpace>::updateBoundingBox(aDomain.x3, aDomain.y3, aDomain.z3);
+  Display3D< Space, KSpace>::updateBoundingBox(aDomain.x4, aDomain.y4, aDomain.z4);
+  aDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
 
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);
-  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> &vectLines = Viewer3D<Space, KSpace>::myLineSetList.at(anDomain.myLineSetIndex);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> vectNewLines= compute2DDomainLineRepresentation(aDomain);
+  std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> &vectLines = Viewer3D<Space, KSpace>::myLineSetList.at(aDomain.myLineSetIndex);
   vectLines.clear();
   for(unsigned int i=0; i<vectNewLines.size(); i++)
     {

@@ -542,12 +542,12 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, 
   DGtal::Z3i::RealPoint upperBound;
   DGtal::Z3i::RealPoint lowerBound;
 
-  if (Space::dimension == 3)
+  if (SpaceDom::dimension == 3)
     {
       upperBound = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], h.myUpperBound[1], h.myUpperBound[2]));
       lowerBound = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], h.myLowerBound[1], h.myLowerBound[2]));
     }
-  if (Space::dimension == 2)
+  if (SpaceDom::dimension == 2)
     {
       upperBound = display.embed( DGtal::Z3i::Point(h.myUpperBound[0], h.myUpperBound[1], 0));
       lowerBound = display.embed( DGtal::Z3i::Point(h.myLowerBound[0], h.myLowerBound[1], 0));
@@ -556,7 +556,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, 
 
   display.setFillColor(DGtal::Color(250,250,250,10));
   double shiftSize=0.01;
-  if (Space::dimension == 3)
+  if (SpaceDom::dimension == 3)
     {
       //Z upper face
       display.addQuad(upperBound[0]+(0.5+shiftSize),
