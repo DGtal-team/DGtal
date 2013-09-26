@@ -1,0 +1,23 @@
+#  MTL format
+# generated from Board3D from the DGTal library
+newmtl 
+Ka 0.0 0.0 0.0
+Kd 0.8 0.8 0.8
+Ks 0.0 0.0 0.0
+d 1
+illum 2
+
+newmtl myCubeSetList_0MAT
+Ka 0.862745 0.862745 0.862745
+Kd 0.862745 0.862745 0.862745
+Ks 0 0 0
+d 1
+illum 2
+
+newmtl myCubeSetList_1MAT
+Ka 0.862745 0.862745 0.862745
+Kd 0.862745 0.862745 0.862745
+Ks 0 0 0
+d 1
+illum 2
+

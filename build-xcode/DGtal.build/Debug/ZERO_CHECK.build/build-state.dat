@@ -1,0 +1,466 @@
+TZERO_CHECK
+v6
+r1
+cCheck dependencies
+cPhaseScriptExecution CMake\ Rules /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-CF28BB748C784C8E83E3A2C0.sh
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0667CD3ACCAF43CBA716BC5D.sh
+c0000000051CC592B00000000000000BB
+t1372346667
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0A1AEA3343E64744AC0928AB.sh
+c0000000051A728C700000000000000BB
+t1369909447
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh
+c00000000521F063B00000000000000BB
+t1377764923
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-5918A11A011648DA9CB46761.sh
+c0000000051CC565A00000000000000BB
+t1372345946
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh
+c0000000051A5B19600000000000000BB
+t1369813398
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-6A7032D9ADAE4F46AD2091ED.sh
+c0000000051AEDA3C00000000000000BB
+t1370413628
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-7CBE29E20F8248CAB85B6725.sh
+c0000000051AB053C00000000000000BB
+t1370162492
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-8B6FDCE18813425AB65577CC.sh
+c0000000051AB04BA00000000000000BB
+t1370162362
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-9007F52B966F4E7CA86CAA45.sh
+c0000000051CC588500000000000000BB
+t1372346501
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-992E4541EC394304896B8C42.sh
+c0000000051AE019800000000000000BB
+t1370358168
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-A80A084709F44BF9A07427F8.sh
+c0000000051A70E3F00000000000000BB
+t1369902655
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh
+c00000000522B2F7200000000000000BB
+t1378561906
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-B6BDF82936B244099E53C7EE.sh
+c0000000051CC57A100000000000000BB
+t1372346273
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-CF28BB748C784C8E83E3A2C0.sh
+c0000000052432D0600000000000000BB
+t1380134150
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-DC8F5C0E57AE46CFACF7BFC3.sh
+c0000000051A7430D00000000000000BB
+t1369916173
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
+c0000000051E001F100000000000000BB
+t1373635057
+s187
+
+CCheck dependencies
+r0
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependencies245f419a0cf4b741^4415429a0cf4b741^---0#1#1#--18"Check dependencies36"B1309C3A-88DA-4D1C-986E-61D052CFA255-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0667CD3ACCAF43CBA716BC5D.sh
+s394102186.578484
+e394102186.724899
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0667CD3ACCAF43CBA716BC5D.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'3ca494aa857db741^9692b9aa857db741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-394102186#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-394102186#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-394102186#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0667CD3ACCAF43CBA716BC5D.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0667CD3ACCAF43CBA716BC5D.sh36"7256DFA8-7EB5-4932-8F27-C7AA12CA206B-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0A1AEA3343E64744AC0928AB.sh
+s391608708.821709
+e391608709.020817
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0A1AEA3343E64744AC0928AB.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'f721d3847957b741^a06d05857957b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-391608708#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-391608708#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-391608709#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0A1AEA3343E64744AC0928AB.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-0A1AEA3343E64744AC0928AB.sh36"979C8B76-3F27-4A93-984C-2FA1A8B8918F-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh
+s399457846.270362
+e399457846.669996
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'553046363ecfb741^4c52ad363ecfb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-399457846#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-399457846#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-399457846#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh36"9BCB5B6D-0F24-496C-8C01-B6A331AD85A9-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-5918A11A011648DA9CB46761.sh
+s394038910.790256
+e394038915.478996
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-5918A11A011648DA9CB46761.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+o/usr/local/Cellar/cmake/2.8.11.1/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- -------------------------------------------------------------------------------
+o-- DGtal Version 0.7.beta
+o-- -------------------------------------------------------------------------------
+o-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal
+o-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- Build type is Debug
+o-- Installation prefix directory is /usr/local
+o-- Host system is Darwin-12.4.0 with processor i386
+o-- Target system is Darwin-12.4.0 with processor i386
+o-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox
+o-- Clang compiler detected
+o-- Boost version: 1.53.0
+o-- Boost  found.
+o-- -------------------------------------------------------------------------------
+o-- DGtal Library optional configuration:
+o--    (to change these values, use ccmake, a graphical
+o--    cmake frontend, or define cmake commandline variables
+o--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)
+o-- 
+o--       WITH_C11          false   (C++ compiler C11 features)
+o--       WITH_OPENMP       false   (OpenMP multithread features)
+o--       WITH_GMP          false   (Gnu Multiprecision Library)
+o--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)
+o--       WITH_CAIRO        false   (CairoGraphics drawing features)
+o--       WITH_HDF5         false   (HDF5 image i/o)
+o--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)
+o--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)
+o--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)
+o-- 
+o-- Checking the dependencies: 
+o-- -------------------------------------------------------------------------------
+o-- Build test files enabled
+o-- Configuring done
+o-- Generating done
+o-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'f41acb7e8e7cb741^b29e7a838e7cb741^-2446"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make/usr/local/Cellar/cmake/2.8.11.1/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-- --------------------------------------------------------------------------------- DGtal Version 0.7.beta-- --------------------------------------------------------------------------------- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-- Build type is Debug-- Installation prefix directory is /usr/local-- Host system is Darwin-12.4.0 with processor i386-- Target system is Darwin-12.4.0 with processor i386-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-- Clang compiler detected-- Boost version: 1.53.0-- Boost  found.-- --------------------------------------------------------------------------------- DGtal Library optional configuration:--    (to change these values, use ccmake, a graphical--    cmake frontend, or define cmake commandline variables--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-- --       WITH_C11          false   (C++ compiler C11 features)--       WITH_OPENMP       false   (OpenMP multithread features)--       WITH_GMP          false   (Gnu Multiprecision Library)--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)--       WITH_CAIRO        false   (CairoGraphics drawing features)--       WITH_HDF5         false   (HDF5 image i/o)--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)-- -- Checking the dependencies: -- --------------------------------------------------------------------------------- Build test files enabled-- Configuring done-- Generating done-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode41(21%IDEActivityLogMessage2@8"echo ""-394038910#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-394038910#9#86#-0#-----2@133"/usr/local/Cellar/cmake/2.8.11.1/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-394038911#95#133#-0#-----2@83"-- --------------------------------------------------------------------------------394038911#228#83#-0#-----2@26"-- DGtal Version 0.7.beta-394038911#311#26#-0#-----2@83"-- --------------------------------------------------------------------------------394038911#337#83#-0#-----2@54"-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-394038911#420#54#-0#-----2@72"-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-394038911#474#72#-0#-----2@23"-- Build type is Debug-394038911#546#23#-0#-----2@47"-- Installation prefix directory is /usr/local-394038911#569#47#-0#-----2@52"-- Host system is Darwin-12.4.0 with processor i386-394038911#616#52#-0#-----2@54"-- Target system is Darwin-12.4.0 with processor i386-394038911#668#54#-0#-----2@73"-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-394038911#722#73#-0#-----2@135"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-394038911#795#135#-0#-----2@147"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-394038911#930#147#-0#-----2@143"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-394038911#1077#143#-0#-----2@27"-- Clang compiler detected-394038911#1220#27#-0#-----2@25"-- Boost version: 1.53.0-394038911#1247#25#-0#-----2@17"-- Boost  found.-394038911#1272#17#-0#-----2@83"-- --------------------------------------------------------------------------------394038911#1289#83#-0#-----2@41"-- DGtal Library optional configuration:-394038911#1372#41#-0#-----2@55"--    (to change these values, use ccmake, a graphical-394038911#1413#55#-0#-----2@60"--    cmake frontend, or define cmake commandline variables-394038911#1468#60#-0#-----2@57"--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-394038911#1528#57#-0#-----2@4"-- -394038911#1585#4#-0#-----2@63"--       WITH_C11          false   (C++ compiler C11 features)-394038911#1589#63#-0#-----2@65"--       WITH_OPENMP       false   (OpenMP multithread features)-394038911#1652#65#-0#-----2@64"--       WITH_GMP          false   (Gnu Multiprecision Library)-394038911#1717#64#-0#-----2@71"--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)-394038911#1781#71#-0#-----2@68"--       WITH_CAIRO        false   (CairoGraphics drawing features)-394038911#1852#68#-0#-----2@52"--       WITH_HDF5         false   (HDF5 image i/o)-394038911#1920#52#-0#-----2@71"--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)-394038911#1972#71#-0#-----2@66"--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)-394038911#2043#66#-0#-----2@66"--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)-394038911#2109#66#-0#-----2@4"-- -394038911#2175#4#-0#-----2@31"-- Checking the dependencies: -394038911#2179#31#-0#-----2@83"-- --------------------------------------------------------------------------------394038911#2210#83#-0#-----2@28"-- Build test files enabled-394038911#2293#28#-0#-----2@20"-- Configuring done-394038912#2321#20#-0#-----2@19"-- Generating done-394038912#2341#19#-0#-----2@86"-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode-394038915#2360#86#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-5918A11A011648DA9CB46761.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-5918A11A011648DA9CB46761.sh36"97479F1B-E5C7-4BA6-B5B5-8C1E7FFCF134-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh
+s391595191.154158
+e391595195.687550
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+o/usr/local/Cellar/cmake/2.8.11/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- -------------------------------------------------------------------------------
+o-- DGtal Version 0.6.0
+o-- -------------------------------------------------------------------------------
+o-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal
+o-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- Build type is 
+o-- Installation prefix directory is /usr/local
+o-- Host system is Darwin-12.3.0 with processor i386
+o-- Target system is Darwin-12.3.0 with processor i386
+o-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox
+o-- Clang compiler detected
+o-- Boost version: 1.53.0
+o-- Boost  found.
+o-- -------------------------------------------------------------------------------
+o-- DGtal Library optional configuration:
+o--    (to change these values, use ccmake, a graphical
+o--    cmake frontend, or define cmake commandline variables
+o--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)
+o-- 
+o--       WITH_C11          false
+o--       WITH_GMP          false
+o--       WITH_ITK          false
+o--       WITH_CAIRO        false
+o--       WITH_HDF5         false
+o--       WITH_COIN3D-SOQT  false
+o--       WITH_QGLVIEWER    false
+o--       WITH_MAGICK       false
+o--       WITH_OPENMP       false
+o-- 
+o-- Checking the dependencies: 
+o-- -------------------------------------------------------------------------------
+o-- Build test files enabled
+o-- Configuring done
+o-- Generating done
+o-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'e21d28b74457b741^9301b0bb4457b741^-2147"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make/usr/local/Cellar/cmake/2.8.11/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-- --------------------------------------------------------------------------------- DGtal Version 0.6.0-- --------------------------------------------------------------------------------- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-- Build type is -- Installation prefix directory is /usr/local-- Host system is Darwin-12.3.0 with processor i386-- Target system is Darwin-12.3.0 with processor i386-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-- Clang compiler detected-- Boost version: 1.53.0-- Boost  found.-- --------------------------------------------------------------------------------- DGtal Library optional configuration:--    (to change these values, use ccmake, a graphical--    cmake frontend, or define cmake commandline variables--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-- --       WITH_C11          false--       WITH_GMP          false--       WITH_ITK          false--       WITH_CAIRO        false--       WITH_HDF5         false--       WITH_COIN3D-SOQT  false--       WITH_QGLVIEWER    false--       WITH_MAGICK       false--       WITH_OPENMP       false-- -- Checking the dependencies: -- --------------------------------------------------------------------------------- Build test files enabled-- Configuring done-- Generating done-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode41(21%IDEActivityLogMessage2@8"echo ""-391595191#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-391595191#9#86#-0#-----2@131"/usr/local/Cellar/cmake/2.8.11/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-391595191#95#131#-0#-----2@83"-- --------------------------------------------------------------------------------391595191#226#83#-0#-----2@23"-- DGtal Version 0.6.0-391595191#309#23#-0#-----2@83"-- --------------------------------------------------------------------------------391595191#332#83#-0#-----2@54"-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-391595191#415#54#-0#-----2@72"-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-391595191#469#72#-0#-----2@18"-- Build type is -391595191#541#18#-0#-----2@47"-- Installation prefix directory is /usr/local-391595191#559#47#-0#-----2@52"-- Host system is Darwin-12.3.0 with processor i386-391595191#606#52#-0#-----2@54"-- Target system is Darwin-12.3.0 with processor i386-391595191#658#54#-0#-----2@73"-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-391595191#712#73#-0#-----2@135"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-391595191#785#135#-0#-----2@147"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-391595191#920#147#-0#-----2@143"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-391595191#1067#143#-0#-----2@27"-- Clang compiler detected-391595191#1210#27#-0#-----2@25"-- Boost version: 1.53.0-391595191#1237#25#-0#-----2@17"-- Boost  found.-391595191#1262#17#-0#-----2@83"-- --------------------------------------------------------------------------------391595191#1279#83#-0#-----2@41"-- DGtal Library optional configuration:-391595191#1362#41#-0#-----2@55"--    (to change these values, use ccmake, a graphical-391595191#1403#55#-0#-----2@60"--    cmake frontend, or define cmake commandline variables-391595191#1458#60#-0#-----2@57"--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-391595191#1518#57#-0#-----2@4"-- -391595191#1575#4#-0#-----2@33"--       WITH_C11          false-391595191#1579#33#-0#-----2@33"--       WITH_GMP          false-391595191#1612#33#-0#-----2@33"--       WITH_ITK          false-391595191#1645#33#-0#-----2@33"--       WITH_CAIRO        false-391595191#1678#33#-0#-----2@33"--       WITH_HDF5         false-391595191#1711#33#-0#-----2@33"--       WITH_COIN3D-SOQT  false-391595191#1744#33#-0#-----2@33"--       WITH_QGLVIEWER    false-391595191#1777#33#-0#-----2@33"--       WITH_MAGICK       false-391595191#1810#33#-0#-----2@33"--       WITH_OPENMP       false-391595191#1843#33#-0#-----2@4"-- -391595191#1876#4#-0#-----2@31"-- Checking the dependencies: -391595191#1880#31#-0#-----2@83"-- --------------------------------------------------------------------------------391595191#1911#83#-0#-----2@28"-- Build test files enabled-391595191#1994#28#-0#-----2@20"-- Configuring done-391595192#2022#20#-0#-----2@19"-- Generating done-391595192#2042#19#-0#-----2@86"-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode-391595195#2061#86#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh36"1E1F1F47-E5AC-4D0C-A786-6EE67B6AE9F4-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-6A7032D9ADAE4F46AD2091ED.sh
+s392107578.749241
+e392107578.981917
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-6A7032D9ADAE4F46AD2091ED.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'fb74c03a165fb741^3449003b165fb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-392107578#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-392107578#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-392107578#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-6A7032D9ADAE4F46AD2091ED.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-6A7032D9ADAE4F46AD2091ED.sh36"D459CBBA-0196-4573-9915-C6FBE417337D-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-7CBE29E20F8248CAB85B6725.sh
+s391855292.195521
+e391855292.386519
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-7CBE29E20F8248CAB85B6725.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'f29732bc3c5bb741^83fa62bc3c5bb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-391855292#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-391855292#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-391855292#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-7CBE29E20F8248CAB85B6725.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-7CBE29E20F8248CAB85B6725.sh36"F76A477A-11D8-4976-BF1F-692B1D9DB8FF-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-8B6FDCE18813425AB65577CC.sh
+s391855162.910293
+e391855163.077130
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-8B6FDCE18813425AB65577CC.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'f3c9ea3a3c5bb741^f3e3133b3c5bb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-391855162#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-391855162#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-391855163#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-8B6FDCE18813425AB65577CC.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-8B6FDCE18813425AB65577CC.sh36"23D6EB2D-554C-4DA1-99C0-E32CB043F6EB-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-9007F52B966F4E7CA86CAA45.sh
+s394039301.130785
+e394039301.280516
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-9007F52B966F4E7CA86CAA45.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'3b1b2205907cb741^c72a4905907cb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-394039301#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-394039301#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-394039301#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-9007F52B966F4E7CA86CAA45.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-9007F52B966F4E7CA86CAA45.sh36"73709514-0DD7-4A85-81D7-27C17F68D066-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-992E4541EC394304896B8C42.sh
+s392051070.062931
+e392051070.138629
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-992E4541EC394304896B8C42.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'2f69107e395eb741^207d237e395eb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-392051070#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-392051070#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-392051070#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-992E4541EC394304896B8C42.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-992E4541EC394304896B8C42.sh36"A1557E3B-12BE-4F3D-8760-CF7546A31825-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-A80A084709F44BF9A07427F8.sh
+s391598970.039851
+e391598970.217587
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-A80A084709F44BF9A07427F8.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'6ac20a7a5357b741^40c3377a5357b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-391598970#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-391598970#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-391598970#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-A80A084709F44BF9A07427F8.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-A80A084709F44BF9A07427F8.sh36"4F551DB5-5357-43BF-BFDA-4D8ECB7614A9-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh
+s400254772.535224
+e400254772.815512
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'55f88b3467dbb741^65c5d03467dbb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-400254772#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-400254772#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-400254772#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh36"379CEECA-AF7A-4987-8362-C400E9CDE20E-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-B6BDF82936B244099E53C7EE.sh
+s394039239.260734
+e394039242.918370
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-B6BDF82936B244099E53C7EE.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+o/usr/local/Cellar/cmake/2.8.11.1/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- -------------------------------------------------------------------------------
+o-- DGtal Version 0.7.beta
+o-- -------------------------------------------------------------------------------
+o-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal
+o-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- Build type is Debug
+o-- Installation prefix directory is /usr/local
+o-- Host system is Darwin-12.4.0 with processor i386
+o-- Target system is Darwin-12.4.0 with processor i386
+o-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox
+o-- Clang compiler detected
+o-- Boost version: 1.53.0
+o-- Boost  found.
+o-- -------------------------------------------------------------------------------
+o-- DGtal Library optional configuration:
+o--    (to change these values, use ccmake, a graphical
+o--    cmake frontend, or define cmake commandline variables
+o--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)
+o-- 
+o--       WITH_C11          false   (C++ compiler C11 features)
+o--       WITH_OPENMP       false   (OpenMP multithread features)
+o--       WITH_GMP          false   (Gnu Multiprecision Library)
+o--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)
+o--       WITH_CAIRO        false   (CairoGraphics drawing features)
+o--       WITH_HDF5         false   (HDF5 image i/o)
+o--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)
+o--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)
+o--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)
+o-- 
+o-- Checking the dependencies: 
+o-- -------------------------------------------------------------------------------
+o-- Build test files enabled
+o-- Configuring done
+o-- Generating done
+o-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'48e043c78f7cb741^3f19ebca8f7cb741^-2446"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make/usr/local/Cellar/cmake/2.8.11.1/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-- --------------------------------------------------------------------------------- DGtal Version 0.7.beta-- --------------------------------------------------------------------------------- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-- Build type is Debug-- Installation prefix directory is /usr/local-- Host system is Darwin-12.4.0 with processor i386-- Target system is Darwin-12.4.0 with processor i386-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-- Clang compiler detected-- Boost version: 1.53.0-- Boost  found.-- --------------------------------------------------------------------------------- DGtal Library optional configuration:--    (to change these values, use ccmake, a graphical--    cmake frontend, or define cmake commandline variables--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-- --       WITH_C11          false   (C++ compiler C11 features)--       WITH_OPENMP       false   (OpenMP multithread features)--       WITH_GMP          false   (Gnu Multiprecision Library)--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)--       WITH_CAIRO        false   (CairoGraphics drawing features)--       WITH_HDF5         false   (HDF5 image i/o)--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)-- -- Checking the dependencies: -- --------------------------------------------------------------------------------- Build test files enabled-- Configuring done-- Generating done-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode41(21%IDEActivityLogMessage2@8"echo ""-394039239#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-394039239#9#86#-0#-----2@133"/usr/local/Cellar/cmake/2.8.11.1/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-394039239#95#133#-0#-----2@83"-- --------------------------------------------------------------------------------394039239#228#83#-0#-----2@26"-- DGtal Version 0.7.beta-394039239#311#26#-0#-----2@83"-- --------------------------------------------------------------------------------394039239#337#83#-0#-----2@54"-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-394039239#420#54#-0#-----2@72"-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-394039239#474#72#-0#-----2@23"-- Build type is Debug-394039239#546#23#-0#-----2@47"-- Installation prefix directory is /usr/local-394039239#569#47#-0#-----2@52"-- Host system is Darwin-12.4.0 with processor i386-394039239#616#52#-0#-----2@54"-- Target system is Darwin-12.4.0 with processor i386-394039239#668#54#-0#-----2@73"-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-394039239#722#73#-0#-----2@135"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-394039239#795#135#-0#-----2@147"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-394039239#930#147#-0#-----2@143"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-394039239#1077#143#-0#-----2@27"-- Clang compiler detected-394039240#1220#27#-0#-----2@25"-- Boost version: 1.53.0-394039240#1247#25#-0#-----2@17"-- Boost  found.-394039240#1272#17#-0#-----2@83"-- --------------------------------------------------------------------------------394039240#1289#83#-0#-----2@41"-- DGtal Library optional configuration:-394039240#1372#41#-0#-----2@55"--    (to change these values, use ccmake, a graphical-394039240#1413#55#-0#-----2@60"--    cmake frontend, or define cmake commandline variables-394039240#1468#60#-0#-----2@57"--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-394039240#1528#57#-0#-----2@4"-- -394039240#1585#4#-0#-----2@63"--       WITH_C11          false   (C++ compiler C11 features)-394039240#1589#63#-0#-----2@65"--       WITH_OPENMP       false   (OpenMP multithread features)-394039240#1652#65#-0#-----2@64"--       WITH_GMP          false   (Gnu Multiprecision Library)-394039240#1717#64#-0#-----2@71"--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)-394039240#1781#71#-0#-----2@68"--       WITH_CAIRO        false   (CairoGraphics drawing features)-394039240#1852#68#-0#-----2@52"--       WITH_HDF5         false   (HDF5 image i/o)-394039240#1920#52#-0#-----2@71"--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)-394039240#1972#71#-0#-----2@66"--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)-394039240#2043#66#-0#-----2@66"--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)-394039240#2109#66#-0#-----2@4"-- -394039240#2175#4#-0#-----2@31"-- Checking the dependencies: -394039240#2179#31#-0#-----2@83"-- --------------------------------------------------------------------------------394039240#2210#83#-0#-----2@28"-- Build test files enabled-394039240#2293#28#-0#-----2@20"-- Configuring done-394039240#2321#20#-0#-----2@19"-- Generating done-394039240#2341#19#-0#-----2@86"-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode-394039242#2360#86#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-B6BDF82936B244099E53C7EE.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-B6BDF82936B244099E53C7EE.sh36"55168F6E-13A9-4F46-898C-905093F2CDC2-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-DC8F5C0E57AE46CFACF7BFC3.sh
+s391612893.096452
+e391612893.228143
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-DC8F5C0E57AE46CFACF7BFC3.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'ff2119dd8957b741^30673add8957b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-391612893#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-391612893#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-391612893#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-DC8F5C0E57AE46CFACF7BFC3.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-DC8F5C0E57AE46CFACF7BFC3.sh36"D274B416-1CC2-4351-8826-BAFBBD9BABBC-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
+s395328024.839401
+e395328024.987417
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'0e30d7183a90b741^95d5fc183a90b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-395328024#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-395328024#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-395328024#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh36"23B63D08-B02F-47DD-9FBD-6C77550B1BF0-
+
+CPhaseScriptExecution CMake\ Rules /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh
+s401826814.134973
+e401826817.922146
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+o/usr/local/Cellar/cmake/2.8.11.2/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- -------------------------------------------------------------------------------
+o-- DGtal Version 0.7.beta
+o-- -------------------------------------------------------------------------------
+o-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal
+o-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o-- Build type is Debug
+o-- Installation prefix directory is /usr/local
+o-- Host system is Darwin-12.4.0 with processor i386
+o-- Target system is Darwin-12.4.0 with processor i386
+o-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board
+o-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox
+o-- Clang compiler detected
+o-- Boost version: 1.54.0
+o-- Boost  found.
+o-- -------------------------------------------------------------------------------
+o-- DGtal Library optional configuration:
+o--    (to change these values, use ccmake, a graphical
+o--    cmake frontend, or define cmake commandline variables
+o--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)
+o-- 
+o--       WITH_C11          false   (C++ compiler C11 features)
+o--       WITH_OPENMP       false   (OpenMP multithread features)
+o--       WITH_GMP          false   (Gnu Multiprecision Library)
+o--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)
+o--       WITH_CAIRO        false   (CairoGraphics drawing features)
+o--       WITH_HDF5         true    (HDF5 image i/o)
+o--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)
+o--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)
+o--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)
+o-- 
+o-- Checking the dependencies: 
+o-- HDF5 found
+o-- -------------------------------------------------------------------------------
+o-- Build test files ENABLED
+o-- Configuring done
+o-- Generating done
+o-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'115"PhaseScriptExecution CMake\ Rules build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh0fd623fe63f3b741^be12ec0164f3b741^-2460"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make/usr/local/Cellar/cmake/2.8.11.2/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-- --------------------------------------------------------------------------------- DGtal Version 0.7.beta-- --------------------------------------------------------------------------------- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-- Build type is Debug-- Installation prefix directory is /usr/local-- Host system is Darwin-12.4.0 with processor i386-- Target system is Darwin-12.4.0 with processor i386-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-- Clang compiler detected-- Boost version: 1.54.0-- Boost  found.-- --------------------------------------------------------------------------------- DGtal Library optional configuration:--    (to change these values, use ccmake, a graphical--    cmake frontend, or define cmake commandline variables--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-- --       WITH_C11          false   (C++ compiler C11 features)--       WITH_OPENMP       false   (OpenMP multithread features)--       WITH_GMP          false   (Gnu Multiprecision Library)--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)--       WITH_CAIRO        false   (CairoGraphics drawing features)--       WITH_HDF5         true    (HDF5 image i/o)--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)-- -- Checking the dependencies: -- HDF5 found-- --------------------------------------------------------------------------------- Build test files ENABLED-- Configuring done-- Generating done-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode42(21%IDEActivityLogMessage2@8"echo ""-401826814#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-401826814#9#86#-0#-----2@133"/usr/local/Cellar/cmake/2.8.11.2/bin/cmake -H/Users/davidcoeurjolly/Sources/DGtal -B/Users/davidcoeurjolly/Sources/DGtal/build-xcode-401826814#95#133#-0#-----2@83"-- --------------------------------------------------------------------------------401826814#228#83#-0#-----2@26"-- DGtal Version 0.7.beta-401826814#311#26#-0#-----2@83"-- --------------------------------------------------------------------------------401826814#337#83#-0#-----2@54"-- Source DIR is /Users/davidcoeurjolly/Sources/DGtal-401826814#420#54#-0#-----2@72"-- Binary/Build DIR is /Users/davidcoeurjolly/Sources/DGtal/build-xcode-401826814#474#72#-0#-----2@23"-- Build type is Debug-401826814#546#23#-0#-----2@47"-- Installation prefix directory is /usr/local-401826814#569#47#-0#-----2@52"-- Host system is Darwin-12.4.0 with processor i386-401826814#616#52#-0#-----2@54"-- Target system is Darwin-12.4.0 with processor i386-401826814#668#54#-0#-----2@73"-- dot found: /usr/local/bin/dot. Installing doc in /usr/local/doc/DGtal-401826814#722#73#-0#-----2@135"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config-401826814#795#135#-0#-----2@147"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.Board.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.Board-401826814#930#147#-0#-----2@143"-- configured /Users/davidcoeurjolly/Sources/DGtal/doc/doxy.config.dox.in --> /Users/davidcoeurjolly/Sources/DGtal/build-xcode/doxy.config.dox-401826814#1077#143#-0#-----2@27"-- Clang compiler detected-401826814#1220#27#-0#-----2@25"-- Boost version: 1.54.0-401826814#1247#25#-0#-----2@17"-- Boost  found.-401826814#1272#17#-0#-----2@83"-- --------------------------------------------------------------------------------401826814#1289#83#-0#-----2@41"-- DGtal Library optional configuration:-401826814#1372#41#-0#-----2@55"--    (to change these values, use ccmake, a graphical-401826814#1413#55#-0#-----2@60"--    cmake frontend, or define cmake commandline variables-401826814#1468#60#-0#-----2@57"--    -e.g. '-DWITH_GMP:string=true'-, cf documentation)-401826814#1528#57#-0#-----2@4"-- -401826814#1585#4#-0#-----2@63"--       WITH_C11          false   (C++ compiler C11 features)-401826814#1589#63#-0#-----2@65"--       WITH_OPENMP       false   (OpenMP multithread features)-401826814#1652#65#-0#-----2@64"--       WITH_GMP          false   (Gnu Multiprecision Library)-401826814#1717#64#-0#-----2@71"--       WITH_ITK          false   (Insight Toolkit ITK image wrapper)-401826814#1781#71#-0#-----2@68"--       WITH_CAIRO        false   (CairoGraphics drawing features)-401826814#1852#68#-0#-----2@52"--       WITH_HDF5         true    (HDF5 image i/o)-401826814#1920#52#-0#-----2@71"--       WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)-401826814#1972#71#-0#-----2@66"--       WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)-401826814#2043#66#-0#-----2@66"--       WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)-401826814#2109#66#-0#-----2@4"-- -401826814#2175#4#-0#-----2@31"-- Checking the dependencies: -401826814#2179#31#-0#-----2@14"-- HDF5 found-401826814#2210#14#-0#-----2@83"-- --------------------------------------------------------------------------------401826814#2224#83#-0#-----2@28"-- Build test files ENABLED-401826814#2307#28#-0#-----2@20"-- Configuring done-401826814#2335#20#-0#-----2@19"-- Generating done-401826815#2355#19#-0#-----2@86"-- Build files have been written to: /Users/davidcoeurjolly/Sources/DGtal/build-xcode-401826817#2374#86#-0#-----0#0#1#--294"PhaseScriptExecution CMake\ Rules build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-ADCCD6C8DEFE4F5A8092C70B.sh36"C7EB713A-519B-4FAE-8FF2-2880D0C69430-
+b894E505D-5602-4181-9B9D-21A78511EF79
+
+CPhaseScriptExecution CMake\ Rules /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-CF28BB748C784C8E83E3A2C0.sh
+s401869978.259734
+e401869978.379375
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-CF28BB748C784C8E83E3A2C0.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'115"PhaseScriptExecution CMake\ Rules build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-CF28BB748C784C8E83E3A2C0.shace5429a0cf4b741^fb1e619a0cf4b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-401869978#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-401869978#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-401869978#95#104#-0#-----0#0#1#--294"PhaseScriptExecution CMake\ Rules build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-CF28BB748C784C8E83E3A2C0.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-CF28BB748C784C8E83E3A2C0.sh36"1F1E6B88-08D5-4201-812C-F3679BA3940D-
+b1DA5B120-698B-4DDE-AF49-322F82EF04DD
+

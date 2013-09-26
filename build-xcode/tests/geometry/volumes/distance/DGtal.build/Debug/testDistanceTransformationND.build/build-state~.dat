@@ -1,0 +1,141 @@
+TtestDistanceTransformationND
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testDistanceTransformationND normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Script-DD5A85C49C4C414EBAB36C76.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.LinkFileList
+c0000000051AB058500000000000000BB
+t1370162565
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Script-DD5A85C49C4C414EBAB36C76.sh
+c0000000051AB05850000000000000107
+t1370162565
+s263
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testDistanceTransformationND
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/DistanceTransformation.h
+c0000000051A5AD7D00000000000020B7
+t1369812349
+s8375
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h
+c0000000051A5AD7D000000000000400B
+t1369812349
+s16395
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageSelector.h
+c0000000051A4E45B0000000000000C16
+t1369760859
+s3094
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h
+c0000000051A5AD7D0000000000000FAA
+t1369812349
+s4010
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GrayscaleColorMap.h
+c0000000051A4E3410000000000001B3A
+t1369760577
+s6970
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/HueShadeColorMap.h
+c0000000051A5AD7D0000000000002027
+t1369812349
+s8231
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
+c0000000051A5AD7E000000000000176C
+t1369812350
+s5996
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
+c0000000051A5AD7E0000000000004E8C
+t1369812350
+s20108
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp
+c0000000051A5AD7E0000000000001238
+t1369812350
+s4664
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/base/Common.h"
+i"DGtal/kernel/SpaceND.h"
+i"DGtal/kernel/domains/HyperRectDomain.h"
+i"DGtal/images/ImageSelector.h"
+i"DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+i"DGtal/geometry/volumes/distance/DistanceTransformation.h"
+i"DGtal/io/colormaps/HueShadeColorMap.h"
+i"DGtal/io/colormaps/GrayscaleColorMap.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies77641c053d5bb741^7aa81d053d5bb741^---0#1#0#--18"Check dependencies36"B028621C-7FA9-4CFA-A0A4-E9F6890097E7-
+
+CCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855365.117113
+e391855369.454825
+r1
+xCompileC
+xbuild-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp20251e053d5bb741^c57174093d5bb741^---0#0#0#-19%DVTDocumentLocation2@117"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp0000000000000000^2866"CompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.o tests/geometry/volumes/distance/testDistanceTransformationND.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testDistanceTransformationND.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.o36"FF9888CA-89A9-48F5-8435-B9586BEBB567-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testDistanceTransformationND normal x86_64
+s391855369.461695
+e391855369.511480
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testDistanceTransformationND
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection120"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testDistanceTransformationNDa94b76093d5bb741^8df082093d5bb741^---0#0#0#--1322"Ld build-xcode/tests/geometry/volumes/distance/Debug/testDistanceTransformationND normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Objects-normal/x86_64/testDistanceTransformationND.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testDistanceTransformationND36"EC5371D5-97CD-407E-BCD2-7C78C3708BB5-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Script-DD5A85C49C4C414EBAB36C76.sh
+s391855369.519509
+e391855369.607797
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Script-DD5A85C49C4C414EBAB36C76.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDistanceTransformationND.Debug
+omake[1]: Nothing to be done for `PostBuild.testDistanceTransformationND.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'38a085093d5bb741^24979b093d5bb741^-380"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDistanceTransformationND.Debugmake[1]: Nothing to be done for `PostBuild.testDistanceTransformationND.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855369#0#30#-0#-----2@23"Depend check for xcode-391855369#30#23#-0#-----2@247"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDistanceTransformationND.Debug-391855369#53#247#-0#-----2@80"make[1]: Nothing to be done for `PostBuild.testDistanceTransformationND.Debug'.-391855369#300#80#-0#-----0#0#0#--405"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Script-DD5A85C49C4C414EBAB36C76.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testDistanceTransformationND.build/Script-DD5A85C49C4C414EBAB36C76.sh36"D136C019-132E-457A-BCD1-2A5E776F573D-
+

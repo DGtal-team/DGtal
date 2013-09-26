@@ -127,7 +127,6 @@ template < typename Space, typename KSpace>
 inline
 void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 {
-  std::cout << " [[ ";
 
   size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
   double Re, Gr, Bl, Tr; // colors of the elements
@@ -671,8 +670,6 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
   outOBJ.close();
   outMTL.close();
-
-  std::cout << " ]] " << std::endl;
 }
 
 

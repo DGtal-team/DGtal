@@ -1,0 +1,46 @@
+TZERO_CHECK
+v5
+r1
+cCheck dependencies
+cPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh
+c00000000521F06BE00000000000000BB
+t1377765054
+s187
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
+c0000000051E002C200000000000000BB
+t1373635266
+s187
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies09fad7b43ecfb741^8290d8b43ecfb741^---0#1#0#--18"Check dependencies36"EBCB5444-34D5-4FFB-BC22-D1C7657D791D-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh
+s399457972.847360
+e399457973.033340
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'93a6d9b43ecfb741^d7dd08b53ecfb741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-399457972#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-399457972#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-399457973#95#104#-0#-----0#0#0#--299"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-52B8CEE2D2D74DD9A62A8E18.sh36"90FBCBDC-4023-4058-87DE-8025EED3E4A6-
+
+CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
+s395328442.483258
+e395328442.567972
+r1
+xPhaseScriptExecution
+xCMake Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
+oecho ""
+o
+omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
+omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'5b0a7cba3b90b741^176691ba3b90b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-395328442#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-395328442#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-395328442#95#104#-0#-----0#0#0#--299"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh36"5E2CD769-1902-41D8-8BFC-6216C00C8E14-
+

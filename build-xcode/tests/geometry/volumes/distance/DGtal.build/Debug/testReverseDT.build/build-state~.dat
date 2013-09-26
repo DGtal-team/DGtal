@@ -1,0 +1,140 @@
+TtestReverseDT
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReverseDT normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Script-598BCB54E628408387E76A22.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.LinkFileList
+c0000000051AB0587000000000000009D
+t1370162567
+s157
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Script-598BCB54E628408387E76A22.sh
+c0000000051AB058700000000000000F8
+t1370162567
+s248
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReverseDT
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/DistanceTransformation.h
+c0000000051A5AD7D00000000000020B7
+t1369812349
+s8375
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h
+c0000000051A5AD7D000000000000400B
+t1369812349
+s16395
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/ReverseDistanceTransformation.h
+c0000000051A5AD7D0000000000002113
+t1369812349
+s8467
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
+c0000000051A5AD7D00000000000021BA
+t1369812349
+s8634
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageSelector.h
+c0000000051A4E45B0000000000000C16
+t1369760859
+s3094
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h
+c0000000051A5AD7D0000000000000FAA
+t1369812349
+s4010
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/HueShadeColorMap.h
+c0000000051A5AD7D0000000000002027
+t1369812349
+s8231
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/sets/DigitalSetBySTLSet.h
+c0000000051A5AD7E00000000000028CB
+t1369812350
+s10443
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp
+c0000000051A5AD7E00000000000021FA
+t1369812350
+s8698
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/helpers/StdDefs.h"
+i"DGtal/images/ImageSelector.h"
+i"DGtal/geometry/volumes/distance/DistanceTransformation.h"
+i"DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+i"DGtal/geometry/volumes/distance/ReverseDistanceTransformation.h"
+i"DGtal/io/colormaps/HueShadeColorMap.h"
+i"DGtal/kernel/sets/DigitalSetBySTLSet.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies36ea81073d5bb741^70b182073d5bb741^---0#1#0#--18"Check dependencies36"B0C3F6DD-C95D-4E1E-9E57-756D786839B6-
+
+CCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855367.511855
+e391855372.962273
+r1
+xCompileC
+xbuild-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection94"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp772b83073d5bb741^645bf60c3d5bb741^---0#0#0#-19%DVTDocumentLocation2@102"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp0000000000000000^2686"CompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.o tests/geometry/volumes/distance/testReverseDT.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReverseDT.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.o36"2F13C943-681F-4642-BE15-086A9127FB85-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReverseDT normal x86_64
+s391855372.969140
+e391855373.038758
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReverseDT
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection105"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReverseDT5d34f80c3d5bb741^7afd090d3d5bb741^---0#0#0#--1262"Ld build-xcode/tests/geometry/volumes/distance/Debug/testReverseDT normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Objects-normal/x86_64/testReverseDT.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReverseDT36"FEFB1A14-CF77-4A74-8643-D736333406CA-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Script-598BCB54E628408387E76A22.sh
+s391855373.046782
+e391855373.130353
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Script-598BCB54E628408387E76A22.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testReverseDT.Debug
+omake[1]: Nothing to be done for `PostBuild.testReverseDT.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'959b0c0d3d5bb741^c45d210d3d5bb741^-350"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testReverseDT.Debugmake[1]: Nothing to be done for `PostBuild.testReverseDT.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855373#0#30#-0#-----2@23"Depend check for xcode-391855373#30#23#-0#-----2@232"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testReverseDT.Debug-391855373#53#232#-0#-----2@65"make[1]: Nothing to be done for `PostBuild.testReverseDT.Debug'.-391855373#285#65#-0#-----0#0#0#--375"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Script-598BCB54E628408387E76A22.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReverseDT.build/Script-598BCB54E628408387E76A22.sh36"C6BAD344-E4FB-4CBA-A562-1E5B50E93035-
+

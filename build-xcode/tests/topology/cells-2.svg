@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="90mm" height="70mm" 
+     viewBox="0 0 255.118 198.425" 
+     xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<desc>output.svg, created with the Board library (Copyleft) 2007 Sebastien Fourey</desc>
+<rect x="0" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="0" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="0" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="0" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="0" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="0" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="0" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="28.35" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="28.35" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="28.35" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="28.35" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="28.35" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="28.35" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="28.35" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="56.69" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="56.69" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="56.69" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="56.69" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="56.69" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="56.69" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="56.69" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="85.04" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="85.04" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="85.04" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="85.04" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="85.04" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="85.04" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="85.04" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="113.39" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="113.39" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="113.39" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="113.39" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="113.39" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="113.39" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="113.39" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="141.73" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="141.73" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="141.73" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="141.73" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="141.73" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="141.73" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="141.73" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="170.08" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="170.08" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="170.08" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="170.08" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="170.08" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="170.08" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="170.08" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="198.43" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="198.43" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="198.43" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="198.43" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="198.43" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="198.43" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="198.43" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="226.77" y="170.08" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="226.77" y="141.73" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="226.77" y="113.39" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="226.77" y="85.04" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="226.77" y="56.69" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="226.77" y="28.35" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="226.77" y="0" width="28.35" height="28.35" fill="rgb(255,255,255)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="86.46" y="111.97" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="114.8" y="140.31" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="114.8" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="58.11" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="111.97" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="86.46" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="83.62" y="86.46" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="86.46" y="83.62" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="111.97" y="114.8" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="111.97" y="58.11" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="114.8" y="55.28" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="83.62" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+</svg>

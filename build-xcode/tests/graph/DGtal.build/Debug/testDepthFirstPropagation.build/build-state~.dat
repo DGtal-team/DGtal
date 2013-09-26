@@ -1,0 +1,130 @@
+TtestDepthFirstPropagation
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.o /Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug/testDepthFirstPropagation normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Script-B10C71DB4F3144ABAC3F0181.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.LinkFileList
+c0000000051AB05A100000000000000A1
+t1370162593
+s161
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Script-B10C71DB4F3144ABAC3F0181.sh
+c0000000051AB05A100000000000000DC
+t1370162593
+s220
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug/testDepthFirstPropagation
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/CGraphVisitor.h
+c0000000051A5AD7D0000000000001F6E
+t1369812349
+s8046
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/CUndirectedSimpleGraph.h
+c0000000051A5AD7D000000000000142B
+t1369812349
+s5163
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/DepthFirstVisitor.h
+c0000000051A5AD7D0000000000002C21
+t1369812349
+s11297
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.h
+c0000000051AB045B0000000000002063
+t1370162267
+s8291
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/HueShadeColorMap.h
+c0000000051A5AD7D0000000000002027
+t1369812349
+s8231
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
+c0000000051A5AD7E000000000000275B
+t1369812350
+s10075
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cpp
+c0000000051A5AD7E0000000000001605
+t1369812350
+s5637
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/io/Color.h"
+i"DGtal/io/colormaps/HueShadeColorMap.h"
+i"DGtal/shapes/Shapes.h"
+i"DGtal/graph/CUndirectedSimpleGraph.h"
+i"DGtal/graph/DepthFirstVisitor.h"
+i"DGtal/graph/CGraphVisitor.h"
+i<set>
+i<iterator>
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesd1afa5213d5bb741^b0feaf213d5bb741^---0#1#0#--18"Check dependencies36"6B6D96E3-985B-4438-8685-F411D226D473-
+
+CCompileC build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.o /Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855393.691062
+e391855400.164522
+r1
+xCompileC
+xbuild-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection86"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cppaf09b1213d5bb741^9b202a283d5bb741^---0#0#0#-19%DVTDocumentLocation2@94"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cpp0000000000000000^2630"CompileC build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.o tests/graph/testDepthFirstPropagation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/graph/testDepthFirstPropagation.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.o36"974120FD-4F2D-4F71-AC78-328BF4EB7EE6-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug/testDepthFirstPropagation normal x86_64
+s391855400.172696
+e391855400.249414
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug/testDepthFirstPropagation
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection97"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug/testDepthFirstPropagation2b4f2c283d5bb741^55d93f283d5bb741^---0#0#0#--1210"Ld build-xcode/tests/graph/Debug/testDepthFirstPropagation normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Objects-normal/x86_64/testDepthFirstPropagation.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Debug/testDepthFirstPropagation36"E85F542F-B9AD-4A8C-A0EC-DCAC5A3A4A8A-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Script-B10C71DB4F3144ABAC3F0181.sh
+s391855403.315029
+e391855403.377234
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Script-B10C71DB4F3144ABAC3F0181.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDepthFirstPropagation.Debug
+omake[1]: Nothing to be done for `PostBuild.testDepthFirstPropagation.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'bc06512b3d5bb741^0492602b3d5bb741^-374"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDepthFirstPropagation.Debugmake[1]: Nothing to be done for `PostBuild.testDepthFirstPropagation.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855403#0#30#-0#-----2@23"Depend check for xcode-391855403#30#23#-0#-----2@244"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDepthFirstPropagation.Debug-391855403#53#244#-0#-----2@77"make[1]: Nothing to be done for `PostBuild.testDepthFirstPropagation.Debug'.-391855403#297#77#-0#-----0#0#0#--359"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Script-B10C71DB4F3144ABAC3F0181.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/DGtal.build/Debug/testDepthFirstPropagation.build/Script-B10C71DB4F3144ABAC3F0181.sh36"D1F35E32-4E5F-4282-BA11-6C18A1966D0B-
+

@@ -1,0 +1,86 @@
+Tconvergents
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/convergents normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Script-A90B7221B9C449879277FFBF.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.LinkFileList
+c0000000051AB0647000000000000008D
+t1370162759
+s141
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Script-A90B7221B9C449879277FFBF.sh
+c0000000051AB064700000000000000DE
+t1370162759
+s222
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/convergents
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cpp
+c0000000051A4E30F0000000000000962
+t1369760527
+s2402
+i<iostream>
+i"DGtal/arithmetic/LighterSternBrocot.h"
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.h
+c0000000051A5AD7C000000000000516F
+t1369812348
+s20847
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesc2c07bc73d5bb741^c0097dc73d5bb741^---0#1#0#--18"Check dependencies36"B1EA8944-CC8A-4B21-9C62-9E3798521075-
+
+CCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855559.487501
+e391855562.332267
+r1
+xCompileC
+xbuild-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.o
+x/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cppc3f17cc73d5bb741^ac1955ca3d5bb741^---0#0#0#-19%DVTDocumentLocation2@88"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cpp0000000000000000^2548"CompileC build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.o examples/arithmetic/convergents.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/convergents.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.o36"18C71511-3FFC-4043-80DF-CC2930FE5836-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/convergents normal x86_64
+s391855562.339616
+e391855562.388357
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/convergents
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/convergentsf60a57ca3d5bb741^4cc463ca3d5bb741^---0#0#0#--1194"Ld build-xcode/examples/arithmetic/Debug/convergents normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Objects-normal/x86_64/convergents.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/convergents36"85EDC9EB-2FC6-4CE9-A382-AD10F35036AB-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Script-A90B7221B9C449879277FFBF.sh
+s391855562.396312
+e391855562.608365
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Script-A90B7221B9C449879277FFBF.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.convergents.Debug
+omake[1]: Nothing to be done for `PostBuild.convergents.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'238774ca3d5bb741^42089cca3d5bb741^-346"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.convergents.Debugmake[1]: Nothing to be done for `PostBuild.convergents.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855562#0#30#-0#-----2@23"Depend check for xcode-391855562#30#23#-0#-----2@230"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.convergents.Debug-391855562#53#230#-0#-----2@63"make[1]: Nothing to be done for `PostBuild.convergents.Debug'.-391855562#283#63#-0#-----0#0#0#--347"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Script-A90B7221B9C449879277FFBF.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/convergents.build/Script-A90B7221B9C449879277FFBF.sh36"213094F1-7A1D-43C1-AF0C-0F177565CD22-
+

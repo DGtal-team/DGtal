@@ -1,0 +1,128 @@
+TtestPNMReader
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testPNMReader normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Script-0870DD8B06B1499898834696.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.LinkFileList
+c0000000051AB05D2000000000000008E
+t1370162642
+s142
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Script-0870DD8B06B1499898834696.sh
+c0000000051AB05D200000000000000DA
+t1370162642
+s218
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testPNMReader
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
+c0000000051A5AD7D00000000000021BA
+t1369812349
+s8634
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageSelector.h
+c0000000051A4E45B0000000000000C16
+t1369760859
+s3094
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/imagesSetsUtils/SetFromImage.h
+c0000000051A5AD7D0000000000001769
+t1369812349
+s5993
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/PGMReader.h
+c0000000051AB045B00000000000015B6
+t1370162267
+s5558
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/PPMReader.h
+c0000000051AB045B00000000000013EA
+t1370162267
+s5098
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/ConfigTest.h
+c000000004ED65CD80000000000000138
+t1322671320
+s312
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp
+c0000000051AB045B00000000000011D9
+t1370162267
+s4569
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/helpers/StdDefs.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/io/readers/PPMReader.h"
+i"DGtal/io/readers/PGMReader.h"
+i"DGtal/images/ImageSelector.h"
+i"DGtal/images/imagesSetsUtils/SetFromImage.h"
+i"ConfigTest.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb4918f523d5bb741^d92691523d5bb741^---0#1#0#--18"Check dependencies36"3290F1DE-EB48-4689-B6A2-413C23BF6737-
+
+CCompileC build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855442.568821
+e391855448.880555
+r1
+xCompileC
+xbuild-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection79"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp1ec191523d5bb741^24f2e1583d5bb741^---0#0#0#-19%DVTDocumentLocation2@87"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp0000000000000000^2536"CompileC build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.o tests/io/readers/testPNMReader.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testPNMReader.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.o36"B7DF3C1E-4309-4D12-A2B4-E62F3105C373-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testPNMReader normal x86_64
+s391855448.887244
+e391855448.938404
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testPNMReader
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection90"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testPNMReaderdf32e3583d5bb741^8480f4583d5bb741^---0#0#0#--1187"Ld build-xcode/tests/io/readers/Debug/testPNMReader normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Objects-normal/x86_64/testPNMReader.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testPNMReader36"7DDC34C7-1B80-444B-81AD-743351FD4EBF-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Script-0870DD8B06B1499898834696.sh
+s391855448.946415
+e391855449.022596
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Script-0870DD8B06B1499898834696.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPNMReader.Debug
+omake[1]: Nothing to be done for `PostBuild.testPNMReader.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'd6e3f2583d5bb741^5bec06593d5bb741^-350"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPNMReader.Debugmake[1]: Nothing to be done for `PostBuild.testPNMReader.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855448#0#30#-0#-----2@23"Depend check for xcode-391855448#30#23#-0#-----2@232"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPNMReader.Debug-391855448#53#232#-0#-----2@65"make[1]: Nothing to be done for `PostBuild.testPNMReader.Debug'.-391855449#285#65#-0#-----0#0#0#--345"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Script-0870DD8B06B1499898834696.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testPNMReader.build/Script-0870DD8B06B1499898834696.sh36"AEB830CF-A4A9-49A3-9B4B-0ED017586A95-
+

@@ -1,0 +1,731 @@
+TDGtal
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Script-2D83E2EC2B0D4A938FA16797.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c0000000051BB16B600000000000000AA
+t1371215542
+s170
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include/math.h
+c00000000502D0AD800000000000066C2
+t1345129176
+s26306
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/DGtal.LinkFileList
+c0000000051E002C200000000000007EB
+t1373635266
+s2027
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Script-2D83E2EC2B0D4A938FA16797.sh
+c0000000051E002C200000000000000B8
+t1373635266
+s184
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cpp
+c0000000051CD537E0000000000009302
+t1372410750
+s37634
+i"Board.h"
+i"Board/Point.h"
+i"Board/Rect.h"
+i"Board/Shapes.h"
+i"Board/Tools.h"
+i"Board/PSFonts.h"
+i<fstream>
+i<iostream>
+i<iomanip>
+i<typeinfo>
+i<ctime>
+i<cstring>
+i<map>
+i<algorithm>
+i<cstdio>
+i<cairo.h>
+i<cairo-pdf.h>
+i<cairo-ps.h>
+i<cairo-svg.h>
+i<math.h>
+i<cmath>
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.h
+c0000000051CD537E0000000000007BED
+t1372410750
+s31725
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp
+c0000000051A4E31100000000000004EB
+t1369760529
+s1259
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.h
+c0000000051CD537E0000000000000808
+t1372410750
+s2056
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cpp
+c0000000051A4E3110000000000001ADF
+t1369760529
+s6879
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Point.h
+c0000000051C305DC0000000000000FE9
+t1371735516
+s4073
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp
+c0000000051A4E3110000000000000757
+t1369760529
+s1879
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.h
+c0000000051CD537E0000000000000881
+t1372410750
+s2177
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp
+c0000000051A4E311000000000000442A
+t1369760529
+s17450
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp
+c0000000051C305DC0000000000011F12
+t1371735516
+s73490
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.h
+c0000000051CD537E0000000000009B86
+t1372410750
+s39814
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cpp
+c0000000051A4E311000000000000023F
+t1369760529
+s575
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.h
+c0000000051CD537E0000000000000643
+t1372410750
+s1603
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp
+c0000000051A4E3110000000000001AB8
+t1369760529
+s6840
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp
+c0000000051A4E45B0000000000000A70
+t1369760859
+s2672
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp
+c0000000051A4E45B0000000000000AA0
+t1369760859
+s2720
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp
+c0000000051A4E45B0000000000002731
+t1369760859
+s10033
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cpp
+c0000000051C305DC0000000000008DED
+t1371735516
+s36333
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp
+c0000000051A4E45B000000000000072E
+t1369760859
+s1838
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cpp
+c0000000051C305DC0000000000003464
+t1371735516
+s13412
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp
+c0000000051D5205C0000000000001DD6
+t1372921948
+s7638
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp
+c0000000051C305DD0000000000000AD1
+t1371735517
+s2769
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cpp
+c0000000051C305DD0000000000003495
+t1371735517
+s13461
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp
+r0
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies01fad1423a90b741^8f70d2423a90b741^---0#1#0#--18"Check dependencies36"6104D7E1-0859-417E-9054-B443A3820811-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328074.628296
+e395328076.653688
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection84"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cppbb0aa14a3a90b741^f757a74c3a90b741^---0#0#0#-19%DVTDocumentLocation2@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cpp0000000000000000^2378"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.o src/DGtal/math/AngleLinearMinimizer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/AngleLinearMinimizer.o36"4612F90A-6909-4953-BA5D-E02084BCB3A3-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328071.643450
+e395328073.371762
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection68"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cppa3e9a4473a90b741^9d2e5f493a90b741^---0#0#0#-19%DVTDocumentLocation2@76"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cpp0000000000000000^2282"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.o src/DGtal/base/Bits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Bits.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Bits.o36"7701BEB5-CB69-44A2-AC02-B5EDAA85A743-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328066.825949
+e395328070.006747
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection64"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cppdf8bd3423a90b741^a6b901463a90b741^---0#0#0#-19%DVTDocumentLocation2@72"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cpp0000000000000000^2278"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.o src/Board/Board.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/Board.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Board.o36"4BE80E5C-952C-4C77-B09F-8B26E4AB8F44-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328073.373149
+e395328076.329104
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp9ab65f493a90b741^9e40544c3a90b741^---0#0#0#-19%DVTDocumentLocation2@75"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp0000000000000000^2284"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.o src/DGtal/io/Color.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Color.o36"F1269CD1-D2ED-4260-A276-F3FDD9191C7A-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328072.460274
+e395328074.626656
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection70"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp700b76483a90b741^836aa34a3a90b741^---0#0#0#-19%DVTDocumentLocation2@78"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp0000000000000000^2294"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.o src/DGtal/base/Common.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Common.o36"C8C5B40D-C0DC-4CB1-96BD-CE05056F94FE-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328069.308321
+e395328071.642078
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection86"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp3b1a4f453a90b741^c45ea4473a90b741^---0#0#0#-19%DVTDocumentLocation2@94"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp0000000000000000^2366"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.o src/DGtal/arithmetic/LightSternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LightSternBrocot.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LightSternBrocot.o36"C919A93E-84C9-48F3-AF55-0FCAEEEFC55B-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328070.008229
+e395328072.458889
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection88"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp715402463a90b741^7d7975483a90b741^---0#0#0#-19%DVTDocumentLocation2@96"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp0000000000000000^2378"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.o src/DGtal/arithmetic/LighterSternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/LighterSternBrocot.o36"E1920A0D-0C43-4CF3-B456-1280B27F854F-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328073.928054
+e395328076.073511
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection78"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp47c7ed493a90b741^fe9e1c4c3a90b741^---0#0#0#-19%DVTDocumentLocation2@86"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp0000000000000000^2334"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.o src/DGtal/kernel/NumberTraits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/NumberTraits.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/NumberTraits.o36"887DDB8E-3696-41E7-8EDB-CFDD705F63E1-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328072.647342
+e395328074.963143
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection79"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cppdee6a5483a90b741^fb24f74a3a90b741^---0#0#0#-19%DVTDocumentLocation2@87"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cpp0000000000000000^2348"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.o src/DGtal/base/OrderedAlphabet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/OrderedAlphabet.o36"4338F8FE-C985-43E3-BCB3-A49503805908-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328066.825719
+e395328066.864785
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection66"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp707ad3423a90b741^e561dd423a90b741^---0#0#0#-19%DVTDocumentLocation2@74"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp0000000000000000^2290"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.o src/Board/PSFonts.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/PSFonts.o36"5E9C74AA-B1AF-48A3-B604-531F19A28DC0-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328066.825730
+e395328068.796206
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection63"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cppa67dd3423a90b741^a2d3cb443a90b741^---0#0#0#-19%DVTDocumentLocation2@71"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cpp0000000000000000^2272"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.o src/Board/Path.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/Path.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Path.o36"8B1AFC0C-92D9-47CE-9A5F-834C8226971F-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328066.826254
+e395328068.622862
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection63"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp139bd3423a90b741^5c739f443a90b741^---0#0#0#-19%DVTDocumentLocation2@71"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp0000000000000000^2272"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.o src/Board/Rect.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/Rect.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Rect.o36"E1FBE213-98BF-4A7C-AAD8-901B70FE4DE9-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328066.867332
+e395328069.306975
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection68"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp302dde423a90b741^42954e453a90b741^---0#0#0#-19%DVTDocumentLocation2@76"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp0000000000000000^2302"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.o src/Board/ShapeList.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/ShapeList.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/ShapeList.o36"A595944E-A109-4507-A757-3D18F830416D-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328068.624208
+e395328072.645922
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection65"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp70ee9f443a90b741^c05aa5483a90b741^---0#0#0#-19%DVTDocumentLocation2@73"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp0000000000000000^2284"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.o src/Board/Shapes.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/Shapes.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Shapes.o36"6C358355-8800-4973-A85A-71C89AD9CC97-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.o /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328071.388324
+e395328073.926654
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection81"Compile /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp299663473a90b741^4e7eef493a90b741^---0#0#0#-19%DVTDocumentLocation2@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp0000000000000000^2336"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.o src/DGtal/arithmetic/SternBrocot.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/SternBrocot.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/SternBrocot.o36"FFAF3A25-4376-4C92-B38B-5B3858BB8F4C-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328068.797654
+e395328069.114618
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection64"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cppc955cc443a90b741^d2561d453a90b741^---0#0#0#-19%DVTDocumentLocation2@72"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cpp0000000000000000^2278"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.o src/Board/Tools.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/Tools.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Tools.o36"EBE86663-AAB5-498A-B4C3-A3C086F3B593-
+
+CCompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.o /Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s395328069.116005
+e395328071.386942
+r1
+xCompileC
+xbuild-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.o
+x/Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Compile /Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp5ed91d453a90b741^5e2d63473a90b741^---0#0#0#-19%DVTDocumentLocation2@77"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp0000000000000000^2308"CompileC build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.o src/Board/Transforms.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DDGtal_EXPORTS -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -Qunused-arguments -Wdocumentation -DNDEBUG -fPIC -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.dia -c /Users/davidcoeurjolly/Sources/DGtal/src/Board/Transforms.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/Transforms.o36"8D94766C-325C-4305-9A04-10D0B96360A1-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib normal x86_64
+s395328076.660603
+e395328076.699149
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib8f33a94c3a90b741^1efeb24c3a90b741^---0#0#0#--1040"Ld build-xcode/src/Release/libDGtal.dylib normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Objects-normal/x86_64/DGtal.LinkFileList -install_name /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib -mmacosx-version-min=10.8 -dynamiclib -Wl,-headerpad_max_install_names /usr/local/lib/libhdf5_hl.dylib /usr/local/lib/libhdf5.dylib /usr/local/lib/libsz.dylib /usr/lib/libz.dylib /usr/lib/libdl.dylib /usr/lib/libm.dylib -single_module -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib36"7C0B4EF4-2D55-4509-B21B-F37BB3E76063-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Script-2D83E2EC2B0D4A938FA16797.sh
+s395328076.707296
+e395328077.253403
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Script-2D83E2EC2B0D4A938FA16797.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.DGtal.Release
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtalIO.dylib
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBasicBoolFunctions
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBasicFunctors
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBits
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCirculator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testClock
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCloneAndAliases
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testConstIteratorAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testConstRangeAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCountedPtr
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIndexedListWithBlocks
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIteratorCirculatorTraits
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIteratorFunctions
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabelledMap
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabelledMap-benchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabels
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testMultiMap-benchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOpenMP
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOrderedAlphabet
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOutputIteratorAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOwningOrAliasingPtr
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testProgressBar
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testStatistics
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testTrace
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testcpp11
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testBasicPointFunctors
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testDigitalSet
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testDomainSpanIterator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testEmbedder
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testHyperRectDomain
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testHyperRectDomain-snippet
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testImagesSetsUtilities
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testInteger
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testLinearAlgebra
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testPointVector
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testPointVectorContainers
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testSimpleMatrix
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testAngleLinearMinimizer
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testBasicMathFunctions
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testMPolynomial
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testMeasure
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testSignal
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/arithmetic/Release/testModuloComputer
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/arithmetic/Release/testPattern
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/Release/testFrechetShortcut
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testEstimatorComparator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testLengthEstimators
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testMostCenteredMSEstimator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testSegmentComputerEstimators
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testTrueLocalEstimator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Release/testKanungo
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/estimation/Release/testMeasureSet
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformation
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformationMetrics
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformationND
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testFMM
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetricBalls
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetrics
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetrics-benchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testPowerMap
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testReducedMedialAxis
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testReverseDT
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testSeparableMetricAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testVoronoiMap
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantCurvatureEstimator2D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantGaussianCurvatureEstimator3D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantMeanCurvatureEstimator3D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testLocalEstimatorFromFunctorAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testNormalVectorEstimatorEmbedder
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Release/testPreimage
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Release/testSphericalAccumulator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testBreadthFirstPropagation
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDepthFirstPropagation
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDigitalSurfaceBoostGraphInterface
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDistancePropagation
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testExpander
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testExpander-benchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testSTLMapToVertexMapAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testAdjacency
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testCellularGridSpaceND
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testDigitalSurface
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testDigitalTopology
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testImplicitDigitalSurface-benchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testLightImplicitDigitalSurface-benchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObject
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObject-benchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObjectBorder
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testSCellsFunctor
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testSimpleExpander
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testUmbrellaComputer
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testArcDrawing
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testBoard2DCustomStyle
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testLongvol
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testSimpleBoard
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Release/testColorMaps
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testGenericReader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testHDF5Reader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testMPolynomialReader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testMeshReader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testPNMReader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testPointListReader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testRawReader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testVolReader
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testGenericWriter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testMeshWriter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testPNMRawWriter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testCheckImageConcept
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testConstImageAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testHashTree
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImage
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageCache
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageContainerBenchmark
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageContainerByHashTree
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageFactoryFromHDF5
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageSimple
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageSpanIterators
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testMorton
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testSliceImageFromFunctor
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testTiledImage
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Release/testImplicitShape
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Release/testParametricShape
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testBall3DSurface
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testDigitalShapesDecorator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testEuclideanShapesDecorator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testGaussDigitizer
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testHalfPlane
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testImplicitFunctionModels
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testMesh
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testShapesFromPoints
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleConstImageAdapter
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleTiledImage
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/extract2DImagesFrom3D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Release/display3DToOFF
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-1-points
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-2-sets
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-3-custom-classes
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-3-custom-points
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-4-colormaps
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/logoDGtal
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/ArithmeticalDSS
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/convex-and-concave-parts
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleFrechetShortcut
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGeometricalDCA
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGeometricalDSS
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGridCurve2d
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/greedy-dss-decomposition
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/estimation/Release/exampleCurvature
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Release/exampleIntegralInvariantCurvature2D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/distancetransform2D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/exampleFMM2D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/voronoimap2D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/tools/Release/examplePreimage
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/demo-kernel-1
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/kernelDomain
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/labelledMapBestParameters
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/range
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/fileGridCurveRanges
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/freemanChainFromImage
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/imageGridCurveEstimator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/imageSetDT
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/shapeGridCurveEstimator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/ctopo-1
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/ctopo-2
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/generateSimplicityTables2D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/generateSimplicityTables3D
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/khalimskySpaceScanner
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/trackImplicitPolynomialSurfaceToOFF
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/volMarchingCubes
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/volToOFF
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial-derivative
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial-read
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial2-derivative
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/approximation
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/convergents
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/fraction
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/lower-integer-convex-hull
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/pattern
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Release/exampleEuclideanShapesDecorator
+o/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/graph/Release/graphTraversal
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'9084b54c3a90b741^0ebb4b513a90b741^-19460"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.DGtal.Release/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtalIO.dylib/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBasicBoolFunctions/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBasicFunctors/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBits/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCirculator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testClock/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCloneAndAliases/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testConstIteratorAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testConstRangeAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCountedPtr/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIndexedListWithBlocks/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIteratorCirculatorTraits/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIteratorFunctions/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabelledMap/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabelledMap-benchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabels/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testMultiMap-benchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOpenMP/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOrderedAlphabet/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOutputIteratorAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOwningOrAliasingPtr/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testProgressBar/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testStatistics/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testTrace/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testcpp11/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testBasicPointFunctors/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testDigitalSet/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testDomainSpanIterator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testEmbedder/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testHyperRectDomain/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testHyperRectDomain-snippet/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testImagesSetsUtilities/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testInteger/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testLinearAlgebra/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testPointVector/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testPointVectorContainers/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testSimpleMatrix/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testAngleLinearMinimizer/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testBasicMathFunctions/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testMPolynomial/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testMeasure/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testSignal/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/arithmetic/Release/testModuloComputer/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/arithmetic/Release/testPattern/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/Release/testFrechetShortcut/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testEstimatorComparator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testLengthEstimators/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testMostCenteredMSEstimator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testSegmentComputerEstimators/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testTrueLocalEstimator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Release/testKanungo/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/estimation/Release/testMeasureSet/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformation/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformationMetrics/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformationND/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testFMM/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetricBalls/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetrics/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetrics-benchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testPowerMap/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testReducedMedialAxis/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testReverseDT/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testSeparableMetricAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testVoronoiMap/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantCurvatureEstimator2D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantGaussianCurvatureEstimator3D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantMeanCurvatureEstimator3D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testLocalEstimatorFromFunctorAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testNormalVectorEstimatorEmbedder/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Release/testPreimage/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Release/testSphericalAccumulator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testBreadthFirstPropagation/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDepthFirstPropagation/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDigitalSurfaceBoostGraphInterface/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDistancePropagation/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testExpander/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testExpander-benchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testSTLMapToVertexMapAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testAdjacency/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testCellularGridSpaceND/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testDigitalSurface/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testDigitalTopology/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testImplicitDigitalSurface-benchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testLightImplicitDigitalSurface-benchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObject/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObject-benchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObjectBorder/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testSCellsFunctor/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testSimpleExpander/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testUmbrellaComputer/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testArcDrawing/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testBoard2DCustomStyle/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testLongvol/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testSimpleBoard/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Release/testColorMaps/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testGenericReader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testHDF5Reader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testMPolynomialReader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testMeshReader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testPNMReader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testPointListReader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testRawReader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testVolReader/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testGenericWriter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testMeshWriter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testPNMRawWriter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testCheckImageConcept/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testConstImageAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testHashTree/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImage/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageCache/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageContainerBenchmark/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageContainerByHashTree/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageFactoryFromHDF5/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageSimple/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageSpanIterators/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testMorton/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testSliceImageFromFunctor/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testTiledImage/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Release/testImplicitShape/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Release/testParametricShape/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testBall3DSurface/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testDigitalShapesDecorator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testEuclideanShapesDecorator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testGaussDigitizer/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testHalfPlane/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testImplicitFunctionModels/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testMesh/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testShapesFromPoints/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleConstImageAdapter/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleTiledImage/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/extract2DImagesFrom3D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Release/display3DToOFF/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-1-points/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-2-sets/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-3-custom-classes/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-3-custom-points/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-4-colormaps/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/logoDGtal/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/ArithmeticalDSS/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/convex-and-concave-parts/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleFrechetShortcut/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGeometricalDCA/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGeometricalDSS/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGridCurve2d/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/greedy-dss-decomposition/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/estimation/Release/exampleCurvature/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Release/exampleIntegralInvariantCurvature2D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/distancetransform2D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/exampleFMM2D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/voronoimap2D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/tools/Release/examplePreimage/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/demo-kernel-1/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/kernelDomain/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/labelledMapBestParameters/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/range/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/fileGridCurveRanges/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/freemanChainFromImage/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/imageGridCurveEstimator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/imageSetDT/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/shapeGridCurveEstimator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/ctopo-1/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/ctopo-2/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/generateSimplicityTables2D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/generateSimplicityTables3D/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/khalimskySpaceScanner/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/trackImplicitPolynomialSurfaceToOFF/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/volMarchingCubes/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/volToOFF/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial-derivative/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial-read/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial2-derivative/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/approximation/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/convergents/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/fraction/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/lower-integer-convex-hull/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/pattern/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Release/exampleEuclideanShapesDecorator/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/graph/Release/graphTraversal184(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-395328076#0#30#-0#-----2@23"Depend check for xcode-395328076#30#23#-0#-----2@226"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.DGtal.Release-395328076#53#226#-0#-----2@89"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtalIO.dylib-395328076#279#89#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBasicBoolFunctions-395328076#368#102#-0#-----2@97"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBasicFunctors-395328076#470#97#-0#-----2@88"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testBits-395328076#567#88#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCirculator-395328076#655#94#-0#-----2@89"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testClock-395328076#749#89#-0#-----2@99"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCloneAndAliases-395328076#838#99#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testConstIteratorAdapter-395328076#937#104#-0#-----2@101"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testConstRangeAdapter-395328076#1041#101#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testCountedPtr-395328076#1142#94#-0#-----2@105"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIndexedListWithBlocks-395328076#1236#105#-0#-----2@108"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIteratorCirculatorTraits-395328076#1341#108#-0#-----2@101"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testIteratorFunctions-395328076#1449#101#-0#-----2@95"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabelledMap-395328076#1550#95#-0#-----2@105"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabelledMap-benchmark-395328076#1645#105#-0#-----2@90"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testLabels-395328076#1750#90#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testMultiMap-benchmark-395328076#1840#102#-0#-----2@90"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOpenMP-395328076#1942#90#-0#-----2@99"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOrderedAlphabet-395328076#2032#99#-0#-----2@105"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOutputIteratorAdapter-395328076#2131#105#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testOwningOrAliasingPtr-395328076#2236#103#-0#-----2@95"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testProgressBar-395328076#2339#95#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testStatistics-395328076#2434#94#-0#-----2@89"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testTrace-395328076#2528#89#-0#-----2@89"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Release/testcpp11-395328076#2617#89#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testBasicPointFunctors-395328076#2706#104#-0#-----2@96"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testDigitalSet-395328076#2810#96#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testDomainSpanIterator-395328076#2906#104#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testEmbedder-395328076#3010#94#-0#-----2@101"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testHyperRectDomain-395328076#3104#101#-0#-----2@109"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testHyperRectDomain-snippet-395328076#3205#109#-0#-----2@105"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testImagesSetsUtilities-395328076#3314#105#-0#-----2@93"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testInteger-395328076#3419#93#-0#-----2@99"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testLinearAlgebra-395328076#3512#99#-0#-----2@97"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testPointVector-395328076#3611#97#-0#-----2@107"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testPointVectorContainers-395328076#3708#107#-0#-----2@98"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Release/testSimpleMatrix-395328076#3815#98#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testAngleLinearMinimizer-395328076#3913#104#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testBasicMathFunctions-395328076#4017#102#-0#-----2@95"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testMPolynomial-395328076#4119#95#-0#-----2@91"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testMeasure-395328076#4214#91#-0#-----2@90"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Release/testSignal-395328076#4305#90#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/arithmetic/Release/testModuloComputer-395328076#4395#104#-0#-----2@97"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/arithmetic/Release/testPattern-395328076#4499#97#-0#-----2@110"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/Release/testFrechetShortcut-395328076#4596#110#-0#-----2@125"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testEstimatorComparator-395328076#4706#125#-0#-----2@122"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testLengthEstimators-395328076#4831#122#-0#-----2@129"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testMostCenteredMSEstimator-395328076#4953#129#-0#-----2@131"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testSegmentComputerEstimators-395328076#5082#131#-0#-----2@124"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Release/testTrueLocalEstimator-395328076#5213#124#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Release/testKanungo-395328076#5337#103#-0#-----2@117"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/estimation/Release/testMeasureSet-395328076#5440#117#-0#-----2@127"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformation-395328076#5557#127#-0#-----2@134"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformationMetrics-395328076#5684#134#-0#-----2@129"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testDistanceTransformationND-395328076#5818#129#-0#-----2@108"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testFMM-395328076#5947#108#-0#-----2@116"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetricBalls-395328076#6055#116#-0#-----2@112"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetrics-395328076#6171#112#-0#-----2@122"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testMetrics-benchmark-395328076#6283#122#-0#-----2@113"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testPowerMap-395328076#6405#113#-0#-----2@122"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testReducedMedialAxis-395328076#6518#122#-0#-----2@114"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testReverseDT-395328076#6640#114#-0#-----2@127"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testSeparableMetricAdapter-395328076#6754#127#-0#-----2@115"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Release/testVoronoiMap-395328076#6881#115#-0#-----2@134"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantCurvatureEstimator2D-395328076#6996#134#-0#-----2@142"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantGaussianCurvatureEstimator3D-395328076#7130#142#-0#-----2@138"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testIntegralInvariantMeanCurvatureEstimator3D-395328076#7272#138#-0#-----2@129"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testLocalEstimatorFromFunctorAdapter-395328076#7410#129#-0#-----2@126"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Release/testNormalVectorEstimatorEmbedder-395328076#7539#126#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Release/testPreimage-395328076#7665#102#-0#-----2@114"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Release/testSphericalAccumulator-395328076#7767#114#-0#-----2@108"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testBreadthFirstPropagation-395328076#7881#108#-0#-----2@106"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDepthFirstPropagation-395328076#7989#106#-0#-----2@118"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDigitalSurfaceBoostGraphInterface-395328076#8095#118#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testDistancePropagation-395328076#8213#104#-0#-----2@93"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testExpander-395328076#8317#93#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testExpander-benchmark-395328076#8410#103#-0#-----2@109"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/graph/Release/testSTLMapToVertexMapAdapter-395328077#8513#109#-0#-----2@97"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testAdjacency-395328077#8622#97#-0#-----2@107"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testCellularGridSpaceND-395328077#8719#107#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testDigitalSurface-395328077#8826#102#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testDigitalTopology-395328077#8928#103#-0#-----2@120"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testImplicitDigitalSurface-benchmark-395328077#9031#120#-0#-----2@125"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testLightImplicitDigitalSurface-benchmark-395328077#9151#125#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObject-395328077#9276#94#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObject-benchmark-395328077#9370#104#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testObjectBorder-395328077#9474#100#-0#-----2@101"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testSCellsFunctor-395328077#9574#101#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testSimpleExpander-395328077#9675#102#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Release/testUmbrellaComputer-395328077#9777#104#-0#-----2@92"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testArcDrawing-395328077#9881#92#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testBoard2DCustomStyle-395328077#9973#100#-0#-----2@89"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testLongvol-395328077#10073#89#-0#-----2@93"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/Release/testSimpleBoard-395328077#10162#93#-0#-----2@101"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Release/testColorMaps-395328077#10255#101#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testGenericReader-395328077#10356#103#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testHDF5Reader-395328077#10459#100#-0#-----2@107"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testMPolynomialReader-395328077#10559#107#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testMeshReader-395328077#10666#100#-0#-----2@99"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testPNMReader-395328077#10766#99#-0#-----2@105"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testPointListReader-395328077#10865#105#-0#-----2@99"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testRawReader-395328077#10970#99#-0#-----2@99"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Release/testVolReader-395328077#11069#99#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testGenericWriter-395328077#11168#103#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testMeshWriter-395328077#11271#100#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Release/testPNMRawWriter-395328077#11371#102#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testCheckImageConcept-395328077#11473#103#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testConstImageAdapter-395328077#11576#103#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testHashTree-395328077#11679#94#-0#-----2@91"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImage-395328077#11773#91#-0#-----2@98"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageAdapter-395328077#11864#98#-0#-----2@96"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageCache-395328077#11962#96#-0#-----2@109"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageContainerBenchmark-395328077#12058#109#-0#-----2@110"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageContainerByHashTree-395328077#12167#110#-0#-----2@106"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageFactoryFromHDF5-395328077#12277#106#-0#-----2@97"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageSimple-395328077#12383#97#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testImageSpanIterators-395328077#12480#104#-0#-----2@92"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testMorton-395328077#12584#92#-0#-----2@107"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testSliceImageFromFunctor-395328077#12676#107#-0#-----2@96"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Release/testTiledImage-395328077#12783#96#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Release/testImplicitShape-395328077#12879#100#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Release/testParametricShape-395328077#12979#102#-0#-----2@99"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testBall3DSurface-395328077#13081#99#-0#-----2@108"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testDigitalShapesDecorator-395328077#13180#108#-0#-----2@110"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testEuclideanShapesDecorator-395328077#13288#110#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testGaussDigitizer-395328077#13398#100#-0#-----2@95"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testHalfPlane-395328077#13498#95#-0#-----2@108"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testImplicitFunctionModels-395328077#13593#108#-0#-----2@90"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testMesh-395328077#13701#90#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Release/testShapesFromPoints-395328077#13791#102#-0#-----2@109"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleConstImageAdapter-395328077#13893#109#-0#-----2@112"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5-395328077#14002#112#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleTiledImage-395328077#14114#102#-0#-----2@106"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/extract2DImagesFrom3D-395328077#14216#106#-0#-----2@95"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Release/display3DToOFF-395328077#14322#95#-0#-----2@109"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-1-points-395328077#14417#109#-0#-----2@107"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-2-sets-395328077#14526#107#-0#-----2@117"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-3-custom-classes-395328077#14633#117#-0#-----2@116"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-3-custom-points-395328077#14750#116#-0#-----2@112"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/dgtalBoard2D-4-colormaps-395328077#14866#112#-0#-----2@97"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Release/logoDGtal-395328077#14978#97#-0#-----2@109"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/ArithmeticalDSS-395328077#15075#109#-0#-----2@118"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/convex-and-concave-parts-395328077#15184#118#-0#-----2@116"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleFrechetShortcut-395328077#15302#116#-0#-----2@115"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGeometricalDCA-395328077#15418#115#-0#-----2@115"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGeometricalDSS-395328077#15533#115#-0#-----2@112"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/exampleGridCurve2d-395328077#15648#112#-0#-----2@118"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Release/greedy-dss-decomposition-395328077#15760#118#-0#-----2@121"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/estimation/Release/exampleCurvature-395328077#15878#121#-0#-----2@131"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Release/exampleIntegralInvariantCurvature2D-395328077#15999#131#-0#-----2@123"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/distancetransform2D-395328077#16130#123#-0#-----2@116"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/exampleFMM2D-395328077#16253#116#-0#-----2@116"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/volumes/distance/Release/voronoimap2D-395328077#16369#116#-0#-----2@108"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/tools/Release/examplePreimage-395328077#16485#108#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/demo-kernel-1-395328077#16593#104#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/kernelDomain-395328077#16697#103#-0#-----2@116"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/labelledMapBestParameters-395328077#16800#116#-0#-----2@96"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Release/range-395328077#16916#96#-0#-----2@115"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/fileGridCurveRanges-395328077#17012#115#-0#-----2@117"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/freemanChainFromImage-395328077#17127#117#-0#-----2@119"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/imageGridCurveEstimator-395328077#17244#119#-0#-----2@106"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/imageSetDT-395328077#17363#106#-0#-----2@119"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/tutorial-examples/Release/shapeGridCurveEstimator-395328077#17469#119#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/ctopo-1-395328077#17588#94#-0#-----2@94"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/ctopo-2-395328077#17682#94#-0#-----2@113"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/generateSimplicityTables2D-395328077#17776#113#-0#-----2@113"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/generateSimplicityTables3D-395328077#17889#113#-0#-----2@108"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/khalimskySpaceScanner-395328077#18002#108#-0#-----2@122"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/trackImplicitPolynomialSurfaceToOFF-395328077#18110#122#-0#-----2@103"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/volMarchingCubes-395328077#18232#103#-0#-----2@95"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Release/volToOFF-395328077#18335#95#-0#-----2@104"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial-derivative-395328077#18430#104#-0#-----2@98"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial-read-395328077#18534#98#-0#-----2@105"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/Release/polynomial2-derivative-395328077#18632#105#-0#-----2@102"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/approximation-395328077#18737#102#-0#-----2@100"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/convergents-395328077#18839#100#-0#-----2@97"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/fraction-395328077#18939#97#-0#-----2@114"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/lower-integer-convex-hull-395328077#19036#114#-0#-----2@96"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Release/pattern-395328077#19150#96#-0#-----2@116"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Release/exampleEuclideanShapesDecorator-395328077#19246#116#-0#-----2@98"/bin/rm -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/graph/Release/graphTraversal-395328077#19362#98#-0#-----0#0#0#--307"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/src/DGtal.build/Release/DGtal.build/Script-2D83E2EC2B0D4A938FA16797.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal.build/Release/DGtal.build/Script-2D83E2EC2B0D4A938FA16797.sh36"0C1A009B-84DC-4E59-9105-9B0E8DB160F3-
+

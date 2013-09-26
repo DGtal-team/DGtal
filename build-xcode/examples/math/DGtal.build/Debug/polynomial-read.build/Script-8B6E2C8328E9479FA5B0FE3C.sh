@@ -1,0 +1,2 @@
+#!/bin/sh
+make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/math/CMakeScripts/polynomial-read_postBuildPhase.make$CONFIGURATION all

@@ -1,0 +1,4 @@
+\begin{tikzpicture}[anchor=south west,text depth=0,x={(1pt,0pt)},y={(0pt,-1pt)}]
+\path[fill=none,draw=black,line width=0.176mm,] (0,56.69) -- (56.69,56.69) -- (56.69,113.39) -- (0,113.39) -- cycle;
+\path[fill=blue,draw=none,line width=0mm,] (85.04,28.35) circle (28.35);
+\end{tikzpicture}

@@ -1,0 +1,95 @@
+Tapproximation
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/approximation normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Script-1E0AE8F554454D398ED8993B.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.LinkFileList
+c0000000051AB06460000000000000091
+t1370162758
+s145
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Script-1E0AE8F554454D398ED8993B.sh
+c0000000051AB064600000000000000E0
+t1370162758
+s224
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/approximation
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cpp
+c0000000051A5AD7C0000000000000AB3
+t1369812348
+s2739
+i<cstdlib>
+i<cmath>
+i<iostream>
+i<iomanip>
+i"DGtal/arithmetic/LighterSternBrocot.h"
+i"DGtal/base/StdRebinders.h"
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.h
+c0000000051A5AD7C000000000000516F
+t1369812348
+s20847
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/StdRebinders.h
+c0000000051A4E33B0000000000000A39
+t1369760571
+s2617
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies041c1ac63d5bb741^fcc71ac63d5bb741^---0#1#0#--18"Check dependencies36"543F4F0D-B43B-4A31-AD54-99108DAC4F6F-
+
+CCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855558.106476
+e391855560.392297
+r1
+xCompileC
+xbuild-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.o
+x/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection82"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cppd0641bc63d5bb741^4d1065c83d5bb741^---0#0#0#-19%DVTDocumentLocation2@90"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cpp0000000000000000^2572"CompileC build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.o examples/arithmetic/approximation.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/approximation.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.o36"BEC6589D-3C3A-4ECD-AF24-45EB4BC5C66B-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/approximation normal x86_64
+s391855560.398823
+e391855560.452112
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/approximation
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/approximation124b66c83d5bb741^38dc73c83d5bb741^---0#0#0#--1202"Ld build-xcode/examples/arithmetic/Debug/approximation normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Objects-normal/x86_64/approximation.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/approximation36"2624800A-7290-4722-97D8-6AD857098868-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Script-1E0AE8F554454D398ED8993B.sh
+s391855560.466425
+e391855560.713753
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Script-1E0AE8F554454D398ED8993B.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.approximation.Debug
+omake[1]: Nothing to be done for `PostBuild.approximation.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'e50978c83d5bb741^e0bdb7c83d5bb741^-350"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.approximation.Debugmake[1]: Nothing to be done for `PostBuild.approximation.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855560#0#30#-0#-----2@23"Depend check for xcode-391855560#30#23#-0#-----2@232"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.approximation.Debug-391855560#53#232#-0#-----2@65"make[1]: Nothing to be done for `PostBuild.approximation.Debug'.-391855560#285#65#-0#-----0#0#0#--351"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Script-1E0AE8F554454D398ED8993B.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/approximation.build/Script-1E0AE8F554454D398ED8993B.sh36"979F555B-2C07-4A9B-A615-F7B351CCF768-
+

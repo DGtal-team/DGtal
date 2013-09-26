@@ -1,0 +1,102 @@
+TtestDomainSpanIterator
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testDomainSpanIterator normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Script-A229AED48CFF4EA8B87E5564.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.LinkFileList
+c0000000051AB056E000000000000009C
+t1370162542
+s156
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Script-A229AED48CFF4EA8B87E5564.sh
+c0000000051AB056E00000000000000DB
+t1370162542
+s219
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testDomainSpanIterator
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
+c0000000051A5AD7E000000000000176C
+t1369812350
+s5996
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
+c0000000051A5AD7E0000000000004E8C
+t1369812350
+s20108
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp
+c0000000051A4E31500000000000008B9
+t1369760533
+s2233
+i<cstdio>
+i<cmath>
+i<iostream>
+i<fstream>
+i<algorithm>
+i"DGtal/base/Common.h"
+i"DGtal/kernel/SpaceND.h"
+i"DGtal/kernel/domains/HyperRectDomain.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies11569bee3c5bb741^fbe99bee3c5bb741^---0#1#0#--18"Check dependencies36"E6D0B243-A62E-4964-89B4-0495F08CD454-
+
+CCompileC build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855342.610955
+e391855344.707224
+r1
+xCompileC
+xbuild-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection84"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp448b9cee3c5bb741^b726b5f03c5bb741^---0#0#0#-19%DVTDocumentLocation2@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp0000000000000000^2604"CompileC build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.o tests/kernel/testDomainSpanIterator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testDomainSpanIterator.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.o36"C684AA68-51D0-48BB-A2FD-30A4ABDE92C0-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testDomainSpanIterator normal x86_64
+s391855344.714061
+e391855344.755998
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testDomainSpanIterator
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testDomainSpanIteratorace5b6f03c5bb741^eb8ec1f03c5bb741^---0#0#0#--1203"Ld build-xcode/tests/kernel/Debug/testDomainSpanIterator normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Objects-normal/x86_64/testDomainSpanIterator.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testDomainSpanIterator36"CDA2BE0E-EA56-41A2-A555-549C8741560A-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Script-A229AED48CFF4EA8B87E5564.sh
+s391855344.764089
+e391855344.848829
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Script-A229AED48CFF4EA8B87E5564.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDomainSpanIterator.Debug
+omake[1]: Nothing to be done for `PostBuild.testDomainSpanIterator.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'3b38c4f03c5bb741^944dd9f03c5bb741^-368"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDomainSpanIterator.Debugmake[1]: Nothing to be done for `PostBuild.testDomainSpanIterator.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855344#0#30#-0#-----2@23"Depend check for xcode-391855344#30#23#-0#-----2@241"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDomainSpanIterator.Debug-391855344#53#241#-0#-----2@74"make[1]: Nothing to be done for `PostBuild.testDomainSpanIterator.Debug'.-391855344#294#74#-0#-----0#0#0#--355"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Script-A229AED48CFF4EA8B87E5564.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testDomainSpanIterator.build/Script-A229AED48CFF4EA8B87E5564.sh36"C53EB9A8-ACD8-48B5-84F4-BC452D69F9FC-
+

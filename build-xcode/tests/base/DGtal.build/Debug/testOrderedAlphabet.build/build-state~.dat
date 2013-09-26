@@ -1,0 +1,93 @@
+TtestOrderedAlphabet
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOrderedAlphabet normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Script-DD2EAC94987644D397553F51.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.LinkFileList
+c0000000051AB05630000000000000094
+t1370162531
+s148
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Script-DD2EAC94987644D397553F51.sh
+c0000000051AB056300000000000000D4
+t1370162531
+s212
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOrderedAlphabet
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OrderedAlphabet.h
+c0000000051A5AD7D0000000000003287
+t1369812349
+s12935
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp
+c0000000051A4E3120000000000001779
+t1369760530
+s6009
+i<iostream>
+i<sstream>
+i"DGtal/base/Common.h"
+i"DGtal/base/OrderedAlphabet.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies200aaae33c5bb741^f9c0aae33c5bb741^---0#1#0#--18"Check dependencies36"52111892-55B6-4792-9338-E667C42A02EA-
+
+CCompileC build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855331.740900
+e391855332.821839
+r1
+xCompileC
+xbuild-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection79"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp66c0bde33c5bb741^516bd2e43c5bb741^---0#0#0#-19%DVTDocumentLocation2@87"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp0000000000000000^2548"CompileC build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.o tests/base/testOrderedAlphabet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOrderedAlphabet.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.o36"09FD6437-AB15-4EE3-91C3-A9EEA72E478D-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOrderedAlphabet normal x86_64
+s391855332.841319
+e391855332.876307
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOrderedAlphabet
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection90"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOrderedAlphabet3770d7e43c5bb741^3255e0e43c5bb741^---0#0#0#--1181"Ld build-xcode/tests/base/Debug/testOrderedAlphabet normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Objects-normal/x86_64/testOrderedAlphabet.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOrderedAlphabet36"575E18DB-5BEE-480B-A4A8-868430D514E3-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Script-DD2EAC94987644D397553F51.sh
+s391855332.969373
+e391855333.041745
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Script-DD2EAC94987644D397553F51.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOrderedAlphabet.Debug
+omake[1]: Nothing to be done for `PostBuild.testOrderedAlphabet.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'85b2f8e43c5bb741^355d0be53c5bb741^-362"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOrderedAlphabet.Debugmake[1]: Nothing to be done for `PostBuild.testOrderedAlphabet.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855332#0#30#-0#-----2@23"Depend check for xcode-391855332#30#23#-0#-----2@238"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOrderedAlphabet.Debug-391855332#53#238#-0#-----2@71"make[1]: Nothing to be done for `PostBuild.testOrderedAlphabet.Debug'.-391855333#291#71#-0#-----0#0#0#--345"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Script-DD2EAC94987644D397553F51.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOrderedAlphabet.build/Script-DD2EAC94987644D397553F51.sh36"E852479B-3066-44D3-BB27-E21788C5A4DA-
+

@@ -1,0 +1,134 @@
+TtestLabelledMap-benchmark
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabelledMap-benchmark normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Script-986BB31AFD9E4E64A9CFFD80.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.LinkFileList
+c0000000051AB056A00000000000000A0
+t1370162538
+s160
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Script-986BB31AFD9E4E64A9CFFD80.sh
+c0000000051AB056A00000000000000DA
+t1370162538
+s218
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabelledMap-benchmark
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/LabelledMap.h
+c0000000051A5AD7D000000000000A256
+t1369812349
+s41558
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp
+c0000000051A4E3120000000000005CAD
+t1369760530
+s23725
+i<cstdio>
+i<cmath>
+i<iostream>
+i<algorithm>
+i<vector>
+i<map>
+i<forward_list>
+i<boost/version.hpp>
+i<boost/random/mersenne_twister.hpp>
+i<boost/random/uniform_smallint.hpp>
+i<boost/random/uniform_01.hpp>
+i<boost/random/geometric_distribution.hpp>
+i<boost/random/variate_generator.hpp>
+i"DGtal/base/Common.h"
+i"DGtal/base/LabelledMap.h"
+
+N/usr/local/include/boost/random/geometric_distribution.hpp
+c0000000051121F350000000000001CEB
+t1360142133
+s7403
+
+N/usr/local/include/boost/random/mersenne_twister.hpp
+c0000000051121F350000000000004AF2
+t1360142133
+s19186
+
+N/usr/local/include/boost/random/uniform_01.hpp
+c0000000051121F350000000000001E8B
+t1360142133
+s7819
+
+N/usr/local/include/boost/random/uniform_smallint.hpp
+c0000000051121F350000000000002BCB
+t1360142133
+s11211
+
+N/usr/local/include/boost/random/variate_generator.hpp
+c0000000051121F350000000000000EBF
+t1360142133
+s3775
+
+N/usr/local/include/boost/version.hpp
+c0000000051121F300000000000000461
+t1360142128
+s1121
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesf835deea3c5bb741^60c8deea3c5bb741^---0#1#0#--18"Check dependencies36"5DDA6630-B8DA-44D8-9318-279B623C717D-
+
+CCompileC build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855338.922715
+e391855340.320809
+r1
+xCompileC
+xbuild-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp4f5aecea3c5bb741^d04454ec3c5bb741^---0#0#0#-19%DVTDocumentLocation2@93"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp0000000000000000^2620"CompileC build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.o tests/base/testLabelledMap-benchmark.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabelledMap-benchmark.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.o36"91A90329-75DF-4CAD-BD75-9FF7E2161F50-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabelledMap-benchmark normal x86_64
+s391855340.381066
+e391855340.430526
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabelledMap-benchmark
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabelledMap-benchmarkb1a361ec3c5bb741^3b366eec3c5bb741^---0#0#0#--1205"Ld build-xcode/tests/base/Debug/testLabelledMap-benchmark normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Objects-normal/x86_64/testLabelledMap-benchmark.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabelledMap-benchmark36"6E6D62B8-D4FC-4E7F-912A-CBB8BBD9DBD3-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Script-986BB31AFD9E4E64A9CFFD80.sh
+s391855340.438299
+e391855340.524601
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Script-986BB31AFD9E4E64A9CFFD80.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLabelledMap-benchmark.Debug
+omake[1]: Nothing to be done for `PostBuild.testLabelledMap-benchmark.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'c6dd70ec3c5bb741^195586ec3c5bb741^-374"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLabelledMap-benchmark.Debugmake[1]: Nothing to be done for `PostBuild.testLabelledMap-benchmark.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855340#0#30#-0#-----2@23"Depend check for xcode-391855340#30#23#-0#-----2@244"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLabelledMap-benchmark.Debug-391855340#53#244#-0#-----2@77"make[1]: Nothing to be done for `PostBuild.testLabelledMap-benchmark.Debug'.-391855340#297#77#-0#-----0#0#0#--357"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Script-986BB31AFD9E4E64A9CFFD80.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabelledMap-benchmark.build/Script-986BB31AFD9E4E64A9CFFD80.sh36"D146F2CF-27C1-486B-8E53-2FB95DC7E15F-
+

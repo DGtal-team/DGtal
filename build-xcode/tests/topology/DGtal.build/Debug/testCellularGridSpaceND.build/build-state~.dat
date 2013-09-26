@@ -1,0 +1,152 @@
+TtestCellularGridSpaceND
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testCellularGridSpaceND normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Script-CBC7D3779CA34EF391676B66.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.LinkFileList
+c0000000051AB05B400000000000000A0
+t1370162612
+s160
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Script-CBC7D3779CA34EF391676B66.sh
+c0000000051AB05B400000000000000E0
+t1370162612
+s224
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testCellularGridSpaceND
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.h
+c0000000051AB045B0000000000002063
+t1370162267
+s8291
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
+c0000000051A5AD7E000000000000176C
+t1369812350
+s5996
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
+c0000000051A5AD7E0000000000004E8C
+t1369812350
+s20108
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/sets/DigitalSetSelector.h
+c0000000051A4E3440000000000000F12
+t1369760580
+s3858
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
+c0000000051A5AD7E000000000000275B
+t1369812350
+s10075
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/CCellularGridSpaceND.h
+c0000000051A5AD7E0000000000009CE5
+t1369812350
+s40165
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/KhalimskySpaceND.h
+c0000000051A5AD7E000000000000AEBE
+t1369812350
+s44734
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/SurfelAdjacency.h
+c0000000051A4E3490000000000001655
+t1369760585
+s5717
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/SurfelNeighborhood.h
+c0000000051A4E34900000000000034CD
+t1369760585
+s13517
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/helpers/Surfaces.h
+c0000000051A5AD7E0000000000008374
+t1369812350
+s33652
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp
+c0000000051A5AD7F0000000000004187
+t1369812351
+s16775
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/kernel/SpaceND.h"
+i"DGtal/kernel/domains/HyperRectDomain.h"
+i"DGtal/kernel/sets/DigitalSetSelector.h"
+i"DGtal/topology/CCellularGridSpaceND.h"
+i"DGtal/topology/KhalimskySpaceND.h"
+i"DGtal/topology/SurfelAdjacency.h"
+i"DGtal/topology/SurfelNeighborhood.h"
+i"DGtal/shapes/Shapes.h"
+i"DGtal/topology/helpers/Surfaces.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/io/Color.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies67d301343d5bb741^1fd815343d5bb741^---0#1#0#--18"Check dependencies36"E82DF636-70D5-4DC3-BFBC-44341FC2D2A0-
+
+CCompileC build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855412.087365
+e391855421.911622
+r1
+xCompileC
+xbuild-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection87"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp799016343d5bb741^b588f03d3d5bb741^---0#0#0#-19%DVTDocumentLocation2@95"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp0000000000000000^2636"CompileC build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.o tests/topology/testCellularGridSpaceND.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testCellularGridSpaceND.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.o36"1804088E-27BC-438F-B723-FC0870B185D8-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testCellularGridSpaceND normal x86_64
+s391855421.918357
+e391855422.064824
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testCellularGridSpaceND
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testCellularGridSpaceNDd730eb3d3d5bb741^a664193e3d5bb741^---0#0#0#--1217"Ld build-xcode/tests/topology/Debug/testCellularGridSpaceND normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Objects-normal/x86_64/testCellularGridSpaceND.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testCellularGridSpaceND36"8D2814AE-644F-40B9-8288-96D3CC2A40BD-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Script-CBC7D3779CA34EF391676B66.sh
+s391855422.073452
+e391855422.170641
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Script-CBC7D3779CA34EF391676B66.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testCellularGridSpaceND.Debug
+omake[1]: Nothing to be done for `PostBuild.testCellularGridSpaceND.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'8b70133e3d5bb741^8885323e3d5bb741^-370"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testCellularGridSpaceND.Debugmake[1]: Nothing to be done for `PostBuild.testCellularGridSpaceND.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855422#0#30#-0#-----2@23"Depend check for xcode-391855422#30#23#-0#-----2@242"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testCellularGridSpaceND.Debug-391855422#53#242#-0#-----2@75"make[1]: Nothing to be done for `PostBuild.testCellularGridSpaceND.Debug'.-391855422#295#75#-0#-----0#0#0#--361"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Script-CBC7D3779CA34EF391676B66.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testCellularGridSpaceND.build/Script-CBC7D3779CA34EF391676B66.sh36"69678517-08D2-46A3-AA25-6542371790EE-
+

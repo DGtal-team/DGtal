@@ -1,0 +1,200 @@
+TtestEmbedder
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testEmbedder normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Script-1F2A0D71C12B46D898ADD8DD.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.LinkFileList
+c0000000051AB05740000000000000088
+t1370162548
+s136
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Script-1F2A0D71C12B46D898ADD8DD.sh
+c0000000051AB057400000000000000D1
+t1370162548
+s209
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testEmbedder
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h
+c0000000051A4E45B0000000000000FFD
+t1369760859
+s4093
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h
+c0000000051A5AD7D000000000000285C
+t1369812349
+s10332
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h
+c0000000051A5AD7D0000000000001D12
+t1369812349
+s7442
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
+c0000000051A5AD7D00000000000021BA
+t1369812349
+s8634
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CPointEmbedder.h
+c0000000051A4E343000000000000115C
+t1369760579
+s4444
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CWithGradientMap.h
+c0000000051A5AD7E000000000000104D
+t1369812350
+s4173
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CanonicCellEmbedder.h
+c0000000051AB045B0000000000001600
+t1370162267
+s5632
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CanonicDigitalSurfaceEmbedder.h
+c0000000051A62C8F000000000000175B
+t1369844879
+s5979
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CanonicEmbedder.h
+c0000000051A4E3430000000000001485
+t1369760579
+s5253
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CanonicSCellEmbedder.h
+c0000000051A62C8F0000000000001614
+t1369844879
+s5652
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/RegularPointEmbedder.h
+c0000000051A4E3440000000000001A12
+t1369760580
+s6674
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h
+c0000000051A5AD7E0000000000002BA2
+t1369812350
+s11170
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/implicit/ImplicitFunctionLinearCellEmbedder.h
+c0000000051A4E3460000000000001D63
+t1369760582
+s7523
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/implicit/ImplicitPolynomial3Shape.h
+c0000000051A4E45B00000000000020AC
+t1369760859
+s8364
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/CCellEmbedder.h
+c0000000051A5AD7E000000000000117F
+t1369812350
+s4479
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/CDigitalSurfaceEmbedder.h
+c0000000051A4E3480000000000001389
+t1369760584
+s5001
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/CSCellEmbedder.h
+c0000000051A4E3480000000000001186
+t1369760584
+s4486
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSetBoundary.h
+c0000000051A4E3480000000000002927
+t1369760584
+s10535
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
+c0000000051A5AD7E0000000000005D4F
+t1369812350
+s23887
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cpp
+c0000000051A62C8F00000000000015B9
+t1369844879
+s5561
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/helpers/StdDefs.h"
+i"DGtal/kernel/CPointEmbedder.h"
+i"DGtal/kernel/CWithGradientMap.h"
+i"DGtal/kernel/CanonicEmbedder.h"
+i"DGtal/kernel/CanonicCellEmbedder.h"
+i"DGtal/kernel/CanonicSCellEmbedder.h"
+i"DGtal/kernel/CanonicDigitalSurfaceEmbedder.h"
+i"DGtal/kernel/RegularPointEmbedder.h"
+i"DGtal/topology/CCellEmbedder.h"
+i"DGtal/topology/CSCellEmbedder.h"
+i"DGtal/topology/CDigitalSurfaceEmbedder.h"
+i"DGtal/topology/DigitalSetBoundary.h"
+i"DGtal/topology/DigitalSurface.h"
+i"DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
+i"DGtal/shapes/implicit/ImplicitFunctionLinearCellEmbedder.h"
+i"DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
+i"DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
+i"DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+i"DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies5dc58ef43c5bb741^ef598ff43c5bb741^---0#1#0#--18"Check dependencies36"70FDB83F-903E-4A1B-83E1-EDBEDC944B1A-
+
+CCompileC build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855348.562157
+e391855353.251076
+r1
+xCompileC
+xbuild-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cppa20d90f43c5bb741^db5243f93c5bb741^---0#0#0#-19%DVTDocumentLocation2@82"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cpp0000000000000000^2484"CompileC build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.o tests/kernel/testEmbedder.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testEmbedder.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.o36"8A86F4F3-B1F4-4912-B3F9-1F7D84075836-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testEmbedder normal x86_64
+s391855353.290247
+e391855353.386326
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testEmbedder
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testEmbedder44a254f93c5bb741^67f162f93c5bb741^---0#0#0#--1163"Ld build-xcode/tests/kernel/Debug/testEmbedder normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Objects-normal/x86_64/testEmbedder.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testEmbedder36"6445DF73-74DD-4320-8CC7-65D67ECCA840-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Script-1F2A0D71C12B46D898ADD8DD.sh
+s391855353.394394
+e391855353.483029
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Script-1F2A0D71C12B46D898ADD8DD.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testEmbedder.Debug
+omake[1]: Nothing to be done for `PostBuild.testEmbedder.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'dc9d65f93c5bb741^09a97bf93c5bb741^-348"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testEmbedder.Debugmake[1]: Nothing to be done for `PostBuild.testEmbedder.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855353#0#30#-0#-----2@23"Depend check for xcode-391855353#30#23#-0#-----2@231"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testEmbedder.Debug-391855353#53#231#-0#-----2@64"make[1]: Nothing to be done for `PostBuild.testEmbedder.Debug'.-391855353#284#64#-0#-----0#0#0#--335"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Script-1F2A0D71C12B46D898ADD8DD.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testEmbedder.build/Script-1F2A0D71C12B46D898ADD8DD.sh36"8CC96523-CBDE-4FB4-8F7C-7B7F307C3907-
+

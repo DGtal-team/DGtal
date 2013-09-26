@@ -1,0 +1,233 @@
+testBasicBoolFunctions 1 0
+testOrderedAlphabet 1 0
+testCirculator 1 0
+testConstIteratorAdapter 1 0
+testProgressBar 1 0
+testBasicFunctors 1 0
+testConstRangeAdapter 1 0
+testOutputIteratorAdapter 1 0
+testClock 1 0
+testTrace 1 0
+testStatistics 1 0
+testcpp11 1 0
+testCountedPtr 1 0
+testBits 1 0
+testIndexedListWithBlocks 1 0
+testLabels 1 0
+testLabelledMap 1 0
+testLabelledMap-benchmark 1 0
+testMultiMap-benchmark 1 0
+testOpenMP 1 0
+testIteratorFunctions 1 0
+testIteratorCirculatorTraits 1 0
+testCloneAndAliases 1 0
+testOwningOrAliasingPtr 1 0
+testDigitalSet 1 0
+testDomainSpanIterator 1 0
+testHyperRectDomain 1 0
+testHyperRectDomain-snippet 1 0
+testInteger 1 0
+testPointVector 1 0
+testPointVectorContainers 1 0
+testLinearAlgebra 1 0
+testImagesSetsUtilities 1 0
+testBasicPointFunctors 1 0
+testEmbedder 1 0
+testSimpleMatrix 1 0
+testMeasure 1 0
+testSignal 1 0
+testMPolynomial 1 0
+testAngleLinearMinimizer 1 0
+testBasicMathFunctions 1 0
+testModuloComputer 1 0
+testPattern 1 0
+testFrechetShortcut 1 0
+testLengthEstimators 1 0
+testTrueLocalEstimator 1 0
+testEstimatorComparator 1 0
+testSegmentComputerEstimators 1 0
+testMostCenteredMSEstimator 1 0
+testKanungo 1 0
+testMeasureSet 1 0
+testDistanceTransformation 1 0
+testDistanceTransformationND 1 0
+testDistanceTransformationMetrics 1 0
+testReverseDT 1 0
+testFMM 1 0
+testVoronoiMap 1 0
+testMetrics 1 0
+testMetricBalls 1 0
+testPowerMap 1 0
+testReducedMedialAxis 1 0
+testSeparableMetricAdapter 1 0
+testPreimage 1 0
+testSphericalAccumulator 1 0
+testBreadthFirstPropagation 1 0
+testDepthFirstPropagation 1 0
+testDigitalSurfaceBoostGraphInterface 1 0
+testDistancePropagation 1 0
+testExpander 1 0
+testSTLMapToVertexMapAdapter 1 0
+testAdjacency 1 0
+testCellularGridSpaceND 1 0
+testDigitalSurface 1 0
+testDigitalTopology 1 0
+testObject 1 0
+testObjectBorder 1 0
+testSimpleExpander 1 0
+testSCellsFunctor 1 0
+testUmbrellaComputer 1 0
+testSimpleBoard 1 0
+testBoard2DCustomStyle 1 0
+testLongvol 1 0
+testArcDrawing 1 0
+testColorMaps 1 0
+testPNMReader 1 0
+testVolReader 1 0
+testRawReader 1 0
+testGenericReader 1 0
+testPointListReader 1 0
+testMeshReader 1 0
+testMPolynomialReader 1 0
+testPNMRawWriter 1 0
+testMeshWriter 1 0
+testGenericWriter 1 0
+testImageSimple 1 0
+testImageAdapter 1 0
+testImageCache 1 0
+testTiledImageFromImage 1 0
+testConstImageAdapter 1 0
+testImage 1 0
+testImageSpanIterators 1 0
+testCheckImageConcept 1 0
+testMorton 1 0
+testHashTree 1 0
+testSliceImageFromFunctor 1 0
+testParametricShape 1 0
+testImplicitShape 1 0
+testGaussDigitizer 1 0
+testHalfPlane 1 0
+testImplicitFunctionModels 1 0
+testShapesFromPoints 1 0
+testMesh 1 0
+testBall3DSurface 1 0
+testEuclideanShapesDecorator 1 0
+testDigitalShapesDecorator 1 0
+testHDF5Reader 0 0
+---
+testBasicBoolFunctions
+testOrderedAlphabet
+testCirculator
+testConstIteratorAdapter
+testProgressBar
+testBasicFunctors
+testConstRangeAdapter
+testOutputIteratorAdapter
+testClock
+testTrace
+testcpp11
+testCountedPtr
+testBits
+testIndexedListWithBlocks
+testLabels
+testLabelledMap
+testLabelledMap-benchmark
+testMultiMap-benchmark
+testOpenMP
+testIteratorFunctions
+testIteratorCirculatorTraits
+testCloneAndAliases
+testOwningOrAliasingPtr
+testDigitalSet
+testDomainSpanIterator
+testHyperRectDomain
+testHyperRectDomain-snippet
+testInteger
+testPointVector
+testPointVectorContainers
+testLinearAlgebra
+testImagesSetsUtilities
+testBasicPointFunctors
+testEmbedder
+testSimpleMatrix
+testMeasure
+testSignal
+testStatistics
+testMPolynomial
+testAngleLinearMinimizer
+testBasicMathFunctions
+testModuloComputer
+testPattern
+testFrechetShortcut
+testLengthEstimators
+testTrueLocalEstimator
+testEstimatorComparator
+testSegmentComputerEstimators
+testMostCenteredMSEstimator
+testKanungo
+testMeasureSet
+testDistanceTransformation
+testDistanceTransformationND
+testDistanceTransformationMetrics
+testReverseDT
+testFMM
+testVoronoiMap
+testMetrics
+testMetricBalls
+testPowerMap
+testReducedMedialAxis
+testSeparableMetricAdapter
+testPreimage
+testSphericalAccumulator
+testBreadthFirstPropagation
+testDepthFirstPropagation
+testDigitalSurfaceBoostGraphInterface
+testDistancePropagation
+testExpander
+testSTLMapToVertexMapAdapter
+testAdjacency
+testCellularGridSpaceND
+testDigitalSurface
+testDigitalTopology
+testObject
+testObjectBorder
+testSimpleExpander
+testSCellsFunctor
+testUmbrellaComputer
+testSimpleBoard
+testBoard2DCustomStyle
+testLongvol
+testArcDrawing
+testColorMaps
+testPNMReader
+testVolReader
+testRawReader
+testGenericReader
+testPointListReader
+testMeshReader
+testMPolynomialReader
+testHDF5Reader
+testPNMRawWriter
+testMeshWriter
+testGenericWriter
+testImageSimple
+testImageAdapter
+testImageCache
+testTiledImageFromImage
+testConstImageAdapter
+testImage
+testImageSpanIterators
+testCheckImageConcept
+testMorton
+testHashTree
+testSliceImageFromFunctor
+testParametricShape
+testImplicitShape
+testGaussDigitizer
+testHalfPlane
+testImplicitFunctionModels
+testShapesFromPoints
+testMesh
+testBall3DSurface
+testEuclideanShapesDecorator
+testDigitalShapesDecorator

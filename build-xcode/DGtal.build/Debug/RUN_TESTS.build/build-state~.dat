@@ -1,0 +1,260 @@
+TRUN_TESTS
+v5
+r1
+cCheck dependencies
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh
+c0000000051AB068700000000000000B4
+t1370162823
+s180
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesf8c2cc073e5bb741^8f56cd073e5bb741^---0#1#0#--18"Check dependencies36"7D37EB0D-41C6-40FB-9A82-2C213D378120-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh
+s391855623.803651
+e391855706.464942
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh
+o/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C Debug
+oTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o        Start   1: testBasicBoolFunctions
+o  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec
+o        Start   2: testOrderedAlphabet
+o  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec
+o        Start   3: testCirculator
+o  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec
+o        Start   4: testConstIteratorAdapter
+o  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec
+o        Start   5: testProgressBar
+o  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec
+o        Start   6: testBasicFunctors
+o  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec
+o        Start   7: testConstRangeAdapter
+o  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec
+o        Start   8: testOutputIteratorAdapter
+o  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec
+o        Start   9: testClock
+o  9/115 Test   #9: testClock ...............................   Passed    0.74 sec
+o        Start  10: testTrace
+o 10/115 Test  #10: testTrace ...............................   Passed    1.59 sec
+o        Start  11: testStatistics
+o 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec
+o        Start  12: testcpp11
+o 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec
+o        Start  13: testCountedPtr
+o 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec
+o        Start  14: testBits
+o 14/115 Test  #14: testBits ................................   Passed    0.35 sec
+o        Start  15: testIndexedListWithBlocks
+o 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.32 sec
+o        Start  16: testLabels
+o 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec
+o        Start  17: testLabelledMap
+o 17/115 Test  #17: testLabelledMap .........................   Passed    0.01 sec
+o        Start  18: testLabelledMap-benchmark
+o 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.02 sec
+o        Start  19: testMultiMap-benchmark
+o 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   29.95 sec
+o        Start  20: testOpenMP
+o 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec
+o        Start  21: testIteratorFunctions
+o 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec
+o        Start  22: testIteratorCirculatorTraits
+o 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec
+o        Start  23: testCloneAndAliases
+o 23/115 Test  #23: testCloneAndAliases .....................   Passed    1.06 sec
+o        Start  24: testOwningOrAliasingPtr
+o 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec
+o        Start  25: testDigitalSet
+o 25/115 Test  #25: testDigitalSet ..........................   Passed    0.04 sec
+o        Start  26: testDomainSpanIterator
+o 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec
+o        Start  27: testHyperRectDomain
+o 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.01 sec
+o        Start  28: testHyperRectDomain-snippet
+o 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec
+o        Start  29: testInteger
+o 29/115 Test  #29: testInteger .............................   Passed    0.01 sec
+o        Start  30: testPointVector
+o 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec
+o        Start  31: testPointVectorContainers
+o 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec
+o        Start  32: testLinearAlgebra
+o 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec
+o        Start  33: testImagesSetsUtilities
+o 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.01 sec
+o        Start  34: testBasicPointFunctors
+o 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec
+o        Start  35: testEmbedder
+o 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec
+o        Start  36: testSimpleMatrix
+o 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.01 sec
+o        Start  37: testMeasure
+o 37/115 Test  #37: testMeasure .............................   Passed    0.01 sec
+o        Start  38: testSignal
+o 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec
+o        Start  39: testMPolynomial
+o 39/115 Test  #39: testMPolynomial .........................   Passed    0.05 sec
+o        Start  40: testAngleLinearMinimizer
+o 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec
+o        Start  41: testBasicMathFunctions
+o 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec
+o        Start  42: testModuloComputer
+o 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec
+o        Start  43: testPattern
+o 43/115 Test  #43: testPattern .............................   Passed    0.43 sec
+o        Start  44: testFrechetShortcut
+o 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec
+o        Start  45: testLengthEstimators
+o 45/115 Test  #45: testLengthEstimators ....................   Passed    1.65 sec
+o        Start  46: testTrueLocalEstimator
+o 46/115 Test  #46: testTrueLocalEstimator ..................   Passed    0.02 sec
+o        Start  47: testEstimatorComparator
+o 47/115 Test  #47: testEstimatorComparator .................   Passed    0.03 sec
+o        Start  48: testSegmentComputerEstimators
+o 48/115 Test  #48: testSegmentComputerEstimators ...........   Passed    0.01 sec
+o        Start  49: testMostCenteredMSEstimator
+o 49/115 Test  #49: testMostCenteredMSEstimator .............   Passed    0.02 sec
+o        Start  50: testKanungo
+o 50/115 Test  #50: testKanungo .............................   Passed    0.69 sec
+o        Start  51: testMeasureSet
+o 51/115 Test  #51: testMeasureSet ..........................   Passed    0.02 sec
+o        Start  52: testDistanceTransformation
+o 52/115 Test  #52: testDistanceTransformation ..............   Passed    3.26 sec
+o        Start  53: testDistanceTransformationND
+o 53/115 Test  #53: testDistanceTransformationND ............   Passed    4.56 sec
+o        Start  54: testDistanceTransformationMetrics
+o 54/115 Test  #54: testDistanceTransformationMetrics .......   Passed    9.11 sec
+o        Start  55: testReverseDT
+o 55/115 Test  #55: testReverseDT ...........................   Passed    0.02 sec
+o        Start  56: testFMM
+o 56/115 Test  #56: testFMM .................................   Passed    7.55 sec
+o        Start  57: testVoronoiMap
+o 57/115 Test  #57: testVoronoiMap ..........................   Passed    8.99 sec
+o        Start  58: testMetrics
+o 58/115 Test  #58: testMetrics .............................   Passed    0.01 sec
+o        Start  59: testMetricBalls
+o 59/115 Test  #59: testMetricBalls .........................   Passed    0.13 sec
+o        Start  60: testPowerMap
+o 60/115 Test  #60: testPowerMap ............................   Passed    0.01 sec
+o        Start  61: testReducedMedialAxis
+o 61/115 Test  #61: testReducedMedialAxis ...................   Passed    0.01 sec
+o        Start  62: testSeparableMetricAdapter
+o 62/115 Test  #62: testSeparableMetricAdapter ..............   Passed    0.08 sec
+o        Start  63: testPreimage
+o 63/115 Test  #63: testPreimage ............................   Passed    0.01 sec
+o        Start  64: testSphericalAccumulator
+o 64/115 Test  #64: testSphericalAccumulator ................   Passed    0.01 sec
+o        Start  65: testBreadthFirstPropagation
+o 65/115 Test  #65: testBreadthFirstPropagation .............   Passed    0.18 sec
+o        Start  66: testDepthFirstPropagation
+o 66/115 Test  #66: testDepthFirstPropagation ...............   Passed    0.23 sec
+o        Start  67: testDigitalSurfaceBoostGraphInterface
+o 67/115 Test  #67: testDigitalSurfaceBoostGraphInterface ...   Passed    0.86 sec
+o        Start  68: testDistancePropagation
+o 68/115 Test  #68: testDistancePropagation .................   Passed    0.13 sec
+o        Start  69: testExpander
+o 69/115 Test  #69: testExpander ............................   Passed    0.41 sec
+o        Start  70: testSTLMapToVertexMapAdapter
+o 70/115 Test  #70: testSTLMapToVertexMapAdapter ............   Passed    0.01 sec
+o        Start  71: testAdjacency
+o 71/115 Test  #71: testAdjacency ...........................   Passed    0.01 sec
+o        Start  72: testCellularGridSpaceND
+o 72/115 Test  #72: testCellularGridSpaceND .................   Passed    0.03 sec
+o        Start  73: testDigitalSurface
+o 73/115 Test  #73: testDigitalSurface ......................   Passed    0.18 sec
+o        Start  74: testDigitalTopology
+o 74/115 Test  #74: testDigitalTopology .....................   Passed    0.01 sec
+o        Start  75: testObject
+o 75/115 Test  #75: testObject ..............................   Passed    2.61 sec
+o        Start  76: testObjectBorder
+o 76/115 Test  #76: testObjectBorder ........................   Passed    0.12 sec
+o        Start  77: testSimpleExpander
+o 77/115 Test  #77: testSimpleExpander ......................   Passed    0.03 sec
+o        Start  78: testSCellsFunctor
+o 78/115 Test  #78: testSCellsFunctor .......................   Passed    0.01 sec
+o        Start  79: testUmbrellaComputer
+o 79/115 Test  #79: testUmbrellaComputer ....................   Passed    0.40 sec
+o        Start  80: testSimpleBoard
+o 80/115 Test  #80: testSimpleBoard .........................   Passed    0.02 sec
+o        Start  81: testBoard2DCustomStyle
+o 81/115 Test  #81: testBoard2DCustomStyle ..................   Passed    0.03 sec
+o        Start  82: testLongvol
+o 82/115 Test  #82: testLongvol .............................   Passed    0.01 sec
+o        Start  83: testArcDrawing
+o 83/115 Test  #83: testArcDrawing ..........................   Passed    0.01 sec
+o        Start  84: testColorMaps
+o 84/115 Test  #84: testColorMaps ...........................   Passed    0.35 sec
+o        Start  85: testPNMReader
+o 85/115 Test  #85: testPNMReader ...........................   Passed    0.12 sec
+o        Start  86: testVolReader
+o 86/115 Test  #86: testVolReader ...........................   Passed    0.06 sec
+o        Start  87: testRawReader
+o 87/115 Test  #87: testRawReader ...........................   Passed    0.01 sec
+o        Start  88: testGenericReader
+o 88/115 Test  #88: testGenericReader .......................   Passed    0.06 sec
+o        Start  89: testPointListReader
+o 89/115 Test  #89: testPointListReader .....................   Passed    0.01 sec
+o        Start  90: testMeshReader
+o 90/115 Test  #90: testMeshReader ..........................   Passed    0.01 sec
+o        Start  91: testMPolynomialReader
+o 91/115 Test  #91: testMPolynomialReader ...................   Passed    0.05 sec
+o        Start  92: testPNMRawWriter
+o 92/115 Test  #92: testPNMRawWriter ........................   Passed    0.02 sec
+o        Start  93: testMeshWriter
+o 93/115 Test  #93: testMeshWriter ..........................   Passed    0.01 sec
+o        Start  94: testGenericWriter
+o 94/115 Test  #94: testGenericWriter .......................   Passed    0.14 sec
+o        Start  95: testImageSimple
+o 95/115 Test  #95: testImageSimple .........................   Passed    0.02 sec
+o        Start  96: testImageAdapter
+o 96/115 Test  #96: testImageAdapter ........................   Passed    0.70 sec
+o        Start  97: testImageCache
+o 97/115 Test  #97: testImageCache ..........................   Passed    0.01 sec
+o        Start  98: testTiledImageFromImage
+o 98/115 Test  #98: testTiledImageFromImage .................   Passed    0.01 sec
+o        Start  99: testConstImageAdapter
+o 99/115 Test  #99: testConstImageAdapter ...................   Passed    0.01 sec
+o        Start 100: testImage
+o100/115 Test #100: testImage ...............................   Passed    0.01 sec
+o        Start 101: testImageSpanIterators
+o101/115 Test #101: testImageSpanIterators ..................   Passed    0.01 sec
+o        Start 102: testCheckImageConcept
+o102/115 Test #102: testCheckImageConcept ...................   Passed    0.01 sec
+o        Start 103: testMorton
+o103/115 Test #103: testMorton ..............................   Passed    0.88 sec
+o        Start 104: testHashTree
+o104/115 Test #104: testHashTree ............................   Passed    2.05 sec
+o        Start 105: testSliceImageFromFunctor
+o105/115 Test #105: testSliceImageFromFunctor ...............   Passed    0.03 sec
+o        Start 106: testParametricShape
+o106/115 Test #106: testParametricShape .....................   Passed    0.01 sec
+o        Start 107: testImplicitShape
+o107/115 Test #107: testImplicitShape .......................   Passed    0.15 sec
+o        Start 108: testGaussDigitizer
+o108/115 Test #108: testGaussDigitizer ......................   Passed    0.38 sec
+o        Start 109: testHalfPlane
+o109/115 Test #109: testHalfPlane ...........................   Passed    0.01 sec
+o        Start 110: testImplicitFunctionModels
+o110/115 Test #110: testImplicitFunctionModels ..............   Passed    0.01 sec
+o        Start 111: testShapesFromPoints
+o111/115 Test #111: testShapesFromPoints ....................   Passed    0.01 sec
+o        Start 112: testMesh
+o112/115 Test #112: testMesh ................................   Passed    0.01 sec
+o        Start 113: testBall3DSurface
+o113/115 Test #113: testBall3DSurface .......................   Passed    0.20 sec
+o        Start 114: testEuclideanShapesDecorator
+o114/115 Test #114: testEuclideanShapesDecorator ............   Passed    0.01 sec
+o        Start 115: testDigitalShapesDecorator
+o115/115 Test #115: testDigitalShapesDecorator ..............   Passed    0.01 sec
+o
+o100% tests passed, 0 tests failed out of 115
+o
+oTotal Test time (real) =  82.58 sec
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'1842ce073e5bb741^cc08775a3e5bb741^-14059"/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C DebugTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode        Start   1: testBasicBoolFunctions  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec        Start   2: testOrderedAlphabet  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec        Start   3: testCirculator  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec        Start   4: testConstIteratorAdapter  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec        Start   5: testProgressBar  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec        Start   6: testBasicFunctors  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec        Start   7: testConstRangeAdapter  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec        Start   8: testOutputIteratorAdapter  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec        Start   9: testClock  9/115 Test   #9: testClock ...............................   Passed    0.74 sec        Start  10: testTrace 10/115 Test  #10: testTrace ...............................   Passed    1.59 sec        Start  11: testStatistics 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec        Start  12: testcpp11 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec        Start  13: testCountedPtr 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec        Start  14: testBits 14/115 Test  #14: testBits ................................   Passed    0.35 sec        Start  15: testIndexedListWithBlocks 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.32 sec        Start  16: testLabels 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec        Start  17: testLabelledMap 17/115 Test  #17: testLabelledMap .........................   Passed    0.01 sec        Start  18: testLabelledMap-benchmark 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.02 sec        Start  19: testMultiMap-benchmark 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   29.95 sec        Start  20: testOpenMP 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec        Start  21: testIteratorFunctions 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec        Start  22: testIteratorCirculatorTraits 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec        Start  23: testCloneAndAliases 23/115 Test  #23: testCloneAndAliases .....................   Passed    1.06 sec        Start  24: testOwningOrAliasingPtr 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec        Start  25: testDigitalSet 25/115 Test  #25: testDigitalSet ..........................   Passed    0.04 sec        Start  26: testDomainSpanIterator 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec        Start  27: testHyperRectDomain 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.01 sec        Start  28: testHyperRectDomain-snippet 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec        Start  29: testInteger 29/115 Test  #29: testInteger .............................   Passed    0.01 sec        Start  30: testPointVector 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec        Start  31: testPointVectorContainers 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec        Start  32: testLinearAlgebra 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec        Start  33: testImagesSetsUtilities 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.01 sec        Start  34: testBasicPointFunctors 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec        Start  35: testEmbedder 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec        Start  36: testSimpleMatrix 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.01 sec        Start  37: testMeasure 37/115 Test  #37: testMeasure .............................   Passed    0.01 sec        Start  38: testSignal 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec        Start  39: testMPolynomial 39/115 Test  #39: testMPolynomial .........................   Passed    0.05 sec        Start  40: testAngleLinearMinimizer 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec        Start  41: testBasicMathFunctions 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec        Start  42: testModuloComputer 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec        Start  43: testPattern 43/115 Test  #43: testPattern .............................   Passed    0.43 sec        Start  44: testFrechetShortcut 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec        Start  45: testLengthEstimators 45/115 Test  #45: testLengthEstimators ....................   Passed    1.65 sec        Start  46: testTrueLocalEstimator 46/115 Test  #46: testTrueLocalEstimator ..................   Passed    0.02 sec        Start  47: testEstimatorComparator 47/115 Test  #47: testEstimatorComparator .................   Passed    0.03 sec        Start  48: testSegmentComputerEstimators 48/115 Test  #48: testSegmentComputerEstimators ...........   Passed    0.01 sec        Start  49: testMostCenteredMSEstimator 49/115 Test  #49: testMostCenteredMSEstimator .............   Passed    0.02 sec        Start  50: testKanungo 50/115 Test  #50: testKanungo .............................   Passed    0.69 sec        Start  51: testMeasureSet 51/115 Test  #51: testMeasureSet ..........................   Passed    0.02 sec        Start  52: testDistanceTransformation 52/115 Test  #52: testDistanceTransformation ..............   Passed    3.26 sec        Start  53: testDistanceTransformationND 53/115 Test  #53: testDistanceTransformationND ............   Passed    4.56 sec        Start  54: testDistanceTransformationMetrics 54/115 Test  #54: testDistanceTransformationMetrics .......   Passed    9.11 sec        Start  55: testReverseDT 55/115 Test  #55: testReverseDT ...........................   Passed    0.02 sec        Start  56: testFMM 56/115 Test  #56: testFMM .................................   Passed    7.55 sec        Start  57: testVoronoiMap 57/115 Test  #57: testVoronoiMap ..........................   Passed    8.99 sec        Start  58: testMetrics 58/115 Test  #58: testMetrics .............................   Passed    0.01 sec        Start  59: testMetricBalls 59/115 Test  #59: testMetricBalls .........................   Passed    0.13 sec        Start  60: testPowerMap 60/115 Test  #60: testPowerMap ............................   Passed    0.01 sec        Start  61: testReducedMedialAxis 61/115 Test  #61: testReducedMedialAxis ...................   Passed    0.01 sec        Start  62: testSeparableMetricAdapter 62/115 Test  #62: testSeparableMetricAdapter ..............   Passed    0.08 sec        Start  63: testPreimage 63/115 Test  #63: testPreimage ............................   Passed    0.01 sec        Start  64: testSphericalAccumulator 64/115 Test  #64: testSphericalAccumulator ................   Passed    0.01 sec        Start  65: testBreadthFirstPropagation 65/115 Test  #65: testBreadthFirstPropagation .............   Passed    0.18 sec        Start  66: testDepthFirstPropagation 66/115 Test  #66: testDepthFirstPropagation ...............   Passed    0.23 sec        Start  67: testDigitalSurfaceBoostGraphInterface 67/115 Test  #67: testDigitalSurfaceBoostGraphInterface ...   Passed    0.86 sec        Start  68: testDistancePropagation 68/115 Test  #68: testDistancePropagation .................   Passed    0.13 sec        Start  69: testExpander 69/115 Test  #69: testExpander ............................   Passed    0.41 sec        Start  70: testSTLMapToVertexMapAdapter 70/115 Test  #70: testSTLMapToVertexMapAdapter ............   Passed    0.01 sec        Start  71: testAdjacency 71/115 Test  #71: testAdjacency ...........................   Passed    0.01 sec        Start  72: testCellularGridSpaceND 72/115 Test  #72: testCellularGridSpaceND .................   Passed    0.03 sec        Start  73: testDigitalSurface 73/115 Test  #73: testDigitalSurface ......................   Passed    0.18 sec        Start  74: testDigitalTopology 74/115 Test  #74: testDigitalTopology .....................   Passed    0.01 sec        Start  75: testObject 75/115 Test  #75: testObject ..............................   Passed    2.61 sec        Start  76: testObjectBorder 76/115 Test  #76: testObjectBorder ........................   Passed    0.12 sec        Start  77: testSimpleExpander 77/115 Test  #77: testSimpleExpander ......................   Passed    0.03 sec        Start  78: testSCellsFunctor 78/115 Test  #78: testSCellsFunctor .......................   Passed    0.01 sec        Start  79: testUmbrellaComputer 79/115 Test  #79: testUmbrellaComputer ....................   Passed    0.40 sec        Start  80: testSimpleBoard 80/115 Test  #80: testSimpleBoard .........................   Passed    0.02 sec        Start  81: testBoard2DCustomStyle 81/115 Test  #81: testBoard2DCustomStyle ..................   Passed    0.03 sec        Start  82: testLongvol 82/115 Test  #82: testLongvol .............................   Passed    0.01 sec        Start  83: testArcDrawing 83/115 Test  #83: testArcDrawing ..........................   Passed    0.01 sec        Start  84: testColorMaps 84/115 Test  #84: testColorMaps ...........................   Passed    0.35 sec        Start  85: testPNMReader 85/115 Test  #85: testPNMReader ...........................   Passed    0.12 sec        Start  86: testVolReader 86/115 Test  #86: testVolReader ...........................   Passed    0.06 sec        Start  87: testRawReader 87/115 Test  #87: testRawReader ...........................   Passed    0.01 sec        Start  88: testGenericReader 88/115 Test  #88: testGenericReader .......................   Passed    0.06 sec        Start  89: testPointListReader 89/115 Test  #89: testPointListReader .....................   Passed    0.01 sec        Start  90: testMeshReader 90/115 Test  #90: testMeshReader ..........................   Passed    0.01 sec        Start  91: testMPolynomialReader 91/115 Test  #91: testMPolynomialReader ...................   Passed    0.05 sec        Start  92: testPNMRawWriter 92/115 Test  #92: testPNMRawWriter ........................   Passed    0.02 sec        Start  93: testMeshWriter 93/115 Test  #93: testMeshWriter ..........................   Passed    0.01 sec        Start  94: testGenericWriter 94/115 Test  #94: testGenericWriter .......................   Passed    0.14 sec        Start  95: testImageSimple 95/115 Test  #95: testImageSimple .........................   Passed    0.02 sec        Start  96: testImageAdapter 96/115 Test  #96: testImageAdapter ........................   Passed    0.70 sec        Start  97: testImageCache 97/115 Test  #97: testImageCache ..........................   Passed    0.01 sec        Start  98: testTiledImageFromImage 98/115 Test  #98: testTiledImageFromImage .................   Passed    0.01 sec        Start  99: testConstImageAdapter 99/115 Test  #99: testConstImageAdapter ...................   Passed    0.01 sec        Start 100: testImage100/115 Test #100: testImage ...............................   Passed    0.01 sec        Start 101: testImageSpanIterators101/115 Test #101: testImageSpanIterators ..................   Passed    0.01 sec        Start 102: testCheckImageConcept102/115 Test #102: testCheckImageConcept ...................   Passed    0.01 sec        Start 103: testMorton103/115 Test #103: testMorton ..............................   Passed    0.88 sec        Start 104: testHashTree104/115 Test #104: testHashTree ............................   Passed    2.05 sec        Start 105: testSliceImageFromFunctor105/115 Test #105: testSliceImageFromFunctor ...............   Passed    0.03 sec        Start 106: testParametricShape106/115 Test #106: testParametricShape .....................   Passed    0.01 sec        Start 107: testImplicitShape107/115 Test #107: testImplicitShape .......................   Passed    0.15 sec        Start 108: testGaussDigitizer108/115 Test #108: testGaussDigitizer ......................   Passed    0.38 sec        Start 109: testHalfPlane109/115 Test #109: testHalfPlane ...........................   Passed    0.01 sec        Start 110: testImplicitFunctionModels110/115 Test #110: testImplicitFunctionModels ..............   Passed    0.01 sec        Start 111: testShapesFromPoints111/115 Test #111: testShapesFromPoints ....................   Passed    0.01 sec        Start 112: testMesh112/115 Test #112: testMesh ................................   Passed    0.01 sec        Start 113: testBall3DSurface113/115 Test #113: testBall3DSurface .......................   Passed    0.20 sec        Start 114: testEuclideanShapesDecorator114/115 Test #114: testEuclideanShapesDecorator ............   Passed    0.01 sec        Start 115: testDigitalShapesDecorator115/115 Test #115: testDigitalShapesDecorator ..............   Passed    0.01 sec100% tests passed, 0 tests failed out of 115Total Test time (real) =  82.58 secShowing first 200 notices only201(21%IDEActivityLogMessage2@76"/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C Debug-391855623#0#76#-0#-----2@62"Test project /Users/davidcoeurjolly/Sources/DGtal/build-xcode-391855623#76#62#-0#-----2@42"        Start   1: testBasicBoolFunctions-391855623#138#42#-0#-----2@82"  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec-391855624#180#82#-0#-----2@39"        Start   2: testOrderedAlphabet-391855624#262#39#-0#-----2@82"  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec-391855624#301#82#-0#-----2@34"        Start   3: testCirculator-391855624#383#34#-0#-----2@82"  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec-391855624#417#82#-0#-----2@44"        Start   4: testConstIteratorAdapter-391855624#499#44#-0#-----2@82"  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec-391855624#543#82#-0#-----2@35"        Start   5: testProgressBar-391855624#625#35#-0#-----2@82"  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec-391855624#660#82#-0#-----2@37"        Start   6: testBasicFunctors-391855624#742#37#-0#-----2@82"  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec-391855624#779#82#-0#-----2@41"        Start   7: testConstRangeAdapter-391855624#861#41#-0#-----2@82"  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec-391855624#902#82#-0#-----2@45"        Start   8: testOutputIteratorAdapter-391855624#984#45#-0#-----2@82"  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec-391855624#1029#82#-0#-----2@29"        Start   9: testClock-391855624#1111#29#-0#-----2@82"  9/115 Test   #9: testClock ...............................   Passed    0.74 sec-391855625#1140#82#-0#-----2@29"        Start  10: testTrace-391855625#1222#29#-0#-----2@82" 10/115 Test  #10: testTrace ...............................   Passed    1.59 sec-391855627#1251#82#-0#-----2@34"        Start  11: testStatistics-391855627#1333#34#-0#-----2@82" 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec-391855627#1367#82#-0#-----2@29"        Start  12: testcpp11-391855627#1449#29#-0#-----2@82" 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec-391855627#1478#82#-0#-----2@34"        Start  13: testCountedPtr-391855627#1560#34#-0#-----2@82" 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec-391855627#1594#82#-0#-----2@28"        Start  14: testBits-391855627#1676#28#-0#-----2@82" 14/115 Test  #14: testBits ................................   Passed    0.35 sec-391855627#1704#82#-0#-----2@45"        Start  15: testIndexedListWithBlocks-391855627#1786#45#-0#-----2@82" 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.32 sec-391855627#1831#82#-0#-----2@30"        Start  16: testLabels-391855627#1913#30#-0#-----2@82" 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec-391855627#1943#82#-0#-----2@35"        Start  17: testLabelledMap-391855627#2025#35#-0#-----2@82" 17/115 Test  #17: testLabelledMap .........................   Passed    0.01 sec-391855627#2060#82#-0#-----2@45"        Start  18: testLabelledMap-benchmark-391855627#2142#45#-0#-----2@82" 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.02 sec-391855627#2187#82#-0#-----2@42"        Start  19: testMultiMap-benchmark-391855627#2269#42#-0#-----2@82" 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   29.95 sec-391855657#2311#82#-0#-----2@30"        Start  20: testOpenMP-391855657#2393#30#-0#-----2@82" 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec-391855657#2423#82#-0#-----2@41"        Start  21: testIteratorFunctions-391855657#2505#41#-0#-----2@82" 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec-391855657#2546#82#-0#-----2@48"        Start  22: testIteratorCirculatorTraits-391855657#2628#48#-0#-----2@82" 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec-391855657#2676#82#-0#-----2@39"        Start  23: testCloneAndAliases-391855657#2758#39#-0#-----2@82" 23/115 Test  #23: testCloneAndAliases .....................   Passed    1.06 sec-391855658#2797#82#-0#-----2@43"        Start  24: testOwningOrAliasingPtr-391855658#2879#43#-0#-----2@82" 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec-391855658#2922#82#-0#-----2@34"        Start  25: testDigitalSet-391855658#3004#34#-0#-----2@82" 25/115 Test  #25: testDigitalSet ..........................   Passed    0.04 sec-391855658#3038#82#-0#-----2@42"        Start  26: testDomainSpanIterator-391855658#3120#42#-0#-----2@82" 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec-391855658#3162#82#-0#-----2@39"        Start  27: testHyperRectDomain-391855658#3244#39#-0#-----2@82" 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.01 sec-391855658#3283#82#-0#-----2@47"        Start  28: testHyperRectDomain-snippet-391855658#3365#47#-0#-----2@82" 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec-391855658#3412#82#-0#-----2@31"        Start  29: testInteger-391855658#3494#31#-0#-----2@82" 29/115 Test  #29: testInteger .............................   Passed    0.01 sec-391855658#3525#82#-0#-----2@35"        Start  30: testPointVector-391855658#3607#35#-0#-----2@82" 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec-391855658#3642#82#-0#-----2@45"        Start  31: testPointVectorContainers-391855658#3724#45#-0#-----2@82" 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec-391855658#3769#82#-0#-----2@37"        Start  32: testLinearAlgebra-391855658#3851#37#-0#-----2@82" 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec-391855658#3888#82#-0#-----2@43"        Start  33: testImagesSetsUtilities-391855658#3970#43#-0#-----2@82" 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.01 sec-391855658#4013#82#-0#-----2@42"        Start  34: testBasicPointFunctors-391855658#4095#42#-0#-----2@82" 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec-391855658#4137#82#-0#-----2@32"        Start  35: testEmbedder-391855658#4219#32#-0#-----2@82" 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec-391855658#4251#82#-0#-----2@36"        Start  36: testSimpleMatrix-391855658#4333#36#-0#-----2@82" 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.01 sec-391855658#4369#82#-0#-----2@31"        Start  37: testMeasure-391855658#4451#31#-0#-----2@82" 37/115 Test  #37: testMeasure .............................   Passed    0.01 sec-391855658#4482#82#-0#-----2@30"        Start  38: testSignal-391855658#4564#30#-0#-----2@82" 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec-391855658#4594#82#-0#-----2@35"        Start  39: testMPolynomial-391855658#4676#35#-0#-----2@82" 39/115 Test  #39: testMPolynomial .........................   Passed    0.05 sec-391855659#4711#82#-0#-----2@44"        Start  40: testAngleLinearMinimizer-391855659#4793#44#-0#-----2@82" 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec-391855659#4837#82#-0#-----2@42"        Start  41: testBasicMathFunctions-391855659#4919#42#-0#-----2@82" 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec-391855659#4961#82#-0#-----2@38"        Start  42: testModuloComputer-391855659#5043#38#-0#-----2@82" 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec-391855659#5081#82#-0#-----2@31"        Start  43: testPattern-391855659#5163#31#-0#-----2@82" 43/115 Test  #43: testPattern .............................   Passed    0.43 sec-391855659#5194#82#-0#-----2@39"        Start  44: testFrechetShortcut-391855659#5276#39#-0#-----2@82" 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec-391855659#5315#82#-0#-----2@40"        Start  45: testLengthEstimators-391855659#5397#40#-0#-----2@82" 45/115 Test  #45: testLengthEstimators ....................   Passed    1.65 sec-391855661#5437#82#-0#-----2@42"        Start  46: testTrueLocalEstimator-391855661#5519#42#-0#-----2@82" 46/115 Test  #46: testTrueLocalEstimator ..................   Passed    0.02 sec-391855661#5561#82#-0#-----2@43"        Start  47: testEstimatorComparator-391855661#5643#43#-0#-----2@82" 47/115 Test  #47: testEstimatorComparator .................   Passed    0.03 sec-391855661#5686#82#-0#-----2@49"        Start  48: testSegmentComputerEstimators-391855661#5768#49#-0#-----2@82" 48/115 Test  #48: testSegmentComputerEstimators ...........   Passed    0.01 sec-391855661#5817#82#-0#-----2@47"        Start  49: testMostCenteredMSEstimator-391855661#5899#47#-0#-----2@82" 49/115 Test  #49: testMostCenteredMSEstimator .............   Passed    0.02 sec-391855661#5946#82#-0#-----2@31"        Start  50: testKanungo-391855661#6028#31#-0#-----2@82" 50/115 Test  #50: testKanungo .............................   Passed    0.69 sec-391855661#6059#82#-0#-----2@34"        Start  51: testMeasureSet-391855661#6141#34#-0#-----2@82" 51/115 Test  #51: testMeasureSet ..........................   Passed    0.02 sec-391855661#6175#82#-0#-----2@46"        Start  52: testDistanceTransformation-391855661#6257#46#-0#-----2@82" 52/115 Test  #52: testDistanceTransformation ..............   Passed    3.26 sec-391855665#6303#82#-0#-----2@48"        Start  53: testDistanceTransformationND-391855665#6385#48#-0#-----2@82" 53/115 Test  #53: testDistanceTransformationND ............   Passed    4.56 sec-391855669#6433#82#-0#-----2@53"        Start  54: testDistanceTransformationMetrics-391855669#6515#53#-0#-----2@82" 54/115 Test  #54: testDistanceTransformationMetrics .......   Passed    9.11 sec-391855678#6568#82#-0#-----2@33"        Start  55: testReverseDT-391855678#6650#33#-0#-----2@82" 55/115 Test  #55: testReverseDT ...........................   Passed    0.02 sec-391855678#6683#82#-0#-----2@27"        Start  56: testFMM-391855678#6765#27#-0#-----2@82" 56/115 Test  #56: testFMM .................................   Passed    7.55 sec-391855686#6792#82#-0#-----2@34"        Start  57: testVoronoiMap-391855686#6874#34#-0#-----2@82" 57/115 Test  #57: testVoronoiMap ..........................   Passed    8.99 sec-391855695#6908#82#-0#-----2@31"        Start  58: testMetrics-391855695#6990#31#-0#-----2@82" 58/115 Test  #58: testMetrics .............................   Passed    0.01 sec-391855695#7021#82#-0#-----2@35"        Start  59: testMetricBalls-391855695#7103#35#-0#-----2@82" 59/115 Test  #59: testMetricBalls .........................   Passed    0.13 sec-391855695#7138#82#-0#-----2@32"        Start  60: testPowerMap-391855695#7220#32#-0#-----2@82" 60/115 Test  #60: testPowerMap ............................   Passed    0.01 sec-391855695#7252#82#-0#-----2@41"        Start  61: testReducedMedialAxis-391855695#7334#41#-0#-----2@82" 61/115 Test  #61: testReducedMedialAxis ...................   Passed    0.01 sec-391855695#7375#82#-0#-----2@46"        Start  62: testSeparableMetricAdapter-391855695#7457#46#-0#-----2@82" 62/115 Test  #62: testSeparableMetricAdapter ..............   Passed    0.08 sec-391855695#7503#82#-0#-----2@32"        Start  63: testPreimage-391855695#7585#32#-0#-----2@82" 63/115 Test  #63: testPreimage ............................   Passed    0.01 sec-391855695#7617#82#-0#-----2@44"        Start  64: testSphericalAccumulator-391855695#7699#44#-0#-----2@82" 64/115 Test  #64: testSphericalAccumulator ................   Passed    0.01 sec-391855695#7743#82#-0#-----2@47"        Start  65: testBreadthFirstPropagation-391855695#7825#47#-0#-----2@82" 65/115 Test  #65: testBreadthFirstPropagation .............   Passed    0.18 sec-391855695#7872#82#-0#-----2@45"        Start  66: testDepthFirstPropagation-391855695#7954#45#-0#-----2@82" 66/115 Test  #66: testDepthFirstPropagation ...............   Passed    0.23 sec-391855696#7999#82#-0#-----2@57"        Start  67: testDigitalSurfaceBoostGraphInterface-391855696#8081#57#-0#-----2@82" 67/115 Test  #67: testDigitalSurfaceBoostGraphInterface ...   Passed    0.86 sec-391855697#8138#82#-0#-----2@43"        Start  68: testDistancePropagation-391855697#8220#43#-0#-----2@82" 68/115 Test  #68: testDistancePropagation .................   Passed    0.13 sec-391855697#8263#82#-0#-----2@32"        Start  69: testExpander-391855697#8345#32#-0#-----2@82" 69/115 Test  #69: testExpander ............................   Passed    0.41 sec-391855697#8377#82#-0#-----2@48"        Start  70: testSTLMapToVertexMapAdapter-391855697#8459#48#-0#-----2@82" 70/115 Test  #70: testSTLMapToVertexMapAdapter ............   Passed    0.01 sec-391855697#8507#82#-0#-----2@33"        Start  71: testAdjacency-391855697#8589#33#-0#-----2@82" 71/115 Test  #71: testAdjacency ...........................   Passed    0.01 sec-391855697#8622#82#-0#-----2@43"        Start  72: testCellularGridSpaceND-391855697#8704#43#-0#-----2@82" 72/115 Test  #72: testCellularGridSpaceND .................   Passed    0.03 sec-391855697#8747#82#-0#-----2@38"        Start  73: testDigitalSurface-391855697#8829#38#-0#-----2@82" 73/115 Test  #73: testDigitalSurface ......................   Passed    0.18 sec-391855697#8867#82#-0#-----2@39"        Start  74: testDigitalTopology-391855697#8949#39#-0#-----2@82" 74/115 Test  #74: testDigitalTopology .....................   Passed    0.01 sec-391855697#8988#82#-0#-----2@30"        Start  75: testObject-391855697#9070#30#-0#-----2@82" 75/115 Test  #75: testObject ..............................   Passed    2.61 sec-391855700#9100#82#-0#-----2@36"        Start  76: testObjectBorder-391855700#9182#36#-0#-----2@82" 76/115 Test  #76: testObjectBorder ........................   Passed    0.12 sec-391855700#9218#82#-0#-----2@38"        Start  77: testSimpleExpander-391855700#9300#38#-0#-----2@82" 77/115 Test  #77: testSimpleExpander ......................   Passed    0.03 sec-391855700#9338#82#-0#-----2@37"        Start  78: testSCellsFunctor-391855700#9420#37#-0#-----2@82" 78/115 Test  #78: testSCellsFunctor .......................   Passed    0.01 sec-391855700#9457#82#-0#-----2@40"        Start  79: testUmbrellaComputer-391855700#9539#40#-0#-----2@82" 79/115 Test  #79: testUmbrellaComputer ....................   Passed    0.40 sec-391855700#9579#82#-0#-----2@35"        Start  80: testSimpleBoard-391855700#9661#35#-0#-----2@82" 80/115 Test  #80: testSimpleBoard .........................   Passed    0.02 sec-391855701#9696#82#-0#-----2@42"        Start  81: testBoard2DCustomStyle-391855701#9778#42#-0#-----2@82" 81/115 Test  #81: testBoard2DCustomStyle ..................   Passed    0.03 sec-391855701#9820#82#-0#-----2@31"        Start  82: testLongvol-391855701#9902#31#-0#-----2@82" 82/115 Test  #82: testLongvol .............................   Passed    0.01 sec-391855701#9933#82#-0#-----2@34"        Start  83: testArcDrawing-391855701#10015#34#-0#-----2@82" 83/115 Test  #83: testArcDrawing ..........................   Passed    0.01 sec-391855701#10049#82#-0#-----2@33"        Start  84: testColorMaps-391855701#10131#33#-0#-----2@82" 84/115 Test  #84: testColorMaps ...........................   Passed    0.35 sec-391855701#10164#82#-0#-----2@33"        Start  85: testPNMReader-391855701#10246#33#-0#-----2@82" 85/115 Test  #85: testPNMReader ...........................   Passed    0.12 sec-391855701#10279#82#-0#-----2@33"        Start  86: testVolReader-391855701#10361#33#-0#-----2@82" 86/115 Test  #86: testVolReader ...........................   Passed    0.06 sec-391855701#10394#82#-0#-----2@33"        Start  87: testRawReader-391855701#10476#33#-0#-----2@82" 87/115 Test  #87: testRawReader ...........................   Passed    0.01 sec-391855701#10509#82#-0#-----2@37"        Start  88: testGenericReader-391855701#10591#37#-0#-----2@82" 88/115 Test  #88: testGenericReader .......................   Passed    0.06 sec-391855701#10628#82#-0#-----2@39"        Start  89: testPointListReader-391855701#10710#39#-0#-----2@82" 89/115 Test  #89: testPointListReader .....................   Passed    0.01 sec-391855701#10749#82#-0#-----2@34"        Start  90: testMeshReader-391855701#10831#34#-0#-----2@82" 90/115 Test  #90: testMeshReader ..........................   Passed    0.01 sec-391855701#10865#82#-0#-----2@41"        Start  91: testMPolynomialReader-391855701#10947#41#-0#-----2@82" 91/115 Test  #91: testMPolynomialReader ...................   Passed    0.05 sec-391855701#10988#82#-0#-----2@36"        Start  92: testPNMRawWriter-391855701#11070#36#-0#-----2@82" 92/115 Test  #92: testPNMRawWriter ........................   Passed    0.02 sec-391855701#11106#82#-0#-----2@34"        Start  93: testMeshWriter-391855701#11188#34#-0#-----2@82" 93/115 Test  #93: testMeshWriter ..........................   Passed    0.01 sec-391855701#11222#82#-0#-----2@37"        Start  94: testGenericWriter-391855701#11304#37#-0#-----2@82" 94/115 Test  #94: testGenericWriter .......................   Passed    0.14 sec-391855701#11341#82#-0#-----2@35"        Start  95: testImageSimple-391855701#11423#35#-0#-----2@82" 95/115 Test  #95: testImageSimple .........................   Passed    0.02 sec-391855701#11458#82#-0#-----2@36"        Start  96: testImageAdapter-391855701#11540#36#-0#-----2@82" 96/115 Test  #96: testImageAdapter ........................   Passed    0.70 sec-391855702#11576#82#-0#-----2@34"        Start  97: testImageCache-391855702#11658#34#-0#-----2@82" 97/115 Test  #97: testImageCache ..........................   Passed    0.01 sec-391855702#11692#82#-0#-----2@43"        Start  98: testTiledImageFromImage-391855702#11774#43#-0#-----2@82" 98/115 Test  #98: testTiledImageFromImage .................   Passed    0.01 sec-391855702#11817#82#-0#-----2@41"        Start  99: testConstImageAdapter-391855702#11899#41#-0#-----2@82" 99/115 Test  #99: testConstImageAdapter ...................   Passed    0.01 sec-391855702#11940#82#-0#-----2@30"Showing first 200 notices only-391855706#18446744073709551615#0#-0#--21"Notice limit exceeded--0#0#0#--303"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh36"DEEE932B-52F4-43D8-8B1E-5A6CE95C920C-
+

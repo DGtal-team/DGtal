@@ -1,0 +1,100 @@
+TtestPointVectorContainers
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testPointVectorContainers normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Script-F9A222B62E254342948A5137.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.LinkFileList
+c0000000051AB057200000000000000A2
+t1370162546
+s162
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Script-F9A222B62E254342948A5137.sh
+c0000000051AB057200000000000000DE
+t1370162546
+s222
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testPointVectorContainers
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/PointVector.h
+c0000000051A5AD7E0000000000005EC2
+t1369812350
+s24258
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp
+c0000000051A5AD7E0000000000000B9F
+t1369812350
+s2975
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/kernel/PointVector.h"
+i<boost/array.hpp>
+i<vector>
+i<array>
+
+N/usr/local/include/boost/array.hpp
+c0000000051121F2F0000000000003DA4
+t1360142127
+s15780
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies33c075f23c5bb741^41b876f23c5bb741^---0#1#0#--18"Check dependencies36"FD2AF41B-7BC6-4D58-9897-57F30EA025CC-
+
+CCompileC build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855346.506900
+e391855348.333669
+r1
+xCompileC
+xbuild-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection87"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp48e281f23c5bb741^4be76bf43c5bb741^---0#0#0#-19%DVTDocumentLocation2@95"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp0000000000000000^2640"CompileC build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.o tests/kernel/testPointVectorContainers.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testPointVectorContainers.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.o36"5DDB3EE7-B3B0-4FD6-9FA5-6EBCE8E5F50D-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testPointVectorContainers normal x86_64
+s391855348.378744
+e391855348.420641
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testPointVectorContainers
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testPointVectorContainersf12c61f43c5bb741^35ec6bf43c5bb741^---0#0#0#--1215"Ld build-xcode/tests/kernel/Debug/testPointVectorContainers normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Objects-normal/x86_64/testPointVectorContainers.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testPointVectorContainers36"7E89876E-16B7-4CFA-BD5D-8034D0F251F5-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Script-F9A222B62E254342948A5137.sh
+s391855348.428111
+e391855348.514834
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Script-F9A222B62E254342948A5137.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPointVectorContainers.Debug
+omake[1]: Nothing to be done for `PostBuild.testPointVectorContainers.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'1f316ef43c5bb741^7cd483f43c5bb741^-374"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPointVectorContainers.Debugmake[1]: Nothing to be done for `PostBuild.testPointVectorContainers.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855348#0#30#-0#-----2@23"Depend check for xcode-391855348#30#23#-0#-----2@244"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPointVectorContainers.Debug-391855348#53#244#-0#-----2@77"make[1]: Nothing to be done for `PostBuild.testPointVectorContainers.Debug'.-391855348#297#77#-0#-----0#0#0#--361"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Script-F9A222B62E254342948A5137.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testPointVectorContainers.build/Script-F9A222B62E254342948A5137.sh36"6AB60FD9-92DC-4A43-A184-7C08AC964603-
+

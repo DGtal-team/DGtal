@@ -1,0 +1,98 @@
+TtestAngleLinearMinimizer
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.o /Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug/testAngleLinearMinimizer normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Script-22C2B611BCBE441085398C4C.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.LinkFileList
+c0000000051AB0579000000000000009E
+t1370162553
+s158
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Script-22C2B611BCBE441085398C4C.sh
+c0000000051AB057900000000000000D9
+t1370162553
+s217
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug/testAngleLinearMinimizer
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/AngleLinearMinimizer.h
+c0000000051A5AD7E0000000000003B9E
+t1369812350
+s15262
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cpp
+c0000000051A4E3150000000000000FA7
+t1369760533
+s4007
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/math/AngleLinearMinimizer.h"
+i"DGtal/io/boards/Board2D.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesba2f07f93c5bb741^e2c807f93c5bb741^---0#1#0#--18"Check dependencies36"350BD246-4BF7-4E1F-A355-76D177936495-
+
+CCompileC build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.o /Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855353.032291
+e391855356.859411
+r1
+xCompileC
+xbuild-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection84"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cppa16608f93c5bb741^c30ddcfc3c5bb741^---0#0#0#-19%DVTDocumentLocation2@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cpp0000000000000000^2608"CompileC build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.o tests/math/testAngleLinearMinimizer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/math/testAngleLinearMinimizer.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.o36"A7E70B90-4675-4777-886F-C35465866824-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug/testAngleLinearMinimizer normal x86_64
+s391855356.865634
+e391855356.968875
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug/testAngleLinearMinimizer
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug/testAngleLinearMinimizer78b4ddfc3c5bb741^4208f8fc3c5bb741^---0#0#0#--1201"Ld build-xcode/tests/math/Debug/testAngleLinearMinimizer normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Objects-normal/x86_64/testAngleLinearMinimizer.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/Debug/testAngleLinearMinimizer36"61FDCE85-7823-49EA-A90F-120DAB1CA8F1-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Script-22C2B611BCBE441085398C4C.sh
+s391855356.976968
+e391855357.066623
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Script-22C2B611BCBE441085398C4C.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testAngleLinearMinimizer.Debug
+omake[1]: Nothing to be done for `PostBuild.testAngleLinearMinimizer.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'40c0fafc3c5bb741^4a0d11fd3c5bb741^-372"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testAngleLinearMinimizer.Debugmake[1]: Nothing to be done for `PostBuild.testAngleLinearMinimizer.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855357#0#30#-0#-----2@23"Depend check for xcode-391855357#30#23#-0#-----2@243"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testAngleLinearMinimizer.Debug-391855357#53#243#-0#-----2@76"make[1]: Nothing to be done for `PostBuild.testAngleLinearMinimizer.Debug'.-391855357#296#76#-0#-----0#0#0#--355"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Script-22C2B611BCBE441085398C4C.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/math/DGtal.build/Debug/testAngleLinearMinimizer.build/Script-22C2B611BCBE441085398C4C.sh36"5D2C0473-0711-4D7F-B1C4-C46181EF0695-
+

@@ -1,0 +1,6 @@
+\begin{tikzpicture}[anchor=south west,text depth=0,x={(1pt,0pt)},y={(0pt,-1pt)}]
+\path[fill=none,draw=black,line width=0.176mm,] (0,2267.72) -- (566.93,2267.72) -- (566.93,2834.65) -- (0,2834.65) -- cycle;
+\path[fill=blue,draw=none,line width=0mm,] (850.39,1984.25) circle (283.46);
+\path[fill={rgb,255:red,220;green,220;blue,220},draw={rgb,255:red,160;green,160;blue,160},line width=0.353mm,] (1559.06,141.73) -- (1842.52,141.73) -- (1842.52,425.2) -- (1559.06,425.2) -- cycle;
+\path[-latex,fill=red,draw=red,line width=0.353mm,] (566.93,2267.72) -- (1984.25,0);
+\end{tikzpicture}

@@ -1,0 +1,105 @@
+TtestImageContainerByHashTree
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageContainerByHashTree normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Script-7A65528755F943F3A417B426.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.LinkFileList
+c0000000051AB05F600000000000000A8
+t1370162678
+s168
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Script-7A65528755F943F3A417B426.sh
+c0000000051AB05F600000000000000E1
+t1370162678
+s225
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageContainerByHashTree
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerByHashTree.h
+c0000000051A5AD7D00000000000063E1
+t1369812349
+s25569
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
+c0000000051A5AD7E000000000000176C
+t1369812350
+s5996
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
+c0000000051A5AD7E0000000000004E8C
+t1369812350
+s20108
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cpp
+c0000000051A5AD7E0000000000001C33
+t1369812350
+s7219
+i<iostream>
+i"DGtal/base/Common.h"
+i<cmath>
+i"DGtal/kernel/SpaceND.h"
+i"DGtal/kernel/domains/HyperRectDomain.h"
+i"DGtal/images/ImageContainerByHashTree.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies417d9b763d5bb741^103d9d763d5bb741^---0#1#0#--18"Check dependencies36"421A79CC-EC37-4C1E-A065-6C91390EA298-
+
+CCompileC build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855478.616324
+e391855481.854400
+r1
+xCompileC
+xbuild-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection90"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cppb7eb9d763d5bb741^0ab9da793d5bb741^---0#0#0#-19%DVTDocumentLocation2@98"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cpp0000000000000000^2676"CompileC build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.o tests/images/testImageContainerByHashTree.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageContainerByHashTree.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.o36"4A1DD96E-D416-45E6-A36D-54D3E6BFDEE9-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageContainerByHashTree normal x86_64
+s391855481.861443
+e391855481.909374
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageContainerByHashTree
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection101"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageContainerByHashTree37a5dc793d5bb741^f9d9e8793d5bb741^---0#0#0#--1227"Ld build-xcode/tests/images/Debug/testImageContainerByHashTree normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Objects-normal/x86_64/testImageContainerByHashTree.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageContainerByHashTree36"BDA3A30B-8AA0-42E3-B857-B126C270F614-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Script-7A65528755F943F3A417B426.sh
+s391855481.918370
+e391855482.052572
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Script-7A65528755F943F3A417B426.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageContainerByHashTree.Debug
+omake[1]: Nothing to be done for `PostBuild.testImageContainerByHashTree.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'0ce6eb793d5bb741^c5740d7a3d5bb741^-380"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageContainerByHashTree.Debugmake[1]: Nothing to be done for `PostBuild.testImageContainerByHashTree.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855481#0#30#-0#-----2@23"Depend check for xcode-391855481#30#23#-0#-----2@247"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageContainerByHashTree.Debug-391855481#53#247#-0#-----2@80"make[1]: Nothing to be done for `PostBuild.testImageContainerByHashTree.Debug'.-391855482#300#80#-0#-----0#0#0#--367"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Script-7A65528755F943F3A417B426.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageContainerByHashTree.build/Script-7A65528755F943F3A417B426.sh36"CE52C01D-3274-49BB-86B3-A774C8DCE6D5-
+

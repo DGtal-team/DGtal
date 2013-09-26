@@ -1,0 +1,116 @@
+TtestLightImplicitDigitalSurface-benchmark
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testLightImplicitDigitalSurface-benchmark normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Script-B5971D0765774B4FBFF65B03.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.LinkFileList
+c0000000051AB05C700000000000000C4
+t1370162631
+s196
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Script-B5971D0765774B4FBFF65B03.sh
+c0000000051AB05C700000000000000F2
+t1370162631
+s242
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testLightImplicitDigitalSurface-benchmark
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/BreadthFirstVisitor.h
+c0000000051A5AD7D0000000000002BFF
+t1369812349
+s11263
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
+c0000000051A5AD7E000000000000275B
+t1369812350
+s10075
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSetBoundary.h
+c0000000051A4E3480000000000002927
+t1369760584
+s10535
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
+c0000000051A5AD7E0000000000005D4F
+t1369812350
+s23887
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/LightImplicitDigitalSurface.h
+c0000000051A5AD7E0000000000003CDE
+t1369812350
+s15582
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp
+c0000000051A5AD7F000000000000114A
+t1369812351
+s4426
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/topology/DigitalSurface.h"
+i"DGtal/topology/DigitalSetBoundary.h"
+i"DGtal/topology/LightImplicitDigitalSurface.h"
+i"DGtal/graph/BreadthFirstVisitor.h"
+i"DGtal/shapes/Shapes.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies7f4ca7473d5bb741^c51ca8473d5bb741^---0#1#0#--18"Check dependencies36"DDAD0EB8-4D15-4E93-8657-841E149D893B-
+
+CCompileC build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855431.657271
+e391855438.070231
+r1
+xCompileC
+xbuild-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection105"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp3468a8473d5bb741^b8211e4e3d5bb741^---0#0#0#-19%DVTDocumentLocation2@113"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp0000000000000000^2852"CompileC build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.o tests/topology/testLightImplicitDigitalSurface-benchmark.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testLightImplicitDigitalSurface-benchmark.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.o36"8A68AC0C-DA0C-4A43-9B52-EC4818A478AC-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testLightImplicitDigitalSurface-benchmark normal x86_64
+s391855438.076609
+e391855438.138198
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testLightImplicitDigitalSurface-benchmark
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection116"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testLightImplicitDigitalSurface-benchmarke5b4134e3d5bb741^5de1294e3d5bb741^---0#0#0#--1289"Ld build-xcode/tests/topology/Debug/testLightImplicitDigitalSurface-benchmark normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Objects-normal/x86_64/testLightImplicitDigitalSurface-benchmark.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testLightImplicitDigitalSurface-benchmark36"9C035162-379E-48FF-96B4-CEE82AB97859-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Script-B5971D0765774B4FBFF65B03.sh
+s391855438.146284
+e391855438.242523
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Script-B5971D0765774B4FBFF65B03.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLightImplicitDigitalSurface-benchmark.Debug
+omake[1]: Nothing to be done for `PostBuild.testLightImplicitDigitalSurface-benchmark.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'6519264e3d5bb741^09323e4e3d5bb741^-406"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLightImplicitDigitalSurface-benchmark.Debugmake[1]: Nothing to be done for `PostBuild.testLightImplicitDigitalSurface-benchmark.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855438#0#30#-0#-----2@23"Depend check for xcode-391855438#30#23#-0#-----2@260"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLightImplicitDigitalSurface-benchmark.Debug-391855438#53#260#-0#-----2@93"make[1]: Nothing to be done for `PostBuild.testLightImplicitDigitalSurface-benchmark.Debug'.-391855438#313#93#-0#-----0#0#0#--397"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Script-B5971D0765774B4FBFF65B03.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testLightImplicitDigitalSurface-benchmark.build/Script-B5971D0765774B4FBFF65B03.sh36"BFED813C-D8CF-4F31-8539-B9197A31AA80-
+

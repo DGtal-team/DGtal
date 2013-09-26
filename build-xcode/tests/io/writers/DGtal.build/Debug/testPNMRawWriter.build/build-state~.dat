@@ -1,0 +1,176 @@
+TtestPNMRawWriter
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug/testPNMRawWriter normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Script-139FEE9F37C14A888048AB5C.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.LinkFileList
+c0000000051AB05DE0000000000000094
+t1370162654
+s148
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Script-139FEE9F37C14A888048AB5C.sh
+c0000000051AB05DE00000000000000DD
+t1370162654
+s221
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug/testPNMRawWriter
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/BasicFunctors.h
+c0000000051A5AD7C000000000000441E
+t1369812348
+s17438
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageSelector.h
+c0000000051A4E45B0000000000000C16
+t1369760859
+s3094
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/BasicColorToScalarFunctors.h
+c0000000051AB045B0000000000000E58
+t1370162267
+s3672
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/ColorBrightnessColorMap.h
+c0000000051A4E34100000000000022A2
+t1369760577
+s8866
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GradientColorMap.h
+c0000000051A5AD7D0000000000002530
+t1369812349
+s9520
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GrayscaleColorMap.h
+c0000000051A4E3410000000000001B3A
+t1369760577
+s6970
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/HueShadeColorMap.h
+c0000000051A5AD7D0000000000002027
+t1369812349
+s8231
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/RandomColorMap.h
+c0000000051A5AD7D00000000000015B9
+t1369812349
+s5561
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/PGMReader.h
+c0000000051AB045B00000000000015B6
+t1370162267
+s5558
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/writers/PGMWriter.h
+c0000000051AB045B00000000000011E7
+t1370162267
+s4583
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/writers/PPMWriter.h
+c0000000051AB045B0000000000000FC4
+t1370162267
+s4036
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/writers/RawWriter.h
+c0000000051A4E45B0000000000000D0C
+t1369760859
+s3340
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
+c0000000051A5AD7E000000000000176C
+t1369812350
+s5996
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
+c0000000051A5AD7E0000000000004E8C
+t1369812350
+s20108
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp
+c0000000051AB045B0000000000001759
+t1370162267
+s5977
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/kernel/SpaceND.h"
+i"DGtal/kernel/domains/HyperRectDomain.h"
+i"DGtal/images/ImageSelector.h"
+i"DGtal/io/colormaps/GrayscaleColorMap.h"
+i"DGtal/io/colormaps/HueShadeColorMap.h"
+i"DGtal/io/colormaps/GradientColorMap.h"
+i"DGtal/io/colormaps/ColorBrightnessColorMap.h"
+i"DGtal/io/colormaps/RandomColorMap.h"
+i"DGtal/io/colormaps/BasicColorToScalarFunctors.h"
+i"DGtal/base/BasicFunctors.h"
+i"DGtal/io/writers/PGMWriter.h"
+i"DGtal/io/writers/PPMWriter.h"
+i"DGtal/io/readers/PGMReader.h"
+i"DGtal/io/writers/RawWriter.h"
+i"DGtal/io/boards/Board2D.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesa0c03f5e3d5bb741^64c9405e3d5bb741^---0#1#0#--18"Check dependencies36"A84E0B42-05C6-4F7D-B32D-C24976DE965D-
+
+CCompileC build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855454.254245
+e391855461.290310
+r1
+xCompileC
+xbuild-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection82"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp6840415e3d5bb741^f8a9be653d5bb741^---0#0#0#-19%DVTDocumentLocation2@90"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp0000000000000000^2572"CompileC build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.o tests/io/writers/testPNMRawWriter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/io/writers/testPNMRawWriter.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.o36"615C5B16-6C2E-4CC6-BE94-52D27D29E53A-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug/testPNMRawWriter normal x86_64
+s391855461.297116
+e391855461.360406
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug/testPNMRawWriter
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug/testPNMRawWriterc2344c653d5bb741^e1b6be653d5bb741^---0#0#0#--1199"Ld build-xcode/tests/io/writers/Debug/testPNMRawWriter normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Objects-normal/x86_64/testPNMRawWriter.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/Debug/testPNMRawWriter36"5C0EC025-58B3-4E04-948B-61F1309972FB-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Script-139FEE9F37C14A888048AB5C.sh
+s391855461.368659
+e391855461.500267
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Script-139FEE9F37C14A888048AB5C.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPNMRawWriter.Debug
+omake[1]: Nothing to be done for `PostBuild.testPNMRawWriter.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'd2fb5e653d5bb741^d3dcbe653d5bb741^-356"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPNMRawWriter.Debugmake[1]: Nothing to be done for `PostBuild.testPNMRawWriter.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855461#0#30#-0#-----2@23"Depend check for xcode-391855461#30#23#-0#-----2@235"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testPNMRawWriter.Debug-391855461#53#235#-0#-----2@68"make[1]: Nothing to be done for `PostBuild.testPNMRawWriter.Debug'.-391855461#288#68#-0#-----0#0#0#--351"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Script-139FEE9F37C14A888048AB5C.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/writers/DGtal.build/Debug/testPNMRawWriter.build/Script-139FEE9F37C14A888048AB5C.sh36"E4230158-0739-43D2-A00F-C480ABDB1540-
+

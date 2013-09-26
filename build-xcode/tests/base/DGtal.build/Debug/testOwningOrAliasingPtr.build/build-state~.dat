@@ -1,0 +1,92 @@
+TtestOwningOrAliasingPtr
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOwningOrAliasingPtr normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Script-80FD89CE69B44A4DA81FAA9B.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.LinkFileList
+c0000000051AB056D000000000000009C
+t1370162541
+s156
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Script-80FD89CE69B44A4DA81FAA9B.sh
+c0000000051AB056D00000000000000D8
+t1370162541
+s216
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOwningOrAliasingPtr
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OwningOrAliasingPtr.h
+c0000000051A4E45B000000000000182B
+t1369760859
+s6187
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cpp
+c0000000051A4E45B00000000000017E5
+t1369760859
+s6117
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/base/OwningOrAliasingPtr.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies003a14ed3c5bb741^c9c914ed3c5bb741^---0#1#0#--18"Check dependencies36"F2B5E664-CD06-44CB-97C6-AF9524D20BE2-
+
+CCompileC build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855341.083203
+e391855342.426993
+r1
+xCompileC
+xbuild-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cppfc6f15ed3c5bb741^ee5f6dee3c5bb741^---0#0#0#-19%DVTDocumentLocation2@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cpp0000000000000000^2596"CompileC build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.o tests/base/testOwningOrAliasingPtr.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOwningOrAliasingPtr.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.o36"55B606D1-7CD5-482D-8896-EFE012B42AD8-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOwningOrAliasingPtr normal x86_64
+s391855342.433476
+e391855342.477731
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOwningOrAliasingPtr
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection94"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOwningOrAliasingPtr5e0e6fee3c5bb741^6f647aee3c5bb741^---0#0#0#--1197"Ld build-xcode/tests/base/Debug/testOwningOrAliasingPtr normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Objects-normal/x86_64/testOwningOrAliasingPtr.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOwningOrAliasingPtr36"69AEECE5-91B2-44BB-A6E0-D961B8D52C23-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Script-80FD89CE69B44A4DA81FAA9B.sh
+s391855342.485239
+e391855342.572267
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Script-80FD89CE69B44A4DA81FAA9B.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOwningOrAliasingPtr.Debug
+omake[1]: Nothing to be done for `PostBuild.testOwningOrAliasingPtr.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'14927cee3c5bb741^d38792ee3c5bb741^-370"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOwningOrAliasingPtr.Debugmake[1]: Nothing to be done for `PostBuild.testOwningOrAliasingPtr.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855342#0#30#-0#-----2@23"Depend check for xcode-391855342#30#23#-0#-----2@242"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOwningOrAliasingPtr.Debug-391855342#53#242#-0#-----2@75"make[1]: Nothing to be done for `PostBuild.testOwningOrAliasingPtr.Debug'.-391855342#295#75#-0#-----0#0#0#--353"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Script-80FD89CE69B44A4DA81FAA9B.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOwningOrAliasingPtr.build/Script-80FD89CE69B44A4DA81FAA9B.sh36"15DB3621-D2D0-494F-B107-F70AA53AE591-
+

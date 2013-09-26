@@ -1,0 +1,1322 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="200mm" height="200mm" 
+     viewBox="0 0 566.929 566.929" 
+     xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<desc>output.svg, created with the Board library (Copyleft) 2007 Sebastien Fourey</desc>
+<g>
+ <path d="M 0 566.93 L 109.84 292.33 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.59,293.43 113.39,283.46 107.1,291.23 112.59,293.43" />
+</g>
+<g>
+ <path d="M 28.35 566.93 L 274.73 457.42 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.93,460.12 283.46,453.54 273.53,454.72 275.93,460.12" />
+</g>
+<g>
+ <path d="M 56.69 566.93 L 274.92 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="276.24,460.46 283.46,453.54 273.59,455.17 276.24,460.46" />
+</g>
+<g>
+ <path d="M 85.04 566.93 L 275.17 458.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="276.63,460.85 283.46,453.54 273.7,455.71 276.63,460.85" />
+</g>
+<g>
+ <path d="M 113.39 566.93 L 275.52 458.84 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="277.15,461.3 283.46,453.54 273.87,456.38 277.15,461.3" />
+</g>
+<g>
+ <path d="M 141.73 566.93 L 276 459.51 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="277.85,461.82 283.46,453.54 274.15,457.2 277.85,461.82" />
+</g>
+<g>
+ <path d="M 170.08 566.93 L 276.71 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="278.79,462.38 283.46,453.54 274.62,458.21 278.79,462.38" />
+</g>
+<g>
+ <path d="M 198.43 566.93 L 277.73 461.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="280.09,462.96 283.46,453.54 275.36,459.41 280.09,462.96" />
+</g>
+<g>
+ <path d="M 226.77 566.93 L 279.19 462.09 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="281.83,463.41 283.46,453.54 276.54,460.76 281.83,463.41" />
+</g>
+<g>
+ <path d="M 255.12 566.93 L 281.15 462.81 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="284.01,463.52 283.46,453.54 278.28,462.09 284.01,463.52" />
+</g>
+<g>
+ <path d="M 283.46 566.93 L 283.46 463.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="286.42,463.09 283.46,453.54 280.5,463.09 286.42,463.09" />
+</g>
+<g>
+ <path d="M 311.81 566.93 L 285.78 462.81 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="288.64,462.09 283.46,453.54 282.91,463.52 288.64,462.09" />
+</g>
+<g>
+ <path d="M 340.16 566.93 L 287.74 462.09 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="290.38,460.76 283.46,453.54 285.09,463.41 290.38,460.76" />
+</g>
+<g>
+ <path d="M 368.5 566.93 L 289.2 461.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="291.56,459.41 283.46,453.54 286.83,462.96 291.56,459.41" />
+</g>
+<g>
+ <path d="M 396.85 566.93 L 290.22 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="292.3,458.21 283.46,453.54 288.13,462.38 292.3,458.21" />
+</g>
+<g>
+ <path d="M 425.2 566.93 L 290.92 459.51 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="292.77,457.2 283.46,453.54 289.07,461.82 292.77,457.2" />
+</g>
+<g>
+ <path d="M 453.54 566.93 L 291.41 458.84 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.05,456.38 283.46,453.54 289.77,461.3 293.05,456.38" />
+</g>
+<g>
+ <path d="M 481.89 566.93 L 291.76 458.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.22,455.71 283.46,453.54 290.29,460.85 293.22,455.71" />
+</g>
+<g>
+ <path d="M 510.24 566.93 L 292.01 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.33,455.17 283.46,453.54 290.68,460.46 293.33,455.17" />
+</g>
+<g>
+ <path d="M 538.58 566.93 L 292.19 457.42 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.39,454.72 283.46,453.54 290.99,460.12 293.39,454.72" />
+</g>
+<g>
+ <path d="M 566.93 566.93 L 457.09 292.33 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.83,291.23 453.54,283.46 454.34,293.43 459.83,291.23" />
+</g>
+<g>
+ <path d="M 0 538.58 L 109.51 292.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.21,293.39 113.39,283.46 106.81,290.99 112.21,293.39" />
+</g>
+<g>
+ <path d="M 28.35 538.58 L 110.36 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.17,293.46 113.39,283.46 107.57,291.59 113.17,293.46" />
+</g>
+<g>
+ <path d="M 56.69 538.58 L 274.52 456.9 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.55,459.66 283.46,453.54 273.48,454.13 275.55,459.66" />
+</g>
+<g>
+ <path d="M 85.04 538.58 L 274.68 457.31 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.84,460.02 283.46,453.54 273.51,454.59 275.84,460.02" />
+</g>
+<g>
+ <path d="M 113.39 538.58 L 274.92 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="276.24,460.46 283.46,453.54 273.59,455.17 276.24,460.46" />
+</g>
+<g>
+ <path d="M 141.73 538.58 L 275.27 458.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="276.79,460.99 283.46,453.54 273.75,455.92 276.79,460.99" />
+</g>
+<g>
+ <path d="M 170.08 538.58 L 275.82 459.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="277.59,461.64 283.46,453.54 274.04,456.91 277.59,461.64" />
+</g>
+<g>
+ <path d="M 198.43 538.58 L 276.71 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="278.79,462.38 283.46,453.54 274.62,458.21 278.79,462.38" />
+</g>
+<g>
+ <path d="M 226.77 538.58 L 278.17 461.49 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="280.62,463.13 283.46,453.54 275.7,459.85 280.62,463.13" />
+</g>
+<g>
+ <path d="M 255.12 538.58 L 280.44 462.61 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="283.24,463.54 283.46,453.54 277.64,461.67 283.24,463.54" />
+</g>
+<g>
+ <path d="M 283.46 538.58 L 283.46 463.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="286.42,463.09 283.46,453.54 280.5,463.09 286.42,463.09" />
+</g>
+<g>
+ <path d="M 311.81 538.58 L 286.49 462.61 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="289.28,461.67 283.46,453.54 283.68,463.54 289.28,461.67" />
+</g>
+<g>
+ <path d="M 340.16 538.58 L 288.76 461.49 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="291.22,459.85 283.46,453.54 286.3,463.13 291.22,459.85" />
+</g>
+<g>
+ <path d="M 368.5 538.58 L 290.22 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="292.3,458.21 283.46,453.54 288.13,462.38 292.3,458.21" />
+</g>
+<g>
+ <path d="M 396.85 538.58 L 291.11 459.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="292.88,456.91 283.46,453.54 289.33,461.64 292.88,456.91" />
+</g>
+<g>
+ <path d="M 425.2 538.58 L 291.66 458.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.17,455.92 283.46,453.54 290.13,460.99 293.17,455.92" />
+</g>
+<g>
+ <path d="M 453.54 538.58 L 292.01 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.33,455.17 283.46,453.54 290.68,460.46 293.33,455.17" />
+</g>
+<g>
+ <path d="M 481.89 538.58 L 292.25 457.31 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.41,454.59 283.46,453.54 291.08,460.02 293.41,454.59" />
+</g>
+<g>
+ <path d="M 510.24 538.58 L 292.41 456.9 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.44,454.13 283.46,453.54 291.37,459.66 293.44,454.13" />
+</g>
+<g>
+ <path d="M 538.58 538.58 L 456.56 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.36,291.59 453.54,283.46 453.76,293.46 459.36,291.59" />
+</g>
+<g>
+ <path d="M 566.93 538.58 L 457.42 292.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.12,290.99 453.54,283.46 454.72,293.39 460.12,290.99" />
+</g>
+<g>
+ <path d="M 0 510.24 L 109.11 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.76,293.33 113.39,283.46 106.47,290.68 111.76,293.33" />
+</g>
+<g>
+ <path d="M 28.35 510.24 L 110.03 292.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.8,293.44 113.39,283.46 107.27,291.37 112.8,293.44" />
+</g>
+<g>
+ <path d="M 56.69 510.24 L 111.07 292.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.94,293.44 113.39,283.46 108.21,292.01 113.94,293.44" />
+</g>
+<g>
+ <path d="M 85.04 510.24 L 274.28 456.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.09,459.01 283.46,453.54 273.46,453.32 275.09,459.01" />
+</g>
+<g>
+ <path d="M 113.39 510.24 L 274.4 456.56 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.33,459.36 283.46,453.54 273.46,453.76 275.33,459.36" />
+</g>
+<g>
+ <path d="M 141.73 510.24 L 274.59 457.09 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.69,459.83 283.46,453.54 273.49,454.34 275.69,459.83" />
+</g>
+<g>
+ <path d="M 170.08 510.24 L 274.92 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="276.24,460.46 283.46,453.54 273.59,455.17 276.24,460.46" />
+</g>
+<g>
+ <path d="M 198.43 510.24 L 275.52 458.84 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="277.15,461.3 283.46,453.54 273.87,456.38 277.15,461.3" />
+</g>
+<g>
+ <path d="M 226.77 510.24 L 276.71 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="278.79,462.38 283.46,453.54 274.62,458.21 278.79,462.38" />
+</g>
+<g>
+ <path d="M 255.12 510.24 L 279.19 462.09 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="281.83,463.41 283.46,453.54 276.54,460.76 281.83,463.41" />
+</g>
+<g>
+ <path d="M 283.46 510.24 L 283.46 463.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="286.42,463.09 283.46,453.54 280.5,463.09 286.42,463.09" />
+</g>
+<g>
+ <path d="M 311.81 510.24 L 287.74 462.09 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="290.38,460.76 283.46,453.54 285.09,463.41 290.38,460.76" />
+</g>
+<g>
+ <path d="M 340.16 510.24 L 290.22 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="292.3,458.21 283.46,453.54 288.13,462.38 292.3,458.21" />
+</g>
+<g>
+ <path d="M 368.5 510.24 L 291.41 458.84 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.05,456.38 283.46,453.54 289.77,461.3 293.05,456.38" />
+</g>
+<g>
+ <path d="M 396.85 510.24 L 292.01 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.33,455.17 283.46,453.54 290.68,460.46 293.33,455.17" />
+</g>
+<g>
+ <path d="M 425.2 510.24 L 292.33 457.09 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.43,454.34 283.46,453.54 291.23,459.83 293.43,454.34" />
+</g>
+<g>
+ <path d="M 453.54 510.24 L 292.53 456.56 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.46,453.76 283.46,453.54 291.59,459.36 293.46,453.76" />
+</g>
+<g>
+ <path d="M 481.89 510.24 L 292.65 456.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.46,453.32 283.46,453.54 291.83,459.01 293.46,453.32" />
+</g>
+<g>
+ <path d="M 510.24 510.24 L 455.86 292.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.72,292.01 453.54,283.46 452.99,293.44 458.72,292.01" />
+</g>
+<g>
+ <path d="M 538.58 510.24 L 456.9 292.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.66,291.37 453.54,283.46 454.13,293.44 459.66,291.37" />
+</g>
+<g>
+ <path d="M 566.93 510.24 L 457.82 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.46,290.68 453.54,283.46 455.17,293.33 460.46,290.68" />
+</g>
+<g>
+ <path d="M 0 481.89 L 108.65 291.76 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.22,293.22 113.39,283.46 106.08,290.29 111.22,293.22" />
+</g>
+<g>
+ <path d="M 28.35 481.89 L 109.62 292.25 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.34,293.41 113.39,283.46 106.91,291.08 112.34,293.41" />
+</g>
+<g>
+ <path d="M 56.69 481.89 L 110.76 292.65 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.61,293.46 113.39,283.46 107.92,291.83 113.61,293.46" />
+</g>
+<g>
+ <path d="M 85.04 481.89 L 112.03 292.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="114.96,293.34 113.39,283.46 109.11,292.5 114.96,293.34" />
+</g>
+<g>
+ <path d="M 113.39 481.89 L 274.04 455.11 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="274.52,458.03 283.46,453.54 273.55,452.2 274.52,458.03" />
+</g>
+<g>
+ <path d="M 141.73 481.89 L 274.1 455.42 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="274.67,458.31 283.46,453.54 273.51,452.52 274.67,458.31" />
+</g>
+<g>
+ <path d="M 170.08 481.89 L 274.2 455.86 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="274.91,458.72 283.46,453.54 273.48,452.99 274.91,458.72" />
+</g>
+<g>
+ <path d="M 198.43 481.89 L 274.4 456.56 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.33,459.36 283.46,453.54 273.46,453.76 275.33,459.36" />
+</g>
+<g>
+ <path d="M 226.77 481.89 L 274.92 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="276.24,460.46 283.46,453.54 273.59,455.17 276.24,460.46" />
+</g>
+<g>
+ <path d="M 255.12 481.89 L 276.71 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="278.79,462.38 283.46,453.54 274.62,458.21 278.79,462.38" />
+</g>
+<g>
+ <path d="M 283.46 481.89 L 283.46 463.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="286.42,463.09 283.46,453.54 280.5,463.09 286.42,463.09" />
+</g>
+<g>
+ <path d="M 311.81 481.89 L 290.22 460.3 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="292.3,458.21 283.46,453.54 288.13,462.38 292.3,458.21" />
+</g>
+<g>
+ <path d="M 340.16 481.89 L 292.01 457.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.33,455.17 283.46,453.54 290.68,460.46 293.33,455.17" />
+</g>
+<g>
+ <path d="M 368.5 481.89 L 292.53 456.56 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.46,453.76 283.46,453.54 291.59,459.36 293.46,453.76" />
+</g>
+<g>
+ <path d="M 396.85 481.89 L 292.73 455.86 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.44,452.99 283.46,453.54 292.01,458.72 293.44,452.99" />
+</g>
+<g>
+ <path d="M 425.2 481.89 L 292.83 455.42 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.41,452.52 283.46,453.54 292.25,458.31 293.41,452.52" />
+</g>
+<g>
+ <path d="M 453.54 481.89 L 292.89 455.11 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.37,452.2 283.46,453.54 292.4,458.03 293.37,452.2" />
+</g>
+<g>
+ <path d="M 481.89 481.89 L 454.89 292.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="457.82,292.5 453.54,283.46 451.97,293.34 457.82,292.5" />
+</g>
+<g>
+ <path d="M 510.24 481.89 L 456.17 292.65 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.01,291.83 453.54,283.46 453.32,293.46 459.01,291.83" />
+</g>
+<g>
+ <path d="M 538.58 481.89 L 457.31 292.25 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.02,291.08 453.54,283.46 454.59,293.41 460.02,291.08" />
+</g>
+<g>
+ <path d="M 566.93 481.89 L 458.28 291.76 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.85,290.29 453.54,283.46 455.71,293.22 460.85,290.29" />
+</g>
+<g>
+ <path d="M 0 453.54 L 108.09 291.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.55,293.05 113.39,283.46 105.63,289.77 110.55,293.05" />
+</g>
+<g>
+ <path d="M 28.35 453.54 L 109.11 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.76,293.33 113.39,283.46 106.47,290.68 111.76,293.33" />
+</g>
+<g>
+ <path d="M 56.69 453.54 L 110.36 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.17,293.46 113.39,283.46 107.57,291.59 113.17,293.46" />
+</g>
+<g>
+ <path d="M 85.04 453.54 L 111.82 292.89 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="114.73,293.37 113.39,283.46 108.9,292.4 114.73,293.37" />
+</g>
+<g>
+ <path d="M 113.39 453.54 L 113.39 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.35,293.01 113.39,283.46 110.43,293.01 116.35,293.01" />
+</g>
+<g>
+ <path d="M 141.73 453.54 L 273.91 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.91,456.5 283.46,453.54 273.91,450.58 273.91,456.5" />
+</g>
+<g>
+ <path d="M 170.08 453.54 L 273.91 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.91,456.5 283.46,453.54 273.91,450.58 273.91,456.5" />
+</g>
+<g>
+ <path d="M 198.43 453.54 L 273.91 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.91,456.5 283.46,453.54 273.91,450.58 273.91,456.5" />
+</g>
+<g>
+ <path d="M 226.77 453.54 L 273.91 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.91,456.5 283.46,453.54 273.91,450.58 273.91,456.5" />
+</g>
+<g>
+ <path d="M 255.12 453.54 L 273.91 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.91,456.5 283.46,453.54 273.91,450.58 273.91,456.5" />
+</g>
+<g>
+ <path d="M 311.81 453.54 L 293.02 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.01,450.58 283.46,453.54 293.01,456.5 293.01,450.58" />
+</g>
+<g>
+ <path d="M 340.16 453.54 L 293.02 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.01,450.58 283.46,453.54 293.01,456.5 293.01,450.58" />
+</g>
+<g>
+ <path d="M 368.5 453.54 L 293.02 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.01,450.58 283.46,453.54 293.01,456.5 293.01,450.58" />
+</g>
+<g>
+ <path d="M 396.85 453.54 L 293.02 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.01,450.58 283.46,453.54 293.01,456.5 293.01,450.58" />
+</g>
+<g>
+ <path d="M 425.2 453.54 L 293.02 453.54 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="293.01,450.58 283.46,453.54 293.01,456.5 293.01,450.58" />
+</g>
+<g>
+ <path d="M 453.54 453.54 L 453.54 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.5,293.01 453.54,283.46 450.58,293.01 456.5,293.01" />
+</g>
+<g>
+ <path d="M 481.89 453.54 L 455.11 292.89 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.03,292.4 453.54,283.46 452.2,293.37 458.03,292.4" />
+</g>
+<g>
+ <path d="M 510.24 453.54 L 456.56 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.36,291.59 453.54,283.46 453.76,293.46 459.36,291.59" />
+</g>
+<g>
+ <path d="M 538.58 453.54 L 457.82 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.46,290.68 453.54,283.46 455.17,293.33 460.46,290.68" />
+</g>
+<g>
+ <path d="M 566.93 453.54 L 458.84 291.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="461.3,289.77 453.54,283.46 456.38,293.05 461.3,289.77" />
+</g>
+<g>
+ <path d="M 0 425.2 L 107.42 290.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="109.73,292.77 113.39,283.46 105.11,289.07 109.73,292.77" />
+</g>
+<g>
+ <path d="M 28.35 425.2 L 108.47 291.66 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.01,293.17 113.39,283.46 105.94,290.13 111.01,293.17" />
+</g>
+<g>
+ <path d="M 56.69 425.2 L 109.84 292.33 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.59,293.43 113.39,283.46 107.1,291.23 112.59,293.43" />
+</g>
+<g>
+ <path d="M 85.04 425.2 L 111.51 292.83 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="114.41,293.41 113.39,283.46 108.62,292.25 114.41,293.41" />
+</g>
+<g>
+ <path d="M 113.39 425.2 L 113.39 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.35,293.01 113.39,283.46 110.43,293.01 116.35,293.01" />
+</g>
+<g>
+ <path d="M 141.73 425.2 L 115.26 292.83 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="118.16,292.25 113.39,283.46 112.37,293.41 118.16,292.25" />
+</g>
+<g>
+ <path d="M 170.08 425.2 L 274.2 451.23 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.48,454.09 283.46,453.54 274.91,448.36 273.48,454.09" />
+</g>
+<g>
+ <path d="M 198.43 425.2 L 274.4 450.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.46,453.32 283.46,453.54 275.33,447.72 273.46,453.32" />
+</g>
+<g>
+ <path d="M 226.77 425.2 L 274.92 449.27 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.59,451.91 283.46,453.54 276.24,446.62 273.59,451.91" />
+</g>
+<g>
+ <path d="M 255.12 425.2 L 276.71 446.79 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="274.62,448.87 283.46,453.54 278.79,444.7 274.62,448.87" />
+</g>
+<g>
+ <path d="M 283.46 425.2 L 283.46 443.99 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="280.5,443.99 283.46,453.54 286.42,443.99 280.5,443.99" />
+</g>
+<g>
+ <path d="M 311.81 425.2 L 290.22 446.79 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="288.13,444.7 283.46,453.54 292.3,448.87 288.13,444.7" />
+</g>
+<g>
+ <path d="M 340.16 425.2 L 292.01 449.27 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="290.68,446.62 283.46,453.54 293.33,451.91 290.68,446.62" />
+</g>
+<g>
+ <path d="M 368.5 425.2 L 292.53 450.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="291.59,447.72 283.46,453.54 293.46,453.32 291.59,447.72" />
+</g>
+<g>
+ <path d="M 396.85 425.2 L 292.73 451.23 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="292.01,448.36 283.46,453.54 293.44,454.09 292.01,448.36" />
+</g>
+<g>
+ <path d="M 425.2 425.2 L 451.67 292.83 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="454.56,293.41 453.54,283.46 448.77,292.25 454.56,293.41" />
+</g>
+<g>
+ <path d="M 453.54 425.2 L 453.54 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.5,293.01 453.54,283.46 450.58,293.01 456.5,293.01" />
+</g>
+<g>
+ <path d="M 481.89 425.2 L 455.42 292.83 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.31,292.25 453.54,283.46 452.52,293.41 458.31,292.25" />
+</g>
+<g>
+ <path d="M 510.24 425.2 L 457.09 292.33 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.83,291.23 453.54,283.46 454.34,293.43 459.83,291.23" />
+</g>
+<g>
+ <path d="M 538.58 425.2 L 458.46 291.66 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.99,290.13 453.54,283.46 455.92,293.17 460.99,290.13" />
+</g>
+<g>
+ <path d="M 566.93 425.2 L 459.51 290.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="461.82,289.07 453.54,283.46 457.2,292.77 461.82,289.07" />
+</g>
+<g>
+ <path d="M 0 396.85 L 106.63 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.72,292.3 113.39,283.46 104.55,288.13 108.72,292.3" />
+</g>
+<g>
+ <path d="M 28.35 396.85 L 107.65 291.11 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.02,292.88 113.39,283.46 105.29,289.33 110.02,292.88" />
+</g>
+<g>
+ <path d="M 56.69 396.85 L 109.11 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.76,293.33 113.39,283.46 106.47,290.68 111.76,293.33" />
+</g>
+<g>
+ <path d="M 85.04 396.85 L 111.07 292.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.94,293.44 113.39,283.46 108.21,292.01 113.94,293.44" />
+</g>
+<g>
+ <path d="M 113.39 396.85 L 113.39 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.35,293.01 113.39,283.46 110.43,293.01 116.35,293.01" />
+</g>
+<g>
+ <path d="M 141.73 396.85 L 115.7 292.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="118.57,292.01 113.39,283.46 112.84,293.44 118.57,292.01" />
+</g>
+<g>
+ <path d="M 170.08 396.85 L 117.66 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="120.31,290.68 113.39,283.46 115.02,293.33 120.31,290.68" />
+</g>
+<g>
+ <path d="M 198.43 396.85 L 275.52 448.24 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="273.87,450.7 283.46,453.54 277.15,445.78 273.87,450.7" />
+</g>
+<g>
+ <path d="M 226.77 396.85 L 276.71 446.79 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="274.62,448.87 283.46,453.54 278.79,444.7 274.62,448.87" />
+</g>
+<g>
+ <path d="M 255.12 396.85 L 279.19 445 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="276.54,446.32 283.46,453.54 281.83,443.67 276.54,446.32" />
+</g>
+<g>
+ <path d="M 283.46 396.85 L 283.46 443.99 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="280.5,443.99 283.46,453.54 286.42,443.99 280.5,443.99" />
+</g>
+<g>
+ <path d="M 311.81 396.85 L 287.74 445 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="285.09,443.67 283.46,453.54 290.38,446.32 285.09,443.67" />
+</g>
+<g>
+ <path d="M 340.16 396.85 L 290.22 446.79 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="288.13,444.7 283.46,453.54 292.3,448.87 288.13,444.7" />
+</g>
+<g>
+ <path d="M 368.5 396.85 L 291.41 448.24 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="289.77,445.78 283.46,453.54 293.05,450.7 289.77,445.78" />
+</g>
+<g>
+ <path d="M 396.85 396.85 L 449.27 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="451.91,293.33 453.54,283.46 446.62,290.68 451.91,293.33" />
+</g>
+<g>
+ <path d="M 425.2 396.85 L 451.23 292.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="454.09,293.44 453.54,283.46 448.36,292.01 454.09,293.44" />
+</g>
+<g>
+ <path d="M 453.54 396.85 L 453.54 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.5,293.01 453.54,283.46 450.58,293.01 456.5,293.01" />
+</g>
+<g>
+ <path d="M 481.89 396.85 L 455.86 292.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.72,292.01 453.54,283.46 452.99,293.44 458.72,292.01" />
+</g>
+<g>
+ <path d="M 510.24 396.85 L 457.82 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.46,290.68 453.54,283.46 455.17,293.33 460.46,290.68" />
+</g>
+<g>
+ <path d="M 538.58 396.85 L 459.28 291.11 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="461.64,289.33 453.54,283.46 456.91,292.88 461.64,289.33" />
+</g>
+<g>
+ <path d="M 566.93 396.85 L 460.3 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="462.38,288.13 453.54,283.46 458.21,292.3 462.38,288.13" />
+</g>
+<g>
+ <path d="M 0 368.5 L 105.74 289.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.52,291.56 113.39,283.46 103.97,286.83 107.52,291.56" />
+</g>
+<g>
+ <path d="M 28.35 368.5 L 106.63 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.72,292.3 113.39,283.46 104.55,288.13 108.72,292.3" />
+</g>
+<g>
+ <path d="M 56.69 368.5 L 108.09 291.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.55,293.05 113.39,283.46 105.63,289.77 110.55,293.05" />
+</g>
+<g>
+ <path d="M 85.04 368.5 L 110.36 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.17,293.46 113.39,283.46 107.57,291.59 113.17,293.46" />
+</g>
+<g>
+ <path d="M 113.39 368.5 L 113.39 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.35,293.01 113.39,283.46 110.43,293.01 116.35,293.01" />
+</g>
+<g>
+ <path d="M 141.73 368.5 L 116.41 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="119.21,291.59 113.39,283.46 113.61,293.46 119.21,291.59" />
+</g>
+<g>
+ <path d="M 170.08 368.5 L 118.69 291.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="121.15,289.77 113.39,283.46 116.23,293.05 121.15,289.77" />
+</g>
+<g>
+ <path d="M 198.43 368.5 L 120.14 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.23,288.13 113.39,283.46 118.06,292.3 122.23,288.13" />
+</g>
+<g>
+ <path d="M 226.77 368.5 L 278.17 445.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="275.7,447.23 283.46,453.54 280.62,443.95 275.7,447.23" />
+</g>
+<g>
+ <path d="M 255.12 368.5 L 280.44 444.48 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="277.64,445.41 283.46,453.54 283.24,443.54 277.64,445.41" />
+</g>
+<g>
+ <path d="M 283.46 368.5 L 283.46 443.99 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="280.5,443.99 283.46,453.54 286.42,443.99 280.5,443.99" />
+</g>
+<g>
+ <path d="M 311.81 368.5 L 286.49 444.48 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="283.68,443.54 283.46,453.54 289.28,445.41 283.68,443.54" />
+</g>
+<g>
+ <path d="M 340.16 368.5 L 288.76 445.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="286.3,443.95 283.46,453.54 291.22,447.23 286.3,443.95" />
+</g>
+<g>
+ <path d="M 368.5 368.5 L 446.79 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.87,292.3 453.54,283.46 444.7,288.13 448.87,292.3" />
+</g>
+<g>
+ <path d="M 396.85 368.5 L 448.24 291.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.7,293.05 453.54,283.46 445.78,289.77 450.7,293.05" />
+</g>
+<g>
+ <path d="M 425.2 368.5 L 450.52 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="453.32,293.46 453.54,283.46 447.72,291.59 453.32,293.46" />
+</g>
+<g>
+ <path d="M 453.54 368.5 L 453.54 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.5,293.01 453.54,283.46 450.58,293.01 456.5,293.01" />
+</g>
+<g>
+ <path d="M 481.89 368.5 L 456.56 292.53 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.36,291.59 453.54,283.46 453.76,293.46 459.36,291.59" />
+</g>
+<g>
+ <path d="M 510.24 368.5 L 458.84 291.41 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="461.3,289.77 453.54,283.46 456.38,293.05 461.3,289.77" />
+</g>
+<g>
+ <path d="M 538.58 368.5 L 460.3 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="462.38,288.13 453.54,283.46 458.21,292.3 462.38,288.13" />
+</g>
+<g>
+ <path d="M 566.93 368.5 L 461.19 289.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="462.96,286.83 453.54,283.46 459.41,291.56 462.96,286.83" />
+</g>
+<g>
+ <path d="M 0 340.16 L 104.84 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.17,290.38 113.39,283.46 103.52,285.09 106.17,290.38" />
+</g>
+<g>
+ <path d="M 28.35 340.16 L 105.44 288.76 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.08,291.22 113.39,283.46 103.8,286.3 107.08,291.22" />
+</g>
+<g>
+ <path d="M 56.69 340.16 L 106.63 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.72,292.3 113.39,283.46 104.55,288.13 108.72,292.3" />
+</g>
+<g>
+ <path d="M 85.04 340.16 L 109.11 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.76,293.33 113.39,283.46 106.47,290.68 111.76,293.33" />
+</g>
+<g>
+ <path d="M 113.39 340.16 L 113.39 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.35,293.01 113.39,283.46 110.43,293.01 116.35,293.01" />
+</g>
+<g>
+ <path d="M 141.73 340.16 L 117.66 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="120.31,290.68 113.39,283.46 115.02,293.33 120.31,290.68" />
+</g>
+<g>
+ <path d="M 170.08 340.16 L 120.14 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.23,288.13 113.39,283.46 118.06,292.3 122.23,288.13" />
+</g>
+<g>
+ <path d="M 198.43 340.16 L 121.33 288.76 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.98,286.3 113.39,283.46 119.7,291.22 122.98,286.3" />
+</g>
+<g>
+ <path d="M 226.77 340.16 L 121.93 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="123.26,285.09 113.39,283.46 120.61,290.38 123.26,285.09" />
+</g>
+<g>
+ <path d="M 255.12 340.16 L 281.15 444.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="278.28,444.99 283.46,453.54 284.01,443.56 278.28,444.99" />
+</g>
+<g>
+ <path d="M 283.46 340.16 L 283.46 443.99 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="280.5,443.99 283.46,453.54 286.42,443.99 280.5,443.99" />
+</g>
+<g>
+ <path d="M 311.81 340.16 L 285.78 444.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="282.91,443.56 283.46,453.54 288.64,444.99 282.91,443.56" />
+</g>
+<g>
+ <path d="M 340.16 340.16 L 445 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.32,290.38 453.54,283.46 443.67,285.09 446.32,290.38" />
+</g>
+<g>
+ <path d="M 368.5 340.16 L 445.59 288.76 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.23,291.22 453.54,283.46 443.95,286.3 447.23,291.22" />
+</g>
+<g>
+ <path d="M 396.85 340.16 L 446.79 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.87,292.3 453.54,283.46 444.7,288.13 448.87,292.3" />
+</g>
+<g>
+ <path d="M 425.2 340.16 L 449.27 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="451.91,293.33 453.54,283.46 446.62,290.68 451.91,293.33" />
+</g>
+<g>
+ <path d="M 453.54 340.16 L 453.54 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.5,293.01 453.54,283.46 450.58,293.01 456.5,293.01" />
+</g>
+<g>
+ <path d="M 481.89 340.16 L 457.82 292.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.46,290.68 453.54,283.46 455.17,293.33 460.46,290.68" />
+</g>
+<g>
+ <path d="M 510.24 340.16 L 460.3 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="462.38,288.13 453.54,283.46 458.21,292.3 462.38,288.13" />
+</g>
+<g>
+ <path d="M 538.58 340.16 L 461.49 288.76 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.13,286.3 453.54,283.46 459.85,291.22 463.13,286.3" />
+</g>
+<g>
+ <path d="M 566.93 340.16 L 462.09 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.41,285.09 453.54,283.46 460.76,290.38 463.41,285.09" />
+</g>
+<g>
+ <path d="M 0 311.81 L 104.12 285.78 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="104.84,288.64 113.39,283.46 103.41,282.91 104.84,288.64" />
+</g>
+<g>
+ <path d="M 28.35 311.81 L 104.32 286.49 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="105.26,289.28 113.39,283.46 103.39,283.68 105.26,289.28" />
+</g>
+<g>
+ <path d="M 56.69 311.81 L 104.84 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.17,290.38 113.39,283.46 103.52,285.09 106.17,290.38" />
+</g>
+<g>
+ <path d="M 85.04 311.81 L 106.63 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.72,292.3 113.39,283.46 104.55,288.13 108.72,292.3" />
+</g>
+<g>
+ <path d="M 113.39 311.81 L 113.39 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.35,293.01 113.39,283.46 110.43,293.01 116.35,293.01" />
+</g>
+<g>
+ <path d="M 141.73 311.81 L 120.14 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.23,288.13 113.39,283.46 118.06,292.3 122.23,288.13" />
+</g>
+<g>
+ <path d="M 170.08 311.81 L 121.93 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="123.26,285.09 113.39,283.46 120.61,290.38 123.26,285.09" />
+</g>
+<g>
+ <path d="M 198.43 311.81 L 122.45 286.49 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="123.39,283.68 113.39,283.46 121.52,289.28 123.39,283.68" />
+</g>
+<g>
+ <path d="M 226.77 311.81 L 122.65 285.78 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="123.37,282.91 113.39,283.46 121.94,288.64 123.37,282.91" />
+</g>
+<g>
+ <path d="M 255.12 311.81 L 122.75 285.34 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="123.34,282.44 113.39,283.46 122.18,288.23 123.34,282.44" />
+</g>
+<g>
+ <path d="M 283.46 311.81 L 283.46 443.99 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="280.5,443.99 283.46,453.54 286.42,443.99 280.5,443.99" />
+</g>
+<g>
+ <path d="M 311.81 311.81 L 444.18 285.34 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.75,288.23 453.54,283.46 443.59,282.44 444.75,288.23" />
+</g>
+<g>
+ <path d="M 340.16 311.81 L 444.28 285.78 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.99,288.64 453.54,283.46 443.56,282.91 444.99,288.64" />
+</g>
+<g>
+ <path d="M 368.5 311.81 L 444.48 286.49 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.41,289.28 453.54,283.46 443.54,283.68 445.41,289.28" />
+</g>
+<g>
+ <path d="M 396.85 311.81 L 445 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.32,290.38 453.54,283.46 443.67,285.09 446.32,290.38" />
+</g>
+<g>
+ <path d="M 425.2 311.81 L 446.79 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.87,292.3 453.54,283.46 444.7,288.13 448.87,292.3" />
+</g>
+<g>
+ <path d="M 453.54 311.81 L 453.54 293.02 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.5,293.01 453.54,283.46 450.58,293.01 456.5,293.01" />
+</g>
+<g>
+ <path d="M 481.89 311.81 L 460.3 290.22 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="462.38,288.13 453.54,283.46 458.21,292.3 462.38,288.13" />
+</g>
+<g>
+ <path d="M 510.24 311.81 L 462.09 287.74 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.41,285.09 453.54,283.46 460.76,290.38 463.41,285.09" />
+</g>
+<g>
+ <path d="M 538.58 311.81 L 462.61 286.49 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.54,283.68 453.54,283.46 461.67,289.28 463.54,283.68" />
+</g>
+<g>
+ <path d="M 566.93 311.81 L 462.81 285.78 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.52,282.91 453.54,283.46 462.09,288.64 463.52,282.91" />
+</g>
+<g>
+ <path d="M 0 283.46 L 103.83 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.84,286.42 113.39,283.46 103.84,280.5 103.84,286.42" />
+</g>
+<g>
+ <path d="M 28.35 283.46 L 103.83 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.84,286.42 113.39,283.46 103.84,280.5 103.84,286.42" />
+</g>
+<g>
+ <path d="M 56.69 283.46 L 103.83 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.84,286.42 113.39,283.46 103.84,280.5 103.84,286.42" />
+</g>
+<g>
+ <path d="M 85.04 283.46 L 103.83 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.84,286.42 113.39,283.46 103.84,280.5 103.84,286.42" />
+</g>
+<g>
+ <path d="M 141.73 283.46 L 122.94 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.94,280.5 113.39,283.46 122.94,286.42 122.94,280.5" />
+</g>
+<g>
+ <path d="M 170.08 283.46 L 122.94 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.94,280.5 113.39,283.46 122.94,286.42 122.94,280.5" />
+</g>
+<g>
+ <path d="M 198.43 283.46 L 122.94 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.94,280.5 113.39,283.46 122.94,286.42 122.94,280.5" />
+</g>
+<g>
+ <path d="M 226.77 283.46 L 122.94 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.94,280.5 113.39,283.46 122.94,286.42 122.94,280.5" />
+</g>
+<g>
+ <path d="M 255.12 283.46 L 122.94 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.94,280.5 113.39,283.46 122.94,286.42 122.94,280.5" />
+</g>
+<g>
+ <path d="M 283.46 283.46 L 443.99 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.99,286.42 453.54,283.46 443.99,280.5 443.99,286.42" />
+</g>
+<g>
+ <path d="M 311.81 283.46 L 443.99 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.99,286.42 453.54,283.46 443.99,280.5 443.99,286.42" />
+</g>
+<g>
+ <path d="M 340.16 283.46 L 443.99 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.99,286.42 453.54,283.46 443.99,280.5 443.99,286.42" />
+</g>
+<g>
+ <path d="M 368.5 283.46 L 443.99 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.99,286.42 453.54,283.46 443.99,280.5 443.99,286.42" />
+</g>
+<g>
+ <path d="M 396.85 283.46 L 443.99 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.99,286.42 453.54,283.46 443.99,280.5 443.99,286.42" />
+</g>
+<g>
+ <path d="M 425.2 283.46 L 443.99 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.99,286.42 453.54,283.46 443.99,280.5 443.99,286.42" />
+</g>
+<g>
+ <path d="M 481.89 283.46 L 463.1 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.09,280.5 453.54,283.46 463.09,286.42 463.09,280.5" />
+</g>
+<g>
+ <path d="M 510.24 283.46 L 463.1 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.09,280.5 453.54,283.46 463.09,286.42 463.09,280.5" />
+</g>
+<g>
+ <path d="M 538.58 283.46 L 463.1 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.09,280.5 453.54,283.46 463.09,286.42 463.09,280.5" />
+</g>
+<g>
+ <path d="M 566.93 283.46 L 463.1 283.46 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="463.09,280.5 453.54,283.46 463.09,286.42 463.09,280.5" />
+</g>
+<g>
+ <path d="M 0 255.12 L 104.12 281.15 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.41,284.01 113.39,283.46 104.84,278.28 103.41,284.01" />
+</g>
+<g>
+ <path d="M 28.35 255.12 L 104.32 280.44 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.39,283.24 113.39,283.46 105.26,277.64 103.39,283.24" />
+</g>
+<g>
+ <path d="M 56.69 255.12 L 104.84 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.52,281.83 113.39,283.46 106.17,276.54 103.52,281.83" />
+</g>
+<g>
+ <path d="M 85.04 255.12 L 106.63 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="104.55,278.79 113.39,283.46 108.72,274.62 104.55,278.79" />
+</g>
+<g>
+ <path d="M 113.39 255.12 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 255.12 L 120.14 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="118.06,274.62 113.39,283.46 122.23,278.79 118.06,274.62" />
+</g>
+<g>
+ <path d="M 170.08 255.12 L 121.93 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="120.61,276.54 113.39,283.46 123.26,281.83 120.61,276.54" />
+</g>
+<g>
+ <path d="M 198.43 255.12 L 122.45 280.44 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="121.52,277.64 113.39,283.46 123.39,283.24 121.52,277.64" />
+</g>
+<g>
+ <path d="M 226.77 255.12 L 122.65 281.15 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="121.94,278.28 113.39,283.46 123.37,284.01 121.94,278.28" />
+</g>
+<g>
+ <path d="M 255.12 255.12 L 122.75 281.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="122.18,278.69 113.39,283.46 123.34,284.48 122.18,278.69" />
+</g>
+<g>
+ <path d="M 283.46 255.12 L 444.12 281.89 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.63,284.8 453.54,283.46 444.6,278.97 443.63,284.8" />
+</g>
+<g>
+ <path d="M 311.81 255.12 L 444.18 281.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.59,284.48 453.54,283.46 444.75,278.69 443.59,284.48" />
+</g>
+<g>
+ <path d="M 340.16 255.12 L 444.28 281.15 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.56,284.01 453.54,283.46 444.99,278.28 443.56,284.01" />
+</g>
+<g>
+ <path d="M 368.5 255.12 L 444.48 280.44 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.54,283.24 453.54,283.46 445.41,277.64 443.54,283.24" />
+</g>
+<g>
+ <path d="M 396.85 255.12 L 445 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.67,281.83 453.54,283.46 446.32,276.54 443.67,281.83" />
+</g>
+<g>
+ <path d="M 425.2 255.12 L 446.79 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.7,278.79 453.54,283.46 448.87,274.62 444.7,278.79" />
+</g>
+<g>
+ <path d="M 453.54 255.12 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 255.12 L 460.3 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.21,274.62 453.54,283.46 462.38,278.79 458.21,274.62" />
+</g>
+<g>
+ <path d="M 510.24 255.12 L 462.09 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.76,276.54 453.54,283.46 463.41,281.83 460.76,276.54" />
+</g>
+<g>
+ <path d="M 538.58 255.12 L 462.61 280.44 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="461.67,277.64 453.54,283.46 463.54,283.24 461.67,277.64" />
+</g>
+<g>
+ <path d="M 566.93 255.12 L 462.81 281.15 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="462.09,278.28 453.54,283.46 463.52,284.01 462.09,278.28" />
+</g>
+<g>
+ <path d="M 0 226.77 L 104.84 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.52,281.83 113.39,283.46 106.17,276.54 103.52,281.83" />
+</g>
+<g>
+ <path d="M 28.35 226.77 L 105.44 278.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.8,280.62 113.39,283.46 107.08,275.7 103.8,280.62" />
+</g>
+<g>
+ <path d="M 56.69 226.77 L 106.63 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="104.55,278.79 113.39,283.46 108.72,274.62 104.55,278.79" />
+</g>
+<g>
+ <path d="M 85.04 226.77 L 109.11 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.47,276.24 113.39,283.46 111.76,273.59 106.47,276.24" />
+</g>
+<g>
+ <path d="M 113.39 226.77 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 226.77 L 117.66 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.02,273.59 113.39,283.46 120.31,276.24 115.02,273.59" />
+</g>
+<g>
+ <path d="M 170.08 226.77 L 120.14 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="118.06,274.62 113.39,283.46 122.23,278.79 118.06,274.62" />
+</g>
+<g>
+ <path d="M 198.43 226.77 L 121.33 278.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="119.7,275.7 113.39,283.46 122.98,280.62 119.7,275.7" />
+</g>
+<g>
+ <path d="M 226.77 226.77 L 121.93 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="120.61,276.54 113.39,283.46 123.26,281.83 120.61,276.54" />
+</g>
+<g>
+ <path d="M 255.12 226.77 L 122.26 279.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="121.16,277.17 113.39,283.46 123.36,282.66 121.16,277.17" />
+</g>
+<g>
+ <path d="M 283.46 226.77 L 444.48 280.44 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.54,283.24 453.54,283.46 445.41,277.64 443.54,283.24" />
+</g>
+<g>
+ <path d="M 311.81 226.77 L 444.67 279.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.57,282.66 453.54,283.46 445.77,277.17 443.57,282.66" />
+</g>
+<g>
+ <path d="M 340.16 226.77 L 445 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.67,281.83 453.54,283.46 446.32,276.54 443.67,281.83" />
+</g>
+<g>
+ <path d="M 368.5 226.77 L 445.59 278.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.95,280.62 453.54,283.46 447.23,275.7 443.95,280.62" />
+</g>
+<g>
+ <path d="M 396.85 226.77 L 446.79 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.7,278.79 453.54,283.46 448.87,274.62 444.7,278.79" />
+</g>
+<g>
+ <path d="M 425.2 226.77 L 449.27 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.62,276.24 453.54,283.46 451.91,273.59 446.62,276.24" />
+</g>
+<g>
+ <path d="M 453.54 226.77 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 226.77 L 457.82 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="455.17,273.59 453.54,283.46 460.46,276.24 455.17,273.59" />
+</g>
+<g>
+ <path d="M 510.24 226.77 L 460.3 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.21,274.62 453.54,283.46 462.38,278.79 458.21,274.62" />
+</g>
+<g>
+ <path d="M 538.58 226.77 L 461.49 278.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.85,275.7 453.54,283.46 463.13,280.62 459.85,275.7" />
+</g>
+<g>
+ <path d="M 566.93 226.77 L 462.09 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="460.76,276.54 453.54,283.46 463.41,281.83 460.76,276.54" />
+</g>
+<g>
+ <path d="M 0 198.43 L 105.74 277.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="103.97,280.09 113.39,283.46 107.52,275.36 103.97,280.09" />
+</g>
+<g>
+ <path d="M 28.35 198.43 L 106.63 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="104.55,278.79 113.39,283.46 108.72,274.62 104.55,278.79" />
+</g>
+<g>
+ <path d="M 56.69 198.43 L 108.09 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="105.63,277.15 113.39,283.46 110.55,273.87 105.63,277.15" />
+</g>
+<g>
+ <path d="M 85.04 198.43 L 110.36 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.57,275.33 113.39,283.46 113.17,273.46 107.57,275.33" />
+</g>
+<g>
+ <path d="M 113.39 198.43 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 198.43 L 116.41 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.61,273.46 113.39,283.46 119.21,275.33 113.61,273.46" />
+</g>
+<g>
+ <path d="M 170.08 198.43 L 118.69 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.23,273.87 113.39,283.46 121.15,277.15 116.23,273.87" />
+</g>
+<g>
+ <path d="M 198.43 198.43 L 120.14 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="118.06,274.62 113.39,283.46 122.23,278.79 118.06,274.62" />
+</g>
+<g>
+ <path d="M 226.77 198.43 L 121.03 277.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="119.26,275.36 113.39,283.46 122.81,280.09 119.26,275.36" />
+</g>
+<g>
+ <path d="M 255.12 198.43 L 121.58 278.55 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="120.06,276.01 113.39,283.46 123.1,281.08 120.06,276.01" />
+</g>
+<g>
+ <path d="M 283.46 198.43 L 445 279.19 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.67,281.83 453.54,283.46 446.32,276.54 443.67,281.83" />
+</g>
+<g>
+ <path d="M 311.81 198.43 L 445.35 278.55 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.83,281.08 453.54,283.46 446.87,276.01 443.83,281.08" />
+</g>
+<g>
+ <path d="M 340.16 198.43 L 445.9 277.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.12,280.09 453.54,283.46 447.67,275.36 444.12,280.09" />
+</g>
+<g>
+ <path d="M 368.5 198.43 L 446.79 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.7,278.79 453.54,283.46 448.87,274.62 444.7,278.79" />
+</g>
+<g>
+ <path d="M 396.85 198.43 L 448.24 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.78,277.15 453.54,283.46 450.7,273.87 445.78,277.15" />
+</g>
+<g>
+ <path d="M 425.2 198.43 L 450.52 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.72,275.33 453.54,283.46 453.32,273.46 447.72,275.33" />
+</g>
+<g>
+ <path d="M 453.54 198.43 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 198.43 L 456.56 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="453.76,273.46 453.54,283.46 459.36,275.33 453.76,273.46" />
+</g>
+<g>
+ <path d="M 510.24 198.43 L 458.84 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.38,273.87 453.54,283.46 461.3,277.15 456.38,273.87" />
+</g>
+<g>
+ <path d="M 538.58 198.43 L 460.3 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.21,274.62 453.54,283.46 462.38,278.79 458.21,274.62" />
+</g>
+<g>
+ <path d="M 566.93 198.43 L 461.19 277.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="459.41,275.36 453.54,283.46 462.96,280.09 459.41,275.36" />
+</g>
+<g>
+ <path d="M 0 170.08 L 106.63 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="104.55,278.79 113.39,283.46 108.72,274.62 104.55,278.79" />
+</g>
+<g>
+ <path d="M 28.35 170.08 L 107.65 275.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="105.29,277.59 113.39,283.46 110.02,274.04 105.29,277.59" />
+</g>
+<g>
+ <path d="M 56.69 170.08 L 109.11 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.47,276.24 113.39,283.46 111.76,273.59 106.47,276.24" />
+</g>
+<g>
+ <path d="M 85.04 170.08 L 111.07 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.21,274.91 113.39,283.46 113.94,273.48 108.21,274.91" />
+</g>
+<g>
+ <path d="M 113.39 170.08 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 170.08 L 115.7 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.84,273.48 113.39,283.46 118.57,274.91 112.84,273.48" />
+</g>
+<g>
+ <path d="M 170.08 170.08 L 117.66 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.02,273.59 113.39,283.46 120.31,276.24 115.02,273.59" />
+</g>
+<g>
+ <path d="M 198.43 170.08 L 119.12 275.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.76,274.04 113.39,283.46 121.49,277.59 116.76,274.04" />
+</g>
+<g>
+ <path d="M 226.77 170.08 L 120.14 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="118.06,274.62 113.39,283.46 122.23,278.79 118.06,274.62" />
+</g>
+<g>
+ <path d="M 255.12 170.08 L 120.85 277.5 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="119,275.18 113.39,283.46 122.7,279.8 119,275.18" />
+</g>
+<g>
+ <path d="M 283.46 170.08 L 445.59 278.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="443.95,280.62 453.54,283.46 447.23,275.7 443.95,280.62" />
+</g>
+<g>
+ <path d="M 311.81 170.08 L 446.08 277.5 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.23,279.8 453.54,283.46 447.93,275.18 444.23,279.8" />
+</g>
+<g>
+ <path d="M 340.16 170.08 L 446.79 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.7,278.79 453.54,283.46 448.87,274.62 444.7,278.79" />
+</g>
+<g>
+ <path d="M 368.5 170.08 L 447.81 275.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.44,277.59 453.54,283.46 450.17,274.04 445.44,277.59" />
+</g>
+<g>
+ <path d="M 396.85 170.08 L 449.27 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.62,276.24 453.54,283.46 451.91,273.59 446.62,276.24" />
+</g>
+<g>
+ <path d="M 425.2 170.08 L 451.23 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.36,274.91 453.54,283.46 454.09,273.48 448.36,274.91" />
+</g>
+<g>
+ <path d="M 453.54 170.08 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 170.08 L 455.86 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="452.99,273.48 453.54,283.46 458.72,274.91 452.99,273.48" />
+</g>
+<g>
+ <path d="M 510.24 170.08 L 457.82 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="455.17,273.59 453.54,283.46 460.46,276.24 455.17,273.59" />
+</g>
+<g>
+ <path d="M 538.58 170.08 L 459.28 275.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.91,274.04 453.54,283.46 461.64,277.59 456.91,274.04" />
+</g>
+<g>
+ <path d="M 566.93 170.08 L 460.3 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="458.21,274.62 453.54,283.46 462.38,278.79 458.21,274.62" />
+</g>
+<g>
+ <path d="M 0 141.73 L 107.42 276 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="105.11,277.85 113.39,283.46 109.73,274.15 105.11,277.85" />
+</g>
+<g>
+ <path d="M 28.35 141.73 L 108.47 275.27 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="105.94,276.79 113.39,283.46 111.01,273.75 105.94,276.79" />
+</g>
+<g>
+ <path d="M 56.69 141.73 L 109.84 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.1,275.69 113.39,283.46 112.59,273.49 107.1,275.69" />
+</g>
+<g>
+ <path d="M 85.04 141.73 L 111.51 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.62,274.67 113.39,283.46 114.41,273.51 108.62,274.67" />
+</g>
+<g>
+ <path d="M 113.39 141.73 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 141.73 L 115.26 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.37,273.51 113.39,283.46 118.16,274.67 112.37,273.51" />
+</g>
+<g>
+ <path d="M 170.08 141.73 L 116.93 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="114.19,273.49 113.39,283.46 119.68,275.69 114.19,273.49" />
+</g>
+<g>
+ <path d="M 198.43 141.73 L 118.3 275.27 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.77,273.75 113.39,283.46 120.84,276.79 115.77,273.75" />
+</g>
+<g>
+ <path d="M 226.77 141.73 L 119.35 276 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="117.05,274.15 113.39,283.46 121.67,277.85 117.05,274.15" />
+</g>
+<g>
+ <path d="M 255.12 141.73 L 120.14 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="118.06,274.62 113.39,283.46 122.23,278.79 118.06,274.62" />
+</g>
+<g>
+ <path d="M 283.46 141.73 L 446.2 277.35 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.31,279.61 453.54,283.46 448.09,275.07 444.31,279.61" />
+</g>
+<g>
+ <path d="M 311.81 141.73 L 446.79 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.7,278.79 453.54,283.46 448.87,274.62 444.7,278.79" />
+</g>
+<g>
+ <path d="M 340.16 141.73 L 447.58 276 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.26,277.85 453.54,283.46 449.88,274.15 445.26,277.85" />
+</g>
+<g>
+ <path d="M 368.5 141.73 L 448.63 275.27 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.09,276.79 453.54,283.46 451.16,273.75 446.09,276.79" />
+</g>
+<g>
+ <path d="M 396.85 141.73 L 450 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.25,275.69 453.54,283.46 452.74,273.49 447.25,275.69" />
+</g>
+<g>
+ <path d="M 425.2 141.73 L 451.67 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.77,274.67 453.54,283.46 454.56,273.51 448.77,274.67" />
+</g>
+<g>
+ <path d="M 453.54 141.73 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 141.73 L 455.42 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="452.52,273.51 453.54,283.46 458.31,274.67 452.52,273.51" />
+</g>
+<g>
+ <path d="M 510.24 141.73 L 457.09 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="454.34,273.49 453.54,283.46 459.83,275.69 454.34,273.49" />
+</g>
+<g>
+ <path d="M 538.58 141.73 L 458.46 275.27 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="455.92,273.75 453.54,283.46 460.99,276.79 455.92,273.75" />
+</g>
+<g>
+ <path d="M 566.93 141.73 L 459.51 276 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="457.2,274.15 453.54,283.46 461.82,277.85 457.2,274.15" />
+</g>
+<g>
+ <path d="M 0 113.39 L 108.09 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="105.63,277.15 113.39,283.46 110.55,273.87 105.63,277.15" />
+</g>
+<g>
+ <path d="M 28.35 113.39 L 109.11 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.47,276.24 113.39,283.46 111.76,273.59 106.47,276.24" />
+</g>
+<g>
+ <path d="M 56.69 113.39 L 110.36 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.57,275.33 113.39,283.46 113.17,273.46 107.57,275.33" />
+</g>
+<g>
+ <path d="M 85.04 113.39 L 111.82 274.04 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.9,274.52 113.39,283.46 114.73,273.55 108.9,274.52" />
+</g>
+<g>
+ <path d="M 113.39 113.39 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 113.39 L 114.96 274.04 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.05,273.55 113.39,283.46 117.88,274.52 112.05,273.55" />
+</g>
+<g>
+ <path d="M 170.08 113.39 L 116.41 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.61,273.46 113.39,283.46 119.21,275.33 113.61,273.46" />
+</g>
+<g>
+ <path d="M 198.43 113.39 L 117.66 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.02,273.59 113.39,283.46 120.31,276.24 115.02,273.59" />
+</g>
+<g>
+ <path d="M 226.77 113.39 L 118.69 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.23,273.87 113.39,283.46 121.15,277.15 116.23,273.87" />
+</g>
+<g>
+ <path d="M 255.12 113.39 L 119.5 276.13 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="117.24,274.23 113.39,283.46 121.78,278.01 117.24,274.23" />
+</g>
+<g>
+ <path d="M 283.46 113.39 L 446.79 276.71 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="444.7,278.79 453.54,283.46 448.87,274.62 444.7,278.79" />
+</g>
+<g>
+ <path d="M 311.81 113.39 L 447.43 276.13 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.15,278.01 453.54,283.46 449.69,274.23 445.15,278.01" />
+</g>
+<g>
+ <path d="M 340.16 113.39 L 448.24 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.78,277.15 453.54,283.46 450.7,273.87 445.78,277.15" />
+</g>
+<g>
+ <path d="M 368.5 113.39 L 449.27 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.62,276.24 453.54,283.46 451.91,273.59 446.62,276.24" />
+</g>
+<g>
+ <path d="M 396.85 113.39 L 450.52 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.72,275.33 453.54,283.46 453.32,273.46 447.72,275.33" />
+</g>
+<g>
+ <path d="M 425.2 113.39 L 451.97 274.04 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="449.05,274.52 453.54,283.46 454.88,273.55 449.05,274.52" />
+</g>
+<g>
+ <path d="M 453.54 113.39 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 113.39 L 455.11 274.04 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="452.2,273.55 453.54,283.46 458.03,274.52 452.2,273.55" />
+</g>
+<g>
+ <path d="M 510.24 113.39 L 456.56 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="453.76,273.46 453.54,283.46 459.36,275.33 453.76,273.46" />
+</g>
+<g>
+ <path d="M 538.58 113.39 L 457.82 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="455.17,273.59 453.54,283.46 460.46,276.24 455.17,273.59" />
+</g>
+<g>
+ <path d="M 566.93 113.39 L 458.84 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="456.38,273.87 453.54,283.46 461.3,277.15 456.38,273.87" />
+</g>
+<g>
+ <path d="M 0 85.04 L 108.65 275.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.08,276.63 113.39,283.46 111.22,273.7 106.08,276.63" />
+</g>
+<g>
+ <path d="M 28.35 85.04 L 109.62 274.68 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.91,275.84 113.39,283.46 112.34,273.51 106.91,275.84" />
+</g>
+<g>
+ <path d="M 56.69 85.04 L 110.76 274.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.92,275.09 113.39,283.46 113.61,273.46 107.92,275.09" />
+</g>
+<g>
+ <path d="M 85.04 85.04 L 112.03 274.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="109.11,274.42 113.39,283.46 114.96,273.58 109.11,274.42" />
+</g>
+<g>
+ <path d="M 113.39 85.04 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 85.04 L 114.74 274.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.82,273.58 113.39,283.46 117.67,274.42 111.82,273.58" />
+</g>
+<g>
+ <path d="M 170.08 85.04 L 116.01 274.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.17,273.46 113.39,283.46 118.86,275.09 113.17,273.46" />
+</g>
+<g>
+ <path d="M 198.43 85.04 L 117.15 274.68 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="114.44,273.51 113.39,283.46 119.87,275.84 114.44,273.51" />
+</g>
+<g>
+ <path d="M 226.77 85.04 L 118.13 275.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.56,273.7 113.39,283.46 120.7,276.63 115.56,273.7" />
+</g>
+<g>
+ <path d="M 255.12 85.04 L 118.94 275.69 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="116.54,273.97 113.39,283.46 121.35,277.4 116.54,273.97" />
+</g>
+<g>
+ <path d="M 283.46 85.04 L 447.33 276.21 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.08,278.13 453.54,283.46 449.57,274.28 445.08,278.13" />
+</g>
+<g>
+ <path d="M 311.81 85.04 L 447.99 275.69 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.58,277.4 453.54,283.46 450.39,273.97 445.58,277.4" />
+</g>
+<g>
+ <path d="M 340.16 85.04 L 448.8 275.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.23,276.63 453.54,283.46 451.37,273.7 446.23,276.63" />
+</g>
+<g>
+ <path d="M 368.5 85.04 L 449.78 274.68 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.06,275.84 453.54,283.46 452.49,273.51 447.06,275.84" />
+</g>
+<g>
+ <path d="M 396.85 85.04 L 450.92 274.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.07,275.09 453.54,283.46 453.76,273.46 448.07,275.09" />
+</g>
+<g>
+ <path d="M 425.2 85.04 L 452.19 274.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="449.26,274.42 453.54,283.46 455.11,273.58 449.26,274.42" />
+</g>
+<g>
+ <path d="M 453.54 85.04 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 85.04 L 454.89 274.01 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="451.97,273.58 453.54,283.46 457.82,274.42 451.97,273.58" />
+</g>
+<g>
+ <path d="M 510.24 85.04 L 456.17 274.28 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="453.32,273.46 453.54,283.46 459.01,275.09 453.32,273.46" />
+</g>
+<g>
+ <path d="M 538.58 85.04 L 457.31 274.68 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="454.59,273.51 453.54,283.46 460.02,275.84 454.59,273.51" />
+</g>
+<g>
+ <path d="M 566.93 85.04 L 458.28 275.17 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="455.71,273.7 453.54,283.46 460.85,276.63 455.71,273.7" />
+</g>
+<g>
+ <path d="M 0 56.69 L 109.11 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.47,276.24 113.39,283.46 111.76,273.59 106.47,276.24" />
+</g>
+<g>
+ <path d="M 28.35 56.69 L 110.03 274.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.27,275.55 113.39,283.46 112.8,273.48 107.27,275.55" />
+</g>
+<g>
+ <path d="M 56.69 56.69 L 111.07 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.21,274.91 113.39,283.46 113.94,273.48 108.21,274.91" />
+</g>
+<g>
+ <path d="M 85.04 56.69 L 112.2 273.98 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="109.27,274.35 113.39,283.46 115.14,273.61 109.27,274.35" />
+</g>
+<g>
+ <path d="M 113.39 56.69 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 56.69 L 114.57 273.98 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.64,273.61 113.39,283.46 117.51,274.35 111.64,273.61" />
+</g>
+<g>
+ <path d="M 170.08 56.69 L 115.7 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.84,273.48 113.39,283.46 118.57,274.91 112.84,273.48" />
+</g>
+<g>
+ <path d="M 198.43 56.69 L 116.74 274.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.98,273.48 113.39,283.46 119.51,275.55 113.98,273.48" />
+</g>
+<g>
+ <path d="M 226.77 56.69 L 117.66 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.02,273.59 113.39,283.46 120.31,276.24 115.02,273.59" />
+</g>
+<g>
+ <path d="M 255.12 56.69 L 118.45 275.36 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.95,273.79 113.39,283.46 120.96,276.93 115.95,273.79" />
+</g>
+<g>
+ <path d="M 283.46 56.69 L 447.81 275.82 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.44,277.59 453.54,283.46 450.17,274.04 445.44,277.59" />
+</g>
+<g>
+ <path d="M 311.81 56.69 L 448.48 275.36 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.97,276.93 453.54,283.46 450.98,273.79 445.97,276.93" />
+</g>
+<g>
+ <path d="M 340.16 56.69 L 449.27 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.62,276.24 453.54,283.46 451.91,273.59 446.62,276.24" />
+</g>
+<g>
+ <path d="M 368.5 56.69 L 450.19 274.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.42,275.55 453.54,283.46 452.95,273.48 447.42,275.55" />
+</g>
+<g>
+ <path d="M 396.85 56.69 L 451.23 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.36,274.91 453.54,283.46 454.09,273.48 448.36,274.91" />
+</g>
+<g>
+ <path d="M 425.2 56.69 L 452.36 273.98 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="449.42,274.35 453.54,283.46 455.29,273.61 449.42,274.35" />
+</g>
+<g>
+ <path d="M 453.54 56.69 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 56.69 L 454.73 273.98 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="451.79,273.61 453.54,283.46 457.66,274.35 451.79,273.61" />
+</g>
+<g>
+ <path d="M 510.24 56.69 L 455.86 274.2 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="452.99,273.48 453.54,283.46 458.72,274.91 452.99,273.48" />
+</g>
+<g>
+ <path d="M 538.58 56.69 L 456.9 274.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="454.13,273.48 453.54,283.46 459.66,275.55 454.13,273.48" />
+</g>
+<g>
+ <path d="M 566.93 56.69 L 457.82 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="455.17,273.59 453.54,283.46 460.46,276.24 455.17,273.59" />
+</g>
+<g>
+ <path d="M 0 28.35 L 109.51 274.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="106.81,275.93 113.39,283.46 112.21,273.53 106.81,275.93" />
+</g>
+<g>
+ <path d="M 28.35 28.35 L 110.36 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.57,275.33 113.39,283.46 113.17,273.46 107.57,275.33" />
+</g>
+<g>
+ <path d="M 56.69 28.35 L 111.31 274.14 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.43,274.78 113.39,283.46 114.2,273.49 108.43,274.78" />
+</g>
+<g>
+ <path d="M 85.04 28.35 L 112.33 273.97 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="109.4,274.29 113.39,283.46 115.27,273.64 109.4,274.29" />
+</g>
+<g>
+ <path d="M 113.39 28.35 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 28.35 L 114.44 273.97 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.51,273.64 113.39,283.46 117.38,274.29 111.51,273.64" />
+</g>
+<g>
+ <path d="M 170.08 28.35 L 115.46 274.14 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.58,273.49 113.39,283.46 118.35,274.78 112.58,273.49" />
+</g>
+<g>
+ <path d="M 198.43 28.35 L 116.41 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.61,273.46 113.39,283.46 119.21,275.33 113.61,273.46" />
+</g>
+<g>
+ <path d="M 226.77 28.35 L 117.27 274.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="114.57,273.53 113.39,283.46 119.97,275.93 114.57,273.53" />
+</g>
+<g>
+ <path d="M 255.12 28.35 L 118.03 275.11 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.45,273.67 113.39,283.46 120.61,276.54 115.45,273.67" />
+</g>
+<g>
+ <path d="M 283.46 28.35 L 448.24 275.52 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="445.78,277.15 453.54,283.46 450.7,273.87 445.78,277.15" />
+</g>
+<g>
+ <path d="M 311.81 28.35 L 448.9 275.11 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.32,276.54 453.54,283.46 451.48,273.67 446.32,276.54" />
+</g>
+<g>
+ <path d="M 340.16 28.35 L 449.66 274.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.96,275.93 453.54,283.46 452.36,273.53 446.96,275.93" />
+</g>
+<g>
+ <path d="M 368.5 28.35 L 450.52 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.72,275.33 453.54,283.46 453.32,273.46 447.72,275.33" />
+</g>
+<g>
+ <path d="M 396.85 28.35 L 451.47 274.14 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.58,274.78 453.54,283.46 454.35,273.49 448.58,274.78" />
+</g>
+<g>
+ <path d="M 425.2 28.35 L 452.49 273.97 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="449.55,274.29 453.54,283.46 455.42,273.64 449.55,274.29" />
+</g>
+<g>
+ <path d="M 453.54 28.35 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 28.35 L 454.6 273.97 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="451.66,273.64 453.54,283.46 457.53,274.29 451.66,273.64" />
+</g>
+<g>
+ <path d="M 510.24 28.35 L 455.62 274.14 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="452.73,273.49 453.54,283.46 458.5,274.78 452.73,273.49" />
+</g>
+<g>
+ <path d="M 538.58 28.35 L 456.56 274.4 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="453.76,273.46 453.54,283.46 459.36,275.33 453.76,273.46" />
+</g>
+<g>
+ <path d="M 566.93 28.35 L 457.42 274.73 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="454.72,273.53 453.54,283.46 460.12,275.93 454.72,273.53" />
+</g>
+<g>
+ <path d="M 0 0 L 109.84 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.1,275.69 113.39,283.46 112.59,273.49 107.1,275.69" />
+</g>
+<g>
+ <path d="M 28.35 0 L 110.64 274.31 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="107.81,275.16 113.39,283.46 113.48,273.46 107.81,275.16" />
+</g>
+<g>
+ <path d="M 56.69 0 L 111.51 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="108.62,274.67 113.39,283.46 114.41,273.51 108.62,274.67" />
+</g>
+<g>
+ <path d="M 85.04 0 L 112.44 273.96 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="109.5,274.25 113.39,283.46 115.38,273.66 109.5,274.25" />
+</g>
+<g>
+ <path d="M 113.39 0 L 113.39 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="110.43,273.91 113.39,283.46 116.35,273.91 110.43,273.91" />
+</g>
+<g>
+ <path d="M 141.73 0 L 114.34 273.96 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="111.4,273.66 113.39,283.46 117.28,274.25 111.4,273.66" />
+</g>
+<g>
+ <path d="M 170.08 0 L 115.26 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="112.37,273.51 113.39,283.46 118.16,274.67 112.37,273.51" />
+</g>
+<g>
+ <path d="M 198.43 0 L 116.13 274.31 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="113.3,273.46 113.39,283.46 118.97,275.16 113.3,273.46" />
+</g>
+<g>
+ <path d="M 226.77 0 L 116.93 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="114.19,273.49 113.39,283.46 119.68,275.69 114.19,273.49" />
+</g>
+<g>
+ <path d="M 255.12 0 L 117.66 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="115.02,273.59 113.39,283.46 120.31,276.24 115.02,273.59" />
+</g>
+<g>
+ <path d="M 283.46 0 L 448.63 275.27 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.09,276.79 453.54,283.46 451.16,273.75 446.09,276.79" />
+</g>
+<g>
+ <path d="M 311.81 0 L 449.27 274.92 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="446.62,276.24 453.54,283.46 451.91,273.59 446.62,276.24" />
+</g>
+<g>
+ <path d="M 340.16 0 L 450 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.25,275.69 453.54,283.46 452.74,273.49 447.25,275.69" />
+</g>
+<g>
+ <path d="M 368.5 0 L 450.8 274.31 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="447.96,275.16 453.54,283.46 453.63,273.46 447.96,275.16" />
+</g>
+<g>
+ <path d="M 396.85 0 L 451.67 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="448.77,274.67 453.54,283.46 454.56,273.51 448.77,274.67" />
+</g>
+<g>
+ <path d="M 425.2 0 L 452.59 273.96 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="449.65,274.25 453.54,283.46 455.53,273.66 449.65,274.25" />
+</g>
+<g>
+ <path d="M 453.54 0 L 453.54 273.91 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="450.58,273.91 453.54,283.46 456.5,273.91 450.58,273.91" />
+</g>
+<g>
+ <path d="M 481.89 0 L 454.49 273.96 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="451.55,273.66 453.54,283.46 457.43,274.25 451.55,273.66" />
+</g>
+<g>
+ <path d="M 510.24 0 L 455.42 274.1 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="452.52,273.51 453.54,283.46 458.31,274.67 452.52,273.51" />
+</g>
+<g>
+ <path d="M 538.58 0 L 456.29 274.31 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="453.45,273.46 453.54,283.46 459.12,275.16 453.45,273.46" />
+</g>
+<g>
+ <path d="M 566.93 0 L 457.09 274.59 z" fill="none" stroke="rgb(42,42,42)" stroke-width="0.353mm" /> <polygon fill="rgb(42,42,42)" stroke="rgb(42,42,42)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="454.34,273.49 453.54,283.46 459.83,275.69 454.34,273.49" />
+</g>
+</svg>

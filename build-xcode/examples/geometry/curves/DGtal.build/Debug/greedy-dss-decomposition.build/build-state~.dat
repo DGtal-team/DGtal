@@ -1,0 +1,136 @@
+Tgreedy-dss-decomposition
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.o /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug/greedy-dss-decomposition normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Script-AC79C9DEBC0C481284369720.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.LinkFileList
+c0000000051AB061500000000000000AC
+t1370162709
+s172
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Script-AC79C9DEBC0C481284369720.sh
+c0000000051AB061500000000000000F5
+t1370162709
+s245
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug/greedy-dss-decomposition
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cpp
+c0000000051A4E45B0000000000000E13
+t1369760859
+s3603
+i<cmath>
+i<iostream>
+i<sstream>
+i"DGtal/base/Common.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/io/Color.h"
+i"DGtal/io/colormaps/GradientColorMap.h"
+i"DGtal/shapes/Shapes.h"
+i"DGtal/helpers/StdDefs.h"
+i"DGtal/geometry/curves/ArithmeticalDSS.h"
+i"DGtal/geometry/curves/FreemanChain.h"
+i"DGtal/geometry/curves/GreedySegmentation.h"
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/ArithmeticalDSS.h
+c0000000051A5AD7D00000000000055BE
+t1369812349
+s21950
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/FreemanChain.h
+c0000000051A5AD7D000000000000866D
+t1369812349
+s34413
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/GreedySegmentation.h
+c0000000051A5AD7D0000000000003E3D
+t1369812349
+s15933
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
+c0000000051A5AD7D00000000000021BA
+t1369812349
+s8634
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.h
+c0000000051AB045B0000000000002063
+t1370162267
+s8291
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GradientColorMap.h
+c0000000051A5AD7D0000000000002530
+t1369812349
+s9520
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
+c0000000051A5AD7E000000000000275B
+t1369812350
+s10075
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies7ee452953d5bb741^4df960953d5bb741^---0#1#0#--18"Check dependencies36"812A71E4-4F18-4821-994F-C34F0A28DAB9-
+
+CCompileC build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.o /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855509.380819
+e391855515.626980
+r1
+xCompileC
+xbuild-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.o
+x/Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cppc6a261953d5bb741^d880a09b3d5bb741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cpp0000000000000000^2754"CompileC build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.o examples/geometry/curves/greedy-dss-decomposition.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/curves/greedy-dss-decomposition.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.o36"E80F267C-BDBF-4B54-88E1-A56F8EE36B5F-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug/greedy-dss-decomposition normal x86_64
+s391855515.633803
+e391855515.702219
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug/greedy-dss-decomposition
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug/greedy-dss-decomposition7c61a29b3d5bb741^b3cfb39b3d5bb741^---0#0#0#--1271"Ld build-xcode/examples/geometry/curves/Debug/greedy-dss-decomposition normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Objects-normal/x86_64/greedy-dss-decomposition.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/Debug/greedy-dss-decomposition36"5DCACA77-A054-48C3-9C32-743ED695AC76-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Script-AC79C9DEBC0C481284369720.sh
+s391855515.711449
+e391855515.909509
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Script-AC79C9DEBC0C481284369720.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.greedy-dss-decomposition.Debug
+omake[1]: Nothing to be done for `PostBuild.greedy-dss-decomposition.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'9dbeb69b3d5bb741^79e7e89b3d5bb741^-372"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.greedy-dss-decomposition.Debugmake[1]: Nothing to be done for `PostBuild.greedy-dss-decomposition.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855515#0#30#-0#-----2@23"Depend check for xcode-391855515#30#23#-0#-----2@243"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.greedy-dss-decomposition.Debug-391855515#53#243#-0#-----2@76"make[1]: Nothing to be done for `PostBuild.greedy-dss-decomposition.Debug'.-391855515#296#76#-0#-----0#0#0#--383"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Script-AC79C9DEBC0C481284369720.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/curves/DGtal.build/Debug/greedy-dss-decomposition.build/Script-AC79C9DEBC0C481284369720.sh36"049195F3-2951-496A-9012-3AF15D5D94D4-
+

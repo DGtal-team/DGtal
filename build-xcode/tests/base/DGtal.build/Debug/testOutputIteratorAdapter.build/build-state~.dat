@@ -1,0 +1,106 @@
+TtestOutputIteratorAdapter
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOutputIteratorAdapter normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Script-A58E48CB1EB845A0866B4152.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.LinkFileList
+c0000000051AB056600000000000000A0
+t1370162534
+s160
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Script-A58E48CB1EB845A0866B4152.sh
+c0000000051AB056600000000000000DA
+t1370162534
+s218
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOutputIteratorAdapter
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/BasicFunctors.h
+c0000000051A5AD7C000000000000441E
+t1369812348
+s17438
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/IteratorAdapter.h
+c0000000051A5AD7D0000000000001340
+t1369812349
+s4928
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/OutputIteratorAdapter.h
+c0000000051A5AD7D00000000000013DE
+t1369812349
+s5086
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cpp
+c0000000051A4E45B0000000000001024
+t1369760859
+s4132
+i<iostream>
+i<map>
+i<vector>
+i"DGtal/base/Common.h"
+i"DGtal/base/BasicFunctors.h"
+i"DGtal/base/OutputIteratorAdapter.h"
+i"DGtal/base/IteratorAdapter.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies38329be63c5bb741^4be79be63c5bb741^---0#1#0#--18"Check dependencies36"58BE6550-A368-4781-842C-C8F1836C615B-
+
+CCompileC build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855334.667100
+e391855336.015118
+r1
+xCompileC
+xbuild-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cppffe9aae63c5bb741^51de03e83c5bb741^---0#0#0#-19%DVTDocumentLocation2@93"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cpp0000000000000000^2620"CompileC build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.o tests/base/testOutputIteratorAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testOutputIteratorAdapter.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.o36"288782E8-90F6-417D-BB15-53D54BF6B540-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOutputIteratorAdapter normal x86_64
+s391855336.021767
+e391855336.062567
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOutputIteratorAdapter
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOutputIteratorAdapter71aa05e83c5bb741^640410e83c5bb741^---0#0#0#--1205"Ld build-xcode/tests/base/Debug/testOutputIteratorAdapter normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Objects-normal/x86_64/testOutputIteratorAdapter.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testOutputIteratorAdapter36"7D8BB2BF-7AE1-4164-8790-9EAD57E1C082-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Script-A58E48CB1EB845A0866B4152.sh
+s391855336.070349
+e391855336.153586
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Script-A58E48CB1EB845A0866B4152.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOutputIteratorAdapter.Debug
+omake[1]: Nothing to be done for `PostBuild.testOutputIteratorAdapter.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'529912e83c5bb741^3c5027e83c5bb741^-374"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOutputIteratorAdapter.Debugmake[1]: Nothing to be done for `PostBuild.testOutputIteratorAdapter.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855336#0#30#-0#-----2@23"Depend check for xcode-391855336#30#23#-0#-----2@244"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testOutputIteratorAdapter.Debug-391855336#53#244#-0#-----2@77"make[1]: Nothing to be done for `PostBuild.testOutputIteratorAdapter.Debug'.-391855336#297#77#-0#-----0#0#0#--357"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Script-A58E48CB1EB845A0866B4152.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testOutputIteratorAdapter.build/Script-A58E48CB1EB845A0866B4152.sh36"26B2ACBE-533D-47E4-AE57-236F1EC9DDBA-
+

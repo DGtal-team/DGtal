@@ -1,0 +1,152 @@
+TexampleIntegralInvariantCurvature2D
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.o /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug/exampleIntegralInvariantCurvature2D normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Script-756729A6D80944B6B9C6DEC8.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.LinkFileList
+c0000000051AB062200000000000000C4
+t1370162722
+s196
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Script-756729A6D80944B6B9C6DEC8.sh
+c0000000051AB06220000000000000104
+t1370162722
+s260
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug/exampleIntegralInvariantCurvature2D
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp
+c0000000051A5AD7C0000000000001AB2
+t1369812348
+s6834
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/shapes/parametric/Flower2D.h"
+i"DGtal/shapes/GaussDigitizer.h"
+i"DGtal/topology/LightImplicitDigitalSurface.h"
+i"DGtal/topology/DigitalSurface.h"
+i"DGtal/graph/DepthFirstVisitor.h"
+i"DGtal/graph/GraphVisitorRange.h"
+i"DGtal/images/ImageHelper.h"
+i"DGtal/geometry/surfaces/FunctorOnCells.h"
+i"DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/io/colormaps/GradientColorMap.h"
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/surfaces/FunctorOnCells.h
+c0000000051A5AD7D0000000000001879
+t1369812349
+s6265
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h
+c0000000051A5AD7D0000000000004DB0
+t1369812349
+s19888
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/DepthFirstVisitor.h
+c0000000051A5AD7D0000000000002C21
+t1369812349
+s11297
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/GraphVisitorRange.h
+c0000000051A5AD7D000000000000292B
+t1369812349
+s10539
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageHelper.h
+c0000000051A5AD7D00000000000032BE
+t1369812349
+s12990
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GradientColorMap.h
+c0000000051A5AD7D0000000000002530
+t1369812349
+s9520
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/GaussDigitizer.h
+c0000000051A4E3460000000000002434
+t1369760582
+s9268
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/parametric/Flower2D.h
+c0000000051A5AD7E0000000000001E95
+t1369812350
+s7829
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
+c0000000051A5AD7E0000000000005D4F
+t1369812350
+s23887
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/LightImplicitDigitalSurface.h
+c0000000051A5AD7E0000000000003CDE
+t1369812350
+s15582
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesdacb6aa23d5bb741^577c6ba23d5bb741^---0#1#0#--18"Check dependencies36"36D287CD-3664-460E-8EC5-AA918308EE0F-
+
+CCompileC build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.o /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855522.470690
+e391855531.672778
+r1
+xCompileC
+xbuild-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.o
+x/Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection111"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp1ea378a23d5bb741^323aacab3d5bb741^---0#0#0#-19%DVTDocumentLocation2@119"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp0000000000000000^2906"CompileC build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.o examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.o36"D1D12816-1E57-4EA3-8637-9CCB020D5E28-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug/exampleIntegralInvariantCurvature2D normal x86_64
+s391855531.679621
+e391855531.766583
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug/exampleIntegralInvariantCurvature2D
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection122"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug/exampleIntegralInvariantCurvature2D7f17aeab3d5bb741^f65ec4ab3d5bb741^---0#0#0#--1325"Ld build-xcode/examples/geometry/surfaces/Debug/exampleIntegralInvariantCurvature2D normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Objects-normal/x86_64/exampleIntegralInvariantCurvature2D.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/Debug/exampleIntegralInvariantCurvature2D36"A6147ED0-AF17-44CA-A915-74E77F4E7533-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Script-756729A6D80944B6B9C6DEC8.sh
+s391855531.774716
+e391855531.872174
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Script-756729A6D80944B6B9C6DEC8.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleIntegralInvariantCurvature2D.Debug
+omake[1]: Nothing to be done for `PostBuild.exampleIntegralInvariantCurvature2D.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'87f9c6ab3d5bb741^8d45dfab3d5bb741^-394"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleIntegralInvariantCurvature2D.Debugmake[1]: Nothing to be done for `PostBuild.exampleIntegralInvariantCurvature2D.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855531#0#30#-0#-----2@23"Depend check for xcode-391855531#30#23#-0#-----2@254"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleIntegralInvariantCurvature2D.Debug-391855531#53#254#-0#-----2@87"make[1]: Nothing to be done for `PostBuild.exampleIntegralInvariantCurvature2D.Debug'.-391855531#307#87#-0#-----0#0#0#--409"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Script-756729A6D80944B6B9C6DEC8.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/geometry/surfaces/DGtal.build/Debug/exampleIntegralInvariantCurvature2D.build/Script-756729A6D80944B6B9C6DEC8.sh36"5A71636B-7277-4832-8CA7-0458F0B49FDD-
+

@@ -1,0 +1,164 @@
+TtestDigitalSurface
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testDigitalSurface normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Script-1E2C630A10F74E0FA0F944BB.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.LinkFileList
+c0000000051AB05B80000000000000096
+t1370162616
+s150
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Script-1E2C630A10F74E0FA0F944BB.sh
+c0000000051AB05B800000000000000DB
+t1370162616
+s219
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testDigitalSurface
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/CConstSinglePassRange.h
+c0000000051A5AD7D0000000000000FFF
+t1369812349
+s4095
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/BreadthFirstVisitor.h
+c0000000051A5AD7D0000000000002BFF
+t1369812349
+s11263
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/CUndirectedSimpleGraph.h
+c0000000051A5AD7D000000000000142B
+t1369812349
+s5163
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/CUndirectedSimpleLocalGraph.h
+c0000000051A5AD7D00000000000019B0
+t1369812349
+s6576
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
+c0000000051A5AD7E000000000000275B
+t1369812350
+s10075
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSetBoundary.h
+c0000000051A4E3480000000000002927
+t1369760584
+s10535
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
+c0000000051A5AD7E0000000000005D4F
+t1369812350
+s23887
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/ExplicitDigitalSurface.h
+c0000000051A4E348000000000000320A
+t1369760584
+s12810
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/ImplicitDigitalSurface.h
+c0000000051A4E3480000000000003020
+t1369760584
+s12320
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/LightExplicitDigitalSurface.h
+c0000000051A5AD7E0000000000003E60
+t1369812350
+s15968
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/LightImplicitDigitalSurface.h
+c0000000051A5AD7E0000000000003CDE
+t1369812350
+s15582
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/helpers/BoundaryPredicate.h
+c0000000051A5AD7E00000000000017D6
+t1369812350
+s6102
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/helpers/FrontierPredicate.h
+c0000000051A5AD7E000000000000187D
+t1369812350
+s6269
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp
+c0000000051A5AD7F0000000000005C5A
+t1369812351
+s23642
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/base/CConstSinglePassRange.h"
+i"DGtal/topology/DigitalSurface.h"
+i"DGtal/topology/DigitalSetBoundary.h"
+i"DGtal/topology/ImplicitDigitalSurface.h"
+i"DGtal/topology/LightImplicitDigitalSurface.h"
+i"DGtal/topology/ExplicitDigitalSurface.h"
+i"DGtal/topology/LightExplicitDigitalSurface.h"
+i"DGtal/graph/BreadthFirstVisitor.h"
+i"DGtal/topology/helpers/FrontierPredicate.h"
+i"DGtal/topology/helpers/BoundaryPredicate.h"
+i"DGtal/graph/CUndirectedSimpleLocalGraph.h"
+i"DGtal/graph/CUndirectedSimpleGraph.h"
+i"DGtal/shapes/Shapes.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies8f8d64383d5bb741^af6067383d5bb741^---0#1#0#--18"Check dependencies36"DEEADD8D-3470-4A37-97DD-E286921121B7-
+
+CCompileC build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855416.405677
+e391855425.819636
+r1
+xCompileC
+xbuild-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection82"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp16fb67383d5bb741^10b0d2413d5bb741^---0#0#0#-19%DVTDocumentLocation2@90"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp0000000000000000^2576"CompileC build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.o tests/topology/testDigitalSurface.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testDigitalSurface.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.o36"9D6273DD-FB2C-4DFA-8EB7-BCDF11E86A6D-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testDigitalSurface normal x86_64
+s391855425.826185
+e391855425.952202
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testDigitalSurface
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testDigitalSurface349fd3413d5bb741^1b63f7413d5bb741^---0#0#0#--1197"Ld build-xcode/tests/topology/Debug/testDigitalSurface normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Objects-normal/x86_64/testDigitalSurface.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testDigitalSurface36"BCB18220-B234-4490-A84D-9AEF1C009324-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Script-1E2C630A10F74E0FA0F944BB.sh
+s391855426.023141
+e391855426.114864
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Script-1E2C630A10F74E0FA0F944BB.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDigitalSurface.Debug
+omake[1]: Nothing to be done for `PostBuild.testDigitalSurface.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'088f06423d5bb741^e7701d423d5bb741^-360"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDigitalSurface.Debugmake[1]: Nothing to be done for `PostBuild.testDigitalSurface.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855426#0#30#-0#-----2@23"Depend check for xcode-391855426#30#23#-0#-----2@237"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testDigitalSurface.Debug-391855426#53#237#-0#-----2@70"make[1]: Nothing to be done for `PostBuild.testDigitalSurface.Debug'.-391855426#290#70#-0#-----0#0#0#--351"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Script-1E2C630A10F74E0FA0F944BB.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testDigitalSurface.build/Script-1E2C630A10F74E0FA0F944BB.sh36"9E6C9CDB-9CD9-4535-BD8F-2A2A5FF5507A-
+

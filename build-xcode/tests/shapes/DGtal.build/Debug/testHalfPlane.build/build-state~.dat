@@ -1,0 +1,133 @@
+TtestHalfPlane
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.o /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testHalfPlane normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Script-3CB440E05D924CBAB793F5CA.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.LinkFileList
+c0000000051AB05FB000000000000008A
+t1370162683
+s138
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Script-3CB440E05D924CBAB793F5CA.sh
+c0000000051AB05FB00000000000000D2
+t1370162683
+s210
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testHalfPlane
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Exceptions.h
+c0000000051A5AD7D0000000000000B30
+t1369812349
+s2864
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
+c0000000051A5AD7E000000000000176C
+t1369812350
+s5996
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/DomainPredicate.h
+c0000000051A4E3440000000000000FF4
+t1369760580
+s4084
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
+c0000000051A5AD7E0000000000004E8C
+t1369812350
+s20108
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/fromPoints/Point2ShapePredicate.h
+c0000000051A4E45B00000000000022E7
+t1369760859
+s8935
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/fromPoints/StraightLineFrom2Points.h
+c0000000051A5AD7E0000000000001960
+t1369812350
+s6496
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cpp
+c0000000051A4E45B0000000000000FBE
+t1369760859
+s4030
+i<cstdio>
+i<cmath>
+i<fstream>
+i<vector>
+i<iostream>
+i<iterator>
+i"DGtal/base/Common.h"
+i"DGtal/base/Exceptions.h"
+i"DGtal/kernel/SpaceND.h"
+i"DGtal/kernel/domains/DomainPredicate.h"
+i"DGtal/kernel/domains/HyperRectDomain.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
+i"DGtal/shapes/fromPoints/Point2ShapePredicate.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies978c6b7b3d5bb741^371a6c7b3d5bb741^---0#1#0#--18"Check dependencies36"B8B27C17-6B17-4C94-91E2-6F31D51CBCD3-
+
+CCompileC build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.o /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855483.424216
+e391855488.056421
+r1
+xCompileC
+xbuild-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection75"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cppeed06c7b3d5bb741^b0700e803d5bb741^---0#0#0#-19%DVTDocumentLocation2@83"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cpp0000000000000000^2496"CompileC build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.o tests/shapes/testHalfPlane.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testHalfPlane.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.o36"3F92FBC5-AC18-4A4E-9E25-37AFDFE5EE6F-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testHalfPlane normal x86_64
+s391855488.063296
+e391855488.109098
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testHalfPlane
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection86"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testHalfPlaned74e10803d5bb741^85ed1b803d5bb741^---0#0#0#--1167"Ld build-xcode/tests/shapes/Debug/testHalfPlane normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Objects-normal/x86_64/testHalfPlane.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testHalfPlane36"82874B67-0DCF-4FC1-8B24-73BF59C1E510-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Script-3CB440E05D924CBAB793F5CA.sh
+s391855488.117212
+e391855488.206512
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Script-3CB440E05D924CBAB793F5CA.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testHalfPlane.Debug
+omake[1]: Nothing to be done for `PostBuild.testHalfPlane.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'16a71e803d5bb741^98dc34803d5bb741^-350"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testHalfPlane.Debugmake[1]: Nothing to be done for `PostBuild.testHalfPlane.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855488#0#30#-0#-----2@23"Depend check for xcode-391855488#30#23#-0#-----2@232"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testHalfPlane.Debug-391855488#53#232#-0#-----2@65"make[1]: Nothing to be done for `PostBuild.testHalfPlane.Debug'.-391855488#285#65#-0#-----0#0#0#--337"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Script-3CB440E05D924CBAB793F5CA.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testHalfPlane.build/Script-3CB440E05D924CBAB793F5CA.sh36"5961A832-8ED7-47FC-9FBD-820BCD682AB1-
+

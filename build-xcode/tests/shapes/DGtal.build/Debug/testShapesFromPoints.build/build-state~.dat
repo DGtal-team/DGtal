@@ -1,0 +1,125 @@
+TtestShapesFromPoints
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.o /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testShapesFromPoints normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Script-0EF4CD2DB130458DA091D63D.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.LinkFileList
+c0000000051AB06000000000000000098
+t1370162688
+s152
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Script-0EF4CD2DB130458DA091D63D.sh
+c0000000051AB060000000000000000D9
+t1370162688
+s217
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testShapesFromPoints
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/PointVector.h
+c0000000051A5AD7E0000000000005EC2
+t1369812350
+s24258
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/fromPoints/CircleFrom2Points.h
+c0000000051A4E45B0000000000001B82
+t1369760859
+s7042
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/fromPoints/CircleFrom3Points.h
+c0000000051A5AD7E0000000000001B29
+t1369812350
+s6953
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/ConfigTest.h
+c000000004ED65CD80000000000000138
+t1322671320
+s312
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cpp
+c0000000051A4E45B00000000000013E9
+t1369760859
+s5097
+i<iostream>
+i<fstream>
+i<sstream>
+i<exception>
+i<boost/program_options.hpp>
+i"DGtal/base/Common.h"
+i"DGtal/kernel/PointVector.h"
+i"DGtal/shapes/fromPoints/CircleFrom3Points.h"
+i"DGtal/shapes/fromPoints/CircleFrom2Points.h"
+i"DGtal/io/boards/Board2D.h"
+i"ConfigTest.h"
+
+N/usr/local/include/boost/program_options.hpp
+c0000000051121F300000000000000333
+t1360142128
+s819
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies7f3309803d5bb741^94c109803d5bb741^---0#1#0#--18"Check dependencies36"E2B4A5E3-7951-4FBE-B9C1-9534246988AA-
+
+CCompileC build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.o /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855488.039925
+e391855494.296061
+r1
+xCompileC
+xbuild-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection82"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cppab5e0a803d5bb741^12c14c863d5bb741^---0#0#0#-19%DVTDocumentLocation2@90"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cpp0000000000000000^2580"CompileC build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.o tests/shapes/testShapesFromPoints.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testShapesFromPoints.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.o36"5097653A-E114-43FB-8E8A-461E78DA222E-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testShapesFromPoints normal x86_64
+s391855494.304007
+e391855494.352298
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testShapesFromPoints
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testShapesFromPoints36ea4d863d5bb741^9d2f5a863d5bb741^---0#0#0#--1195"Ld build-xcode/tests/shapes/Debug/testShapesFromPoints normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Objects-normal/x86_64/testShapesFromPoints.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testShapesFromPoints36"3AD33C82-2064-444B-8B80-A13A2AA38D24-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Script-0EF4CD2DB130458DA091D63D.sh
+s391855494.360356
+e391855494.494252
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Script-0EF4CD2DB130458DA091D63D.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testShapesFromPoints.Debug
+omake[1]: Nothing to be done for `PostBuild.testShapesFromPoints.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'c8ec5c863d5bb741^c8b77f863d5bb741^-364"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testShapesFromPoints.Debugmake[1]: Nothing to be done for `PostBuild.testShapesFromPoints.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855494#0#30#-0#-----2@23"Depend check for xcode-391855494#30#23#-0#-----2@239"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testShapesFromPoints.Debug-391855494#53#239#-0#-----2@72"make[1]: Nothing to be done for `PostBuild.testShapesFromPoints.Debug'.-391855494#292#72#-0#-----0#0#0#--351"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Script-0EF4CD2DB130458DA091D63D.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testShapesFromPoints.build/Script-0EF4CD2DB130458DA091D63D.sh36"410F6DAD-4B54-4FAC-85D2-B052C96EB214-
+

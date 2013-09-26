@@ -1,0 +1,1783 @@
+TRUN_TESTS
+v6
+r1
+cCheck dependencies
+cPhaseScriptExecution CMake\ PostBuild\ Rules /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F53B6C2FC48746359D93DFFE.sh
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F53B6C2FC48746359D93DFFE.sh
+c000000005243D73100000000000000B4
+t1380177713
+s180
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F9EF140C901E4C5D9006E400.sh
+c0000000051AE015F00000000000000B4
+t1370358111
+s180
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh
+c0000000051AB068700000000000000B4
+t1370162823
+s180
+
+CCheck dependencies
+r0
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18"Check dependencies9f207db10ef4b741^eb1c7fb10ef4b741^---0#1#1#--18"Check dependencies36"6F25E8DD-0446-4AE1-BBD6-540F15EB8C74-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F9EF140C901E4C5D9006E400.sh
+s392050911.157696
+e392050968.475683
+r0
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F9EF140C901E4C5D9006E400.sh
+o/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C Debug
+oTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o        Start   1: testBasicBoolFunctions
+o  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec
+o        Start   2: testOrderedAlphabet
+o  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec
+o        Start   3: testCirculator
+o  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec
+o        Start   4: testConstIteratorAdapter
+o  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec
+o        Start   5: testProgressBar
+o  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec
+o        Start   6: testBasicFunctors
+o  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec
+o        Start   7: testConstRangeAdapter
+o  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec
+o        Start   8: testOutputIteratorAdapter
+o  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec
+o        Start   9: testClock
+o  9/115 Test   #9: testClock ...............................   Passed    1.20 sec
+o        Start  10: testTrace
+o 10/115 Test  #10: testTrace ...............................   Passed    2.50 sec
+o        Start  11: testStatistics
+o 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec
+o        Start  12: testcpp11
+o 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec
+o        Start  13: testCountedPtr
+o 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec
+o        Start  14: testBits
+o 14/115 Test  #14: testBits ................................   Passed    0.51 sec
+o        Start  15: testIndexedListWithBlocks
+o 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.68 sec
+o        Start  16: testLabels
+o 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec
+o        Start  17: testLabelledMap
+o 17/115 Test  #17: testLabelledMap .........................   Passed    0.03 sec
+o        Start  18: testLabelledMap-benchmark
+o 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.06 sec
+o        Start  19: testMultiMap-benchmark
+o 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   46.97 sec
+o        Start  20: testOpenMP
+o 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec
+o        Start  21: testIteratorFunctions
+o 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec
+o        Start  22: testIteratorCirculatorTraits
+o 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec
+o        Start  23: testCloneAndAliases
+o 23/115 Test  #23: testCloneAndAliases .....................   Passed    2.15 sec
+o        Start  24: testOwningOrAliasingPtr
+o 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec
+o        Start  25: testDigitalSet
+o 25/115 Test  #25: testDigitalSet ..........................   Passed    0.06 sec
+o        Start  26: testDomainSpanIterator
+o 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec
+o        Start  27: testHyperRectDomain
+o 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.02 sec
+o        Start  28: testHyperRectDomain-snippet
+o 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec
+o        Start  29: testInteger
+o 29/115 Test  #29: testInteger .............................   Passed    0.01 sec
+o        Start  30: testPointVector
+o 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec
+o        Start  31: testPointVectorContainers
+o 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec
+o        Start  32: testLinearAlgebra
+o 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec
+o        Start  33: testImagesSetsUtilities
+o 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.02 sec
+o        Start  34: testBasicPointFunctors
+o 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec
+o        Start  35: testEmbedder
+o 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec
+o        Start  36: testSimpleMatrix
+o 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.02 sec
+o        Start  37: testMeasure
+o 37/115 Test  #37: testMeasure .............................   Passed    0.02 sec
+o        Start  38: testSignal
+o 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec
+o        Start  39: testMPolynomial
+o 39/115 Test  #39: testMPolynomial .........................   Passed    0.07 sec
+o        Start  40: testAngleLinearMinimizer
+o 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec
+o        Start  41: testBasicMathFunctions
+o 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec
+o        Start  42: testModuloComputer
+o 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec
+o        Start  43: testPattern
+o 43/115 Test  #43: testPattern .............................   Passed    0.71 sec
+o        Start  44: testFrechetShortcut
+o 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec
+o        Start  45: testLengthEstimators
+omake: *** [RUN_TESTS_buildpart_0] Interrupt: 2
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'27bf29df385eb741^89287a18395eb741^-5484"/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C DebugTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode        Start   1: testBasicBoolFunctions  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec        Start   2: testOrderedAlphabet  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec        Start   3: testCirculator  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec        Start   4: testConstIteratorAdapter  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec        Start   5: testProgressBar  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec        Start   6: testBasicFunctors  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec        Start   7: testConstRangeAdapter  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec        Start   8: testOutputIteratorAdapter  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec        Start   9: testClock  9/115 Test   #9: testClock ...............................   Passed    1.20 sec        Start  10: testTrace 10/115 Test  #10: testTrace ...............................   Passed    2.50 sec        Start  11: testStatistics 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec        Start  12: testcpp11 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec        Start  13: testCountedPtr 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec        Start  14: testBits 14/115 Test  #14: testBits ................................   Passed    0.51 sec        Start  15: testIndexedListWithBlocks 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.68 sec        Start  16: testLabels 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec        Start  17: testLabelledMap 17/115 Test  #17: testLabelledMap .........................   Passed    0.03 sec        Start  18: testLabelledMap-benchmark 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.06 sec        Start  19: testMultiMap-benchmark 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   46.97 sec        Start  20: testOpenMP 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec        Start  21: testIteratorFunctions 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec        Start  22: testIteratorCirculatorTraits 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec        Start  23: testCloneAndAliases 23/115 Test  #23: testCloneAndAliases .....................   Passed    2.15 sec        Start  24: testOwningOrAliasingPtr 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec        Start  25: testDigitalSet 25/115 Test  #25: testDigitalSet ..........................   Passed    0.06 sec        Start  26: testDomainSpanIterator 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec        Start  27: testHyperRectDomain 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.02 sec        Start  28: testHyperRectDomain-snippet 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec        Start  29: testInteger 29/115 Test  #29: testInteger .............................   Passed    0.01 sec        Start  30: testPointVector 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec        Start  31: testPointVectorContainers 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec        Start  32: testLinearAlgebra 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec        Start  33: testImagesSetsUtilities 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.02 sec        Start  34: testBasicPointFunctors 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec        Start  35: testEmbedder 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec        Start  36: testSimpleMatrix 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.02 sec        Start  37: testMeasure 37/115 Test  #37: testMeasure .............................   Passed    0.02 sec        Start  38: testSignal 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec        Start  39: testMPolynomial 39/115 Test  #39: testMPolynomial .........................   Passed    0.07 sec        Start  40: testAngleLinearMinimizer 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec        Start  41: testBasicMathFunctions 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec        Start  42: testModuloComputer 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec        Start  43: testPattern 43/115 Test  #43: testPattern .............................   Passed    0.71 sec        Start  44: testFrechetShortcut 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec        Start  45: testLengthEstimatorsmake: *** [RUN_TESTS_buildpart_0] Interrupt: 292(21%IDEActivityLogMessage2@76"/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C Debug-392050911#0#76#-0#-----2@62"Test project /Users/davidcoeurjolly/Sources/DGtal/build-xcode-392050911#76#62#-0#-----2@42"        Start   1: testBasicBoolFunctions-392050911#138#42#-0#-----2@82"  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec-392050911#180#82#-0#-----2@39"        Start   2: testOrderedAlphabet-392050911#262#39#-0#-----2@82"  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec-392050911#301#82#-0#-----2@34"        Start   3: testCirculator-392050911#383#34#-0#-----2@82"  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec-392050911#417#82#-0#-----2@44"        Start   4: testConstIteratorAdapter-392050911#499#44#-0#-----2@82"  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec-392050911#543#82#-0#-----2@35"        Start   5: testProgressBar-392050911#625#35#-0#-----2@82"  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec-392050911#660#82#-0#-----2@37"        Start   6: testBasicFunctors-392050911#742#37#-0#-----2@82"  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec-392050911#779#82#-0#-----2@41"        Start   7: testConstRangeAdapter-392050911#861#41#-0#-----2@82"  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec-392050911#902#82#-0#-----2@45"        Start   8: testOutputIteratorAdapter-392050911#984#45#-0#-----2@82"  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec-392050911#1029#82#-0#-----2@29"        Start   9: testClock-392050911#1111#29#-0#-----2@82"  9/115 Test   #9: testClock ...............................   Passed    1.20 sec-392050913#1140#82#-0#-----2@29"        Start  10: testTrace-392050913#1222#29#-0#-----2@82" 10/115 Test  #10: testTrace ...............................   Passed    2.50 sec-392050915#1251#82#-0#-----2@34"        Start  11: testStatistics-392050915#1333#34#-0#-----2@82" 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec-392050915#1367#82#-0#-----2@29"        Start  12: testcpp11-392050915#1449#29#-0#-----2@82" 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec-392050915#1478#82#-0#-----2@34"        Start  13: testCountedPtr-392050915#1560#34#-0#-----2@82" 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec-392050915#1594#82#-0#-----2@28"        Start  14: testBits-392050915#1676#28#-0#-----2@82" 14/115 Test  #14: testBits ................................   Passed    0.51 sec-392050916#1704#82#-0#-----2@45"        Start  15: testIndexedListWithBlocks-392050916#1786#45#-0#-----2@82" 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.68 sec-392050916#1831#82#-0#-----2@30"        Start  16: testLabels-392050916#1913#30#-0#-----2@82" 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec-392050916#1943#82#-0#-----2@35"        Start  17: testLabelledMap-392050916#2025#35#-0#-----2@82" 17/115 Test  #17: testLabelledMap .........................   Passed    0.03 sec-392050916#2060#82#-0#-----2@45"        Start  18: testLabelledMap-benchmark-392050916#2142#45#-0#-----2@82" 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.06 sec-392050916#2187#82#-0#-----2@42"        Start  19: testMultiMap-benchmark-392050916#2269#42#-0#-----2@82" 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   46.97 sec-392050963#2311#82#-0#-----2@30"        Start  20: testOpenMP-392050963#2393#30#-0#-----2@82" 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec-392050963#2423#82#-0#-----2@41"        Start  21: testIteratorFunctions-392050963#2505#41#-0#-----2@82" 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec-392050963#2546#82#-0#-----2@48"        Start  22: testIteratorCirculatorTraits-392050963#2628#48#-0#-----2@82" 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec-392050963#2676#82#-0#-----2@39"        Start  23: testCloneAndAliases-392050963#2758#39#-0#-----2@82" 23/115 Test  #23: testCloneAndAliases .....................   Passed    2.15 sec-392050966#2797#82#-0#-----2@43"        Start  24: testOwningOrAliasingPtr-392050966#2879#43#-0#-----2@82" 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec-392050966#2922#82#-0#-----2@34"        Start  25: testDigitalSet-392050966#3004#34#-0#-----2@82" 25/115 Test  #25: testDigitalSet ..........................   Passed    0.06 sec-392050966#3038#82#-0#-----2@42"        Start  26: testDomainSpanIterator-392050966#3120#42#-0#-----2@82" 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec-392050966#3162#82#-0#-----2@39"        Start  27: testHyperRectDomain-392050966#3244#39#-0#-----2@82" 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.02 sec-392050966#3283#82#-0#-----2@47"        Start  28: testHyperRectDomain-snippet-392050966#3365#47#-0#-----2@82" 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec-392050966#3412#82#-0#-----2@31"        Start  29: testInteger-392050966#3494#31#-0#-----2@82" 29/115 Test  #29: testInteger .............................   Passed    0.01 sec-392050966#3525#82#-0#-----2@35"        Start  30: testPointVector-392050966#3607#35#-0#-----2@82" 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec-392050966#3642#82#-0#-----2@45"        Start  31: testPointVectorContainers-392050966#3724#45#-0#-----2@82" 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec-392050966#3769#82#-0#-----2@37"        Start  32: testLinearAlgebra-392050966#3851#37#-0#-----2@82" 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec-392050966#3888#82#-0#-----2@43"        Start  33: testImagesSetsUtilities-392050966#3970#43#-0#-----2@82" 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.02 sec-392050966#4013#82#-0#-----2@42"        Start  34: testBasicPointFunctors-392050966#4095#42#-0#-----2@82" 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec-392050966#4137#82#-0#-----2@32"        Start  35: testEmbedder-392050966#4219#32#-0#-----2@82" 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec-392050966#4251#82#-0#-----2@36"        Start  36: testSimpleMatrix-392050966#4333#36#-0#-----2@82" 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.02 sec-392050966#4369#82#-0#-----2@31"        Start  37: testMeasure-392050966#4451#31#-0#-----2@82" 37/115 Test  #37: testMeasure .............................   Passed    0.02 sec-392050966#4482#82#-0#-----2@30"        Start  38: testSignal-392050966#4564#30#-0#-----2@82" 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec-392050966#4594#82#-0#-----2@35"        Start  39: testMPolynomial-392050966#4676#35#-0#-----2@82" 39/115 Test  #39: testMPolynomial .........................   Passed    0.07 sec-392050966#4711#82#-0#-----2@44"        Start  40: testAngleLinearMinimizer-392050966#4793#44#-0#-----2@82" 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec-392050966#4837#82#-0#-----2@42"        Start  41: testBasicMathFunctions-392050966#4919#42#-0#-----2@82" 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec-392050966#4961#82#-0#-----2@38"        Start  42: testModuloComputer-392050966#5043#38#-0#-----2@82" 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec-392050966#5081#82#-0#-----2@31"        Start  43: testPattern-392050966#5163#31#-0#-----2@82" 43/115 Test  #43: testPattern .............................   Passed    0.71 sec-392050967#5194#82#-0#-----2@39"        Start  44: testFrechetShortcut-392050967#5276#39#-0#-----2@82" 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec-392050967#5315#82#-0#-----2@40"        Start  45: testLengthEstimators-392050967#5397#40#-0#-----2@47"make: *** [RUN_TESTS_buildpart_0] Interrupt: 2-392050968#5437#47#-0#-----0#0#0#--303"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F9EF140C901E4C5D9006E400.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F9EF140C901E4C5D9006E400.sh36"E5C8F5D6-FBF3-4969-8BB6-0BCB8B03F4AE-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh
+s391855623.803651
+e391855706.464942
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh
+o/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C Debug
+oTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o        Start   1: testBasicBoolFunctions
+o  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec
+o        Start   2: testOrderedAlphabet
+o  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec
+o        Start   3: testCirculator
+o  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec
+o        Start   4: testConstIteratorAdapter
+o  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec
+o        Start   5: testProgressBar
+o  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec
+o        Start   6: testBasicFunctors
+o  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec
+o        Start   7: testConstRangeAdapter
+o  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec
+o        Start   8: testOutputIteratorAdapter
+o  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec
+o        Start   9: testClock
+o  9/115 Test   #9: testClock ...............................   Passed    0.74 sec
+o        Start  10: testTrace
+o 10/115 Test  #10: testTrace ...............................   Passed    1.59 sec
+o        Start  11: testStatistics
+o 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec
+o        Start  12: testcpp11
+o 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec
+o        Start  13: testCountedPtr
+o 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec
+o        Start  14: testBits
+o 14/115 Test  #14: testBits ................................   Passed    0.35 sec
+o        Start  15: testIndexedListWithBlocks
+o 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.32 sec
+o        Start  16: testLabels
+o 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec
+o        Start  17: testLabelledMap
+o 17/115 Test  #17: testLabelledMap .........................   Passed    0.01 sec
+o        Start  18: testLabelledMap-benchmark
+o 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.02 sec
+o        Start  19: testMultiMap-benchmark
+o 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   29.95 sec
+o        Start  20: testOpenMP
+o 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec
+o        Start  21: testIteratorFunctions
+o 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec
+o        Start  22: testIteratorCirculatorTraits
+o 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec
+o        Start  23: testCloneAndAliases
+o 23/115 Test  #23: testCloneAndAliases .....................   Passed    1.06 sec
+o        Start  24: testOwningOrAliasingPtr
+o 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec
+o        Start  25: testDigitalSet
+o 25/115 Test  #25: testDigitalSet ..........................   Passed    0.04 sec
+o        Start  26: testDomainSpanIterator
+o 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec
+o        Start  27: testHyperRectDomain
+o 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.01 sec
+o        Start  28: testHyperRectDomain-snippet
+o 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec
+o        Start  29: testInteger
+o 29/115 Test  #29: testInteger .............................   Passed    0.01 sec
+o        Start  30: testPointVector
+o 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec
+o        Start  31: testPointVectorContainers
+o 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec
+o        Start  32: testLinearAlgebra
+o 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec
+o        Start  33: testImagesSetsUtilities
+o 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.01 sec
+o        Start  34: testBasicPointFunctors
+o 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec
+o        Start  35: testEmbedder
+o 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec
+o        Start  36: testSimpleMatrix
+o 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.01 sec
+o        Start  37: testMeasure
+o 37/115 Test  #37: testMeasure .............................   Passed    0.01 sec
+o        Start  38: testSignal
+o 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec
+o        Start  39: testMPolynomial
+o 39/115 Test  #39: testMPolynomial .........................   Passed    0.05 sec
+o        Start  40: testAngleLinearMinimizer
+o 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec
+o        Start  41: testBasicMathFunctions
+o 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec
+o        Start  42: testModuloComputer
+o 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec
+o        Start  43: testPattern
+o 43/115 Test  #43: testPattern .............................   Passed    0.43 sec
+o        Start  44: testFrechetShortcut
+o 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec
+o        Start  45: testLengthEstimators
+o 45/115 Test  #45: testLengthEstimators ....................   Passed    1.65 sec
+o        Start  46: testTrueLocalEstimator
+o 46/115 Test  #46: testTrueLocalEstimator ..................   Passed    0.02 sec
+o        Start  47: testEstimatorComparator
+o 47/115 Test  #47: testEstimatorComparator .................   Passed    0.03 sec
+o        Start  48: testSegmentComputerEstimators
+o 48/115 Test  #48: testSegmentComputerEstimators ...........   Passed    0.01 sec
+o        Start  49: testMostCenteredMSEstimator
+o 49/115 Test  #49: testMostCenteredMSEstimator .............   Passed    0.02 sec
+o        Start  50: testKanungo
+o 50/115 Test  #50: testKanungo .............................   Passed    0.69 sec
+o        Start  51: testMeasureSet
+o 51/115 Test  #51: testMeasureSet ..........................   Passed    0.02 sec
+o        Start  52: testDistanceTransformation
+o 52/115 Test  #52: testDistanceTransformation ..............   Passed    3.26 sec
+o        Start  53: testDistanceTransformationND
+o 53/115 Test  #53: testDistanceTransformationND ............   Passed    4.56 sec
+o        Start  54: testDistanceTransformationMetrics
+o 54/115 Test  #54: testDistanceTransformationMetrics .......   Passed    9.11 sec
+o        Start  55: testReverseDT
+o 55/115 Test  #55: testReverseDT ...........................   Passed    0.02 sec
+o        Start  56: testFMM
+o 56/115 Test  #56: testFMM .................................   Passed    7.55 sec
+o        Start  57: testVoronoiMap
+o 57/115 Test  #57: testVoronoiMap ..........................   Passed    8.99 sec
+o        Start  58: testMetrics
+o 58/115 Test  #58: testMetrics .............................   Passed    0.01 sec
+o        Start  59: testMetricBalls
+o 59/115 Test  #59: testMetricBalls .........................   Passed    0.13 sec
+o        Start  60: testPowerMap
+o 60/115 Test  #60: testPowerMap ............................   Passed    0.01 sec
+o        Start  61: testReducedMedialAxis
+o 61/115 Test  #61: testReducedMedialAxis ...................   Passed    0.01 sec
+o        Start  62: testSeparableMetricAdapter
+o 62/115 Test  #62: testSeparableMetricAdapter ..............   Passed    0.08 sec
+o        Start  63: testPreimage
+o 63/115 Test  #63: testPreimage ............................   Passed    0.01 sec
+o        Start  64: testSphericalAccumulator
+o 64/115 Test  #64: testSphericalAccumulator ................   Passed    0.01 sec
+o        Start  65: testBreadthFirstPropagation
+o 65/115 Test  #65: testBreadthFirstPropagation .............   Passed    0.18 sec
+o        Start  66: testDepthFirstPropagation
+o 66/115 Test  #66: testDepthFirstPropagation ...............   Passed    0.23 sec
+o        Start  67: testDigitalSurfaceBoostGraphInterface
+o 67/115 Test  #67: testDigitalSurfaceBoostGraphInterface ...   Passed    0.86 sec
+o        Start  68: testDistancePropagation
+o 68/115 Test  #68: testDistancePropagation .................   Passed    0.13 sec
+o        Start  69: testExpander
+o 69/115 Test  #69: testExpander ............................   Passed    0.41 sec
+o        Start  70: testSTLMapToVertexMapAdapter
+o 70/115 Test  #70: testSTLMapToVertexMapAdapter ............   Passed    0.01 sec
+o        Start  71: testAdjacency
+o 71/115 Test  #71: testAdjacency ...........................   Passed    0.01 sec
+o        Start  72: testCellularGridSpaceND
+o 72/115 Test  #72: testCellularGridSpaceND .................   Passed    0.03 sec
+o        Start  73: testDigitalSurface
+o 73/115 Test  #73: testDigitalSurface ......................   Passed    0.18 sec
+o        Start  74: testDigitalTopology
+o 74/115 Test  #74: testDigitalTopology .....................   Passed    0.01 sec
+o        Start  75: testObject
+o 75/115 Test  #75: testObject ..............................   Passed    2.61 sec
+o        Start  76: testObjectBorder
+o 76/115 Test  #76: testObjectBorder ........................   Passed    0.12 sec
+o        Start  77: testSimpleExpander
+o 77/115 Test  #77: testSimpleExpander ......................   Passed    0.03 sec
+o        Start  78: testSCellsFunctor
+o 78/115 Test  #78: testSCellsFunctor .......................   Passed    0.01 sec
+o        Start  79: testUmbrellaComputer
+o 79/115 Test  #79: testUmbrellaComputer ....................   Passed    0.40 sec
+o        Start  80: testSimpleBoard
+o 80/115 Test  #80: testSimpleBoard .........................   Passed    0.02 sec
+o        Start  81: testBoard2DCustomStyle
+o 81/115 Test  #81: testBoard2DCustomStyle ..................   Passed    0.03 sec
+o        Start  82: testLongvol
+o 82/115 Test  #82: testLongvol .............................   Passed    0.01 sec
+o        Start  83: testArcDrawing
+o 83/115 Test  #83: testArcDrawing ..........................   Passed    0.01 sec
+o        Start  84: testColorMaps
+o 84/115 Test  #84: testColorMaps ...........................   Passed    0.35 sec
+o        Start  85: testPNMReader
+o 85/115 Test  #85: testPNMReader ...........................   Passed    0.12 sec
+o        Start  86: testVolReader
+o 86/115 Test  #86: testVolReader ...........................   Passed    0.06 sec
+o        Start  87: testRawReader
+o 87/115 Test  #87: testRawReader ...........................   Passed    0.01 sec
+o        Start  88: testGenericReader
+o 88/115 Test  #88: testGenericReader .......................   Passed    0.06 sec
+o        Start  89: testPointListReader
+o 89/115 Test  #89: testPointListReader .....................   Passed    0.01 sec
+o        Start  90: testMeshReader
+o 90/115 Test  #90: testMeshReader ..........................   Passed    0.01 sec
+o        Start  91: testMPolynomialReader
+o 91/115 Test  #91: testMPolynomialReader ...................   Passed    0.05 sec
+o        Start  92: testPNMRawWriter
+o 92/115 Test  #92: testPNMRawWriter ........................   Passed    0.02 sec
+o        Start  93: testMeshWriter
+o 93/115 Test  #93: testMeshWriter ..........................   Passed    0.01 sec
+o        Start  94: testGenericWriter
+o 94/115 Test  #94: testGenericWriter .......................   Passed    0.14 sec
+o        Start  95: testImageSimple
+o 95/115 Test  #95: testImageSimple .........................   Passed    0.02 sec
+o        Start  96: testImageAdapter
+o 96/115 Test  #96: testImageAdapter ........................   Passed    0.70 sec
+o        Start  97: testImageCache
+o 97/115 Test  #97: testImageCache ..........................   Passed    0.01 sec
+o        Start  98: testTiledImageFromImage
+o 98/115 Test  #98: testTiledImageFromImage .................   Passed    0.01 sec
+o        Start  99: testConstImageAdapter
+o 99/115 Test  #99: testConstImageAdapter ...................   Passed    0.01 sec
+o        Start 100: testImage
+o100/115 Test #100: testImage ...............................   Passed    0.01 sec
+o        Start 101: testImageSpanIterators
+o101/115 Test #101: testImageSpanIterators ..................   Passed    0.01 sec
+o        Start 102: testCheckImageConcept
+o102/115 Test #102: testCheckImageConcept ...................   Passed    0.01 sec
+o        Start 103: testMorton
+o103/115 Test #103: testMorton ..............................   Passed    0.88 sec
+o        Start 104: testHashTree
+o104/115 Test #104: testHashTree ............................   Passed    2.05 sec
+o        Start 105: testSliceImageFromFunctor
+o105/115 Test #105: testSliceImageFromFunctor ...............   Passed    0.03 sec
+o        Start 106: testParametricShape
+o106/115 Test #106: testParametricShape .....................   Passed    0.01 sec
+o        Start 107: testImplicitShape
+o107/115 Test #107: testImplicitShape .......................   Passed    0.15 sec
+o        Start 108: testGaussDigitizer
+o108/115 Test #108: testGaussDigitizer ......................   Passed    0.38 sec
+o        Start 109: testHalfPlane
+o109/115 Test #109: testHalfPlane ...........................   Passed    0.01 sec
+o        Start 110: testImplicitFunctionModels
+o110/115 Test #110: testImplicitFunctionModels ..............   Passed    0.01 sec
+o        Start 111: testShapesFromPoints
+o111/115 Test #111: testShapesFromPoints ....................   Passed    0.01 sec
+o        Start 112: testMesh
+o112/115 Test #112: testMesh ................................   Passed    0.01 sec
+o        Start 113: testBall3DSurface
+o113/115 Test #113: testBall3DSurface .......................   Passed    0.20 sec
+o        Start 114: testEuclideanShapesDecorator
+o114/115 Test #114: testEuclideanShapesDecorator ............   Passed    0.01 sec
+o        Start 115: testDigitalShapesDecorator
+o115/115 Test #115: testDigitalShapesDecorator ..............   Passed    0.01 sec
+o
+o100% tests passed, 0 tests failed out of 115
+o
+oTotal Test time (real) =  82.58 sec
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'1842ce073e5bb741^cc08775a3e5bb741^-14059"/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C DebugTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode        Start   1: testBasicBoolFunctions  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec        Start   2: testOrderedAlphabet  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec        Start   3: testCirculator  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec        Start   4: testConstIteratorAdapter  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec        Start   5: testProgressBar  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec        Start   6: testBasicFunctors  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec        Start   7: testConstRangeAdapter  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec        Start   8: testOutputIteratorAdapter  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec        Start   9: testClock  9/115 Test   #9: testClock ...............................   Passed    0.74 sec        Start  10: testTrace 10/115 Test  #10: testTrace ...............................   Passed    1.59 sec        Start  11: testStatistics 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec        Start  12: testcpp11 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec        Start  13: testCountedPtr 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec        Start  14: testBits 14/115 Test  #14: testBits ................................   Passed    0.35 sec        Start  15: testIndexedListWithBlocks 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.32 sec        Start  16: testLabels 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec        Start  17: testLabelledMap 17/115 Test  #17: testLabelledMap .........................   Passed    0.01 sec        Start  18: testLabelledMap-benchmark 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.02 sec        Start  19: testMultiMap-benchmark 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   29.95 sec        Start  20: testOpenMP 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec        Start  21: testIteratorFunctions 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec        Start  22: testIteratorCirculatorTraits 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec        Start  23: testCloneAndAliases 23/115 Test  #23: testCloneAndAliases .....................   Passed    1.06 sec        Start  24: testOwningOrAliasingPtr 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec        Start  25: testDigitalSet 25/115 Test  #25: testDigitalSet ..........................   Passed    0.04 sec        Start  26: testDomainSpanIterator 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec        Start  27: testHyperRectDomain 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.01 sec        Start  28: testHyperRectDomain-snippet 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec        Start  29: testInteger 29/115 Test  #29: testInteger .............................   Passed    0.01 sec        Start  30: testPointVector 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec        Start  31: testPointVectorContainers 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec        Start  32: testLinearAlgebra 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec        Start  33: testImagesSetsUtilities 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.01 sec        Start  34: testBasicPointFunctors 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec        Start  35: testEmbedder 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec        Start  36: testSimpleMatrix 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.01 sec        Start  37: testMeasure 37/115 Test  #37: testMeasure .............................   Passed    0.01 sec        Start  38: testSignal 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec        Start  39: testMPolynomial 39/115 Test  #39: testMPolynomial .........................   Passed    0.05 sec        Start  40: testAngleLinearMinimizer 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec        Start  41: testBasicMathFunctions 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec        Start  42: testModuloComputer 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec        Start  43: testPattern 43/115 Test  #43: testPattern .............................   Passed    0.43 sec        Start  44: testFrechetShortcut 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec        Start  45: testLengthEstimators 45/115 Test  #45: testLengthEstimators ....................   Passed    1.65 sec        Start  46: testTrueLocalEstimator 46/115 Test  #46: testTrueLocalEstimator ..................   Passed    0.02 sec        Start  47: testEstimatorComparator 47/115 Test  #47: testEstimatorComparator .................   Passed    0.03 sec        Start  48: testSegmentComputerEstimators 48/115 Test  #48: testSegmentComputerEstimators ...........   Passed    0.01 sec        Start  49: testMostCenteredMSEstimator 49/115 Test  #49: testMostCenteredMSEstimator .............   Passed    0.02 sec        Start  50: testKanungo 50/115 Test  #50: testKanungo .............................   Passed    0.69 sec        Start  51: testMeasureSet 51/115 Test  #51: testMeasureSet ..........................   Passed    0.02 sec        Start  52: testDistanceTransformation 52/115 Test  #52: testDistanceTransformation ..............   Passed    3.26 sec        Start  53: testDistanceTransformationND 53/115 Test  #53: testDistanceTransformationND ............   Passed    4.56 sec        Start  54: testDistanceTransformationMetrics 54/115 Test  #54: testDistanceTransformationMetrics .......   Passed    9.11 sec        Start  55: testReverseDT 55/115 Test  #55: testReverseDT ...........................   Passed    0.02 sec        Start  56: testFMM 56/115 Test  #56: testFMM .................................   Passed    7.55 sec        Start  57: testVoronoiMap 57/115 Test  #57: testVoronoiMap ..........................   Passed    8.99 sec        Start  58: testMetrics 58/115 Test  #58: testMetrics .............................   Passed    0.01 sec        Start  59: testMetricBalls 59/115 Test  #59: testMetricBalls .........................   Passed    0.13 sec        Start  60: testPowerMap 60/115 Test  #60: testPowerMap ............................   Passed    0.01 sec        Start  61: testReducedMedialAxis 61/115 Test  #61: testReducedMedialAxis ...................   Passed    0.01 sec        Start  62: testSeparableMetricAdapter 62/115 Test  #62: testSeparableMetricAdapter ..............   Passed    0.08 sec        Start  63: testPreimage 63/115 Test  #63: testPreimage ............................   Passed    0.01 sec        Start  64: testSphericalAccumulator 64/115 Test  #64: testSphericalAccumulator ................   Passed    0.01 sec        Start  65: testBreadthFirstPropagation 65/115 Test  #65: testBreadthFirstPropagation .............   Passed    0.18 sec        Start  66: testDepthFirstPropagation 66/115 Test  #66: testDepthFirstPropagation ...............   Passed    0.23 sec        Start  67: testDigitalSurfaceBoostGraphInterface 67/115 Test  #67: testDigitalSurfaceBoostGraphInterface ...   Passed    0.86 sec        Start  68: testDistancePropagation 68/115 Test  #68: testDistancePropagation .................   Passed    0.13 sec        Start  69: testExpander 69/115 Test  #69: testExpander ............................   Passed    0.41 sec        Start  70: testSTLMapToVertexMapAdapter 70/115 Test  #70: testSTLMapToVertexMapAdapter ............   Passed    0.01 sec        Start  71: testAdjacency 71/115 Test  #71: testAdjacency ...........................   Passed    0.01 sec        Start  72: testCellularGridSpaceND 72/115 Test  #72: testCellularGridSpaceND .................   Passed    0.03 sec        Start  73: testDigitalSurface 73/115 Test  #73: testDigitalSurface ......................   Passed    0.18 sec        Start  74: testDigitalTopology 74/115 Test  #74: testDigitalTopology .....................   Passed    0.01 sec        Start  75: testObject 75/115 Test  #75: testObject ..............................   Passed    2.61 sec        Start  76: testObjectBorder 76/115 Test  #76: testObjectBorder ........................   Passed    0.12 sec        Start  77: testSimpleExpander 77/115 Test  #77: testSimpleExpander ......................   Passed    0.03 sec        Start  78: testSCellsFunctor 78/115 Test  #78: testSCellsFunctor .......................   Passed    0.01 sec        Start  79: testUmbrellaComputer 79/115 Test  #79: testUmbrellaComputer ....................   Passed    0.40 sec        Start  80: testSimpleBoard 80/115 Test  #80: testSimpleBoard .........................   Passed    0.02 sec        Start  81: testBoard2DCustomStyle 81/115 Test  #81: testBoard2DCustomStyle ..................   Passed    0.03 sec        Start  82: testLongvol 82/115 Test  #82: testLongvol .............................   Passed    0.01 sec        Start  83: testArcDrawing 83/115 Test  #83: testArcDrawing ..........................   Passed    0.01 sec        Start  84: testColorMaps 84/115 Test  #84: testColorMaps ...........................   Passed    0.35 sec        Start  85: testPNMReader 85/115 Test  #85: testPNMReader ...........................   Passed    0.12 sec        Start  86: testVolReader 86/115 Test  #86: testVolReader ...........................   Passed    0.06 sec        Start  87: testRawReader 87/115 Test  #87: testRawReader ...........................   Passed    0.01 sec        Start  88: testGenericReader 88/115 Test  #88: testGenericReader .......................   Passed    0.06 sec        Start  89: testPointListReader 89/115 Test  #89: testPointListReader .....................   Passed    0.01 sec        Start  90: testMeshReader 90/115 Test  #90: testMeshReader ..........................   Passed    0.01 sec        Start  91: testMPolynomialReader 91/115 Test  #91: testMPolynomialReader ...................   Passed    0.05 sec        Start  92: testPNMRawWriter 92/115 Test  #92: testPNMRawWriter ........................   Passed    0.02 sec        Start  93: testMeshWriter 93/115 Test  #93: testMeshWriter ..........................   Passed    0.01 sec        Start  94: testGenericWriter 94/115 Test  #94: testGenericWriter .......................   Passed    0.14 sec        Start  95: testImageSimple 95/115 Test  #95: testImageSimple .........................   Passed    0.02 sec        Start  96: testImageAdapter 96/115 Test  #96: testImageAdapter ........................   Passed    0.70 sec        Start  97: testImageCache 97/115 Test  #97: testImageCache ..........................   Passed    0.01 sec        Start  98: testTiledImageFromImage 98/115 Test  #98: testTiledImageFromImage .................   Passed    0.01 sec        Start  99: testConstImageAdapter 99/115 Test  #99: testConstImageAdapter ...................   Passed    0.01 sec        Start 100: testImage100/115 Test #100: testImage ...............................   Passed    0.01 sec        Start 101: testImageSpanIterators101/115 Test #101: testImageSpanIterators ..................   Passed    0.01 sec        Start 102: testCheckImageConcept102/115 Test #102: testCheckImageConcept ...................   Passed    0.01 sec        Start 103: testMorton103/115 Test #103: testMorton ..............................   Passed    0.88 sec        Start 104: testHashTree104/115 Test #104: testHashTree ............................   Passed    2.05 sec        Start 105: testSliceImageFromFunctor105/115 Test #105: testSliceImageFromFunctor ...............   Passed    0.03 sec        Start 106: testParametricShape106/115 Test #106: testParametricShape .....................   Passed    0.01 sec        Start 107: testImplicitShape107/115 Test #107: testImplicitShape .......................   Passed    0.15 sec        Start 108: testGaussDigitizer108/115 Test #108: testGaussDigitizer ......................   Passed    0.38 sec        Start 109: testHalfPlane109/115 Test #109: testHalfPlane ...........................   Passed    0.01 sec        Start 110: testImplicitFunctionModels110/115 Test #110: testImplicitFunctionModels ..............   Passed    0.01 sec        Start 111: testShapesFromPoints111/115 Test #111: testShapesFromPoints ....................   Passed    0.01 sec        Start 112: testMesh112/115 Test #112: testMesh ................................   Passed    0.01 sec        Start 113: testBall3DSurface113/115 Test #113: testBall3DSurface .......................   Passed    0.20 sec        Start 114: testEuclideanShapesDecorator114/115 Test #114: testEuclideanShapesDecorator ............   Passed    0.01 sec        Start 115: testDigitalShapesDecorator115/115 Test #115: testDigitalShapesDecorator ..............   Passed    0.01 sec100% tests passed, 0 tests failed out of 115Total Test time (real) =  82.58 secShowing first 200 notices only201(21%IDEActivityLogMessage2@76"/usr/local/Cellar/cmake/2.8.11/bin/ctest --force-new-ctest-process -C Debug-391855623#0#76#-0#-----2@62"Test project /Users/davidcoeurjolly/Sources/DGtal/build-xcode-391855623#76#62#-0#-----2@42"        Start   1: testBasicBoolFunctions-391855623#138#42#-0#-----2@82"  1/115 Test   #1: testBasicBoolFunctions ..................   Passed    0.02 sec-391855624#180#82#-0#-----2@39"        Start   2: testOrderedAlphabet-391855624#262#39#-0#-----2@82"  2/115 Test   #2: testOrderedAlphabet .....................   Passed    0.01 sec-391855624#301#82#-0#-----2@34"        Start   3: testCirculator-391855624#383#34#-0#-----2@82"  3/115 Test   #3: testCirculator ..........................   Passed    0.01 sec-391855624#417#82#-0#-----2@44"        Start   4: testConstIteratorAdapter-391855624#499#44#-0#-----2@82"  4/115 Test   #4: testConstIteratorAdapter ................   Passed    0.01 sec-391855624#543#82#-0#-----2@35"        Start   5: testProgressBar-391855624#625#35#-0#-----2@82"  5/115 Test   #5: testProgressBar .........................   Passed    0.57 sec-391855624#660#82#-0#-----2@37"        Start   6: testBasicFunctors-391855624#742#37#-0#-----2@82"  6/115 Test   #6: testBasicFunctors .......................   Passed    0.01 sec-391855624#779#82#-0#-----2@41"        Start   7: testConstRangeAdapter-391855624#861#41#-0#-----2@82"  7/115 Test   #7: testConstRangeAdapter ...................   Passed    0.01 sec-391855624#902#82#-0#-----2@45"        Start   8: testOutputIteratorAdapter-391855624#984#45#-0#-----2@82"  8/115 Test   #8: testOutputIteratorAdapter ...............   Passed    0.01 sec-391855624#1029#82#-0#-----2@29"        Start   9: testClock-391855624#1111#29#-0#-----2@82"  9/115 Test   #9: testClock ...............................   Passed    0.74 sec-391855625#1140#82#-0#-----2@29"        Start  10: testTrace-391855625#1222#29#-0#-----2@82" 10/115 Test  #10: testTrace ...............................   Passed    1.59 sec-391855627#1251#82#-0#-----2@34"        Start  11: testStatistics-391855627#1333#34#-0#-----2@82" 11/115 Test  #11: testStatistics ..........................   Passed    0.01 sec-391855627#1367#82#-0#-----2@29"        Start  12: testcpp11-391855627#1449#29#-0#-----2@82" 12/115 Test  #12: testcpp11 ...............................   Passed    0.01 sec-391855627#1478#82#-0#-----2@34"        Start  13: testCountedPtr-391855627#1560#34#-0#-----2@82" 13/115 Test  #13: testCountedPtr ..........................   Passed    0.01 sec-391855627#1594#82#-0#-----2@28"        Start  14: testBits-391855627#1676#28#-0#-----2@82" 14/115 Test  #14: testBits ................................   Passed    0.35 sec-391855627#1704#82#-0#-----2@45"        Start  15: testIndexedListWithBlocks-391855627#1786#45#-0#-----2@82" 15/115 Test  #15: testIndexedListWithBlocks ...............   Passed    0.32 sec-391855627#1831#82#-0#-----2@30"        Start  16: testLabels-391855627#1913#30#-0#-----2@82" 16/115 Test  #16: testLabels ..............................   Passed    0.01 sec-391855627#1943#82#-0#-----2@35"        Start  17: testLabelledMap-391855627#2025#35#-0#-----2@82" 17/115 Test  #17: testLabelledMap .........................   Passed    0.01 sec-391855627#2060#82#-0#-----2@45"        Start  18: testLabelledMap-benchmark-391855627#2142#45#-0#-----2@82" 18/115 Test  #18: testLabelledMap-benchmark ...............   Passed    0.02 sec-391855627#2187#82#-0#-----2@42"        Start  19: testMultiMap-benchmark-391855627#2269#42#-0#-----2@82" 19/115 Test  #19: testMultiMap-benchmark ..................   Passed   29.95 sec-391855657#2311#82#-0#-----2@30"        Start  20: testOpenMP-391855657#2393#30#-0#-----2@82" 20/115 Test  #20: testOpenMP ..............................   Passed    0.01 sec-391855657#2423#82#-0#-----2@41"        Start  21: testIteratorFunctions-391855657#2505#41#-0#-----2@82" 21/115 Test  #21: testIteratorFunctions ...................   Passed    0.01 sec-391855657#2546#82#-0#-----2@48"        Start  22: testIteratorCirculatorTraits-391855657#2628#48#-0#-----2@82" 22/115 Test  #22: testIteratorCirculatorTraits ............   Passed    0.01 sec-391855657#2676#82#-0#-----2@39"        Start  23: testCloneAndAliases-391855657#2758#39#-0#-----2@82" 23/115 Test  #23: testCloneAndAliases .....................   Passed    1.06 sec-391855658#2797#82#-0#-----2@43"        Start  24: testOwningOrAliasingPtr-391855658#2879#43#-0#-----2@82" 24/115 Test  #24: testOwningOrAliasingPtr .................   Passed    0.01 sec-391855658#2922#82#-0#-----2@34"        Start  25: testDigitalSet-391855658#3004#34#-0#-----2@82" 25/115 Test  #25: testDigitalSet ..........................   Passed    0.04 sec-391855658#3038#82#-0#-----2@42"        Start  26: testDomainSpanIterator-391855658#3120#42#-0#-----2@82" 26/115 Test  #26: testDomainSpanIterator ..................   Passed    0.01 sec-391855658#3162#82#-0#-----2@39"        Start  27: testHyperRectDomain-391855658#3244#39#-0#-----2@82" 27/115 Test  #27: testHyperRectDomain .....................   Passed    0.01 sec-391855658#3283#82#-0#-----2@47"        Start  28: testHyperRectDomain-snippet-391855658#3365#47#-0#-----2@82" 28/115 Test  #28: testHyperRectDomain-snippet .............   Passed    0.01 sec-391855658#3412#82#-0#-----2@31"        Start  29: testInteger-391855658#3494#31#-0#-----2@82" 29/115 Test  #29: testInteger .............................   Passed    0.01 sec-391855658#3525#82#-0#-----2@35"        Start  30: testPointVector-391855658#3607#35#-0#-----2@82" 30/115 Test  #30: testPointVector .........................   Passed    0.01 sec-391855658#3642#82#-0#-----2@45"        Start  31: testPointVectorContainers-391855658#3724#45#-0#-----2@82" 31/115 Test  #31: testPointVectorContainers ...............   Passed    0.01 sec-391855658#3769#82#-0#-----2@37"        Start  32: testLinearAlgebra-391855658#3851#37#-0#-----2@82" 32/115 Test  #32: testLinearAlgebra .......................   Passed    0.01 sec-391855658#3888#82#-0#-----2@43"        Start  33: testImagesSetsUtilities-391855658#3970#43#-0#-----2@82" 33/115 Test  #33: testImagesSetsUtilities .................   Passed    0.01 sec-391855658#4013#82#-0#-----2@42"        Start  34: testBasicPointFunctors-391855658#4095#42#-0#-----2@82" 34/115 Test  #34: testBasicPointFunctors ..................   Passed    0.01 sec-391855658#4137#82#-0#-----2@32"        Start  35: testEmbedder-391855658#4219#32#-0#-----2@82" 35/115 Test  #35: testEmbedder ............................   Passed    0.01 sec-391855658#4251#82#-0#-----2@36"        Start  36: testSimpleMatrix-391855658#4333#36#-0#-----2@82" 36/115 Test  #36: testSimpleMatrix ........................   Passed    0.01 sec-391855658#4369#82#-0#-----2@31"        Start  37: testMeasure-391855658#4451#31#-0#-----2@82" 37/115 Test  #37: testMeasure .............................   Passed    0.01 sec-391855658#4482#82#-0#-----2@30"        Start  38: testSignal-391855658#4564#30#-0#-----2@82" 38/115 Test  #38: testSignal ..............................   Passed    0.01 sec-391855658#4594#82#-0#-----2@35"        Start  39: testMPolynomial-391855658#4676#35#-0#-----2@82" 39/115 Test  #39: testMPolynomial .........................   Passed    0.05 sec-391855659#4711#82#-0#-----2@44"        Start  40: testAngleLinearMinimizer-391855659#4793#44#-0#-----2@82" 40/115 Test  #40: testAngleLinearMinimizer ................   Passed    0.01 sec-391855659#4837#82#-0#-----2@42"        Start  41: testBasicMathFunctions-391855659#4919#42#-0#-----2@82" 41/115 Test  #41: testBasicMathFunctions ..................   Passed    0.01 sec-391855659#4961#82#-0#-----2@38"        Start  42: testModuloComputer-391855659#5043#38#-0#-----2@82" 42/115 Test  #42: testModuloComputer ......................   Passed    0.01 sec-391855659#5081#82#-0#-----2@31"        Start  43: testPattern-391855659#5163#31#-0#-----2@82" 43/115 Test  #43: testPattern .............................   Passed    0.43 sec-391855659#5194#82#-0#-----2@39"        Start  44: testFrechetShortcut-391855659#5276#39#-0#-----2@82" 44/115 Test  #44: testFrechetShortcut .....................   Passed    0.02 sec-391855659#5315#82#-0#-----2@40"        Start  45: testLengthEstimators-391855659#5397#40#-0#-----2@82" 45/115 Test  #45: testLengthEstimators ....................   Passed    1.65 sec-391855661#5437#82#-0#-----2@42"        Start  46: testTrueLocalEstimator-391855661#5519#42#-0#-----2@82" 46/115 Test  #46: testTrueLocalEstimator ..................   Passed    0.02 sec-391855661#5561#82#-0#-----2@43"        Start  47: testEstimatorComparator-391855661#5643#43#-0#-----2@82" 47/115 Test  #47: testEstimatorComparator .................   Passed    0.03 sec-391855661#5686#82#-0#-----2@49"        Start  48: testSegmentComputerEstimators-391855661#5768#49#-0#-----2@82" 48/115 Test  #48: testSegmentComputerEstimators ...........   Passed    0.01 sec-391855661#5817#82#-0#-----2@47"        Start  49: testMostCenteredMSEstimator-391855661#5899#47#-0#-----2@82" 49/115 Test  #49: testMostCenteredMSEstimator .............   Passed    0.02 sec-391855661#5946#82#-0#-----2@31"        Start  50: testKanungo-391855661#6028#31#-0#-----2@82" 50/115 Test  #50: testKanungo .............................   Passed    0.69 sec-391855661#6059#82#-0#-----2@34"        Start  51: testMeasureSet-391855661#6141#34#-0#-----2@82" 51/115 Test  #51: testMeasureSet ..........................   Passed    0.02 sec-391855661#6175#82#-0#-----2@46"        Start  52: testDistanceTransformation-391855661#6257#46#-0#-----2@82" 52/115 Test  #52: testDistanceTransformation ..............   Passed    3.26 sec-391855665#6303#82#-0#-----2@48"        Start  53: testDistanceTransformationND-391855665#6385#48#-0#-----2@82" 53/115 Test  #53: testDistanceTransformationND ............   Passed    4.56 sec-391855669#6433#82#-0#-----2@53"        Start  54: testDistanceTransformationMetrics-391855669#6515#53#-0#-----2@82" 54/115 Test  #54: testDistanceTransformationMetrics .......   Passed    9.11 sec-391855678#6568#82#-0#-----2@33"        Start  55: testReverseDT-391855678#6650#33#-0#-----2@82" 55/115 Test  #55: testReverseDT ...........................   Passed    0.02 sec-391855678#6683#82#-0#-----2@27"        Start  56: testFMM-391855678#6765#27#-0#-----2@82" 56/115 Test  #56: testFMM .................................   Passed    7.55 sec-391855686#6792#82#-0#-----2@34"        Start  57: testVoronoiMap-391855686#6874#34#-0#-----2@82" 57/115 Test  #57: testVoronoiMap ..........................   Passed    8.99 sec-391855695#6908#82#-0#-----2@31"        Start  58: testMetrics-391855695#6990#31#-0#-----2@82" 58/115 Test  #58: testMetrics .............................   Passed    0.01 sec-391855695#7021#82#-0#-----2@35"        Start  59: testMetricBalls-391855695#7103#35#-0#-----2@82" 59/115 Test  #59: testMetricBalls .........................   Passed    0.13 sec-391855695#7138#82#-0#-----2@32"        Start  60: testPowerMap-391855695#7220#32#-0#-----2@82" 60/115 Test  #60: testPowerMap ............................   Passed    0.01 sec-391855695#7252#82#-0#-----2@41"        Start  61: testReducedMedialAxis-391855695#7334#41#-0#-----2@82" 61/115 Test  #61: testReducedMedialAxis ...................   Passed    0.01 sec-391855695#7375#82#-0#-----2@46"        Start  62: testSeparableMetricAdapter-391855695#7457#46#-0#-----2@82" 62/115 Test  #62: testSeparableMetricAdapter ..............   Passed    0.08 sec-391855695#7503#82#-0#-----2@32"        Start  63: testPreimage-391855695#7585#32#-0#-----2@82" 63/115 Test  #63: testPreimage ............................   Passed    0.01 sec-391855695#7617#82#-0#-----2@44"        Start  64: testSphericalAccumulator-391855695#7699#44#-0#-----2@82" 64/115 Test  #64: testSphericalAccumulator ................   Passed    0.01 sec-391855695#7743#82#-0#-----2@47"        Start  65: testBreadthFirstPropagation-391855695#7825#47#-0#-----2@82" 65/115 Test  #65: testBreadthFirstPropagation .............   Passed    0.18 sec-391855695#7872#82#-0#-----2@45"        Start  66: testDepthFirstPropagation-391855695#7954#45#-0#-----2@82" 66/115 Test  #66: testDepthFirstPropagation ...............   Passed    0.23 sec-391855696#7999#82#-0#-----2@57"        Start  67: testDigitalSurfaceBoostGraphInterface-391855696#8081#57#-0#-----2@82" 67/115 Test  #67: testDigitalSurfaceBoostGraphInterface ...   Passed    0.86 sec-391855697#8138#82#-0#-----2@43"        Start  68: testDistancePropagation-391855697#8220#43#-0#-----2@82" 68/115 Test  #68: testDistancePropagation .................   Passed    0.13 sec-391855697#8263#82#-0#-----2@32"        Start  69: testExpander-391855697#8345#32#-0#-----2@82" 69/115 Test  #69: testExpander ............................   Passed    0.41 sec-391855697#8377#82#-0#-----2@48"        Start  70: testSTLMapToVertexMapAdapter-391855697#8459#48#-0#-----2@82" 70/115 Test  #70: testSTLMapToVertexMapAdapter ............   Passed    0.01 sec-391855697#8507#82#-0#-----2@33"        Start  71: testAdjacency-391855697#8589#33#-0#-----2@82" 71/115 Test  #71: testAdjacency ...........................   Passed    0.01 sec-391855697#8622#82#-0#-----2@43"        Start  72: testCellularGridSpaceND-391855697#8704#43#-0#-----2@82" 72/115 Test  #72: testCellularGridSpaceND .................   Passed    0.03 sec-391855697#8747#82#-0#-----2@38"        Start  73: testDigitalSurface-391855697#8829#38#-0#-----2@82" 73/115 Test  #73: testDigitalSurface ......................   Passed    0.18 sec-391855697#8867#82#-0#-----2@39"        Start  74: testDigitalTopology-391855697#8949#39#-0#-----2@82" 74/115 Test  #74: testDigitalTopology .....................   Passed    0.01 sec-391855697#8988#82#-0#-----2@30"        Start  75: testObject-391855697#9070#30#-0#-----2@82" 75/115 Test  #75: testObject ..............................   Passed    2.61 sec-391855700#9100#82#-0#-----2@36"        Start  76: testObjectBorder-391855700#9182#36#-0#-----2@82" 76/115 Test  #76: testObjectBorder ........................   Passed    0.12 sec-391855700#9218#82#-0#-----2@38"        Start  77: testSimpleExpander-391855700#9300#38#-0#-----2@82" 77/115 Test  #77: testSimpleExpander ......................   Passed    0.03 sec-391855700#9338#82#-0#-----2@37"        Start  78: testSCellsFunctor-391855700#9420#37#-0#-----2@82" 78/115 Test  #78: testSCellsFunctor .......................   Passed    0.01 sec-391855700#9457#82#-0#-----2@40"        Start  79: testUmbrellaComputer-391855700#9539#40#-0#-----2@82" 79/115 Test  #79: testUmbrellaComputer ....................   Passed    0.40 sec-391855700#9579#82#-0#-----2@35"        Start  80: testSimpleBoard-391855700#9661#35#-0#-----2@82" 80/115 Test  #80: testSimpleBoard .........................   Passed    0.02 sec-391855701#9696#82#-0#-----2@42"        Start  81: testBoard2DCustomStyle-391855701#9778#42#-0#-----2@82" 81/115 Test  #81: testBoard2DCustomStyle ..................   Passed    0.03 sec-391855701#9820#82#-0#-----2@31"        Start  82: testLongvol-391855701#9902#31#-0#-----2@82" 82/115 Test  #82: testLongvol .............................   Passed    0.01 sec-391855701#9933#82#-0#-----2@34"        Start  83: testArcDrawing-391855701#10015#34#-0#-----2@82" 83/115 Test  #83: testArcDrawing ..........................   Passed    0.01 sec-391855701#10049#82#-0#-----2@33"        Start  84: testColorMaps-391855701#10131#33#-0#-----2@82" 84/115 Test  #84: testColorMaps ...........................   Passed    0.35 sec-391855701#10164#82#-0#-----2@33"        Start  85: testPNMReader-391855701#10246#33#-0#-----2@82" 85/115 Test  #85: testPNMReader ...........................   Passed    0.12 sec-391855701#10279#82#-0#-----2@33"        Start  86: testVolReader-391855701#10361#33#-0#-----2@82" 86/115 Test  #86: testVolReader ...........................   Passed    0.06 sec-391855701#10394#82#-0#-----2@33"        Start  87: testRawReader-391855701#10476#33#-0#-----2@82" 87/115 Test  #87: testRawReader ...........................   Passed    0.01 sec-391855701#10509#82#-0#-----2@37"        Start  88: testGenericReader-391855701#10591#37#-0#-----2@82" 88/115 Test  #88: testGenericReader .......................   Passed    0.06 sec-391855701#10628#82#-0#-----2@39"        Start  89: testPointListReader-391855701#10710#39#-0#-----2@82" 89/115 Test  #89: testPointListReader .....................   Passed    0.01 sec-391855701#10749#82#-0#-----2@34"        Start  90: testMeshReader-391855701#10831#34#-0#-----2@82" 90/115 Test  #90: testMeshReader ..........................   Passed    0.01 sec-391855701#10865#82#-0#-----2@41"        Start  91: testMPolynomialReader-391855701#10947#41#-0#-----2@82" 91/115 Test  #91: testMPolynomialReader ...................   Passed    0.05 sec-391855701#10988#82#-0#-----2@36"        Start  92: testPNMRawWriter-391855701#11070#36#-0#-----2@82" 92/115 Test  #92: testPNMRawWriter ........................   Passed    0.02 sec-391855701#11106#82#-0#-----2@34"        Start  93: testMeshWriter-391855701#11188#34#-0#-----2@82" 93/115 Test  #93: testMeshWriter ..........................   Passed    0.01 sec-391855701#11222#82#-0#-----2@37"        Start  94: testGenericWriter-391855701#11304#37#-0#-----2@82" 94/115 Test  #94: testGenericWriter .......................   Passed    0.14 sec-391855701#11341#82#-0#-----2@35"        Start  95: testImageSimple-391855701#11423#35#-0#-----2@82" 95/115 Test  #95: testImageSimple .........................   Passed    0.02 sec-391855701#11458#82#-0#-----2@36"        Start  96: testImageAdapter-391855701#11540#36#-0#-----2@82" 96/115 Test  #96: testImageAdapter ........................   Passed    0.70 sec-391855702#11576#82#-0#-----2@34"        Start  97: testImageCache-391855702#11658#34#-0#-----2@82" 97/115 Test  #97: testImageCache ..........................   Passed    0.01 sec-391855702#11692#82#-0#-----2@43"        Start  98: testTiledImageFromImage-391855702#11774#43#-0#-----2@82" 98/115 Test  #98: testTiledImageFromImage .................   Passed    0.01 sec-391855702#11817#82#-0#-----2@41"        Start  99: testConstImageAdapter-391855702#11899#41#-0#-----2@82" 99/115 Test  #99: testConstImageAdapter ...................   Passed    0.01 sec-391855702#11940#82#-0#-----2@30"Showing first 200 notices only-391855706#18446744073709551615#0#-0#--21"Notice limit exceeded--0#0#0#--303"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-FEB9DF69862441E191B375EA.sh36"DEEE932B-52F4-43D8-8B1E-5A6CE95C920C-
+
+CPhaseScriptExecution CMake\ PostBuild\ Rules /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F53B6C2FC48746359D93DFFE.sh
+s401870513.493513
+e401870513.971947
+r0
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F53B6C2FC48746359D93DFFE.sh
+o/usr/local/Cellar/cmake/2.8.11.2/bin/ctest --force-new-ctest-process -C Debug
+oTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode
+o        Start   1: testBasicBoolFunctions
+oCould not find executable testBasicBoolFunctions
+oLooked in the following places:
+otestBasicBoolFunctions
+otestBasicBoolFunctions
+oDebug/testBasicBoolFunctions
+oDebug/testBasicBoolFunctions
+oDebug/testBasicBoolFunctions
+oDebug/testBasicBoolFunctions
+oUnable to find executable: testBasicBoolFunctions
+o  1/116 Test   #1: testBasicBoolFunctions ..................***Not Run   0.00 sec
+o        Start   2: testOrderedAlphabet
+oCould not find executable testOrderedAlphabet
+oLooked in the following places:
+otestOrderedAlphabet
+otestOrderedAlphabet
+oDebug/testOrderedAlphabet
+oDebug/testOrderedAlphabet
+oDebug/testOrderedAlphabet
+oDebug/testOrderedAlphabet
+oUnable to find executable: testOrderedAlphabet
+o  2/116 Test   #2: testOrderedAlphabet .....................***Not Run   0.00 sec
+o        Start   3: testCirculator
+oCould not find executable testCirculator
+oLooked in the following places:
+otestCirculator
+otestCirculator
+oDebug/testCirculator
+oDebug/testCirculator
+oDebug/testCirculator
+oDebug/testCirculator
+oUnable to find executable: testCirculator
+o  3/116 Test   #3: testCirculator ..........................***Not Run   0.00 sec
+o        Start   4: testConstIteratorAdapter
+oCould not find executable testConstIteratorAdapter
+oLooked in the following places:
+otestConstIteratorAdapter
+otestConstIteratorAdapter
+oDebug/testConstIteratorAdapter
+oDebug/testConstIteratorAdapter
+oDebug/testConstIteratorAdapter
+oDebug/testConstIteratorAdapter
+oUnable to find executable: testConstIteratorAdapter
+o  4/116 Test   #4: testConstIteratorAdapter ................***Not Run   0.00 sec
+o        Start   5: testProgressBar
+oCould not find executable testProgressBar
+oLooked in the following places:
+otestProgressBar
+otestProgressBar
+oDebug/testProgressBar
+oDebug/testProgressBar
+oDebug/testProgressBar
+oDebug/testProgressBar
+oUnable to find executable: testProgressBar
+o  5/116 Test   #5: testProgressBar .........................***Not Run   0.00 sec
+o        Start   6: testBasicFunctors
+oCould not find executable testBasicFunctors
+oLooked in the following places:
+otestBasicFunctors
+otestBasicFunctors
+oDebug/testBasicFunctors
+oDebug/testBasicFunctors
+oDebug/testBasicFunctors
+oDebug/testBasicFunctors
+oUnable to find executable: testBasicFunctors
+o  6/116 Test   #6: testBasicFunctors .......................***Not Run   0.00 sec
+o        Start   7: testConstRangeAdapter
+oCould not find executable testConstRangeAdapter
+oLooked in the following places:
+otestConstRangeAdapter
+otestConstRangeAdapter
+oDebug/testConstRangeAdapter
+oDebug/testConstRangeAdapter
+oDebug/testConstRangeAdapter
+oDebug/testConstRangeAdapter
+oUnable to find executable: testConstRangeAdapter
+o  7/116 Test   #7: testConstRangeAdapter ...................***Not Run   0.00 sec
+o        Start   8: testOutputIteratorAdapter
+oCould not find executable testOutputIteratorAdapter
+oLooked in the following places:
+otestOutputIteratorAdapter
+otestOutputIteratorAdapter
+oDebug/testOutputIteratorAdapter
+oDebug/testOutputIteratorAdapter
+oDebug/testOutputIteratorAdapter
+oDebug/testOutputIteratorAdapter
+oUnable to find executable: testOutputIteratorAdapter
+o  8/116 Test   #8: testOutputIteratorAdapter ...............***Not Run   0.00 sec
+o        Start   9: testClock
+oCould not find executable testClock
+oLooked in the following places:
+otestClock
+otestClock
+oDebug/testClock
+oDebug/testClock
+oDebug/testClock
+oDebug/testClock
+oUnable to find executable: testClock
+o  9/116 Test   #9: testClock ...............................***Not Run   0.00 sec
+o        Start  10: testTrace
+oCould not find executable testTrace
+oLooked in the following places:
+otestTrace
+otestTrace
+oDebug/testTrace
+oDebug/testTrace
+oDebug/testTrace
+oDebug/testTrace
+oUnable to find executable: testTrace
+o 10/116 Test  #10: testTrace ...............................***Not Run   0.00 sec
+o        Start  11: testcpp11
+oCould not find executable testcpp11
+oLooked in the following places:
+otestcpp11
+otestcpp11
+oDebug/testcpp11
+oDebug/testcpp11
+oDebug/testcpp11
+oDebug/testcpp11
+oUnable to find executable: testcpp11
+o 11/116 Test  #11: testcpp11 ...............................***Not Run   0.00 sec
+o        Start  12: testCountedPtr
+oCould not find executable testCountedPtr
+oLooked in the following places:
+otestCountedPtr
+otestCountedPtr
+oDebug/testCountedPtr
+oDebug/testCountedPtr
+oDebug/testCountedPtr
+oDebug/testCountedPtr
+oUnable to find executable: testCountedPtr
+o 12/116 Test  #12: testCountedPtr ..........................***Not Run   0.00 sec
+o        Start  13: testBits
+oCould not find executable testBits
+oLooked in the following places:
+otestBits
+otestBits
+oDebug/testBits
+oDebug/testBits
+oDebug/testBits
+oDebug/testBits
+oUnable to find executable: testBits
+o 13/116 Test  #13: testBits ................................***Not Run   0.00 sec
+o        Start  14: testIndexedListWithBlocks
+oCould not find executable testIndexedListWithBlocks
+oLooked in the following places:
+otestIndexedListWithBlocks
+otestIndexedListWithBlocks
+oDebug/testIndexedListWithBlocks
+oDebug/testIndexedListWithBlocks
+oDebug/testIndexedListWithBlocks
+oDebug/testIndexedListWithBlocks
+oUnable to find executable: testIndexedListWithBlocks
+o 14/116 Test  #14: testIndexedListWithBlocks ...............***Not Run   0.00 sec
+o        Start  15: testLabels
+oCould not find executable testLabels
+oLooked in the following places:
+otestLabels
+otestLabels
+oDebug/testLabels
+oDebug/testLabels
+oDebug/testLabels
+oDebug/testLabels
+oUnable to find executable: testLabels
+o 15/116 Test  #15: testLabels ..............................***Not Run   0.00 sec
+o        Start  16: testLabelledMap
+oCould not find executable testLabelledMap
+oLooked in the following places:
+otestLabelledMap
+otestLabelledMap
+oDebug/testLabelledMap
+oDebug/testLabelledMap
+oDebug/testLabelledMap
+oDebug/testLabelledMap
+oUnable to find executable: testLabelledMap
+o 16/116 Test  #16: testLabelledMap .........................***Not Run   0.00 sec
+o        Start  17: testLabelledMap-benchmark
+oCould not find executable testLabelledMap-benchmark
+oLooked in the following places:
+otestLabelledMap-benchmark
+otestLabelledMap-benchmark
+oDebug/testLabelledMap-benchmark
+oDebug/testLabelledMap-benchmark
+oDebug/testLabelledMap-benchmark
+oDebug/testLabelledMap-benchmark
+oUnable to find executable: testLabelledMap-benchmark
+o 17/116 Test  #17: testLabelledMap-benchmark ...............***Not Run   0.00 sec
+o        Start  18: testMultiMap-benchmark
+oCould not find executable testMultiMap-benchmark
+oLooked in the following places:
+otestMultiMap-benchmark
+otestMultiMap-benchmark
+oDebug/testMultiMap-benchmark
+oDebug/testMultiMap-benchmark
+oDebug/testMultiMap-benchmark
+oDebug/testMultiMap-benchmark
+oUnable to find executable: testMultiMap-benchmark
+o 18/116 Test  #18: testMultiMap-benchmark ..................***Not Run   0.00 sec
+o        Start  19: testOpenMP
+oCould not find executable testOpenMP
+oLooked in the following places:
+otestOpenMP
+otestOpenMP
+oDebug/testOpenMP
+oDebug/testOpenMP
+oDebug/testOpenMP
+oDebug/testOpenMP
+oUnable to find executable: testOpenMP
+o 19/116 Test  #19: testOpenMP ..............................***Not Run   0.00 sec
+o        Start  20: testIteratorFunctions
+oCould not find executable testIteratorFunctions
+oLooked in the following places:
+otestIteratorFunctions
+otestIteratorFunctions
+oDebug/testIteratorFunctions
+oDebug/testIteratorFunctions
+oDebug/testIteratorFunctions
+oDebug/testIteratorFunctions
+oUnable to find executable: testIteratorFunctions
+o 20/116 Test  #20: testIteratorFunctions ...................***Not Run   0.00 sec
+o        Start  21: testIteratorCirculatorTraits
+oCould not find executable testIteratorCirculatorTraits
+oLooked in the following places:
+otestIteratorCirculatorTraits
+otestIteratorCirculatorTraits
+oDebug/testIteratorCirculatorTraits
+oDebug/testIteratorCirculatorTraits
+oDebug/testIteratorCirculatorTraits
+oDebug/testIteratorCirculatorTraits
+oUnable to find executable: testIteratorCirculatorTraits
+o 21/116 Test  #21: testIteratorCirculatorTraits ............***Not Run   0.00 sec
+o        Start  22: testCloneAndAliases
+oCould not find executable testCloneAndAliases
+oLooked in the following places:
+otestCloneAndAliases
+otestCloneAndAliases
+oDebug/testCloneAndAliases
+oDebug/testCloneAndAliases
+oDebug/testCloneAndAliases
+oDebug/testCloneAndAliases
+oUnable to find executable: testCloneAndAliases
+o 22/116 Test  #22: testCloneAndAliases .....................***Not Run   0.00 sec
+o        Start  23: testOwningOrAliasingPtr
+oCould not find executable testOwningOrAliasingPtr
+oLooked in the following places:
+otestOwningOrAliasingPtr
+otestOwningOrAliasingPtr
+oDebug/testOwningOrAliasingPtr
+oDebug/testOwningOrAliasingPtr
+oDebug/testOwningOrAliasingPtr
+oDebug/testOwningOrAliasingPtr
+oUnable to find executable: testOwningOrAliasingPtr
+o 23/116 Test  #23: testOwningOrAliasingPtr .................***Not Run   0.00 sec
+o        Start  24: testDigitalSet
+oCould not find executable testDigitalSet
+oLooked in the following places:
+otestDigitalSet
+otestDigitalSet
+oDebug/testDigitalSet
+oDebug/testDigitalSet
+oDebug/testDigitalSet
+oDebug/testDigitalSet
+oUnable to find executable: testDigitalSet
+o 24/116 Test  #24: testDigitalSet ..........................***Not Run   0.00 sec
+o        Start  25: testDomainSpanIterator
+oCould not find executable testDomainSpanIterator
+oLooked in the following places:
+otestDomainSpanIterator
+otestDomainSpanIterator
+oDebug/testDomainSpanIterator
+oDebug/testDomainSpanIterator
+oDebug/testDomainSpanIterator
+oDebug/testDomainSpanIterator
+oUnable to find executable: testDomainSpanIterator
+o 25/116 Test  #25: testDomainSpanIterator ..................***Not Run   0.00 sec
+o        Start  26: testHyperRectDomain
+oCould not find executable testHyperRectDomain
+oLooked in the following places:
+otestHyperRectDomain
+otestHyperRectDomain
+oDebug/testHyperRectDomain
+oDebug/testHyperRectDomain
+oDebug/testHyperRectDomain
+oDebug/testHyperRectDomain
+oUnable to find executable: testHyperRectDomain
+o 26/116 Test  #26: testHyperRectDomain .....................***Not Run   0.00 sec
+o        Start  27: testHyperRectDomain-snippet
+oCould not find executable testHyperRectDomain-snippet
+oLooked in the following places:
+otestHyperRectDomain-snippet
+otestHyperRectDomain-snippet
+oDebug/testHyperRectDomain-snippet
+oDebug/testHyperRectDomain-snippet
+oDebug/testHyperRectDomain-snippet
+oDebug/testHyperRectDomain-snippet
+oUnable to find executable: testHyperRectDomain-snippet
+o 27/116 Test  #27: testHyperRectDomain-snippet .............***Not Run   0.00 sec
+o        Start  28: testInteger
+oCould not find executable testInteger
+oLooked in the following places:
+otestInteger
+otestInteger
+oDebug/testInteger
+oDebug/testInteger
+oDebug/testInteger
+oDebug/testInteger
+oUnable to find executable: testInteger
+o 28/116 Test  #28: testInteger .............................***Not Run   0.00 sec
+o        Start  29: testPointVector
+oCould not find executable testPointVector
+oLooked in the following places:
+otestPointVector
+otestPointVector
+oDebug/testPointVector
+oDebug/testPointVector
+oDebug/testPointVector
+oDebug/testPointVector
+oUnable to find executable: testPointVector
+o 29/116 Test  #29: testPointVector .........................***Not Run   0.00 sec
+o        Start  30: testPointVectorContainers
+oCould not find executable testPointVectorContainers
+oLooked in the following places:
+otestPointVectorContainers
+otestPointVectorContainers
+oDebug/testPointVectorContainers
+oDebug/testPointVectorContainers
+oDebug/testPointVectorContainers
+oDebug/testPointVectorContainers
+oUnable to find executable: testPointVectorContainers
+o 30/116 Test  #30: testPointVectorContainers ...............***Not Run   0.00 sec
+o        Start  31: testLinearAlgebra
+oCould not find executable testLinearAlgebra
+oLooked in the following places:
+otestLinearAlgebra
+otestLinearAlgebra
+oDebug/testLinearAlgebra
+oDebug/testLinearAlgebra
+oDebug/testLinearAlgebra
+oDebug/testLinearAlgebra
+oUnable to find executable: testLinearAlgebra
+o 31/116 Test  #31: testLinearAlgebra .......................***Not Run   0.00 sec
+o        Start  32: testImagesSetsUtilities
+oCould not find executable testImagesSetsUtilities
+oLooked in the following places:
+otestImagesSetsUtilities
+otestImagesSetsUtilities
+oDebug/testImagesSetsUtilities
+oDebug/testImagesSetsUtilities
+oDebug/testImagesSetsUtilities
+oDebug/testImagesSetsUtilities
+oUnable to find executable: testImagesSetsUtilities
+o 32/116 Test  #32: testImagesSetsUtilities .................***Not Run   0.00 sec
+o        Start  33: testBasicPointFunctors
+oCould not find executable testBasicPointFunctors
+oLooked in the following places:
+otestBasicPointFunctors
+otestBasicPointFunctors
+oDebug/testBasicPointFunctors
+oDebug/testBasicPointFunctors
+oDebug/testBasicPointFunctors
+oDebug/testBasicPointFunctors
+oUnable to find executable: testBasicPointFunctors
+o 33/116 Test  #33: testBasicPointFunctors ..................***Not Run   0.00 sec
+o        Start  34: testEmbedder
+oCould not find executable testEmbedder
+oLooked in the following places:
+otestEmbedder
+otestEmbedder
+oDebug/testEmbedder
+oDebug/testEmbedder
+oDebug/testEmbedder
+oDebug/testEmbedder
+oUnable to find executable: testEmbedder
+o 34/116 Test  #34: testEmbedder ............................***Not Run   0.00 sec
+o        Start  35: testSimpleMatrix
+oCould not find executable testSimpleMatrix
+oLooked in the following places:
+otestSimpleMatrix
+otestSimpleMatrix
+oDebug/testSimpleMatrix
+oDebug/testSimpleMatrix
+oDebug/testSimpleMatrix
+oDebug/testSimpleMatrix
+oUnable to find executable: testSimpleMatrix
+o 35/116 Test  #35: testSimpleMatrix ........................***Not Run   0.00 sec
+o        Start  36: testMeasure
+oCould not find executable testMeasure
+oLooked in the following places:
+otestMeasure
+otestMeasure
+oDebug/testMeasure
+oDebug/testMeasure
+oDebug/testMeasure
+oDebug/testMeasure
+oUnable to find executable: testMeasure
+o 36/116 Test  #36: testMeasure .............................***Not Run   0.00 sec
+o        Start  37: testSignal
+oCould not find executable testSignal
+oLooked in the following places:
+otestSignal
+otestSignal
+oDebug/testSignal
+oDebug/testSignal
+oDebug/testSignal
+oDebug/testSignal
+oUnable to find executable: testSignal
+o 37/116 Test  #37: testSignal ..............................***Not Run   0.00 sec
+o        Start  38: testStatistics
+oCould not find executable testStatistics
+oLooked in the following places:
+otestStatistics
+otestStatistics
+oDebug/testStatistics
+oDebug/testStatistics
+oDebug/testStatistics
+oDebug/testStatistics
+oUnable to find executable: testStatistics
+o 38/116 Test  #38: testStatistics ..........................***Not Run   0.00 sec
+o        Start  39: testMPolynomial
+oCould not find executable testMPolynomial
+oLooked in the following places:
+otestMPolynomial
+otestMPolynomial
+oDebug/testMPolynomial
+oDebug/testMPolynomial
+oDebug/testMPolynomial
+oDebug/testMPolynomial
+oUnable to find executable: testMPolynomial
+o 39/116 Test  #39: testMPolynomial .........................***Not Run   0.00 sec
+o        Start  40: testAngleLinearMinimizer
+oCould not find executable testAngleLinearMinimizer
+oLooked in the following places:
+otestAngleLinearMinimizer
+otestAngleLinearMinimizer
+oDebug/testAngleLinearMinimizer
+oDebug/testAngleLinearMinimizer
+oDebug/testAngleLinearMinimizer
+oDebug/testAngleLinearMinimizer
+oUnable to find executable: testAngleLinearMinimizer
+o 40/116 Test  #40: testAngleLinearMinimizer ................***Not Run   0.00 sec
+o        Start  41: testBasicMathFunctions
+oCould not find executable testBasicMathFunctions
+oLooked in the following places:
+otestBasicMathFunctions
+otestBasicMathFunctions
+oDebug/testBasicMathFunctions
+oDebug/testBasicMathFunctions
+oDebug/testBasicMathFunctions
+oDebug/testBasicMathFunctions
+oUnable to find executable: testBasicMathFunctions
+o 41/116 Test  #41: testBasicMathFunctions ..................***Not Run   0.00 sec
+o        Start  42: testModuloComputer
+oCould not find executable testModuloComputer
+oLooked in the following places:
+otestModuloComputer
+otestModuloComputer
+oDebug/testModuloComputer
+oDebug/testModuloComputer
+oDebug/testModuloComputer
+oDebug/testModuloComputer
+oUnable to find executable: testModuloComputer
+o 42/116 Test  #42: testModuloComputer ......................***Not Run   0.00 sec
+o        Start  43: testPattern
+oCould not find executable testPattern
+oLooked in the following places:
+otestPattern
+otestPattern
+oDebug/testPattern
+oDebug/testPattern
+oDebug/testPattern
+oDebug/testPattern
+oUnable to find executable: testPattern
+o 43/116 Test  #43: testPattern .............................***Not Run   0.00 sec
+o        Start  44: testFrechetShortcut
+oCould not find executable testFrechetShortcut
+oLooked in the following places:
+otestFrechetShortcut
+otestFrechetShortcut
+oDebug/testFrechetShortcut
+oDebug/testFrechetShortcut
+oDebug/testFrechetShortcut
+oDebug/testFrechetShortcut
+oUnable to find executable: testFrechetShortcut
+o 44/116 Test  #44: testFrechetShortcut .....................***Not Run   0.00 sec
+o        Start  45: testLengthEstimators
+oCould not find executable testLengthEstimators
+oLooked in the following places:
+otestLengthEstimators
+otestLengthEstimators
+oDebug/testLengthEstimators
+oDebug/testLengthEstimators
+oDebug/testLengthEstimators
+oDebug/testLengthEstimators
+oUnable to find executable: testLengthEstimators
+o 45/116 Test  #45: testLengthEstimators ....................***Not Run   0.00 sec
+o        Start  46: testTrueLocalEstimator
+oCould not find executable testTrueLocalEstimator
+oLooked in the following places:
+otestTrueLocalEstimator
+otestTrueLocalEstimator
+oDebug/testTrueLocalEstimator
+oDebug/testTrueLocalEstimator
+oDebug/testTrueLocalEstimator
+oDebug/testTrueLocalEstimator
+oUnable to find executable: testTrueLocalEstimator
+o 46/116 Test  #46: testTrueLocalEstimator ..................***Not Run   0.00 sec
+o        Start  47: testEstimatorComparator
+oCould not find executable testEstimatorComparator
+oLooked in the following places:
+otestEstimatorComparator
+otestEstimatorComparator
+oDebug/testEstimatorComparator
+oDebug/testEstimatorComparator
+oDebug/testEstimatorComparator
+oDebug/testEstimatorComparator
+oUnable to find executable: testEstimatorComparator
+o 47/116 Test  #47: testEstimatorComparator .................***Not Run   0.00 sec
+o        Start  48: testSegmentComputerEstimators
+oCould not find executable testSegmentComputerEstimators
+oLooked in the following places:
+otestSegmentComputerEstimators
+otestSegmentComputerEstimators
+oDebug/testSegmentComputerEstimators
+oDebug/testSegmentComputerEstimators
+oDebug/testSegmentComputerEstimators
+oDebug/testSegmentComputerEstimators
+oUnable to find executable: testSegmentComputerEstimators
+o 48/116 Test  #48: testSegmentComputerEstimators ...........***Not Run   0.00 sec
+o        Start  49: testMostCenteredMSEstimator
+oCould not find executable testMostCenteredMSEstimator
+oLooked in the following places:
+otestMostCenteredMSEstimator
+otestMostCenteredMSEstimator
+oDebug/testMostCenteredMSEstimator
+oDebug/testMostCenteredMSEstimator
+oDebug/testMostCenteredMSEstimator
+oDebug/testMostCenteredMSEstimator
+oUnable to find executable: testMostCenteredMSEstimator
+o 49/116 Test  #49: testMostCenteredMSEstimator .............***Not Run   0.00 sec
+o        Start  50: testKanungo
+oCould not find executable testKanungo
+oLooked in the following places:
+otestKanungo
+otestKanungo
+oDebug/testKanungo
+oDebug/testKanungo
+oDebug/testKanungo
+oDebug/testKanungo
+oUnable to find executable: testKanungo
+o 50/116 Test  #50: testKanungo .............................***Not Run   0.00 sec
+o        Start  51: testMeasureSet
+oCould not find executable testMeasureSet
+oLooked in the following places:
+otestMeasureSet
+otestMeasureSet
+oDebug/testMeasureSet
+oDebug/testMeasureSet
+oDebug/testMeasureSet
+oDebug/testMeasureSet
+oUnable to find executable: testMeasureSet
+o 51/116 Test  #51: testMeasureSet ..........................***Not Run   0.00 sec
+o        Start  52: testDistanceTransformation
+oCould not find executable testDistanceTransformation
+oLooked in the following places:
+otestDistanceTransformation
+otestDistanceTransformation
+oDebug/testDistanceTransformation
+oDebug/testDistanceTransformation
+oDebug/testDistanceTransformation
+oDebug/testDistanceTransformation
+oUnable to find executable: testDistanceTransformation
+o 52/116 Test  #52: testDistanceTransformation ..............***Not Run   0.00 sec
+o        Start  53: testDistanceTransformationND
+oCould not find executable testDistanceTransformationND
+oLooked in the following places:
+otestDistanceTransformationND
+otestDistanceTransformationND
+oDebug/testDistanceTransformationND
+oDebug/testDistanceTransformationND
+oDebug/testDistanceTransformationND
+oDebug/testDistanceTransformationND
+oUnable to find executable: testDistanceTransformationND
+o 53/116 Test  #53: testDistanceTransformationND ............***Not Run   0.00 sec
+o        Start  54: testDistanceTransformationMetrics
+oCould not find executable testDistanceTransformationMetrics
+oLooked in the following places:
+otestDistanceTransformationMetrics
+otestDistanceTransformationMetrics
+oDebug/testDistanceTransformationMetrics
+oDebug/testDistanceTransformationMetrics
+oDebug/testDistanceTransformationMetrics
+oDebug/testDistanceTransformationMetrics
+oUnable to find executable: testDistanceTransformationMetrics
+o 54/116 Test  #54: testDistanceTransformationMetrics .......***Not Run   0.00 sec
+o        Start  55: testReverseDT
+oCould not find executable testReverseDT
+oLooked in the following places:
+otestReverseDT
+otestReverseDT
+oDebug/testReverseDT
+oDebug/testReverseDT
+oDebug/testReverseDT
+oDebug/testReverseDT
+oUnable to find executable: testReverseDT
+o 55/116 Test  #55: testReverseDT ...........................***Not Run   0.00 sec
+o        Start  56: testFMM
+oCould not find executable testFMM
+oLooked in the following places:
+otestFMM
+otestFMM
+oDebug/testFMM
+oDebug/testFMM
+oDebug/testFMM
+oDebug/testFMM
+oUnable to find executable: testFMM
+o 56/116 Test  #56: testFMM .................................***Not Run   0.00 sec
+o        Start  57: testVoronoiMap
+oCould not find executable testVoronoiMap
+oLooked in the following places:
+otestVoronoiMap
+otestVoronoiMap
+oDebug/testVoronoiMap
+oDebug/testVoronoiMap
+oDebug/testVoronoiMap
+oDebug/testVoronoiMap
+oUnable to find executable: testVoronoiMap
+o 57/116 Test  #57: testVoronoiMap ..........................***Not Run   0.00 sec
+o        Start  58: testMetrics
+oCould not find executable testMetrics
+oLooked in the following places:
+otestMetrics
+otestMetrics
+oDebug/testMetrics
+oDebug/testMetrics
+oDebug/testMetrics
+oDebug/testMetrics
+oUnable to find executable: testMetrics
+o 58/116 Test  #58: testMetrics .............................***Not Run   0.00 sec
+o        Start  59: testMetricBalls
+oCould not find executable testMetricBalls
+oLooked in the following places:
+otestMetricBalls
+otestMetricBalls
+oDebug/testMetricBalls
+oDebug/testMetricBalls
+oDebug/testMetricBalls
+oDebug/testMetricBalls
+oUnable to find executable: testMetricBalls
+o 59/116 Test  #59: testMetricBalls .........................***Not Run   0.00 sec
+o        Start  60: testPowerMap
+oCould not find executable testPowerMap
+oLooked in the following places:
+otestPowerMap
+otestPowerMap
+oDebug/testPowerMap
+oDebug/testPowerMap
+oDebug/testPowerMap
+oDebug/testPowerMap
+oUnable to find executable: testPowerMap
+o 60/116 Test  #60: testPowerMap ............................***Not Run   0.00 sec
+o        Start  61: testReducedMedialAxis
+oCould not find executable testReducedMedialAxis
+oLooked in the following places:
+otestReducedMedialAxis
+otestReducedMedialAxis
+oDebug/testReducedMedialAxis
+oDebug/testReducedMedialAxis
+oDebug/testReducedMedialAxis
+oDebug/testReducedMedialAxis
+oUnable to find executable: testReducedMedialAxis
+o 61/116 Test  #61: testReducedMedialAxis ...................***Not Run   0.00 sec
+o        Start  62: testSeparableMetricAdapter
+oCould not find executable testSeparableMetricAdapter
+oLooked in the following places:
+otestSeparableMetricAdapter
+otestSeparableMetricAdapter
+oDebug/testSeparableMetricAdapter
+oDebug/testSeparableMetricAdapter
+oDebug/testSeparableMetricAdapter
+oDebug/testSeparableMetricAdapter
+oUnable to find executable: testSeparableMetricAdapter
+o 62/116 Test  #62: testSeparableMetricAdapter ..............***Not Run   0.00 sec
+o        Start  63: testPreimage
+oCould not find executable testPreimage
+oLooked in the following places:
+otestPreimage
+otestPreimage
+oDebug/testPreimage
+oDebug/testPreimage
+oDebug/testPreimage
+oDebug/testPreimage
+oUnable to find executable: testPreimage
+o 63/116 Test  #63: testPreimage ............................***Not Run   0.00 sec
+o        Start  64: testSphericalAccumulator
+oCould not find executable testSphericalAccumulator
+oLooked in the following places:
+otestSphericalAccumulator
+otestSphericalAccumulator
+oDebug/testSphericalAccumulator
+oDebug/testSphericalAccumulator
+oDebug/testSphericalAccumulator
+oDebug/testSphericalAccumulator
+oUnable to find executable: testSphericalAccumulator
+o 64/116 Test  #64: testSphericalAccumulator ................***Not Run   0.00 sec
+o        Start  65: testBreadthFirstPropagation
+oCould not find executable testBreadthFirstPropagation
+oLooked in the following places:
+otestBreadthFirstPropagation
+otestBreadthFirstPropagation
+oDebug/testBreadthFirstPropagation
+oDebug/testBreadthFirstPropagation
+oDebug/testBreadthFirstPropagation
+oDebug/testBreadthFirstPropagation
+oUnable to find executable: testBreadthFirstPropagation
+o 65/116 Test  #65: testBreadthFirstPropagation .............***Not Run   0.00 sec
+o        Start  66: testDepthFirstPropagation
+oCould not find executable testDepthFirstPropagation
+oLooked in the following places:
+otestDepthFirstPropagation
+otestDepthFirstPropagation
+oDebug/testDepthFirstPropagation
+oDebug/testDepthFirstPropagation
+oDebug/testDepthFirstPropagation
+oDebug/testDepthFirstPropagation
+oUnable to find executable: testDepthFirstPropagation
+o 66/116 Test  #66: testDepthFirstPropagation ...............***Not Run   0.00 sec
+o        Start  67: testDigitalSurfaceBoostGraphInterface
+oCould not find executable testDigitalSurfaceBoostGraphInterface
+oLooked in the following places:
+otestDigitalSurfaceBoostGraphInterface
+otestDigitalSurfaceBoostGraphInterface
+oDebug/testDigitalSurfaceBoostGraphInterface
+oDebug/testDigitalSurfaceBoostGraphInterface
+oDebug/testDigitalSurfaceBoostGraphInterface
+oDebug/testDigitalSurfaceBoostGraphInterface
+oUnable to find executable: testDigitalSurfaceBoostGraphInterface
+o 67/116 Test  #67: testDigitalSurfaceBoostGraphInterface ...***Not Run   0.00 sec
+o        Start  68: testDistancePropagation
+oCould not find executable testDistancePropagation
+oLooked in the following places:
+otestDistancePropagation
+otestDistancePropagation
+oDebug/testDistancePropagation
+oDebug/testDistancePropagation
+oDebug/testDistancePropagation
+oDebug/testDistancePropagation
+oUnable to find executable: testDistancePropagation
+o 68/116 Test  #68: testDistancePropagation .................***Not Run   0.00 sec
+o        Start  69: testExpander
+oCould not find executable testExpander
+oLooked in the following places:
+otestExpander
+otestExpander
+oDebug/testExpander
+oDebug/testExpander
+oDebug/testExpander
+oDebug/testExpander
+oUnable to find executable: testExpander
+o 69/116 Test  #69: testExpander ............................***Not Run   0.00 sec
+o        Start  70: testSTLMapToVertexMapAdapter
+oCould not find executable testSTLMapToVertexMapAdapter
+oLooked in the following places:
+otestSTLMapToVertexMapAdapter
+otestSTLMapToVertexMapAdapter
+oDebug/testSTLMapToVertexMapAdapter
+oDebug/testSTLMapToVertexMapAdapter
+oDebug/testSTLMapToVertexMapAdapter
+oDebug/testSTLMapToVertexMapAdapter
+oUnable to find executable: testSTLMapToVertexMapAdapter
+o 70/116 Test  #70: testSTLMapToVertexMapAdapter ............***Not Run   0.00 sec
+o        Start  71: testAdjacency
+oCould not find executable testAdjacency
+oLooked in the following places:
+otestAdjacency
+otestAdjacency
+oDebug/testAdjacency
+oDebug/testAdjacency
+oDebug/testAdjacency
+oDebug/testAdjacency
+oUnable to find executable: testAdjacency
+o 71/116 Test  #71: testAdjacency ...........................***Not Run   0.00 sec
+o        Start  72: testCellularGridSpaceND
+oCould not find executable testCellularGridSpaceND
+oLooked in the following places:
+otestCellularGridSpaceND
+otestCellularGridSpaceND
+oDebug/testCellularGridSpaceND
+oDebug/testCellularGridSpaceND
+oDebug/testCellularGridSpaceND
+oDebug/testCellularGridSpaceND
+oUnable to find executable: testCellularGridSpaceND
+o 72/116 Test  #72: testCellularGridSpaceND .................***Not Run   0.00 sec
+o        Start  73: testDigitalSurface
+oCould not find executable testDigitalSurface
+oLooked in the following places:
+otestDigitalSurface
+otestDigitalSurface
+oDebug/testDigitalSurface
+oDebug/testDigitalSurface
+oDebug/testDigitalSurface
+oDebug/testDigitalSurface
+oUnable to find executable: testDigitalSurface
+o 73/116 Test  #73: testDigitalSurface ......................***Not Run   0.00 sec
+o        Start  74: testDigitalTopology
+oCould not find executable testDigitalTopology
+oLooked in the following places:
+otestDigitalTopology
+otestDigitalTopology
+oDebug/testDigitalTopology
+oDebug/testDigitalTopology
+oDebug/testDigitalTopology
+oDebug/testDigitalTopology
+oUnable to find executable: testDigitalTopology
+o 74/116 Test  #74: testDigitalTopology .....................***Not Run   0.00 sec
+o        Start  75: testObject
+oCould not find executable testObject
+oLooked in the following places:
+otestObject
+otestObject
+oDebug/testObject
+oDebug/testObject
+oDebug/testObject
+oDebug/testObject
+oUnable to find executable: testObject
+o 75/116 Test  #75: testObject ..............................***Not Run   0.00 sec
+o        Start  76: testObjectBorder
+oCould not find executable testObjectBorder
+oLooked in the following places:
+otestObjectBorder
+otestObjectBorder
+oDebug/testObjectBorder
+oDebug/testObjectBorder
+oDebug/testObjectBorder
+oDebug/testObjectBorder
+oUnable to find executable: testObjectBorder
+o 76/116 Test  #76: testObjectBorder ........................***Not Run   0.00 sec
+o        Start  77: testSimpleExpander
+oCould not find executable testSimpleExpander
+oLooked in the following places:
+otestSimpleExpander
+otestSimpleExpander
+oDebug/testSimpleExpander
+oDebug/testSimpleExpander
+oDebug/testSimpleExpander
+oDebug/testSimpleExpander
+oUnable to find executable: testSimpleExpander
+o 77/116 Test  #77: testSimpleExpander ......................***Not Run   0.00 sec
+o        Start  78: testSCellsFunctor
+oCould not find executable testSCellsFunctor
+oLooked in the following places:
+otestSCellsFunctor
+otestSCellsFunctor
+oDebug/testSCellsFunctor
+oDebug/testSCellsFunctor
+oDebug/testSCellsFunctor
+oDebug/testSCellsFunctor
+oUnable to find executable: testSCellsFunctor
+o 78/116 Test  #78: testSCellsFunctor .......................***Not Run   0.00 sec
+o        Start  79: testUmbrellaComputer
+oCould not find executable testUmbrellaComputer
+oLooked in the following places:
+otestUmbrellaComputer
+otestUmbrellaComputer
+oDebug/testUmbrellaComputer
+oDebug/testUmbrellaComputer
+oDebug/testUmbrellaComputer
+oDebug/testUmbrellaComputer
+oUnable to find executable: testUmbrellaComputer
+o 79/116 Test  #79: testUmbrellaComputer ....................***Not Run   0.00 sec
+o        Start  80: testSimpleBoard
+oCould not find executable testSimpleBoard
+oLooked in the following places:
+otestSimpleBoard
+otestSimpleBoard
+oDebug/testSimpleBoard
+oDebug/testSimpleBoard
+oDebug/testSimpleBoard
+oDebug/testSimpleBoard
+oUnable to find executable: testSimpleBoard
+o 80/116 Test  #80: testSimpleBoard .........................***Not Run   0.00 sec
+o        Start  81: testBoard2DCustomStyle
+oCould not find executable testBoard2DCustomStyle
+oLooked in the following places:
+otestBoard2DCustomStyle
+otestBoard2DCustomStyle
+oDebug/testBoard2DCustomStyle
+oDebug/testBoard2DCustomStyle
+oDebug/testBoard2DCustomStyle
+oDebug/testBoard2DCustomStyle
+oUnable to find executable: testBoard2DCustomStyle
+o 81/116 Test  #81: testBoard2DCustomStyle ..................***Not Run   0.00 sec
+o        Start  82: testLongvol
+oCould not find executable testLongvol
+oLooked in the following places:
+otestLongvol
+otestLongvol
+oDebug/testLongvol
+oDebug/testLongvol
+oDebug/testLongvol
+oDebug/testLongvol
+oUnable to find executable: testLongvol
+o 82/116 Test  #82: testLongvol .............................***Not Run   0.00 sec
+o        Start  83: testArcDrawing
+oCould not find executable testArcDrawing
+oLooked in the following places:
+otestArcDrawing
+otestArcDrawing
+oDebug/testArcDrawing
+oDebug/testArcDrawing
+oDebug/testArcDrawing
+oDebug/testArcDrawing
+oUnable to find executable: testArcDrawing
+o 83/116 Test  #83: testArcDrawing ..........................***Not Run   0.00 sec
+o        Start  84: testColorMaps
+oCould not find executable testColorMaps
+oLooked in the following places:
+otestColorMaps
+otestColorMaps
+oDebug/testColorMaps
+oDebug/testColorMaps
+oDebug/testColorMaps
+oDebug/testColorMaps
+oUnable to find executable: testColorMaps
+o 84/116 Test  #84: testColorMaps ...........................***Not Run   0.00 sec
+o        Start  85: testPNMReader
+oCould not find executable testPNMReader
+oLooked in the following places:
+otestPNMReader
+otestPNMReader
+oDebug/testPNMReader
+oDebug/testPNMReader
+oDebug/testPNMReader
+oDebug/testPNMReader
+oUnable to find executable: testPNMReader
+o 85/116 Test  #85: testPNMReader ...........................***Not Run   0.00 sec
+o        Start  86: testVolReader
+oCould not find executable testVolReader
+oLooked in the following places:
+otestVolReader
+otestVolReader
+oDebug/testVolReader
+oDebug/testVolReader
+oDebug/testVolReader
+oDebug/testVolReader
+oUnable to find executable: testVolReader
+o 86/116 Test  #86: testVolReader ...........................***Not Run   0.00 sec
+o        Start  87: testRawReader
+oCould not find executable testRawReader
+oLooked in the following places:
+otestRawReader
+otestRawReader
+oDebug/testRawReader
+oDebug/testRawReader
+oDebug/testRawReader
+oDebug/testRawReader
+oUnable to find executable: testRawReader
+o 87/116 Test  #87: testRawReader ...........................***Not Run   0.00 sec
+o        Start  88: testGenericReader
+oCould not find executable testGenericReader
+oLooked in the following places:
+otestGenericReader
+otestGenericReader
+oDebug/testGenericReader
+oDebug/testGenericReader
+oDebug/testGenericReader
+oDebug/testGenericReader
+oUnable to find executable: testGenericReader
+o 88/116 Test  #88: testGenericReader .......................***Not Run   0.00 sec
+o        Start  89: testPointListReader
+oCould not find executable testPointListReader
+oLooked in the following places:
+otestPointListReader
+otestPointListReader
+oDebug/testPointListReader
+oDebug/testPointListReader
+oDebug/testPointListReader
+oDebug/testPointListReader
+oUnable to find executable: testPointListReader
+o 89/116 Test  #89: testPointListReader .....................***Not Run   0.00 sec
+o        Start  90: testMeshReader
+oCould not find executable testMeshReader
+oLooked in the following places:
+otestMeshReader
+otestMeshReader
+oDebug/testMeshReader
+oDebug/testMeshReader
+oDebug/testMeshReader
+oDebug/testMeshReader
+oUnable to find executable: testMeshReader
+o 90/116 Test  #90: testMeshReader ..........................***Not Run   0.00 sec
+o        Start  91: testMPolynomialReader
+oCould not find executable testMPolynomialReader
+oLooked in the following places:
+otestMPolynomialReader
+otestMPolynomialReader
+oDebug/testMPolynomialReader
+oDebug/testMPolynomialReader
+oDebug/testMPolynomialReader
+oDebug/testMPolynomialReader
+oUnable to find executable: testMPolynomialReader
+o 91/116 Test  #91: testMPolynomialReader ...................***Not Run   0.00 sec
+o        Start  92: testHDF5Reader
+oCould not find executable testHDF5Reader
+oLooked in the following places:
+otestHDF5Reader
+otestHDF5Reader
+oDebug/testHDF5Reader
+oDebug/testHDF5Reader
+oDebug/testHDF5Reader
+oDebug/testHDF5Reader
+oUnable to find executable: testHDF5Reader
+o 92/116 Test  #92: testHDF5Reader ..........................***Not Run   0.00 sec
+o        Start  93: testPNMRawWriter
+oCould not find executable testPNMRawWriter
+oLooked in the following places:
+otestPNMRawWriter
+otestPNMRawWriter
+oDebug/testPNMRawWriter
+oDebug/testPNMRawWriter
+oDebug/testPNMRawWriter
+oDebug/testPNMRawWriter
+oUnable to find executable: testPNMRawWriter
+o 93/116 Test  #93: testPNMRawWriter ........................***Not Run   0.00 sec
+o        Start  94: testMeshWriter
+oCould not find executable testMeshWriter
+oLooked in the following places:
+otestMeshWriter
+otestMeshWriter
+oDebug/testMeshWriter
+oDebug/testMeshWriter
+oDebug/testMeshWriter
+oDebug/testMeshWriter
+oUnable to find executable: testMeshWriter
+o 94/116 Test  #94: testMeshWriter ..........................***Not Run   0.00 sec
+o        Start  95: testGenericWriter
+oCould not find executable testGenericWriter
+oLooked in the following places:
+otestGenericWriter
+otestGenericWriter
+oDebug/testGenericWriter
+oDebug/testGenericWriter
+oDebug/testGenericWriter
+oDebug/testGenericWriter
+oUnable to find executable: testGenericWriter
+o 95/116 Test  #95: testGenericWriter .......................***Not Run   0.00 sec
+o        Start  96: testImageSimple
+oCould not find executable testImageSimple
+oLooked in the following places:
+otestImageSimple
+otestImageSimple
+oDebug/testImageSimple
+oDebug/testImageSimple
+oDebug/testImageSimple
+oDebug/testImageSimple
+oUnable to find executable: testImageSimple
+o 96/116 Test  #96: testImageSimple .........................***Not Run   0.00 sec
+o        Start  97: testImageAdapter
+oCould not find executable testImageAdapter
+oLooked in the following places:
+otestImageAdapter
+otestImageAdapter
+oDebug/testImageAdapter
+oDebug/testImageAdapter
+oDebug/testImageAdapter
+oDebug/testImageAdapter
+oUnable to find executable: testImageAdapter
+o 97/116 Test  #97: testImageAdapter ........................***Not Run   0.00 sec
+o        Start  98: testImageCache
+oCould not find executable testImageCache
+oLooked in the following places:
+otestImageCache
+otestImageCache
+oDebug/testImageCache
+oDebug/testImageCache
+oDebug/testImageCache
+oDebug/testImageCache
+oUnable to find executable: testImageCache
+o 98/116 Test  #98: testImageCache ..........................***Not Run   0.00 sec
+o        Start  99: testTiledImageFromImage
+oCould not find executable testTiledImageFromImage
+oLooked in the following places:
+otestTiledImageFromImage
+otestTiledImageFromImage
+oDebug/testTiledImageFromImage
+oDebug/testTiledImageFromImage
+oDebug/testTiledImageFromImage
+oDebug/testTiledImageFromImage
+oUnable to find executable: testTiledImageFromImage
+o 99/116 Test  #99: testTiledImageFromImage .................***Not Run   0.00 sec
+o        Start 100: testConstImageAdapter
+oCould not find executable testConstImageAdapter
+oLooked in the following places:
+otestConstImageAdapter
+otestConstImageAdapter
+oDebug/testConstImageAdapter
+oDebug/testConstImageAdapter
+oDebug/testConstImageAdapter
+oDebug/testConstImageAdapter
+oUnable to find executable: testConstImageAdapter
+o100/116 Test #100: testConstImageAdapter ...................***Not Run   0.00 sec
+o        Start 101: testImage
+oCould not find executable testImage
+oLooked in the following places:
+otestImage
+otestImage
+oDebug/testImage
+oDebug/testImage
+oDebug/testImage
+oDebug/testImage
+oUnable to find executable: testImage
+o101/116 Test #101: testImage ...............................***Not Run   0.00 sec
+o        Start 102: testImageSpanIterators
+oCould not find executable testImageSpanIterators
+oLooked in the following places:
+otestImageSpanIterators
+otestImageSpanIterators
+oDebug/testImageSpanIterators
+oDebug/testImageSpanIterators
+oDebug/testImageSpanIterators
+oDebug/testImageSpanIterators
+oUnable to find executable: testImageSpanIterators
+o102/116 Test #102: testImageSpanIterators ..................***Not Run   0.00 sec
+o        Start 103: testCheckImageConcept
+oCould not find executable testCheckImageConcept
+oLooked in the following places:
+otestCheckImageConcept
+otestCheckImageConcept
+oDebug/testCheckImageConcept
+oDebug/testCheckImageConcept
+oDebug/testCheckImageConcept
+oDebug/testCheckImageConcept
+oUnable to find executable: testCheckImageConcept
+o103/116 Test #103: testCheckImageConcept ...................***Not Run   0.00 sec
+o        Start 104: testMorton
+oCould not find executable testMorton
+oLooked in the following places:
+otestMorton
+otestMorton
+oDebug/testMorton
+oDebug/testMorton
+oDebug/testMorton
+oDebug/testMorton
+oUnable to find executable: testMorton
+o104/116 Test #104: testMorton ..............................***Not Run   0.00 sec
+o        Start 105: testHashTree
+oCould not find executable testHashTree
+oLooked in the following places:
+otestHashTree
+otestHashTree
+oDebug/testHashTree
+oDebug/testHashTree
+oDebug/testHashTree
+oDebug/testHashTree
+oUnable to find executable: testHashTree
+o105/116 Test #105: testHashTree ............................***Not Run   0.00 sec
+o        Start 106: testSliceImageFromFunctor
+oCould not find executable testSliceImageFromFunctor
+oLooked in the following places:
+otestSliceImageFromFunctor
+otestSliceImageFromFunctor
+oDebug/testSliceImageFromFunctor
+oDebug/testSliceImageFromFunctor
+oDebug/testSliceImageFromFunctor
+oDebug/testSliceImageFromFunctor
+oUnable to find executable: testSliceImageFromFunctor
+o106/116 Test #106: testSliceImageFromFunctor ...............***Not Run   0.00 sec
+o        Start 107: testParametricShape
+oCould not find executable testParametricShape
+oLooked in the following places:
+otestParametricShape
+otestParametricShape
+oDebug/testParametricShape
+oDebug/testParametricShape
+oDebug/testParametricShape
+oDebug/testParametricShape
+oUnable to find executable: testParametricShape
+o107/116 Test #107: testParametricShape .....................***Not Run   0.00 sec
+o        Start 108: testImplicitShape
+oCould not find executable testImplicitShape
+oLooked in the following places:
+otestImplicitShape
+otestImplicitShape
+oDebug/testImplicitShape
+oDebug/testImplicitShape
+oDebug/testImplicitShape
+oDebug/testImplicitShape
+oUnable to find executable: testImplicitShape
+o108/116 Test #108: testImplicitShape .......................***Not Run   0.00 sec
+o        Start 109: testGaussDigitizer
+oCould not find executable testGaussDigitizer
+oLooked in the following places:
+otestGaussDigitizer
+otestGaussDigitizer
+oDebug/testGaussDigitizer
+oDebug/testGaussDigitizer
+oDebug/testGaussDigitizer
+oDebug/testGaussDigitizer
+oUnable to find executable: testGaussDigitizer
+o109/116 Test #109: testGaussDigitizer ......................***Not Run   0.00 sec
+o        Start 110: testHalfPlane
+oCould not find executable testHalfPlane
+oLooked in the following places:
+otestHalfPlane
+otestHalfPlane
+oDebug/testHalfPlane
+oDebug/testHalfPlane
+oDebug/testHalfPlane
+oDebug/testHalfPlane
+oUnable to find executable: testHalfPlane
+o110/116 Test #110: testHalfPlane ...........................***Not Run   0.00 sec
+o        Start 111: testImplicitFunctionModels
+oCould not find executable testImplicitFunctionModels
+oLooked in the following places:
+otestImplicitFunctionModels
+otestImplicitFunctionModels
+oDebug/testImplicitFunctionModels
+oDebug/testImplicitFunctionModels
+oDebug/testImplicitFunctionModels
+oDebug/testImplicitFunctionModels
+oUnable to find executable: testImplicitFunctionModels
+o111/116 Test #111: testImplicitFunctionModels ..............***Not Run   0.00 sec
+o        Start 112: testShapesFromPoints
+oCould not find executable testShapesFromPoints
+oLooked in the following places:
+otestShapesFromPoints
+otestShapesFromPoints
+oDebug/testShapesFromPoints
+oDebug/testShapesFromPoints
+oDebug/testShapesFromPoints
+oDebug/testShapesFromPoints
+oUnable to find executable: testShapesFromPoints
+o112/116 Test #112: testShapesFromPoints ....................***Not Run   0.00 sec
+o        Start 113: testMesh
+oCould not find executable testMesh
+oLooked in the following places:
+otestMesh
+otestMesh
+oDebug/testMesh
+oDebug/testMesh
+oDebug/testMesh
+oDebug/testMesh
+oUnable to find executable: testMesh
+o113/116 Test #113: testMesh ................................***Not Run   0.00 sec
+o        Start 114: testBall3DSurface
+oCould not find executable testBall3DSurface
+oLooked in the following places:
+otestBall3DSurface
+otestBall3DSurface
+oDebug/testBall3DSurface
+oDebug/testBall3DSurface
+oDebug/testBall3DSurface
+oDebug/testBall3DSurface
+oUnable to find executable: testBall3DSurface
+o114/116 Test #114: testBall3DSurface .......................***Not Run   0.00 sec
+o        Start 115: testEuclideanShapesDecorator
+oCould not find executable testEuclideanShapesDecorator
+oLooked in the following places:
+otestEuclideanShapesDecorator
+otestEuclideanShapesDecorator
+oDebug/testEuclideanShapesDecorator
+oDebug/testEuclideanShapesDecorator
+oDebug/testEuclideanShapesDecorator
+oDebug/testEuclideanShapesDecorator
+oUnable to find executable: testEuclideanShapesDecorator
+o115/116 Test #115: testEuclideanShapesDecorator ............***Not Run   0.00 sec
+o        Start 116: testDigitalShapesDecorator
+oCould not find executable testDigitalShapesDecorator
+oLooked in the following places:
+otestDigitalShapesDecorator
+otestDigitalShapesDecorator
+oDebug/testDigitalShapesDecorator
+oDebug/testDigitalShapesDecorator
+oDebug/testDigitalShapesDecorator
+oDebug/testDigitalShapesDecorator
+oUnable to find executable: testDigitalShapesDecorator
+o116/116 Test #116: testDigitalShapesDecorator ..............***Not Run   0.00 sec
+o
+o0% tests passed, 116 tests failed out of 116
+o
+oTotal Test time (real) =   0.16 sec
+o
+oThe following tests FAILED:
+o	  1 - testBasicBoolFunctions (Not Run)
+o	  2 - testOrderedAlphabet (Not Run)
+o	  3 - testCirculator (Not Run)
+o	  4 - testConstIteratorAdapter (Not Run)
+o	  5 - testProgressBar (Not Run)
+o	  6 - testBasicFunctors (Not Run)
+o	  7 - testConstRangeAdapter (Not Run)
+o	  8 - testOutputIteratorAdapter (Not Run)
+o	  9 - testClock (Not Run)
+o	 10 - testTrace (Not Run)
+o	 11 - testcpp11 (Not Run)
+o	 12 - testCountedPtr (Not Run)
+o	 13 - testBits (Not Run)
+o	 14 - testIndexedListWithBlocks (Not Run)
+o	 15 - testLabels (Not Run)
+o	 16 - testLabelledMap (Not Run)
+o	 17 - testLabelledMap-benchmark (Not Run)
+o	 18 - testMultiMap-benchmark (Not Run)
+o	 19 - testOpenMP (Not Run)
+o	 20 - testIteratorFunctions (Not Run)
+o	 21 - testIteratorCirculatorTraits (Not Run)
+o	 22 - testCloneAndAliases (Not Run)
+o	 23 - testOwningOrAliasingPtr (Not Run)
+o	 24 - testDigitalSet (Not Run)
+o	 25 - testDomainSpanIterator (Not Run)
+o	 26 - testHyperRectDomain (Not Run)
+o	 27 - testHyperRectDomain-snippet (Not Run)
+o	 28 - testInteger (Not Run)
+o	 29 - testPointVector (Not Run)
+o	 30 - testPointVectorContainers (Not Run)
+o	 31 - testLinearAlgebra (Not Run)
+o	 32 - testImagesSetsUtilities (Not Run)
+o	 33 - testBasicPointFunctors (Not Run)
+o	 34 - testEmbedder (Not Run)
+o	 35 - testSimpleMatrix (Not Run)
+o	 36 - testMeasure (Not Run)
+o	 37 - testSignal (Not Run)
+o	 38 - testStatistics (Not Run)
+o	 39 - testMPolynomial (Not Run)
+o	 40 - testAngleLinearMinimizer (Not Run)
+o	 41 - testBasicMathFunctions (Not Run)
+o	 42 - testModuloComputer (Not Run)
+o	 43 - testPattern (Not Run)
+o	 44 - testFrechetShortcut (Not Run)
+o	 45 - testLengthEstimators (Not Run)
+o	 46 - testTrueLocalEstimator (Not Run)
+o	 47 - testEstimatorComparator (Not Run)
+o	 48 - testSegmentComputerEstimators (Not Run)
+o	 49 - testMostCenteredMSEstimator (Not Run)
+o	 50 - testKanungo (Not Run)
+o	 51 - testMeasureSet (Not Run)
+o	 52 - testDistanceTransformation (Not Run)
+o	 53 - testDistanceTransformationND (Not Run)
+o	 54 - testDistanceTransformationMetrics (Not Run)
+o	 55 - testReverseDT (Not Run)
+o	 56 - testFMM (Not Run)
+o	 57 - testVoronoiMap (Not Run)
+o	 58 - testMetrics (Not Run)
+o	 59 - testMetricBalls (Not Run)
+o	 60 - testPowerMap (Not Run)
+o	 61 - testReducedMedialAxis (Not Run)
+o	 62 - testSeparableMetricAdapter (Not Run)
+o	 63 - testPreimage (Not Run)
+o	 64 - testSphericalAccumulator (Not Run)
+o	 65 - testBreadthFirstPropagation (Not Run)
+o	 66 - testDepthFirstPropagation (Not Run)
+o	 67 - testDigitalSurfaceBoostGraphInterface (Not Run)
+o	 68 - testDistancePropagation (Not Run)
+o	 69 - testExpander (Not Run)
+o	 70 - testSTLMapToVertexMapAdapter (Not Run)
+o	 71 - testAdjacency (Not Run)
+o	 72 - testCellularGridSpaceND (Not Run)
+o	 73 - testDigitalSurface (Not Run)
+o	 74 - testDigitalTopology (Not Run)
+o	 75 - testObject (Not Run)
+o	 76 - testObjectBorder (Not Run)
+o	 77 - testSimpleExpander (Not Run)
+o	 78 - testSCellsFunctor (Not Run)
+o	 79 - testUmbrellaComputer (Not Run)
+o	 80 - testSimpleBoard (Not Run)
+o	 81 - testBoard2DCustomStyle (Not Run)
+o	 82 - testLongvol (Not Run)
+o	 83 - testArcDrawing (Not Run)
+o	 84 - testColorMaps (Not Run)
+o	 85 - testPNMReader (Not Run)
+o	 86 - testVolReader (Not Run)
+o	 87 - testRawReader (Not Run)
+o	 88 - testGenericReader (Not Run)
+o	 89 - testPointListReader (Not Run)
+o	 90 - testMeshReader (Not Run)
+o	 91 - testMPolynomialReader (Not Run)
+o	 92 - testHDF5Reader (Not Run)
+o	 93 - testPNMRawWriter (Not Run)
+o	 94 - testMeshWriter (Not Run)
+o	 95 - testGenericWriter (Not Run)
+o	 96 - testImageSimple (Not Run)
+o	 97 - testImageAdapter (Not Run)
+o	 98 - testImageCache (Not Run)
+o	 99 - testTiledImageFromImage (Not Run)
+o	100 - testConstImageAdapter (Not Run)
+o	101 - testImage (Not Run)
+o	102 - testImageSpanIterators (Not Run)
+o	103 - testCheckImageConcept (Not Run)
+o	104 - testMorton (Not Run)
+o	105 - testHashTree (Not Run)
+o	106 - testSliceImageFromFunctor (Not Run)
+o	107 - testParametricShape (Not Run)
+o	108 - testImplicitShape (Not Run)
+o	109 - testGaussDigitizer (Not Run)
+o	110 - testHalfPlane (Not Run)
+o	111 - testImplicitFunctionModels (Not Run)
+o	112 - testShapesFromPoints (Not Run)
+o	113 - testMesh (Not Run)
+o	114 - testBall3DSurface (Not Run)
+o	115 - testEuclideanShapesDecorator (Not Run)
+o	116 - testDigitalShapesDecorator (Not Run)
+oErrors while running CTest
+omake: *** [RUN_TESTS_buildpart_0] Error 8
+lSLF06#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'125"PhaseScriptExecution CMake\ PostBuild\ Rules build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F53B6C2FC48746359D93DFFE.sh5cc97eb10ef4b741^d9d1f8b10ef4b741^-48794"/usr/local/Cellar/cmake/2.8.11.2/bin/ctest --force-new-ctest-process -C DebugTest project /Users/davidcoeurjolly/Sources/DGtal/build-xcode        Start   1: testBasicBoolFunctionsCould not find executable testBasicBoolFunctionsLooked in the following places:testBasicBoolFunctionstestBasicBoolFunctionsDebug/testBasicBoolFunctionsDebug/testBasicBoolFunctionsDebug/testBasicBoolFunctionsDebug/testBasicBoolFunctionsUnable to find executable: testBasicBoolFunctions  1/116 Test   #1: testBasicBoolFunctions ..................***Not Run   0.00 sec        Start   2: testOrderedAlphabetCould not find executable testOrderedAlphabetLooked in the following places:testOrderedAlphabettestOrderedAlphabetDebug/testOrderedAlphabetDebug/testOrderedAlphabetDebug/testOrderedAlphabetDebug/testOrderedAlphabetUnable to find executable: testOrderedAlphabet  2/116 Test   #2: testOrderedAlphabet .....................***Not Run   0.00 sec        Start   3: testCirculatorCould not find executable testCirculatorLooked in the following places:testCirculatortestCirculatorDebug/testCirculatorDebug/testCirculatorDebug/testCirculatorDebug/testCirculatorUnable to find executable: testCirculator  3/116 Test   #3: testCirculator ..........................***Not Run   0.00 sec        Start   4: testConstIteratorAdapterCould not find executable testConstIteratorAdapterLooked in the following places:testConstIteratorAdaptertestConstIteratorAdapterDebug/testConstIteratorAdapterDebug/testConstIteratorAdapterDebug/testConstIteratorAdapterDebug/testConstIteratorAdapterUnable to find executable: testConstIteratorAdapter  4/116 Test   #4: testConstIteratorAdapter ................***Not Run   0.00 sec        Start   5: testProgressBarCould not find executable testProgressBarLooked in the following places:testProgressBartestProgressBarDebug/testProgressBarDebug/testProgressBarDebug/testProgressBarDebug/testProgressBarUnable to find executable: testProgressBar  5/116 Test   #5: testProgressBar .........................***Not Run   0.00 sec        Start   6: testBasicFunctorsCould not find executable testBasicFunctorsLooked in the following places:testBasicFunctorstestBasicFunctorsDebug/testBasicFunctorsDebug/testBasicFunctorsDebug/testBasicFunctorsDebug/testBasicFunctorsUnable to find executable: testBasicFunctors  6/116 Test   #6: testBasicFunctors .......................***Not Run   0.00 sec        Start   7: testConstRangeAdapterCould not find executable testConstRangeAdapterLooked in the following places:testConstRangeAdaptertestConstRangeAdapterDebug/testConstRangeAdapterDebug/testConstRangeAdapterDebug/testConstRangeAdapterDebug/testConstRangeAdapterUnable to find executable: testConstRangeAdapter  7/116 Test   #7: testConstRangeAdapter ...................***Not Run   0.00 sec        Start   8: testOutputIteratorAdapterCould not find executable testOutputIteratorAdapterLooked in the following places:testOutputIteratorAdaptertestOutputIteratorAdapterDebug/testOutputIteratorAdapterDebug/testOutputIteratorAdapterDebug/testOutputIteratorAdapterDebug/testOutputIteratorAdapterUnable to find executable: testOutputIteratorAdapter  8/116 Test   #8: testOutputIteratorAdapter ...............***Not Run   0.00 sec        Start   9: testClockCould not find executable testClockLooked in the following places:testClocktestClockDebug/testClockDebug/testClockDebug/testClockDebug/testClockUnable to find executable: testClock  9/116 Test   #9: testClock ...............................***Not Run   0.00 sec        Start  10: testTraceCould not find executable testTraceLooked in the following places:testTracetestTraceDebug/testTraceDebug/testTraceDebug/testTraceDebug/testTraceUnable to find executable: testTrace 10/116 Test  #10: testTrace ...............................***Not Run   0.00 sec        Start  11: testcpp11Could not find executable testcpp11Looked in the following places:testcpp11testcpp11Debug/testcpp11Debug/testcpp11Debug/testcpp11Debug/testcpp11Unable to find executable: testcpp11 11/116 Test  #11: testcpp11 ...............................***Not Run   0.00 sec        Start  12: testCountedPtrCould not find executable testCountedPtrLooked in the following places:testCountedPtrtestCountedPtrDebug/testCountedPtrDebug/testCountedPtrDebug/testCountedPtrDebug/testCountedPtrUnable to find executable: testCountedPtr 12/116 Test  #12: testCountedPtr ..........................***Not Run   0.00 sec        Start  13: testBitsCould not find executable testBitsLooked in the following places:testBitstestBitsDebug/testBitsDebug/testBitsDebug/testBitsDebug/testBitsUnable to find executable: testBits 13/116 Test  #13: testBits ................................***Not Run   0.00 sec        Start  14: testIndexedListWithBlocksCould not find executable testIndexedListWithBlocksLooked in the following places:testIndexedListWithBlockstestIndexedListWithBlocksDebug/testIndexedListWithBlocksDebug/testIndexedListWithBlocksDebug/testIndexedListWithBlocksDebug/testIndexedListWithBlocksUnable to find executable: testIndexedListWithBlocks 14/116 Test  #14: testIndexedListWithBlocks ...............***Not Run   0.00 sec        Start  15: testLabelsCould not find executable testLabelsLooked in the following places:testLabelstestLabelsDebug/testLabelsDebug/testLabelsDebug/testLabelsDebug/testLabelsUnable to find executable: testLabels 15/116 Test  #15: testLabels ..............................***Not Run   0.00 sec        Start  16: testLabelledMapCould not find executable testLabelledMapLooked in the following places:testLabelledMaptestLabelledMapDebug/testLabelledMapDebug/testLabelledMapDebug/testLabelledMapDebug/testLabelledMapUnable to find executable: testLabelledMap 16/116 Test  #16: testLabelledMap .........................***Not Run   0.00 sec        Start  17: testLabelledMap-benchmarkCould not find executable testLabelledMap-benchmarkLooked in the following places:testLabelledMap-benchmarktestLabelledMap-benchmarkDebug/testLabelledMap-benchmarkDebug/testLabelledMap-benchmarkDebug/testLabelledMap-benchmarkDebug/testLabelledMap-benchmarkUnable to find executable: testLabelledMap-benchmark 17/116 Test  #17: testLabelledMap-benchmark ...............***Not Run   0.00 sec        Start  18: testMultiMap-benchmarkCould not find executable testMultiMap-benchmarkLooked in the following places:testMultiMap-benchmarktestMultiMap-benchmarkDebug/testMultiMap-benchmarkDebug/testMultiMap-benchmarkDebug/testMultiMap-benchmarkDebug/testMultiMap-benchmarkUnable to find executable: testMultiMap-benchmark 18/116 Test  #18: testMultiMap-benchmark ..................***Not Run   0.00 sec        Start  19: testOpenMPCould not find executable testOpenMPLooked in the following places:testOpenMPtestOpenMPDebug/testOpenMPDebug/testOpenMPDebug/testOpenMPDebug/testOpenMPUnable to find executable: testOpenMP 19/116 Test  #19: testOpenMP ..............................***Not Run   0.00 sec        Start  20: testIteratorFunctionsCould not find executable testIteratorFunctionsLooked in the following places:testIteratorFunctionstestIteratorFunctionsDebug/testIteratorFunctionsDebug/testIteratorFunctionsDebug/testIteratorFunctionsDebug/testIteratorFunctionsUnable to find executable: testIteratorFunctions 20/116 Test  #20: testIteratorFunctions ...................***Not Run   0.00 sec        Start  21: testIteratorCirculatorTraitsCould not find executable testIteratorCirculatorTraitsLooked in the following places:testIteratorCirculatorTraitstestIteratorCirculatorTraitsDebug/testIteratorCirculatorTraitsDebug/testIteratorCirculatorTraitsDebug/testIteratorCirculatorTraitsDebug/testIteratorCirculatorTraitsUnable to find executable: testIteratorCirculatorTraits 21/116 Test  #21: testIteratorCirculatorTraits ............***Not Run   0.00 sec        Start  22: testCloneAndAliasesCould not find executable testCloneAndAliasesLooked in the following places:testCloneAndAliasestestCloneAndAliasesDebug/testCloneAndAliasesDebug/testCloneAndAliasesDebug/testCloneAndAliasesDebug/testCloneAndAliasesUnable to find executable: testCloneAndAliases 22/116 Test  #22: testCloneAndAliases .....................***Not Run   0.00 sec        Start  23: testOwningOrAliasingPtrCould not find executable testOwningOrAliasingPtrLooked in the following places:testOwningOrAliasingPtrtestOwningOrAliasingPtrDebug/testOwningOrAliasingPtrDebug/testOwningOrAliasingPtrDebug/testOwningOrAliasingPtrDebug/testOwningOrAliasingPtrUnable to find executable: testOwningOrAliasingPtr 23/116 Test  #23: testOwningOrAliasingPtr .................***Not Run   0.00 sec        Start  24: testDigitalSetCould not find executable testDigitalSetLooked in the following places:testDigitalSettestDigitalSetDebug/testDigitalSetDebug/testDigitalSetDebug/testDigitalSetDebug/testDigitalSetUnable to find executable: testDigitalSet 24/116 Test  #24: testDigitalSet ..........................***Not Run   0.00 sec        Start  25: testDomainSpanIteratorCould not find executable testDomainSpanIteratorLooked in the following places:testDomainSpanIteratortestDomainSpanIteratorDebug/testDomainSpanIteratorDebug/testDomainSpanIteratorDebug/testDomainSpanIteratorDebug/testDomainSpanIteratorUnable to find executable: testDomainSpanIterator 25/116 Test  #25: testDomainSpanIterator ..................***Not Run   0.00 sec        Start  26: testHyperRectDomainCould not find executable testHyperRectDomainLooked in the following places:testHyperRectDomaintestHyperRectDomainDebug/testHyperRectDomainDebug/testHyperRectDomainDebug/testHyperRectDomainDebug/testHyperRectDomainUnable to find executable: testHyperRectDomain 26/116 Test  #26: testHyperRectDomain .....................***Not Run   0.00 sec        Start  27: testHyperRectDomain-snippetCould not find executable testHyperRectDomain-snippetLooked in the following places:testHyperRectDomain-snippettestHyperRectDomain-snippetDebug/testHyperRectDomain-snippetDebug/testHyperRectDomain-snippetDebug/testHyperRectDomain-snippetDebug/testHyperRectDomain-snippetUnable to find executable: testHyperRectDomain-snippet 27/116 Test  #27: testHyperRectDomain-snippet .............***Not Run   0.00 sec        Start  28: testIntegerCould not find executable testIntegerLooked in the following places:testIntegertestIntegerDebug/testIntegerDebug/testIntegerDebug/testIntegerDebug/testIntegerUnable to find executable: testInteger 28/116 Test  #28: testInteger .............................***Not Run   0.00 sec        Start  29: testPointVectorCould not find executable testPointVectorLooked in the following places:testPointVectortestPointVectorDebug/testPointVectorDebug/testPointVectorDebug/testPointVectorDebug/testPointVectorUnable to find executable: testPointVector 29/116 Test  #29: testPointVector .........................***Not Run   0.00 sec        Start  30: testPointVectorContainersCould not find executable testPointVectorContainersLooked in the following places:testPointVectorContainerstestPointVectorContainersDebug/testPointVectorContainersDebug/testPointVectorContainersDebug/testPointVectorContainersDebug/testPointVectorContainersUnable to find executable: testPointVectorContainers 30/116 Test  #30: testPointVectorContainers ...............***Not Run   0.00 sec        Start  31: testLinearAlgebraCould not find executable testLinearAlgebraLooked in the following places:testLinearAlgebratestLinearAlgebraDebug/testLinearAlgebraDebug/testLinearAlgebraDebug/testLinearAlgebraDebug/testLinearAlgebraUnable to find executable: testLinearAlgebra 31/116 Test  #31: testLinearAlgebra .......................***Not Run   0.00 sec        Start  32: testImagesSetsUtilitiesCould not find executable testImagesSetsUtilitiesLooked in the following places:testImagesSetsUtilitiestestImagesSetsUtilitiesDebug/testImagesSetsUtilitiesDebug/testImagesSetsUtilitiesDebug/testImagesSetsUtilitiesDebug/testImagesSetsUtilitiesUnable to find executable: testImagesSetsUtilities 32/116 Test  #32: testImagesSetsUtilities .................***Not Run   0.00 sec        Start  33: testBasicPointFunctorsCould not find executable testBasicPointFunctorsLooked in the following places:testBasicPointFunctorstestBasicPointFunctorsDebug/testBasicPointFunctorsDebug/testBasicPointFunctorsDebug/testBasicPointFunctorsDebug/testBasicPointFunctorsUnable to find executable: testBasicPointFunctors 33/116 Test  #33: testBasicPointFunctors ..................***Not Run   0.00 sec        Start  34: testEmbedderCould not find executable testEmbedderLooked in the following places:testEmbeddertestEmbedderDebug/testEmbedderDebug/testEmbedderDebug/testEmbedderDebug/testEmbedderUnable to find executable: testEmbedder 34/116 Test  #34: testEmbedder ............................***Not Run   0.00 sec        Start  35: testSimpleMatrixCould not find executable testSimpleMatrixLooked in the following places:testSimpleMatrixtestSimpleMatrixDebug/testSimpleMatrixDebug/testSimpleMatrixDebug/testSimpleMatrixDebug/testSimpleMatrixUnable to find executable: testSimpleMatrix 35/116 Test  #35: testSimpleMatrix ........................***Not Run   0.00 sec        Start  36: testMeasureCould not find executable testMeasureLooked in the following places:testMeasuretestMeasureDebug/testMeasureDebug/testMeasureDebug/testMeasureDebug/testMeasureUnable to find executable: testMeasure 36/116 Test  #36: testMeasure .............................***Not Run   0.00 sec        Start  37: testSignalCould not find executable testSignalLooked in the following places:testSignaltestSignalDebug/testSignalDebug/testSignalDebug/testSignalDebug/testSignalUnable to find executable: testSignal 37/116 Test  #37: testSignal ..............................***Not Run   0.00 sec        Start  38: testStatisticsCould not find executable testStatisticsLooked in the following places:testStatisticstestStatisticsDebug/testStatisticsDebug/testStatisticsDebug/testStatisticsDebug/testStatisticsUnable to find executable: testStatistics 38/116 Test  #38: testStatistics ..........................***Not Run   0.00 sec        Start  39: testMPolynomialCould not find executable testMPolynomialLooked in the following places:testMPolynomialtestMPolynomialDebug/testMPolynomialDebug/testMPolynomialDebug/testMPolynomialDebug/testMPolynomialUnable to find executable: testMPolynomial 39/116 Test  #39: testMPolynomial .........................***Not Run   0.00 sec        Start  40: testAngleLinearMinimizerCould not find executable testAngleLinearMinimizerLooked in the following places:testAngleLinearMinimizertestAngleLinearMinimizerDebug/testAngleLinearMinimizerDebug/testAngleLinearMinimizerDebug/testAngleLinearMinimizerDebug/testAngleLinearMinimizerUnable to find executable: testAngleLinearMinimizer 40/116 Test  #40: testAngleLinearMinimizer ................***Not Run   0.00 sec        Start  41: testBasicMathFunctionsCould not find executable testBasicMathFunctionsLooked in the following places:testBasicMathFunctionstestBasicMathFunctionsDebug/testBasicMathFunctionsDebug/testBasicMathFunctionsDebug/testBasicMathFunctionsDebug/testBasicMathFunctionsUnable to find executable: testBasicMathFunctions 41/116 Test  #41: testBasicMathFunctions ..................***Not Run   0.00 sec        Start  42: testModuloComputerCould not find executable testModuloComputerLooked in the following places:testModuloComputertestModuloComputerDebug/testModuloComputerDebug/testModuloComputerDebug/testModuloComputerDebug/testModuloComputerUnable to find executable: testModuloComputer 42/116 Test  #42: testModuloComputer ......................***Not Run   0.00 sec        Start  43: testPatternCould not find executable testPatternLooked in the following places:testPatterntestPatternDebug/testPatternDebug/testPatternDebug/testPatternDebug/testPatternUnable to find executable: testPattern 43/116 Test  #43: testPattern .............................***Not Run   0.00 sec        Start  44: testFrechetShortcutCould not find executable testFrechetShortcutLooked in the following places:testFrechetShortcuttestFrechetShortcutDebug/testFrechetShortcutDebug/testFrechetShortcutDebug/testFrechetShortcutDebug/testFrechetShortcutUnable to find executable: testFrechetShortcut 44/116 Test  #44: testFrechetShortcut .....................***Not Run   0.00 sec        Start  45: testLengthEstimatorsCould not find executable testLengthEstimatorsLooked in the following places:testLengthEstimatorstestLengthEstimatorsDebug/testLengthEstimatorsDebug/testLengthEstimatorsDebug/testLengthEstimatorsDebug/testLengthEstimatorsUnable to find executable: testLengthEstimators 45/116 Test  #45: testLengthEstimators ....................***Not Run   0.00 sec        Start  46: testTrueLocalEstimatorCould not find executable testTrueLocalEstimatorLooked in the following places:testTrueLocalEstimatortestTrueLocalEstimatorDebug/testTrueLocalEstimatorDebug/testTrueLocalEstimatorDebug/testTrueLocalEstimatorDebug/testTrueLocalEstimatorUnable to find executable: testTrueLocalEstimator 46/116 Test  #46: testTrueLocalEstimator ..................***Not Run   0.00 sec        Start  47: testEstimatorComparatorCould not find executable testEstimatorComparatorLooked in the following places:testEstimatorComparatortestEstimatorComparatorDebug/testEstimatorComparatorDebug/testEstimatorComparatorDebug/testEstimatorComparatorDebug/testEstimatorComparatorUnable to find executable: testEstimatorComparator 47/116 Test  #47: testEstimatorComparator .................***Not Run   0.00 sec        Start  48: testSegmentComputerEstimatorsCould not find executable testSegmentComputerEstimatorsLooked in the following places:testSegmentComputerEstimatorstestSegmentComputerEstimatorsDebug/testSegmentComputerEstimatorsDebug/testSegmentComputerEstimatorsDebug/testSegmentComputerEstimatorsDebug/testSegmentComputerEstimatorsUnable to find executable: testSegmentComputerEstimators 48/116 Test  #48: testSegmentComputerEstimators ...........***Not Run   0.00 sec        Start  49: testMostCenteredMSEstimatorCould not find executable testMostCenteredMSEstimatorLooked in the following places:testMostCenteredMSEstimatortestMostCenteredMSEstimatorDebug/testMostCenteredMSEstimatorDebug/testMostCenteredMSEstimatorDebug/testMostCenteredMSEstimatorDebug/testMostCenteredMSEstimatorUnable to find executable: testMostCenteredMSEstimator 49/116 Test  #49: testMostCenteredMSEstimator .............***Not Run   0.00 sec        Start  50: testKanungoCould not find executable testKanungoLooked in the following places:testKanungotestKanungoDebug/testKanungoDebug/testKanungoDebug/testKanungoDebug/testKanungoUnable to find executable: testKanungo 50/116 Test  #50: testKanungo .............................***Not Run   0.00 sec        Start  51: testMeasureSetCould not find executable testMeasureSetLooked in the following places:testMeasureSettestMeasureSetDebug/testMeasureSetDebug/testMeasureSetDebug/testMeasureSetDebug/testMeasureSetUnable to find executable: testMeasureSet 51/116 Test  #51: testMeasureSet ..........................***Not Run   0.00 sec        Start  52: testDistanceTransformationCould not find executable testDistanceTransformationLooked in the following places:testDistanceTransformationtestDistanceTransformationDebug/testDistanceTransformationDebug/testDistanceTransformationDebug/testDistanceTransformationDebug/testDistanceTransformationUnable to find executable: testDistanceTransformation 52/116 Test  #52: testDistanceTransformation ..............***Not Run   0.00 sec        Start  53: testDistanceTransformationNDCould not find executable testDistanceTransformationNDLooked in the following places:testDistanceTransformationNDtestDistanceTransformationNDDebug/testDistanceTransformationNDDebug/testDistanceTransformationNDDebug/testDistanceTransformationNDDebug/testDistanceTransformationNDUnable to find executable: testDistanceTransformationND 53/116 Test  #53: testDistanceTransformationND ............***Not Run   0.00 sec        Start  54: testDistanceTransformationMetricsCould not find executable testDistanceTransformationMetricsLooked in the following places:testDistanceTransformationMetricstestDistanceTransformationMetricsDebug/testDistanceTransformationMetricsDebug/testDistanceTransformationMetricsDebug/testDistanceTransformationMetricsDebug/testDistanceTransformationMetricsUnable to find executable: testDistanceTransformationMetrics 54/116 Test  #54: testDistanceTransformationMetrics .......***Not Run   0.00 sec        Start  55: testReverseDTCould not find executable testReverseDTLooked in the following places:testReverseDTtestReverseDTDebug/testReverseDTDebug/testReverseDTDebug/testReverseDTDebug/testReverseDTUnable to find executable: testReverseDT 55/116 Test  #55: testReverseDT ...........................***Not Run   0.00 sec        Start  56: testFMMCould not find executable testFMMLooked in the following places:testFMMtestFMMDebug/testFMMDebug/testFMMDebug/testFMMDebug/testFMMUnable to find executable: testFMM 56/116 Test  #56: testFMM .................................***Not Run   0.00 sec        Start  57: testVoronoiMapCould not find executable testVoronoiMapLooked in the following places:testVoronoiMaptestVoronoiMapDebug/testVoronoiMapDebug/testVoronoiMapDebug/testVoronoiMapDebug/testVoronoiMapUnable to find executable: testVoronoiMap 57/116 Test  #57: testVoronoiMap ..........................***Not Run   0.00 sec        Start  58: testMetricsCould not find executable testMetricsLooked in the following places:testMetricstestMetricsDebug/testMetricsDebug/testMetricsDebug/testMetricsDebug/testMetricsUnable to find executable: testMetrics 58/116 Test  #58: testMetrics .............................***Not Run   0.00 sec        Start  59: testMetricBallsCould not find executable testMetricBallsLooked in the following places:testMetricBallstestMetricBallsDebug/testMetricBallsDebug/testMetricBallsDebug/testMetricBallsDebug/testMetricBallsUnable to find executable: testMetricBalls 59/116 Test  #59: testMetricBalls .........................***Not Run   0.00 sec        Start  60: testPowerMapCould not find executable testPowerMapLooked in the following places:testPowerMaptestPowerMapDebug/testPowerMapDebug/testPowerMapDebug/testPowerMapDebug/testPowerMapUnable to find executable: testPowerMap 60/116 Test  #60: testPowerMap ............................***Not Run   0.00 sec        Start  61: testReducedMedialAxisCould not find executable testReducedMedialAxisLooked in the following places:testReducedMedialAxistestReducedMedialAxisDebug/testReducedMedialAxisDebug/testReducedMedialAxisDebug/testReducedMedialAxisDebug/testReducedMedialAxisUnable to find executable: testReducedMedialAxis 61/116 Test  #61: testReducedMedialAxis ...................***Not Run   0.00 sec        Start  62: testSeparableMetricAdapterCould not find executable testSeparableMetricAdapterLooked in the following places:testSeparableMetricAdaptertestSeparableMetricAdapterDebug/testSeparableMetricAdapterDebug/testSeparableMetricAdapterDebug/testSeparableMetricAdapterDebug/testSeparableMetricAdapterUnable to find executable: testSeparableMetricAdapter 62/116 Test  #62: testSeparableMetricAdapter ..............***Not Run   0.00 sec        Start  63: testPreimageCould not find executable testPreimageLooked in the following places:testPreimagetestPreimageDebug/testPreimageDebug/testPreimageDebug/testPreimageDebug/testPreimageUnable to find executable: testPreimage 63/116 Test  #63: testPreimage ............................***Not Run   0.00 sec        Start  64: testSphericalAccumulatorCould not find executable testSphericalAccumulatorLooked in the following places:testSphericalAccumulatortestSphericalAccumulatorDebug/testSphericalAccumulatorDebug/testSphericalAccumulatorDebug/testSphericalAccumulatorDebug/testSphericalAccumulatorUnable to find executable: testSphericalAccumulator 64/116 Test  #64: testSphericalAccumulator ................***Not Run   0.00 sec        Start  65: testBreadthFirstPropagationCould not find executable testBreadthFirstPropagationLooked in the following places:testBreadthFirstPropagationtestBreadthFirstPropagationDebug/testBreadthFirstPropagationDebug/testBreadthFirstPropagationDebug/testBreadthFirstPropagationDebug/testBreadthFirstPropagationUnable to find executable: testBreadthFirstPropagation 65/116 Test  #65: testBreadthFirstPropagation .............***Not Run   0.00 sec        Start  66: testDepthFirstPropagationCould not find executable testDepthFirstPropagationLooked in the following places:testDepthFirstPropagationtestDepthFirstPropagationDebug/testDepthFirstPropagationDebug/testDepthFirstPropagationDebug/testDepthFirstPropagationDebug/testDepthFirstPropagationUnable to find executable: testDepthFirstPropagation 66/116 Test  #66: testDepthFirstPropagation ...............***Not Run   0.00 sec        Start  67: testDigitalSurfaceBoostGraphInterfaceCould not find executable testDigitalSurfaceBoostGraphInterfaceLooked in the following places:testDigitalSurfaceBoostGraphInterfacetestDigitalSurfaceBoostGraphInterfaceDebug/testDigitalSurfaceBoostGraphInterfaceDebug/testDigitalSurfaceBoostGraphInterfaceDebug/testDigitalSurfaceBoostGraphInterfaceDebug/testDigitalSurfaceBoostGraphInterfaceUnable to find executable: testDigitalSurfaceBoostGraphInterface 67/116 Test  #67: testDigitalSurfaceBoostGraphInterface ...***Not Run   0.00 sec        Start  68: testDistancePropagationCould not find executable testDistancePropagationLooked in the following places:testDistancePropagationtestDistancePropagationDebug/testDistancePropagationDebug/testDistancePropagationDebug/testDistancePropagationDebug/testDistancePropagationUnable to find executable: testDistancePropagation 68/116 Test  #68: testDistancePropagation .................***Not Run   0.00 sec        Start  69: testExpanderCould not find executable testExpanderLooked in the following places:testExpandertestExpanderDebug/testExpanderDebug/testExpanderDebug/testExpanderDebug/testExpanderUnable to find executable: testExpander 69/116 Test  #69: testExpander ............................***Not Run   0.00 sec        Start  70: testSTLMapToVertexMapAdapterCould not find executable testSTLMapToVertexMapAdapterLooked in the following places:testSTLMapToVertexMapAdaptertestSTLMapToVertexMapAdapterDebug/testSTLMapToVertexMapAdapterDebug/testSTLMapToVertexMapAdapterDebug/testSTLMapToVertexMapAdapterDebug/testSTLMapToVertexMapAdapterUnable to find executable: testSTLMapToVertexMapAdapter 70/116 Test  #70: testSTLMapToVertexMapAdapter ............***Not Run   0.00 sec        Start  71: testAdjacencyCould not find executable testAdjacencyLooked in the following places:testAdjacencytestAdjacencyDebug/testAdjacencyDebug/testAdjacencyDebug/testAdjacencyDebug/testAdjacencyUnable to find executable: testAdjacency 71/116 Test  #71: testAdjacency ...........................***Not Run   0.00 sec        Start  72: testCellularGridSpaceNDCould not find executable testCellularGridSpaceNDLooked in the following places:testCellularGridSpaceNDtestCellularGridSpaceNDDebug/testCellularGridSpaceNDDebug/testCellularGridSpaceNDDebug/testCellularGridSpaceNDDebug/testCellularGridSpaceNDUnable to find executable: testCellularGridSpaceND 72/116 Test  #72: testCellularGridSpaceND .................***Not Run   0.00 sec        Start  73: testDigitalSurfaceCould not find executable testDigitalSurfaceLooked in the following places:testDigitalSurfacetestDigitalSurfaceDebug/testDigitalSurfaceDebug/testDigitalSurfaceDebug/testDigitalSurfaceDebug/testDigitalSurfaceUnable to find executable: testDigitalSurface 73/116 Test  #73: testDigitalSurface ......................***Not Run   0.00 sec        Start  74: testDigitalTopologyCould not find executable testDigitalTopologyLooked in the following places:testDigitalTopologytestDigitalTopologyDebug/testDigitalTopologyDebug/testDigitalTopologyDebug/testDigitalTopologyDebug/testDigitalTopologyUnable to find executable: testDigitalTopology 74/116 Test  #74: testDigitalTopology .....................***Not Run   0.00 sec        Start  75: testObjectCould not find executable testObjectLooked in the following places:testObjecttestObjectDebug/testObjectDebug/testObjectDebug/testObjectDebug/testObjectUnable to find executable: testObject 75/116 Test  #75: testObject ..............................***Not Run   0.00 sec        Start  76: testObjectBorderCould not find executable testObjectBorderLooked in the following places:testObjectBordertestObjectBorderDebug/testObjectBorderDebug/testObjectBorderDebug/testObjectBorderDebug/testObjectBorderUnable to find executable: testObjectBorder 76/116 Test  #76: testObjectBorder ........................***Not Run   0.00 sec        Start  77: testSimpleExpanderCould not find executable testSimpleExpanderLooked in the following places:testSimpleExpandertestSimpleExpanderDebug/testSimpleExpanderDebug/testSimpleExpanderDebug/testSimpleExpanderDebug/testSimpleExpanderUnable to find executable: testSimpleExpander 77/116 Test  #77: testSimpleExpander ......................***Not Run   0.00 sec        Start  78: testSCellsFunctorCould not find executable testSCellsFunctorLooked in the following places:testSCellsFunctortestSCellsFunctorDebug/testSCellsFunctorDebug/testSCellsFunctorDebug/testSCellsFunctorDebug/testSCellsFunctorUnable to find executable: testSCellsFunctor 78/116 Test  #78: testSCellsFunctor .......................***Not Run   0.00 sec        Start  79: testUmbrellaComputerCould not find executable testUmbrellaComputerLooked in the following places:testUmbrellaComputertestUmbrellaComputerDebug/testUmbrellaComputerDebug/testUmbrellaComputerDebug/testUmbrellaComputerDebug/testUmbrellaComputerUnable to find executable: testUmbrellaComputer 79/116 Test  #79: testUmbrellaComputer ....................***Not Run   0.00 sec        Start  80: testSimpleBoardCould not find executable testSimpleBoardLooked in the following places:testSimpleBoardtestSimpleBoardDebug/testSimpleBoardDebug/testSimpleBoardDebug/testSimpleBoardDebug/testSimpleBoardUnable to find executable: testSimpleBoard 80/116 Test  #80: testSimpleBoard .........................***Not Run   0.00 sec        Start  81: testBoard2DCustomStyleCould not find executable testBoard2DCustomStyleLooked in the following places:testBoard2DCustomStyletestBoard2DCustomStyleDebug/testBoard2DCustomStyleDebug/testBoard2DCustomStyleDebug/testBoard2DCustomStyleDebug/testBoard2DCustomStyleUnable to find executable: testBoard2DCustomStyle 81/116 Test  #81: testBoard2DCustomStyle ..................***Not Run   0.00 sec        Start  82: testLongvolCould not find executable testLongvolLooked in the following places:testLongvoltestLongvolDebug/testLongvolDebug/testLongvolDebug/testLongvolDebug/testLongvolUnable to find executable: testLongvol 82/116 Test  #82: testLongvol .............................***Not Run   0.00 sec        Start  83: testArcDrawingCould not find executable testArcDrawingLooked in the following places:testArcDrawingtestArcDrawingDebug/testArcDrawingDebug/testArcDrawingDebug/testArcDrawingDebug/testArcDrawingUnable to find executable: testArcDrawing 83/116 Test  #83: testArcDrawing ..........................***Not Run   0.00 sec        Start  84: testColorMapsCould not find executable testColorMapsLooked in the following places:testColorMapstestColorMapsDebug/testColorMapsDebug/testColorMapsDebug/testColorMapsDebug/testColorMapsUnable to find executable: testColorMaps 84/116 Test  #84: testColorMaps ...........................***Not Run   0.00 sec        Start  85: testPNMReaderCould not find executable testPNMReaderLooked in the following places:testPNMReadertestPNMReaderDebug/testPNMReaderDebug/testPNMReaderDebug/testPNMReaderDebug/testPNMReaderUnable to find executable: testPNMReader 85/116 Test  #85: testPNMReader ...........................***Not Run   0.00 sec        Start  86: testVolReaderCould not find executable testVolReaderLooked in the following places:testVolReadertestVolReaderDebug/testVolReaderDebug/testVolReaderDebug/testVolReaderDebug/testVolReaderUnable to find executable: testVolReader 86/116 Test  #86: testVolReader ...........................***Not Run   0.00 sec        Start  87: testRawReaderCould not find executable testRawReaderLooked in the following places:testRawReadertestRawReaderDebug/testRawReaderDebug/testRawReaderDebug/testRawReaderDebug/testRawReaderUnable to find executable: testRawReader 87/116 Test  #87: testRawReader ...........................***Not Run   0.00 sec        Start  88: testGenericReaderCould not find executable testGenericReaderLooked in the following places:testGenericReadertestGenericReaderDebug/testGenericReaderDebug/testGenericReaderDebug/testGenericReaderDebug/testGenericReaderUnable to find executable: testGenericReader 88/116 Test  #88: testGenericReader .......................***Not Run   0.00 sec        Start  89: testPointListReaderCould not find executable testPointListReaderLooked in the following places:testPointListReadertestPointListReaderDebug/testPointListReaderDebug/testPointListReaderDebug/testPointListReaderDebug/testPointListReaderUnable to find executable: testPointListReader 89/116 Test  #89: testPointListReader .....................***Not Run   0.00 sec        Start  90: testMeshReaderCould not find executable testMeshReaderLooked in the following places:testMeshReadertestMeshReaderDebug/testMeshReaderDebug/testMeshReaderDebug/testMeshReaderDebug/testMeshReaderUnable to find executable: testMeshReader 90/116 Test  #90: testMeshReader ..........................***Not Run   0.00 sec        Start  91: testMPolynomialReaderCould not find executable testMPolynomialReaderLooked in the following places:testMPolynomialReadertestMPolynomialReaderDebug/testMPolynomialReaderDebug/testMPolynomialReaderDebug/testMPolynomialReaderDebug/testMPolynomialReaderUnable to find executable: testMPolynomialReader 91/116 Test  #91: testMPolynomialReader ...................***Not Run   0.00 sec        Start  92: testHDF5ReaderCould not find executable testHDF5ReaderLooked in the following places:testHDF5ReadertestHDF5ReaderDebug/testHDF5ReaderDebug/testHDF5ReaderDebug/testHDF5ReaderDebug/testHDF5ReaderUnable to find executable: testHDF5Reader 92/116 Test  #92: testHDF5Reader ..........................***Not Run   0.00 sec        Start  93: testPNMRawWriterCould not find executable testPNMRawWriterLooked in the following places:testPNMRawWritertestPNMRawWriterDebug/testPNMRawWriterDebug/testPNMRawWriterDebug/testPNMRawWriterDebug/testPNMRawWriterUnable to find executable: testPNMRawWriter 93/116 Test  #93: testPNMRawWriter ........................***Not Run   0.00 sec        Start  94: testMeshWriterCould not find executable testMeshWriterLooked in the following places:testMeshWritertestMeshWriterDebug/testMeshWriterDebug/testMeshWriterDebug/testMeshWriterDebug/testMeshWriterUnable to find executable: testMeshWriter 94/116 Test  #94: testMeshWriter ..........................***Not Run   0.00 sec        Start  95: testGenericWriterCould not find executable testGenericWriterLooked in the following places:testGenericWritertestGenericWriterDebug/testGenericWriterDebug/testGenericWriterDebug/testGenericWriterDebug/testGenericWriterUnable to find executable: testGenericWriter 95/116 Test  #95: testGenericWriter .......................***Not Run   0.00 sec        Start  96: testImageSimpleCould not find executable testImageSimpleLooked in the following places:testImageSimpletestImageSimpleDebug/testImageSimpleDebug/testImageSimpleDebug/testImageSimpleDebug/testImageSimpleUnable to find executable: testImageSimple 96/116 Test  #96: testImageSimple .........................***Not Run   0.00 sec        Start  97: testImageAdapterCould not find executable testImageAdapterLooked in the following places:testImageAdaptertestImageAdapterDebug/testImageAdapterDebug/testImageAdapterDebug/testImageAdapterDebug/testImageAdapterUnable to find executable: testImageAdapter 97/116 Test  #97: testImageAdapter ........................***Not Run   0.00 sec        Start  98: testImageCacheCould not find executable testImageCacheLooked in the following places:testImageCachetestImageCacheDebug/testImageCacheDebug/testImageCacheDebug/testImageCacheDebug/testImageCacheUnable to find executable: testImageCache 98/116 Test  #98: testImageCache ..........................***Not Run   0.00 sec        Start  99: testTiledImageFromImageCould not find executable testTiledImageFromImageLooked in the following places:testTiledImageFromImagetestTiledImageFromImageDebug/testTiledImageFromImageDebug/testTiledImageFromImageDebug/testTiledImageFromImageDebug/testTiledImageFromImageUnable to find executable: testTiledImageFromImage 99/116 Test  #99: testTiledImageFromImage .................***Not Run   0.00 sec        Start 100: testConstImageAdapterCould not find executable testConstImageAdapterLooked in the following places:testConstImageAdaptertestConstImageAdapterDebug/testConstImageAdapterDebug/testConstImageAdapterDebug/testConstImageAdapterDebug/testConstImageAdapterUnable to find executable: testConstImageAdapter100/116 Test #100: testConstImageAdapter ...................***Not Run   0.00 sec        Start 101: testImageCould not find executable testImageLooked in the following places:testImagetestImageDebug/testImageDebug/testImageDebug/testImageDebug/testImageUnable to find executable: testImage101/116 Test #101: testImage ...............................***Not Run   0.00 sec        Start 102: testImageSpanIteratorsCould not find executable testImageSpanIteratorsLooked in the following places:testImageSpanIteratorstestImageSpanIteratorsDebug/testImageSpanIteratorsDebug/testImageSpanIteratorsDebug/testImageSpanIteratorsDebug/testImageSpanIteratorsUnable to find executable: testImageSpanIterators102/116 Test #102: testImageSpanIterators ..................***Not Run   0.00 sec        Start 103: testCheckImageConceptCould not find executable testCheckImageConceptLooked in the following places:testCheckImageConcepttestCheckImageConceptDebug/testCheckImageConceptDebug/testCheckImageConceptDebug/testCheckImageConceptDebug/testCheckImageConceptUnable to find executable: testCheckImageConcept103/116 Test #103: testCheckImageConcept ...................***Not Run   0.00 sec        Start 104: testMortonCould not find executable testMortonLooked in the following places:testMortontestMortonDebug/testMortonDebug/testMortonDebug/testMortonDebug/testMortonUnable to find executable: testMorton104/116 Test #104: testMorton ..............................***Not Run   0.00 sec        Start 105: testHashTreeCould not find executable testHashTreeLooked in the following places:testHashTreetestHashTreeDebug/testHashTreeDebug/testHashTreeDebug/testHashTreeDebug/testHashTreeUnable to find executable: testHashTree105/116 Test #105: testHashTree ............................***Not Run   0.00 sec        Start 106: testSliceImageFromFunctorCould not find executable testSliceImageFromFunctorLooked in the following places:testSliceImageFromFunctortestSliceImageFromFunctorDebug/testSliceImageFromFunctorDebug/testSliceImageFromFunctorDebug/testSliceImageFromFunctorDebug/testSliceImageFromFunctorUnable to find executable: testSliceImageFromFunctor106/116 Test #106: testSliceImageFromFunctor ...............***Not Run   0.00 sec        Start 107: testParametricShapeCould not find executable testParametricShapeLooked in the following places:testParametricShapetestParametricShapeDebug/testParametricShapeDebug/testParametricShapeDebug/testParametricShapeDebug/testParametricShapeUnable to find executable: testParametricShape107/116 Test #107: testParametricShape .....................***Not Run   0.00 sec        Start 108: testImplicitShapeCould not find executable testImplicitShapeLooked in the following places:testImplicitShapetestImplicitShapeDebug/testImplicitShapeDebug/testImplicitShapeDebug/testImplicitShapeDebug/testImplicitShapeUnable to find executable: testImplicitShape108/116 Test #108: testImplicitShape .......................***Not Run   0.00 sec        Start 109: testGaussDigitizerCould not find executable testGaussDigitizerLooked in the following places:testGaussDigitizertestGaussDigitizerDebug/testGaussDigitizerDebug/testGaussDigitizerDebug/testGaussDigitizerDebug/testGaussDigitizerUnable to find executable: testGaussDigitizer109/116 Test #109: testGaussDigitizer ......................***Not Run   0.00 sec        Start 110: testHalfPlaneCould not find executable testHalfPlaneLooked in the following places:testHalfPlanetestHalfPlaneDebug/testHalfPlaneDebug/testHalfPlaneDebug/testHalfPlaneDebug/testHalfPlaneUnable to find executable: testHalfPlane110/116 Test #110: testHalfPlane ...........................***Not Run   0.00 sec        Start 111: testImplicitFunctionModelsCould not find executable testImplicitFunctionModelsLooked in the following places:testImplicitFunctionModelstestImplicitFunctionModelsDebug/testImplicitFunctionModelsDebug/testImplicitFunctionModelsDebug/testImplicitFunctionModelsDebug/testImplicitFunctionModelsUnable to find executable: testImplicitFunctionModels111/116 Test #111: testImplicitFunctionModels ..............***Not Run   0.00 sec        Start 112: testShapesFromPointsCould not find executable testShapesFromPointsLooked in the following places:testShapesFromPointstestShapesFromPointsDebug/testShapesFromPointsDebug/testShapesFromPointsDebug/testShapesFromPointsDebug/testShapesFromPointsUnable to find executable: testShapesFromPoints112/116 Test #112: testShapesFromPoints ....................***Not Run   0.00 sec        Start 113: testMeshCould not find executable testMeshLooked in the following places:testMeshtestMeshDebug/testMeshDebug/testMeshDebug/testMeshDebug/testMeshUnable to find executable: testMesh113/116 Test #113: testMesh ................................***Not Run   0.00 sec        Start 114: testBall3DSurfaceCould not find executable testBall3DSurfaceLooked in the following places:testBall3DSurfacetestBall3DSurfaceDebug/testBall3DSurfaceDebug/testBall3DSurfaceDebug/testBall3DSurfaceDebug/testBall3DSurfaceUnable to find executable: testBall3DSurface114/116 Test #114: testBall3DSurface .......................***Not Run   0.00 sec        Start 115: testEuclideanShapesDecoratorCould not find executable testEuclideanShapesDecoratorLooked in the following places:testEuclideanShapesDecoratortestEuclideanShapesDecoratorDebug/testEuclideanShapesDecoratorDebug/testEuclideanShapesDecoratorDebug/testEuclideanShapesDecoratorDebug/testEuclideanShapesDecoratorUnable to find executable: testEuclideanShapesDecorator115/116 Test #115: testEuclideanShapesDecorator ............***Not Run   0.00 sec        Start 116: testDigitalShapesDecoratorCould not find executable testDigitalShapesDecoratorLooked in the following places:testDigitalShapesDecoratortestDigitalShapesDecoratorDebug/testDigitalShapesDecoratorDebug/testDigitalShapesDecoratorDebug/testDigitalShapesDecoratorDebug/testDigitalShapesDecoratorUnable to find executable: testDigitalShapesDecorator116/116 Test #116: testDigitalShapesDecorator ..............***Not Run   0.00 sec0% tests passed, 116 tests failed out of 116Total Test time (real) =   0.16 secThe following tests FAILED:	  1 - testBasicBoolFunctions (Not Run)	  2 - testOrderedAlphabet (Not Run)	  3 - testCirculator (Not Run)	  4 - testConstIteratorAdapter (Not Run)	  5 - testProgressBar (Not Run)	  6 - testBasicFunctors (Not Run)	  7 - testConstRangeAdapter (Not Run)	  8 - testOutputIteratorAdapter (Not Run)	  9 - testClock (Not Run)	 10 - testTrace (Not Run)	 11 - testcpp11 (Not Run)	 12 - testCountedPtr (Not Run)	 13 - testBits (Not Run)	 14 - testIndexedListWithBlocks (Not Run)	 15 - testLabels (Not Run)	 16 - testLabelledMap (Not Run)	 17 - testLabelledMap-benchmark (Not Run)	 18 - testMultiMap-benchmark (Not Run)	 19 - testOpenMP (Not Run)	 20 - testIteratorFunctions (Not Run)	 21 - testIteratorCirculatorTraits (Not Run)	 22 - testCloneAndAliases (Not Run)	 23 - testOwningOrAliasingPtr (Not Run)	 24 - testDigitalSet (Not Run)	 25 - testDomainSpanIterator (Not Run)	 26 - testHyperRectDomain (Not Run)	 27 - testHyperRectDomain-snippet (Not Run)	 28 - testInteger (Not Run)	 29 - testPointVector (Not Run)	 30 - testPointVectorContainers (Not Run)	 31 - testLinearAlgebra (Not Run)	 32 - testImagesSetsUtilities (Not Run)	 33 - testBasicPointFunctors (Not Run)	 34 - testEmbedder (Not Run)	 35 - testSimpleMatrix (Not Run)	 36 - testMeasure (Not Run)	 37 - testSignal (Not Run)	 38 - testStatistics (Not Run)	 39 - testMPolynomial (Not Run)	 40 - testAngleLinearMinimizer (Not Run)	 41 - testBasicMathFunctions (Not Run)	 42 - testModuloComputer (Not Run)	 43 - testPattern (Not Run)	 44 - testFrechetShortcut (Not Run)	 45 - testLengthEstimators (Not Run)	 46 - testTrueLocalEstimator (Not Run)	 47 - testEstimatorComparator (Not Run)	 48 - testSegmentComputerEstimators (Not Run)	 49 - testMostCenteredMSEstimator (Not Run)	 50 - testKanungo (Not Run)	 51 - testMeasureSet (Not Run)	 52 - testDistanceTransformation (Not Run)	 53 - testDistanceTransformationND (Not Run)	 54 - testDistanceTransformationMetrics (Not Run)	 55 - testReverseDT (Not Run)	 56 - testFMM (Not Run)	 57 - testVoronoiMap (Not Run)	 58 - testMetrics (Not Run)	 59 - testMetricBalls (Not Run)	 60 - testPowerMap (Not Run)	 61 - testReducedMedialAxis (Not Run)	 62 - testSeparableMetricAdapter (Not Run)	 63 - testPreimage (Not Run)	 64 - testSphericalAccumulator (Not Run)	 65 - testBreadthFirstPropagation (Not Run)	 66 - testDepthFirstPropagation (Not Run)	 67 - testDigitalSurfaceBoostGraphInterface (Not Run)	 68 - testDistancePropagation (Not Run)	 69 - testExpander (Not Run)	 70 - testSTLMapToVertexMapAdapter (Not Run)	 71 - testAdjacency (Not Run)	 72 - testCellularGridSpaceND (Not Run)	 73 - testDigitalSurface (Not Run)	 74 - testDigitalTopology (Not Run)	 75 - testObject (Not Run)	 76 - testObjectBorder (Not Run)	 77 - testSimpleExpander (Not Run)	 78 - testSCellsFunctor (Not Run)	 79 - testUmbrellaComputer (Not Run)	 80 - testSimpleBoard (Not Run)	 81 - testBoard2DCustomStyle (Not Run)	 82 - testLongvol (Not Run)	 83 - testArcDrawing (Not Run)	 84 - testColorMaps (Not Run)	 85 - testPNMReader (Not Run)	 86 - testVolReader (Not Run)	 87 - testRawReader (Not Run)	 88 - testGenericReader (Not Run)	 89 - testPointListReader (Not Run)	 90 - testMeshReader (Not Run)	 91 - testMPolynomialReader (Not Run)	 92 - testHDF5Reader (Not Run)	 93 - testPNMRawWriter (Not Run)	 94 - testMeshWriter (Not Run)	 95 - testGenericWriter (Not Run)	 96 - testImageSimple (Not Run)	 97 - testImageAdapter (Not Run)	 98 - testImageCache (Not Run)	 99 - testTiledImageFromImage (Not Run)	100 - testConstImageAdapter (Not Run)	101 - testImage (Not Run)	102 - testImageSpanIterators (Not Run)	103 - testCheckImageConcept (Not Run)	104 - testMorton (Not Run)	105 - testHashTree (Not Run)	106 - testSliceImageFromFunctor (Not Run)	107 - testParametricShape (Not Run)	108 - testImplicitShape (Not Run)	109 - testGaussDigitizer (Not Run)	110 - testHalfPlane (Not Run)	111 - testImplicitFunctionModels (Not Run)	112 - testShapesFromPoints (Not Run)	113 - testMesh (Not Run)	114 - testBall3DSurface (Not Run)	115 - testEuclideanShapesDecorator (Not Run)	116 - testDigitalShapesDecorator (Not Run)Errors while running CTestmake: *** [RUN_TESTS_buildpart_0] Error 8Showing first 200 notices onlyCommand /bin/sh failed with exit code 2202(21%IDEActivityLogMessage2@78"/usr/local/Cellar/cmake/2.8.11.2/bin/ctest --force-new-ctest-process -C Debug-401870513#0#78#-0#-----2@62"Test project /Users/davidcoeurjolly/Sources/DGtal/build-xcode-401870513#78#62#-0#-----2@42"        Start   1: testBasicBoolFunctions-401870513#140#42#-0#-----2@49"Could not find executable testBasicBoolFunctions-401870513#182#49#-0#-----2@32"Looked in the following places:-401870513#231#32#-0#-----2@23"testBasicBoolFunctions-401870513#263#23#-0#-----2@23"testBasicBoolFunctions-401870513#286#23#-0#-----2@29"Debug/testBasicBoolFunctions-401870513#309#29#-0#-----2@29"Debug/testBasicBoolFunctions-401870513#338#29#-0#-----2@29"Debug/testBasicBoolFunctions-401870513#367#29#-0#-----2@29"Debug/testBasicBoolFunctions-401870513#396#29#-0#-----2@50"Unable to find executable: testBasicBoolFunctions-401870513#425#50#-0#-----2@82"  1/116 Test   #1: testBasicBoolFunctions ..................***Not Run   0.00 sec-401870513#475#82#-0#-----2@39"        Start   2: testOrderedAlphabet-401870513#557#39#-0#-----2@46"Could not find executable testOrderedAlphabet-401870513#596#46#-0#-----2@32"Looked in the following places:-401870513#642#32#-0#-----2@20"testOrderedAlphabet-401870513#674#20#-0#-----2@20"testOrderedAlphabet-401870513#694#20#-0#-----2@26"Debug/testOrderedAlphabet-401870513#714#26#-0#-----2@26"Debug/testOrderedAlphabet-401870513#740#26#-0#-----2@26"Debug/testOrderedAlphabet-401870513#766#26#-0#-----2@26"Debug/testOrderedAlphabet-401870513#792#26#-0#-----2@47"Unable to find executable: testOrderedAlphabet-401870513#818#47#-0#-----2@82"  2/116 Test   #2: testOrderedAlphabet .....................***Not Run   0.00 sec-401870513#865#82#-0#-----2@34"        Start   3: testCirculator-401870513#947#34#-0#-----2@41"Could not find executable testCirculator-401870513#981#41#-0#-----2@32"Looked in the following places:-401870513#1022#32#-0#-----2@15"testCirculator-401870513#1054#15#-0#-----2@15"testCirculator-401870513#1069#15#-0#-----2@21"Debug/testCirculator-401870513#1084#21#-0#-----2@21"Debug/testCirculator-401870513#1105#21#-0#-----2@21"Debug/testCirculator-401870513#1126#21#-0#-----2@21"Debug/testCirculator-401870513#1147#21#-0#-----2@42"Unable to find executable: testCirculator-401870513#1168#42#-0#-----2@82"  3/116 Test   #3: testCirculator ..........................***Not Run   0.00 sec-401870513#1210#82#-0#-----2@44"        Start   4: testConstIteratorAdapter-401870513#1292#44#-0#-----2@51"Could not find executable testConstIteratorAdapter-401870513#1336#51#-0#-----2@32"Looked in the following places:-401870513#1387#32#-0#-----2@25"testConstIteratorAdapter-401870513#1419#25#-0#-----2@25"testConstIteratorAdapter-401870513#1444#25#-0#-----2@31"Debug/testConstIteratorAdapter-401870513#1469#31#-0#-----2@31"Debug/testConstIteratorAdapter-401870513#1500#31#-0#-----2@31"Debug/testConstIteratorAdapter-401870513#1531#31#-0#-----2@31"Debug/testConstIteratorAdapter-401870513#1562#31#-0#-----2@52"Unable to find executable: testConstIteratorAdapter-401870513#1593#52#-0#-----2@82"  4/116 Test   #4: testConstIteratorAdapter ................***Not Run   0.00 sec-401870513#1645#82#-0#-----2@35"        Start   5: testProgressBar-401870513#1727#35#-0#-----2@42"Could not find executable testProgressBar-401870513#1762#42#-0#-----2@32"Looked in the following places:-401870513#1804#32#-0#-----2@16"testProgressBar-401870513#1836#16#-0#-----2@16"testProgressBar-401870513#1852#16#-0#-----2@22"Debug/testProgressBar-401870513#1868#22#-0#-----2@22"Debug/testProgressBar-401870513#1890#22#-0#-----2@22"Debug/testProgressBar-401870513#1912#22#-0#-----2@22"Debug/testProgressBar-401870513#1934#22#-0#-----2@43"Unable to find executable: testProgressBar-401870513#1956#43#-0#-----2@82"  5/116 Test   #5: testProgressBar .........................***Not Run   0.00 sec-401870513#1999#82#-0#-----2@37"        Start   6: testBasicFunctors-401870513#2081#37#-0#-----2@44"Could not find executable testBasicFunctors-401870513#2118#44#-0#-----2@32"Looked in the following places:-401870513#2162#32#-0#-----2@18"testBasicFunctors-401870513#2194#18#-0#-----2@18"testBasicFunctors-401870513#2212#18#-0#-----2@24"Debug/testBasicFunctors-401870513#2230#24#-0#-----2@24"Debug/testBasicFunctors-401870513#2254#24#-0#-----2@24"Debug/testBasicFunctors-401870513#2278#24#-0#-----2@24"Debug/testBasicFunctors-401870513#2302#24#-0#-----2@45"Unable to find executable: testBasicFunctors-401870513#2326#45#-0#-----2@82"  6/116 Test   #6: testBasicFunctors .......................***Not Run   0.00 sec-401870513#2371#82#-0#-----2@41"        Start   7: testConstRangeAdapter-401870513#2453#41#-0#-----2@48"Could not find executable testConstRangeAdapter-401870513#2494#48#-0#-----2@32"Looked in the following places:-401870513#2542#32#-0#-----2@22"testConstRangeAdapter-401870513#2574#22#-0#-----2@22"testConstRangeAdapter-401870513#2596#22#-0#-----2@28"Debug/testConstRangeAdapter-401870513#2618#28#-0#-----2@28"Debug/testConstRangeAdapter-401870513#2646#28#-0#-----2@28"Debug/testConstRangeAdapter-401870513#2674#28#-0#-----2@28"Debug/testConstRangeAdapter-401870513#2702#28#-0#-----2@49"Unable to find executable: testConstRangeAdapter-401870513#2730#49#-0#-----2@82"  7/116 Test   #7: testConstRangeAdapter ...................***Not Run   0.00 sec-401870513#2779#82#-0#-----2@45"        Start   8: testOutputIteratorAdapter-401870513#2861#45#-0#-----2@52"Could not find executable testOutputIteratorAdapter-401870513#2906#52#-0#-----2@32"Looked in the following places:-401870513#2958#32#-0#-----2@26"testOutputIteratorAdapter-401870513#2990#26#-0#-----2@26"testOutputIteratorAdapter-401870513#3016#26#-0#-----2@32"Debug/testOutputIteratorAdapter-401870513#3042#32#-0#-----2@32"Debug/testOutputIteratorAdapter-401870513#3074#32#-0#-----2@32"Debug/testOutputIteratorAdapter-401870513#3106#32#-0#-----2@32"Debug/testOutputIteratorAdapter-401870513#3138#32#-0#-----2@53"Unable to find executable: testOutputIteratorAdapter-401870513#3170#53#-0#-----2@82"  8/116 Test   #8: testOutputIteratorAdapter ...............***Not Run   0.00 sec-401870513#3223#82#-0#-----2@29"        Start   9: testClock-401870513#3305#29#-0#-----2@36"Could not find executable testClock-401870513#3334#36#-0#-----2@32"Looked in the following places:-401870513#3370#32#-0#-----2@10"testClock-401870513#3402#10#-0#-----2@10"testClock-401870513#3412#10#-0#-----2@16"Debug/testClock-401870513#3422#16#-0#-----2@16"Debug/testClock-401870513#3438#16#-0#-----2@16"Debug/testClock-401870513#3454#16#-0#-----2@16"Debug/testClock-401870513#3470#16#-0#-----2@37"Unable to find executable: testClock-401870513#3486#37#-0#-----2@82"  9/116 Test   #9: testClock ...............................***Not Run   0.00 sec-401870513#3523#82#-0#-----2@29"        Start  10: testTrace-401870513#3605#29#-0#-----2@36"Could not find executable testTrace-401870513#3634#36#-0#-----2@32"Looked in the following places:-401870513#3670#32#-0#-----2@10"testTrace-401870513#3702#10#-0#-----2@10"testTrace-401870513#3712#10#-0#-----2@16"Debug/testTrace-401870513#3722#16#-0#-----2@16"Debug/testTrace-401870513#3738#16#-0#-----2@16"Debug/testTrace-401870513#3754#16#-0#-----2@16"Debug/testTrace-401870513#3770#16#-0#-----2@37"Unable to find executable: testTrace-401870513#3786#37#-0#-----2@82" 10/116 Test  #10: testTrace ...............................***Not Run   0.00 sec-401870513#3823#82#-0#-----2@29"        Start  11: testcpp11-401870513#3905#29#-0#-----2@36"Could not find executable testcpp11-401870513#3934#36#-0#-----2@32"Looked in the following places:-401870513#3970#32#-0#-----2@10"testcpp11-401870513#4002#10#-0#-----2@10"testcpp11-401870513#4012#10#-0#-----2@16"Debug/testcpp11-401870513#4022#16#-0#-----2@16"Debug/testcpp11-401870513#4038#16#-0#-----2@16"Debug/testcpp11-401870513#4054#16#-0#-----2@16"Debug/testcpp11-401870513#4070#16#-0#-----2@37"Unable to find executable: testcpp11-401870513#4086#37#-0#-----2@82" 11/116 Test  #11: testcpp11 ...............................***Not Run   0.00 sec-401870513#4123#82#-0#-----2@34"        Start  12: testCountedPtr-401870513#4205#34#-0#-----2@41"Could not find executable testCountedPtr-401870513#4239#41#-0#-----2@32"Looked in the following places:-401870513#4280#32#-0#-----2@15"testCountedPtr-401870513#4312#15#-0#-----2@15"testCountedPtr-401870513#4327#15#-0#-----2@21"Debug/testCountedPtr-401870513#4342#21#-0#-----2@21"Debug/testCountedPtr-401870513#4363#21#-0#-----2@21"Debug/testCountedPtr-401870513#4384#21#-0#-----2@21"Debug/testCountedPtr-401870513#4405#21#-0#-----2@42"Unable to find executable: testCountedPtr-401870513#4426#42#-0#-----2@82" 12/116 Test  #12: testCountedPtr ..........................***Not Run   0.00 sec-401870513#4468#82#-0#-----2@28"        Start  13: testBits-401870513#4550#28#-0#-----2@35"Could not find executable testBits-401870513#4578#35#-0#-----2@32"Looked in the following places:-401870513#4613#32#-0#-----2@9"testBits-401870513#4645#9#-0#-----2@9"testBits-401870513#4654#9#-0#-----2@15"Debug/testBits-401870513#4663#15#-0#-----2@15"Debug/testBits-401870513#4678#15#-0#-----2@15"Debug/testBits-401870513#4693#15#-0#-----2@15"Debug/testBits-401870513#4708#15#-0#-----2@36"Unable to find executable: testBits-401870513#4723#36#-0#-----2@82" 13/116 Test  #13: testBits ................................***Not Run   0.00 sec-401870513#4759#82#-0#-----2@45"        Start  14: testIndexedListWithBlocks-401870513#4841#45#-0#-----2@52"Could not find executable testIndexedListWithBlocks-401870513#4886#52#-0#-----2@32"Looked in the following places:-401870513#4938#32#-0#-----2@26"testIndexedListWithBlocks-401870513#4970#26#-0#-----2@26"testIndexedListWithBlocks-401870513#4996#26#-0#-----2@32"Debug/testIndexedListWithBlocks-401870513#5022#32#-0#-----2@32"Debug/testIndexedListWithBlocks-401870513#5054#32#-0#-----2@32"Debug/testIndexedListWithBlocks-401870513#5086#32#-0#-----2@32"Debug/testIndexedListWithBlocks-401870513#5118#32#-0#-----2@53"Unable to find executable: testIndexedListWithBlocks-401870513#5150#53#-0#-----2@82" 14/116 Test  #14: testIndexedListWithBlocks ...............***Not Run   0.00 sec-401870513#5203#82#-0#-----2@30"        Start  15: testLabels-401870513#5285#30#-0#-----2@37"Could not find executable testLabels-401870513#5315#37#-0#-----2@32"Looked in the following places:-401870513#5352#32#-0#-----2@11"testLabels-401870513#5384#11#-0#-----2@11"testLabels-401870513#5395#11#-0#-----2@17"Debug/testLabels-401870513#5406#17#-0#-----2@17"Debug/testLabels-401870513#5423#17#-0#-----2@17"Debug/testLabels-401870513#5440#17#-0#-----2@17"Debug/testLabels-401870513#5457#17#-0#-----2@38"Unable to find executable: testLabels-401870513#5474#38#-0#-----2@82" 15/116 Test  #15: testLabels ..............................***Not Run   0.00 sec-401870513#5512#82#-0#-----2@35"        Start  16: testLabelledMap-401870513#5594#35#-0#-----2@42"Could not find executable testLabelledMap-401870513#5629#42#-0#-----2@32"Looked in the following places:-401870513#5671#32#-0#-----2@16"testLabelledMap-401870513#5703#16#-0#-----2@16"testLabelledMap-401870513#5719#16#-0#-----2@22"Debug/testLabelledMap-401870513#5735#22#-0#-----2@22"Debug/testLabelledMap-401870513#5757#22#-0#-----2@22"Debug/testLabelledMap-401870513#5779#22#-0#-----2@22"Debug/testLabelledMap-401870513#5801#22#-0#-----2@43"Unable to find executable: testLabelledMap-401870513#5823#43#-0#-----2@82" 16/116 Test  #16: testLabelledMap .........................***Not Run   0.00 sec-401870513#5866#82#-0#-----2@45"        Start  17: testLabelledMap-benchmark-401870513#5948#45#-0#-----2@52"Could not find executable testLabelledMap-benchmark-401870513#5993#52#-0#-----2@32"Looked in the following places:-401870513#6045#32#-0#-----2@26"testLabelledMap-benchmark-401870513#6077#26#-0#-----2@26"testLabelledMap-benchmark-401870513#6103#26#-0#-----2@32"Debug/testLabelledMap-benchmark-401870513#6129#32#-0#-----2@32"Debug/testLabelledMap-benchmark-401870513#6161#32#-0#-----2@32"Debug/testLabelledMap-benchmark-401870513#6193#32#-0#-----2@32"Debug/testLabelledMap-benchmark-401870513#6225#32#-0#-----2@53"Unable to find executable: testLabelledMap-benchmark-401870513#6257#53#-0#-----2@82" 17/116 Test  #17: testLabelledMap-benchmark ...............***Not Run   0.00 sec-401870513#6310#82#-0#-----2@42"        Start  18: testMultiMap-benchmark-401870513#6392#42#-0#-----2@49"Could not find executable testMultiMap-benchmark-401870513#6434#49#-0#-----2@32"Looked in the following places:-401870513#6483#32#-0#-----2@23"testMultiMap-benchmark-401870513#6515#23#-0#-----2@23"testMultiMap-benchmark-401870513#6538#23#-0#-----2@29"Debug/testMultiMap-benchmark-401870513#6561#29#-0#-----2@29"Debug/testMultiMap-benchmark-401870513#6590#29#-0#-----2@29"Debug/testMultiMap-benchmark-401870513#6619#29#-0#-----2@29"Debug/testMultiMap-benchmark-401870513#6648#29#-0#-----2@50"Unable to find executable: testMultiMap-benchmark-401870513#6677#50#-0#-----2@82" 18/116 Test  #18: testMultiMap-benchmark ..................***Not Run   0.00 sec-401870513#6727#82#-0#-----2@30"Showing first 200 notices only-401870513#18446744073709551615#0#-0#--21"Notice limit exceeded--2@39"Command /bin/sh failed with exit code 2-401870513#18446744073709551615#0#-2#--29"Shell Script Invocation Error--0#0#1#--303"PhaseScriptExecution CMake\ PostBuild\ Rules build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F53B6C2FC48746359D93DFFE.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/RUN_TESTS.build/Script-F53B6C2FC48746359D93DFFE.sh36"AA27DD90-DEAD-4FC3-A765-CC2C757796DE-
+bA9B70E05-1F0B-4D61-BAAD-A83991C36026
+

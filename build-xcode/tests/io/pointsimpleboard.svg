@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="700mm" height="1000mm" 
+     viewBox="0 0 1984.25 2834.65" 
+     xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<desc>output.svg, created with the Board library (Copyleft) 2007 Sebastien Fourey</desc>
+<rect x="0" y="2267.72" width="566.93" height="566.93" fill="none" stroke="rgb(0,0,0)" stroke-width="0.176mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<circle cx="850.39" cy="1984.25" r="283.46" fill="rgb(0,0,255)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<rect x="1559.06" y="141.73" width="283.46" height="283.46" fill="rgb(220,220,220)" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<g>
+ <path d="M 566.93 2267.72 L 1979.19 8.1 z" fill="none" stroke="rgb(255,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(255,0,0)" stroke="rgb(255,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="1981.69,9.67 1984.25,0 1976.68,6.53 1981.69,9.67" />
+</g>
+</svg>

@@ -1,0 +1,152 @@
+TtestIntegralInvariantCurvatureEstimator2D
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug/testIntegralInvariantCurvatureEstimator2D normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Script-563F8062E15243BA8C10F3C7.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.LinkFileList
+c0000000051AB059500000000000000CD
+t1370162581
+s205
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Script-563F8062E15243BA8C10F3C7.sh
+c0000000051AB05950000000000000104
+t1370162581
+s260
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug/testIntegralInvariantCurvatureEstimator2D
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h
+c0000000051A5AD7D0000000000001196
+t1369812349
+s4502
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h
+c0000000051A5AD7D00000000000016EC
+t1369812349
+s5868
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/surfaces/FunctorOnCells.h
+c0000000051A5AD7D0000000000001879
+t1369812349
+s6265
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h
+c0000000051A5AD7D0000000000004DB0
+t1369812349
+s19888
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/DepthFirstVisitor.h
+c0000000051A5AD7D0000000000002C21
+t1369812349
+s11297
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/graph/GraphVisitorRange.h
+c0000000051A5AD7D000000000000292B
+t1369812349
+s10539
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageHelper.h
+c0000000051A5AD7D00000000000032BE
+t1369812349
+s12990
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/GaussDigitizer.h
+c0000000051A4E3460000000000002434
+t1369760582
+s9268
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/parametric/AccFlower2D.h
+c0000000051A4E45B0000000000001F66
+t1369760859
+s8038
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
+c0000000051A5AD7E0000000000005D4F
+t1369812350
+s23887
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/LightImplicitDigitalSurface.h
+c0000000051A5AD7E0000000000003CDE
+t1369812350
+s15582
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp
+c0000000051A5AD7E0000000000001D0A
+t1369812350
+s7434
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/shapes/parametric/AccFlower2D.h"
+i"DGtal/shapes/GaussDigitizer.h"
+i"DGtal/topology/LightImplicitDigitalSurface.h"
+i"DGtal/topology/DigitalSurface.h"
+i"DGtal/geometry/surfaces/FunctorOnCells.h"
+i"DGtal/images/ImageHelper.h"
+i"DGtal/graph/DepthFirstVisitor.h"
+i"DGtal/graph/GraphVisitorRange.h"
+i"DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
+i"DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h"
+i"DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies0ff28a153d5bb741^bb268c153d5bb741^---0#1#0#--18"Check dependencies36"60C2A60E-EDB3-49AF-8A9E-4C922E80C96C-
+
+CCompileC build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855381.587459
+e391855388.046421
+r1
+xCompileC
+xbuild-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection114"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cppa98996153d5bb741^75e50b1c3d5bb741^---0#0#0#-19%DVTDocumentLocation2@122"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp0000000000000000^2942"CompileC build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.o tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/surfaces/testIntegralInvariantCurvatureEstimator2D.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.o36"30C54169-6062-451B-AFD4-A8BD6E332C0E-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug/testIntegralInvariantCurvatureEstimator2D normal x86_64
+s391855388.052745
+e391855388.188625
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug/testIntegralInvariantCurvatureEstimator2D
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection125"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug/testIntegralInvariantCurvatureEstimator2Daf980d1c3d5bb741^ce54301c3d5bb741^---0#0#0#--1334"Ld build-xcode/tests/geometry/surfaces/Debug/testIntegralInvariantCurvatureEstimator2D normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Objects-normal/x86_64/testIntegralInvariantCurvatureEstimator2D.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/Debug/testIntegralInvariantCurvatureEstimator2D36"0E36BF7C-AD02-4C14-9EB1-108D22BE5357-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Script-563F8062E15243BA8C10F3C7.sh
+s391855388.196621
+e391855388.293339
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Script-563F8062E15243BA8C10F3C7.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIntegralInvariantCurvatureEstimator2D.Debug
+omake[1]: Nothing to be done for `PostBuild.testIntegralInvariantCurvatureEstimator2D.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'7d22331c3d5bb741^c2164b1c3d5bb741^-406"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIntegralInvariantCurvatureEstimator2D.Debugmake[1]: Nothing to be done for `PostBuild.testIntegralInvariantCurvatureEstimator2D.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855388#0#30#-0#-----2@23"Depend check for xcode-391855388#30#23#-0#-----2@260"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIntegralInvariantCurvatureEstimator2D.Debug-391855388#53#260#-0#-----2@93"make[1]: Nothing to be done for `PostBuild.testIntegralInvariantCurvatureEstimator2D.Debug'.-391855388#313#93#-0#-----0#0#0#--415"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Script-563F8062E15243BA8C10F3C7.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/surfaces/DGtal.build/Debug/testIntegralInvariantCurvatureEstimator2D.build/Script-563F8062E15243BA8C10F3C7.sh36"21C8A8B0-0D30-4414-A964-1935335585B1-
+

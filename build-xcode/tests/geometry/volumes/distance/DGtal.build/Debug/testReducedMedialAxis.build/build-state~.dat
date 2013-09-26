@@ -1,0 +1,116 @@
+TtestReducedMedialAxis
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReducedMedialAxis normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Script-864405B022A74E9F934FE475.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.LinkFileList
+c0000000051AB059000000000000000AD
+t1370162576
+s173
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Script-864405B022A74E9F934FE475.sh
+c0000000051AB05900000000000000100
+t1370162576
+s256
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReducedMedialAxis
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h
+c0000000051A5AD7D0000000000004152
+t1369812349
+s16722
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/PowerMap.h
+c0000000051A5AD7D0000000000002950
+t1369812349
+s10576
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/ReducedMedialAxis.h
+c0000000051A5AD7D0000000000001547
+t1369812349
+s5447
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
+c0000000051A5AD7D00000000000021BA
+t1369812349
+s8634
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/sets/DigitalSetDomain.h
+c0000000051A5AD7E0000000000001939
+t1369812350
+s6457
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp
+c0000000051A5AD7E00000000000012EB
+t1369812350
+s4843
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/helpers/StdDefs.h"
+i"DGtal/geometry/volumes/distance/PowerMap.h"
+i"DGtal/geometry/volumes/distance/ReducedMedialAxis.h"
+i"DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
+i"DGtal/kernel/sets/DigitalSetDomain.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesfb1ea9103d5bb741^38bfa9103d5bb741^---0#1#0#--18"Check dependencies36"AE12E039-53EB-4367-A68B-52448BC54DCE-
+
+CCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855376.665018
+e391855381.302630
+r1
+xCompileC
+xbuild-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp7060aa103d5bb741^2d784d153d5bb741^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp0000000000000000^2782"CompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.o tests/geometry/volumes/distance/testReducedMedialAxis.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testReducedMedialAxis.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.o36"F3A8224D-2F0B-420B-93BA-F6C3D713EC12-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReducedMedialAxis normal x86_64
+s391855381.309310
+e391855381.365248
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReducedMedialAxis
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReducedMedialAxis06494f153d5bb741^06815d153d5bb741^---0#0#0#--1294"Ld build-xcode/tests/geometry/volumes/distance/Debug/testReducedMedialAxis normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Objects-normal/x86_64/testReducedMedialAxis.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testReducedMedialAxis36"BC494315-9DA6-4E17-BF99-56DDBC801144-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Script-864405B022A74E9F934FE475.sh
+s391855381.373594
+e391855381.461377
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Script-864405B022A74E9F934FE475.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testReducedMedialAxis.Debug
+omake[1]: Nothing to be done for `PostBuild.testReducedMedialAxis.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'8c4860153d5bb741^ed2876153d5bb741^-366"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testReducedMedialAxis.Debugmake[1]: Nothing to be done for `PostBuild.testReducedMedialAxis.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855381#0#30#-0#-----2@23"Depend check for xcode-391855381#30#23#-0#-----2@240"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testReducedMedialAxis.Debug-391855381#53#240#-0#-----2@73"make[1]: Nothing to be done for `PostBuild.testReducedMedialAxis.Debug'.-391855381#293#73#-0#-----0#0#0#--391"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Script-864405B022A74E9F934FE475.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testReducedMedialAxis.build/Script-864405B022A74E9F934FE475.sh36"1ADAFCC1-27AD-4D69-91F8-3CF6EAE9C915-
+

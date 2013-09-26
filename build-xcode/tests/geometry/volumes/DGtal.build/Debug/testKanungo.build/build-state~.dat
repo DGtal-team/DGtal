@@ -1,0 +1,116 @@
+TtestKanungo
+v5
+r1
+cCheck dependencies
+cCompileC build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug/testKanungo normal x86_64
+cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Script-3C60092FF7C640F8B8AC61E0.sh
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000516D0E1000000000000000AA
+t1366101520
+s170
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.LinkFileList
+c0000000051AB05820000000000000090
+t1370162562
+s144
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.o
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Script-3C60092FF7C640F8B8AC61E0.sh
+c0000000051AB058200000000000000E4
+t1370162562
+s228
+
+N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug/testKanungo
+t2
+s0
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
+c0000000051A5AD7D0000000000001238
+t1369812349
+s4664
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/KanungoNoise.h
+c0000000051A5AD7D0000000000001B98
+t1369812349
+s7064
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
+c0000000051A5AD7D00000000000021BA
+t1369812349
+s8634
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
+c0000000051A5AD7D00000000000030EF
+t1369812349
+s12527
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CPointPredicate.h
+c0000000051A5AD7E0000000000000CE4
+t1369812350
+s3300
+
+N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
+c0000000051A5AD7E000000000000275B
+t1369812350
+s10075
+
+N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cpp
+c0000000051A5AD7E0000000000000E88
+t1369812350
+s3720
+i<iostream>
+i"DGtal/base/Common.h"
+i"DGtal/geometry/volumes/KanungoNoise.h"
+i"DGtal/io/boards/Board2D.h"
+i"DGtal/helpers/StdDefs.h"
+i"DGtal/shapes/Shapes.h"
+i"DGtal/kernel/CPointPredicate.h"
+
+CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cpp
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies399c79023d5bb741^077c7a023d5bb741^---0#1#0#--18"Check dependencies36"B7CC144E-9346-4C2E-8D71-CB78942818C8-
+
+CCompileC build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s391855362.522071
+e391855367.195572
+r1
+xCompileC
+xbuild-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.o
+x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cpp
+xnormal
+xx86_64
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cppefc785023d5bb741^281032073d5bb741^---0#0#0#-19%DVTDocumentLocation2@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cpp0000000000000000^2572"CompileC build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.o tests/geometry/volumes/testKanungo.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/testKanungo.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.o36"81B4B8ED-2E77-41CB-92C6-2FE17385609F-
+
+CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug/testKanungo normal x86_64
+s391855367.202469
+e391855367.263459
+r1
+xLd
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug/testKanungo
+xnormal
+xx86_64
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection94"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug/testKanungo39ef33073d5bb741^da7143073d5bb741^---0#0#0#--1209"Ld build-xcode/tests/geometry/volumes/Debug/testKanungo normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Objects-normal/x86_64/testKanungo.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/Debug/testKanungo36"C5771487-851F-4E5E-97D5-E815AF1B1D6C-
+
+CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Script-3C60092FF7C640F8B8AC61E0.sh
+s391855367.271560
+e391855367.426657
+r1
+xPhaseScriptExecution
+xCMake PostBuild Rules
+x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Script-3C60092FF7C640F8B8AC61E0.sh
+oecho "Depend check for xcode"
+oDepend check for xcode
+ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testKanungo.Debug
+omake[1]: Nothing to be done for `PostBuild.testKanungo.Debug'.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'336c50073d5bb741^26386d073d5bb741^-346"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testKanungo.Debugmake[1]: Nothing to be done for `PostBuild.testKanungo.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855367#0#30#-0#-----2@23"Depend check for xcode-391855367#30#23#-0#-----2@230"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testKanungo.Debug-391855367#53#230#-0#-----2@63"make[1]: Nothing to be done for `PostBuild.testKanungo.Debug'.-391855367#283#63#-0#-----0#0#0#--353"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Script-3C60092FF7C640F8B8AC61E0.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/DGtal.build/Debug/testKanungo.build/Script-3C60092FF7C640F8B8AC61E0.sh36"A1619C5A-E5B7-469A-B25B-DCC894F5C78B-
+
