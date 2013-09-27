@@ -252,17 +252,17 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
 
   if( anImageDomain.myMode=="BoundingBox")
     {
-      aLine.x1=anImageDomain.x1; aLine.y1=anImageDomain.y1; aLine.z1=anImageDomain.z1;
-      aLine.x2=anImageDomain.x2; aLine.y2=anImageDomain.y2; aLine.z2=anImageDomain.z2;
+      aLine.point1[0]=anImageDomain.x1; aLine.point1[1]=anImageDomain.y1; aLine.point1[2]=anImageDomain.z1;
+      aLine.point2[0]=anImageDomain.x2; aLine.point2[1]=anImageDomain.y2; aLine.point2[2]=anImageDomain.z2;
       aLineSet.push_back(aLine);
-      aLine.x1=anImageDomain.x2; aLine.y1=anImageDomain.y2; aLine.z1=anImageDomain.z2;
-      aLine.x2=anImageDomain.x3; aLine.y2=anImageDomain.y3; aLine.z2=anImageDomain.z3;
+      aLine.point1[0]=anImageDomain.x2; aLine.point1[1]=anImageDomain.y2; aLine.point1[2]=anImageDomain.z2;
+      aLine.point2[0]=anImageDomain.x3; aLine.point2[1]=anImageDomain.y3; aLine.point2[2]=anImageDomain.z3;
       aLineSet.push_back(aLine);
-      aLine.x1=anImageDomain.x3; aLine.y1=anImageDomain.y3; aLine.z1=anImageDomain.z3;
-      aLine.x2=anImageDomain.x4; aLine.y2=anImageDomain.y4; aLine.z2=anImageDomain.z4;
+      aLine.point1[0]=anImageDomain.x3; aLine.point1[1]=anImageDomain.y3; aLine.point1[2]=anImageDomain.z3;
+      aLine.point2[0]=anImageDomain.x4; aLine.point2[1]=anImageDomain.y4; aLine.point2[2]=anImageDomain.z4;
       aLineSet.push_back(aLine);
-      aLine.x1=anImageDomain.x4; aLine.y1=anImageDomain.y4; aLine.z1=anImageDomain.z4;
-      aLine.x2=anImageDomain.x1; aLine.y2=anImageDomain.y1; aLine.z2=anImageDomain.z1;
+      aLine.point1[0]=anImageDomain.x4; aLine.point1[1]=anImageDomain.y4; aLine.point1[2]=anImageDomain.z4;
+      aLine.point2[0]=anImageDomain.x1; aLine.point2[1]=anImageDomain.y1; aLine.point2[2]=anImageDomain.z1;
       aLineSet.push_back(aLine);
     }else if(anImageDomain.myMode=="InterGrid")
     {
@@ -271,15 +271,15 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
           //lines align to the x direction
           for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++)
             {
-              aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1+delta;
-              aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z1+delta;
+              aLine.point1[0] = anImageDomain.x1; aLine.point1[1] = anImageDomain.y1+i; aLine.point1[2] = anImageDomain.z1+delta;
+              aLine.point2[0] = anImageDomain.x2; aLine.point2[1] = anImageDomain.y1+i; aLine.point2[2] = anImageDomain.z1+delta;
               aLineSet.push_back(aLine);
             }
           //lines align to the y direction
           for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++)
             {
-              aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta;
-              aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta;
+              aLine.point1[0] = anImageDomain.x1+i; aLine.point1[1] = anImageDomain.y1; aLine.point1[2] = anImageDomain.z1+delta;
+              aLine.point2[0] = anImageDomain.x1+i; aLine.point2[1] = anImageDomain.y4; aLine.point2[2] = anImageDomain.z1+delta;
               aLineSet.push_back(aLine);
             }
         }else if(anImageDomain.myDirection==xDirection)
@@ -287,16 +287,16 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
           //lines align to the y direction
           for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++)
             {
-              aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i;
-              aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i;
+              aLine.point1[0] = anImageDomain.x1+delta; aLine.point1[1] = anImageDomain.y1; aLine.point1[2] = anImageDomain.z1+i;
+              aLine.point2[0] = anImageDomain.x1+delta; aLine.point2[1] = anImageDomain.y2; aLine.point2[2] = anImageDomain.z1+i;
               aLineSet.push_back(aLine);
             }
 
           //lines align to the z direction
           for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++)
             {
-              aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1;
-              aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z4;
+              aLine.point1[0] = anImageDomain.x1+delta; aLine.point1[1] = anImageDomain.y1+i; aLine.point1[2] = anImageDomain.z1;
+              aLine.point2[0] = anImageDomain.x1+delta; aLine.point2[1] = anImageDomain.y1+i; aLine.point2[2] = anImageDomain.z4;
               aLineSet.push_back(aLine);
             }
         }else if(anImageDomain.myDirection==yDirection)
@@ -304,16 +304,16 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
           //lines align to the x direction
           for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++)
             {
-              aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1+i;
-              aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z1+i;
+              aLine.point1[0] = anImageDomain.x1; aLine.point1[1] = anImageDomain.y1+delta; aLine.point1[2] = anImageDomain.z1+i;
+              aLine.point2[0] = anImageDomain.x2; aLine.point2[1] = anImageDomain.y1+delta; aLine.point2[2] = anImageDomain.z1+i;
               aLineSet.push_back(aLine);
             }
 
           //lines align to the z direction
           for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++)
             {
-              aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1;
-              aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z4;
+              aLine.point1[0] = anImageDomain.x1+i; aLine.point1[1] = anImageDomain.y1+delta; aLine.point1[2] = anImageDomain.z1;
+              aLine.point2[0] = anImageDomain.x1+i; aLine.point2[1] = anImageDomain.y1+delta; aLine.point2[2] = anImageDomain.z4;
               aLineSet.push_back(aLine);
             }
         }
@@ -324,15 +324,15 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
           //lines align to the x direction
           for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++)
             {
-              aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1+delta;
-              aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z1+delta;
+              aLine.point1[0] = anImageDomain.x1; aLine.point1[1] = anImageDomain.y1+i+0.5; aLine.point1[2] = anImageDomain.z1+delta;
+              aLine.point2[0] = anImageDomain.x2; aLine.point2[1] = anImageDomain.y1+i+0.5; aLine.point2[2] = anImageDomain.z1+delta;
               aLineSet.push_back(aLine);
             }
           //lines align to the y direction
           for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++)
             {
-              aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta;
-              aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta;
+              aLine.point1[0] = anImageDomain.x1+i+0.5; aLine.point1[1] = anImageDomain.y1; aLine.point1[2] = anImageDomain.z1+delta;
+              aLine.point2[0] = anImageDomain.x1+i+0.5; aLine.point2[1] = anImageDomain.y4; aLine.point2[2] = anImageDomain.z1+delta;
               aLineSet.push_back(aLine);
             }
         }else if(anImageDomain.myDirection==xDirection)
@@ -340,16 +340,16 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
           //lines align to the y direction
           for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++)
             {
-              aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i+0.5;
-              aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i+0.5;
+              aLine.point1[0] = anImageDomain.x1+delta; aLine.point1[1] = anImageDomain.y1; aLine.point1[2] = anImageDomain.z1+i+0.5;
+              aLine.point2[0] = anImageDomain.x1+delta; aLine.point2[1] = anImageDomain.y2; aLine.point2[2] = anImageDomain.z1+i+0.5;
               aLineSet.push_back(aLine);
             }
 
           //lines align to the z direction
           for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++)
             {
-              aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1;
-              aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z4;
+              aLine.point1[0] = anImageDomain.x1+delta; aLine.point1[1] = anImageDomain.y1+i+0.5; aLine.point1[2] = anImageDomain.z1;
+              aLine.point2[0] = anImageDomain.x1+delta; aLine.point2[1] = anImageDomain.y1+i+0.5; aLine.point2[2] = anImageDomain.z4;
               aLineSet.push_back(aLine);
             }
         }else if(anImageDomain.myDirection==yDirection)
@@ -357,16 +357,16 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
           //lines align to the x direction
           for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++)
             {
-              aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1+i+0.5;
-              aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z1+i+0.5;
+              aLine.point1[0] = anImageDomain.x1; aLine.point1[1] = anImageDomain.y1+delta; aLine.point1[2] = anImageDomain.z1+i+0.5;
+              aLine.point2[0] = anImageDomain.x2; aLine.point2[1] = anImageDomain.y1+delta; aLine.point2[2] = anImageDomain.z1+i+0.5;
               aLineSet.push_back(aLine);
             }
 
           //lines align to the z direction
           for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++)
             {
-              aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1;
-              aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z4;
+              aLine.point1[0] = anImageDomain.x1+i+0.5; aLine.point1[1] = anImageDomain.y1+delta; aLine.point1[2] = anImageDomain.z1;
+              aLine.point2[0] = anImageDomain.x1+i+0.5; aLine.point2[1] = anImageDomain.y1+delta; aLine.point2[2] = anImageDomain.z4;
               aLineSet.push_back(aLine);
             }
         }
@@ -1059,8 +1059,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
             ++s_it )
         {
           glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
-          glVertex3f ( ( *s_it ).x1, ( *s_it ).y1, ( *s_it ).z1 );
-          glVertex3f ( ( *s_it ).x2, ( *s_it ).y2, ( *s_it ).z2 );
+          glVertex3f ( ( *s_it ).point1[0], ( *s_it ).point1[1], ( *s_it ).point1[2] );
+          glVertex3f ( ( *s_it ).point2[0], ( *s_it ).point2[1], ( *s_it ).point2[2] );
         }
       glEnd();
       glEnable ( GL_LIGHTING );
@@ -1291,8 +1291,8 @@ void
 DGtal::Viewer3D<Space, KSpace>::glDrawGLLinel ( typename Viewer3D<Space, KSpace>::LineD3D aLinel )
 {
   glPushMatrix();
-  glTranslatef ( aLinel.x1, aLinel.y1, aLinel.z1 );
-  Vec dir ( aLinel.x2-aLinel.x1, aLinel.y2-aLinel.y1, aLinel.z2-aLinel.z1 );
+  glTranslatef ( aLinel.point1[0], aLinel.point1[1], aLinel.point1[2] );
+  Vec dir ( aLinel.point2[0]-aLinel.point1[0], aLinel.point2[1]-aLinel.point1[1], aLinel.point2[2]-aLinel.point1[2] );
   glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
   GLUquadric* quadric = gluNewQuadric();
   glColor4ub ( aLinel.color.red(), aLinel.color.green(), aLinel.color.blue(), aLinel.color.alpha() );
