@@ -80,6 +80,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::init
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename DigitalSurf, typename TMetric,   typename Functor>
+template< typename SurfelConstIterator >
 inline
 typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::Quantity
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval ( const SurfelConstIterator& it ) const
@@ -105,7 +106,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename DigitalSurf, typename TMetric,   typename Functor>
-template <typename OutputIterator>
+template < typename SurfelConstIterator, typename OutputIterator>
 inline
 OutputIterator
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval (const SurfelConstIterator& itb,

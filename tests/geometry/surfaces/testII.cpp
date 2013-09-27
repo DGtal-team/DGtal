@@ -1558,16 +1558,16 @@ int testII3D_noise( int argc, char** argv )
     typedef ImplicitPolynomial3Shape<Z3i::Space> Shape;
     typedef Z3i::Space Space;
 
-    RealPoint border_min( -10, -10, -10 );
-    RealPoint border_max( 10, 10, 10 );
+    RealPoint border_min( -1, -1, -1 );
+    RealPoint border_max( 1, 1, 1 );
 
-    double h = 0.2;
-    double noiseLevel = 0.5;
+    double h = 0.02;
+    double noiseLevel = 20;
     double alpha = 0.333333;
-    double radius_kernel = 3;
+    double radius_kernel = 0.5;
     bool lambda_optimized = false;
 
-    std::string poly_str = "x^2 + y^2 + z^2 - 25";
+    std::string poly_str = "1000x^2y^2z^2 + 3x^2 + 3y^2 + z^2 - 1";
 
     Polynomial3 poly;
     Polynomial3Reader reader;
