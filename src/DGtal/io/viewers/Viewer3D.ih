@@ -928,12 +928,12 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
               typename Viewer3D<Space, KSpace>::CubeD3D s1 = (**it);
               typename Viewer3D<Space, KSpace>::CubeD3D s2 = (**itBest);
-              double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) +
-                                   ( posCam.y-s1.y ) * ( posCam.y-s1.y ) +
-                                   ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
-              double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) +
-                                   ( posCam.y-s2.y ) * ( posCam.y-s2.y ) +
-                                   ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
+              double dist1= sqrt ( ( posCam.x-s1.center[0] ) * ( posCam.x-s1.center[0] ) +
+                                   ( posCam.y-s1.center[1] ) * ( posCam.y-s1.center[1] ) +
+                                   ( posCam.z-s1.center[2] ) * ( posCam.z-s1.center[2] ) );
+              double dist2= sqrt ( ( posCam.x-s2.center[0] ) * ( posCam.x-s2.center[0] ) +
+                                   ( posCam.y-s2.center[1] ) * ( posCam.y-s2.center[1] ) +
+                                   ( posCam.z-s2.center[2] ) * ( posCam.z-s2.center[2] ) );
               //check if the if the cube is the farhest or the most included( the most small)
               if (( it != itBest) and
                   (
@@ -957,45 +957,45 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
           //z+
           glNormal3f ( 0.0, 0.0, 1.0 );
-          glVertex3f ( cube.x-_width, cube.y+_width, cube.z+_width );
-          glVertex3f ( cube.x-_width, cube.y-_width, cube.z+_width );
-          glVertex3f ( cube.x+_width, cube.y-_width, cube.z+_width );
-          glVertex3f ( cube.x+_width, cube.y+_width, cube.z+_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
 
           //z-
           glNormal3f ( 0.0, 0.0, -1.0 );
-          glVertex3f ( cube.x-_width, cube.y+_width, cube.z-_width );
-          glVertex3f ( cube.x+_width, cube.y+_width, cube.z-_width );
-          glVertex3f ( cube.x+_width, cube.y-_width, cube.z-_width );
-          glVertex3f ( cube.x-_width, cube.y-_width, cube.z-_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
 
           //x+
           glNormal3f ( 1.0, 0.0, 0.0 );
-          glVertex3f ( cube.x+_width, cube.y-_width, cube.z+_width );
-          glVertex3f ( cube.x+_width, cube.y-_width, cube.z-_width );
-          glVertex3f ( cube.x+_width, cube.y+_width, cube.z-_width );
-          glVertex3f ( cube.x+_width, cube.y+_width, cube.z+_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
 
           //x-
           glNormal3f ( -1.0, 0.0, 0.0 );
-          glVertex3f ( cube.x-_width, cube.y-_width, cube.z+_width );
-          glVertex3f ( cube.x-_width, cube.y+_width, cube.z+_width );
-          glVertex3f ( cube.x-_width, cube.y+_width, cube.z-_width );
-          glVertex3f ( cube.x-_width, cube.y-_width, cube.z-_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
 
           //y+
           glNormal3f ( 0.0, 1.0, 0.0 );
-          glVertex3f ( cube.x-_width, cube.y+_width, cube.z+_width );
-          glVertex3f ( cube.x+_width, cube.y+_width, cube.z+_width );
-          glVertex3f ( cube.x+_width, cube.y+_width, cube.z-_width );
-          glVertex3f ( cube.x-_width, cube.y+_width, cube.z-_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]+_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]+_width, cube.center[2]-_width );
 
           //y-
           glNormal3f ( 0.0, -1.0, 0.0 );
-          glVertex3f ( cube.x-_width, cube.y-_width, cube.z+_width );
-          glVertex3f ( cube.x-_width, cube.y-_width, cube.z-_width );
-          glVertex3f ( cube.x+_width, cube.y-_width, cube.z-_width );
-          glVertex3f ( cube.x+_width, cube.y-_width, cube.z+_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]+_width );
+          glVertex3f ( cube.center[0]-_width, cube.center[1]-_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]-_width );
+          glVertex3f ( cube.center[0]+_width, cube.center[1]-_width, cube.center[2]+_width );
 
           //increment the list where the farthest cube were and remove it if ended
           (*itBest) ++;

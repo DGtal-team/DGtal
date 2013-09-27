@@ -123,8 +123,7 @@ namespace DGtal
     struct CubeD3D{
       /// The center coordinate of the cube.
       ///
-      double x, y,z;
-
+      RealPoint center;
       /// The display color of the cube.
       ///
       DGtal::Color color;

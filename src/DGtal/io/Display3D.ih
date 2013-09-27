@@ -178,9 +178,9 @@ DGtal::Display3D< Space ,KSpace >::addCube(double x, double y, double z, double 
   width = width/2;
   updateBoundingBox((double)x, (double)y, (double)z);
   CubeD3D v;
-  v.x=x;
-  v.y=y;
-  v.z=z;
+  v.center[0]=x;
+  v.center[1]=y;
+  v.center[2]=z;
   v.color=getFillColor();
   v.width=width;
   if (myCubeSetList.size() ==0)
@@ -1092,14 +1092,14 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
       BallD3D p1, p2, p3, p4, p5, p6, p7, p8;
       double width= cube.width;
 
-      p1.x = (cube.x-width); p1.y = (cube.y+width); p1.z = (cube.z+width);
-      p2.x = (cube.x+width); p2.y = (cube.y+width); p2.z = (cube.z+width);
-      p3.x = (cube.x+width); p3.y = (cube.y-width); p3.z = (cube.z+width);
-      p4.x = (cube.x-width); p4.y = (cube.y-width); p4.z = (cube.z+width);
-      p5.x = (cube.x-width); p5.y = (cube.y+width); p5.z = (cube.z-width);
-      p6.x = (cube.x+width); p6.y = (cube.y+width); p6.z = (cube.z-width);
-      p7.x = (cube.x+width); p7.y = (cube.y-width); p7.z = (cube.z-width);
-      p8.x = (cube.x-width); p8.y = (cube.y-width); p8.z = (cube.z-width);
+      p1.x = (cube.center[0]-width); p1.y = (cube.center[1]+width); p1.z = (cube.center[2]+width);
+      p2.x = (cube.center[0]+width); p2.y = (cube.center[1]+width); p2.z = (cube.center[2]+width);
+      p3.x = (cube.center[0]+width); p3.y = (cube.center[1]-width); p3.z = (cube.center[2]+width);
+      p4.x = (cube.center[0]-width); p4.y = (cube.center[1]-width); p4.z = (cube.center[2]+width);
+      p5.x = (cube.center[0]-width); p5.y = (cube.center[1]+width); p5.z = (cube.center[2]-width);
+      p6.x = (cube.center[0]+width); p6.y = (cube.center[1]+width); p6.z = (cube.center[2]-width);
+      p7.x = (cube.center[0]+width); p7.y = (cube.center[1]-width); p7.z = (cube.center[2]-width);
+      p8.x = (cube.center[0]-width); p8.y = (cube.center[1]-width); p8.z = (cube.center[2]-width);
 
       aMesh.addVertex(p1);
       aMesh.addVertex(p2);

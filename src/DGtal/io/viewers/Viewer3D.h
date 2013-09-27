@@ -684,8 +684,8 @@ namespace DGtal
       bool operator() (typename Viewer3D<Space,KSpace>::CubeD3D s1,
                        typename Viewer3D<Space,KSpace>::CubeD3D s2 )
       {
-        double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
-        double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
+        double dist1= sqrt ( ( posCam.x-s1.center[0] ) * ( posCam.x-s1.center[0] ) + ( posCam.y-s1.center[1] ) * ( posCam.y-s1.center[1] ) + ( posCam.z-s1.center[2] ) * ( posCam.z-s1.center[2] ) );
+        double dist2= sqrt ( ( posCam.x-s2.center[0] ) * ( posCam.x-s2.center[0] ) + ( posCam.y-s2.center[1] ) * ( posCam.y-s2.center[1] ) + ( posCam.z-s2.center[2] ) * ( posCam.z-s2.center[2] ) );
         return dist1>dist2;
       }
     };
