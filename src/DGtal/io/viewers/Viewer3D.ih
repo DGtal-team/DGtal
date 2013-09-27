@@ -209,11 +209,7 @@ DGtal::Viewer3D< Space ,KSpace >::addImage2DDomainD3D(const TDomain &aDomain,
                                                       std::string mode, const DGtal::Color &aColor)
 {
   typename DGtal::Viewer3D< Space ,KSpace >::Image2DDomainD3D anImageDomain(aDomain);
-  anImageDomain.R = aColor.red();
-  anImageDomain.G =aColor.green();
-  anImageDomain.B =aColor.blue();
-  anImageDomain.T =aColor.alpha();
-
+  anImageDomain.color = aColor;
   anImageDomain.myMode = mode;
   anImageDomain.myLineSetIndex=Viewer3D<Space, KSpace>::myLineSetList.size();
 
@@ -251,11 +247,7 @@ DGtal::Viewer3D< Space ,KSpace >::compute2DDomainLineRepresentation(typename DGt
 {
   std::vector<typename DGtal::Viewer3D< Space ,KSpace >::LineD3D> aLineSet;
   typename Viewer3D<Space, KSpace>::LineD3D aLine;
-  aLine.R = anImageDomain.R;
-  aLine.G = anImageDomain.G;
-  aLine.B = anImageDomain.B;
-  aLine.T = anImageDomain.T;
-
+  aLine.color = anImageDomain.color;
   aLine.width=0.1;
 
   if( anImageDomain.myMode=="BoundingBox")
@@ -947,7 +939,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
                   (
                    (( (dist2 + (2*s2.width)) - (dist1-(2*s1.width)) ) < 0)
                    or( ( dist1-s1.width == dist2 - s2.width) and (dist1 > dist2) )
-                   or( (( (dist2 + (2*s2.width)) - (dist1 -(2*s1.width)) ) > 0) and (s1.T > s2.T) )
+                   or( (( (dist2 + (2*s2.width)) - (dist1 -(2*s1.width)) ) > 0) and (s1.color.alpha() > s2.color.alpha()) )
                    )
                   )
                 {
@@ -960,7 +952,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
             }
 
           typename Viewer3D<Space, KSpace>::CubeD3D cube = (**itBest);
-          glColor4ub ( cube.R, cube.G, cube.B, cube.T );
+          glColor4ub ( cube.color.red(), cube.color.green(), cube.color.blue(), cube.color.alpha() );
           double _width= cube.width;
 
           //z+
@@ -1044,7 +1036,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
         s_it != Viewer3D<Space, KSpace>::mySurfelPrismList.end();
         ++s_it )
     {
-      glColor4ub ( ( *s_it ).R, ( *s_it ).G, ( *s_it ).B, ( *s_it ).T );
+      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
       glNormal3f ( ( *s_it ).nx, ( *s_it ).ny, ( *s_it ).nz );
       glVertex3f ( ( *s_it ).x1, ( *s_it ).y1 , ( *s_it ).z1 );
       glVertex3f ( ( *s_it ).x2, ( *s_it ).y2 , ( *s_it ).z2 );
@@ -1066,7 +1058,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
             s_it != Viewer3D<Space, KSpace>::myLineSetList.at ( i ).end();
             ++s_it )
         {
-          glColor4ub ( ( *s_it ).R, ( *s_it ).G, ( *s_it ).B, ( *s_it ).T );
+          glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
           glVertex3f ( ( *s_it ).x1, ( *s_it ).y1, ( *s_it ).z1 );
           glVertex3f ( ( *s_it ).x2, ( *s_it ).y2, ( *s_it ).z2 );
         }
@@ -1090,7 +1082,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
             s_it != Viewer3D<Space, KSpace>::myBallSetList.at ( i ).end();
             ++s_it )
         {
-          glColor4ub ( ( *s_it ).R, ( *s_it ).G, ( *s_it ).B, ( *s_it ).T );
+          glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
           glVertex3f ( ( *s_it ).x, ( *s_it ).y, ( *s_it ).z );
         }
       glEnd();
@@ -1121,7 +1113,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     {
       for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
-          glColor4ub ( it_s->R, it_s->G, it_s->B, it_s->T );
+          glColor4ub ( it_s->color.blue(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
           glNormal3f ( it_s->nx, it_s->ny ,it_s->nz );
           glVertex3f ( it_s->x1, it_s->y1, it_s->z1 );
           glVertex3f ( it_s->x2, it_s->y2, it_s->z2 );
@@ -1170,7 +1162,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     {
       for (typename std::vector<typename Viewer3D<Space, KSpace>::TriangleD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
-          glColor4ub (it_s->R,it_s->G,it_s->B,it_s->T );
+          glColor4ub (it_s->color.red(),it_s->color.green(),it_s->color.blue(),it_s->color.alpha() );
           glNormal3f (it_s->nx,it_s->ny ,it_s->nz );
           glVertex3f (it_s->x1,it_s->y1,it_s->z1 );
           glVertex3f (it_s->x2,it_s->y2,it_s->z2 );
@@ -1216,7 +1208,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
       for (typename std::vector<typename Viewer3D<Space, KSpace>::PolygonD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
           glBegin ( GL_POLYGON );
-          glColor4ub ( it_s->R, it_s->G, it_s->B, it_s->T );
+          glColor4ub ( it_s->color.red(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
           glNormal3f ( it_s->nx, it_s->ny ,it_s->nz );
           for(unsigned int j=0;j < (it_s->vertices).size();j++)
             {
@@ -1303,7 +1295,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLLinel ( typename Viewer3D<Space, KSpace>
   Vec dir ( aLinel.x2-aLinel.x1, aLinel.y2-aLinel.y1, aLinel.z2-aLinel.z1 );
   glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
   GLUquadric* quadric = gluNewQuadric();
-  glColor4ub ( aLinel.R, aLinel.G, aLinel.B, aLinel.T );
+  glColor4ub ( aLinel.color.red(), aLinel.color.green(), aLinel.color.blue(), aLinel.color.alpha() );
 
   gluCylinder ( quadric, ( aLinel.signPos || !aLinel.isSigned ) ? aLinel.width :0 ,
                 ( aLinel.signPos && aLinel.isSigned ) ? 0 :aLinel.width ,
@@ -1322,7 +1314,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
       glPushMatrix();
       glTranslatef ( ballel.x, ballel.y, ballel.z );
       GLUquadric* quadric = gluNewQuadric();
-      glColor4ub ( ballel.R, ballel.G, ballel.B, ballel.T );
+      glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
       gluSphere ( quadric, ballel.size, 10, 10 );
       glPopMatrix();
     }
@@ -1336,7 +1328,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
           Vec dir ( 0.14, 0.14, 0 );
           glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
           GLUquadric* quadric = gluNewQuadric();
-          glColor4ub ( ballel.R, ballel.G, ballel.B, ballel.T );
+          glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
           gluCylinder ( quadric, ballel.size/3.0 , ballel.size/3.0,
                         dir.norm(),10, 4 );
           glPopMatrix();
@@ -1345,7 +1337,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
           dir=Vec ( 0.14, -0.14, 0 );
           glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
           quadric = gluNewQuadric();
-          glColor4ub ( ballel.R, ballel.G, ballel.B, ballel.T );
+          glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
           gluCylinder ( quadric, ballel.size/3.0 , ballel.size/3.0,
                         dir.norm(),10, 4 );
           glPopMatrix();
@@ -1357,7 +1349,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
           Vec dir ( 0.0, -0.14, 0.14 );
           glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
           GLUquadric* quadric = gluNewQuadric();
-          glColor4ub ( ballel.R, ballel.G, ballel.B, ballel.T );
+          glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
           gluCylinder ( quadric, ballel.size/4.0 , ballel.size/4.0,
                         dir.norm(),10, 4 );
           glPopMatrix();
