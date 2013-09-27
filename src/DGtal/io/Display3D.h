@@ -93,6 +93,9 @@ namespace DGtal
   {
 
     BOOST_CONCEPT_ASSERT((CSpace<Space>));
+  public:
+    //RealPoint
+    typedef typename Space::RealPoint RealPoint;
 
 
     // ------------------------- Private Datas --------------------------------
@@ -106,8 +109,8 @@ namespace DGtal
      * structure used to display line in 3D
      */
     struct LineD3D{
-      double x1, y1, z1;
-      double x2, y2, z2;
+      RealPoint point1;
+      RealPoint point2;
       double width;
       DGtal::Color color;
       bool isSigned;
@@ -172,8 +175,6 @@ namespace DGtal
 
   public:
 
-    //RealPoint
-    typedef typename Space::RealPoint RealPoint;
 
 
     /// Structure used to display point in 3D
