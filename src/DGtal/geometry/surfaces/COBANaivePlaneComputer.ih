@@ -390,7 +390,7 @@ extend( TInputIterator it, TInputIterator itE )
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
 
   ASSERT( isValid() );
-
+  if ( it == itE ) return true;
   // Check if points lies within the current bounds of the plane.
   bool changed;
   _state.N = myState.N; 
@@ -445,8 +445,11 @@ extend( TInputIterator it, TInputIterator itE )
   {
     computeCentroidAndNormal( _state );
     // Calls oracle
-    computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
-    updateMinMax( _state, it, itE );
+    if ( ! myPointSet.empty() ) {
+      computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
+      updateMinMax( _state, it, itE );
+    }
+    else computeMinMax( _state, it, itE );
     // Check if width is now ok
     if ( checkPlaneWidth( _state ) )
       { // Found a plane.
@@ -489,6 +492,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
 
   ASSERT( isValid() );
+  if ( it == itE ) return true;
   // Check if points lies within the current bounds of the plane.
   bool changed;
   _state.N = myState.N; 
@@ -499,7 +503,6 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
     }
   else
     {
-      _state.N = myState.N; 
       _state.min = myState.min; 
       _state.max = myState.max; 
       _state.ptMin = myState.ptMin; 
@@ -530,8 +533,11 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   {
     computeCentroidAndNormal( _state );
     // Calls oracle
-    computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
-    updateMinMax( _state, it, itE );
+    if ( ! myPointSet.empty() ) {
+      computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
+      updateMinMax( _state, it, itE );
+    }
+    else computeMinMax( _state, it, itE );
     // Check if width is now ok
     if ( checkPlaneWidth( _state ) )
       // Found a plane.
