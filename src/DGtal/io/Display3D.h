@@ -109,7 +109,7 @@ namespace DGtal
       double x1, y1, z1;
       double x2, y2, z2;
       double width;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
       bool isSigned;
       bool signPos;
     };
@@ -124,8 +124,8 @@ namespace DGtal
 
       /// The display color of the cube.
       ///
-      unsigned char R,G,B,T;
-
+      DGtal::Color color;
+      
       /// The width of a cube face
       ///
       double width;
@@ -152,7 +152,7 @@ namespace DGtal
       double x3,y3,z3;
       double x4,y4,z4;
       double nx, ny, nz;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
     };
 
 
@@ -166,7 +166,7 @@ namespace DGtal
       double x2,y2,z2;
       double x3,y3,z3;
       double nx, ny, nz;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
     };
 
 
@@ -205,7 +205,7 @@ namespace DGtal
         return x;
       };
       double x, y, z;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
       bool isSigned;
       bool signPos;
       double size;
@@ -220,7 +220,7 @@ namespace DGtal
     {
       std::vector<RealPoint> vertices;
       double nx, ny, nz;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
     };
 
 

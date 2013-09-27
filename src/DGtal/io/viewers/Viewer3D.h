@@ -221,7 +221,7 @@ namespace DGtal
       double x3, y3, z3;
       double x4, y4, z4;
       /// The image domain color
-      unsigned char R,G,B,T;
+      DGtal::Color color;
       /// the width of the image domain
       unsigned int myDomainWidth;
       /// the height of the image domain

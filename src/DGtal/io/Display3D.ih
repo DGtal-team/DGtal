@@ -176,19 +176,13 @@ DGtal::Display3D< Space ,KSpace >::addCube(double x, double y, double z, double 
 {
   //because the width in the cube parameters is actually the distance between the center and the faces
   width = width/2;
-  DGtal::Color aColor = getFillColor();
-
   updateBoundingBox((double)x, (double)y, (double)z);
   CubeD3D v;
   v.x=x;
   v.y=y;
   v.z=z;
-  v.R=aColor.red();
-  v.G=aColor.green();
-  v.B=aColor.blue();
-  v.T=aColor.alpha();
+  v.color=getFillColor();
   v.width=width;
-
   if (myCubeSetList.size() ==0)
     createNewCubeList("Cube Root");
 
@@ -202,21 +196,14 @@ void
 DGtal::Display3D< Space ,KSpace >::addBall(double x, double y, double z, double size)
 {
   updateBoundingBox(x, y, z);
-  DGtal::Color aColor = getFillColor();
   BallD3D p;
   p.x=x;
   p.y=y;
   p.z=z;
-
-
-  p.R=aColor.red();
-  p.G=aColor.green();
-  p.B=aColor.blue();
-  p.T=aColor.alpha();
+  p.color = getFillColor();
   p.isSigned=false;
   p.signPos=false;
   p.size=size;
-
   if (myBallSetList.size()== 0)
     createNewBallList("Ball Root");
 
@@ -232,7 +219,6 @@ DGtal::Display3D< Space ,KSpace >::addLine(double x1, double y1, double z1, doub
 {
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
-  DGtal::Color aColor = getLineColor();
   LineD3D l;
   l.x1=x1;
   l.y1=y1;
@@ -241,11 +227,7 @@ DGtal::Display3D< Space ,KSpace >::addLine(double x1, double y1, double z1, doub
   l.x2=x2;
   l.y2=y2;
   l.z2=z2;
-
-  l.R=aColor.red();
-  l.G=aColor.green();
-  l.B=aColor.blue();
-  l.T=aColor.alpha();
+  l.color= getLineColor();
   l.width=width;
   l.isSigned=false;
   l.signPos=false;
@@ -264,7 +246,7 @@ DGtal::Display3D< Space ,KSpace >::addQuad(double x1, double y1, double z1,
                                            double x3, double y3, double z3,
                                            double x4, double y4, double z4)
 {
-  DGtal::Color aColor = getFillColor();
+
   if(myQuadSetList.size() == 0 )
   {
     createNewQuadList("quad");
@@ -294,12 +276,8 @@ DGtal::Display3D< Space ,KSpace >::addQuad(double x1, double y1, double z1,
   aQuad.nx= n[0];
   aQuad.ny= n[1];
   aQuad.nz= n[2];
-
-  aQuad.R=aColor.red();
-  aQuad.G=aColor.green();
-  aQuad.B=aColor.blue();
-  aQuad.T=aColor.alpha();
-
+  aQuad.color= getFillColor();
+  
  if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
@@ -314,7 +292,6 @@ DGtal::Display3D< Space ,KSpace >::addTriangle(double x1, double y1, double z1, 
                                                double y2, double z2,
                                                double x3, double y3, double z3)
 {
-  DGtal::Color aColor = getFillColor();
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   updateBoundingBox(x3, y3, z3);
@@ -340,12 +317,8 @@ DGtal::Display3D< Space ,KSpace >::addTriangle(double x1, double y1, double z1, 
   aTriangle.nx= n[0];
   aTriangle.ny= n[1];
   aTriangle.nz= n[2];
-
-  aTriangle.R=aColor.red();
-  aTriangle.G=aColor.green();
-  aTriangle.B=aColor.blue();
-  aTriangle.T=aColor.alpha();
-
+  aTriangle.color = getFillColor();
+  
  if (myTriangleSetList.size()== 0)
     createNewTriangleList("Triangle Root");
 
@@ -361,7 +334,6 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
 
   VERIFY_MSG(vertices.size()>2, "Polygon must have at least two vertices");
 
-  DGtal::Color aColor = getFillColor();
   PolygonD3D polygon;
   for(unsigned int i=0; i< vertices.size();i++)
   {
@@ -396,12 +368,8 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
   polygon.nx= n[0];
   polygon.ny= n[1];
   polygon.nz= n[2];
-
-  polygon.R=aColor.red();
-  polygon.G=aColor.green();
-  polygon.B=aColor.blue();
-  polygon.T=aColor.alpha();
-
+  polygon.color = getFillColor();
+  
  if (myPolygonSetList.size()== 0)
     createNewPolygonList("Polygon Root");
 
@@ -504,9 +472,8 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   qFaceUp.x2=x2; qFaceUp.y2=y2; qFaceUp.z2= z2;
   qFaceUp.x3=x3; qFaceUp.y3=y3; qFaceUp.z3= z3;
   qFaceUp.x4=x4; qFaceUp.y4=y4; qFaceUp.z4= z4;
-
-  qFaceUp.R=myCurrentFillColor.red();qFaceUp.G=myCurrentFillColor.green(); qFaceUp.B=myCurrentFillColor.blue();
-  qFaceUp.T=myCurrentFillColor.alpha();
+  
+  qFaceUp.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFaceUp);
   //main down face
   QuadD3D qFaceDown;
@@ -517,8 +484,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   qFaceDown.x2=x8; qFaceDown.y2=y8; qFaceDown.z2= z8;
   qFaceDown.x3=x7; qFaceDown.y3=y7; qFaceDown.z3= z7;
   qFaceDown.x4=x6; qFaceDown.y4=y6; qFaceDown.z4= z6;
-  qFaceDown.R=myCurrentFillColor.red();qFaceDown.G=myCurrentFillColor.green(); qFaceDown.B=myCurrentFillColor.blue();
-  qFaceDown.T=myCurrentFillColor.alpha();
+  qFaceDown.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFaceDown);
 
   //small face 1
@@ -534,8 +500,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   qFace1.x2= x5; qFace1.y2 =y5; qFace1.z2=z5;
   qFace1.x3= x6; qFace1.y3 =y6; qFace1.z3=z6;
   qFace1.x4= x2; qFace1.y4 =y2; qFace1.z4=z2;
-  qFace1.R=myCurrentFillColor.red();qFace1.G=myCurrentFillColor.green(); qFace1.B=myCurrentFillColor.blue();
-  qFace1.T=myCurrentFillColor.alpha();
+  qFace1.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFace1);
 
   //small face 2
@@ -551,8 +516,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   qFace2.x2= x6; qFace2.y2 =y6; qFace2.z2=z6;
   qFace2.x3= x7; qFace2.y3 =y7; qFace2.z3=z7;
   qFace2.x4= x3; qFace2.y4 =y3; qFace2.z4=z3;
-  qFace2.R=myCurrentFillColor.red();qFace2.G=myCurrentFillColor.green(); qFace2.B=myCurrentFillColor.blue();
-  qFace2.T=myCurrentFillColor.alpha();
+  qFace2.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFace2);
 
   //small face 3
@@ -567,8 +531,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   qFace3.x2= x7; qFace3.y2 =y7; qFace3.z2=z7;
   qFace3.x3= x8; qFace3.y3 =y8; qFace3.z3=z8;
   qFace3.x4= x4; qFace3.y4 =y4; qFace3.z4=z4;
-  qFace3.R=myCurrentFillColor.red();qFace3.G=myCurrentFillColor.green(); qFace3.B=myCurrentFillColor.blue();
-  qFace3.T=myCurrentFillColor.alpha();
+  qFace3.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFace3);
 
   //small face 4
@@ -583,8 +546,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   qFace4.x2= x8; qFace4.y2 =y8; qFace4.z2=z8;
   qFace4.x3= x5; qFace4.y3 =y5; qFace4.z3=z5;
   qFace4.x4= x1; qFace4.y4 =y1; qFace4.z4=z1;
-  qFace4.R=myCurrentFillColor.red();qFace4.G=myCurrentFillColor.green(); qFace4.B=myCurrentFillColor.blue();
-  qFace4.T=myCurrentFillColor.alpha();
+  qFace4.color= myCurrentFillColor;
   mySurfelPrismList.push_back(qFace4);
 }
 
@@ -649,7 +611,6 @@ DGtal::Display3D< Space ,KSpace >::addCone(double x1, double y1, double z1,
   int nbPoints = 6; //the number of point on the base of the cone
   double degree = 360 / nbPoints; // the angle between two points
   double radian = degree * PI/180;
-  DGtal::Color color = getFillColor();
   double norm; // norm of the vectors
 
   // A(x1,y1,z1) and B(x2,y2,z2) vector AB
@@ -778,7 +739,6 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const double x1, const double y1,
   int nbPoints = 6; //the number of point on the base of the cone
   double degree = 360 / nbPoints; // the angle between two points
   double radian = degree * PI/180;
-  DGtal::Color color = getFillColor();
   double norm; // norm of the vectors
 
   // A(x1,y1,z1) and B(x2,y2,z2) vector AB
@@ -1086,7 +1046,7 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
     aMesh.addVertex(p3);
     aMesh.addVertex(p4);
     aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+2,vertexIndex+3,
-                      DGtal::Color(quad.R, quad.G, quad.B, quad.T));
+                      quad.color);
     vertexIndex+=4;
   }
 
@@ -1105,7 +1065,7 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
       aMesh.addVertex(p2);
       aMesh.addVertex(p1);
       aMesh.addQuadFace(vertexIndex,vertexIndex+1, vertexIndex+2, vertexIndex+3,
-                        DGtal::Color(aQuad->R, aQuad->G, aQuad->B, aQuad->T));
+                        aQuad->color);
       vertexIndex+=4;
     }
   }
@@ -1123,8 +1083,7 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
       aMesh.addVertex(p2);
       aMesh.addVertex(p3);
       aMesh.addTriangularFace(vertexIndex, vertexIndex+1, vertexIndex+2,
-                              DGtal::Color(aTriangle->R, aTriangle->G,
-                                           aTriangle->B, aTriangle->T));
+                              aTriangle->color);
       vertexIndex+=3;
     }
   }
@@ -1158,22 +1117,22 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
 
       //z+
       aMesh.addQuadFace(vertexIndex, vertexIndex+3, vertexIndex+2, vertexIndex+1,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
+                        cube.color);
       //z-
       aMesh.addQuadFace(vertexIndex+4, vertexIndex+5, vertexIndex+6, vertexIndex+7,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
+                        cube.color);
       //y+
       aMesh.addQuadFace(vertexIndex+1, vertexIndex+2, vertexIndex+6, vertexIndex+5,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
+                        cube.color);
       //y-
       aMesh.addQuadFace(vertexIndex, vertexIndex+4, vertexIndex+7, vertexIndex+3,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
+                        cube.color);
       //x+
       aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+5, vertexIndex+4,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
+                        cube.color);
       //x-
       aMesh.addQuadFace(vertexIndex+3, vertexIndex+7, vertexIndex+6, vertexIndex+2,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
+                        cube.color);
 
       vertexIndex+=8;
     }
