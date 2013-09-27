@@ -396,6 +396,82 @@ unsigned int maxDiameter( unsigned int min, unsigned int max )
     }
   return min-1;
 }
+
+template <typename GenericNaivePlaneComputer>
+bool
+checkExtendWithManyPoints( unsigned int diameter,
+                           unsigned int nbplanes, 
+                           unsigned int nbpoints )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef typename GenericNaivePlaneComputer::InternalInteger Integer;
+  typedef typename GenericNaivePlaneComputer::Point Point;
+  typedef typename Point::Coordinate PointInteger;
+  IntegerComputer<Integer> ic;
+
+  trace.beginBlock( "checkExtendWithManyPoints" );
+  for ( unsigned int j = 0; j < nbplanes; ++j )
+    {
+      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer c = getRandomInteger<Integer>( (Integer) 1, (Integer) diameter / 2 ); 
+      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      GenericNaivePlaneComputer plane;
+      Dimension axis;
+      if ( ( a >= b ) && ( a >= c ) )       axis = 0;
+      else if ( ( b >= a ) && ( b >= c ) )  axis = 1;
+      else                                  axis = 2;
+      plane.init( diameter, 1, 1 );
+
+      std::vector<Point> pts;
+      for ( unsigned int i = 0; i < nbpoints; ++i )
+        {
+          Point p;
+          p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+          p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+          p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+          Integer x = (Integer) p[ 0 ];
+          Integer y = (Integer) p[ 1 ];
+          Integer z = (Integer) p[ 2 ];
+          switch( axis ) {
+          case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+          case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+          case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+          }
+          pts.push_back( p );
+        }
+      ++nb, nbok += plane.isExtendable( pts.begin(), pts.end() ); // should be ok
+      trace.info() << "(" << nbok << "/" << nb 
+                   << ") plane.isExtendable( pts.begin(), pts.end() )"
+                   << std::endl;
+      Point & any0 = pts[ getRandomInteger<int>( 0, pts.size() ) ];
+      pts.push_back( any0 + Point(1,0,0) );
+      Point & any1 = pts[ getRandomInteger<int>( 0, pts.size() ) ];
+      pts.push_back( any1 + Point(0,1,0) );
+      Point & any2 = pts[ getRandomInteger<int>( 0, pts.size() ) ];
+      pts.push_back( any2 + Point(0,0,1) );
+      bool check = ! plane.isExtendable( pts.begin(), pts.end() ); // should not be ok
+      ++nb, nbok += check ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb 
+                   << ") ! plane.isExtendable( pts.begin(), pts.end() )"
+                   << std::endl;
+      if ( ! check )
+        trace.warning() << plane << " last=" << pts.back() << std::endl
+                        << "a=" << a << " b=" << b << " c=" << c << " d=" << d << std::endl;
+      ++nb, nbok += plane.extend( pts.begin(), pts.end() - 3 ); // should be ok
+      trace.info() << "(" << nbok << "/" << nb 
+                   << ") plane.extend( pts.begin(), pts.end() - 3)"
+                   << std::endl;
+      ++nb, nbok += ! plane.extend( pts.end() - 3, pts.end() ); // should not be ok
+      trace.info() << "(" << nbok << "/" << nb 
+                   << ") ! plane.extend( pts.end() - 3, pts.end() )"
+                   << std::endl;
+    }
+  trace.endBlock();
+  return nb == nbok;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -408,7 +484,9 @@ int main( int /*argc*/, char** /*argv*/ )
     && testCOBANaivePlaneComputer()
     && checkManyPlanes<COBANaivePlaneComputer<Z3, DGtal::int32_t> >( 20, 100, 200 )
     && checkManyPlanes<COBANaivePlaneComputer<Z3, DGtal::int64_t> >( 500, 100, 200 )
-    && checkManyPlanes<COBANaivePlaneComputer<Z3, DGtal::BigInteger> >( 10000, 10, 200 );
+    && checkManyPlanes<COBANaivePlaneComputer<Z3, DGtal::BigInteger> >( 10000, 10, 200 )
+    && checkExtendWithManyPoints<COBAGenericNaivePlaneComputer<Z3, DGtal::int64_t> >( 100, 100, 200 );
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   // trace.beginBlock ( "Max diameter for COBANaivePlaneComputer<Z3, int32_t>" );
