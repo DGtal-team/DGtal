@@ -1038,10 +1038,10 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     {
       glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
       glNormal3f ( ( *s_it ).nx, ( *s_it ).ny, ( *s_it ).nz );
-      glVertex3f ( ( *s_it ).x1, ( *s_it ).y1 , ( *s_it ).z1 );
-      glVertex3f ( ( *s_it ).x2, ( *s_it ).y2 , ( *s_it ).z2 );
-      glVertex3f ( ( *s_it ).x3, ( *s_it ).y3 , ( *s_it ).z3 );
-      glVertex3f ( ( *s_it ).x4, ( *s_it ).y4 , ( *s_it ).z4 );
+      glVertex3f ( ( *s_it ).point1[0], ( *s_it ).point1[1] , ( *s_it ).point1[2] );
+      glVertex3f ( ( *s_it ).point2[0], ( *s_it ).point2[1] , ( *s_it ).point2[2] );
+      glVertex3f ( ( *s_it ).point3[0], ( *s_it ).point3[1] , ( *s_it ).point3[2] );
+      glVertex3f ( ( *s_it ).point4[0], ( *s_it ).point4[1] , ( *s_it ).point4[2] );
     }
   glEnd();
   glEndList();
@@ -1115,10 +1115,10 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
         {
           glColor4ub ( it_s->color.blue(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
           glNormal3f ( it_s->nx, it_s->ny ,it_s->nz );
-          glVertex3f ( it_s->x1, it_s->y1, it_s->z1 );
-          glVertex3f ( it_s->x2, it_s->y2, it_s->z2 );
-          glVertex3f ( it_s->x3, it_s->y3, it_s->z3 );
-          glVertex3f ( it_s->x4, it_s->y4, it_s->z4 );
+          glVertex3f ( it_s->point1[0], it_s->point1[1], it_s->point1[2] );
+          glVertex3f ( it_s->point2[0], it_s->point2[1], it_s->point2[2] );
+          glVertex3f ( it_s->point3[0], it_s->point3[1], it_s->point3[2] );
+          glVertex3f ( it_s->point4[0], it_s->point4[1], it_s->point4[2] );
         }
     }
   glEnd();
@@ -1136,18 +1136,19 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
         {
           glColor4ub ( 150.0,150.0,150.0,255.0 );
           glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(), Viewer3D<Space, KSpace>::myCurrentLineColor.green(), Viewer3D<Space, KSpace>::myCurrentLineColor.blue() , Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
-          glVertex3f ( it_s->x1, it_s->y1, it_s->z1 );
-          glVertex3f ( it_s->x2, it_s->y2, it_s->z2 );
-          glVertex3f ( it_s->x2, it_s->y2, it_s->z2 );
+          glVertex3f ( it_s->point1[0], it_s->point1[1], it_s->point1[2] );
+          glVertex3f ( it_s->point2[0], it_s->point2[1], it_s->point2[2] );
+          glVertex3f ( it_s->point2[0], it_s->point2[1], it_s->point2[2] );
           glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(), Viewer3D<Space, KSpace>::myCurrentLineColor.green(), Viewer3D<Space, KSpace>::myCurrentLineColor.blue() , Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
-          glVertex3f ( it_s->x3, it_s->y3, it_s->z3 );
-          glVertex3f ( it_s->x3, it_s->y3, it_s->z3 );
-          glVertex3f ( it_s->x4, it_s->y4, it_s->z4 );
+          glVertex3f ( it_s->point3[0], it_s->point3[1], it_s->point3[2] );
+          glVertex3f ( it_s->point3[0], it_s->point3[1], it_s->point3[2] );
+          glVertex3f ( it_s->point4[0], it_s->point4[1], it_s->point4[2] );
           glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(), Viewer3D<Space, KSpace>::myCurrentLineColor.green(), Viewer3D<Space, KSpace>::myCurrentLineColor.blue() , Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
-          glVertex3f ( it_s->x4, it_s->y4, it_s->z4 );
-          glVertex3f ( it_s->x1, it_s->y1, it_s->z1 );
+          glVertex3f ( it_s->point4[0], it_s->point4[1], it_s->point4[2] );
+	  glVertex3f(it_s->point1[0], it_s->point1[1], it_s->point1[2]);
         }
     }
+  
   glEnable ( GL_LIGHTING );
   glEnd();
   glEndList();
@@ -1164,9 +1165,9 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
         {
           glColor4ub (it_s->color.red(),it_s->color.green(),it_s->color.blue(),it_s->color.alpha() );
           glNormal3f (it_s->nx,it_s->ny ,it_s->nz );
-          glVertex3f (it_s->x1,it_s->y1,it_s->z1 );
-          glVertex3f (it_s->x2,it_s->y2,it_s->z2 );
-          glVertex3f (it_s->x3,it_s->y3,it_s->z3 );
+          glVertex3f (it_s->point1[0],it_s->point1[1],it_s->point1[2] );
+          glVertex3f (it_s->point2[0],it_s->point2[1],it_s->point2[2] );
+          glVertex3f (it_s->point3[0],it_s->point3[1],it_s->point3[2] );
         }
     }
   glEnd();
@@ -1185,12 +1186,12 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
       for (typename std::vector<typename Viewer3D<Space, KSpace>::TriangleD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
           glColor4ub ( Viewer3D<Space, KSpace>::myCurrentLineColor.red(), Viewer3D<Space, KSpace>::myCurrentLineColor.green(), Viewer3D<Space, KSpace>::myCurrentLineColor.blue() , Viewer3D<Space, KSpace>::myCurrentLineColor.alpha() );
-          glVertex3f (it_s->x1,it_s->y1,it_s->z1 );
-          glVertex3f (it_s->x2,it_s->y2,it_s->z2 );
-          glVertex3f (it_s->x2,it_s->y2,it_s->z2 );
-          glVertex3f (it_s->x3,it_s->y3,it_s->z3 );
-          glVertex3f (it_s->x3,it_s->y3,it_s->z3 );
-          glVertex3f (it_s->x1,it_s->y1,it_s->z1 );
+          glVertex3f (it_s->point1[0],it_s->point1[1],it_s->point1[2] );
+          glVertex3f (it_s->point2[0],it_s->point2[1],it_s->point2[2] );
+          glVertex3f (it_s->point2[0],it_s->point2[1],it_s->point2[2] );
+          glVertex3f (it_s->point3[0],it_s->point3[1],it_s->point3[2] );
+          glVertex3f (it_s->point3[0],it_s->point3[1],it_s->point3[2] );
+          glVertex3f (it_s->point1[0],it_s->point1[1],it_s->point1[2] );
         }
     }
   glEnd();
