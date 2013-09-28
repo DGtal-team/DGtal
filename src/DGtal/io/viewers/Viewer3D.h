@@ -216,10 +216,10 @@ namespace DGtal
     {
 
       /// The image domain coordinates
-      double x1, y1, z1;
-      double x2, y2, z2;
-      double x3, y3, z3;
-      double x4, y4, z4;
+      DGtal::Z3i::RealPoint point1;
+      DGtal::Z3i::RealPoint point2;
+      DGtal::Z3i::RealPoint point3;
+      DGtal::Z3i::RealPoint point4;
       /// The image domain color
       DGtal::Color color;
       /// the width of the image domain
@@ -286,11 +286,10 @@ namespace DGtal
     struct TextureImage
     {
 
-
-      double x1, y1, z1; /// The quad coordinates should be given in counter clockwise order
-      double x2, y2, z2; /// The quad coordinates should be given in counter clockwise order
-      double x3, y3, z3; /// The quad coordinates should be given in counter clockwise order
-      double x4, y4, z4; /// The quad coordinates should be given in counter clockwise order
+      DGtal::Z3i::RealPoint point1;
+      DGtal::Z3i::RealPoint point2;
+      DGtal::Z3i::RealPoint point3;
+      DGtal::Z3i::RealPoint point4;
 
       ImageDirection myDirection; /// direction of the image (x, y or z axe)
 
@@ -315,11 +314,9 @@ namespace DGtal
        * @brief Copy constructor (needed due to myTabImage)
        * @param img the image
        */
-      TextureImage(const TextureImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
-                                             x2(img.x2), y2(img.y2), z2(img.z2),
-                                             x3(img.x3), y3(img.y3), z3(img.z3),
-                                             x4(img.x4), y4(img.y4), z4(img.z4),
-                                             myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+      TextureImage(const TextureImage & img): point1(img.point1), point2(img.point2),
+					      point3(img.point3), point4(img.point4),
+					      myDirection(img.myDirection), myImageWidth(img.myImageWidth),
                                              myImageHeight(img.myImageHeight),
         myTabImage(img.myTabImage),
         myDrawDomain(img.myDrawDomain),
@@ -417,10 +414,10 @@ namespace DGtal
         assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth &&
                  (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
 
-        x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
-        x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
-        x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
-        x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
+        point1[0] += xTranslation; point1[1] += yTranslation; point1[2] += zTranslation;
+        point2[0] +=xTranslation; point2[1] +=yTranslation; point2[2] += zTranslation;
+        point3[0] += xTranslation; point3[1] += yTranslation; point3[2] += zTranslation;
+        point4[0] += xTranslation; point4[1] += yTranslation; point4[2] += zTranslation;
 
         unsigned int pos=0;
         for(typename TImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
@@ -802,10 +799,11 @@ namespace DGtal
     struct GLTextureImage
     {
       /// coordinates
-      double x1, y1, z1;
-      double x2, y2, z2;
-      double x3, y3, z3;
-      double x4, y4, z4;
+      DGtal::Z3i::RealPoint point1;
+      DGtal::Z3i::RealPoint point2;
+      DGtal::Z3i::RealPoint point3;
+      DGtal::Z3i::RealPoint point4;
+
       typename Viewer3D<Space, KSpace>::ImageDirection myDirection;
       unsigned int myImageWidth;
       unsigned int myImageHeight;
@@ -849,10 +847,10 @@ namespace DGtal
                                                     myMode(aGLImg.myMode)
 
       {
-        x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
-        x2=aGLImg.x2; y2=aGLImg.y2; z2=aGLImg.z2;
-        x3=aGLImg.x3; y3=aGLImg.y3; z3=aGLImg.z3;
-        x4=aGLImg.x4; y4=aGLImg.y4; z4=aGLImg.z4;
+        point1[0]=aGLImg.point1[0]; point1[1]=aGLImg.point1[1]; point1[2]=aGLImg.point1[2];
+        point2[0]=aGLImg.point2[0]; point2[1]=aGLImg.point2[1]; point2[2]=aGLImg.point2[2];
+        point3[0]=aGLImg.point3[0]; point3[1]=aGLImg.point3[1]; point3[2]=aGLImg.point3[2];
+        point4[0]=aGLImg.point4[0]; point4[1]=aGLImg.point4[1]; point4[2]=aGLImg.point4[2];
         myImageWidth=aGLImg.myImageWidth; myImageHeight=aGLImg.myImageHeight;
         myDirection = aGLImg.myDirection;
         vectNormal[0]=aGLImg.vectNormal[0];
@@ -882,10 +880,10 @@ namespace DGtal
       //Copy constructor from a TextureImage
       GLTextureImage(const typename Viewer3D<Space, KSpace>::TextureImage &aGSImage)
       {
-        x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
-        x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
-        x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
-        x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
+        point1[0]=aGSImage.point1[0]; point1[1]=aGSImage.point1[1]; point1[2]=aGSImage.point1[2];
+        point2[0]=aGSImage.point2[0]; point2[1]=aGSImage.point2[1]; point2[2]=aGSImage.point2[2];
+        point3[0]=aGSImage.point3[0]; point3[1]=aGSImage.point3[1]; point3[2]=aGSImage.point3[2];
+        point4[0]=aGSImage.point4[0]; point4[1]=aGSImage.point4[1]; point4[2]=aGSImage.point4[2];
         myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
         myDirection = aGSImage.myDirection;
         myMode= aGSImage.myMode;
