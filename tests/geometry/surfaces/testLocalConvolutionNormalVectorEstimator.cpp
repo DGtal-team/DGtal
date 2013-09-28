@@ -137,8 +137,10 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
         Point center = ks.sCoords ( *itbis );
         MyEstimator::Quantity normal = myNormalEstimator.eval ( itbis );
 
-        viewer.addLine ( center[0],center[1],center[2],
-                         center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2], 1.0 );
+        viewer.addLine ( center,
+                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
+					       center[1]-3*normal[1],
+					       center[2]-3*normal[2]), 1.0 );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;
@@ -166,8 +168,10 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
         Point center = ks.sCoords ( *itbis );
         MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
-        viewer.addLine ( center[0],center[1],center[2],
-                         center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2], 1.0 );
+        viewer.addLine ( center,
+                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
+					       center[1]-3*normal[1],
+					       center[2]-3*normal[2]), 1.0 );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;
