@@ -149,10 +149,10 @@ namespace DGtal
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
     struct QuadD3D{
-      double x1,y1,z1;
-      double x2,y2,z2;
-      double x3,y3,z3;
-      double x4,y4,z4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
       double nx, ny, nz;
       DGtal::Color color;
     };
@@ -164,9 +164,9 @@ namespace DGtal
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
     struct TriangleD3D{
-      double x1,y1,z1;
-      double x2,y2,z2;
-      double x3,y3,z3;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
       double nx, ny, nz;
       DGtal::Color color;
     };
@@ -399,36 +399,20 @@ namespace DGtal
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
-     * @param x1 x of the 1st point
-     * @param y1 y of the 1st point
-     * @param z1 z of the 1st point
-     * @param x2 x of the 2nd point
-     * @param y2 y of the 2nd point
-     * @param z2 z of the 2nd point
-     * @param x3 x of the 3rd point
-     * @param y3 y of the 3rd point
-     * @param z3 z of the 3rd point
-     * @param x4 x of the 4th point
-     * @param y4 y of the 4th point
-     * @param z4 z of the 4th point
+     * @param p1 the 1st point
+     * @param p2 the 2nd point
+     * @param p3 the 3rd point
+     * @param p4  the 4th point
      */
-    void addQuad(double x1, double y1, double z1, double x2, double y2, double z2,
-                 double x3, double y3, double z3, double x4, double y4, double z4);
+    void addQuad(RealPoint p1, RealPoint p2, RealPoint p3, RealPoint p4);
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
-     * @param x1 x of the 1st point
-     * @param y1 y of the 1st point
-     * @param z1 z of the 1st point
-     * @param x2 x of the 2nd point
-     * @param y2 y of the 2nd point
-     * @param z2 z of the 2nd point
-     * @param x3 x of the 3rd point
-     * @param y3 y of the 3rd point
-     * @param z3 z of the 3rd point
+     * @param p1 the 1st point
+     * @param p2 the 2nd point
+     * @param p3 the 3rd point
      */
-    void addTriangle(double x1, double y1, double z1, double x2, double y2, double z2,
-                     double x3, double y3, double z3);
+    void addTriangle(RealPoint p1, RealPoint p2, RealPoint p3);
 
 
     /**

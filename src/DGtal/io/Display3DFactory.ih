@@ -87,10 +87,7 @@ DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
           DGtal::Z3i::RealPoint rpc = display.embed( c );
           DGtal::Z3i::RealPoint rpd = display.embed( d );
           display.setFillColor( cmap(aAccumulator.count(i,j)));
-          display.addQuad(rpa[0], rpa[1], rpa[2],
-                          rpb[0], rpb[1], rpb[2],
-                          rpc[0], rpc[1], rpc[2],
-                          rpd[0], rpd[1], rpd[2]);
+          display.addQuad(rpa, rpb, rpc, rpd);
         }
     }
   display.setFillColor( saveFillColor);
@@ -132,19 +129,14 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display3D<Space, KSpace
           TPoint p3 = aMesh.getVertex(aFace.at(2));
           TPoint p4 = aMesh.getVertex(aFace.at(3));
 
-          display.addQuad(p1[0], p1[1], p1[2],
-                          p2[0], p2[1], p2[2],
-                          p3[0], p3[1], p3[2],
-                          p4[0], p4[1], p4[2]);
+          display.addQuad(p1, p2, p3, p4);
         }else if(aNum==3)
         {
           TPoint p1 = aMesh.getVertex(aFace.at(0));
           TPoint p2 = aMesh.getVertex(aFace.at(1));
           TPoint p3 = aMesh.getVertex(aFace.at(2));
 
-          display.addTriangle(p1[0], p1[1], p1[2],
-                              p2[0], p2[1], p2[2],
-                              p3[0], p3[1], p3[2]);
+          display.addTriangle(p1, p2,p3);
         }else if(aNum>4)
         {
           std::vector<typename Display3D<Space, KSpace>::RealPoint> vectPoly;
@@ -315,14 +307,8 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, KSpac
     display.addLine(rpf4[0], rpf4[1], rpf4[2], rpl4[0], rpl4[1], rpl4[2]);
 
     //two end facets
-    display.addQuad(rpf[0],rpf[1],rpf[2],
-                    rpf2[0],rpf2[1],rpf2[2],
-                    rpf4[0],rpf4[1],rpf4[2],
-                    rpf3[0],rpf3[1],rpf3[2]);
-    display.addQuad(rpl[0],rpl[1],rpl[2],
-                    rpl2[0],rpl2[1],rpl2[2],
-                    rpl4[0],rpl4[1],rpl4[2],
-                    rpl3[0],rpl3[1],rpl3[2]);
+    display.addQuad(rpf,rpf2,rpf4, rpf3);
+    display.addQuad(rpl, rpl2, rpl4,rpl3);
   }
 }
 
@@ -559,83 +545,83 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, 
   if (SpaceDom::dimension == 3)
     {
       //Z upper face
-      display.addQuad(upperBound[0]+(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      upperBound[0]+(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize));
+      display.addQuad(DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)));
       //Z lower face
-      display.addQuad(upperBound[0]+(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      upperBound[0]+(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize));
+      display.addQuad(DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)));
       //Y upper face
-      display.addQuad(upperBound[0]+(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      upperBound[0]+(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize));
+      display.addQuad(DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)));
       //Y lower face
-      display.addQuad(upperBound[0]+(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      upperBound[0]+(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize));
+      display.addQuad(DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)));
       // X upper face
-      display.addQuad(upperBound[0]+(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      upperBound[0]+(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      upperBound[0]+(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      upperBound[0]+(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize));
+      display.addQuad(DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(upperBound[0]+(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)));
       // X lower face
-      display.addQuad(lowerBound[0]-(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      upperBound[1]+(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      lowerBound[2]-(0.5+shiftSize),
-                      lowerBound[0]-(0.5+shiftSize),
-                      lowerBound[1]-(0.5+shiftSize),
-                      upperBound[2]+(0.5+shiftSize));
+      display.addQuad(DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				upperBound[1]+(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				lowerBound[2]-(0.5+shiftSize)),
+                      DGtal::Z3i::RealPoint(lowerBound[0]-(0.5+shiftSize),
+				lowerBound[1]-(0.5+shiftSize),
+				upperBound[2]+(0.5+shiftSize)));
     }
   display.setFillColor( fillColorSave);
 }

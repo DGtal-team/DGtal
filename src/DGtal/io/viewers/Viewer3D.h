@@ -700,8 +700,8 @@ namespace DGtal
       bool operator() ( typename Viewer3D<Space,KSpace>::TriangleD3D t1,
                         typename Viewer3D<Space,KSpace>::TriangleD3D t2 )
       {
-        qglviewer::Vec center1 ( ( t1.x1+t1.x2+t1.x3 ) /3.0, ( t1.y1+t1.y2+t1.y3 ) /3.0, ( t1.z1+t1.z2+t1.z3 ) /3.0 );
-        qglviewer::Vec center2 ( ( t2.x1+t2.x2+t2.x3 ) /3.0, ( t2.y1+t2.y2+t2.y3 ) /3.0, ( t2.z1+t2.z2+t2.z3 ) /3.0 );
+        qglviewer::Vec center1 ( ( t1.point1[0]+t1.point2[0]+t1.point3[0] ) /3.0, ( t1.point1[1]+t1.point2[1]+t1.point3[1] ) /3.0, ( t1.point1[2]+t1.point2[2]+t1.point3[2] ) /3.0 );
+        qglviewer::Vec center2 ( ( t2.point1[0]+t2.point2[0]+t2.point3[0] ) /3.0, ( t2.point1[1]+t2.point2[1]+t2.point3[1] ) /3.0, ( t2.point1[2]+t2.point2[2]+t2.point3[2] ) /3.0 );
         double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
         double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
 
@@ -719,8 +719,8 @@ namespace DGtal
                        typename Viewer3D<Space,KSpace>::QuadD3D q2 )
       {
 
-        qglviewer::Vec center1 ( ( q1.x1+q1.x2+q1.x3+q1.x4 ) /4.0, ( q1.y1+q1.y2+q1.y3+q1.y4 ) /4.0, ( q1.z1+q1.z2+q1.z3+q1.z4 ) /4.0 );
-        qglviewer::Vec center2 ( ( q2.x1+q2.x2+q2.x3+q2.x4 ) /4.0, ( q2.y1+q2.y2+q2.y3+q2.y4 ) /4.0, ( q2.z1+q2.z2+q2.z3+q2.z4 ) /4.0 );
+        qglviewer::Vec center1 ( ( q1.point1[0]+q1.point2[0]+q1.point3[0]+q1.point4[0] ) /4.0, ( q1.point1[1]+q1.point2[1]+q1.point3[1]+q1.point4[1] ) /4.0, ( q1.point1[2]+q1.point2[2]+q1.point3[2]+q1.point4[2] ) /4.0 );
+        qglviewer::Vec center2 ( ( q2.point1[0]+q2.point2[0]+q2.point3[0]+q2.point4[0] ) /4.0, ( q2.point1[1]+q2.point2[1]+q2.point3[1]+q2.point4[1] ) /4.0, ( q2.point1[2]+q2.point2[2]+q2.point3[2]+q2.point4[2] ) /4.0 );
 
         double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
         double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
