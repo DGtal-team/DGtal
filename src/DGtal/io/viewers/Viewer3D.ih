@@ -1083,7 +1083,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
             ++s_it )
         {
           glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
-          glVertex3f ( ( *s_it ).x, ( *s_it ).y, ( *s_it ).z );
+          glVertex3f ( ( *s_it ).center[0], ( *s_it ).center[1], ( *s_it ).center[2] );
         }
       glEnd();
       glEnable ( GL_LIGHTING );
@@ -1313,7 +1313,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
   if ( !ballel.isSigned )
     {
       glPushMatrix();
-      glTranslatef ( ballel.x, ballel.y, ballel.z );
+      glTranslatef ( ballel.center[0], ballel.center[1], ballel.center[2] );
       GLUquadric* quadric = gluNewQuadric();
       glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
       gluSphere ( quadric, ballel.size, 10, 10 );
@@ -1325,7 +1325,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
       if ( ballel.signPos )
         {
           glPushMatrix();
-          glTranslatef ( ballel.x-0.07, ballel.y-0.07, ballel.z );
+          glTranslatef ( ballel.center[0]-0.07, ballel.center[1]-0.07, ballel.center[2] );
           Vec dir ( 0.14, 0.14, 0 );
           glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
           GLUquadric* quadric = gluNewQuadric();
@@ -1334,7 +1334,8 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
                         dir.norm(),10, 4 );
           glPopMatrix();
           glPushMatrix();
-          glTranslatef ( ballel.x-0.07, ballel.y+0.07, ballel.z );
+	  glTranslatef ( ballel.center[0]-0.07, ballel.center[1]+0.07, ballel.center[2] ); 
+
           dir=Vec ( 0.14, -0.14, 0 );
           glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
           quadric = gluNewQuadric();
@@ -1346,7 +1347,7 @@ DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpac
       else
         {
           glPushMatrix();
-          glTranslatef ( ballel.x, ballel.y+0.07, ballel.z-0.07 );
+          glTranslatef ( ballel.center[0], ballel.center[1]+0.07, ballel.center[2]-0.07 );
           Vec dir ( 0.0, -0.14, 0.14 );
           glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
           GLUquadric* quadric = gluNewQuadric();

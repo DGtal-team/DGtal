@@ -185,26 +185,14 @@ namespace DGtal
       const double & operator[]( unsigned int i ) const
       {
         assert(i<3);
-        switch (i)
-          {
-          case 0: {return x;}
-          case 1: {return y;}
-          case 2: {return z;}
-          }
-        return x;
+        return center[i];
       };
       double & operator[]( unsigned int i )
       {
         assert(i<3);
-        switch (i)
-          {
-          case 0: {return x;}
-          case 1: {return y;}
-          case 2: {return z;}
-          }
-        return x;
+        return center[i];
       };
-      double x, y, z;
+      RealPoint center;
       DGtal::Color color;
       bool isSigned;
       bool signPos;
