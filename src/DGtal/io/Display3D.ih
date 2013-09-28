@@ -194,9 +194,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center, double size)
 {
   updateBoundingBox(center);
   BallD3D p;
-  p.x=center[0];
-  p.y=center[1];
-  p.z=center[2];
+  p.center=center;
   p.color = getFillColor();
   p.isSigned=false;
   p.signPos=false;
@@ -1029,10 +1027,10 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
     {
       QuadD3D quad = mySurfelPrismList.at(i);
       BallD3D p1, p2, p3, p4;
-      p1.x=quad.point1[0]; p1.y=quad.point1[1]; p1.z=quad.point1[2];
-      p2.x=quad.point2[0]; p2.y=quad.point2[1]; p2.z=quad.point2[2];
-      p3.x=quad.point3[0]; p3.y=quad.point3[1]; p3.z=quad.point3[2];
-      p4.x=quad.point4[0]; p4.y=quad.point4[1]; p4.z=quad.point4[2];
+      p1.center=quad.point1;
+      p2.center=quad.point2;
+      p3.center=quad.point3;
+      p4.center=quad.point4;
       aMesh.addVertex(p1);
       aMesh.addVertex(p2);
       aMesh.addVertex(p3);
@@ -1048,10 +1046,10 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
       for (typename std::vector<QuadD3D>::const_iterator aQuad = it->begin(); aQuad!=it->end();aQuad ++)
 	{
 	  BallD3D p1, p2, p3, p4;
-	  p1.x=aQuad->point1[0]; p1.y=aQuad->point1[1]; p1.z=aQuad->point1[2];
-	  p2.x=aQuad->point2[0]; p2.y=aQuad->point2[1]; p2.z=aQuad->point2[2];
-	  p3.x=aQuad->point3[0]; p3.y=aQuad->point3[1]; p3.z=aQuad->point3[2];
-	  p4.x=aQuad->point4[0]; p4.y=aQuad->point4[1]; p4.z=aQuad->point4[2];
+	  p1.center=aQuad->point1;
+	  p2.center=aQuad->point2;
+	  p3.center=aQuad->point3;
+	  p4.center=aQuad->point4;
 	  aMesh.addVertex(p4);
 	  aMesh.addVertex(p3);
 	  aMesh.addVertex(p2);
@@ -1068,9 +1066,9 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
       for (typename std::vector<TriangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
 	{
 	  BallD3D p1, p2, p3;
-	  p1.x = aTriangle->point1[0]; p1.y = aTriangle->point1[1]; p1.z = aTriangle->point1[2];
-	  p2.x = aTriangle->point2[0]; p2.y = aTriangle->point2[1]; p2.z = aTriangle->point2[2];
-	  p3.x = aTriangle->point3[0]; p3.y = aTriangle->point3[1]; p3.z = aTriangle->point3[2];
+	  p1.center=aTriangle->point1;
+	  p2.center=aTriangle->point2;
+	  p3.center=aTriangle->point3;
 	  aMesh.addVertex(p1);
 	  aMesh.addVertex(p2);
 	  aMesh.addVertex(p3);
@@ -1088,15 +1086,15 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
 	  CubeD3D cube = myCubeSetList.at(j).at(i);
 	  BallD3D p1, p2, p3, p4, p5, p6, p7, p8;
 	  double width= cube.width;
-
-	  p1.x = (cube.center[0]-width); p1.y = (cube.center[1]+width); p1.z = (cube.center[2]+width);
-	  p2.x = (cube.center[0]+width); p2.y = (cube.center[1]+width); p2.z = (cube.center[2]+width);
-	  p3.x = (cube.center[0]+width); p3.y = (cube.center[1]-width); p3.z = (cube.center[2]+width);
-	  p4.x = (cube.center[0]-width); p4.y = (cube.center[1]-width); p4.z = (cube.center[2]+width);
-	  p5.x = (cube.center[0]-width); p5.y = (cube.center[1]+width); p5.z = (cube.center[2]-width);
-	  p6.x = (cube.center[0]+width); p6.y = (cube.center[1]+width); p6.z = (cube.center[2]-width);
-	  p7.x = (cube.center[0]+width); p7.y = (cube.center[1]-width); p7.z = (cube.center[2]-width);
-	  p8.x = (cube.center[0]-width); p8.y = (cube.center[1]-width); p8.z = (cube.center[2]-width);
+	  	  
+	  p1.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]+width);
+	  p2.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]+width);
+	  p3.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]+width);
+	  p4.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]+width);
+	  p5.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]-width);
+	  p6.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]-width);
+	  p7.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]-width);
+	  p8.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]-width);
 
 	  aMesh.addVertex(p1);
 	  aMesh.addVertex(p2);
