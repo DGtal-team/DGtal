@@ -30,10 +30,10 @@
 #include <algorithm>
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "ConfigExamples.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 
 using namespace std;
@@ -151,29 +151,23 @@ void viewPolygons
   const std::vector< std::vector< unsigned int > > & indices,  
   const std::vector<Vector> & points )
 {
-  typedef typename Viewer::pointD3D pointD3D;
-  //DGtal::Color color( 200, 200, 220, 255 );
-  std::vector<pointD3D> pts3d;
+  typedef typename Viewer::RealPoint RealPoint;
+  std::vector<RealPoint> pts3d;
+  DGtal::Color fillColorSave = viewer.getFillColor();
   for ( unsigned int f = 0; f < indices.size(); ++f )
     {
       pts3d.clear();
-      pointD3D P;
-      P.R = color.red();
-      P.G = color.green();
-      P.B = color.blue();
-      P.T = color.alpha();
-      P.isSigned = false;
-      P.signPos = false;
-      P.size = 0.1;
+      RealPoint P;
       for ( unsigned int v = 0; v < indices[ f ].size(); ++v )
         {
           unsigned int i = indices[ f ][ v ];
-          P.x = rescale( points[ i ][ 0 ] );
-          P.y = rescale( points[ i ][ 1 ] );
-          P.z = rescale( points[ i ][ 2 ] );
+          P[0] = rescale( points[ i ][ 0 ] );
+          P[1] = rescale( points[ i ][ 1 ] );
+          P[2] = rescale( points[ i ][ 2 ] );
           pts3d.push_back( P );
         }
-      viewer.addPolygon( pts3d, color );
+      viewer.setFillColor(color);
+      viewer.addPolygon( pts3d );
     }
 }
 
@@ -401,26 +395,16 @@ int main( int argc, char** argv )
   typedef KSpace::CellSet CellSet;
   QApplication application(argc,argv);
   //! [ExampleDisplay3DToOFF]
-  Viewer3D viewer;
+  KSpace KS;
+
+  Viewer3D<Z3i::Space,Z3i::KSpace> viewer(KS);
   viewer.show();
   DGtal::Color fillColor( 200, 200, 220, 255 );
   DGtal::Color surfelColor( 255, 0, 0, 150 );
   DGtal::Color voxelColor( 150, 150, 0, 150 );
 
   std::vector<Vector> pts;
-  // pts.push_back( Vector( 0, 0, 0 ) );
-  // pts.push_back( Vector( 1, 0, 0 ) );
-  // pts.push_back( Vector( 0, 1, 0 ) );
-  // pts.push_back( Vector( 0, 0, 1 ) );
-  // pts.push_back( Vector( 0, 1, 1 ) );
-  // pts.push_back( Vector( 1, 0, 1 ) );
-  // pts.push_back( Vector( 1, 1, 0 ) );
-  // std::vector< std::vector< unsigned int > > indices;
-  // naiveConvexHull( indices, pts, false ); // right_handed
-
-  // viewPolygons( viewer, fillColor, indices, pts );
-  // viewer << Viewer3D::updateDisplay;
-
+ 
   unsigned int cfg = argc > 1 ? atoi( argv[1] ) : 0;
   unsigned int cfg2 = argc > 2 ? atoi( argv[2] ) : 255;
   std::map< Vector, bool > f;
@@ -450,6 +434,7 @@ int main( int argc, char** argv )
         viewer << CustomColors3D( DGtal::Color( 255, 0, 0, 255 ), fillColor );
         std::vector< std::vector< unsigned int > > indices;
         Domain domain2( offset + Vector( 0, 0, 0), offset + Vector( 1, 1, 1 ) );
+
         for ( Domain::ConstIterator it = domain.begin(), itE = domain.end();
               it != itE; ++it )
           {
@@ -457,9 +442,9 @@ int main( int argc, char** argv )
             indices.clear();
             naiveConvexHull( indices, pts, false ); // right_handed
             viewPolygons( viewer, fillColor, indices, pts );
-          }
+            }
       }
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   //! [ExampleDisplay3DToOFF]
   return application.exec();
 }

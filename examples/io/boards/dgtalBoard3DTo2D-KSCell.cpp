@@ -27,15 +27,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
-#include "DGtal/base/Common.h"
-///////////////////////////////////////////////////////////////////////////////
-
-using namespace std;
-using namespace DGtal;
-
-///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
+//#include <iostream>
 #include "DGtal/io/boards/Board3DTo2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -51,7 +43,7 @@ using namespace Z3i;
 
 int main()
 {
-  Board3DTo2D board;
+
 
   KSpace K;
   Point plow(0,0,0);  
@@ -59,8 +51,10 @@ int main()
   Domain domain( plow, pup );
   K.init( plow, pup, true );
 
-  //board << SetMode3D( domain.className(), "Paving" );
-  //board << domain; 
+  Board3DTo2D<> board(K);
+
+  board << SetMode3D( domain.className(), "Paving" );
+  board << domain;
 
   // Drawing cell of dimension 3
   Cell voxelA = K.uCell(Point(1,1,1));
@@ -81,6 +75,7 @@ int main()
   board << linelA << linelB << linelC;
 
   Cell center(Point(5,5,5));
+
   // Testing display of oriented surfels:
   SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false ); 
   SCell ssurfelXY = K.sCell( Point( 5, 5, 6 ), false ); 
@@ -95,11 +90,12 @@ int main()
   board << ssurfelXZo << ssurfelXYo << ssurfelZYo;
 
   // Testing display oriented pointels
+
   Cell pointelA = K.uCell(Point(2, 2, 2));
   SCell pointelB = K.sCell(Point(4, 4, 4), true);
   SCell pointelC = K.sCell(Point(6, 4, 4), false);
   SCell linelAC = K.sCell(Point(5, 4, 4), false);
-  board << pointelA << pointelB << pointelC << linelAC;
+  board  << pointelA << pointelB << pointelC << linelAC;
 
   /*board << CameraPosition(2.69044, 1.73705, -1.89961)
     << CameraDirection(-0.515153, -0.212857, 0.830247)
@@ -110,7 +106,8 @@ int main()
     << CameraUpVector(0.516135, -0.84913, -0.112173);
 
   //board << SetMode3D(board.className(), "WireFrameMode");
-  board.saveCairo("dgtalBoard3DTo2D-KSCell.png", Board3DTo2D::CairoPNG, 600, 400);
+  board.saveCairo("dgtalBoard3DTo2D-KSCell.png", Board3DTo2D<Space, KSpace>::CairoPNG, 600, 400);
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

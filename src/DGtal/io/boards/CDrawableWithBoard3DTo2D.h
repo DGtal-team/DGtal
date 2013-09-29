@@ -17,51 +17,50 @@
 #pragma once
 
 /**
- * @file CDrawableWithDisplay3D.h
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @file CDrawableWithBoard3DTo2D.h
+ * @author Aline Martin
  *
- * @date 2011/08/08
+ * @date 2013/07/02
  *
- * Header file for concept CDrawableWithDisplay3D.cpp
+ * Header file for concept CDrawableWithBoard3DTo2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDrawableWithDisplay3D_RECURSES)
-#error Recursive header files inclusion detected in CDrawableWithDisplay3D.h
-#else // defined(CDrawableWithDisplay3D_RECURSES)
+#if defined(CDrawableWithBoard3DTo2D_RECURSES)
+#error Recursive header files inclusion detected in CDrawableWithBoard3DTo2D.h
+#else // defined(CDrawableWithBoard3DTo2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDrawableWithDisplay3D_RECURSES
+#define CDrawableWithBoard3DTo2D_RECURSES
 
-#if !defined CDrawableWithDisplay3D_h
+#if !defined CDrawableWithBoard3DTo2D_h
 /** Prevents repeated inclusion of headers. */
-#define CDrawableWithDisplay3D_h
+#define CDrawableWithBoard3DTo2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-//#include "DGtal/io/Display3D.h"
+#include "DGtal/io/CDrawableWithDisplay3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithDisplay3D
+  // class CDrawableWithBoard3DTo2D
   /**
-Description of \b concept '\b CDrawableWithDisplay3D' <p>
+Description of \b concept '\b CDrawableWithBoard3DTo2D' <p>
 @ingroup Concepts
 
-@brief Aim:  The concept CDrawableWithDisplay3D specifies what are the classes
-that admit an export with Display3D.
+@brief Aim:  The concept CDrawableWithBoard3DTo2D specifies what are the classes
+that admit an export with Board3DTo2D.
     
 An object x satisfying this concept may then be used as:
     
    \code
-   Display3D display;
+   Board3DTo2D display;
    display << CustomStyle( x.className(), x.defaultStyle() )
          << x;
    \endcode 
@@ -71,7 +70,7 @@ An object x satisfying this concept may then be used as:
 ### Associated types :
    
 ### Notation
-    - \t X : A type that is a model of CDrawableWithDisplay3DD
+    - \t X : A type that is a model of CDrawableWithBoard3DTo2DD
     - \t x, \t y  : Object of type X
     - \t m  : a string of characters
    
@@ -81,9 +80,9 @@ An object x satisfying this concept may then be used as:
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|the default draw style | x.defaultStyle( m = "") | mode \t m: \c std::string | CDrawableWithDisplay3D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
+|the default draw style | x.defaultStyle( m = "") | mode \t m: \c std::string | CDrawableWithBoard3DTo2D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
 |the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
-|the way the object \t x is drawn | x.setStyle(CDrawableWithDisplay3D &display) | | | |draws the object \c x on the \c display stream | | |  
+|the way the object \t x is drawn | x.setStyle(CDrawableWithBoard3DTo2D &display) | | | |draws the object \c x on the \c display stream | | |
 
 ### Invariants
    
@@ -95,13 +94,13 @@ An object x satisfying this concept may then be used as:
     @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */  
   
-  template < class S, class KS> class Display3D;
+  template < class S, class KS> class Board3DTo2D;
   
-  template <typename T, typename Sp, typename KSp>
-  struct CDrawableWithDisplay3D
+  template <typename T, typename S, typename KS >
+  struct CDrawableWithBoard3DTo2D : public CDrawableWithDisplay3D<T, S , KS>
   {
 
-  BOOST_CONCEPT_USAGE( CDrawableWithDisplay3D )
+  BOOST_CONCEPT_USAGE( CDrawableWithBoard3DTo2D )
     {
       //Drawable model should have a className() returning a string
       ConceptUtils::sameType( myS, myT.className() );
@@ -114,16 +113,16 @@ An object x satisfying this concept may then be used as:
     // ------------------------- Private Datas --------------------------------
   private:
 
-    T myT; //! the drawable class
-    DrawableWithDisplay3D *myD;
+    T myT;//! the drawable object
+    DrawableWithBoard3DTo2D *myD;
 
-    Display3D< Sp, KSp> myD3D;
+    Board3DTo2D<S, KS> myD3D;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CDrawableWithDisplay3D
+  }; // end of concept CDrawableWithBoard3DTo2D
   
 } // namespace DGtal
 
@@ -132,7 +131,7 @@ An object x satisfying this concept may then be used as:
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDrawableWithDisplay3D_h
+#endif // !defined CDrawableWithBoard3DTo2D_h
 
-#undef CDrawableWithDisplay3D_RECURSES
-#endif // else defined(CDrawableWithDisplay3D_RECURSES)
+#undef CDrawableWithBoard3DTo2D_RECURSES
+#endif // else defined(CDrawableWithBoard3DTo2D_RECURSES)
