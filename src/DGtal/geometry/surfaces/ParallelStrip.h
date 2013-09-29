@@ -56,8 +56,8 @@ namespace DGtal
      half-planes such that each half-plane includes the other.
 
      If N is the unit normal to one of the half-plane, the set of point \a
-     X that is included in the strip satisfies some: \f$ \mu <= N \dot
-     X <= \mu + \nu \f$.
+     X that is included in the strip satisfies some: \f$ \mu \le N \dot
+     X \le \mu + \nu \f$.
 
      The \b normal to the strip is the vector \a N. The \b width of
      the strip is the scalar \f$\nu\f$. The \b axis \b width of the
@@ -75,8 +75,16 @@ namespace DGtal
      values. However, they approach standard digital planes.
 
      @tparam TSpace any digital space, i.e., a model of CSpace.
+
+     @tparam muIncluded when 'true', the first inequality is large,
+     i.e. \f$ \mu \le N \dot X \f$, otherwise it is strict, i.e. \f$
+     \mu < N \dot X \f$
+
+     @tparam muPlusNuIncluded when 'true', the second inequality is
+     large, i.e. \f$ N \dot X \le \mu + \nu\f$, otherwise it is
+     strict, i.e. \f$ N \dot X < \mu + \nu\f$
    */
-  template <typename TSpace>
+  template <typename TSpace, bool muIncluded = true, bool muPlusNuIncluded = true>
   class ParallelStrip
   {
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
@@ -84,7 +92,7 @@ namespace DGtal
     // ----------------------- public types ------------------------------
   public:
     typedef TSpace Space;
-    typedef ParallelStrip<Space> Self;
+    typedef ParallelStrip<Space,muIncluded,muPlusNuIncluded> Self;
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::Vector Vector;
@@ -199,14 +207,23 @@ namespace DGtal
   public:
 
     /**
-     * Checks if the point \a p is in this strip. Therefore, a
+     * Checks if the digital point \a p is in this strip. Therefore, a
      * ParallelStrip is a model of CPointPredicate.
      *
-     * @param p any 3D point.
+     * @param p any 3D digital point.
      *
      * @return 'true' if it is in the strip, false otherwise.
      */
     bool operator()( const Point & p ) const;
+
+    /**
+     * Checks if the (real-valued) point \a p is in this strip.
+     *
+     * @param p any 3D real-valued point.
+     *
+     * @return 'true' if it is in the strip, false otherwise.
+     */
+    bool operator()( const RealPoint & p ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -250,9 +267,10 @@ namespace DGtal
    * @param object the object of class 'ParallelStrip' to write.
    * @return the output stream after the writing.
    */
-  template <typename TSpace>
+  template <typename TSpace, bool muIncluded, bool muPlusNuIncluded>
   std::ostream&
-  operator<< ( std::ostream & out, const ParallelStrip<TSpace> & object );
+  operator<< ( std::ostream & out, 
+               const ParallelStrip<TSpace,muIncluded,muPlusNuIncluded> & object );
 
 } // namespace DGtal
 

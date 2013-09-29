@@ -174,7 +174,7 @@ namespace DGtal
     typedef typename InputPointSet::const_iterator ConstIterator;
     typedef typename InputPointSet::iterator Iterator;
     typedef typename Space::Point Point;
-    typedef ParallelStrip<Space> Primitive;
+    typedef ParallelStrip<Space,true,true> Primitive;
 
     // ----------------------- std public types ------------------------------
   public:
@@ -430,6 +430,11 @@ namespace DGtal
        @return the current primitive recognized by this computer,
        which is a ParallelStrip of axis width smaller than the one
        specified at instanciation.
+
+       @note The returned primitive has the form \f$\mu \le \vec{N}
+       \cdot \vec{X} \le \mu + \epsilon\f$. It is guaranteed that its axis
+       width is strictly less than the value \a widthNumerator / \a
+       widthDenominator specified with method \ref init.
     */
     Primitive primitive() const;
 

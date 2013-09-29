@@ -15,7 +15,7 @@ Part of the \ref packageGeometry.
 This module gathers classes and functions to recognize piece of naive
 planes, and more generally piece of planes with arbitrary rational
 axis-thickness. It is based on an implementation of the COBA Algorithm
-[Charrier, Buzer 1998 : \cite Charrier:2008-dgci]. For the user,
+[Charrier, Buzer 1998 : \cite Charrier_2008_dgci]. For the user,
 everything is gathered in classes COBANaivePlaneComputer and
 COBAGenericNaivePlaneComputer, which are additive primitive computers.  File
 viewer3D-7-planes.cpp gives a very simple example of use-case. File
