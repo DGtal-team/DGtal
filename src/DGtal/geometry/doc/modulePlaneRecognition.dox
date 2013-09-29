@@ -1,0 +1,129 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/*!
+   
+@page modulePlaneRecognition  Plane recognition and plane width computation
+
+@writers Jacques-Olivier Lachaud
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes classes and functions related to the
+planarity of a set of points in 3D. For instance, it provides
+solutions to the following problems:
+
+- \b planarity \b decision: checks whether or not a given set of
+  (digital or not) points belongs to a parallel strip of specified
+  width.
+- \b plane \b recognition: decide if a given set of (digital or not)
+  points is planar and provides an explicit solution (i.e. gives the
+  normal and shift of some parallel strip containing all the points).
+- \b incremental or \b additive \b plane \b recognition: same as
+  above, except that planarity of points can be checked progressively
+  by adding points one at a time (incremental) or by groups (additive).
+- \b width \b computation: computes the minimal width of a parallel
+  strip that containes a given set of (digital or not) points.
+
+This module thus extends to the 3D case the recognition of \b digital
+\b straight \b segments and of \b blurred \b segments.
+
+For now, these problems are solved with two algorithms: the COBA
+algorithm by Charrier and Buzer \cite Charrier_2008_dgci and the Chord
+algorithm by Gerard, Debled-Rennesson and Zimmermann \cite
+Gerard_2005_dam.
+
+More precisely, these modules tackle \e naive \e digital \e planes (with or
+without a specified axis) and \e digital \e planes of arbitrary \e rational
+\e axis \e width. 
+
+\note A current limitation is that these algorithms do not compute the
+\e minimal characteristics of the digital plane containing the input
+points, but only a valid parallel strip of approximate normal. 
+
+[TOC]
+
+Related examples are viewer3D-7-planes.cpp, viewer3D-7bis-planes.cpp,
+greedy-plane-segmentation.cpp, greedy-plane-segmentation-ex2.cpp.
+
+\section modulePlaneRecognition_sec1 Planarity as a parallel strip.
+
+\subsection modulePlaneRecognition_sec11 Definition of parallel strip.
+
+A \b parallel \b strip is the intersection of two parallel half-planes such
+that each half-plane includes the other. Half-planes may be closed or
+open. Hence, parallel strips take one of the following form:
+
+- \f$ \mu \le \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class \ref ParallelStrip<Space,true,true>
+- \f$ \mu \le \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \ref ParallelStrip<Space,true,false>
+- \f$ \mu < \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class \ref ParallelStrip<Space,false,true>
+- \f$ \mu < \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \ref ParallelStrip<Space,false,false>
+
+Here are a few useful definitions:
+
+- The \b normal to the strip is the vector \a N, which is a unit
+  vector in the class \ref ParallelStrip.
+- The \b width of the strip is the scalar \f$\nu\f$.
+- The \b axis \b width of the strip is the quantity \f$|\nu / N_i|\f$
+  where \f$|N_i|\f$ is the greatest component. The \b main \b axis is
+  the \a i-th axis.
+- The \b diagonal \b width is the quantity \f$ \frac{\nu
+  \sqrt{n}}{\|N\|_1} \f$, where \a n is the dimension of the
+  space. The \b main \b diagonal is the vector \f$( \pm 1, \ldots, \pm
+  1) \f$, where the \f$ \pm 1 \f$ are the signs of the components of
+  \b N.
+
+Digital planes are specific cases of parallel strips. We give below
+their 3D definitions, but their \a n-dimensional definition is
+straightforward.
+
+\subsection modulePlaneRecognition_sec12 Naive digital planes
+
+A \b naive \b digital \b plane is a set of digital points \f$(x,y,z)
+\in Z^3\f$ such that \f$ d \le ax+by+cz < d + \omega \f$, with \a a,
+\a b, \a c integer numbers and \f$ \omega = \max(|a|,|b|,|c|) \f$.
+
+It is easily seen that naive planes are parallel strips of \e axis \e width
+strictly smaller than 1, by a simple division of both inequalities by
+\f$\omega\f$.
+
+\subsection modulePlaneRecognition_sec13 Standard digital planes
+
+A \b standard \b digital \b plane is a set of digital points \f$(x,y,z)
+\in Z^3\f$ such that \f$ d \le ax+by+cz < d + \omega \f$, with \a a,
+\a b, \a c integer numbers and \f$ \omega = |a|+|b|+|c| \f$.
+
+It is easily seen that standard planes are parallel strips of \e
+diagonal \e width strictly smaller than \f$ \sqrt{3} \f$, by a simple
+division of both inequalities by \f$\sqrt{a^2+b^2+c^2}\f$.
+
+The user thus specifies a main axis \a axis and a rational width
+(i.e. \f$ \epsilon \f$ as \a widthNumerator / \a widthDenominator ) at
+initialization (see COBANaivePlaneComputer::init()).
+
+*/
+
+/**
+   This example shows the recognition of a simple digital plane with
+   the Chord algorithm (class ChordNaivePlaneComputer). Green points belong to
+   the naive plane.  There is no naive plane containing the green
+   points and any one of the red points.
+
+@see \ref moduleNaivePlaneRecognition_sec2
+
+@verbatim
+$ ./examples/geometry/surfaces/viewer3D-7bis-planes
+@endverbatim
+
+@image html chord-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
+@image latex chord-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
+
+\example geometry/surfaces/viewer3D-7bis-planes.cpp
+*/
+
+
+
+}
