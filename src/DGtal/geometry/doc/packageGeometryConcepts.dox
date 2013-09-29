@@ -77,6 +77,20 @@ subgraph cluster_concepts_2 {
 
     label="geometry/volumes (main concepts)";
   }
+
+  subgraph cluster_concepts_3 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+               
+    CPrimitiveComputer [ URL="\ref CPrimitiveComputer" ];
+    CIncrementalPrimitiveComputer [ URL="\ref CIncrementalPrimitiveComputer" ];
+    CAdditivePrimitiveComputer [ URL="\ref CAdditivePrimitiveComputer" ];
+
+    CAdditivePrimitiveComputer -> CIncrementalPrimitiveComputer -> CPrimitiveComputer;
+    label="geometry/surfaces (main concepts)";
+  }
+
  
   CLocalPremetric -> boost_CopyConstructible;
   CLocalPremetric -> boost_Assignable;
@@ -85,6 +99,10 @@ subgraph cluster_concepts_2 {
   CSegment -> boost_DefaultConstructible;
   CSegment -> boost_Assignable;
   CSegment -> boost_EqualityComparable;
+
+  CPrimitiveComputer -> boost_DefaultConstructible;
+  CPrimitiveComputer -> boost_CopyConstructible;
+  CPrimitiveComputer -> boost_Assignable;
 
   subgraph cluster_models {
      style=filled;
@@ -98,18 +116,10 @@ subgraph cluster_concepts_2 {
      ChordGenericNaivePlaneComputer [ URL="\ref ChordGenericNaivePlaneComputer" ];
   }
 
-  COBANaivePlaneComputer -> boost_CopyConstructible ;
-  COBANaivePlaneComputer -> boost_DefaultConstructible;
-  COBANaivePlaneComputer -> boost_Assignable;
-  COBAGenericNaivePlaneComputer -> boost_CopyConstructible ;
-  COBAGenericNaivePlaneComputer -> boost_DefaultConstructible;
-  COBAGenericNaivePlaneComputer -> boost_Assignable;
-  ChordNaivePlaneComputer -> boost_CopyConstructible ;
-  ChordNaivePlaneComputer -> boost_DefaultConstructible;
-  ChordNaivePlaneComputer -> boost_Assignable;
-  ChordGenericNaivePlaneComputer -> boost_CopyConstructible ;
-  ChordGenericNaivePlaneComputer -> boost_DefaultConstructible;
-  ChordGenericNaivePlaneComputer -> boost_Assignable;
+  COBANaivePlaneComputer -> CAdditivePrimitiveComputer;
+  COBAGenericNaivePlaneComputer -> CAdditivePrimitiveComputer;
+  ChordNaivePlaneComputer -> CAdditivePrimitiveComputer;
+  ChordGenericNaivePlaneComputer -> CAdditivePrimitiveComputer;
  }
 @enddot
 
