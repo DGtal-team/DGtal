@@ -1546,6 +1546,112 @@ int testII3D_same_results( )
     return 0;
 }
 
+int testII2D_noise( )
+{
+    Board2D viewer;
+    Color red( 255, 0, 0 );
+    Color dred( 192, 0, 0 );
+    Color dgreen( 0, 192, 0 );
+    Color blue( 0, 0, 255 );
+    Color dblue( 0, 0, 192 );
+
+    typedef Z2i::Space::RealPoint RealPoint;
+    typedef ImplicitBall< Z2i::Space > Shape;
+    typedef Z2i::Space Space;
+
+    RealPoint border_min( -6, -6);
+    RealPoint border_max( 6, 6 );
+
+    double h = 0.2;
+    double noiseLevel = 0.2;
+    double alpha = 0.333333;
+    double radius_kernel = 5;
+    bool lambda_optimized = false;
+
+    double radius = 5.0;
+    RealPoint rcenter( 0.0, 0.0 );
+    Shape* aShape = new Shape( rcenter, radius );
+
+    typedef typename Space::RealPoint RealPoint;
+    typedef GaussDigitizer< Z2i::Space, Shape > DigitalShape;
+    typedef Z2i::KSpace KSpace;
+    typedef typename KSpace::SCell SCell;
+    typedef typename KSpace::Surfel Surfel;
+
+    bool withNoise = ( noiseLevel <= 0.0 ) ? false : true;
+    if( withNoise )
+        noiseLevel *= h;
+
+    ASSERT (( noiseLevel < 1.0 ));
+    // Digitizer
+    DigitalShape* dshape = new DigitalShape();
+    dshape->attach( *aShape );
+    dshape->init( border_min, border_max, h );
+
+    KSpace K;
+    if ( ! K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
+    {
+        std::cerr << "[3dLocalEstimators_0memory] error in creating KSpace." << std::endl;
+        return false;
+    }
+
+    typedef KanungoNoise< DigitalShape, Z2i::Domain > KanungoPredicate;
+    typedef LightImplicitDigitalSurface< KSpace, KanungoPredicate > Boundary;
+    typedef DigitalSurface< Boundary > MyDigitalSurface;
+    typedef typename MyDigitalSurface::ConstIterator ConstIterator;
+
+    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+
+    typedef PointFunctorFromPointPredicateAndDomain< KanungoPredicate, Z2i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
+
+    // Extracts shape boundary
+    KanungoPredicate * noisifiedObject = new KanungoPredicate( *dshape, dshape->getDomain(), noiseLevel );
+    SCell bel = Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
+    Boundary * boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
+    MyDigitalSurface surf ( *boundary );
+
+    double minsize = dshape->getUpperBound()[0] - dshape->getLowerBound()[0];
+    unsigned int tries = 0;
+    while( surf.size() < 2 * minsize || tries > 150 )
+    {
+        delete boundary;
+        bel = Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
+        boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
+        surf = MyDigitalSurface( *boundary );
+        ++tries;
+    }
+
+    if( tries > 150 )
+    {
+        std::cerr << "Can't found a proper bel. So .... I ... just ... kill myself." << std::endl;
+        return false;
+    }
+
+    VisitorRange * range;
+    VisitorConstIterator ibegin;
+    VisitorConstIterator iend;
+
+    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
+    ibegin = range->begin();
+    iend = range->end();
+
+    viewer << SetMode( dshape->getDomain().className(), "Grid" )
+          << dshape->getDomain();
+
+    for( ; ibegin != iend; ++ibegin )
+    {
+        viewer << CustomStyle( (*ibegin).className(), new CustomColors( red, dred ) )
+               << *ibegin;
+    }
+
+    delete range;
+
+    viewer.saveSVG("testII2D-noise.svg");
+}
+
 int testII3D_noise( int argc, char** argv )
 {
     QApplication application( argc, argv );
@@ -1564,10 +1670,10 @@ int testII3D_noise( int argc, char** argv )
     double h = 0.02;
     double noiseLevel = 20;
     double alpha = 0.333333;
-    double radius_kernel = 0.5;
+    double radius_kernel = 5;
     bool lambda_optimized = false;
 
-    std::string poly_str = "1000x^2y^2z^2 + 3x^2 + 3y^2 + z^2 - 1";
+    std::string poly_str = argv[1];//"1000x^2y^2z^2 + 3x^2 + 3y^2 + z^2 - 1";
 
     Polynomial3 poly;
     Polynomial3Reader reader;
@@ -1588,11 +1694,11 @@ int testII3D_noise( int argc, char** argv )
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Surfel Surfel;
 
-    ASSERT (( noiseLevel < 1.0 ));
     bool withNoise = ( noiseLevel <= 0.0 ) ? false : true;
     if( withNoise )
         noiseLevel *= h;
 
+    ASSERT (( noiseLevel < 1.0 ));
     // Digitizer
     DigitalShape* dshape = new DigitalShape();
     dshape->attach( *aShape );
@@ -1674,7 +1780,8 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    testII3D_noise( argc, argv );
+    testII2D_noise( );
+//    testII3D_noise( argc, argv );
 //    test2DTopology();
 //    testII2D( );
 //    testII2D_kernels();
