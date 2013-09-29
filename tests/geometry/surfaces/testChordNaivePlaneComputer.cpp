@@ -37,6 +37,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/geometry/surfaces/CAdditivePrimitiveComputer.h"
 #include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 #include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -534,10 +535,12 @@ bool testChordNaivePlaneComputer()
   typedef ChordNaivePlaneComputer<Space, Point, Integer> NaivePlaneComputer;
   typedef ChordGenericNaivePlaneComputer<Space, Point, Integer> GenericNaivePlaneComputer;
 
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( CAdditivePrimitiveComputer< NaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( CAdditivePrimitiveComputer< GenericNaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlaneComputer > ));
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< GenericNaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlaneComputer::Primitive > ));
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlaneComputer::Primitive > ));
 
   trace.beginBlock ( "Testing block: ChordNaivePlaneComputer instantiation." );
   NaivePlaneComputer plane;
