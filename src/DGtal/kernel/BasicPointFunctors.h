@@ -84,15 +84,15 @@ namespace DGtal
    *
    * @code
 
-  PointVector<3,int> p(3,1,5): 
+   PointVector<3,int> p(3,1,5): 
 
-  Projector<SpaceND<2,int> > proj; 
-  proj( p ) //== (3,1)
+   Projector<SpaceND<2,int> > proj; 
+   proj( p ) //== (3,1)
 
-  ...
-  //v (2, 0): selection of the 2nd and 0th basis vectors
-  proj.init(v.begin(), v.end()); 
-  proj( p ) //== (5,3)
+   ...
+   //v (2, 0): selection of the 2nd and 0th basis vectors
+   proj.init(v.begin(), v.end()); 
+   proj( p ) //== (5,3)
 
    * @endcode
    *
@@ -155,7 +155,7 @@ namespace DGtal
     template<typename TInputPoint>
     Point operator()( const TInputPoint& aPoint ) const;
 
-   private: 
+  private: 
     /**
      * Array storing the coordinates that are copied from 
      * the input point to its projection (order matters)
@@ -169,7 +169,7 @@ namespace DGtal
      * Default integer set to coordinates of the projected point
      * not in the input point
      */
-     Integer myDefaultInteger; 
+    Integer myDefaultInteger; 
 
   }; // end of class ConstantPointFunctors
   
@@ -199,8 +199,8 @@ namespace DGtal
    SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
    PointVector<2, int> pt_2(10, 9);  
    trace.info() <<  sliceRot2(pt_2);
-     @endcode
-     *
+   @endcode
+   *
    *
    * @tparam TDomain3D the type of the 3d domain. 
    * @tparam TInteger specifies the integer number type used to define the space. 
@@ -269,18 +269,22 @@ namespace DGtal
       Point pt;
       Dimension pos=0;
       std::vector<Dimension> indexesRotate;
-      for( Dimension i=0; i<pt.size(); i++){
-	if(i!=myPosDimAdded){
-	  pt[i]= aPoint[pos];
-	  pos++; 
-	}else{
-	  pt[i]=mySliceIndex;
+      for( Dimension i=0; i<pt.size(); i++)
+	{
+	  if(i!=myPosDimAdded)
+	    {
+	      pt[i]= aPoint[pos];
+	      pos++; 
+	    }else
+	    {
+	      pt[i]=mySliceIndex;
+	    }
 	}
-      }
-      for( Dimension i=0; i<pt.size(); i++){
-	if(i!=myDimRotated)
-	  indexesRotate.push_back(i);
-      }
+      for( Dimension i=0; i<pt.size(); i++)
+	{
+	  if(i!=myDimRotated)
+	    indexesRotate.push_back(i);
+	}
       double d1 = pt[indexesRotate[0]] - myCenter[indexesRotate[0]];
       double d2 = pt[indexesRotate[1]] - myCenter[indexesRotate[1]];
       
@@ -294,7 +298,7 @@ namespace DGtal
     }
   private:
     // position of insertion of the new dimension
-     Dimension myPosDimAdded;
+    Dimension myPosDimAdded;
     // the index of the slice associated to the new domain.
     Integer mySliceIndex;
     TDomain3D myDomain;
