@@ -362,6 +362,37 @@ std::pair<Z3i::Integer,Z3i::Integer> width =
   PlaneComputer::computeAxisWidth( 2, pts.begin(), pts.end() ); // z-axis
 \endcode
 
+\section modulePlaneRecognition_sec5 Comparative evaluation of COBA and Chord algorithm
+
+For now, there are only two computers for computing a ParallelStrip
+primitive: the ChordNaivePlaneComputer (1) and the
+COBANaivePlaneComputer (2).
+
+-# Complexity: (2) has a better worst time complexity than (1),
+   but neither (1) nor (2) has an easy bound on the number of
+   global recomputation (traversal of all input points to
+   recompute a valid direction).
+-# Big integers: (1) requires (significantly) smaller integers
+   than (2). For instance, int64_t are required for diameter
+   greater than 25 for (1) instead of 14000 for (2).
+-# Practical speed: both algorithms are very comparable. (1) seems
+   slightly faster than (2) on average (but this was not tested on
+   many architecture). According to the graph below, obtained with
+   programs testCOBANaivePlaneComputer-benchmark.cpp and
+   testChordNaivePlaneComputer-benchmark.cpp, (1) is faster for a
+   number of points below 200 while (2) is best for a big number of
+   points. However, if the diameter is not too big,
+   ChordNaivePlaneComputer with \ref int64_t seems always faster.
+-# Exactness: Both algorithms do not return the smallest possible
+   arithmetic parameters for the plane, but only a rational
+   approximation.
+-# Services: Algorithm (1) can be transformed to find the exact
+   axis width of a given set of points, (2) is not suited for that
+   task.
+
+@image html coba-chord-benchmark.png "Evaluation of computation times of COBA and Chord algorithms according to the number of points. Times are in ms. We did not put the graph of COBANaivePlaneComputer with int64_t since we cannot exceed a diameter of 500. In this benchmark, the diameter was always 10 times the number of points."
+@image latex coba-chord-benchmark.png "Evaluation of computation times of COBA and Chord algorithms according to the number of points. Times are in ms. We did not put the graph of COBANaivePlaneComputer with int64_t since we cannot exceed a diameter of 500. In this benchmark, the diameter was always 10 times the number of points." width=5cm
+
 */
 
 /**
