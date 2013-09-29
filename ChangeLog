@@ -39,6 +39,15 @@
       convex hulls or Farey Fan. Also works when the DSL
       characteristics are not integers.
 
+    - Chord algorithm for (naive) plane recognition and width computation.
+    - New organization for computing primitives. Introduction of the concept
+      of PrimitiveComputer and specialization. COBA algorithm and Chord algorithm
+      are now models of AdditivePrimitiveComputer.
+    - Introduction of the primitive ParallelStrip, computed by COBA and Chord algorithms
+    - New documentation for planarity decision, plane recognition and width computation.
+      Quantitative and qualitative evaluation of COBA and Chord algorithm.
+    - Bug fix in COBA algorithm when extending an empty computer with a group of points.
+
 *Shape Package*
 
     - The class MeshFromPoints was transformed into Mesh (more from
