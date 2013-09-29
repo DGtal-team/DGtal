@@ -6,7 +6,7 @@ namespace DGtal {
 
 /*!
    
-@page moduleCOBANaivePlaneRecognition  Naive plane recognition (and naive planes with rational width) with COBA algorithm
+@page moduleCOBANaivePlaneRecognition Detailed explanation of COBA plane recognition algorithm
 
 @writers Jacques-Olivier Lachaud
 
