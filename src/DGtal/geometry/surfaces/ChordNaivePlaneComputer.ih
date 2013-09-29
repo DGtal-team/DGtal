@@ -451,14 +451,6 @@ axisWidth( State & state, TInputIterator itB, TInputIterator itE ) const
   for ( unsigned int loop = 0; ! optimum; ++loop )
     {
       computeHeight( state );
-      // trace.warning() << "[axisWidth] (" << loop << ")"
-      //           << " axis=" << z
-      //           << " h=" << state.height 
-      //           << " N=(" << state.N[ 0 ] << "," << state.N[ 1 ] << ","<< state.N[ 2 ] << ")"
-      //           << " w=(" << width.first << "," << width.second << ")"
-      //           << std::endl;
-      // selfDisplay( trace.warning(), state );
-      // trace.warning() << std::endl;
       if ( state.nbValid >= 2 )
         { // in case 2 and 3, we have a starting triangle.
           InputPoint M = state.ptMax - state.ptMin;

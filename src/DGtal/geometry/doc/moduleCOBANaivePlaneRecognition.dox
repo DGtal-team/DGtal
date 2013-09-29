@@ -6,7 +6,7 @@ namespace DGtal {
 
 /*!
    
-@page moduleNaivePlaneRecognition  Naive plane recognition (and naive planes with rational width) with COBA algorithm
+@page moduleCOBANaivePlaneRecognition  Naive plane recognition (and naive planes with rational width) with COBA algorithm
 
 @writers Jacques-Olivier Lachaud
 
@@ -27,7 +27,7 @@ plane recognition algorithm.
 Related examples are viewer3D-7-planes.cpp,
 greedy-plane-segmentation.cpp, greedy-plane-segmentation-ex2.cpp.
 
-\section moduleNaivePlaneRecognition_sec1 What planes are recognized by the COBA algorithm ?
+\section moduleCOBANaivePlaneRecognition_sec1 What planes are recognized by the COBA algorithm ?
 
 The COBA algorithm recognizes planes defined with some equation \f$
 \mu \le \vec{N} \cdot \vec{x} < \mu + \epsilon \f$, where \f$ N_z \f$ (for
@@ -67,7 +67,7 @@ polygon with vertices at integer coordinates), and class
 LatticePolytope2D, to maintain the set of rational
 solutions. Experimentally, even for a great number of points
 (<=100000), this convex set has generally fewer than 12 vertices (see
-\ref moduleNaivePlaneRecognition_sec3).
+\ref moduleCOBANaivePlaneRecognition_sec3).
 
 A drawback of the COBA algorithm is that it does \b not provide the \b
 minimal \b characteristics of the recognized plane. This is due to the
@@ -87,7 +87,7 @@ but explains the worst-case complexity.
 precisely at module \ref dgtal_lattice_polytope_2d to see how
 lattice polytopes are represented.
 
-\section moduleNaivePlaneRecognition_sec2 How to recognize a plane ?
+\section moduleCOBANaivePlaneRecognition_sec2 How to recognize a plane ?
 
 The main class is COBANaivePlaneComputer. It is templated by the digital space
 \a TSpace, an arbitrary model of CSpace with dimension equal to 3, and
@@ -182,7 +182,7 @@ approximately 500 for int64_t, and whatever with BigInteger/GMP
 integers. For huge diameters, the slow-down is polylogarithmic with
 the diameter.
 
-\section moduleNaivePlaneRecognition_sec3 Extracting plane characteristics
+\section moduleCOBANaivePlaneRecognition_sec3 Extracting plane characteristics
 
 You may obtain the current normal to the plane as a 3D vector over
 some real-value type (e.g. \c float, \c double) with the templated
@@ -197,7 +197,7 @@ of the plane that contains all the input points. It provides you one
 feasible solution.
 
 
-\section moduleNaivePlaneRecognition_sec4 Speed and computational complexity of COBA algorithm
+\section moduleCOBANaivePlaneRecognition_sec4 Speed and computational complexity of COBA algorithm
 
 It is not a trivial task to determine bounds on the computational
 complexity of this algorithm that depends only on the number of points
@@ -247,7 +247,7 @@ BigInteger.
 @image latex html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions." width=5cm
 
 
-\section moduleNaivePlaneRecognition_sec5 Application to greedy segmentation into digital planes
+\section moduleCOBANaivePlaneRecognition_sec5 Application to greedy segmentation into digital planes
 
 Example greedy-plane-segmentation.cpp illustrates the use of
 COBANaivePlaneComputer to segment a digital surface into connected pieces of
@@ -299,7 +299,7 @@ moments). Do that for each vertex independently. Put them in a
 priority queue, the first to be popped should be the ones with the
 biggest size. The remaining of the algorithm is unchanged.
 
-\section moduleNaivePlaneRecognition_sec6 What if you do not know the main axis beforehands ?
+\section moduleCOBANaivePlaneRecognition_sec6 What if you do not know the main axis beforehands ?
 
 In this case, you should use the class COBAGenericNaivePlaneComputer. You use
 it similarly to COBANaivePlaneComputer, but you do not need to specify a main
@@ -339,7 +339,7 @@ recognizer of arbitrary pieces of naive planes.
    the naive plane.  There is no naive plane containing the green
    points and any one of the red points.
 
-@see \ref moduleNaivePlaneRecognition_sec2
+@see \ref moduleCOBANaivePlaneRecognition_sec2
 
 @verbatim
 $ ./examples/geometry/surfaces/viewer3D-7-planes
@@ -356,7 +356,7 @@ $ ./examples/geometry/surfaces/viewer3D-7-planes
 
    Colors for each plane are chosen randomly. Surfels in the same plane have the same color.
 
-@see \ref moduleNaivePlaneRecognition_sec5
+@see \ref moduleCOBANaivePlaneRecognition_sec5
 
 @verbatim
 # naive plane: width=1/1
@@ -383,7 +383,7 @@ $ ./examples/geometry/surfaces/greedy-plane-segmentation -i ./examples/samples/A
 
    Colors for each plane are chosen randomly. Surfels in the same plane have the same color.
 
-@see \ref moduleNaivePlaneRecognition_sec5 (solution of exercice 2)
+@see \ref moduleCOBANaivePlaneRecognition_sec5 (solution of exercice 2)
 
 @verbatim
 # naive plane: width=1/1
