@@ -42,9 +42,8 @@
 
 #include "DGtal/shapes/Shapes.h" 
 #include "DGtal/shapes/ShapeFactory.h" 
-
-#include "DGtal/io/viewers/Viewer3D.h" 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -58,7 +57,7 @@ int main(int argc, char **argv)
 {
   QApplication application(argc,argv);
   
-  DGtal::Viewer3D viewer;
+  DGtal::Viewer3D<> viewer;
   
   DGtal::Z3i::Point center(0,0,0);
   DGtal::ImplicitRoundedHyperCube<Z3i::Space> myCube( center, 20, 2.8);
@@ -105,7 +104,7 @@ int main(int argc, char **argv)
   
   viewer << DGtal::ClippingPlane(1,0,0,0);
   //@todo updateDisplay is in Display3D or Viewer3D (cf doc)?
-  viewer << DGtal::Display3D::updateDisplay; 
+  viewer << DGtal::Viewer3D<>::updateDisplay;
   
   return application.exec();
   

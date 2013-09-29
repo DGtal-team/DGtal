@@ -58,7 +58,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
   //! [MeshUseInitDisplay]
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();     
   //! [MeshUseInitDisplay]
 
@@ -96,7 +96,7 @@ int main( int argc, char** argv )
   //! [MeshUseDisplay]
   viewer.setLineColor(Color(150,0,0,254));
   viewer << aMesh;
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   //! [MeshUseDisplay]
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
