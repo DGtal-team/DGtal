@@ -122,7 +122,7 @@ namespace DGtal
    @endcode
    *
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
-   * boost::Assignable, boost::ForwardContainer, CPointPredicate.
+   * boost::Assignable, boost::ForwardContainer, CAdditivePrimitiveComputer, CPointPredicate.
    */
   template < typename TSpace, 
              typename TInternalInteger >

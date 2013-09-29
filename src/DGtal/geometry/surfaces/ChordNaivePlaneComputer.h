@@ -113,7 +113,7 @@ namespace DGtal
        axis width of a given set of points, (2) is not suited for that
        task.
 
-    \par A small example to show how to check if some points form a
+    A small example to show how to check if some points form a
     subset of a naive plane.
 
     @code
@@ -130,7 +130,8 @@ namespace DGtal
     @endcode
    
     Model of boost::DefaultConstructible, boost::CopyConstructible,
-    boost::Assignable, boost::ForwardContainer, CPointPredicate.
+    boost::Assignable, boost::ForwardContainer,
+    CAdditivePrimitiveComputer, CPointPredicate.
 
     @tparam TSpace specifies the digital space (provides dimension and
     types for the primitive)
