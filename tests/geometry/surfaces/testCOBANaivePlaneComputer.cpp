@@ -33,6 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/geometry/surfaces/CAdditivePrimitiveComputer.h"
 #include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 #include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -287,10 +288,12 @@ bool testCOBANaivePlaneComputer()
   typedef COBANaivePlaneComputer<Z3, BigInteger> NaivePlaneComputer;
   typedef COBAGenericNaivePlaneComputer<Z3, BigInteger> GenericNaivePlaneComputer;
 
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( CAdditivePrimitiveComputer< NaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( CAdditivePrimitiveComputer< GenericNaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlaneComputer > ));
-  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlaneComputer > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< GenericNaivePlaneComputer > ));
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlaneComputer::Primitive > ));
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlaneComputer::Primitive > ));
 
   trace.beginBlock ( "Testing block: COBANaivePlaneComputer instantiation." );
   NaivePlaneComputer plane;
@@ -478,6 +481,7 @@ checkExtendWithManyPoints( unsigned int diameter,
 int main( int /*argc*/, char** /*argv*/ )
 {
   using namespace Z3i;
+
   // Max diameter is ~20 for int32_t, ~500 for int64_t, any with BigInteger.
   trace.beginBlock ( "Testing class COBANaivePlaneComputer" );
   bool res = true 
