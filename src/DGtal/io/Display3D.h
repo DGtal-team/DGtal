@@ -93,6 +93,9 @@ namespace DGtal
   {
 
     BOOST_CONCEPT_ASSERT((CSpace<Space>));
+  public:
+    //RealPoint
+    typedef typename DGtal::Z3i::RealPoint RealPoint;
 
 
     // ------------------------- Private Datas --------------------------------
@@ -106,10 +109,10 @@ namespace DGtal
      * structure used to display line in 3D
      */
     struct LineD3D{
-      double x1, y1, z1;
-      double x2, y2, z2;
+      RealPoint point1;
+      RealPoint point2;
       double width;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
       bool isSigned;
       bool signPos;
     };
@@ -120,12 +123,11 @@ namespace DGtal
     struct CubeD3D{
       /// The center coordinate of the cube.
       ///
-      double x, y,z;
-
+      RealPoint center;
       /// The display color of the cube.
       ///
-      unsigned char R,G,B,T;
-
+      DGtal::Color color;
+      
       /// The width of a cube face
       ///
       double width;
@@ -147,12 +149,12 @@ namespace DGtal
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
     struct QuadD3D{
-      double x1,y1,z1;
-      double x2,y2,z2;
-      double x3,y3,z3;
-      double x4,y4,z4;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
+      RealPoint point4;
       double nx, ny, nz;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
     };
 
 
@@ -162,18 +164,16 @@ namespace DGtal
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
     struct TriangleD3D{
-      double x1,y1,z1;
-      double x2,y2,z2;
-      double x3,y3,z3;
+      RealPoint point1;
+      RealPoint point2;
+      RealPoint point3;
       double nx, ny, nz;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
     };
 
 
   public:
 
-    //RealPoint
-    typedef typename Space::RealPoint RealPoint;
 
 
     /// Structure used to display point in 3D
@@ -185,27 +185,15 @@ namespace DGtal
       const double & operator[]( unsigned int i ) const
       {
         assert(i<3);
-        switch (i)
-          {
-          case 0: {return x;}
-          case 1: {return y;}
-          case 2: {return z;}
-          }
-        return x;
+        return center[i];
       };
       double & operator[]( unsigned int i )
       {
         assert(i<3);
-        switch (i)
-          {
-          case 0: {return x;}
-          case 1: {return y;}
-          case 2: {return z;}
-          }
-        return x;
+        return center[i];
       };
-      double x, y, z;
-      unsigned char R,G,B,T;
+      RealPoint center;
+      DGtal::Color color;
       bool isSigned;
       bool signPos;
       double size;
@@ -220,7 +208,7 @@ namespace DGtal
     {
       std::vector<RealPoint> vertices;
       double nx, ny, nz;
-      unsigned char R,G,B,T;
+      DGtal::Color color;
     };
 
 
@@ -399,36 +387,20 @@ namespace DGtal
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
-     * @param x1 x of the 1st point
-     * @param y1 y of the 1st point
-     * @param z1 z of the 1st point
-     * @param x2 x of the 2nd point
-     * @param y2 y of the 2nd point
-     * @param z2 z of the 2nd point
-     * @param x3 x of the 3rd point
-     * @param y3 y of the 3rd point
-     * @param z3 z of the 3rd point
-     * @param x4 x of the 4th point
-     * @param y4 y of the 4th point
-     * @param z4 z of the 4th point
+     * @param p1 the 1st point
+     * @param p2 the 2nd point
+     * @param p3 the 3rd point
+     * @param p4  the 4th point
      */
-    void addQuad(double x1, double y1, double z1, double x2, double y2, double z2,
-                 double x3, double y3, double z3, double x4, double y4, double z4);
+    void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4);
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
-     * @param x1 x of the 1st point
-     * @param y1 y of the 1st point
-     * @param z1 z of the 1st point
-     * @param x2 x of the 2nd point
-     * @param y2 y of the 2nd point
-     * @param z2 z of the 2nd point
-     * @param x3 x of the 3rd point
-     * @param y3 y of the 3rd point
-     * @param z3 z of the 3rd point
+     * @param p1 the 1st point
+     * @param p2 the 2nd point
+     * @param p3 the 3rd point
      */
-    void addTriangle(double x1, double y1, double z1, double x2, double y2, double z2,
-                     double x3, double y3, double z3);
+    void addTriangle(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3);
 
 
     /**
@@ -441,50 +413,39 @@ namespace DGtal
     /**
      * Method to add a line to the current display.
      * x1, y1, z1, x2, y2, z2 the two extremty line points.
-     * @param x1 x of the 1st point
-     * @param y1 y of the 1st point
-     * @param z1 z of the 1st point
-     * @param x2 x of the 2nd point
-     * @param y2 y of the 2nd point
-     * @param z2 z of the 2nd point
+     * @param p1 the 1st point
+     * @param p2  the 2nd point
      * @param width the line width
      *
      */
 
-    void addLine(double x1, double y1, double z1,
-                 double x2, double y2, double z2, double width=0.03);
+    void addLine(const RealPoint &p1, const RealPoint &p2, double width=0.03);
 
 
     /**
      * Method to add specific cube. It includes several modes to
      * display the cube with and without the wire visualisation.
      *
-     * @param x cube center x
-     * @param y cube center y
-     * @param z cube center z.
+     * @param center cube center 
      * @param width the cube width.
      */
-    void addCube(double x, double y, double z, double width=1.0);
+    void addCube(const RealPoint &center, double width=1.0);
 
 
     /**
      * Method to add a point to the current display.
-     * @param x ball center x
-     * @param y ball center y
-     * @param z ball center z.
+     * @param center ball center x
      * @param size the point width
      *
      */
-    void addBall(double x, double y, double z , double size=0.05);
+    void addBall(const RealPoint &center , double size=0.05);
 
 
 
     /**
      * Specific to display a surfel from Kahlimsky space. The display can
      * take into accounts the sign of the cell.
-     * @param x base quad center x
-     * @param y base quad center y
-     * @param z base quad center z
+     * @param baseQuadCenter  base quad center point
      * @param xSurfel true if the surfel has its main face in the direction of the x-axis
      * @param ySurfel true if the surfel has its main face in the direction of the y-axis
      * @param zSurfel true if the surfel has its main face in the direction of the z-axis
@@ -494,16 +455,14 @@ namespace DGtal
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
      * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addSurfelPrism(double x, double y, double z,
+    void addSurfelPrism(const RealPoint &baseQuadCenter,
                         bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                         double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
     /**
      * Specific to display a surfel from Kahlimsky space in basic mode.
      *
-     * @param x base quad center x
-     * @param y base quad center y
-     * @param z base quad center z
+     * @param baseQuadCenter  base quad center point
      * @param xSurfel true if the surfel has its main face in the direction of the x-axis
      * @param ySurfel true if the surfel has its main face in the direction of the y-axis
      * @param zSurfel true if the surfel has its main face in the direction of the z-axis
@@ -513,7 +472,7 @@ namespace DGtal
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
      * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addQuad(double x, double y, double z,
+    void addQuad(const RealPoint &baseQuadCenter,
                  bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                  double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
@@ -522,42 +481,30 @@ namespace DGtal
     /**
      * Add a signed KSLinel from the Kahlimsky space. Display it as a cone.
      *
-     * @param x1 x coordinate of the cone apex
-     * @param y1 y coordinate of the cone apex
-     * @param z1 z coordinate of the cone apex
-     * @param x2 x coordinate of the cone base
-     * @param y2 y coordinate of the cone base
-     * @param z2 z coordinate of the cone base
+     * @param p1  the cone apex
+     * @param p2  the cone base
      * @param width the width of the cone (default= 0.02)
      */
-    void addCone(double x1, double y1, double z1,
-                 double x2, double y2, double z2,
+    void addCone(const RealPoint &p1, const RealPoint &p2,
                  double width=0.02);
 
 
     /**
      * Add a non signed KSLinel from the Kahlimsky space. Display it as a simple cylinder.
-     * @param x1 x coordinates of the 1st point
-     * @param y1 y coordinates of the 1st point
-     * @param z1 z coordinates of the 1st point
-     * @param x2 x coordinates of the 2nd point
-     * @param y2 y coordinates of the 2nd point
-     * @param z2 z coordinates of the 2nd point
+     * @param p1  the 1st point
+     * @param p2  the 2nd point
      * @param width the width of the cylinder (default= 0.02)
      */
-    void addCylinder(const double x1, const double y1, const  double z1,
-                     const double x2, const double y2, const double z2,
+    void addCylinder(const RealPoint  &p1, const RealPoint &p2,
                      const double width=0.02);
 
 
     /**
      * Used to update the scene bounding box when objects are added.
      *
-     * @param x the x coordinate to be taken into accounts.
-     * @param y the y coordinate to be taken into accounts.
-     * @param z the z coordinate to be taken into accounts.
+     * @param point the point to be taken into accounts.
      */
-    void updateBoundingBox(const double x, const double y, const double z);
+    void updateBoundingBox(const RealPoint &point);
 
 
 

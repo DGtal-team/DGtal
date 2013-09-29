@@ -172,26 +172,17 @@ DGtal::Display3D< Space ,KSpace >::createNewPolygonList(std::string str)
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addCube(double x, double y, double z, double width)
+DGtal::Display3D< Space ,KSpace >::addCube(const RealPoint &center, double width)
 {
   //because the width in the cube parameters is actually the distance between the center and the faces
   width = width/2;
-  DGtal::Color aColor = getFillColor();
-
-  updateBoundingBox((double)x, (double)y, (double)z);
+  updateBoundingBox(center);
   CubeD3D v;
-  v.x=x;
-  v.y=y;
-  v.z=z;
-  v.R=aColor.red();
-  v.G=aColor.green();
-  v.B=aColor.blue();
-  v.T=aColor.alpha();
+  v.center=center;
+  v.color=getFillColor();
   v.width=width;
-
   if (myCubeSetList.size() ==0)
     createNewCubeList("Cube Root");
-
   (myCubeSetList.at(myCubeSetList.size()-1)).push_back(v);
 }
 
@@ -199,27 +190,17 @@ DGtal::Display3D< Space ,KSpace >::addCube(double x, double y, double z, double 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addBall(double x, double y, double z, double size)
+DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center, double size)
 {
-  updateBoundingBox(x, y, z);
-  DGtal::Color aColor = getFillColor();
+  updateBoundingBox(center);
   BallD3D p;
-  p.x=x;
-  p.y=y;
-  p.z=z;
-
-
-  p.R=aColor.red();
-  p.G=aColor.green();
-  p.B=aColor.blue();
-  p.T=aColor.alpha();
+  p.center=center;
+  p.color = getFillColor();
   p.isSigned=false;
   p.signPos=false;
   p.size=size;
-
   if (myBallSetList.size()== 0)
     createNewBallList("Ball Root");
-
   (myBallSetList.at(myBallSetList.size()-1)).push_back(p);
 }
 
@@ -228,24 +209,14 @@ DGtal::Display3D< Space ,KSpace >::addBall(double x, double y, double z, double 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addLine(double x1, double y1, double z1, double x2, double y2, double z2, double width)
+DGtal::Display3D< Space ,KSpace >::addLine(const RealPoint &p1, const RealPoint &p2, double width)
 {
-  updateBoundingBox(x1, y1, z1);
-  updateBoundingBox(x2, y2, z2);
-  DGtal::Color aColor = getLineColor();
+  updateBoundingBox(p1);
+  updateBoundingBox(p2);
   LineD3D l;
-  l.x1=x1;
-  l.y1=y1;
-  l.z1=z1;
-
-  l.x2=x2;
-  l.y2=y2;
-  l.z2=z2;
-
-  l.R=aColor.red();
-  l.G=aColor.green();
-  l.B=aColor.blue();
-  l.T=aColor.alpha();
+  l.point1=p1;
+  l.point2=p2;
+  l.color= getLineColor();
   l.width=width;
   l.isSigned=false;
   l.signPos=false;
@@ -259,48 +230,40 @@ DGtal::Display3D< Space ,KSpace >::addLine(double x1, double y1, double z1, doub
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addQuad(double x1, double y1, double z1,
-                                           double x2, double y2, double z2,
-                                           double x3, double y3, double z3,
-                                           double x4, double y4, double z4)
+DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint &p2,
+					   const RealPoint &p3, const RealPoint &p4)
 {
-  DGtal::Color aColor = getFillColor();
-  if(myQuadSetList.size() == 0 )
-  {
-    createNewQuadList("quad");
-  }
 
+  if(myQuadSetList.size() == 0 )
+    {
+      createNewQuadList("quad");
+    }
   QuadD3D aQuad;
-  updateBoundingBox(x1, y1, z1);
-  updateBoundingBox(x2, y2, z2);
-  updateBoundingBox(x3, y3, z3);
-  updateBoundingBox(x4, y4, z4);
+  updateBoundingBox(p1);
+  updateBoundingBox(p2);
+  updateBoundingBox(p3);
+  updateBoundingBox(p4);
   double u[3]; double v [3]; double n [3];
-  u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
-  v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
+  u[0]=p2[0]-p1[0]; u[1]=p2[1]-p1[1]; u[2]=p2[2]-p1[2];
+  v[0]=p3[0]-p1[0]; v[1]=p3[1]-p1[1]; v[2]=p3[2]-p1[2];
   cross(n, u, v );
   normalize(n);
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
-  {
-    trace.error()<< "Warning quad not added due to identical vertex... "<<std::endl;
-    return;
-  }
-
-  aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
-  aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
-  aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
-  aQuad.x4=x4; aQuad.y4=y4; aQuad.z4=z4;
+    {
+      trace.error()<< "Warning quad not added due to identical vertex... "<<std::endl;
+      return;
+    }
+  aQuad.point1=p1;
+  aQuad.point2=p2;
+  aQuad.point3=p3;
+  aQuad.point4=p4;
   aQuad.nx= n[0];
   aQuad.ny= n[1];
   aQuad.nz= n[2];
-
-  aQuad.R=aColor.red();
-  aQuad.G=aColor.green();
-  aQuad.B=aColor.blue();
-  aQuad.T=aColor.alpha();
-
- if (myQuadSetList.size()== 0)
+  aQuad.color= getFillColor();
+  
+  if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
   (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
@@ -310,43 +273,35 @@ DGtal::Display3D< Space ,KSpace >::addQuad(double x1, double y1, double z1,
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addTriangle(double x1, double y1, double z1, double x2,
-                                               double y2, double z2,
-                                               double x3, double y3, double z3)
+DGtal::Display3D< Space ,KSpace >::addTriangle(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3)
 {
-  DGtal::Color aColor = getFillColor();
-  updateBoundingBox(x1, y1, z1);
-  updateBoundingBox(x2, y2, z2);
-  updateBoundingBox(x3, y3, z3);
+  updateBoundingBox(p1);
+  updateBoundingBox(p2);
+  updateBoundingBox(p3);
 
   TriangleD3D aTriangle;
   double u[3]; double v [3]; double n [3];
-  u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
-  v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
+  u[0]=p2[0]-p1[0]; u[1]=p2[1]-p1[1]; u[2]=p2[2]-p1[2];
+  v[0]=p3[0]-p1[0]; v[1]=p3[1]-p1[1]; v[2]=p3[2]-p1[2];
   cross(n, u, v );
   cross(n, u, v );
   normalize(n);
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
-  {
-    trace.error()<< "Warning triangle not added due to identical vertex... "<<std::endl;
-    return;
-  }
-
-  aTriangle.x1=x1; aTriangle.y1=y1; aTriangle.z1=z1;
-  aTriangle.x2=x2; aTriangle.y2=y2; aTriangle.z2=z2;
-  aTriangle.x3=x3; aTriangle.y3=y3; aTriangle.z3=z3;
+    {
+      trace.error()<< "Warning triangle not added due to identical vertex... "<<std::endl;
+      return;
+    }
+  aTriangle.point1=p1;
+  aTriangle.point2=p2;
+  aTriangle.point3=p3;
 
   aTriangle.nx= n[0];
   aTriangle.ny= n[1];
   aTriangle.nz= n[2];
-
-  aTriangle.R=aColor.red();
-  aTriangle.G=aColor.green();
-  aTriangle.B=aColor.blue();
-  aTriangle.T=aColor.alpha();
-
- if (myTriangleSetList.size()== 0)
+  aTriangle.color = getFillColor();
+  
+  if (myTriangleSetList.size()== 0)
     createNewTriangleList("Triangle Root");
 
   (myTriangleSetList.at(myTriangleSetList.size()-1)).push_back(aTriangle);
@@ -361,13 +316,12 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
 
   VERIFY_MSG(vertices.size()>2, "Polygon must have at least two vertices");
 
-  DGtal::Color aColor = getFillColor();
   PolygonD3D polygon;
   for(unsigned int i=0; i< vertices.size();i++)
-  {
-    polygon.vertices.push_back(vertices[i]);
-    updateBoundingBox(vertices[i][0], vertices[i][1], vertices[i][2]);
-  }
+    {
+      polygon.vertices.push_back(vertices[i]);
+      updateBoundingBox(vertices[i]);
+    }
 
   double x1= vertices[0][0];
   double y1= vertices[0][1];
@@ -388,25 +342,21 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
   normalize(n);
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
-  {
-    trace.error()<< "Warning polygio not added due to identical vertex... "<<std::endl;
-    return;
-  }
+    {
+      trace.error()<< "Warning polygio not added due to identical vertex... "<<std::endl;
+      return;
+    }
 
   polygon.nx= n[0];
   polygon.ny= n[1];
   polygon.nz= n[2];
-
-  polygon.R=aColor.red();
-  polygon.G=aColor.green();
-  polygon.B=aColor.blue();
-  polygon.T=aColor.alpha();
-
- if (myPolygonSetList.size()== 0)
+  polygon.color = getFillColor();
+  
+  if (myPolygonSetList.size()== 0)
     createNewPolygonList("Polygon Root");
 
- //@fixme we force the list creation
- createNewPolygonList("tmp");
+  //@fixme we force the list creation
+  createNewPolygonList("tmp");
 
   (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(polygon);
 }
@@ -415,12 +365,12 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
+DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCenter,
                                                   bool xSurfel, bool ySurfel, bool zSurfel,
                                                   double sizeShiftFactor,
                                                   double sizeFactor, bool isSigned, bool aSign)
 {
-  updateBoundingBox(x, y, z);
+  updateBoundingBox(baseQuadCenter);
   double retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuSurfelPrisms);
   double width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuSurfelPrisms);
 
@@ -433,35 +383,35 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
-  {
-    x1= x-(0.5*sizeFactor); y1= y-(0.5*sizeFactor); z1= z-0.5;
-    x2= x+(0.5*sizeFactor); y2= y-(0.5*sizeFactor); z2= z-0.5;
-    x3= x+(0.5*sizeFactor); y3= y+(0.5*sizeFactor); z3= z-0.5;
-    x4= x-(0.5*sizeFactor); y4= y+(0.5*sizeFactor); z4= z-0.5;
-    y1+=retract; y2+=retract; y3-=retract; y4-=retract;
-    x1+=retract; x2-=retract; x3-=retract; x4+=retract;
-    dx=0.0; dy=0.0; dz=width;
-  }
+    {
+      x1= baseQuadCenter[0]-(0.5*sizeFactor); y1= baseQuadCenter[1]-(0.5*sizeFactor); z1= baseQuadCenter[2]-0.5;
+      x2= baseQuadCenter[0]+(0.5*sizeFactor); y2= baseQuadCenter[1]-(0.5*sizeFactor); z2= baseQuadCenter[2]-0.5;
+      x3= baseQuadCenter[0]+(0.5*sizeFactor); y3= baseQuadCenter[1]+(0.5*sizeFactor); z3= baseQuadCenter[2]-0.5;
+      x4= baseQuadCenter[0]-(0.5*sizeFactor); y4= baseQuadCenter[1]+(0.5*sizeFactor); z4= baseQuadCenter[2]-0.5;
+      y1+=retract; y2+=retract; y3-=retract; y4-=retract;
+      x1+=retract; x2-=retract; x3-=retract; x4+=retract;
+      dx=0.0; dy=0.0; dz=width;
+    }
   else if(ySurfel)
-  {
-    x1= x-(0.5*sizeFactor); y1= y-0.5; z1= z-(0.5*sizeFactor);
-    x2= x-(0.5*sizeFactor); y2= y-0.5; z2= z+(0.5*sizeFactor);
-    x3= x+(0.5*sizeFactor); y3= y-0.5; z3= z+(0.5*sizeFactor);
-    x4= x+(0.5*sizeFactor); y4= y-0.5; z4= z-(0.5*sizeFactor);
-    x1+=retract; x2+=retract; x3-=retract; x4-=retract;
-    z1+=retract; z2-=retract; z3-=retract; z4+=retract;
-    dx=0.0; dy=width; dz=0.0;
-  }
+    {
+      x1= baseQuadCenter[0]-(0.5*sizeFactor); y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-(0.5*sizeFactor);
+      x2= baseQuadCenter[0]-(0.5*sizeFactor); y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+(0.5*sizeFactor);
+      x3= baseQuadCenter[0]+(0.5*sizeFactor); y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+(0.5*sizeFactor);
+      x4= baseQuadCenter[0]+(0.5*sizeFactor); y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-(0.5*sizeFactor);
+      x1+=retract; x2+=retract; x3-=retract; x4-=retract;
+      z1+=retract; z2-=retract; z3-=retract; z4+=retract;
+      dx=0.0; dy=width; dz=0.0;
+    }
   else
-  {
-    x1= x-0.5; y1= y-(0.5*sizeFactor); z1= z-(0.5*sizeFactor);
-    x2= x-0.5; y2= y+(0.5*sizeFactor); z2= z-(0.5*sizeFactor);
-    x3= x-0.5; y3= y+(0.5*sizeFactor); z3= z+(0.5*sizeFactor);
-    x4= x-0.5; y4= y-(0.5*sizeFactor); z4= z+(0.5*sizeFactor);
-    y1+=retract; y2-=retract; y3-=retract; y4+=retract;
-    z1+=retract; z2+=retract; z3-=retract; z4-=retract;
-    dx=width; dy=0.0; dz=0.0;
-  }
+    {
+      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-(0.5*sizeFactor); z1= baseQuadCenter[2]-(0.5*sizeFactor);
+      x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+(0.5*sizeFactor); z2= baseQuadCenter[2]-(0.5*sizeFactor);
+      x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+(0.5*sizeFactor); z3= baseQuadCenter[2]+(0.5*sizeFactor);
+      x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-(0.5*sizeFactor); z4= baseQuadCenter[2]+(0.5*sizeFactor);
+      y1+=retract; y2-=retract; y3-=retract; y4+=retract;
+      z1+=retract; z2+=retract; z3-=retract; z4-=retract;
+      dx=width; dy=0.0; dz=0.0;
+    }
 
   double xcenter= (x1+x2+x3+x4)/4.0;
   double ycenter= (y1+y2+y3+y4)/4.0;
@@ -479,16 +429,16 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
 
   //if cell is oriented positively we retrac the upper face:
   if(isSigned && aSign)
-  {
-    x1= 0.6*x1+0.4*xcenter; x2= 0.6*x2+0.4*xcenter; x3= 0.6*x3+0.4*xcenter; x4= 0.6*x4+0.4*xcenter;
-    y1= 0.6*y1+0.4*ycenter; y2= 0.6*y2+0.4*ycenter; y3= 0.6*y3+0.4*ycenter; y4= 0.6*y4+0.4*ycenter;
-    z1= 0.6*z1+0.4*zcenter; z2= 0.6*z2+0.4*zcenter; z3= 0.6*z3+0.4*zcenter; z4= 0.6*z4+0.4*zcenter;
-  }else if (isSigned)
-  {
-    x5= 0.6*x5+0.4*xcenter; x6= 0.6*x6+0.4*xcenter; x7= 0.6*x7+0.4*xcenter; x8= 0.6*x8+0.4*xcenter;
-    y5= 0.6*y5+0.4*ycenter; y6= 0.6*y6+0.4*ycenter; y7= 0.6*y7+0.4*ycenter; y8= 0.6*y8+0.4*ycenter;
-    z5= 0.6*z5+0.4*zcenter; z6= 0.6*z6+0.4*zcenter; z7= 0.6*z7+0.4*zcenter; z8= 0.6*z8+0.4*zcenter;
-  }
+    {
+      x1= 0.6*x1+0.4*xcenter; x2= 0.6*x2+0.4*xcenter; x3= 0.6*x3+0.4*xcenter; x4= 0.6*x4+0.4*xcenter;
+      y1= 0.6*y1+0.4*ycenter; y2= 0.6*y2+0.4*ycenter; y3= 0.6*y3+0.4*ycenter; y4= 0.6*y4+0.4*ycenter;
+      z1= 0.6*z1+0.4*zcenter; z2= 0.6*z2+0.4*zcenter; z3= 0.6*z3+0.4*zcenter; z4= 0.6*z4+0.4*zcenter;
+    }else if (isSigned)
+    {
+      x5= 0.6*x5+0.4*xcenter; x6= 0.6*x6+0.4*xcenter; x7= 0.6*x7+0.4*xcenter; x8= 0.6*x8+0.4*xcenter;
+      y5= 0.6*y5+0.4*ycenter; y6= 0.6*y6+0.4*ycenter; y7= 0.6*y7+0.4*ycenter; y8= 0.6*y8+0.4*ycenter;
+      z5= 0.6*z5+0.4*zcenter; z6= 0.6*z6+0.4*zcenter; z7= 0.6*z7+0.4*zcenter; z8= 0.6*z8+0.4*zcenter;
+    }
 
   //main up face
   QuadD3D qFaceUp;
@@ -500,25 +450,23 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   qFaceUp.ny= normaleUp[1];
   qFaceUp.nz= normaleUp[2];
 
-  qFaceUp.x1=x1; qFaceUp.y1=y1; qFaceUp.z1= z1;
-  qFaceUp.x2=x2; qFaceUp.y2=y2; qFaceUp.z2= z2;
-  qFaceUp.x3=x3; qFaceUp.y3=y3; qFaceUp.z3= z3;
-  qFaceUp.x4=x4; qFaceUp.y4=y4; qFaceUp.z4= z4;
-
-  qFaceUp.R=myCurrentFillColor.red();qFaceUp.G=myCurrentFillColor.green(); qFaceUp.B=myCurrentFillColor.blue();
-  qFaceUp.T=myCurrentFillColor.alpha();
+  qFaceUp.point1[0]=x1; qFaceUp.point1[1]=y1; qFaceUp.point1[2]= z1;
+  qFaceUp.point2[0]=x2; qFaceUp.point2[1]=y2; qFaceUp.point2[2]= z2;
+  qFaceUp.point3[0]=x3; qFaceUp.point3[1]=y3; qFaceUp.point3[2]= z3;
+  qFaceUp.point4[0]=x4; qFaceUp.point4[1]=y4; qFaceUp.point4[2]= z4;
+  
+  qFaceUp.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFaceUp);
   //main down face
   QuadD3D qFaceDown;
   qFaceDown.nx= -normaleUp[0];
   qFaceDown.ny= -normaleUp[1];
   qFaceDown.nz= -normaleUp[2];
-  qFaceDown.x1=x5; qFaceDown.y1=y5; qFaceDown.z1= z5;
-  qFaceDown.x2=x8; qFaceDown.y2=y8; qFaceDown.z2= z8;
-  qFaceDown.x3=x7; qFaceDown.y3=y7; qFaceDown.z3= z7;
-  qFaceDown.x4=x6; qFaceDown.y4=y6; qFaceDown.z4= z6;
-  qFaceDown.R=myCurrentFillColor.red();qFaceDown.G=myCurrentFillColor.green(); qFaceDown.B=myCurrentFillColor.blue();
-  qFaceDown.T=myCurrentFillColor.alpha();
+  qFaceDown.point1[0]=x5; qFaceDown.point1[1]=y5; qFaceDown.point1[2]= z5;
+  qFaceDown.point2[0]=x8; qFaceDown.point2[1]=y8; qFaceDown.point2[2]= z8;
+  qFaceDown.point3[0]=x7; qFaceDown.point3[1]=y7; qFaceDown.point3[2]= z7;
+  qFaceDown.point4[0]=x6; qFaceDown.point4[1]=y6; qFaceDown.point4[2]= z6;
+  qFaceDown.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFaceDown);
 
   //small face 1
@@ -530,12 +478,11 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   cross(n1, v1,vF1);
   normalize(n1);
   qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
-  qFace1.x1= x1; qFace1.y1 =y1; qFace1.z1=z1;
-  qFace1.x2= x5; qFace1.y2 =y5; qFace1.z2=z5;
-  qFace1.x3= x6; qFace1.y3 =y6; qFace1.z3=z6;
-  qFace1.x4= x2; qFace1.y4 =y2; qFace1.z4=z2;
-  qFace1.R=myCurrentFillColor.red();qFace1.G=myCurrentFillColor.green(); qFace1.B=myCurrentFillColor.blue();
-  qFace1.T=myCurrentFillColor.alpha();
+  qFace1.point1[0]= x1; qFace1.point1[1] =y1; qFace1.point1[2]=z1;
+  qFace1.point2[0]= x5; qFace1.point2[1] =y5; qFace1.point2[2]=z5;
+  qFace1.point3[0]= x6; qFace1.point3[1] =y6; qFace1.point3[2]=z6;
+  qFace1.point4[0]= x2; qFace1.point4[1] =y2; qFace1.point4[2]=z2;
+  qFace1.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFace1);
 
   //small face 2
@@ -547,12 +494,11 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   normalize(n2);
 
   qFace2.nx=n2[0]; qFace2.ny=n2[1]; qFace2.nz=n2[2];
-  qFace2.x1= x2; qFace2.y1 =y2; qFace2.z1=z2;
-  qFace2.x2= x6; qFace2.y2 =y6; qFace2.z2=z6;
-  qFace2.x3= x7; qFace2.y3 =y7; qFace2.z3=z7;
-  qFace2.x4= x3; qFace2.y4 =y3; qFace2.z4=z3;
-  qFace2.R=myCurrentFillColor.red();qFace2.G=myCurrentFillColor.green(); qFace2.B=myCurrentFillColor.blue();
-  qFace2.T=myCurrentFillColor.alpha();
+  qFace2.point1[0]= x2; qFace2.point1[1] =y2; qFace2.point1[2]=z2;
+  qFace2.point2[0]= x6; qFace2.point2[1] =y6; qFace2.point2[2]=z6;
+  qFace2.point3[0]= x7; qFace2.point3[1] =y7; qFace2.point3[2]=z7;
+  qFace2.point4[0]= x3; qFace2.point4[1] =y3; qFace2.point4[2]=z3;
+  qFace2.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFace2);
 
   //small face 3
@@ -563,12 +509,11 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   cross(n3, v3, vF3);
   normalize(n3);
   qFace3.nx=n3[0]; qFace3.ny=n3[1]; qFace3.nz=n3[2];
-  qFace3.x1= x3; qFace3.y1 =y3; qFace3.z1=z3;
-  qFace3.x2= x7; qFace3.y2 =y7; qFace3.z2=z7;
-  qFace3.x3= x8; qFace3.y3 =y8; qFace3.z3=z8;
-  qFace3.x4= x4; qFace3.y4 =y4; qFace3.z4=z4;
-  qFace3.R=myCurrentFillColor.red();qFace3.G=myCurrentFillColor.green(); qFace3.B=myCurrentFillColor.blue();
-  qFace3.T=myCurrentFillColor.alpha();
+  qFace3.point1[0]= x3; qFace3.point1[1] =y3; qFace3.point1[2]=z3;
+  qFace3.point2[0]= x7; qFace3.point2[1] =y7; qFace3.point2[2]=z7;
+  qFace3.point3[0]= x8; qFace3.point3[1] =y8; qFace3.point3[2]=z8;
+  qFace3.point4[0]= x4; qFace3.point4[1] =y4; qFace3.point4[2]=z4;
+  qFace3.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFace3);
 
   //small face 4
@@ -579,19 +524,18 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(double x, double y, double z,
   cross(n4, v4, vF4);
   normalize(n4);
   qFace4.nx=n4[0]; qFace4.ny=n4[1]; qFace4.nz=n4[2];
-  qFace4.x1= x4; qFace4.y1 =y4; qFace4.z1=z4;
-  qFace4.x2= x8; qFace4.y2 =y8; qFace4.z2=z8;
-  qFace4.x3= x5; qFace4.y3 =y5; qFace4.z3=z5;
-  qFace4.x4= x1; qFace4.y4 =y1; qFace4.z4=z1;
-  qFace4.R=myCurrentFillColor.red();qFace4.G=myCurrentFillColor.green(); qFace4.B=myCurrentFillColor.blue();
-  qFace4.T=myCurrentFillColor.alpha();
+  qFace4.point1[0]= x4; qFace4.point1[1] =y4; qFace4.point1[2]=z4;
+  qFace4.point2[0]= x8; qFace4.point2[1] =y8; qFace4.point2[2]=z8;
+  qFace4.point3[0]= x5; qFace4.point3[1] =y5; qFace4.point3[2]=z5;
+  qFace4.point4[0]= x1; qFace4.point4[1] =y1; qFace4.point4[2]=z1;
+  qFace4.color= myCurrentFillColor;
   mySurfelPrismList.push_back(qFace4);
 }
 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addQuad(double x, double y, double z,
+DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &baseQuadCenter,
                                            bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                                            double sizeFactor, bool isSigned, bool aSign)
 {
@@ -601,37 +545,39 @@ DGtal::Display3D< Space ,KSpace >::addQuad(double x, double y, double z,
   ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
-  {
-    x1= x-(0.5*sizeFactor); y1= y-(0.5*sizeFactor); z1= z-0.5;
-    x2= x+(0.5*sizeFactor); y2= y-(0.5*sizeFactor); z2= z-0.5;
-    x3= x+(0.5*sizeFactor); y3= y+(0.5*sizeFactor); z3= z-0.5;
-    x4= x-(0.5*sizeFactor); y4= y+(0.5*sizeFactor); z4= z-0.5;
-    y1+=retract; y2+=retract; y3-=retract; y4-=retract;
-    x1+=retract; x2-=retract; x3-=retract; x4+=retract;
-  }
+    {
+      x1= baseQuadCenter[0]-(0.5*sizeFactor); y1= baseQuadCenter[1]-(0.5*sizeFactor); z1= baseQuadCenter[2]-0.5;
+      x2= baseQuadCenter[0]+(0.5*sizeFactor); y2= baseQuadCenter[1]-(0.5*sizeFactor); z2= baseQuadCenter[2]-0.5;
+      x3= baseQuadCenter[0]+(0.5*sizeFactor); y3= baseQuadCenter[1]+(0.5*sizeFactor); z3= baseQuadCenter[2]-0.5;
+      x4= baseQuadCenter[0]-(0.5*sizeFactor); y4= baseQuadCenter[1]+(0.5*sizeFactor); z4= baseQuadCenter[2]-0.5;
+      y1+=retract; y2+=retract; y3-=retract; y4-=retract;
+      x1+=retract; x2-=retract; x3-=retract; x4+=retract;
+    }
   else if(ySurfel)
-  {
-    x1= x-(0.5*sizeFactor); y1= y-0.5; z1= z-(0.5*sizeFactor);
-    x2= x-(0.5*sizeFactor); y2= y-0.5; z2= z+(0.5*sizeFactor);
-    x3= x+(0.5*sizeFactor); y3= y-0.5; z3= z+(0.5*sizeFactor);
-    x4= x+(0.5*sizeFactor); y4= y-0.5; z4= z-(0.5*sizeFactor);
-    x1+=retract; x2+=retract; x3-=retract; x4-=retract;
-    z1+=retract; z2-=retract; z3-=retract; z4+=retract;
-  }
+    {
+      x1= baseQuadCenter[0]-(0.5*sizeFactor); y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-(0.5*sizeFactor);
+      x2= baseQuadCenter[0]-(0.5*sizeFactor); y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+(0.5*sizeFactor);
+      x3= baseQuadCenter[0]+(0.5*sizeFactor); y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+(0.5*sizeFactor);
+      x4= baseQuadCenter[0]+(0.5*sizeFactor); y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-(0.5*sizeFactor);
+      x1+=retract; x2+=retract; x3-=retract; x4-=retract;
+      z1+=retract; z2-=retract; z3-=retract; z4+=retract;
+    }
   else
-  {
-    x1= x-0.5; y1= y-(0.5*sizeFactor); z1= z-(0.5*sizeFactor);
-    x2= x-0.5; y2= y+(0.5*sizeFactor); z2= z-(0.5*sizeFactor);
-    x3= x-0.5; y3= y+(0.5*sizeFactor); z3= z+(0.5*sizeFactor);
-    x4= x-0.5; y4= y-(0.5*sizeFactor); z4= z+(0.5*sizeFactor);
-    y1+=retract; y2-=retract; y3-=retract; y4+=retract;
-    z1+=retract; z2+=retract; z3-=retract; z4-=retract;
-  }
+    {
+      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-(0.5*sizeFactor); z1= baseQuadCenter[2]-(0.5*sizeFactor);
+      x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+(0.5*sizeFactor); z2= baseQuadCenter[2]-(0.5*sizeFactor);
+      x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+(0.5*sizeFactor); z3= baseQuadCenter[2]+(0.5*sizeFactor);
+      x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-(0.5*sizeFactor); z4= baseQuadCenter[2]+(0.5*sizeFactor);
+      y1+=retract; y2-=retract; y3-=retract; y4+=retract;
+      z1+=retract; z2+=retract; z3-=retract; z4-=retract;
+    }
 
   if(isSigned && ! aSign)
-    this->addQuad(x1,y1,z1,x2,y2,z2, x3,y3,z3, x4,y4,z4 );
+    this->addQuad(RealPoint(x1,y1,z1), RealPoint(x2,y2,z2), 
+		  RealPoint(x3,y3,z3), RealPoint(x4,y4,z4) );
   else
-    this->addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1 );
+    this->addQuad(RealPoint(x4,y4,z4), RealPoint(x3,y3,z3),
+		  RealPoint(x2,y2,z2), RealPoint(x1,y1,z1) );
 }
 
 
@@ -639,25 +585,23 @@ DGtal::Display3D< Space ,KSpace >::addQuad(double x, double y, double z,
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addCone(double x1, double y1, double z1,
-                                           double x2, double y2, double z2,
+DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint &p2,
                                            double width)
 {
-  updateBoundingBox(x1, y1, z1);
-  updateBoundingBox(x2, y2, z2);
+  updateBoundingBox(p1);
+  updateBoundingBox(p2);
 
   int nbPoints = 6; //the number of point on the base of the cone
   double degree = 360 / nbPoints; // the angle between two points
   double radian = degree * PI/180;
-  DGtal::Color color = getFillColor();
   double norm; // norm of the vectors
 
   // A(x1,y1,z1) and B(x2,y2,z2) vector AB
   double xab, yab, zab;
 
-  xab = x2-x1;
-  yab = y2-y1;
-  zab = z2-z1;
+  xab = p2[0]-p1[0];
+  yab = p2[1]-p1[1];
+  zab = p2[2]-p1[2];
 
   norm = sqrt( xab*xab + yab*yab + zab*zab);
   assert (norm > 0);
@@ -670,16 +614,16 @@ DGtal::Display3D< Space ,KSpace >::addCone(double x1, double y1, double z1,
   double ym = 0;
   double zm = 0;
 
-  while (x1 == xm || x2 ==xm) xm++;
-  while (y1 == ym || y2 ==ym) ym++;
-  while (z1 == zm || z2 ==zm) zm++;
+  while (p1[0] == xm || p2[0] ==xm) xm++;
+  while (p1[1] == ym || p2[1] ==ym) ym++;
+  while (p1[2] == zm || p2[2] ==zm) zm++;
 
   //vector AM
   double xam, yam, zam;
 
-  xam = xm-x1;
-  yam = ym-y1;
-  zam = zm-z1;
+  xam = xm-p1[0];
+  yam = ym-p1[1];
+  zam = zm-p1[2];
 
   norm = sqrt( xam*xam + yam*yam + zam*zam);
   assert (norm > 0);
@@ -704,9 +648,9 @@ DGtal::Display3D< Space ,KSpace >::addCone(double x1, double y1, double z1,
   //the first point of the base
   double xf, yf, zf;
 
-  xf = x2 + width * xn;
-  yf = y2 + width * yn;
-  zf = z2 + width * zn;
+  xf = p2[0] + width * xn;
+  yf = p2[1] + width * yn;
+  zf = p2[2] + width * zn;
 
   //two following points of the base
   double xb1 = xf;
@@ -719,74 +663,72 @@ DGtal::Display3D< Space ,KSpace >::addCone(double x1, double y1, double z1,
 
   createNewTriangleList("Cone");
   for (int i =0; i < nbPoints-1; i ++)
-  {
-    // r = AB^n
-    xr = yab*zn - yn*zab;
-    yr = xn*zab - xab*zn;
-    zr = xab*yn - xn*yab;
+    {
+      // r = AB^n
+      xr = yab*zn - yn*zab;
+      yr = xn*zab - xab*zn;
+      zr = xab*yn - xn*yab;
 
-    //rotate n by degree
-    xn = cos(radian)*xn + sin(radian)*xr;
-    yn = cos(radian)*yn + sin(radian)*yr;
-    zn = cos(radian)*zn + sin(radian)*zr;
+      //rotate n by degree
+      xn = cos(radian)*xn + sin(radian)*xr;
+      yn = cos(radian)*yn + sin(radian)*yr;
+      zn = cos(radian)*zn + sin(radian)*zr;
 
-    //divide n by its norm
-    norm = sqrt( xn*xn + yn*yn + zn*zn);
-    assert (norm > 0);
-    xn = xn / norm;
-    yn = yn / norm;
-    zn = zn / norm;
+      //divide n by its norm
+      norm = sqrt( xn*xn + yn*yn + zn*zn);
+      assert (norm > 0);
+      xn = xn / norm;
+      yn = yn / norm;
+      zn = zn / norm;
 
-    // calculate one point with the normal vector at a distance width
-    xb2 = x2 + width * xn;
-    yb2 = y2 + width * yn;
-    zb2 = z2 + width * zn;
+      // calculate one point with the normal vector at a distance width
+      xb2 = p2[0] + width * xn;
+      yb2 = p2[1] + width * yn;
+      zb2 = p2[2] + width * zn;
 
-    //adding the triangles associated with this point
-    addTriangle(x1, y1, z1,
-                xb1, yb1, zb1,
-                xb2, yb2, zb2);
-    addTriangle(x2, y2, z2,
-                xb1, yb1, zb1,
-                xb2, yb2, zb2);
+      //adding the triangles associated with this point
+      addTriangle(p1,
+		  RealPoint(xb1, yb1, zb1),
+		  RealPoint(xb2, yb2, zb2));
+      addTriangle(p2,
+		  RealPoint(xb1, yb1, zb1),
+		  RealPoint(xb2, yb2, zb2));
 
-    xb1 = xb2;
-    yb1 = yb2;
-    zb1 = zb2;
-  }
+      xb1 = xb2;
+      yb1 = yb2;
+      zb1 = zb2;
+    }
 
   //Last part to close the cone
-  addTriangle(x1, y1, z1,
-              xb1, yb1,zb1,
-              xf, yf, zf);
-  addTriangle(x2, y2, z2,
-              xb1, yb1, zb1,
-              xf, yf, zf);
+  addTriangle(p1,
+              RealPoint(xb1, yb1,zb1),
+              RealPoint(xf, yf, zf));
+  addTriangle(p2,
+              RealPoint(xb1, yb1, zb1),
+              RealPoint(xf, yf, zf));
 }
 
 // add multiple triangular faces which form a hexagonal-based cylinder
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addCylinder(const double x1, const double y1, const double z1,
-                                               const double x2, const double y2, const double z2,
+DGtal::Display3D< Space ,KSpace >::addCylinder(const RealPoint &p1, const RealPoint &p2,
                                                const double width)
 {
-  updateBoundingBox(x1, y1, z1);
-  updateBoundingBox(x2, y2, z2);
+  updateBoundingBox(p1);
+  updateBoundingBox(p2);
 
   int nbPoints = 6; //the number of point on the base of the cone
   double degree = 360 / nbPoints; // the angle between two points
   double radian = degree * PI/180;
-  DGtal::Color color = getFillColor();
   double norm; // norm of the vectors
 
-  // A(x1,y1,z1) and B(x2,y2,z2) vector AB
+  // A(p1[0],p1[1],p1[2]) and B(p2[0],p2[1],p2[2]) vector AB
   double xab, yab, zab;
 
-  xab = x2-x1;
-  yab = y2-y1;
-  zab = z2-z1;
+  xab = p2[0]-p1[0];
+  yab = p2[1]-p1[1];
+  zab = p2[2]-p1[2];
 
   norm = sqrt( xab*xab + yab*yab + zab*zab);
   assert (norm > 0);
@@ -799,16 +741,16 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const double x1, const double y1,
   double ym = 0;
   double zm = 0;
 
-  while (x1 == xm || x2 ==xm) xm++;
-  while (y1 == ym || y2 ==ym) ym++;
-  while (z1 == zm || z2 ==zm) zm++;
+  while (p1[0] == xm || p2[0] ==xm) xm++;
+  while (p1[1] == ym || p2[1] ==ym) ym++;
+  while (p1[2] == zm || p2[2] ==zm) zm++;
 
   //vector AM
   double xam, yam, zam;
 
-  xam = xm-x1;
-  yam = ym-y1;
-  zam = zm-z1;
+  xam = xm-p1[0];
+  yam = ym-p1[1];
+  zam = zm-p1[2];
 
   norm = sqrt( xam*xam + yam*yam + zam*zam);
   assert (norm > 0);
@@ -835,13 +777,13 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const double x1, const double y1,
   double xbf, ybf, zbf;
   double xaf, yaf, zaf;
 
-  xbf = x2 + width * xn;
-  ybf = y2 + width * yn;
-  zbf = z2 + width * zn;
+  xbf = p2[0] + width * xn;
+  ybf = p2[1] + width * yn;
+  zbf = p2[2] + width * zn;
 
-  xaf = x1 + width * xn;
-  yaf = y1 + width * yn;
-  zaf = z1 + width * zn;
+  xaf = p1[0] + width * xn;
+  yaf = p1[1] + width * yn;
+  zaf = p1[2] + width * zn;
 
   //two following points of the bases
   double xb1 = xbf;
@@ -860,66 +802,66 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const double x1, const double y1,
   createNewTriangleList("Cylinder");
   createNewQuadList("Cylinder");
   for (int i =0; i < nbPoints-1; i ++)
-  {
-    // r = AB^n
-    xr = yab*zn - yn*zab;
-    yr = xn*zab - xab*zn;
-    zr = xab*yn - xn*yab;
+    {
+      // r = AB^n
+      xr = yab*zn - yn*zab;
+      yr = xn*zab - xab*zn;
+      zr = xab*yn - xn*yab;
 
-    //rotate n by degree
-    xn = cos(radian)*xn + sin(radian)*xr;
-    yn = cos(radian)*yn + sin(radian)*yr;
-    zn = cos(radian)*zn + sin(radian)*zr;
+      //rotate n by degree
+      xn = cos(radian)*xn + sin(radian)*xr;
+      yn = cos(radian)*yn + sin(radian)*yr;
+      zn = cos(radian)*zn + sin(radian)*zr;
 
-    //divide n by its norm (used when a bug appear)
-    norm = sqrt( xn*xn + yn*yn + zn*zn);
-    assert (norm > 0);
-    xn = xn / norm;
-    yn = yn / norm;
-    zn = zn / norm;
+      //divide n by its norm (used when a bug appear)
+      norm = sqrt( xn*xn + yn*yn + zn*zn);
+      assert (norm > 0);
+      xn = xn / norm;
+      yn = yn / norm;
+      zn = zn / norm;
 
-    // calculate one point with the normal vector at a distance width
-    xb2 = x2 + width * xn;
-    yb2 = y2 + width * yn;
-    zb2 = z2 + width * zn;
+      // calculate one point with the normal vector at a distance width
+      xb2 = p2[0] + width * xn;
+      yb2 = p2[1] + width * yn;
+      zb2 = p2[2] + width * zn;
 
-    xa2 = x1 + width * xn;
-    ya2 = y1 + width * yn;
-    za2 = z1 + width * zn;
+      xa2 = p1[0] + width * xn;
+      ya2 = p1[1] + width * yn;
+      za2 = p1[2] + width * zn;
 
-    //adding the triangles and the quad associated with those points
-    addTriangle(x1, y1, z1,
-                xa1, ya1, za1,
-                xa2, ya2, za2);
-    addTriangle(x2, y2, z2,
-                xb1, yb1, zb1,
-                xb2, yb2, zb2);
-    addQuad(xb1, yb1, zb1,
-            xb2, yb2, zb2,
-            xa2, ya2, za2,
-            xa1, ya1, za1);
+      //adding the triangles and the quad associated with those points
+      addTriangle(p1,
+		  RealPoint(xa1, ya1, za1),
+		  RealPoint(xa2, ya2, za2));
+      addTriangle(p2,
+		  RealPoint(xb1, yb1, zb1),
+		  RealPoint(xb2, yb2, zb2));
+      addQuad(RealPoint(xb1, yb1, zb1),
+	      RealPoint(xb2, yb2, zb2),
+	      RealPoint(xa2, ya2, za2),
+	      RealPoint(xa1, ya1, za1));
 
-    xb1 = xb2;
-    yb1 = yb2;
-    zb1 = zb2;
+      xb1 = xb2;
+      yb1 = yb2;
+      zb1 = zb2;
 
-    xa1 = xa2;
-    ya1 = ya2;
-    za1 = za2;
+      xa1 = xa2;
+      ya1 = ya2;
+      za1 = za2;
 
-  }
+    }
 
   //Last part to close the cylinder
-  addTriangle(x1, y1, z1,
-              xa1, ya1, za1,
-              xaf, yaf, zaf);
-  addTriangle(x2, y2, z2,
-              xb1, yb1, zb1,
-              xbf, ybf, zbf);
-  addQuad(xb1, yb1, zb1,
-          xbf, ybf, zbf,
-          xaf, yaf, zaf,
-          xa1, ya1, za1);
+  addTriangle(p1,
+	      RealPoint(xa1, ya1, za1),
+	      RealPoint(xaf, yaf, zaf));
+  addTriangle(p2,
+	      RealPoint(xb1, yb1, zb1),
+	      RealPoint(xbf, ybf, zbf));
+  addQuad(RealPoint(xb1, yb1, zb1),
+	  RealPoint(xbf, ybf, zbf),
+	  RealPoint(xaf, yaf, zaf),
+	  RealPoint(xa1, ya1, za1));
 }
 
 
@@ -933,98 +875,106 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
   cp.a=a; cp.b=b; cp.c=c; cp.d=d;
   myClippingPlaneList.push_back(cp);
   if(drawPlane)
-  {
-    double x1,x2,x3,x4;
-    double y1,y2,y3,y4;
-    double z1,z2,z3,z4;
-    double norm = sqrt(a*a+b*b+c*c);
-    double dec=0.1;
-    // Z dominant projection of the upper face
-    if(abs(c)>=abs(b) && abs(c) >= abs(a))
     {
-      x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
-      z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
-      x2= myBoundingPtLow[0]+a*dec/norm; y2= myBoundingPtUp[1]+b*dec/norm;
-      z2= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtUp[1])/c;
-      x3= myBoundingPtLow[0]+a*dec/norm; y3= myBoundingPtLow[1]+b*dec/norm;
-      z3= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtLow[1])/c;
-      x4= myBoundingPtUp[0]+a*dec/norm; y4= myBoundingPtLow[1]+b*dec/norm;
-      z4= c*dec/norm+(-d-a*myBoundingPtUp[0]-b*myBoundingPtLow[1])/c;
-      if(c>0)
-      {
-        addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1 );
-      }else
-      {
-        addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4);
-      }
-    }// Y dominant projection of the upper face
-    else if(abs(b)>=abs(c) && abs(b) >= abs(a))
-    {
-      x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
-      y1= b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
-      x2= myBoundingPtUp[0]+a*dec/norm; z2= myBoundingPtLow[2]+c*dec/norm;
-      y2= b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtLow[2])/b;
-      x3= myBoundingPtLow[0]+a*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
-      y3= b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtLow[2])/b;
-      x4= myBoundingPtLow[0]+a*dec/norm; z4= myBoundingPtUp[2]+c*dec/norm;
-      y4= b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtUp[2])/b;
-      if(b>0)
-      {
-        addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1);
-      }else
-      {
-        addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4);
-      }
-    }// X dominant projection of the upper face
-    else if(abs(a)>=abs(c) && abs(a) >= abs(b))
-    {
-      y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
-      x1= a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;
-      y2= myBoundingPtLow[1]+b*dec/norm; z2= myBoundingPtUp[2]+c*dec/norm;
-      x2= a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtUp[2])/a;
-      y3= myBoundingPtLow[1]+b*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
-      x3= a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtLow[2])/a;
-      y4= myBoundingPtUp[1]+b*dec/norm; z4= myBoundingPtLow[2]+c*dec/norm;
-      x4= a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtLow[2])/a;
+      double x1,x2,x3,x4;
+      double y1,y2,y3,y4;
+      double z1,z2,z3,z4;
+      double norm = sqrt(a*a+b*b+c*c);
+      double dec=0.1;
+      // Z dominant projection of the upper face
+      if(abs(c)>=abs(b) && abs(c) >= abs(a))
+	{
+	  x1= myBoundingPtUp[0]+a*dec/norm; y1= myBoundingPtUp[1]+b*dec/norm;
+	  z1 = c*dec/norm +(-d-a*myBoundingPtUp[0]-b*myBoundingPtUp[1])/c;
+	  x2= myBoundingPtLow[0]+a*dec/norm; y2= myBoundingPtUp[1]+b*dec/norm;
+	  z2= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtUp[1])/c;
+	  x3= myBoundingPtLow[0]+a*dec/norm; y3= myBoundingPtLow[1]+b*dec/norm;
+	  z3= c*dec/norm+(-d-a*myBoundingPtLow[0]-b*myBoundingPtLow[1])/c;
+	  x4= myBoundingPtUp[0]+a*dec/norm; y4= myBoundingPtLow[1]+b*dec/norm;
+	  z4= c*dec/norm+(-d-a*myBoundingPtUp[0]-b*myBoundingPtLow[1])/c;
+	  if(c>0)
+	    {
+	      addQuad(RealPoint(x4,y4,z4),RealPoint(x3,y3,z3),
+		      RealPoint(x2,y2,z2),RealPoint(x1,y1,z1) );
+	    }else
+	    {
+	      addQuad(RealPoint(x1,y1,z1), RealPoint( x2,y2,z2), 
+		      RealPoint(x3,y3,z3), RealPoint(x4,y4,z4));
+	    }
+	}// Y dominant projection of the upper face
+      else if(abs(b)>=abs(c) && abs(b) >= abs(a))
+	{
+	  x1= myBoundingPtUp[0]+a*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+	  y1= b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtUp[2])/b;
+	  x2= myBoundingPtUp[0]+a*dec/norm; z2= myBoundingPtLow[2]+c*dec/norm;
+	  y2= b*dec/norm +(-d-a*myBoundingPtUp[0]-c*myBoundingPtLow[2])/b;
+	  x3= myBoundingPtLow[0]+a*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+	  y3= b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtLow[2])/b;
+	  x4= myBoundingPtLow[0]+a*dec/norm; z4= myBoundingPtUp[2]+c*dec/norm;
+	  y4= b*dec/norm +(-d-a*myBoundingPtLow[0]-c*myBoundingPtUp[2])/b;
+	  if(b>0)
+	    {
+	      addQuad(RealPoint(x4,y4,z4),RealPoint(x3, y3,z3),
+		      RealPoint(x2,y2,z2), RealPoint(x1,y1,z1));
+	    }else
+	    {
+	      addQuad(RealPoint(x1,y1,z1), RealPoint(x2,y2,z2),
+		      RealPoint(x3,y3,z3), RealPoint(x4,y4,z4));
+	    }
+	}// X dominant projection of the upper face
+      else if(abs(a)>=abs(c) && abs(a) >= abs(b))
+	{
+	  y1= myBoundingPtUp[1]+b*dec/norm; z1= myBoundingPtUp[2]+c*dec/norm;
+	  x1= a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtUp[2])/a;
+	  y2= myBoundingPtLow[1]+b*dec/norm; z2= myBoundingPtUp[2]+c*dec/norm;
+	  x2= a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtUp[2])/a;
+	  y3= myBoundingPtLow[1]+b*dec/norm; z3= myBoundingPtLow[2]+c*dec/norm;
+	  x3= a*dec/norm +(-d-b*myBoundingPtLow[1]-c*myBoundingPtLow[2])/a;
+	  y4= myBoundingPtUp[1]+b*dec/norm; z4= myBoundingPtLow[2]+c*dec/norm;
+	  x4= a*dec/norm +(-d-b*myBoundingPtUp[1]-c*myBoundingPtLow[2])/a;
 
-      if(a>0)
-      {
+	  if(a>0)
+	    {
 
-        addQuad(x4,y4,z4,x3,y3,z3, x2,y2,z2, x1,y1,z1);
-      }else
-      {
-        addQuad( x1,y1,z1, x2,y2,z2, x3,y3,z3,x4,y4,z4);
-      }
+	      addQuad(RealPoint(x4,y4,z4),
+		      RealPoint(x3,y3,z3),
+		      RealPoint(x2,y2,z2),
+		      RealPoint(x1,y1,z1));
+	    }else
+	    {
+	      addQuad( RealPoint(x1,y1,z1), RealPoint(x2,y2,z2), 
+		       RealPoint(x3,y3,z3),RealPoint(x4,y4,z4));
+	    }
+	}
     }
-  }
 }
 
 
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::updateBoundingBox(double x, double y, double z)
+DGtal::Display3D< Space ,KSpace >::updateBoundingBox(const RealPoint &p)
 {
   if (myBoundingPtEmptyTag)
-  {
-    myBoundingPtLow[0]= x;
-    myBoundingPtLow[1]= y;
-    myBoundingPtLow[2]= z;
-    myBoundingPtUp[0]= x;
-    myBoundingPtUp[1]= y;
-    myBoundingPtUp[2]= z;
-    myBoundingPtEmptyTag = false;
-  }
+    {
+      myBoundingPtLow[0]= p[0];
+      myBoundingPtLow[1]= p[1];
+      myBoundingPtLow[2]= p[2];
+      myBoundingPtUp[0]= p[0];
+      myBoundingPtUp[1]= p[1];
+      myBoundingPtUp[2]= p[2];
+      myBoundingPtEmptyTag = false;
+    }
   else
-  {
-    if(x <myBoundingPtLow[0]) myBoundingPtLow[0]= x;
-    if(y <myBoundingPtLow[1]) myBoundingPtLow[1]= y;
-    if(z <myBoundingPtLow[2]) myBoundingPtLow[2]= z;
+    {
+      if(p[0] <myBoundingPtLow[0]) myBoundingPtLow[0]= p[0];
+      if(p[1] <myBoundingPtLow[1]) myBoundingPtLow[1]= p[1];
+      if(p[2] <myBoundingPtLow[2]) myBoundingPtLow[2]= p[2];
 
-    if(x >myBoundingPtUp[0]) myBoundingPtUp[0]= x;
-    if(y >myBoundingPtUp[1]) myBoundingPtUp[1]= y;
-    if(z >myBoundingPtUp[2]) myBoundingPtUp[2]= z;
-  }
+      if(p[0] >myBoundingPtUp[0]) myBoundingPtUp[0]= p[0];
+      if(p[1] >myBoundingPtUp[1]) myBoundingPtUp[1]= p[1];
+      if(p[2] >myBoundingPtUp[2]) myBoundingPtUp[2]= p[2];
+    }
 }
 
 
@@ -1074,110 +1024,109 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
 
   // Export of SurfelPrism lists (generated from KhalimskyCell or SignedKhalimskyCell (through addSurfelPrism))
   for (unsigned int i=0; i< mySurfelPrismList.size(); i++)
-  {
-    QuadD3D quad = mySurfelPrismList.at(i);
-    BallD3D p1, p2, p3, p4;
-    p1.x=quad.x1; p1.y=quad.y1; p1.z=quad.z1;
-    p2.x=quad.x2; p2.y=quad.y2; p2.z=quad.z2;
-    p3.x=quad.x3; p3.y=quad.y3; p3.z=quad.z3;
-    p4.x=quad.x4; p4.y=quad.y4; p4.z=quad.z4;
-    aMesh.addVertex(p1);
-    aMesh.addVertex(p2);
-    aMesh.addVertex(p3);
-    aMesh.addVertex(p4);
-    aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+2,vertexIndex+3,
-                      DGtal::Color(quad.R, quad.G, quad.B, quad.T));
-    vertexIndex+=4;
-  }
+    {
+      QuadD3D quad = mySurfelPrismList.at(i);
+      BallD3D p1, p2, p3, p4;
+      p1.center=quad.point1;
+      p2.center=quad.point2;
+      p3.center=quad.point3;
+      p4.center=quad.point4;
+      aMesh.addVertex(p1);
+      aMesh.addVertex(p2);
+      aMesh.addVertex(p3);
+      aMesh.addVertex(p4);
+      aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+2,vertexIndex+3,
+			quad.color);
+      vertexIndex+=4;
+    }
 
   // Export QuadList
   for (typename std::vector<std::vector<QuadD3D> >::const_iterator it = myQuadSetList.begin(); it != myQuadSetList.end(); it++)
-  {
-    for (typename std::vector<QuadD3D>::const_iterator aQuad = it->begin(); aQuad!=it->end();aQuad ++)
     {
-      BallD3D p1, p2, p3, p4;
-      p1.x=aQuad->x1; p1.y=aQuad->y1; p1.z=aQuad->z1;
-      p2.x=aQuad->x2; p2.y=aQuad->y2; p2.z=aQuad->z2;
-      p3.x=aQuad->x3; p3.y=aQuad->y3; p3.z=aQuad->z3;
-      p4.x=aQuad->x4; p4.y=aQuad->y4; p4.z=aQuad->z4;
-      aMesh.addVertex(p4);
-      aMesh.addVertex(p3);
-      aMesh.addVertex(p2);
-      aMesh.addVertex(p1);
-      aMesh.addQuadFace(vertexIndex,vertexIndex+1, vertexIndex+2, vertexIndex+3,
-                        DGtal::Color(aQuad->R, aQuad->G, aQuad->B, aQuad->T));
-      vertexIndex+=4;
+      for (typename std::vector<QuadD3D>::const_iterator aQuad = it->begin(); aQuad!=it->end();aQuad ++)
+	{
+	  BallD3D p1, p2, p3, p4;
+	  p1.center=aQuad->point1;
+	  p2.center=aQuad->point2;
+	  p3.center=aQuad->point3;
+	  p4.center=aQuad->point4;
+	  aMesh.addVertex(p4);
+	  aMesh.addVertex(p3);
+	  aMesh.addVertex(p2);
+	  aMesh.addVertex(p1);
+	  aMesh.addQuadFace(vertexIndex,vertexIndex+1, vertexIndex+2, vertexIndex+3,
+			    aQuad->color);
+	  vertexIndex+=4;
+	}
     }
-  }
 
   // Export the mesh from TriangleList
   for ( typename std::vector<std::vector<TriangleD3D> >::const_iterator it =myTriangleSetList.begin(); it != myTriangleSetList.end(); it++)
-  {
-    for (typename std::vector<TriangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
     {
-      BallD3D p1, p2, p3;
-      p1.x = aTriangle->x1; p1.y = aTriangle->y1; p1.z = aTriangle->z1;
-      p2.x = aTriangle->x2; p2.y = aTriangle->y2; p2.z = aTriangle->z2;
-      p3.x = aTriangle->x3; p3.y = aTriangle->y3; p3.z = aTriangle->z3;
-      aMesh.addVertex(p1);
-      aMesh.addVertex(p2);
-      aMesh.addVertex(p3);
-      aMesh.addTriangularFace(vertexIndex, vertexIndex+1, vertexIndex+2,
-                              DGtal::Color(aTriangle->R, aTriangle->G,
-                                           aTriangle->B, aTriangle->T));
-      vertexIndex+=3;
+      for (typename std::vector<TriangleD3D>::const_iterator aTriangle = it->begin(); aTriangle!=it->end();aTriangle ++)
+	{
+	  BallD3D p1, p2, p3;
+	  p1.center=aTriangle->point1;
+	  p2.center=aTriangle->point2;
+	  p3.center=aTriangle->point3;
+	  aMesh.addVertex(p1);
+	  aMesh.addVertex(p2);
+	  aMesh.addVertex(p3);
+	  aMesh.addTriangularFace(vertexIndex, vertexIndex+1, vertexIndex+2,
+				  aTriangle->color);
+	  vertexIndex+=3;
+	}
     }
-  }
 
   // Export of cubeSet (generated from addCube)
   for(unsigned int j=0; j<myCubeSetList.size(); j++)
-  {
-    for (unsigned int i=0; i< myCubeSetList.at(j).size(); i++)
     {
-      CubeD3D cube = myCubeSetList.at(j).at(i);
-      BallD3D p1, p2, p3, p4, p5, p6, p7, p8;
-      double width= cube.width;
+      for (unsigned int i=0; i< myCubeSetList.at(j).size(); i++)
+	{
+	  CubeD3D cube = myCubeSetList.at(j).at(i);
+	  BallD3D p1, p2, p3, p4, p5, p6, p7, p8;
+	  double width= cube.width;
+	  	  
+	  p1.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]+width);
+	  p2.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]+width);
+	  p3.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]+width);
+	  p4.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]+width);
+	  p5.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]-width);
+	  p6.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]-width);
+	  p7.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]-width);
+	  p8.center = RealPoint(cube.center[0]-width, cube.center[1]-width, cube.center[2]-width);
 
-      p1.x = (cube.x-width); p1.y = (cube.y+width); p1.z = (cube.z+width);
-      p2.x = (cube.x+width); p2.y = (cube.y+width); p2.z = (cube.z+width);
-      p3.x = (cube.x+width); p3.y = (cube.y-width); p3.z = (cube.z+width);
-      p4.x = (cube.x-width); p4.y = (cube.y-width); p4.z = (cube.z+width);
-      p5.x = (cube.x-width); p5.y = (cube.y+width); p5.z = (cube.z-width);
-      p6.x = (cube.x+width); p6.y = (cube.y+width); p6.z = (cube.z-width);
-      p7.x = (cube.x+width); p7.y = (cube.y-width); p7.z = (cube.z-width);
-      p8.x = (cube.x-width); p8.y = (cube.y-width); p8.z = (cube.z-width);
+	  aMesh.addVertex(p1);
+	  aMesh.addVertex(p2);
+	  aMesh.addVertex(p3);
+	  aMesh.addVertex(p4);
+	  aMesh.addVertex(p5);
+	  aMesh.addVertex(p6);
+	  aMesh.addVertex(p7);
+	  aMesh.addVertex(p8);
 
-      aMesh.addVertex(p1);
-      aMesh.addVertex(p2);
-      aMesh.addVertex(p3);
-      aMesh.addVertex(p4);
-      aMesh.addVertex(p5);
-      aMesh.addVertex(p6);
-      aMesh.addVertex(p7);
-      aMesh.addVertex(p8);
+	  //z+
+	  aMesh.addQuadFace(vertexIndex, vertexIndex+3, vertexIndex+2, vertexIndex+1,
+			    cube.color);
+	  //z-
+	  aMesh.addQuadFace(vertexIndex+4, vertexIndex+5, vertexIndex+6, vertexIndex+7,
+			    cube.color);
+	  //y+
+	  aMesh.addQuadFace(vertexIndex+1, vertexIndex+2, vertexIndex+6, vertexIndex+5,
+			    cube.color);
+	  //y-
+	  aMesh.addQuadFace(vertexIndex, vertexIndex+4, vertexIndex+7, vertexIndex+3,
+			    cube.color);
+	  //x+
+	  aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+5, vertexIndex+4,
+			    cube.color);
+	  //x-
+	  aMesh.addQuadFace(vertexIndex+3, vertexIndex+7, vertexIndex+6, vertexIndex+2,
+			    cube.color);
 
-      //z+
-      aMesh.addQuadFace(vertexIndex, vertexIndex+3, vertexIndex+2, vertexIndex+1,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
-      //z-
-      aMesh.addQuadFace(vertexIndex+4, vertexIndex+5, vertexIndex+6, vertexIndex+7,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
-      //y+
-      aMesh.addQuadFace(vertexIndex+1, vertexIndex+2, vertexIndex+6, vertexIndex+5,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
-      //y-
-      aMesh.addQuadFace(vertexIndex, vertexIndex+4, vertexIndex+7, vertexIndex+3,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
-      //x+
-      aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+5, vertexIndex+4,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
-      //x-
-      aMesh.addQuadFace(vertexIndex+3, vertexIndex+7, vertexIndex+6, vertexIndex+2,
-                        DGtal::Color(cube.R, cube.G, cube.B, cube.T));
-
-      vertexIndex+=8;
+	  vertexIndex+=8;
+	}
     }
-  }
 }
 
 
