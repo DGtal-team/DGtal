@@ -85,7 +85,7 @@ namespace DGtal {
           viewer << *it;     
      }     
    }
-   viewer << Viewer3D::updateDisplay;
+   viewer << Viewer3D<>::updateDisplay;
    @endcode
 
    By executing the following command line from the build directory of DGtalTools:

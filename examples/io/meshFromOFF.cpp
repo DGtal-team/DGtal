@@ -29,17 +29,20 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/base/Common.h"
-#include "DGtal/io/Color.h"
-#include "ConfigExamples.h"
+
 //! [includeImportOFF]
+//!
+
+
 #include "DGtal/io/readers/MeshReader.h"
 
 #include <QtGui/qapplication.h>
 #include "DGtal/io/Display3D.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 //! [includeImportOFF]
-
+#include "DGtal/base/Common.h"
+#include "DGtal/io/Color.h"
+#include "ConfigExamples.h"
 ///////////////////////////////////////////////////////////////////////////////
 using namespace std;
 using namespace DGtal;
@@ -48,19 +51,19 @@ using namespace DGtal;
 int main( int argc, char** argv )
 {    
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();     
   //! [ImportOFFfile]
   std::string inputFilename = examplesPath + "samples/tref.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
-  Mesh<Display3D::pointD3D> anImportedMesh;
+  Mesh<Viewer3D<>::RealPoint> anImportedMesh;
   anImportedMesh << inputFilename;
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
   //! [displayOFFfile]
   viewer.setLineColor(DGtal::Color(150,0,0,254));
   viewer << anImportedMesh;
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   //! [displayOFFfile]
   return application.exec();
 }

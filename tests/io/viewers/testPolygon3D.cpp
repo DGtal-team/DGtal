@@ -15,14 +15,12 @@
  **/
 
 /**
- * @file viewer3D-1-points.cpp
- * @ingroup examples/3dViewer
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @file test3dViewer.cpp
+ * @ingroup Tests
+ * @author David Coeurjolly
+ * @date 2013/09/06
  *
- * @date 2011/19/03
- *
- * Simple example of class Viewer3D.
+ * Functions for testing class Viewer3D.
  *
  * This file is part of the DGtal library.
  */
@@ -32,14 +30,36 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
-
+#include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class Viewer3D.
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testViewer3D()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;  
+  trace.beginBlock ( "Testing block ..." );
+  nbok += true ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -48,20 +68,37 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
-
- Point p1( 0, 0, 0 );
- Point p2( 5, 5 ,5 );
- Point p3( 2, 3, 4 );
- Domain domain( p1, p2 );
-
- typedef Viewer3D<> MyViewer;
- MyViewer viewer;
+ Viewer3D<> viewer;
+ viewer.setWindowTitle("simpleViewer");
  viewer.show();
- viewer << domain;
- viewer << p1 << p2 << p3;
+ 
+ std::vector<Z3i::RealPoint> polyg1;
+ 
+ polyg1.push_back(Z3i::RealPoint(0,0,0));
+ polyg1.push_back(Z3i::RealPoint(0,1,0));
+ polyg1.push_back(Z3i::RealPoint(1,1,0));
+ 
+ viewer.addPolygon(polyg1);
 
- viewer<< MyViewer::updateDisplay;
- return application.exec();
+ viewer.createNewPolygonList("hop");
+
+ std::vector<Z3i::RealPoint> polyg2;
+ 
+ polyg2.push_back(Z3i::RealPoint(0,10,0));
+ polyg2.push_back(Z3i::RealPoint(0,11,0));
+ polyg2.push_back(Z3i::RealPoint(11,11,0));
+ 
+ viewer.addPolygon(polyg2);
+
+ viewer << Viewer3D<>::updateDisplay;
+
+ bool res = application.exec();
+ trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+ trace.endBlock();
+ return res ? 0 : 1;
+
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
