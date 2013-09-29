@@ -68,8 +68,9 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 - \ref moduleVolumetric (David Coeurjolly)
 
 - Analysis of two-dimensional structures --- coming soon ---
- - \ref modulePlaneRecognition (Jacques-Olivier Lachaud) 
- - \ref moduleNaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
+ - \ref modulePlaneRecognition (Jacques-Olivier Lachaud)
+  - \ref moduleCOBANaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
+  - Chord algorithm for plane recognition (Jacques-Olivier Lachaud, Yan Gerard, Isabelle Debled-Rennesson, Paul Zimmermann)
 
 @b Package @b Concepts @b Overview
 
