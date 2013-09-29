@@ -190,14 +190,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
         while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
         {
-          double d2 = ( itClip->a * s_it->x) + (itClip->b * s_it->y) + ( itClip->c * s_it->z ) + itClip->d;
+          double d2 = ( itClip->a * (*s_it)[0]) + (itClip->b * (*s_it)[1]) + ( itClip->c * (*s_it)[2] ) + itClip->d;
           notCut = ( d2 >= 0);
 
           itClip ++;
         }
         if (notCut)
         {
-          tmpStream << "v " << s_it->x << " " << s_it->y << " " << s_it->z << std::endl;
+          tmpStream << "v " << (*s_it)[0] << " " << (*s_it)[1] << " " << (*s_it)[2] << std::endl;
           tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
         }
       }
@@ -219,10 +219,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << tmpStream.str();
 
         typename std::vector< typename Board3D<Space, KSpace>::BallD3D>::const_iterator itBegin = it->begin();
-        Re = itBegin->R /255.0 ;
-        Gr = itBegin->G /255.0;
-        Bl = itBegin->B /255.0;
-        Tr = itBegin->T /255.0;
+        Re = itBegin->color.red() /255.0 ;
+        Gr = itBegin->color.green() /255.0;
+        Bl = itBegin->color.blue() /255.0;
+        Tr = itBegin->color.alpha() /255.0;
 
         bufMTL << "newmtl " << matName.str()  <<std::endl;
         bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
@@ -324,10 +324,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << tmpStream.str();
 
         typename std::vector< typename Board3D<Space, KSpace>::LineD3D>::const_iterator itBegin = it->begin();
-        Re = itBegin->R /255.0 ;
-        Gr = itBegin->G /255.0;
-        Bl = itBegin->B /255.0;
-        Tr = itBegin->T /255.0;
+        Re = itBegin->color.red() /255.0 ;
+        Gr = itBegin->color.green() /255.0;
+        Bl = itBegin->color.blue() /255.0;
+        Tr = itBegin->color.alpha() /255.0;
 
         bufMTL << "newmtl " << matName.str()  <<std::endl;
         bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
@@ -441,10 +441,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << tmpStream.str();
 
         typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator itBegin = it->begin();
-        Re = itBegin->R /255.0 ;
-        Gr = itBegin->G /255.0;
-        Bl = itBegin->B /255.0;
-        Tr = itBegin->T /255.0;
+        Re = itBegin->color.red() /255.0 ;
+        Gr = itBegin->color.green() /255.0;
+        Bl = itBegin->color.blue() /255.0;
+        Tr = itBegin->color.alpha()/255.0;
 
         bufMTL << "newmtl " << matName.str()  <<std::endl;
         bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
@@ -494,10 +494,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << tmpStream.str();
 
         typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->begin();
-        Re = itBegin->R /255.0 ;
-        Gr = itBegin->G /255.0;
-        Bl = itBegin->B /255.0;
-        Tr = itBegin->T /255.0;
+        Re = itBegin->color.red() /255.0 ;
+        Gr = itBegin->color.green() /255.0;
+        Bl = itBegin->color.blue() /255.0;
+        Tr = itBegin->color.alpha() /255.0;
 
         bufMTL << "newmtl " << matName.str()  <<std::endl;
         bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
@@ -569,10 +569,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << tmpStream.str();
 
         typename std::vector< typename Board3D<Space, KSpace>::TriangleD3D>::const_iterator itBegin = it->begin();
-        Re = itBegin->R /255.0 ;
-        Gr = itBegin->G /255.0;
-        Bl = itBegin->B /255.0;
-        Tr = itBegin->T /255.0;
+        Re = itBegin->color.red() /255.0 ;
+        Gr = itBegin->color.green() /255.0;
+        Bl = itBegin->color.blue() /255.0;
+        Tr = itBegin->color.alpha() /255.0;
 
         bufMTL << "newmtl " << matName.str()  <<std::endl;
         bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
@@ -644,10 +644,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         outOBJ << tmpStream.str();
 
         typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
-        Re = itBegin->R /255.0 ;
-        Gr = itBegin->G /255.0;
-        Bl = itBegin->B /255.0;
-        Tr = itBegin->T /255.0;
+        Re = itBegin->color.red() /255.0 ;
+        Gr = itBegin->color.green() /255.0;
+        Bl = itBegin->color.blue() /255.0;
+        Tr = itBegin->color.alpha() /255.0;
 
         bufMTL << "newmtl " << matName.str()  <<std::endl;
         bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
