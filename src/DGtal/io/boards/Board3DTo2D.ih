@@ -338,7 +338,8 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
             {
                 cairo_save (cr);
 
-                cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
+                cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0, 
+				       (*s_it).color.blue()/255.0, (*s_it).color.alpha()/255.0);
                 cairo_set_line_width (cr, 1.); // arbitraire car non set
 
                 double x1, y1, x2, y2, x3, y3, x4, y4;
@@ -350,40 +351,40 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
 (camera_position[2]-centerS.z)*(camera_position[2]-centerS.z));*/
 
                 //z+
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //z-
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x+
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x-
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y+
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y-
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 
                 cairo_restore (cr);
@@ -400,13 +401,14 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
         {
             {
                 cairo_save (cr);
-
-                cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/255.0);
+		
+                cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0, 
+				       (*s_it).color.blue()/255.0, (*s_it).color.alpha()/255.0);
 
                 double x1, y1;
                 double x2, y2;
-                project((*s_it).x1, (*s_it).y1, (*s_it).z1, x1, y1);
-                project((*s_it).x2, (*s_it).y2, (*s_it).z2, x2, y2);
+                project((*s_it).point1[0], (*s_it).point1[1], (*s_it).point1[2], x1, y1);
+                project((*s_it).point2[0], (*s_it).point2[1], (*s_it).point2[2], x2, y2);
                 cairo_move_to (cr, x1, y1);
                 cairo_line_to (cr, x2, y2);
 
@@ -431,9 +433,11 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
                 cairo_save (cr);
 
                 if (Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode")
-                    cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*1.75)); // *1.75 arbitraire
+		  cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
+					 (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*1.75)); // *1.75 arbitraire
                 else
-                    cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
+		  cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
+					 (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*0.75)); // *0.75 arbitraire
 
                 cairo_set_line_width (cr, 1.); // arbitraire car non set
 
@@ -441,40 +445,40 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
                 double width=(*s_it).width;
 
                 //z+
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<Space, KSpace>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //z-
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<Space, KSpace>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x+
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<Space, KSpace>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //x-
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<Space, KSpace>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y+
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y+width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y+width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]+width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<Space, KSpace>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
                 //y-
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z+width, x1, y1);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z+width, x2, y2);
-                project((*s_it).x+width,  (*s_it).y-width, (*s_it).z-width, x3, y3);
-                project((*s_it).x-width,  (*s_it).y-width, (*s_it).z-width, x4, y4);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x1, y1);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]+width, x2, y2);
+                project((*s_it).center[0]+width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x3, y3);
+                project((*s_it).center[0]-width,  (*s_it).center[1]-width, (*s_it).center[2]-width, x4, y4);
                 cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr);Board3DTo2D<Space, KSpace>::myModes ["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 
                 cairo_restore (cr);
@@ -496,18 +500,20 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
             cairo_save (cr);
 
             if (Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode")
-                cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*3.75)); // *3.75 arbitraire
+	      cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
+				     (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*3.75)); // *3.75 arbitraire
             else
-                cairo_set_source_rgba (cr, (*s_it).R/255.0, (*s_it).G/255.0, (*s_it).B/255.0, (*s_it).T/(255.0*0.75)); // *0.75 arbitraire
+	      cairo_set_source_rgba (cr, (*s_it).color.red()/255.0, (*s_it).color.green()/255.0,
+				     (*s_it).color.blue()/255.0, (*s_it).color.alpha()/(255.0*0.75)); // *0.75 arbitraire
 
             cairo_set_line_width (cr, 1.); // arbitraire car non set
 
             double x1, y1, x2, y2, x3, y3, x4, y4;
 
-            project((*s_it).x1,  (*s_it).y1, (*s_it).z1, x1, y1);
-            project((*s_it).x2,  (*s_it).y2, (*s_it).z2, x2, y2);
-            project((*s_it).x3,  (*s_it).y3, (*s_it).z3, x3, y3);
-            project((*s_it).x4,  (*s_it).y4, (*s_it).z4, x4, y4);
+            project((*s_it).point1[0],  (*s_it).point1[1], (*s_it).point1[2], x1, y1);
+            project((*s_it).point2[0],  (*s_it).point2[1], (*s_it).point2[2], x2, y2);
+            project((*s_it).point3[0],  (*s_it).point3[1], (*s_it).point3[2], x3, y3);
+            project((*s_it).point4[0],  (*s_it).point4[1], (*s_it).point4[2], x4, y4);
             cairo_move_to (cr, x1, y1); cairo_line_to (cr, x2, y2); cairo_line_to (cr, x3, y3); cairo_line_to (cr, x4, y4); cairo_line_to (cr, x1, y1); cairo_close_path (cr); Board3DTo2D<Space, KSpace>::myModes["Board3DTo2D"]=="SolidMode"?cairo_fill (cr):cairo_stroke (cr);
 
             cairo_restore (cr);
