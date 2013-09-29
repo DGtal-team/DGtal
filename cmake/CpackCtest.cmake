@@ -1,4 +1,3 @@
-
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------
@@ -38,9 +37,6 @@ INCLUDE(CPack)
 # -----------------------------------------------------------------------------
 # CTest options
 # -----------------------------------------------------------------------------
-
-OPTION(BUILD_TESTING "Build testing." OFF)
-
 if (BUILD_TESTING)
   ENABLE_TESTING()
   include(CTest)
@@ -51,7 +47,7 @@ if (BUILD_TESTING)
   if (CMAKE_COMPILER_IS_GNUCC)
     SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -Wno-long-long -pedantic -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCC)
-  add_subdirectory (tests)
+  add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
 ELSE (BUILD_TESTING)
   message(STATUS "Build test files DISABLED (you can activate unit tests with '-DBUILD_TESTING=ON' cmake option)")
 endif (BUILD_TESTING)

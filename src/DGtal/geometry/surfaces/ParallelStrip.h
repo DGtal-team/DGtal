@@ -55,9 +55,10 @@ namespace DGtal
      parallel strip in the space is the intersection of two parallel
      half-planes such that each half-plane includes the other.
 
-     If N is the unit normal to one of the half-plane, the set of point \a
-     X that is included in the strip satisfies some: \f$ \mu \le N \dot
-     X \le \mu + \nu \f$.
+     If N is the unit normal to one of the half-plane, the set of
+     point \a X that is included in the strip satisfies some: \f$ \mu
+     \le N \dot X \le \mu + \nu \f$, where inequalities can be large
+     or strict.
 
      The \b normal to the strip is the vector \a N. The \b width of
      the strip is the scalar \f$\nu\f$. The \b axis \b width of the
@@ -70,9 +71,10 @@ namespace DGtal
      digital planes since their parameters are floating-point
      values. However, they approach naive digital planes.
 
-     \note Parallel strips of diagonal width smaller than 1 are not standard
-     digital planes since their parameters are floating-point
-     values. However, they approach standard digital planes.
+     \note Parallel strips of diagonal width smaller than
+     \f$\sqrt{3}\f$ are not standard digital planes since their
+     parameters are floating-point values. However, they approach
+     standard digital planes.
 
      @tparam TSpace any digital space, i.e., a model of CSpace.
 

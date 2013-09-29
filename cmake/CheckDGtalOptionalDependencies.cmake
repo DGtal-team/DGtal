@@ -15,6 +15,8 @@ message(STATUS "")
 OPTION(WITH_C11 "With C++ compiler C11 features." OFF)
 OPTION(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
+OPTION(WITH_EIGEN "With Eigen3 Linear Algebra Library." OFF)
+OPTION(WITH_CGAL "With CGAL." OFF)
 OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
 OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
@@ -43,6 +45,22 @@ message(STATUS "      WITH_GMP          true    (Gnu Multiprecision Library)")
 ELSE(WITH_GMP)
 message(STATUS "      WITH_GMP          false   (Gnu Multiprecision Library)")
 ENDIF(WITH_GMP)
+
+IF(WITH_EIGEN)
+SET (LIST_OPTION ${LIST_OPTION} [EIGEN]\ )
+message(STATUS "      WITH_EIGEN        true    (Eigen3)")
+ELSE(WITH_EIGEN)
+message(STATUS "      WITH_EIGEN        false   (Eigen3)")
+ENDIF(WITH_EIGEN)
+
+
+IF(WITH_CGAL)
+SET (LIST_OPTION ${LIST_OPTION} [CGAL]\ )
+message(STATUS "      WITH_CGAL         true    (cgal)")
+ELSE(WITH_CGAL)
+message(STATUS "      WITH_CGAL         false   (cgal)")
+ENDIF(WITH_CGAL)
+
 
 IF(WITH_ITK)
 SET (LIST_OPTION ${LIST_OPTION} [ITK]\ )
@@ -100,7 +118,7 @@ SET(C11_FORWARD_DGTAL 0)
 SET(C11_INITIALIZER_DGTAL 0)
 SET(C11_ARRAY 0)
 IF(WITH_C11)
-  INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP11.cmake)
+  INCLUDE(CheckCPP11)
   IF (CPP11_INITIALIZER_LIST OR CPP11_AUTO OR CP11_FORWARD_LIST)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ")
     SET(C11_FOUND_DGTAL 1)
@@ -126,11 +144,11 @@ IF(WITH_C11)
   ENDIF()
 ENDIF(WITH_C11)
 
-  
+
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)
 # (They are not compulsory).
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 SET(GMP_FOUND_DGTAL 0)
 IF(WITH_GMP)
   FIND_PACKAGE(GMP REQUIRED)
@@ -138,7 +156,7 @@ IF(WITH_GMP)
     INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
     SET(GMP_FOUND_DGTAL 1)
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${GMPXX_LIBRARIES} ${GMP_LIBRARIES})
-    message(STATUS "GMP found." )
+    message(STATUS "GMP and GMPXX found." )
     ADD_DEFINITIONS("-DWITH_GMP ")
     SET(DGtalLibInc ${DGtalLibInc} ${GMP_INCLUDE_DIR})
   ELSE(GMP_FOUND)
@@ -179,7 +197,7 @@ IF(WITH_ITK)
     SET(ITK_FOUND_DGTAL 1)
     INCLUDE(${ITK_USE_FILE})
     MESSAGE(STATUS "ITK found ${ITK_USE_FILE}.")
- 
+
    SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     ADD_DEFINITIONS(" -DWITH_ITK ")
     SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
@@ -210,7 +228,7 @@ IF(WITH_ITK)
        message( "Warning: some package has enabled a limited template depth for the C++ compiler." )
        message( "         Disabling option -ftemplate-depth-xx in CMAKE_CXX_FLAGS." )
        set( CMAKE_CXX_FLAGS_TMP ${CMAKE_CXX_FLAGS} )
-       STRING( REGEX REPLACE "-ftemplate-depth-[0-9]*" "" 
+       STRING( REGEX REPLACE "-ftemplate-depth-[0-9]*" ""
 	 CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_TMP}" )
        message ("         CMAKE_CXX_FLAGS=" ${CMAKE_CXX_FLAGS} )
      endif (CMAKE_CXX_FLAGS MATCHES "-ftemplate-depth-[0-9]*")
@@ -374,5 +392,43 @@ IF(WITH_OPENMP)
     message(FATAL_ERROR "OpenMP support not available.")
   ENDIF(OPENMP_FOUND)
 ENDIF(WITH_OPENMP)
+
+# -----------------------------------------------------------------------------
+# Look for Eigen3
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(EIGEN_FOUND_DGTAL 0)
+IF(WITH_EIGEN)
+  FIND_PACKAGE(Eigen3 REQUIRED)
+  IF(EIGEN3_FOUND)
+    SET(EIGEN_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_EIGEN ")
+    include_directories( ${EIGEN3_INCLUDE_DIR})
+    message(STATUS "Eigen3 found.")
+  ENDIF(EIGEN3_FOUND)
+ENDIF(WITH_EIGEN)
+
+# -----------------------------------------------------------------------------
+# Look for CGAL
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(CGAL_FOUND_DGTAL 0)
+IF(WITH_CGAL)
+  IF (WITH_GMP AND  WITH_EIGEN)
+    message(STATUS "GMP and Eigen3 detected for CGAL.")
+  ELSE()
+    message(FATAL_ERROR "CGAL needs GMP and Eigen3. You must active WITH_GMP and WITH_EIGEN flags and have the associated package installed.")
+  ENDIF()
+
+  find_package(CGAL COMPONENTS Core Eigen3)
+  IF(CGAL_FOUND)
+    include( ${CGAL_USE_FILE} )
+    SET(CGAL_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DCGAL_EIGEN3_ENABLED   ")
+    ADD_DEFINITIONS("-DWITH_CGAL ")
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${CGAL_LIBRARIES} ${CGAL_3D_PARTY-LIBRARIES} )
+    message(STATUS "CGAL found.")
+  ENDIF(CGAL_FOUND)
+ENDIF(WITH_CGAL)
 
 message(STATUS "-------------------------------------------------------------------------------")

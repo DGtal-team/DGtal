@@ -30,12 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/base/Common.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,19 +52,20 @@ int main( int argc, char** argv )
 
  QApplication application(argc,argv);
 
- Viewer3D viewer;
+ typedef Viewer3D<> MyViewer;
+ MyViewer viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
  Point p2( 10, 10 , 10 );
  Domain domain( p1, p2 );
- 
- 
+
+
  DigitalSet shape_set( domain );
  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
  viewer <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
- viewer << shape_set;  
+ viewer << shape_set;
 
  Object6_18 shape( dt6_18, shape_set );
  viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
@@ -73,13 +74,9 @@ int main( int argc, char** argv )
  Object18_6 shape2( dt18_6, shape_set );
  viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
  //viewer << shape2;
- 
- viewer<< Viewer3D::updateDisplay;
+
+ viewer<< MyViewer::updateDisplay;
  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-

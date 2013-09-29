@@ -95,9 +95,9 @@ An object x satisfying this concept may then be used as:
     @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */  
   
-  class Display3D;
+  template < class S, class KS> class Display3D;
   
-  template <typename T>
+  template <typename T, typename Sp, typename KSp>
   struct CDrawableWithDisplay3D
   {
 
@@ -113,10 +113,11 @@ An object x satisfying this concept may then be used as:
 
     // ------------------------- Private Datas --------------------------------
   private:
-    T myT;
+
+    T myT; //! the drawable class
     DrawableWithDisplay3D *myD;
 
-    Display3D myD3D;
+    Display3D< Sp, KSp> myD3D;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
