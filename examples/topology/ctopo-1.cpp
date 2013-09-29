@@ -49,7 +49,7 @@ int main()
   Board2D board; // for 2D display
   K.init( plow, pup, true );
   board << SetMode( domain.className(), "Paving" )
-  << domain;
+        << domain;
   Cell pixlow = K.uSpel( plow ); // pixel (-3*2+1,-2*2+1)
   Cell ptlow = K.uPointel( plow ); // pointel (-3*2,-2*2)
   Cell pixup = K.uSpel( pup ); // pixel (5*2+1,3*2+1)
@@ -59,18 +59,18 @@ int main()
   Cell linelt = K.uCell( Point( 1, 2 ) ); // linel (1,2) top
   Cell linell = K.uCell( Point( 0, 1 ) ); // linel (0,1) left
   Cell linelr = K.uCell( Point( 2, 1 ) ); // linel (2,1) right
-  board << CustomStyle( ptlow.className(), 
-      new CustomColors( Color( 0, 0, 200 ), 
-            Color( 100, 100, 255 ) ) )
-  << ptlow << ptup2;
-  board << CustomStyle( pixlow.className(), 
-      new CustomColors( Color( 200, 0, 0 ), 
-            Color( 255, 100, 100 ) ) )
-  << pixlow << pixup;
-  board << CustomStyle( linelb.className(), 
-      new CustomColors( Color( 0, 200, 0 ), 
-            Color( 100, 255, 100 ) ) )
-  << linelb << linelt << linell << linelr;
+  board << CustomStyle( ptlow.className(),
+                        new CustomColors( Color( 0, 0, 200 ),
+                                          Color( 100, 100, 255 ) ) )
+        << ptlow << ptup2;
+  board << CustomStyle( pixlow.className(),
+                        new CustomColors( Color( 200, 0, 0 ),
+                                          Color( 255, 100, 100 ) ) )
+        << pixlow << pixup;
+  board << CustomStyle( linelb.className(),
+                        new CustomColors( Color( 0, 200, 0 ),
+                                          Color( 100, 255, 100 ) ) )
+        << linelb << linelt << linell << linelr;
   board.saveSVG("ctopo-1.svg");
   board.saveEPS("ctopo-1.eps");
   return 0;
