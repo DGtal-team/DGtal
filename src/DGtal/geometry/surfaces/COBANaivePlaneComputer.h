@@ -105,7 +105,7 @@ namespace DGtal
    * points. In practice, diameter is limited to 20 for int32_t,
    * diameter is approximately 500 for int64_t, and whatever with
    * BigInteger/GMP integers. For huge diameters, the slow-down is
-   * polylogarithmic with the diameter.
+   * polylogarithmic with respect to the diameter.
    *
    * Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    *
