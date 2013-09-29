@@ -123,8 +123,6 @@ int main( int argc, char** argv )
   //! [ExampleViewer3D2DImagesDisplayImagesColor]
 
 
-
-
   //! [ExampleViewer3D2DModifImages]
   viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(1, MyViewer::yDirection, 0.0,  50.0, 0.0);
   viewer << DGtal::UpdateImageData<MySliceImageAdapter>(0, aSliceImageZ,  0, 0, 10);
