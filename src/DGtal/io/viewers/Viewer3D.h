@@ -613,7 +613,7 @@ namespace DGtal
     /**
      * Rotate an lineD3D from its two extremity points.   
      *
-     * @param aLine the line to be rotated.
+     * @param aLine (returns) the line to be rotated.
      * @param pt the center of rotation.
      * @param angleRotation the angle of rotation.
      * @param dirRotation the rotation will be applied around this direction. 
@@ -627,7 +627,7 @@ namespace DGtal
     /**
      * Rotate an Image2DDomainD3D from its bounding points and from its grid line.   
      *
-     * @param anDom the domain to be rotated.
+     * @param anDom (returns) the domain to be rotated.
      * @param angle the angle of rotation.
      * @param rotationDir the rotation will be applied around this direction. 
      **/
@@ -974,7 +974,7 @@ namespace DGtal
      * from the image center point.
      * 
      * @tparam  TImageORDomain the type object to be rotated (should  be an Image2DDomainD3D or a TextureImage)
-     * @param anImageOrDom the domain or image to be rotated.
+     * @param anImageOrDom (returns) the domain or image to be rotated.
      * @param angle the angle of the rotation.
      * @param rotationDir the rotation is applied around this axis direction.
      **/
