@@ -2752,6 +2752,66 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
 }
 
 template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
+template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
+inline
+void
+DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelConstIterator, DigitalShapeMasks, 3 >::evalPrincipalCurvatures
+( const ConstIteratorOnCells & itbegin,
+  const ConstIteratorOnCells & itend,
+  OutputIterator & result,
+  EvalFunctor functor )
+{
+    ASSERT ( isInitMask == true );
+
+    Dimension total = 0;
+#ifdef DEBUG_VERBOSE
+    Dimension recount = 0;
+#endif
+
+    Quantity lastInnerMoments[ nbMoments ];
+    Quantity lastOuterMoments[ nbMoments ];
+
+    CovarianceMatrix innerCovarianceMatrix, outerCovarianceMatrix;
+    CovarianceMatrix resultCovarianceMatrix;
+
+    Spel lastInnerSpel, lastOuterSpel;
+
+    /// Iterate on all cells
+    for( ConstIteratorOnCells it = itbegin; it != itend; ++it )
+    {
+        if( total != 0 )
+        {
+#ifdef DEBUG_VERBOSE
+            bool hasJumped = core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
+            recount = ( hasJumped ) ? recount + 1 : recount;
+#else
+            core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
+#endif
+        }
+        else
+        {
+            core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, false, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
+        }
+
+        /// Computation of result covariance matrix + moving
+        double lambda = 0.5;
+        resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
+
+        typename EvalFunctor::CurvatureInformations p = functor( resultCovarianceMatrix, 42 );
+        result = p;
+        ++result;
+
+        ++total;
+    }
+
+#ifdef DEBUG_VERBOSE
+    std::cout << "#total cells = " << total << std::endl;
+    std::cout << "#recount = " << recount << std::endl;
+#endif
+}
+
+
+template< typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, typename DigitalShapeMasks >
 template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
 inline
 void

@@ -163,6 +163,9 @@ namespace DGtal
     inline
     double gaussianCurvature( const RealPoint &aPoint ) const;
 
+    inline
+    void principalCurvatures( const RealPoint &aPoint, double & k1, double & k2 ) const;
+
     /**
        Perform a gradient descent in order to move a point @a aPoint
        closer to the implicit surface. More precisely, we use a

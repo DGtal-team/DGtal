@@ -70,8 +70,19 @@ template< typename Matrix3x3 >
 class GaussianCurvatureFunctor3 : std::unary_function <double,double>
 {
 public:
+    struct CurvatureInformations
+    {
+        typedef double Value;
+        typedef EigenValues3D< Value >::Vector3 Vector3;
+        Value k1;
+        Value k2;
+        Vector3 values;
+        Matrix3x3 vectors;
+    };
+public:
     typedef double Value;
     typedef EigenValues3D< Value >::Vector3 Vector3;
+    typedef std::pair< Value, Value > PrincipalCurvatures;
 
     GaussianCurvatureFunctor3(){}
 
@@ -95,6 +106,23 @@ public:
         Vector3 eigenValues;
         evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
         return k1 * k2;
+    }
+
+    CurvatureInformations operator()( const Matrix3x3 & aInput, int nothing )
+    {
+        Matrix3x3 cp_matrix = aInput;
+//        std::cout << cp_matrix << std::endl;
+        cp_matrix *= dh5;
+        Value k1,k2;
+        Matrix3x3 eigenVectors;
+        Vector3 eigenValues;
+        evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
+        CurvatureInformations result;
+        result.k1 = k1;
+        result.k2 = k2;
+        result.values = eigenValues;
+        result.vectors = eigenVectors;
+        return result;
     }
 
 protected:
@@ -550,6 +578,8 @@ public:
     typedef typename Convolver::CovarianceMatrix Matrix3x3;
     typedef EigenValues3D< Quantity >::Vector3 Vector3;
 
+    typedef GaussianCurvatureFunctor3< Matrix3x3 > ValuesFunctor;
+
     //  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
     // ----------------------- Standard services ------------------------------
@@ -640,6 +670,11 @@ public:
                 const ConstIteratorOnCells & ite,
                 OutputIterator & result );
 
+    template< typename ConstIteratorOnCells, typename OutputIterator >
+    void evalPrincipalCurvatures ( const ConstIteratorOnCells & itb,
+                                   const ConstIteratorOnCells & ite,
+                                   OutputIterator & result );
+
     /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -699,7 +734,7 @@ private:
     Quantity d8_5r; /// 8/5r
     Quantity dh5; /// h^5*/
 
-    GaussianCurvatureFunctor3< Matrix3x3 > gaussFunctor;
+    ValuesFunctor gaussFunctor;
 
 private:
 

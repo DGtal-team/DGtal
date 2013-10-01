@@ -347,6 +347,18 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunct
 }
 
 template< typename TKSpace, typename TShapeFunctor >
+template< typename ConstIteratorOnCells, typename OutputIterator >
+inline
+void
+DGtal::IntegralInvariantGaussianCurvatureEstimator_0memory< TKSpace, TShapeFunctor, 3 >::evalPrincipalCurvatures
+( const ConstIteratorOnCells & itb,
+  const ConstIteratorOnCells & ite,
+  OutputIterator & result )
+{
+    myConvolver.evalPrincipalCurvatures( itb, ite, result, gaussFunctor );
+}
+
+template< typename TKSpace, typename TShapeFunctor >
 template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape >
 inline
 void

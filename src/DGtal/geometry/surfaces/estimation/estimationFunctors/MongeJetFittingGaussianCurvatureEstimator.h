@@ -86,6 +86,8 @@ namespace DGtal
     typedef CGAL::Monge_via_jet_fitting<CGALKernel>  CGALMongeViaJet;
     typedef CGALMongeViaJet::Monge_form CGALMongeForm;
 
+    typedef std::pair< Quantity, Quantity > PrincipalCurvatures;
+
     /**
      * Constructor.
      *
@@ -127,6 +129,18 @@ namespace DGtal
       double k2 = monge_form.principal_curvatures ( 1 );
       return (k1*k2);
     }
+
+    /*PrincipalCurvatures eval()
+    {
+      CGALMongeForm monge_form;
+      CGALMongeViaJet monge_fit;
+
+      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4);
+
+      double k1 = monge_form.principal_curvatures ( 0 );
+      double k2 = monge_form.principal_curvatures ( 1 );
+      return PrincipalCurvatures( k1, k2 );
+    }*/
 
     /**
      * Reset the point list.

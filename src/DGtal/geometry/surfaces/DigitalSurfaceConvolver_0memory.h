@@ -758,6 +758,21 @@ public:
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
        */
+    template< typename ConstIteratorOnCells, typename OutputIterator, typename EvalFunctor >
+    void evalPrincipalCurvatures ( const ConstIteratorOnCells & itbegin,
+                                   const ConstIteratorOnCells & itend,
+                                   OutputIterator & result,
+                                   EvalFunctor functor );
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
+       *
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
+       * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       *
+       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       */
     template< typename ConstIteratorOnCells, typename OutputIterator, typename Shape, typename EvalFunctor >
     void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
                                 const ConstIteratorOnCells & itend,

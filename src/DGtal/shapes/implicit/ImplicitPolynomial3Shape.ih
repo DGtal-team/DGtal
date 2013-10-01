@@ -239,6 +239,20 @@ gaussianCurvature( const RealPoint &aPoint ) const
 }
 
 
+template< typename TSpace >
+inline
+void
+DGtal::ImplicitPolynomial3Shape<TSpace>::principalCurvatures
+( const RealPoint & aPoint,
+  double & k1,
+  double & k2 ) const
+{
+    double H = meanCurvature( aPoint );
+    double G = gaussianCurvature( aPoint );
+    k1 = H + std::sqrt( H * H - G );
+    k2 = H - std::sqrt( H * H - G );
+}
+
 /**
  *@param aPoint any point in the Euclidean space.
  *@param accuracy refers to the precision 
