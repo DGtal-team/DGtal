@@ -81,6 +81,31 @@ DGtal::Display3D< Space ,KSpace >::setLineColor(DGtal::Color aColor)
   myCurrentLineColor=aColor;
 }
 
+
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::setSpaceEmbedder(const CanonicEmbedder<Space> &anEmbedder)
+{
+  myEmbedder = anEmbedder;
+}
+
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::setKSpaceEmbedder(const CanonicCellEmbedder<KSpace> &anEmbedder)
+{
+  myCellEmbedder = anEmbedder;
+}
+
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::setSKSpaceEmbedder(const CanonicSCellEmbedder<KSpace> &anEmbedder)
+{
+  mySCellEmbedder = anEmbedder;
+}
+
 template < typename Space ,typename KSpace >
 inline
 DGtal::Color
