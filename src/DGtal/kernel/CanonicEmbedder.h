@@ -123,13 +123,6 @@ namespace DGtal
     virtual RealPoint operator()( const Point & dp ) const;
 
 
-    /**
-       Assignment.
-       @param other the object to clone.
-       @return a reference to 'this'.
-    */
-    virtual Self & operator=( const Self & other ){return *this;};
-
 
     // ----------------------- Interface --------------------------------------
 public:
