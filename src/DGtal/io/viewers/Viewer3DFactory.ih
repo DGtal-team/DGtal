@@ -137,7 +137,7 @@ void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate)
 {
   viewer.updateTextureImage(anUpdate.myIndex, *(anUpdate.myImage), anUpdate.myFunctor, anUpdate.myTranslateX,
-                            anUpdate.myTranslateY, anUpdate.myTranslateZ);
+                            anUpdate.myTranslateY, anUpdate.myTranslateZ, anUpdate.myRotationAngle, anUpdate.myRotationDir);
 }
 
 template <typename Space, typename KSpace>

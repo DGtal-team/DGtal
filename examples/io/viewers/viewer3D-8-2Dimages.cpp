@@ -132,7 +132,7 @@ int main( int argc, char** argv )
 
   //! [ExampleViewer3D2DModifImagesColor]
   viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(3, MyViewer::yDirection, 500.0,  50.0, 0.0);
-  viewer << DGtal::UpdateImageData<MySliceImageAdapter, hueFct>(2, aSliceImageZ, 500, 0, 10, hueFct());
+  viewer << DGtal::UpdateImageData<MySliceImageAdapter, hueFct>(2, aSliceImageZ, 500, 0, 10, 0.0, MyViewer::zDirection, hueFct());
   viewer << MyViewer::updateDisplay;
   //! [ExampleViewer3D2DModifImagesColor]
 
