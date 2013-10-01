@@ -87,7 +87,7 @@ namespace DGtal
 
     ///Concept Checks
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
-    BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
+    //BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
     
     ///Digital surface type
     typedef TDigitalSurface DigitalSurface;

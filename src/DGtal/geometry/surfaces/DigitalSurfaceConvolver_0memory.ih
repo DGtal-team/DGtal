@@ -2797,7 +2797,7 @@ DGtal::DigitalSurfaceConvolver_0memory< Functor, KernelFunctor, KSpace, KernelCo
         double lambda = 0.5;
         resultCovarianceMatrix = innerCovarianceMatrix * lambda + outerCovarianceMatrix * ( 1.0 - lambda );
 
-        typename EvalFunctor::CurvatureInformations p = functor( resultCovarianceMatrix, 42 );
+        typename EvalFunctor::PrincipalCurvatures p = functor( resultCovarianceMatrix, 42 );
         result = p;
         ++result;
 

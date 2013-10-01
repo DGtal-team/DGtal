@@ -249,8 +249,11 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::principalCurvatures
 {
     double H = meanCurvature( aPoint );
     double G = gaussianCurvature( aPoint );
-    k1 = H + std::sqrt( H * H - G );
-    k2 = H - std::sqrt( H * H - G );
+    double tmp1 = H * H - G;
+    double tmp = std::sqrt( H * H - G );
+    std::cout << H << " " << G << " " << tmp1 << " " << tmp << std::endl;
+    k1 = H + tmp;
+    k2 = H - tmp;
 }
 
 /**

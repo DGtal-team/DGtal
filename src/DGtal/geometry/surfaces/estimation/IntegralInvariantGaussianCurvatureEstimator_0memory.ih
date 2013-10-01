@@ -529,3 +529,13 @@ DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvature
     object.selfDisplay( out );
     return out;
 }
+
+/////////////////////////////////
+
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, const CurvatureInformations & object)
+{
+    out << object.k1 << " " << object.k2;
+    return out;
+}

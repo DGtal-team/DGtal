@@ -66,23 +66,26 @@
 namespace DGtal
 {
 
+struct CurvatureInformations
+{
+    typedef double Value;
+    typedef EigenValues3D< Value >::Vector3 Vector3;
+    typedef SimpleMatrix< Value, 3, 3 > Matrix3x3;
+    Value k1;
+    Value k2;
+    Vector3 values;
+    Matrix3x3 vectors;
+
+    friend std::ostream& operator <<(std::ostream&, const CurvatureInformations&);
+};
+
 template< typename Matrix3x3 >
 class GaussianCurvatureFunctor3 : std::unary_function <double,double>
 {
 public:
-    struct CurvatureInformations
-    {
-        typedef double Value;
-        typedef EigenValues3D< Value >::Vector3 Vector3;
-        Value k1;
-        Value k2;
-        Vector3 values;
-        Matrix3x3 vectors;
-    };
-public:
     typedef double Value;
     typedef EigenValues3D< Value >::Vector3 Vector3;
-    typedef std::pair< Value, Value > PrincipalCurvatures;
+    typedef CurvatureInformations PrincipalCurvatures;
 
     GaussianCurvatureFunctor3(){}
 
@@ -108,7 +111,7 @@ public:
         return k1 * k2;
     }
 
-    CurvatureInformations operator()( const Matrix3x3 & aInput, int nothing )
+    PrincipalCurvatures operator()( const Matrix3x3 & aInput, int nothing )
     {
         Matrix3x3 cp_matrix = aInput;
 //        std::cout << cp_matrix << std::endl;
@@ -117,7 +120,7 @@ public:
         Matrix3x3 eigenVectors;
         Vector3 eigenValues;
         evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
-        CurvatureInformations result;
+        PrincipalCurvatures result;
         result.k1 = k1;
         result.k2 = k2;
         result.values = eigenValues;

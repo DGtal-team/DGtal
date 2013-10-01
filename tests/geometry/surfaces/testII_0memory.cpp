@@ -666,7 +666,7 @@ int testII3D_Principal( int argc, char** argv )
 
     typedef Estimator::Matrix3x3 Matrix3;
     typedef Matrix3::ColumnVector ColumnVector;
-    typedef GaussianCurvatureFunctor3< Estimator::Matrix3x3 >::CurvatureInformations Values;
+    typedef CurvatureInformations Values;
     std::vector< Values > eigenResults;
     std::back_insert_iterator< std::vector< Values > > iteratorResults( eigenResults );
     if( !lambda_optimized )
