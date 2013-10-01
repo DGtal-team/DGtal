@@ -187,11 +187,9 @@ namespace DGtal
     Scalar diagonalWidth() const;
 
     /**
-       @return the integer that specifies the diagonal among the
+       @return the integer that specifies the main diagonal among the
        2^dimension diagonals. The 1-bits of its bit representation
        specifies the axes that are negated.
-
-       @return the main diagonal of the strip.
     */
     Dimension mainDiagonal() const;
 
