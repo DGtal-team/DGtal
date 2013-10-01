@@ -316,7 +316,7 @@ typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalSca
 DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 primitive() const
 {
-  myComputers[ active() ].primitive();
+  return myComputers[ active() ].primitive();
 }
 
 //-----------------------------------------------------------------------------

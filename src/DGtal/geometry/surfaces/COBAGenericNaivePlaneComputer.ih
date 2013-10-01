@@ -333,7 +333,7 @@ typename DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::Primiti
 DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 primitive() const
 {
-  myComputers[ active() ].primitive();
+  return myComputers[ active() ].primitive();
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
