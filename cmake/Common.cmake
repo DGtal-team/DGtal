@@ -33,9 +33,9 @@ endforeach()
 # Doxygen targets
 # -----------------------------------------------------------------------------
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
-INCLUDE(${CMAKE_MODULE_PATH}/doxygen.cmake)
-INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake OPTIONAL)
-INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDox.cmake OPTIONAL)
+INCLUDE(doxygen)
+INCLUDE(TargetDoxygenDoc OPTIONAL)
+INCLUDE(TargetDoxygenDox OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
@@ -51,6 +51,7 @@ ADD_CUSTOM_TARGET(uninstall
 # Parsing cmake options
 # -----------------------------------------------------------------------------
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
+OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
 

@@ -30,12 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,10 +51,12 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- Viewer3D viewer;
+
+ typedef Viewer3D<> MyViewer;
+ MyViewer viewer;
  viewer.show();
 
-  
+
  Point p1( -1, -1, -2 );
  Point p2( 2, 2, 3 );
  Domain domain( p1, p2 );
@@ -65,8 +67,8 @@ int main( int argc, char** argv )
  Point p0( 0, 2, 1 );
  viewer <<  SetMode3D( p1.className(), "PavingWired" );
  viewer << p1 << p2 << p3;
-  
- 
+
+
  //viewer <<  SetMode3D( p1.className(), "Grid" );
   viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
@@ -78,14 +80,10 @@ int main( int argc, char** argv )
 
 
   viewer << SetMode3D(domain.className(), "Paving");
-  viewer << domain << Display3D::updateDisplay;   
+  viewer << domain << MyViewer::updateDisplay;
 
 
  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-
