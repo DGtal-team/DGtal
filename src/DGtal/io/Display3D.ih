@@ -1011,7 +1011,7 @@ inline
 typename DGtal::CanonicEmbedder<Space>::RealPoint
 DGtal::Display3D< Space ,KSpace >::embed( const DGtal::Z3i::Point & dp ) const
 {
-  ASSERT( myEmbedder.isValid());
+  ASSERT( myEmbedder->isValid());
   return myEmbedder->embed(dp);
 }
 
@@ -1020,7 +1020,7 @@ inline
 typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const DGtal::Z3i::SCell & scell ) const
 {
-  ASSERT( mySCellEmbedder.isValid());
+  ASSERT( mySCellEmbedder->isValid());
   return mySCellEmbedder->embed(scell);
 }
 
@@ -1029,7 +1029,7 @@ inline
 typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedSurfelPrism & aTrans ) const
 {
-  ASSERT( mySCellEmbedder.isValid());
+  ASSERT( mySCellEmbedder->isValid());
   return mySCellEmbedder->embed(aTrans.mySurfel);
 }
 
@@ -1039,7 +1039,7 @@ inline
 typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedK( const DGtal::Z3i::Cell & cell ) const
 {
-  ASSERT( myCellEmbedder.isValid());
+  ASSERT( myCellEmbedder->isValid());
   return myCellEmbedder->embed(cell);
 }
 
