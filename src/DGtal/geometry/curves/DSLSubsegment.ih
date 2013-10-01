@@ -33,7 +33,7 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-//#define DEBUG
+// #define DEBUG
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -668,7 +668,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<T
   else
     if(v > 0)
       return BELOW;
-
+  
   return ABOVE;
 
 }
@@ -735,10 +735,10 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
       myPosition = positionWrtRay(myRay,a,b,mu);
 
 
-#ifdef DEBUG
-      trace.info() << "height " << r << " Ray " << myRay.x << " " << myRay.y << std::endl;
-      trace.info() << "myPosition " << myPosition << std::endl;
-#endif
+// #ifdef DEBUG
+//       std::cout << "height " << r << " Ray " << myRay.x << " " << myRay.y << std::endl;
+//       std::cout << "myPosition " << myPosition << std::endl;
+// #endif
 
 
       if(myPosition == ONTO)
@@ -786,9 +786,9 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
      }
 
-#ifdef DEBUG
-   trace.info() << r << std::endl;
-#endif
+// #ifdef DEBUG
+//    std::cout << r << std::endl;
+// #endif
 
    return r;
  }
@@ -806,9 +806,9 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
   *flagRayFound = false;
 
-#ifdef DEBUG
-  trace.info() << fp << " " << fq << " " << gp << " " << gq << std::endl;
-#endif
+// #ifdef DEBUG
+//   std::cout << fp << " " << fq << " " << gp << " " << gq << std::endl;
+// #endif
 
 
   while((lup>=2 || ldown >=2) && !*flagRayFound)
@@ -816,10 +816,12 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
       myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
       myPosition = positionWrtRay(myRay,alpha,beta);
 
-#ifdef DEBUG
-      trace.info() << "height " << r << " Ray " << myRay.x << " " << myRay.y << std::endl;
-      trace.info() << "myPosition " << myPosition << std::endl;
-#endif
+      
+ // #ifdef DEBUG
+ //             std::cout << "height " << r << " Ray " << myRay.x << " " << myRay.y << std::endl;
+ // 	     std::cout << "myPosition " << myPosition << std::endl;
+ // #endif
+      
 
       if(myPosition == ONTO)
 	*flagRayFound = true;
@@ -864,9 +866,11 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
      }
 
-#ifdef DEBUG
-   trace.info() << r << std::endl;
-#endif
+   //std::cout << r;
+
+// #ifdef DEBUG
+//    std::cout << r << std::endl;
+// #endif
 
    return r;
 }
@@ -925,8 +929,8 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
       myPosition = positionWrtRay(aRay,alpha,beta);
 
 #ifdef DEBUG
-      trace.info() << "k " << k << " Ray " << aRay.x << " " << aRay.y << std::endl;
-      trace.info() << "myPosition " << myPosition << std::endl;
+      std::cout << "k " << k << " Ray " << aRay.x << " " << aRay.y << std::endl;
+      std::cout << "myPosition " << myPosition << std::endl;
 #endif
 
       if(myPosition == ONTO)
@@ -1218,9 +1222,9 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
       	}
 
 
-#ifdef DEBUG
-      trace.info() << "fractions = " << fp << " " << fq << " " << gp << " " << gq << std::endl;
-#endif
+// #ifdef DEBUG
+//       std::cout << "fractions = " << fp << " " << fq << " " << gp << " " << gq << std::endl;
+// #endif
 
 
       bool found;
@@ -1457,8 +1461,8 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
 
 
 #ifdef DEBUG
-  trace.info() << "\n \nDSLSubsegment with floats, n=" << n << " precision = " << myPrecision << std::endl;
-  trace.info() << std::setprecision(15) << "alpha = " << alpha << " beta = " << beta << std::endl;
+  std::cout << "\n \nDSLSubsegment with floats, n=" << n << " precision = " << myPrecision << std::endl;
+  std::cout << std::setprecision(15) << "alpha = " << alpha << " beta = " << beta << std::endl;
 #endif
 
 
@@ -1470,7 +1474,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
 
 
 #ifdef DEBUG
-  trace.info() << "f and g = " << fp << " " << fq << " " << gp << " " << gq << std::endl;
+  std::cout << "f and g = " << fp << " " << fq << " " << gp << " " << gq << std::endl;
 #endif
 
 
