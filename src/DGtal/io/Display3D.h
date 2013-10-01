@@ -214,7 +214,7 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
-  private:
+  protected:
     /// an embeder from a dgtal space point to a real space point
     CanonicEmbedder< Space > myEmbedder;
     /// an embeder from a unsigned khalimsky space point to a real space point
