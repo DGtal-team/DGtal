@@ -54,44 +54,6 @@ using namespace DGtal;
 //#define CHECK_RES
 
 
-template <typename Integer>
-bool singleTest(Integer a, Integer b, Integer mu, Integer x1, Integer x2)
-{
-  typedef double Number;
-  typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
-  typedef DGtal::DSLSubsegment<Integer,Number> DSLSubsegD;
-  
-  typedef typename DSLSubseg::Point Point;
-  DGtal::IntegerComputer<Integer> ic;
-
-  Integer y1 = ic.floorDiv(a*x1+mu,b);
-  Integer y2 = ic.floorDiv(a*x2+mu,b);
-  Point A = Point(x1,y1);
-  Point B = Point(x2,y2);
-  
-  DSLSubseg D(a,b,mu,A,B,"farey");
-  
-  Number alpha = (Number) a/(Number) b;
-  Number beta = (Number) mu/(Number) b;
-  Number precision = (Number) 1/(2*b);
-
-  DSLSubsegD DD(alpha,beta,A,B, precision);
-
-  std::cout << "(" << a << "," << b << "," << mu << ") (" << alpha << "," << beta << "," << precision << ")" << std::endl;
-  std::cout  << A << " " << B << std::endl;
-
-  std::cout << "res = " << "(" << D.getA() << "," << D.getB() << "," << D.getMu() << ")" << std::endl;
-  std::cout << "res float = " << "(" << DD.getA() << "," << DD.getB() << "," << DD.getMu() << ")" << std::endl;
-
-  assert(D.getA() == DD.getA() && D.getB() == DD.getB() && D.getMu() == DD.getMu());
-  //if(!(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu))
-  //nberrors++;
-		
-
-}
-
-
-
 template <typename Integer,typename Fraction>
 bool testDSLSubsegment(Integer modb)
 {
@@ -238,65 +200,7 @@ bool testDSLSubsegment(Integer modb)
   trace.endBlock();
   trace.info() << std::endl;
   
-
-  trace.beginBlock("Compare DSLSubsegment integer version with DSLSubsegment float-type version");
-  // generate b as a power of 10
-  // the parameters of the DSL can be expressed as (a,b,mu) with a,b,mu integers or (a/b,mu/b) as decimal numbers
-  int p = 3;
-  b = (Integer) pow(10.0,p);
-  
- 
-  Integer g = ic.gcd(a,b);
-  a = a/g;
-  b = b/g;
-  
-  //trace.info() << "a b mu xf: " << a << " " << b << " " << mu << " " << xf << std::endl; 
-  Number precision = (double) 1/(2*b);
-  Number alpha = (Number) a/(Number) b;
-  Number beta = (Number) mu/(Number) b;
-  //trace.info() << "alpha beta precision: " << alpha << " " << beta << " " << precision << std::endl;
-  
-  int error4=0; int total4 = 0;
-  for(unsigned int i = 0; i<l; i++)
-    for(unsigned int j = i+1; j<l; j++)
-      {
-	Integer x1 = xf+i;
-	Integer x2 = xf+j;
-
-	Integer y1 = ic.floorDiv(a*x1+mu,b);
-	Integer y2 = ic.floorDiv(a*x2+mu,b);
-	Point A = Point(x1,y1);
-	Point B = Point(x2,y2);
-	
-	
-	
-	// DSLSubsegment with Farey Fan (O(log(n))
-	DSLSubseg DSLsub(a,b,mu,A,B,"farey");
-	    
-	// DSLSubsegment with float-type DSL parameters
-	DSLSubsegD DSLsubD(alpha,beta,A,B,precision);
-	
-	// If results are different, count an error
-	if(DSLsub.getA() != DSLsubD.getA() || DSLsub.getB() != DSLsubD.getB() || DSLsub.getMu() != DSLsubD.getMu())	
-	  { 
-	    trace.info() << "a b mu xf: " << a << " " << b << " " << mu  << std::endl; 
-	    trace.info() << A << " " << B << std::endl;
-	    
-	    trace.info() << DSLsub.getA() << " " << DSLsub.getB() << " " << DSLsub.getMu() << " ---- " << DSLsubD.getA() << " " << DSLsubD.getB() << " " << DSLsubD.getMu() << std::endl << std::endl;
-	    
-	    error4 ++;
-	    
-	  }
-	total4++;
-      }
-  
-  trace.info() << error4 << "/" << total4 << " errors." << std::endl;
-  trace.endBlock();
-  trace.info() << std::endl;
-  
-  
-
-  return (error1==0 && error2==0 && error3==0 && error4==0);
+  return (error1==0 && error2==0 && error3==0);
 
 }
 
@@ -311,15 +215,14 @@ int main( int argc, char** argv )
   typedef LightSternBrocot<Integer,DGtal::int32_t> LSB;
   typedef LSB::Fraction Fraction;
 
-  trace.beginBlock ( "Testing class DSlSubsegment" );
+  trace.beginBlock ( "Testing class DSLSubsegment" );
   trace.info() << std::endl;
 
   Integer i = 1000;
   srand(time(NULL));
   
-  //bool res = testDSLSubsegment<Integer,Fraction>(i);
-  bool res = singleTest<Integer>(547,1000,930,467,471);
-
+  bool res = testDSLSubsegment<Integer,Fraction>(i);
+  
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
