@@ -214,12 +214,12 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
-
-    /// an embeder from a dgtal space point to a a real space point
+  private:
+    /// an embeder from a dgtal space point to a real space point
     CanonicEmbedder< Space > myEmbedder;
-    /// an embeder from a unsigned khalimsky space point to a a real space point
+    /// an embeder from a unsigned khalimsky space point to a real space point
     CanonicCellEmbedder< KSpace > myCellEmbedder;
-    /// an embeder from a signed khalimsky space point to a a real space point
+    /// an embeder from a signed khalimsky space point to a real space point
     CanonicSCellEmbedder< KSpace > mySCellEmbedder;
 
 
@@ -312,6 +312,27 @@ namespace DGtal
      **/
 
     virtual DGtal::Color getLineColor();
+
+
+    /**
+     * Used to change the default embedder for point of the Digital 3D Space 
+     * @param anEmbedder the new CanonicEmbedder
+     **/
+    virtual void  setSpaceEmbedder(const CanonicEmbedder<Space> &anEmbedder);
+    
+    /**
+     *  Used to change the default embedder for unsigned cell of Khalimsky 3D Space.
+     * @param anEmbedder the new CanonicCellEmbedder
+     **/
+    virtual void  setKSpaceEmbedder(const CanonicCellEmbedder<KSpace> &anEmbedder);
+
+    /**
+     * Used to change the default embedder for signed cell of Khalimsky 3D Space.
+     * @param anEmbedder the new CanonicSCellEmbedder
+     **/
+    virtual void  setSKSpaceEmbedder(const CanonicSCellEmbedder<KSpace> &anEmbedder);
+    
+    
 
 
 
