@@ -40,6 +40,7 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 #----------------------
 SET(DGTAL_TESTS_GMP_SRC 
     testCOBANaivePlaneComputer
+    testCOBAGenericStandardPlaneComputer
     testChordNaivePlaneComputer
  )
 
