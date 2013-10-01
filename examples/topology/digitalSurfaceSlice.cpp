@@ -42,9 +42,9 @@
 #include "DGtal/topology/DigitalSurface2DSlice.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/io/Color.h"
@@ -71,7 +71,7 @@ int main( int argc, char** argv )
   DigitalSet set3d (image.domain());
   SetFromImage<DigitalSet>::append<Image>(set3d, image, 
                                           0, 1 );
-  Viewer3D viewer;  
+  Viewer3D<> viewer;
   viewer.show(); 
   trace.endBlock();
   //! [digitalSurfaceSlice-readVol]
@@ -157,7 +157,7 @@ int main( int argc, char** argv )
   cmap_grad.addColor( Color( 255, 255, 10 ) );
   
   // Need to avoid surfel superposition (the surfel size in increased)
-  viewer << Viewer3D::shiftSurfelVisu; 
+  viewer << Viewer3D<>::shiftSurfelVisu;
   viewer << SetMode3D( surf.className(), "");
   viewer.setFillColor(Color(180, 200, 25, 255));
   
@@ -187,10 +187,10 @@ int main( int argc, char** argv )
     }
   
   // One need once again to avoid superposition.
-  viewer << Viewer3D::shiftSurfelVisu; 
+  viewer << Viewer3D<>::shiftSurfelVisu;
   viewer.setFillColor(Color(18, 200, 25, 255));
   viewer << surf ;
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   trace.endBlock();
     
   return application.exec();

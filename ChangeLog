@@ -2,11 +2,8 @@
 
 *General*
 
-    - Unit tests build is now disabled by default (to turn it on, run
-	cmake with "-DBUILD_TESTING=on"
-
+    - Unit tests build is now disabled by default (to turn it on, run cmake with "-DBUILD_TESTING=on"
     - The "boost program option library" dependency was removed.
-
     - DGtal needs boost >= 1.46
 
 
@@ -26,9 +23,14 @@
 
     - New possibility to access the 3 2D ArithmeticDSS object within an
       ArithmeticDSS3d.
+    - New local estimator adapter to make easy implementation of locally defined differential
+      estimator on digital surfaces.
+    - Minor improvements in the spherical accumulator.
 
-    - New local estimator adapter to make easy implementation of
-      locally defined differential estimator on digital surfaces.
+    - With an optional binding with CGAL and Eigen3, new curvature and
+      normal vector estimators have been added. For instance, you can
+      now estimate curvature from polyonomial surface fitting (Jet
+      Fitting) and Monge forms.
 
     - Minor improvements in the spherical accumulator.
 
@@ -38,7 +40,6 @@
       characteristics are not integers.
 
 
-
 *Shape Package*
 
     - The class MeshFromPoints was transformed into Mesh (more from
@@ -46,16 +47,10 @@
       points and mesh face.
 
 *IO Package*
-
-    - New reader: HDF5 file with 2D image dataset(s) (8-bit with
-      palette and 24-bit truecolor with INTERLACE_PIXEL).
-
-    - New GenericReader and Generic Writer for both 2D, 3D and ND
-      images.
-
-    - A new display of 2D and 3D image in Display3D class (implemented
-      in Viewer3D only).
-
+    - Complete refactoring of 3D viewers and boards (Viewer3D, Board3DTo2D).
+    - A new display of 2D and 3D image in Viewer3D.
+    - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
+    - New GenericReader and Generic Writer for both 2D, 3D and ND images.
     - Adding missing PPM Reader.
 
 *Image Package*
