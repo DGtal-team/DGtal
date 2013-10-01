@@ -624,7 +624,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glPushMatrix();
   glMultMatrixd ( manipulatedFrame()->matrix() );
   glPushMatrix();
-
+  glScalef(myGLScaleFactorX, myGLScaleFactorY, myGLScaleFactorZ);      
   unsigned int i = 0;
   typename vector< typename Viewer3D<Space, KSpace>::ClippingPlaneD3D >::const_iterator it = Viewer3D<Space, KSpace>::myClippingPlaneList.begin();
 
@@ -749,10 +749,11 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glVertex3f(textureImg.point4[0], textureImg.point4[1], textureImg.point4[2]);
       glEnd();
       glDisable(GL_TEXTURE_2D);
-      glPopMatrix();
-      glPopMatrix();
-      drawLight(GL_LIGHT1);
+     
     }
+   glPopMatrix();
+   glPopMatrix();
+   drawLight(GL_LIGHT1);
 }
 
 
@@ -790,6 +791,10 @@ DGtal::Viewer3D<Space, KSpace>::init()
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
   myViewWire=true;
+  myGLScaleFactorX=1.0;
+  myGLScaleFactorY=1.0;
+  myGLScaleFactorZ=1.0;
+  
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   vector<typename Viewer3D<Space, KSpace>::LineD3D> listeLine;
@@ -822,6 +827,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
+  setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
 
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
@@ -1479,12 +1485,12 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
       updateGL();
     }
 
-  // was used to resize the scale
 
   if ( ( e->key() ==Qt::Key_R ) )
     {
-      // unused now
-
+      myScaleX=1.0f;
+      myScaleY=1.0f;
+      myScaleZ=1.0f;
       updateGL();
     }
 
