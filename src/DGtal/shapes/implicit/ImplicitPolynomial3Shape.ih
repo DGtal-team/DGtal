@@ -252,8 +252,8 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::principalCurvatures
     //double tmp1 = H * H - G;
     double tmp = std::sqrt( fabs( H * H - G ));
     //std::cout << H << " " << G << " " << tmp1 << " " << tmp << std::endl;
-    k1 = H + tmp;
-    k2 = H - tmp;
+    k2 = H + tmp;
+    k1 = H - tmp;
 }
 
 /**
