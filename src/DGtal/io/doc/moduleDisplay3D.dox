@@ -459,27 +459,50 @@ You will obtain such a visualization:
 
 
 /**
+Example of digital point visualization  with Viewer3D.
+@see DGtalGLV_Viewer3D 
 \example io/viewers/viewer3D-1-points.cpp
+ \image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
+ *
+*/
+
+/**
+  Example of digital point visualization with Viewer3D.
+   @see \ref DGtalGLV_VisualizationDigitalSet
+   \example io/viewers/viewer3D-2-sets.cpp
+     \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."   
+*
+*/
+
+
+/**
+Example of 6-18 digital Adjacencies visualization  with Viewer3D.
+@see \ref DGtalGLV_ModeEx
+\example io/viewers/viewer3D-3-objects.cpp
+ \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
+*
+*/
+
+/*
+Example of default visualization of a digital point sets with the associated domain
+@see \ref DGtalGLV_ModeExamplesDomain
+\example io/viewers/viewer3D-4-modes.cpp
+\image html visuModeDefault.png "Default visualization of a digital point sets with the associated domain "
 *
 */
 
 /**
-\example io/viewers/viewer3D-2-sets.cpp
-*
-*/
-/**
-\example io/viewers/viewer3D-3-objects.cpp
-*
-*/
-/**
-\example io/viewers/viewer3D-4-modes.cpp
-*
-*/
-/**
+Example of a custom display
+@see \ref DGtalGLV_Custom
 \example io/viewers/viewer3D-5-custom.cpp
-*
+\image html visuModeCustom.png "Example of several custom display ." width=5cm
 */
+
 /**
+Example of visualization after adding two clipping planes
+@see \ref DGtalGLV_CLipping
+ \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ."
+
 \example io/viewers/viewer3D-6-clipping.cpp
 *
 */
