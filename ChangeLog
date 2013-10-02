@@ -39,6 +39,7 @@
       convex hulls or Farey Fan. Also works when the DSL
       characteristics are not integers.
 
+
 *Shape Package*
 
     - The class MeshFromPoints was transformed into Mesh (more from
