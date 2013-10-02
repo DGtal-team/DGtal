@@ -44,6 +44,7 @@
 
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
+#include <exception>
 
 #include <iomanip>
 

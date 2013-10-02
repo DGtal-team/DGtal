@@ -67,10 +67,10 @@ int main( int argc, char** argv )
 
   // Compute the minimal characteristics of the subsegment [AB] of the
   // 8-connected DSL of characteristics (2,3,15). The algorithm using
-  // the Farey fan is used since the boolean is set to true. If set to
-  // false, the algorithm using local convex hull is used: the result is
-  // the same but the computation time is a bit longer.  
-  DSLSubseg D1(2,3,15,A,B,true);
+  // the Farey fan is used in this case. If the string is set to
+  // "localCH", the algorithm using local convex hull is used: the
+  // result is the same but the computation time is a bit longer.  
+  DSLSubseg D1(2,3,15,A,B,"farey");
   
   // Display the result
   std::cout << "a=" << D1.getA() << " b=" << D1.getB() << " mu=" << D1.getMu() << std::endl;
@@ -82,7 +82,7 @@ int main( int argc, char** argv )
   // Same as before, except that the last parameter is the precision used for
   // floating-point geometric predicates. The algorithm used is an
   // adaptation of the Farey fan algorithm for floating-point input data.
-  DSLSubsegD D2(0.6666,5,A,B,0.00001);
+  DSLSubsegD D2(0.6666,5,A,B,0.00005);
   
   // Display the result
   std::cout << "a=" << D2.getA() << " b=" << D2.getB() << " mu=" << D2.getMu() << std::endl;
