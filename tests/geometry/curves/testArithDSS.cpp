@@ -472,7 +472,7 @@ int main(int argc, char **argv)
 {
 
   trace.beginBlock ( "Testing class ArithmeticalDSS" );
-  Trace.info() << "Args:";
+  trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
