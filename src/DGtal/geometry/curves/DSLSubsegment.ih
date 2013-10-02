@@ -1170,12 +1170,23 @@ template <typename TInteger, typename TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, std::string type)
 {
-  if(type.compare("farey"))
-    this->DSLSubsegmentFareyFan(a,b,mu,A,B);
-  else
-    if(type.compare("localCH"))
-      this->DSLSubsegmentLocalCH(a,b,mu,A,B);
+  try 
+    {
+      if(type.compare("farey")==0)
+	this->DSLSubsegmentFareyFan(a,b,mu,A,B);
+      else
+	if(type.compare("localCH")==0)
+	  this->DSLSubsegmentLocalCH(a,b,mu,A,B);
+	else
+	  throw std::invalid_argument("ERROR: Unknow string to specify the algorithm. \"farey\" is used hereafter.");
+    }
+  catch(std::invalid_argument & e)
+    {
+      std::cerr << e.what() << std::endl;
+      this->DSLSubsegmentFareyFan(a,b,mu,A,B);
+    }
 }
+
 
 
 template <typename TInteger, typename TNumber>

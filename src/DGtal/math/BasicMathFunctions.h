@@ -102,8 +102,8 @@ namespace DGtal
      **/
     template<typename T> 
     T roundToUpperPowerOfTwo(const  T &n){
-      return (T)  1 << (1+DGtal::Bits::mostSignificantBit( (unsigned int) n-1 ) );;
-    };
+      return (T)  1 << (1+DGtal::Bits::mostSignificantBit( (unsigned int) n-1 ) );
+    }
 
     /** 
      * Return the absolute value of an instance of type T.
