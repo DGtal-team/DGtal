@@ -467,10 +467,10 @@ Example of digital point visualization  with Viewer3D.
 */
 
 /**
-  Example of digital point visualization with Viewer3D.
-   @see \ref DGtalGLV_VisualizationDigitalSet
-   \example io/viewers/viewer3D-2-sets.cpp
-     \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."   
+Example of digital point visualization with Viewer3D.
+@see \ref DGtalGLV_VisualizationDigitalSet
+\example io/viewers/viewer3D-2-sets.cpp
+\image html simple3dVisu2.png "Digital point visualization  with Viewer3D."   
 *
 */
 
@@ -501,55 +501,69 @@ Example of a custom display
 /**
 Example of visualization after adding two clipping planes
 @see \ref DGtalGLV_CLipping
- \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ."
-
+\image html  visuClipping2.png "Visualization after adding a second clipping plane (1,0,0,-4.9) ."
 \example io/viewers/viewer3D-6-clipping.cpp
 *
 */
 
-/**
-\example io/boards/dgtalBoard3DTo2D-1-points.cpp
-*
-*/
 
 /**
+Example of digital point visualization with Board3DTo2D.
+@see \ref DGtalGLV_VisualizationDigitalSet
 \example io/boards/dgtalBoard3DTo2D-2-sets.cpp
+\image html dgtalBoard3DTo2D-2-sets.png "Digital point visualization  with Board3DTo2D."   
 *
 */
 
 /**
+Example of digital point visualization with Board3DTo2D (wireframe visualisation).
+@see \ref DGtalGLV_VisualizationDigitalSet
 \example io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
+\image html dgtalBoard3DTo2D-2bis-sets-wireframe.png "Digital point visualization  with Board3DTo2D (wireframe visualisation))."   
 *
 */
 
 /**
+Example of 6-18 digital Adjacencies visualization  with Board3DTo2D.
+@see \ref DGtalGLV_ModeEx
 \example io/boards/dgtalBoard3DTo2D-3-objects.cpp
+\image html dgtalBoard3DTo2D-3-objects.png " 6-18 digital Adjacencies visualization  with Board3DTo2D."
 *
 */
 
 
 
-/**
+/*
+Example of default visualization of a digital point sets with the associated domain (with Board3DTo2D)
+@see \ref DGtalGLV_ModeExamplesDomain
 \example io/boards/dgtalBoard3DTo2D-4-modes.cpp
+\image html visuModeDefault.png "Default visualization of a digital point sets with the associated domain (with Board3DTo2D) "
 *
 */
 
 
-
 /**
+Example of a custom display (with Board3DTo2D)
+@see \ref DGtalGLV_Custom
 \example io/boards/dgtalBoard3DTo2D-5-custom.cpp
-*
+\image html dgtalBoard3DTo2D-5-custom.png "Example of several custom display  (with Board3DTo2D)." width=5cm 
 */
 
 
 
 /**
-\example io/boards/dgtalBoard3DTo2D-6.cpp
+Ball visualisation (with Board3DTo2D)
+@see \ref DGtalGLV_CLipping
+\image html  dgtalBoard3DTo2D-6.png "Ball visualization (with Board3DTo2D) ."
+\example io/boards/dgtalBoard3DTo2D-6.cpp 
 *
 */
 
 
 /**
+Khalimsky Signed Cell Visualization (with Board3DTo2D) 
+@see \ref 
+\image html dgtalBoard3DTo2D-KSCell.png "Khalimsky Signed Cell Visualization (with Board3DTo2D)"
 \example io/boards/dgtalBoard3DTo2D-KSCell.cpp
 *
 */
