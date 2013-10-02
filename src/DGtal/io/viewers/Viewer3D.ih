@@ -1488,9 +1488,9 @@ DGtal::Viewer3D<Space, KSpace>::keyPressEvent ( QKeyEvent *e )
 
   if ( ( e->key() ==Qt::Key_R ) )
     {
-      myScaleX=1.0f;
-      myScaleY=1.0f;
-      myScaleZ=1.0f;
+      myGLScaleFactorX=1.0f;
+      myGLScaleFactorY=1.0f;
+      myGLScaleFactorZ=1.0f;
       updateGL();
     }
 
