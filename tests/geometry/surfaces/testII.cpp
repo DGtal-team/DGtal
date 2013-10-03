@@ -951,9 +951,11 @@ int testII2D_noise( int argc, char** argv )
     imageFromFunctor( img, pf );
 
     typedef GrayscaleColorMap<unsigned char> Gray;
-    PPMWriter<Image, Gray>::exportPPM( "testEllipseNoise.ppm", img, Gray(0,255) );
+    PPMWriter<Image, Gray>::exportPPM( argv[3], img, Gray(0,255) );
 
     trace.endBlock();
+
+    return 0;
 
     trace.beginBlock("find a bel");
     double minsize = dshape->getUpperBound()[0] - dshape->getLowerBound()[0];
