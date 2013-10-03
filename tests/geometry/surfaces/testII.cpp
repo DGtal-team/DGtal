@@ -29,6 +29,11 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+//#define EUCLIDEAN
+#define EXPORT
+#define IS_2D
+//#define IS_3D
+
 #include <iostream>
 #include "DGtal/base/Common.h"
 
@@ -36,40 +41,51 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/volumes/KanungoNoise.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
-
-#include "DGtal/kernel/BasicPointFunctors.h"
-
-#include "DGtal/shapes/implicit/ImplicitBall.h"
-#include "DGtal/shapes/ShapeFactory.h"
-
-#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/shapes/DigitalShapesDecorator.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/shapes/implicit/ImplicitBall.h"
 
+#ifdef IS_2D
+#include "DGtal/shapes/ShapeFactory.h"
+#endif
+
+#if defined( IS_2D ) && defined( EXPORT )
+#include "DGtal/images/ImageHelper.h"
+#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/writers/PPMWriter.h"
+#endif
+
+#if defined( IS_3D ) && defined( EXPORT )
 #include <QtGui/QApplication>
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/io/viewers/Viewer3D.h"
+#endif
+
+//#include "DGtal/helpers/StdDefs.h"
+/*<#include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/topology/SetOfSurfels.h"
-#include "DGtal/math/MPolynomial.h"
-#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/topology/SetOfSurfels.h"*/
+
+#ifdef IS_3D
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
+#include "DGtal/math/MPolynomial.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/topology/SCellsFunctors.h"
-#include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/topology/SetOfSurfels.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#endif
 
-//#define EUCLIDEAN
-#define EXPORT
+#ifdef EXPORT
+#include "DGtal/topology/SCellsFunctors.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#endif
+//#include "DGtal/topology/helpers/BoundaryPredicate.h"
+//#include "DGtal/topology/SetOfSurfels.h"
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -85,59 +101,8 @@ using namespace DGtal;
  *
  */
 
-template < typename TKSpace, typename TShape >
-class NearestPointEmbedder
-{
-public:
-    typedef TKSpace KSpace;
-    typedef TShape Shape;
-    typedef typename KSpace::SCell SCell;
-    typedef typename KSpace::Point Point;
-    typedef typename KSpace::Space Space;
-    typedef typename Space::RealPoint RealPoint;
-    typedef Z3i::Cell Argument;
-    typedef RealPoint Value;
 
-    NearestPointEmbedder()
-        :shape(0)
-    {}
-
-    ~NearestPointEmbedder(){}
-
-    void init( const KSpace & K, const double h, const Shape & s )
-    {
-        k = K;
-        step = h;
-        shape = &s;
-    }
-
-    RealPoint operator()( const SCell & cell ) const
-    {
-        SCellToMidPoint< KSpace > embedder;
-        RealPoint A = embedder( cell ) * step;
-        //    Point B = k.uKCoords( cell );
-        //    RealPoint A( B[ 0 ], B[1], B[2] );
-        //    A /= 2.0;
-        //    A *= step;
-        A = shape->nearestPoint( A, 0.01 * step, 200, 0.1 * step );
-        return A;
-    }
-
-protected:
-    KSpace k;
-    double step;
-    const Shape* shape;
-};
-
-template < typename TSpace, typename Point >
-typename TSpace::RealPoint RegularPointEmbedder_( const Point & p, const double & h )
-{
-    typedef typename TSpace::Integer Integer;
-    typename TSpace::RealPoint aRealPoint;
-    for ( Dimension i = 0; i < TSpace::dimension; ++i )
-        aRealPoint[ i ] = NumberTraits<Integer>::castToDouble( p[ i ] ) * h;
-    return aRealPoint;
-}
+#ifdef IS_2D
 
 bool test2DTopology()
 {
@@ -146,7 +111,7 @@ bool test2DTopology()
     typedef Z2i::Domain Domain;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
-//    typedef AccFlower2D< Space > Shape;
+    //    typedef AccFlower2D< Space > Shape;
     typedef Ball2D< Space > Shape;
 
     typedef GaussDigitizer< Space, Shape > Digitizer;
@@ -173,7 +138,7 @@ bool test2DTopology()
 
     double h = 1;
 
-//    Shape * aShape = new Shape( center, radius, varsmallradius, k, phi );
+    //    Shape * aShape = new Shape( center, radius, varsmallradius, k, phi );
     Shape * aShape = new Shape( center, radius );
     Digitizer * digShape = new Digitizer();
     digShape->attach( *aShape );
@@ -327,7 +292,7 @@ bool test2DTopology()
     board2 << SetMode( domain.className(), "Grid" )
            << domain;
     board2 << CustomStyle( origin.className(), new CustomColors( red, dred ) )
-          << origin;
+           << origin;
 #endif
     for( SurfelConstIterator ibegin = range.begin(), iend = range.end(); ibegin != iend; ++ibegin )
     {
@@ -338,7 +303,7 @@ bool test2DTopology()
         board << CustomStyle( current.className(), new CustomColors( green, dgreen ) )
               << current;
         board2 << CustomStyle( (*ibegin).className(), new CustomColors( black, dblack ) )
-              << (*ibegin);
+               << (*ibegin);
 #endif
         if( count == 0 || count == 1 )
             std::cout << *ibegin << std::endl;
@@ -357,7 +322,7 @@ bool test2DTopology()
 
 bool testII2D_kernels()
 {
-    typedef ImplicitBall< Z2i::Space > ShapeA;
+    /*typedef ImplicitBall< Z2i::Space > ShapeA;
     typedef ImplicitBall< Z2i::Space > ShapeB;
     typedef ImplicitBall< Z2i::Space > ShapeC;
     typedef GaussDigitizer< Z2i::Space, ShapeA > DigitalShapeA;
@@ -595,6 +560,7 @@ bool testII2D_kernels()
     }
 
 #endif
+ */
     return true;
 }
 
@@ -907,6 +873,293 @@ bool testII2D_kernels_2()
     return true;
 }
 
+int testII2D_noise( int argc, char** argv )
+{
+    Board2D viewer;
+    Color red( 255, 0, 0 );
+    Color dred( 192, 0, 0 );
+    Color dgreen( 0, 192, 0 );
+    Color blue( 0, 0, 255 );
+    Color dblue( 0, 0, 192 );
+
+    typedef Z2i::Space::RealPoint RealPoint;
+    typedef Z2i::Point Point;
+    typedef Ellipse2D< Z2i::Space > Shape;
+    typedef Z2i::Space Space;
+
+    RealPoint border_min( -25, -25);
+    RealPoint border_max( 25, 25 );
+
+    double h = atof( argv[1] );
+    double noiseLevel = atof( argv[2] );
+    double alpha = 0.333333;
+    double radius_kernel = 5;
+    bool lambda_optimized = false;
+
+    double radius = 5.0;
+    RealPoint rcenter( 0.0, 0.0 );
+    Point pcenter( 0, 0 );
+    Shape* aShape = new Shape( rcenter, 20, 7, 0.2 );
+
+    typedef typename Space::RealPoint RealPoint;
+    typedef GaussDigitizer< Z2i::Space, Shape > DigitalShape;
+    typedef Z2i::KSpace KSpace;
+    typedef typename KSpace::SCell SCell;
+    typedef typename KSpace::Surfel Surfel;
+
+    bool withNoise = ( noiseLevel <= 0.0 ) ? false : true;
+    //if( withNoise )
+    //    noiseLevel *= h;
+
+    //ASSERT (( noiseLevel < 1.0 ));
+    // Digitizer
+    DigitalShape* dshape = new DigitalShape();
+    dshape->attach( *aShape );
+    dshape->init( border_min, border_max, h );
+
+    KSpace K;
+    if ( ! K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
+    {
+        std::cerr << "[3dLocalEstimators_0memory] error in creating KSpace." << std::endl;
+        return false;
+    }
+
+    typedef KanungoNoise< DigitalShape, Z2i::Domain > KanungoPredicate;
+    typedef LightImplicitDigitalSurface< KSpace, KanungoPredicate > Boundary;
+    typedef DigitalSurface< Boundary > MyDigitalSurface;
+    typedef typename MyDigitalSurface::ConstIterator ConstIterator;
+
+    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+
+    typedef PointFunctorFromPointPredicateAndDomain< KanungoPredicate, Z2i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
+
+    // Extracts shape boundary
+    trace.beginBlock("noise");
+    KanungoPredicate * noisifiedObject = new KanungoPredicate( *dshape, dshape->getDomain(), noiseLevel );
+    trace.endBlock();
+    trace.beginBlock("surface");
+    SCell bel( K.sSpel( pcenter ));//Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
+    Boundary * boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
+    MyDigitalSurface surf ( *boundary );
+
+    typedef ImageContainerBySTLVector< Z2i::Domain, unsigned char > Image;
+    Image img( dshape->getDomain() );
+    MyPointFunctor pf( noisifiedObject, dshape->getDomain(), 255, 0 );
+    imageFromFunctor( img, pf );
+
+    typedef GrayscaleColorMap<unsigned char> Gray;
+    PPMWriter<Image, Gray>::exportPPM( "testEllipseNoise.ppm", img, Gray(0,255) );
+
+    trace.endBlock();
+
+    trace.beginBlock("find a bel");
+    double minsize = dshape->getUpperBound()[0] - dshape->getLowerBound()[0];
+    unsigned int tries = 0;
+    while( surf.size() < 2 * minsize || tries > 150 )
+    {
+        delete boundary;
+        bel = Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
+        boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
+        surf = MyDigitalSurface( *boundary );
+        ++tries;
+    }
+    trace.endBlock();
+
+    if( tries > 150 )
+    {
+        std::cerr << "Can't found a proper bel. So .... I ... just ... kill myself." << std::endl;
+        return false;
+    }
+
+    VisitorRange * range;
+    VisitorConstIterator ibegin;
+    VisitorConstIterator iend;
+
+    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
+    ibegin = range->begin();
+    iend = range->end();
+
+    //viewer << SetMode( dshape->getDomain().className(), "Grid" )
+    //      << dshape->getDomain();
+
+    trace.beginBlock("viewer");
+    for( ; ibegin != iend; ++ibegin )
+    {
+        viewer << CustomStyle( (*ibegin).className(), new CustomColors( red, dred ) )
+               << *ibegin;
+    }
+    trace.endBlock();
+
+    delete range;
+
+    viewer.saveSVG("testII2D-noise.svg");
+}
+
+bool testII2D()
+{
+    typedef ImplicitBall< Z2i::Space > Ball;
+    typedef Z2i::RealPoint RealPoint;
+    typedef Z2i::Domain Domain;
+
+    /// Euclidean shape
+    RealPoint rcenter( 0.0, 0.0 );
+    Ball ball( rcenter, 5.0 );
+
+    /// Digital shape
+    typedef Z2i::Point Point;
+    typedef GaussDigitizer< Z2i::Space, Ball > Digitizer;
+
+    Point dcenter( 0, 0 );
+    double h = 0.1;
+    Digitizer* gauss = new Digitizer();
+    gauss->attach( ball );
+    gauss->init( RealPoint( -6.0, -6.0 ), RealPoint( 6.0, 6.0 ), h );
+
+    Domain domain = gauss->getDomain();
+
+    typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
+    MyPointFunctor pointFunctor( gauss, domain, 1, 0 );
+
+    typedef DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
+    MySet set( domain );
+    Shapes< Domain >::digitalShaper( set, *gauss );
+
+    /// Khalimsky shape
+    Z2i::KSpace k;
+    k.init( domain.lowerBound(), domain.upperBound(), true );
+
+    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
+    MyCellFunctor cellFunctor ( pointFunctor, k );
+
+    typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
+    typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
+    typedef Z2i::KSpace::SCell SCell;
+    SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
+    SCell bel;
+    try
+    {
+        bel = Surfaces< Z2i::KSpace >::findABel( k, *gauss, 10000 );
+    }
+    catch( ... )
+    {
+        return false;
+    }
+    LightImplicitDigSurface LightImplDigSurf( k, *gauss, SAdj, bel );
+    DigSurface digSurf( LightImplDigSurf );
+
+    typedef DepthFirstVisitor< DigSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef VisitorRange::ConstIterator It;
+
+    /// Integral Invariant
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > GaussianEstimator;
+    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MeanEstimator;
+
+    double re = 3.0;
+
+    /////// Mean
+    MeanEstimator meanEstimator( k, cellFunctor );
+    meanEstimator.init( h, re );
+
+    std::vector< double > resultsMean;
+    std::back_insert_iterator< std::vector< double > > insertResultsMean( resultsMean );
+
+    VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
+    It ibegin = range.begin();
+    It iend = range.end();
+
+    meanEstimator.eval( ibegin, iend, insertResultsMean, ball );
+
+    /////// Gaussian
+    GaussianEstimator gaussianEstimator( k, cellFunctor );
+    gaussianEstimator.init( h, re );
+
+    std::vector< double > resultsGaussian;
+    std::back_insert_iterator< std::vector< double > > insertResultsGaussian( resultsGaussian );
+
+    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
+    ibegin = range2.begin();
+    iend = range2.end();
+
+    gaussianEstimator.eval( ibegin, iend, insertResultsGaussian );
+
+
+    ASSERT( resultsMean.size() == resultsGaussian.size() );
+
+    for( unsigned int i = 0; i < resultsMean.size(); ++i )
+    {
+        std::cout << i << " " << resultsMean[ i ] << " " << resultsGaussian[ i ] << std::endl;
+    }
+
+#ifdef EXPORT
+
+    /// Board
+    Board2D board;
+    //board.setUnit(LibBoard::Board::UCentimeter);
+    Color red( 255, 0, 0 );
+    Color dred( 192, 0, 0 );
+    Color dgreen( 0, 192, 0 );
+    Color blue( 0, 0, 255 );
+    Color dblue( 0, 0, 192 );
+
+    board << SetMode( domain.className(), "Grid" )
+          << domain
+             //          << SetMode( gauss->className(), "Paving" )
+          << set;
+    board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
+          << dcenter;
+    board.saveSVG("testII.svg");
+
+    board.clear();
+    board << SetMode( domain.className(), "Grid" )
+          << domain;
+
+    VisitorRange range4( new Visitor( digSurf, *digSurf.begin() ) );
+    ibegin = range4.begin();
+    iend = range4.end();
+    while ( ibegin != iend )
+    {
+        Dimension kdim = k.sOrthDir( *ibegin );
+        SCell currentSCell = k.sIndirectIncident( *ibegin, kdim );
+        //        SCellToOuterPoint< Z2i::KSpace > SCellToPoint( k );
+        //        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
+        Point currentPoint = ( k.sCoords( currentSCell ));
+        board << currentPoint;
+        ++ibegin;
+    }
+    board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
+          << dcenter;
+    board.saveSVG("testII-outer.svg");
+
+    board.clear();
+
+    VisitorRange range3( new Visitor( digSurf, *digSurf.begin() ) );
+    ibegin = range3.begin();
+    iend = range3.end();
+    while ( ibegin != iend )
+    {
+        Dimension kdim = k.sOrthDir( *ibegin );
+        SCell currentSCell = k.sDirectIncident( *ibegin, kdim );
+        //        SCellToInnerPoint< Z2i::KSpace > SCellToPoint( k );
+        //        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
+        Point currentPoint = ( k.sCoords( currentSCell ));
+        board << currentPoint;
+        ++ibegin;
+    }
+    board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
+          << dcenter;
+    board.saveSVG("testII-inner.svg");
+#endif
+
+    return true;
+}
+
+#endif
+#ifdef IS_3D
+
 int testII3D_kernels( int argc, char** argv )
 {
     typedef Z3i::KSpace KSpace;
@@ -1112,165 +1365,6 @@ int testII2D_same_results( )
     return 1;
 }
 
-bool testII2D()
-{
-    typedef ImplicitBall< Z2i::Space > Ball;
-    typedef Z2i::RealPoint RealPoint;
-    typedef Z2i::Domain Domain;
-
-    /// Euclidean shape
-    RealPoint rcenter( 0.0, 0.0 );
-    Ball ball( rcenter, 5.0 );
-
-    /// Digital shape
-    typedef Z2i::Point Point;
-    typedef GaussDigitizer< Z2i::Space, Ball > Digitizer;
-
-    Point dcenter( 0, 0 );
-    double h = 0.1;
-    Digitizer* gauss = new Digitizer();
-    gauss->attach( ball );
-    gauss->init( RealPoint( -6.0, -6.0 ), RealPoint( 6.0, 6.0 ), h );
-
-    Domain domain = gauss->getDomain();
-
-    typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
-    MyPointFunctor pointFunctor( gauss, domain, 1, 0 );
-
-    typedef DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
-    MySet set( domain );
-    Shapes< Domain >::digitalShaper( set, *gauss );
-
-    /// Khalimsky shape
-    Z2i::KSpace k;
-    k.init( domain.lowerBound(), domain.upperBound(), true );
-
-    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
-    MyCellFunctor cellFunctor ( pointFunctor, k );
-
-    typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
-    typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
-    typedef Z2i::KSpace::SCell SCell;
-    SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
-    SCell bel;
-    try
-    {
-        bel = Surfaces< Z2i::KSpace >::findABel( k, *gauss, 10000 );
-    }
-    catch( ... )
-    {
-        return false;
-    }
-    LightImplicitDigSurface LightImplDigSurf( k, *gauss, SAdj, bel );
-    DigSurface digSurf( LightImplDigSurf );
-
-    typedef DepthFirstVisitor< DigSurface > Visitor;
-    typedef GraphVisitorRange< Visitor > VisitorRange;
-    typedef VisitorRange::ConstIterator It;
-
-    /// Integral Invariant
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > GaussianEstimator;
-    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MeanEstimator;
-
-    double re = 3.0;
-
-    /////// Mean
-    MeanEstimator meanEstimator( k, cellFunctor );
-    meanEstimator.init( h, re );
-
-    std::vector< double > resultsMean;
-    std::back_insert_iterator< std::vector< double > > insertResultsMean( resultsMean );
-
-    VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
-    It ibegin = range.begin();
-    It iend = range.end();
-
-    meanEstimator.eval( ibegin, iend, insertResultsMean, ball );
-
-    /////// Gaussian
-    GaussianEstimator gaussianEstimator( k, cellFunctor );
-    gaussianEstimator.init( h, re );
-
-    std::vector< double > resultsGaussian;
-    std::back_insert_iterator< std::vector< double > > insertResultsGaussian( resultsGaussian );
-
-    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
-    ibegin = range2.begin();
-    iend = range2.end();
-
-    gaussianEstimator.eval( ibegin, iend, insertResultsGaussian );
-
-
-    ASSERT( resultsMean.size() == resultsGaussian.size() );
-
-    for( unsigned int i = 0; i < resultsMean.size(); ++i )
-    {
-        std::cout << i << " " << resultsMean[ i ] << " " << resultsGaussian[ i ] << std::endl;
-    }
-
-#ifdef EXPORT
-
-    /// Board
-    Board2D board;
-    //board.setUnit(LibBoard::Board::UCentimeter);
-    Color red( 255, 0, 0 );
-    Color dred( 192, 0, 0 );
-    Color dgreen( 0, 192, 0 );
-    Color blue( 0, 0, 255 );
-    Color dblue( 0, 0, 192 );
-
-    board << SetMode( domain.className(), "Grid" )
-          << domain
-             //          << SetMode( gauss->className(), "Paving" )
-          << set;
-    board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
-          << dcenter;
-    board.saveSVG("testII.svg");
-
-    board.clear();
-    board << SetMode( domain.className(), "Grid" )
-          << domain;
-
-    VisitorRange range4( new Visitor( digSurf, *digSurf.begin() ) );
-    ibegin = range4.begin();
-    iend = range4.end();
-    while ( ibegin != iend )
-    {
-        Dimension kdim = k.sOrthDir( *ibegin );
-        SCell currentSCell = k.sIndirectIncident( *ibegin, kdim );
-        //        SCellToOuterPoint< Z2i::KSpace > SCellToPoint( k );
-        //        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
-        Point currentPoint = ( k.sCoords( currentSCell ));
-        board << currentPoint;
-        ++ibegin;
-    }
-    board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
-          << dcenter;
-    board.saveSVG("testII-outer.svg");
-
-    board.clear();
-
-    VisitorRange range3( new Visitor( digSurf, *digSurf.begin() ) );
-    ibegin = range3.begin();
-    iend = range3.end();
-    while ( ibegin != iend )
-    {
-        Dimension kdim = k.sOrthDir( *ibegin );
-        SCell currentSCell = k.sDirectIncident( *ibegin, kdim );
-        //        SCellToInnerPoint< Z2i::KSpace > SCellToPoint( k );
-        //        CanonicSCellEmbedder< Z2i::KSpace > SCellToPoint( k );
-        Point currentPoint = ( k.sCoords( currentSCell ));
-        board << currentPoint;
-        ++ibegin;
-    }
-    board << CustomStyle( dcenter.className(), new CustomColors( red, dred ) )
-          << dcenter;
-    board.saveSVG("testII-inner.svg");
-#endif
-
-    return true;
-}
-
 int testII3D( int argc, char** argv )
 {
     typedef Z3i::Space::RealPoint RealPoint;
@@ -1354,17 +1448,17 @@ int testII3D( int argc, char** argv )
     iigaussest.init( step, re );
 
 
-//    std::vector< double > resultTrue;
+    //    std::vector< double > resultTrue;
     std::vector< double > resultII;
-//    std::vector< RealPoint > nearestPoints;
+    //    std::vector< RealPoint > nearestPoints;
     //-----------------------------------------------------------------------
     // Looking for the min and max values
 
     double minCurv = 1;
     double maxCurv = 0;
     //  SCellToMidPoint< KSpace > midpoint( K );
-//    NearestPointEmbedder< Z3i::KSpace, ImplicitShape > ScellToRealPoint;
-//    ScellToRealPoint.init( K, step, *ishape );
+    //    NearestPointEmbedder< Z3i::KSpace, ImplicitShape > ScellToRealPoint;
+    //    ScellToRealPoint.init( K, step, *ishape );
 
     std::back_insert_iterator< std::vector< double > > resultIIIterator( resultII );
     iigaussest.eval( theSetOfSurfels.begin(), theSetOfSurfels.end(), resultIIIterator, *ishape );
@@ -1546,112 +1640,6 @@ int testII3D_same_results( )
     return 0;
 }
 
-int testII2D_noise( )
-{
-    Board2D viewer;
-    Color red( 255, 0, 0 );
-    Color dred( 192, 0, 0 );
-    Color dgreen( 0, 192, 0 );
-    Color blue( 0, 0, 255 );
-    Color dblue( 0, 0, 192 );
-
-    typedef Z2i::Space::RealPoint RealPoint;
-    typedef ImplicitBall< Z2i::Space > Shape;
-    typedef Z2i::Space Space;
-
-    RealPoint border_min( -6, -6);
-    RealPoint border_max( 6, 6 );
-
-    double h = 0.2;
-    double noiseLevel = 0.2;
-    double alpha = 0.333333;
-    double radius_kernel = 5;
-    bool lambda_optimized = false;
-
-    double radius = 5.0;
-    RealPoint rcenter( 0.0, 0.0 );
-    Shape* aShape = new Shape( rcenter, radius );
-
-    typedef typename Space::RealPoint RealPoint;
-    typedef GaussDigitizer< Z2i::Space, Shape > DigitalShape;
-    typedef Z2i::KSpace KSpace;
-    typedef typename KSpace::SCell SCell;
-    typedef typename KSpace::Surfel Surfel;
-
-    bool withNoise = ( noiseLevel <= 0.0 ) ? false : true;
-    if( withNoise )
-        noiseLevel *= h;
-
-    ASSERT (( noiseLevel < 1.0 ));
-    // Digitizer
-    DigitalShape* dshape = new DigitalShape();
-    dshape->attach( *aShape );
-    dshape->init( border_min, border_max, h );
-
-    KSpace K;
-    if ( ! K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
-    {
-        std::cerr << "[3dLocalEstimators_0memory] error in creating KSpace." << std::endl;
-        return false;
-    }
-
-    typedef KanungoNoise< DigitalShape, Z2i::Domain > KanungoPredicate;
-    typedef LightImplicitDigitalSurface< KSpace, KanungoPredicate > Boundary;
-    typedef DigitalSurface< Boundary > MyDigitalSurface;
-    typedef typename MyDigitalSurface::ConstIterator ConstIterator;
-
-    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-    typedef GraphVisitorRange< Visitor > VisitorRange;
-    typedef typename VisitorRange::ConstIterator VisitorConstIterator;
-
-    typedef PointFunctorFromPointPredicateAndDomain< KanungoPredicate, Z2i::Domain, unsigned int > MyPointFunctor;
-    typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
-
-    // Extracts shape boundary
-    KanungoPredicate * noisifiedObject = new KanungoPredicate( *dshape, dshape->getDomain(), noiseLevel );
-    SCell bel = Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
-    Boundary * boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
-    MyDigitalSurface surf ( *boundary );
-
-    double minsize = dshape->getUpperBound()[0] - dshape->getLowerBound()[0];
-    unsigned int tries = 0;
-    while( surf.size() < 2 * minsize || tries > 150 )
-    {
-        delete boundary;
-        bel = Surfaces< KSpace >::findABel( K, *noisifiedObject, 10000 );
-        boundary = new Boundary( K, *noisifiedObject, SurfelAdjacency< KSpace::dimension >( true ), bel );
-        surf = MyDigitalSurface( *boundary );
-        ++tries;
-    }
-
-    if( tries > 150 )
-    {
-        std::cerr << "Can't found a proper bel. So .... I ... just ... kill myself." << std::endl;
-        return false;
-    }
-
-    VisitorRange * range;
-    VisitorConstIterator ibegin;
-    VisitorConstIterator iend;
-
-    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
-    ibegin = range->begin();
-    iend = range->end();
-
-    viewer << SetMode( dshape->getDomain().className(), "Grid" )
-          << dshape->getDomain();
-
-    for( ; ibegin != iend; ++ibegin )
-    {
-        viewer << CustomStyle( (*ibegin).className(), new CustomColors( red, dred ) )
-               << *ibegin;
-    }
-
-    delete range;
-
-    viewer.saveSVG("testII2D-noise.svg");
-}
-
 int testII3D_noise( int argc, char** argv )
 {
     QApplication application( argc, argv );
@@ -1769,6 +1757,8 @@ int testII3D_noise( int argc, char** argv )
     return application.exec();
 }
 
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -1780,17 +1770,17 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    testII2D_noise( );
-//    testII3D_noise( argc, argv );
-//    test2DTopology();
-//    testII2D( );
-//    testII2D_kernels();
-//    testII2D_kernels_2();
-//    testII2D_same_results();
-//    testII3D_same_results();
-//    testII3D_kernels(argc, argv);
-//    testII3D( argc, argv );
-//    testII3D();
+    testII2D_noise( argc, argv );
+    //    testII3D_noise( argc, argv );
+    //    test2DTopology();
+    //    testII2D( );
+    //    testII2D_kernels();
+    //    testII2D_kernels_2();
+    //    testII2D_same_results();
+    //    testII3D_same_results();
+    //    testII3D_kernels(argc, argv);
+    //    testII3D( argc, argv );
+    //    testII3D();
 
     trace.endBlock();
     return 1;
