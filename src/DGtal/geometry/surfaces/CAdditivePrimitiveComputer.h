@@ -88,7 +88,7 @@ Description of \b concept '\b CAdditivePrimitiveComputer' <p>
 
  ### Models###
 
-- COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer
+- COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
 
  ### Notes###
 

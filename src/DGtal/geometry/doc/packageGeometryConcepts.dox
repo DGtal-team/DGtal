@@ -112,14 +112,19 @@ subgraph cluster_concepts_2 {
 
      COBANaivePlaneComputer [ URL="\ref COBANaivePlaneComputer" ];
      COBAGenericNaivePlaneComputer [ URL="\ref COBAGenericNaivePlaneComputer" ];
+     COBAGenericStandardPlaneComputer [ URL="\ref COBAGenericStandardPlaneComputer" ];
      ChordNaivePlaneComputer [ URL="\ref ChordNaivePlaneComputer" ];
      ChordGenericNaivePlaneComputer [ URL="\ref ChordGenericNaivePlaneComputer" ];
   }
 
   COBANaivePlaneComputer -> CAdditivePrimitiveComputer;
   COBAGenericNaivePlaneComputer -> CAdditivePrimitiveComputer;
+  COBAGenericStandardPlaneComputer -> CAdditivePrimitiveComputer;
   ChordNaivePlaneComputer -> CAdditivePrimitiveComputer;
   ChordGenericNaivePlaneComputer -> CAdditivePrimitiveComputer;
+  COBAGenericNaivePlaneComputer -> COBANaivePlaneComputer [label="use",style=dashed];
+  COBAGenericStandardPlaneComputer -> COBANaivePlaneComputer [label="use",style=dashed];
+  ChordGenericNaivePlaneComputer -> ChordNaivePlaneComputer [label="use",style=dashed];
  }
 @enddot
 
