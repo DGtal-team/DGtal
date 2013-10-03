@@ -18,7 +18,9 @@ solutions to the following problems:
 
 - \b planarity \b decision: checks whether or not a given set of
   (digital or not) points belongs to a parallel strip of specified
-  width.
+  width. Strips may be specified with an \a axis \a width (like \e
+  naive planes) or with a \a diagonal \a width (like \a standard
+  \a planes).
 - \b plane \b recognition: decide if a given set of (digital or not)
   points is planar and provides an explicit solution (i.e. gives the
   normal and shift of some parallel strip containing all the points).
@@ -47,7 +49,8 @@ points, but only a valid parallel strip of approximate normal.
 [TOC]
 
 Related examples are viewer3D-7-planes.cpp, viewer3D-7bis-planes.cpp,
-greedy-plane-segmentation.cpp, greedy-plane-segmentation-ex2.cpp.
+viewer3D-7-stdplane.cpp, greedy-plane-segmentation.cpp,
+greedy-plane-segmentation-ex2.cpp.
 
 \section modulePlaneRecognition_sec1 Planarity as a parallel strip.
 
@@ -263,17 +266,65 @@ axis by calling ChordGenericNaivePlaneComputer::active().
 ChordGenericNaivePlaneComputer is to have three instances of
 ChordNaivePlaneComputer at the beginning, one per possible axis.
 
+
+\subsection modulePlaneRecognition_sec25 Standard plane recognition with COBA algorithm
+
+The user should instantiate a COBAGenericStandardPlaneComputer with the
+appropriate digital space. The maximal diagonal width (as a
+rational number \f$p/q \times \sqrt{3}\f$ ) is specified by method
+COBAGenericStandardPlaneComputer::init. The diameter of the set of points \a S
+\b must also be specified (i.e. \f$ \max_{p,q \in S} \|p-q\|_\infty
+\f$). Then, method COBAGenericStandardPlaneComputer::extend is called with the
+appropriate range of points. The method
+COBAGenericStandardPlaneComputer::primitive returns the solution (if any) as
+parallel strip of axis width smaller than p/q.
+
+\code
+#include "DGtal/arithmetic/COBAGenericStandardPlaneComputer.h" 
+...
+std::vector<Z3i::Point> pts;       // any container of 3D digital points
+...                                // fill pts with your points
+COBAGenericStandardPlaneComputer<Z3i::Space, int64_t> plane; // int64_t is enough for diameter 100
+plane.init( 100, 1, 1 );           // any axis, diameter is 100, epsilon=1/1 x sqrt(3)
+bool isPlane = plane.extend( pts.begin(), pts.end() );
+if ( isPlane )
+  std::cout << "This is a standard plane, well approximated by " << plane.primitive() << std::endl;
+else
+  std::cout << "This is a not standard plane." << std::endl;
+\endcode
+
+The advantage is that the object detects progressively
+what is the correct main diagonal. You may know what is a correct main
+diagonal by calling COBAGenericStandardPlaneComputer::active().
+
+\note The principle of COBAGenericNaivePlaneComputer is to have four
+instances of COBANaivePlaneComputer at the beginning, all of z
+axis. When extending the object by adding points, the points are
+transformed such as: \f$(x,y,z) \mapsto (x \pm z, y \pm z, z)\f$. We
+need four instances for the four possible sign combinations.  It is
+guaranteed that if there is a naive plane (of specified width) that
+contains the given set of points, then it corresponds to a standard
+plane before the transformation. Then the object
+COBAGenericStandardPlaneComputer will have at least one active
+COBANaivePlaneComputer instance. COBAGenericStandardPlaneComputer is
+thus a correct recognizer of arbitrary pieces of standard planes.
+
+\note Template parameters have the same role as for class
+COBANaivePlaneComputer (see above).
+
+
+
 \section modulePlaneRecognition_sec3 Incremental or additive plane recognition
 
 Incremental and additive plane recognition are done in exactly the
-same way for all four classes COBANaivePlaneComputer,
-COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer,
-ChordGenericNaivePlaneComputer. They are illustrated in examples
-viewer-7-planes.cpp and viewer-7bis-planes.cpp
+same way for all five classes COBANaivePlaneComputer,
+COBAGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer,
+ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer. They are
+illustrated in examples viewer-7-planes.cpp and viewer-7bis-planes.cpp
 
 \subsection modulePlaneRecognition_sec31 Incremental plane recognition
 
-These four classes are models of CIncrementalPrimitiveComputer. They
+These five classes are models of CIncrementalPrimitiveComputer. They
 all have an internal state that store a current parallel strip that
 contains all points previously inserted. Furthermore, they provide
 methods \b extend( \a p ) and \b isExtendable( \a p ) to insert a
@@ -323,7 +374,7 @@ extend directly whenever possible.
 
 \subsection modulePlaneRecognition_sec32 Additive plane recognition
 
-These four classes are models of CAdditivePrimitiveComputer. They all
+These five classes are models of CAdditivePrimitiveComputer. They all
 have an internal state that store a current parallel strip that
 contains all points previously inserted. Furthermore, they provide
 templated methods \b extend( \a it, \a itE ) and \b isExtendable( \a
@@ -411,6 +462,25 @@ $ ./examples/geometry/surfaces/viewer3D-7bis-planes
 @image latex chord-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
 
 \example geometry/surfaces/viewer3D-7bis-planes.cpp
+*/
+
+/**
+   This example shows the recognition of a simple standard digital
+   plane with the COBA algorithm (class
+   COBAGenericStandardPlaneComputer). Green points belong to the naive
+   plane. Grey points show farther points that also belong to the
+   strip.
+
+@see \ref modulePlaneRecognition_sec25
+
+@verbatim
+$ ./examples/geometry/surfaces/viewer3D-7-stdplane
+@endverbatim
+
+@image html coba-stdplane.png "Piece of standard plane."
+@image latex coba-stdplane.png "Piece of standard plane." width=5cm
+
+\example geometry/surfaces/viewer3D-7-stdplane.cpp
 */
 
 
