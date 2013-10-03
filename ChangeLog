@@ -13,6 +13,7 @@
       for the Projector Functor from the BasicPointFunctors class in
       order to simplify the slice images (with example and test in 2D
       slice image extraction from 3D volume file).
+    - New basic functor: SliceRotator2D to rotate 2D Slice images from 3D volume.
 
 *Geometry Package*
 
@@ -51,6 +52,7 @@
     - A new display of 2D and 3D image in Viewer3D.
     - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
     - New GenericReader and Generic Writer for both 2D, 3D and ND images.
+    - New display of 2D and 3D image in Display3D class (implemented in Viewer3D only).
     - Adding missing PPM Reader.
 
 *Image Package*
