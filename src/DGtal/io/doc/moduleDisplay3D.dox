@@ -549,8 +549,6 @@ Example of a custom display (with Board3DTo2D)
 \image html dgtalBoard3DTo2D-5-custom.png "Example of several custom display  (with Board3DTo2D)." width=5cm 
 */
 
-
-
 /**
 Ball visualisation (with Board3DTo2D)
 @see \ref DGtalGLV_CLipping
@@ -568,14 +566,11 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
 *
 */
 
-
-
 /**
    \image html  view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
 \example io/viewers/viewer3D-4bis-illustrationMode.cpp
-
-*
 */
+
 /**
    \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualization."
    \example io/viewers/viewer3D-8-2Dimages.cpp
@@ -587,12 +582,6 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
    \example io/viewers/viewer3D-9-3Dimages.cpp
 *
 */
-
-
-
-
-
-
 
 
 
