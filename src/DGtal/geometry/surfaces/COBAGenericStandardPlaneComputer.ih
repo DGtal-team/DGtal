@@ -146,7 +146,7 @@ typename DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::Cons
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 begin() const
 {
-  return myComputers[ active() ].begin();
+  return ConstIterator( myComputers[ active() ].begin(), invT( active() ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
@@ -155,7 +155,7 @@ typename DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::Cons
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 end() const
 {
-  return myComputers[ active() ].end();
+  return ConstIterator( myComputers[ active() ].end(), invT( active() ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
@@ -209,7 +209,7 @@ bool
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 operator()( const Point & p ) const
 {
-  return myComputers[ active() ].operator()( p );
+  return myComputers[ active() ].operator()( t( active() )( p ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -299,7 +299,8 @@ extend( TInputIterator it, TInputIterator itE )
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
   ASSERT( isValid() );
-  typedef IteratorAdapter<TInputIterator,Transform,Point> TransformedInputIterator;
+  typedef boost::transform_iterator<Transform,TInputIterator,Point,Point> TransformedInputIterator;
+  //typedef IteratorAdapter<TInputIterator,Transform,Point> TransformedInputIterator;
   unsigned int nbok = 0;
   _orthantsToErase.clear();
   for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
@@ -335,7 +336,8 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
   ASSERT( isValid() );
 
-  typedef IteratorAdapter<TInputIterator,Transform,Point> TransformedInputIterator;
+  typedef boost::transform_iterator<Transform,TInputIterator,Point,Point> TransformedInputIterator;
+  // typedef IteratorAdapter<TInputIterator,Transform,Point> TransformedInputIterator;
   unsigned int nbok = 0;
   for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
         orthIt != orthItE; ++orthIt )
@@ -354,7 +356,18 @@ typename DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::Prim
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 primitive() const
 {
-  return myComputers[ active() ].primitive();
+  IntegerVector3 n;
+  InternalInteger imin, imax;
+  Point p_min, p_max;
+  getCharacteristics( n, imin, imax, p_min, p_max );
+  double ddenom = NumberTraits<InternalInteger>::castToDouble( n[ 2 ] );
+  double min = ( NumberTraits<InternalInteger>::castToDouble( imin ) - 0.5 ) / ddenom;
+  double max = ( NumberTraits<InternalInteger>::castToDouble( imax ) + 0.5 ) / ddenom;
+  typename Space::RealVector normal;
+  normal[ 0 ] = NumberTraits<InternalInteger>::castToDouble( n[ 0 ] ) / ddenom;
+  normal[ 1 ] = NumberTraits<InternalInteger>::castToDouble( n[ 1 ] ) / ddenom;
+  normal[ 2 ] = NumberTraits<InternalInteger>::castToDouble( n[ 2 ] ) / ddenom;
+  return Primitive( min, normal, max-min );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
@@ -365,6 +378,7 @@ DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 getNormal( Vector3D & normal ) const
 {
   myComputers[ active() ].getNormal( normal );
+  invT( active() ).transform( normal );
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -375,7 +389,11 @@ void
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 getUnitNormal( Vector3D & normal ) const
 {
-  myComputers[ active() ].getUnitNormal( normal );
+  myComputers[ active() ].getNormal( normal );
+  invT( active() ).transform( normal );
+  normal /= sqrt( normal[0]*normal[0]
+                  +normal[1]*normal[1]
+                  +normal[2]*normal[2] );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
@@ -384,7 +402,13 @@ void
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 getBounds( double & min, double & max ) const
 {
-  myComputers[ active() ].getBounds( min, max );
+  IntegerVector3 n;
+  InternalInteger imin, imax;
+  Point p_min, p_max;
+  getCharacteristics( n, imin, imax, p_min, p_max );
+  double ddenom = NumberTraits<InternalInteger>::castToDouble( n[ 2 ] );
+  min = ( NumberTraits<InternalInteger>::castToDouble( imin ) - 0.5 ) / ddenom;
+  max = ( NumberTraits<InternalInteger>::castToDouble( imax ) + 0.5 ) / ddenom;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
@@ -393,7 +417,11 @@ typename DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::Poin
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 minimalPoint() const
 {
-  return invT( active() )( myComputers[ active() ].minimalPoint() );
+  IntegerVector3 n;
+  InternalInteger imin, imax;
+  Point p_min, p_max;
+  getCharacteristics( n, imin, imax, p_min, p_max );
+  return p_min;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
@@ -402,10 +430,45 @@ typename DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::Poin
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 maximalPoint() const
 {
-  return invT( active() )( myComputers[ active() ].maximalPoint() );
+  IntegerVector3 n;
+  InternalInteger imin, imax;
+  Point p_min, p_max;
+  getCharacteristics( n, imin, imax, p_min, p_max );
+  return p_max;
 }
 
-
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+void
+DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
+getCharacteristics( IntegerVector3 & n, 
+                     InternalInteger & imin, InternalInteger & imax, 
+                     Point & p_min, Point & p_max ) const
+{
+  // This rather complex method is necessary to guarantee that there
+  // are no numeric error due to bad rounding when casting to double.
+  p_min = invT( active() )( myComputers[ active() ].minimalPoint() );
+  p_max = invT( active() )( myComputers[ active() ].maximalPoint() );
+  // min and max may be swapped because of the transform.
+  n = myComputers[ active() ].integralNormal();
+  invT( active() ).transform( n );
+  if ( n[ 2 ] < NumberTraits<InternalInteger>::ZERO )
+    { n = -n; }
+  imin =
+    ( ( n[ 0 ] * InternalInteger( p_min[ 0 ] ) )
+      + ( n[ 1 ] * InternalInteger( p_min[ 1 ] ) )
+      + ( n[ 2 ] * InternalInteger( p_min[ 2 ] ) ) );
+  imax = 
+    ( ( n[ 0 ] * InternalInteger( p_max[ 0 ] ) ) 
+      + ( n[ 1 ] * InternalInteger( p_max[ 1 ] ) ) 
+      + ( n[ 2 ] * InternalInteger( p_max[ 2 ] ) ) );
+  if ( imax < imin ) 
+    {
+      std::swap( imin, imax );
+      std::swap( p_min, p_max );
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

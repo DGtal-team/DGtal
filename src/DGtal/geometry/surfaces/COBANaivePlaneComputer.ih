@@ -606,6 +606,16 @@ getNormal( Vector3D & normal ) const
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
+inline
+const typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::IntegerVector3 & 
+DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
+integralNormal() const
+{
+  return myState.N;
+}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
 template <typename Vector3D>
 inline
 void
@@ -642,7 +652,7 @@ DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 minimalPoint() const
 {
   ASSERT( ! this->empty() );
-  return *(myState.indMin);
+  return myState.ptMin;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
@@ -652,7 +662,7 @@ DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 maximalPoint() const
 {
   ASSERT( ! this->empty() );
-  return *(myState.indMax);
+  return myState.ptMax;
 }
 
 

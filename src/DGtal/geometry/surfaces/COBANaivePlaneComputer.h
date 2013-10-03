@@ -144,6 +144,7 @@ namespace DGtal
     typedef TInternalInteger InternalInteger;
     typedef IntegerComputer< InternalInteger > MyIntegerComputer;
     typedef ParallelStrip<Space, true, true> Primitive;
+    typedef PointVector< 3, InternalInteger > IntegerVector3;
 
     // ----------------------- std public types ------------------------------
   public:
@@ -396,6 +397,11 @@ namespace DGtal
     void getNormal( Vector3D & normal ) const;
 
     /**
+     * @return a reference to the current normal vector (exact form).
+     */
+    const IntegerVector3 & integralNormal() const;
+
+    /**
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
@@ -483,7 +489,7 @@ namespace DGtal
      * update the polygon of solutions state.cip.
      *
      * @param state (modified) the state where the fields
-     * state.indMin, state.indMax, state.cip are used in computation
+     * state.ptMin, state.ptMax, state.cip are used in computation
      * and where field state.cip is updated.
      */
     void doubleCut( InternalPoint2 & grad, State & state ) const;
@@ -496,7 +502,7 @@ namespace DGtal
      * @tparam TInputIterator any model of InputIterator.
      * @param state (modified) the state where the normal N is used in
      * computation and where fields state.min, state.max,
-     * state.indMin, state.indMax are updated.
+     * state.ptMin, state.ptMax are updated.
      *
      * @param itB an input iterator on the first point of the range.
      * @param itE an input iterator after the last point of the range.
@@ -513,12 +519,12 @@ namespace DGtal
      *
      * @param state (modified) the state where the normal N is used in
      * computation and where fields state.min, state.max,
-     * state.indMin, state.indMax are updated.
+     * state.ptMin, state.ptMax are updated.
      *
      * @param itB an input iterator on the first point of the range.
      * @param itE an input iterator after the last point of the range.
      * @return 'true' if any of the fields state.min, state.max,
-     * state.indMin, state.indMax have been updated, 'false'
+     * state.ptMin, state.ptMax have been updated, 'false'
      * otherwise.
      */
     template <typename TInputIterator>
@@ -539,8 +545,8 @@ namespace DGtal
      * @param grad (updated) the value of a gradient used to cut the
      * polygon of solutions.
      *
-     * @param state the state where the iterators state.indMin and
-     * state.indMax are used in computations.
+     * @param state the state where the iterators state.ptMin and
+     * state.ptMax are used in computations.
      */
     void computeGradient( InternalPoint2 & grad, const State & state ) const;
 

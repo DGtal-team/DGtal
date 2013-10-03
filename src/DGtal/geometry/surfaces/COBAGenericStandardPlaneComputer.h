@@ -58,50 +58,48 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class COBAGenericStandardPlaneComputer
   /**
-   * Description of template class 'COBAGenericStandardPlaneComputer'
-   * <p> \brief Aim: A class that recognizes pieces of digital planes
-   * of given axis width. When the diagonal width is \f$ 1 \times
-   * \sqrt{3} \f$, it corresponds to standard planes. Contrary to
-   * COBAStandardPlaneComputer, the axis is \b not specified at
-   * initialization of the object. This class uses four instances of
-   * COBAStandardPlaneComputer of axis z, by casting points from
-   * \f$(x,y,z)\f$ to \f$(x \pm z, y \pm z, z)\f$.
-   *
-   * As a (3D) geometric primitive computer, it obeys the concept
-   * CAdditivePrimitiveComputer. It is copy constructible, assignable.
-   * It has methods \ref extend(), extend( InputIterator,
-   * InputIterator) and \ref isExtendable(),
-   * isExtendable(InputIterator, InputIterator).  The object stores
-   * all the distinct points \c p such that 'extend( \c p )' was
-   * successful. It is thus a model of boost::ForwardContainer (non
-   * mutable). It is iterable (inner type ConstIterator, begin(),
-   * end()). You may clear() it. However, the points are not stored as
-   * is, but transformed as \f$(x \pm z, y \pm z, z)\f$, depending on
-   * which instance of COBANaivePlaneComputer is active.
-   *
-   * It is also a model of CPointPredicate (returns 'true' iff a point
-   * is within the current bounds).
-   *
-   * Note on complexity: See COBAStandardPlaneComputer. Although it uses four
-   * instances of COBAStandardPlaneComputer, the recognition is \b not four
-   * times slower. Indeed, recognition stops quickly on bad orthants.
-   *
-   * Note on execution times: The user should favor int64_t instead of
-   * BigInteger whenever possible (diameter smaller than 500). The
-   * speed-up is between 10 and 20 for these diameters. For greater
-   * diameters, it is necessary to use BigInteger (see below).
-   *
-   * @tparam TSpace specifies the type of digital space in which lies
-   * input digital points. A model of CSpace.
-   *
-   * @tparam TInternalInteger specifies the type of integer used in
-   * internal computations. The type should be able to hold integers
-   * of order (2*D^3)^2 if D is the diameter of the set of digital
-   * points. In practice, diameter is limited to 20 for int32_t,
-   * diameter is approximately 500 for int64_t, and whatever with
-   * BigInteger/GMP integers. For huge diameters, the slow-down is
-   * polylogarithmic with the diameter.
-   *
+     Description of template class 'COBAGenericStandardPlaneComputer'
+     <p> \brief Aim: A class that recognizes pieces of digital planes
+     of given axis width. When the diagonal width is \f$ 1 \times
+     \sqrt{3} \f$, it corresponds to standard planes. Contrary to
+     COBANaivePlaneComputer, the axis is \b not specified at
+     initialization of the object. This class uses four instances of
+     COBANaivePlaneComputer of axis z, by transforming points
+     \f$(x,y,z)\f$ to \f$(x \pm z, y \pm z, z)\f$.
+    
+     As a (3D) geometric primitive computer, it obeys the concept
+     CAdditivePrimitiveComputer. It is copy constructible, assignable.
+     It has methods \ref extend(), extend( InputIterator,
+     InputIterator) and \ref isExtendable(),
+     isExtendable(InputIterator, InputIterator).  The object stores
+     all the distinct points \c p such that 'extend(\c p )' was
+     successful. It is thus a model of boost::ForwardContainer (non
+     mutable). It is iterable (inner type ConstIterator, begin(),
+     end()). You may clear() it. 
+    
+     It is also a model of CPointPredicate (returns 'true' iff a point
+     is within the current bounds).
+    
+     Note on complexity: See COBAStandardPlaneComputer. Although it uses four
+     instances of COBAStandardPlaneComputer, the recognition is \b not four
+     times slower. Indeed, recognition stops quickly on bad orthants.
+    
+     Note on execution times: The user should favor int64_t instead of
+     BigInteger whenever possible (diameter smaller than 500). The
+     speed-up is between 10 and 20 for these diameters. For greater
+     diameters, it is necessary to use BigInteger (see below).
+    
+     @tparam TSpace specifies the type of digital space in which lies
+     input digital points. A model of CSpace.
+    
+     @tparam TInternalInteger specifies the type of integer used in
+     internal computations. The type should be able to hold integers
+     of order (2*D^3)^2 if D is the diameter of the set of digital
+     points. In practice, diameter is limited to 20 for int32_t,
+     diameter is approximately 500 for int64_t, and whatever with
+     BigInteger/GMP integers. For huge diameters, the slow-down is
+     polylogarithmic with the diameter.
+    
    @code
    typedef SpaceND<3,int> Z3;
    typedef COBAGenericStandardPlaneComputer< Z3, int64_t > StandardPlaneComputer;
@@ -113,10 +111,17 @@ namespace DGtal
    plane.extend( Point( 5, 5, 5 ) );  // return 'false'
    // There is no standard plane going through the 3 first points and the last one.
    @endcode
-   *
-   * Model of boost::DefaultConstructible, boost::CopyConstructible,
-   * boost::Assignable, boost::ForwardContainer,
-   * CAdditivePrimitiveComputer, CPointPredicate.
+    
+     Model of boost::DefaultConstructible, boost::CopyConstructible,
+     boost::Assignable, boost::ForwardContainer,
+     CAdditivePrimitiveComputer, CPointPredicate.
+
+     @advanced All accepted inserted points are stored in the
+     different naive plane computers, but they are stored
+     "transformed". This is why we adapt the iterator on the naive
+     plane computer with a boost::transform_iterator, such that the
+     points are transformed back when accessing to the value of the
+     iterator (notably in \ref begin and \ref end method).
    */
   template < typename TSpace, 
              typename TInternalInteger >
@@ -139,7 +144,7 @@ namespace DGtal
     typedef IntegerComputer< InternalInteger > MyIntegerComputer;
     typedef COBANaivePlaneComputer< Space, InternalInteger > COBAComputer;
     typedef typename COBAComputer::Primitive Primitive;
-
+    typedef typename COBAComputer::IntegerVector3 IntegerVector3;
 
     // ----------------------- internal types ------------------------------
   private:
@@ -148,6 +153,17 @@ namespace DGtal
 
     // --------- adapter types for standard to naive transformation --------
   private:
+    /**
+       This type is used to cast points from \f$(x,y,z)\f$ to \f$(x
+       \pm z,y \pm z,z)\f$ and inversely. This is used when recognize
+       a standard plane. Indeed, we only know how to recognize naive
+       planes. So we dilate points of standard planes with this
+       transform so that the standard plane becomes naive. Otherwise
+       said, if \f$T_{\pm,\pm}: (x,y,z) \mapsto (x \pm z,y \pm
+       z,z)\f$, then P is a standard plane iff one of \f$T_{+,+}(P),
+       T_{+,-}(P), T_{-,+}(P), T_{-,-}(P)\f$ is a naive plane of main
+       axis z.
+    */
     struct Transform {
       typedef Point Value;
       typedef Point value_type;
@@ -165,9 +181,27 @@ namespace DGtal
       { return Point( p[ 0 ] + ( _posX ? -p[ 2 ] : p[ 2 ] ), 
                       p[ 1 ] + ( _posY ? -p[ 2 ] : p[ 2 ] ), 
                       p[ 2 ] ); }
+      template <typename Vector3D>
+      void transformBack( Vector3D & v )
+      {
+        v[ 2 ] += ( _posX ? v[ 0 ] : -v[ 0 ] );
+        v[ 2 ] += ( _posY ? v[ 1 ] : -v[ 1 ] );
+      }
+      template <typename Vector3D>
+      void transform( Vector3D & v )
+      {
+        v[ 2 ] += ( _posX ? -v[ 0 ] : v[ 0 ] );
+        v[ 2 ] += ( _posY ? -v[ 1 ] : v[ 1 ] );
+      }
     };
 
-    typedef IteratorAdapter<PointSetConstIterator,Transform> ConstIterator;
+    /**
+       We wrap a transform over the iterator on point that uses one of
+       the functor Transform to cast back the point from the naive
+       space to the standard space.
+    */
+    typedef boost::transform_iterator<Transform,PointSetConstIterator,Point,Point> 
+    ConstIterator;
 
     // ----------------------- std public types ------------------------------
   public:
@@ -434,6 +468,21 @@ namespace DGtal
      * vector. Note that other points may also have a maximum value.
      */
     Point maximalPoint() const;
+    
+    /**
+       The basic method for computing all characteristics of the
+       recognized plane. Used by \ref primitive, \ref minimalPoint,
+       \ref maximalPoint, \ref getBounds.
+
+       @param[out] n the integral normal vector (with last component positive).
+       @param[out] imin the minimum dot product of an inserted point with \a n.
+       @param[out] imax the maximum dot product of an inserted point with \a n.
+       @param[out] p_min an inserted point satisfying the minimum dot product \a imin.
+       @param[out] p_max an inserted point satisfying the maximum dot product \a imax.
+    */ 
+    void getCharacteristics( IntegerVector3 & n, 
+                             InternalInteger & imin, InternalInteger & imax, 
+                             Point & p_min, Point & p_max ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
