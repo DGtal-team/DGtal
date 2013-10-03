@@ -192,7 +192,24 @@ namespace DGtal
     {
       ZNear = _near; ZFar = _far;
     }
+    
+    /**
+     * Set the open gl scale of x,y,z axis. It doesn't change the
+     * geometry of anything, it is just visualisation parameter
+     * (useful to produce more realistic 3D volume display)
+     * @param sx the scale on the x axis.
+     * @param sy the scale on the y axis.
+     * @param sz the scale on the z axis.     
+     *
+     **/
+    void setGLScale(float sx, float sy, float sz)
+    {
+      myGLScaleFactorX=sx;
+      myGLScaleFactorY=sy;
+      myGLScaleFactorZ=sz;
+    }
 
+    
     /// the 3 possible axes for the image direction
     enum ImageDirection {xDirection, yDirection, zDirection };
     /// the modes of representation of an image
@@ -1039,12 +1056,17 @@ namespace DGtal
 
     //the default width of the mesh line
     float myMeshDefaultLineWidth;
-
+    
+    // To apply openGL ajustment only on visualisation
+    float myGLScaleFactorX;
+    float myGLScaleFactorY;
+    float myGLScaleFactorZ;
+    
     /// Used to store all displayed images
     std::vector<TextureImage> myGSImageList;
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
-
+    
 
   }; // end of class Viewer3D
 
