@@ -399,7 +399,7 @@ namespace DGtal
     /**
      * @return a reference to the current normal vector (exact form).
      */
-    const IntegerVector3 & integralNormal() const;
+    const IntegerVector3 & exactNormal() const;
 
     /**
      * @tparam Vector3D any type T such that T.operator[](int i)

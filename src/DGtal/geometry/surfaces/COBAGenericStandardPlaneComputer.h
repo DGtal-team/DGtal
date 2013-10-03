@@ -152,7 +152,7 @@ namespace DGtal
     typedef std::vector<Dimension>::const_iterator OrthantConstIterator;
 
     // --------- adapter types for standard to naive transformation --------
-  private:
+  public:
     /**
        This type is used to cast points from \f$(x,y,z)\f$ to \f$(x
        \pm z,y \pm z,z)\f$ and inversely. This is used when recognize
@@ -413,7 +413,7 @@ namespace DGtal
 
     /**
        @return the current primitive recognized by this computer,
-       which is a ParallelStrip of axis width smaller than the one
+       which is a ParallelStrip of diagonal width smaller than the one
        specified at instanciation.
 
        @note The returned primitive has the form \f$\mu \le \vec{N}
@@ -501,7 +501,7 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    std::vector<Dimension> myOrthants; /**< The list of active plane orthants. Starts with {++,+-,-+,--}. */
+    std::vector<Dimension> myOrthants; /**< The list of active plane orthants. Starts with {0:++,1:+-,2:-+,3:--}. */
     COBAComputer myComputers[ 4 ];     /**< The four COBA plane computers. */
     static Transform myTransforms[ 4 ];/**< The four space transformation associated with each COBA plane computer, shared by all computers. */
     mutable std::vector<Dimension> _orthantsToErase; /**< Useful when erasing orthants. */

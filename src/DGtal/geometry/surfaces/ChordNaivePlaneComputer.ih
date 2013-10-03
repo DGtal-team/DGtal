@@ -741,6 +741,15 @@ getNormal( Vector3D & normal ) const
     normal[ i ] = NumberTraits<InternalScalar>::castToDouble( myState.N[ i ] );
 }
 //-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+const typename DGtal::ChordNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::InternalVector&
+DGtal::ChordNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+exactNormal() const
+{
+  return myState.N;
+}
+//-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 template <typename Vector3D>

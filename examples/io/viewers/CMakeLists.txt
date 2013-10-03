@@ -15,6 +15,7 @@ SET(DGTAL_TESTS_SRC
 SET(DGTAL_TESTS_GMP_SRC
    viewer3D-7-planes
    viewer3D-7-stdplane
+   viewer3D-7bis-stdplane
 )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

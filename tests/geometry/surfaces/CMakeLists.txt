@@ -1,3 +1,12 @@
+SET(TESTS_SRC
+ testChordGenericStandardPlaneComputer
+)        
+
+FOREACH(FILE ${TESTS_SRC})
+  add_executable(${FILE} ${FILE})
+  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+  add_test(${FILE} ${FILE})
+ENDFOREACH(FILE)
 
 SET(TESTS_SURFACES_SRC
  testNormalVectorEstimatorEmbedder

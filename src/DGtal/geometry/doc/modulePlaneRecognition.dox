@@ -126,7 +126,7 @@ COBANaivePlaneComputer::primitive returns the solution (if any) as
 parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/arithmetic/COBANaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h" 
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -159,7 +159,7 @@ of points. The method ChordNaivePlaneComputer::primitive returns the
 solution (if any) as parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/arithmetic/ChordNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h" 
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -203,7 +203,7 @@ COBAGenericNaivePlaneComputer::primitive returns the solution (if any) as
 parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/arithmetic/COBAGenericNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.h" 
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -245,7 +245,7 @@ of points. The method ChordGenericNaivePlaneComputer::primitive returns the
 solution (if any) as parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/arithmetic/ChordGenericNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h" 
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -280,7 +280,7 @@ COBAGenericStandardPlaneComputer::primitive returns the solution (if any) as
 parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/arithmetic/COBAGenericStandardPlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBAGenericStandardPlaneComputer.h" 
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -313,14 +313,62 @@ thus a correct recognizer of arbitrary pieces of standard planes.
 COBANaivePlaneComputer (see above).
 
 
+\subsection modulePlaneRecognition_sec26 Standard plane recognition with Chord algorithm
+
+The user should instantiate a ChordGenericStandardPlaneComputer with
+the appropriate digital space. The maximal diagonal width (as a
+rational number \f$p/q \times \sqrt{3}\f$ ) is specified by method
+ChordGenericStandardPlaneComputer::init. Then, method
+ChordGenericStandardPlaneComputer::extend is called with the
+appropriate range of points. The method
+ChordGenericStandardPlaneComputer::primitive returns the solution (if
+any) as parallel strip of axis width smaller than p/q.
+
+\code
+#include "DGtal/geometry/surfaces/ChordGenericStandardPlaneComputer.h" 
+...
+std::vector<Z3i::Point> pts;       // any container of 3D digital points
+...                                // fill pts with your points
+ChordGenericStandardPlaneComputer<Z3i::Space, Z3i::Point, int64_t> plane; 
+plane.init( 1, 1 );                // any axis, epsilon=1/1 x sqrt(3)
+bool isPlane = plane.extend( pts.begin(), pts.end() );
+if ( isPlane )
+  std::cout << "This is a standard plane, well approximated by " << plane.primitive() << std::endl;
+else
+  std::cout << "This is a not standard plane." << std::endl;
+\endcode
+
+The advantage is that the object detects progressively
+what is the correct main diagonal. You may know what is a correct main
+diagonal by calling ChordGenericStandardPlaneComputer::active().
+
+\note The principle of ChordGenericNaivePlaneComputer is to have four
+instances of ChordNaivePlaneComputer at the beginning, all of z
+axis. When extending the object by adding points, the points are
+transformed such as: \f$(x,y,z) \mapsto (x \pm z, y \pm z, z)\f$. We
+need four instances for the four possible sign combinations.  It is
+guaranteed that if there is a naive plane (of specified width) that
+contains the given set of points, then it corresponds to a standard
+plane before the transformation. Then the object
+ChordGenericStandardPlaneComputer will have at least one active
+ChordNaivePlaneComputer instance. ChordGenericStandardPlaneComputer is
+thus a correct recognizer of arbitrary pieces of standard planes.
+
+\note Template parameters have the same role as for class
+ChordNaivePlaneComputer (see above).
+
+
+
 
 \section modulePlaneRecognition_sec3 Incremental or additive plane recognition
 
 Incremental and additive plane recognition are done in exactly the
 same way for all five classes COBANaivePlaneComputer,
 COBAGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer,
-ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer. They are
-illustrated in examples viewer-7-planes.cpp and viewer-7bis-planes.cpp
+ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer,
+ChordGenericStandardPlaneComputer. They are illustrated in examples
+viewer-7-planes.cpp, viewer-7bis-planes.cpp, viewer-7-stdplane.cpp,
+and viewer-7bis-stdplane.cpp.
 
 \subsection modulePlaneRecognition_sec31 Incremental plane recognition
 
@@ -404,7 +452,7 @@ static method ChordNaivePlaneComputer::computeAxisWidth. The axis
 width is returned as a pair (p,q), such that the width is p/q.
 
 \code
-#include "DGtal/arithmetic/ChordNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h" 
 ...
 std::set<Z3i::Point> pts;       // any container of 3D digital points
 ...                             // fill pts with your points

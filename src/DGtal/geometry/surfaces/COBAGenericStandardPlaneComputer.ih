@@ -38,6 +38,7 @@ template <typename TSpace, typename TInternalInteger>
 typename DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::Transform
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::myTransforms[4] = {
   Transform( true, true ), Transform( true, false ), Transform( false, true ), Transform( false, false ) };
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -257,7 +258,6 @@ extend( const Point & p )
         orthIt != orthItE; ++orthIt )
     {
       Point Tp = t( *orthIt )( p );
-      trace.info() << p << " -> " << Tp << std::endl;
       bool ok = myComputers[ *orthIt ].extend( Tp );
       if ( ! ok ) _orthantsToErase.push_back( *orthIt );
       else ++nbok;
@@ -300,14 +300,13 @@ extend( TInputIterator it, TInputIterator itE )
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
   ASSERT( isValid() );
   typedef boost::transform_iterator<Transform,TInputIterator,Point,Point> TransformedInputIterator;
-  //typedef IteratorAdapter<TInputIterator,Transform,Point> TransformedInputIterator;
   unsigned int nbok = 0;
   _orthantsToErase.clear();
   for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
         orthIt != orthItE; ++orthIt )
     {
       Dimension orthant = *orthIt;
-      TransformedInputIterator transIt ( it,  t( orthant  ) ); 
+      TransformedInputIterator transIt ( it,  t( orthant ) ); 
       TransformedInputIterator transItE( itE, t( orthant ) ); 
       bool ok = myComputers[ orthant ].extend( transIt, transItE );
       if ( ! ok ) _orthantsToErase.push_back( orthant );
@@ -335,15 +334,14 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
   ASSERT( isValid() );
-
-  typedef boost::transform_iterator<Transform,TInputIterator,Point,Point> TransformedInputIterator;
-  // typedef IteratorAdapter<TInputIterator,Transform,Point> TransformedInputIterator;
+  typedef boost::transform_iterator<Transform,TInputIterator,Point,Point>
+    TransformedInputIterator;
   unsigned int nbok = 0;
   for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
         orthIt != orthItE; ++orthIt )
     {
       Dimension orthant = *orthIt;
-      TransformedInputIterator transIt ( it,  t( orthant  ) ); 
+      TransformedInputIterator transIt ( it,  t( orthant ) ); 
       TransformedInputIterator transItE( itE, t( orthant ) ); 
       nbok += myComputers[ orthant ].isExtendable( transIt, transItE ) ? 1 : 0;
     }
@@ -443,15 +441,15 @@ inline
 void
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 getCharacteristics( IntegerVector3 & n, 
-                     InternalInteger & imin, InternalInteger & imax, 
-                     Point & p_min, Point & p_max ) const
+                    InternalInteger & imin, InternalInteger & imax, 
+                    Point & p_min, Point & p_max ) const
 {
   // This rather complex method is necessary to guarantee that there
   // are no numeric error due to bad rounding when casting to double.
   p_min = invT( active() )( myComputers[ active() ].minimalPoint() );
   p_max = invT( active() )( myComputers[ active() ].maximalPoint() );
   // min and max may be swapped because of the transform.
-  n = myComputers[ active() ].integralNormal();
+  n = myComputers[ active() ].exactNormal();
   invT( active() ).transform( n );
   if ( n[ 2 ] < NumberTraits<InternalInteger>::ZERO )
     { n = -n; }

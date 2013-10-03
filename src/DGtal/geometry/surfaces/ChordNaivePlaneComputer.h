@@ -68,33 +68,35 @@ namespace DGtal
     Zimmermann, 2005: An elementary digital plane recognition
     algorithm, @cite Gerard_2005_dam.
    
-    As a (3D) geometric primitive, it obeys to a subset of the
-    concept CSegmentComputer. It is copy constructible,
-    assignable. It is iterable (inner type ConstIterator, begin(),
-    end()). It has methods \ref extend(), extend( InputIterator,
+    As a (3D) geometric primitive computer, it obeys the concept
+    CAdditivePrimitiveComputer. It is copy constructible, assignable.
+    It has methods \ref extend(), extend( InputIterator,
     InputIterator) and \ref isExtendable(),
     isExtendable(InputIterator, InputIterator).  The object stores
-    all the distinct points \c p such that 'extend( \c p )' was
+    all the distinct points \c p such that 'extend(\c p )' was
     successful. It is thus a model of boost::ForwardContainer (non
-    mutable).
-   
+    mutable). It is iterable (inner type ConstIterator, begin(),
+    end()). You may clear() it. 
+       
     It is also a model of CPointPredicate (returns 'true' iff a point
     is within the current bounds).
    
-    \par Note on complexity: 
-    According to the paper, the worst-case complexity is \f$ O(n^7)
-    \f$ (in its non-incremental form). However, the observed complexity is quasi-linear. 
+    \par Note on complexity: According to the paper, the
+     worst-case complexity is \f$ O(n^7) \f$ (in its non-incremental
+     form). However, the observed complexity is quasi-linear.
    
-    \par Note on execution times: 
-    The user should favor int32_t or int64_t instead of BigInteger
-    whenever possible. When the point components are smaller than
-    14000, int32_t are sufficient. For point components smaller than
-    440000000, int64_t are sufficient. For greater diameters, it is
-    necessary to use BigInteger.
+    \par Note on execution times: The user should favor int32_t or
+     int64_t instead of BigInteger whenever possible. When the point
+     components are smaller than 14000, int32_t are sufficient. For
+     point components smaller than 440000000, int64_t are
+     sufficient. For greater diameters, it is necessary to use
+     BigInteger.
 
     \par What is the best algorithm to check if a set of digital points is some (naive) plane ? 
 
-    We discuss only this question between ChordNaivePlaneComputer (1) and COBANaivePlaneComputer (2):
+    We discuss only this question between ChordNaivePlaneComputer (1)
+     and COBANaivePlaneComputer (2) (see also \ref
+     modulePlaneRecognition_sec5):
 
     -# Complexity: (2) has a better worst time complexity than (1),
        but neither (1) nor (2) has an easy bound on the number of
@@ -145,7 +147,7 @@ namespace DGtal
     @tparam TInternalScalar specifies the type of scalar used in
     internal computations, generally a more precise type than
     TInputPoint::Component. For instance, for digital points, the type
-    should be able to hold integers of order (2*D^3) if D is the
+    should be able to hold integers of order \f$(2*D)^2\f$ if D is the
     diameter of the set of digital points.
    
    */
@@ -168,7 +170,7 @@ namespace DGtal
     typedef InputPoint InputVector;
     typedef typename InputVector::Component Component;
     typedef typename InputPoint::Coordinate Coordinate;
-    typedef InternalScalar InternalVector[ 3 ];
+    typedef PointVector<3,InternalScalar> InternalVector;
 
     typedef std::set< InputPoint > InputPointSet;
     typedef typename InputPointSet::size_type Size;
@@ -450,6 +452,11 @@ namespace DGtal
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
+
+    /**
+     * @return a reference to the current normal vector (exact form).
+     */
+    const InternalVector & exactNormal() const;
 
     /**
      * @tparam Vector3D any type T such that T.operator[](int i)
