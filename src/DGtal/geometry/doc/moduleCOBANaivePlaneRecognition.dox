@@ -114,7 +114,7 @@ boost::ForwardContainer):
 You may instantiate a COBANaivePlaneComputer as follows:
 
 @code 
-#include "DGtal/arithmetic/COBANaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h" 
 ...
 using namespace Z3i;               // digital space is Z3
 ...
@@ -306,7 +306,7 @@ it similarly to COBANaivePlaneComputer, but you do not need to specify a main
 axis when calling COBAGenericNaivePlaneComputer::init().
 
 @code 
-#include "DGtal/arithmetic/COBAGenericNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.h" 
 ...
 using namespace Z3i;            // digital space is Z3
 ...

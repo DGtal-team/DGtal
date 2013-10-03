@@ -609,7 +609,7 @@ template <typename TSpace, typename TInternalInteger>
 inline
 const typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::IntegerVector3 & 
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
-integralNormal() const
+exactNormal() const
 {
   return myState.N;
 }

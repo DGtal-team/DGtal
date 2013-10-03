@@ -64,22 +64,23 @@ namespace DGtal
      at initialization of the object. This class uses three instances
      of ChordNaivePlaneComputer, one per axis.
      
-     As a (3D) geometric primitive, it obeys to a subset of the
-     concept CSegmentComputer. It is copy constructible,
-     assignable. It is iterable (inner type ConstIterator, begin(),
-     end()). You may clear() it. It has methods \ref extend(), extend(
-     InputIterator, InputIterator) and \ref isExtendable(),
+     As a (3D) geometric primitive computer, it obeys the concept
+     CAdditivePrimitiveComputer. It is copy constructible, assignable.
+     It has methods \ref extend(), extend( InputIterator,
+     InputIterator) and \ref isExtendable(),
      isExtendable(InputIterator, InputIterator).  The object stores
-     all the distinct points \c p such that 'extend( \c p )' was
+     all the distinct points \c p such that 'extend(\c p )' was
      successful. It is thus a model of boost::ForwardContainer (non
-     mutable).
+     mutable). It is iterable (inner type ConstIterator, begin(),
+     end()). You may clear() it. 
      
      It is also a model of CPointPredicate (returns 'true' iff a point
      is within the current bounds).
      
-     Note on complexity: See ChordNaivePlaneComputer. Although it uses three
-     instances of ChordNaivePlaneComputer, the recognition is \b not three
-     times slower. Indeed, recognition stops quickly on bad axes.
+     Note on complexity: See ChordNaivePlaneComputer and \ref
+     modulePlaneRecognition_sec5. Although it uses three instances of
+     ChordNaivePlaneComputer, the recognition is \b not three times
+     slower. Indeed, recognition stops quickly on bad axes.
      
      @tparam TSpace specifies the digital space (provides dimension and
      types for the primitive)
@@ -93,7 +94,7 @@ namespace DGtal
      @tparam TInternalScalar specifies the type of scalar used in
      internal computations, generally a more precise type than
      TInputPoint::Component. For instance, for digital points, the type
-     should be able to hold integers of order (2*D^3) if D is the
+     should be able to hold integers of order \f$(2*D)^2\f$ if D is the
      diameter of the set of digital points.
      
      @code
