@@ -65,6 +65,7 @@ Description of \b concept '\b CPrimitiveComputer' <p>
  ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
 
  ### Associated types :
+    - \t Space, the type that defines the digital space.
     - \t Primitive, the type that defines the primitive.
 
  ### Notation
@@ -83,7 +84,7 @@ Description of \b concept '\b CPrimitiveComputer' <p>
 
  ### Models###
 
-- COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer
+- COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
 
  ### Notes###
 
@@ -97,6 +98,7 @@ Description of \b concept '\b CPrimitiveComputer' <p>
   public:
     // Inner types
     typedef typename T::Primitive Primitive;
+    typedef typename T::Space Space;
 
     // Methods
     BOOST_CONCEPT_USAGE( CPrimitiveComputer )
