@@ -53,8 +53,8 @@
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
-
-
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/io/readers/VolReader.h"
 
 /*#include "DGtal/io/boards/Board2D.h"
 
@@ -594,7 +594,7 @@ int testII3D_Principal( int argc, char** argv )
     double radius_kernel = atof(argv[3]);
     bool lambda_optimized = false;
 
-    Polynomial3 poly;
+    /*Polynomial3 poly;
     Polynomial3Reader reader;
     std::string::const_iterator iter = reader.read( poly, poly_str.begin(), poly_str.end() );
     if ( iter != poly_str.end() )
@@ -605,16 +605,16 @@ int testII3D_Principal( int argc, char** argv )
         return 1;
     }
 
-    Shape* aShape = new Shape( poly );
+    Shape* aShape = new Shape( poly );*/
 
     typedef typename Space::RealPoint RealPoint;
-    typedef GaussDigitizer< Z3i::Space, Shape > DigitalShape;
+    //typedef GaussDigitizer< Z3i::Space, Shape > DigitalShape;
     typedef Z3i::KSpace KSpace;
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Surfel Surfel;
 
     // Digitizer
-    DigitalShape* dshape = new DigitalShape();
+    /*DigitalShape* dshape = new DigitalShape();
     dshape->attach( *aShape );
     dshape->init( border_min, border_max, h );
 
@@ -626,10 +626,26 @@ int testII3D_Principal( int argc, char** argv )
     {
         std::cerr << "[3dLocalEstimators_0memory] error in creating KSpace." << std::endl;
         return false;
+    }*/
+
+    typedef ImageSelector< Z3i::Domain, bool>::Type Image;
+    typedef SimpleThresholdForegroundPredicate< Image > ImagePredicate;
+    Image image = VolReader<Image>::importVol( poly_str );
+    ImagePredicate predicate = ImagePredicate( image, 0 );
+
+    Z3i::Domain domain = image.domain();
+
+    Z3i::KSpace K;
+
+    bool space_ok = K.init( domain.lowerBound(), domain.upperBound(), true );
+    if (!space_ok)
+    {
+      trace.error() << "Error in the Khalimsky space construction."<<std::endl;
+      return 2;
     }
 
     //typedef KanungoNoise< DigitalShape, Z3i::Domain > KanungoPredicate;
-    typedef LightImplicitDigitalSurface< KSpace, DigitalShape > Boundary;
+    typedef LightImplicitDigitalSurface< KSpace, ImagePredicate > Boundary;
     typedef DigitalSurface< Boundary > MyDigitalSurface;
     typedef typename MyDigitalSurface::ConstIterator ConstIterator;
 
@@ -637,12 +653,10 @@ int testII3D_Principal( int argc, char** argv )
     typedef GraphVisitorRange< Visitor > VisitorRange;
     typedef typename VisitorRange::ConstIterator VisitorConstIterator;
 
-    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
-    typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
 
     // Extracts shape boundary
-    SCell bel = Surfaces< KSpace >::findABel( K, *dshape, 10000 );
-    Boundary * boundary = new Boundary( K, *dshape, SurfelAdjacency< KSpace::dimension >( true ), bel );
+    SCell bel = Surfaces< KSpace >::findABel( K, predicate, 10000 );
+    Boundary * boundary = new Boundary( K, predicate, SurfelAdjacency< KSpace::dimension >( true ), bel );
     MyDigitalSurface surf ( *boundary );
 
     VisitorRange * range;
@@ -653,11 +667,13 @@ int testII3D_Principal( int argc, char** argv )
     ibegin = range->begin();
     iend = range->end();
 
-    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
+    typedef ImageToConstantFunctor< Image, ImagePredicate > MyPointFunctor;
+//    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
     typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
     typedef IntegralInvariantGaussianCurvatureEstimator_0memory< KSpace, MySpelFunctor > Estimator;
 
-    MyPointFunctor * pointFunctor = new MyPointFunctor( dshape, dshape->getDomain(), 1, 0 );
+    MyPointFunctor * pointFunctor = new MyPointFunctor( &image, &predicate, 1 );
+//    MyPointFunctor * pointFunctor = new MyPointFunctor( dshape, dshape->getDomain(), 1, 0 );
     MySpelFunctor * functor = new MySpelFunctor( *pointFunctor, K );
     Estimator * iigEstimator = new Estimator( K, *functor );
     iigEstimator->init( h, radius_kernel );
@@ -683,7 +699,7 @@ int testII3D_Principal( int argc, char** argv )
     QApplication application( argc, argv );
     Viewer3D viewer;
     viewer.show();
-    viewer << SetMode3D( dshape->getDomain().className(), "BoundingBox" ) << dshape->getDomain();
+    //viewer << SetMode3D( dshape->getDomain().className(), "BoundingBox" ) << dshape->getDomain();
 
     delete range;
     range = new VisitorRange( new Visitor( surf, *surf.begin() ));
