@@ -47,6 +47,7 @@
     - New documentation for planarity decision, plane recognition and width computation.
       Quantitative and qualitative evaluation of COBA and Chord algorithm.
     - Bug fix in COBA algorithm when extending an empty computer with a group of points.
+    - add standard plane recognition with adapter classes both for COBA and Chord algorithm.
 
 *Shape Package*
 
