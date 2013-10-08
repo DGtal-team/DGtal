@@ -578,14 +578,14 @@ namespace DGtal
      * @param dp a DGtal Point
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const Z3i::Point & dp) const ;
+    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const typename Space::Point & dp) const ;
 
     /**
      * Use to embed a signed DGtal kahlimsky cell into space
      * @param cell a kahlimsky cell
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const Z3i::SCell & cell ) const;
+    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const typename KSpace::SCell & cell ) const;
 
 
     /**
@@ -601,7 +601,7 @@ namespace DGtal
      * @param cell kahlimsky cell
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const Z3i::Cell & cell ) const;
+    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const typename KSpace::Cell & cell ) const;
 
     //---end interface
 
