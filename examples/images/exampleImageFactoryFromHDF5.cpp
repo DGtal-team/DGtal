@@ -82,7 +82,6 @@ bool writeHDF5_3D_TILED()
         return false;
       }
 
-      int cpt = 1;
       // Data and output buffer initialization.
       for(k = 0; k < NZ_3D_TILED; k++)
         for(j = 0; j < NY_3D_TILED; j++)
@@ -727,8 +726,11 @@ int main( int argc, char** argv )
     
     /*exampleOLDTiledImage3D() && */exampleImage3D();
     
-    exampleTiledImageFromImage_1block3D() && exampleTiledImageFromHDF5_1block3D();
-    exampleTiledImageFromHDF5_10blocks3D() && exampleTiledImageFromImage_10blocks3D();
+    //exampleTiledImageFromImage_1block3D();
+    //exampleTiledImageFromHDF5_1block3D();
+    
+    exampleTiledImageFromImage_10blocks3D();
+    exampleTiledImageFromHDF5_10blocks3D();
     
     return 0;
 }

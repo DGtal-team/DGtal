@@ -87,7 +87,7 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::wr
 
 template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
-void
+TImageContainer * 
 DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::update(const Domain &aDomain)
 {
     ImageContainer *myImagePtr = myReadPolicy->getPageToDetach();
@@ -100,8 +100,10 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::up
     }
     
     clock->startClock();
-    myReadPolicy->updateCache(aDomain);
+    TImageContainer* anImage = myReadPolicy->updateCache(aDomain);
     myTicksUpdateCache += clock->stopClock();
+    
+    return anImage;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

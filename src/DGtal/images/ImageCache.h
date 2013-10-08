@@ -183,7 +183,7 @@ public:
      * 
      * @param aDomain the domain.
      */
-    void update(const Domain &aDomain);
+    ImageContainer * update(const Domain &aDomain);
     
     /**
      * Get the cacheMissRead value.
