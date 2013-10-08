@@ -337,21 +337,28 @@ namespace DGtal
      * @param translateX the x translation value.
      * @param translateY the y translation value.
      * @param translateZ the y translation value.
-     *
+     * @param rotationAngle the angle of rotation. 
+     * @param dirRotation the rotation is applyed arount the given direction (default zDirection).
      */
     UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
-                    double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
-                                                                                                     myImage(&anImage),
-                                                                                                     myTranslateX (translateX),
-                                                                                                     myTranslateY (translateY),
-      myTranslateZ (translateZ),
-      myFunctor(aFunctor)
+                    double translateY=0, double translateZ=0,
+		    double rotationAngle=0.0, typename Viewer3D<>::ImageDirection dirRotation=Viewer3D<>::zDirection,
+		    const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
+							   myImage(&anImage),
+							   myTranslateX (translateX),
+							   myTranslateY (translateY),
+							   myTranslateZ (translateZ),
+							   myFunctor(aFunctor),
+							   myRotationAngle(rotationAngle),
+							   myRotationDir(dirRotation)
     {}
 
     unsigned int myIndex;
     int myTranslateX;
     int myTranslateY;
     int myTranslateZ;
+    double myRotationAngle;
+    typename Viewer3D<>::ImageDirection  myRotationDir;
     const TImageType *myImage;
     const TFunctor &myFunctor;
   };
