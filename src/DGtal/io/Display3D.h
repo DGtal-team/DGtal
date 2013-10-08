@@ -211,13 +211,13 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
-
-    /// an embeder from a dgtal space point to a a real space point
-    CanonicEmbedder< Space > myEmbedder;
-    /// an embeder from a unsigned khalimsky space point to a a real space point
-    CanonicCellEmbedder< KSpace > myCellEmbedder;
-    /// an embeder from a signed khalimsky space point to a a real space point
-    CanonicSCellEmbedder< KSpace > mySCellEmbedder;
+  protected:
+    /// an embeder from a dgtal space point to a real space point
+    CanonicEmbedder< Space > *myEmbedder;
+    /// an embeder from a unsigned khalimsky space point to a real space point
+    CanonicCellEmbedder< KSpace > *myCellEmbedder;
+    /// an embeder from a signed khalimsky space point to a real space point
+    CanonicSCellEmbedder< KSpace > *mySCellEmbedder;
 
 
 
@@ -230,7 +230,12 @@ namespace DGtal
     /**
      * Destructor.
      */
-    virtual ~Display3D(){};
+    virtual ~Display3D()
+    {
+      delete myEmbedder;
+      delete mySCellEmbedder;
+      delete myCellEmbedder;
+    };
 
     /**
      * default constructor
@@ -240,8 +245,9 @@ namespace DGtal
     {
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
-
       myBoundingPtEmptyTag = true;
+      myEmbedder= new CanonicEmbedder<Space>();
+      
     }
 
     /**
@@ -253,8 +259,8 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myCellEmbedder = CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = CanonicSCellEmbedder<KSpace >(KSEmb);
+      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
+      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
     };
 
     /**
@@ -309,6 +315,27 @@ namespace DGtal
      **/
 
     virtual DGtal::Color getLineColor();
+
+
+    /**
+     * Used to change the default embedder for point of the Digital 3D Space 
+     * @param anEmbedder the new CanonicEmbedder
+     **/
+    virtual void  setSpaceEmbedder(CanonicEmbedder<Space> *anEmbedder);
+    
+    /**
+     *  Used to change the default embedder for unsigned cell of Khalimsky 3D Space.
+     * @param anEmbedder the new CanonicCellEmbedder
+     **/
+    virtual void  setKSpaceEmbedder(CanonicCellEmbedder<KSpace> *anEmbedder);
+
+    /**
+     * Used to change the default embedder for signed cell of Khalimsky 3D Space.
+     * @param anEmbedder the new CanonicSCellEmbedder
+     **/
+    virtual void  setSKSpaceEmbedder(CanonicSCellEmbedder<KSpace> *anEmbedder);
+    
+    
 
 
 
@@ -548,14 +575,14 @@ namespace DGtal
      * @param dp a DGtal Point
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const Z3i::Point & dp) const ;
+    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const typename Space::Point & dp) const ;
 
     /**
      * Use to embed a signed DGtal kahlimsky cell into space
      * @param cell a kahlimsky cell
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const Z3i::SCell & cell ) const;
+    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const typename KSpace::SCell & cell ) const;
 
 
     /**
@@ -571,7 +598,7 @@ namespace DGtal
      * @param cell kahlimsky cell
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const Z3i::Cell & cell ) const;
+    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const typename KSpace::Cell & cell ) const;
 
     //---end interface
 

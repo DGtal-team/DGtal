@@ -44,6 +44,7 @@
 
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
+#include <exception>
 
 #include <iomanip>
 
@@ -174,14 +175,15 @@ namespace DGtal
        * compute the parameters of the DSS [AB]. The algorithm used
        * depends on the value of the boolean (Farey fan if true, local
        * convex hull otherwise).
-       * @param [in] a DSS a parameter
-       * @param [in] b DSS b parameter
-       * @param [in] mu DSS mu parameter
+       * @param [in] a DSL a parameter
+       * @param [in] b DSL b parameter
+       * @param [in] mu DSL mu parameter
        * @param [in] A left-most point
        * @param [in] B right-most point
        * @param [in] farey a boolean
        */
-      DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, bool farey);
+
+      DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, std::string type);
 
       /**
        * Constructor
@@ -193,7 +195,7 @@ namespace DGtal
        * @param [in] beta intercept of the line
        * @param [in] A left-most point
        * @param [in] B right-most point
-       * @param [in] precision precison
+       * @param [in] precision precision
        */
       DSLSubsegment(Number alpha, Number beta, Point &A, Point &B, Number precision = 1e-10);
 
@@ -202,9 +204,9 @@ namespace DGtal
       /**
        * Function called by the constructor when the input parameters
        * are integers and the Farey Fan algorithm is used.
-       * @param a DSS a parameter
-       * @param b DSS b parameter
-       * @param mu DSS mu parameter
+       * @param a DSL a parameter
+       * @param b DSL b parameter
+       * @param mu DSL mu parameter
        * @param A left-most point
        * @param B right-most point
       */
@@ -213,14 +215,13 @@ namespace DGtal
       /**
        * Function called by the constructor when the input parameters
        * are integers and the local convex hull algorithm is used.
-       * @param a DSS a parameter
-       * @param b DSS b parameter
-       * @param mu DSS mu parameter
+       * @param a DSL a parameter
+       * @param b DSL b parameter
+       * @param mu DSL mu parameter
        * @param A left-most point
        * @param B right-most point
        */
       void DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point &A, Point &B);
-
 
       /**
        * Constructor.
@@ -542,9 +543,9 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param a DSS a parameter
-       * @param b DSS b parameter
-       * @param mu DSS mu parameter
+       * @param a DSL a parameter
+       * @param b DSL b parameter
+       * @param mu DSL mu parameter
        * @param n order of the Farey Fan
        * @param [out] flagRayFound pointer on a boolean, used to check whether localizeRay
        * should be called ot not
@@ -597,9 +598,9 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param a DSS a parameter
-       * @param b DSS b parameter
-       * @param mu DSS my parameter
+       * @param a DSL a parameter
+       * @param b DSL b parameter
+       * @param mu DSL my parameter
        * @param n order of the Farey Fan
        * @return a ray
        */
@@ -696,7 +697,10 @@ namespace DGtal
                              Integer *resBetaP);  // resBetaQ = resAlphaQ
 
 
-
+  public :
+      Integer computeMinRemainder(Number a, Number b, Number mu, Point A, Point B);
+      Integer computeMaxRemainder(Number a, Number b, Number mu, Point A, Point B);
+      
 
       // ------------------------- Accessors ------------------------------
 
