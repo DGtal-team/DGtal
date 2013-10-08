@@ -1,135 +1,0 @@
-TexampleEuclideanShapesDecorator
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.o /Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug/exampleEuclideanShapesDecorator normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Script-B88DFAB9BC614188AC0CACAF.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.LinkFileList
-c0000000051AB064C00000000000000B1
-t1370162764
-s177
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Script-B88DFAB9BC614188AC0CACAF.sh
-c0000000051AB064C00000000000000EA
-t1370162764
-s234
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug/exampleEuclideanShapesDecorator
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp
-c0000000051A5AD7C0000000000001457
-t1369812348
-s5207
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/shapes/GaussDigitizer.h"
-i"DGtal/topology/LightImplicitDigitalSurface.h"
-i"DGtal/topology/DigitalSurface.h"
-i"DGtal/io/boards/Board2D.h"
-i"DGtal/images/ImageHelper.h"
-i"DGtal/shapes/Shapes.h"
-i"DGtal/shapes/implicit/ImplicitBall.h"
-i"DGtal/shapes/EuclideanShapesDecorator.h"
-i"DGtal/io/boards/Board2D.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageHelper.h
-c0000000051A5AD7D00000000000032BE
-t1369812349
-s12990
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/EuclideanShapesDecorator.h
-c0000000051A5AD7E0000000000003CD6
-t1369812350
-s15574
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/GaussDigitizer.h
-c0000000051A4E3460000000000002434
-t1369760582
-s9268
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
-c0000000051A5AD7E000000000000275B
-t1369812350
-s10075
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/implicit/ImplicitBall.h
-c0000000051A5AD7E0000000000001531
-t1369812350
-s5425
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
-c0000000051A5AD7E0000000000005D4F
-t1369812350
-s23887
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/LightImplicitDigitalSurface.h
-c0000000051A5AD7E0000000000003CDE
-t1369812350
-s15582
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies98bda4cc3d5bb741^c380a5cc3d5bb741^---0#1#0#--18"Check dependencies36"90A07AD7-7FBC-4B5D-A651-246CDD301B8B-
-
-CCompileC build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.o /Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855564.648429
-e391855571.483935
-r1
-xCompileC
-xbuild-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp2827a6cc3d5bb741^67f17ed33d5bb741^---0#0#0#-19%DVTDocumentLocation2@104"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp0000000000000000^2748"CompileC build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.o examples/shapes/exampleEuclideanShapesDecorator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/shapes/exampleEuclideanShapesDecorator.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.o36"1EE074C0-7062-4CC7-B976-F91AEBDFC72A-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug/exampleEuclideanShapesDecorator normal x86_64
-s391855571.494314
-e391855571.557339
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug/exampleEuclideanShapesDecorator
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection107"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug/exampleEuclideanShapesDecoratorf4a67ed33d5bb741^2cb98ed33d5bb741^---0#0#0#--1254"Ld build-xcode/examples/shapes/Debug/exampleEuclideanShapesDecorator normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Objects-normal/x86_64/exampleEuclideanShapesDecorator.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/Debug/exampleEuclideanShapesDecorator36"AED7E749-635B-4D1E-8B92-BC9BC3CD2D11-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Script-B88DFAB9BC614188AC0CACAF.sh
-s391855571.565986
-e391855571.660327
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Script-B88DFAB9BC614188AC0CACAF.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleEuclideanShapesDecorator.Debug
-omake[1]: Nothing to be done for `PostBuild.exampleEuclideanShapesDecorator.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'0bf091d33d5bb741^6f0ca9d33d5bb741^-386"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleEuclideanShapesDecorator.Debugmake[1]: Nothing to be done for `PostBuild.exampleEuclideanShapesDecorator.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855571#0#30#-0#-----2@23"Depend check for xcode-391855571#30#23#-0#-----2@250"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleEuclideanShapesDecorator.Debug-391855571#53#250#-0#-----2@83"make[1]: Nothing to be done for `PostBuild.exampleEuclideanShapesDecorator.Debug'.-391855571#303#83#-0#-----0#0#0#--379"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Script-B88DFAB9BC614188AC0CACAF.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/shapes/DGtal.build/Debug/exampleEuclideanShapesDecorator.build/Script-B88DFAB9BC614188AC0CACAF.sh36"FA1448DC-CB7B-42A0-B9D1-AB9BEDD36916-
-

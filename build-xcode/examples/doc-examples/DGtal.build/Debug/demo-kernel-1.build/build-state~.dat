@@ -1,110 +1,0 @@
-Tdemo-kernel-1
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.o /Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug/demo-kernel-1 normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Script-EE737AEB2D4C4DAF93E8FC08.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.LinkFileList
-c0000000051AB062C0000000000000093
-t1370162732
-s147
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Script-EE737AEB2D4C4DAF93E8FC08.sh
-c0000000051AB062C00000000000000E4
-t1370162732
-s228
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug/demo-kernel-1
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cpp
-c0000000051A4E30F0000000000000808
-t1369760527
-s2056
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/kernel/SpaceND.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/kernel/domains/HyperRectDomain.h"
-i"DGtal/io/boards/Board2D.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
-c0000000051A5AD7E000000000000176C
-t1369812350
-s5996
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
-c0000000051A5AD7E0000000000004E8C
-t1369812350
-s20108
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies178210ac3d5bb741^eb6f11ac3d5bb741^---0#1#0#--18"Check dependencies36"EA9B0E6E-9137-4211-81D1-3594866A0B2C-
-
-CCompileC build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.o /Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855532.068906
-e391855537.590933
-r1
-xCompileC
-xbuild-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection84"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cppb0c611ac3d5bb741^d55b97b13d5bb741^---0#0#0#-19%DVTDocumentLocation2@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cpp0000000000000000^2592"CompileC build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.o examples/doc-examples/demo-kernel-1.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/doc-examples/demo-kernel-1.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.o36"74D9A70F-DEA9-4DB2-9D3F-90C75181833B-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug/demo-kernel-1 normal x86_64
-s391855537.597818
-e391855537.640635
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug/demo-kernel-1
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug/demo-kernel-1e12499b13d5bb741^9700a4b13d5bb741^---0#0#0#--1212"Ld build-xcode/examples/doc-examples/Debug/demo-kernel-1 normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Objects-normal/x86_64/demo-kernel-1.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/Debug/demo-kernel-136"D0336244-BFED-4A54-9E2C-27938498FB59-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Script-EE737AEB2D4C4DAF93E8FC08.sh
-s391855537.649839
-e391855537.765051
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Script-EE737AEB2D4C4DAF93E8FC08.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.demo-kernel-1.Debug
-omake[1]: Nothing to be done for `PostBuild.demo-kernel-1.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'7006a7b13d5bb741^45d9c3b13d5bb741^-350"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.demo-kernel-1.Debugmake[1]: Nothing to be done for `PostBuild.demo-kernel-1.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855537#0#30#-0#-----2@23"Depend check for xcode-391855537#30#23#-0#-----2@232"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.demo-kernel-1.Debug-391855537#53#232#-0#-----2@65"make[1]: Nothing to be done for `PostBuild.demo-kernel-1.Debug'.-391855537#285#65#-0#-----0#0#0#--355"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Script-EE737AEB2D4C4DAF93E8FC08.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/doc-examples/DGtal.build/Debug/demo-kernel-1.build/Script-EE737AEB2D4C4DAF93E8FC08.sh36"7D39FBC4-D719-4B0B-80B1-1B709923D176-
-

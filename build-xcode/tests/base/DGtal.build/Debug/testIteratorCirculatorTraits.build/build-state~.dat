@@ -1,125 +1,0 @@
-TtestIteratorCirculatorTraits
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIteratorCirculatorTraits normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Script-59DC6D84099A4277B4EF7671.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.LinkFileList
-c0000000051AB056C00000000000000A6
-t1370162540
-s166
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Script-59DC6D84099A4277B4EF7671.sh
-c0000000051AB056C00000000000000DD
-t1370162540
-s221
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIteratorCirculatorTraits
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/BasicFunctors.h
-c0000000051A5AD7C000000000000441E
-t1369812348
-s17438
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Circulator.h
-c0000000051A5AD7D0000000000003296
-t1369812349
-s12950
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/ConstIteratorAdapter.h
-c0000000051A5AD7D0000000000001388
-t1369812349
-s5000
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/IteratorAdapter.h
-c0000000051A5AD7D0000000000001340
-t1369812349
-s4928
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/IteratorCirculatorTraits.h
-c0000000051A5AD7D00000000000026BF
-t1369812349
-s9919
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/ReverseIterator.h
-c0000000051A5AD7D0000000000000F52
-t1369812349
-s3922
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp
-c0000000051A5AD7E00000000000029A4
-t1369812350
-s10660
-i<iostream>
-i<list>
-i<vector>
-i<forward_list>
-i"DGtal/base/Common.h"
-i"DGtal/base/IteratorCirculatorTraits.h"
-i"DGtal/base/Circulator.h"
-i"DGtal/base/ReverseIterator.h"
-i"DGtal/base/BasicFunctors.h"
-i"DGtal/base/ConstIteratorAdapter.h"
-i"DGtal/base/IteratorAdapter.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies093266ec3c5bb741^4be866ec3c5bb741^---0#1#0#--18"Check dependencies36"940CB917-3DEF-46E3-A480-4CC5036CCD4C-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855340.431771
-e391855342.201713
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection88"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp47ab6eec3c5bb741^e0a233ee3c5bb741^---0#0#0#-19%DVTDocumentLocation2@96"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp0000000000000000^2656"CompileC build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.o tests/base/testIteratorCirculatorTraits.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIteratorCirculatorTraits.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.o36"6FB4A48A-D1C3-4944-9DDB-A8CEE9FA6B14-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIteratorCirculatorTraits normal x86_64
-s391855342.208538
-e391855342.251795
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIteratorCirculatorTraits
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIteratorCirculatorTraitsc87b35ee3c5bb741^927540ee3c5bb741^---0#0#0#--1217"Ld build-xcode/tests/base/Debug/testIteratorCirculatorTraits normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Objects-normal/x86_64/testIteratorCirculatorTraits.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIteratorCirculatorTraits36"F4BB2AA0-C58B-4638-B4D8-1D98BF650BAC-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Script-59DC6D84099A4277B4EF7671.sh
-s391855342.259646
-e391855342.344293
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Script-59DC6D84099A4277B4EF7671.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIteratorCirculatorTraits.Debug
-omake[1]: Nothing to be done for `PostBuild.testIteratorCirculatorTraits.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'1efe42ee3c5bb741^bc055aee3c5bb741^-380"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIteratorCirculatorTraits.Debugmake[1]: Nothing to be done for `PostBuild.testIteratorCirculatorTraits.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855342#0#30#-0#-----2@23"Depend check for xcode-391855342#30#23#-0#-----2@247"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIteratorCirculatorTraits.Debug-391855342#53#247#-0#-----2@80"make[1]: Nothing to be done for `PostBuild.testIteratorCirculatorTraits.Debug'.-391855342#300#80#-0#-----0#0#0#--363"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Script-59DC6D84099A4277B4EF7671.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIteratorCirculatorTraits.build/Script-59DC6D84099A4277B4EF7671.sh36"A9497C37-CAFD-492E-9E2C-17244A5CC9E6-
-

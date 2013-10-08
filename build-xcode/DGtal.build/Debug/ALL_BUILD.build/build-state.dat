@@ -1,46 +1,0 @@
-TALL_BUILD
-v5
-r1
-cCheck dependencies
-cPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-F33EDF3099ED45ED95B1C2F6.sh
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-902FF46A9E38436EB8F8FA8C.sh
-c0000000051AB065400000000000000BA
-t1370162772
-s186
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-F33EDF3099ED45ED95B1C2F6.sh
-c0000000051AEDD2800000000000000BA
-t1370414376
-s186
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesf46c0257175fb741^d2ff0257175fb741^---0#1#0#--18"Check dependencies36"545B4FB1-1D37-42FC-B2C0-885107B2F00E-
-
-CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-902FF46A9E38436EB8F8FA8C.sh
-s391855572.342714
-e391855572.366638
-r1
-xPhaseScriptExecution
-xCMake Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-902FF46A9E38436EB8F8FA8C.sh
-oecho ""
-o
-oecho Build\ all\ projects
-oBuild all projects
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'ff0758d43d5bb741^12db5dd43d5bb741^-54"echo ""echo Build\ all\ projectsBuild all projects3(21%IDEActivityLogMessage2@8"echo ""-391855572#0#8#-0#-----2@26"echo Build\ all\ projects-391855572#9#26#-0#-----2@19"Build all projects-391855572#35#19#-0#-----0#0#0#--293"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-902FF46A9E38436EB8F8FA8C.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-902FF46A9E38436EB8F8FA8C.sh36"95469AD0-1836-493D-A59B-3F54519EEF78-
-
-CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-F33EDF3099ED45ED95B1C2F6.sh
-s392107863.012864
-e392107863.056774
-r1
-xPhaseScriptExecution
-xCMake Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-F33EDF3099ED45ED95B1C2F6.sh
-oecho ""
-o
-oecho Build\ all\ projects
-oBuild all projects
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'19e30357175fb741^b9890e57175fb741^-54"echo ""echo Build\ all\ projectsBuild all projects3(21%IDEActivityLogMessage2@8"echo ""-392107863#0#8#-0#-----2@26"echo Build\ all\ projects-392107863#9#26#-0#-----2@19"Build all projects-392107863#35#19#-0#-----0#0#0#--293"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-F33EDF3099ED45ED95B1C2F6.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ALL_BUILD.build/Script-F33EDF3099ED45ED95B1C2F6.sh36"6B91E016-F584-44C7-BF94-C22ECEBCA002-
-

@@ -1,117 +1,0 @@
-TtestUmbrellaComputer
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testUmbrellaComputer normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Script-3F58BFBE7E294247A066F68F.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.LinkFileList
-c0000000051AB05C4000000000000009A
-t1370162628
-s154
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Script-3F58BFBE7E294247A066F68F.sh
-c0000000051AB05C400000000000000DD
-t1370162628
-s221
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testUmbrellaComputer
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/GaussDigitizer.h
-c0000000051A4E3460000000000002434
-t1369760582
-s9268
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/implicit/ImplicitBall.h
-c0000000051A5AD7E0000000000001531
-t1369812350
-s5425
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
-c0000000051A5AD7E0000000000005D4F
-t1369812350
-s23887
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/LightImplicitDigitalSurface.h
-c0000000051A5AD7E0000000000003CDE
-t1369812350
-s15582
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/UmbrellaComputer.h
-c0000000051A4E3490000000000002A26
-t1369760585
-s10790
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp
-c0000000051A4E3160000000000002842
-t1369760534
-s10306
-i<iostream>
-i<fstream>
-i"DGtal/base/Common.h"
-i"DGtal/shapes/implicit/ImplicitBall.h"
-i"DGtal/shapes/GaussDigitizer.h"
-i"DGtal/topology/LightImplicitDigitalSurface.h"
-i"DGtal/topology/DigitalSurface.h"
-i"DGtal/topology/UmbrellaComputer.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies9830e6443d5bb741^e7dfe6443d5bb741^---0#1#0#--18"Check dependencies36"2D39F61B-23B6-43FD-97BD-4FAA2DAFCB53-
-
-CCompileC build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855428.903923
-e391855435.740487
-r1
-xCompileC
-xbuild-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection84"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp7e8ee7443d5bb741^8d0bbf4b3d5bb741^---0#0#0#-19%DVTDocumentLocation2@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp0000000000000000^2600"CompileC build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.o tests/topology/testUmbrellaComputer.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testUmbrellaComputer.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.o36"FC81298D-0095-42DB-8773-73ACE2A40A16-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testUmbrellaComputer normal x86_64
-s391855435.746807
-e391855435.836123
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testUmbrellaComputer
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testUmbrellaComputerae45bf4b3d5bb741^670cdf4b3d5bb741^---0#0#0#--1205"Ld build-xcode/tests/topology/Debug/testUmbrellaComputer normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Objects-normal/x86_64/testUmbrellaComputer.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testUmbrellaComputer36"BD3B7B17-EC0D-479F-84E3-64028A1A875C-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Script-3F58BFBE7E294247A066F68F.sh
-s391855435.844303
-e391855435.944734
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Script-3F58BFBE7E294247A066F68F.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testUmbrellaComputer.Debug
-omake[1]: Nothing to be done for `PostBuild.testUmbrellaComputer.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'57b1d84b3d5bb741^359bf74b3d5bb741^-364"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testUmbrellaComputer.Debugmake[1]: Nothing to be done for `PostBuild.testUmbrellaComputer.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855435#0#30#-0#-----2@23"Depend check for xcode-391855435#30#23#-0#-----2@239"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testUmbrellaComputer.Debug-391855435#53#239#-0#-----2@72"make[1]: Nothing to be done for `PostBuild.testUmbrellaComputer.Debug'.-391855435#292#72#-0#-----0#0#0#--355"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Script-3F58BFBE7E294247A066F68F.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testUmbrellaComputer.build/Script-3F58BFBE7E294247A066F68F.sh36"AD391B5A-B42F-4295-B54C-C7D295768E48-
-

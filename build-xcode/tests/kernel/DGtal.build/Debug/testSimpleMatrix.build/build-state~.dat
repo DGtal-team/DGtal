@@ -1,92 +1,0 @@
-TtestSimpleMatrix
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testSimpleMatrix normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Script-A4BBF627DB0A49F880244369.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.LinkFileList
-c0000000051AB05750000000000000090
-t1370162549
-s144
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Script-A4BBF627DB0A49F880244369.sh
-c0000000051AB057500000000000000D5
-t1370162549
-s213
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testSimpleMatrix
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SimpleMatrix.h
-c0000000051A5AD7E0000000000002C85
-t1369812350
-s11397
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cpp
-c0000000051A4E45B000000000000256D
-t1369760859
-s9581
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/kernel/SimpleMatrix.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesab0714f53c5bb741^c1c714f53c5bb741^---0#1#0#--18"Check dependencies36"0A4F87D0-5FB3-4E01-B3A4-CC7098FD668B-
-
-CCompileC build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855349.082326
-e391855351.128854
-r1
-xCompileC
-xbuild-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection78"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cppc63615f53c5bb741^2ffc20f73c5bb741^---0#0#0#-19%DVTDocumentLocation2@86"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cpp0000000000000000^2532"CompileC build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.o tests/kernel/testSimpleMatrix.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testSimpleMatrix.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.o36"81F9629B-BFD2-4C97-81D5-DB6CBA9BC5A5-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testSimpleMatrix normal x86_64
-s391855351.135744
-e391855351.181089
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testSimpleMatrix
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection89"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testSimpleMatrix77da22f73c5bb741^855b2ef73c5bb741^---0#0#0#--1179"Ld build-xcode/tests/kernel/Debug/testSimpleMatrix normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Objects-normal/x86_64/testSimpleMatrix.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testSimpleMatrix36"FAD876CF-5E52-448E-BA53-3E56FFE7E5AD-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Script-A4BBF627DB0A49F880244369.sh
-s391855351.189291
-e391855351.274875
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Script-A4BBF627DB0A49F880244369.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSimpleMatrix.Debug
-omake[1]: Nothing to be done for `PostBuild.testSimpleMatrix.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'5f0c31f73c5bb741^185d46f73c5bb741^-356"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSimpleMatrix.Debugmake[1]: Nothing to be done for `PostBuild.testSimpleMatrix.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855351#0#30#-0#-----2@23"Depend check for xcode-391855351#30#23#-0#-----2@235"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSimpleMatrix.Debug-391855351#53#235#-0#-----2@68"make[1]: Nothing to be done for `PostBuild.testSimpleMatrix.Debug'.-391855351#288#68#-0#-----0#0#0#--343"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Script-A4BBF627DB0A49F880244369.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testSimpleMatrix.build/Script-A4BBF627DB0A49F880244369.sh36"A79DE64F-A334-42F9-AF1B-AA99DFE45A8D-
-

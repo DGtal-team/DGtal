@@ -1,131 +1,0 @@
-TtestGenericReader
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testGenericReader normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Script-A6C5C75CF23A4064BB2DEFE4.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.LinkFileList
-c0000000051AB05D80000000000000096
-t1370162648
-s150
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Script-A6C5C75CF23A4064BB2DEFE4.sh
-c0000000051AB05D800000000000000DE
-t1370162648
-s222
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testGenericReader
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerBySTLVector.h
-c0000000051A5AD7D0000000000003984
-t1369812349
-s14724
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h
-c0000000051AB045B00000000000029A8
-t1370162267
-s10664
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/ConfigTest.h
-c000000004ED65CD80000000000000138
-t1322671320
-s312
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp
-c0000000051A5AD7E0000000000001595
-t1369812350
-s5525
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/images/ImageContainerBySTLVector.h"
-i"DGtal/io/readers/GenericReader.h"
-i"DGtal/helpers/StdDefs.h"
-i"ConfigTest.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies0ea027583d5bb741^66bc71583d5bb741^---0#1#0#--18"Check dependencies36"490B1093-03AF-43F8-AB43-93361C62E5C0-
-
-CCompileC build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855448.412661
-e391855453.651358
-r1
-xCompileC
-xbuild-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oIn file included from /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:34:
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h:131:9: warning: '\tparam' command used in a comment that is not attached to a template declaration [-Wdocumentation]
-o     * @tparam TFunctor the type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, Value > ).
-o        ^~~~~~
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h:132:15: warning: parameter 'aFunctor' not found in the function declaration [-Wdocumentation]
-o     * @param aFunctor to transform input unsigned char of image value into the given image type. 
-o              ^~~~~~~~
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h:132:15: note: did you mean 'filename'?
-o     * @param aFunctor to transform input unsigned char of image value into the given image type. 
-o              ^~~~~~~~
-o              filename
-o/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:87:16: warning: unused variable 'size0Img2' [-Wunused-variable]
-o  unsigned int size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;
-o               ^
-o/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:89:16: warning: unused variable 'size2Img2' [-Wunused-variable]
-o  unsigned int size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;
-o               ^
-o/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:88:16: warning: unused variable 'size1Img2' [-Wunused-variable]
-o  unsigned int size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;
-o               ^
-o5 warnings generated.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp06f169583d5bb741^a2f0b55d3d5bb741^-1705"In file included from /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:34:/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h:131:9: warning: '\tparam' command used in a comment that is not attached to a template declaration [-Wdocumentation]     * @tparam TFunctor the type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, Value > ).        ^~~~~~/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h:132:15: warning: parameter 'aFunctor' not found in the function declaration [-Wdocumentation]     * @param aFunctor to transform input unsigned char of image value into the given image type.               ^~~~~~~~/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h:132:15: note: did you mean 'filename'?     * @param aFunctor to transform input unsigned char of image value into the given image type.               ^~~~~~~~              filename/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:87:16: warning: unused variable 'size0Img2' [-Wunused-variable]  unsigned int size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;               ^/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:89:16: warning: unused variable 'size2Img2' [-Wunused-variable]  unsigned int size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;               ^/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:88:16: warning: unused variable 'size1Img2' [-Wunused-variable]  unsigned int size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;               ^5 warnings generated.5(36%IDEClangDiagnosticActivityLogMessage2@82"'\tparam' command used in a comment that is not attached to a template declaration-391855453#18446744073709551615#0#1(2@101"In file included from /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:34:-391855453#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp0000000000000000^33#9#33#9#1154#0#21"Clang LLVM 1.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h0000000000000000^130#8#130#8#4516#0#19"Documentation Issue1(3@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h0000000000000000^130#8#130#14#4516#6#-2@58"Parameter 'aFunctor' not found in the function declaration-391855453#18446744073709551615#0#2(2@101"In file included from /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp:34:-391855453#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp0000000000000000^33#9#33#9#1154#0#21"Clang LLVM 1.0 Notice--2@24"Did you mean 'filename'?-391855453#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h0000000000000000^131#14#131#14#4647#0#19"Documentation Issue1(3@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h0000000000000000^131#14#131#22#4647#8#-1#27"com.apple.dt.IDE.diagnostic3@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h0000000000000000^131#14#131#14#4647#0#19"Documentation Issue1(3@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/GenericReader.h0000000000000000^131#14#131#22#4647#7#-2@27"Unused variable 'size0Img2'-391855453#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp0000000000000000^86#15#86#15#3626#0#19"Unused Entity Issue--2@27"Unused variable 'size2Img2'-391855453#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp0000000000000000^88#15#88#15#3780#0#19"Unused Entity Issue--2@27"Unused variable 'size1Img2'-391855453#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp0000000000000000^87#15#87#15#3703#0#19"Unused Entity Issue--0#0#0#-19%DVTDocumentLocation4@91"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp0000000000000000^2584"CompileC build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.o tests/io/readers/testGenericReader.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/io/readers/testGenericReader.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.o36"D59A536F-FAF7-484F-B4F8-65D0438AB734-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testGenericReader normal x86_64
-s391855453.737747
-e391855453.914909
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testGenericReader
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection94"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testGenericReader05fcce5d3d5bb741^cee0ef5d3d5bb741^---0#0#0#--1203"Ld build-xcode/tests/io/readers/Debug/testGenericReader normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Objects-normal/x86_64/testGenericReader.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/Debug/testGenericReader36"C5DB6A4B-0118-46DB-BF7D-B2220373B38A-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Script-A6C5C75CF23A4064BB2DEFE4.sh
-s391855453.947091
-e391855454.086976
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Script-A6C5C75CF23A4064BB2DEFE4.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testGenericReader.Debug
-omake[1]: Nothing to be done for `PostBuild.testGenericReader.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'c6def35d3d5bb741^7a18225e3d5bb741^-358"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testGenericReader.Debugmake[1]: Nothing to be done for `PostBuild.testGenericReader.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855454#0#30#-0#-----2@23"Depend check for xcode-391855454#30#23#-0#-----2@236"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testGenericReader.Debug-391855454#53#236#-0#-----2@69"make[1]: Nothing to be done for `PostBuild.testGenericReader.Debug'.-391855454#289#69#-0#-----0#0#0#--353"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Script-A6C5C75CF23A4064BB2DEFE4.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/readers/DGtal.build/Debug/testGenericReader.build/Script-A6C5C75CF23A4064BB2DEFE4.sh36"4CDBCADC-3BC6-40E9-B6AB-3DB1D8C7A0F2-
-

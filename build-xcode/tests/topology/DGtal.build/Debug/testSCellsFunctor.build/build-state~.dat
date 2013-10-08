@@ -1,104 +1,0 @@
-TtestSCellsFunctor
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testSCellsFunctor normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Script-5D38BCAFE70E47E69E220305.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.LinkFileList
-c0000000051AB05C20000000000000094
-t1370162626
-s148
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Script-5D38BCAFE70E47E69E220305.sh
-c0000000051AB05C200000000000000DA
-t1370162626
-s218
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testSCellsFunctor
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/CUnaryFunctor.h
-c0000000051A5AD7D0000000000001066
-t1369812349
-s4198
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/KhalimskySpaceND.h
-c0000000051A5AD7E000000000000AEBE
-t1369812350
-s44734
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/SCellsFunctors.h
-c0000000051A5AD7E000000000000406C
-t1369812350
-s16492
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp
-c0000000051A4E45B00000000000019C2
-t1369760859
-s6594
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/base/CUnaryFunctor.h"
-i"DGtal/topology/SCellsFunctors.h"
-i"DGtal/topology/KhalimskySpaceND.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies093632423d5bb741^8cbe32423d5bb741^---0#1#0#--18"Check dependencies36"E2CEE513-BF80-4469-9561-7C9A1443E007-
-
-CCompileC build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.o /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855426.200026
-e391855428.879715
-r1
-xCompileC
-xbuild-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection81"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp145933423d5bb741^3d9be5443d5bb741^---0#0#0#-19%DVTDocumentLocation2@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp0000000000000000^2564"CompileC build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.o tests/topology/testSCellsFunctor.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/topology/testSCellsFunctor.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.o36"7AB9B2D7-1AA4-41D0-B675-841EFB1CE508-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testSCellsFunctor normal x86_64
-s391855428.886544
-e391855428.939204
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testSCellsFunctor
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection92"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testSCellsFunctor800ee3443d5bb741^2c7df0443d5bb741^---0#0#0#--1193"Ld build-xcode/tests/topology/Debug/testSCellsFunctor normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Objects-normal/x86_64/testSCellsFunctor.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/Debug/testSCellsFunctor36"F0B10436-DAFA-4FC3-BE93-785BC4DA805F-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Script-5D38BCAFE70E47E69E220305.sh
-s391855428.947134
-e391855429.050455
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Script-5D38BCAFE70E47E69E220305.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSCellsFunctor.Debug
-omake[1]: Nothing to be done for `PostBuild.testSCellsFunctor.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'07ecf2443d5bb741^7afe0c453d5bb741^-358"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSCellsFunctor.Debugmake[1]: Nothing to be done for `PostBuild.testSCellsFunctor.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855428#0#30#-0#-----2@23"Depend check for xcode-391855428#30#23#-0#-----2@236"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSCellsFunctor.Debug-391855428#53#236#-0#-----2@69"make[1]: Nothing to be done for `PostBuild.testSCellsFunctor.Debug'.-391855429#289#69#-0#-----0#0#0#--349"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Script-5D38BCAFE70E47E69E220305.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/topology/DGtal.build/Debug/testSCellsFunctor.build/Script-5D38BCAFE70E47E69E220305.sh36"B8C0A120-3041-4846-9434-BD7B127BF443-
-

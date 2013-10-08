@@ -1,125 +1,0 @@
-TtestImageCache
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageCache normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Script-2A013111592E42B9AEC1B736.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.LinkFileList
-c0000000051AB05E6000000000000008C
-t1370162662
-s140
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Script-2A013111592E42B9AEC1B736.sh
-c0000000051AB05E600000000000000D3
-t1370162662
-s211
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageCache
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCache.h
-c0000000051A5AD7D0000000000001DBC
-t1369812349
-s7612
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerBySTLVector.h
-c0000000051A5AD7D0000000000003984
-t1369812349
-s14724
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromImage.h
-c0000000051A5AD7D0000000000001A37
-t1369812349
-s6711
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/ConfigTest.h
-c000000004ED65CD80000000000000138
-t1322671320
-s312
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp
-c0000000051A5AD7E0000000000003302
-t1369812350
-s13058
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/images/ImageContainerBySTLVector.h"
-i"DGtal/images/ImageFactoryFromImage.h"
-i"DGtal/images/ImageCache.h"
-i"ConfigTest.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies7a3455663d5bb741^2f4e58663d5bb741^---0#1#0#--18"Check dependencies36"65708995-8DE4-45B7-BDE8-7B13F34BFF48-
-
-CCompileC build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855462.435790
-e391855468.262915
-r1
-xCompileC
-xbuild-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oIn file included from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp:39:
-oIn file included from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCache.h:220:
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCachePolicies.h:91:7: warning: field 'myImageFactory' will be initialized after field 'myCacheImagesPtr' [-Wreorder]
-o      myImageFactory(anImageFactory), myCacheImagesPtr(NULL)
-o      ^
-o/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp:97:32: note: in instantiation of member function 'DGtal::ImageCacheReadPolicyLAST<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<2, int> >, int>, DGtal::ImageFactoryFromImage<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<2, int> >, int> > >::ImageCacheReadPolicyLAST' requested here
-o    MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
-o                               ^
-o1 warning generated.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection76"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp3f9187663d5bb741^10e8486c3d5bb741^-957"In file included from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp:39:In file included from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCache.h:220:/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCachePolicies.h:91:7: warning: field 'myImageFactory' will be initialized after field 'myCacheImagesPtr' [-Wreorder]      myImageFactory(anImageFactory), myCacheImagesPtr(NULL)      ^/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp:97:32: note: in instantiation of member function 'DGtal::ImageCacheReadPolicyLAST<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<2, int> >, int>, DGtal::ImageFactoryFromImage<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<2, int> >, int> > >::ImageCacheReadPolicyLAST' requested here    MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);                               ^1 warning generated.1(36%IDEClangDiagnosticActivityLogMessage2@73"Field 'myImageFactory' will be initialized after field 'myCacheImagesPtr'-391855468#18446744073709551615#0#3(2@94"In file included from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp:39:-391855468#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@84"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp0000000000000000^38#9#38#9#1305#0#21"Clang LLVM 1.0 Notice--2@93"In file included from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCache.h:220:-391855468#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@82"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCache.h0000000000000000^219#9#219#9#7272#0#21"Clang LLVM 1.0 Notice--2@318"In instantiation of member function 'DGtal::ImageCacheReadPolicyLAST<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<2, int> >, int>, DGtal::ImageFactoryFromImage<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<2, int> >, int> > >::ImageCacheReadPolicyLAST' requested here-391855468#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@84"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp0000000000000000^96#31#96#31#3937#0#14"Semantic Issue--1#27"com.apple.dt.IDE.diagnostic3@90"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCachePolicies.h0000000000000000^90#6#90#6#3274#0#14"Semantic Issue--0#0#0#-19%DVTDocumentLocation4@84"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp0000000000000000^2508"CompileC build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.o tests/images/testImageCache.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageCache.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.o36"81230E27-DD1C-4B09-9BC2-9DF1CEF8C595-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageCache normal x86_64
-s391855468.269706
-e391855468.326396
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageCache
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection87"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageCache3d27456c3d5bb741^fa9c536c3d5bb741^---0#0#0#--1171"Ld build-xcode/tests/images/Debug/testImageCache normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Objects-normal/x86_64/testImageCache.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageCache36"3026A722-D6C2-4B5B-8DDA-EA5D9E11DD66-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Script-2A013111592E42B9AEC1B736.sh
-s391855468.334237
-e391855468.427587
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Script-2A013111592E42B9AEC1B736.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageCache.Debug
-omake[1]: Nothing to be done for `PostBuild.testImageCache.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'9335566c3d5bb741^17816d6c3d5bb741^-352"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageCache.Debugmake[1]: Nothing to be done for `PostBuild.testImageCache.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855468#0#30#-0#-----2@23"Depend check for xcode-391855468#30#23#-0#-----2@233"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageCache.Debug-391855468#53#233#-0#-----2@66"make[1]: Nothing to be done for `PostBuild.testImageCache.Debug'.-391855468#286#66#-0#-----0#0#0#--339"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Script-2A013111592E42B9AEC1B736.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageCache.build/Script-2A013111592E42B9AEC1B736.sh36"69AA289D-05E5-4BE0-A04A-F266C0A6A95C-
-

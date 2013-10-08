@@ -1,68 +1,0 @@
-TCompilerIdC
-v5
-r1
-cCheck dependencies
-cCompileC ./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/CMakeCCompilerId.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC normal i386
-cPhaseScriptExecution "Run Script" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Script-2C8FEB8E15DC1A1A00E56A5D.sh
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CompilerIdC.LinkFileList
-c0000000051CC562800000000000000A4
-t1372345896
-s164
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Script-2C8FEB8E15DC1A1A00E56A5D.sh
-c0000000051CC5628000000000000002A
-t1372345896
-s42
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/CMakeCCompilerId.c
-c0000000051CC56270000000000002E9E
-t1372345895
-s11934
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies57974ba88d7cb741^02626aa88d7cb741^---0#1#0#--18"Check dependencies36"0B3F1573-3D6C-4BDB-9EA5-ABB4B4CC495F-
-
-CCompileC ./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/CMakeCCompilerId.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
-s394038696.420877
-e394038696.611698
-r1
-xCompileC
-x./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.o
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/CMakeCCompilerId.c
-xnormal
-xi386
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection107"Compile /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/CMakeCCompilerId.c1d716ca88d7cb741^f2999ca88d7cb741^---0#0#0#-19%DVTDocumentLocation2@115"file://localhost/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/CMakeCCompilerId.c0000000000000000^2544"CompileC ./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.o CMakeCCompilerId.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch i386 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -Os -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/CompilerIdC.hmap -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/DerivedSources/i386 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/DerivedSources -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.dia -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/CMakeCCompilerId.c -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CMakeCCompilerId.o36"37CBEF0C-56E2-4370-BA73-4D1253F86814-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC normal i386
-s394038696.618204
-e394038696.721833
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC
-xnormal
-xi386
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdCf7589ea88d7cb741^c9c9b8a88d7cb741^---0#0#0#--669"Ld ./CompilerIdC normal i386    cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch i386 -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Objects-normal/i386/CompilerIdC.LinkFileList -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC36"1CA76F49-5E7E-445B-B66F-D4C48DB730C4-
-
-CPhaseScriptExecution "Run Script" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Script-2C8FEB8E15DC1A1A00E56A5D.sh
-s394038696.729956
-e394038696.774277
-r1
-xPhaseScriptExecution
-xRun Script
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Script-2C8FEB8E15DC1A1A00E56A5D.sh
-oGCC_VERSION=com.apple.compilers.llvm.clang.1_0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection36"Run custom shell script 'Run Script'0935bba88d7cb741^6d36c6a88d7cb741^-47"GCC_VERSION=com.apple.compilers.llvm.clang.1_01(21%IDEActivityLogMessage2@47"GCC_VERSION=com.apple.compilers.llvm.clang.1_0-394038696#0#47#-0#-----0#0#0#--376"PhaseScriptExecution "Run Script" ./CompilerIdC.build/Debug/CompilerIdC.build/Script-2C8FEB8E15DC1A1A00E56A5D.sh    cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/2.8.11.1/CompilerIdC/./CompilerIdC.build/Debug/CompilerIdC.build/Script-2C8FEB8E15DC1A1A00E56A5D.sh36"0EF931D8-59FB-4853-8713-022EC503D875-
-

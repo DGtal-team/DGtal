@@ -1,215 +1,0 @@
-TexampleImageFactoryFromHDF5
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.o /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5 normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Script-BA64885B5EDE4A73936534D4.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c0000000051BB16B600000000000000AA
-t1371215542
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.LinkFileList
-c0000000051E002D500000000000000AB
-t1373635285
-s171
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Script-BA64885B5EDE4A73936534D4.sh
-c0000000051E002D500000000000000E6
-t1373635285
-s230
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/ConfigExamples.h
-c000000004ED65CD90000000000000146
-t1322671321
-s326
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp
-c0000000051DFFB690000000000003CE4
-t1373633385
-s15588
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/images/ImageSelector.h"
-i"DGtal/io/readers/HDF5Reader.h"
-i"DGtal/images/ImageFactoryFromHDF5.h"
-i"DGtal/images/ImageCache.h"
-i"DGtal/images/TiledImage.h"
-i"ConfigExamples.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051CD537E0000000000001238
-t1372410750
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051C305DD00000000000021BA
-t1371735517
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageCache.h
-c0000000051DFFB690000000000001E56
-t1373633385
-s7766
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromHDF5.h
-c0000000051DFFB690000000000004969
-t1373633385
-s18793
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageSelector.h
-c0000000051A4E45B0000000000000C16
-t1369760859
-s3094
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/TiledImage.h
-c0000000051E0025B0000000000002AFC
-t1373635163
-s11004
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.h
-c0000000051DFFB690000000000000F9C
-t1373633385
-s3996
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesac1925553a90b741^d19425553a90b741^---0#1#0#--18"Check dependencies36"F3F5DC7F-449D-4CAA-BF5B-97A7BDAC6254-
-
-CCompileC build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.o /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s395328085.148954
-e395328088.368304
-r1
-xCompileC
-xbuild-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oIn file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:35:
-oIn file included from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.h:103:
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.ih:66:20: warning: unused variable 'j' [-Wunused-variable]
-o  int           i, j;
-o                   ^
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.ih:66:17: warning: unused variable 'i' [-Wunused-variable]
-o  int           i, j;
-o                ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:172:9: warning: unused variable 'i' [-Wunused-variable]
-o    int i, j, k;
-o        ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:195:26: warning: unused variable 'aValue' [-Wunused-variable]
-o      OutputImage::Value aValue;
-o                         ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:172:12: warning: unused variable 'j' [-Wunused-variable]
-o    int i, j, k;
-o           ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:172:15: warning: unused variable 'k' [-Wunused-variable]
-o    int i, j, k;
-o              ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:244:26: warning: unused variable 'aValue' [-Wunused-variable]
-o      OutputImage::Value aValue;
-o                         ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:216:15: warning: unused variable 'k' [-Wunused-variable]
-o    int i, j, k;
-o              ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:216:12: warning: unused variable 'j' [-Wunused-variable]
-o    int i, j, k;
-o           ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:216:9: warning: unused variable 'i' [-Wunused-variable]
-o    int i, j, k;
-o        ^
-o/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:325:26: warning: unused variable 'aValue' [-Wunused-variable]
-o      OutputImage::Value aValue;
-o                         ^
-oIn file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:36:
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromHDF5.h:348:11: warning: unused variable 'i' [-Wunused-variable]
-o      int i[ddim];
-o          ^
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:100:43: note: in instantiation of member function 'DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> >::requestImage' requested here
-o        ConceptUtils::sameType( myOI, myT.requestImage(myDomain) );
-o                                          ^
-o/usr/local/include/boost/concept/usage.hpp:22:43: note: in instantiation of member function 'DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > >::~CImageFactory' requested here
-o    ~usage_requirements() { ((Model*)0)->~Model(); }
-o                                          ^
-o/usr/local/include/boost/concept/detail/general.hpp:38:42: note: in instantiation of member function 'boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::~usage_requirements' requested here
-o    static void failed() { ((Model*)0)->~Model(); }
-o                                         ^
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:98:5: note: in instantiation of member function 'boost::concepts::requirement<boost::concepts::failed ************boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::************>::failed' requested here
-o    BOOST_CONCEPT_USAGE( CImageFactory )
-o    ^
-o/usr/local/include/boost/concept/usage.hpp:35:7: note: expanded from macro 'BOOST_CONCEPT_USAGE'
-o      BOOST_CONCEPT_ASSERT((boost::concepts::usage_requirements<model>)); \
-o      ^
-o/usr/local/include/boost/concept/assert.hpp:44:5: note: expanded from macro 'BOOST_CONCEPT_ASSERT'
-o    BOOST_CONCEPT_ASSERT_FN(void(*)ModelInParens)
-o    ^
-o/usr/local/include/boost/concept/detail/general.hpp:70:51: note: expanded from macro 'BOOST_CONCEPT_ASSERT_FN'
-o    &::boost::concepts::requirement_<ModelFnPtr>::failed>    \
-o                                                  ^
-oIn file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:36:
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromHDF5.h:443:11: warning: unused variable 'i' [-Wunused-variable]
-o      int i[ddim];
-o          ^
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:101:13: note: in instantiation of member function 'DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> >::flushImage' requested here
-o        myT.flushImage(myOI);
-o            ^
-o/usr/local/include/boost/concept/usage.hpp:22:43: note: in instantiation of member function 'DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > >::~CImageFactory' requested here
-o    ~usage_requirements() { ((Model*)0)->~Model(); }
-o                                          ^
-o/usr/local/include/boost/concept/detail/general.hpp:38:42: note: in instantiation of member function 'boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::~usage_requirements' requested here
-o    static void failed() { ((Model*)0)->~Model(); }
-o                                         ^
-o/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:98:5: note: in instantiation of member function 'boost::concepts::requirement<boost::concepts::failed ************boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::************>::failed' requested here
-o    BOOST_CONCEPT_USAGE( CImageFactory )
-o    ^
-o/usr/local/include/boost/concept/usage.hpp:35:7: note: expanded from macro 'BOOST_CONCEPT_USAGE'
-o      BOOST_CONCEPT_ASSERT((boost::concepts::usage_requirements<model>)); \
-o      ^
-o/usr/local/include/boost/concept/assert.hpp:44:5: note: expanded from macro 'BOOST_CONCEPT_ASSERT'
-o    BOOST_CONCEPT_ASSERT_FN(void(*)ModelInParens)
-o    ^
-o/usr/local/include/boost/concept/detail/general.hpp:70:51: note: expanded from macro 'BOOST_CONCEPT_ASSERT_FN'
-o    &::boost::concepts::requirement_<ModelFnPtr>::failed>    \
-o                                                  ^
-o13 warnings generated.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection92"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cppef3b26553a90b741^73485e583a90b741^-7112"In file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:35:In file included from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.h:103:/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.ih:66:20: warning: unused variable 'j' [-Wunused-variable]  int           i, j;                   ^/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.ih:66:17: warning: unused variable 'i' [-Wunused-variable]  int           i, j;                ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:172:9: warning: unused variable 'i' [-Wunused-variable]    int i, j, k;        ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:195:26: warning: unused variable 'aValue' [-Wunused-variable]      OutputImage::Value aValue;                         ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:172:12: warning: unused variable 'j' [-Wunused-variable]    int i, j, k;           ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:172:15: warning: unused variable 'k' [-Wunused-variable]    int i, j, k;              ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:244:26: warning: unused variable 'aValue' [-Wunused-variable]      OutputImage::Value aValue;                         ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:216:15: warning: unused variable 'k' [-Wunused-variable]    int i, j, k;              ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:216:12: warning: unused variable 'j' [-Wunused-variable]    int i, j, k;           ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:216:9: warning: unused variable 'i' [-Wunused-variable]    int i, j, k;        ^/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:325:26: warning: unused variable 'aValue' [-Wunused-variable]      OutputImage::Value aValue;                         ^In file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:36:/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromHDF5.h:348:11: warning: unused variable 'i' [-Wunused-variable]      int i[ddim];          ^/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:100:43: note: in instantiation of member function 'DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> >::requestImage' requested here        ConceptUtils::sameType( myOI, myT.requestImage(myDomain) );                                          ^/usr/local/include/boost/concept/usage.hpp:22:43: note: in instantiation of member function 'DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > >::~CImageFactory' requested here    ~usage_requirements() { ((Model*)0)->~Model(); }                                          ^/usr/local/include/boost/concept/detail/general.hpp:38:42: note: in instantiation of member function 'boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::~usage_requirements' requested here    static void failed() { ((Model*)0)->~Model(); }                                         ^/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:98:5: note: in instantiation of member function 'boost::concepts::requirement<boost::concepts::failed ************boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::************>::failed' requested here    BOOST_CONCEPT_USAGE( CImageFactory )    ^/usr/local/include/boost/concept/usage.hpp:35:7: note: expanded from macro 'BOOST_CONCEPT_USAGE'      BOOST_CONCEPT_ASSERT((boost::concepts::usage_requirements<model>)); \      ^/usr/local/include/boost/concept/assert.hpp:44:5: note: expanded from macro 'BOOST_CONCEPT_ASSERT'    BOOST_CONCEPT_ASSERT_FN(void(*)ModelInParens)    ^/usr/local/include/boost/concept/detail/general.hpp:70:51: note: expanded from macro 'BOOST_CONCEPT_ASSERT_FN'    &::boost::concepts::requirement_<ModelFnPtr>::failed>    \                                                  ^In file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:36:/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromHDF5.h:443:11: warning: unused variable 'i' [-Wunused-variable]      int i[ddim];          ^/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:101:13: note: in instantiation of member function 'DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> >::flushImage' requested here        myT.flushImage(myOI);            ^/usr/local/include/boost/concept/usage.hpp:22:43: note: in instantiation of member function 'DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > >::~CImageFactory' requested here    ~usage_requirements() { ((Model*)0)->~Model(); }                                          ^/usr/local/include/boost/concept/detail/general.hpp:38:42: note: in instantiation of member function 'boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::~usage_requirements' requested here    static void failed() { ((Model*)0)->~Model(); }                                         ^/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h:98:5: note: in instantiation of member function 'boost::concepts::requirement<boost::concepts::failed ************boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::************>::failed' requested here    BOOST_CONCEPT_USAGE( CImageFactory )    ^/usr/local/include/boost/concept/usage.hpp:35:7: note: expanded from macro 'BOOST_CONCEPT_USAGE'      BOOST_CONCEPT_ASSERT((boost::concepts::usage_requirements<model>)); \      ^/usr/local/include/boost/concept/assert.hpp:44:5: note: expanded from macro 'BOOST_CONCEPT_ASSERT'    BOOST_CONCEPT_ASSERT_FN(void(*)ModelInParens)    ^/usr/local/include/boost/concept/detail/general.hpp:70:51: note: expanded from macro 'BOOST_CONCEPT_ASSERT_FN'    &::boost::concepts::requirement_<ModelFnPtr>::failed>    \                                                  ^13 warnings generated.13(36%IDEClangDiagnosticActivityLogMessage2@19"Unused variable 'j'-395328088#18446744073709551615#0#2(2@110"In file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:35:-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^34#9#34#9#1249#0#21"Clang LLVM 1.0 Notice--2@97"In file included from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.h:103:-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@86"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.h0000000000000000^102#9#102#9#3696#0#21"Clang LLVM 1.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@87"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.ih0000000000000000^65#19#65#19#2209#0#19"Unused Entity Issue--2@19"Unused variable 'i'-395328088#18446744073709551615#0#2(2@110"In file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:35:-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^34#9#34#9#1249#0#21"Clang LLVM 1.0 Notice--2@97"In file included from /Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.h:103:-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@86"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.h0000000000000000^102#9#102#9#3696#0#21"Clang LLVM 1.0 Notice--1#27"com.apple.dt.IDE.diagnostic3@87"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/HDF5Reader.ih0000000000000000^65#16#65#16#2206#0#19"Unused Entity Issue--2@19"Unused variable 'i'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^171#8#171#8#5963#0#19"Unused Entity Issue--2@24"Unused variable 'aValue'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^194#25#194#25#7252#0#19"Unused Entity Issue--2@19"Unused variable 'j'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^171#11#171#11#5966#0#19"Unused Entity Issue--2@19"Unused variable 'k'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^171#14#171#14#5969#0#19"Unused Entity Issue--2@24"Unused variable 'aValue'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^243#25#243#25#9647#0#19"Unused Entity Issue--2@19"Unused variable 'k'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^215#14#215#14#7948#0#19"Unused Entity Issue--2@19"Unused variable 'j'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^215#11#215#11#7945#0#19"Unused Entity Issue--2@19"Unused variable 'i'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^215#8#215#8#7942#0#19"Unused Entity Issue--2@24"Unused variable 'aValue'-395328088#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^324#25#324#25#13303#0#19"Unused Entity Issue--2@19"Unused variable 'i'-395328088#18446744073709551615#0#5(2@110"In file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:36:-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^35#9#35#9#1290#0#21"Clang LLVM 1.0 Notice--2@193"In instantiation of member function 'DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> >::requestImage' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@85"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h0000000000000000^99#42#99#42#3691#0#14"Semantic Issue--2@218"In instantiation of member function 'DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > >::~CImageFactory' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@58"file://localhost/usr/local/include/boost/concept/usage.hpp0000000000000000^21#42#21#42#642#0#14"Semantic Issue--2@261"In instantiation of member function 'boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::~usage_requirements' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@67"file://localhost/usr/local/include/boost/concept/detail/general.hpp0000000000000000^37#41#37#41#996#0#14"Semantic Issue--2@328"In instantiation of member function 'boost::concepts::requirement<boost::concepts::failed ************boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::************>::failed' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@85"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h0000000000000000^97#4#97#4#109#0#14"Semantic Issue--1#27"com.apple.dt.IDE.diagnostic3@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromHDF5.h0000000000000000^347#10#347#10#11729#0#19"Unused Entity Issue--2@19"Unused variable 'i'-395328088#18446744073709551615#0#5(2@110"In file included from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp:36:-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^35#9#35#9#1290#0#21"Clang LLVM 1.0 Notice--2@191"In instantiation of member function 'DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> >::flushImage' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@85"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h0000000000000000^100#12#100#12#3729#0#14"Semantic Issue--2@218"In instantiation of member function 'DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > >::~CImageFactory' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@58"file://localhost/usr/local/include/boost/concept/usage.hpp0000000000000000^21#42#21#42#642#0#14"Semantic Issue--2@261"In instantiation of member function 'boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::~usage_requirements' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@67"file://localhost/usr/local/include/boost/concept/detail/general.hpp0000000000000000^37#41#37#41#996#0#14"Semantic Issue--2@328"In instantiation of member function 'boost::concepts::requirement<boost::concepts::failed ************boost::concepts::usage_requirements<DGtal::CImageFactory<DGtal::ImageFactoryFromHDF5<DGtal::ImageContainerBySTLVector<DGtal::HyperRectDomain<DGtal::SpaceND<3, int> >, unsigned char> > > >::************>::failed' requested here-395328088#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@85"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImageFactory.h0000000000000000^97#4#97#4#109#0#14"Semantic Issue--1#27"com.apple.dt.IDE.diagnostic3@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageFactoryFromHDF5.h0000000000000000^442#10#442#10#14730#0#19"Unused Entity Issue--0#0#0#-19%DVTDocumentLocation4@100"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp0000000000000000^2736"CompileC build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.o examples/images/exampleImageFactoryFromHDF5.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O3 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Release\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release -Qunused-arguments -Wdocumentation -DNDEBUG -DWITH_HDF5 -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleImageFactoryFromHDF5.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.o36"0B6FDA39-077B-4F56-B3CA-520F782280B0-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5 normal x86_64
-s395328088.375086
-e395328088.401356
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5
-xnormal
-xx86_64
-old: warning: directory not found for option '-L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Release'
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection105"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF5b11960583a90b741^4cc166583a90b741^-105"ld: warning: directory not found for option '-L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Release'1(21%IDEActivityLogMessage2@91"Directory not found for option '-L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Release'-395328088#0#105#-1#-23%DVTTextDocumentLocation3@-0000000000000000^18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#18446744073709551615#0#32"Apple Mach-O Linker (ld) Warning--0#0#0#--1405"Ld build-xcode/examples/images/Release/exampleImageFactoryFromHDF5 normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Release -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Objects-normal/x86_64/exampleImageFactoryFromHDF5.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Release/libDGtal.dylib /usr/local/lib/libhdf5_hl.dylib /usr/local/lib/libhdf5.dylib /usr/local/lib/libsz.dylib /usr/lib/libz.dylib /usr/lib/libdl.dylib /usr/lib/libm.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Release/exampleImageFactoryFromHDF536"7AC39039-2135-4700-97F2-52CFAE6535B4-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Script-BA64885B5EDE4A73936534D4.sh
-s395328088.409617
-e395328088.476642
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Script-BA64885B5EDE4A73936534D4.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleImageFactoryFromHDF5.Release
-omake[1]: Nothing to be done for `PostBuild.exampleImageFactoryFromHDF5.Release'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'b03b69583a90b741^9f047a583a90b741^-382"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleImageFactoryFromHDF5.Releasemake[1]: Nothing to be done for `PostBuild.exampleImageFactoryFromHDF5.Release'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-395328088#0#30#-0#-----2@23"Depend check for xcode-395328088#30#23#-0#-----2@248"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleImageFactoryFromHDF5.Release-395328088#53#248#-0#-----2@81"make[1]: Nothing to be done for `PostBuild.exampleImageFactoryFromHDF5.Release'.-395328088#301#81#-0#-----0#0#0#--375"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Script-BA64885B5EDE4A73936534D4.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Release/exampleImageFactoryFromHDF5.build/Script-BA64885B5EDE4A73936534D4.sh36"EA57F6BB-E547-4878-8DEC-6DB2DC089FD1-
-

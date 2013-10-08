@@ -1,99 +1,0 @@
-TtestBasicFunctors
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testBasicFunctors normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Script-C74172FF84324378B773496F.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.LinkFileList
-c0000000051AB05660000000000000090
-t1370162534
-s144
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Script-C74172FF84324378B773496F.sh
-c0000000051AB056600000000000000D2
-t1370162534
-s210
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testBasicFunctors
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/BasicFunctors.h
-c0000000051A5AD7C000000000000441E
-t1369812348
-s17438
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/CUnaryFunctor.h
-c0000000051A5AD7D0000000000001066
-t1369812349
-s4198
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp
-c0000000051A4E45B00000000000013FE
-t1369760859
-s5118
-i<iostream>
-i<functional>
-i"DGtal/base/Common.h"
-i"DGtal/base/CUnaryFunctor.h"
-i"DGtal/base/BasicFunctors.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies96219ae63c5bb741^da1c9be63c5bb741^---0#1#0#--18"Check dependencies36"623A8413-41A9-45B0-B088-4FE47A4525EE-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855334.607135
-e391855335.692783
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection77"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp368f9be63c5bb741^e659b1e73c5bb741^---0#0#0#-19%DVTDocumentLocation2@85"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp0000000000000000^2524"CompileC build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.o tests/base/testBasicFunctors.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testBasicFunctors.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.o36"20525855-417C-4556-A702-FAD8BEC6DF15-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testBasicFunctors normal x86_64
-s391855335.769994
-e391855335.810408
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testBasicFunctors
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection88"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testBasicFunctorsc233c5e73c5bb741^d7a0d3e73c5bb741^---0#0#0#--1173"Ld build-xcode/tests/base/Debug/testBasicFunctors normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Objects-normal/x86_64/testBasicFunctors.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testBasicFunctors36"D90AA407-06EB-4EB2-BE6D-D8E33DE8E359-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Script-C74172FF84324378B773496F.sh
-s391855335.853096
-e391855335.964277
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Script-C74172FF84324378B773496F.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testBasicFunctors.Debug
-omake[1]: Nothing to be done for `PostBuild.testBasicFunctors.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'1f2be4e73c5bb741^aed9f6e73c5bb741^-358"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testBasicFunctors.Debugmake[1]: Nothing to be done for `PostBuild.testBasicFunctors.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855335#0#30#-0#-----2@23"Depend check for xcode-391855335#30#23#-0#-----2@236"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testBasicFunctors.Debug-391855335#53#236#-0#-----2@69"make[1]: Nothing to be done for `PostBuild.testBasicFunctors.Debug'.-391855335#289#69#-0#-----0#0#0#--341"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Script-C74172FF84324378B773496F.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testBasicFunctors.build/Script-C74172FF84324378B773496F.sh36"9A34EF06-7F96-4F04-BC5F-8AFCC827F581-
-

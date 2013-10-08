@@ -1,28 +1,0 @@
-TZERO_CHECK
-v5
-r1
-cCheck dependencies
-cPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
-c0000000051E002C200000000000000BB
-t1373635266
-s187
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies446ab6423a90b741^56b8b9423a90b741^---0#1#0#--18"Check dependencies36"3B906EEA-A919-4613-BDDF-85183413EAB3-
-
-CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
-s395328066.727302
-e395328066.804644
-r1
-xPhaseScriptExecution
-xCMake Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh
-oecho ""
-o
-omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
-omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'b799ba423a90b741^15fdcd423a90b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-395328066#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-395328066#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-395328066#95#104#-0#-----0#0#0#--299"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Release/ZERO_CHECK.build/Script-E3A450BA948C4FCF893B1C5F.sh36"2AB6B3D7-4EB2-4B4F-8745-03C7643039B2-
-

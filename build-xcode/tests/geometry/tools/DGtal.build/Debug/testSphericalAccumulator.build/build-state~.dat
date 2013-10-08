@@ -1,98 +1,0 @@
-TtestSphericalAccumulator
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug/testSphericalAccumulator normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Script-65FB58EA1932469180A68373.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.LinkFileList
-c0000000051AB059C00000000000000A8
-t1370162588
-s168
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Script-65FB58EA1932469180A68373.sh
-c0000000051AB059C00000000000000ED
-t1370162588
-s237
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug/testSphericalAccumulator
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/tools/SphericalAccumulator.h
-c0000000051A5AD7D0000000000002F27
-t1369812349
-s12071
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp
-c0000000051A4E45B0000000000001C64
-t1369760859
-s7268
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/geometry/tools/SphericalAccumulator.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies1ea9621c3d5bb741^23d9631c3d5bb741^---0#1#0#--18"Check dependencies36"8210E529-D629-4624-9629-52DC1E14AA5C-
-
-CCompileC build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855388.390073
-e391855393.383999
-r1
-xCompileC
-xbuild-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection94"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp2200641c3d5bb741^f94c62213d5bb741^---0#0#0#-19%DVTDocumentLocation2@102"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp0000000000000000^2708"CompileC build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.o tests/geometry/tools/testSphericalAccumulator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/tools/testSphericalAccumulator.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.o36"EC861F14-4DBC-4A13-AAC4-A3A3F5177FD9-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug/testSphericalAccumulator normal x86_64
-s391855393.391037
-e391855393.462824
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug/testSphericalAccumulator
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection105"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug/testSphericalAccumulator8a3964213d5bb741^e57b76213d5bb741^---0#0#0#--1251"Ld build-xcode/tests/geometry/tools/Debug/testSphericalAccumulator normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Objects-normal/x86_64/testSphericalAccumulator.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/Debug/testSphericalAccumulator36"5E637986-C78A-46F4-9E04-7BFF8BB459A8-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Script-65FB58EA1932469180A68373.sh
-s391855393.470863
-e391855393.561008
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Script-65FB58EA1932469180A68373.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSphericalAccumulator.Debug
-omake[1]: Nothing to be done for `PostBuild.testSphericalAccumulator.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'431a79213d5bb741^48a68f213d5bb741^-372"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSphericalAccumulator.Debugmake[1]: Nothing to be done for `PostBuild.testSphericalAccumulator.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855393#0#30#-0#-----2@23"Depend check for xcode-391855393#30#23#-0#-----2@243"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSphericalAccumulator.Debug-391855393#53#243#-0#-----2@76"make[1]: Nothing to be done for `PostBuild.testSphericalAccumulator.Debug'.-391855393#296#76#-0#-----0#0#0#--375"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Script-65FB58EA1932469180A68373.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/tools/DGtal.build/Debug/testSphericalAccumulator.build/Script-65FB58EA1932469180A68373.sh36"4CD9CAC9-24A9-465C-89E8-70F4A8C3EE91-
-

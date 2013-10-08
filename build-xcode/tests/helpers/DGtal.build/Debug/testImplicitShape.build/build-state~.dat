@@ -1,128 +1,0 @@
-TtestImplicitShape
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.o /Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug/testImplicitShape normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Script-67F2B380488249988A6E6E4D.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.LinkFileList
-c0000000051AB05F90000000000000093
-t1370162681
-s147
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Script-67F2B380488249988A6E6E4D.sh
-c0000000051AB05F900000000000000D8
-t1370162681
-s216
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug/testImplicitShape
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerBySTLVector.h
-c0000000051A5AD7D0000000000003984
-t1369812349
-s14724
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GrayscaleColorMap.h
-c0000000051A4E3410000000000001B3A
-t1369760577
-s6970
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/writers/VolWriter.h
-c0000000051A4E45B0000000000000D3D
-t1369760859
-s3389
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/ShapeFactory.h
-c0000000051A4E45B0000000000000A86
-t1369760859
-s2694
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
-c0000000051A5AD7E000000000000275B
-t1369812350
-s10075
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp
-c0000000051A4E45B00000000000012BA
-t1369760859
-s4794
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/shapes/Shapes.h"
-i"DGtal/shapes/ShapeFactory.h"
-i"DGtal/io/boards/Board2D.h"
-i"DGtal/io/colormaps/GrayscaleColorMap.h"
-i"DGtal/io/writers/VolWriter.h"
-i"DGtal/images/ImageContainerBySTLVector.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesabb14c793d5bb741^94fb4d793d5bb741^---0#1#0#--18"Check dependencies36"235FC3ED-8612-460E-8DA7-FB4FA51BDC19-
-
-CCompileC build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.o /Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855481.305725
-e391855487.786446
-r1
-xCompileC
-xbuild-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp6f644e793d5bb741^9e62c97f3d5bb741^---0#0#0#-19%DVTDocumentLocation2@88"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp0000000000000000^2554"CompileC build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.o tests/helpers/testImplicitShape.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/helpers/testImplicitShape.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.o36"3D6F77E8-E612-428C-8812-952286695A49-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug/testImplicitShape normal x86_64
-s391855487.792896
-e391855487.854128
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug/testImplicitShape
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug/testImplicitShape5115cb7f3d5bb741^abb3da7f3d5bb741^---0#0#0#--1188"Ld build-xcode/tests/helpers/Debug/testImplicitShape normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Objects-normal/x86_64/testImplicitShape.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/Debug/testImplicitShape36"A0348186-13C6-4D37-8B2B-92ADC446031C-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Script-67F2B380488249988A6E6E4D.sh
-s391855487.861640
-e391855487.951501
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Script-67F2B380488249988A6E6E4D.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImplicitShape.Debug
-omake[1]: Nothing to be done for `PostBuild.testImplicitShape.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'2b33dd7f3d5bb741^6494f37f3d5bb741^-358"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImplicitShape.Debugmake[1]: Nothing to be done for `PostBuild.testImplicitShape.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855487#0#30#-0#-----2@23"Depend check for xcode-391855487#30#23#-0#-----2@236"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImplicitShape.Debug-391855487#53#236#-0#-----2@69"make[1]: Nothing to be done for `PostBuild.testImplicitShape.Debug'.-391855487#289#69#-0#-----0#0#0#--347"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Script-67F2B380488249988A6E6E4D.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/helpers/DGtal.build/Debug/testImplicitShape.build/Script-67F2B380488249988A6E6E4D.sh36"62B437D0-0F28-4B2A-9114-29E14B08EBC4-
-

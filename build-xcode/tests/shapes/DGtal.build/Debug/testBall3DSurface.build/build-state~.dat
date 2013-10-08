@@ -1,98 +1,0 @@
-TtestBall3DSurface
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.o /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testBall3DSurface normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Script-2B7745202E07482593FE69A5.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.LinkFileList
-c0000000051AB06000000000000000092
-t1370162688
-s146
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Script-2B7745202E07482593FE69A5.sh
-c0000000051AB060000000000000000D6
-t1370162688
-s214
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testBall3DSurface
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.h
-c0000000051AB045B0000000000002063
-t1370162267
-s8291
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/parametric/Ball3D.h
-c0000000051A5AD7E0000000000001ECC
-t1369812350
-s7884
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp
-c0000000051A5AD7E0000000000000B34
-t1369812350
-s2868
-i<iostream>
-i"DGtal/shapes/parametric/Ball3D.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/io/Color.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies40ddd0803d5bb741^2672d1803d5bb741^---0#1#0#--18"Check dependencies36"CE8C611E-0155-46A5-BEC4-12013F03F62D-
-
-CCompileC build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.o /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855488.820022
-e391855494.251337
-r1
-xCompileC
-xbuild-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection79"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp1f12d2803d5bb741^49bc4c863d5bb741^---0#0#0#-19%DVTDocumentLocation2@87"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp0000000000000000^2544"CompileC build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.o tests/shapes/testBall3DSurface.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/shapes/testBall3DSurface.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.o36"B9BA0DED-67A1-4EFF-83B0-A50EABC4B707-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testBall3DSurface normal x86_64
-s391855494.258076
-e391855494.318533
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testBall3DSurface
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection90"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testBall3DSurface013042863d5bb741^af9851863d5bb741^---0#0#0#--1183"Ld build-xcode/tests/shapes/Debug/testBall3DSurface normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Objects-normal/x86_64/testBall3DSurface.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/Debug/testBall3DSurface36"C3044285-D2C5-475D-BEFD-B6EF519422F2-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Script-2B7745202E07482593FE69A5.sh
-s391855494.326480
-e391855494.433794
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Script-2B7745202E07482593FE69A5.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testBall3DSurface.Debug
-omake[1]: Nothing to be done for `PostBuild.testBall3DSurface.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'1e3754863d5bb741^7b136f863d5bb741^-358"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testBall3DSurface.Debugmake[1]: Nothing to be done for `PostBuild.testBall3DSurface.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855494#0#30#-0#-----2@23"Depend check for xcode-391855494#30#23#-0#-----2@236"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testBall3DSurface.Debug-391855494#53#236#-0#-----2@69"make[1]: Nothing to be done for `PostBuild.testBall3DSurface.Debug'.-391855494#289#69#-0#-----0#0#0#--345"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Script-2B7745202E07482593FE69A5.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/shapes/DGtal.build/Debug/testBall3DSurface.build/Script-2B7745202E07482593FE69A5.sh36"99D772B7-AC93-4F14-907D-9FEF394CA5B6-
-

@@ -1,6 +1,0 @@
-\begin{tikzpicture}[anchor=south west,text depth=0,x={(1pt,0pt)},y={(0pt,-1pt)}]
-\path[fill=none,draw=black,line width=0.176mm,] (141.73,141.73) +(-0:141.73) arc (-0:-90:141.73);
-\path[fill=none,draw=black,line width=0.176mm,] (141.73,141.73) +(-0:113.39) arc (-0:270:113.39);
-\path[fill=none,draw=black,line width=0.176mm,] (141.73,141.73) +(28.6479:85.04) arc (28.6479:-61.3521:85.04);
-\path[fill=none,draw=black,line width=0.176mm,] (141.73,141.73) +(-28.6479:56.69) arc (-28.6479:-118.648:56.69);
-\end{tikzpicture}

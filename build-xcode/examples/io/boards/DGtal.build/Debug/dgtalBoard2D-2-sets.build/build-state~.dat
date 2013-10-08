@@ -1,104 +1,0 @@
-TdgtalBoard2D-2-sets
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.o /Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug/dgtalBoard2D-2-sets normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Script-25EE301B75224CFEA69B7356.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.LinkFileList
-c0000000051AB060C000000000000009C
-t1370162700
-s156
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Script-25EE301B75224CFEA69B7356.sh
-c0000000051AB060C00000000000000E4
-t1370162700
-s228
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug/dgtalBoard2D-2-sets
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cpp
-c0000000051A4E3100000000000000F9C
-t1369760528
-s3996
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/io/boards/Board2D.h"
-i"DGtal/shapes/Shapes.h"
-i"DGtal/helpers/StdDefs.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
-c0000000051A5AD7E000000000000275B
-t1369812350
-s10075
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies8ac78d8c3d5bb741^8c658e8c3d5bb741^---0#1#0#--18"Check dependencies36"26A46837-D3C1-44AC-8F1E-50DC11A79598-
-
-CCompileC build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.o /Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855500.558318
-e391855505.857178
-r1
-xCompileC
-xbuild-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection87"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cppba148f8c3d5bb741^4c6fdb913d5bb741^---0#0#0#-19%DVTDocumentLocation2@95"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cpp0000000000000000^2634"CompileC build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.o examples/io/boards/dgtalBoard2D-2-sets.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/io/boards/dgtalBoard2D-2-sets.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.o36"69ACE9C8-5BA5-4596-99A8-8250CDC56647-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug/dgtalBoard2D-2-sets normal x86_64
-s391855505.863582
-e391855505.923973
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug/dgtalBoard2D-2-sets
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug/dgtalBoard2D-2-setse82edd913d5bb741^f08aec913d5bb741^---0#0#0#--1221"Ld build-xcode/examples/io/boards/Debug/dgtalBoard2D-2-sets normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Objects-normal/x86_64/dgtalBoard2D-2-sets.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/Debug/dgtalBoard2D-2-sets36"6BEBCEF3-8A8D-45A6-BD67-23ABC5B4FBB3-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Script-25EE301B75224CFEA69B7356.sh
-s391855505.932907
-e391855506.022759
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Script-25EE301B75224CFEA69B7356.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.dgtalBoard2D-2-sets.Debug
-omake[1]: Nothing to be done for `PostBuild.dgtalBoard2D-2-sets.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'917eef913d5bb741^e5d105923d5bb741^-362"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.dgtalBoard2D-2-sets.Debugmake[1]: Nothing to be done for `PostBuild.dgtalBoard2D-2-sets.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855505#0#30#-0#-----2@23"Depend check for xcode-391855505#30#23#-0#-----2@238"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.dgtalBoard2D-2-sets.Debug-391855505#53#238#-0#-----2@71"make[1]: Nothing to be done for `PostBuild.dgtalBoard2D-2-sets.Debug'.-391855506#291#71#-0#-----0#0#0#--361"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Script-25EE301B75224CFEA69B7356.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/boards/DGtal.build/Debug/dgtalBoard2D-2-sets.build/Script-25EE301B75224CFEA69B7356.sh36"22C77E74-C480-4463-A0AF-A519BBD7991B-
-

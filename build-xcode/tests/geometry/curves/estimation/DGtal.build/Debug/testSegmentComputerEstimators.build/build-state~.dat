@@ -1,117 +1,0 @@
-TtestSegmentComputerEstimators
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug/testSegmentComputerEstimators normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Script-EB14C4205E2040E8AE4EA8B2.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.LinkFileList
-c0000000051AB055F00000000000000BE
-t1370162527
-s190
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Script-EB14C4205E2040E8AE4EA8B2.sh
-c0000000051AB055F000000000000010A
-t1370162527
-s266
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug/testSegmentComputerEstimators
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/ArithmeticalDSS.h
-c0000000051A5AD7D00000000000055BE
-t1369812349
-s21950
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/GeometricalDCA.h
-c0000000051A4E45B0000000000002E3F
-t1369760859
-s11839
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/curves/estimation/SegmentComputerEstimators.h
-c0000000051A5AD7D000000000000B78C
-t1369812349
-s46988
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/ConfigTest.h
-c000000004ED65CD80000000000000138
-t1322671320
-s312
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp
-c0000000051A4E45B0000000000002551
-t1369760859
-s9553
-i<iostream>
-i<cmath>
-i"DGtal/base/Common.h"
-i"DGtal/geometry/curves/ArithmeticalDSS.h"
-i"DGtal/geometry/curves/GeometricalDCA.h"
-i"DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
-i"DGtal/io/boards/Board2D.h"
-i"ConfigTest.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies573fbadf3c5bb741^e220bddf3c5bb741^---0#1#0#--18"Check dependencies36"6DD52313-8CD3-4D7D-B199-D5CABEB2971C-
-
-CCompileC build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855328.376168
-e391855331.739627
-r1
-xCompileC
-xbuild-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection111"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cppe76d60e03c5bb741^6957bde33c5bb741^---0#0#0#-19%DVTDocumentLocation2@119"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp0000000000000000^2888"CompileC build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.o tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/curves/estimation/testSegmentComputerEstimators.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.o36"551107DD-7A86-4555-A541-A4EC5696EEDE-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug/testSegmentComputerEstimators normal x86_64
-s391855332.751636
-e391855332.804007
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug/testSegmentComputerEstimators
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection122"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug/testSegmentComputerEstimatorse884c0e43c5bb741^bbd3cde43c5bb741^---0#0#0#--1331"Ld build-xcode/tests/geometry/curves/estimation/Debug/testSegmentComputerEstimators normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Objects-normal/x86_64/testSegmentComputerEstimators.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/Debug/testSegmentComputerEstimators36"CB5A13F7-D210-4A9E-A9D8-7672D65100EA-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Script-EB14C4205E2040E8AE4EA8B2.sh
-s391855332.824381
-e391855332.966903
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Script-EB14C4205E2040E8AE4EA8B2.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSegmentComputerEstimators.Debug
-omake[1]: Nothing to be done for `PostBuild.testSegmentComputerEstimators.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'849cd3e43c5bb741^779ff7e43c5bb741^-382"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSegmentComputerEstimators.Debugmake[1]: Nothing to be done for `PostBuild.testSegmentComputerEstimators.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855332#0#30#-0#-----2@23"Depend check for xcode-391855332#30#23#-0#-----2@248"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testSegmentComputerEstimators.Debug-391855332#53#248#-0#-----2@81"make[1]: Nothing to be done for `PostBuild.testSegmentComputerEstimators.Debug'.-391855332#301#81#-0#-----0#0#0#--409"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Script-EB14C4205E2040E8AE4EA8B2.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/curves/estimation/DGtal.build/Debug/testSegmentComputerEstimators.build/Script-EB14C4205E2040E8AE4EA8B2.sh36"02F2241B-6605-47C6-B7ED-F8EC97977305-
-

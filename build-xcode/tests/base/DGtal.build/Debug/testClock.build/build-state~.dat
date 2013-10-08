@@ -1,94 +1,0 @@
-TtestClock
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testClock normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Script-3599B536BC9E4288A53501A1.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.LinkFileList
-c0000000051AB05660000000000000080
-t1370162534
-s128
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Script-3599B536BC9E4288A53501A1.sh
-c0000000051AB056600000000000000CA
-t1370162534
-s202
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testClock
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Clock.h
-c0000000051A4E45B000000000000116C
-t1369760859
-s4460
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp
-c0000000051A4E3120000000000000931
-t1369760530
-s2353
-i<cstdio>
-i<cmath>
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/base/Clock.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesbf9dbce63c5bb741^9835bde63c5bb741^---0#1#0#--18"Check dependencies36"1F7975A4-20BF-44EC-B486-EB8DDA665BCC-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855334.770347
-e391855335.791081
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp4358c5e63c5bb741^c383cae73c5bb741^---0#0#0#-19%DVTDocumentLocation2@77"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp0000000000000000^2428"CompileC build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.o tests/base/testClock.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testClock.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.o36"D503F780-B703-41CF-AF91-9400D216F76A-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testClock normal x86_64
-s391855335.797482
-e391855335.890772
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testClock
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testClock1840cce73c5bb741^3413e4e73c5bb741^---0#0#0#--1141"Ld build-xcode/tests/base/Debug/testClock normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Objects-normal/x86_64/testClock.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testClock36"2EAAF896-A362-4BDF-81F7-2001F2D52177-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Script-3599B536BC9E4288A53501A1.sh
-s391855335.966854
-e391855336.037194
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Script-3599B536BC9E4288A53501A1.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testClock.Debug
-omake[1]: Nothing to be done for `PostBuild.testClock.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'4223f8e73c5bb741^149509e83c5bb741^-342"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testClock.Debugmake[1]: Nothing to be done for `PostBuild.testClock.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855335#0#30#-0#-----2@23"Depend check for xcode-391855335#30#23#-0#-----2@228"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testClock.Debug-391855335#53#228#-0#-----2@61"make[1]: Nothing to be done for `PostBuild.testClock.Debug'.-391855336#281#61#-0#-----0#0#0#--325"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testClock.build/Script-3599B536BC9E4288A53501A1.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testClock.build/Script-3599B536BC9E4288A53501A1.sh36"4B22EFB9-4DDB-4F5C-AAF0-D6B92E812F01-
-

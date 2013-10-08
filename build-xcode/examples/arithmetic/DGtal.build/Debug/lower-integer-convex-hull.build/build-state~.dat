@@ -1,109 +1,0 @@
-Tlower-integer-convex-hull
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/lower-integer-convex-hull normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Script-2586609D25324B3BB66CA6BE.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.LinkFileList
-c0000000051AB064A00000000000000A9
-t1370162762
-s169
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Script-2586609D25324B3BB66CA6BE.sh
-c0000000051AB064A00000000000000EC
-t1370162762
-s236
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/lower-integer-convex-hull
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cpp
-c0000000051A5AD7C0000000000000C47
-t1369812348
-s3143
-i"DGtal/base/Common.h"
-i"DGtal/arithmetic/LatticePolytope2D.h"
-i"DGtal/io/boards/Board2D.h"
-i"DGtal/shapes/Shapes.h"
-i"DGtal/helpers/StdDefs.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LatticePolytope2D.h
-c0000000051A5AD7C0000000000004E4F
-t1369812348
-s20047
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/shapes/Shapes.h
-c0000000051A5AD7E000000000000275B
-t1369812350
-s10075
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies41f3ddca3d5bb741^22a8deca3d5bb741^---0#1#0#--18"Check dependencies36"BA2A8D1A-1DC4-44BA-8EFB-F2475D72FA8A-
-
-CCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855562.873214
-e391855569.793136
-r1
-xCompileC
-xbuild-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection94"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cppbcb2dfca3d5bb741^1c0acbd13d5bb741^---0#0#0#-19%DVTDocumentLocation2@102"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cpp0000000000000000^2716"CompileC build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.o examples/arithmetic/lower-integer-convex-hull.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/lower-integer-convex-hull.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.o36"01F2DADD-D810-45C1-8059-5640839E6F95-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/lower-integer-convex-hull normal x86_64
-s391855569.800024
-e391855569.887490
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/lower-integer-convex-hull
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection105"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/lower-integer-convex-hull03ebccd13d5bb741^4832e3d13d5bb741^---0#0#0#--1250"Ld build-xcode/examples/arithmetic/Debug/lower-integer-convex-hull normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Objects-normal/x86_64/lower-integer-convex-hull.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/lower-integer-convex-hull36"0FA347BE-DB42-44CC-A8F0-9C09530DBEEA-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Script-2586609D25324B3BB66CA6BE.sh
-s391855569.895135
-e391855569.991072
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Script-2586609D25324B3BB66CA6BE.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.lower-integer-convex-hull.Debug
-omake[1]: Nothing to be done for `PostBuild.lower-integer-convex-hull.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'd8d4e5d13d5bb741^52b5fdd13d5bb741^-374"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.lower-integer-convex-hull.Debugmake[1]: Nothing to be done for `PostBuild.lower-integer-convex-hull.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855569#0#30#-0#-----2@23"Depend check for xcode-391855569#30#23#-0#-----2@244"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.lower-integer-convex-hull.Debug-391855569#53#244#-0#-----2@77"make[1]: Nothing to be done for `PostBuild.lower-integer-convex-hull.Debug'.-391855569#297#77#-0#-----0#0#0#--375"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Script-2586609D25324B3BB66CA6BE.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/lower-integer-convex-hull.build/Script-2586609D25324B3BB66CA6BE.sh36"86B344AF-AB0F-46E1-858F-8237589E3AFC-
-

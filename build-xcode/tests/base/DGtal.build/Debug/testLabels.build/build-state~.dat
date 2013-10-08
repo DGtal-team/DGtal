@@ -1,97 +1,0 @@
-TtestLabels
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabels normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Script-902E7FAB011149DB9269D5B4.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.LinkFileList
-c0000000051AB05690000000000000082
-t1370162537
-s130
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Script-902E7FAB011149DB9269D5B4.sh
-c0000000051AB056900000000000000CB
-t1370162537
-s203
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabels
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Labels.h
-c0000000051A5AD7D000000000000265C
-t1369812349
-s9820
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cpp
-c0000000051A5AD7E0000000000000EA1
-t1369812350
-s3745
-i<cstdio>
-i<cmath>
-i<iostream>
-i<algorithm>
-i<vector>
-i<bitset>
-i"DGtal/base/Common.h"
-i"DGtal/base/Labels.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencieseacb8ae93c5bb741^f5638be93c5bb741^---0#1#0#--18"Check dependencies36"011F4D87-F091-45EE-83EA-02704F44D782-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855338.418400
-e391855339.642917
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection70"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cppf4316bea3c5bb741^af95a4eb3c5bb741^---0#0#0#-19%DVTDocumentLocation2@78"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cpp0000000000000000^2440"CompileC build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.o tests/base/testLabels.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testLabels.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.o36"DC932AE0-DED6-49B1-9CD4-14D1B2252047-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabels normal x86_64
-s391855339.649578
-e391855339.690120
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabels
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection81"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabels6363a6eb3c5bb741^82abb0eb3c5bb741^---0#0#0#--1145"Ld build-xcode/tests/base/Debug/testLabels normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Objects-normal/x86_64/testLabels.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testLabels36"EC365A6C-A89E-435A-92A2-943F7BC3DE48-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Script-902E7FAB011149DB9269D5B4.sh
-s391855340.128709
-e391855340.202165
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Script-902E7FAB011149DB9269D5B4.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLabels.Debug
-omake[1]: Nothing to be done for `PostBuild.testLabels.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'758e21ec3c5bb741^f9bf33ec3c5bb741^-344"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLabels.Debugmake[1]: Nothing to be done for `PostBuild.testLabels.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855340#0#30#-0#-----2@23"Depend check for xcode-391855340#30#23#-0#-----2@229"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testLabels.Debug-391855340#53#229#-0#-----2@62"make[1]: Nothing to be done for `PostBuild.testLabels.Debug'.-391855340#282#62#-0#-----0#0#0#--327"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Script-902E7FAB011149DB9269D5B4.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testLabels.build/Script-902E7FAB011149DB9269D5B4.sh36"B3CD6942-0EE6-403C-A189-DA5470413AEE-
-

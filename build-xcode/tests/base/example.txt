@@ -1,8 +1,0 @@
-This is an Info trace
-[WRG]This is an warning trace
-[ERR]This is an Error trace
-This is an Emphased trace
-New Block [FirstMethod]
-  This is an Info trace, level 1
-  This is an Info trace, level 1
-EndBlock [FirstMethod] (0 ms)

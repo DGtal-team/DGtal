@@ -1,87 +1,0 @@
-TtestStatistics
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testStatistics normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Script-343AA773BE7B4D4DA5CF7896.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.LinkFileList
-c0000000051AB0568000000000000008A
-t1370162536
-s138
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Script-343AA773BE7B4D4DA5CF7896.sh
-c0000000051AB056800000000000000CF
-t1370162536
-s207
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testStatistics
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/math/Statistic.h
-c0000000051A5AD7E0000000000001F58
-t1369812350
-s8024
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cpp
-c0000000051A5AD7E00000000000010C4
-t1369812350
-s4292
-i<iostream>
-i<vector>
-i"DGtal/math/Statistic.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb7b208e83c5bb741^564409e83c5bb741^---0#1#0#--18"Check dependencies36"37808AD4-32C8-47F1-A5B8-27B9FC9BF5F7-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855336.038445
-e391855337.368837
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cppbef909e83c5bb741^bd6d5ee93c5bb741^---0#0#0#-19%DVTDocumentLocation2@82"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cpp0000000000000000^2488"CompileC build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.o tests/base/testStatistics.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testStatistics.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.o36"15C43827-D36E-4F7A-8129-BDA632096144-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testStatistics normal x86_64
-s391855337.380203
-e391855337.410853
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testStatistics
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testStatistics726c61e93c5bb741^562d69e93c5bb741^---0#0#0#--1161"Ld build-xcode/tests/base/Debug/testStatistics normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Objects-normal/x86_64/testStatistics.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testStatistics36"B8A06187-8205-4C4B-923C-A1878E5320E3-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Script-343AA773BE7B4D4DA5CF7896.sh
-s391855337.444706
-e391855337.519009
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Script-343AA773BE7B4D4DA5CF7896.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testStatistics.Debug
-omake[1]: Nothing to be done for `PostBuild.testStatistics.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'136672e93c5bb741^5c7486e93c5bb741^-352"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testStatistics.Debugmake[1]: Nothing to be done for `PostBuild.testStatistics.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855337#0#30#-0#-----2@23"Depend check for xcode-391855337#30#23#-0#-----2@233"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testStatistics.Debug-391855337#53#233#-0#-----2@66"make[1]: Nothing to be done for `PostBuild.testStatistics.Debug'.-391855337#286#66#-0#-----0#0#0#--335"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Script-343AA773BE7B4D4DA5CF7896.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testStatistics.build/Script-343AA773BE7B4D4DA5CF7896.sh36"0C131036-E597-41ED-846D-9D82FF09D364-
-

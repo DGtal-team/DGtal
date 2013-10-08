@@ -1,128 +1,0 @@
-Tdisplay3DToOFF
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.o /Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug/display3DToOFF normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Script-CEA9E260647D49F08FE32660.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.LinkFileList
-c0000000051AB0558000000000000008B
-t1370162520
-s139
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Script-CEA9E260647D49F08FE32660.sh
-c0000000051AB055800000000000000D1
-t1370162520
-s209
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug/display3DToOFF
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/ConfigExamples.h
-c000000004ED65CD90000000000000146
-t1322671321
-s326
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cpp
-c0000000051A4E3100000000000000433
-t1369760528
-s1075
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/io/readers/VolReader.h"
-i"DGtal/io/Display3D.h"
-i"DGtal/io/DrawWithDisplay3DModifier.h"
-i"DGtal/images/ImageSelector.h"
-i"DGtal/images/imagesSetsUtils/SetFromImage.h"
-i"DGtal/helpers/StdDefs.h"
-i"ConfigExamples.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageSelector.h
-c0000000051A4E45B0000000000000C16
-t1369760859
-s3094
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/imagesSetsUtils/SetFromImage.h
-c0000000051A5AD7D0000000000001769
-t1369812349
-s5993
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Display3D.h
-c0000000051A5AD7D0000000000005065
-t1369812349
-s20581
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/DrawWithDisplay3DModifier.h
-c0000000051A5AD7D0000000000002800
-t1369812349
-s10240
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/VolReader.h
-c0000000051AB045B0000000000001820
-t1370162267
-s6176
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesd7867ad83c5bb741^d6197bd83c5bb741^---0#1#0#--18"Check dependencies36"302A906A-A61E-4B1F-9864-06057CBDC7C3-
-
-CCompileC build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.o /Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855320.483491
-e391855323.995181
-r1
-xCompileC
-xbuild-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection75"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cppbbec7bd83c5bb741^71a9fedb3c5bb741^---0#0#0#-19%DVTDocumentLocation2@83"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cpp0000000000000000^2504"CompileC build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.o examples/io/display3DToOFF.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/io/display3DToOFF.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.o36"7CB5E9B8-474C-485C-A54F-C162D06599E4-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug/display3DToOFF normal x86_64
-s391855326.988608
-e391855327.051227
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug/display3DToOFF
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection86"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug/display3DToOFF9929fdde3c5bb741^d21c0ddf3c5bb741^---0#0#0#--1016"Ld build-xcode/examples/io/Debug/display3DToOFF normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Objects-normal/x86_64/display3DToOFF.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/Debug/display3DToOFF36"5B971240-330E-46E1-A20A-2587AB2B61CD-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Script-CEA9E260647D49F08FE32660.sh
-s391855327.084633
-e391855327.147508
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Script-CEA9E260647D49F08FE32660.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.display3DToOFF.Debug
-omake[1]: Nothing to be done for `PostBuild.display3DToOFF.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'771516df3c5bb741^c2c225df3c5bb741^-352"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.display3DToOFF.Debugmake[1]: Nothing to be done for `PostBuild.display3DToOFF.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855327#0#30#-0#-----2@23"Depend check for xcode-391855327#30#23#-0#-----2@233"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.display3DToOFF.Debug-391855327#53#233#-0#-----2@66"make[1]: Nothing to be done for `PostBuild.display3DToOFF.Debug'.-391855327#286#66#-0#-----0#0#0#--337"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Script-CEA9E260647D49F08FE32660.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/io/DGtal.build/Debug/display3DToOFF.build/Script-CEA9E260647D49F08FE32660.sh36"B1244F9F-8D6E-4B16-9DB5-411558450F98-
-

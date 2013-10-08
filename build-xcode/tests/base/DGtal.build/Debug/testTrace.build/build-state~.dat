@@ -1,95 +1,0 @@
-TtestTrace
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testTrace normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Script-5E12580C591A4108B965A226.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/DGtal/base/Config.h
-c0000000051AB04700000000000000185
-t1370162288
-s389
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.LinkFileList
-c0000000051AB05670000000000000080
-t1370162535
-s128
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Script-5E12580C591A4108B965A226.sh
-c0000000051AB056700000000000000CA
-t1370162535
-s202
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testTrace
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cpp
-c0000000051A5AD7E000000000000119C
-t1369812350
-s4508
-i<cstdio>
-i<cmath>
-i<iostream>
-i<fstream>
-i"DGtal/base/Config.h"
-i"DGtal/base/Common.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies18d0d7e73c5bb741^6e51dae73c5bb741^---0#1#0#--18"Check dependencies36"CA379C01-9331-4028-8592-9B6204616865-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855335.894309
-e391855337.229403
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cppf90fe5e73c5bb741^2bbd3ae93c5bb741^---0#0#0#-19%DVTDocumentLocation2@77"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cpp0000000000000000^2428"CompileC build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.o tests/base/testTrace.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testTrace.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.o36"1F02E44D-4AA9-4174-8E8A-BD37AEAD67C0-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testTrace normal x86_64
-s391855337.236057
-e391855337.279282
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testTrace
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testTracead863ce93c5bb741^30114be93c5bb741^---0#0#0#--1141"Ld build-xcode/tests/base/Debug/testTrace normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Objects-normal/x86_64/testTrace.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testTrace36"7C8E6ED5-BF8E-4F3F-BF11-30FD5C85D276-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Script-5E12580C591A4108B965A226.sh
-s391855337.373786
-e391855337.448633
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Script-5E12580C591A4108B965A226.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testTrace.Debug
-omake[1]: Nothing to be done for `PostBuild.testTrace.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'674560e93c5bb741^90d872e93c5bb741^-342"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testTrace.Debugmake[1]: Nothing to be done for `PostBuild.testTrace.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855337#0#30#-0#-----2@23"Depend check for xcode-391855337#30#23#-0#-----2@228"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testTrace.Debug-391855337#53#228#-0#-----2@61"make[1]: Nothing to be done for `PostBuild.testTrace.Debug'.-391855337#281#61#-0#-----0#0#0#--325"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Script-5E12580C591A4108B965A226.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testTrace.build/Script-5E12580C591A4108B965A226.sh36"072DF989-D05E-448F-A698-ED33C6D96597-
-

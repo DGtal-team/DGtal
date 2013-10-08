@@ -1,122 +1,0 @@
-TtestImageSimple
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSimple normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Script-76FF41F7E728470C8F3D5884.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.LinkFileList
-c0000000051AB05E5000000000000008E
-t1370162661
-s142
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Script-76FF41F7E728470C8F3D5884.sh
-c0000000051AB05E500000000000000D4
-t1370162661
-s212
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSimple
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CImage.h
-c0000000051A5AD7D0000000000000FBB
-t1369812349
-s4027
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/Image.h
-c0000000051A5AD7D00000000000020F4
-t1369812349
-s8436
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerBySTLVector.h
-c0000000051A5AD7D0000000000003984
-t1369812349
-s14724
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
-c0000000051A5AD7E000000000000176C
-t1369812350
-s5996
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
-c0000000051A5AD7E0000000000004E8C
-t1369812350
-s20108
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp
-c0000000051A4E45B00000000000022DD
-t1369760859
-s8925
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/kernel/domains/HyperRectDomain.h"
-i"DGtal/kernel/SpaceND.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/images/CImage.h"
-i"DGtal/images/Image.h"
-i"DGtal/images/ImageContainerBySTLVector.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb3612d653d5bb741^9d102e653d5bb741^---0#1#0#--18"Check dependencies36"CA46F1D4-6110-4692-A183-EB0060158008-
-
-CCompileC build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855461.182029
-e391855467.237801
-r1
-xCompileC
-xbuild-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection77"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp51f62e653d5bb741^bddf3c6b3d5bb741^---0#0#0#-19%DVTDocumentLocation2@85"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp0000000000000000^2520"CompileC build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.o tests/images/testImageSimple.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSimple.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.o36"DA2BA7CE-109D-4ED9-9D70-E7FCA289887E-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSimple normal x86_64
-s391855467.244665
-e391855467.294837
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSimple
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection88"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSimple0ab93e6b3d5bb741^d57a4b6b3d5bb741^---0#0#0#--1175"Ld build-xcode/tests/images/Debug/testImageSimple normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Objects-normal/x86_64/testImageSimple.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSimple36"EC856650-E46D-4E3B-A50B-8A72C6F102EF-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Script-76FF41F7E728470C8F3D5884.sh
-s391855467.303060
-e391855467.392931
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Script-76FF41F7E728470C8F3D5884.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageSimple.Debug
-omake[1]: Nothing to be done for `PostBuild.testImageSimple.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'ff204e6b3d5bb741^8e95646b3d5bb741^-354"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageSimple.Debugmake[1]: Nothing to be done for `PostBuild.testImageSimple.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855467#0#30#-0#-----2@23"Depend check for xcode-391855467#30#23#-0#-----2@234"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageSimple.Debug-391855467#53#234#-0#-----2@67"make[1]: Nothing to be done for `PostBuild.testImageSimple.Debug'.-391855467#287#67#-0#-----0#0#0#--341"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Script-76FF41F7E728470C8F3D5884.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSimple.build/Script-76FF41F7E728470C8F3D5884.sh36"0001D0AC-6B04-435E-B3E8-7B78E3D5A12B-
-

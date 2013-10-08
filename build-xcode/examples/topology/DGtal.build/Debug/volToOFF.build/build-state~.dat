@@ -1,128 +1,0 @@
-TvolToOFF
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.o /Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/volToOFF normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Script-CC27EF7BE4DB450891014037.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.LinkFileList
-c0000000051AB063F0000000000000085
-t1370162751
-s133
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Script-CC27EF7BE4DB450891014037.sh
-c0000000051AB063F00000000000000D7
-t1370162751
-s215
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/volToOFF
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cpp
-c0000000051A5AD7C0000000000001225
-t1369812348
-s4645
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/io/readers/VolReader.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/topology/helpers/Surfaces.h"
-i"DGtal/topology/DigitalSurface.h"
-i"DGtal/topology/SetOfSurfels.h"
-i"DGtal/images/ImageSelector.h"
-i"DGtal/images/imagesSetsUtils/SetFromImage.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageSelector.h
-c0000000051A4E45B0000000000000C16
-t1369760859
-s3094
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/imagesSetsUtils/SetFromImage.h
-c0000000051A5AD7D0000000000001769
-t1369812349
-s5993
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/VolReader.h
-c0000000051AB045B0000000000001820
-t1370162267
-s6176
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/DigitalSurface.h
-c0000000051A5AD7E0000000000005D4F
-t1369812350
-s23887
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/SetOfSurfels.h
-c0000000051A4E3490000000000002BD4
-t1369760585
-s11220
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/helpers/Surfaces.h
-c0000000051A5AD7E0000000000008374
-t1369812350
-s33652
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesf39039bf3d5bb741^700a43bf3d5bb741^---0#1#0#--18"Check dependencies36"61356796-7605-4B01-9AC9-A68E8B70359B-
-
-CCompileC build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.o /Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855551.230771
-e391855557.829196
-r1
-xCompileC
-xbuild-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection75"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cppc5383bbf3d5bb741^834ed4c53d5bb741^---0#0#0#-19%DVTDocumentLocation2@83"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cpp0000000000000000^2492"CompileC build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.o examples/topology/volToOFF.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/topology/volToOFF.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.o36"6C99A756-CD86-4FAE-9BA4-76EB625647EB-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/volToOFF normal x86_64
-s391855557.836034
-e391855557.911621
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/volToOFF
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection86"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/volToOFF6022d6c53d5bb741^5872e9c53d5bb741^---0#0#0#--1098"Ld build-xcode/examples/topology/Debug/volToOFF normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Objects-normal/x86_64/volToOFF.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/volToOFF36"4D636C6B-1F7B-4281-A8EA-AF581BEDD106-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Script-CC27EF7BE4DB450891014037.sh
-s391855557.919728
-e391855558.016867
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Script-CC27EF7BE4DB450891014037.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.volToOFF.Debug
-omake[1]: Nothing to be done for `PostBuild.volToOFF.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'9c16ecc53d5bb741^2c6204c63d5bb741^-340"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.volToOFF.Debugmake[1]: Nothing to be done for `PostBuild.volToOFF.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855557#0#30#-0#-----2@23"Depend check for xcode-391855557#30#23#-0#-----2@227"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.volToOFF.Debug-391855557#53#227#-0#-----2@60"make[1]: Nothing to be done for `PostBuild.volToOFF.Debug'.-391855558#280#60#-0#-----0#0#0#--337"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Script-CC27EF7BE4DB450891014037.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/volToOFF.build/Script-CC27EF7BE4DB450891014037.sh36"A479308B-F33B-4D98-A5A5-A1DCF56579A5-
-

@@ -1,95 +1,0 @@
-TtestCirculator
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testCirculator normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Script-BD3E8232427341E6B3808F25.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.LinkFileList
-c0000000051AB0565000000000000008A
-t1370162533
-s138
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Script-BD3E8232427341E6B3808F25.sh
-c0000000051AB056500000000000000CF
-t1370162533
-s207
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testCirculator
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Circulator.h
-c0000000051A5AD7D0000000000003296
-t1369812349
-s12950
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp
-c0000000051A5AD7E0000000000002505
-t1369812350
-s9477
-i<iostream>
-i<vector>
-i<list>
-i<forward_list>
-i"DGtal/base/Common.h"
-i"DGtal/base/Circulator.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies05a40de53c5bb741^919d0fe53c5bb741^---0#1#0#--18"Check dependencies36"6E626930-153C-42E8-A640-F656D049E9F4-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855333.058348
-e391855334.432698
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection74"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp06130fe53c5bb741^15c66ee63c5bb741^---0#0#0#-19%DVTDocumentLocation2@82"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp0000000000000000^2488"CompileC build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.o tests/base/testCirculator.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testCirculator.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.o36"5308106B-6EE4-4873-9F46-49E4FD6A8779-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testCirculator normal x86_64
-s391855334.548424
-e391855334.584397
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testCirculator
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testCirculatord97c8ce63c5bb741^c66998e63c5bb741^---0#0#0#--1161"Ld build-xcode/tests/base/Debug/testCirculator normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Objects-normal/x86_64/testCirculator.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testCirculator36"EAD74BA3-CC3A-4061-AA9F-FD5FDF720305-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Script-BD3E8232427341E6B3808F25.sh
-s391855334.592500
-e391855334.665777
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Script-BD3E8232427341E6B3808F25.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testCirculator.Debug
-omake[1]: Nothing to be done for `PostBuild.testCirculator.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'be4c98e63c5bb741^db6eaae63c5bb741^-352"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testCirculator.Debugmake[1]: Nothing to be done for `PostBuild.testCirculator.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855334#0#30#-0#-----2@23"Depend check for xcode-391855334#30#23#-0#-----2@233"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testCirculator.Debug-391855334#53#233#-0#-----2@66"make[1]: Nothing to be done for `PostBuild.testCirculator.Debug'.-391855334#286#66#-0#-----0#0#0#--335"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Script-BD3E8232427341E6B3808F25.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testCirculator.build/Script-BD3E8232427341E6B3808F25.sh36"E7849139-4184-4A56-BB4E-9762229F6300-
-

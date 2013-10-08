@@ -1,110 +1,0 @@
-TkhalimskySpaceScanner
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.o /Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/khalimskySpaceScanner normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Script-EA45C41A9F0B43DCBAE024AC.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.LinkFileList
-c0000000051AB0639000000000000009F
-t1370162745
-s159
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Script-EA45C41A9F0B43DCBAE024AC.sh
-c0000000051AB063900000000000000E4
-t1370162745
-s228
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/khalimskySpaceScanner
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cpp
-c0000000051A4E3110000000000000E1C
-t1369760529
-s3612
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/topology/KhalimskySpaceND.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/io/Color.h"
-i"DGtal/io/boards/Board2D.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.h
-c0000000051AB045B0000000000002063
-t1370162267
-s8291
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/topology/KhalimskySpaceND.h
-c0000000051A5AD7E000000000000AEBE
-t1369812350
-s44734
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies5ab9abb93d5bb741^ab92acb93d5bb741^---0#1#0#--18"Check dependencies36"344F7B45-CADE-40BD-A9C2-45577BC20742-
-
-CCompileC build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.o /Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855545.675170
-e391855550.938221
-r1
-xCompileC
-xbuild-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection88"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cppe201adb93d5bb741^ef8ef0be3d5bb741^---0#0#0#-19%DVTDocumentLocation2@96"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cpp0000000000000000^2648"CompileC build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.o examples/topology/khalimskySpaceScanner.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/topology/khalimskySpaceScanner.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.o36"767CEF99-1E10-4459-BF77-E610FA5027D8-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/khalimskySpaceScanner normal x86_64
-s391855551.033493
-e391855551.085637
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/khalimskySpaceScanner
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/khalimskySpaceScanner32ae08bf3d5bb741^cff515bf3d5bb741^---0#0#0#--1150"Ld build-xcode/examples/topology/Debug/khalimskySpaceScanner normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Objects-normal/x86_64/khalimskySpaceScanner.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/Debug/khalimskySpaceScanner36"7EEFC84E-7D49-41D1-A713-838BD4E3A89B-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Script-EA45C41A9F0B43DCBAE024AC.sh
-s391855551.093720
-e391855551.187668
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Script-EA45C41A9F0B43DCBAE024AC.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.khalimskySpaceScanner.Debug
-omake[1]: Nothing to be done for `PostBuild.khalimskySpaceScanner.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'31b218bf3d5bb741^82c737bf3d5bb741^-366"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.khalimskySpaceScanner.Debugmake[1]: Nothing to be done for `PostBuild.khalimskySpaceScanner.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855551#0#30#-0#-----2@23"Depend check for xcode-391855551#30#23#-0#-----2@240"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.khalimskySpaceScanner.Debug-391855551#53#240#-0#-----2@73"make[1]: Nothing to be done for `PostBuild.khalimskySpaceScanner.Debug'.-391855551#293#73#-0#-----0#0#0#--363"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Script-EA45C41A9F0B43DCBAE024AC.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/topology/DGtal.build/Debug/khalimskySpaceScanner.build/Script-EA45C41A9F0B43DCBAE024AC.sh36"E2E5C9D0-3FBB-4D90-AC9F-C21C6D0D4582-
-

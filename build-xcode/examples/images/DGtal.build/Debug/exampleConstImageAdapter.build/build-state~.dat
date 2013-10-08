@@ -1,128 +1,0 @@
-TexampleConstImageAdapter
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.o /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug/exampleConstImageAdapter normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Script-33F3B3CB4743497F99F4E396.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.LinkFileList
-c0000000051AB060600000000000000A3
-t1370162694
-s163
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Script-33F3B3CB4743497F99F4E396.sh
-c0000000051AB060600000000000000E3
-t1370162694
-s227
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug/exampleConstImageAdapter
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/ConfigExamples.h
-c000000004ED65CD90000000000000146
-t1322671321
-s326
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cpp
-c0000000051A4E45B0000000000001644
-t1369760859
-s5700
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/helpers/StdDefs.h"
-i"ConfigExamples.h"
-i"DGtal/io/boards/Board2D.h"
-i"DGtal/io/colormaps/HueShadeColorMap.h"
-i"DGtal/io/colormaps/GrayscaleColorMap.h"
-i"DGtal/images/ImageContainerBySTLVector.h"
-i"DGtal/images/ConstImageAdapter.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ConstImageAdapter.h
-c0000000051A5AD7D0000000000002475
-t1369812349
-s9333
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerBySTLVector.h
-c0000000051A5AD7D0000000000003984
-t1369812349
-s14724
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GrayscaleColorMap.h
-c0000000051A4E3410000000000001B3A
-t1369760577
-s6970
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/HueShadeColorMap.h
-c0000000051A5AD7D0000000000002027
-t1369812349
-s8231
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies87dc80863d5bb741^1b9f81863d5bb741^---0#1#0#--18"Check dependencies36"94E5C2C7-DA94-4FD5-ACA0-6155FCA50E84-
-
-CCompileC build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.o /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855494.508217
-e391855501.082319
-r1
-xCompileC
-xbuild-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection89"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cppf73d82863d5bb741^471d158d3d5bb741^---0#0#0#-19%DVTDocumentLocation2@97"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cpp0000000000000000^2664"CompileC build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.o examples/images/exampleConstImageAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/images/exampleConstImageAdapter.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.o36"476D8020-594C-4044-8A63-6A42356D46D2-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug/exampleConstImageAdapter normal x86_64
-s391855501.089121
-e391855501.143754
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug/exampleConstImageAdapter
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug/exampleConstImageAdapterd0ec168d3d5bb741^ffcc248d3d5bb741^---0#0#0#--1226"Ld build-xcode/examples/images/Debug/exampleConstImageAdapter normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Objects-normal/x86_64/exampleConstImageAdapter.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/Debug/exampleConstImageAdapter36"82987819-2D5F-4A1B-89D0-6084C84BA9B2-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Script-33F3B3CB4743497F99F4E396.sh
-s391855501.151861
-e391855501.248673
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Script-33F3B3CB4743497F99F4E396.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleConstImageAdapter.Debug
-omake[1]: Nothing to be done for `PostBuild.exampleConstImageAdapter.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'058b278d3d5bb741^2fa83f8d3d5bb741^-372"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleConstImageAdapter.Debugmake[1]: Nothing to be done for `PostBuild.exampleConstImageAdapter.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855501#0#30#-0#-----2@23"Depend check for xcode-391855501#30#23#-0#-----2@243"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.exampleConstImageAdapter.Debug-391855501#53#243#-0#-----2@76"make[1]: Nothing to be done for `PostBuild.exampleConstImageAdapter.Debug'.-391855501#296#76#-0#-----0#0#0#--365"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Script-33F3B3CB4743497F99F4E396.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/images/DGtal.build/Debug/exampleConstImageAdapter.build/Script-33F3B3CB4743497F99F4E396.sh36"63FAD5B8-E785-481C-B5D3-E9826C510DC6-
-

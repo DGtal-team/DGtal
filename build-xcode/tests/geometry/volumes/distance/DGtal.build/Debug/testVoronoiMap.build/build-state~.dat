@@ -1,140 +1,0 @@
-TtestVoronoiMap
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testVoronoiMap normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Script-859C628DCC23447D8BBA25A7.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.LinkFileList
-c0000000051AB058A000000000000009F
-t1370162570
-s159
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Script-859C628DCC23447D8BBA25A7.sh
-c0000000051AB058A00000000000000F9
-t1370162570
-s249
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testVoronoiMap
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/DistanceTransformation.h
-c0000000051A5AD7D00000000000020B7
-t1369812349
-s8375
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h
-c0000000051A5AD7D000000000000400B
-t1369812349
-s16395
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h
-c0000000051A5AD7D000000000000266F
-t1369812349
-s9839
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/geometry/volumes/distance/VoronoiMap.h
-c0000000051A5AD7D0000000000002D21
-t1369812349
-s11553
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/CConstImage.h
-c0000000051A5AD7D0000000000000EAD
-t1369812349
-s3757
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/HueShadeColorMap.h
-c0000000051A5AD7D0000000000002027
-t1369812349
-s8231
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/BasicPointPredicates.h
-c0000000051A5AD7E0000000000003002
-t1369812350
-s12290
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cpp
-c0000000051A5AD7E0000000000003CA7
-t1369812350
-s15527
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/images/CConstImage.h"
-i"DGtal/geometry/volumes/distance/VoronoiMap.h"
-i"DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
-i"DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
-i"DGtal/geometry/volumes/distance/DistanceTransformation.h"
-i"DGtal/kernel/BasicPointPredicates.h"
-i"DGtal/io/boards/Board2D.h"
-i"DGtal/io/colormaps/HueShadeColorMap.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies406c810a3d5bb741^912a820a3d5bb741^---0#1#0#--18"Check dependencies36"0928DC04-B1F7-458C-B307-B3DA268DABA2-
-
-CCompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.o /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855370.509745
-e391855376.234221
-r1
-xCompileC
-xbuild-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cppb0aa820a3d5bb741^b83a3c103d5bb741^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cpp0000000000000000^2698"CompileC build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.o tests/geometry/volumes/distance/testVoronoiMap.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/geometry/volumes/distance/testVoronoiMap.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.o36"5FA6A06B-C554-447B-8531-218480ECFCBD-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testVoronoiMap normal x86_64
-s391855376.281795
-e391855376.482364
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testVoronoiMap
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection106"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testVoronoiMapab4148103d5bb741^137c7b103d5bb741^---0#0#0#--1266"Ld build-xcode/tests/geometry/volumes/distance/Debug/testVoronoiMap normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Objects-normal/x86_64/testVoronoiMap.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/Debug/testVoronoiMap36"D4B9C07B-20D0-455B-BE46-D1F7FC12942E-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Script-859C628DCC23447D8BBA25A7.sh
-s391855376.490638
-e391855376.578658
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Script-859C628DCC23447D8BBA25A7.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testVoronoiMap.Debug
-omake[1]: Nothing to be done for `PostBuild.testVoronoiMap.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'a73c7e103d5bb741^af2194103d5bb741^-352"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testVoronoiMap.Debugmake[1]: Nothing to be done for `PostBuild.testVoronoiMap.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855376#0#30#-0#-----2@23"Depend check for xcode-391855376#30#23#-0#-----2@233"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testVoronoiMap.Debug-391855376#53#233#-0#-----2@66"make[1]: Nothing to be done for `PostBuild.testVoronoiMap.Debug'.-391855376#286#66#-0#-----0#0#0#--377"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Script-859C628DCC23447D8BBA25A7.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/geometry/volumes/distance/DGtal.build/Debug/testVoronoiMap.build/Script-859C628DCC23447D8BBA25A7.sh36"EB13AE3F-F408-4A0A-A5FC-6CDAD7DEEE30-
-

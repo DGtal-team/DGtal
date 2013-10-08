@@ -1,94 +1,0 @@
-TtestHyperRectDomain-snippet
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testHyperRectDomain-snippet normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Script-80BE6EA308E04F5E8AD93676.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.LinkFileList
-c0000000051AB057000000000000000A6
-t1370162544
-s166
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Script-80BE6EA308E04F5E8AD93676.sh
-c0000000051AB057000000000000000E0
-t1370162544
-s224
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testHyperRectDomain-snippet
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
-c0000000051A5AD7E000000000000176C
-t1369812350
-s5996
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
-c0000000051A5AD7E0000000000004E8C
-t1369812350
-s20108
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp
-c0000000051A4E3150000000000000740
-t1369760533
-s1856
-i<algorithm>
-i<iterator>
-i<iostream>
-i<DGtal/kernel/SpaceND.h>
-i<DGtal/kernel/domains/HyperRectDomain.h>
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb249a6f03c5bb741^e42cb0f03c5bb741^---0#1#0#--18"Check dependencies36"53D12C24-AAE5-404C-9888-30198D59E3D7-
-
-CCompileC build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855344.654003
-e391855346.529942
-r1
-xCompileC
-xbuild-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection89"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp8b8ba7f03c5bb741^ffb287f23c5bb741^---0#0#0#-19%DVTDocumentLocation2@97"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp0000000000000000^2664"CompileC build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.o tests/kernel/testHyperRectDomain-snippet.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testHyperRectDomain-snippet.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.o36"F76D9537-E75E-4512-880C-E489D49D87B1-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testHyperRectDomain-snippet normal x86_64
-s391855346.536317
-e391855346.574603
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testHyperRectDomain-snippet
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testHyperRectDomain-snippeta16589f23c5bb741^1e1993f23c5bb741^---0#0#0#--1223"Ld build-xcode/tests/kernel/Debug/testHyperRectDomain-snippet normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Objects-normal/x86_64/testHyperRectDomain-snippet.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testHyperRectDomain-snippet36"0A7E2163-F8E1-438B-8ECE-1C62A7C672A2-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Script-80BE6EA308E04F5E8AD93676.sh
-s391855346.582683
-e391855346.669511
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Script-80BE6EA308E04F5E8AD93676.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testHyperRectDomain-snippet.Debug
-omake[1]: Nothing to be done for `PostBuild.testHyperRectDomain-snippet.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'7fc295f23c5bb741^1079abf23c5bb741^-378"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testHyperRectDomain-snippet.Debugmake[1]: Nothing to be done for `PostBuild.testHyperRectDomain-snippet.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855346#0#30#-0#-----2@23"Depend check for xcode-391855346#30#23#-0#-----2@246"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testHyperRectDomain-snippet.Debug-391855346#53#246#-0#-----2@79"make[1]: Nothing to be done for `PostBuild.testHyperRectDomain-snippet.Debug'.-391855346#299#79#-0#-----0#0#0#--365"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Script-80BE6EA308E04F5E8AD93676.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testHyperRectDomain-snippet.build/Script-80BE6EA308E04F5E8AD93676.sh36"599D4ACB-6080-4414-96D1-E544CC2FD0A8-
-

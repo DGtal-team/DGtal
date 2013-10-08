@@ -1,99 +1,0 @@
-TtestInteger
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testInteger normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Script-145E31FF423F4433906E4B8E.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.LinkFileList
-c0000000051AB05700000000000000086
-t1370162544
-s134
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Script-145E31FF423F4433906E4B8E.sh
-c0000000051AB057000000000000000D0
-t1370162544
-s208
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testInteger
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CInteger.h
-c0000000051A5AD7E0000000000000B9F
-t1369812350
-s2975
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/CUnsignedNumber.h
-c0000000051A5AD7E0000000000000EFF
-t1369812350
-s3839
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp
-c0000000051A5AD7E000000000000139A
-t1369812350
-s5018
-i<iostream>
-i<string>
-i"DGtal/base/Common.h"
-i"DGtal/kernel/CInteger.h"
-i"DGtal/kernel/CUnsignedNumber.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies6118e4f03c5bb741^23dce4f03c5bb741^---0#1#0#--18"Check dependencies36"B0CD5BF4-CA21-42C9-8F2D-CCAABCF400DE-
-
-CCompileC build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.o /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855344.895093
-e391855346.254204
-r1
-xCompileC
-xbuild-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection73"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp8b4fe5f03c5bb741^051541f23c5bb741^---0#0#0#-19%DVTDocumentLocation2@81"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp0000000000000000^2472"CompileC build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.o tests/kernel/testInteger.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/kernel/testInteger.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.o36"8AF1171D-79EC-48A8-A778-23AE22900A8D-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testInteger normal x86_64
-s391855346.261050
-e391855346.300621
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testInteger
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection84"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testInteger0fee42f23c5bb741^0af54cf23c5bb741^---0#0#0#--1159"Ld build-xcode/tests/kernel/Debug/testInteger normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Objects-normal/x86_64/testInteger.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/Debug/testInteger36"6CB5D705-2F95-4CBE-AE5B-C2FEF3ACAC5B-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Script-145E31FF423F4433906E4B8E.sh
-s391855346.308832
-e391855346.393583
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Script-145E31FF423F4433906E4B8E.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testInteger.Debug
-omake[1]: Nothing to be done for `PostBuild.testInteger.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'eba74ff23c5bb741^59c064f23c5bb741^-346"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testInteger.Debugmake[1]: Nothing to be done for `PostBuild.testInteger.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855346#0#30#-0#-----2@23"Depend check for xcode-391855346#30#23#-0#-----2@230"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testInteger.Debug-391855346#53#230#-0#-----2@63"make[1]: Nothing to be done for `PostBuild.testInteger.Debug'.-391855346#283#63#-0#-----0#0#0#--333"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Script-145E31FF423F4433906E4B8E.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/kernel/DGtal.build/Debug/testInteger.build/Script-145E31FF423F4433906E4B8E.sh36"3CA35DB8-CF02-487D-B678-0FF981056EA3-
-

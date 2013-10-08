@@ -1,128 +1,0 @@
-TtestImageAdapter
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageAdapter normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Script-B5591B1CA67F42F0A1E0E748.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.LinkFileList
-c0000000051AB05E60000000000000090
-t1370162662
-s144
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Script-B5591B1CA67F42F0A1E0E748.sh
-c0000000051AB05E600000000000000D5
-t1370162662
-s213
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageAdapter
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/helpers/StdDefs.h
-c0000000051A5AD7D00000000000021BA
-t1369812349
-s8634
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageAdapter.h
-c0000000051A5AD7D00000000000028C6
-t1369812349
-s10438
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerBySTLVector.h
-c0000000051A5AD7D0000000000003984
-t1369812349
-s14724
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GrayscaleColorMap.h
-c0000000051A4E3410000000000001B3A
-t1369760577
-s6970
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/readers/PGMReader.h
-c0000000051AB045B00000000000015B6
-t1370162267
-s5558
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/ConfigTest.h
-c000000004ED65CD80000000000000138
-t1322671320
-s312
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp
-c0000000051AB045B0000000000003B64
-t1370162267
-s15204
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/helpers/StdDefs.h"
-i"DGtal/images/ImageContainerBySTLVector.h"
-i"DGtal/images/ImageAdapter.h"
-i"DGtal/io/colormaps/GrayscaleColorMap.h"
-i"DGtal/io/readers/PGMReader.h"
-i"DGtal/io/boards/Board2D.h"
-i"ConfigTest.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies3ae60c663d5bb741^92ae0d663d5bb741^---0#1#0#--18"Check dependencies36"6835F85D-B848-4187-9A22-4CC5E94BE7C9-
-
-CCompileC build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855462.054440
-e391855469.153107
-r1
-xCompileC
-xbuild-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection78"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp44190e663d5bb741^423f276d3d5bb741^---0#0#0#-19%DVTDocumentLocation2@86"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp0000000000000000^2532"CompileC build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.o tests/images/testImageAdapter.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageAdapter.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.o36"B7588BFC-C156-45AE-ACA7-F80025FB0A94-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageAdapter normal x86_64
-s391855469.159935
-e391855469.245312
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageAdapter
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection89"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageAdapter8d0d296d3d5bb741^172a3f6d3d5bb741^---0#0#0#--1179"Ld build-xcode/tests/images/Debug/testImageAdapter normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Objects-normal/x86_64/testImageAdapter.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageAdapter36"FB09FFB5-14F7-495F-B94E-66ABC74BD8CA-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Script-B5591B1CA67F42F0A1E0E748.sh
-s391855469.253454
-e391855469.397632
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Script-B5591B1CA67F42F0A1E0E748.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageAdapter.Debug
-omake[1]: Nothing to be done for `PostBuild.testImageAdapter.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'118a416d3d5bb741^e2ca656d3d5bb741^-356"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageAdapter.Debugmake[1]: Nothing to be done for `PostBuild.testImageAdapter.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855469#0#30#-0#-----2@23"Depend check for xcode-391855469#30#23#-0#-----2@235"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageAdapter.Debug-391855469#53#235#-0#-----2@68"make[1]: Nothing to be done for `PostBuild.testImageAdapter.Debug'.-391855469#288#68#-0#-----0#0#0#--343"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Script-B5591B1CA67F42F0A1E0E748.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageAdapter.build/Script-B5591B1CA67F42F0A1E0E748.sh36"81A584B8-266B-4EBE-9FA5-DD294B92E25C-
-

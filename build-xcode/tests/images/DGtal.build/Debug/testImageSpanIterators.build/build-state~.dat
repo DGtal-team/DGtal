@@ -1,106 +1,0 @@
-TtestImageSpanIterators
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSpanIterators normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Script-70B7B7452F654CECB63540AD.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.LinkFileList
-c0000000051AB05ED000000000000009C
-t1370162669
-s156
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Script-70B7B7452F654CECB63540AD.sh
-c0000000051AB05ED00000000000000DB
-t1370162669
-s219
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSpanIterators
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/images/ImageContainerBySTLVector.h
-c0000000051A5AD7D0000000000003984
-t1369812349
-s14724
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/SpaceND.h
-c0000000051A5AD7E000000000000176C
-t1369812350
-s5996
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/kernel/domains/HyperRectDomain.h
-c0000000051A5AD7E0000000000004E8C
-t1369812350
-s20108
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cpp
-c0000000051A4E3140000000000000D0B
-t1369760532
-s3339
-i<cstdio>
-i<cmath>
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/kernel/SpaceND.h"
-i"DGtal/kernel/domains/HyperRectDomain.h"
-i"DGtal/images/ImageContainerBySTLVector.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesee938b6d3d5bb741^83188c6d3d5bb741^---0#1#0#--18"Check dependencies36"8C3A8F54-57BC-493A-A550-0BEA42BE4D68-
-
-CCompileC build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.o /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855469.549205
-e391855472.662035
-r1
-xCompileC
-xbuild-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection84"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cppc6be8c6d3d5bb741^5a81a9703d5bb741^---0#0#0#-19%DVTDocumentLocation2@92"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cpp0000000000000000^2604"CompileC build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.o tests/images/testImageSpanIterators.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/images/testImageSpanIterators.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.o36"3340895D-A28D-4C3F-A14C-FDF015F50BC0-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSpanIterators normal x86_64
-s391855472.671040
-e391855472.893312
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSpanIterators
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSpanIterators3cf6ab703d5bb741^42b2e4703d5bb741^---0#0#0#--1203"Ld build-xcode/tests/images/Debug/testImageSpanIterators normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Objects-normal/x86_64/testImageSpanIterators.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/Debug/testImageSpanIterators36"CE4B309E-338A-4790-AFE4-38460DFFF7D2-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Script-70B7B7452F654CECB63540AD.sh
-s391855472.903554
-e391855473.021633
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Script-70B7B7452F654CECB63540AD.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageSpanIterators.Debug
-omake[1]: Nothing to be done for `PostBuild.testImageSpanIterators.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'd7f9e7703d5bb741^6ea305713d5bb741^-368"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageSpanIterators.Debugmake[1]: Nothing to be done for `PostBuild.testImageSpanIterators.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855472#0#30#-0#-----2@23"Depend check for xcode-391855472#30#23#-0#-----2@241"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testImageSpanIterators.Debug-391855472#53#241#-0#-----2@74"make[1]: Nothing to be done for `PostBuild.testImageSpanIterators.Debug'.-391855473#294#74#-0#-----0#0#0#--355"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Script-70B7B7452F654CECB63540AD.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/images/DGtal.build/Debug/testImageSpanIterators.build/Script-70B7B7452F654CECB63540AD.sh36"52264D59-6ADF-433F-A7EC-5FACC91B8AE9-
-

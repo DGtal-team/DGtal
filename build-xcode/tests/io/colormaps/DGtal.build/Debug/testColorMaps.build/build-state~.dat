@@ -1,140 +1,0 @@
-TtestColorMaps
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug/testColorMaps normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Script-BBCFB5D1531D4B5E91171BCF.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.LinkFileList
-c0000000051AB05D10000000000000090
-t1370162641
-s144
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Script-BBCFB5D1531D4B5E91171BCF.sh
-c0000000051AB05D100000000000000DE
-t1370162641
-s222
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug/testColorMaps
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/Board/PSFonts.h
-c0000000051A4E3390000000000000808
-t1369760569
-s2056
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/Color.h
-c0000000051AB045B0000000000002063
-t1370162267
-s8291
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/boards/Board2D.h
-c0000000051A5AD7D00000000000030EF
-t1369812349
-s12527
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/CColorMap.h
-c0000000051A5AD7D000000000000103B
-t1369812349
-s4155
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/ColorBrightnessColorMap.h
-c0000000051A4E34100000000000022A2
-t1369760577
-s8866
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GradientColorMap.h
-c0000000051A5AD7D0000000000002530
-t1369812349
-s9520
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/GrayscaleColorMap.h
-c0000000051A4E3410000000000001B3A
-t1369760577
-s6970
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/HueShadeColorMap.h
-c0000000051A5AD7D0000000000002027
-t1369812349
-s8231
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/io/colormaps/RandomColorMap.h
-c0000000051A5AD7D00000000000015B9
-t1369812349
-s5561
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp
-c0000000051A4E3140000000000001DE6
-t1369760532
-s7654
-i<iostream>
-i"DGtal/base/Common.h"
-i"DGtal/io/Color.h"
-i"DGtal/io/colormaps/CColorMap.h"
-i"DGtal/io/colormaps/GrayscaleColorMap.h"
-i"DGtal/io/colormaps/HueShadeColorMap.h"
-i"DGtal/io/colormaps/ColorBrightnessColorMap.h"
-i"DGtal/io/colormaps/GradientColorMap.h"
-i"DGtal/io/colormaps/RandomColorMap.h"
-i"DGtal/io/boards/Board2D.h"
-i"Board/PSFonts.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesea93d4513d5bb741^205fd6513d5bb741^---0#1#0#--18"Check dependencies36"3924E1F4-B9C1-48FC-8F2E-67B4E5EDA825-
-
-CCompileC build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.o /Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855441.835630
-e391855447.787048
-r1
-xCompileC
-xbuild-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection81"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp7425d6513d5bb741^19cac9573d5bb741^---0#0#0#-19%DVTDocumentLocation2@89"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp0000000000000000^2556"CompileC build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.o tests/io/colormaps/testColorMaps.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/io/colormaps/testColorMaps.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.o36"CD11DC16-7EA1-4CEA-B734-E642D5D84CEA-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug/testColorMaps normal x86_64
-s391855447.794854
-e391855447.867218
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug/testColorMaps
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection92"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug/testColorMaps9295cb573d5bb741^e8dedf573d5bb741^---0#0#0#--1197"Ld build-xcode/tests/io/colormaps/Debug/testColorMaps normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Objects-normal/x86_64/testColorMaps.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/Debug/testColorMaps36"424E6786-751E-443A-8CE3-190506294129-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Script-BBCFB5D1531D4B5E91171BCF.sh
-s391855447.962684
-e391855448.070478
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Script-BBCFB5D1531D4B5E91171BCF.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testColorMaps.Debug
-omake[1]: Nothing to be done for `PostBuild.testColorMaps.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'0f09f7573d5bb741^f01412583d5bb741^-350"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testColorMaps.Debugmake[1]: Nothing to be done for `PostBuild.testColorMaps.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855447#0#30#-0#-----2@23"Depend check for xcode-391855447#30#23#-0#-----2@232"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testColorMaps.Debug-391855447#53#232#-0#-----2@65"make[1]: Nothing to be done for `PostBuild.testColorMaps.Debug'.-391855448#285#65#-0#-----0#0#0#--349"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Script-BBCFB5D1531D4B5E91171BCF.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/io/colormaps/DGtal.build/Debug/testColorMaps.build/Script-BBCFB5D1531D4B5E91171BCF.sh36"C05CCC1F-03A7-4363-BA1D-E210B1992A5E-
-

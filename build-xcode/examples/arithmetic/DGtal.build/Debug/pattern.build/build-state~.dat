@@ -1,96 +1,0 @@
-Tpattern
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/pattern normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Script-60DADCF0CABB4D34B89DB224.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.LinkFileList
-c0000000051AB064A0000000000000085
-t1370162762
-s133
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Script-60DADCF0CABB4D34B89DB224.sh
-c0000000051AB064A00000000000000DA
-t1370162762
-s218
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/pattern
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp
-c0000000051A4E30F00000000000007C3
-t1369760527
-s1987
-i<cstdlib>
-i<cmath>
-i<iostream>
-i<iomanip>
-i<string>
-i"DGtal/arithmetic/LighterSternBrocot.h"
-i"DGtal/arithmetic/Pattern.h"
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/LighterSternBrocot.h
-c0000000051A5AD7C000000000000516F
-t1369812348
-s20847
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/arithmetic/Pattern.h
-c0000000051A5AD7C0000000000002726
-t1369812348
-s10022
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesce50a8ca3d5bb741^4776a9ca3d5bb741^---0#1#0#--18"Check dependencies36"29B01DF9-AE09-4E66-B673-C8F0E55FE69D-
-
-CCompileC build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.o /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855562.664065
-e391855566.188708
-r1
-xCompileC
-xbuild-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.o
-x/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection76"Compile /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp4e26aaca3d5bb741^c64e30ce3d5bb741^---0#0#0#-19%DVTDocumentLocation2@84"file://localhost/Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp0000000000000000^2500"CompileC build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.o examples/arithmetic/pattern.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.dia -c /Users/davidcoeurjolly/Sources/DGtal/examples/arithmetic/pattern.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.o36"0B9C439E-721C-4B54-9DA8-9326B3CF5630-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/pattern normal x86_64
-s391855566.195419
-e391855566.237792
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/pattern
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection87"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/pattern102132ce3d5bb741^dfdf3cce3d5bb741^---0#0#0#--1178"Ld build-xcode/examples/arithmetic/Debug/pattern normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Objects-normal/x86_64/pattern.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/Debug/pattern36"DFC87595-7FA8-4933-8647-14F546A61307-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Script-60DADCF0CABB4D34B89DB224.sh
-s391855566.246025
-e391855566.341412
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Script-60DADCF0CABB4D34B89DB224.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.pattern.Debug
-omake[1]: Nothing to be done for `PostBuild.pattern.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'459f3fce3d5bb741^886557ce3d5bb741^-338"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.pattern.Debugmake[1]: Nothing to be done for `PostBuild.pattern.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855566#0#30#-0#-----2@23"Depend check for xcode-391855566#30#23#-0#-----2@226"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.pattern.Debug-391855566#53#226#-0#-----2@59"make[1]: Nothing to be done for `PostBuild.pattern.Debug'.-391855566#279#59#-0#-----0#0#0#--339"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Script-60DADCF0CABB4D34B89DB224.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/examples/arithmetic/DGtal.build/Debug/pattern.build/Script-60DADCF0CABB4D34B89DB224.sh36"F8358602-5233-4BE2-BE58-D79BEB7331E9-
-

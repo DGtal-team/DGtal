@@ -1,28 +1,0 @@
-TZERO_CHECK
-v5
-r1
-cCheck dependencies
-cPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh
-c0000000051A5B19600000000000000BB
-t1369813398
-s187
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies3c2f8d16e955b741^020f9416e955b741^---0#1#0#--18"Check dependencies36"CED41E4A-0DB1-4785-85DA-456796C20DD3-
-
-CPhaseScriptExecution "CMake Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh
-s391506198.576347
-e391506198.789876
-r1
-xPhaseScriptExecution
-xCMake Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh
-oecho ""
-o
-omake -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make
-omake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Run custom shell script 'CMake Rules'f12d9416e955b741^6fb8cb16e955b741^-199"echo ""make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.makemake[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.3(21%IDEActivityLogMessage2@8"echo ""-391506198#0#8#-0#-----2@86"make -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/ReRunCMake.make-391506198#9#86#-0#-----2@104"make[1]: `/Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeFiles/cmake.check_cache' is up to date.-391506198#95#104#-0#-----0#0#0#--295"PhaseScriptExecution "CMake Rules" build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/DGtal.build/Debug/ZERO_CHECK.build/Script-68330418ABCC43DEB5774FBA.sh36"7CD7541B-6CF8-4681-BFCD-85E5A6F3E208-
-

@@ -1,102 +1,0 @@
-TtestIndexedListWithBlocks
-v5
-r1
-cCheck dependencies
-cCompileC build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIndexedListWithBlocks normal x86_64
-cPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Script-42C89F2184134BA8B10C6C6C.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0E1000000000000000AA
-t1366101520
-s170
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.LinkFileList
-c0000000051AB056900000000000000A0
-t1370162537
-s160
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.o
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Script-42C89F2184134BA8B10C6C6C.sh
-c0000000051AB056900000000000000DA
-t1370162537
-s218
-
-N/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIndexedListWithBlocks
-t2
-s0
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Common.h
-c0000000051A5AD7D0000000000001238
-t1369812349
-s4664
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/IndexedListWithBlocks.h
-c0000000051A5AD7D00000000000052D1
-t1369812349
-s21201
-
-N/Users/davidcoeurjolly/Sources/DGtal/src/DGtal/base/Labels.h
-c0000000051A5AD7D000000000000265C
-t1369812349
-s9820
-
-N/Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cpp
-c0000000051A4E3120000000000001075
-t1369760530
-s4213
-i<cstdio>
-i<cmath>
-i<iostream>
-i<algorithm>
-i<vector>
-i"DGtal/base/Common.h"
-i"DGtal/base/IndexedListWithBlocks.h"
-i"DGtal/base/Labels.h"
-
-CBuild AST from /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cpp
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies785e8ae93c5bb741^77108be93c5bb741^---0#1#0#--18"Check dependencies36"C5BACC2D-C7DE-42BD-B98F-1A4C8FD12BF2-
-
-CCompileC build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.o /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s391855337.545213
-e391855338.724645
-r1
-xCompileC
-xbuild-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.o
-x/Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cpp
-xnormal
-xx86_64
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection85"Compile /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cppb3b48be93c5bb741^8c81b9ea3c5bb741^---0#0#0#-19%DVTDocumentLocation2@93"file://localhost/Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cpp0000000000000000^2620"CompileC build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.o tests/base/testIndexedListWithBlocks.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/davidcoeurjolly/Sources/DGtal    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch x86_64 -fmessage-length=0 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions "-DCMAKE_INTDIR=\"Debug\"" -DUNIX -DAPPLE -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.8 -g -Wno-sign-conversion -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/include -I/usr/local/include -I/Users/davidcoeurjolly/Sources/DGtal/src -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/src -I/Users/davidcoeurjolly/Sources/DGtal/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/DerivedSources/x86_64 -I/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/DerivedSources -Wmost -Wno-four-char-constants -Wno-unknown-pragmas -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -Qunused-arguments -Wdocumentation -MMD -MT dependencies -MF /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.d --serialize-diagnostics /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.dia -c /Users/davidcoeurjolly/Sources/DGtal/tests/base/testIndexedListWithBlocks.cpp -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.o36"D0899A6C-8DE3-4E29-A744-013868E0CFE6-
-
-CLd /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIndexedListWithBlocks normal x86_64
-s391855338.730896
-e391855338.765290
-r1
-xLd
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIndexedListWithBlocks
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Link /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIndexedListWithBlocks3c31bbea3c5bb741^3255c4ea3c5bb741^---0#0#0#--1205"Ld build-xcode/tests/base/Debug/testIndexedListWithBlocks normal x86_64    cd /Users/davidcoeurjolly/Sources/DGtal    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode/Debug -L/Users/davidcoeurjolly/Sources/DGtal/build-xcode -F/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug -filelist /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Objects-normal/x86_64/testIndexedListWithBlocks.LinkFileList -mmacosx-version-min=10.8 -Wl,-search_paths_first -Wl,-headerpad_max_install_names /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtalIO.dylib /Users/davidcoeurjolly/Sources/DGtal/build-xcode/src/Debug/libDGtal.dylib -o /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/Debug/testIndexedListWithBlocks36"D2597A35-37BE-454E-8B54-763D359DB785-
-
-CPhaseScriptExecution "CMake PostBuild Rules" /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Script-42C89F2184134BA8B10C6C6C.sh
-s391855338.834628
-e391855338.921359
-r1
-xPhaseScriptExecution
-xCMake PostBuild Rules
-x/Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Script-42C89F2184134BA8B10C6C6C.sh
-oecho "Depend check for xcode"
-oDepend check for xcode
-ocd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIndexedListWithBlocks.Debug
-omake[1]: Nothing to be done for `PostBuild.testIndexedListWithBlocks.Debug'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'CMake PostBuild Rules'2f35d6ea3c5bb741^1edeebea3c5bb741^-374"echo "Depend check for xcode"Depend check for xcodecd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIndexedListWithBlocks.Debugmake[1]: Nothing to be done for `PostBuild.testIndexedListWithBlocks.Debug'.4(21%IDEActivityLogMessage2@30"echo "Depend check for xcode"-391855338#0#30#-0#-----2@23"Depend check for xcode-391855338#30#23#-0#-----2@244"cd /Users/davidcoeurjolly/Sources/DGtal/build-xcode && make -C /Users/davidcoeurjolly/Sources/DGtal/build-xcode -f /Users/davidcoeurjolly/Sources/DGtal/build-xcode/CMakeScripts/XCODE_DEPEND_HELPER.make PostBuild.testIndexedListWithBlocks.Debug-391855338#53#244#-0#-----2@77"make[1]: Nothing to be done for `PostBuild.testIndexedListWithBlocks.Debug'.-391855338#297#77#-0#-----0#0#0#--357"PhaseScriptExecution "CMake PostBuild Rules" build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Script-42C89F2184134BA8B10C6C6C.sh    cd /Users/davidcoeurjolly/Sources/DGtal    /bin/sh -c /Users/davidcoeurjolly/Sources/DGtal/build-xcode/tests/base/DGtal.build/Debug/testIndexedListWithBlocks.build/Script-42C89F2184134BA8B10C6C6C.sh36"E12B36FA-DCD2-4A41-A189-FF3444E7CE92-
-
