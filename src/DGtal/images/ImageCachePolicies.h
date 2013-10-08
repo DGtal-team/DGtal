@@ -122,7 +122,7 @@ public:
      *
      * @param aDomain the domain.
      */
-    void updateCache(const Domain &aDomain);
+    ImageContainer * updateCache(const Domain &aDomain);
     
     /**
      * Clear the cache.
@@ -208,7 +208,7 @@ public:
      *
      * @param aDomain the domain.
      */
-    void updateCache(const Domain &aDomain);
+    ImageContainer * updateCache(const Domain &aDomain);
     
     /**
      * Clear the cache.

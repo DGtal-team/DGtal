@@ -99,7 +99,7 @@ public:
     {
         ConceptUtils::sameType( myIC, myT.getPage(myPoint) );
         ConceptUtils::sameType( myIC, myT.getPageToDetach() );
-        myT.updateCache(myDomain);
+        ConceptUtils::sameType( myIC, myT.updateCache(myDomain) );
         myT.clearCache();
 
         // check const methods.

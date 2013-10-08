@@ -195,13 +195,24 @@ public:
       /**
        * Constructor.
        *
-       * @param p starting point of the TiledIterator
+       * @param aPoint starting point of the TiledIterator
        * @param aTiledImage pointer to the TiledImage
        */
-      TiledIterator ( const Point & p,
-                     TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) : myPos ( p ),  myTiledImage ( aTiledImage )
+      TiledIterator ( const Point & aPoint, bool beginIterator,
+                     TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) : myTiledImage ( aTiledImage )
       {
-        d = myTiledImage->findSubDomain(myPos);
+        myTiledImage->findTileCoords(myTiledImage->m_upperBound, lastTileCoords);
+        
+        if (myTiledImage->findTileCoords(aPoint, myTileCoords))
+        {
+          myTiledImage->myImageCache->incCacheMissRead();
+          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords(myTileCoords));
+          
+          if (beginIterator)
+            rit = myTile->range().begin();
+          else
+            rit = myTile->range().end();
+        }
       }
       
       /**
@@ -212,7 +223,7 @@ public:
       inline
       const Value operator*()
       {
-        return ( *myTiledImage ) ( myPos );
+        return ( *rit );
       }
       
       /**
@@ -223,7 +234,7 @@ public:
       inline
       bool operator== ( const TiledIterator &it ) const
       {
-        return ( myPos == it.myPos );
+          return ( (this->myTileCoords == it.myTileCoords) && (this->rit == myTile->range().end()/*it.rit*/) ); // PROBLEM !
       }
 
       /**
@@ -233,10 +244,10 @@ public:
        */
       inline
       bool operator!= ( const TiledIterator &it ) const
-      {
-        return ( myPos != it.myPos );
+{
+          return ( (this->myTileCoords != it.myTileCoords) || (this->rit != myTile->range().end()/*it.rit*/) ); // PROBLEM !
       }
-      
+
       /**
        * Implements the next() method: we move on step forward.
        *
@@ -244,51 +255,56 @@ public:
       inline
       void next()
       {
-        typename Domain::Integer i,j,k;
-        bool upper;
+        rit++;
         
-        for(i=0; i<Domain::dimension; i++)
+        if (rit != myTile->range().end())
+          return;
+        else
         {
-          if (myPos[i] < d.upperBound()[i])
+          typename Domain::Integer i,j;
+          bool upper;
+          
+          for(i=0; i<Domain::dimension; i++)
           {
-            myPos[i]++;
-            return;
-          }
-          else
-          {
-            upper = true;
-            for(j=0; j<Domain::dimension; j++)
+            if (myTileCoords[i] < lastTileCoords[i])
             {
-              if (myPos[j] != d.upperBound()[j])
-              {
-                upper = false;
-                break;
-              }
-            }
+              myTileCoords[i]++;
               
-            if (upper)
-            {
-              for(j=0; j<Domain::dimension; j++)
-              {
-                if (d.upperBound()[j] < myTiledImage->m_upperBound[j])
-                {
-                  myPos[j]=d.upperBound()[j]+1;
-                  
-                  for(k=j+1; k<Domain::dimension; k++)
-                    myPos[k] = d.lowerBound()[k];
-                  
-                  d = myTiledImage->findSubDomain(myPos);
-                  return;
-                }
-                else
-                  myPos[j]=myTiledImage->m_lowerBound[j];
-              }
+              //trace.info() << " myTileCoords[0]: " << myTileCoords[0] << " - myTileCoords[1]: " << myTileCoords[1] << " - myTileCoords[2]: " << myTileCoords[2] << std::endl;
+
+              myTiledImage->myImageCache->incCacheMissRead();
+              myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords(myTileCoords));
+              rit = myTile->range().begin();
+
+              return;
             }
             else
-              for(j=0; j<=i; j++)
-                myPos[j] = d.lowerBound()[j];
+            {
+              upper = true;
+              for(j=0; j<Domain::dimension; j++)
+              {
+                if (myTileCoords[j] != lastTileCoords[i])
+                {
+                  upper = false;
+                  break;
+                }
+              }
+              
+              if (!upper)
+              {
+                for(j=0; j<=i; j++)
+                  myTileCoords[j] = 0;
+                
+                /*myTiledImage->myImageCache->incCacheMissRead();
+                myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords(myTileCoords));
+                rit = myTile->range().begin();*/
+              }
+            }
           }
         }
+        
+        /*if (rit == myTile->range().end())
+          trace.info() << "upper" << std::endl;*/
       }
       
       /**
@@ -298,12 +314,6 @@ public:
       inline
       TiledIterator &operator++()
       {
-        /*typename Domain::Integer i;
-        
-        for(i=0; i<Domain::dimension; i++)
-          trace.info() << myPos[i] << ",";
-        trace.info() << " - ";*/
-        
         next();
         return *this;
       }
@@ -324,22 +334,27 @@ public:
       /// TiledImage pointer
       TiledImage *myTiledImage;
       
-      /// Current TiledIterator position
-      Point myPos;
+      /// Last tile coords
+      Point lastTileCoords;
 
-      /// Current domain
-      Domain d;
+      /// Current tile coords
+      Point myTileCoords;
+      
+      /// Alias on the current tile
+      ImageContainer * myTile;
+      
+      typename ImageContainer::Range::/*Const*/Iterator rit;
 
     };
     
     TiledIterator begin()
     {
-      return TiledIterator( m_lowerBound, this );
+      return TiledIterator( m_lowerBound, true, this );
     }
     
     TiledIterator end()
     {
-      return TiledIterator( m_upperBound, this );
+      return TiledIterator( m_upperBound, false, this );
     }
 
     /////////////////// API ///////////////////////
@@ -384,6 +399,47 @@ public:
       for(i=0; i<Domain::dimension; i++)
       {
         dMin[i] = (low[i]*mySize[i])+m_lowerBound[i];
+        dMax[i] = dMin[i] + (mySize[i]-1);
+        
+        if (dMax[i] > m_upperBound[i]) // last tile
+          dMax[i] = m_upperBound[i];
+      }
+      
+      Domain di(dMin, dMax);
+      return di;      
+    }
+    
+    const bool findTileCoords(const Point & aPoint, Point &aCoord) const
+    {
+      ASSERT(myImageFactory->domain().isInside(aPoint));
+      
+      typename Domain::Integer i;
+      
+      if (aPoint >= m_lowerBound || aPoint <= m_upperBound)
+      {
+        for(i=0; i<Domain::dimension; i++)
+        {
+          /*if ( (aPoint[i]-m_lowerBound[i]) < mySize[i] )
+            aCoord[i] = 0;
+          else*/
+            aCoord[i] = (aPoint[i]-m_lowerBound[i])/mySize[i];
+        }
+        return true;
+      }
+      
+      return false;      
+    }
+    
+    const Domain findSubDomainFromCoords(const Point & aCoord) const
+    {
+      ASSERT(myImageFactory->domain().isInside(aPoint));
+      
+      typename Domain::Integer i;
+      
+      Point dMin, dMax;
+      for(i=0; i<Domain::dimension; i++)
+      {
+        dMin[i] = (aCoord[i]*mySize[i])+m_lowerBound[i];
         dMax[i] = dMin[i] + (mySize[i]-1);
         
         if (dMax[i] > m_upperBound[i]) // last tile
