@@ -205,8 +205,7 @@ public:
         
         if (myTiledImage->findTileCoords(aPoint, myTileCoords))
         {
-          myTiledImage->myImageCache->incCacheMissRead();
-          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords(myTileCoords));
+          myTile = myTiledImage->myImageFactory->requestImage(myTiledImage->findSubDomainFromCoords(myTileCoords));
           
           if (beginIterator)
             rit = myTile->range().begin();
@@ -272,8 +271,7 @@ public:
               
               //trace.info() << " myTileCoords[0]: " << myTileCoords[0] << " - myTileCoords[1]: " << myTileCoords[1] << " - myTileCoords[2]: " << myTileCoords[2] << std::endl;
 
-              myTiledImage->myImageCache->incCacheMissRead();
-              myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords(myTileCoords));
+              myTile = myTiledImage->myImageFactory->requestImage(myTiledImage->findSubDomainFromCoords(myTileCoords));
               rit = myTile->range().begin();
 
               return;
@@ -294,10 +292,6 @@ public:
               {
                 for(j=0; j<=i; j++)
                   myTileCoords[j] = 0;
-                
-                /*myTiledImage->myImageCache->incCacheMissRead();
-                myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords(myTileCoords));
-                rit = myTile->range().begin();*/
               }
             }
           }
