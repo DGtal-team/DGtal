@@ -180,7 +180,7 @@ namespace DGtal
        * @param [in] mu DSL mu parameter
        * @param [in] A left-most point
        * @param [in] B right-most point
-       * @param [in] farey a boolean
+       * @param [in] type a type
        */
 
       DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, std::string type);
@@ -700,7 +700,7 @@ namespace DGtal
   public :
       Integer computeMinRemainder(Number a, Number b, Number mu, Point A, Point B);
       Integer computeMaxRemainder(Number a, Number b, Number mu, Point A, Point B);
-      
+
 
       // ------------------------- Accessors ------------------------------
 
