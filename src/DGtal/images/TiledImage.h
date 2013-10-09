@@ -256,11 +256,11 @@ public:
       }
 
       /**
-       * Implements the next() method: we move on step forward.
-       *
-       **/
+      * Implements the next() method to scan the domain points dimension by dimension
+      * (lexicographic order).
+      **/
       inline
-      void next()
+      void nextLexicographicOrder()
       {
         myTileRangeIterator++;
         
@@ -275,6 +275,7 @@ public:
           
           myTiledImage->myImageCache->incCacheMissRead();
           myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
+          
           myTileRangeIterator = myTile->range().begin();
         }
       }
@@ -286,7 +287,7 @@ public:
       inline
       TiledIterator &operator++()
       {
-        next();
+        nextLexicographicOrder();
         return *this;
       }
       
@@ -298,7 +299,56 @@ public:
       TiledIterator operator++ ( int )
       {
         TiledIterator tmp = *this;
-        next();
+        nextLexicographicOrder();
+        return tmp;
+      }
+      
+      /**
+      * Implements the prev() method to scan the domain points dimension by dimension
+      * (lexicographic order).
+      **/
+      inline
+      void prevLexicographicOrder()
+      {
+        if ( myTileRangeIterator != myTile->range().begin() )
+        {
+          myTileRangeIterator--;
+          return;
+        }
+        else
+        {
+          if ( myCellsIterator == myTiledImage->domainCoords().begin() )
+            return;
+          
+          myCellsIterator--;
+          
+          myTiledImage->myImageCache->incCacheMissRead();
+          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
+          
+          myTileRangeIterator = myTile->range().end();
+          myTileRangeIterator--;
+        }
+      }
+
+      /**
+      * Operator -- (--it)
+      *
+      */
+      inline
+      TiledIterator &operator--()
+      {
+        prevLexicographicOrder();
+        return *this;
+      }
+
+      /**
+      * Operator -- (it--)
+      */
+      inline
+      TiledIterator operator-- ( int )
+      {
+        TiledIterator tmp = *this;
+        prevLexicographicOrder();
         return tmp;
       }
 
@@ -399,7 +449,7 @@ public:
     
     const Domain findSubDomainFromCoords(const Point & aCoord) const
     {
-      ASSERT(myImageFactory->domain().isInside(aPoint));
+      //ASSERT(myImageFactory->domain().isInside(aCoord));
       
       typename Domain::Integer i;
       
