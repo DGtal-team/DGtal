@@ -565,6 +565,174 @@ int testII3D_Mean()
     return 0;
 }
 
+int testII3D_Principal2( int argc, char** argv )
+{
+    /*char lola[4] = "3.7";
+    char lolb[4] = "4,2";
+
+    std::cout << std::atof( lola ) << std::endl;
+    std::cout << std::atof( lolb ) << std::endl;
+
+    QApplication application( argc, argv );
+
+    std::cout << std::atof( lola ) << std::endl;
+    std::cout << std::atof( lolb ) << std::endl;*/
+
+    typedef Z3i::Space::RealPoint RealPoint;
+    typedef Z3i::Space::RealPoint::Coordinate Ring;
+    typedef MPolynomial< 3, Ring > Polynomial3;
+    typedef MPolynomialReader<3, Ring> Polynomial3Reader;
+    typedef ImplicitPolynomial3Shape<Z3i::Space> Shape;
+    typedef Z3i::Space Space;
+
+    RealPoint border_min( -1, -1, -1 );
+    RealPoint border_max( 1, 1, 1 );
+
+    std::string poly_str = argv[1];//"1000x^2y^2z^2 + 3x^2 + 3y^2 + z^2 - 1";
+    double h = atof(argv[2]);
+    double alpha = 0.333333;
+    double radius_kernel = atof(argv[3]);
+    bool lambda_optimized = false;
+
+    Polynomial3 poly;
+    Polynomial3Reader reader;
+    std::string::const_iterator iter = reader.read( poly, poly_str.begin(), poly_str.end() );
+    if ( iter != poly_str.end() )
+    {
+        std::cerr << "ERROR: I read only <"
+                  << poly_str.substr( 0, iter - poly_str.begin() )
+                  << ">, and I built P=" << poly << std::endl;
+        return 1;
+    }
+
+    Shape* aShape = new Shape( poly );
+
+    typedef typename Space::RealPoint RealPoint;
+    typedef GaussDigitizer< Z3i::Space, Shape > DigitalShape;
+    typedef Z3i::KSpace KSpace;
+    typedef typename KSpace::SCell SCell;
+    typedef typename KSpace::Surfel Surfel;
+
+    // Digitizer
+    DigitalShape* dshape = new DigitalShape();
+    dshape->attach( *aShape );
+    dshape->init( border_min, border_max, h );
+
+    std::cout << dshape->getLowerBound() << std::endl;
+    std::cout << dshape->getUpperBound() << std::endl;
+
+    KSpace K;
+    if ( ! K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
+    {
+        std::cerr << "[3dLocalEstimators_0memory] error in creating KSpace." << std::endl;
+        return false;
+    }
+
+    //typedef KanungoNoise< DigitalShape, Z3i::Domain > KanungoPredicate;
+    typedef LightImplicitDigitalSurface< KSpace, DigitalShape > Boundary;
+    typedef DigitalSurface< Boundary > MyDigitalSurface;
+    typedef typename MyDigitalSurface::ConstIterator ConstIterator;
+
+    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+
+    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
+
+    // Extracts shape boundary
+    SCell bel = Surfaces< KSpace >::findABel( K, *dshape, 10000 );
+    Boundary * boundary = new Boundary( K, *dshape, SurfelAdjacency< KSpace::dimension >( true ), bel );
+    MyDigitalSurface surf ( *boundary );
+
+    VisitorRange * range;
+    VisitorConstIterator ibegin;
+    VisitorConstIterator iend;
+
+    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
+    ibegin = range->begin();
+    iend = range->end();
+
+    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, KSpace > MySpelFunctor;
+    typedef IntegralInvariantGaussianCurvatureEstimator_0memory< KSpace, MySpelFunctor > Estimator;
+
+    MyPointFunctor * pointFunctor = new MyPointFunctor( dshape, dshape->getDomain(), 1, 0 );
+    MySpelFunctor * functor = new MySpelFunctor( *pointFunctor, K );
+    Estimator * iigEstimator = new Estimator( K, *functor );
+    iigEstimator->init( h, radius_kernel );
+
+    trace.beginBlock ( "Computing II" );
+
+    typedef Estimator::Matrix3x3 Matrix3;
+    typedef Matrix3::ColumnVector ColumnVector;
+    typedef CurvatureInformations Values;
+    std::vector< Values > eigenResults;
+    std::back_insert_iterator< std::vector< Values > > iteratorResults( eigenResults );
+    if( !lambda_optimized )
+    {
+        iigEstimator->evalPrincipalCurvatures ( ibegin, iend, iteratorResults );
+    }
+    else
+    {
+        //iigEstimator->evalPrincipalCurvatures ( ibegin, iend, iteratorResults);//, *aShape );
+    }
+
+    trace.endBlock();
+
+    QApplication application( argc, argv );
+    Viewer3D viewer;
+    viewer.show();
+    viewer << SetMode3D( dshape->getDomain().className(), "BoundingBox" ) << dshape->getDomain();
+
+    delete range;
+    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
+    ibegin = range->begin();
+    iend = range->end();
+
+    trace.beginBlock ( "Viewer" );
+
+    unsigned int i = 0;
+    for( ; ibegin != iend; ++ibegin )
+    {
+        //                    viewer << CustomColors3D( Color::Black, cmap_grad( b ));
+        DGtal::Dimension kDim = K.sOrthDir( *ibegin );
+        SCell currentInnerSpel = K.sDirectIncident( *ibegin, kDim );
+        viewer << *ibegin;
+
+        ColumnVector normal = eigenResults[i].vectors.column(0).getNormalized(); // don't show the normal
+        ColumnVector curv1 = eigenResults[i].vectors.column(1).getNormalized();
+        ColumnVector curv2 = eigenResults[i].vectors.column(2).getNormalized();
+
+        SCellToMidPoint< KSpace > embedder( K );
+        double eps = 0.01;
+        RealPoint center = embedder( *ibegin ) + eps*embedder( *ibegin );
+
+        viewer.addLine ( center[0] -  0.5 * curv1[0],
+                         center[1] -  0.5 * curv1[1],
+                         center[2] -  0.5 * curv1[2],
+                         center[0] +  0.5 * curv1[0],
+                         center[1] +  0.5 * curv1[1],
+                         center[2] +  0.5 * curv1[2],
+                         DGtal::Color ( 20,200,200 ), 3.0 );
+
+        viewer.addLine ( center[0] -  0.5 * curv2[0],
+                         center[1] -  0.5 * curv2[1],
+                         center[2] -  0.5 * curv2[2],
+                         center[0] +  0.5 * curv2[0],
+                         center[1] +  0.5 * curv2[1],
+                         center[2] +  0.5 * curv2[2],
+                         DGtal::Color ( 200,20,20 ), 3.0 );
+        ++i;
+    }
+    trace.endBlock();
+
+    delete range;
+
+    viewer << Viewer3D::updateDisplay;
+    return application.exec();
+}
+
 int testII3D_Principal( int argc, char** argv )
 {
     /*char lola[4] = "3.7";

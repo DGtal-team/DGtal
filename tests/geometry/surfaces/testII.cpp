@@ -31,8 +31,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 //#define EUCLIDEAN
 #define EXPORT
-#define IS_2D
-//#define IS_3D
+//#define IS_2D
+#define IS_3D
 
 #include <iostream>
 #include "DGtal/base/Common.h"
@@ -75,6 +75,7 @@
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
+#include "DGtal/topology/SetOfSurfels.h"
 #endif
 
 #ifdef EXPORT
@@ -83,7 +84,6 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #endif
 //#include "DGtal/topology/helpers/BoundaryPredicate.h"
-//#include "DGtal/topology/SetOfSurfels.h"
 
 
 
@@ -1159,6 +1159,105 @@ bool testII2D()
     return true;
 }
 
+
+int testII2D_same_results( )
+{
+    typedef ImplicitBall< Z2i::Space > Ball;
+    typedef Z2i::RealPoint RealPoint;
+    typedef Z2i::Domain Domain;
+
+    /// Euclidean shape
+    RealPoint rcenter( 0.0, 0.0 );
+    Ball ball( rcenter, 5.0 );
+
+
+
+    /// Digital shape
+    typedef Z2i::Point Point;
+    Point dcenter( 0, 0 );
+    double h = 0.1;
+
+    typedef GaussDigitizer< Z2i::Space, Ball > Digitizer;
+    Digitizer* gauss = new Digitizer();
+    gauss->attach( ball );
+    gauss->init( RealPoint( -6.0, -6.0 ), RealPoint( 6.0, 6.0 ), h );
+    Domain domain = gauss->getDomain();
+
+    typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
+    MyPointFunctor pointFunctor( gauss, domain, 1, 0 );
+
+    typedef DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
+    MySet set( domain );
+    Shapes< Domain >::digitalShaper( set, *gauss );
+
+    /// Khalimsky shape
+
+    Z2i::KSpace k;
+    k.init( domain.lowerBound(), domain.upperBound(), true );
+
+    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
+    MyCellFunctor cellFunctor ( pointFunctor, k );
+
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > Estimator;
+    Estimator estimator( k, cellFunctor );
+    estimator.init( h, 3.0 );
+
+    typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
+    typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
+    typedef Z2i::KSpace::SCell SCell;
+    SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
+    SCell bel;
+    try
+    {
+        bel = Surfaces< Z2i::KSpace >::findABel( k, *gauss, 10000 );
+    }
+    catch( ... )
+    {
+        return false;
+    }
+    LightImplicitDigSurface LightImplDigSurf( k, *gauss, SAdj, bel );
+    DigSurface digSurf( LightImplDigSurf );
+
+    typedef DepthFirstVisitor< DigSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef VisitorRange::ConstIterator It;
+    VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
+    It ibegin = range.begin();
+    It iend = range.end();
+
+    std::vector< double > results;
+    std::back_insert_iterator< std::vector< double > > insertResults( results );
+    estimator.eval( ibegin, iend, insertResults, ball );
+
+    //    std::vector< double > resultsShape;
+    //    std::back_insert_iterator< std::vector< double > > insertResultsShape( resultsShape );
+    //    estimator.eval( ibegin, iend, insertResultsShape, ball );
+
+    int p = 0;
+    //    std::cout << "here"<<std::endl;
+
+    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
+    ibegin = range2.begin();
+    iend = range2.end();
+    for ( ;
+          ibegin != iend; ++ibegin, ++p)
+    {
+        //        std::cout << "p"<<std::endl;
+        /*if ( p != 148 )
+            continue;*/
+
+        // double resultOneShape = estimator.eval( it, *ishape );
+        double resultOne = estimator.eval( ibegin );
+
+        if( results[ p ] != resultOne )
+            std::cout << p << " error without shape " << results[p] << " vs " << resultOne << std::endl;
+
+    }
+
+    return 1;
+}
+
+
 #endif
 #ifdef IS_3D
 
@@ -1268,103 +1367,6 @@ int testII3D_kernels( int argc, char** argv )
     viewer << Viewer3D::updateDisplay;
 
     return application.exec();
-}
-
-int testII2D_same_results( )
-{
-    typedef ImplicitBall< Z2i::Space > Ball;
-    typedef Z2i::RealPoint RealPoint;
-    typedef Z2i::Domain Domain;
-
-    /// Euclidean shape
-    RealPoint rcenter( 0.0, 0.0 );
-    Ball ball( rcenter, 5.0 );
-
-
-
-    /// Digital shape
-    typedef Z2i::Point Point;
-    Point dcenter( 0, 0 );
-    double h = 0.1;
-
-    typedef GaussDigitizer< Z2i::Space, Ball > Digitizer;
-    Digitizer* gauss = new Digitizer();
-    gauss->attach( ball );
-    gauss->init( RealPoint( -6.0, -6.0 ), RealPoint( 6.0, 6.0 ), h );
-    Domain domain = gauss->getDomain();
-
-    typedef PointFunctorFromPointPredicateAndDomain< Digitizer, Domain, unsigned int > MyPointFunctor;
-    MyPointFunctor pointFunctor( gauss, domain, 1, 0 );
-
-    typedef DigitalSetSelector< Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
-    MySet set( domain );
-    Shapes< Domain >::digitalShaper( set, *gauss );
-
-    /// Khalimsky shape
-
-    Z2i::KSpace k;
-    k.init( domain.lowerBound(), domain.upperBound(), true );
-
-    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
-    MyCellFunctor cellFunctor ( pointFunctor, k );
-
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z2i::KSpace, MyCellFunctor > Estimator;
-    Estimator estimator( k, cellFunctor );
-    estimator.init( h, 3.0 );
-
-    typedef LightImplicitDigitalSurface< Z2i::KSpace, Digitizer > LightImplicitDigSurface;
-    typedef DigitalSurface< LightImplicitDigSurface > DigSurface;
-    typedef Z2i::KSpace::SCell SCell;
-    SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
-    SCell bel;
-    try
-    {
-        bel = Surfaces< Z2i::KSpace >::findABel( k, *gauss, 10000 );
-    }
-    catch( ... )
-    {
-        return false;
-    }
-    LightImplicitDigSurface LightImplDigSurf( k, *gauss, SAdj, bel );
-    DigSurface digSurf( LightImplDigSurf );
-
-    typedef DepthFirstVisitor< DigSurface > Visitor;
-    typedef GraphVisitorRange< Visitor > VisitorRange;
-    typedef VisitorRange::ConstIterator It;
-    VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
-    It ibegin = range.begin();
-    It iend = range.end();
-
-    std::vector< double > results;
-    std::back_insert_iterator< std::vector< double > > insertResults( results );
-    estimator.eval( ibegin, iend, insertResults, ball );
-
-    //    std::vector< double > resultsShape;
-    //    std::back_insert_iterator< std::vector< double > > insertResultsShape( resultsShape );
-    //    estimator.eval( ibegin, iend, insertResultsShape, ball );
-
-    int p = 0;
-    //    std::cout << "here"<<std::endl;
-
-    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
-    ibegin = range2.begin();
-    iend = range2.end();
-    for ( ;
-          ibegin != iend; ++ibegin, ++p)
-    {
-        //        std::cout << "p"<<std::endl;
-        /*if ( p != 148 )
-            continue;*/
-
-        // double resultOneShape = estimator.eval( it, *ishape );
-        double resultOne = estimator.eval( ibegin );
-
-        if( results[ p ] != resultOne )
-            std::cout << p << " error without shape " << results[p] << " vs " << resultOne << std::endl;
-
-    }
-
-    return 1;
 }
 
 int testII3D( int argc, char** argv )
@@ -1647,6 +1649,8 @@ int testII3D_noise( int argc, char** argv )
     QApplication application( argc, argv );
     Viewer3D viewer;
 
+    trace.beginBlock("Euclidean construction");
+
     typedef Z3i::Space::RealPoint RealPoint;
     typedef Z3i::Space::RealPoint::Coordinate Ring;
     typedef MPolynomial< 3, Ring > Polynomial3;
@@ -1654,11 +1658,11 @@ int testII3D_noise( int argc, char** argv )
     typedef ImplicitPolynomial3Shape<Z3i::Space> Shape;
     typedef Z3i::Space Space;
 
-    RealPoint border_min( -1, -1, -1 );
-    RealPoint border_max( 1, 1, 1 );
+    RealPoint border_min( -10, -10, -10 );
+    RealPoint border_max( 10, 10, 10 );
 
-    double h = 0.02;
-    double noiseLevel = 20;
+    double h = 0.2;
+    double noiseLevel = 0.0000000001;
     double alpha = 0.333333;
     double radius_kernel = 5;
     bool lambda_optimized = false;
@@ -1677,6 +1681,10 @@ int testII3D_noise( int argc, char** argv )
     }
 
     Shape* aShape = new Shape( poly );
+
+    trace.endBlock();
+
+    trace.beginBlock("Digitalization");
 
     typedef typename Space::RealPoint RealPoint;
     typedef GaussDigitizer< Z3i::Space, Shape > DigitalShape;
@@ -1736,6 +1744,8 @@ int testII3D_noise( int argc, char** argv )
         return false;
     }
 
+    trace.endBlock();
+
     VisitorRange * range;
     VisitorConstIterator ibegin;
     VisitorConstIterator iend;
@@ -1743,6 +1753,8 @@ int testII3D_noise( int argc, char** argv )
     range = new VisitorRange( new Visitor( surf, *surf.begin() ));
     ibegin = range->begin();
     iend = range->end();
+
+    trace.beginBlock("viewer");
 
     viewer.show();
     viewer << SetMode3D( dshape->getDomain().className(), "BoundingBox" ) << dshape->getDomain();
@@ -1756,6 +1768,8 @@ int testII3D_noise( int argc, char** argv )
     delete range;
 
     viewer << Viewer3D::updateDisplay;
+
+    trace.endBlock();
     return application.exec();
 }
 
@@ -1772,8 +1786,8 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    testII2D_noise( argc, argv );
-    //    testII3D_noise( argc, argv );
+//    testII2D_noise( argc, argv );
+        testII3D_noise( argc, argv );
     //    test2DTopology();
     //    testII2D( );
     //    testII2D_kernels();
