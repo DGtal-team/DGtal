@@ -31,7 +31,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //#define EUCLIDEAN
 #define EXPORT
-//#define IS_2D
+#define IS_2D
 #define IS_3D
 
 #include <iostream>
