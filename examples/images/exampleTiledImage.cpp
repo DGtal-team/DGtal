@@ -111,18 +111,39 @@ int main( int argc, char** argv )
     
     // ---
     
-    int cpt, sumC, sumT;
+    int cpt, sumTp, sumTm, sumC;
     
-    cpt=sumT=0;
-    trace.beginBlock("test TiledIterator");
-    for(MyTiledImage::TiledIterator it = tiledImage.begin(), itend = tiledImage.end();
-        it != itend; ++it)
+    MyTiledImage::TiledIterator tiled_it = tiledImage.begin(), tiled_itend = tiledImage.end(), tiled_itbegin = tiledImage.begin();
+    
+    cpt=sumTp=0;
+    trace.beginBlock("test TiledIterator (++)");
+    for(;
+        tiled_it != tiled_itend; ++tiled_it)
         {
-          trace.info() << (*it) << ",";
-          sumT += (*it);
+          trace.info() << (*tiled_it) << ",";
+          sumTp += (*tiled_it);
           cpt++;
         }
-    trace.info() << "Cpt: " << cpt << " - sumT: " << sumT << endl;
+    trace.info() << "Cpt: " << cpt << " - sumTp: " << sumTp << endl;
+    trace.endBlock();
+    
+    tiled_it--;
+    
+    cpt=sumTm=0;
+    trace.beginBlock("test TiledIterator (--)");
+    for(;
+        tiled_it != tiled_itbegin; --tiled_it)
+        {
+          trace.info() << (*tiled_it) << ",";
+          sumTm += (*tiled_it);
+          cpt++;
+        }
+        
+    trace.info() << (*tiled_it) << ",";
+    sumTm += (*tiled_it);
+    cpt++;
+    
+    trace.info() << "Cpt: " << cpt << " - sumTm: " << sumTm << endl;
     trace.endBlock();
     
     cpt=sumC=0;
