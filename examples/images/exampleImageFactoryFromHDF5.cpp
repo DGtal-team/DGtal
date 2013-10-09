@@ -726,8 +726,8 @@ int main( int argc, char** argv )
     
     /*exampleOLDTiledImage3D() && */exampleImage3D();
     
-    //exampleTiledImageFromImage_1block3D();
-    //exampleTiledImageFromHDF5_1block3D();
+    exampleTiledImageFromImage_1block3D();
+    exampleTiledImageFromHDF5_1block3D();
     
     exampleTiledImageFromImage_10blocks3D();
     exampleTiledImageFromHDF5_10blocks3D();
