@@ -216,10 +216,14 @@ public:
       {
         if ( myCellsIterator != myTiledImage->domainCoords().end() )
         {
-          //myTiledImage->myImageCache->incCacheMissRead();
+          myTiledImage->myImageCache->incCacheMissRead();
           myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
           myTileRangeIterator = myTile->range().begin();
+          
+          end = false;
         }
+        else
+          end = true;
       }
       
       /**
@@ -241,6 +245,9 @@ public:
       inline
       bool operator== ( const TiledIterator &it ) const
       {
+          if ( this->end == it.end )
+            return true;
+          
           return ( ( this->myCellsIterator == it.myCellsIterator ) && ( this->myTileRangeIterator == it.myTileRangeIterator ) );
       }
 
@@ -252,6 +259,9 @@ public:
       inline
       bool operator!= ( const TiledIterator &it ) const
       {
+          if ( this->end == it.end )
+            return false;
+
           return ( ( this->myCellsIterator != it.myCellsIterator ) || ( this->myTileRangeIterator != it.myTileRangeIterator ) );
       }
 
@@ -263,15 +273,19 @@ public:
       void nextLexicographicOrder()
       {
         myTileRangeIterator++;
-        
+          
         if ( myTileRangeIterator != myTile->range().end() )
           return;
         else
         {
-          if ( myCellsIterator == myTiledImage->domainCoords().end() )
-            return;
-          
           myCellsIterator++;
+          
+          if ( myCellsIterator == myTiledImage->domainCoords().end() )
+          {
+            myCellsIterator--;
+            end = true;
+            return;
+          }
           
           myTiledImage->myImageCache->incCacheMissRead();
           myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
@@ -362,6 +376,8 @@ public:
       typename ImageContainer::Range::Iterator myTileRangeIterator;
       
       typename Domain::Iterator myCellsIterator;
+      
+      bool end;
     };
     
     TiledIterator begin()
@@ -449,7 +465,7 @@ public:
     
     const Domain findSubDomainFromCoords(const Point & aCoord) const
     {
-      //ASSERT(myImageFactory->domain().isInside(aCoord));
+      ASSERT(domainCoords().isInside(aCoord));
       
       typename Domain::Integer i;
       
