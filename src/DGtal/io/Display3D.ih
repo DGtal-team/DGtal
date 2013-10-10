@@ -415,7 +415,7 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
 			      bool isSigned, bool aSign, bool basicMode )
 {
   updateBoundingBox(x, y, z);
-  double retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
+  double retract= 0;//0.05*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   double width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuKSSurfels);
   if(basicMode){
     width=0.0;
