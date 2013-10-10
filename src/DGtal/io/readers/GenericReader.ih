@@ -40,19 +40,19 @@
 
 template <typename TContainer, int TDim>
 inline
-TContainer 
+TContainer
 DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename, std::vector<unsigned int> dimSpace)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
   if(extension!="raw"){
-    trace.error() << "Extension " << extension<< " not yet implemented in n dimension for DGtal GenericReader (only raw images are actually implemented in Nd." << std::endl;
-    throw dgtalio;
+	trace.error() << "Extension " << extension<< " not yet implemented in n dimension for DGtal GenericReader (only raw images are actually implemented in Nd." << std::endl;
+	throw dgtalio;
   }else{
-    typename TContainer::Point aPointDim;
-    for(unsigned int i=0; i< dimSpace.size(); i++){
-      aPointDim[i]= dimSpace[i];
-    }
-    return RawReader< TContainer >::importRaw8 ( filename, aPointDim  );	
+	typename TContainer::Point aPointDim;
+	for(unsigned int i=0; i< dimSpace.size(); i++){
+	  aPointDim[i]= dimSpace[i];
+	}
+	return RawReader< TContainer >::importRaw8 ( filename, aPointDim  );
   }
 
 }
@@ -61,25 +61,29 @@ DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename, std:
 
 template <typename TContainer>
 inline
-TContainer 
+TContainer
 DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
-					    unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException){
+						unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
-  
+
   if(extension=="vol"){
-    return  VolReader<TContainer>::importVol( filename );
+	return  VolReader<TContainer>::importVol( filename );
   }else  if(extension=="longvol"){
-    return  LongvolReader<TContainer>::importLongvol( filename );
+	return  LongvolReader<TContainer>::importLongvol( filename );
   }else  if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="pgm"){
-    return PGMReader<TContainer>::importPGM3D(filename);
+	return PGMReader<TContainer>::importPGM3D(filename);
   } else if(extension=="raw"){
-    ASSERT(x!=0 && y!=0 && z!=0); 
-    typename TContainer::Point pt (x,y,z);
-    return RawReader< TContainer >::importRaw8 ( filename, pt  );
-  }else{
-    trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-    throw dgtalio;
+	ASSERT(x!=0 && y!=0 && z!=0);
+	typename TContainer::Point pt (x,y,z);
+	return RawReader< TContainer >::importRaw8 ( filename, pt  );
+#ifdef WITH_ITK
+  } else  if(extension=="dcm"){
+	return  DicomReader<TContainer>::importDicom( filename );
+#endif
+  } else{
+	trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+	throw dgtalio;
   }
 }
 
@@ -87,36 +91,36 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
 
 template <typename TContainer>
 inline
-TContainer 
+TContainer
 DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const std::string & datasetName)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   //Getting image extension
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
   if(extension=="pgm"){
-    return PGMReader<TContainer>::importPGM(filename);
+	return PGMReader<TContainer>::importPGM(filename);
   }else if(extension=="ppm"){
-    return PPMReader<TContainer>::importPPM(filename);
+	return PPMReader<TContainer>::importPPM(filename);
   }
-  
+
 #ifdef WITH_HDF5
   else if (extension=="h5"){
-    return HDF5Reader<TContainer>::importHDF5(filename, datasetName); 
+	return HDF5Reader<TContainer>::importHDF5(filename, datasetName);
   }
 #endif
   else if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp"){
 #ifdef WITH_MAGICK
-    MagickReader<TContainer> reader;
-    return reader.importImage( filename );  
-    
-#else 
-    trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
-    throw dgtalio;
+	MagickReader<TContainer> reader;
+	return reader.importImage( filename );
+
+#else
+	trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
+	throw dgtalio;
 #endif
 
   }else{
-    trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-    throw dgtalio;
+	trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+	throw dgtalio;
   }
 }
 
