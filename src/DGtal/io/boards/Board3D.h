@@ -60,8 +60,9 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class Board3D
   /**
-   * The class Board3D is a type of Display3D which export the figures in the format OBJ/MTL
+   * @brief The class Board3D is a type of Display3D which export the figures in the format OBJ/MTL
    * when calling the method saveOBJ.
+   *
    * The format OBJ/MTL is a geometry definition file format, this format has been adopted by many
    * 3D graphics application vendors (pbrt, blender, etc.).
    * to learn more about OBJ see <http://en.wikipedia.org/wiki/Wavefront_.obj_file>
@@ -70,40 +71,40 @@ namespace DGtal
    * they will melt in the same mesh eventually. If a list doesn't have a name the program will try
    * to give it an unique name so it will become a separate mesh.
    * Each list have a material description which correspond to its first element color.
-   * If two lists have the same name and merge the final mesh will have two materials ( one by list).
+   * If two lists have the same name and merge the final mesh will have two materials (one per list).
    *
+   * @tparam Space a model of digital space (default type=Z3i::Space)
+   * @tparam KSpace a model of Khalimsky space (default type=Z3i::KSpace)
    *
-   *
-   * @brief Class for OBJ export
    */
-template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
+  template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
   class Board3D : public Display3D<Space, KSpace>
   {
   public:
 
 
     /*!
-     * \brief Constructor.
+     * Constructor.
      */
     Board3D();
 
     /**
-    * Constructor with a khalimsky space
-    * @param KSEmb the Khalimsky space
-    */
+     * Constructor with a khalimsky space
+     * @param KSEmb the Khalimsky space
+     */
     Board3D( KSpace KSEmb):Display3D<Space,KSpace>(KSEmb) {}
 
     /**
-        *Constructor with a space and a khalimsky space
-        *@param SEmb a space
-        *@param KSEmb a khalimsky space
-        **/
+     *Constructor with a space and a khalimsky space
+     *@param SEmb a space
+     *@param KSEmb a khalimsky space
+     **/
     Board3D( Space SEmb, KSpace KSEmb):Display3D<Space,KSpace>(SEmb, KSEmb){}
 
 
 
     /*!
-     * \brief Destructor.
+     * Destructor.
      */
     ~Board3D(){};
 
@@ -123,18 +124,6 @@ template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
     void saveOBJ(const std::string & filename);
 
 
-
-    /**
-     * The associated map type for storing possible modes used for
-     * displaying for digital objects.
-     */
-    //typedef std::map< std::string, std::string > ModeMapping;
-
-    //  /**
-    //    * The associated map type for storing the default styles of
-    //    * digital objects.
-    //    */
-    //   typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
 
     DGtal::Color myDefaultColor;  //!< default color
 
@@ -185,11 +174,8 @@ template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
     virtual void init();
 
   }; // end of class Board3D
-  
 
 
-
-  
   /**
    * Overloads 'operator<<' for displaying objects of class 'Board3D'.
    * @param out the output stream where the object is written.
