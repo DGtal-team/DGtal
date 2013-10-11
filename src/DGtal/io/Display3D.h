@@ -124,7 +124,7 @@ namespace DGtal
       /// The display color of the cube.
       ///
       DGtal::Color color;
-      
+
       /// The width of a cube face
       ///
       double width;
@@ -230,7 +230,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    virtual ~Display3D()
+    ~Display3D()
     {
       delete myEmbedder;
       delete mySCellEmbedder;
@@ -247,7 +247,9 @@ namespace DGtal
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
       myEmbedder= new CanonicEmbedder<Space>();
-      
+      myCellEmbedder = new CanonicCellEmbedder<KSpace >();
+      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >();
+
     }
 
     /**
@@ -273,9 +275,9 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder = CanonicEmbedder<Space >(Semb);
-      myCellEmbedder = CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = CanonicSCellEmbedder<KSpace >(KSEmb);
+      myEmbedder = new CanonicEmbedder<Space >(Semb);
+      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
+      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
     };
 
 
@@ -318,11 +320,11 @@ namespace DGtal
 
 
     /**
-     * Used to change the default embedder for point of the Digital 3D Space 
+     * Used to change the default embedder for point of the Digital 3D Space
      * @param anEmbedder the new CanonicEmbedder
      **/
     virtual void  setSpaceEmbedder(CanonicEmbedder<Space> *anEmbedder);
-    
+
     /**
      *  Used to change the default embedder for unsigned cell of Khalimsky 3D Space.
      * @param anEmbedder the new CanonicCellEmbedder
@@ -334,8 +336,8 @@ namespace DGtal
      * @param anEmbedder the new CanonicSCellEmbedder
      **/
     virtual void  setSKSpaceEmbedder(CanonicSCellEmbedder<KSpace> *anEmbedder);
-    
-    
+
+
 
 
 
@@ -450,7 +452,7 @@ namespace DGtal
      * Method to add specific cube. It includes several modes to
      * display the cube with and without the wire visualisation.
      *
-     * @param center cube center 
+     * @param center cube center
      * @param width the cube width.
      */
     void addCube(const RealPoint &center, double width=1.0);

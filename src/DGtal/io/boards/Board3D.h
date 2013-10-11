@@ -92,22 +92,27 @@ namespace DGtal
      * Constructor with a khalimsky space
      * @param KSEmb the Khalimsky space
      */
-    Board3D( KSpace KSEmb):Display3D<Space,KSpace>(KSEmb) {}
+    Board3D(const  KSpace &KSEmb):Display3D<Space,KSpace>(KSEmb)
+    {
+      init();
+    }
 
     /**
      *Constructor with a space and a khalimsky space
      *@param SEmb a space
      *@param KSEmb a khalimsky space
      **/
-    Board3D( Space SEmb, KSpace KSEmb):Display3D<Space,KSpace>(SEmb, KSEmb){}
-
+    Board3D(const  Space &SEmb, const KSpace &KSEmb):Display3D<Space,KSpace>(SEmb,
+                                                                             KSEmb)
+    {
+      init();
+    }
 
 
     /*!
      * Destructor.
      */
     ~Board3D(){};
-
 
     /**
      * @return the style name used for drawing this object.
@@ -171,7 +176,7 @@ namespace DGtal
     /**
      *  init function (should be in Constructor).
      */
-    virtual void init();
+    void init();
 
   }; // end of class Board3D
 
