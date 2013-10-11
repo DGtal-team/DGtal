@@ -353,9 +353,9 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
            s_it != it->end(); ++s_it)
       {
         double wid = s_it->width;
-        double x = (*s_it)[0];
-        double y = (*s_it)[1];
-        double z = (*s_it)[2];
+        double x = s_it->center[0];
+        double y = s_it->center[1];
+        double z = s_it->center[2];
 
         double x1 = x - wid;
         double x2 = x + wid;
