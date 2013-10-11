@@ -261,6 +261,7 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
+      myEmbedder= new CanonicEmbedder<Space>();
       myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
       mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
     };
