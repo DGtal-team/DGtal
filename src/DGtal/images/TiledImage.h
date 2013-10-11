@@ -48,6 +48,7 @@
 #include "DGtal/images/CImageCacheReadPolicy.h"
 #include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
+#include "DGtal/base/ReverseIterator.h"
 
 #include "DGtal/images/ImageCache.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -205,6 +206,12 @@ public:
 
     public:
       
+      typedef std::bidirectional_iterator_tag iterator_category; // ???
+      typedef Value value_type;
+      typedef ptrdiff_t difference_type; // ???
+      typedef Value* pointer;
+      typedef Value& reference;
+      
       /**
        * Constructor.
        *
@@ -232,7 +239,13 @@ public:
        * @return the value associated to the current TiledIterator position.
        */
       inline
-      const Value operator*()
+      const Value & operator*() const
+      {
+        return (*myTileRangeIterator);
+      }
+      
+      inline
+      Value & operator*()
       {
         return (*myTileRangeIterator);
       }
@@ -282,7 +295,6 @@ public:
           
           if ( myCellsIterator == myTiledImage->domainCoords().end() )
           {
-            myCellsIterator--;
             end = true;
             return;
           }
@@ -324,6 +336,23 @@ public:
       inline
       void prevLexicographicOrder()
       {
+        // -- IF we are at the end... (reverse, --)
+        if ( myCellsIterator == myTiledImage->domainCoords().end() )
+        {
+          myCellsIterator--;
+          
+          myTiledImage->myImageCache->incCacheMissRead();
+          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
+          
+          myTileRangeIterator = myTile->range().end();
+          myTileRangeIterator--;
+          
+          return;
+        }
+        // -- IF we are at the end... (reverse, --)
+        
+        // ---
+          
         if ( myTileRangeIterator != myTile->range().begin() )
         {
           myTileRangeIterator--;
@@ -379,7 +408,7 @@ public:
       
       bool end;
     };
-    
+
     TiledIterator begin()
     {
       return TiledIterator( this->domainCoords().begin(), this );
@@ -388,6 +417,21 @@ public:
     TiledIterator end()
     {
       return TiledIterator( this->domainCoords().end(), this );
+    }
+    
+    // ---
+    
+    typedef ReverseIterator<TiledIterator> ReverseTiledIterator;
+    //typedef std::reverse_iterator<TiledIterator> ReverseTiledIterator;
+    
+    ReverseTiledIterator rbegin()
+    {
+      return ReverseTiledIterator( end() );
+    }
+
+    ReverseTiledIterator rend()
+    {
+      return ReverseTiledIterator( begin() );
     }
 
     /////////////////// API ///////////////////////

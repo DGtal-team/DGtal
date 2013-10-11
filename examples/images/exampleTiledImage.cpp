@@ -111,13 +111,11 @@ int main( int argc, char** argv )
     
     // ---
     
-    int cpt, sumTp, sumTm, sumC;
-    
-    MyTiledImage::TiledIterator tiled_it = tiledImage.begin(), tiled_itend = tiledImage.end(), tiled_itbegin = tiledImage.begin();
+    int cpt, sumTp, sumTm, sumTrp, sumC;
     
     cpt=sumTp=0;
     trace.beginBlock("test TiledIterator (++)");
-    for(;
+    for(MyTiledImage::TiledIterator tiled_it = tiledImage.begin(), tiled_itend = tiledImage.end();
         tiled_it != tiled_itend; ++tiled_it)
         {
           trace.info() << (*tiled_it) << ",";
@@ -127,26 +125,36 @@ int main( int argc, char** argv )
     trace.info() << "Cpt: " << cpt << " - sumTp: " << sumTp << endl;
     trace.endBlock();
     
-    tiled_it--;
-    
-    cpt=sumTm=0;
+    cpt=sumTm=0; tiledImage.clearCacheAndResetCacheMisses();
     trace.beginBlock("test TiledIterator (--)");
-    for(;
-        tiled_it != tiled_itbegin; --tiled_it)
-        {
-          trace.info() << (*tiled_it) << ",";
-          sumTm += (*tiled_it);
-          cpt++;
-        }
+    {
+      MyTiledImage::TiledIterator tiled_it = tiledImage.end(), tiled_itend = tiledImage.begin();
+      do
+      {
+        --tiled_it;
         
-    trace.info() << (*tiled_it) << ",";
-    sumTm += (*tiled_it);
-    cpt++;
-    
+        trace.info() << (*tiled_it) << ",";
+        sumTm += (*tiled_it);
+        cpt++;
+      }
+      while (tiled_it != tiled_itend);
+    }
     trace.info() << "Cpt: " << cpt << " - sumTm: " << sumTm << endl;
     trace.endBlock();
     
-    cpt=sumC=0;
+    cpt=sumTrp=0; tiledImage.clearCacheAndResetCacheMisses();
+    trace.beginBlock("test ReverseTiledIterator (++)");
+    for(MyTiledImage::ReverseTiledIterator rtiled_it = tiledImage.rbegin(), rtiled_itend = tiledImage.rend();
+        rtiled_it != rtiled_itend; ++rtiled_it)
+        {
+          trace.info() << (*rtiled_it) << ",";
+          sumTrp += (*rtiled_it);
+          cpt++;
+        }
+    trace.info() << "Cpt: " << cpt << " - sumTrp: " << sumTrp << endl;
+    trace.endBlock();
+    
+    cpt=sumC=0; tiledImage.clearCacheAndResetCacheMisses();
     trace.beginBlock("test ConstIterator");
     for(VImage::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
         it != itend; ++it)
