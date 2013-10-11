@@ -106,7 +106,7 @@ namespace DGtal
 
 	typedef TFunctor Functor;
 
-	BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;
+	BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, int, Value > )) ;
 
 
 
@@ -127,7 +127,7 @@ namespace DGtal
 	 * coordinate will be the top left of the image (not usual).
 	 * @return an instance of the ImageContainer.
 	 */
-	static  ImageContainer importDicom(const std::string & aDirname,
+	static  ImageContainer importDicom(const std::string & aFilename,
 									 const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
 
 

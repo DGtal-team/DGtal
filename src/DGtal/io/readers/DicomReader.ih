@@ -56,13 +56,13 @@
 template <typename TImageContainer, typename TFunctor>
 inline
 TImageContainer
-DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & aDirname,
+DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & aFilename,
 							   const TFunctor &aFunctor) throw(DGtal::IOException)
 {
-  std::ifstream infile;
   DGtal::IOException dgtalio;
   BOOST_STATIC_ASSERT( ImageContainer::Domain::dimension == 3 );
 
+  std::string directory = aFilename.substr(0,aFilename.find_last_of("/"));
 
   // Définition of image type
   const unsigned int InputDimension = ImageContainer::Domain::dimension;
@@ -79,7 +79,7 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   // Series reader
   typedef itk::GDCMSeriesFileNames NamesGeneratorType;
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
-  nameGenerator->SetDirectory(aDirname);
+  nameGenerator->SetDirectory(directory);
   reader->SetFileNames(nameGenerator->GetInputFileNames());
 
   // Image reading
@@ -89,27 +89,21 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   }
   catch( ... )
   {
-	  trace.error() << "DicomReader: can't read " << aDirname << std::endl;
+	  trace.error() << "DicomReader: can't read " << directory << std::endl;
 	  throw dgtalio;
   }
 
   const itk::MetaDataDictionary &dictionary = dicomIO->GetMetaDataDictionary(); //Dictionary
 
   // Dimensions reading from dictionary
-  bool size_ok;
   const unsigned int height = atoi(getTag("0028|0010",dictionary).c_str());
-  if ( !size_ok )
-  {
-	  trace.error() << "DicomReader: cant't read tag of image height." << std::endl;
-	  throw dgtalio;
-  }
-  const unsigned int width = atoi(getTag("0028|0011",dictionary).c_str());
-  if ( !size_ok )
-  {
-	  trace.error() << "DicomReader: cant't read tag of image width." << std::endl;
-	  throw dgtalio;
-  }
   const unsigned int depth = reader->GetFileNames().size();
+  const unsigned int width = atoi(getTag("0028|0011",dictionary).c_str());
+  if ( !height || !width || !depth )
+  {
+	  trace.error() << "DicomReader: one dimension is null (w=" << width << ", h=" << height << ", d=" << depth << ")" << std::endl;
+	  throw dgtalio;
+  }
 
 
   // Itk Image pointer
