@@ -34,7 +34,6 @@
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/writers/MeshWriter.h"
 
 #include <limits>
 //////////////////////////////////////////////////////////////////////////////
@@ -51,7 +50,8 @@
 template < typename Space, typename KSpace>
 inline
 DGtal::Board3D<Space, KSpace> &
-DGtal::Board3D<Space, KSpace>::operator<<(const DGtal::Color & aColor){
+DGtal::Board3D<Space, KSpace>::operator<<(const DGtal::Color & aColor)
+{
   myDefaultColor=aColor;
   return *this;
 }
@@ -87,9 +87,9 @@ DGtal::Board3D<Space, KSpace>::operator<<( const TDrawableWithDisplay3D & object
  */
 template < typename Space, typename KSpace>
 inline
-DGtal::Board3D<Space, KSpace>::Board3D()
+DGtal::Board3D<Space, KSpace>::Board3D() : Display3D<Space,KSpace>()
 {
-  Board3D<Space, KSpace>::init();
+  init();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
