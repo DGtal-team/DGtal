@@ -471,10 +471,10 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
            s_it != it->end(); ++s_it)
       {
         //test if a clipping plane do not cut it
-          tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
-          tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
-          tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
-          tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+          tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]      << " " << s_it->point1[2] << std::endl;
+          tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
+          tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
+          tmpStream << "v " << s_it->point4[0]     << " " << s_it->point4[1]      << " " << s_it->point4[2] << std::endl;
 
           tmpStream << "f " << "-4" << " " << "-3" << " " << "-2"<< " " << "-1"<< std::endl;
       }
@@ -532,20 +532,20 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
           double b = itClip->b;
           double c = itClip->c;
           double d = itClip->d;
-          double d2 = ( a * s_it->x1) + (b * s_it->y1) + ( c * s_it->z1 ) + d;
+          double d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * s_it->point1[2] ) + d;
           notCut = ( d2 >= 0);
-          d2 = ( a * s_it->x2) + (b * s_it->y2) + ( c * s_it->z2) + d;
+          d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * s_it->point2[2]) + d;
           notCut = ( notCut  && ( d2 >= 0) );
-          d2 = ( a * s_it->x3) + (b * s_it->y3) + ( c * s_it->z3) + d;
+          d2 = ( a * s_it->point3[0]) + (b * s_it->point3[1]) + ( c * s_it->point3[2]) + d;
           notCut = ( notCut  && ( d2 >= 0) );
 
           itClip ++;
         }
         if (notCut)
         {
-          tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
-          tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
-          tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
+          tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]      << " " << s_it->point1[2] << std::endl;
+          tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
+          tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
 
           tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
 
@@ -607,23 +607,23 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         double b = itClip->b;
         double c = itClip->c;
         double d = itClip->d;
-        double d2 = ( a * s_it->x1) + (b * s_it->y1) + ( c * s_it->z1 ) + d;
+        double d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * s_it->point1[2] ) + d;
         notCut = ( d2 >= 0);
-        d2 = ( a * s_it->x2) + (b * s_it->y2) + ( c * s_it->z2) + d;
+        d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * s_it->point2[2]) + d;
         notCut = ( notCut  && ( d2 >= 0) );
-        d2 = ( a * s_it->x3) + (b * s_it->y3) + ( c * s_it->z3) + d;
+        d2 = ( a * s_it->point3[0]) + (b * s_it->point3[1]) + ( c * s_it->point3[2]) + d;
         notCut = ( notCut  && ( d2 >= 0) );
-        d2 = ( a * s_it->x4) + (b * s_it->y4) + ( c * s_it->z4) + d;
+        d2 = ( a * s_it->point4[0]) + (b * s_it->point4[1]) + ( c * s_it->point4[2]) + d;
         notCut = ( notCut  && ( d2 >= 0) );
 
         itClip ++;
       }
       if (notCut)
       {
-        tmpStream << "v " << s_it->x1     << " " << s_it->y1      << " " << s_it->z1 << std::endl;
-        tmpStream << "v " << s_it->x2     << " " << s_it->y2      << " " << s_it->z2 << std::endl;
-        tmpStream << "v " << s_it->x3     << " " << s_it->y3      << " " << s_it->z3 << std::endl;
-        tmpStream << "v " << s_it->x4     << " " << s_it->y4      << " " << s_it->z4 << std::endl;
+        tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]      << " " << s_it->point1[2] << std::endl;
+        tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
+        tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
+        tmpStream << "v " << s_it->point4[0]     << " " << s_it->point4[1]      << " " << s_it->point4[2] << std::endl;
 
         tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
 
