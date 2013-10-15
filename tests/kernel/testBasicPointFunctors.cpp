@@ -118,7 +118,25 @@ bool testProjector()
   trace.info() << "pt " << pt_2 << " => " << sliceRot2(pt_2) << " == " << ptR2 << std::endl;
   nbok += ( sliceRot2(pt_2) == ptR2 ) ? 1 : 0; 
   nb++;
+
+
+  //Point2DEmbedderIn3D
+  PointVector<3,int> ptOrigin3D(3,3,3);
+  Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder(domain,
+									ptOrigin3D,
+									PointVector<3,int>(6,6,3),
+									PointVector<3,int>(3,3,5),
+									PointVector<3,int>(0,0,0));
+  PointVector<2, int> ptb(0, 0);  
+  PointVector<2, int> pt_2b(4, 2);  
+    trace.info() << "pt " << ptb << " => " << embedder(ptb) << " == " << PointVector<3,int>(3,3,3) << std::endl;
+  nbok += ( embedder(ptb) == PointVector<3,int>(3,3,3) ) ? 1 : 0; 
+  nb++;
   
+  trace.info() << "pt " << pt_2b << " => " << embedder(pt_2b) << " == " << PointVector<3,int>(5,5,5) << std::endl;
+  nbok += ( embedder(pt_2b) ==  PointVector<3,int>(5,5,5)  ) ? 1 : 0; 
+  nb++;
+    
   //comparison
   PointVector<3,int> res1(5,0,2); 
   trace.info() << "p " << p << " => " << proj1(p) << " == " << res1 << std::endl;
