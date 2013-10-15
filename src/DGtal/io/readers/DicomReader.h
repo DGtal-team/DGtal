@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/images/CImage.h"
 
 #include <itkMetaDataDictionary.h>
 
@@ -59,38 +60,38 @@ namespace DGtal
 // class DicomReader
 /**
  * Description of class 'DicomReader' <p>
- * \brief Aim: Import a 2D or 3D using the Netpbm formats (ASCII mode).
- * - PPM: RGB
- *  - Dicom: grayscale
- *  - PPM3D: 3D variant of PPM
- *  - Dicom3D: 3D variant of Dicom
+ * \brief Aim: Import a 3D DICOM image from file series.
  *
+ *  This class requires ITK installation (http://www.itk.org/ITK/resources/software.html)
+ *  and to compile DGtal with -DWITH_ITK option.
  *
- *  Simple example: (extract from test file testDicomReader.cpp)
+ *  Simple example: (extract from test/io/readers/testDicomReader.cpp)
  *
  *  @code
+ *  #include "DGtal/images/ImageContainerBySTLVector.h"
  *  #include "DGtal/helpers/StdDefs.h"
  *  #include "DGtal/io/readers/DicomReader.h"
- *  #include "DGtal/kernel/images/ImageSelector.h"
+ *
+ *  template<typename T>
+ *  struct HounsfieldToGrayscaleFunctor
+ *  {
+ *  	int minHounsfieldValue;
+ *  	int maxHounsfieldValue;
+ *  	HounsfieldToGrayscaleFunctor() : minHounsfieldValue(-3000), maxHounsfieldValue(3000) {}
+ *  	HounsfieldToGrayscaleFunctor( const int &min, const int &max ) : minHounsfieldValue(min), maxHounsfieldValue(max) {}
+ *  	inline
+ *  	T operator() (const T& a) const
+ *  	{ return a<=minHounsfieldValue ? 0 : a >= maxHounsfieldValue ? 255 : (a-minHounsfieldValue)*(255./(maxHounsfieldValue-minHounsfieldValue)); }
+ *  };
  *  ...
- *  string filename = "test.Dicom";
- *  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
- *  Image image = DicomReader<Image>::importDicomImage( filename );
- *   @endcode
- *  You can then for instance display a threshold part of the image:
- *  @code
- *  #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"
- *  ...
- *  Z2i::DigitalSet set2d (image.domain());
- *  // Threshold all pixel in ]0, 255] in a DigitalSet
- *  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
- *  Board2D board;
- *  board << image.domain() << set2d; // display domain and set
+ *  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain,  int > Image3D;
+ *  string filename = "test.dcm";
+ *  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int> >::importDicom( filename, HounsfieldToGrayscaleFunctor<int>(-900,530) );
  *  @endcode
  *
  * @tparam TImageContainer the type of the image container
  *
- * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>) .
+ * @tparam TFunctor the type of functor used in the import (by default, copy and use the HounsfieldToGrayscaleFunctor).
  *
  */
   template <typename TImageContainer,
@@ -103,36 +104,38 @@ namespace DGtal
 	typedef TImageContainer ImageContainer;
 	typedef typename TImageContainer::Value Value;
 	typedef typename TImageContainer::Domain::Vector Vector;
-
 	typedef TFunctor Functor;
 
+	BOOST_CONCEPT_ASSERT((  CImage<ImageContainer> )) ;
 	BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, int, Value > )) ;
-
-
-
-	BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
+	BOOST_STATIC_ASSERT(( ImageContainer::Domain::dimension == 3 ));
 
 	/**
-	 * Main method to import a Dicom (8bits) into an instance of the
+	 * Main method to import a Dicom serie into an instance of the
 	 * template parameter ImageContainer.
 	 *
-	 * @param aFilename the file name to import.
+	 * @param aFilename one file of the serie to import.
 	 * @param aFunctor the functor used to import and cast the source
 	 * image values into the type of the image container value (by
-	 * default set to CastFunctor < TImageContainer::Value > .
+	 * default set to CastFunctor < TImageContainer::Value >.
 	 *
-	 * @param topbotomOrder
-	 * if true, the point of coordinate (0,0) will be the bottom left
-	 * corner image point (default) else the center of image
-	 * coordinate will be the top left of the image (not usual).
 	 * @return an instance of the ImageContainer.
 	 */
-	static  ImageContainer importDicom(const std::string & aFilename,
-									 const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+	static ImageContainer importDicom(const std::string & aFilename,
+									  const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
 
 
-	//! Dicom tag corresponding to the entry ID from dictionary
-	static std::string getTag( const std::string &entryId, const itk::MetaDataDictionary &dictionary );
+  private:
+
+	/**
+	 * Method to read the DICOM dictionnary where tags are stored.
+	 *
+	 * @param entryID tag id like "0028|0010"
+	 * @param dictionary table containing tag ids and their corresponding values
+	 * @return tag value corresponding to the entryId in dictionary
+	 */
+	static std::string getTag( const std::string &entryId,
+							   const itk::MetaDataDictionary &dictionary );
 
  }; // end of class  DicomReader
 

@@ -111,14 +111,14 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   itk::ImageRegionConstIterator< ImageType > in( itkImage,itkImage->GetBufferedRegion() );
 
   // DGtal image
-  typename TImageContainer::Point firstPoint( 0, 0, 0 );
-  typename TImageContainer::Point lastPoint( width-1, height-1, depth-1 );
+  typename ImageContainer::Point firstPoint( 0, 0, 0 );
+  typename ImageContainer::Point lastPoint( width-1, height-1, depth-1 );
 
-  typename TImageContainer::Domain domain(firstPoint,lastPoint);
-  typename TImageContainer::Domain::ConstIterator itDomain = domain.begin();
-  typename TImageContainer::Domain::ConstIterator endDomain = domain.end();
+  typename ImageContainer::Domain domain(firstPoint,lastPoint);
+  typename ImageContainer::Domain::ConstIterator itDomain = domain.begin();
+  typename ImageContainer::Domain::ConstIterator endDomain = domain.end();
 
-  TImageContainer image(domain);
+  ImageContainer image(domain);
 
   // DGtal image filling
   long int total = width * height * depth;
