@@ -38,7 +38,8 @@
 
 #include "DGtal/io/Color.h"
 
-// Required ITK files to read serie DICOm files
+// Required ITK files to read serie DICOM files
+// DGtal must be compiled with "-DWITH_ITK=true" option
 #include <itkImage.h>
 #include <itkImageSeriesReader.h>
 #include <itkGDCMImageIO.h>
