@@ -309,6 +309,100 @@ namespace DGtal
   };
 
 
+  /**
+   * Description of template class 'Point2DEmbedderIn3D' <p>
+   * \brief 
+
+
+
+   * @code 
+
+   @endcode
+   *
+   *
+   * @tparam TDomain3D the type of the 3d domain. 
+   * @tparam TInteger specifies the integer number type used to define the space. 
+   *
+   */
+  template <typename TDomain3D, typename TInteger =  DGtal::int32_t >
+  class Point2DEmbedderIn3D
+  {
+  public:
+        
+    typedef SpaceND< 3, TInteger>  Space;
+    typedef typename Space::Point Point; 
+    typedef typename Space::Integer Integer; 
+    
+    /** 
+     * Constructor.
+     */
+    
+    Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg, 
+			 const Point &anOriginPoint, const Point &anUpperPointOnAxis1,
+			 const Point &anUpperPointOnAxis2,
+			 const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
+								   myOriginPointEmbeddedIn3D(anOriginPoint),
+								   myUpperPointAxis1EmbeddedIn3D(anUpperPointOnAxis1),
+								   myUpperPointAxis2EmbeddedIn3D(anUpperPointOnAxis2),
+								   myDefaultPoint (aDefautPoint),
+								   myFirstAxisEmbeddedDirection(Point(anUpperPointOnAxis1[0]-anOriginPoint[0],
+												      anUpperPointOnAxis1[1]-anOriginPoint[1],
+												      anUpperPointOnAxis1[2]-anOriginPoint[2])),
+                                                                   mySecondAxisEmbeddedDirection(Point(anUpperPointOnAxis2[0]-anOriginPoint[0],
+												       anUpperPointOnAxis2[1]-anOriginPoint[1],
+												       anUpperPointOnAxis2[2]-anOriginPoint[2]))
+      
+      
+    {    
+      myFirstAxisEmbeddedDirection /= myFirstAxisEmbeddedDirection.norm();
+      mySecondAxisEmbeddedDirection /= mySecondAxisEmbeddedDirection.norm();
+    };
+    
+    /** 
+     * The operator just recover the 3D Point associated to the Point2DEmbederIn3D parameters.
+     * @param[in] aPoint point of the input domain (of dimension 2).
+     * 
+     * @return the point of dimension 3.
+     */
+    template <typename TPoint2D>
+    inline
+    Point  operator()(const TPoint2D& aPoint) const
+    {
+      Point pt = myOriginPointEmbeddedIn3D;
+      for( Dimension i=0; i<pt.size(); i++)
+	{
+	  pt[i] = pt[i]+aPoint[0]*myFirstAxisEmbeddedDirection[i];
+	  pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
+	}
+
+      if(myDomain.isInside(pt))
+	return pt;
+      else
+	return  myDefaultPoint;
+    }
+
+  private:
+    TDomain3D myDomain;
+    
+    // Origin (or lower point) of the 2D image embedded in the 3D domain 
+    Point  myOriginPointEmbeddedIn3D;
+    // Upper point of axis 1   
+    Point myUpperPointAxis1EmbeddedIn3D;
+    // Upper point of axis 2   
+    Point myUpperPointAxis2EmbeddedIn3D;
+    
+
+    // Point giving the direction of the embedded first axis of the 2D image.
+    typename Space::RealPoint myFirstAxisEmbeddedDirection;
+
+    // Point giving the direction of the embedded second axis of the 2D image.
+    typename Space::RealPoint mySecondAxisEmbeddedDirection;
+    
+    Point myDefaultPoint;
+
+  };
+
+
 
 } // namespace dgtal
 
