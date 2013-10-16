@@ -153,12 +153,6 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   outMTL.open(nameMTL.str().c_str());
   outMTL << "#  MTL format"<< std::endl;
   outMTL << "# generated from Board3D from the DGTal library"<< std::endl;
-  outMTL << "newmtl " << std::endl;
-  outMTL << "Ka 0.0 0.0 0.0" << std::endl;
-  outMTL << "Kd 0.8 0.8 0.8" << std::endl;
-  outMTL << "Ks 0.0 0.0 0.0" << std::endl;
-  outMTL << "d 1" << std::endl;
-  outMTL << "illum 2" << std::endl << std::endl;
 
   //OPT head
   // TODOLP tests unitaires pour chaque partie
