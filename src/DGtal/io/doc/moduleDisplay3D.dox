@@ -96,11 +96,16 @@ Then we can display some 3D primitives:
 
 
 
-\section DGtalGLV_Boas3DTo2D Static visualization from Board2Dto3D
+\section DGtalGLV_Boas3DTo2D Alternative visualization without OpenGL dependency 
 
 
- The same visualization can be obtain with the Board2Dto3D class. You
-just need to adapt the camera settings (see example: <a href="io_2boards_2dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
+There are two ways to obtain an alternative visualization without the dependency of the 3D interactive viewer:
+      - Static display by using Board2Dto3D.
+      - Export the Display3D objects into 3D files (OBJ format).
+
+\subsection DGtalGLV_StaticDisplay Static display
+
+ The same visualization can be obtain with the Board2Dto3D class. You just need to adapt the camera settings (see example: <a href="io_2boards_2dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
 
 
 @code
@@ -118,6 +123,8 @@ board.saveCairo("dgtalCairo-1-points.pdf", Board3DTo2D::CairoPDF, 600*2, 400*2);
 This example should provides a comparable visualization.
 
 
+
+\subsection DGtalGLV_OBJExport Export Display3D objects
 
 
 
@@ -560,7 +567,6 @@ Ball visualisation (with Board3DTo2D)
 
 /**
 Khalimsky Signed Cell Visualization (with Board3DTo2D) 
-@see \ref 
 \image html dgtalBoard3DTo2D-KSCell.png "Khalimsky Signed Cell Visualization (with Board3DTo2D)"
 \example io/boards/dgtalBoard3DTo2D-KSCell.cpp
 *
