@@ -48,8 +48,8 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
+  //! [ExampleViewer3DSets]
  QApplication application(argc,argv);
-
  typedef  Viewer3D<>  MyViewer;
  MyViewer viewer;
  viewer.show();
@@ -66,7 +66,7 @@ int main( int argc, char** argv )
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
  viewer << shape_set << MyViewer::updateDisplay;
-
+ //! [ExampleViewer3DSets]
  return application.exec();
 }
 //                                                                           //
