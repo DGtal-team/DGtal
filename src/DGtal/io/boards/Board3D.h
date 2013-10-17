@@ -83,7 +83,7 @@ namespace DGtal
   public:
 
 
-    /*!
+    /*
      * Constructor.
      */
     Board3D();
