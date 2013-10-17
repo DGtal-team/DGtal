@@ -51,9 +51,6 @@ int main( )
 
   Board3D<Space, KSpace> board(K);
 
-  board << SetMode3D( domain.className(), "Paving" );
-  board << domain;
-
   // drawing cells of dimension 3
 
   SCell v2 = K.sSpel( Point( 1, 0, 0 ), KSpace::POS ); // +v

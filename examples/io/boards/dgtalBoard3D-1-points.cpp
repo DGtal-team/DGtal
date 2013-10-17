@@ -57,12 +57,13 @@ int main()
   shape_set.insertNew(p6);
   shape_set.insertNew(p7);
 
-
+  //! [ExampleBoard3DExport]
   Board3D<> board;
   board << SetMode3D(domain.className(), "Paving");
   board << p1 << p2 << p3;
   board << shape_set;
   board.saveOBJ("dgtalBoard3D-1-points.obj");
+  //! [ExampleBoard3DExport]
 
   Board3D<> board2;
   board2 << SetMode3D(domain.className(), "Paving");
