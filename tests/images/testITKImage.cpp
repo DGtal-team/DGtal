@@ -36,8 +36,7 @@
 #include <boost/foreach.hpp>
 
 //specific itk method
-#include <itkBinaryThresholdImageFilter.h>
-#include <itkImageFileWriter.h>
+#include <itkExtractImageFilter.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -133,7 +132,7 @@ bool testITKMethod()
   typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
 
   Point a ( 0, 0 );
-  Point b ( 25, 25);
+  Point b ( 10, 10);
 
   Image myImage ( a, b );
   trace.info() << myImage << std::endl;
@@ -152,36 +151,50 @@ bool testITKMethod()
     trace.warning() << myImage(it) << " ";
   trace.info() << endl;
 
-  //We construct an ITK pipeline
-  typedef itk::BinaryThresholdImageFilter< Image::ITKImage, Image::ITKImage> Filter;
-  Filter::Pointer filter = Filter::New();
 
-  filter->SetInput( myImage.getImagePointer() );
-  filter->SetOutsideValue( 0 );
-  filter->SetInsideValue( 10 );
-  filter->SetLowerThreshold( 34 );;
-  filter->SetUpperThreshold( 400 );;
-  filter->Update();
+  // We define a cropFilter
+  typedef itk::ExtractImageFilter< Image::ITKImage, Image::ITKImage > CropFilter;
 
-  //We create a DGtal::Image from a pointer to the pipeline output
-  Image::ITKImagePointer handleOut = filter->GetOutput();
-  Image myImageOut ( a, b, handleOut );
+  // Crop filter region
+  Image::ITKImage::SizeType size;
+  size[0] = 5;
+  size[1] = 5;
 
-  //We trace the result of the thresholding
+  Image::ITKImage::IndexType index;
+  index[0] = 2;
+  index[1] = 2;
+
+  Image::ITKImage::RegionType regionToExtract(index,size);
+
+  // Crop filter process
+  CropFilter::Pointer cropFilter = CropFilter::New();
+  cropFilter->SetInput( myImage.getImagePointer() );
+  cropFilter->SetExtractionRegion( regionToExtract  );
+  cropFilter->Update();
+
+  // Pointer to the filter output
+  Image::ITKImagePointer handleOut = cropFilter->GetOutput();
+  Point c ( 0, 0 );
+  Point d ( 5, 5);
+  Image myImageOut ( c, d, handleOut );
+
+
   trace.info() << "Output image=";
   
+  Integer counter = 22;
   for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
        it != itend;
        ++it)
-    trace.warning() << myImageOut(it) << " ";
+  {
+    nbok += (it.Value() == (22 + it.GetIndex()[1]*10 + it.GetIndex()[0]));
+    nb++;
+    trace.warning() << myImageOut(it) << "(" << (22 + it.GetIndex()[1]*10 + it.GetIndex()[0]) << ")" << " ";
+  }
   trace.info() << endl;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") "
+
+    trace.info() << "(" << nbok << "/" << nb << ") "
   << "true == true" << std::endl;
   trace.endBlock();
-
-
-
 
   return nbok == nb;
 }
