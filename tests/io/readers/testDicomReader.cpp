@@ -64,21 +64,20 @@ struct HounsfieldToGrayscaleFunctor
 bool testDicomReader()
 {
   //Default image selector = STLVector
-  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain,  int > Image3D;
+  typedef ImageContainerBySTLVector<Z3i::Domain,  int > Image3D;
 
-  //std::string filename = testPath + "samples/cat10.Dicom";
-  std::string filename = "../../../Images/DICOM/Premier_billon/partiel/1.2.840.113619.2.55.3.1670609623.220.1201508363.125.1.dcm";
+  std::string filename = testPath + "samples/fileToUpload.dcm";
   Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int> >::importDicom( filename, HounsfieldToGrayscaleFunctor<int>(-900,530) );
 
   trace.info() << image <<endl;
 
   unsigned int nbval=0;
-  for ( Image3D::ConstIterator it=image.begin(), itend=image.end(); it != itend;   ++it)
-	if ( (*it) > -100 ) nbval++;
+  for ( Image3D::ConstIterator it=image.begin(), itend=image.end() ; it != itend ; ++it )
+	  if ( (*it) > -100 ) nbval++;
 
-  trace.info() << "Number of points with (val!=0)  = " << nbval << endl;
+  trace.info() << "Number of points with (val>-100)  = " << nbval << endl;
 
-  return true;
+  return nbval==0;
 }
 
 
@@ -87,7 +86,7 @@ bool testIOException()
   //Default image selector = STLVector
   typedef ImageContainerBySTLVector<Z3i::Domain,  int > Image3D;
 
-  std::string filename = testPath + "samples/null.Dicom";
+  std::string filename = testPath + "samples/null.dcm";
 
   try {
 	Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int> >::importDicom( filename, HounsfieldToGrayscaleFunctor<int>(-900,530) );
