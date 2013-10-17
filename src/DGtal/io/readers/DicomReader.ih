@@ -98,9 +98,9 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   const itk::MetaDataDictionary &dictionary = dicomIO->GetMetaDataDictionary(); //Dictionary
 
   // Dimensions reading from dictionary
+  const unsigned int width = atoi(getTag("0028|0011",dictionary).c_str());
   const unsigned int height = atoi(getTag("0028|0010",dictionary).c_str());
   const unsigned int depth = reader->GetFileNames().size();
-  const unsigned int width = atoi(getTag("0028|0011",dictionary).c_str());
   if ( !height || !width || !depth )
   {
 	  trace.error() << "DicomReader: one dimension is null (w=" << width << ", h=" << height << ", d=" << depth << ")" << std::endl;
