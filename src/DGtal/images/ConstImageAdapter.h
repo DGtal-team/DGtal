@@ -111,7 +111,7 @@ public:
     typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self; 
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CConstImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( CDomain<TNewDomain> ));
    
     typedef TNewDomain Domain;
