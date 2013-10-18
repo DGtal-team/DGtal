@@ -95,18 +95,15 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
 	  throw dgtalio;
   }
 
-  const itk::MetaDataDictionary &dictionary = dicomIO->GetMetaDataDictionary(); //Dictionary
-
-  // Dimensions reading from dictionary
-  const unsigned int width = atoi(getTag("0028|0011",dictionary).c_str());
-  const unsigned int height = atoi(getTag("0028|0010",dictionary).c_str());
-  const unsigned int depth = reader->GetFileNames().size();
+  const typename ImageType::SizeType& inputSize = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
+  const unsigned int width = inputSize[0];
+  const unsigned int height = inputSize[1];
+  const unsigned int depth = inputSize[2];
   if ( !height || !width || !depth )
   {
 	  trace.error() << "DicomReader: one dimension is null (w=" << width << ", h=" << height << ", d=" << depth << ")" << std::endl;
 	  throw dgtalio;
   }
-
 
   // Itk Image pointer
   const typename ImageType::Pointer &itkImage = reader->GetOutput();
@@ -141,27 +138,6 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   }
 
   return  image;
-}
-
-
-template<typename T, typename TFunctor>
-std::string
-DGtal::DicomReader<T, TFunctor>::getTag( const std::string &entryId, const itk::MetaDataDictionary &dictionary )
-{
-	std::string value = "undefined";
-
-	itk::MetaDataObject<std::string>::ConstPointer entryValue = 0;
-	const itk::MetaDataDictionary::ConstIterator tagItr = dictionary.Find(entryId);
-
-	if( tagItr != dictionary.End ())
-	{
-		entryValue = dynamic_cast<itk::MetaDataObject<std::string> *> (tagItr->second.GetPointer());
-		if ( entryValue )
-		{
-			value = entryValue->GetMetaDataObjectValue();
-		}
-	}
-	return value;
 }
 
 
