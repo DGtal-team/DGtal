@@ -44,19 +44,6 @@ using namespace DGtal;
 // Functions for testing class DicomReader.
 ///////////////////////////////////////////////////////////////////////////////
 
-template<typename T>
-struct HounsfieldToGrayscaleFunctor
-{
-	int minHounsfieldValue;
-	int maxHounsfieldValue;
-	HounsfieldToGrayscaleFunctor() : minHounsfieldValue(-3000), maxHounsfieldValue(3000) {}
-	HounsfieldToGrayscaleFunctor( const int &min, const int &max ) : minHounsfieldValue(min), maxHounsfieldValue(max) {}
-	inline
-	T operator() (const T& a) const
-	{ return a<=minHounsfieldValue ? 0 : a >= maxHounsfieldValue ? 255 : (a-minHounsfieldValue)*(255./(maxHounsfieldValue-minHounsfieldValue)); }
-};
-
-
 /**
  * Example of a test. To be completed.
  *
@@ -66,18 +53,18 @@ bool testDicomReader()
   //Default image selector = STLVector
   typedef ImageContainerBySTLVector<Z3i::Domain,  int > Image3D;
 
-  std::string filename = testPath + "samples/fileToUpload.dcm";
-  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int> >::importDicom( filename, HounsfieldToGrayscaleFunctor<int>(-900,530) );
+  std::string filename = testPath + "samples/dicomSample/1629.dcm";
+  Image3D image = DicomReader< Image3D >::importDicom( filename );
 
   trace.info() << image <<endl;
 
   unsigned int nbval=0;
   for ( Image3D::ConstIterator it=image.begin(), itend=image.end() ; it != itend ; ++it )
-	  if ( (*it) > -100 ) nbval++;
+	  if ( (*it) > 0 ) nbval++;
 
-  trace.info() << "Number of points with (val>-100)  = " << nbval << endl;
+  trace.info() << "Number of points with (val>0) = " << nbval << endl;
 
-  return nbval==0;
+  return nbval==296030;
 }
 
 
@@ -87,15 +74,15 @@ bool testIOException()
   typedef ImageContainerBySTLVector<Z3i::Domain,  int > Image3D;
 
   std::string filename = testPath + "samples/null.dcm";
-
   try {
-	Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int> >::importDicom( filename, HounsfieldToGrayscaleFunctor<int>(-900,530) );
+	  Image3D image = DicomReader< Image3D >::importDicom( filename );
   }
   catch(exception& e) {
-	trace.info() << "Exception catched. Message : " << e.what()<<endl;
+	  trace.info() << "Exception catched. Message : " << e.what()<<endl;
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

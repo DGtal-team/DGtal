@@ -45,8 +45,6 @@
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/images/CImage.h"
 
-#include <itkMetaDataDictionary.h>
-
 //////////////////////////////////////////////////////////////////////////////
 
 #ifdef _MSC_VER
@@ -123,19 +121,6 @@ namespace DGtal
 	 */
 	static ImageContainer importDicom(const std::string & aFilename,
 									  const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
-
-
-  private:
-
-	/**
-	 * Method to read the DICOM dictionnary where tags are stored.
-	 *
-	 * @param entryID tag id like "0028|0010"
-	 * @param dictionary table containing tag ids and their corresponding values
-	 * @return tag value corresponding to the entryId in dictionary
-	 */
-	static std::string getTag( const std::string &entryId,
-							   const itk::MetaDataDictionary &dictionary );
 
  }; // end of class  DicomReader
 
