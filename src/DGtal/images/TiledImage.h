@@ -48,7 +48,7 @@
 #include "DGtal/images/CImageCacheReadPolicy.h"
 #include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
-#include "DGtal/base/ReverseIterator.h"
+//#include "DGtal/base/ReverseIterator.h"
 
 #include "DGtal/images/ImageCache.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -199,18 +199,19 @@ public:
      * Specific TiledIterator on TiledImage.
      */
 
-    class TiledIterator
+    class TiledIterator : public 
+      std::iterator<std::bidirectional_iterator_tag, Value, ptrdiff_t, Value*, Value&> 
     {
 
       friend class TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy>;
 
     public:
       
-      typedef std::bidirectional_iterator_tag iterator_category; // ???
+      /*typedef std::bidirectional_iterator_tag iterator_category; // ???
       typedef Value value_type;
       typedef ptrdiff_t difference_type; // ???
       typedef Value* pointer;
-      typedef Value& reference;
+      typedef Value& reference;*/
       
       /**
        * Constructor.
@@ -421,8 +422,8 @@ public:
     
     // ---
     
-    typedef ReverseIterator<TiledIterator> ReverseTiledIterator;
-    //typedef std::reverse_iterator<TiledIterator> ReverseTiledIterator;
+    //typedef ReverseIterator<TiledIterator> ReverseTiledIterator;
+    typedef std::reverse_iterator<TiledIterator> ReverseTiledIterator;
     
     ReverseTiledIterator rbegin()
     {
