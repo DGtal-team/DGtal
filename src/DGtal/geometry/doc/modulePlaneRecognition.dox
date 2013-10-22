@@ -503,13 +503,13 @@ COBANaivePlaneComputer (2).
 @see \ref modulePlaneRecognition_sec22
 
 @verbatim
-$ ./examples/geometry/surfaces/viewer3D-7bis-planes
+$ ./examples/io/viewers/viewer3D-7bis-planes
 @endverbatim
 
 @image html chord-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
 @image latex chord-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
 
-\example geometry/surfaces/viewer3D-7bis-planes.cpp
+\example io/viewers/viewer3D-7bis-planes.cpp
 */
 
 /**
@@ -522,13 +522,13 @@ $ ./examples/geometry/surfaces/viewer3D-7bis-planes
 @see \ref modulePlaneRecognition_sec25
 
 @verbatim
-$ ./examples/geometry/surfaces/viewer3D-7-stdplane
+$ ./examples/io/viewers/viewer3D-7-stdplane
 @endverbatim
 
 @image html coba-stdplane.png "Piece of standard plane."
 @image latex coba-stdplane.png "Piece of standard plane." width=5cm
 
-\example geometry/surfaces/viewer3D-7-stdplane.cpp
+\example io/viewers/viewer3D-7-stdplane.cpp
 */
 
 
