@@ -98,20 +98,18 @@ namespace DGtal
 
       /**
        * Constructor.
-       * @param aPointA one of the image bound (lower or upper point). 
-       * @param aPointB one of the image bound (lower or upper point). 
+	   *
+	   * @param aDomain the image domain.
        */
-      ImageContainerByITKImage(const Point &aPointA,
-             const Point &aPointB );
+      ImageContainerByITKImage(const Domain& aDomain);
 
       /**
        * Constructor.
-       * @param aPointA one of the image bound (lower or upper point). 
-       * @param aPointB one of the image bound (lower or upper point). 
+	   *
+	   * @param aDomain the image domain.
        * @param aRef a reference to an ITKImage
        */
-      ImageContainerByITKImage(const Point &aPointA,
-             const Point &aPointB,
+      ImageContainerByITKImage(const Domain& aDomain,
              ITKImagePointer &aRef);
 
       /**

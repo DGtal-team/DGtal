@@ -73,7 +73,7 @@ bool testITKImage()
   Point c ( t3 );
   Integer val;
 
-  Image myImage ( a, b );
+  Image myImage ( Domain(a, b) );
 
   trace.info() << myImage << std::endl;
   trace.info() << "getvalue= " << myImage(c) << endl;
@@ -132,10 +132,9 @@ bool testITKMethod()
 
   typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
 
-  Point a ( 0, 0 );
-  Point b ( 25, 25);
+  Domain domain(Point(0,0), Point(25,25));
 
-  Image myImage ( a, b );
+  Image myImage(domain);
   trace.info() << myImage << std::endl;
 
   //We fill the image
@@ -165,7 +164,7 @@ bool testITKMethod()
 
   //We create a DGtal::Image from a pointer to the pipeline output
   Image::ITKImagePointer handleOut = filter->GetOutput();
-  Image myImageOut ( a, b, handleOut );
+  Image myImageOut(domain, handleOut);
 
   //We trace the result of the thresholding
   trace.info() << "Output image=";
