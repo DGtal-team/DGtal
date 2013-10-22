@@ -172,26 +172,42 @@ namespace DGtal
       inline Transform() {}
       inline Transform( bool posX, bool posY ) : _posX( posX ), _posY( posY ) {}
       inline Point operator()( const Point & p ) const
-      { return Point( p[ 0 ] + ( _posX ? p[ 2 ] : -p[ 2 ] ), 
-                      p[ 1 ] + ( _posY ? p[ 2 ] : -p[ 2 ] ), 
-                      p[ 2 ] ); }
+      { 
+	if ( _posX ) {
+	  if ( _posY ) return Point( p[ 0 ] + p[ 2 ], p[ 1 ] + p[ 2 ], p[ 2 ] );
+	  else         return Point( p[ 0 ] + p[ 2 ], p[ 1 ] - p[ 2 ], p[ 2 ] );
+	} else {
+	  if ( _posY ) return Point( p[ 0 ] - p[ 2 ], p[ 1 ] + p[ 2 ], p[ 2 ] );
+	  else         return Point( p[ 0 ] - p[ 2 ], p[ 1 ] - p[ 2 ], p[ 2 ] );
+	}
+      }
       inline bool isPlusZOnX() const { return _posX; }
       inline bool isPlusZOnY() const { return _posY; }
       inline Point inverse( const Point & p ) const
-      { return Point( p[ 0 ] + ( _posX ? -p[ 2 ] : p[ 2 ] ), 
-                      p[ 1 ] + ( _posY ? -p[ 2 ] : p[ 2 ] ), 
-                      p[ 2 ] ); }
+      { 
+	if ( _posX ) {
+	  if ( _posY ) return Point( p[ 0 ] - p[ 2 ], p[ 1 ] - p[ 2 ], p[ 2 ] );
+	  else         return Point( p[ 0 ] - p[ 2 ], p[ 1 ] + p[ 2 ], p[ 2 ] );
+	} else {
+	  if ( _posY ) return Point( p[ 0 ] + p[ 2 ], p[ 1 ] - p[ 2 ], p[ 2 ] );
+	  else         return Point( p[ 0 ] + p[ 2 ], p[ 1 ] + p[ 2 ], p[ 2 ] );
+	}
+      }
       template <typename Vector3D>
       void transformBack( Vector3D & v )
       {
-        v[ 2 ] += ( _posX ? v[ 0 ] : -v[ 0 ] );
-        v[ 2 ] += ( _posY ? v[ 1 ] : -v[ 1 ] );
+        if ( _posX ) v[ 2 ] += v[ 0 ];
+	else         v[ 2 ] -= v[ 0 ];
+        if ( _posY ) v[ 2 ] += v[ 1 ];
+	else         v[ 2 ] -= v[ 1 ];
       }
       template <typename Vector3D>
       void transform( Vector3D & v )
       {
-        v[ 2 ] += ( _posX ? -v[ 0 ] : v[ 0 ] );
-        v[ 2 ] += ( _posY ? -v[ 1 ] : v[ 1 ] );
+        if ( _posX ) v[ 2 ] -= v[ 0 ];
+	else         v[ 2 ] += v[ 0 ];
+        if ( _posY ) v[ 2 ] -= v[ 1 ];
+	else         v[ 2 ] += v[ 1 ];
       }
     };
 
