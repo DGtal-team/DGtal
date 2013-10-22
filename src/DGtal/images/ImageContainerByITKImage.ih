@@ -54,23 +54,15 @@ namespace DGtal
 
     template <typename TDomain, typename TValue>
     inline
-    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Point &aPointA,
-        const Point &aPointB)
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Domain& domain)
         :  myITKImagePointer(ITKImage::New())
     {
       typename ITKImage::IndexType start;
       typename ITKImage::SizeType size;
 
-      if (aPointA < aPointB)
-      {
-        myLowerBound = aPointA;
-        myUpperBound = aPointB;
-      }
-      else
-      {
-        myLowerBound = aPointB;
-        myUpperBound = aPointA;
-      }
+	  myLowerBound = domain.lowerBound();
+	  myUpperBound = domain.lowerBound();
+
       Point dec = myUpperBound - myLowerBound;
 
       //copy of domain information
@@ -101,23 +93,16 @@ namespace DGtal
 
     template <typename TDomain, typename TValue>
     inline
-    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Point &aPointA,
-        const Point &aPointB, ITKImagePointer &aRef)
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Domain& domain,
+        ITKImagePointer &aRef)
         :  myITKImagePointer(aRef)
     {
       typename ITKImage::IndexType start;
       typename ITKImage::SizeType size;
 
-      if (aPointA < aPointB)
-      {
-        myLowerBound = aPointA;
-        myUpperBound = aPointB;
-      }
-      else
-      {
-        myLowerBound = aPointB;
-        myUpperBound = aPointA;
-      }
+	  myLowerBound = domain.lowerBound();
+	  myUpperBound = domain.upperBound();
+
       Point dec = myUpperBound - myLowerBound;
 
       //copy of domain information

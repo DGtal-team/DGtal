@@ -72,7 +72,7 @@ bool testCheckImageConcept()
   BOOST_CONCEPT_ASSERT(( CImage< ImageVector >));
   BOOST_CONCEPT_ASSERT(( CImage< ImageMap >));
 #ifdef WITH_ITK
-  //BOOST_CONCEPT_ASSERT(( CImage< ImageITK >));
+  BOOST_CONCEPT_ASSERT(( CImage< ImageITK >));
 #endif
 
   BOOST_CONCEPT_ASSERT(( CImage< ImageHash >));
