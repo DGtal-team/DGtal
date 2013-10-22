@@ -42,10 +42,6 @@ namespace DGtal
 {
   namespace experimental
   {
-
-    /**
-     * Destructor.
-     */
     template<typename TDomain, typename TValue>
     inline
     ImageContainerByITKImage<TDomain, TValue>::~ImageContainerByITKImage()
@@ -54,82 +50,43 @@ namespace DGtal
 
     template <typename TDomain, typename TValue>
     inline
-    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Domain& domain)
-        :  myITKImagePointer(ITKImage::New())
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ImageContainerByITKImage& other)
+        : myITKImagePointer(NULL)
     {
-      typename ITKImage::IndexType start;
-      typename ITKImage::SizeType size;
-
-	  myLowerBound = domain.lowerBound();
-	  myUpperBound = domain.lowerBound();
-
-      Point dec = myUpperBound - myLowerBound;
-
-      //copy of domain information
-      for (Dimension k = 0; k < dimension; k++)
-      {
-        start[k] = myLowerBound[k];
-        size[k] = dec[k];
-      }
-
-      myRegion.SetSize( size );
-      myRegion.SetIndex( start );
-
-      myITKImagePointer->SetRegions(myRegion);
-      myITKImagePointer->Allocate();
-
-      //ConstIterators
-      myConstItBegin = ConstIterator( myITKImagePointer, myRegion);
-      myConstItBegin.GoToBegin();
-      myConstItEnd = ConstIterator( myITKImagePointer, myRegion);
-      myConstItEnd.GoToEnd();
-
-      //Iterators
-      myItBegin = Iterator( myITKImagePointer, myRegion);
-      myItBegin.GoToBegin();
-      myItEnd = Iterator( myITKImagePointer, myRegion);
-      myItEnd.GoToEnd();
+        myITKImagePointer = other.getITKImagePointer(); //FIXME should deepcopy?
     }
 
     template <typename TDomain, typename TValue>
     inline
-    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Domain& domain,
-        ITKImagePointer &aRef)
-        :  myITKImagePointer(aRef)
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Domain& domain)
+        : myITKImagePointer(ITKImage::New())
     {
       typename ITKImage::IndexType start;
       typename ITKImage::SizeType size;
 
-	  myLowerBound = domain.lowerBound();
-	  myUpperBound = domain.upperBound();
-
-      Point dec = myUpperBound - myLowerBound;
+      const Point lowerBound = domain.lowerBound();
+      const Point upperBound = domain.upperBound();
+      const Point dec = upperBound-lowerBound;
 
       //copy of domain information
       for (Dimension k = 0; k < dimension; k++)
       {
-        start[k] = myLowerBound[k];
-        size[k] = dec[k];
+        start[k] = lowerBound[k];
+        size[k]  = dec[k];
       }
 
-      myRegion.SetSize( size );
-      myRegion.SetIndex( start );
+      const typename ITKImage::RegionType region(start,size);
 
-      myITKImagePointer->SetRegions(myRegion);      
-
-      //ConstIterators
-      myConstItBegin = ConstIterator( myITKImagePointer, myRegion);
-      myConstItBegin.GoToBegin();
-      myConstItEnd = ConstIterator( myITKImagePointer, myRegion);
-      myConstItEnd.GoToEnd();
-
-      //Iterators
-      myItBegin = Iterator( myITKImagePointer, myRegion);
-      myItBegin.GoToBegin();
-      myItEnd = Iterator( myITKImagePointer, myRegion);
-      myItEnd.GoToEnd();
+      myITKImagePointer->SetRegions(region);
+      myITKImagePointer->Allocate();
     }
 
+    template <typename TDomain, typename TValue>
+    inline
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ITKImagePointer &aRef)
+        :  myITKImagePointer(aRef)
+    {
+    }
 
     ///////////////////////////////////////////////////////////////////////////////
     // Interface - public :
@@ -208,9 +165,8 @@ namespace DGtal
     void
     ImageContainerByITKImage<TDomain, TValue>::selfDisplay ( std::ostream & out ) const
     {
-      out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValue) 
-    << "bytes lower=" << myLowerBound << " upper=" 
-    << myUpperBound;
+      out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValue) << "bytes "
+          << "domain=" << this->domain();
     }
 
     /**

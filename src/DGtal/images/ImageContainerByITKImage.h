@@ -98,19 +98,34 @@ namespace DGtal
 
       /**
        * Constructor.
-	   *
-	   * @param aDomain the image domain.
+       *
+       * @param aDomain the image domain.
        */
       ImageContainerByITKImage(const Domain& aDomain);
 
       /**
        * Constructor.
-	   *
-	   * @param aDomain the image domain.
+       *
+       * @param aDomain the image domain.
        * @param aRef a reference to an ITKImage
        */
-      ImageContainerByITKImage(const Domain& aDomain,
-             ITKImagePointer &aRef);
+      ImageContainerByITKImage(const ITKImagePointer &aRef);
+
+      /**
+       * Copy constructor
+       *
+       * @param other the object to copy.
+       *
+       */
+      ImageContainerByITKImage(const ImageContainerByITKImage& other);
+
+      /**
+       * Assignment.
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       * Forbidden by default.
+       */
+      ImageContainerByITKImage & operator=(const ImageContainerByITKImage & other);
 
       /**
        * Destructor.
@@ -170,7 +185,19 @@ namespace DGtal
        */
       Domain domain() const
       {
-  return Domain(myLowerBound, myUpperBound);
+        const typename ITKImage::RegionType region = myITKImagePointer->GetLargestPossibleRegion();
+        const typename ITKImage::IndexType start = region.GetIndex();
+        const typename ITKImage::SizeType size = region.GetSize(); 
+
+        Point lowerBound;
+        Point upperBound;
+        for (Dimension k = 0; k < dimension; k++)
+        {
+          lowerBound[k] = start[k];
+          upperBound[k] = start[k]+size[k];
+        }
+
+        return Domain(lowerBound, upperBound);
       }
     
       /**
@@ -179,7 +206,8 @@ namespace DGtal
        */
       Point extent() const
       {
-  return myUpperBound - myLowerBound;
+          const Domain myDomain = domain();
+          return myDomain.upperBound()-myDomain.lowerBound();
       }
 
 
@@ -188,7 +216,7 @@ namespace DGtal
        */
       ITKImagePointer getImagePointer() const
       {
-  return myITKImagePointer;
+          return myITKImagePointer;
       }
 
       // ------------------------- stream ------------------------------
@@ -212,7 +240,9 @@ namespace DGtal
        **/
       ConstIterator begin() const
       {
-  return myConstItBegin;
+          ConstIterator iter = ConstIterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToBegin();
+          return iter;
       }
 
       /**
@@ -221,7 +251,9 @@ namespace DGtal
        **/
       Iterator begin()
       {
-  return myItBegin;
+          Iterator iter = Iterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToBegin();
+          return iter;
       }
 
       /**
@@ -236,7 +268,9 @@ namespace DGtal
        **/
       const ConstIterator end() const
       {
-  return myConstItEnd;
+          ConstIterator iter = ConstIterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToEnd();
+          return iter;
       }
 
       /**
@@ -245,7 +279,9 @@ namespace DGtal
        **/
       Iterator end()
       {
-  return myItEnd;
+          Iterator iter = Iterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToEnd();
+          return iter;
       }
 
       /**
@@ -267,35 +303,10 @@ namespace DGtal
        */
       ImageContainerByITKImage();
 
-    private:
-
-      /**
-       * Copy constructor.
-       * @param other the object to clone.
-       * Forbidden by default.
-       */
-      ImageContainerByITKImage ( const ImageContainerByITKImage & other );
-
-      /**
-       * Assignment.
-       * @param other the object to copy.
-       * @return a reference on 'this'.
-       * Forbidden by default.
-       */
-      ImageContainerByITKImage & operator= ( const ImageContainerByITKImage & other );
-
       // ------------------------- Internals ------------------------------------
     private:
 
-      Point myLowerBound;
-      Point myUpperBound;
       ITKImagePointer myITKImagePointer;
-      typename ITKImage::RegionType myRegion;
-      ConstIterator myConstItBegin;
-      Iterator myItBegin;
-      ConstIterator myConstItEnd;
-      Iterator myItEnd;
-
     }; // end of class ImageContainerByITKImage
 
   }
