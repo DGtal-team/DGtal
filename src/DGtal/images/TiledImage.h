@@ -51,6 +51,8 @@
 //#include "DGtal/base/ReverseIterator.h"
 
 #include "DGtal/images/ImageCache.h"
+
+#include "DGtal/base/ConstRangeAdapter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -90,8 +92,6 @@ public:
     typedef typename ImageContainer::Domain Domain;
     typedef typename ImageContainer::Point Point;
     typedef typename ImageContainer::Value Value;
-    typedef typename ImageContainer::ConstRange ConstRange;
-    typedef typename ImageContainer::Range Range;
     
     typedef TImageFactory ImageFactory;
     typedef typename ImageFactory::OutputImage OutputImage;
@@ -212,6 +212,8 @@ public:
       typedef ptrdiff_t difference_type; // ???
       typedef Value* pointer;
       typedef Value& reference;*/
+      
+      TiledIterator();
       
       /**
        * Constructor.
@@ -433,6 +435,21 @@ public:
     ReverseTiledIterator rend()
     {
       return ReverseTiledIterator( begin() );
+    }
+    
+    /////////////////////////// Ranges  /////////////////////
+    
+    typedef ConstRangeAdapter<TiledIterator, DefaultFunctor, Value > ConstRange;
+    
+    /**
+     * Returns the range of the underlying image
+     * to iterate over its values
+     *
+     * @return a range.
+     */
+    ConstRange constRange()
+    {
+        return ConstRange( begin(), end(), new DefaultFunctor() );
     }
 
     /////////////////// API ///////////////////////
