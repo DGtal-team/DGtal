@@ -496,7 +496,7 @@ COBANaivePlaneComputer (2).
 
 /**
    This example shows the recognition of a simple digital plane with
-   the Chord algorithm (class ChordNaivePlaneComputer). Green points belong to
+   the Chord algorithm (class \ref ChordNaivePlaneComputer). Green points belong to
    the naive plane.  There is no naive plane containing the green
    points and any one of the red points.
 
@@ -515,7 +515,7 @@ $ ./examples/io/viewers/viewer3D-7bis-planes
 /**
    This example shows the recognition of a simple standard digital
    plane with the COBA algorithm (class
-   COBAGenericStandardPlaneComputer). Green points belong to the naive
+   \ref COBAGenericStandardPlaneComputer). Green points belong to the naive
    plane. Grey points show farther points that also belong to the
    strip.
 
@@ -531,6 +531,25 @@ $ ./examples/io/viewers/viewer3D-7-stdplane
 \example io/viewers/viewer3D-7-stdplane.cpp
 */
 
+
+/**
+   This example shows the recognition of a simple standard digital
+   plane with the Chord algorithm (class
+   ChordGenericStandardPlaneComputer ). Green points belong to the naive
+   plane. Grey points show farther points that also belong to the
+   strip.
+
+@see \ref modulePlaneRecognition_sec26
+
+@verbatim
+$ ./examples/io/viewers/viewer3D-7bis-stdplane
+@endverbatim
+
+@image html coba-stdplane.png "Piece of standard plane."
+@image latex coba-stdplane.png "Piece of standard plane." width=5cm
+
+\example io/viewers/viewer3D-7bis-stdplane.cpp
+*/
 
 
 }
