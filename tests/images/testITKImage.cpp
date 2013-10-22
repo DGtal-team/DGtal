@@ -164,7 +164,7 @@ bool testITKMethod()
 
   //We create a DGtal::Image from a pointer to the pipeline output
   Image::ITKImagePointer handleOut = filter->GetOutput();
-  Image myImageOut(domain, handleOut);
+  Image myImageOut(handleOut);
 
   //We trace the result of the thresholding
   trace.info() << "Output image=";
