@@ -43,6 +43,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/images/DefaultConstImageRange.h"
+#include "DGtal/images/DefaultImageRange.h"
 
 #include <itkImage.h>
 #include <itkImageRegionConstIterator.h>
@@ -78,6 +81,7 @@ namespace DGtal
 
       typedef TValue Value;
       typedef TDomain Domain;
+      typedef ImageContainerByITKImage<TDomain, TValue> Self;
 
       // static constants
       static const typename Domain::Dimension dimension = Domain::dimension;
@@ -94,6 +98,8 @@ namespace DGtal
       typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
       typedef typename itk::ImageRegionIterator< ITKImage > Iterator;
 
+      typedef DefaultConstImageRange<Self> ConstRange;
+      typedef DefaultImageRange<Self> Range;
       ///@todo SpanIterator
 
       /**
@@ -135,6 +141,23 @@ namespace DGtal
       // ----------------------- Interface --------------------------------------
     public:
 
+      /**
+       * @return the range providing begin and end
+       * iterators to scan the values of image.
+       */
+      ConstRange constRange() const
+      {
+          return ConstRange(*this);
+      }
+
+      /**
+       * @return the range providing begin and end
+       * iterators to scan the values of image.
+       */
+      Range range()
+      {
+          return Range(*this);
+      }
 
       /**
        * Get the value of an image at a given position.
@@ -160,7 +183,6 @@ namespace DGtal
        */
       Value operator()(const Iterator &it) const;
 
-
       /**
        * Set a value on an Image at aPoint.
        *
@@ -183,6 +205,7 @@ namespace DGtal
       /**
        * @return the domain associated to the image.
        */
+      inline
       Domain domain() const
       {
         const typename ITKImage::RegionType region = myITKImagePointer->GetLargestPossibleRegion();
@@ -204,6 +227,7 @@ namespace DGtal
        * Returns the extent of the image
        *
        */
+      inline
       Point extent() const
       {
           const Domain myDomain = domain();
@@ -214,7 +238,8 @@ namespace DGtal
       /**
        * Returns a copy of the itkImage smartPointer
        */
-      ITKImagePointer getImagePointer() const
+      inline
+      ITKImagePointer getITKImagePointer() const
       {
           return myITKImagePointer;
       }
@@ -238,6 +263,7 @@ namespace DGtal
        * begin() const iterator.
        *
        **/
+      inline
       ConstIterator begin() const
       {
           ConstIterator iter = ConstIterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
@@ -249,6 +275,7 @@ namespace DGtal
        * begin() const iterator.
        *
        **/
+      inline
       Iterator begin()
       {
           Iterator iter = Iterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
@@ -257,15 +284,10 @@ namespace DGtal
       }
 
       /**
-       * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-       *
-       **/
-      ConstIterator begin ( const Point &aPoint ) const;
-
-      /**
        * end() const iterator.
        *
        **/
+      inline
       const ConstIterator end() const
       {
           ConstIterator iter = ConstIterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
@@ -277,19 +299,13 @@ namespace DGtal
        * end()  iterator.
        *
        **/
+      inline
       Iterator end()
       {
           Iterator iter = Iterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
           iter.GoToEnd();
           return iter;
       }
-
-      /**
-       * end() iterator.
-       * @return  a ConstIterator at the endpoint \param aPoint
-       *
-       **/
-      ConstIterator end(const Point &aPoint) const;
 
       // ------------------------- Private Datas --------------------------------
     private:

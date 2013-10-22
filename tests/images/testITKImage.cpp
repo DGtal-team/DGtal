@@ -155,7 +155,7 @@ bool testITKMethod()
   typedef itk::BinaryThresholdImageFilter< Image::ITKImage, Image::ITKImage> Filter;
   Filter::Pointer filter = Filter::New();
 
-  filter->SetInput( myImage.getImagePointer() );
+  filter->SetInput( myImage.getITKImagePointer() );
   filter->SetOutsideValue( 0 );
   filter->SetInsideValue( 10 );
   filter->SetLowerThreshold( 34 );;
