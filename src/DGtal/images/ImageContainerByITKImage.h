@@ -100,7 +100,6 @@ namespace DGtal
 
       typedef DefaultConstImageRange<Self> ConstRange;
       typedef DefaultImageRange<Self> Range;
-      ///@todo SpanIterator
 
       /**
        * Constructor.
@@ -127,9 +126,9 @@ namespace DGtal
 
       /**
        * Assignment.
+       *
        * @param other the object to copy.
        * @return a reference on 'this'.
-       * Forbidden by default.
        */
       ImageContainerByITKImage & operator=(const ImageContainerByITKImage & other);
 
@@ -205,36 +204,8 @@ namespace DGtal
       /**
        * @return the domain associated to the image.
        */
-      inline
-      Domain domain() const
-      {
-        const typename ITKImage::RegionType region = myITKImagePointer->GetLargestPossibleRegion();
-        const typename ITKImage::IndexType start = region.GetIndex();
-        const typename ITKImage::SizeType size = region.GetSize(); 
-
-        Point lowerBound;
-        Point upperBound;
-        for (Dimension k = 0; k < dimension; k++)
-        {
-          lowerBound[k] = start[k];
-          upperBound[k] = start[k]+size[k];
-        }
-
-        return Domain(lowerBound, upperBound);
-      }
+      Domain domain() const;
     
-      /**
-       * Returns the extent of the image
-       *
-       */
-      inline
-      Point extent() const
-      {
-          const Domain myDomain = domain();
-          return myDomain.upperBound()-myDomain.lowerBound();
-      }
-
-
       /**
        * Returns a copy of the itkImage smartPointer
        */
