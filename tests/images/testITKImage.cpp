@@ -166,15 +166,27 @@ bool testITKMethod()
   Image::ITKImagePointer handleOut = filter->GetOutput();
   Image myImageOut(handleOut);
 
+  //We create another image
+  Image myImageOutCopy(handleOut);
+
+  //And we copy the result between the two containers with DGTal
+  std::copy(myImageOut.constRange().begin(), myImageOut.constRange().end(), myImageOutCopy.range().outputIterator());
+
   //We trace the result of the thresholding
   trace.info() << "Output image=";
-  
-  for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
+
+  nbVal = 0;
+  for (Image::ConstIterator it = myImageOutCopy.begin(), itend = myImageOutCopy.end();
        it != itend;
        ++it)
-    trace.warning() << myImageOut(it) << " ";
+  {
+    trace.warning() << myImageOutCopy(it) << " ";
+    if (myImageOutCopy(it)==10) nb++;
+    if (nbVal>=34 and nbVal<=400) nbok++;
+    nbVal++;
+  }
   trace.info() << endl;
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "true == true" << std::endl;
   trace.endBlock();
