@@ -1009,7 +1009,7 @@ DGtal::Display3D< Space ,KSpace >::updateBoundingBox(const RealPoint &p)
 template < typename Space ,typename KSpace >
 inline
 typename DGtal::CanonicEmbedder<Space>::RealPoint
-DGtal::Display3D< Space ,KSpace >::embed( const DGtal::Z3i::Point & dp ) const
+DGtal::Display3D< Space ,KSpace >::embed( const typename Space::Point & dp ) const
 {
   ASSERT( myEmbedder->isValid());
   return myEmbedder->embed(dp);
@@ -1018,7 +1018,7 @@ DGtal::Display3D< Space ,KSpace >::embed( const DGtal::Z3i::Point & dp ) const
 template < typename Space ,typename KSpace >
 inline
 typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
-DGtal::Display3D< Space ,KSpace >::embedKS( const DGtal::Z3i::SCell & scell ) const
+DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell ) const
 {
   ASSERT( mySCellEmbedder->isValid());
   return mySCellEmbedder->embed(scell);
@@ -1037,7 +1037,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedSurfelPrism & aTran
 template < typename Space ,typename KSpace >
 inline
 typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint
-DGtal::Display3D< Space ,KSpace >::embedK( const DGtal::Z3i::Cell & cell ) const
+DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) const
 {
   ASSERT( myCellEmbedder->isValid());
   return myCellEmbedder->embed(cell);

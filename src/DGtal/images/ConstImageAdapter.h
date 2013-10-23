@@ -64,19 +64,19 @@ namespace DGtal
  * \brief Aim: implements a const image adapter with a given domain
  * (i.e. a subdomain) and 2 functors : g for domain, f for accessing point values.
  *
- * This class is (like Image class) a lightweight proxy on any models of CImage.
+ * This class is (like Image class) a lightweight proxy on any models of CConstImage.
  * It uses a given Domain (i.e. a subdomain) but work directly (for
  * accessing process) thanks to an alias (i.e. a pointer) on the
  * original Image given in argument.
  *
- * ConstImageAdapter class is also a model of CImage.
+ * ConstImageAdapter class is also a model of CConstImage.
  * 
  * Caution :
  *  - the type of value of Point for the ConstImageAdapter Domain must
  * also be the same than the type of value of Point for the original
  * ImageContainer.
  *
- * @tparam TImageContainer an image container type (model of CImage).
+ * @tparam TImageContainer an image container type (model of CConstImage).
  * @tparam TNewDomain a domain.
  * @tparam TFunctorD the functor g that transforms the domain into another one
  * @tparam TNewValue the type of value return by the functor f.
@@ -111,7 +111,7 @@ public:
     typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self; 
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CConstImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( CDomain<TNewDomain> ));
    
     typedef TNewDomain Domain;
