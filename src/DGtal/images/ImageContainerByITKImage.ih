@@ -50,14 +50,15 @@ namespace DGtal
 
     template <typename TDomain, typename TValue>
     ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ImageContainerByITKImage& other)
-        : myITKImagePointer(ITKImage::New())
+        : myITKImagePointer(ITKImage::New()), myDomain()
     {
         myITKImagePointer = other.getITKImagePointer();
+        update();
     }
 
     template <typename TDomain, typename TValue>
     ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const TDomain& domain)
-        : myITKImagePointer(ITKImage::New())
+        : myITKImagePointer(ITKImage::New()), myDomain(domain)
     {
       typename ITKImage::IndexType start;
       typename ITKImage::SizeType size;
@@ -87,17 +88,13 @@ namespace DGtal
     ///////////////////////////////////////////////////////////////////////////////
     // Interface - public :
 
-
-    /**
-     * @return the domain associated to the image.
-     */
     template <typename TDomain, typename TValue>
-    TDomain
-    ImageContainerByITKImage<TDomain, TValue>::domain() const
+    void
+    ImageContainerByITKImage<TDomain, TValue>::update()
     {
         const typename ITKImage::RegionType region = myITKImagePointer->GetLargestPossibleRegion();
         const typename ITKImage::IndexType start = region.GetIndex();
-        const typename ITKImage::SizeType size = region.GetSize(); 
+        const typename ITKImage::SizeType size = region.GetSize();
 
         Point lowerBound;
         Point upperBound;
@@ -107,7 +104,7 @@ namespace DGtal
             upperBound[k] = start[k]+size[k]-1;
         }
 
-        return TDomain(lowerBound, upperBound);
+        myDomain = TDomain(lowerBound, upperBound);
     }
 
     /**
