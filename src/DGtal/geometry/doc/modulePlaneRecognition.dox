@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /*!
-   
+
 @page modulePlaneRecognition  Plane recognition and plane width computation
 
 @writers Jacques-Olivier Lachaud
@@ -33,18 +33,18 @@ solutions to the following problems:
 This module thus extends to the 3D case the recognition of \b digital
 \b straight \b segments and of \b blurred \b segments.
 
-For now, these problems are solved with two algorithms: the COBA
+For now, these problems are solved thanks to two algorithms: the COBA
 algorithm by Charrier and Buzer \cite Charrier_2008_dgci and the Chord
 algorithm by Gerard, Debled-Rennesson and Zimmermann \cite
 Gerard_2005_dam.
 
 More precisely, these modules tackle \e naive \e digital \e planes (with or
 without a specified axis) and \e digital \e planes of arbitrary \e rational
-\e axis \e width. 
+\e axis \e width.
 
 \note A current limitation is that these algorithms do not compute the
 \e minimal characteristics of the digital plane containing the input
-points, but only a valid parallel strip of approximate normal. 
+points, but only a valid parallel strip of approximated normal.
 
 [TOC]
 
@@ -52,15 +52,15 @@ Related examples are viewer3D-7-planes.cpp, viewer3D-7bis-planes.cpp,
 viewer3D-7-stdplane.cpp, greedy-plane-segmentation.cpp,
 greedy-plane-segmentation-ex2.cpp.
 
-\section modulePlaneRecognition_sec1 Planarity as a parallel strip.
+\section modulePlaneRecognition_sec1 Planarity as a parallel strip
 
-\subsection modulePlaneRecognition_sec11 Definition of parallel strip.
+\subsection modulePlaneRecognition_sec11 Definition of parallel strip
 
 A \b parallel \b strip is the intersection of two parallel half-planes such
 that each half-plane includes the other. Half-planes may be closed or
 open. Hence, parallel strips take one of the following form:
 
-- \f$ \mu \le \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class \ref ParallelStrip<Space,true,true>
+- \f$ \mu \le \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class  ParallelStrip<Space,true,true>
 - \f$ \mu \le \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \ref ParallelStrip<Space,true,false>
 - \f$ \mu < \vec{N} \cdot \vec{X} \le \mu + \epsilon \f$, class \ref ParallelStrip<Space,false,true>
 - \f$ \mu < \vec{N} \cdot \vec{X} < \mu + \epsilon \f$, class \ref ParallelStrip<Space,false,false>
@@ -113,7 +113,7 @@ recognition. In this section, the user specifies the (strict) maximal
 axis width as a rational p/q. Naive digital planes are thus specified
 by 1/1.
 
-\subsection modulePlaneRecognition_sec21 Naive plane recognition (known axis), with COBA algorithm
+\subsection modulePlaneRecognition_sec21 Naive plane recognition (known axis) with COBA algorithm
 
 The user should instantiate a COBANaivePlaneComputer with the
 appropriate digital space. The axis and the maximal axis width (as a
@@ -126,7 +126,7 @@ COBANaivePlaneComputer::primitive returns the solution (if any) as
 parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -148,7 +148,7 @@ the set of digital points. In practice, diameter is limited to 20 for
 \ref BigInteger / GMP integers. For huge diameters, the slow-down is
 polylogarithmic with respect to the diameter.
 
-\subsection modulePlaneRecognition_sec22 Naive plane recognition (known axis), with Chord algorithm
+\subsection modulePlaneRecognition_sec22 Naive plane recognition (known axis) with Chord algorithm
 
 The user should instantiate a ChordNaivePlaneComputer with the
 appropriate digital space. The axis and the maximal axis width (as a
@@ -159,7 +159,7 @@ of points. The method ChordNaivePlaneComputer::primitive returns the
 solution (if any) as parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -172,25 +172,25 @@ else
   std::cout << "This is a not naive plane." << std::endl;
 \endcode
 
-\note The second template parallel for class ChordNaivePlaneComputer
+\note The second template parameter of the class ChordNaivePlaneComputer
 gives the type of input points. When recognizing digital planes, you
 shoud set it to Space::Point, where Space is your digital space. Note
 that the Chord algorithm works also for real-valued points: in this
 case, you can specify another kind of Point like RealPoint.
- 
-\note The third template parameter for class ChordNaivePlaneComputer
+
+\note The third template parameter of the class ChordNaivePlaneComputer
 gives the internal scalar (or integer) type for computation. If the
 input points are digital points, then this type should be integral and
 hold integers of order \f$(2D)^2\f$ if \a D is the diameter of the set
 of digital points. In practice, diameter is limited to 14000 for \ref
 int32_t, diameter is approximately 440000000 for \ref int64_t, and
-whatever with \ref BigInteger / GMP integers. For huge diameters, the
+whatever with DGtal::BigInteger / GMP integers. For huge diameters, the
 slow-down is polylogarithmic with respect to the diameter. If the
 input points are not digital, you should provide a scalar type for
 intermediate computations (e.g. double).
 
 
-\subsection modulePlaneRecognition_sec23 Naive plane recognition (unknown axis), with COBA algorithm
+\subsection modulePlaneRecognition_sec23 Naive plane recognition (unknown axis) with COBA algorithm
 
 The user should instantiate a COBAGenericNaivePlaneComputer with the
 appropriate digital space. The maximal axis width (as a
@@ -203,7 +203,7 @@ COBAGenericNaivePlaneComputer::primitive returns the solution (if any) as
 parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.h"
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -234,7 +234,7 @@ recognizer of arbitrary pieces of naive planes.
 COBANaivePlaneComputer (see above).
 
 
-\subsection modulePlaneRecognition_sec24 Naive plane recognition (unknown axis), with Chord algorithm
+\subsection modulePlaneRecognition_sec24 Naive plane recognition (unknown axis) with Chord algorithm
 
 The user should instantiate a ChordGenericNaivePlaneComputer with the
 appropriate digital space. The maximal axis width (as a
@@ -245,7 +245,7 @@ of points. The method ChordGenericNaivePlaneComputer::primitive returns the
 solution (if any) as parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h"
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -280,7 +280,7 @@ COBAGenericStandardPlaneComputer::primitive returns the solution (if any) as
 parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/geometry/surfaces/COBAGenericStandardPlaneComputer.h" 
+#include "DGtal/geometry/surfaces/COBAGenericStandardPlaneComputer.h"
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
@@ -325,11 +325,11 @@ ChordGenericStandardPlaneComputer::primitive returns the solution (if
 any) as parallel strip of axis width smaller than p/q.
 
 \code
-#include "DGtal/geometry/surfaces/ChordGenericStandardPlaneComputer.h" 
+#include "DGtal/geometry/surfaces/ChordGenericStandardPlaneComputer.h"
 ...
 std::vector<Z3i::Point> pts;       // any container of 3D digital points
 ...                                // fill pts with your points
-ChordGenericStandardPlaneComputer<Z3i::Space, Z3i::Point, int64_t> plane; 
+ChordGenericStandardPlaneComputer<Z3i::Space, Z3i::Point, int64_t> plane;
 plane.init( 1, 1 );                // any axis, epsilon=1/1 x sqrt(3)
 bool isPlane = plane.extend( pts.begin(), pts.end() );
 if ( isPlane )
@@ -408,7 +408,7 @@ bool pt5_inside = plane.extend( pt5 ); // true
 Point pt6 = Point( 1, 0, 1 );
 bool pt6_inside = plane.extend( pt6 ); // true
 Primitive strip = plane.primitive();
-trace.info() << "strip=" << strip 
+trace.info() << "strip=" << strip
              << " axis=" << strip.mainAxis()
              << " axiswidth=" << strip.axisWidth()
              << " diag=" << strip.mainDiagonal()
@@ -452,12 +452,12 @@ static method ChordNaivePlaneComputer::computeAxisWidth. The axis
 width is returned as a pair (p,q), such that the width is p/q.
 
 \code
-#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h" 
+#include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 ...
 std::set<Z3i::Point> pts;       // any container of 3D digital points
 ...                             // fill pts with your points
 typedef ChordNaivePlaneComputer<Z3i::Space, Z3i::Point, int64_t> PlaneComputer;
-std::pair<Z3i::Integer,Z3i::Integer> width = 
+std::pair<Z3i::Integer,Z3i::Integer> width =
   PlaneComputer::computeAxisWidth( 2, pts.begin(), pts.end() ); // z-axis
 \endcode
 
