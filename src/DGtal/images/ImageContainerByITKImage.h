@@ -19,9 +19,10 @@
 /**
  * @file ImageContainerByITKImage.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Pierre Gueth (\c pierre.pierre@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/12/09
+ * @date 2013/10/23
  *
  * Header file for module ImageContainerByITKImage.cpp
  *
