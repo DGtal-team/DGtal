@@ -142,6 +142,14 @@ namespace DGtal
     public:
 
       /**
+       *
+       * update internal cache.
+       * should be called after modifying underlying ITK image.
+       *
+       */
+      void update();
+
+      /**
        * @return the range providing begin and end
        * iterators to scan the values of image.
        */
@@ -205,8 +213,11 @@ namespace DGtal
       /**
        * @return the domain associated to the image.
        */
-      Domain domain() const;
-    
+      const Domain& domain() const
+      {
+          return myDomain;
+      }
+
       /**
        * Returns a copy of the itkImage smartPointer
        */
@@ -295,6 +306,7 @@ namespace DGtal
     private:
 
       ITKImagePointer myITKImagePointer;
+      Domain myDomain; // cached from myITKImagePointer region. updated when calling update().
     }; // end of class ImageContainerByITKImage
 
   }
