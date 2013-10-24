@@ -43,14 +43,17 @@ using namespace DGtal;
 
 int main()
 {
+  // define digital space and domain
   typedef DGtal::SpaceND<2, DGtal::int32_t> MySpace;
   typedef MySpace::Point MyPoint;
   typedef HyperRectDomain<MySpace> MyDomain;
+  // define points in this domain
   MyPoint p1(-3,-4);
   MyPoint p2(10,4);
   MyPoint p3(5,1);
   MyDomain domain(p1,p2);
-  Board2D board; // for 2D display
+  // 2D display
+  Board2D board; 
   board << domain;
   board << p1 << p2 << p3;
   board.saveSVG("demo-kernel-1.svg");

@@ -1,4 +1,3 @@
-
 #------------------------------------------------------------------------------
 # CPack Configurations
 #------------------------------------------------------------------------------
@@ -38,24 +37,17 @@ INCLUDE(CPack)
 # -----------------------------------------------------------------------------
 # CTest options
 # -----------------------------------------------------------------------------
-ENABLE_TESTING()
-include(CTest)
-
-OPTION(DGTAL_BUILD_TESTING "Build testing." ON)
-SET(BUILD_TESTING ${DGTAL_BUILD_TESTING} CACHE BOOL "" FORCE)
-# Hide BUILD_TESTING as user tend to always turn all options on and then complains when something
-# does not work 'by default'
-MARK_AS_ADVANCED(BUILD_TESTING)
-
-if (DGTAL_BUILD_TESTING)
-  message(STATUS "Build test files enabled")
+if (BUILD_TESTING)
+  ENABLE_TESTING()
+  include(CTest)
+  message(STATUS "Build test files ENABLED")
   if (CMAKE_COMPILER_IS_GNUCXX)
     SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -pedantic -W -Wshadow -Wunused-variable  -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCXX)
   if (CMAKE_COMPILER_IS_GNUCC)
     SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -Wno-long-long -pedantic -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCC)
-  add_subdirectory (tests)
-ELSE (DGTAL_BUILD_TESTING)
-  message(STATUS "Build test files disabled")
-endif (DGTAL_BUILD_TESTING)
+  add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
+ELSE (BUILD_TESTING)
+  message(STATUS "Build test files DISABLED (you can activate unit tests with '-DBUILD_TESTING=ON' cmake option)")
+endif (BUILD_TESTING)

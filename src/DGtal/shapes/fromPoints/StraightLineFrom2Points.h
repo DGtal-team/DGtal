@@ -60,7 +60,7 @@ namespace DGtal
   /**
    * \brief Aim: Represents a straight line uniquely
    * defined by two 2D points and that is able
-   * to return for any given 2D point its signed distance to itself 
+   * to return for any given 2D point its signed distance to itself
    *
    * @tparam TPoint  a type of points.
    */
@@ -134,12 +134,12 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Computes the signed distance of @aP to the straight line
+     * Computes the signed distance of @a aP to the straight line
      * @param aP the point to be tested.
      * @return the signed distance.
      */
     Distance signedDistance(const Point& aP) const;
-    
+
     /**
      * @return the first point through which the straight line passes.
      */
@@ -147,7 +147,7 @@ namespace DGtal
     {
       return myP;
     };
-    
+
     /**
      * @return the second point through which the straight line passes.
      */
@@ -162,7 +162,7 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
-    
+
     /**
      * @return the style name used for drawing this object.
      */
@@ -207,7 +207,7 @@ namespace DGtal
   template <typename TPoint>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
         const StraightLineFrom2Points<TPoint> & object )
   {
     object.selfDisplay( out );

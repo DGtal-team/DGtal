@@ -4,13 +4,13 @@
 #  DGTAL_LIBRARY_DIRS - library directories for DGtal (normally not used!)
 #  DGTAL_LIBRARIES    - libraries to link against
 #  DGTAL_VERSION      - version of the DGtal library
- 
+
 # Tell the user project where to find our headers and libraries
 set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@;@DGtalLibInc@")
 set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
 set(DGTAL_VERSION "@DGTAL_VERSION@")
 
- 
+
 # Our library dependencies (contains definitions for IMPORTED targets)
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
 
@@ -53,8 +53,8 @@ ENDIF(MSVC)
 
 
 #------------------------------------------------
-#---- We propagate definitions for #define marco 
-#---- according to dependencies detected during 
+#---- We propagate definitions for #define marco
+#---- according to dependencies detected during
 #---- the build.
 #------------------------------------------------
 IF(@DEBUG_VERBOSE_DGTAL@)
@@ -70,7 +70,7 @@ ENDIF(@VERBOSE_DGTAL@)
 IF(@C11_FOUND_DGTAL@)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
   ADD_DEFINITIONS("-DWITH_C11 ")
-  SET(WITH_C11 1) 
+  SET(WITH_C11 1)
   IF(@C11_AUTO_DGTAL@)
     ADD_DEFINITIONS("-DCPP11_AUTO")
     SET(CPP11_AUTO 1)
@@ -78,16 +78,16 @@ IF(@C11_FOUND_DGTAL@)
   IF(@C11_INITIALIZER_DGTAL@)
     ADD_DEFINITIONS("-DCPP11_INITIALIZER_LIST")
     SET(CPP11_INITIALIZER_LIST 1)
-  ENDIF(@C11_INITIALIZER_DGTAL@) 
+  ENDIF(@C11_INITIALIZER_DGTAL@)
   IF(@C11_FORWARD_DGTAL@)
     ADD_DEFINITIONS("-DCPP11_FORWARD_LIST")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
     SET(CPP11_FORWARD_LIST 1)
-  ENDIF(@C11_FORWARD_DGTAL@) 
+  ENDIF(@C11_FORWARD_DGTAL@)
  IF(@C11_ARRAY_DGTAL@)
     ADD_DEFINITIONS("-DCPP11_ARRAY")
     SET(CPP11_ARRAY 1)
-  ENDIF(@C11_ARRAY_DGTAL@) 
+  ENDIF(@C11_ARRAY_DGTAL@)
 ENDIF(@C11_FOUND_DGTAL@)
 
 
@@ -135,6 +135,7 @@ ENDIF( @COIN3D_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ AND @SOQT_FOUND_DGTAL@ )
 IF(@QGLVIEWER_FOUND_DGTAL@ AND @QT4_FOUND_DGTAL@ )
   ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER ")
   SET(WITH_VISU3D_QGLVIEWER 1)
+  SET(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS} @QGLVIEWER_INCLUDE_DIR@ )
 ENDIF(@QGLVIEWER_FOUND_DGTAL@  AND @QT4_FOUND_DGTAL@ )
 
 #-- We force the Qt rediscovering
@@ -156,7 +157,20 @@ IF(@OPENMP_FOUND_DGTAL@)
   ADD_DEFINITIONS("-DWITH_OPENMP ")
 ENDIF(@OPENMP_FOUND_DGTAL@)
 
- 
+
+IF(@EIGEN_FOUND_DGTAL@)
+  ADD_DEFINITIONS("-DWITH_EIGEN ")
+  SET(WITH_EIGEN 1)
+ENDIF(@EIGEN_FOUND_DGTAL@)
+
+
+IF(@CGAL_FOUND_DGTAL@)
+  find_package(CGAL COMPONENTS Core Eigen3)
+  include( ${CGAL_USE_FILE} )
+  ADD_DEFINITIONS("-DWITH_CGAL ")
+  SET(WITH_CGAL 1)
+ENDIF(@CGAL_FOUND_DGTAL@)
+
+
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
 set(DGTAL_LIBRARIES DGtal DGtalIO)
-

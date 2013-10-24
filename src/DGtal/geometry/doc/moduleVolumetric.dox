@@ -422,8 +422,10 @@ For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(dn^d)@
 
 /**
    Example of distance transformation in dimension 3 with DGtal Viewer3D.
-
+This program outputs this image:
 @see \ref moduleVolumetric
+
+@image html example-DT-3D.png
 
 \example geometry/volumes/distance/distancetransform3D.cpp
 */
