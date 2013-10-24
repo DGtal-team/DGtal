@@ -54,10 +54,10 @@ INCLUDE(GeneratorSpecific)
 #------------------------------------------------------------------------------
 add_subdirectory(${PROJECT_SOURCE_DIR}/src)
 
-OPTION(BUILD_EXAMPLES "Build examples." ON)
-IF (BUILD_EXAMPLES)
-  add_subdirectory (${PROJECT_SOURCE_DIR}/examples)
-ENDIF(BUILD_EXAMPLES)
+#------------------------------------------------------------------------------
+# Examples
+#------------------------------------------------------------------------------
+INCLUDE(BuildExamples)
 
 # -----------------------------------------------------------------------------
 # Install settings
