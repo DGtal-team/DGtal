@@ -49,6 +49,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/base/OrderedAlphabet.h"
+#include "DGtal/base/IteratorCirculatorTraits.h"
+#include "DGtal/kernel/CInteger.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -103,8 +106,7 @@ namespace DGtal
       typedef DGtal::PointVector<2,Integer> Point;
       typedef DGtal::PointVector<2,Integer> Vector;
 
-
-      typedef typename iterator_traits<ConstIterator>::value_type Code;
+      typedef typename IteratorCirculatorTraits<ConstIterator>::Value Code;
       typedef int Size;
       typedef int Index;
 
@@ -119,8 +121,8 @@ namespace DGtal
        * @tparam TIterator an iterator on the codes.
        * @tparam iterator_type the type of iterations services provided by TIterator.
        */ 
-      template < class TIterator, class iterator_type = typename iterator_traits<TIterator>::iterator_category >
-      class CodeHandler
+      
+      template < class TIterator, class iterator_type = typename IteratorCirculatorTraits <TIterator>::Category >  class CodeHandler
         {
         public :
           CodeHandler()
@@ -146,16 +148,16 @@ namespace DGtal
             }
 
         private :
-          vector<Code> myCodes;
+	std::vector<Code> myCodes;
           TIterator myIter;
         };
 
       /**
        * Partial specialization template in the case where the iterator is of
-       * cartegory bidirectional
+       * category bidirectional
        */
       template < class TIterator >
-      class CodeHandler< TIterator, bidirectional_iterator_tag > 
+	class CodeHandler< TIterator, BidirectionalCategory >
         {
         public :
           CodeHandler()
@@ -199,8 +201,8 @@ namespace DGtal
             }
 
         private :
-          vector<Code> myPosCodes;
-          vector<Code> myNegCodes;
+	  std::vector<Code> myPosCodes;
+	  std::vector<Code> myNegCodes;
           TIterator myFirst;
           TIterator myLast;
         };
@@ -209,8 +211,8 @@ namespace DGtal
        * Partial template specialization for random access iterators.
        */ 
       template < class TIterator>
-        class CodeHandler<TIterator, random_access_iterator_tag >
-          {
+	class CodeHandler<TIterator, RandomAccessCategory >
+	{
           public :
             CodeHandler()
               { }
@@ -243,7 +245,7 @@ namespace DGtal
       struct ConstPointIterator
         {
 
-          typedef bidirectional_iterator_tag iterator_category;
+          typedef BidirectionalCategory iterator_category;
           typedef Point value_type;
           typedef Index difference_type;
           typedef Point * pointer;

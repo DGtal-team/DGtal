@@ -46,7 +46,7 @@ using namespace Z3i;
 
 int main()
 {
-  Board3DTo2D board;
+  Board3DTo2D<Space, KSpace> board;
 
   Point p1( -1, -1, -2 );
   Point p2( 2, 2, 3 );
@@ -73,10 +73,10 @@ int main()
   board << SetMode3D(domain.className(), "Paving");
   board << domain;
   board << SetMode3D(board.className(), "WireFrameMode");
-  board.saveCairo("dgtalBoard3DTo2D-5-custom-wireframe.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+  board.saveCairo("dgtalBoard3DTo2D-5-custom-wireframe.png", Board3DTo2D<Space, KSpace>::CairoPNG, 600*2, 400*2);
   
   board << SetMode3D(board.className(), "SolidMode");
-  board.saveCairo("dgtalBoard3DTo2D-5-custom.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+  board.saveCairo("dgtalBoard3DTo2D-5-custom.png", Board3DTo2D<Space, KSpace>::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
