@@ -66,6 +66,10 @@ namespace DGtal
      *
      * Using this container, you can switch from DGtal alogrithms to
      * ITK processing pipeline.
+     * The Ownership of the underlying ITK image is shared between the wrapper
+     * and the ITK pipeline.
+     * If the ITK image region is modified, one should manually update the domain of the wrapper.
+     * This is done by calling the updateDomain() method.
      *
      * \see testITKImage.cpp
      */
