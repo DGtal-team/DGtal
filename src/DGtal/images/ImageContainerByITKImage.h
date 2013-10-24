@@ -143,11 +143,11 @@ namespace DGtal
 
       /**
        *
-       * update internal cache.
+       * update internal domain cache.
        * should be called after modifying underlying ITK image.
        *
        */
-      void update();
+      void updateDomain();
 
       /**
        * @return the range providing begin and end
