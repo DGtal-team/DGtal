@@ -51,20 +51,24 @@ using namespace DGtal;
 bool testDicomReader()
 {
   //Default image selector = STLVector
-  typedef ImageContainerBySTLVector<Z3i::Domain,  int > Image3D;
+  typedef ImageContainerBySTLVector<Z3i::Domain,  unsigned char > Image3D;
 
   std::string filename = testPath + "samples/dicomSample/1629.dcm";
-  Image3D image = DicomReader< Image3D >::importDicom( filename );
+  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int32_t, Image3D::Value> >::importDicom(
+                              filename, HounsfieldToGrayscaleFunctor<int32_t, Image3D::Value>(0,255) );
 
   trace.info() << image <<endl;
 
-  unsigned int nbval=0;
+  unsigned int nbVal=0, nbPos = 0;
   for ( Image3D::ConstIterator it=image.begin(), itend=image.end() ; it != itend ; ++it )
-	  if ( (*it) > 0 ) nbval++;
+  {
+    nbVal++;
+	  if ( (*it) > 0 ) nbPos++;
+  }
 
-  trace.info() << "Number of points with (val>0) = " << nbval << endl;
+  trace.info() << "Number of points with (val>0) = " << nbVal << endl;
 
-  return nbval==296030;
+  return nbVal==2130048 && nbPos==296030;
 }
 
 
