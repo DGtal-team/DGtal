@@ -57,8 +57,6 @@
 
 namespace DGtal
 {
-  namespace experimental
-  {
 
     /////////////////////////////////////////////////////////////////////////////
     // template class ImageContainerByITKImage
@@ -309,8 +307,6 @@ namespace DGtal
       Domain myDomain; // cached from myITKImagePointer region. updated when calling update().
     }; // end of class ImageContainerByITKImage
 
-  }
-
   /**
    * Overloads 'operator<<' for displaying objects of class 'ImageContainerByITKImage'.
    * @param out the output stream where the object is written.
@@ -319,7 +315,7 @@ namespace DGtal
    */
   template <typename T, typename TV>
   std::ostream&
-  operator<< ( std::ostream & out, const experimental::ImageContainerByITKImage<T, TV> & object );
+  operator<< ( std::ostream & out, const ImageContainerByITKImage<T, TV> & object );
 
 }
 ///////////////////////////////////////////////////////////////////////////////
