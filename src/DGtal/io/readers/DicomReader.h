@@ -60,26 +60,26 @@ namespace DGtal
  *
  * @tparam T the type of image container
  */
- template<typename T>
+ template<typename TInputType, typename TOutputType>
  struct HounsfieldToGrayscaleFunctor
  {
- 	T minHounsfieldValue;
- 	T maxHounsfieldValue;
+ 	TInputType minHounsfieldValue;
+ 	TInputType maxHounsfieldValue;
  	/**
 	 * Functor constructor.
 	 *
 	 * @param min the minimum value to consider on Hounsfield scale. Lower values are considered as background values (0).
 	 * @param max the maximum value to consider on Hounsfield scale. Greater values are considered as foreground value (255).
 	 */
- 	HounsfieldToGrayscaleFunctor( const T &min, const T &max ) : minHounsfieldValue(min), maxHounsfieldValue(max) {}
+ 	HounsfieldToGrayscaleFunctor( const TInputType &min, const TInputType &max ) : minHounsfieldValue(min), maxHounsfieldValue(max) {}
  	/**
 	 * Function to obtain the hounsVal value rescaling.
 	 *
 	 * @param hounsVal value of Hounsfield scale to rescale.
 	 */
  	inline
- 	int32_t operator() (const T& hounsVal) const
- 	{ return hounsVal<=minHounsfieldValue ? 0 : hounsVal >= maxHounsfieldValue ? 255 : (hounsVal-minHounsfieldValue)*(255./(maxHounsfieldValue-minHounsfieldValue)); }
+ 	TOutputType operator() (const TInputType& hounsVal) const
+ 	{ return hounsVal<minHounsfieldValue ? 0 : hounsVal > maxHounsfieldValue ? 255 : (hounsVal-minHounsfieldValue)*(255./(maxHounsfieldValue-minHounsfieldValue)); }
  };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -100,9 +100,10 @@ namespace DGtal
  *
  *  ...
  *
- *  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain,  int > Image3D;
+ *  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char > Image3D;
  *  string filename = "test.dcm";
- *  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int> >::importDicom( filename, HounsfieldToGrayscaleFunctor<int>(-900,530) );
+ *  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int32_t,Image3D::Value> >::importDicom(
+ * 								filename, HounsfieldToGrayscaleFunctor<int32_t,Image3D::Value>(-900,530) );
  *  @endcode
  *
  * @tparam TImageContainer the type of the image container
@@ -121,12 +122,12 @@ namespace DGtal
 
 	typedef TImageContainer ImageContainer;
 	typedef typename TImageContainer::Value Value;
-	typedef typename TImageContainer::Domain::Vector Vector;
 	typedef TFunctor Functor;
+	typedef int32_t PixelType;
 
 	BOOST_CONCEPT_ASSERT((  CImage<ImageContainer> )) ;
-	BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, int, Value > )) ;
-	BOOST_STATIC_ASSERT(( ImageContainer::Domain::dimension == 3 ));
+	BOOST_CONCEPT_ASSERT((  CUnaryFunctor<Functor, PixelType, Value > )) ;
+	BOOST_STATIC_ASSERT(( TImageContainer::Domain::dimension == 3 ));
 
 	/**
 	 * Main method to import a Dicom serie into an instance of the
