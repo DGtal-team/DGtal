@@ -62,8 +62,7 @@ bool testITKImage()
   typedef HyperRectDomain<Space3Type> Domain;
   typedef Domain::Point Point;
 
-  //ATTENTION only the int container works at this point
-  typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
 
   const Integer t[ ] = { 1, 1, 1};
   const Integer t2[ ] = { 5, 5, 5};
@@ -130,7 +129,7 @@ bool testITKMethod()
   typedef Domain::Point Point;
 
 
-  typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
 
   Domain domain(Point(0,0), Point(25,25));
 

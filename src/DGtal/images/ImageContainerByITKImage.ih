@@ -41,8 +41,6 @@
 
 namespace DGtal
 {
-  namespace experimental
-  {
     template<typename TDomain, typename TValue>
     ImageContainerByITKImage<TDomain, TValue>::~ImageContainerByITKImage()
     {
@@ -188,9 +186,6 @@ namespace DGtal
           << "region=" << region.GetIndex() << "/" << region.GetSize();
     }
 
-  }
-
-
   ///////////////////////////////////////////////////////////////////////////////
   // Implementation of inline functions                                        //
 
@@ -198,7 +193,7 @@ namespace DGtal
   inline
   std::ostream&
   operator<< ( std::ostream & out,
-      const experimental::ImageContainerByITKImage<TDomain, TValue> & object )
+      const ImageContainerByITKImage<TDomain, TValue> & object )
   {
     object.selfDisplay( out );
     return out;
