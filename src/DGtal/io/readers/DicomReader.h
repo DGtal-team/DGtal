@@ -54,6 +54,34 @@
 namespace DGtal
 {
 
+/**
+ * Functor suitable for DICOM images to convert
+ * values of Hounsfiled scale [min,max] to grayscale values [0,255].
+ *
+ * @tparam T the type of image container
+ */
+ template<typename T>
+ struct HounsfieldToGrayscaleFunctor
+ {
+ 	T minHounsfieldValue;
+ 	T maxHounsfieldValue;
+ 	/**
+	 * Functor constructor.
+	 *
+	 * @param min the minimum value to consider on Hounsfield scale. Lower values are considered as background values (0).
+	 * @param max the maximum value to consider on Hounsfield scale. Greater values are considered as foreground value (255).
+	 */
+ 	HounsfieldToGrayscaleFunctor( const T &min, const T &max ) : minHounsfieldValue(min), maxHounsfieldValue(max) {}
+ 	/**
+	 * Function to obtain the hounsVal value rescaling.
+	 *
+	 * @param hounsVal value of Hounsfield scale to rescale.
+	 */
+ 	inline
+ 	int32_t operator() (const T& hounsVal) const
+ 	{ return hounsVal<=minHounsfieldValue ? 0 : hounsVal >= maxHounsfieldValue ? 255 : (hounsVal-minHounsfieldValue)*(255./(maxHounsfieldValue-minHounsfieldValue)); }
+ };
+
 /////////////////////////////////////////////////////////////////////////////
 // class DicomReader
 /**
@@ -70,18 +98,8 @@ namespace DGtal
  *  #include "DGtal/helpers/StdDefs.h"
  *  #include "DGtal/io/readers/DicomReader.h"
  *
- *  template<typename T>
- *  struct HounsfieldToGrayscaleFunctor
- *  {
- *  	int minHounsfieldValue;
- *  	int maxHounsfieldValue;
- *  	HounsfieldToGrayscaleFunctor() : minHounsfieldValue(-3000), maxHounsfieldValue(3000) {}
- *  	HounsfieldToGrayscaleFunctor( const int &min, const int &max ) : minHounsfieldValue(min), maxHounsfieldValue(max) {}
- *  	inline
- *  	T operator() (const T& a) const
- *  	{ return a<=minHounsfieldValue ? 0 : a >= maxHounsfieldValue ? 255 : (a-minHounsfieldValue)*(255./(maxHounsfieldValue-minHounsfieldValue)); }
- *  };
  *  ...
+ *
  *  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain,  int > Image3D;
  *  string filename = "test.dcm";
  *  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int> >::importDicom( filename, HounsfieldToGrayscaleFunctor<int>(-900,530) );
@@ -92,6 +110,8 @@ namespace DGtal
  * @tparam TFunctor the type of functor used in the import (by default, copy and use the HounsfieldToGrayscaleFunctor).
  *
  */
+
+
   template <typename TImageContainer,
 		typename TFunctor = CastFunctor< typename TImageContainer::Value > >
   struct DicomReader
