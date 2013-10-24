@@ -62,25 +62,23 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
 							   const TFunctor &aFunctor) throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
-  BOOST_STATIC_ASSERT( ImageContainer::Domain::dimension == 3 );
 
   std::string directory = aFilename.substr(0,aFilename.find_last_of("/"));
 
   // Définition of image type
-  const unsigned int InputDimension = ImageContainer::Domain::dimension;
-  typedef int PixelType;
-  typedef itk::Image<PixelType,InputDimension> ImageType;
-  typedef itk::ImageSeriesReader<ImageType> ReaderType;
-  typename ReaderType::Pointer reader = ReaderType::New();
+  const unsigned int Dimension = ImageContainer::Domain::dimension;
+  typedef itk::Image<PixelType,Dimension> ItkImage;
+  typedef itk::ImageSeriesReader<ItkImage> ItkReader;
+  typename ItkReader::Pointer reader = ItkReader::New();
 
   // Définition of ITK Dicom reader
-  typedef itk::GDCMImageIO ImageIOType;
-  ImageIOType::Pointer dicomIO = ImageIOType::New();
+  typedef itk::GDCMImageIO ItkImageIO;
+  ItkImageIO::Pointer dicomIO = ItkImageIO::New();
   reader->SetImageIO(dicomIO);
 
   // Series reader
-  typedef itk::GDCMSeriesFileNames NamesGeneratorType;
-  NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
+  typedef itk::GDCMSeriesFileNames ItkNamesGenerator;
+  ItkNamesGenerator::Pointer nameGenerator = ItkNamesGenerator::New();
   nameGenerator->SetDirectory(directory);
   reader->SetFileNames(nameGenerator->GetInputFileNames());
 
@@ -95,7 +93,7 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
 	  throw dgtalio;
   }
 
-  const typename ImageType::SizeType& inputSize = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
+  const typename ItkImage::SizeType& inputSize = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
   const unsigned int width = inputSize[0];
   const unsigned int height = inputSize[1];
   const unsigned int depth = inputSize[2];
@@ -106,8 +104,8 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   }
 
   // Itk Image pointer
-  const typename ImageType::Pointer &itkImage = reader->GetOutput();
-  itk::ImageRegionConstIterator< ImageType > in( itkImage,itkImage->GetBufferedRegion() );
+  const typename ItkImage::Pointer &itkImage = reader->GetOutput();
+  itk::ImageRegionConstIterator< ItkImage > in( itkImage,itkImage->GetBufferedRegion() );
 
   // DGtal image
   typename ImageContainer::Point firstPoint( 0, 0, 0 );
@@ -124,7 +122,7 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   long count = 0;
   while ( itDomain != endDomain )
   {
-	  const int &value = in.Value();
+	  const PixelType &value = in.Value();
 	  image.setValue( *itDomain , aFunctor(value) );
 	  ++in;
 	  ++itDomain;
@@ -133,8 +131,8 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
 
   if ( count != total )
   {
-	trace.error() << "DicomReader: can't read file (raw data) !\n";
-	throw dgtalio;
+    trace.error() << "DicomReader: can't read file (raw data) !\n";
+    throw dgtalio;
   }
 
   return  image;
