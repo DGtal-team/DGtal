@@ -62,8 +62,7 @@ bool testITKImage()
   typedef HyperRectDomain<Space3Type> Domain;
   typedef Domain::Point Point;
 
-  //ATTENTION only the int container works at this point
-  typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
 
   const Integer t[ ] = { 1, 1, 1};
   const Integer t2[ ] = { 5, 5, 5};
@@ -73,7 +72,7 @@ bool testITKImage()
   Point c ( t3 );
   Integer val;
 
-  Image myImage ( a, b );
+  Image myImage ( Domain(a, b) );
 
   trace.info() << myImage << std::endl;
   trace.info() << "getvalue= " << myImage(c) << endl;
@@ -130,12 +129,11 @@ bool testITKMethod()
   typedef Domain::Point Point;
 
 
-  typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
 
-  Point a ( 0, 0 );
-  Point b ( 25, 25);
+  Domain domain(Point(0,0), Point(25,25));
 
-  Image myImage ( a, b );
+  Image myImage(domain);
   trace.info() << myImage << std::endl;
 
   //We fill the image
@@ -156,7 +154,7 @@ bool testITKMethod()
   typedef itk::BinaryThresholdImageFilter< Image::ITKImage, Image::ITKImage> Filter;
   Filter::Pointer filter = Filter::New();
 
-  filter->SetInput( myImage.getImagePointer() );
+  filter->SetInput( myImage.getITKImagePointer() );
   filter->SetOutsideValue( 0 );
   filter->SetInsideValue( 10 );
   filter->SetLowerThreshold( 34 );;
@@ -165,17 +163,29 @@ bool testITKMethod()
 
   //We create a DGtal::Image from a pointer to the pipeline output
   Image::ITKImagePointer handleOut = filter->GetOutput();
-  Image myImageOut ( a, b, handleOut );
+  Image myImageOut(handleOut);
+
+  //We create another image
+  Image myImageOutCopy(handleOut);
+
+  //And we copy the result between the two containers with DGTal
+  std::copy(myImageOut.constRange().begin(), myImageOut.constRange().end(), myImageOutCopy.range().outputIterator());
 
   //We trace the result of the thresholding
   trace.info() << "Output image=";
-  
-  for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
+
+  nbVal = 0;
+  for (Image::ConstIterator it = myImageOutCopy.begin(), itend = myImageOutCopy.end();
        it != itend;
        ++it)
-    trace.warning() << myImageOut(it) << " ";
+  {
+    trace.warning() << myImageOutCopy(it) << " ";
+    if (myImageOutCopy(it)==10) nb++;
+    if (nbVal>=34 and nbVal<=400) nbok++;
+    nbVal++;
+  }
   trace.info() << endl;
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "true == true" << std::endl;
   trace.endBlock();
