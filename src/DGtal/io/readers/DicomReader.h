@@ -54,34 +54,6 @@
 namespace DGtal
 {
 
-/**
- * Functor suitable for DICOM images to convert
- * values of Hounsfiled scale [min,max] to grayscale values [0,255].
- *
- * @tparam T the type of image container
- */
- template<typename TInputType, typename TOutputType>
- struct HounsfieldToGrayscaleFunctor
- {
- 	TInputType minHounsfieldValue;
- 	TInputType maxHounsfieldValue;
- 	/**
-	 * Functor constructor.
-	 *
-	 * @param min the minimum value to consider on Hounsfield scale. Lower values are considered as background values (0).
-	 * @param max the maximum value to consider on Hounsfield scale. Greater values are considered as foreground value (255).
-	 */
- 	HounsfieldToGrayscaleFunctor( const TInputType &min, const TInputType &max ) : minHounsfieldValue(min), maxHounsfieldValue(max) {}
- 	/**
-	 * Function to obtain the hounsVal value rescaling.
-	 *
-	 * @param hounsVal value of Hounsfield scale to rescale.
-	 */
- 	inline
- 	TOutputType operator() (const TInputType& hounsVal) const
- 	{ return hounsVal<minHounsfieldValue ? 0 : hounsVal > maxHounsfieldValue ? 255 : (hounsVal-minHounsfieldValue)*(255./(maxHounsfieldValue-minHounsfieldValue)); }
- };
-
 /////////////////////////////////////////////////////////////////////////////
 // class DicomReader
 /**
@@ -102,13 +74,13 @@ namespace DGtal
  *
  *  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char > Image3D;
  *  string filename = "test.dcm";
- *  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int32_t,Image3D::Value> >::importDicom(
- * 								filename, HounsfieldToGrayscaleFunctor<int32_t,Image3D::Value>(-900,530) );
+ *  Image3D image = DicomReader< Image3D, RescalingFunctor<int32_t,Image3D::Value> >::importDicom(
+ * 								filename, RescalingFunctor<int32_t,Image3D::Value>(-900,530,0,255) );
  *  @endcode
  *
  * @tparam TImageContainer the type of the image container
  *
- * @tparam TFunctor the type of functor used in the import (by default, copy and use the HounsfieldToGrayscaleFunctor).
+ * @tparam TFunctor the type of functor used in the import (you can use the RescalingFunctor as in the example above).
  *
  */
 
