@@ -54,8 +54,7 @@ bool testDicomReader()
   typedef ImageContainerBySTLVector<Z3i::Domain,  unsigned char > Image3D;
 
   std::string filename = testPath + "samples/dicomSample/1629.dcm";
-  Image3D image = DicomReader< Image3D, HounsfieldToGrayscaleFunctor<int32_t, Image3D::Value> >::importDicom(
-                              filename, HounsfieldToGrayscaleFunctor<int32_t, Image3D::Value>(0,255) );
+  Image3D image = DicomReader< Image3D >::importDicom( filename );
 
   trace.info() << image <<endl;
 
