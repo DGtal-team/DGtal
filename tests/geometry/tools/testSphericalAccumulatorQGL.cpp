@@ -32,10 +32,12 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 /////////////////////ddzad//////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class SphericalAccumulator.
@@ -44,24 +46,24 @@ using namespace DGtal;
 
 
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
+
 bool testSphericalViewer(int argc, char **argv)
 {
   QApplication application(argc,argv);
-  
+
   trace.beginBlock ( "Testing Spherical Accumulator Viewer..." );
-  
+
   typedef Z3i::RealVector Vector;
-  
+
   SphericalAccumulator<Vector> accumulator(15);
   trace.info()<< accumulator << std::endl;
-  
+
   for(unsigned int i=0; i< 10000; i++)
     accumulator.addDirection( Vector (1+10.0*(rand()-RAND_MAX/2)/(double)RAND_MAX,
 				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX,
 				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX));
-  
-  Viewer3D viewer;
+
+  Viewer3D<> viewer;
   viewer.show();
   Vector a,b,c,d;
   viewer << accumulator;
@@ -74,7 +76,7 @@ bool testSphericalViewer(int argc, char **argv)
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
@@ -83,23 +85,23 @@ bool testSphericalViewer(int argc, char **argv)
 bool testSphericalViewerInteger(int argc, char **argv)
 {
   QApplication application(argc,argv);
-  
+
   trace.beginBlock ( "Testing Spherical Accumulator Viewer  with Integer numbers..." );
-  
+
   typedef Z3i::Vector Vector;
-  
+
   SphericalAccumulator<Vector> accumulator(15);
   trace.info()<< accumulator << std::endl;
-  
+
   for(unsigned int i=0; i< 10000; i++)
     accumulator.addDirection( Vector (1+(rand()-RAND_MAX/2),
                                       (1+(rand()-RAND_MAX/2)),
                                       (1+(rand()-RAND_MAX/2))));
-  
-  Viewer3D viewer;
+
+  Viewer3D<> viewer;
   viewer.show();
   Vector a,b,c,d;
-  Display3DFactory::draw(viewer,accumulator, Z3i::RealVector(1.0,1.0,1.0), 3.0);
+  Display3DFactory<Space,KSpace>::draw(viewer,accumulator, Z3i::RealVector(1.0,1.0,1.0), 3.0);
 
     trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
@@ -109,7 +111,7 @@ bool testSphericalViewerInteger(int argc, char **argv)
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

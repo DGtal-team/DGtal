@@ -50,7 +50,7 @@ int main()
   Point p3( 2, 3, 4 );
   Domain domain( p1, p2 );
 
-  Board3DTo2D board;
+  Board3DTo2D<Space, KSpace> board;
 
   board << domain;  
   board << p1 << p2 << p3;
@@ -62,7 +62,7 @@ int main()
   //board << CameraZNearFar(4.578200, 22.578199);
 
   board << SetMode3D(board.className(), "WireFrameMode");
-  board.saveCairo("dgtalBoard3DTo2D-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
+  board.saveCairo("dgtalBoard3DTo2D-1-points.png", Board3DTo2D<Space, KSpace>::CairoPNG, 600*2, 400*2);
 
 }
 //                                                                           //
