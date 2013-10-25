@@ -65,9 +65,10 @@ namespace DGtal
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
- * The policy is done with 4 functions:
+ * The policy is done with 5 functions:
  * 
- *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a domain or NULL if no image in the cache contains that domain
  *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
  *  - updateCache :             for updating the cache according to the cache policy
  *  - clearCache :              for clearing the cache
@@ -110,6 +111,16 @@ public:
     ImageContainer * getPage(const Point & aPoint);
     
     /**
+     * Get the alias on the image that matchs the domain aDomain
+     * or NULL if no image in the cache matchs the domain aDomain.
+     * 
+     * @param aDomain the domain.
+     *
+     * @return the alias on the image container or NULL pointer.
+     */
+    ImageContainer * getPage(const Domain & aDomain);
+    
+    /**
      * Get the alias on the image that we have to detach
      * or NULL if no image have to be detached.
      *
@@ -122,7 +133,7 @@ public:
      *
      * @param aDomain the domain.
      */
-    ImageContainer * updateCache(const Domain &aDomain);
+    void updateCache(const Domain &aDomain);
     
     /**
      * Clear the cache.
@@ -151,9 +162,10 @@ protected:
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
- * The policy is done with 4 functions:
+ * The policy is done with 5 functions:
  * 
- *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a domain or NULL if no image in the cache contains that domain
  *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
  *  - updateCache :             for updating the cache according to the cache policy
  *  - clearCache :              for clearing the cache
@@ -196,6 +208,16 @@ public:
     ImageContainer * getPage(const Point & aPoint);
     
     /**
+     * Get the alias on the image that matchs the domain aDomain
+     * or NULL if no image in the cache matchs the domain aDomain.
+     * 
+     * @param aDomain the domain.
+     *
+     * @return the alias on the image container or NULL pointer.
+     */
+    ImageContainer * getPage(const Domain & aDomain);
+    
+    /**
      * Get the alias on the image that we have to detach
      * or NULL if no image have to be detached.
      *
@@ -208,7 +230,7 @@ public:
      *
      * @param aDomain the domain.
      */
-    ImageContainer * updateCache(const Domain &aDomain);
+    void updateCache(const Domain &aDomain);
     
     /**
      * Clear the cache.

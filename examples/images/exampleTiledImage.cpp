@@ -99,6 +99,9 @@ int main( int argc, char** argv )
     
     // here we create the TiledImage
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    //BOOST_CONCEPT_ASSERT(( CConstBidirectionalRangeFromPoint< MyTiledImage > ));
+    //BOOST_CONCEPT_ASSERT(( CBidirectionalOutputRangeFromPoint< MyTiledImage::Range, typename MyTiledImage::Value > ));
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 //! [TiledImage_creation]
     
@@ -114,7 +117,7 @@ int main( int argc, char** argv )
     int cpt, sumcRp, sumcRrp, sumTp, sumTm, sumTrp, sumC;
     
     cpt=sumcRp=0;
-    trace.beginBlock("test constRange");
+    trace.beginBlock("test ConstRange");
     for(MyTiledImage::ConstRange::ConstIterator tiled_it = tiledImage.constRange().begin(), tiled_itend = tiledImage.constRange().end();
         tiled_it != tiled_itend; ++tiled_it)
         {
@@ -122,11 +125,11 @@ int main( int argc, char** argv )
           sumcRp += (*tiled_it);
           cpt++;
         }
-    trace.info() << "Cpt: " << cpt << " - sumcRp: " << sumcRp << endl;
+    trace.info() << "Cpt: " << cpt << " - sumcRp: " << sumcRp << " - cacheMissRead:" << tiledImage.getCacheMissRead() << endl;
     trace.endBlock();
     
     cpt=sumcRrp=0; tiledImage.clearCacheAndResetCacheMisses();
-    trace.beginBlock("test constRange (reverse)");
+    trace.beginBlock("test ConstRange (reverse)");
     for(MyTiledImage::ConstRange::ConstReverseIterator rtiled_it = tiledImage.constRange().rbegin(), rtiled_itend = tiledImage.constRange().rend();
         rtiled_it != rtiled_itend; ++rtiled_it)
         {
@@ -134,7 +137,7 @@ int main( int argc, char** argv )
           sumcRrp += (*rtiled_it);
           cpt++;
         }
-    trace.info() << "Cpt: " << cpt << " - sumcRrp: " << sumcRrp << endl;
+    trace.info() << "Cpt: " << cpt << " - sumcRrp: " << sumcRrp << " - cacheMissRead:" << tiledImage.getCacheMissRead() << endl;
     trace.endBlock();
     
     // ---
@@ -148,7 +151,7 @@ int main( int argc, char** argv )
           sumTp += (*tiled_it);
           cpt++;
         }
-    trace.info() << "Cpt: " << cpt << " - sumTp: " << sumTp << endl;
+    trace.info() << "Cpt: " << cpt << " - sumTp: " << sumTp << " - cacheMissRead:" << tiledImage.getCacheMissRead() << endl;
     trace.endBlock();
     
     cpt=sumTm=0; tiledImage.clearCacheAndResetCacheMisses();
@@ -165,11 +168,11 @@ int main( int argc, char** argv )
       }
       while (tiled_it != tiled_itend);
     }
-    trace.info() << "Cpt: " << cpt << " - sumTm: " << sumTm << endl;
+    trace.info() << "Cpt: " << cpt << " - sumTm: " << sumTm << " - cacheMissRead:" << tiledImage.getCacheMissRead() << endl;
     trace.endBlock();
     
     // ---
-    
+
     cpt=sumTrp=0; tiledImage.clearCacheAndResetCacheMisses();
     trace.beginBlock("test ReverseTiledIterator (++)");
     for(MyTiledImage::ReverseTiledIterator rtiled_it = tiledImage.rbegin(), rtiled_itend = tiledImage.rend();
@@ -179,7 +182,23 @@ int main( int argc, char** argv )
           sumTrp += (*rtiled_it);
           cpt++;
         }
-    trace.info() << "Cpt: " << cpt << " - sumTrp: " << sumTrp << endl;
+    trace.info() << "Cpt: " << cpt << " - sumTrp: " << sumTrp << " - cacheMissRead:" << tiledImage.getCacheMissRead() << endl;
+    trace.endBlock();
+    
+    // ---
+    
+    tiledImage.clearCacheAndResetCacheMisses();
+    trace.beginBlock("test Range (writing)");
+    {
+      const int maximalValue = tiledImage.domain().size(); 
+      MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator(); 
+      for (int i = 0; i < maximalValue; ++i)
+      {
+        //*it++ = 10;
+        it.setValue(10); it++;
+      }
+    }
+    trace.info() << "--> cacheMissRead:" << tiledImage.getCacheMissRead() << endl;
     trace.endBlock();
     
     // ---

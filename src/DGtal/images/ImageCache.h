@@ -165,7 +165,17 @@ public:
     * 
     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
     */
-    bool read(const Point & aPoint, Value &aValue);// const;
+    bool read(const Point & aPoint, Value &aValue) const;
+    
+    /**
+     * Get the alias on the image that matchs the domain aDomain
+     * or NULL if no image in the cache matchs the domain aDomain.
+     * 
+     * @param aDomain the domain.
+     *
+     * @return the alias on the image container or NULL pointer.
+     */
+    ImageContainer * getPage(const Domain & aDomain) const;
 
     /**
      * Set a value on an image from cache at a given position given
@@ -183,7 +193,7 @@ public:
      * 
      * @param aDomain the domain.
      */
-    ImageContainer * update(const Domain &aDomain);
+    void update(const Domain &aDomain);
     
     /**
      * Get the cacheMissRead value.
