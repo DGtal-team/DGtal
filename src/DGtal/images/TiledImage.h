@@ -48,11 +48,8 @@
 #include "DGtal/images/CImageCacheReadPolicy.h"
 #include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
-//#include "DGtal/base/ReverseIterator.h"
 
 #include "DGtal/images/ImageCache.h"
-
-#include "DGtal/base/ConstRangeAdapter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,7 +60,7 @@ namespace DGtal
  * Description of template class 'TiledImage' <p>
  * \brief Aim: implements a tiled image from a "bigger/original" one from an ImageFactory.
  * 
- * @tparam TImageContainer an image container type (model of CImage).
+ * @tparam TImageContainer an image container type (model of ).
  * @tparam TImageFactory an image factory type (model of CImageFactory).
  * @tparam TImageCacheReadPolicy an image cache read policy class (model of CImageCacheReadPolicy).
  * @tparam TImageCacheWritePolicy an image cache write policy class (model of CImageCacheWritePolicy).
@@ -100,7 +97,8 @@ public:
     typedef TImageCacheWritePolicy ImageCacheWritePolicy;
     typedef ImageCache<OutputImage, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy > MyImageCache;
     
-    ///New types
+    typedef Self ConstRange;
+    typedef Self Range;
 
     // ----------------------- Standard services ------------------------------
 
@@ -136,9 +134,11 @@ public:
      */
     ~TiledImage()
     {
-        delete myImageCache;
+        // pb here (because Range/ConstRange) !!!
         
-        delete clock; // TEMP_MT
+        //delete myImageCache;
+        
+        //delete clock; // TEMP_MT
     }
 
     // ----------------------- Interface --------------------------------------
@@ -169,30 +169,6 @@ public:
         return Domain(lowerBoundCords, upperBoundCoords);
     }
     
-    /////////////////////////// Ranges //////////////////////
-
-    /**
-     * Returns the range of the underlying image
-     * to iterate over its values
-     *
-     * @return a range.
-     */
-    /*ConstRange constRange() const
-    {
-        //return myImagePtr->constRange();
-    }*/
-
-    /**
-     * Returns the range of the underlying image
-     * to iterate over its values
-     *
-     * @return a range.
-     */
-    /*Range range()
-    {
-        //return myImagePtr->range();
-    }*/
-    
     /////////////////////////// Custom Iterator /////////////
     
     /**
@@ -218,22 +194,17 @@ public:
       /**
        * Constructor.
        *
-       * @param aCellIterator
+       * @param aBlockIterator
        * @param aTiledImage pointer to the TiledImage
        */
-      TiledIterator ( typename Domain::Iterator aCellIterator,
-                     TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) : myCellsIterator ( aCellIterator ), myTiledImage ( aTiledImage )
+      TiledIterator ( typename Domain::Iterator aBlockIterator,
+                     const TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) : myBlocksIterator ( aBlockIterator ), myTiledImage ( aTiledImage )
       {
-        if ( myCellsIterator != myTiledImage->domainCoords().end() )
+        if ( myBlocksIterator != myTiledImage->domainCoords().end() )
         {
-          myTiledImage->myImageCache->incCacheMissRead();
-          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
+          myTile = myTiledImage->findTileFromCoords( (*myBlocksIterator) );
           myTileRangeIterator = myTile->range().begin();
-          
-          end = false;
         }
-        else
-          end = true;
       }
       
       /**
@@ -241,16 +212,23 @@ public:
        *
        * @return the value associated to the current TiledIterator position.
        */
-      inline
+      /*inline
       const Value & operator*() const
       {
         return (*myTileRangeIterator);
-      }
+      }*/
       
       inline
       Value & operator*()
       {
         return (*myTileRangeIterator);
+      }
+      
+      inline
+      void setValue ( const Value aVal )
+      {
+        (*myTileRangeIterator) = aVal;
+        myTiledImage->myImageFactory->flushImage(myTile); // TEMP
       }
       
       /**
@@ -261,10 +239,7 @@ public:
       inline
       bool operator== ( const TiledIterator &it ) const
       {
-          if ( this->end == it.end )
-            return true;
-          
-          return ( ( this->myCellsIterator == it.myCellsIterator ) && ( this->myTileRangeIterator == it.myTileRangeIterator ) );
+        return ( ( this->myBlocksIterator == it.myBlocksIterator ) && ( this->myTileRangeIterator == it.myTileRangeIterator ) );
       }
 
       /**
@@ -275,10 +250,10 @@ public:
       inline
       bool operator!= ( const TiledIterator &it ) const
       {
-          if ( this->end == it.end )
-            return false;
-
-          return ( ( this->myCellsIterator != it.myCellsIterator ) || ( this->myTileRangeIterator != it.myTileRangeIterator ) );
+        if ( myBlocksIterator == myTiledImage->domainCoords().end() )
+          return false;
+        
+        return ( ( this->myBlocksIterator != it.myBlocksIterator ) || ( this->myTileRangeIterator != it.myTileRangeIterator ) );
       }
 
       /**
@@ -294,17 +269,12 @@ public:
           return;
         else
         {
-          myCellsIterator++;
+          myBlocksIterator++;
           
-          if ( myCellsIterator == myTiledImage->domainCoords().end() )
-          {
-            end = true;
+          if ( myBlocksIterator == myTiledImage->domainCoords().end() )
             return;
-          }
           
-          myTiledImage->myImageCache->incCacheMissRead();
-          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
-          
+          myTile = myTiledImage->findTileFromCoords( (*myBlocksIterator) );
           myTileRangeIterator = myTile->range().begin();
         }
       }
@@ -340,12 +310,11 @@ public:
       void prevLexicographicOrder()
       {
         // -- IF we are at the end... (reverse, --)
-        if ( myCellsIterator == myTiledImage->domainCoords().end() )
+        if ( myBlocksIterator == myTiledImage->domainCoords().end() )
         {
-          myCellsIterator--;
+          myBlocksIterator--;
           
-          myTiledImage->myImageCache->incCacheMissRead();
-          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
+          myTile = myTiledImage->findTileFromCoords( (*myBlocksIterator) );
           
           myTileRangeIterator = myTile->range().end();
           myTileRangeIterator--;
@@ -363,13 +332,12 @@ public:
         }
         else
         {
-          if ( myCellsIterator == myTiledImage->domainCoords().begin() )
+          if ( myBlocksIterator == myTiledImage->domainCoords().begin() )
             return;
           
-          myCellsIterator--;
+          myBlocksIterator--;
           
-          myTiledImage->myImageCache->incCacheMissRead();
-          myTile = myTiledImage->myImageCache->update(myTiledImage->findSubDomainFromCoords( (*myCellsIterator) ));
+          myTile = myTiledImage->findTileFromCoords( (*myBlocksIterator) );
           
           myTileRangeIterator = myTile->range().end();
           myTileRangeIterator--;
@@ -400,46 +368,80 @@ public:
 
     private:
       /// TiledImage pointer
-      TiledImage *myTiledImage;
+      const TiledImage *myTiledImage;
       
       /// Alias on the current tile
       ImageContainer * myTile;
       
-      typename ImageContainer::Range::Iterator myTileRangeIterator;
+      typename ImageContainer::Range::/*Output*/Iterator myTileRangeIterator;
       
-      typename Domain::Iterator myCellsIterator;
-      
-      bool end;
+      typename Domain::Iterator myBlocksIterator;
     };
 
-    TiledIterator begin()
+    typedef std::reverse_iterator<TiledIterator> ReverseTiledIterator;
+    
+    typedef TiledIterator ConstIterator;
+    typedef ReverseTiledIterator ConstReverseIterator;
+    
+    typedef TiledIterator OutputIterator;
+    typedef ReverseTiledIterator ReverseOutputIterator;
+
+    TiledIterator begin() const
     {
       return TiledIterator( this->domainCoords().begin(), this );
     }
     
-    TiledIterator end()
+    TiledIterator end() const
     {
       return TiledIterator( this->domainCoords().end(), this );
     }
     
-    // ---
+    ReverseTiledIterator rbegin() const
+    {
+      return ReverseTiledIterator( end() );
+    }
     
-    //typedef ReverseIterator<TiledIterator> ReverseTiledIterator;
-    typedef std::reverse_iterator<TiledIterator> ReverseTiledIterator;
-    
-    ReverseTiledIterator rbegin()
+    // TODO -> aPoint
+    ReverseTiledIterator rbegin(const Point& aPoint) const
     {
       return ReverseTiledIterator( end() );
     }
 
-    ReverseTiledIterator rend()
+    ReverseTiledIterator rend() const
     {
       return ReverseTiledIterator( begin() );
     }
     
-    /////////////////////////// Ranges  /////////////////////
+    /**
+      * OutputIterator service.
+      * @return an output itertor on the first elements
+      */
+    OutputIterator outputIterator()
+    {
+      return OutputIterator( begin() );
+    }
+
+    /**
+    * ReverseOutputIterator service.
+    * @return an output itertor on the first elements
+    */
+    ReverseOutputIterator routputIterator()
+    {
+      return ReverseOutputIterator ( end() );
+    }
+      
+    /**
+      * ReverseOutputIterator service.
+      * @param aPoint a point
+      * @return an output itertor on the point
+      */
+    // TODO -> aPoint
+    ReverseOutputIterator routputIterator ( const Point &aPoint )
+    {
+      return ReverseOutputIterator ( end() ) ;
+    }
     
-    typedef ConstRangeAdapter<TiledIterator, DefaultFunctor, Value > ConstRange;
+    /////////////////////////// Ranges  /////////////////////
     
     /**
      * Returns the range of the underlying image
@@ -447,9 +449,20 @@ public:
      *
      * @return a range.
      */
-    ConstRange constRange()
+    ConstRange constRange() const
     {
-        return ConstRange( begin(), end(), new DefaultFunctor() );
+      return *this;
+    }
+
+    /**
+     * Returns the range of the underlying image
+     * to iterate over its values
+     *
+     * @return a range.
+     */
+    Range range()
+    {
+      return *this;
     }
 
     /////////////////// API ///////////////////////
@@ -504,27 +517,6 @@ public:
       return di;      
     }
     
-    const bool findTileCoords(const Point & aPoint, Point &aCoord) const
-    {
-      ASSERT(myImageFactory->domain().isInside(aPoint));
-      
-      typename Domain::Integer i;
-      
-      if (aPoint >= m_lowerBound || aPoint <= m_upperBound)
-      {
-        for(i=0; i<Domain::dimension; i++)
-        {
-          /*if ( (aPoint[i]-m_lowerBound[i]) < mySize[i] )
-            aCoord[i] = 0;
-          else*/
-            aCoord[i] = (aPoint[i]-m_lowerBound[i])/mySize[i];
-        }
-        return true;
-      }
-      
-      return false;      
-    }
-    
     const Domain findSubDomainFromCoords(const Point & aCoord) const
     {
       ASSERT(domainCoords().isInside(aCoord));
@@ -545,6 +537,22 @@ public:
       return di;      
     }
     
+    ImageContainer * findTileFromCoords(const Point & aCoord) const
+    {
+      ASSERT(domainCoords().isInside(aCoord));
+      
+      Domain d = findSubDomainFromCoords( aCoord );
+      ImageContainer *tile = myImageCache->getPage(d);
+      if (!tile)
+      {
+        myImageCache->incCacheMissRead();
+        myImageCache->update(d);
+        tile = myImageCache->getPage(d);
+      }
+      
+      return tile;
+    }
+    
     /**
      * Get the value of an image (from cache) at a given position given by aPoint.
      *
@@ -553,7 +561,7 @@ public:
      */
     Value operator()(const Point & aPoint)// const // TEMP_MT
     {
-      ASSERT(myImageFactory->domain().isInside(aPoint)); // TEMP_MT
+      ASSERT(myImageFactory->domain().isInside(aPoint));
 
       typename OutputImage::Value aValue;
       bool res;
