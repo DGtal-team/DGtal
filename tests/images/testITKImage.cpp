@@ -131,7 +131,8 @@ bool testITKMethod()
   typedef ImageContainerByITKImage<Domain, Integer> Image;
 
   Point a ( 0, 0 );
-  Point b ( 10, 10);
+  Point b ( 9, 9);
+  Domain domain(a, b);
 
   Image myImage(domain);
   trace.info() << myImage << std::endl;
@@ -167,34 +168,31 @@ bool testITKMethod()
 
   // Crop filter process
   CropFilter::Pointer cropFilter = CropFilter::New();
-  cropFilter->SetInput( myImage.getImagePointer() );
+  cropFilter->SetInput( myImage.getITKImagePointer() );
   cropFilter->SetExtractionRegion( regionToExtract  );
   cropFilter->Update();
 
   // Pointer to the filter output
   Image::ITKImagePointer handleOut = cropFilter->GetOutput();
-  Point c ( 0, 0 );
-  Point d ( 5, 5);
-  Image myImageOut ( c, d, handleOut );
+  Image myImageOut ( handleOut );
 
 
   trace.info() << "Output image=";
   
-  Integer counter = 22;
   for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
        it != itend;
        ++it)
   {
-    nbok += (it.Value() == (22 + it.GetIndex()[1]*10 + it.GetIndex()[0]));
+    nbok += (it.Value() == (it.GetIndex()[1]*10 + it.GetIndex()[0]));
     nb++;
-    trace.warning() << myImageOut(it) << "(" << (22 + it.GetIndex()[1]*10 + it.GetIndex()[0]) << ")" << " ";
+    trace.warning() << myImageOut(it) << "(" << (it.GetIndex()[1]*10 + it.GetIndex()[0]) << ")" << " ";
   }
   trace.info() << endl;
 
   trace.info() << "(" << nbok << "/" << nb << ") " << "true == true" << std::endl;
   trace.endBlock();
 
-  return nbok == nb;
+  return nbok == 25 && nb == 25;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
