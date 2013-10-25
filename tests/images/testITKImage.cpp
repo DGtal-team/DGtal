@@ -61,8 +61,7 @@ bool testITKImage()
   typedef HyperRectDomain<Space3Type> Domain;
   typedef Domain::Point Point;
 
-  //ATTENTION only the int container works at this point
-  typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
 
   const Integer t[ ] = { 1, 1, 1};
   const Integer t2[ ] = { 5, 5, 5};
@@ -72,7 +71,7 @@ bool testITKImage()
   Point c ( t3 );
   Integer val;
 
-  Image myImage ( a, b );
+  Image myImage ( Domain(a, b) );
 
   trace.info() << myImage << std::endl;
   trace.info() << "getvalue= " << myImage(c) << endl;
@@ -129,12 +128,12 @@ bool testITKMethod()
   typedef Domain::Point Point;
 
 
-  typedef experimental::ImageContainerByITKImage<Domain, Integer> Image;
+  typedef ImageContainerByITKImage<Domain, Integer> Image;
 
   Point a ( 0, 0 );
   Point b ( 10, 10);
 
-  Image myImage ( a, b );
+  Image myImage(domain);
   trace.info() << myImage << std::endl;
 
   //We fill the image
@@ -192,8 +191,7 @@ bool testITKMethod()
   }
   trace.info() << endl;
 
-    trace.info() << "(" << nbok << "/" << nb << ") "
-  << "true == true" << std::endl;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "true == true" << std::endl;
   trace.endBlock();
 
   return nbok == nb;

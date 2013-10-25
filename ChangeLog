@@ -67,6 +67,10 @@
       write' policies, TiledImageFromImage to implement a tiled image
       from a "bigger/original" one.
 
+    - ImageContainerByITKImage complies with CImage.
+      The container has been moved from the DGtal::experimental namespace to
+      the main DGtal namespace.
+
 *Graph Package*
 
     - New graph visitor, which allows to visit a graph according to
