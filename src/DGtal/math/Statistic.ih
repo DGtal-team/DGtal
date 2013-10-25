@@ -118,9 +118,9 @@ DGtal::Statistic<TQuantity>::operator+=
   if ( other.mySamples != 0 )
     {
       if ( ( mySamples == 0 ) || ( other.myMin < myMin ) )
-  myMin = other.myMin;
+        myMin = other.myMin;
       if ( ( mySamples == 0 ) || ( other.myMax > myMax ) )
-  myMax = other.myMax;
+        myMax = other.myMax;
     }
   mySamples += other.mySamples;
   myExp += other.myExp;
@@ -152,7 +152,22 @@ DGtal::Statistic<TQuantity>::operator+
 }
 
 
-
+//-----------------------------------------------------------------------------
+template <typename TQuantity>
+inline
+typename DGtal::Statistic<TQuantity>::ConstIterator
+DGtal::Statistic<TQuantity>::begin() const
+{
+  return myValues.begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TQuantity>
+inline
+typename DGtal::Statistic<TQuantity>::ConstIterator
+DGtal::Statistic<TQuantity>::end() const
+{
+  return myValues.end();
+}
 
 
 
@@ -228,7 +243,7 @@ DGtal::Statistic<TQuantity>::median()
   else{
     ASSERT(myValues.size()>0);
     nth_element( myValues.begin(), myValues.begin()+(myValues.size()/2), 
-     myValues.end());
+                 myValues.end());
     return *(myValues.begin()+(myValues.size()/2));
   }
 }
@@ -296,7 +311,9 @@ DGtal::Statistic<TQuantity>::terminate()
 {
   if(myStoreSamples){
     myMedian=median();
-    myValues.clear();
+    // JOL: Perhaps a cleanUp() or dispose() method is
+    // preferable. Sometimes, it is useful to access also the values.
+    // myValues.clear();
     myStoreSamples=false;
     myIsTerminated=true;
   } 
@@ -314,13 +331,13 @@ DGtal::Statistic<TQuantity>::selfDisplay
 ( std::ostream& thatStream ) const
 {
   thatStream << "[Statistic "
-       << " nb=" << samples()
-       << " exp=" << mean()
-       << " var=" << variance()
-       << " uvar=" << unbiasedVariance()
-       << " min=" << min()
-       << " max=" << max()
-       << "]";
+             << " nb=" << samples()
+             << " exp=" << mean()
+             << " var=" << variance()
+             << " uvar=" << unbiasedVariance()
+             << " min=" << min()
+             << " max=" << max()
+             << "]";
 }
 
 
@@ -341,7 +358,7 @@ template <typename TQuantity>
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & thatStream, 
-       const Statistic<TQuantity> & that_object_to_display )
+                   const Statistic<TQuantity> & that_object_to_display )
 {
   that_object_to_display.selfDisplay( thatStream );
   return thatStream;
