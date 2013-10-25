@@ -185,7 +185,7 @@ bool testITKMethod()
   {
     nbok += (it.Value() == (it.GetIndex()[1]*10 + it.GetIndex()[0]));
     nb++;
-    trace.warning() << myImageOut(it) << "(" << (it.GetIndex()[1]*10 + it.GetIndex()[0]) << ")" << " ";
+    trace.warning() << it.Value() << "(" << (it.GetIndex()[1]*10 + it.GetIndex()[0]) << ")" << " ";
   }
   trace.info() << endl;
 
