@@ -8,6 +8,8 @@ SET(DGTAL_EXAMPLES_SRC
   exampleGeometricalDSS
   exampleGeometricalDCA
   exampleFrechetShortcut 
+  exampleDSLSubsegment
+  exampleArithDSSIterator
 )
 
 
@@ -32,10 +34,16 @@ ENDIF(MAGICK++_FOUND)
 ### Test with QGLViewer
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
-     exampleArithDSS3d
+
      exampleGridCurve3d
      exampleGridCurve3d-2
    )
+### Test with QGLViewer and CAIRO
+   IF( WITH_CAIRO)
+     SET(DGTAL_EXAMPLES_QGL_CAIRO_SRC
+     exampleArithDSS3d
+   )
+   endif(WITH_CAIRO)
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE} DGtalIO DGtal)   
