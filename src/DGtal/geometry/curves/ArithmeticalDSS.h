@@ -311,13 +311,30 @@ namespace DGtal
      * @param aOther the object to copy.
      * @return a reference on 'this'.
      */
-    ArithmeticalDSS & operator= ( const ArithmeticalDSS & aOther );
+    ArithmeticalDSS& operator= ( const ArithmeticalDSS & aOther );
+
+    /**
+     * Returns a copy of '*this' with a reverse orientation, ie. 
+     * with parameters @a -myA ,  @a -myB ,  @a -myMu , @a myOmega
+     * and swapped leaning points. 
+     * @return the negation of '*this'.
+     */
+    ArithmeticalDSS negate () const;
 
     /**
      * Equality.
      * @param aOther the object to compare with.
-     * @return 'true' the two set of points that are
-     * implicitly defined are equal, 'false' otherwise
+     * @return 'true' if all the members of the two objects
+     * are equal, 'false' otherwise
+     */
+    bool equalsTo ( const ArithmeticalDSS & aOther ) const;
+
+    /**
+     * Equality.
+     * @param aOther the object to compare with.
+     * @return 'true' the two sets of points that are
+     * implicitly defined are equal (without respect to 
+     * the orientation), 'false' otherwise
      */
     bool operator== ( const ArithmeticalDSS & aOther ) const;
 
@@ -532,57 +549,52 @@ namespace DGtal
     // ----------------------- Dynamic methods --------------------------------
 
     /**
-     * Tests whether the union between a point 
-     * and the DSS is a DSS. 
+     * Tests whether the union between a new point, 
+     * which is located at the front of the DSS,
+     * and the DSS is still a DSS. 
      *
-     * @param aNewPoint the point to test
-     * @param aStep vector between @a aNewPoint and 
-     * @a aEndPoint oriented from back to front. 
-     * @param aEndPoint end point of the DSS next to which 
-     * @a aNewPoint should be 
+     * @param aNewPoint a point to test
      * 
      * @return an integer equal to 0 if the union between 
      * aNewPoint and *this is not a DSS, but strictly greater 
      * than 0 otherwise. The value gives the way of updating
      *  the members of the DSS: 
-     * 1: initialization of the first step
-     * 2: repetition of the first step
-     * 3: initialization of the second step on the left
+     * 1:  initialization of the first step
+     * 2:  repetition of the first step
+     * 3:  initialization of the second step on the left
      * 4: initialization of the second step on the right
-     * 5: weakly interior on the left
+     * 5:  weakly interior on the left
      * 6: weakly interior on the right
-     * 7: weakly exterior on the left
+     * 7:  weakly exterior on the left
      * 8: weakly exterior on the right
      * 9: strongly interior
-     * @see extend
+     * @see extend isExtendableBackward
      */
-    unsigned short int isExtendable( const Point& aNewPoint,
-				     const Vector& aStep, 
-				     const Point& aEndPoint ) const;
+    unsigned short int isExtendableForward( const Point& aNewPoint ) const;
 
     /**
-     * Tests whether the union between a point 
-     * and the DSS is a DSS. 
-     * Computes the parameters of the new DSS 
-     * with the adding point if true.
+     * Tests whether the union between a new point, 
+     * which is located at the back of the DSS,
+     * and the DSS is still a DSS. 
      *
-     * @param aNewPoint the point to add
-     * @param aStep vector between @a aNewPoint and 
-     * @a aEndPoint oriented from back to front. 
-     * @param aEndPoint last point of the DSS next to which 
-     * @a aNewPoint should be 
-     * @param aFirstLeft first leaning point located on the left side of the DSS
-     * @param aLastLeft last leaning point located on the left side of the DSS  
-     * @param aFirstRight first leaning point located on the right side of the DSS
-     * @param aLastRight last leaning point located on the right side of the DSS 
+     * @param aNewPoint the point to test
      * 
-     * @return 'true' if the union is a DSS, 'false' otherwise.
-     * @see isExtendable
+     * @return an integer equal to 0 if the union between 
+     * aNewPoint and *this is not a DSS, but strictly greater 
+     * than 0 otherwise. The value gives the way of updating
+     *  the members of the DSS: 
+     * 1:  initialization of the first step
+     * 2:  repetition of the first step
+     * 3:  initialization of the second step on the left
+     * 4: initialization of the second step on the right
+     * 5:  weakly interior on the left
+     * 6: weakly interior on the right
+     * 7:  weakly exterior on the left
+     * 8: weakly exterior on the right
+     * 9: strongly interior
+     * @see extend isExtendableForward
      */
-    bool extend( const Point& aNewPoint, const Vector& aStep, 
-		 Point& aEndPoint, 
-		 Point& aFirstLeft,  Point& aLastLeft,
-		 Point& aFirstRight,  Point& aLastRight );
+    unsigned short int isExtendableBackward( const Point& aNewPoint ) const;
 
     /**
      * Tests whether the union between a point, 
@@ -594,7 +606,7 @@ namespace DGtal
      * @param aNewPoint the point to add
      * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
-     * @see extend
+     * @see isExtendableForward extendBackward
      */
     bool extendForward( const Point& aNewPoint );
     /**
@@ -607,7 +619,7 @@ namespace DGtal
      * @param aNewPoint the point to add
      * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
-     * @see extend
+     * @see isExtendableBackward extendForward
      */
     bool extendBackward( const Point& aNewPoint );
 

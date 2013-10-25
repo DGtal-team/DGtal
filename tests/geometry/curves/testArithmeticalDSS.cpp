@@ -74,9 +74,9 @@ bool mainTest()
 
   //egalite, difference
   DSS dss5(0, -1, 
-	  Point(1,0), Point(0,0), 
-	  Point(1,0), Point(0,0),
-	  Point(1,0), Point(0,0) ); 
+	   Point(1,0), Point(0,0), 
+	   Point(1,0), Point(0,0),
+	   Point(1,0), Point(0,0) ); 
   
   if ( (dss == dss2)
        &&(dss == dss3)
@@ -96,9 +96,9 @@ bool mainTest()
 	       << std::endl;
 
   DSS dss6(0, 1, 0, 1, 
-	  Point(1,0), Point(0,0), 
-	  Point(1,0), Point(0,0),
-	  Point(1,0), Point(0,0) ); 
+	   Point(1,0), Point(0,0), 
+	   Point(1,0), Point(0,0),
+	   Point(1,0), Point(0,0) ); 
 
   trace.info() << "not valid dss" << std::endl; 
   if (!dss6.isValid()) 
@@ -240,8 +240,8 @@ bool rangeTest(const DSS& dss)
       nbok++; 
     nb++;
 
-  trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << std::endl;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+		 << std::endl;
   }
 
   {//backward pass
@@ -265,8 +265,8 @@ bool rangeTest(const DSS& dss)
       nbok++; 
     nb++;
 
-  trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << std::endl;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+		 << std::endl;
   }
 
   trace.endBlock();
@@ -291,58 +291,59 @@ void extensionTest(const DSS& dss,
 		   typename DSS::Point newPointToFront, 
 		   typename DSS::Point newPointToBack, 
 		   unsigned int& nbok, unsigned int& nb, 
-		   const unsigned int& code = 0)
+		   const unsigned short int& code = 0)
 {
-    trace.info() << dss << std::endl; 
-    if (dss.isValid())
-      nbok++;
-    nb++; 
-    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  trace.info() << dss << std::endl; 
+  if (dss.isValid())
+    nbok++;
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-    trace.info() << "to front " << newPointToFront << std::endl;
-    if (dss.isExtendable( newPointToFront, (newPointToFront - dss.front()), dss.front() ) == code)
-      nbok++;
-    nb++; 
-    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  trace.info() << "to front " << newPointToFront << std::endl;
+  if (dss.isExtendableForward( newPointToFront ) == code)
+    nbok++;
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-    DSS mdss = dss; //local and modifiable copy
-    if (code == 0)
-      {
-    	if ( (!mdss.extendForward(newPointToFront)) )
-    	  nbok++;
-	nb++; 
-      }
-    else
-      {
-    	if ( (mdss.extendForward(newPointToFront))&&(mdss.isValid()) )
-    	  nbok++;
-	nb++; 
-      }
-    trace.info() << mdss << std::endl; 
-    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  DSS mdss = dss; //local and modifiable copy
+  if (code == 0)
+    {
+      if ( (!mdss.extendForward(newPointToFront)) )
+	nbok++;
+      nb++; 
+    }
+  else
+    {
+      if ( (mdss.extendForward(newPointToFront))&&(mdss.isValid()) )
+	nbok++;
+      nb++; 
+      std::cerr << mdss.isValid() << std::endl; 
+    }
+  trace.info() << mdss << std::endl; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-    trace.info() << "to back " << newPointToBack << std::endl;
-    if (dss.isExtendable( newPointToBack, (dss.back() - newPointToBack), dss.back() )  == code)
-      nbok++;
-    nb++; 
-    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  trace.info() << "to back " << newPointToBack << std::endl;
+  if (dss.isExtendableBackward( newPointToBack ) == code)
+    nbok++;
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-    mdss = dss; //local and modifiable copy
-    if (code == 0)
-      {
-    	if ( (!mdss.extendBackward(newPointToBack)) )
-    	  nbok++;
-	nb++; 
-      }
-    else
-      {
-    	if ( (mdss.extendBackward(newPointToBack))&&(mdss.isValid()) )
-    	  nbok++;
-	nb++; 
-	std::cerr << mdss.isValid() << std::endl; 
-      }
-    trace.info() << mdss << std::endl; 
-    trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  mdss = dss; //local and modifiable copy
+  if (code == 0)
+    {
+      if ( (!mdss.extendBackward(newPointToBack)) )
+	nbok++;
+      nb++; 
+    }
+  else
+    {
+      if ( (mdss.extendBackward(newPointToBack))&&(mdss.isValid()) )
+	nbok++;
+      nb++; 
+      std::cerr << mdss.isValid() << std::endl; 
+    }
+  trace.info() << mdss << std::endl; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -432,186 +433,221 @@ bool updateTest()
   
   trace.beginBlock ( "Extension services..." );
 
-  {
-    trace.info() << "not connected point" << std::endl;
-    DSS dss(Point(0,0), Point(8,5), true); 
-    extensionTest( dss, Point(9,7), Point(-2,1), nbok, nb ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "not connected point" << std::endl;
+      DSS dss(Point(0,0), Point(8,5), true); 
+      extensionTest( dss, Point(9,7), Point(-2,1), nbok, nb ); 
+    }
 
-  {
-    trace.info() << "not compatible second step" << std::endl;
-    DSS dss(Point(0,0), Point(1,1), true); 
-    extensionTest( dss, Point(0,2), Point(-1,1), nbok, nb ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "not compatible second step" << std::endl;
+      DSS dss(Point(0,0), Point(1,1), true); 
+      extensionTest( dss, Point(0,2), Point(-1,1), nbok, nb ); 
+    }
 
-  {
-    trace.info() << "a third step" << std::endl;
-    DSS dss(Point(0,0), Point(2,1), true); 
-    extensionTest( dss, Point(2,2), Point(0,1), nbok, nb ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "a third step" << std::endl;
+      DSS dss(Point(0,0), Point(2,1), true); 
+      extensionTest( dss, Point(2,2), Point(0,1), nbok, nb ); 
+    }
 
-  {
-    trace.info() << "strongly exterior" << std::endl;
-    DSS dss(Point(0,0), Point(8,5), true); 
-    extensionTest( dss, Point(9,6), Point(-1,0), nbok, nb ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "strongly exterior" << std::endl;
+      DSS dss(Point(0,0), Point(8,5), true); 
+      extensionTest( dss, Point(9,6), Point(-1,0), nbok, nb ); 
+    }
 
-  {
-    trace.info() << "confounded points" << std::endl;
-    DSS dss(Point(0,0), Point(8,5), true); 
-    extensionTest( dss, Point(8,5), Point(0,0), nbok, nb, 9 ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "confounded points" << std::endl;
+      DSS dss(Point(0,0), Point(8,5), true); 
+      extensionTest( dss, Point(8,5), Point(0,0), nbok, nb, 9 ); 
+    }
 
-  {
-    trace.info() << "strongly interior points" << std::endl;
-    DSS dss0(Point(0,0), Point(8,5), true); 
-    DSS dss(5, 8, Point(-2,-2), Point(8,5), 
-	    dss0.Uf(), dss0.Ul(), 
-	    dss0.Lf(), dss0.Ll() ); 
-    extensionTest( dss, Point(9,5), Point(-3,-2), nbok, nb, 9 ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "strongly interior points" << std::endl;
+      DSS dss0(Point(0,0), Point(8,5), true); 
+      DSS dss(5, 8, Point(-2,-2), Point(8,5), 
+	      dss0.Uf(), dss0.Ul(), 
+	      dss0.Lf(), dss0.Ll() ); 
+      extensionTest( dss, Point(9,5), Point(-3,-2), nbok, nb, 9 ); 
+    }
 
-  {
-    trace.info() << "weakly interior points on the left" << std::endl;
-    DSS dss0(Point(0,0), Point(8,5), true); 
-    DSS dss(5, 8, Point(-7,-5), Point(16,10)-dss0.steps().second, 
-	    dss0.Uf(), dss0.Ul(), 
-	    dss0.Lf()-Vector(8,5), dss0.Ll()+Vector(8,5) ); 
-    extensionTest( dss, Point(16,10), Point(-8,-5), nbok, nb, 5 ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "weakly interior points on the left" << std::endl;
+      DSS dss0(Point(0,0), Point(8,5), true); 
+      Point newPointToBack = dss0.Lf()-Vector(8,5); 
+      Point newPointToFront = dss0.Ul()+Vector(8,5); 
+      DSS dss(5, 8, 
+	      newPointToBack+dss0.steps().second, 
+	      newPointToFront-dss0.steps().second, 
+	      dss0.Uf(), dss0.Ul(), 
+	      dss0.Lf(), dss0.Ll() ); 
+      extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 5 ); 
+    }
 
-  {
-    trace.info() << "weakly exterior points on the left" << std::endl;
-    DSS dss0(Point(0,0), Point(8,5), true); 
-    Point newPointToBack = dss0.Lf()-dss0.shift()-Vector(8,5); 
-    Point newPointToFront = dss0.Ll()-dss0.shift()+Vector(8,5); 
-    DSS dss(5, 8, 
-	    newPointToBack+dss0.steps().first, 
-	    newPointToFront-dss0.steps().second, 
-	    dss0.Uf(), dss0.Ul(), 
-	    dss0.Lf(), dss0.Ll() ); 
-    extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 7 );
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "weakly exterior points on the left" << std::endl;
+      DSS dss0(Point(0,0), Point(8,5), true); 
+      Point newPointToBack = dss0.Uf()+dss0.shift()-Vector(8,5); 
+      Point newPointToFront = dss0.Ll()-dss0.shift()+Vector(8,5); 
+      DSS dss(5, 8, 
+	      newPointToBack+dss0.steps().second, 
+	      newPointToFront-dss0.steps().second, 
+	      dss0.Uf(), dss0.Ul(), 
+	      dss0.Lf(), dss0.Ll() ); 
+      extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 7 );
+    }
 
-  {
-    trace.info() << "weakly interior points on the right" << std::endl;
-    DSS dss0(Point(0,0), Point(8,5), true); 
-    Point newPointToBack = dss0.Lf()-Vector(8,5); 
-    Point newPointToFront = dss0.Ll()+Vector(8,5); 
-    DSS dss(5, 8, 
-	    newPointToBack+dss0.steps().first, 
-	    newPointToFront-dss0.steps().second, 
-	    dss0.Uf(), dss0.Ul(), 
-	    dss0.Lf(), dss0.Ll() ); 
-    extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 6 ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "weakly interior points on the right" << std::endl;
+      DSS dss0(Point(0,0), Point(8,5), true); 
+      Point newPointToBack = dss0.Uf()-Vector(8,5); 
+      Point newPointToFront = dss0.Ll()+Vector(8,5); 
+      DSS dss(5, 8, 
+	      newPointToBack+dss0.steps().first, 
+	      newPointToFront-dss0.steps().first, 
+	      dss0.Uf(), dss0.Ul(), 
+	      dss0.Lf(), dss0.Ll() ); 
+      extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 6 ); 
+    }
 
-  {
-    trace.info() << "weakly exterior points on the right" << std::endl;
-    DSS dss0(Point(0,0), Point(8,5), true); 
-    Point newPointToBack = dss0.Uf()-Vector(8,5)+dss0.shift(); 
-    Point newPointToFront = dss0.Ul()+Vector(8,5)+dss0.shift(); 
-    DSS dss(5, 8, 
-	    newPointToBack+dss0.steps().first, 
-	    newPointToFront-dss0.steps().second, 
-	    dss0.Uf(), dss0.Ul(), 
-	    dss0.Lf()-Vector(8,5), dss0.Ll()+Vector(8,5) ); 
-    extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 8 ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "weakly exterior points on the right" << std::endl;
+      DSS dss0(Point(0,0), Point(8,5), true); 
+      Point newPointToBack = dss0.Lf()-Vector(8,5)-dss0.shift(); 
+      Point newPointToFront = dss0.Ul()+Vector(8,5)+dss0.shift(); 
+      DSS dss(5, 8, 
+	      newPointToBack+dss0.steps().first, 
+	      newPointToFront-dss0.steps().first, 
+	      dss0.Uf(), dss0.Ul(), 
+	      dss0.Lf(), dss0.Ll()+Vector(8,5) ); 
+      extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 8 ); 
+    }
 
-  {
-    trace.info() << "first step" << std::endl;
-    DSS dss( Point(0,0), Point(0,0) ); 
-    extensionTest( dss, Point(1,0), Point(-1,0), nbok, nb, 1 ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "first step" << std::endl;
+      DSS dss( Point(0,0), Point(0,0) ); 
+      extensionTest( dss, Point(1,0), Point(-1,0), nbok, nb, 1 ); 
+    }
 
-  {
-    trace.info() << "first step repetition" << std::endl;
-    DSS dss(Point(0,0), Point(1,0), true); 
-    extensionTest( dss, Point(2,0), Point(-1,0), nbok, nb, 2 ); 
-  }
+  if (nbok == nb)
+    {
+      trace.info() << "first step repetition" << std::endl;
+      DSS dss(Point(0,0), Point(1,0), true); 
+      extensionTest( dss, Point(2,0), Point(-1,0), nbok, nb, 2 ); 
+    }
 
-  {
-    trace.info() << "second step (above)" << std::endl;
-    DSS dss0a(Point(0,0), Point(2,1), true); 
-    DSS dss0b(Point(0,0), Point(2,-1), true); 
-    DSS dss(Point(0,0), Point(2,1) - dss0a.steps().second); 
-    Point newPointToBack = Point(0,0) - dss0b.steps().first;  
-    extensionTest( dss, Point(2,1), newPointToBack, nbok, nb, 3 ); 
-  }
+  ///////////////////////////////////////////////////////////////////// TODO
+  if (nbok == nb)
+    {
+      trace.info() << "second step (above)" << std::endl;
+      DSS dss0(Point(0,0), Point(2,1), true); 
+      DSS dss(Point(0,0), Point(2,1) - dss0.steps().second); 
+      Point newPointToBack = Point(0,0) - dss0.steps().second;  
+      extensionTest( dss, Point(2,1), newPointToBack, nbok, nb, 3 ); 
+    }
 
-  {
-    trace.info() << "second step (below)" << std::endl;
-    DSS dss0a(Point(0,0), Point(2,-1), true); 
-    DSS dss0b(Point(0,0), Point(2,1), true); 
-    DSS dss(Point(0,0), Point(2,-1) - dss0a.steps().first); 
-    Point newPointToBack = Point(0,0) - dss0b.steps().second;  
-    extensionTest( dss, Point(2,-1), newPointToBack, nbok, nb, 4 ); 
-  }
-
-  trace.endBlock();
-
-  trace.beginBlock ( "Retraction services..." );
-
-  {
-    trace.info() << "upper leaning points" << std::endl; 
-    DSS dss(Point(0,0), Point(8,5), true); 
-    retractionTest( dss, nbok, nb ); 
-  }
-  {
-    trace.info() << "lower leaning points" << std::endl; 
-    DSS dss0(Point(0,0), Point(8,5), true); 
-    Point first = dss0.Lf(); 
-    Point last = dss0.Lf() + Vector(8,5); 
-    DSS dss(5, 8, first, last, 
-	    Point(8,5), Point(8,5), 
-	    first, last ); 
-    retractionTest( dss, nbok, nb ); 
-  }
-  {
-    trace.info() << "upper leaning points (repetitions)" << std::endl; 
-    DSS dss(Point(0,0), Point(16,10), true); 
-    retractionTest( dss, nbok, nb ); 
-  }
-  {
-    trace.info() << "lower leaning points (repetitions)" << std::endl; 
-    DSS dss0(Point(0,0), Point(16,10), true); 
-    Point first = dss0.Lf(); 
-    Point last = dss0.Lf() + Vector(16,10); 
-    DSS dss(5, 8, first, last, 
-	    Point(8,5), Point(16,10), 
-	    first, last ); 
-    retractionTest( dss, nbok, nb ); 
-  }
-  {
-    trace.info() << "no change" << std::endl; 
-    DSS dss0(Point(0,0), Point(21,13), true);
-    typename DSS::ConstIterator itb = dss0.begin(); 
-    --itb; --itb; --itb;
-    typename DSS::ConstIterator ite = dss0.end(); 
-    ++ite; ++ite; ++ite;
-    DSS dss(dss0.a(), dss0.b(), *itb, *ite,
-	    dss0.Uf(), dss0.Ul(), dss0.Lf(), dss0.Ll() ); 
-    retractionTest( dss, nbok, nb ); 
-  }
-  {
-    trace.info() << "one point" << std::endl; 
-    DSS dss(Point(0,0), Point(0,0), true);
-    retractionTest( dss, nbok, nb, false ); 
-  }
-  {
-    trace.info() << "two points" << std::endl; 
-    DSS dss(Point(0,0), Point(1,0), true);
-    retractionTest( dss, nbok, nb ); 
-  }
-  {
-    trace.info() << "from two steps to one step" << std::endl; 
-    DSS dss(Point(0,0), Point(1,1), true);
-    retractionTest( dss, nbok, nb ); 
-  }
-
+  if (nbok == nb)
+    {
+      trace.info() << "second step (below)" << std::endl;
+      DSS dss0a(Point(0,0), Point(2,-1), true); 
+      DSS dss0b(Point(0,0), Point(2,1), true); 
+      DSS dss(Point(0,0), Point(2,-1) - dss0a.steps().first); 
+      Point newPointToBack = Point(0,0) - dss0a.steps().first;  
+      extensionTest( dss, Point(2,-1), newPointToBack, nbok, nb, 4 ); 
+    }
 
   trace.endBlock();
+
+  if (nbok == nb)
+    {
+      trace.beginBlock ( "Retraction services..." );
+
+      {
+	trace.info() << "upper leaning points" << std::endl; 
+	DSS dss(Point(0,0), Point(8,5), true); 
+	retractionTest( dss, nbok, nb ); 
+      }
+
+      if (nbok == nb)
+	{
+	  trace.info() << "lower leaning points" << std::endl; 
+	  DSS dss0(Point(0,0), Point(8,5), true); 
+	  Point first = dss0.Lf(); 
+	  Point last = dss0.Lf() + Vector(8,5); 
+	  DSS dss(5, 8, first, last, 
+		  Point(8,5), Point(8,5), 
+		  first, last ); 
+	  retractionTest( dss, nbok, nb ); 
+	}
+
+      if (nbok == nb)
+	{
+	  trace.info() << "upper leaning points (repetitions)" << std::endl; 
+	  DSS dss(Point(0,0), Point(16,10), true); 
+	  retractionTest( dss, nbok, nb ); 
+	}
+
+      if (nbok == nb)
+	{
+	  trace.info() << "lower leaning points (repetitions)" << std::endl; 
+	  DSS dss0(Point(0,0), Point(16,10), true); 
+	  Point first = dss0.Lf(); 
+	  Point last = dss0.Lf() + Vector(16,10); 
+	  DSS dss(5, 8, first, last, 
+		  Point(8,5), Point(16,10), 
+		  first, last ); 
+	  retractionTest( dss, nbok, nb ); 
+	}
+
+      if (nbok == nb)
+	{
+	  trace.info() << "no change" << std::endl; 
+	  DSS dss0(Point(0,0), Point(21,13), true);
+	  typename DSS::ConstIterator itb = dss0.begin(); 
+	  --itb; --itb; --itb;
+	  typename DSS::ConstIterator ite = dss0.end(); 
+	  ++ite; ++ite; ++ite;
+	  DSS dss(dss0.a(), dss0.b(), *itb, *ite,
+		  dss0.Uf(), dss0.Ul(), dss0.Lf(), dss0.Ll() ); 
+	  retractionTest( dss, nbok, nb ); 
+	}
+
+      if (nbok == nb)
+	{
+	  trace.info() << "one point" << std::endl; 
+	  DSS dss(Point(0,0), Point(0,0), true);
+	  retractionTest( dss, nbok, nb, false ); 
+	}
+
+      if (nbok == nb)
+	{
+	  trace.info() << "two points" << std::endl; 
+	  DSS dss(Point(0,0), Point(1,0), true);
+	  retractionTest( dss, nbok, nb ); 
+	}
+
+      if (nbok == nb)
+	{
+	  trace.info() << "from two steps to one step" << std::endl; 
+	  DSS dss(Point(0,0), Point(1,1), true);
+	  retractionTest( dss, nbok, nb ); 
+	}
+
+
+      trace.endBlock();
+    }
   
   return nbok == nb;
 }

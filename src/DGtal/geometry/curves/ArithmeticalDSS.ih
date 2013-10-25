@@ -182,24 +182,38 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
+DGtal::ArithmeticalDSS<TC, TI, adj>
+DGtal::ArithmeticalDSS<TC, TI, adj>
+::negate() const
+{
+  return DGtal::ArithmeticalDSS<TC, TI, adj>(-myA, -myB, -(myMu+myOmega-1), myOmega, 
+					     myL, myF, myLl, myLf, myUl, myUf);  
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>
+::equalsTo(const ArithmeticalDSS<TC, TI, adj>& aOther) const
+{
+  return ( (myOmega == aOther.myOmega) &&
+	   (myUf == aOther.myUf) && 
+	   (myUl == aOther.myUl) &&  
+	   (myLf == aOther.myLf) &&  
+	   (myLl == aOther.myLl) && 
+	   (myF == aOther.myF) &&  
+	   (myL == aOther.myL) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::operator==(const ArithmeticalDSS<TC, TI, adj>& aOther) const
 {
-  return ( ( (myOmega == aOther.myOmega) &&
-	     (myUf == aOther.myUf) && 
-	     (myUl == aOther.myUl) &&  
-	     (myLf == aOther.myLf) &&  
-	     (myLl == aOther.myLl) && 
-	     (myF == aOther.myF) &&  
-	     (myL == aOther.myL) ) || 
-	   ( (myOmega == aOther.myOmega) &&
-	     (myUf == aOther.myLl) && 
-	     (myUl == aOther.myLf) &&  
-	     (myLf == aOther.myUl) &&  
-	     (myLl == aOther.myUf) && 
-	     (myF == aOther.myL) &&  
-	     (myL == aOther.myF) ) );
+  return ( equalsTo(aOther) || equalsTo(aOther.negate()) ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -557,11 +571,10 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 unsigned short int
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-isExtendable( const Point& aNewPoint,
-	      const Vector& aStep, 
-	      const Point& /*aEndPoint*/ ) const
+isExtendableForward( const Point& aNewPoint ) const
 {
-  Coordinate deviation = DGtal::ArithmeticalDSSKernel<TC,adj>::norm(aStep[0], aStep[1]);
+  Vector step = aNewPoint - myL; 
+  Coordinate deviation = DGtal::ArithmeticalDSSKernel<TC,adj>::norm(step[0], step[1]);
  
   //if the two last points are confounded OK
   if (deviation == NumberTraits<Coordinate>::ZERO) 
@@ -580,15 +593,14 @@ isExtendable( const Point& aNewPoint,
   else if (mySteps.second == Vector(0,0))
     {
       //if the first step exists and is repeated OK
-      if (aStep == mySteps.first) 
+      if (step == mySteps.first) 
   	return 2; 
       else 
   	{
 	  //if the two steps are compatible OK
-	  Vector v = aStep - mySteps.first; 
+	  Vector v = step - mySteps.first; 
 	  if ( DGtal::ArithmeticalDSSKernel<TC,DGtal::ArithmeticalDSSKernel<TC,adj>::BackgroundAdjacency>
 	       ::norm(v[0], v[1]) ==  NumberTraits<Coordinate>::ONE )
-	  // if (directionalPosition(aStep) > NumberTraits<Integer>::ZERO)
 	    {
 	      Integer r = remainder(aNewPoint);
 	      //if weakly exterior on the left 
@@ -601,13 +613,6 @@ isExtendable( const Point& aNewPoint,
 		  return 4;
 		}
 	    }
-	  // //if weakly exterior on the left AND the two steps are compatible OK
-	  // if ( (r == myMu-1)&&(aNewPoint != (aEndPoint - myShift)) )
-	  //   return 3;
-	  // //if weakly exterior on the right AND the two steps are compatible OK
-	  // else if ( (r == myMu+myOmega)&&(aNewPoint != (aEndPoint + myShift)) )
-	  //   return 4;
-	  //otherwise
   	  else
 	    return 0; 
   	}
@@ -616,7 +621,7 @@ isExtendable( const Point& aNewPoint,
   else 
     {
       //if there are less than two steps
-      if (isOneOfTheTwoSteps(aStep)) 
+      if (isOneOfTheTwoSteps(step)) 
   	{
       	Integer r = remainder(aNewPoint);
 
@@ -637,7 +642,6 @@ isExtendable( const Point& aNewPoint,
   	    else 
   	      return 9; 
   	  }
-
   	} 
       //if there are more than two steps KO
       else  
@@ -648,74 +652,97 @@ isExtendable( const Point& aNewPoint,
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
+unsigned short int
+DGtal::ArithmeticalDSS<TC, TI, adj>::
+isExtendableBackward( const Point& aNewPoint ) const
+{
+  return negate().isExtendableForward( aNewPoint ); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-extend( const Point& aNewPoint, const Vector& aStep, 
-	Point& aEndPoint, 
-	Point& aFirstLeft,  Point& aLastLeft,
-	Point& aFirstRight,  Point& aLastRight )
+extendForward( const Point& aNewPoint )
 {
-  bool flag = true;
+  //true if the DSS can be extended to aNewPoint
+  //false otherwise
+  bool flag = true; 
  
-  unsigned int res = isExtendable(aNewPoint, aStep, aEndPoint); 
+  //code that tells how to update the DSS
+  unsigned short int res = isExtendableForward(aNewPoint);
+
   switch (res)
     {
     case 1: //first step init
-      aEndPoint = aNewPoint; 
-      aLastLeft = aEndPoint; 
-      aLastRight = aEndPoint;
-      setSlope( aStep[1], aStep[0] ); 
-      mySteps.first = aStep; 
+      //NB: becareful of the initialization sequence: 
+      //setMuOmega() requires myShift to be initialized, 
+      //which requires myA, myB to be initialized, 
+      //which requires mySteps.first to be initialize. 
+      mySteps.first = Vector( (aNewPoint[0] - myL[0]), (aNewPoint[1] - myL[1]) ); 
+      setSlope( mySteps.first[1], mySteps.first[0] ); 
       myShift = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB); 
       setMuOmega( remainder(myUl), remainder(myShift) );
+      myL = aNewPoint; 
+      myUl = aNewPoint; 
+      myLl = aNewPoint;
       break; 
     case 2: //first step repeated
-      aEndPoint = aNewPoint; 
-      aLastLeft = aEndPoint; 
-      aLastRight = aEndPoint;
+      myL = aNewPoint; 
+      myUl = aNewPoint; 
+      myLl = aNewPoint;
       break; 
     case 3: //second step init on the left
-      setSlope( myUl[1]-myUf[1]+aStep[1], myUl[0]-myUf[0]+aStep[0] );  
-      aEndPoint = aNewPoint; 
-      aLastLeft = aEndPoint; 
-      aFirstRight = aLastRight;
+      //NB: becareful of the initialization sequence: 
+      //setMuOmega() => myShift => mySteps
+      //             => leaning points => setSlope()
+      setSlope( ((myUl[1] - myUf[1]) + (aNewPoint[1] - myL[1])), 
+		((myUl[0] - myUf[0]) + (aNewPoint[0] - myL[0])) ); 
+      myL = aNewPoint; 
+      myUl = aNewPoint; 
+      myLf = myLl; 
       mySteps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB);
       myShift = mySteps.first-mySteps.second; 
       setMuOmega( remainder(myUl), remainder(myShift) );
       break; 
     case 4: //second step init on the right
-      setSlope( myLl[1]-myLf[1]+aStep[1], myLl[0]-myLf[0]+aStep[0] );  
-      aEndPoint = aNewPoint; 
-      aLastRight = aEndPoint; 
-      aFirstLeft = aLastLeft;
+      //NB: becareful of the initialization sequence: 
+      //setMuOmega() => myShift => mySteps
+      //             => leaning points => setSlope()
+      setSlope( ((myLl[1] - myLf[1]) + (aNewPoint[1] - myL[1])), 
+		((myLl[0] - myLf[0]) + (aNewPoint[0] - myL[0])) ); 
+      myL = aNewPoint; 
+      myLl = aNewPoint; 
+      myUf = myUl; 
       mySteps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB);
       myShift = mySteps.first-mySteps.second; 
       setMuOmega( remainder(myUl), remainder(myShift) );
       break; 
     case 5: //weakly interior on the left
-      aEndPoint = aNewPoint; 
-      aLastLeft = aEndPoint; 
+      myL = aNewPoint; 
+      myUl = aNewPoint; 
       break; 
     case 6: //weakly interior on the right
-      aEndPoint = aNewPoint; 
-      aLastRight = aEndPoint; 
+      myL = aNewPoint; 
+      myLl = aNewPoint; 
       break; 
     case 7: //weakly exterior on the left
-      aEndPoint = aNewPoint; 
-      aLastLeft = aEndPoint; 
-      aFirstRight = aLastRight;
+      myL = aNewPoint; 
+      myUl = aNewPoint; 
+      myLf = myLl; 
       setSlope( (myUl[1] - myUf[1]), (myUl[0] - myUf[0]) ); 
       setMuOmega( remainder(myUl), remainder(myShift) );
       break; 
     case 8: //weakly exterior on the right
-      aEndPoint = aNewPoint; 
-      aLastRight = aEndPoint; 
-      aFirstLeft = aLastLeft;
+      myL = aNewPoint; 
+      myLl = aNewPoint; 
+      myUf = myUl; 
       setSlope( (myLl[1] - myLf[1]), (myLl[0] - myLf[0]) ); 
       setMuOmega( remainder(myUl), remainder(myShift) );
       break; 
     case 9: //strongly interior
-      aEndPoint = aNewPoint; 
+      myL = aNewPoint; 
       break; 
     default: 
       flag = false; 
@@ -729,21 +756,16 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-extendForward( const Point& aNewPoint )
-{
-  return extend( aNewPoint, (aNewPoint - myL), myL, 
-		 myUf, myUl, myLf, myLl ); 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
 extendBackward( const Point& aNewPoint )
 {
-  return extend( aNewPoint, (myF - aNewPoint), myF, 
-		 myUl, myUf, myLl, myLf ); 
+  //call extendForward to the opposite
+  DGtal::ArithmeticalDSS<TC, TI, adj> opposite = negate();
+  bool flag = opposite.extendForward(aNewPoint);
+ 
+  if (flag) //update '*this' if required
+    *this = opposite.negate(); 
+
+  return flag;  
 }
 
 
