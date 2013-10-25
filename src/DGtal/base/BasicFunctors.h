@@ -723,7 +723,49 @@ private:
       return aPair.second;
     }
     
-  }; 
+  };
+
+  /**
+   * Description of template class 'RescalingFunctor' <p>
+   * \brief Aim: Functor allowing to rescale a value.
+   * Values of the initial scale [initMin,initMax] are rescaled to the new scale [newMin,newMax].
+   *
+   * @tparam TInput the type of values on the inital scale.
+   * @tparam TOutput the type of values on the new scale.
+   */
+  template<typename TInputType, typename TOutputType>
+  struct RescalingFunctor
+  {
+      TInputType _initMin;
+      TInputType _initMax;
+      TInputType _initRange;
+
+      TOutputType _newMin;
+      TOutputType _newMax;
+      TOutputType _newRange;
+
+      /**
+       * Constructor.
+       *
+       * @param initMin the minimum value of the initial scale. Lower values are set to this value.
+       * @param initMax the maximum value of the initial scale. Greater values are set to this value.
+       * @param newMin the minimum value of the new scale.
+       * @param newMax the maximum value of the new scale.
+       */
+      RescalingFunctor( const TInputType &initMin, const TInputType &initMax, const TOutputType &newMin, const TOutputType &newMax ) :
+                          _initMin(initMin), _initMax(initMax), _initRange(initMax-initMin), _newMin(newMin), _newMax(newMax), _newRange(newMax-newMin) {}
+      /**
+       * Operator.
+       *
+       *
+       * @param initVal value of the initial scale.
+       * 
+       * @return value of initVal, considered on the initial scale, on the new scale.
+       */
+      inline
+      TOutputType operator() (const TInputType& initVal) const
+      { return initVal<_initMin ? _newMin : initVal > _initMax ? _newMax : (initVal-_initMin)*_newRange/_initRange + _newMin; }
+  };
 
 }
 ///////////////////////////////////////////////////////////////////////////////
