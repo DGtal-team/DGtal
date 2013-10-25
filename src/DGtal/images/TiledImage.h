@@ -163,7 +163,10 @@ public:
         for(typename Domain::Integer i=0; i<Domain::dimension; i++)
         {
           lowerBoundCords[i] = 0;
-          upperBoundCoords[i] = myN-1;
+          upperBoundCoords[i] = myN;
+          
+          if (((m_upperBound[i]-m_lowerBound[i]+1) % myN) == 0)
+            upperBoundCoords[i]--;
         }
         
         return Domain(lowerBoundCords, upperBoundCoords);

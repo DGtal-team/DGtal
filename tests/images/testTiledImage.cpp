@@ -71,7 +71,7 @@ bool testSimple()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
@@ -152,7 +152,7 @@ bool test3d()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImage::OutputImage OutputImage;
@@ -180,7 +180,7 @@ bool test3d()
     return nbok == nb;
 }
 
-/*bool test_range_constRange()
+bool test_range_constRange()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
@@ -212,7 +212,10 @@ bool test3d()
     const int maximalValue = tiledImage.domain().size(); 
     MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator(); 
     for (int i = 0; i < maximalValue; ++i)
-      *it++ = i;
+    {
+      //*it++ = i;
+      it.setValue(i); it++;
+    }
 
     // reading values 
     MyTiledImage::ConstRange r = tiledImage.constRange(); 
@@ -240,7 +243,7 @@ bool test3d()
     trace.endBlock();
     
     return nbok == nb;
-}*/
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -253,7 +256,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testSimple() && test3d();// && test_range_constRange(); // && ... other tests
+    bool res = testSimple() && test3d() && test_range_constRange(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
