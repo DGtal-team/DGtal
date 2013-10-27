@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/math/CBinner.h"
+#include "DGtal/kernel/CCommutativeRing.h"
 #include "DGtal/math/Statistic.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +51,7 @@ namespace DGtal
 {
 
   /**
-    Description of template class 'Histogram' <p> \brief Aim:
+    Description of template class 'RegularBinner' <p> \brief Aim:
     Represents an elementary functor that partitions quantities into
     regular intervals, given a range [\a min,\a max] range and a
     number \a nb of intervals (each interval is called a bin).
@@ -105,26 +107,30 @@ namespace DGtal
     hist.init( Histogram<double>::Scott, stat );
     hist.addValues( v.begin(), v.end() );
     hist.terminate();
-
+    // Displays the estimated probability density function
     for ( unsigned int i = 0; i < hist.size(); ++i )
       std::cout << i << " " << hist.pdf( i ) << std::endl;
     @endcode
 
-    @tparam TQuantity any model of CCommutativeRing.
+    @tparam TQuantity any model of CCommutativeRing listed in
+    NumberTraits and that can be castToDouble.
 
-    @tparam TBinner any model of functor TQuantity -> uint32_t that
-    puts a quantity into a bin. Default is RegularBinner<TQuantity>.
+    @tparam TBinner any model of CBinner that puts a quantity into a
+    bin. Default is RegularBinner<TQuantity>.
    */
   template < typename TQuantity,
              typename TBinner = RegularBinner< TQuantity > >
   class Histogram
   {
+  public:
+    BOOST_CONCEPT_ASSERT(( CCommutativeRing< TQuantity > ));
+    BOOST_CONCEPT_ASSERT(( CBinner< TBinner > ));
     // ----------------------- public types ------------------------------
   public:
     typedef TQuantity Quantity;
     typedef TBinner Binner;
     typedef Histogram< Quantity, Binner > Self;
-    typedef DGtal::uint32_t Bin;
+    typedef typename Binner::Bin Bin;
     typedef DGtal::uint64_t Size;
     typedef std::vector<Size> Container;
     typedef Container::const_iterator ConstIterator;
