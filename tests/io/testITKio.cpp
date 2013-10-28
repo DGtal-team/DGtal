@@ -34,6 +34,7 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/io/writers/ITKWriter.h"
+#include "DGtal/io/readers/ITKReader.h"
 using namespace DGtal;
 
 #include <string>
@@ -63,15 +64,36 @@ test_image(const string& filename)
     Image image(domain);
 
     typedef typename std::vector<typename Image::Value> Values;
-    Values values(image.domain().size());
-    for (typename Values::iterator iter=values.begin(), iter_end=values.end(); iter!=iter_end; iter++)
-        *iter = rand();
+    Values values;
+    for (typename Domain::Size kk=0; kk<domain.size(); kk++)
+        values.push_back(rand());
 
     std::copy(values.begin(), values.end(), image.range().outputIterator());
 
     trace.info() << image << endl;
     trace.info() << "writing " << filename << endl;
     if (!ITKWriter<Image>::exportITK(filename, image)) return false;
+
+    trace.info() << "reading " << filename << endl;
+    Image image_read = ITKReader<Image>::importITK(filename);
+    trace.info() << image_read << endl;
+
+    if (image_read.domain().lowerBound() !=  image.domain().lowerBound()) trace.warning() << "lowerBound mismatch!!" << endl;
+    if (image_read.domain().upperBound() !=  image.domain().upperBound()) trace.warning() << "upperBound mismatch!!" << endl;
+
+    typename Image::ConstRange::ConstIterator iter_read = image_read.constRange().begin();
+    typename Image::ConstRange::ConstIterator iter_read_end = image_read.constRange().end();
+    typename Values::const_iterator iter_value = values.begin();
+    typename Values::const_iterator iter_value_end = values.end();
+    while (iter_value!=iter_value_end && iter_read!=iter_read_end)
+    {
+        if ((*iter_read)!=(*iter_value)) {
+            trace.error() << "values mismatch" << endl;
+            return false;
+        }
+        iter_value++;
+        iter_read++;
+    }
 
     return true;
 }
@@ -103,7 +125,7 @@ bool testITKio()
 
   nbok += 3;
   trace.beginBlock ( "Testing 2D ITK image formats ..." );
-  nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_unsigned_char.jpg");
+  nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_unsigned_char.jpg"); nbok--; // jpg is lossy
   nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_unsigned_char.png");
   nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_unsigned_char.bmp");
   trace.endBlock();
