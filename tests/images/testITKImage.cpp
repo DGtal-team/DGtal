@@ -36,8 +36,7 @@
 #include <boost/foreach.hpp>
 
 //specific itk method
-#include <itkBinaryThresholdImageFilter.h>
-#include <itkImageFileWriter.h>
+#include <itkExtractImageFilter.h>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -131,7 +130,9 @@ bool testITKMethod()
 
   typedef ImageContainerByITKImage<Domain, Integer> Image;
 
-  Domain domain(Point(0,0), Point(25,25));
+  Point a ( 0, 0 );
+  Point b ( 9, 9);
+  Domain domain(a, b);
 
   Image myImage(domain);
   trace.info() << myImage << std::endl;
@@ -150,50 +151,48 @@ bool testITKMethod()
     trace.warning() << myImage(it) << " ";
   trace.info() << endl;
 
-  //We construct an ITK pipeline
-  typedef itk::BinaryThresholdImageFilter< Image::ITKImage, Image::ITKImage> Filter;
-  Filter::Pointer filter = Filter::New();
 
-  filter->SetInput( myImage.getITKImagePointer() );
-  filter->SetOutsideValue( 0 );
-  filter->SetInsideValue( 10 );
-  filter->SetLowerThreshold( 34 );;
-  filter->SetUpperThreshold( 400 );;
-  filter->Update();
+  // We define a cropFilter
+  typedef itk::ExtractImageFilter< Image::ITKImage, Image::ITKImage > CropFilter;
 
-  //We create a DGtal::Image from a pointer to the pipeline output
-  Image::ITKImagePointer handleOut = filter->GetOutput();
-  Image myImageOut(handleOut);
+  // Crop filter region
+  Image::ITKImage::SizeType size;
+  size[0] = 5;
+  size[1] = 5;
 
-  //We create another image
-  Image myImageOutCopy(handleOut);
+  Image::ITKImage::IndexType index;
+  index[0] = 2;
+  index[1] = 2;
 
-  //And we copy the result between the two containers with DGTal
-  std::copy(myImageOut.constRange().begin(), myImageOut.constRange().end(), myImageOutCopy.range().outputIterator());
+  Image::ITKImage::RegionType regionToExtract(index,size);
 
-  //We trace the result of the thresholding
+  // Crop filter process
+  CropFilter::Pointer cropFilter = CropFilter::New();
+  cropFilter->SetInput( myImage.getITKImagePointer() );
+  cropFilter->SetExtractionRegion( regionToExtract  );
+  cropFilter->Update();
+
+  // Pointer to the filter output
+  Image::ITKImagePointer handleOut = cropFilter->GetOutput();
+  Image myImageOut ( handleOut );
+
+
   trace.info() << "Output image=";
-
-  nbVal = 0;
-  for (Image::ConstIterator it = myImageOutCopy.begin(), itend = myImageOutCopy.end();
+  
+  for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
        it != itend;
        ++it)
   {
-    trace.warning() << myImageOutCopy(it) << " ";
-    if (myImageOutCopy(it)==10) nb++;
-    if (nbVal>=34 and nbVal<=400) nbok++;
-    nbVal++;
+    nbok += (it.Value() == (it.GetIndex()[1]*10 + it.GetIndex()[0]));
+    nb++;
+    trace.warning() << it.Value() << "(" << (it.GetIndex()[1]*10 + it.GetIndex()[0]) << ")" << " ";
   }
   trace.info() << endl;
 
-  trace.info() << "(" << nbok << "/" << nb << ") "
-  << "true == true" << std::endl;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "true == true" << std::endl;
   trace.endBlock();
 
-
-
-
-  return nbok == nb;
+  return nbok == 25 && nb == 25;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
