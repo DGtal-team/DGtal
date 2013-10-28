@@ -46,12 +46,13 @@ namespace DGtal {
 
 This package gathers various mathematical subpackages and modules. For
 now, it consists essentially in a module for defining multivariate
-polynomials.
+polynomials, and some classes for simple statistic analysis.
 
 @b Modules 
 - \ref modulePolynomial (Jacques-Olivier Lachaud, Felix Fontein)
 
 @b Package @b Concepts @b Overview
+ - \ref packageMathConcepts
 
 @b Related @b documentation @b pages
 
