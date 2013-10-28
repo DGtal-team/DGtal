@@ -50,6 +50,7 @@
 #include "DGtal/arithmetic/IntegerComputer.h"
 
 #include "DGtal/geometry/curves/ArithmeticalDSSKernel.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -367,47 +368,6 @@ namespace DGtal
      * NB: in O( log( max( |@a myA |,| @a myB | ) ) )
      */
     bool isValid() const;
-
-    /**
-     * Checks the validity of the DSS when it contains only one point.
-     * @return 'true' if the DSS is valid, 'false' otherwise.
-     * @see isValid
-     */
-    bool checkOnePoint() const;
-
-    /**
-     * Checks the consistency between the parameters and 
-     * the leaning points: upper leaning points should
-     * have a remainder equal to @a myMu while lower 
-     * leaning points should have a remainder equal to 
-     * @a myMu + @a myOmega -1
-     * @return 'true' if this property is fulfilled, 'false' otherwise.
-     * @see isValid
-     */
-    bool checkLeaningPointsRemainder() const;
-
-    /**
-     * Checks whether the difference between two extremal
-     * upper (resp. lower) leaning points is equal to the 
-     * direction vector ( @a myA, @a myB ) scaled by 
-     * an integer. 
-     * @param fromFirstToLast vector starting from the 
-     * first upper (resp. lower) leaning point and 
-     * pointing to the last upper (resp. lower) leaning point. 
-     * @return 'true' if this property if fulfilled, 'false' otherwise.
-     * @see isValid
-     *
-     * NB: in logarithmic time
-     */
-    bool checkLeaningPointsAndSlope(const Vector& fromFirstToLast) const;
-
-    /**
-     * Checks the shift vector and the DSS steps, 
-     * which depend on the octant/quadrant of the DSS.
-     * @return 'true' if this property if fulfilled, 'false' otherwise.
-     * @see isValid
-     */
-    bool checkShiftAndSteps() const;
 
     /**
      * @return a parameter (y-component of the direction vector)

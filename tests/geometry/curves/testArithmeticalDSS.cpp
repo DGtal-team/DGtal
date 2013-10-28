@@ -488,7 +488,7 @@ bool updateTest()
 	      newPointToBack+dss0.steps().second, 
 	      newPointToFront-dss0.steps().second, 
 	      dss0.Uf(), dss0.Ul(), 
-	      dss0.Lf(), dss0.Ll() ); 
+	      dss0.Lf(), dss0.Ll()+Vector(8,5) ); 
       extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 5 ); 
     }
 
@@ -502,7 +502,7 @@ bool updateTest()
 	      newPointToBack+dss0.steps().second, 
 	      newPointToFront-dss0.steps().second, 
 	      dss0.Uf(), dss0.Ul(), 
-	      dss0.Lf(), dss0.Ll() ); 
+	      dss0.Lf()-Vector(8,5), dss0.Ll() ); 
       extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 7 );
     }
 
@@ -516,7 +516,7 @@ bool updateTest()
 	      newPointToBack+dss0.steps().first, 
 	      newPointToFront-dss0.steps().first, 
 	      dss0.Uf(), dss0.Ul(), 
-	      dss0.Lf(), dss0.Ll() ); 
+	      dss0.Lf()-Vector(8,5), dss0.Ll() ); 
       extensionTest( dss, newPointToFront, newPointToBack, nbok, nb, 6 ); 
     }
 
