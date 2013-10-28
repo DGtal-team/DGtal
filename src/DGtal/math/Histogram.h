@@ -42,8 +42,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Clone.h"
 #include "DGtal/math/CBinner.h"
-#include "DGtal/kernel/CCommutativeRing.h"
+#include "DGtal/kernel/CEuclideanRing.h"
 #include "DGtal/math/Statistic.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -55,6 +56,10 @@ namespace DGtal
     Represents an elementary functor that partitions quantities into
     regular intervals, given a range [\a min,\a max] range and a
     number \a nb of intervals (each interval is called a bin).
+
+    Model of CBinner.
+
+    @tparam TQuantity any number type, model of CEuclideanRing.
   */
   template <typename TQuantity>
   struct RegularBinner {
@@ -62,29 +67,47 @@ namespace DGtal
     typedef RegularBinner< Quantity > Self;
     typedef DGtal::uint32_t Bin;
 
-    Quantity myMin;
-    Quantity myMax;
-    Bin myNb; 
-    Quantity myWidth;
+    Quantity myMin; /**< any value below is considered the same. */
+    Quantity myMax; /**< any value above is considered the same. */
+    Bin myNb;       /**< the number of bins. */
+    Quantity myWidth;/**< the width of each bin. */
 
-    RegularBinner( const Quantity & min, const Quantity & max, Bin nb )
-      : myMin( min ), myMax( max ), myNb( nb )
+    /**
+       Creates a regular binner that place quantities in range [\a
+       min,\a max] in \a n bins (numbered from 0 to \a n-1), such
+       that all bins have equal width \f$\frac{max-min}{n}.
+
+       @param min any quantity smaller than \a min falls into bin 0.
+       @param max any quantity greater than \a max falls into bin \a n-1.
+       @param n the number of bins.
+       @pre \a n>0.
+    */
+    RegularBinner( const Quantity & min, const Quantity & max, Bin n )
+      : myMin( min ), myMax( max ), myNb( n )
     {
       ASSERT( max > min );
-      ASSERT( nb > 0 );
-      myWidth = ( max - min ) / static_cast<Quantity>( nb );
+      ASSERT( n > 0 );
+      myWidth = ( max - min ) / static_cast<Quantity>( n );
     }
 
+    /**
+       @return the number of bins of this binner.
+    */
     inline Bin size() const
     { 
       return myNb;
     }
 
+    /**
+       Places the quantity \a q into the correct bin.
+       @param q any quantity
+       @return the associated bin (integer in [0,\c size()-1].
+    */
     inline Bin operator()( const Quantity & q ) const
     {
-      if ( q <= myMin )       return static_cast<Bin>( 0 );
-      else if ( q >= myMax ) return myNb - static_cast<Bin>( 1 );
-      else return static_cast<Bin>( ( q - myMin ) / myWidth );
+      if ( q <= myMin )      return NumberTraits<Bin>::ZERO;
+      else if ( q >= myMax ) return myNb - NumberTraits<Bin>::ONE;
+      else return static_cast<Bin>( floor( ( q - myMin ) / myWidth ) );
     }
   };
 
@@ -99,12 +122,12 @@ namespace DGtal
     @code
     std::vector<double> v; 
     ...
-    Statistic<double> stat;
-    stat.addValues( v.begin(), v.end() );
-    stat.terminate(); // stat are computed.
+    Statistic<double> stats;
+    stats.addValues( v.begin(), v.end() );
+    stats.terminate(); // stats are computed.
 
     Histogram<double> hist;
-    hist.init( Histogram<double>::Scott, stat );
+    hist.init( Histogram<double>::Scott, stats );
     hist.addValues( v.begin(), v.end() );
     hist.terminate();
     // Displays the estimated probability density function
@@ -112,7 +135,7 @@ namespace DGtal
       std::cout << i << " " << hist.pdf( i ) << std::endl;
     @endcode
 
-    @tparam TQuantity any model of CCommutativeRing listed in
+    @tparam TQuantity any model of CEuclideanRing listed in
     NumberTraits and that can be castToDouble.
 
     @tparam TBinner any model of CBinner that puts a quantity into a
@@ -123,8 +146,10 @@ namespace DGtal
   class Histogram
   {
   public:
-    BOOST_CONCEPT_ASSERT(( CCommutativeRing< TQuantity > ));
+    BOOST_CONCEPT_ASSERT(( CEuclideanRing< TQuantity > ));
     BOOST_CONCEPT_ASSERT(( CBinner< TBinner > ));
+    BOOST_STATIC_ASSERT(( boost::is_same< TQuantity, typename TBinner::Quantity >::value ));
+
     // ----------------------- public types ------------------------------
   public:
     typedef TQuantity Quantity;
@@ -164,7 +189,7 @@ namespace DGtal
     /**
      * Initialization from Binner. The binner is cloned into this object.
      */
-    void init( const Binner & binner );
+    void init( Clone<Binner> binner );
 
     /**
        Initialization from a statistic (min, max, samples, variance
