@@ -186,8 +186,11 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::negate() const
 {
-  return DGtal::ArithmeticalDSS<TC, TI, adj>(-myA, -myB, -(myMu+myOmega-1), myOmega, 
-					     myL, myF, myLl, myLf, myUl, myUf);  
+  if ( (myA == 0)&&(myB == 0) )
+    return DGtal::ArithmeticalDSS<TC, TI, adj>(0, 0, 0, 0, myL, myF, myLl, myLf, myUl, myUf);      
+  else 
+    return DGtal::ArithmeticalDSS<TC, TI, adj>(-myA, -myB, -(myMu+myOmega-1), myOmega, 
+					       myL, myF, myLl, myLf, myUl, myUf);  
 }
 
 //-----------------------------------------------------------------------------
@@ -768,75 +771,6 @@ extendBackward( const Point& aNewPoint )
   return flag;  
 }
 
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-template <typename TIterator>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
-retract( Point& aFirst, 
-	 TIterator aIt,
-	 const Point& aLast, 
-	 Point& aBezout, 
-	 Point& aLeaningPoint, 
-	 Point& aFirstUpper, 
-	 Point& aLastUpper, 
-	 Point& aFirstLower,
-	 Point& aLastLower)
-{
-  //next point computation
-  ++aIt; 
-  Point next = *aIt; 
-  //if the next point is the last one
-  if (next == aLast)
-    {
-      aFirst = next; 
-      aFirstUpper = next; 
-      aFirstLower = next; 
-      ASSERT( aLastUpper == next ); 
-      ASSERT( aLastLower == next ); 
-      setSlope(0,0); 
-      setMuOmega(0,0);
-      ASSERT( mySteps.second == Vector(0,0) ); 
-      mySteps.first = Vector(0,0); 
-      myShift = Vector(0,0); 
-      return false; 
-    }
-  //otherwise
-  else
-    {
-      bool res = false; 
-      //update of the leaning points
-      if (aFirst == aFirstUpper)
-	{
-	  aBezout = aFirstUpper + myShift; 
-	  aLeaningPoint = aFirstLower; 
-	  res = updateLeaningPoints( Vector(myB, myA), 
-				     next, aLast, 
-				     aBezout, 
-				     aFirstLower, aLastLower, 
-				     aFirstUpper, aLastUpper );
-	}
-      if (aFirst == aFirstLower) 
-	{
-	  aBezout = aFirstLower - myShift; 
-	  aLeaningPoint = aFirstUpper; 
-	  res = updateLeaningPoints( Vector(myB, myA),
-				     next, aLast, 
-				     aBezout, 
-				     aFirstUpper, aLastUpper, 
-				     aFirstLower, aLastLower ); 
-	}
-      //update of the first point
-      aFirst = next; 
-
-      return res; 
-
-    }
-}
-
-
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
@@ -844,18 +778,14 @@ bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
 retractForward()
 {
-  if (myF == myL)
-    return false; 
-  else 
-    {
-      Point bezout, leaningPoint; 
-      if ( retract (myL, rbegin(), myF, 
-		    bezout, leaningPoint, 
-		    myUl, myUf, myLl, myLf ) )
-	updateParameters( bezout - leaningPoint ); 
-     
-      return true; 
-    }
+  //call retractBackward to the opposite
+  DGtal::ArithmeticalDSS<TC, TI, adj> opposite = negate();
+  bool hasBeenRetracted = opposite.retractBackward();
+ 
+  if (hasBeenRetracted) //update '*this' if required
+    *this = opposite.negate(); 
+
+  return hasBeenRetracted;  
 } 
 
 //-----------------------------------------------------------------------------
@@ -869,13 +799,59 @@ retractBackward()
     return false; 
   else 
     {
-      Point bezout, leaningPoint; 
-      if ( retract (myF, begin(), myL, 
-		    bezout, leaningPoint, 
-		    myUf, myUl, myLf, myLl ) )
-	updateParameters( leaningPoint - bezout ); 
 
-      return true; 
+      //next point computation
+      Point next = *++begin(); 
+      //if the next point is the last one
+      if (next == myL)
+	{
+	  myF = next; 
+	  myUf = next; 
+	  myLf = next; 
+	  ASSERT( myUl == next ); 
+	  ASSERT( myLl == next ); 
+	  setSlope(0,0); 
+	  setMuOmega(0,0);
+	  ASSERT( mySteps.second == Vector(0,0) ); 
+	  mySteps.first = Vector(0,0); 
+	  myShift = Vector(0,0); 
+	  return true; 
+	}
+      //otherwise
+      else
+	{
+	  //points used to update the DSS
+	  Point bezoutPoint, firstLeaningPoint; 
+	  
+	  //leaning points / parameters update
+	  if (myF == myUf)
+	    {
+	      bezoutPoint = myUf + myShift; 
+	      if ( updateLeaningPoints( Vector(myB, myA), 
+					next, myL, 
+					bezoutPoint, 
+					myLf, myLl, 
+					myUf, myUl ) )
+		updateParameters( myLf - bezoutPoint ); 
+	      
+	    }
+	  if (myF == myLf) 
+	    {
+	      bezoutPoint = myLf - myShift; 
+	      if ( updateLeaningPoints( Vector(myB, myA),
+					next, myL, 
+					bezoutPoint, 
+					myUf, myUl, 
+					myLf, myLl ) )
+		updateParameters( myUf - bezoutPoint ); 
+	    }
+
+	  //first point update
+	  myF = next; 
+
+	  return true; 
+	}
+
     }
 } 
 

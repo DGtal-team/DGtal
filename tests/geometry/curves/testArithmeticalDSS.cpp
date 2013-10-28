@@ -548,7 +548,6 @@ bool updateTest()
       extensionTest( dss, Point(2,0), Point(-1,0), nbok, nb, 2 ); 
     }
 
-  ///////////////////////////////////////////////////////////////////// TODO
   if (nbok == nb)
     {
       trace.info() << "second step (above)" << std::endl;

@@ -221,10 +221,12 @@ int main( int argc, char** argv )
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(-1,-1)
     ; 
 
+#ifdef WITH_BIGINTEGER
   res = res 
     && test<DGtal::BigInteger, DGtal::BigInteger, 8>(8,5) 
     && test<DGtal::BigInteger, DGtal::BigInteger, 4>(8,5)
     ; 
+#endif
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
