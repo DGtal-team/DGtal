@@ -15,22 +15,26 @@
  **/
 
 /**
- * @file   dgtalBoard3DTo2D-1-points.cpp
- * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
- * @date   mercredi 25 mai 2011
- * 
- * @brief
+ * @file Board3D-6-clipping.cpp
+ * @ingroup examples/3dboard
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * Simple example of class Board3DTo2D.
+ * @date 2011/19/03
+ *
+ * Simple example of class Board3D.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/boards/Board3DTo2D.h"
+#include "DGtal/io/boards/Board3D.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/shapes/Shapes.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -42,29 +46,32 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main()
+int main( int argc, char** argv )
 {
 
-  Point p1( 0, 0, 0 );
-  Point p2( 5, 5 ,5 );
-  Point p3( 2, 3, 4 );
-  Domain domain( p1, p2 );
-  //! [ExampleBoard3DTo2D]
-  Board3DTo2D<Space, KSpace> board;
-  board << domain;  
-  board << p1 << p2 << p3;
-  
-  board << CameraPosition(2.500000, 2.500000, 16.078199)
-        << CameraDirection(0.000000, 0.000000, -1.000000)
-        << CameraUpVector(0.000000, 1.000000, 0.000000);
-  board << CameraZNearFar(4.578200, 22.578199);
+ Board3D<> board;
 
-  board << SetMode3D(board.className(), "WireFrameMode");
-  board.saveCairo("dgtalBoard3DTo2D-1-points.png", Board3DTo2D<Space, KSpace>::CairoPNG, 600*2, 400*2);
-  //! [ExampleBoard3DTo2D]
+ Point p1( 0, 0, 0 );
+ Point p2( 20, 20, 20 );
+ Domain domain(p1, p2);
+ DigitalSet shape_set( domain );
+ 
+ Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+ 
+ board << SetMode3D( shape_set.className(), "Both" );
+ board << shape_set;
+ board << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
+ board <<  SetMode3D( p1.className(), "Paving" );
+ 
+ board << ClippingPlane(1,0,0,-4.9);
+ board << ClippingPlane(0,1,0.3,-10); 
+
+ board.saveOBJ("board3D-6-clipping.obj");
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
 
 
 

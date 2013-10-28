@@ -1,3 +1,4 @@
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -15,59 +16,67 @@
  **/
 
 /**
- * @file viewer3D-2-sets.cpp
- * @ingroup examples/3dViewer
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @file dgtalBoard2D-1-points.cpp
+ * @ingroup Examples
+ * @author Aline MARTIN (\c aline.martin@insa-lyon.fr )
  *
- * @date 2011/19/03
+ * @date 2013/06/16
  *
- * Simple example of class Viewer3D.
+ * An example file named dgtalBoard3D-1-points.
  *
- * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
+#include "DGtal/io/boards/Board3D.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace Z3i;
-
+using namespace DGtal::Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
+  trace.beginBlock ( "Example dgtalBoard3D-1-points" );
 
-  //! [ExampleViewer3DSets]
- QApplication application(argc,argv);
- typedef  Viewer3D<>  MyViewer;
- MyViewer viewer;
- viewer.show();
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
- Domain domain( p1, p2 );
- viewer << domain;
+  Point p1( -3, -2, 0 );
+  Point p2( 7, 3 , 6);
+  Point p3( -1, -1, -1);
+  Point p4(-1, -1, 0 );
+  Point p5( 5, 2 , 4);
+  Point p6(-3, -6, 0 );
+  Point p7( 5, 2 , 3);
 
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+  Domain domain(p4, p5);
+  DigitalSet shape_set( domain );
+  shape_set.insertNew(p6);
+  shape_set.insertNew(p7);
 
- shape_set.erase(Point(3,3,3));
- shape_set.erase(Point(6,6,6));
- viewer << shape_set << MyViewer::updateDisplay;
- //! [ExampleViewer3DSets]
- return application.exec();
+  //! [ExampleBoard3DExport]
+  Board3D<> board;
+  board << SetMode3D(domain.className(), "Paving");
+  board << p1 << p2 << p3;
+  board << shape_set;
+  board.saveOBJ("dgtalBoard3D-1-points.obj");
+  //! [ExampleBoard3DExport]
+
+  Board3D<> board2;
+  board2 << SetMode3D(domain.className(), "Paving");
+  board2 << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  board2 << p1 ;
+  board2 << CustomColors3D(Color(0, 255,0),Color(0, 0,255));
+  board2 << p2 << p3;
+  board2.saveOBJ("dgtalBoard3D-1bis-points.obj");
+
+
+
+  trace.endBlock();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
