@@ -81,6 +81,7 @@ namespace DGtal
     ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ITKImagePointer &aRef)
         :  myITKImagePointer(aRef)
     {
+        updateDomain();
     }
 
     ///////////////////////////////////////////////////////////////////////////////
