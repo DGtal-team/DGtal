@@ -52,7 +52,6 @@
 #include "DGtal/kernel/domains/CDomain.h"
 
 #include "DGtal/images/DefaultConstImageRange.h"
-#include <tr1/tuple>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -70,7 +69,7 @@ namespace DGtal
  * original Image given in argument.
  *
  * ConstImageAdapter class is also a model of CConstImage.
- * 
+ *
  * Caution :
  *  - the type of value of Point for the ConstImageAdapter Domain must
  * also be the same than the type of value of Point for the original
@@ -82,23 +81,23 @@ namespace DGtal
  * @tparam TNewValue the type of value return by the functor f.
  * @tparam TFunctorV the functor f that transforms the value into another one during reading process
  *
- * The values associated to accessing the point values are adapted  
- * with a functor g and a functor f given at construction so that 
- * operator() calls f(img(g(aPoint))), instead of calling directly 
+ * The values associated to accessing the point values are adapted
+ * with a functor g and a functor f given at construction so that
+ * operator() calls f(img(g(aPoint))), instead of calling directly
  * operator() of the underlying image img.
- * 
- * Here is the construction of a simple ConstImageAdapter that 
- * is a thresholded view of the initial scalar image: 
+ *
+ * Here is the construction of a simple ConstImageAdapter that
+ * is a thresholded view of the initial scalar image:
  *
  * @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
  *
  * NB: the underlying image as well as the 2 functors
  * are stored in the adapter as aliasing pointer
- * in order to avoid copies.  
- * The pointed objects must exist and must not be deleted 
+ * in order to avoid copies.
+ * The pointed objects must exist and must not be deleted
  * during the use of the adapter
  */
-template <typename TImageContainer, 
+template <typename TImageContainer,
 	  typename TNewDomain,
 	  typename TFunctorD,
 	  typename TNewValue, typename TFunctorV>
@@ -108,23 +107,23 @@ class ConstImageAdapter
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self; 
+    typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self;
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CConstImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( CDomain<TNewDomain> ));
-   
+
     typedef TNewDomain Domain;
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
 
-  
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> )); 
+
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-  
+
     typedef DefaultConstImageRange<Self> ConstRange;
 
     // ----------------------- Standard services ------------------------------
@@ -207,11 +206,11 @@ public:
     Value operator()(const Point & aPoint) const
     {
         ASSERT(this->domain().isInside(aPoint));
-        
+
         return myFV->operator()(myImagePtr->operator()(myFD->operator()(aPoint)));
     }
-    
-    
+
+
     /////////////////// API //////////////////
 
     /**
@@ -229,7 +228,7 @@ public:
         return (myImagePtr->isValid() );
     }
 
-  
+
     /**
      * @return the style name used for drawing this object.
      */
@@ -255,18 +254,18 @@ private:
         trace.warning() << "ConstImageAdapter Ctor default " << std::endl;
 #endif
     }
-    
+
     // ------------------------- Private Datas --------------------------------
 protected:
 
     /// Alias on the image container
     const ImageContainer * myImagePtr;
-    
+
     /**
      * The image SubDomain
      */
     const Domain *mySubDomainPtr;
-    
+
     /**
      * Aliasing pointer on the underlying Domain functor
      */
