@@ -78,45 +78,14 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::ArithmeticalDSS(const Point& aF, const Point& aL, 
-		  const bool& isOnTheUpperLine)
+		  const bool& areOnTheUpperLine)
 {
-  //first and last points
-  myF = aF; 
-  myL = aL; 
+  typedef DGtal::ArithmeticalDSSFactory<TC, TI, adj> Factory; 
 
-  if (myF == myL)
-    {
-      //leaning points 
-      myUf = myF; 
-      myUl = myL; 
-      myLf = myF; 
-      myLl = myL; 
-
-      //(a, b, mu, omega) parameters
-      setSlope(0, 0); 
-      setMuOmega(remainder( myUf ), 0); 
-    }
+  if (areOnTheUpperLine)
+    *this = Factory::createPattern(aF, aL); 
   else 
-    {
-      if (isOnTheUpperLine)
-	{
-	  //upper leaning points 
-	  myUf = myF; 
-	  myUl = myL; 
-	  //other leaning points and other parameters
-	  setPattern(myUf, myUl, myLf, myLl, -1);
-	  setMuOmega(remainder( myUf ), remainder( myShift )); 
-	}
-      else 
-	{	
-	  //lower leaning points 
-	  myLf = myF; 
-	  myLl = myL; 
-	  //other leaning points and other parameters
-	  setPattern(myLf, myLl, myUf, myUl, 1);
-	  setMuOmega(remainder( myUf ), remainder( myShift )); 
-	}
-    }
+    *this = Factory::createReversedPattern(aF, aL); 
 }
 
 //-----------------------------------------------------------------------------
