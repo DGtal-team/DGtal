@@ -51,6 +51,7 @@
 
 #include "DGtal/geometry/curves/ArithmeticalDSSKernel.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -279,7 +280,7 @@ namespace DGtal
      *
      * @param aF the first point
      * @param aL the last point
-     * @param isOnTheUpperLine boolean equal to 'true' if the
+     * @param areOnTheUpperLine boolean equal to 'true' if the
      * two given end points are upper leaning points (pattern case, default), 
      * 'false' if they are lower leaning points (reversed pattern case).  
      *
@@ -287,7 +288,7 @@ namespace DGtal
      * starting from @a aF and pointing to @a aL
      */
     ArithmeticalDSS(const Point& aF, const Point& aL, 
-		    const bool& isOnTheUpperLine = true);
+		    const bool& areOnTheUpperLine = true);
 
     /**
      * Construction from a range of iterator on points. 

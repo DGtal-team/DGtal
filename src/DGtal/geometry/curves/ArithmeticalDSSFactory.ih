@@ -1,0 +1,145 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ArithmeticalDSSFactory.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/10/28
+ *
+ * Implementation of inline methods defined in ArithmeticalDSSFactory.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+
+#include "ArithmeticalDSSKernel.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+DGtal::ArithmeticalDSS<TC,TI,adj>
+DGtal::ArithmeticalDSSFactory<TC,TI,adj>::createPattern(const Point& aF, const Point& aL)
+{
+
+  //specific case: a and b are both null
+  if (aF == aL)
+    {
+      return DGtal::ArithmeticalDSS<TC,TI,adj>(0, 0, 0, 0, aF, aL, aF, aL, aF, aL); 
+    }
+  //otherwise
+  else 
+    {
+
+      //upper leaning points 
+      Point Uf, Ul, Lf, Ll; 
+      Uf = aF; 
+      Ul = aL; 
+
+      //irreductible direction vector
+      Vector u2 = aL - aF; 
+      IntegerComputer<Coordinate> computer; 
+      Coordinate gcd = computer.gcd(u2[0], u2[1]); 
+      Vector u = Vector(u2[0]/gcd, u2[1]/gcd);
+
+      //shift
+      Vector s = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(u[1], u[0]); 
+
+      //steps
+      Steps steps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(u[1], u[0]); 
+
+      if (steps.second == Vector(0,0))
+	{ //specific case: a or b is null
+	  //lower leaning points
+	  Lf = Uf;  
+	  Ll = Ul;  
+	}
+      else 
+	{ //otherwise
+	  //Bezout vector
+	  Integer signedUnity = -1; 
+	  Vector v = bezoutVector(u[1], u[0], signedUnity); 
+	  //lower leaning points
+	  Lf = Uf + v - s*signedUnity; 
+	  Ll = Uf + u*(gcd-1) + v - s*signedUnity; 
+	}
+      
+      //(a, b, mu, omega) parameters
+      Integer a, b, mu, omega; 
+      a = u[1]; 
+      b = u[0]; 
+      mu = a * static_cast<Integer>(Uf[0]) - b * static_cast<Integer>(Uf[1]);
+      omega = a * static_cast<Integer>(s[0]) - b * static_cast<Integer>(s[1]);
+
+      return DGtal::ArithmeticalDSS<TC,TI,adj>(a, b, mu, omega, aF, aL, Uf, Ul, Lf, Ll);
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+DGtal::ArithmeticalDSS<TC,TI,adj>
+DGtal::ArithmeticalDSSFactory<TC,TI,adj>::createReversedPattern(const Point& aF, const Point& aL)
+{
+  DGtal::ArithmeticalDSS<TC,TI,adj> pattern = createPattern(aL, aF); 
+  return pattern.negate(); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSSFactory<TC,TI,adj>::Vector
+DGtal::ArithmeticalDSSFactory<TC,TI,adj>::
+bezoutVector(const Coordinate& aA, 
+	     const Coordinate& aB, 
+	     const Coordinate& aR)
+{
+  ASSERT( (aR == 1)||(aR == -1) ); 
+
+  //compute the shortest Bezout vector
+  IntegerComputer<Coordinate> computer; 
+  Vector v = computer.extendedEuclid2(aA, -aB, aR ); 
+  ASSERT( (aA*v[0]-aB*v[1]) == aR );
+ 
+  //compute the one whose component
+  //have a sign equal to the direction
+  //vector components
+  if ( (aB >= 0)&&(v[0] < 0) )
+    v += Vector(aB,aA); 
+  else if ( (aB < 0)&&(v[0] >= 0) )
+    v += Vector(aB,aA); 
+  else if ( ( aA >= 0 )&&(v[1] < 0) )
+    v += Vector(aB,aA);
+  else if ( ( aA < 0 )&&(v[1] >= 0) )
+    v += Vector(aB,aA);
+  ASSERT( (aA*v[0]-aB*v[1]) == aR );
+  ASSERT( (( aA >= 0 )&&(v[1] >= 0))||(( aA < 0 )&&(v[1] < 0)) ); 
+  ASSERT( (( aB >= 0 )&&(v[0] >= 0))||(( aB < 0 )&&(v[0] < 0)) ); 
+
+  return v; 
+}
+
+
+

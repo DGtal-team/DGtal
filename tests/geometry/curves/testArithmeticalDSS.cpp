@@ -33,6 +33,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/base/CConstBidirectionalRange.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -825,82 +826,75 @@ int main( int argc, char** argv )
 
   {   //range services for 8 adjacency
     typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8; 
+    typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory; 
     typedef DSS8::Point Point; 
 
-    DSS8 dss6(Point(0,0), Point(5,-8), true); 
-    DSS8 dss7(Point(0,0), Point(8,-5), true); 
-    DSS8 dss10(Point(0,0), Point(1,0), true); 
-    DSS8 dss11(Point(0,0), Point(-1,0), true); 
-    DSS8 dss12(Point(0,0), Point(0,1), true); 
-    DSS8 dss13(Point(0,0), Point(0,-1), true); 
-    DSS8 dss14(Point(0,0), Point(1,1), true); 
-    DSS8 dss15(Point(0,0), Point(-1,1), true); 
-    DSS8 dss16(Point(0,0), Point(1,-1), true); 
-    DSS8 dss17(Point(0,0), Point(-1,-1), true); 
-
     res = res 
-      && rangeTest( DSS8(Point(0,0), Point(8,5), true) )
-      && rangeTest( DSS8(Point(0,0), Point(5,8), true) )
-      && rangeTest( DSS8(Point(0,0), Point(-5,8), true) )
-      && rangeTest( DSS8(Point(0,0), Point(-8,5), true) )
-      && rangeTest( DSS8(Point(0,0), Point(-8,-5), true) )
-      && rangeTest( DSS8(Point(0,0), Point(-5,-8), true) )
-      && rangeTest(dss6)
-      && rangeTest(dss7)
-      && rangeTest(dss10)
-      && rangeTest(dss11)
-      && rangeTest(dss12)
-      && rangeTest(dss13)
-      && rangeTest(dss14)
-      && rangeTest(dss15)
-      && rangeTest(dss16)
-      && rangeTest(dss17)
+      && rangeTest( Factory::createPattern(Point(0,0), Point(8,5)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(5,8)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-5,8)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-8,5)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-8,-5)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-5,-8)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(5,-8)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(8,-5)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(1,0)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-1,0)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(0,1)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(0,-1)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(1,1)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-1,1)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(1,-1)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-1,-1)) )
       ;
   }
 
 
   {  //range services for 4 adjacency
     typedef DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::int32_t, 4> DSS4; 
+    typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t, DGtal::int32_t, 4> Factory; 
     typedef DSS4::Point Point; 
     
     res = res 
-      && rangeTest( DSS4(Point(0,0), Point(8,5), true) )
-      && rangeTest( DSS4(Point(0,0), Point(5,8), true) )
-      && rangeTest( DSS4(Point(0,0), Point(-8,-5), true) )
-      && rangeTest( DSS4(Point(0,0), Point(-5,-8), true) )
-      && rangeTest( DSS4(Point(0,0), Point(5,-8), true) )
-      && rangeTest( DSS4(Point(0,0), Point(8,-5), true) )
-      && rangeTest( DSS4(Point(0,0), Point(1,0), true) )
-      && rangeTest( DSS4(Point(0,0), Point(-1,0), true) )
-      && rangeTest( DSS4(Point(0,0), Point(0,1), true) )
-      && rangeTest( DSS4(Point(0,0), Point(0,-1), true) )
-      && rangeTest( DSS4(Point(0,0), Point(8,5), false) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(8,5)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(5,8)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-8,-5)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-5,-8)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(5,-8)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(8,-5)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(1,0)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(-1,0)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(0,1)) )
+      && rangeTest( Factory::createPattern(Point(0,0), Point(0,-1)) )
+      && rangeTest( Factory::createReversedPattern(Point(0,0), Point(8,5)) )
       ;
   }
 
   {
     typedef DGtal::ArithmeticalDSS<DGtal::int32_t> DSS8; 
+    typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t> Factory; 
     typedef DSS8::Point Point; 
     res = res 
-      && compatibleStepsTest( DSS8( Point(0,0), Point(5,0), true ) )
-      && compatibleStepsTest( DSS8( Point(0,0), Point(-5,0), true ) )
-      && compatibleStepsTest( DSS8( Point(0,0), Point(0,5), true ) )
-      && compatibleStepsTest( DSS8( Point(0,0), Point(0,-5), true ) )
-      && compatibleStepsTest( DSS8( Point(0,0), Point(5,5), true ) )
-      && compatibleStepsTest( DSS8( Point(0,0), Point(5,-5), true ) )
-      && compatibleStepsTest( DSS8( Point(0,0), Point(-5,5), true ) )
-      && compatibleStepsTest( DSS8( Point(0,0), Point(-5,-5), true ) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(5,0)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(-5,0)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(0,5)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(0,-5)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(5,5)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(5,-5)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(-5,5)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(-5,-5)) )
       ; 
   }
 
   {
     typedef DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::int32_t, 4> DSS4; 
+    typedef DGtal::ArithmeticalDSSFactory<DGtal::int32_t, DGtal::int32_t, 4> Factory; 
     typedef DSS4::Point Point; 
     res = res 
-      && compatibleStepsTest( DSS4( Point(0,0), Point(5,0), true ) )
-      && compatibleStepsTest( DSS4( Point(0,0), Point(-5,0), true ) )
-      && compatibleStepsTest( DSS4( Point(0,0), Point(0,5), true ) )
-      && compatibleStepsTest( DSS4( Point(0,0), Point(0,-5), true ) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(5,0)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(-5,0)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(0,5)) )
+      && compatibleStepsTest( Factory::createPattern(Point(0,0), Point(0,-5)) )
       ; 
   }
 
