@@ -63,7 +63,7 @@ bool testCheckImageConcept()
   typedef ImageContainerBySTLVector<Domain, int> ImageMap;
  
 #ifdef WITH_ITK
- typedef experimental::ImageContainerByITKImage<Domain, int> ImageITK;
+ typedef ImageContainerByITKImage<Domain, int> ImageITK;
 #endif
 
   //HashTree is not (yet) a model of CImage
@@ -72,7 +72,7 @@ bool testCheckImageConcept()
   BOOST_CONCEPT_ASSERT(( CImage< ImageVector >));
   BOOST_CONCEPT_ASSERT(( CImage< ImageMap >));
 #ifdef WITH_ITK
-  //BOOST_CONCEPT_ASSERT(( CImage< ImageITK >));
+  BOOST_CONCEPT_ASSERT(( CImage< ImageITK >));
 #endif
 
   BOOST_CONCEPT_ASSERT(( CImage< ImageHash >));

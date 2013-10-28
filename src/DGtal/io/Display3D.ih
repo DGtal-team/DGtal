@@ -43,9 +43,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-
-#define PI 3.14159265
-
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods //
 
@@ -290,7 +287,7 @@ DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint 
   aQuad.ny= n[1];
   aQuad.nz= n[2];
   aQuad.color= getFillColor();
-  
+
   if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
@@ -328,7 +325,7 @@ DGtal::Display3D< Space ,KSpace >::addTriangle(const RealPoint &p1, const RealPo
   aTriangle.ny= n[1];
   aTriangle.nz= n[2];
   aTriangle.color = getFillColor();
-  
+
   if (myTriangleSetList.size()== 0)
     createNewTriangleList("Triangle Root");
 
@@ -379,12 +376,9 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
   polygon.ny= n[1];
   polygon.nz= n[2];
   polygon.color = getFillColor();
-  
+
   if (myPolygonSetList.size()== 0)
     createNewPolygonList("Polygon Root");
-
-  //@fixme we force the list creation
-  createNewPolygonList("tmp");
 
   (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(polygon);
 }
@@ -482,7 +476,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFaceUp.point2[0]=x2; qFaceUp.point2[1]=y2; qFaceUp.point2[2]= z2;
   qFaceUp.point3[0]=x3; qFaceUp.point3[1]=y3; qFaceUp.point3[2]= z3;
   qFaceUp.point4[0]=x4; qFaceUp.point4[1]=y4; qFaceUp.point4[2]= z4;
-  
+
   qFaceUp.color=myCurrentFillColor;
   mySurfelPrismList.push_back(qFaceUp);
   //main down face
@@ -558,6 +552,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFace4.point4[0]= x1; qFace4.point4[1] =y1; qFace4.point4[2]=z1;
   qFace4.color= myCurrentFillColor;
   mySurfelPrismList.push_back(qFace4);
+
 }
 
 template < typename Space ,typename KSpace >
@@ -601,7 +596,7 @@ DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &baseQuadCenter,
     }
 
   if(isSigned && ! aSign)
-    this->addQuad(RealPoint(x1,y1,z1), RealPoint(x2,y2,z2), 
+    this->addQuad(RealPoint(x1,y1,z1), RealPoint(x2,y2,z2),
 		  RealPoint(x3,y3,z3), RealPoint(x4,y4,z4) );
   else
     this->addQuad(RealPoint(x4,y4,z4), RealPoint(x3,y3,z3),
@@ -621,7 +616,7 @@ DGtal::Display3D< Space ,KSpace >::addCone(const RealPoint &p1, const RealPoint 
 
   int nbPoints = 6; //the number of point on the base of the cone
   double degree = 360 / nbPoints; // the angle between two points
-  double radian = degree * PI/180;
+  double radian = degree * M_PI/180.0;
   double norm; // norm of the vectors
 
   // A(x1,y1,z1) and B(x2,y2,z2) vector AB
@@ -748,7 +743,7 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const RealPoint &p1, const RealPo
 
   int nbPoints = 6; //the number of point on the base of the cone
   double degree = 360 / nbPoints; // the angle between two points
-  double radian = degree * PI/180;
+  double radian = degree * M_PI/180.0;
   double norm; // norm of the vectors
 
   // A(p1[0],p1[1],p1[2]) and B(p2[0],p2[1],p2[2]) vector AB
@@ -926,7 +921,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
 		      RealPoint(x2,y2,z2),RealPoint(x1,y1,z1) );
 	    }else
 	    {
-	      addQuad(RealPoint(x1,y1,z1), RealPoint( x2,y2,z2), 
+	      addQuad(RealPoint(x1,y1,z1), RealPoint( x2,y2,z2),
 		      RealPoint(x3,y3,z3), RealPoint(x4,y4,z4));
 	    }
 	}// Y dominant projection of the upper face
@@ -970,7 +965,7 @@ DGtal::Display3D< Space ,KSpace >::addClippingPlane(double a, double b, double c
 		      RealPoint(x1,y1,z1));
 	    }else
 	    {
-	      addQuad( RealPoint(x1,y1,z1), RealPoint(x2,y2,z2), 
+	      addQuad( RealPoint(x1,y1,z1), RealPoint(x2,y2,z2),
 		       RealPoint(x3,y3,z3),RealPoint(x4,y4,z4));
 	    }
 	}
@@ -1114,7 +1109,7 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
 	  CubeD3D cube = myCubeSetList.at(j).at(i);
 	  BallD3D p1, p2, p3, p4, p5, p6, p7, p8;
 	  double width= cube.width;
-	  	  
+
 	  p1.center = RealPoint(cube.center[0]-width, cube.center[1]+width, cube.center[2]+width);
 	  p2.center = RealPoint(cube.center[0]+width, cube.center[1]+width, cube.center[2]+width);
 	  p3.center = RealPoint(cube.center[0]+width, cube.center[1]-width, cube.center[2]+width);
