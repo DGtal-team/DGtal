@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/curves/ArithDSSIterator.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -59,7 +59,7 @@ bool testArithDSSIterator()
   //     ++it;
   //   }
   
-  typedef ArithmeticalDSS<myIterator,int,8> ArithDSS;
+  typedef ArithmeticalDSSComputer<myIterator,int,8> ArithDSS;
 
   ArithDSS myDSS(it);
 
