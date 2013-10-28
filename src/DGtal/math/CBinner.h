@@ -42,7 +42,9 @@
 // Inclusions
 #include <iostream>
 #include <boost/type_traits/is_integral.hpp>
+#include <boost/type_traits/is_unsigned.hpp>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CEuclideanRing.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -64,8 +66,8 @@ continuous random variable.
 ### Refinement of boost::CopyConstructible
 
 ### Associated types :
-- \c Quantity: the type of domain values (i.e. continuous values)
-- \c Bin: should be some integral type and satisfy boost::is_integral.
+- \c Quantity: the type of domain values (i.e. continuous values), a model of CEuclideanRing.
+- \c Bin: should be some unsigned integral type and satisfy boost::is_integral and boost::is_unsigned.
 
 ### Notation
  - \c X : A type that is a model of CBinner
@@ -97,7 +99,9 @@ struct CBinner : boost::CopyConstructible<T>
 public:
   typedef typename T::Quantity Quantity;
   typedef typename T::Bin Bin;
+  BOOST_CONCEPT_ASSERT(( CEuclideanRing< Quantity > ));
   BOOST_STATIC_ASSERT(( boost::is_integral<Bin>::value ));
+  BOOST_STATIC_ASSERT(( boost::is_unsigned<Bin>::value ));
 
   // 2. then check the presence of data members, operators and methods with
   BOOST_CONCEPT_USAGE( CBinner )

@@ -71,7 +71,7 @@ DGtal::Histogram<TQuantity, TBinner>::clear()
 template <typename TQuantity, typename TBinner>
 inline
 void
-DGtal::Histogram<TQuantity, TBinner>::init( const Binner & binner )
+DGtal::Histogram<TQuantity, TBinner>::init( Clone<Binner> binner )
 {
   clear();
   myBinner = new Binner( binner );
@@ -138,7 +138,7 @@ inline
 void
 DGtal::Histogram<TQuantity, TBinner>::addValues( TInputIterator it, TInputIterator itE )
 {
-  //BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
   for ( ; it != itE; ++it )
     addValue( *it );
 }
@@ -164,7 +164,6 @@ inline
 typename DGtal::Histogram<TQuantity, TBinner>::Size
 DGtal::Histogram<TQuantity, TBinner>::nb( Bin b ) const
 {
-  ASSERT( 0 <= b );
   ASSERT( b < size() );
   return myHistogram[ b ];
 }
@@ -174,7 +173,6 @@ inline
 typename DGtal::Histogram<TQuantity, TBinner>::Size
 DGtal::Histogram<TQuantity, TBinner>::accumulation( Bin b ) const
 {
-  ASSERT( 0 <= b );
   ASSERT( b < size() );
   return myCumulativeHistogram[ b ];
 }
@@ -205,10 +203,10 @@ DGtal::Histogram<TQuantity, TBinner>::terminate()
   ConstIterator srcIt = myHistogram.begin();
   ConstIterator srcItE = myHistogram.end();
   Bin b = 0;
-  myCumulativeHistogram[ b++ ] = *srcIt++;
+  myCumulativeHistogram[ b ] = *srcIt++;
   for ( ; srcIt != srcItE; ++srcIt, ++b )
     {
-      myCumulativeHistogram[ b ] = myCumulativeHistogram[ b-1 ] + *srcIt;
+      myCumulativeHistogram[ b+1 ] = myCumulativeHistogram[ b ] + *srcIt;
     }
 }
 
