@@ -47,51 +47,51 @@ template <typename Image>
 bool
 test_image(const string& filename)
 {
-		BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
 
-		typedef typename Image::Domain::Point Point;
-		Point point0;
-		Point point1;
-		for (typename Image::Domain::Dimension kk=0; kk<Image::Domain::dimension; kk++)
-		{
-				point0[kk] = 5;
-				point1[kk] = 10;
-		}
+    typedef typename Image::Domain::Point Point;
+    Point point0;
+    Point point1;
+    for (typename Image::Domain::Dimension kk=0; kk<Image::Domain::dimension; kk++)
+    {
+        point0[kk] = 5;
+        point1[kk] = 10;
+    }
 
-		typedef typename Image::Domain Domain;
-		const Domain domain(point0, point1);
-		Image image(domain);
+    typedef typename Image::Domain Domain;
+    const Domain domain(point0, point1);
+    Image image(domain);
 
-		typedef typename std::vector<typename Image::Value> Values;
-		Values values(image.domain().size());
-		for (typename Values::iterator iter=values.begin(), iter_end=values.end(); iter!=iter_end; iter++)
-				*iter = rand();
+    typedef typename std::vector<typename Image::Value> Values;
+    Values values(image.domain().size());
+    for (typename Values::iterator iter=values.begin(), iter_end=values.end(); iter!=iter_end; iter++)
+        *iter = rand();
 
-		std::copy(values.begin(), values.end(), image.range().outputIterator());
+    std::copy(values.begin(), values.end(), image.range().outputIterator());
 
-		trace.info() << image << endl;
-		trace.info() << "writing " << filename << endl;
-		if (!ITKWriter<Image>::exportITK(filename, image)) return false;
+    trace.info() << image << endl;
+    trace.info() << "writing " << filename << endl;
+    if (!ITKWriter<Image>::exportITK(filename, image)) return false;
 
-		return true;
+    return true;
 }
 
 bool testITKio()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing ITK io loop ..." );
   nbok = 5;
-	nb += test_image<ImageSelector<Z2i::Domain, int>::Type>("image00.mhd");
-	nb += test_image<ImageSelector<Z2i::Domain, bool>::Type>("image01.mhd");
-	nb += test_image<ImageSelector<Z2i::Domain, unsigned int>::Type>("image02.mhd");
-	nb += test_image<ImageSelector<Z2i::Domain, float>::Type>("image03.mhd");
-	nb += test_image<ImageSelector<Z2i::Domain, double>::Type>("image04.mhd");
+  nb += test_image<ImageSelector<Z2i::Domain, int>::Type>("image_int.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, bool>::Type>("image_bool.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, unsigned int>::Type>("image_unsigned_int.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, float>::Type>("image_float.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, double>::Type>("image_double.mha");
 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
