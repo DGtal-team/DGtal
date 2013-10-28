@@ -81,16 +81,34 @@ bool testITKio()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing ITK io loop ..." );
-  nbok = 5;
-  nb += test_image<ImageSelector<Z2i::Domain, int>::Type>("image_int.mha");
-  nb += test_image<ImageSelector<Z2i::Domain, bool>::Type>("image_bool.mha");
-  nb += test_image<ImageSelector<Z2i::Domain, unsigned int>::Type>("image_unsigned_int.mha");
-  nb += test_image<ImageSelector<Z2i::Domain, float>::Type>("image_float.mha");
-  nb += test_image<ImageSelector<Z2i::Domain, double>::Type>("image_double.mha");
+  nbok += 6;
+  trace.beginBlock ( "Testing 2D ITK image value types ..." );
+  nb += test_image<ImageSelector<Z2i::Domain, int>::Type>("image_2d_int.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, bool>::Type>("image_2d_bool.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, unsigned int>::Type>("image_2d_unsigned_int.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_2d_unsigned_char.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, float>::Type>("image_2d_float.mha");
+  nb += test_image<ImageSelector<Z2i::Domain, double>::Type>("image_2d_double.mha");
+  trace.endBlock();
+
+  nbok += 6;
+  trace.beginBlock ( "Testing 3D ITK image value types ..." );
+  nb += test_image<ImageSelector<Z3i::Domain, int>::Type>("image_3d_int.mha");
+  nb += test_image<ImageSelector<Z3i::Domain, bool>::Type>("image_3d_bool.mha");
+  nb += test_image<ImageSelector<Z3i::Domain, unsigned int>::Type>("image_3d_unsigned_int.mha");
+  nb += test_image<ImageSelector<Z3i::Domain, unsigned char>::Type>("image_3d_unsigned_char.mha");
+  nb += test_image<ImageSelector<Z3i::Domain, float>::Type>("image_3d_float.mha");
+  nb += test_image<ImageSelector<Z3i::Domain, double>::Type>("image_3d_double.mha");
+  trace.endBlock();
+
+  nbok += 3;
+  trace.beginBlock ( "Testing 2D ITK image formats ..." );
+  nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_unsigned_char.jpg");
+  nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_unsigned_char.png");
+  nb += test_image<ImageSelector<Z2i::Domain, unsigned char>::Type>("image_unsigned_char.bmp");
+  trace.endBlock();
 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  trace.endBlock();
 
   return nbok == nb;
 }
