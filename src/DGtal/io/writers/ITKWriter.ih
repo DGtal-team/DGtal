@@ -40,8 +40,6 @@ namespace DGtal {
   ITKWriter<I,F>::exportITK(const std::string& filename, const I& aImage, const Functor& aFunctor)
   throw(DGtal::IOException)
   {
-    DGtal::IOException dgtalio;
-
     typedef typename Image::Domain Domain;
     const Domain& domain = aImage.domain();
 
@@ -55,9 +53,19 @@ namespace DGtal {
 
     typedef itk::ImageFileWriter<typename DGtalITKImage::ITKImage> ITKImageWriter;
     typename ITKImageWriter::Pointer writer = ITKImageWriter::New();
-    writer->SetFileName(filename);
-    writer->SetInput(itk_image.getITKImagePointer());
-    writer->Update();
+
+    try
+    {
+      writer->SetFileName(filename);
+      writer->SetInput(itk_image.getITKImagePointer());
+      writer->Update();
+    }
+    catch (itk::ExceptionObject &e)
+    {
+      trace.error() << e;
+      throw IOException();
+      return false;
+    }
 
     return true;
   }
