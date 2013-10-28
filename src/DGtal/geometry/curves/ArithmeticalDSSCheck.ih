@@ -1,0 +1,213 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ArithmeticalDSSCheck.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/10/28
+ *
+ * Implementation of inline functions defined in ArithmeticalDSSCheck.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+
+#include "ArithmeticalDSSKernel.h"
+#include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSSCheck::
+checkOnePoint(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+{
+  ASSERT(aDSS.front()==aDSS.back()); 
+
+  //Vector type redefinition 
+  typedef typename ArithmeticalDSS<TC,TI,adj>::Vector V;
+ 
+  return ( (aDSS.a()==0)
+	   &&(aDSS.b()==0)
+	   &&(aDSS.mu()==0)
+	   &&(aDSS.omega()==0)
+	   &&(aDSS.Uf()==aDSS.back())
+	   &&(aDSS.Lf()==aDSS.back())
+	   &&(aDSS.Ul()==aDSS.front())
+	   &&(aDSS.Ll()==aDSS.front())
+	   &&(aDSS.shift()==V(0,0))
+	   &&(aDSS.steps().first==V(0,0))
+	   &&(aDSS.steps().second==V(0,0)) ); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSSCheck::
+checkPointsRemainder(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+{
+  ASSERT(aDSS.front()!=aDSS.back()); 
+
+  //  std::cerr << " >>> check remainders " << std::endl; 
+
+  //'true' if valid, 'false' otherwise
+  bool isValid; 
+
+  if (aDSS.remainder(aDSS.Uf()) != aDSS.mu()) 
+    isValid = false;
+  else if (aDSS.remainder(aDSS.Ul()) != aDSS.mu()) 
+    isValid = false;
+  else if (aDSS.remainder(aDSS.Lf()) != aDSS.mu()+aDSS.omega()-1) 
+    isValid = false;
+  else if (aDSS.remainder(aDSS.Ll()) != aDSS.mu()+aDSS.omega()-1) 
+    isValid = false;
+  else if (aDSS.isInDSL(aDSS.front()))
+    isValid = true; 
+  else if (aDSS.isInDSL(aDSS.back()))
+    isValid = true; 
+  else 
+    isValid = false; 
+
+  //  std::cerr << isValid << std::endl; 
+
+  return isValid; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSSCheck::
+checkPointsPosition(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+{
+  ASSERT(aDSS.front()!=aDSS.back()); 
+
+  //  std::cerr << " >>> check positions " << std::endl; 
+
+  //Vector type redefinition 
+  typedef typename ArithmeticalDSS<TC,TI,adj>::Vector V;
+  V v(aDSS.b(), aDSS.a()); 
+  //Length of direction vector
+  TI lv = aDSS.directionalPosition(v); 
+
+  //Position of end points and leaning points
+  TI posBack = aDSS.directionalPosition(aDSS.back()); 
+  TI posUf = aDSS.directionalPosition(aDSS.Uf()); 
+  TI posLf = aDSS.directionalPosition(aDSS.Lf()); 
+  TI posUl = aDSS.directionalPosition(aDSS.Ul()); 
+  TI posLl = aDSS.directionalPosition(aDSS.Ll()); 
+  TI posFront = aDSS.directionalPosition(aDSS.front()); 
+
+  bool isValid = ( ((posUf - posBack) < lv)
+		   && ((posLf - posBack) < lv)
+		   && ((posFront - posUl) < lv)
+		   && ((posFront - posLl) < lv)
+		   && ((posUl - posUf)%lv == 0)
+		   && ( ( ((posUl - posUf) >= 0) && (lv >= 0) ) 
+			|| ( ((posUl - posUf) < 0) && (lv < 0) ) ) 
+		   && ((posLl - posLf)%lv == 0)
+		   && ( ( ((posLl - posLf) >= 0) && (lv >= 0) ) 
+			|| ( ((posLl - posLf) < 0) && (lv < 0) ) ) 
+		   ); 
+
+  //  std::cerr << isValid << std::endl; 
+
+  return isValid; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSSCheck::
+checkShiftAndSteps(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+{
+  ASSERT(aDSS.front()!=aDSS.back()); 
+
+  //  std::cerr << " >>> check shift/steps " << std::endl; 
+
+  //Vector type redefinition 
+  typedef typename ArithmeticalDSS<TC,TI,adj>::Vector V;
+
+  //'true' if valid, 'false' otherwise
+  bool isValid; 
+
+  if (aDSS.steps() != DGtal::ArithmeticalDSSKernel<TC,adj>::steps(aDSS.a(), aDSS.b()))
+    isValid = false; 
+  else if (aDSS.shift() != DGtal::ArithmeticalDSSKernel<TC,adj>::shift(aDSS.a(), aDSS.b()))
+    isValid = false; 
+  else if ( (aDSS.steps().second != V(0,0) )
+	    &&( (aDSS.steps().first - aDSS.steps().second) != aDSS.shift() ) )
+    isValid = false;
+  else 
+    isValid = true; 
+
+  //  std::cerr << isValid << std::endl; 
+
+  return isValid; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSSCheck::
+checkAll(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+{ 
+  //'true' if valid, 'false' otherwise
+  bool isValid;  
+
+  //special case with one point
+  if (aDSS.front() == aDSS.back())  
+    isValid = checkOnePoint(aDSS);
+ 
+  //otherwise  
+  else 
+    {
+
+      TI gcd = IntegerComputer<TI>::staticGcd(aDSS.a(),aDSS.b()); 
+      if (gcd != NumberTraits<TI>::ONE) 
+	isValid = false; //a,b should be relatively prime
+      else if (!checkShiftAndSteps(aDSS))
+	isValid = false; 
+      else if (!checkPointsRemainder(aDSS))
+	isValid = false; 
+      else if (!checkPointsPosition(aDSS))
+	isValid = false; 
+      else 
+	isValid = true; 
+
+    }
+
+  return isValid; 
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

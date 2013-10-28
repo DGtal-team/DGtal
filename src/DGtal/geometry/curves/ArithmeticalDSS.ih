@@ -236,108 +236,13 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::~ArithmeticalDSS()
 {
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Interface - public :
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::checkOnePoint() const
-{
-  return ( (myA==0)
-	   &&(myB==0)
-	   &&(myMu==0)
-	   &&(myOmega==0)
-	   &&(myUf==myF)
-	   &&(myLf==myF)
-	   &&(myUl==myL)
-	   &&(myLl==myL)
-	   &&(myShift==Vector(0,0))
-	   &&(mySteps.first==Vector(0,0))
-	   &&(mySteps.second==Vector(0,0)) ); 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::checkLeaningPointsRemainder() const
-{
-  if (remainder(myUf) != myMu) return false;
-  else if (remainder(myUl) != myMu) return false;
-  else if (remainder(myLf) != myMu+myOmega-1) return false;
-  else if (remainder(myLl) != myMu+myOmega-1) return false;
-  else return true; 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
-checkLeaningPointsAndSlope(const Vector& fromFirstToLast) const
-{
-  Coordinate gcd = IntegerComputer<Coordinate>::
-    staticGcd(fromFirstToLast[0], fromFirstToLast[1]);
- 
-  return ( ( (myB*gcd) == fromFirstToLast[0]) 
-	   && ( (myA*gcd) == fromFirstToLast[1]) ); 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::checkShiftAndSteps() const
-{
-  if (mySteps != DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB))
-    return false; 
-  else if (myShift != DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB))
-    return false; 
-  else if ( (mySteps.second != Vector(0,0) )
-       &&( (mySteps.first - mySteps.second) != myShift ) )
-    return false;
-  else 
-    return true; 
-}
-
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::isValid() const
 {
-
-  //special case with one point
-  if (myF == myL)  
-    return checkOnePoint(); 
-  //otherwise  
-  else {
-
-    Integer gcd = IntegerComputer<Integer>::staticGcd(myA, myB); 
-    if (gcd != NumberTraits<Integer>::ONE) 
-      return false; //a,b should be relatively prime
-    else
-      {
-	//remainders of leaning points
-	if (!checkLeaningPointsRemainder())
-	  return false; 
-	else 
-	  {
-	    //number of patterns
-	    if (!checkLeaningPointsAndSlope(myUl-myUf))
-	      return false; 
-	    else if (!checkLeaningPointsAndSlope(myLl-myLf))
-	      return false;
-	    //steps and shift
-	    else if (!checkShiftAndSteps())
-	      return false; 
-	    else 
-	      return true;
-	  }
-      }
-  }
+  return ArithmeticalDSSCheck::checkAll(*this); 
 }
 
 //-----------------------------------------------------------------------------
@@ -888,13 +793,15 @@ bezoutVector(const Coordinate& aA,
   //vector components
   if ( (aB >= 0)&&(v[0] < 0) )
     v += Vector(aB,aA); 
-  if ( (aB < 0)&&(v[0] >= 0) )
-    v -= Vector(aB,aA); 
-  if ( ( aA >= 0 )&&(v[1] < 0) )
+  else if ( (aB < 0)&&(v[0] >= 0) )
+    v += Vector(aB,aA); 
+  else if ( ( aA >= 0 )&&(v[1] < 0) )
     v += Vector(aB,aA);
-  if ( ( aA < 0 )&&(v[1] >= 0) )
-    v -= Vector(aB,aA);
+  else if ( ( aA < 0 )&&(v[1] >= 0) )
+    v += Vector(aB,aA);
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
+  ASSERT( (( aA >= 0 )&&(v[1] >= 0))||(( aA < 0 )&&(v[1] < 0)) ); 
+  ASSERT( (( aB >= 0 )&&(v[0] >= 0))||(( aB < 0 )&&(v[0] < 0)) ); 
 
   return v; 
 }
