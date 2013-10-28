@@ -150,9 +150,7 @@ inline
 bool 
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableForward()
 {
-  Point newPoint = *myEnd; 
-  Point lastPoint = myDSS.front(); 
-  return ( myDSS.isExtendable( newPoint, (newPoint - lastPoint), lastPoint ) != 0 ); 
+  return myDSS.isExtendableForward( *myEnd ); 
 }
 
 //--------------------------------------------------------------------
@@ -163,9 +161,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableBackwa
 {
   ConstIterator it = myBegin; 
   --it; 
-  Point newPoint = *it; 
-  Point firstPoint = myDSS.back(); 
-  return ( myDSS.isExtendable( newPoint, (newPoint - firstPoint), firstPoint ) != 0 ); 
+  return myDSS.isExtendableBackward( *it ); 
 }
 
 //-----------------------------------------------------------------------------

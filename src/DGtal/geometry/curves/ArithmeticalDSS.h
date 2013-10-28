@@ -624,42 +624,6 @@ namespace DGtal
     bool extendBackward( const Point& aNewPoint );
 
     /**
-     * Removes an end point to retract the DSS.  
-     *
-     * @param aFirst end point to remove, 
-     * viewed as the first point of the DSS
-     * @param aIt iterator used to get the point
-     * following @a aFirst
-     * @tparam TIterator a model of forward iterator
-     * @param aLast opposite end of the DSS
-     * @param aBezout returned weakly exterior point used to 
-     * compute the new slope and to update the leaning points
-     * @param aLeaningPoint returned leaning point used to 
-     * compute the new slope and to update the leaning points
-     * @param aFirstUpper first leaning point after @a aFirst
-     * @param aLastUpper last leaning point close to @a aLast
-     * @param aFirstLower first leaning point after @a aFirst
-     * @param aLastLower last leaning point close to @a aLast
-     *
-     * @return 'true' is the slope has to be updated, 
-     * 'false' otherwise
-     *
-     * @see updateLeaningPoints
-     * @see retractForward retractBackward
-     */
-    template<typename TIterator>
-    bool retract( Point& aFirst, 
-		  TIterator aIt, 
-		  const Point& aLast,
-		  Point& aBezout, 
-		  Point& aLeaningPoint, 
-		  Point& aFirstUpper, 
-		  Point& aLastUpper, 
-		  Point& aFirstLower,
-		  Point& aLastLower);
-
-
-    /**
      * Removes the front point of the DSS 
      * if it remains strictly more than one point
      *
