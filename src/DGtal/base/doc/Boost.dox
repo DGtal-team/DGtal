@@ -23,6 +23,7 @@
    - the BOOST iterator library main page http://www.boost.org/doc/libs/1_52_0/libs/iterator/doc/index.html 
    - the BOOST graph library main page http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/index.html
    - the BOOST graph concepts main page http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/graph_concepts.html
+   - the BOOST type traits main page http://www.boost.org/doc/libs/1_52_0/libs/type_traits/doc/html/index.html
 */
 namespace boost {
   /// Go to http://www.boost.org/doc/html/DefaultConstructible.html
@@ -172,5 +173,14 @@ namespace boost {
   /// Go to http://www.boost.org/doc/libs/1_52_0/libs/utility/MultiPassInputIterator.html
   template <class G>
   struct MultiPassInputIterator {};
+
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/type_traits/doc/html/index.html
+  template <class T>
+  struct is_integral {};
+
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/type_traits/doc/html/index.html
+  template <class T>
+  struct is_unsigned {};
+
 }
 
