@@ -79,7 +79,7 @@ DGtal::ArithmeticalDSSFactory<TC,TI,adj>::createPattern(const Point& aF, const P
       else 
 	{ //otherwise
 	  //Bezout vector
-	  Integer signedUnity = -1; 
+	  Coordinate signedUnity = -1; 
 	  Vector v = bezoutVector(u[1], u[0], signedUnity); 
 	  //lower leaning points
 	  Lf = Uf + v - s*signedUnity; 
@@ -87,9 +87,10 @@ DGtal::ArithmeticalDSSFactory<TC,TI,adj>::createPattern(const Point& aF, const P
 	}
       
       //(a, b, mu, omega) parameters
-      Integer a, b, mu, omega; 
+      Coordinate a, b;  
       a = u[1]; 
       b = u[0]; 
+      Integer mu, omega; 
       mu = a * static_cast<Integer>(Uf[0]) - b * static_cast<Integer>(Uf[1]);
       omega = a * static_cast<Integer>(s[0]) - b * static_cast<Integer>(s[1]);
 
