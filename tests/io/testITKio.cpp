@@ -142,7 +142,6 @@ int main( int argc, char** argv )
 {
   bool res = testITKio(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
   return res ? 0 : 1;
 }
 //                                                                           //
