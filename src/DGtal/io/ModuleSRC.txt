@@ -54,5 +54,6 @@ endif( WITH_HDF5 )
 if( WITH_ITK )
 SET(DGTALIO_SRC ${DGTALIO_SRC}
     DGtal/io/ITKIOTrait
-    DGtal/io/writers/ITKWriter)
+    DGtal/io/writers/ITKWriter
+    DGtal/io/readers/ITKReader)
 endif( WITH_ITK )

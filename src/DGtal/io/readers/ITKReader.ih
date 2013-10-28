@@ -1,0 +1,75 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ITKReader.h
+ * @author Pierre Gueth (\c pierre.gueth@gmail.com )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/10/28
+ *
+ * Header file for module ITKReader.cpp
+ *
+ * This file is part of the DGtal library.
+ */
+
+#include "DGtal/images/ConstImageAdapter.h"
+#include "DGtal/images/ImageContainerByITKImage.h"
+#include <itkImageFileReader.h>
+
+namespace DGtal {
+  template<typename I,typename F>
+  I
+  ITKReader<I,F>::importITK(const std::string& filename, const Functor& aFunctor)
+  throw(DGtal::IOException)
+  {
+    typedef typename Image::Domain Domain;
+    typedef typename Domain::Point Point;
+
+    typedef ImageContainerByITKImage<Domain, ValueOut> DGtalITKImage;
+    typedef typename DGtalITKImage::ITKImagePointer ITKImagePointer;
+    ITKImagePointer itk_image = DGtalITKImage::ITKImage::New();
+
+    try
+    {
+      typedef itk::ImageFileReader<typename DGtalITKImage::ITKImage> ITKImageReader;
+      typename ITKImageReader::Pointer reader = ITKImageReader::New();
+
+      reader->SetFileName(filename);
+      reader->Update();
+      reader->GetOutput();
+
+      itk_image = reader->GetOutput();
+    }
+    catch (itk::ExceptionObject &e)
+    {
+      trace.error() << e;
+      throw IOException();
+    }
+
+    const DGtalITKImage dgtal_itk_image(itk_image);
+    const Domain& domain = dgtal_itk_image.domain();
+
+    typedef ConstImageAdapter<DGtalITKImage, Domain, DefaultFunctor, Value, Functor> AdaptedImage;
+    const AdaptedImage adapted(dgtal_itk_image, domain, DefaultFunctor(), aFunctor);
+
+    Image image(domain);
+    std::copy(adapted.constRange().begin(), adapted.constRange().end(), image.range().outputIterator());
+
+    return image;
+  }
+
+}//namespace

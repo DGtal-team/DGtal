@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file ITKWriter.h
+ * @file ITKReader.h
  * @author Pierre Gueth (\c pierre.gueth@gmail.com )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/10/28
  *
- * Header file for module ITKWriter.cpp
+ * Header file for module ITKReader.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ITKWriter_RECURSES)
-#error Recursive header files inclusion detected in ITKWriter.h
-#else // defined(ITKWriter_RECURSES)
+#if defined(ITKReader_RECURSES)
+#error Recursive header files inclusion detected in ITKReader.h
+#else // defined(ITKReader_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ITKWriter_RECURSES
+#define ITKReader_RECURSES
 
-#if !defined ITKWriter_h
+#if !defined ITKReader_h
 /** Prevents repeated inclusion of headers. */
-#define ITKWriter_h
+#define ITKReader_h
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
@@ -47,49 +47,45 @@ namespace DGtal
 {
 
   /**
-   * Description of template class 'ITKWriter'
-   * \brief Export a 2D/3D Image using the ITK formats.
-   *
-   * A functor can be specified to convert image values to ITK file values.
-   * ITKIOTrait is used to determine the actual value type used when saving the image.
+   * Description of template class 'ITKReader'
+   * \brief Aim: Export a 2D/3D Image using the ITK formats.
    *
    * @tparam TImage the Image type.
    * @tparam TFunctor the type of functor used in the export.
-	 * @see ITKReader
+   * @see ITKWriter
    */
-  template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultWriteFunctor >
-  struct ITKWriter
+  template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor >
+  struct ITKReader
   {
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
     typedef TFunctor Functor;
 
-    BOOST_CONCEPT_ASSERT(( CConstImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
+    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, ValueOut, Value> )) ;
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
     /**
      * Export an Image with a format supported by ITK.
      *
      * @param filename name of the output file
-     * @param aImage the image to export
      * @param aFunctor functor used to cast image values
-     * @return true if no errors occur.
+     * @return read image
      */
-    static bool exportITK(const std::string & filename, const Image &aImage,
+    static Image importITK(const std::string & filename,
         const Functor & aFunctor = Functor()) throw(DGtal::IOException);
   };
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/writers/ITKWriter.ih"
+#include "DGtal/io/readers/ITKReader.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ITKWriter_h
+#endif // !defined ITKReader_h
 
-#undef ITKWriter_RECURSES
-#endif // else defined(ITKWriter_RECURSES)
+#undef ITKReader_RECURSES
+#endif // else defined(ITKReader_RECURSES)

@@ -53,7 +53,8 @@ template <typename Value>
 struct ITKIOTrait
 {
 		typedef Value ValueOut;
-		typedef CastFunctor<ValueOut> DefaultCastFunctor;
+		typedef CastFunctor<ValueOut> DefaultWriteFunctor;
+		typedef CastFunctor<Value> DefaultReadFunctor;
 
 private:
 
@@ -73,7 +74,8 @@ template <>
 struct ITKIOTrait<bool>
 {
 		typedef unsigned char ValueOut;
-		typedef CastFunctor<ValueOut> DefaultCastFunctor;
+		typedef CastFunctor<unsigned char> DefaultWriteFunctor;
+		typedef CastFunctor<bool> DefaultReadFunctor;
 };
 
 } // namespace DGtal
