@@ -810,35 +810,36 @@ DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
 				   mode=="BoundingBox")||
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
   ASSERT((Space::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="Grid") ||
-         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
 
   if(Space::dimension == 2)
-    {
-      if (mode=="")
-        mode="BoundingBox";
-    }else if ( mode == "BoundingBox" )
-    {
-      display.createNewLineList(aDomain.className());
-      drawAsBoundingBox( display, aDomain );
-    }else if(( mode == "" ) || (mode == "Grid"))
-    {
-      display.createNewLineList(aDomain.className());
-      drawAsGrid( display, aDomain );
-    } else if ( mode == "Paving" )
-    {
-      display.createNewCubeList(aDomain.className());
-      drawAsPaving( display, aDomain );
-    } else if ( mode == "PavingPoints" )
-    {
-      display.createNewBallList(aDomain.className());
-      drawAsPavingBalls( display, aDomain );
-    }else if ( mode == "PavingGrids" )
-    {
-      display.createNewLineList(aDomain.className());
-      display.createNewCubeList( aDomain.className());
-      drawAsGrid( display, aDomain );
-      drawAsPaving( display, aDomain );
-    }
+  {
+    if (mode=="")
+      mode="BoundingBox";
+
+  }else if ( mode == "BoundingBox" )
+  {
+    display.createNewLineList(aDomain.className());
+    drawAsBoundingBox( display, aDomain );
+  }else if(( mode == "" ) || (mode == "Grid"))
+  {
+    display.createNewLineList(aDomain.className());
+    drawAsGrid( display, aDomain );
+  } else if ( mode == "Paving" )
+  {
+    display.createNewCubeList(aDomain.className());
+    drawAsPaving( display, aDomain );
+  } else if ( mode == "PavingPoints" )
+  {
+    display.createNewBallList(aDomain.className());
+    drawAsPavingBalls( display, aDomain );
+  }else if ( mode == "PavingGrids" )
+  {
+    display.createNewLineList(aDomain.className());
+    display.createNewCubeList( aDomain.className());
+    drawAsGrid( display, aDomain );
+    drawAsPaving( display, aDomain );
+  }
 }
 // HyperRectDomain
 
@@ -976,7 +977,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
         }
       if (sk.myPositive)
         {
-          display.addCone(DGtal::Z3i::RealPoint(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 )), 
+          display.addCone(DGtal::Z3i::RealPoint(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 )),
 			  DGtal::Z3i::RealPoint(rps[0]+ (xodd? 0.5:0 ), rps[1]+ (yodd? 0.5:0 ), rps[2]+ (zodd? 0.5:0 )));
         }
       else
@@ -1131,7 +1132,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingWired( Display3D<Space, 
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5));
   display.addLine(DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5),
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5));
-  
+
   display.addLine(DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5),
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5));
   display.addLine(DGtal::Z3i::RealPoint(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5),
@@ -1375,6 +1376,14 @@ template< typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::CustomColors3D & cc3d )
 {
+  //We reset the lists
+  display.createNewLineList();
+  display.createNewBallList();
+  display.createNewCubeList();
+  display.createNewQuadList();
+  display.createNewTriangleList();
+  display.createNewPolygonList();
+
   display.setFillColor(cc3d.myFillColor);
   display.setLineColor(cc3d.myPenColor);
 }

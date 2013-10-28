@@ -380,9 +380,6 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
   if (myPolygonSetList.size()== 0)
     createNewPolygonList("Polygon Root");
 
-  //@fixme we force the list creation
-  createNewPolygonList("tmp");
-
   (myPolygonSetList.at(myPolygonSetList.size()-1)).push_back(polygon);
 }
 
@@ -555,6 +552,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFace4.point4[0]= x1; qFace4.point4[1] =y1; qFace4.point4[2]=z1;
   qFace4.color= myCurrentFillColor;
   mySurfelPrismList.push_back(qFace4);
+
 }
 
 template < typename Space ,typename KSpace >
