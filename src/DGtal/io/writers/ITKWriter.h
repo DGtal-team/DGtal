@@ -67,22 +67,23 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
     typedef TImage Image;
     typedef typename TImage::Value Value;
-		typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
+    typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, ValueOut> )) ;    
+
+    BOOST_CONCEPT_ASSERT(( CConstImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, Value, ValueOut> )) ;
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
-    /** 
+    /**
      * Export an Image with a format supported by ITK.
-     * 
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
-    static bool exportITK(const std::string & filename, const Image &aImage, 
-			  const Functor & aFunctor = Functor()) throw(DGtal::IOException);
+    static bool exportITK(const std::string & filename, const Image &aImage,
+        const Functor & aFunctor = Functor()) throw(DGtal::IOException);
   };
 }//namespace
 
