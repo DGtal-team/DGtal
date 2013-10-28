@@ -30,13 +30,13 @@
  * This file is part of the DGtal library (backported from Imagene)
  */
 
-#if defined(Clock_RECURSES)
+#ifdef Clock_RECURSES
 #error Recursive header files inclusion detected in Clock.h
 #else // defined(Clock_RECURSES)
 /** Prevents recursive inclusion of headers. */
 #define Clock_RECURSES
 
-#if !defined Clock_h
+#ifndef Clock_h
 /** Prevents repeated inclusion of headers. */
 #define Clock_h
 
@@ -55,7 +55,7 @@
 #include <mach/mach.h>
 #endif
 
-#if ( (defined(WIN32)) )
+#ifdef WIN32
 #include <time.h>
 #endif
 
@@ -138,12 +138,10 @@ namespace DGtal
   private:
 
     ///internal timer object;
-#if ( (defined(UNIX)||defined(unix)||defined(linux) || defined(__MACH__) ) )
-    struct timespec myTimerStart;
-#endif
-
-#if ( (defined(WIN32)) )
+#ifdef WIN32
     clock_t myFirstTick;
+#else
+    struct timespec myTimerStart;
 #endif
     
   }; // end of class Clock
