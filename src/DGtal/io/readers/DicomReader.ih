@@ -89,7 +89,8 @@ DGtal::DicomReader<TImageContainer, TFunctor>::importDicom(const std::string & a
   }
   catch( ... )
   {
-	  trace.error() << "DicomReader: can't read " << directory << std::endl;
+	  trace.error() << "DicomReader: can't read " << aFilename << std::endl;
+	  trace.error() << "(from directory: " << directory << ")" << std::endl;
 	  throw dgtalio;
   }
 
