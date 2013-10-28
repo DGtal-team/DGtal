@@ -6,6 +6,9 @@ SET(DGTAL_TESTS_SRC_IOVIEWERS
        testLongvol
        testArcDrawing )
 
+if (WITH_ITK)
+    set(DGTAL_TESTS_SRC_IOVIEWERS ${DGTAL_TESTS_SRC_IOVIEWERS} testITKio)
+endif (WITH_ITK)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IOVIEWERS})
   add_executable(${FILE} ${FILE})
