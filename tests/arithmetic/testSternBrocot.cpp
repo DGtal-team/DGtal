@@ -654,7 +654,6 @@ bool testSubStandardDSLQ0()
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
   typedef typename DSL::Point Point;
-  typedef typename DSL::ConstIterator ConstIterator;
   IntegerComputer<Integer> ic;
   unsigned int nbok = 0;
   unsigned int nb = 0;
