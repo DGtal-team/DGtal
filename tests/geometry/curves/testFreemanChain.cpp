@@ -161,14 +161,14 @@ bool testPublicSercives()
   //    findQuadrantChange( OrderedAlphabet & A ) const;
   OrderedAlphabet oa( '0', 4 );
   Iterator it = fc.findQuadrantChange( oa );
-  test = ( it.getPosition() == 4 );
+  test = ( it.position() == 4 );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 6 " << ((test) ? "passed" : "failed" ) << endl;
 
   //  typename Self::ConstIterator 
   //    findQuadrantChange4( OrderedAlphabet & A ) const;
   it = fc.findQuadrantChange4( oa );
-  test = ( it.getPosition() == 9 );
+  test = ( it.position() == 9 );
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 7 " << ((test) ? "passed" : "failed" ) << endl;
 

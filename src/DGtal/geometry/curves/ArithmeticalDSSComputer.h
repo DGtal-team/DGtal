@@ -331,7 +331,7 @@ Steps:
      * @param it an iterator on points
      * @return the remainder of @a *it.
      */
-    Integer getRemainder(const ConstIterator & it) const;
+    Integer remainder(const ConstIterator & it) const;
 
     /**
      * Computes the remainder of a point
@@ -339,7 +339,7 @@ Steps:
      * @param aPoint the point whose remainder is returned 
      * @return @a myA * @a aPoint[0] - @a myB * @a aPoint[1].
      */
-    Integer getRemainder( const Point& aPoint ) const;
+    Integer remainder( const Point& aPoint ) const;
 
     /**
      * Computes the position of a point
@@ -347,7 +347,7 @@ Steps:
      * @param it an iterator on points
      * @return the position of @a *it.
      */
-    Integer getPosition(const ConstIterator & it) const;
+    Integer position(const ConstIterator & it) const;
 
     /**
      * Computes the position of a point
@@ -355,7 +355,7 @@ Steps:
      * @param aPoint the point whose position is returned 
      * @return @a myA * @a aPoint[0] + @a myB * @a aPoint[1].
      */
-    Integer getPosition( const Point& aPoint ) const;
+    Integer position( const Point& aPoint ) const;
 
     /**
      * Checks whether a point is in the DSL

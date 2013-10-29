@@ -1440,11 +1440,11 @@ namespace DGtal
 	    Integer omega = mySCPtr->omega();
 
 	    //cases
-	    if ( (mySCPtr->getRemainder(*back)<=mu-1)&&
-		 (mySCPtr->getRemainder(*front)<=mu-1) ) {                //convex
+	    if ( (mySCPtr->remainder(*back)<=mu-1)&&
+		 (mySCPtr->remainder(*front)<=mu-1) ) {                //convex
 	      k = myFunctor(*mySCPtr) / myH; 
-	    } else if ( (mySCPtr->getRemainder(*back)>=mu+omega)&&
-			(mySCPtr->getRemainder(*front)>=mu+omega) ) {           //concave
+	    } else if ( (mySCPtr->remainder(*back)>=mu+omega)&&
+			(mySCPtr->remainder(*front)>=mu+omega) ) {           //concave
 	      k = -myFunctor(*mySCPtr) / myH; 
 	    } //else                                                  //inflection
 
@@ -1457,9 +1457,9 @@ namespace DGtal
 	    Integer omega = mySCPtr->omega();
 
 	    //cases
-	    if ( (mySCPtr->getRemainder(*back)<=mu-1) ) {                //convex
+	    if ( (mySCPtr->remainder(*back)<=mu-1) ) {                //convex
 	      k = myFunctor(*mySCPtr) / myH; 
-	    } else if ( (mySCPtr->getRemainder(*back)>=mu+omega) ) {     //concave
+	    } else if ( (mySCPtr->remainder(*back)>=mu+omega) ) {     //concave
 	      k = -myFunctor(*mySCPtr) / myH; 
 	    } //else                                                 //inflection
 
@@ -1471,9 +1471,9 @@ namespace DGtal
           Integer omega = mySCPtr->omega();
 
           //cases
-          if ( (mySCPtr->getRemainder(*front)<=mu-1) ) {                //convex
+          if ( (mySCPtr->remainder(*front)<=mu-1) ) {                //convex
             k = myFunctor(*mySCPtr) / myH; 
-          } else if ( (mySCPtr->getRemainder(*front)>=mu+omega) ) {     //concave
+          } else if ( (mySCPtr->remainder(*front)>=mu+omega) ) {     //concave
             k = -myFunctor(*mySCPtr) / myH; 
           } //else                                                  //inflection
 
