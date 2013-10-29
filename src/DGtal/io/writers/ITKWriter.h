@@ -56,6 +56,7 @@ namespace DGtal
    * @tparam TImage the Image type.
    * @tparam TFunctor the type of functor used in the export.
 	 * @see ITKReader
+   * @see ITKIOTrait
    */
   template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultWriteFunctor >
   struct ITKWriter

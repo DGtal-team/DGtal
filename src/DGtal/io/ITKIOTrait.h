@@ -48,13 +48,14 @@ namespace DGtal
 /**
  * Description of class 'ITKIOTrait' <p>
  * \brief Aim: Provide type trait for ITK reader and ITK writer
+ * @tparam Value is the value type of the DGtal image one wants to save or read using ITKWriter or ITKReader
  */
 template <typename Value>
 struct ITKIOTrait
 {
-		typedef Value ValueOut;
-		typedef CastFunctor<ValueOut> DefaultWriteFunctor;
-		typedef CastFunctor<Value> DefaultReadFunctor;
+		typedef Value ValueOut; // Associated ITK image value type
+		typedef CastFunctor<ValueOut> DefaultWriteFunctor; // Default functor used by ITKWriter
+		typedef CastFunctor<Value> DefaultReadFunctor; // Default functor used by ITKReader
 
 private:
 
