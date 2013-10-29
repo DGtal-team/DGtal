@@ -879,7 +879,8 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC 
+DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n)
 {
   BOOST_CONCEPT_ASSERT((CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);

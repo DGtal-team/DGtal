@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -93,12 +94,15 @@ namespace DGtal
     /**
      * @return the estimated quantity.
      */
-    Quantity eval( ) {return myCpt; } const
+    Quantity eval( ) const {return myCpt; } 
     
     /**
      * Reset the estimator.
      */
-    void reset() { myCpt = 0;}
+    void reset() 
+    { 
+      myCpt = NumberTraits<Quantity>::ZERO;
+    }
     
   private:
     
