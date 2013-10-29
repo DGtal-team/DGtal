@@ -594,7 +594,7 @@ namespace DGtal
        * @param aPoint a point whose remainder is returned
        * @returns the remaindre of aPoint
        */
-      Integer getRemainder(const Point & aPoint) const;
+      Integer remainder(const Point & aPoint) const;
 
       /**
        * Computes the leaning points of the DSS

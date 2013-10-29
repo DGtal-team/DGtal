@@ -226,7 +226,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
   ASSERT( aDSS.isExtendableForward() == false ); 
 
-  if ( aDSS.getRemainder( aDSS.end() ) < (aDSS.mu()) ) 
+  if ( aDSS.remainder( aDSS.end() ) < (aDSS.mu()) ) 
     {      //concave part
       return new details
 	::DSSDecorator4ConcavePart<typename Adapter::DSS>(aDSS);

@@ -109,7 +109,7 @@ inline
 void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::init(const typename FreemanChainCode::ConstIterator& it)
 {
   std::string::const_iterator string_it = it.getChain()->chain.begin();
-  string_it += it.getPosition();
+  string_it += it.position();
   init( string_it, *it, FreemanChainCode::displacement );
 }
 
@@ -1021,7 +1021,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::computeLeaningPoin
     ? myNbRepeat : myNbRepeat - 1;
   ll =  *it + v*nbLowerRepeats;
 
-  if ( getRemainder( uf ) > getRemainder( lf ) ) 
+  if ( remainder( uf ) > remainder( lf ) ) 
     {
       swap ( uf, lf );
       swap ( ul, ll );
@@ -1103,7 +1103,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::displacement( Code c ) 
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer 
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getRemainder(const Point & aPoint) const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::remainder(const Point & aPoint) const
 {
   Integer a,b,mu,omega;
   Integer x = aPoint[0];
@@ -1170,11 +1170,11 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::front() const
 //{
 //  OrderedAlphabet::Size nb;
 //  OrderedAlphabet::Size len;
-//  OrderedAlphabet::Index e = it.getChain()->end().getPosition();
+//  OrderedAlphabet::Index e = it.getChain()->end().position();
 //  unsigned int a,b;
 //  unsigned int lf1, lf2;
 //  bool cvx = aAlph.duvalPPtoDSS(len, nb, a, b, lf1, lf2, 
-//      it.getChain()->chain, it.getPosition(), e);
+//      it.getChain()->chain, it.position(), e);
 //
 //  len *= nb;
 //  Vector direction1 = FreemanChainCode::displacement(aAlph.letter(1) - '0');
@@ -1196,7 +1196,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::front() const
 //  this->myMu       = this->myA*this->myUf[0] - this->myB*this->myUf[1];
 //  this->myOmega    = DSS::template Tools<Integer,4>::norm(this->myA,this->myB);
 //  this->myF        = it;
-//  this->myL        = Iterator(*it.getChain(), it.getPosition() + len, this->myUl);
+//  this->myL        = Iterator(*it.getChain(), it.position() + len, this->myUl);
 //  this->mySteps.clear();
 //  if (a != 0) 
 //    this->mySteps.push_back(direction1);
