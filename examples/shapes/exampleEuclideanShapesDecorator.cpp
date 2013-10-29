@@ -76,7 +76,6 @@ int main( int argc, char** argv )
     //! [EuclideanShapesDecoratorUsage]
 
     typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeA;
-    typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizerShapeA > LightImplDigSurfaceA;
     MyGaussDigitizerShapeA digShapeA;
     digShapeA.attach( shapeA );
     digShapeA.init( shapeA.getLowerBound(), shapeA.getUpperBound(), h );
@@ -85,10 +84,7 @@ int main( int argc, char** argv )
     Z2i::DigitalSet aSetA( domainShapeA );
     Shapes<Z2i::Domain>::digitalShaper( aSetA, digShapeA );
 
-
-
     typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeB;
-    typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizerShapeB > LightImplDigSurfaceB;
     MyGaussDigitizerShapeB digShapeB;
     digShapeB.attach( shapeB );
     digShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
@@ -97,18 +93,13 @@ int main( int argc, char** argv )
     Z2i::DigitalSet aSetB( domainShapeB );
     Shapes<Z2i::Domain>::digitalShaper( aSetB, digShapeB );
 
-
-
     typedef GaussDigitizer< Z2i::Space, Minus > MyGaussDigitizer;
-    typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
     MyGaussDigitizer digShape;
     digShape.attach( s_minus );
     digShape.init( s_minus.getLowerBound(), s_minus.getUpperBound(), h );
     Z2i::Domain domainShape = digShape.getDomain();
     Z2i::DigitalSet aSet( domainShape );
     Shapes<Z2i::Domain>::digitalShaper( aSet, digShape );
-
-
 
     Board2D board;
     board << SetMode( domainShape.className(), "Paving" )
