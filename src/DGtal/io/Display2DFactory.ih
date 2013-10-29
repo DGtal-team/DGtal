@@ -329,7 +329,6 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
-  typedef typename Point::Coordinate Coordinate;
   typedef typename std::set<Point>::const_iterator ConstIterator;
     
   VERIFY(Domain::Space::dimension == 2);
@@ -974,7 +973,6 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
                                          const typename Image::Value & maxV )
 {
   typedef typename Image::Domain D;
-  typedef typename Image::Value V;
   
   VERIFY(D::Space::dimension == 2);
 
