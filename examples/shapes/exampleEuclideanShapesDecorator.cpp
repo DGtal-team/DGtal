@@ -75,11 +75,8 @@ int main( int argc, char** argv )
     Minus s_minus ( shapeA, shapeB );
     //! [EuclideanShapesDecoratorUsage]
 
-    typedef Z2i::KSpace::Surfel Surfel;
-
     typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeA;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizerShapeA > LightImplDigSurfaceA;
-    typedef DigitalSurface< LightImplDigSurfaceA > MyDigitalSurfaceA;
     MyGaussDigitizerShapeA digShapeA;
     digShapeA.attach( shapeA );
     digShapeA.init( shapeA.getLowerBound(), shapeA.getUpperBound(), h );
@@ -92,7 +89,6 @@ int main( int argc, char** argv )
 
     typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeB;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizerShapeB > LightImplDigSurfaceB;
-    typedef DigitalSurface< LightImplDigSurfaceB > MyDigitalSurfaceB;
     MyGaussDigitizerShapeB digShapeB;
     digShapeB.attach( shapeB );
     digShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
@@ -105,7 +101,6 @@ int main( int argc, char** argv )
 
     typedef GaussDigitizer< Z2i::Space, Minus > MyGaussDigitizer;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
-    typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
     MyGaussDigitizer digShape;
     digShape.attach( s_minus );
     digShape.init( s_minus.getLowerBound(), s_minus.getUpperBound(), h );
