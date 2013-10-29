@@ -262,19 +262,19 @@ Steps:
     /**
      * @return an Integer of value @a myA.
      */
-    Integer getA() const;
+    Integer a() const;
     /**
      * @return an Integer of value @a myB.
      */
-    Integer getB() const;
+    Integer b() const;
     /**
      * @return an Integer of value @a myMu.
      */
-    Integer getMu() const;
+    Integer mu() const;
     /**
      * @return an Integer of value @a myOmega.
      */
-    Integer getOmega() const;
+    Integer omega() const;
     /**
      * Accessor to the first upper leaning point
      * @return first upper leaning point.

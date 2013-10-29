@@ -914,7 +914,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointEnd() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getA() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::a() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega);
@@ -927,7 +927,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getA() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getB() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::b() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega);
@@ -942,7 +942,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getB() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getMu() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mu() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega );
@@ -956,7 +956,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getMu() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getOmega() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::omega() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega );

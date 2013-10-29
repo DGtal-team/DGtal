@@ -634,9 +634,9 @@ bool checkSubStandardDSLQ0( const DSL & D,
   dss.init( it );
   while ( ( dss.end() != it_end )
           && ( dss.extendForward() ) ) {}
-  bool ok = S.a() == dss.getA() 
-    &&  S.b() == dss.getB() 
-    &&  S.mu() == dss.getMu(); 
+  bool ok = S.a() == dss.a() 
+    &&  S.b() == dss.b() 
+    &&  S.mu() == dss.mu(); 
   if ( ! ok )
     {
       trace.info() << "-------------------------------------------------------"

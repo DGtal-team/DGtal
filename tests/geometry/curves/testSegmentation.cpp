@@ -115,8 +115,8 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
       PointIterator end = i->end();
 
       //parameters
-      int mu = i->getMu();
-      int omega = i->getOmega();
+      int mu = i->mu();
+      int omega = i->omega();
 
       //configurations
       if ( (i->getRemainder(begin)<=mu-1)&&

@@ -558,7 +558,7 @@ namespace DGtal
        *
        * @return the value of 'a' in the DSS equation
        */
-      Integer getA() const;
+      Integer a() const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
@@ -567,7 +567,7 @@ namespace DGtal
        * 
        * @return the value of 'b' in the DSS equation
        */
-      Integer getB() const;
+      Integer b() const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
@@ -576,7 +576,7 @@ namespace DGtal
        *
        * @return the value of 'mu' in the DSS equation
        */
-      Integer getMu() const;
+      Integer mu() const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
@@ -585,7 +585,7 @@ namespace DGtal
        *
        * @return the value of 'omega' in the DSS equation
        */
-      Integer getOmega() const;
+      Integer omega() const;
 
 
       /**
