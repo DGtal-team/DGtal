@@ -90,7 +90,6 @@ bool testDistanceTransformation()
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  typedef HueShadeColorMap<unsigned char, 2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
   Point a ( 2, 2 );
   Point b ( 15, 15 );
@@ -208,7 +207,6 @@ bool testDistanceTransformationNeg()
   typedef Z2i::Space TSpace;
   typedef TSpace::Point Point;
   typedef Z2i::Domain Domain;
-  typedef HueShadeColorMap<unsigned char, 2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
   Point a ( -10, -10 );
   Point b ( 10, 10 );
@@ -293,9 +291,6 @@ bool testDTFromSet()
   trace.beginBlock ( "Testing the whole DT computation from a Set" );
 
   typedef SpaceND<2> TSpace;
-  typedef TSpace::Point Point;
-  typedef HyperRectDomain<TSpace> Domain;
-  typedef ImageSelector<Domain, unsigned int>::Type Image;
   typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
 
  
@@ -356,7 +351,6 @@ bool testDistanceTransformationBorder()
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
-  typedef GrayscaleColorMap<DGtal::uint64_t> Gray;
 
   Point a (0, 0 );
   Point b ( 128, 128 );
@@ -429,8 +423,6 @@ bool testDistanceTransformation3D()
   typedef SpaceND<3> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  typedef HueShadeColorMap<unsigned char, 2> HueTwice;
-  typedef GrayscaleColorMap<unsigned char> Gray;
   Point a ( 0, 0, 0 );
   Point b ( 15, 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
@@ -483,7 +475,6 @@ bool testChessboard()
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
-  typedef GrayscaleColorMap<DGtal::uint64_t> Gray;
 
   Point a (0, 0 );
   Point b ( 128, 128 );
@@ -498,7 +489,6 @@ bool testChessboard()
 
   randomSeeds(image, 19, 0);
 
-  typedef ImageSelector<Domain, long int>::Type ImageLong;
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
   

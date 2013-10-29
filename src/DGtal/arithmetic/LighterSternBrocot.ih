@@ -342,7 +342,6 @@ DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 next( Quotient v ) const
 {
   ASSERT( ! this->null() );
-  typedef typename MapQuotientToNode::iterator Iterator;
   if ( v == NumberTraits<Quotient>::ZERO )
     return *this;
   Node* node = myNode->origin()->child( u() + NumberTraits<Quotient>::ONE );
