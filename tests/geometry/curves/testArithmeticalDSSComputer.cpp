@@ -225,15 +225,16 @@ bool testExtendRetractForward()
   ReverseComputer rc; 
   rc.init( contour.rbegin() ); 
 
-  while ( (rc.begin() != contour.rend())
-          &&(rc.extendForward()) ) {
-  }
+  while ( (rc.end() != contour.rend())
+          &&(rc.extendForward()) ) 
+    {
+    }
 
   //removing step and store each DSS for comparison
   trace.info() << "removing" << std::endl;
 
   v2.push_front( rc.primitive() );
-  while (rc.retractForward()) {
+  while (rc.retractBackward()) {
     v2.push_front( rc.primitive() );
   }    
   ASSERT(v1.size() == v2.size());
@@ -246,7 +247,7 @@ bool testExtendRetractForward()
     if (v1.at(k) != v2.at(k)) 
       isOk = false;
     trace.info() << "DSS :" << k << std::endl;
-    trace.info() << v1.at(k) << v2.at(k) << std::endl;
+    trace.info() << v1.at(k) << std::endl << v2.at(k) << std::endl;
   }
 
   if (isOk) 
