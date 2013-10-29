@@ -786,8 +786,6 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
-  typedef typename Container::const_iterator ContainerConstIterator;
-  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
 
@@ -851,8 +849,6 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
-  typedef typename Container::const_iterator ContainerConstIterator;
-  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
   typedef typename DigitalSetDomain<DigitalSet>::Predicate PredicateIsInX;
