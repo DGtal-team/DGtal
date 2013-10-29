@@ -119,7 +119,7 @@ template <typename TSpace, typename TInternalInteger>
 inline
 void
 DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
-init( InternalInteger diameter, 
+init( InternalInteger diameter,
       InternalInteger widthNumerator,
       InternalInteger widthDenominator )
 {
@@ -206,10 +206,10 @@ inline
 bool
 DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::
 extendAsIs( const Point & p )
-{ 
+{
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end(); 
+  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end();
         it != itE; ++it )
     {
       nbok += myComputers[ *it ].operator()( p ) ? 1 : 0;
@@ -221,7 +221,7 @@ extendAsIs( const Point & p )
         // modifiying a vector.
         {
           bool ok = myComputers[ *it ].extendAsIs( p );
-          if ( ! ok ) 
+          if ( ! ok )
             it = myAxes.erase( it );
           else
             ++it;
@@ -241,7 +241,7 @@ extend( const Point & p )
   ASSERT( isValid() );
   unsigned int nbok = 0;
   _axesToErase.clear();
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     {
       bool ok = myComputers[ *axIt ].extend( p );
@@ -269,7 +269,7 @@ isExtendable( const Point & p ) const
 {
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end(); 
+  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end();
         it != itE; ++it )
     {
       nbok += myComputers[ *it ].isExtendable( p ) ? 1 : 0;
@@ -288,7 +288,7 @@ extend( TInputIterator it, TInputIterator itE )
   ASSERT( isValid() );
   unsigned int nbok = 0;
   _axesToErase.clear();
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     {
       bool ok = myComputers[ *axIt ].extend( it, itE );
@@ -319,7 +319,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
 
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     {
       nbok += myComputers[ *axIt ].isExtendable( it, itE ) ? 1 : 0;
@@ -399,12 +399,11 @@ void
 DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
   double min, max;
-  double N[ 3 ];
   out << "[COBAGenericNaivePlaneComputer";
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     out << " " << myComputers[ *axIt ];
-  out << " ]"; 
+  out << " ]";
 }
 
 /**
@@ -430,7 +429,7 @@ DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::isValid() const
 template <typename TSpace, typename TInternalInteger>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const COBAGenericNaivePlaneComputer<TSpace, TInternalInteger> & object )
 {
   object.selfDisplay( out );
@@ -439,5 +438,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
