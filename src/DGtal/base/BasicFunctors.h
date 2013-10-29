@@ -764,7 +764,7 @@ private:
        */
       inline
       TOutputType operator() (const TInputType& anInitVal) const
-      { return initVal<myInitMin ? myNewMin : anInitVal > myInitMax ? myNewMax : (anInitVal-myInitMin)*myNewRange/myInitRange + myNewMin; }
+      { return anInitVal<myInitMin ? myNewMin : anInitVal > myInitMax ? myNewMax : (anInitVal-myInitMin)*myNewRange/myInitRange + myNewMin; }
   };
 
 }
