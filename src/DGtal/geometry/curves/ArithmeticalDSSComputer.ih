@@ -350,7 +350,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::omega() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUf() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Uf() const 
 {
   return myDSS.Uf();
 }
@@ -359,7 +359,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUf() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUl() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ul() const 
 {
   return myDSS.Ul();
 }
@@ -368,7 +368,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUl() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLf() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Lf() const 
 {
   return myDSS.Lf();
 }
@@ -377,7 +377,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLf() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLl() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ll() const 
 {
   return myDSS.Ll();
 }

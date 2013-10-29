@@ -279,22 +279,22 @@ Steps:
      * Accessor to the first upper leaning point
      * @return first upper leaning point.
      */
-    Point getUf() const;
+    Point Uf() const;
     /**
      * Accessor to the last upper leaning point
      * @return last upper leaning point.
      */
-    Point getUl() const;
+    Point Ul() const;
     /**
      * Accessor to the first lower leaning point
      * @return first lower leaning point.
      */
-    Point getLf() const;
+    Point Lf() const;
     /**
      * Accessor to the last lower leaning point
      * @return last lower leaning point.
      */
-    Point getLl() const;
+    Point Ll() const;
     /**
      * Accessor to the first added point to the DSS
      * @return the first point of the DSS.

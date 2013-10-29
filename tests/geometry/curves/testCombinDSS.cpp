@@ -181,8 +181,8 @@ bool CompareToArithmetical()
       // Compare arithmetic parameters
       if ( ( C.a() != A.a() ) || ( C.b() != A.b() ) ||
            ( C.mu() != A.mu() ) || ( C.omega() != A.omega() ) ||
-           ( C.getUf() != A.getUf() ) || ( C.getUl() != A.getUl() ) ||
-           ( C.getLf() != A.getLf() ) || ( C.getLl() != A.getLl() ) 
+           ( C.Uf() != A.Uf() ) || ( C.Ul() != A.Ul() ) ||
+           ( C.Lf() != A.Lf() ) || ( C.Ll() != A.Ll() ) 
          )
         {
           cout << "Arithmetic parameters error\n";
@@ -192,10 +192,10 @@ bool CompareToArithmetical()
           cout << "b()    " <<  C.b()     << " --- " <<  A.b() << "\n";
           cout << "mu()   " <<  C.mu()    << " --- " <<  A.mu() << "\n";
           cout << "omega()" <<  C.omega() << " --- " <<  A.omega() << "\n";
-          cout << "getUf()   " <<  C.getUf()    << " --- " <<  A.getUf() << "\n";
-          cout << "getUl()   " <<  C.getUl()    << " --- " <<  A.getUl() << "\n";
-          cout << "getLf()   " <<  C.getLf()    << " --- " <<  A.getLf() << "\n";
-          cout << "getLl()   " <<  C.getLl()    << " --- " <<  A.getLl() << endl;
+          cout << "Uf()   " <<  C.Uf()    << " --- " <<  A.Uf() << "\n";
+          cout << "Ul()   " <<  C.Ul()    << " --- " <<  A.Ul() << "\n";
+          cout << "Lf()   " <<  C.Lf()    << " --- " <<  A.Lf() << "\n";
+          cout << "Ll()   " <<  C.Ll()    << " --- " <<  A.Ll() << endl;
           res = false;
           break;
         }

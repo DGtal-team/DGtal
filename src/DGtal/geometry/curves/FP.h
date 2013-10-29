@@ -67,7 +67,7 @@ namespace DGtal
      * 
      * @tparam TDSS type devoted to DSS recognition
      * Must have a nested type 'Point' and four accessors: 
-     *  getUf(), getUl(), getLf(), getLl()
+     *  Uf(), Ul(), Lf(), Ll()
      *
      */
     template <typename TDSS>
@@ -152,7 +152,7 @@ namespace DGtal
      * 
      * @tparam TDSS type devoted to DSS recognition
      * Must have a nested type 'Point' and four accessors: 
-     *  getUf(), getUl(), getLf(), getLl()
+     *  Uf(), Ul(), Lf(), Ll()
      *
      * @see DSSDecorator FP
      */
@@ -174,7 +174,7 @@ namespace DGtal
        */
       typename TDSS::Point firstLeaningPoint() const 
       {
-        return this->myDSS->getUf();
+        return this->myDSS->Uf();
       }
       /**
        * Last leaning point accessor 
@@ -182,7 +182,7 @@ namespace DGtal
        */
       typename TDSS::Point lastLeaningPoint() const
       {
-        return this->myDSS->getUl();
+        return this->myDSS->Ul();
       }
       /**
        * Tells whether it adapts a DSS computer for convex parts or not
@@ -203,7 +203,7 @@ namespace DGtal
      * 
      * @tparam TDSS type devoted to DSS recognition
      * Must have a nested type 'Point' and four accessors: 
-     *  getUf(), getUl(), getLf(), getLl()
+     *  Uf(), Ul(), Lf(), Ll()
      *
      * @see DSSDecorator FP
      */
@@ -225,7 +225,7 @@ namespace DGtal
        */
       typename TDSS::Point firstLeaningPoint() const 
       {
-        return this->myDSS->getLf();
+        return this->myDSS->Lf();
       }
       /**
        * Last leaning point accessor 
@@ -233,7 +233,7 @@ namespace DGtal
        */
       typename TDSS::Point lastLeaningPoint() const
       {
-        return this->myDSS->getLl();
+        return this->myDSS->Ll();
       }
       /**
        * Tells whether it adapts a DSS computer for convex parts or not
