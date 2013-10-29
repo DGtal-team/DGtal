@@ -79,6 +79,11 @@
     - New graph visitor, which allows to visit a graph according to
       any distance object (like the Euclidean distance to some point).
 
+*Math Package*
+
+    - add Histogram class and CBinner concept.
+    - add math concepts diagram.
+
 
 === DGtal 0.6 ===
 
