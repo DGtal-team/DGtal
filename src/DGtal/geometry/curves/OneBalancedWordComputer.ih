@@ -1127,7 +1127,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getRemainder(const Poin
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getFirstPoint() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::back() const
 {
   return myFirstPoint;
 }
@@ -1140,7 +1140,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getFirstPoint() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getLastPoint() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::front() const
 {
   return myLastPoint;
 }

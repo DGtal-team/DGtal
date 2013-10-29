@@ -172,7 +172,7 @@ bool CompareToArithmetical()
           C.retractForward();
         }
       // Compare positions
-      if ( ( C.getFirstPoint() != A.getFirstPoint() ) || ( C.getLastPoint() != A.getLastPoint() )  )
+      if ( ( C.back() != A.back() ) || ( C.front() != A.front() )  )
         {
           res = false;
           cout << "Equality test error\n";

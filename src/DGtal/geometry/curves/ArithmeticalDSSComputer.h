@@ -300,25 +300,13 @@ Steps:
      * @return the first point of the DSS.
      * @see getFirstPoint
      */
-    Point getBackPoint() const ;
+    Point back() const ;
     /**
      * Accessor to the last added point to the DSS
      * @return the last point of the DSS.
      * @see getLastPoint
      */
-    Point getFrontPoint() const ;
-    /**
-     * Accessor to the first added point to the DSS
-     * @return the first point of the DSS.
-     * @see getBackPoint
-     */
-    Point getFirstPoint() const ;
-    /**
-     * Accessor to the last added point to the DSS
-     * @return the last point of the DSS.
-     * @see getFrontPoint
-     */
-    Point getLastPoint() const;
+    Point front() const ;
     /**
      * @return begin iterator of the DSS range.
      */
