@@ -86,7 +86,7 @@ DGtal::DSSLengthEstimator<T>::init(const double h,
   typename GreedySegmentation<DSSComputer>::SegmentComputerIterator segItEnd = decomposition.end(); 
   for ( ; segIt != segItEnd; ++segIt ) 
     {
-      myRep.push_back( segIt->getBackPoint() );
+      myRep.push_back( segIt->back() );
    } 
   //last point
   myRep.push_back(lastPoint(ite)); 

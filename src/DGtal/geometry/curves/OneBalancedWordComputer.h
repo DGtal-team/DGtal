@@ -689,13 +689,13 @@ namespace DGtal
        * Accessor to the first added point to the DSS
        * @return point.
        */
-      Point getFirstPoint() const;
+      Point back() const;
 
       /**
        * Accessor to the last added point to the DSS
        * @return point.
        */
-      Point getLastPoint() const;
+      Point front() const;
 
       /**
        * Accessor to the first added point to the DSS
