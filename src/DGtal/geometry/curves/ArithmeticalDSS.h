@@ -233,6 +233,8 @@ namespace DGtal
      * The user gives all the (redondant) parameters and 
      * should be sure that the resulting DSS is valid. 
      *
+     * @see isValid
+     *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
      * @param aMu intercept
@@ -243,12 +245,16 @@ namespace DGtal
      * @param aUl the last upper point
      * @param aLf the first lower point
      * @param aLl the last lower point
+     * @param aSteps pair of steps used to iterate over the DSS points
+     * @param aShift shift vector translating a point of remainder r 
+     * to a point of remainder r +  @a aOmega
      */
     ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
 		    const Integer& aMu, const Integer& aOmega, 
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
-		    const Point& aLf, const Point& aLl);
+		    const Point& aLf, const Point& aLl, 
+		    const Steps& aSteps, const Vector& aShift);
 
     /**
      * Constructor.
@@ -257,6 +263,8 @@ namespace DGtal
      * The user should be sure that the slope is
      * consistent with the position of the leaning 
      * points. 
+     *
+     * @see isValid
      *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
@@ -637,25 +645,6 @@ namespace DGtal
   protected:
 
     /**
-     * Returns the bezout vector (u,v) of a given
-     * direction vector of slope @a aA / @a aB
-     * such that u and @a aB (resp. v and @a aA)
-     * have the same sign.  
-     * @return bezout vector 
-     * @param aA y-component of the direction vector
-     * @param aB x-component of the dirention vector
-     * @param aR a remainder equal to either 1 or -1
-     * 
-     * @see setPattern
-     *
-     * NB: this method uses the extended Euclid's algorithm
-     * and runs in logarithmic time. 
-     */
-    Vector bezoutVector(const Coordinate& aA, 
-			const Coordinate& aB, 
-			const Coordinate& aR) const; 
-
-    /**
      * Tests whether @a aStep is one of the two steps of the DSS, 
      * stored in @a mySteps. 
      *
@@ -687,33 +676,6 @@ namespace DGtal
      */
     void setMuOmega(const Integer& aMu, const Integer& aOmega); 
 
-    /**
-     * Initializes a pattern from its two end points, which are
-     * two leaning points, either located on the upper leaning line
-     * or on the lower leaning line. 
-     * Besides the leaning points, this method set the shift vector
-     * the steps and the slope, but neither the intercept nor the 
-     * thickness, which should be set after. 
-     *
-     * @param aFirstLeaningPoint first point of the DSS
-     * @param aFirstLeaningPoint last point of the DSS
-     * @param aFirstOppositeLeaningPoint returned first leaning point 
-     * located on the opposite leaning line
-     * @param aLastOppositeLeaningPoint returned last leaning point 
-     * located on the opposite leaning line
-     * @param sign integer equal to '1' if the two end points are
-     * located on the upper leaning line, '-1' if they are located
-     * on the lower leaning line. It gives the remainder of the 
-     * shorthest Bezout vector starting from @a aFirstLeaningPoint 
-     * and pointing to @a aLastLeaningPoint
-     *
-     * NB: logarithmic in time. 
-     */
-    void setPattern(const Point& aFirstLeaningPoint, 
-		    const Point& aLastLeaningPoint,
-		    Point& aFirstOppositeLeaningPoint, 
-		    Point& aLastOppositeLeaningPoint, 
-		    const short& sign);
     /**
      * Updates the parameters of the DSS
      * (slope, intercept, thickness, steps, 
@@ -795,7 +757,7 @@ namespace DGtal
      */
     Steps mySteps;
     /**
-     * Shift vector (translating a point of remainder r to a point of remainder r+omega 
+     * Shift vector (translating a point of remainder r to a point of remainder r+omega) 
      */
     Vector myShift;
 

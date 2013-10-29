@@ -96,7 +96,7 @@ bool mainTest()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
 
-  DSS dss6(0, 1, 0, 1, 
+  DSS dss6(0, 1,
 	   Point(1,0), Point(0,0), 
 	   Point(1,0), Point(0,0),
 	   Point(1,0), Point(0,0) ); 
