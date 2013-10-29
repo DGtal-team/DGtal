@@ -801,27 +801,6 @@ namespace DGtal
     typedef ArithmeticalDSS<TCoordinate, TInteger, 4> Super; 
 
   public: 
-    /**
-     * Constructor.
-     * The user gives all the (redondant) parameters and 
-     * should be sure that the resulting DSS is valid. 
-     *
-     * @param aA y-component of the direction vector
-     * @param aB x-component of the direction vector
-     * @param aMu intercept
-     * @param aOmega thickness
-     * @param aF the first point
-     * @param aL the last point
-     * @param aUf the first upper point
-     * @param aUl the last upper point
-     * @param aLf the first lower point
-     * @param aLl the last lower point
-     */
-    StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
-		 const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
-		 const typename Super::Point& aF, const typename Super::Point& aL,
-		 const typename Super::Point& aUf, const typename Super::Point& aUl,
-		 const typename Super::Point& aLf, const typename Super::Point& aLl);
 
     /**
      * Constructor.
@@ -906,27 +885,6 @@ namespace DGtal
     typedef ArithmeticalDSS<TCoordinate, TInteger, 8> Super; 
 
   public: 
-    /**
-     * Constructor.
-     * The user gives all the (redondant) parameters and 
-     * should be sure that the resulting DSS is valid. 
-     *
-     * @param aA y-component of the direction vector
-     * @param aB x-component of the direction vector
-     * @param aMu intercept
-     * @param aOmega thickness
-     * @param aF the first point
-     * @param aL the last point
-     * @param aUf the first upper point
-     * @param aUl the last upper point
-     * @param aLf the first lower point
-     * @param aLl the last lower point
-     */
-    NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
-	      const typename Super::Integer& aMu, const typename Super::Integer& aOmega, 
-	      const typename Super::Point& aF, const typename Super::Point& aL,
-	      const typename Super::Point& aUf, const typename Super::Point& aUl,
-	      const typename Super::Point& aLf, const typename Super::Point& aLl);
     /**
      * Constructor.
      * Minimal set of parameters to build the DSS
