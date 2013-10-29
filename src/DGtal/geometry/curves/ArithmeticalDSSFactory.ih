@@ -73,31 +73,31 @@ DGtal::ArithmeticalDSSFactory<TC,TI,adj>::createPattern(const Point& aF, const P
       //steps
       Steps steps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(u[1], u[0]); 
 
-      if (steps.second == Vector(0,0))
-	{ //specific case: a or b is null
-	  //lower leaning points
+      //lower leaning points
+      if ( steps.second == Vector(0,0) )
+	{ //specific case: there is only one step, 
+	  //ie. either a == 0, or b == 0, or 
+	  //(a == 1 and b == 1) in the naive case
 	  Lf = Uf;  
 	  Ll = Ul;  
 	}
       else 
 	{ //otherwise
-	  //Bezout vector
 	  Coordinate signedUnity = -1; 
-	  Vector v = bezoutVector(u[1], u[0], signedUnity); 
-	  //lower leaning points
+	  Vector v = bezoutVector(u[1], u[0], signedUnity);
 	  Lf = Uf + v - s*signedUnity; 
 	  Ll = Uf + u*(gcd-1) + v - s*signedUnity; 
 	}
       
-      //(a, b, mu, omega) parameters
+      //DSL parameters
       Coordinate a, b;  
       a = u[1]; 
       b = u[0]; 
-      Integer mu, omega; 
-      mu = a * static_cast<Integer>(Uf[0]) - b * static_cast<Integer>(Uf[1]);
-      omega = a * static_cast<Integer>(s[0]) - b * static_cast<Integer>(s[1]);
+      Integer mu1, mu2; 
+      mu1 = a * static_cast<Integer>(Uf[0]) - b * static_cast<Integer>(Uf[1]);
+      mu2 = a * static_cast<Integer>(Lf[0]) - b * static_cast<Integer>(Lf[1]);
 
-      return DGtal::ArithmeticalDSS<TC,TI,adj>(a, b, mu, omega, aF, aL, 
+      return DGtal::ArithmeticalDSS<TC,TI,adj>(a, b, mu1, mu2, aF, aL, 
 					       Uf, Ul, Lf, Ll, steps, s);
     }
 }
