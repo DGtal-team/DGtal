@@ -119,11 +119,6 @@ namespace DGtal
       /// Quantity to remove to the current remainder
       Integer  myQuantityToRemove;
 
-      /// Upper bound on the remainders
-      Integer  myUpperBound;
-      /// Lower bound on the remainders
-      Integer  myLowerBound;
-
       /// Remainder of the current point
       Integer  myCurrentRemainder;
 
@@ -674,7 +669,7 @@ namespace DGtal
      * @param aOmega new omega parameter
      * @see extend
      */
-    void setMuOmega(const Integer& aMu, const Integer& aOmega); 
+    void setBounds(const Integer& aLowerBound, const Integer& aUpperBound); 
 
     /**
      * Updates the parameters of the DSS
@@ -771,13 +766,18 @@ namespace DGtal
      */
     Coordinate myB;
     /**
-     * Intercept
+     * Lower intercept
+     * NB: for any upper leaning point U, we have remainder(U) == myLowerBound.
+     * NB: myLowerBound <= myUpperBound
      */
-    Integer myMu;
+    Integer myLowerBound;
     /**
-     * Thickness
+     * Upper intercept
+     * NB: for any lower leaning point L, we have remainder(L) == myUpperBound.
+     * NB: if myA and myB are not both null, myUpperBound == myLowerBound + omega() - 1
+     * NB: myLowerBound <= myUpperBound
      */
-    Integer myOmega;
+    Integer myUpperBound;
 
 
 

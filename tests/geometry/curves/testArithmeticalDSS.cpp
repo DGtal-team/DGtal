@@ -378,12 +378,11 @@ void retractionTest(const DSS& dss,
   //forward test
   Point first = mdss.back(); 
   trace.info() << "remove " << first << std::endl; 
-  if ( (mdss.retractBackward()==res) 
-       && (mdss.isValid())
-       && (!mdss(first)) )
+  if ( ( (mdss.retractBackward()) 
+	 && (mdss.isValid())
+	 && (mdss(first) == false) ) == res )
     nbok++; 
   nb++; 
-  trace.info() << mdss << std::endl; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   if (res)
@@ -392,15 +391,15 @@ void retractionTest(const DSS& dss,
 	   && (mdss.isValid()) && (mdss == dss) )
 	nbok++; 
       nb++;
+      trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
     }
-  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   //backward test
   Point last = mdss.front(); 
   trace.info() << "remove " << last << std::endl; 
-  if ( (mdss.retractForward()==res) 
-       && (mdss.isValid())
-       && (!mdss(last)) )
+  if ( ( (mdss.retractForward()) 
+	 && (mdss.isValid())
+	 && (mdss(last) == false) ) == res )
     nbok++; 
   nb++; 
   trace.info() << mdss << std::endl; 
@@ -412,8 +411,8 @@ void retractionTest(const DSS& dss,
 	   && (mdss.isValid()) && (mdss == dss) )
 	nbok++; 
       nb++; 
+      trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
     }
-  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 }
 
@@ -846,6 +845,8 @@ int main( int argc, char** argv )
       && rangeTest( Factory::createPattern(Point(0,0), Point(-1,1)) )
       && rangeTest( Factory::createPattern(Point(0,0), Point(1,-1)) )
       && rangeTest( Factory::createPattern(Point(0,0), Point(-1,-1)) )
+      && rangeTest( Factory::createReversedPattern(Point(0,0), Point(8,5)) )
+      && rangeTest( Factory::createReversedPattern(Point(0,0), Point(5,8)) )
       ;
   }
 
