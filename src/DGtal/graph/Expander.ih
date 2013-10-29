@@ -179,7 +179,6 @@ DGtal::Expander<TObject>
   typedef std::set<Point> SetContainer;
   typedef std::insert_iterator< SetContainer > Inserter;
   typedef std::vector<Point> VectorContainer;
-  typedef std::back_insert_iterator< VectorContainer > VectorInserter;
   SetContainer newLayer;
   Inserter inserter( newLayer, newLayer.begin() );
   

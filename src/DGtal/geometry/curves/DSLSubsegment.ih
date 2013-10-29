@@ -1026,8 +1026,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
       }
     else  //the facet is upper triangular,
       {
-	IntegerComputer<Integer> ic;
-	Integer g = ic.gcd(inf[1] + sup[1],inf[0]+sup[0]);
+	IntegerComputer<Integer> icc;
+	Integer g = icc.gcd(inf[1] + sup[1],inf[0]+sup[0]);
 	*resAlphaP = (inf[1]+sup[1])/g;
 	*resAlphaQ = (inf[0]+sup[0])/g;
 	*resBetaP = -(*resAlphaP)*r.x+(*resAlphaQ)*r.y;
