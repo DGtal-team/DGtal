@@ -73,7 +73,6 @@ bool testFP(string filename)
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
 
-  typedef Range::ConstIterator ConstIterator;//constIterator
 
   //faithful polyon
   trace.info() << "Building FP (process digital curve as"; 

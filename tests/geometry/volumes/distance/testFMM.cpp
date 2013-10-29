@@ -137,7 +137,6 @@ ballGenerator(const int& size, double aCx, double aCy, double aR, GridCurve<TKSp
   // Types
   typedef TKSpace KSpace;  
   typedef typename KSpace::SCell SCell;
-  typedef GridCurve<KSpace> GridCurve; 
   typedef typename KSpace::Space Space;  
   typedef typename Space::Point Point;
 
@@ -169,7 +168,6 @@ void draw( const TIterator& itb, const TIterator& ite, const int& size, std::str
 {
   typedef typename std::iterator_traits<TIterator>::value_type Pair; 
   typedef typename Pair::first_type Point; 
-  typedef typename Pair::second_type Value; 
   HueShadeColorMap<unsigned char, 2> colorMap(0,3*size);
 
   Board2D b; 

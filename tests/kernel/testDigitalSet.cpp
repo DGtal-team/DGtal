@@ -360,7 +360,6 @@ bool testDigitalSetDomain()
 
 bool testDigitalSetConcept()
 {
-  typedef Z2i::Point Value;
   BOOST_CONCEPT_ASSERT(( CDigitalSet<Z2i::DigitalSet> ));
   BOOST_CONCEPT_ASSERT(( CDigitalSet<Z3i::DigitalSet> ));
 

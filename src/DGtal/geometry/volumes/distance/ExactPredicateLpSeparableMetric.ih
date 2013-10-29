@@ -342,7 +342,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::hiddenBy(const Point &u,
                                                         const Point &v,
                                                         const Point &w, 
                                                         const Point &startingPoint,
-                                                        const Point &endPoint,
+                                                        const Point &/*endPoint*/,
                                                         const typename Point::UnsignedComponent dim) const
 {
   Promoted a,b, c;
