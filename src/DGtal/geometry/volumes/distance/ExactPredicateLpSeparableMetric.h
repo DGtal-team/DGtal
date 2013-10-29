@@ -112,6 +112,9 @@ namespace DGtal
     ///Type for distance values
     typedef double Value;
 
+    ///Self type
+    typedef ExactPredicateLpSeparableMetric<TSpace,p,TPromoted> Self;
+
     /**
      * Constructor.
      */
@@ -123,18 +126,23 @@ namespace DGtal
      */
     ~ExactPredicateLpSeparableMetric();
 
-  /**
+    /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ExactPredicateLpSeparableMetric ( const ExactPredicateLpSeparableMetric & other ) {}
+    ExactPredicateLpSeparableMetric ( const Self & /*other*/ ) 
+    {
+    }
     
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpSeparableMetric & operator= ( const ExactPredicateLpSeparableMetric & other ) { return *this;}
+    Self & operator= ( const Self & /*other*/ ) 
+    { 
+      return *this;
+    }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -293,6 +301,9 @@ namespace DGtal
     ///Type for distance values
     typedef double Value;    
     
+    ///Self type
+    typedef ExactPredicateLpSeparableMetric<TSpace,2,TPromoted> Self;
+
     /**
      * Constructor.
      */
@@ -309,14 +320,14 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    ExactPredicateLpSeparableMetric ( const ExactPredicateLpSeparableMetric & other ) {}
+    ExactPredicateLpSeparableMetric ( const Self & /*other*/ ) {}
     
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpSeparableMetric & operator= ( const ExactPredicateLpSeparableMetric & other ) { return *this;}
+    Self & operator= ( const Self & /*other*/ ) { return *this;}
 
    
     // ----------------------- Interface --------------------------------------

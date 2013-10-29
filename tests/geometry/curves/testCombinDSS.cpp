@@ -66,7 +66,6 @@ typedef FreemanChain<int>::Vector Vector;
  */
 bool testOneBalancedWordComputer() 
 {
-  typedef Contour::ConstIterator ConstIterator;
   typedef string::const_iterator codeIterator;
   typedef OneBalancedWordComputer< list<char>::iterator, int> OneBalancedWordComputer_list;
   typedef OneBalancedWordComputer<codeIterator, int> OneBalancedWordComputer_string;
@@ -153,7 +152,7 @@ bool CompareToArithmetical()
   Contour::ConstIterator it = theContour.begin();
   TestedType C;
   C.init( it );
-  ArithmeticalDSSComputer<FreemanChain<int>::ConstIterator, int, 4> A(it);
+  ReferenceType A(it);
   A.extendForward(); 
   bool res = true;
   while ( C.end() != theContour.chain.end() ) 
