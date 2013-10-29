@@ -48,11 +48,12 @@ namespace DGtal
 
   /**
    * Description of template class 'ITKReader'
-   * \brief Aim: Export a 2D/3D Image using the ITK formats.
+   * \brief Aim: Import a 2D/3D Image using the ITK formats.
    *
    * @tparam TImage the Image type.
    * @tparam TFunctor the type of functor used in the export.
    * @see ITKWriter
+   * @see ITKIOTrait
    */
   template <typename TImage, typename TFunctor = typename ITKIOTrait<typename TImage::Value>::DefaultReadFunctor >
   struct ITKReader
@@ -67,7 +68,7 @@ namespace DGtal
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3) || (TImage::Domain::dimension == 2) ));
 
     /**
-     * Export an Image with a format supported by ITK.
+     * Import an Image with a format supported by ITK.
      *
      * @param filename name of the output file
      * @param aFunctor functor used to cast image values
