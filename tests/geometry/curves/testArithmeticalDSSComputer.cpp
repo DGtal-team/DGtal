@@ -408,10 +408,10 @@ bool testBIGINTEGER()
 
   Coordinate mu;
   mu = "-3000000000";
-  if( (theDSS4.getA() == 2)
-      &&(theDSS4.getB() == 5)
-      &&(theDSS4.getMu() == mu)
-      &&(theDSS4.getOmega() == 7) ) {
+  if( (theDSS4.a() == 2)
+      &&(theDSS4.b() == 5)
+      &&(theDSS4.mu() == mu)
+      &&(theDSS4.omega() == 7) ) {
     flag = true;
   } else {
     flag = false;

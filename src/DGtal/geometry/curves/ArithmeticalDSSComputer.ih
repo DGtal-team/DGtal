@@ -314,7 +314,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSS(const Cons
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getA() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::a() const 
 {
   return myDSS.a();
 }
@@ -323,7 +323,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getA() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getB() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::b() const 
 {
   return myDSS.b();
 }
@@ -332,7 +332,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getB() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getMu() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::mu() const 
 {
   return myDSS.mu();
 }
@@ -341,7 +341,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getMu() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getOmega() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::omega() const 
 {
   return myDSS.omega();
 }
