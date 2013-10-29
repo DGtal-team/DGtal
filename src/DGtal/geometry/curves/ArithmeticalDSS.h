@@ -640,49 +640,6 @@ namespace DGtal
   protected:
 
     /**
-     * Tests whether @a aStep is one of the two steps of the DSS, 
-     * stored in @a mySteps. 
-     *
-     * @param aStep any step to test
-     * @pre steps of @a mySteps should not be null
-     * @return 'true' if @a aStep is one of the two steps of the DSS,
-     * 'false' otherwise.
-     *
-     * @see isExtendable
-     */
-    bool isOneOfTheTwoSteps( const Vector& aStep ) const; 
-
-
-    // ----------------------- Setters -----------------------------------------
-    /**
-     * Set the DSS slope (ie. @a myA and @a myB parameters) 
-     * @param aA new a-parameter
-     * @param aB new b-parameter
-     * @see extend
-     */
-    void setSlope(const Coordinate& aA, const Coordinate& aB); 
-
-    /**
-     * Set the intercept and the thickness of the DSS
-     * (ie. @a myMu and @a myOmega parameters) 
-     * @param aMu new mu parameter
-     * @param aOmega new omega parameter
-     * @see extend
-     */
-    void setBounds(const Integer& aLowerBound, const Integer& aUpperBound); 
-
-    /**
-     * Updates the parameters of the DSS
-     * (slope, intercept, thickness, steps, 
-     * shift vector) after the retraction. 
-     *
-     * @param aDirection direction vector
-     *
-     * @see retractForward retractBackward
-     */
-    void updateParameters( const Vector& aNewDirection );
-
-    /**
      * Updates the leaning points of the DSS
      * if the end point is a leaning point
      * that has to be removed from the DSS. 
@@ -705,16 +662,41 @@ namespace DGtal
      * @return 'true' is the slope has to be updated, 
      * 'false' otherwise
      *
-     * @see retract
+     * @see retractForward retractBackward
      */
-    bool updateLeaningPoints( const Vector& aDirection, 
-			      const Point& aFirst,
-			      const Point& aLast, 
-			      const Point& aBezout, 
-			      const Point& aFirstAtOppositeSide, 
-			      Point& aLastAtOppositeSide, 
-			      Point& aFirstAtRemovalSide,
-			      const Point& aLastAtRemovalSide);
+    bool retractUpdateLeaningPoints( const Vector& aDirection, 
+				     const Point& aFirst,
+				     const Point& aLast, 
+				     const Point& aBezout, 
+				     const Point& aFirstAtOppositeSide, 
+				     Point& aLastAtOppositeSide, 
+				     Point& aFirstAtRemovalSide,
+				     const Point& aLastAtRemovalSide);
+
+    /**
+     * Updates the parameters of the DSS
+     * (slope, intercept, thickness, steps, 
+     * shift vector) after the retraction. 
+     *
+     * @param aDirection direction vector
+     *
+     * @see retractForward retractBackward
+     */
+    void retractUpdateParameters( const Vector& aNewDirection );
+
+    /**
+     * Tests whether @a aStep is one of the two steps of the DSS, 
+     * stored in @a mySteps or not. 
+     *
+     * @param aStep any step to test
+     * @pre steps of @a mySteps should not be null
+     * @return 'true' if @a aStep is one of the two steps of the DSS,
+     * 'false' otherwise.
+     *
+     * @see isExtendableForward
+     */
+    bool isOneOfTheTwoSteps( const Vector& aStep ) const; 
+
 
 
     // ------------------------- Protected Datas ------------------------------
@@ -756,7 +738,7 @@ namespace DGtal
      */
     Vector myShift;
 
-    //------------------------ parameters of the DSS --------------------------
+    //------------------------ parameters of the DSL --------------------------
     /**
      * y-component of the direction vector
      */

@@ -466,12 +466,14 @@ isExtendableForward( const Point& aNewPoint ) const
     return 0;
 
   //if the first step does not exist yet OK
-  else if (mySteps.first == Vector(0,0)) 
+  else if ( (mySteps.first[0] == NumberTraits<Coordinate>::ZERO)
+	    &&(mySteps.first[1] == NumberTraits<Coordinate>::ZERO) ) 
     return 1; 
 
   //if the first step exists and
   //if the second step does not exist
-  else if (mySteps.second == Vector(0,0))
+  else if ( (mySteps.second[0] == NumberTraits<Coordinate>::ZERO)
+	    &&(mySteps.second[1] == NumberTraits<Coordinate>::ZERO) )
     {
       //if the first step exists and is repeated OK
       if (step == mySteps.first) 
@@ -481,16 +483,16 @@ isExtendableForward( const Point& aNewPoint ) const
 	  //if the two steps are compatible OK
 	  Vector v = step - mySteps.first; 
 	  if ( DGtal::ArithmeticalDSSKernel<TC,DGtal::ArithmeticalDSSKernel<TC,adj>::BackgroundAdjacency>
-	       ::norm(v[0], v[1]) ==  NumberTraits<Coordinate>::ONE )
+	       ::norm(v[0], v[1]) == NumberTraits<Coordinate>::ONE )
 	    {
 	      Integer r = remainder(aNewPoint);
 	      //if weakly exterior on the left 
-	      if (r == myLowerBound-1)
+	      if (r == myLowerBound-NumberTraits<Integer>::ONE)
 		return 3;
 	      //if weakly exterior on the right
 	      else 
 		{
-		  ASSERT(r == myUpperBound+1); 
+		  ASSERT(r == myUpperBound+NumberTraits<Integer>::ONE); 
 		  return 4;
 		}
 	    }
@@ -507,7 +509,8 @@ isExtendableForward( const Point& aNewPoint ) const
       	Integer r = remainder(aNewPoint);
 
   	//if strongly exterior KO
-  	if ( (r < myLowerBound-1)||(r > myUpperBound+1) )
+  	if ( (r < myLowerBound-NumberTraits<Integer>::ONE)
+	     ||(r > myUpperBound+NumberTraits<Integer>::ONE) )
   	  return 0;
   	//otherwise OK
   	else 
@@ -516,9 +519,9 @@ isExtendableForward( const Point& aNewPoint ) const
   	      return 5; 
   	    else if (r == myUpperBound)
   	      return 6;
-  	    else if (r == myLowerBound-1)
+  	    else if (r == myLowerBound-NumberTraits<Integer>::ONE)
   	      return 7;
-  	    else if (r == myUpperBound+1)
+  	    else if (r == myUpperBound+NumberTraits<Integer>::ONE)
   	      return 8;
   	    else 
   	      return 9; 
@@ -557,17 +560,16 @@ extendForward( const Point& aNewPoint )
   switch (res)
     {
     case 1: //first step init
-      //NB: becareful of the initialization sequence: 
-      //setBounds() requires myShift to be initialized, 
-      //which requires myA, myB to be initialized, 
-      //which requires mySteps.first to be initialize. 
-      mySteps.first = Vector( (aNewPoint[0] - myL[0]), (aNewPoint[1] - myL[1]) ); 
-      setSlope( mySteps.first[1], mySteps.first[0] ); 
-      myShift = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB); 
-      setBounds( remainder(myUl), remainder(myLl) );
+      mySteps.first[0] = (aNewPoint[0] - myL[0]); 
+      mySteps.first[1] = (aNewPoint[1] - myL[1]); 
+      myA = mySteps.first[1]; 
+      myB = mySteps.first[0]; 
+      myLowerBound = remainder(myUf); //myUf doesn't change
+      myUpperBound = remainder(myLf); //myLf doesn't change
       myL = aNewPoint; 
       myUl = aNewPoint; 
       myLl = aNewPoint;
+      myShift = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB); 
       break; 
     case 2: //first step repeated
       myL = aNewPoint; 
@@ -575,30 +577,26 @@ extendForward( const Point& aNewPoint )
       myLl = aNewPoint;
       break; 
     case 3: //second step init on the left
-      //NB: becareful of the initialization sequence: 
-      //setBounds() => myShift => mySteps
-      //             => leaning points => setSlope()
-      setSlope( ((myUl[1] - myUf[1]) + (aNewPoint[1] - myL[1])), 
-		((myUl[0] - myUf[0]) + (aNewPoint[0] - myL[0])) ); 
+      myA = ((myUl[1] - myUf[1]) + (aNewPoint[1] - myL[1]));  
+      myB = ((myUl[0] - myUf[0]) + (aNewPoint[0] - myL[0])); 
+      myLowerBound = remainder(myUf); //myUf doesn't change
+      myUpperBound = remainder(myLl); //myLl doesn't change
       myL = aNewPoint; 
       myUl = aNewPoint; 
       myLf = myLl; 
       mySteps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB);
       myShift = mySteps.first-mySteps.second; 
-      setBounds( remainder(myUl), remainder(myLl) );
       break; 
     case 4: //second step init on the right
-      //NB: becareful of the initialization sequence: 
-      //setBounds() => myShift => mySteps
-      //             => leaning points => setSlope()
-      setSlope( ((myLl[1] - myLf[1]) + (aNewPoint[1] - myL[1])), 
-		((myLl[0] - myLf[0]) + (aNewPoint[0] - myL[0])) ); 
+      myA = ((myLl[1] - myLf[1]) + (aNewPoint[1] - myL[1]));  
+      myB = ((myLl[0] - myLf[0]) + (aNewPoint[0] - myL[0])); 
+      myLowerBound = remainder(myUl); //myUl doesn't change
+      myUpperBound = remainder(myLf); //myLf doesn't change
       myL = aNewPoint; 
       myLl = aNewPoint; 
       myUf = myUl; 
       mySteps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB);
       myShift = mySteps.first-mySteps.second; 
-      setBounds( remainder(myUl), remainder(myLl) );
       break; 
     case 5: //weakly interior on the left
       myL = aNewPoint; 
@@ -609,18 +607,22 @@ extendForward( const Point& aNewPoint )
       myLl = aNewPoint; 
       break; 
     case 7: //weakly exterior on the left
+      myA = (aNewPoint[1] - myUf[1]);  
+      myB = (aNewPoint[0] - myUf[0]); 
+      myLowerBound = remainder(myUf); //myUf doesn't change
+      myUpperBound = remainder(myLl); //myLl doesn't change
       myL = aNewPoint; 
       myUl = aNewPoint; 
       myLf = myLl; 
-      setSlope( (myUl[1] - myUf[1]), (myUl[0] - myUf[0]) ); 
-      setBounds( remainder(myUl), remainder(myLl) );
       break; 
     case 8: //weakly exterior on the right
+      myA = (aNewPoint[1] - myLf[1]);  
+      myB = (aNewPoint[0] - myLf[0]); 
+      myLowerBound = remainder(myUl); //myUl doesn't change
+      myUpperBound = remainder(myLf); //myLf doesn't change
       myL = aNewPoint; 
       myLl = aNewPoint; 
       myUf = myUl; 
-      setSlope( (myLl[1] - myLf[1]), (myLl[0] - myLf[0]) ); 
-      setBounds( remainder(myUl), remainder(myLl) );
       break; 
     case 9: //strongly interior
       myL = aNewPoint; 
@@ -688,40 +690,43 @@ retractBackward()
 	  myLf = next; 
 	  ASSERT( myUl == next ); 
 	  ASSERT( myLl == next ); 
-	  setSlope(0,0); 
-	  setBounds(0,0);
-	  ASSERT( mySteps.second == Vector(0,0) ); 
-	  mySteps.first = Vector(0,0); 
-	  myShift = Vector(0,0); 
+	  myA = NumberTraits<Coordinate>::ZERO; 
+	  myB = NumberTraits<Coordinate>::ZERO;  
+	  myLowerBound = NumberTraits<Integer>::ZERO; 
+	  myUpperBound = NumberTraits<Integer>::ZERO; 
+	  mySteps.first[0] = NumberTraits<Coordinate>::ZERO; 
+	  mySteps.first[1] = NumberTraits<Coordinate>::ZERO; 
+	  myShift[0] = NumberTraits<Coordinate>::ZERO; 
+	  myShift[1] = NumberTraits<Coordinate>::ZERO; 
 	  return true; 
 	}
       //otherwise
       else
 	{
 	  //points used to update the DSS
-	  Point bezoutPoint, firstLeaningPoint; 
+	  Point bezoutPoint; 
 	  
 	  //leaning points / parameters update
 	  if (myF == myUf)
 	    {
 	      bezoutPoint = myUf + myShift; 
-	      if ( updateLeaningPoints( Vector(myB, myA), 
-					next, myL, 
-					bezoutPoint, 
-					myLf, myLl, 
-					myUf, myUl ) )
-		updateParameters( myLf - bezoutPoint ); 
+	      if ( retractUpdateLeaningPoints( Vector(myB, myA), 
+					       next, myL, 
+					       bezoutPoint, 
+					       myLf, myLl, 
+					       myUf, myUl ) )
+		retractUpdateParameters( myLf - bezoutPoint ); 
 	      
 	    }
 	  if (myF == myLf) 
 	    {
 	      bezoutPoint = myLf - myShift; 
-	      if ( updateLeaningPoints( Vector(myB, myA),
-					next, myL, 
-					bezoutPoint, 
-					myUf, myUl, 
-					myLf, myLl ) )
-		updateParameters( myUf - bezoutPoint ); 
+	      if ( retractUpdateLeaningPoints( Vector(myB, myA),
+					       next, myL, 
+					       bezoutPoint, 
+					       myUf, myUl, 
+					       myLf, myLl ) )
+		retractUpdateParameters( myUf - bezoutPoint ); 
 	    }
 
 	  //first point update
@@ -729,7 +734,6 @@ retractBackward()
 
 	  return true; 
 	}
-
     }
 } 
 
@@ -738,66 +742,14 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-isOneOfTheTwoSteps(const Vector& aStep) const
-{
-  ASSERT( mySteps.first != Vector(0,0) ); 
-  ASSERT( mySteps.second != Vector(0,0) ); 
-  return ( (aStep == mySteps.first) || (aStep == mySteps.second ) ); 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-void
-DGtal::ArithmeticalDSS<TC, TI, adj>::setSlope(const Coordinate& aA, const Coordinate& aB) 
-{
-  myA = aA; 
-  myB = aB; 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-void
-DGtal::ArithmeticalDSS<TC, TI, adj>::setBounds(const Integer& aLowerBound, const Integer& aUpperBound) 
-{
-  myLowerBound = aLowerBound; 
-  myUpperBound = aUpperBound; 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-void
-DGtal::ArithmeticalDSS<TC, TI, adj>::
-updateParameters( const Vector& aNewDirection )
-{
-  //update of the slope
-  setSlope( aNewDirection[1], aNewDirection[0] ); 
-  //update of the steps and shift
-  if (myUf == myLf) 
-    {
-      ASSERT( myUl == myLl );
-      mySteps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB); 
-      myShift = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB); 
-    }
-  //update of mu and omega
-  setBounds( remainder(myUf), remainder(myLf) ); 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
-updateLeaningPoints( const Vector& aDirection, 
-		     const Point& aFirst, 
-		     const Point& aLast, 
-		     const Point& aBezout, 
-		     const Point& aFirstAtOppositeSide, 
-		     Point& aLastAtOppositeSide, 
-		     Point& aFirstAtRemovalSide,
-		     const Point& aLastAtRemovalSide)
+retractUpdateLeaningPoints( const Vector& aDirection, 
+			    const Point& aFirst, 
+			    const Point& aLast, 
+			    const Point& aBezout, 
+			    const Point& aFirstAtOppositeSide, 
+			    Point& aLastAtOppositeSide, 
+			    Point& aFirstAtRemovalSide,
+			    const Point& aLastAtRemovalSide)
 {
   if (aFirstAtOppositeSide == aLastAtOppositeSide)
     {
@@ -820,6 +772,42 @@ updateLeaningPoints( const Vector& aDirection,
       aFirstAtRemovalSide += aDirection; 
       return false; 
     }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+void
+DGtal::ArithmeticalDSS<TC, TI, adj>::
+retractUpdateParameters( const Vector& aNewDirection )
+{
+  //update of the slope
+  myA = aNewDirection[1]; 
+  myB = aNewDirection[0]; 
+  //intercepts
+  myLowerBound = remainder(myUf); 
+  myUpperBound = remainder(myLf); 
+  //update of the steps and shift
+  if (myUf == myLf) 
+    {
+      ASSERT( myUl == myLl );
+      mySteps = DGtal::ArithmeticalDSSKernel<TC,adj>::steps(myA, myB); 
+      myShift = DGtal::ArithmeticalDSSKernel<TC,adj>::shift(myA, myB); 
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>::
+isOneOfTheTwoSteps(const Vector& aStep) const
+{
+  ASSERT( (mySteps.first[0] != NumberTraits<Coordinate>::ZERO)
+	  ||(mySteps.first[1] != NumberTraits<Coordinate>::ZERO) );  
+  ASSERT( (mySteps.second[0] != NumberTraits<Coordinate>::ZERO)
+	  ||(mySteps.second[1] != NumberTraits<Coordinate>::ZERO) );  
+  return ( (aStep == mySteps.first) || (aStep == mySteps.second ) ); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
