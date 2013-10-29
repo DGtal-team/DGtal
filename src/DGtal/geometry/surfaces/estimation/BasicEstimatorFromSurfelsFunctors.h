@@ -85,7 +85,7 @@ namespace DGtal
      * Push a surfel to the estimator. For this dummy estimator,
      * we just count the number of surfels.
      */
-    void pushSurfel(const Surfel &aSurfel)
+    void pushSurfel(const Surfel &/*aSurfel*/)
     {
       myCpt++;
     }
