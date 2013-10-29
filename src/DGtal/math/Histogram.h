@@ -75,7 +75,7 @@ namespace DGtal
     /**
        Creates a regular binner that place quantities in range [\a
        min,\a max] in \a n bins (numbered from 0 to \a n-1), such
-       that all bins have equal width \f$\frac{max-min}{n}.
+       that all bins have equal width \f$\frac{max-min}{n}\f$.
 
        @param min any quantity smaller than \a min falls into bin 0.
        @param max any quantity greater than \a max falls into bin \a n-1.
@@ -107,7 +107,7 @@ namespace DGtal
     {
       if ( q <= myMin )      return NumberTraits<Bin>::ZERO;
       else if ( q >= myMax ) return myNb - NumberTraits<Bin>::ONE;
-      else return static_cast<Bin>( floor( ( q - myMin ) / myWidth ) );
+      else return static_cast<Bin>( floor( NumberTraits<Quantity>::castToDouble( ( q - myMin ) / myWidth ) ) );
     }
   };
 
