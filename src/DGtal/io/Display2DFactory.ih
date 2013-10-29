@@ -407,7 +407,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   else
     {
       mode = "draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & fp ): Unknown mode "+mode;
-      VERIFY_MSG(false, mode );
+      ASSERT_MSG(false, mode );
     }
 }
 // FP
