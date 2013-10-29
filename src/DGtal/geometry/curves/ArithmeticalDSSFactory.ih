@@ -47,7 +47,10 @@ DGtal::ArithmeticalDSSFactory<TC,TI,adj>::createPattern(const Point& aF, const P
   //specific case: a and b are both null
   if (aF == aL)
     {
-      return DGtal::ArithmeticalDSS<TC,TI,adj>(0, 0, 0, 0, aF, aL, aF, aL, aF, aL); 
+      return DGtal::ArithmeticalDSS<TC,TI,adj>(0, 0, 0, 0, aF, aL, 
+					       aF, aL, aF, aL,
+ 					       std::make_pair(Vector(0,0), Vector(0,0)), 
+					       Vector(0,0) );      
     }
   //otherwise
   else 
@@ -94,7 +97,8 @@ DGtal::ArithmeticalDSSFactory<TC,TI,adj>::createPattern(const Point& aF, const P
       mu = a * static_cast<Integer>(Uf[0]) - b * static_cast<Integer>(Uf[1]);
       omega = a * static_cast<Integer>(s[0]) - b * static_cast<Integer>(s[1]);
 
-      return DGtal::ArithmeticalDSS<TC,TI,adj>(a, b, mu, omega, aF, aL, Uf, Ul, Lf, Ll);
+      return DGtal::ArithmeticalDSS<TC,TI,adj>(a, b, mu, omega, aF, aL, 
+					       Uf, Ul, Lf, Ll, steps, s);
     }
 }
 
