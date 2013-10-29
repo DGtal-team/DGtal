@@ -98,7 +98,6 @@ int main( int argc, char** argv )
 
   //! [volToOff-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by scanning the space. " );
-  typedef KSpace::Surfel Surfel;
   typedef KSpace::SurfelSet SurfelSet;
   typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
   typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;

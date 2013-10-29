@@ -132,8 +132,6 @@ int main( int argc, char** argv )
   typedef KSpace::Surfel Surfel;
   typedef KSpace::SurfelSet SurfelSet;
   typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
-  typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
-
 
   MySetOfSurfels theSetOfSurfels( K, surfAdj );
   Surfel bel = Surfaces< KSpace >::findABel( K, dshape, 100000 );

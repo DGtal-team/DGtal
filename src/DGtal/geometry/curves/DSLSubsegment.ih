@@ -879,7 +879,8 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC 
+DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n)
 {
   BOOST_CONCEPT_ASSERT((CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
@@ -1026,8 +1027,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
       }
     else  //the facet is upper triangular,
       {
-	IntegerComputer<Integer> ic;
-	Integer g = ic.gcd(inf[1] + sup[1],inf[0]+sup[0]);
+	IntegerComputer<Integer> icc;
+	Integer g = icc.gcd(inf[1] + sup[1],inf[0]+sup[0]);
 	*resAlphaP = (inf[1]+sup[1])/g;
 	*resAlphaQ = (inf[0]+sup[0])/g;
 	*resBetaP = -(*resAlphaP)*r.x+(*resAlphaQ)*r.y;
