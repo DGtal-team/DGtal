@@ -122,7 +122,10 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & other ) { return *this;}
+    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & /*other*/ ) 
+    {
+      return *this;
+    }
     
     // ----------------------- Interface --------------------------------------
   public:
