@@ -1037,7 +1037,7 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::computeLeaningPoin
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getUf() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Uf() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1051,7 +1051,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getUf() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getUl() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Ul() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1065,7 +1065,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getUl() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getLf() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Lf() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1079,7 +1079,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getLf() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Point 
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getLl() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Ll() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );

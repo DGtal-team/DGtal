@@ -613,7 +613,7 @@ namespace DGtal
        * leaning point is computed.
        * @return first upper leaning point.
        */
-      Point getUf() const;
+      Point Uf() const;
 
       /**
        * Accessor to the last upper leaning point
@@ -621,7 +621,7 @@ namespace DGtal
        * leaning point is computed.
        * @return last upper leaning point.
        */
-      Point getUl() const;
+      Point Ul() const;
 
       /**
        * Accessor to the first lower leaning point
@@ -629,7 +629,7 @@ namespace DGtal
        * leaning point is computed.
        * @return first lower leaning point.
        */
-      Point getLf() const;
+      Point Lf() const;
 
       /**
        * Accessor to the last lower leaning point
@@ -637,7 +637,7 @@ namespace DGtal
        * leaning point is computed.
        * @return last lower leaning point.
        */
-      Point getLl() const;
+      Point Ll() const;
 
       /**
        * Performs some basic tests to check the validity of the DSS. 
