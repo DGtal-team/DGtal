@@ -373,7 +373,6 @@ inline
 void
 DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
-  double min, max;
   double N[ 3 ];
   out << "[COBAGenericNaivePlane";
   for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
