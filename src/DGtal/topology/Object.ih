@@ -32,7 +32,9 @@
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/topology/DigitalTopologyTraits.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
+#include "DGtal/graph/Expander.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -779,7 +781,7 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhood
-( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
+( const TAdjacency & adj, const Point & p, unsigned int k ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;
@@ -789,13 +791,12 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
 
-  DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
   Container tmp_local_points;
   std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
-  alpha.writeNeighbors( back_ins_it, p, limitedX.predicate() );
+  alpha.writeNeighbors( back_ins_it, p, *myPointSet );
 
   // Construct local domain.
   Point p1 = p - Point::diagonal(1);
@@ -805,7 +806,12 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Construct local X.
   LocalTopology aTopology( adj, omega );
   LocalObject X( aTopology, aDomain );
-  X.pointSet().insertNew( tmp_local_points.begin(), tmp_local_points.end() );
+  for ( typename Container::const_iterator it = tmp_local_points.begin(),
+	  itE = tmp_local_points.end(); it != itE; ++it )
+    if ( *it != p )
+      X.pointSet().insertNew( *it ); // X does not contain p.
+  
+  // X.pointSet().insertNew( tmp_local_points.begin(), tmp_local_points.end() );
 
   // A neighborhood is small, so is defined the digital object.
   typename LocalObject::SmallObject neighAdj = X.properNeighborhood( p );
@@ -814,7 +820,13 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     ( X, neighAdj.pointSet().begin(),
       neighAdj.pointSet().end() );
   while ( ! visitor.finished() )
-    visitor.expand();
+    {
+      typename LocalObject::Size d = visitor.current().second;
+      if ( d < k )       visitor.expand(); // we need to go further
+      else if ( d == k ) visitor.ignore(); // no need to go further
+      else break; // to far away, we exit
+    }
+  visitor.terminate();
   SmallObject geodesicN( this->topology(), aDomain );
   geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
                                   visitor.markedVertices().end()  );
@@ -842,7 +854,7 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallComplementObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhoodInComplement
-( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
+( const TAdjacency & adj, const Point & p, unsigned int k ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;
@@ -851,23 +863,18 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
-  typedef typename DigitalSetDomain<DigitalSet>::Predicate PredicateIsInX;
-  DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
+  // DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
   Container tmp_local_points;
   std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
-  NotPointPredicate<PredicateIsInX> not_pred_is_in_X( limitedX.predicate() );
+  NotPointPredicate<DigitalSet> not_pred_is_in_X( *myPointSet );
   alpha.writeNeighbors( back_ins_it, p, not_pred_is_in_X );
 
   // Construct local domain.
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
+  Point p1 = p - Point::diagonal(1);
+  Point p2 = p + Point::diagonal(1);
   LocalDomain aDomain( p1, p2 );
 
   // Construct local Xcomp.
@@ -882,7 +889,14 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     ( Xcomp, neighAdj.pointSet().begin(),
       neighAdj.pointSet().end() );
   while ( ! visitor.finished() )
-    visitor.expand();
+    {
+      typename LocalObject::Size d = visitor.current().second;
+      if ( d < k )       visitor.expand(); // we need to go further
+      else if ( d == k ) visitor.ignore(); // no need to go further
+      else break; // to far away, we exit
+    }
+  visitor.terminate();
+	
   SmallComplementObject geodesicN( this->topology().reverseTopology(),
                                    aDomain ); 
   geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
@@ -918,16 +932,21 @@ bool
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::isSimple( const Point & v ) const
 {
+  static const int kappa_n = 
+    DigitalTopologyTraits< ForegroundAdjacency, BackgroundAdjacency, Space::dimension >::GEODESIC_NEIGHBORHOOD_SIZE;
+  static const int lambda_n = 
+    DigitalTopologyTraits< BackgroundAdjacency, ForegroundAdjacency, Space::dimension >::GEODESIC_NEIGHBORHOOD_SIZE;
+
   SmallObject Gkappa_X
   = geodesicNeighborhood( topology().kappa(),
-      v, Space::dimension );
+			  v, kappa_n ); // Space::dimension );
   if ( Gkappa_X.computeConnectedness() == CONNECTED )
   {
     if ( Gkappa_X.pointSet().empty() )
       return false;
     SmallComplementObject Glambda_compX
-    = geodesicNeighborhoodInComplement( topology().lambda(),
-        v, Space::dimension );
+      = geodesicNeighborhoodInComplement( topology().lambda(),
+					  v, lambda_n ); // Space::dimension );
     return ( Glambda_compX.computeConnectedness()
 	     == CONNECTED )
       && ( ! Glambda_compX.pointSet().empty() );

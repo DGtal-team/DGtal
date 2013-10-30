@@ -77,7 +77,7 @@ int main( int argc, char** argv )
   
   int layer = 0;
   
-  Object6_26 shape( dt6_26,  shape_set );
+  Object18_6 shape( dt18_6,  shape_set );
   int nb_simple=0; 
   do 
     {
