@@ -23,7 +23,7 @@ matrix:
     - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DBUILD_TESTING=ON"
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_ITK=true -DBUILD_TESTING=ON"
     - compiler: clang
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON"
 
