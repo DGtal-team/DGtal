@@ -736,13 +736,13 @@ private:
   template<typename TInputType, typename TOutputType>
   struct RescalingFunctor
   {
-      TInputType _initMin;
-      TInputType _initMax;
-      TInputType _initRange;
+      TInputType myInitMin;
+      TInputType myInitMax;
+      TInputType myInitRange;
 
-      TOutputType _newMin;
-      TOutputType _newMax;
-      TOutputType _newRange;
+      TOutputType myNewMin;
+      TOutputType myNewMax;
+      TOutputType myNewRange;
 
       /**
        * Constructor.
@@ -753,18 +753,18 @@ private:
        * @param newMax the maximum value of the new scale.
        */
       RescalingFunctor( const TInputType &initMin, const TInputType &initMax, const TOutputType &newMin, const TOutputType &newMax ) :
-                          _initMin(initMin), _initMax(initMax), _initRange(initMax-initMin), _newMin(newMin), _newMax(newMax), _newRange(newMax-newMin) {}
+                          myInitMin(initMin), myInitMax(initMax), myInitRange(initMax-initMin), myNewMin(newMin), myNewMax(newMax), myNewRange(newMax-newMin) {}
       /**
        * Operator.
        *
        *
-       * @param initVal value of the initial scale.
+       * @param anInitVal value of the initial scale.
        * 
-       * @return value of initVal, considered on the initial scale, on the new scale.
+       * @return value of anInitVal, considered on the initial scale, on the new scale.
        */
       inline
-      TOutputType operator() (const TInputType& initVal) const
-      { return initVal<_initMin ? _newMin : initVal > _initMax ? _newMax : (initVal-_initMin)*_newRange/_initRange + _newMin; }
+      TOutputType operator() (const TInputType& anInitVal) const
+      { return anInitVal<myInitMin ? myNewMin : anInitVal > myInitMax ? myNewMax : (anInitVal-myInitMin)*myNewRange/myInitRange + myNewMin; }
   };
 
 }
