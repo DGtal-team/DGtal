@@ -48,7 +48,7 @@ void
 DGtal::Clock::startClock()
 {
 
-#if ( (defined(WIN32)) )
+#ifdef WIN32
   myFirstTick = clock();
   if (myFirstTick == (clock_t) -1)
     {
@@ -76,7 +76,7 @@ double
 DGtal::Clock::stopClock()
 {
 
-#if ( (defined(WIN32)) )
+#ifdef WIN32
   clock_t last_tick = clock();
   if (last_tick == (clock_t) -1)
     {

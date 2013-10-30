@@ -398,8 +398,7 @@ inline
 void
 DGtal::COBAGenericNaivePlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
-  double min, max;
-  out << "[COBAGenericNaivePlaneComputer";
+  out << "[COBAGenericNaivePlane";
   for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     out << " " << myComputers[ *axIt ];

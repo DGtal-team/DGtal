@@ -32,6 +32,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
+#include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
@@ -462,6 +464,15 @@ bool testSpecialCasesL2()
   return nbok == nb;
 }
 
+
+bool testConcepts()
+{
+  BOOST_CONCEPT_ASSERT(( CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > ));
+  BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> > ));
+  BOOST_CONCEPT_ASSERT(( CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > ));  
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -478,7 +489,8 @@ int main( int argc, char** argv )
     && testPowerMetrics()
     && testBinarySearch()
     && testSpecialCasesL2()
-    && testSpecialCasesLp();
+    && testSpecialCasesLp()
+    && testConcepts();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -71,7 +71,6 @@ bool testCover4()
 {
 
   typedef int Coordinate;
-  typedef PointVector<2,Coordinate> Point;
   typedef FreemanChain<Coordinate> ContourType; 
 
   typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> PrimitiveType;

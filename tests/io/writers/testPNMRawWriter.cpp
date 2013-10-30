@@ -66,7 +66,6 @@ bool testPNMWriter()
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
   typedef HueShadeColorMap<unsigned char> Hue;
-  typedef RandomColorMap  Rand;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
   // Gradient using the "Jet" preset.
@@ -121,7 +120,6 @@ bool testRWIssue254()
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  typedef GrayscaleColorMap<unsigned char> Gray;
 
   Point a ( 0, 0);
   Point b ( 15, 15);

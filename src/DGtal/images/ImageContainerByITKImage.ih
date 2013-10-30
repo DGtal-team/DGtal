@@ -17,9 +17,10 @@
 /**
  * @file ImageContainerByITKImage.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/12/09
+ * @date 2013/10/23
  *
  * Implementation of inline methods defined in ImageContainerByITKImage.h
  *
@@ -40,115 +41,70 @@
 
 namespace DGtal
 {
-  namespace experimental
-  {
-
-    /**
-     * Destructor.
-     */
     template<typename TDomain, typename TValue>
-    inline
     ImageContainerByITKImage<TDomain, TValue>::~ImageContainerByITKImage()
     {
     }
 
     template <typename TDomain, typename TValue>
-    inline
-    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Point &aPointA,
-        const Point &aPointB)
-        :  myITKImagePointer(ITKImage::New())
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ImageContainerByITKImage& other)
+        : myITKImagePointer(ITKImage::New()), myDomain()
     {
-      typename ITKImage::IndexType start;
-      typename ITKImage::SizeType size;
-
-      if (aPointA < aPointB)
-      {
-        myLowerBound = aPointA;
-        myUpperBound = aPointB;
-      }
-      else
-      {
-        myLowerBound = aPointB;
-        myUpperBound = aPointA;
-      }
-      Point dec = myUpperBound - myLowerBound;
-
-      //copy of domain information
-      for (Dimension k = 0; k < dimension; k++)
-      {
-        start[k] = myLowerBound[k];
-        size[k] = dec[k];
-      }
-
-      myRegion.SetSize( size );
-      myRegion.SetIndex( start );
-
-      myITKImagePointer->SetRegions(myRegion);
-      myITKImagePointer->Allocate();
-
-      //ConstIterators
-      myConstItBegin = ConstIterator( myITKImagePointer, myRegion);
-      myConstItBegin.GoToBegin();
-      myConstItEnd = ConstIterator( myITKImagePointer, myRegion);
-      myConstItEnd.GoToEnd();
-
-      //Iterators
-      myItBegin = Iterator( myITKImagePointer, myRegion);
-      myItBegin.GoToBegin();
-      myItEnd = Iterator( myITKImagePointer, myRegion);
-      myItEnd.GoToEnd();
+        myITKImagePointer = other.getITKImagePointer();
+        updateDomain();
     }
 
     template <typename TDomain, typename TValue>
-    inline
-    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const Point &aPointA,
-        const Point &aPointB, ITKImagePointer &aRef)
-        :  myITKImagePointer(aRef)
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const TDomain& aDomain)
+        : myITKImagePointer(ITKImage::New()), myDomain(aDomain)
     {
       typename ITKImage::IndexType start;
       typename ITKImage::SizeType size;
 
-      if (aPointA < aPointB)
-      {
-        myLowerBound = aPointA;
-        myUpperBound = aPointB;
-      }
-      else
-      {
-        myLowerBound = aPointB;
-        myUpperBound = aPointA;
-      }
-      Point dec = myUpperBound - myLowerBound;
+      const Point lowerBound = aDomain.lowerBound();
+      const Point upperBound = aDomain.upperBound();
+      const Point dec = upperBound-lowerBound;
 
-      //copy of domain information
       for (Dimension k = 0; k < dimension; k++)
       {
-        start[k] = myLowerBound[k];
-        size[k] = dec[k];
+        start[k] = lowerBound[k];
+        size[k]  = dec[k]+1;
       }
 
-      myRegion.SetSize( size );
-      myRegion.SetIndex( start );
+      const typename ITKImage::RegionType region(start,size);
 
-      myITKImagePointer->SetRegions(myRegion);      
-
-      //ConstIterators
-      myConstItBegin = ConstIterator( myITKImagePointer, myRegion);
-      myConstItBegin.GoToBegin();
-      myConstItEnd = ConstIterator( myITKImagePointer, myRegion);
-      myConstItEnd.GoToEnd();
-
-      //Iterators
-      myItBegin = Iterator( myITKImagePointer, myRegion);
-      myItBegin.GoToBegin();
-      myItEnd = Iterator( myITKImagePointer, myRegion);
-      myItEnd.GoToEnd();
+      myITKImagePointer->SetRegions(region);
+      myITKImagePointer->Allocate();
     }
 
+    template <typename TDomain, typename TValue>
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ITKImagePointer &aRef)
+        :  myITKImagePointer(aRef)
+    {
+        updateDomain();
+    }
 
     ///////////////////////////////////////////////////////////////////////////////
     // Interface - public :
 
+    template <typename TDomain, typename TValue>
+    void
+    ImageContainerByITKImage<TDomain, TValue>::updateDomain()
+    {
+        const typename ITKImage::RegionType region = myITKImagePointer->GetLargestPossibleRegion();
+        const typename ITKImage::IndexType start = region.GetIndex();
+        const typename ITKImage::SizeType size = region.GetSize();
+
+        Point lowerBound;
+        Point upperBound;
+        for (Dimension k = 0; k < dimension; k++)
+        {
+            lowerBound[k] = start[k];
+            upperBound[k] = start[k]+size[k]-1;
+        }
+
+        myDomain = TDomain(lowerBound, upperBound);
+    }
 
     /**
      * Get the value of an image at a given position.
@@ -223,25 +179,13 @@ namespace DGtal
     void
     ImageContainerByITKImage<TDomain, TValue>::selfDisplay ( std::ostream & out ) const
     {
-      out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValue) 
-    << "bytes lower=" << myLowerBound << " upper=" 
-    << myUpperBound;
+      typename ITKImage::RegionType region = myITKImagePointer->GetLargestPossibleRegion();
+
+      out << "[ImageContainerByITKImage] valuetype=" << sizeof(TValue) << "bytes "
+          << "domain=" << this->domain() << " "
+          << "refcount=" << myITKImagePointer->GetReferenceCount() << " "
+          << "region=" << region.GetIndex() << "/" << region.GetSize();
     }
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    template<typename TDomain, typename TValue>
-    inline
-    bool
-    ImageContainerByITKImage<TDomain, TValue>::isValid() const
-    {
-      return true;
-    }
-
-  }
-
 
   ///////////////////////////////////////////////////////////////////////////////
   // Implementation of inline functions                                        //
@@ -250,7 +194,7 @@ namespace DGtal
   inline
   std::ostream&
   operator<< ( std::ostream & out,
-      const experimental::ImageContainerByITKImage<TDomain, TValue> & object )
+      const ImageContainerByITKImage<TDomain, TValue> & object )
   {
     object.selfDisplay( out );
     return out;
