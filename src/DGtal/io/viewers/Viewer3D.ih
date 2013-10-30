@@ -1168,7 +1168,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
       glPushName ( myNbListe );
       glBegin ( GL_POINTS );
-      for ( typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D>::iterator s_it = Viewer3D<Space, KSpace>::myBallSetList.at ( i ).begin();
+      for ( typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D>::iterator s_it = Viewer3D<Space, KSpace>::myBallSetList.at ( j ).begin();
             s_it != Viewer3D<Space, KSpace>::myBallSetList.at ( j ).end();
             ++s_it )
         {
