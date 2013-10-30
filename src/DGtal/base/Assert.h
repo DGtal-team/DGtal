@@ -19,11 +19,10 @@
 /**
  * @file Assert.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/05/15
- *
- *
+ * @date 2013/10/30
  *
  * This file is part of the DGtal library.
  */
@@ -50,9 +49,13 @@ namespace DGtal
   /**
   * DGtal Assert function.
   *
+  * ASSERT(expr) and ASSERT_MSG(expr, message) are defined and expr is avaluated only when NDEBUG isn't defined.
+  * FATAL_ERROR(expr) and FATAL_ERROR_MSG(expr, message) are always defined.
   *
   **/
+
   extern Trace trace;
+
 #if defined(NDEBUG)
   #define ASSERT(expr) ((void)0)
 #else
@@ -107,10 +110,6 @@ namespace DGtal
 #define FATAL_ERROR_MSG(expr,msg) ((expr) ? ((void)0) : ::DGtal::fatal_error_failed_message(#expr,msg, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__))
 
 } // namespace DGtal
-
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined Assert_h
 
