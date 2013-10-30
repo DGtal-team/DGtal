@@ -501,6 +501,7 @@ included in DGtal. Its classes are grouped into the namespace Board.
 This simple example shows the basic usage of a Board2D to
 export graphical representations of dgtal objects (here, a
 HyperRectDomain and three points exported as SVG and EPS).
+   \image html  dgtalboard-1-points.png  "visualization of one of the  resulting export."
  */
 
   /**
@@ -512,6 +513,7 @@ digital set and a digital object). Note also the use of different
 modes that may be defined for some classes. An object may thus be
 displayed just as a set of points, but also as a set of points
 with neighborhood structure (a graph).
+   \image html  dgtalboard-2-sets-1.png  "visualization of resulting export (first export dgtalBoard2D-2-sets-1)."
  */
 
   /**
@@ -522,6 +524,7 @@ elements. You just have to create an instance of CustomColors,
 CustomPenColor, CustomFillColor or CustomPen and you attach this
 style to your drawable element type with an instance of CustomStyle
 outputed in the Board2D stream.
+   \image html  dgtalboard-3-custom-classes.png  "visualization of resulting export."
  */
 
   /**
@@ -533,6 +536,7 @@ gives in its method \c setStyle the specific style
 parameters. Then, you attach this style to your drawable elements
 with an instance of CustomStyle outputed in the Board2D
 stream.
+   \image html  dgtalboard-3-custom-points.png  "visualization of resulting export."
  */
 
   /**
@@ -541,6 +545,7 @@ stream.
 This example shows you how to use colormaps with Board2D
 streams. Note how we redefine the style of a specific mode for
 the drawable element.
+   \image html  dgtalboard-4-colormaps.png  "visualization of resulting export."
  */
 
   /**
@@ -554,6 +559,7 @@ element ArithmeticDSS is redefined.
 \example logoDGtal.cpp
   
 Simple example to generate DGtal logo in DGtal.
+   \image html  logo_DGtal_small.png   "visualization of resulting export."
  */
 
 

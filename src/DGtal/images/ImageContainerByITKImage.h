@@ -19,9 +19,10 @@
 /**
  * @file ImageContainerByITKImage.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/12/09
+ * @date 2013/10/23
  *
  * Header file for module ImageContainerByITKImage.cpp
  *
@@ -43,6 +44,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/images/DefaultConstImageRange.h"
+#include "DGtal/images/DefaultImageRange.h"
 
 #include <itkImage.h>
 #include <itkImageRegionConstIterator.h>
@@ -53,8 +57,6 @@
 
 namespace DGtal
 {
-  namespace experimental
-  {
 
     /////////////////////////////////////////////////////////////////////////////
     // template class ImageContainerByITKImage
@@ -64,6 +66,10 @@ namespace DGtal
      *
      * Using this container, you can switch from DGtal alogrithms to
      * ITK processing pipeline.
+     * The Ownership of the underlying ITK image is shared between the wrapper
+     * and the ITK pipeline.
+     * If the ITK image region is modified, one should manually update the domain of the wrapper.
+     * This is done by calling the updateDomain() method.
      *
      * \see testITKImage.cpp
      */
@@ -78,6 +84,7 @@ namespace DGtal
 
       typedef TValue Value;
       typedef TDomain Domain;
+      typedef ImageContainerByITKImage<TDomain, TValue> Self;
 
       // static constants
       static const typename Domain::Dimension dimension = Domain::dimension;
@@ -94,25 +101,39 @@ namespace DGtal
       typedef typename itk::ImageRegionConstIterator< ITKImage > ConstIterator;
       typedef typename itk::ImageRegionIterator< ITKImage > Iterator;
 
-      ///@todo SpanIterator
+      typedef DefaultConstImageRange<Self> ConstRange;
+      typedef DefaultImageRange<Self> Range;
 
       /**
        * Constructor.
-       * @param aPointA one of the image bound (lower or upper point). 
-       * @param aPointB one of the image bound (lower or upper point). 
+       *
+       * @param aDomain the image domain.
        */
-      ImageContainerByITKImage(const Point &aPointA,
-             const Point &aPointB );
+      ImageContainerByITKImage(const Domain& aDomain);
 
       /**
        * Constructor.
-       * @param aPointA one of the image bound (lower or upper point). 
-       * @param aPointB one of the image bound (lower or upper point). 
+       *
+       * @param aDomain the image domain.
        * @param aRef a reference to an ITKImage
        */
-      ImageContainerByITKImage(const Point &aPointA,
-             const Point &aPointB,
-             ITKImagePointer &aRef);
+      ImageContainerByITKImage(const ITKImagePointer &aRef);
+
+      /**
+       * Copy constructor
+       *
+       * @param other the object to copy.
+       *
+       */
+      ImageContainerByITKImage(const ImageContainerByITKImage& other);
+
+      /**
+       * Assignment.
+       *
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       */
+      ImageContainerByITKImage & operator=(const ImageContainerByITKImage & other);
 
       /**
        * Destructor.
@@ -122,6 +143,31 @@ namespace DGtal
       // ----------------------- Interface --------------------------------------
     public:
 
+      /**
+       *
+       * update internal domain cache.
+       * should be called after modifying underlying ITK image.
+       *
+       */
+      void updateDomain();
+
+      /**
+       * @return the range providing begin and end
+       * iterators to scan the values of image.
+       */
+      ConstRange constRange() const
+      {
+          return ConstRange(*this);
+      }
+
+      /**
+       * @return the range providing begin and end
+       * iterators to scan the values of image.
+       */
+      Range range()
+      {
+          return Range(*this);
+      }
 
       /**
        * Get the value of an image at a given position.
@@ -147,7 +193,6 @@ namespace DGtal
        */
       Value operator()(const Iterator &it) const;
 
-
       /**
        * Set a value on an Image at aPoint.
        *
@@ -170,27 +215,18 @@ namespace DGtal
       /**
        * @return the domain associated to the image.
        */
-      Domain domain() const
+      const Domain& domain() const
       {
-  return Domain(myLowerBound, myUpperBound);
+          return myDomain;
       }
-    
-      /**
-       * Returns the extent of the image
-       *
-       */
-      Point extent() const
-      {
-  return myUpperBound - myLowerBound;
-      }
-
 
       /**
        * Returns a copy of the itkImage smartPointer
        */
-      ITKImagePointer getImagePointer() const
+      inline
+      ITKImagePointer getITKImagePointer() const
       {
-  return myITKImagePointer;
+          return myITKImagePointer;
       }
 
       // ------------------------- stream ------------------------------
@@ -212,50 +248,49 @@ namespace DGtal
        * begin() const iterator.
        *
        **/
+      inline
       ConstIterator begin() const
       {
-  return myConstItBegin;
+          ConstIterator iter = ConstIterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToBegin();
+          return iter;
       }
 
       /**
        * begin() const iterator.
        *
        **/
+      inline
       Iterator begin()
       {
-  return myItBegin;
+          Iterator iter = Iterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToBegin();
+          return iter;
       }
-
-      /**
-       * begin(aPoint) iterator. Returns an iterator starting at \param aPoint
-       *
-       **/
-      ConstIterator begin ( const Point &aPoint ) const;
 
       /**
        * end() const iterator.
        *
        **/
+      inline
       const ConstIterator end() const
       {
-  return myConstItEnd;
+          ConstIterator iter = ConstIterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToEnd();
+          return iter;
       }
 
       /**
        * end()  iterator.
        *
        **/
+      inline
       Iterator end()
       {
-  return myItEnd;
+          Iterator iter = Iterator(myITKImagePointer, myITKImagePointer->GetLargestPossibleRegion());
+          iter.GoToEnd();
+          return iter;
       }
-
-      /**
-       * end() iterator.
-       * @return  a ConstIterator at the endpoint \param aPoint
-       *
-       **/
-      ConstIterator end(const Point &aPoint) const;
 
       // ------------------------- Private Datas --------------------------------
     private:
@@ -269,38 +304,12 @@ namespace DGtal
        */
       ImageContainerByITKImage();
 
-    private:
-
-      /**
-       * Copy constructor.
-       * @param other the object to clone.
-       * Forbidden by default.
-       */
-      ImageContainerByITKImage ( const ImageContainerByITKImage & other );
-
-      /**
-       * Assignment.
-       * @param other the object to copy.
-       * @return a reference on 'this'.
-       * Forbidden by default.
-       */
-      ImageContainerByITKImage & operator= ( const ImageContainerByITKImage & other );
-
       // ------------------------- Internals ------------------------------------
     private:
 
-      Point myLowerBound;
-      Point myUpperBound;
       ITKImagePointer myITKImagePointer;
-      typename ITKImage::RegionType myRegion;
-      ConstIterator myConstItBegin;
-      Iterator myItBegin;
-      ConstIterator myConstItEnd;
-      Iterator myItEnd;
-
+      Domain myDomain; // cached from myITKImagePointer region. updated when calling update().
     }; // end of class ImageContainerByITKImage
-
-  }
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'ImageContainerByITKImage'.
@@ -310,7 +319,7 @@ namespace DGtal
    */
   template <typename T, typename TV>
   std::ostream&
-  operator<< ( std::ostream & out, const experimental::ImageContainerByITKImage<T, TV> & object );
+  operator<< ( std::ostream & out, const ImageContainerByITKImage<T, TV> & object );
 
 }
 ///////////////////////////////////////////////////////////////////////////////

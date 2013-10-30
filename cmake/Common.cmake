@@ -32,6 +32,9 @@ endforeach()
 # -----------------------------------------------------------------------------
 # Doxygen targets
 # -----------------------------------------------------------------------------
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "Checking if doxygen/dot is installed:")
+message(STATUS " ")
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
 INCLUDE(doxygen)
 INCLUDE(TargetDoxygenDoc OPTIONAL)

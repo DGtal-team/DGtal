@@ -714,17 +714,19 @@ DGtal::Viewer3D<Space, KSpace>::draw()
 
   // Drawing all Khalimsky Space Cells
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator it= Viewer3D<Space, KSpace>::myBallSetList.begin(); it != Viewer3D<Space, KSpace>::myBallSetList.end(); it++ )
+  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
+	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
     {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
         {
           glDrawGLPointel ( *it_s );
         }
     }
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::LineD3D> >::const_iterator it= Viewer3D<Space, KSpace>::myLineSetList.begin(); it != Viewer3D<Space, KSpace>::myLineSetList.end(); it++ )
+  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::LineD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myLineSetList.begin(); 
+	itb != Viewer3D<Space, KSpace>::myLineSetList.end(); itb++ )
     {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::LineD3D>::const_iterator it_s = it->begin(); it_s !=it->end() ; it_s ++)
+      for ( typename vector< typename Viewer3D<Space, KSpace>::LineD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
         {
           glDrawGLLinel (*it_s );
         }
@@ -1012,7 +1014,6 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
           typename std::vector<ItCube>::iterator itBest= listIt.begin();
           typename std::vector<ItCube>::iterator endBest= listEnd.begin();
 
-          int idxBest = 0; int idx =0;
           typename std::vector<ItCube>::iterator itEnd =  listEnd.begin();
           for ( typename std::vector<ItCube>::iterator it = listIt.begin(); it != listIt.end(); it++)
             {
@@ -1036,10 +1037,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
                 {
                   itBest= it;
                   endBest= itEnd;
-                  idxBest = idx;
                 }
               itEnd++;
-              idx++;
             }
 
           typename Viewer3D<Space, KSpace>::CubeD3D cube = (**itBest);
@@ -1137,16 +1136,16 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEnd();
   glEndList();
 
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myLineSetList.size(); i++ )
+  for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
     {
       listeID++;
-      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+i+1 ), GL_COMPILE );
+      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+j+1 ), GL_COMPILE );
       myNbListe++;
       glDisable ( GL_LIGHTING );
       glPushName ( myNbListe );
       glBegin ( GL_LINES );
-      for ( typename std::vector<typename Viewer3D<Space, KSpace>::LineD3D>::iterator s_it = Viewer3D<Space, KSpace>::myLineSetList.at ( i ).begin();
-            s_it != Viewer3D<Space, KSpace>::myLineSetList.at ( i ).end();
+      for ( typename std::vector<typename Viewer3D<Space, KSpace>::LineD3D>::iterator s_it = Viewer3D<Space, KSpace>::myLineSetList.at ( j ).begin();
+            s_it != Viewer3D<Space, KSpace>::myLineSetList.at ( j ).end();
             ++s_it )
         {
           glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
@@ -1158,9 +1157,9 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
       glEndList();
     }
 
-  for ( unsigned int i=0; i<Viewer3D<Space, KSpace>::myBallSetList.size(); i++ )
+  for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
-      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+i+1 ), GL_COMPILE );
+      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+j+1 ), GL_COMPILE );
       myNbListe++;
       glDepthMask ( GL_TRUE );
       glDisable ( GL_TEXTURE_2D );
@@ -1341,9 +1340,9 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   myVectTextureImage.clear();
 
   //Filling new image texture from myGSImageList
-  for(unsigned int i=0; i<Viewer3D<Space, KSpace>::myGSImageList.size(); i++)
+  for(unsigned int j=0; j<Viewer3D<Space, KSpace>::myGSImageList.size(); j++)
     {
-      typename Viewer3D<Space, KSpace>::TextureImage & aGSImage = Viewer3D<Space, KSpace>::myGSImageList.at(i);
+      typename Viewer3D<Space, KSpace>::TextureImage & aGSImage = Viewer3D<Space, KSpace>::myGSImageList.at(j);
       GLTextureImage textureImg(aGSImage);
 
       glGenTextures(1, &textureImg.myTextureName);

@@ -94,9 +94,6 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
   
   //------------
-  typedef Z3i::Point Point;
-
-  
   QApplication application(argc,argv);
   Viewer3D<> viewer;
   viewer.setWindowTitle("simpleViewer");
