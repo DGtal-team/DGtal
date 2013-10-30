@@ -40,8 +40,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include <iostream>
 
-#include "DGtal/base/Trace.h"
 #include <boost/assert.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,12 +53,23 @@ namespace DGtal
   * At this point, it is just a redirect to the boost/assert.hpp macro.
   *
   **/
-#define BOOST_ASSERT_MSG_OSTREAM DGtal::trace.error()
-
 #define ASSERT(expr) BOOST_ASSERT(expr)
-#define ASSERT_MSG(expr,msg) BOOST_ASSERT_MSG(expr,msg)
+
+#if defined(BOOST_DISABLE_ASSERT) || defined(NDEBUG)
+ #define ASSERT_MSG(expr,msg) ((void)0)
+#else
+#define ASSERT_MSG(expr,msg) if (!(expr)) {trace.error()<<msg<<std::endl;} BOOST_ASSERT(expr)
+#endif
 
 #define VERIFY(expr) BOOST_VERIFY(expr)
+#define VERIFY_MSG(expr,msg) if (!(expr)) {trace.error()<<msg<<std::endl;} BOOST_VERIFY(expr)
+
+
+#if defined(CHECK_ALL_PRE)
+#define ASSERT_ALL_PRE(expr) BOOST_ASSERT(expr)
+#else // defined(CHECK_ALL_PRE)
+#define ASSERT_ALL_PRE(expr)
+#endif
 
 } // namespace DGtal
 

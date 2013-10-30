@@ -96,7 +96,7 @@ namespace DGtal
     MongeJetFittingGaussianCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
       myEmbedder(anEmbedder), myH(h), myD(d)
     {
-      ASSERT_MSG(d>=2,"Polynomial surface degree must be greater than 2");
+      VERIFY_MSG(d>=2,"Polynomial surface degree must be greater than 2");
     }
 
     /**
