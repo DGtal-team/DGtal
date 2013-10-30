@@ -40,36 +40,71 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
-
-#include <boost/assert.hpp>
 //////////////////////////////////////////////////////////////////////////////
+#include "DGtal/base/Trace.h"
+#include <boost/current_function.hpp>
 
 namespace DGtal
 {
 
   /**
   * DGtal Assert function.
-  * At this point, it is just a redirect to the boost/assert.hpp macro.
+  *
   *
   **/
-#define ASSERT(expr) BOOST_ASSERT(expr)
-
-#if defined(BOOST_DISABLE_ASSERT) || defined(NDEBUG)
- #define ASSERT_MSG(expr,msg) ((void)0)
+  extern Trace trace;
+#if defined(NDEBUG)
+  #define ASSERT(expr) ((void)0)
 #else
-#define ASSERT_MSG(expr,msg) if (!(expr)) {trace.error()<<msg<<std::endl;} BOOST_ASSERT(expr)
+  inline
+  void
+  assert_failed(const char* expr, const char* function, const char* file, long int line)
+  {
+      trace.error()
+          << " Assertion Error - assertion (" << expr << ") failed in " << function << ": "
+          << file << '(' << line << ")" << std::endl;
+      std::abort();
+  }
+  #define ASSERT(expr) ((expr) ? ((void)0) : ::DGtal::assert_failed(#expr, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__))
 #endif
 
-#define VERIFY(expr) BOOST_VERIFY(expr)
-#define VERIFY_MSG(expr,msg) if (!(expr)) {trace.error()<<msg<<std::endl;} BOOST_VERIFY(expr)
 
-
-#if defined(CHECK_ALL_PRE)
-#define ASSERT_ALL_PRE(expr) BOOST_ASSERT(expr)
-#else // defined(CHECK_ALL_PRE)
-#define ASSERT_ALL_PRE(expr)
+#if defined(NDEBUG)
+  #define ASSERT_MSG(expr, msg) ((void)0)
+#else
+  inline
+  void
+  assert_failed_message(const char* expr, const char* message, const char* function, const char* file, long int line)
+  {
+      trace.error()
+          << " Assertion Error - assertion (" << expr << ") failed in " << function << ": "
+          << file << '(' << line << "): " << std::endl << message << std::endl;
+      std::abort();
+  }
+  #define ASSERT_MSG(expr,msg) ((expr) ? ((void)0) : ::DGtal::assert_failed_message(#expr, msg, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__))
 #endif
+
+  inline
+  void
+  fatal_error_failed(const char* expr, const char* function, const char* file, long int line)
+  {
+      trace.error()
+          << " Fatal Error - assertion (" << expr << ") failed in " << function << ": "
+          << file << '(' << line << ")" << std::endl;
+      std::abort();
+  }
+#define FATAL_ERROR(expr) ((expr) ? ((void)0) : ::DGtal::fatal_error_failed(#expr, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__))
+
+  inline
+  void
+  fatal_error_failed_message(const char* expr, const char* message, const char* function, const char* file, long int line)
+  {
+      trace.error()
+          << " Fatal Error - assertion (" << expr << ") failed in " << function << ": "
+          << file << '(' << line << "): " << std::endl << message << std::endl;
+      std::abort();
+  }
+#define FATAL_ERROR_MSG(expr,msg) ((expr) ? ((void)0) : ::DGtal::fatal_error_failed_message(#expr,msg, BOOST_CURRENT_FUNCTION, __FILE__, __LINE__))
 
 } // namespace DGtal
 
