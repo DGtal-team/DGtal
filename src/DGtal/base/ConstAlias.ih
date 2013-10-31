@@ -74,12 +74,12 @@ inline
 DGtal::ConstAlias<T>::ConstAlias( const T* pT ) : myPtrT( pT )
 {}
 //-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::ConstAlias<T>::operator const T*() const
-{
-  return myPtrT;
-}
+// template <typename T>
+// inline
+// DGtal::ConstAlias<T>::operator const T*() const
+// {
+//   return myPtrT;
+// }
 //-----------------------------------------------------------------------------
 template <typename T>
 inline

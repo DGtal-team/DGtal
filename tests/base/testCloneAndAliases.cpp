@@ -119,7 +119,7 @@ struct DByClone {
 // The data member is a pointer to the given instance.
 struct EByAlias {
   EByAlias( Alias<A1> a )
-    : myA1( a )
+    : myA1( &a )
   {
     std::cout << "  EByAlias( Alias<A1> a ) " << myA1 << std::endl;
   }
@@ -136,7 +136,7 @@ struct EByAlias {
 // The data member is a const pointer to the given instance.
 struct EByConstAlias {
   EByConstAlias( ConstAlias<A1> a )
-    : myA1( a )
+    : myA1( &a )
   {
     std::cout << "  EByConstAlias( Alias<A1> a ) " << myA1 << std::endl;
   }

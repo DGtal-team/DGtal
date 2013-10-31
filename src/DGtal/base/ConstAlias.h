@@ -255,12 +255,23 @@ namespace DGtal
        of type ConstAlias<A>.
     */
     operator const T&() const;
+
     /**
        Cast operator to a pointer to a T instance. Gives access to the
        instance of T.  This allows things like: A* a2 = a1; where a1 is
        of type ConstAlias<A>.
+
+       @deprecated since 0.7. It may cause implict casts in some
+       situation which prevents the compiler to find the correct
+       match. Use the adresse operator instead (see operator&).
     */
-    operator const T*() const;
+    // operator const T*() const;
+
+    /**
+       @return the address of the const-aliased object.
+       @since 0.7
+    */
+    inline const T* operator&() const { return myPtrT; }
 
     // ------------------------- Private Datas --------------------------------
   private:

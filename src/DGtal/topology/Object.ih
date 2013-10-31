@@ -57,7 +57,7 @@
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object()
-    : myTopo( 0 ), myPointSet( 0 ), myConnectedness( UNKNOWN )
+  : myTopo( 0 ), myPointSet( 0 ), myConnectedness( UNKNOWN )
 {
 }
 
@@ -73,10 +73,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object()
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const DigitalTopology & aTopology,
-    const DigitalSet & aPointSet,
-    Connectedness cxn )
-    : myTopo( new DigitalTopology( aTopology ) ),
+( Clone<DigitalTopology> aTopology,
+  Clone<DigitalSet> aPointSet,
+  Connectedness cxn )
+  : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( new DigitalSet( aPointSet ) ),
     myConnectedness( cxn )
 {
@@ -94,10 +94,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const CowPtr<DigitalTopology> & aTopology,
-    const DigitalSet & aPointSet,
-    Connectedness cxn )
-    : myTopo( aTopology ),
+( CowPtr<DigitalTopology> aTopology,
+  Clone<DigitalSet> aPointSet,
+  Connectedness cxn )
+  : myTopo( aTopology ),
     myPointSet( new DigitalSet( aPointSet ) ),
     myConnectedness( cxn )
 {
@@ -115,10 +115,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const TDigitalTopology & aTopology,
-    const CowPtr<DigitalSet> & aPointSet,
-    Connectedness cxn )
-    : myTopo( new DigitalTopology( aTopology ) ),
+( Clone<DigitalTopology> aTopology,
+  CowPtr<DigitalSet> aPointSet,
+  Connectedness cxn )
+  : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( aPointSet ),
     myConnectedness( cxn )
 {
@@ -137,11 +137,11 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const TDigitalTopology & aTopology,
-    DigitalSet* aPointSetPtr,
-    Connectedness cxn )
-    : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( pointSet ),
+( Clone<DigitalTopology> aTopology,
+  DigitalSet* aPointSetPtr,
+  Connectedness cxn )
+  : myTopo( new DigitalTopology( aTopology ) ),
+    myPointSet( aPointSetPtr ),
     myConnectedness( cxn )
 {
 }
@@ -157,7 +157,7 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( const Object & other )
-    : myTopo( other.myTopo ),
+  : myTopo( other.myTopo ),
     myPointSet( other.myPointSet ),
     myConnectedness( other.myConnectedness )
 {
@@ -174,9 +174,9 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const TDigitalTopology & aTopology,
-    const Domain & aDomain )
-    : myTopo( new DigitalTopology( aTopology ) ),
+( Clone<DigitalTopology> aTopology,
+  CountedPtr<Domain> aDomain )
+  : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( new DigitalSet( aDomain ) ),
     myConnectedness( CONNECTED )
 {
@@ -192,9 +192,9 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const CowPtr<DigitalTopology> & aTopology,
-    const Domain & aDomain )
-    : myTopo( aTopology ),
+( CowPtr<DigitalTopology> aTopology,
+  CountedPtr<Domain> aDomain )
+  : myTopo( aTopology ),
     myPointSet( new DigitalSet( aDomain ) ),
     myConnectedness( CONNECTED )
 {
@@ -249,6 +249,14 @@ const typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain &
 DGtal::Object<TDigitalTopology, TDigitalSet>::domain() const
 {
   return myPointSet->domain();
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::CountedPtr<typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain>
+DGtal::Object<TDigitalTopology, TDigitalSet>::domainPointer() const
+{
+  return myPointSet->domainPointer();
 }
 
 
@@ -329,7 +337,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::neighborhood
   tmp_local_points.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
-  SmallObject neighA( myTopo, pointSet().domain() );
+  SmallObject neighA( myTopo, pointSet().domainPointer() );
   const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
@@ -406,7 +414,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::properNeighborhood
   adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
-  SmallObject neighA( myTopo, pointSet().domain() );
+  SmallObject neighA( myTopo, pointSet().domainPointer() );
   const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
@@ -477,7 +485,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
   // Intermediate container that is fast writable.
   const DigitalSet & mySet = pointSet();
   Object<DigitalTopology, DigitalSet> output( topology(),
-      domain() );
+					      mySet.domainPointer() );
   DigitalSet & outputSet = output.pointSet();
 
   // Loop on all points of the set.
@@ -541,7 +549,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // first component.
   BreadthFirstVisitor< Object, std::set<Vertex> > visitor( *this, p );
   while ( ! visitor.finished() ) visitor.expand();
-  DigitalSet visited( domain() );
+  DigitalSet visited( domainPointer() );
   visited.insertNew( visitor.markedVertices().begin(),
                      visitor.markedVertices().end() );
   *it++ = Object( myTopo, visited, CONNECTED );
@@ -553,7 +561,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     {
       BreadthFirstVisitor< Object, std::set<Vertex> > visitor2( *this, p );
       while ( ! visitor2.finished() ) visitor2.expand();
-      DigitalSet visited2( domain() );
+      DigitalSet visited2( domainPointer() );
       visited2.insertNew( visitor2.markedVertices().begin(),
                           visitor2.markedVertices().end() );
       *it++ = Object( myTopo, visited2, CONNECTED );
@@ -796,22 +804,17 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Intermediate container that is fast writable.
   Container tmp_local_points;
   std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
-  alpha.writeNeighbors( back_ins_it, p, *myPointSet );
+  alpha.writeNeighbors( back_ins_it, p, *myPointSet ); // p is not a neighbor itself.
 
   // Construct local domain.
   Point p1 = p - Point::diagonal(1);
   Point p2 = p + Point::diagonal(1);
-  LocalDomain aDomain( p1, p2 );
+  CountedPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
 
   // Construct local X.
   LocalTopology aTopology( adj, omega );
   LocalObject X( aTopology, aDomain );
-  for ( typename Container::const_iterator it = tmp_local_points.begin(),
-	  itE = tmp_local_points.end(); it != itE; ++it )
-    if ( *it != p )
-      X.pointSet().insertNew( *it ); // X does not contain p.
-  
-  // X.pointSet().insertNew( tmp_local_points.begin(), tmp_local_points.end() );
+  X.pointSet().insertNew( tmp_local_points.begin(), tmp_local_points.end() );
 
   // A neighborhood is small, so is defined the digital object.
   typename LocalObject::SmallObject neighAdj = X.properNeighborhood( p );
@@ -875,7 +878,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Construct local domain.
   Point p1 = p - Point::diagonal(1);
   Point p2 = p + Point::diagonal(1);
-  LocalDomain aDomain( p1, p2 );
+  CountedPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
 
   // Construct local Xcomp.
   LocalTopology aTopology( adj, omega );

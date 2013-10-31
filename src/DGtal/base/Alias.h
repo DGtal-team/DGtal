@@ -254,12 +254,23 @@ namespace DGtal
        of type Alias<A>.
     */
     operator T&() const;
+
     /**
        Cast operator to a pointer to a T instance. Gives access to the
        instance of T.  This allows things like: A* a2 = a1; where a1 is
        of type Alias<A>.
+
+       @deprecated since 0.7. It may cause implict casts in some
+       situation which prevents the compiler to find the correct
+       match. Use the adresse operator instead (see operator&).
     */
-    operator T*() const;
+    //operator T*() const;
+
+    /**
+       @return the address of the aliased object.
+       @since 0.7
+    */
+    inline T* operator&() { return myPtrT; }
 
     // ------------------------- Private Datas --------------------------------
   private:
