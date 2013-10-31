@@ -48,6 +48,11 @@
 #include <vector>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/Clone.h"
+#include "DGtal/base/Alias.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -93,7 +98,24 @@ namespace DGtal
      *
      * @param d any domain.
      */
-    DigitalSetBySTLVector( const Domain & d );
+    DigitalSetBySTLVector( Clone<Domain> d );
+
+    /**
+     * Constructor.
+     * Creates the empty set in the domain [d].
+     *
+     * @param ptrD any pointer on a dyn. alloc. domain, which is
+     * acquired by this object.
+     */
+    DigitalSetBySTLVector( Domain* ptrD );
+
+    /**
+     * Constructor.
+     * Creates the empty set in the domain [d].
+     *
+     * @param d any counted pointer on domain.
+     */
+    DigitalSetBySTLVector( CountedPtr<Domain> d );
 
     /**
      * Copy constructor.
@@ -113,6 +135,10 @@ namespace DGtal
      */
     const Domain & domain() const;
 
+    /**
+     * @return a counted pointer on the embedding domain.
+     */
+    CountedPtr<Domain> domainPointer() const;
 
     // ----------------------- Standard Set services --------------------------
   public:
@@ -303,9 +329,10 @@ namespace DGtal
   protected:
     
     /**
-     * The associated domain.
+     * The associated domain. The pointed domain may be changed but it
+     * remains valid during the lifetime of the set.
      */
-    const Domain & myDomain;
+    CountedPtr<Domain> myDomain;
 
     /**
      * The container storing the points of the set.

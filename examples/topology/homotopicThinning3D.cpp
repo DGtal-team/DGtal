@@ -73,10 +73,9 @@ int main( int argc, char** argv )
   shape_set.insertNew( *it );
       }
     }
-  trace.warning() << "  [Done]";
+  trace.warning() << "  [Done]" << std::endl;
   
-  int layer = 0;
-  
+  trace.beginBlock ( "Thinning" );
   Object18_6 shape( dt18_6,  shape_set );
   int nb_simple=0; 
   do 
@@ -101,12 +100,8 @@ int main( int argc, char** argv )
     }
   while ( nb_simple != 0 );
   DigitalSet & S = shape.pointSet();
-  
+  trace.endBlock();
 
-
-  ++layer;// avant dernier{ avant while
-  //cerr << "point simple " << (*it) << endl; // avant S.erase
-  
   // Display by using two different list to manage OpenGL transparency.
 
   viewer << SetMode3D( shape_set.className(), "Paving" );
