@@ -159,12 +159,11 @@ namespace DGtal
     ///Array of CGAL points
     std::vector<CGALPoint> myPoints;
 
-    ///Degree of the polynomial surface to fit
-    unsigned int myD;
-
     ///Grid step
     double myH;
 
+    ///Degree of the polynomial surface to fit
+    unsigned int myD;
 
   }; // end of class MongeJetFittingMeanCurvatureEstimator
 

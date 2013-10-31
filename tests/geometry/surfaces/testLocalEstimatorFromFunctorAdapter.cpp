@@ -89,7 +89,6 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
   typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> Surface;
   typedef Surface::SurfelConstIterator ConstIterator;
-  typedef Surface::Tracker Tracker;
   typedef Surface::Surfel Surfel;
   
 
