@@ -75,6 +75,11 @@ namespace DGtal
     of domain.
 
     Model of CDigitalSet.
+
+    @since 0.7 Domains are now hold with counted pointers and no more
+    only aliased. The problem was related to returning sets with a
+    locally constructed domain. With CountedPtr, you are sure that the
+    domain remains valid during the lifetime of your set.
    */
   template <typename TDomain>
   class DigitalSetBySTLSet
