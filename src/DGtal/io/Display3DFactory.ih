@@ -930,7 +930,6 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
-  bool basicMode=false;
   if(mode=="Highlighted")
     {
       factorVolSurfel = 1.2;
@@ -940,7 +939,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       display.setFillColor(DGtal::Color(180, 180, 250, 25));
     }else if(mode=="Basic")
     {
-      basicMode=true;
+      //basicMode=true;
     }
 
   DGtal::Z3i::RealPoint rps = display.embedKS( sk );
@@ -1392,7 +1391,6 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::ShiftedKSSurfel & aTransformedSurfelPrism ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
-  bool basicMode=false;
   if(mode=="Highlighted")
     {
       factorVolSurfel = 1.2;
@@ -1402,7 +1400,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       display.setFillColor(DGtal::Color(180, 180, 250, 25));
     }else if(mode=="Basic")
     {
-      basicMode=true;
+      // basicMode=true;
     }
   DGtal::Z3i::RealPoint rps = display.embedKS(aTransformedSurfelPrism );
 

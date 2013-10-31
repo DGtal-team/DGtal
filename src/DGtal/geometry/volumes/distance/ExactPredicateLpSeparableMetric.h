@@ -267,7 +267,7 @@ namespace DGtal
      * 
      * @return the power p of the l_p distance between aP and aQ.
      */    
-    Promoted exactDistanceRepresentation(const Point &aP, const Point &aQ) const;
+    Promoted exactDistanceRepresentation(const Point &/*aP*/, const Point &/*aQ*/) const;
    
   
   }; // end of class ExactPredicateLpSeparableMetric

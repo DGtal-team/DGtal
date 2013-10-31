@@ -779,7 +779,7 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhood
-( const TAdjacency & adj, const Point & p, unsigned int k ) const
+( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;
@@ -842,7 +842,7 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallComplementObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhoodInComplement
-( const TAdjacency & adj, const Point & p, unsigned int k ) const
+( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;

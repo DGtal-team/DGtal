@@ -470,6 +470,7 @@ bool testConcepts()
   BOOST_CONCEPT_ASSERT(( CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > ));
   BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> > ));
   BOOST_CONCEPT_ASSERT(( CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > ));  
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

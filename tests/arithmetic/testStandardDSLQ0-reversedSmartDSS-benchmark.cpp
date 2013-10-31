@@ -50,14 +50,6 @@ bool checkSubStandardDSLQ0( const DSL & D,
                             const typename DSL::Point & A, 
                             const typename DSL::Point & B ) 
 {
-  typedef typename DSL::Fraction Fraction;
-  typedef typename DSL::Integer Integer;
-  typedef typename DSL::Quotient Quotient;
-  typedef typename DSL::Point Point;
-  typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
-
   DSL S = D.reversedSmartDSS( A, B );
   // std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
   //           << S.a() << " " << S.b() << " " << S.mu() << " "
@@ -74,11 +66,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
-  typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
   IntegerComputer<Integer> ic;
 
 

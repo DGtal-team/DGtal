@@ -61,7 +61,6 @@ bool testCellularGridSpaceND()
   typedef typename KSpace::Point Point;
   typedef typename KSpace::DirIterator DirIterator;
   typedef typename KSpace::Cells Cells;
-  typedef typename KSpace::SCells SCells;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
@@ -197,12 +196,8 @@ template <typename KSpace>
 bool testSurfelAdjacency()
 {
   typedef typename KSpace::Integer Integer;
-  typedef typename KSpace::Cell Cell;
   typedef typename KSpace::SCell SCell;
   typedef typename KSpace::Point Point;
-  typedef typename KSpace::DirIterator DirIterator;
-  typedef typename KSpace::Cells Cells;
-  typedef typename KSpace::SCells SCells;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
@@ -329,9 +324,6 @@ bool testCellDrawOnBoard()
   typedef typename KSpace::Cell Cell;
   typedef typename KSpace::SCell SCell;
   typedef typename KSpace::Point Point;
-  typedef typename KSpace::DirIterator DirIterator;
-  typedef typename KSpace::Cells Cells;
-  typedef typename KSpace::SCells SCells;
   typedef SpaceND<2, Integer> Z2;
   typedef HyperRectDomain<Z2> Domain;
   unsigned int nbok = 0;
