@@ -112,6 +112,11 @@ namespace DGtal
      */
     const Domain & domain() const { return DummyObject<Domain>::get(); }
 
+    /**
+     * @return the embedding domain.
+     */
+    CountedPtr<Domain> domainPointer() const { return DummyObject< CountedPtr<Domain> >::get(); }
+
     // ----------------------- Standard Set services --------------------------
   public:
 
