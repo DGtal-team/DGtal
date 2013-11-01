@@ -723,7 +723,7 @@ DGtal::Viewer3D<Space, KSpace>::draw()
         }
     }
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::LineD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myLineSetList.begin(); 
+  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::LineD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myLineSetList.begin();
 	itb != Viewer3D<Space, KSpace>::myLineSetList.end(); itb++ )
     {
       for ( typename vector< typename Viewer3D<Space, KSpace>::LineD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
@@ -1168,8 +1168,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
       glPushName ( myNbListe );
       glBegin ( GL_POINTS );
-      for ( typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D>::iterator s_it = Viewer3D<Space, KSpace>::myBallSetList.at ( i ).begin();
-            s_it != Viewer3D<Space, KSpace>::myBallSetList.at ( i ).end();
+      for ( typename std::vector<typename Viewer3D<Space, KSpace>::BallD3D>::iterator s_it = Viewer3D<Space, KSpace>::myBallSetList.at ( j ).begin();
+            s_it != Viewer3D<Space, KSpace>::myBallSetList.at ( j ).end();
             ++s_it )
         {
           glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
