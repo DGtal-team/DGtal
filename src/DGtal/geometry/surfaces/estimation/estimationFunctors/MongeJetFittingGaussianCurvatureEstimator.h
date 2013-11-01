@@ -93,7 +93,7 @@ namespace DGtal
      * @param h gridstep
      * @param d degree of the polynomial surface to fit.
      */
-    MongeJetFittingGaussianCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, 
+    MongeJetFittingGaussianCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder,
 					      const double h, unsigned int d = 4):
       myEmbedder(anEmbedder), myH(h), myD(d)
     {
