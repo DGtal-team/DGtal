@@ -48,7 +48,7 @@
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/CMetric.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/geometry/surfaces/estimation/CLocalEstimatorFromSurfelFunctor.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/CLocalEstimatorFromSurfelFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,7 +61,7 @@ namespace DGtal
    * \brief Aim: this class adapts any local functor on digital surface element to define
    * a local estimator.
    *
-   * When we evaluate the adapted estimator at a surfel @a s, we first identify the set of 
+   * When we evaluate the adapted estimator at a surfel @a s, we first identify the set of
    * neighboring around @a s using a DistanceBreadthFirstVisitor parametrized by a given metric. Then,
    * the estimated quantity is computed applying a functor on the surfel set.
    *
@@ -69,7 +69,7 @@ namespace DGtal
    * perform the local estimator computation.
    *
    * During the @e init() method, we thus specify the gridstep @e h and the radius of the ball to consider to
-   * define the neighborhood. 
+   * define the neighborhood.
    *
    * Note that the visitor used in this class considers the distance
    * function in the ambient space (not a geodesic one for instance) on
@@ -88,37 +88,37 @@ namespace DGtal
     ///Concept Checks
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
     BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
-    
+
     ///Digital surface type
     typedef TDigitalSurface DigitalSurface;
-    
+
     ///Metric type
     typedef TMetric Metric;
-   
+
     ///Metric value type
     typedef typename TMetric::Value Value;
-    
+
     ///Functor on surfels type
     typedef TFunctorOnSurfel FunctorOnSurfel;
-        
+
     ///Quantity type
     typedef typename TFunctorOnSurfel::Quantity Quantity;
-    
+
     ///Surfel const iterator
     typedef typename DigitalSurface::SurfelConstIterator SurfelConstIterator;
-    
-     
+
+
   private:
-    
+
     ///Embedded and type defintions
     typedef CanonicSCellEmbedder<typename DigitalSurface::KSpace> Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
     typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
     typedef DistanceBreadthFirstVisitor<DigitalSurface, VertexFunctor> Visitor;
-    
-    
+
+
   public:
-    
+
     /**
      * Constructor.
      * @param aSurface a digital surface
@@ -127,7 +127,7 @@ namespace DGtal
     LocalEstimatorFromSurfelFunctorAdapter(ConstAlias<DigitalSurface>  aSurface,
                                      ConstAlias<TMetric> aMetric,
                                      Alias<FunctorOnSurfel>  aFunctor);
-    
+
     /**
      * Destructor.
      */
@@ -136,23 +136,23 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    
+
     /**
      * Initialisation of estimator parameters.
      * @param [in] h grid size (must be >0).
      * @param [in] radius radius of the ball kernel.
-     * 
+     *
      */
     void init(const double h,
               const Value radius);
-    
-  
+
+
     /**
      * @return the estimated quantity at *it
      * @param [in] it the surfel iterator at which we evaluate the quantity.
      */
     Quantity eval(const SurfelConstIterator& it) const;
-    
+
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
@@ -165,8 +165,8 @@ namespace DGtal
     OutputIterator eval(const SurfelConstIterator& itb,
                         const SurfelConstIterator& ite,
                         OutputIterator result) const;
-    
-        
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -213,22 +213,22 @@ namespace DGtal
 
     ///Functor member
     FunctorOnSurfel * myFunctor;
-    
+
     ///Distance functor
     const Metric * myMetric;
-    
+
     ///Grid step
     double myH;
-    
+
     ///Has init been done before eval
     bool myInit;
-    
+
     ///Embedder object
     const Embedder myEmbedder;
-    
+
     ///Ball radius
     Value myRadius;
-    
+
   }; // end of class LocalEstimatorFromSurfelFunctorAdapter
 
   /**
