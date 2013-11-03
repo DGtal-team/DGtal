@@ -43,8 +43,8 @@ In addition, they must have a range, returned by the `range` method,
 providing output iterators.  
 
 Different models of images are available: ImageContainerBySTLVector, 
-ImageContainerBySTLMap, and --- coming soon --- experimental::ImageContainerByHashTree, 
- experimental::ImageContainerByITKImage, a wrapper for ITK images. 
+ImageContainerBySTLMap, ImageContainerByITKImage (a wrapper for ITK images)
+and --- coming soon --- experimental::ImageContainerByHashTree.
 
  \section dgtalImagesDetails Let us go into details 
 
