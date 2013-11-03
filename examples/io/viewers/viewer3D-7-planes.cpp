@@ -64,7 +64,7 @@ int main( int argc, char** argv )
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef BigInteger Integer;
+
   typedef COBANaivePlaneComputer<Z3, BigInteger> PlaneComputer;
   typedef PlaneComputer::Primitive Primitive;
   PlaneComputer plane;
@@ -108,9 +108,9 @@ int main( int argc, char** argv )
   ++nb, nbok += pt6_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt5
                << " Plane=" << plane << std::endl;
-  
+
   Primitive strip = plane.primitive();
-  trace.info() << "strip=" << strip 
+  trace.info() << "strip=" << strip
                << " axis=" << strip.mainAxis()
                << " axiswidth=" << strip.axisWidth()
                << " diag=" << strip.mainDiagonal()

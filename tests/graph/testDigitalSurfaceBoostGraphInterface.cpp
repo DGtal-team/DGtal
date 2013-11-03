@@ -134,7 +134,6 @@ bool testDigitalSurfaceBoostGraphInterface()
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
-  typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
   // Implicit shape is an ellipse
   trace.beginBlock( "Constructing implicit shape." );

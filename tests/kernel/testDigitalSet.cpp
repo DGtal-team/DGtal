@@ -360,11 +360,6 @@ bool testDigitalSetDomain()
 
 bool testDigitalSetConcept()
 {
-  typedef Z2i::Point Value;
-  typedef std::vector<Value>::iterator vector_iterator;
-  typedef std::set<Value>::iterator set_iterator;
-  //BOOST_CONCEPT_ASSERT(( boost::Mutable_BidirectionalIterator< vector_iterator > ));
-  //BOOST_CONCEPT_ASSERT(( boost::Mutable_BidirectionalIterator< set_iterator > ));
   BOOST_CONCEPT_ASSERT(( CDigitalSet<Z2i::DigitalSet> ));
   BOOST_CONCEPT_ASSERT(( CDigitalSet<Z3i::DigitalSet> ));
 

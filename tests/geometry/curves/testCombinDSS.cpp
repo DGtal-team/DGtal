@@ -66,7 +66,6 @@ typedef FreemanChain<int>::Vector Vector;
  */
 bool testCombinatorialDSS() 
 {
-  typedef Contour::ConstIterator ConstIterator;
   typedef string::const_iterator codeIterator;
   typedef CombinatorialDSS< list<char>::iterator, int> CombinatorialDSS_list;
   typedef CombinatorialDSS<codeIterator, int> CombinatorialDSS_string;
@@ -142,7 +141,6 @@ bool CompareToArithmetical()
 {
   typedef string::const_iterator codeIterator;
   typedef CombinatorialDSS<codeIterator, int> TestedType;
-  typedef ArithmeticalDSS<Contour::ConstIterator,int,4> ReferenceType;
 
   trace.beginBlock ( "Comparing to ArithmeticalDSS" );
 
