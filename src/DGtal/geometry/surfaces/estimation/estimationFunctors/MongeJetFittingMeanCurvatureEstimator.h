@@ -106,7 +106,8 @@ namespace DGtal
      * @param h gridstep.
      * @param d degree of the polynomial surface to fit.
      */
-    MongeJetFittingMeanCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
+    MongeJetFittingMeanCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder,
+                                          const double h, unsigned int d = 4):
       myEmbedder(anEmbedder), myH(h), myD(d)
     {
       VERIFY_MSG(d>=2,"Polynomial surface degree must be greater than 2");
@@ -116,9 +117,13 @@ namespace DGtal
      * Add the geometrical embedding of a surfel to the point list
      *
      * @param aSurf a surfel to add
+     * @param aDistance distance of aSurf to the neighborhood boundary
      */
-    void pushSurfel(const Surfel & aSurf)
+    void pushSurfel(const Surfel & aSurf
+                    const double aDistance)
     {
+      BOOST_VERIFY(aDistance==aDistance);
+
       RealPoint p = myEmbedder->operator()(aSurf);
       CGALPoint pp(p[0]*myH,p[1]*myH,p[2]*myH);
       myPoints.push_back(pp);

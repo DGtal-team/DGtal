@@ -78,7 +78,7 @@ LocalEstimatorFromSurfelFunctorAdapter.
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Constructor from Embedder and gridstep     | X(anEmbedder,h)  | anEmbedder of type @e SCellEmbedder , h of type  const double  |               |              | construct an instance from an SCell embedder  |                |            |
-| push a surfel      | x.pushSurfel(aSurfel)  | aSurfel of type @e const @e Surfel   |       void        |              | push a surfel to the estimator  |                |            |
+| push a surfel      | x.pushSurfel(aSurfel, aDistance)  | aSurfel of type @e const @e Surfel, aDistance of type double |       void        |              | push a surfel to the estimator,  @e aDistance is the distance of the surfel to the local visitor boundary (for the visitor metric)   |                |            |
 | evaluate the estimator      | v = x.eval()  | |  v of type @e Quantity  |              | evaluate to the estimator  |                |            |
 | reset       |  x.reset()  |  |  void  |              | reset the estimator  |                |            |
 
@@ -113,8 +113,7 @@ public:
   {
     ConceptUtils::sameType( myQ, myX.eval( ) );
     myX.reset( );
-    myX.pushSurfel( myCA );
-
+    myX.pushSurfel( myCA, myDist );
   }
 
   // ------------------------- Private Datas --------------------------------
@@ -125,6 +124,7 @@ private:
   Quantity myQ;
   SCellEmbedder myEmb;
   double myH;
+  double myDist;
 
     // ------------------------- Internals ------------------------------------
 private:
