@@ -59,11 +59,12 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 - \ref moduleGridCurveAnalysis  (Tristan Roussillon)
  - Digital straight segments --- coming soon ---
  - Digital circular arcs     --- coming soon ---
- - Other 
+ - Other
  - \ref moduleFrechetShortcut (Isabelle Sivignon)
 
 - Geometric estimators  ---coming soon---  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
 	- \ref moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (David Coeurjolly, Jacques-Olivier Lachaud, Jérémy Levallois)
+	- \ref LocalEstimatorsFromSurfel (David Coeurjolly)
 
 - \ref moduleVolumetric (David Coeurjolly)
 
@@ -81,7 +82,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 - voronoimap2D.cpp
 - distancetransform3D.cpp
 - distancetransform2D.cpp
-- viewer3D-7-planes.cpp , greedy-plane-segmentation.cpp  , greedy-plane-segmentation-ex2.cpp 
+- viewer3D-7-planes.cpp , greedy-plane-segmentation.cpp  , greedy-plane-segmentation-ex2.cpp
 
 */
 

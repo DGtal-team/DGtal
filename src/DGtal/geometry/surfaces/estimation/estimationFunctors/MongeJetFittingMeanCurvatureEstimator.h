@@ -70,7 +70,7 @@ namespace DGtal
    * Be carefull, this functor uses a polynomial surface fitting from
    * point set. Curvature information is given from Monge basis which
    * could be up to the orientation of the normal vector. Hence, if
-   * the estimated normal @f$ n @f$ is such that @f$ n\cdotn_0>0@f$ with
+   * the estimated normal @f$ n @f$ is such that @f$ n\cdot n_0>0@f$ with
    * @f$ n_0@f$ being the true normal at the point set center,
    * everything is ok.
    * Otherwise, we have to inverse the princiapl curvature sign:
@@ -82,7 +82,7 @@ namespace DGtal
    *
    *
    * @tparam TSurfel type of surfels
-   * @tparam TEmbedder type of functors which embed surfel to R^3
+   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
    */
   template <typename TSurfel, typename TEmbedder>
   class MongeJetFittingMeanCurvatureEstimator
@@ -134,7 +134,7 @@ namespace DGtal
       CGALMongeForm monge_form;
       CGALMongeViaJet monge_fit;
 
-      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4);
+      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (2<myD)? myD : 2);
 
       double k1 = monge_form.principal_curvatures ( 0 );
       double k2 = monge_form.principal_curvatures ( 1 );
