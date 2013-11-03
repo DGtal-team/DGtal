@@ -178,12 +178,13 @@ namespace DGtal
 
 
   /**
-   * Description of template class 'SliceRotator2D' <p>
-   * \brief Special Point Functor that adds one dimension to a 2D point and
-   *  apply on it a rotation of angle alpha according to a given
-   *  direction and the domain center. It also checks if the resulting
-   *  point is inside the 3D domain, else it returns a particular point (by
-   *  default the point at domain origin lowerBound() point).
+   * Description of template class 'SliceRotator2D' <p> \brief Special
+   * Point Functor that adds one dimension to a 2D point and apply on
+   * it a rotation of angle alpha according to a given direction and
+   * the domain center. It also checks if the resulting point is
+   * inside the 3D domain, else it returns a particular point (by
+   * default the point at domain origin (from the domain method
+   * lowerBound()).
    *
    * Ex: a Point P (10, 9) in the domain (defined (0,0,0) (10,10,10))
    * given in 3D by adding the dimension in Z (2) with slice num 7: =>
@@ -312,20 +313,25 @@ namespace DGtal
   /**
    * Description of template class 'Point2DEmbedderIn3D' <p> \brief
    * Aim: Functor that embeds a 2D point into a 3D space from two axis
-   * vectors and an origin given in the 3D space.
+   * vectors and an origin point given in the 3D space.
    *
    * It also checks if the resulting point is inside the 3D domain,
    * else it returns a particular point (by default the point at
-   * domain origin lowerBound() point).
+   * domain origin (from the domain method lowerBound())).
    *   
    * It can be used to extract 2D images from volumetric files. For
-   * instance: 
-   We use first some image type and ConstImageAdapter to exploit the functor:
+   * instance (see full example images/extract2DImagesFrom3D.cpp): 
+   *
+   * - First some image types and ConstImageAdapter are defined to exploit the functor:
    * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DType
    *
-   
+   * - Then, we define the origin point and axis vector used to extract 2D image values and we also deduce the associated 2D domain:
+   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOrigin3D
+   * 
+   * - The 2D image we can now be  constructed from the embeder and from the ConstImageAdapter class:
+   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOExtract
    *
-   *
+   * @see tests/kernel/testBasicPointFunctors.cpp 
    * @tparam TDomain3D the type of the 3d domain. 
    * @tparam TInteger specifies the integer number type used to define the space. 
    *
@@ -341,6 +347,11 @@ namespace DGtal
     
     /** 
      * Constructor.
+     * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain. 
+     * @param anOriginPoint the origin point given in the 3D domain. 
+     * @param anUpperPointOnAxis1 the upper point given in the 3D domain to define the first axis of the 2D domain.
+     * @param anUpperPointOnAxis2 the upper point given in the 3D domain to define the second axis of the 2D domain.
+     * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
      */
     
     Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg, 
@@ -363,7 +374,7 @@ namespace DGtal
       myFirstAxisEmbeddedDirection /= myFirstAxisEmbeddedDirection.norm();
       mySecondAxisEmbeddedDirection /= mySecondAxisEmbeddedDirection.norm();
     };
-    
+   
     /** 
      * The operator just recover the 3D Point associated to the Point2DEmbederIn3D parameters.
      * @param[in] aPoint point of the input domain (of dimension 2).
