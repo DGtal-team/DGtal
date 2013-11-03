@@ -134,7 +134,7 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Computes the signed distance of @a aP to the straight line
+     * Computes the signed distance of @e aP to the straight line
      * @param aP the point to be tested.
      * @return the signed distance.
      */

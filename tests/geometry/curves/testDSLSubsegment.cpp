@@ -183,8 +183,6 @@ bool testDSLSubsegment(Integer modb)
 	Point B2 = BB;
 	B2[0] += B2[1];
 	
-	bool aBool;
-	
 	 // DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
 	 // b whereas reversedSmartDSS uses  mu <= ab-by < mu + b => -mu
 	 // is introduced in order to compare the results  

@@ -152,35 +152,35 @@ namespace DGtal
 
     /**
      * Set camera position.
-     * @param x x position.
-     * @param y y position.
-     * @param z z position.
+     * @param ax x position.
+     * @param ay y position.
+     * @param az z position.
      */
-    void setCameraPosition(double x, double y, double z)
+    void setCameraPosition(double ax, double ay, double az)
     {
-      camera_position[0] = x; camera_position[1] = y; camera_position[2] = z;
+      camera_position[0] = ax; camera_position[1] = ay; camera_position[2] = az;
     }
 
     /**
      * Set camera direction.
-     * @param x x direction.
-     * @param y y direction.
-     * @param z z direction.
+     * @param ax x direction.
+     * @param ay y direction.
+     * @param az z direction.
      */
-    void setCameraDirection(double x, double y, double z)
+    void setCameraDirection(double ax, double ay, double az)
     {
-      camera_direction[0] = x; camera_direction[1] = y; camera_direction[2] = z;
+      camera_direction[0] = ax; camera_direction[1] = ay; camera_direction[2] = az;
     }
 
     /**
      * Set camera up-vector.
-     * @param x x coordinate of up-vector.
-     * @param y y coordinate of up-vector.
-     * @param z z coordinate of up-vector.
+     * @param ax x coordinate of up-vector.
+     * @param ay y coordinate of up-vector.
+     * @param az z coordinate of up-vector.
      */
-    void setCameraUpVector(double x, double y, double z)
+    void setCameraUpVector(double ax, double ay, double az)
     {
-      camera_upVector[0] = x; camera_upVector[1] = y; camera_upVector[2] = z;
+      camera_upVector[0] = ax; camera_upVector[1] = ay; camera_upVector[2] = az;
     }
 
     /**
@@ -392,7 +392,7 @@ namespace DGtal
         updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
         myMode=aMode;
         updateImageDataAndParam(image, aFunctor);
-      };
+      }
 
       /**
        * Update the image direction from a specific normal direction
@@ -443,7 +443,7 @@ namespace DGtal
             myTabImage[pos]= aFunctor(image(*it));
             pos++;
           }
-      };
+      }
 
       /**
        * return the class name to implment the CDrawableWithViewer3D concept.
@@ -882,13 +882,13 @@ namespace DGtal
       }
 
       //Copy constructor from a GLTextureImage
-      GLTextureImage(const GLTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
-                                                    myBufferWidth(aGLImg.myBufferWidth),
+      GLTextureImage(const GLTextureImage &aGLImg): myBufferWidth(aGLImg.myBufferWidth),
+                                                    myBufferHeight(aGLImg.myBufferHeight),
                                                     myTextureName(aGLImg.myTextureName),
-                                                    myTextureFitX(aGLImg.myTextureFitX),
-                                                    myTextureFitY(aGLImg.myTextureFitY),
-                                                    myMode(aGLImg.myMode)
-
+                                                    myMode(aGLImg.myMode),
+						    myTextureFitX(aGLImg.myTextureFitX),
+                                                    myTextureFitY(aGLImg.myTextureFitY)
+                                                   
       {
         point1[0]=aGLImg.point1[0]; point1[1]=aGLImg.point1[1]; point1[2]=aGLImg.point1[2];
         point2[0]=aGLImg.point2[0]; point2[1]=aGLImg.point2[1]; point2[2]=aGLImg.point2[2];
@@ -1008,7 +1008,7 @@ namespace DGtal
       rotatePoint( anImageOrDom.point3[0],  anImageOrDom.point3[1], anImageOrDom.point3[2],   xB, yB, zB, angle, rotationDir);
       rotatePoint( anImageOrDom.point4[0],  anImageOrDom.point4[1], anImageOrDom.point4[2],   xB, yB, zB, angle, rotationDir);
     
-    };
+    }
 
     /**
      * Rotate a vertex from a given angle, a center point and a rotation direction. 

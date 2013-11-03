@@ -69,10 +69,15 @@ namespace DGtal
   class Statistic
   {
 
-    // ----------------------- Standard services ------------------------------
+    // ----------------------- public types -----------------------------------
   public:
     typedef TQuantity Quantity;
     BOOST_CONCEPT_ASSERT(( CCommutativeRing<Quantity> ) );
+    typedef std::vector< Quantity > Container;
+    typedef typename Container::const_iterator ConstIterator;
+    
+    // ----------------------- Standard services ------------------------------
+  public:
 
     /**
      * Destructor. 
@@ -113,7 +118,16 @@ namespace DGtal
      * @return a new object that is the union of these statistics.
      */
     Statistic operator+( const Statistic & other ) const;
-   
+
+    /**
+       @return an iterator on the first stored value (if storeSample was set).
+    */
+    ConstIterator begin() const;
+
+    /**
+       @return an iterator after the last stored value (if storeSample was set).
+    */
+    ConstIterator end() const;
  
     // ----------------------- Accessors ------------------------------
   public:
@@ -263,7 +277,7 @@ namespace DGtal
      * stores the sample to determine the median value 
      * 
      **/
-    std::vector < Quantity > myValues;
+    Container myValues;
 
 
     /**
