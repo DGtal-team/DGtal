@@ -19,7 +19,7 @@ namespace DGtal {
 @dot
 digraph GGeom   {
   rankdir=BT;
-  
+
   subgraph cluster_ext {
       rank = same;
       style=invis;
@@ -41,7 +41,7 @@ digraph GGeom   {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-               
+
     CSegment [ URL="\ref CSegment" ];
     CBidirectionalSegmentComputer  [ URL="\ref CBidirectionalSegmentComputer" ];
     CIncrementalSegmentComputer [ URL="\ref CIncrementalSegmentComputer" ];
@@ -50,7 +50,7 @@ digraph GGeom   {
     CDynamicBidirectionalSegmentComputer [ URL="\ref CDynamicBidirectionalSegmentComputer" ];
     CDynamicSegmentComputer [ URL="\ref CDynamicSegmentComputer" ];
 
-    CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CIncrementalSegmentComputer -> CSegmentFactory -> CSegment; 
+    CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CIncrementalSegmentComputer -> CSegmentFactory -> CSegment;
     CDynamicSegmentComputer-> CForwardSegmentComputer ;
     CDynamicBidirectionalSegmentComputer->          CDynamicSegmentComputer  ;
 
@@ -63,7 +63,7 @@ subgraph cluster_concepts_2 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-               
+
     CLocalPremetric [ label="CLocalPremetric"  URL="\ref CLocalPremetric" ];
     CMetric [label="CMetric" URL="@ref CMetric"];
     CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
@@ -77,14 +77,32 @@ subgraph cluster_concepts_2 {
 
     label="geometry/volumes (main concepts)";
   }
- 
+
+  subgraph cluster_concepts_3 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+
+    CPrimitiveComputer [ URL="\ref CPrimitiveComputer" ];
+    CIncrementalPrimitiveComputer [ URL="\ref CIncrementalPrimitiveComputer" ];
+    CAdditivePrimitiveComputer [ URL="\ref CAdditivePrimitiveComputer" ];
+
+    CAdditivePrimitiveComputer -> CIncrementalPrimitiveComputer -> CPrimitiveComputer;
+    label="geometry/surfaces (main concepts)";
+  }
+
+
   CLocalPremetric -> boost_CopyConstructible;
   CLocalPremetric -> boost_Assignable;
-  
+
   CSegment -> boost_CopyConstructible ;
   CSegment -> boost_DefaultConstructible;
   CSegment -> boost_Assignable;
   CSegment -> boost_EqualityComparable;
+
+  CPrimitiveComputer -> boost_DefaultConstructible;
+  CPrimitiveComputer -> boost_CopyConstructible;
+  CPrimitiveComputer -> boost_Assignable;
 
   subgraph cluster_models {
      style=filled;
@@ -92,15 +110,43 @@ subgraph cluster_concepts_2 {
      node [style=filled,color=white];
      label="geometry/surfaces (main models)";
 
-     COBANaivePlane [ URL="\ref COBANaivePlane" ];
+     COBANaivePlaneComputer [ URL="\ref COBANaivePlaneComputer" ];
+     COBAGenericNaivePlaneComputer [ URL="\ref COBAGenericNaivePlaneComputer" ];
+     COBAGenericStandardPlaneComputer [ URL="\ref COBAGenericStandardPlaneComputer" ];
+     ChordNaivePlaneComputer [ URL="\ref ChordNaivePlaneComputer" ];
+     ChordGenericNaivePlaneComputer [ URL="\ref ChordGenericNaivePlaneComputer" ];
+     ChordGenericStandardPlaneComputer [ URL="\ref ChordGenericStandardPlaneComputer" ];
   }
 
-  COBANaivePlane -> boost_CopyConstructible ;
-  COBANaivePlane -> boost_DefaultConstructible;
-  COBANaivePlane -> boost_Assignable;
+  subgraph cluster_models_vol {
+     style=filled;
+     color="#ccffcc";
+     node [style=filled,color=white];
+     label="geometry/volumes (main models)";
+
+     ExactPredicateLpSeparableMetric [ URL="\ref ExactPredicateLpSeparableMetric" ];
+     ExactPredicateLpPowerSeparableMetric [ URL="\ref ExactPredicateLpPowerSeparableMetric" ];
+     InexactPredicateLpSeparableMetric [ URL="\ref InexactPredicateLpSeparableMetric" ];
+  }
+
+
+  ExactPredicateLpPowerSeparableMetric -> CPowerSeparableMetric;
+  ExactPredicateLpSeparableMetric -> CSeparableMetric;
+  InexactPredicateLpSeparableMetric -> CSeparableMetric;
+
+  COBAGenericNaivePlaneComputer -> CAdditivePrimitiveComputer;
+  COBAGenericNaivePlaneComputer -> COBANaivePlaneComputer [label="use",style=dashed];
+  COBANaivePlaneComputer -> CAdditivePrimitiveComputer;
+  COBAGenericStandardPlaneComputer -> CAdditivePrimitiveComputer;
+  COBAGenericStandardPlaneComputer -> COBANaivePlaneComputer [label="use",style=dashed];
+  ChordGenericNaivePlaneComputer -> CAdditivePrimitiveComputer;
+  ChordGenericNaivePlaneComputer -> ChordNaivePlaneComputer [label="use",style=dashed];
+  ChordNaivePlaneComputer -> CAdditivePrimitiveComputer;
+  ChordGenericStandardPlaneComputer -> CAdditivePrimitiveComputer;
+  ChordGenericStandardPlaneComputer -> ChordNaivePlaneComputer [label="use",style=dashed];
  }
 @enddot
 
- 
+
 */
 }
