@@ -183,7 +183,7 @@ namespace DGtal
    *  apply on it a rotation of angle alpha according to a given
    *  direction and the domain center. It also checks if the resulting
    *  point is inside the 3D domain, else it returns a particular point (by
-   *  default the point at domain origin lowBound() point).
+   *  default the point at domain origin lowerBound() point).
    *
    * Ex: a Point P (10, 9) in the domain (defined (0,0,0) (10,10,10))
    * given in 3D by adding the dimension in Z (2) with slice num 7: =>
@@ -310,14 +310,20 @@ namespace DGtal
 
 
   /**
-   * Description of template class 'Point2DEmbedderIn3D' <p>
-   * \brief 
-
-
-
-   * @code 
-
-   @endcode
+   * Description of template class 'Point2DEmbedderIn3D' <p> \brief
+   * Aim: Functor that embeds a 2D point into a 3D space from two axis
+   * vectors and an origin given in the 3D space.
+   *
+   * It also checks if the resulting point is inside the 3D domain,
+   * else it returns a particular point (by default the point at
+   * domain origin lowerBound() point).
+   *   
+   * It can be used to extract 2D images from volumetric files. For
+   * instance: 
+   We use first some image type and ConstImageAdapter to exploit the functor:
+   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DType
+   *
+   
    *
    *
    * @tparam TDomain3D the type of the 3d domain. 
