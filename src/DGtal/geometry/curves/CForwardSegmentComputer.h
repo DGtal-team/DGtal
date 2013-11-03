@@ -51,51 +51,51 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CForwardSegmentComputer
   /**
-     Description of \b concept '\b CForwardSegmentComputer' <p>
-     @ingroup Concepts
-     @brief Aim: Defines the concept describing a forward segment computer.  
-    Like any model of CIncrementalSegmentComputer, it can control its own extension 
-    (in the direction that is relative to the underlying iterator)
-    so that an implicit predicate P remains true. However, contrary to models 
-    of CIncrementalSegmentComputer, it garantees that P is also true for any 
-    subrange of the whole segment at any time. This extra constraint is necessary
-    to be able to incrementally check whether or not the segment is maximal.     
-     
- ### Refinement of CIncrementalSegmentComputer 
-    
- ### Associated types : 
+ Description of \b concept '\b CForwardSegmentComputer' <p>
+ @ingroup Concepts
+ @brief Aim: Defines the concept describing a forward segment computer.
+ Like any model of CIncrementalSegmentComputer, it can control its own extension
+ (in the direction that is relative to the underlying iterator)
+ so that an implicit predicate P remains true. However, contrary to models
+ of CIncrementalSegmentComputer, it garantees that P is also true for any
+ subrange of the whole segment at any time. This extra constraint is necessary
+ to be able to incrementally check whether or not the segment is maximal.
+
+ ### Refinement of CIncrementalSegmentComputer
+
+ ### Associated types :
      - same as CIncrementalSegmentComputer
-  
+
  ### Notation
      - \t X : A type that is a model of CForwardSegmentComputer
      - \t x : object of type X
      - \t r : object of type X::Reverse
-     
+
  ### Invariants###
 
-Contrary to models of CIncrementalSegmentComputer, 
-models of CForwardSegmentComputer also garantee that 
-for each iterator it from s.begin() to s.end(), 
-the range [it, s.end()) is a segment such that P is true. 
-    
+Contrary to models of CIncrementalSegmentComputer,
+models of CForwardSegmentComputer also garantee that
+for each iterator it from s.begin() to s.end(),
+the range [it, s.end()) is a segment such that P is true.
+
 @code
-for ( ConstIterator it = s.begin(), 
+for ( ConstIterator it = s.begin(),
       ConstIterator itEnd = s.end();
       it != itEnd; ++it)
   { // [it, itEnd) is a segment:
-    bool flag = true; 
+    bool flag = true;
     while ( (s.end() != itEnd)&&(flag) ) { flag = s.extend(); }
-    ASSERT( flag ); 
+    ASSERT( flag );
   }
 @endcode
 
  ### Models###
-    
+
  ### Notes###
 
 @tparam T the type that should be a model of CForwardSegmentComputer.
    */
-  template <typename T> 
+  template <typename T>
   struct CForwardSegmentComputer : CIncrementalSegmentComputer<T>
   {
     //no new syntactic constraints to check
@@ -104,12 +104,12 @@ for ( ConstIterator it = s.begin(),
 
     // ------------------------- Private Datas --------------------------------
   private:
-  
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CForwardSegmentComputer
-  
+
 } // namespace DGtal
 
 //                                                                           //

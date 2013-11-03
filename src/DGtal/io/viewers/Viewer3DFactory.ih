@@ -506,7 +506,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLVector<Domain> & aSet )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
 }
 
 template <typename Space, typename KSpace>
@@ -554,7 +554,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::HyperRectDomain<SpaceDom> & aDomain )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aDomain);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aDomain);
 }
 
 template <typename Space, typename KSpace>
@@ -603,7 +603,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const typename KSpace::Cell & aCell )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aCell);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aCell);
 }
 
 template <typename Space, typename KSpace>
@@ -623,7 +623,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, anObject);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, anObject);
 }
 
 template <typename Space, typename KSpace>
@@ -653,7 +653,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::PointVector<dim,TComponent> & aPoint )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aPoint);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aPoint);
 }
 
 template <typename Space, typename KSpace>
@@ -709,7 +709,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const typename KSpace::SCell & aSCell )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aSCell);
+  return  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aSCell);
 }
 
 template <typename Space, typename KSpace>

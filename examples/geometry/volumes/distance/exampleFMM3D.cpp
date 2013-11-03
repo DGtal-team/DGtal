@@ -83,8 +83,6 @@ int main( int argc, char** argv )
   typedef ConstImageAdapter<LabelImage, Domain, DefaultFunctor, bool, Thresholder<LabelImage::Value> > BinaryImage;
   typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
-  typedef Frontier::SurfelConstIterator SurfelIterator;
-
   
   //reading image
   std::string imageFileName = examplesPath + "samples/Al.100.vol"; 

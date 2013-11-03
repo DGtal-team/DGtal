@@ -63,7 +63,6 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   hsize_t       planes;
   char          interlace[16];
   hssize_t      npals;
-  int           i, j;
   unsigned char *imgBuf; // 'unsigned char' is mandated by the HDF5 library
 
   // Load the library -- not required on most platforms

@@ -139,7 +139,7 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
 
   trace.endBlock();
   trace.beginBlock ( "Testing integral invariant 3D mean curvature computation ..." );
-  
+
   try
   {
     estimator.eval( abegin, aend, resultsIICurvatureIterator );
@@ -163,6 +163,11 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   }
   mean /= rsize;
 
+  trace.info() << "Computed: "<<mean<<std::endl;
+  trace.info() << "Expected: "<<realValue<<"  delta="<<delta<<std::endl;
+  trace.info() << "abs= "<< std::abs ( realValue - mean ) <<std::endl;
+
+
   if ( std::abs ( realValue - mean ) > delta )
   {
     trace.endBlock();
@@ -185,7 +190,7 @@ int main( int argc, char** argv )
   trace.info() << std::endl;
 
   bool res = testIntegralInvariantMeanCurvatureEstimator3D( 0.6, 0.008 ); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
+  trace.emphase() << ( res ? "Passed." : "Errors in test." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;
 }

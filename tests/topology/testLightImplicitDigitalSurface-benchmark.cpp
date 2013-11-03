@@ -50,11 +50,8 @@ namespace DGtal {
                                    const PointPredicate & pp,
                                    const typename KSpace::Surfel & bel )
   {
-    typedef typename KSpace::Point Point;
-    typedef typename KSpace::Surfel Surfel;
     typedef LightImplicitDigitalSurface<KSpace,PointPredicate> Boundary;
     typedef typename Boundary::SurfelConstIterator ConstIterator;
-    typedef typename Boundary::Tracker Tracker;
     
     unsigned int nbok = 0;
     unsigned int nb = 0;

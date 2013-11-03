@@ -839,7 +839,7 @@ void generateStatsMultiMapXY( const string & name,
 ///////////////////////////////////////////////////////////////////////////////
 
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   typedef double Value;
   static const unsigned int L = 16;

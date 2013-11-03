@@ -66,7 +66,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::exactDistanceRepresentation (cons
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::local (const Point &aP, 
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::local (const Point &/*aP*/, 
 						      const Vector &aDir) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
@@ -278,7 +278,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::exactDistanceRepresentation (cons
 template <typename T,   typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::local (const Point &aP, 
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::local (const Point &/*aP*/, 
 						      const Vector &aDir) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
@@ -342,7 +342,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::hiddenBy(const Point &u,
                                                         const Point &v,
                                                         const Point &w, 
                                                         const Point &startingPoint,
-                                                        const Point &endPoint,
+                                                        const Point &/*endPoint*/,
                                                         const typename Point::UnsignedComponent dim) const
 {
   Promoted a,b, c;
