@@ -69,7 +69,7 @@ namespace DGtal
    * model of CLocalEstimatorFromSurfelFunctor.
    *
    * @tparam TSurfel type of surfels
-   * @tparam TEmbedder type of functors which embed surfel to R^3
+   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
    */
   template <typename TSurfel, typename TEmbedder>
   class MongeJetFittingGaussianCurvatureEstimator
@@ -122,7 +122,7 @@ namespace DGtal
       CGALMongeForm monge_form;
       CGALMongeViaJet monge_fit;
 
-      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4);
+      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (2<myD)? myD : 2);
 
       double k1 = monge_form.principal_curvatures ( 0 );
       double k2 = monge_form.principal_curvatures ( 1 );
