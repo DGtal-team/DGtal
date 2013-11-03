@@ -85,17 +85,17 @@ typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Funct
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval ( const SurfelConstIterator& it ) const
 {
   ASSERT_MSG( isValid(), "Missing init() before evaluation" );
-    
+
   MetricToPoint metricToPoint( *myMetric, myEmbedder( *it ));
   VertexFunctor vfunctor( myEmbedder, metricToPoint);
   Visitor visitor( *mySurface, vfunctor, *it);
-  Value currentRadius = 0;
-    
-  while ( (currentRadius < myRadius) && (! visitor.finished() ))
+  Value currentDistance = 0;
+
+  while ( (currentDistance < myRadius) && (! visitor.finished() ))
   {
     typename Visitor::Node node = visitor.current();
-    currentRadius = node.second;
-    myFunctor->pushSurfel( node.first );
+    currentDistance = node.second;
+    myFunctor->pushSurfel( node.first , myRadius - currentDistance);
     visitor.expand();
   }
 
@@ -117,7 +117,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval
     Quantity q = eval( it );
     *result++ = q;
   }
-  
+
   return result;
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -131,5 +131,3 @@ DGtal::operator<< ( std::ostream & out,
   return out;
 }
 ///////////////////////////////////////////////////////////////////////////////
-
-
