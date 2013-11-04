@@ -78,7 +78,7 @@ namespace DGtal
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Sequence;
   typedef Sequence::iterator Iterator;
-  typedef ArithmeticalDSS<Iterator,int,8> DSSComputer;
+  typedef ArithmeticalDSSComputer<Iterator,int,8> DSSComputer;
   typedef MaximalSegments<DSS> Cover;
 
   //sequence of input points

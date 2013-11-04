@@ -35,8 +35,8 @@
 #include "DGtal/base/Common.h"
 
 
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
-#include "DGtal/geometry/curves/GeometricalDCA.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+#include "DGtal/geometry/curves/StabbingCircleComputer.h"
 #include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
 
 #include "DGtal/io/boards/Board2D.h"
@@ -219,8 +219,8 @@ int main( int argc, char** argv )
   {
     typedef std::vector<Point> Range;
     typedef Range::iterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
-    typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
+    typedef ArithmeticalDSSComputer<ConstIterator,int,4> DSS4;  
+    typedef ArithmeticalDSSComputer<ConstIterator,int,8> DSS8;  
 
     //input points
     Range curve4;
@@ -258,7 +258,7 @@ int main( int argc, char** argv )
     typedef std::pair<Point,Point> Pair; 
     typedef std::vector<Pair> Range;
     typedef Range::const_iterator ConstIterator; 
-    typedef GeometricalDCA<ConstIterator> DCA;  
+    typedef StabbingCircleComputer<ConstIterator> DCA;  
 
     Range curve; 
     curve.push_back(std::make_pair(Point(0,0),Point(0,1))); 

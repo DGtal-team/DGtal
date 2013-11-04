@@ -46,7 +46,7 @@
 
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/boards/DrawWithBoard3DTo2DModifier.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/StandardDSS6Computer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -156,7 +156,7 @@ namespace DGtal
 
 
 
-  // ArithmeticalDSS3d
+  // StandardDSS6Computer
   /**
    * Default drawing style object.
    * @param str the name of the class
@@ -165,7 +165,7 @@ namespace DGtal
    */
   template <typename TIterator, typename TInteger, int connectivity>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  defaultStyle( std::string str, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
   template <typename TIterator, typename TInteger, int connectivity>
   /**
@@ -174,7 +174,7 @@ namespace DGtal
    * @param arithm the arithm to draw
    */
   static void
-  drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
   /**
    * @brief drawAsBoundingBox
@@ -183,7 +183,7 @@ namespace DGtal
    */
   template <typename TIterator, typename TInteger, int connectivity>
   static void
-  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
   template <typename TIterator, typename TInteger, int connectivity>
   /**
@@ -192,8 +192,8 @@ namespace DGtal
    * @param arithm the arithm to draw
    */
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
-  // ArithmeticalDSS3d
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
+  // StandardDSS6Computer
 
 
   // DigitalSetBySTLSet

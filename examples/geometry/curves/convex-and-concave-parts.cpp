@@ -36,7 +36,7 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,8 +61,8 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
   
   typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
 
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string aStyleName = "ArithmeticalDSS/BoundingBox";
+  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
+  string aStyleName = "ArithmeticalDSSComputer/BoundingBox";
 
   for (Iterator i(itb); i != ite; ++i) {
      
@@ -119,7 +119,7 @@ void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite,
                                  Board& aBoard)
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
-  typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
+  typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> RecognitionAlgorithm;
   typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
   RecognitionAlgorithm algo;
