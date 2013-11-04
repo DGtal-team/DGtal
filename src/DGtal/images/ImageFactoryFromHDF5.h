@@ -345,7 +345,7 @@ namespace DGtal
       hsize_t offset_out[ddim];    // hyperslab offset in memory
       hsize_t count_out[ddim];     // size of the hyperslab in memory
       
-      int i[ddim];
+      //int i[ddim];
       int N_SUB[ddim];
       typename Domain::Integer d;
       
@@ -360,7 +360,7 @@ namespace DGtal
       if (data_out == NULL)
       {
         trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
-        exit;
+        exit(-1);
       }
       
       // Define hyperslab in the dataset.
@@ -388,14 +388,14 @@ namespace DGtal
       if (status)
       {
         trace.error() << " H5DSpecializations/H5Dread error" << std::endl;
-        exit;
+        exit(-2);
       }
     
       OutputImage* outputImage = new OutputImage(aDomain);
       if (outputImage == NULL)
       {
         trace.error() << "outputImage new error in requestImage: " << std::endl;
-        exit;
+        exit(-3);
       }
           
       typedef SpaceND<ddim> TSpace;
@@ -405,7 +405,7 @@ namespace DGtal
         a[d]=offset[ddim-d-1]+myDomain->lowerBound()[d];
         b[d]=a[d]+N_SUB[ddim-d-1]-1;
       }
-      HyperRectDomain<TSpace> domain(a,b);
+      HyperRectDomain<TSpace> hrdomain(a,b);
 
       /*std::vector<typename TSpace::Dimension> v(ddim);
       for(d=0; d<ddim; d++)
@@ -413,7 +413,7 @@ namespace DGtal
       
       int p=0;
       for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator 
-            it = domain/*.subRange(v, a)*/.begin(), itend = domain/*.subRange(v, a)*/.end();
+            it = hrdomain/*.subRange(v, a)*/.begin(), itend = hrdomain/*.subRange(v, a)*/.end();
           it != itend; 
           ++it)
       {
@@ -450,7 +450,7 @@ namespace DGtal
       hsize_t offset_in[ddim];    // hyperslab offset in memory
       hsize_t count_in[ddim];     // size of the hyperslab in memory
       
-      int i[ddim];
+      //int i[ddim];
       int N_SUB[ddim];
       typename Domain::Integer d;
       
@@ -494,7 +494,7 @@ namespace DGtal
         a[d]=offset[ddim-d-1]+myDomain->lowerBound()[d];
         b[d]=a[d]+N_SUB[ddim-d-1]-1;
       }
-      HyperRectDomain<TSpace> domain(a,b);
+      HyperRectDomain<TSpace> hrdomain(a,b);
 
       std::vector<typename TSpace::Dimension> v(ddim);
       for(d=0; d<ddim; d++)
@@ -502,7 +502,7 @@ namespace DGtal
       
       int p=0;
       for( typename HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
-            it = domain.subRange(v, a).begin(), itend = domain.subRange(v, a).end();
+            it = hrdomain.subRange(v, a).begin(), itend = hrdomain.subRange(v, a).end();
           it != itend; 
           ++it)
       {

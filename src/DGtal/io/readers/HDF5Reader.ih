@@ -68,7 +68,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   hsize_t       planes;
   char          interlace[16];
   hssize_t      npals;
-  int           i, j;
+  //int           i, j;
   unsigned char *imgBuf; // 'unsigned char' is mandated by the HDF5 library
 
   // Load the library -- not required on most platforms
@@ -224,7 +224,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   hsize_t offset_out[ddim];    // hyperslab offset in memory
   hsize_t count_out[ddim];     // size of the hyperslab in memory
   
-  int i[ddim];
+  //int i[ddim];
   int N_SUB[ddim];
   
   int malloc_size=1;
@@ -238,7 +238,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   if (data_out == NULL)
   {
     trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
-    exit;
+    exit(-1);
   }
   
   // Define hyperslab in the dataset.
@@ -265,7 +265,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   if (status)
   {
     trace.error() << " H5Dread error" << std::endl;
-    exit;
+    exit(-2);
   }
 
   OutputImage outputImage(aDomain);

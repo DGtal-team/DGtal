@@ -192,7 +192,7 @@ int main( int argc, char** argv )
     {
       const int maximalValue = tiledImage.domain().size(); 
       MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator(); 
-      for (int i = 0; i < maximalValue; ++i)
+      for (int ii = 0; ii < maximalValue; ++ii)
       {
         //*it++ = 10;
         it.setValue(10); it++;

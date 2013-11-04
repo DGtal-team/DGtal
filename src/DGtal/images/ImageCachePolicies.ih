@@ -103,7 +103,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const P
   if (myFIFOCacheImages.empty())
     return NULL;
 
-  for (int i=0; i<myFIFOCacheImages.size(); i++)
+  for (unsigned int i=0; i<myFIFOCacheImages.size(); i++)
     if (myFIFOCacheImages[i]->domain().isInside(aPoint))
       return myFIFOCacheImages[i];
   
@@ -118,7 +118,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const D
   if (myFIFOCacheImages.empty())
     return NULL;
 
-  for (int i=0; i<myFIFOCacheImages.size(); i++)
+  for (unsigned int i=0; i<myFIFOCacheImages.size(); i++)
     if ( (myFIFOCacheImages[i]->domain().lowerBound() == aDomain.lowerBound()) && (myFIFOCacheImages[i]->domain().upperBound() == aDomain.upperBound()) )
       return myFIFOCacheImages[i];
   

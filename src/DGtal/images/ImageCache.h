@@ -198,7 +198,7 @@ public:
     /**
      * Get the cacheMissRead value.
      */
-    const unsigned int getCacheMissRead() const
+    unsigned int getCacheMissRead()
     {
         return cacheMissRead;
     }
@@ -206,7 +206,7 @@ public:
     /**
      * Get the cacheMissWrite value.
      */
-    const unsigned int getCacheMissWrite() const
+    unsigned int getCacheMissWrite()
     {
         return cacheMissWrite;
     }
@@ -249,7 +249,7 @@ public:
     /**
      * Get the ticks value.
      */
-    const long getTicksUpdateCache() const // TEMP_MT
+    long getTicksUpdateCache() // TEMP_MT
     {
         return myTicksUpdateCache;
     }
