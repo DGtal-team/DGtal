@@ -243,7 +243,7 @@ protected:
     std::deque <ImageContainer *> myFIFOCacheImages;
     
     /// Size max of the FIFO
-    int myFIFOSizeMax;
+    unsigned int myFIFOSizeMax;
     
     /// Alias on the image factory
     ImageFactory * myImageFactory;

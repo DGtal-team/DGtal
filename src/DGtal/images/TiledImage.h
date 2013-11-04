@@ -624,7 +624,7 @@ public:
     /**
      * Get the cacheMissRead value.
      */
-    const unsigned int getCacheMissRead() const
+    unsigned int getCacheMissRead() const
     {
         return myImageCache->getCacheMissRead();
     }
@@ -632,7 +632,7 @@ public:
     /**
      * Get the cacheMissWrite value.
      */
-    const unsigned int getCacheMissWrite() const
+    unsigned int getCacheMissWrite() const
     {
         return myImageCache->getCacheMissWrite();
     }
@@ -656,7 +656,7 @@ public:
     /**
      * Get the ticks value.
      */
-    const long getTicksUpdateCache() const // TEMP_MT
+    long getTicksUpdateCache() const // TEMP_MT
     {
         return myImageCache->getTicksUpdateCache();
     }
@@ -672,7 +672,7 @@ public:
     /**
      * Get the ticks value.
      */
-    const long getTicksUpdate() const // TEMP_MT
+    long getTicksUpdate() const // TEMP_MT
     {
         return myTicksUpdate;
     }
@@ -688,7 +688,7 @@ public:
     /**
      * Get the ticks value.
      */
-    const long getTicksFindSubDomain() const // TEMP_MT
+    long getTicksFindSubDomain() const // TEMP_MT
     {
         return myTicksFindSubDomain;
     }
@@ -704,7 +704,7 @@ public:
     /**
      * Get the ticks value.
      */
-    const long getTicksRead() const // TEMP_MT
+    long getTicksRead() const // TEMP_MT
     {
         return myTicksRead;
     }

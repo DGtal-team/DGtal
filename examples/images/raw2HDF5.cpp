@@ -85,7 +85,7 @@ bool raw2HDF5_3D(char *rawFilename, int sizeX, int sizeY, int sizeZ, int sizeChu
       }
       
       trace.info() << " begin read" << endl;
-      if (fread(data, 1, sizeZ*sizeY*sizeX, fd) != sizeZ*sizeY*sizeX)
+      if (fread(data, 1, sizeZ*sizeY*sizeX, fd) != (unsigned)sizeZ*sizeY*sizeX)
       {
         trace.error() << " fread failed" << endl;
         fclose(fd);

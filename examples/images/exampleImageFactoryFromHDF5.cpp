@@ -245,7 +245,7 @@ bool exampleTiledImageFromImage_1block3D()
       MyTiledImage tiledImage1block(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
       
       typedef MyTiledImage::OutputImage OutputImage;
-      OutputImage::Value aValue;
+      //OutputImage::Value aValue;
       
       trace.info() << tiledImage1block << std::endl;
 
@@ -275,7 +275,7 @@ bool exampleTiledImageFromImage_1block3D()
 
 bool exampleTiledImageFromHDF5_1block3D()
 {
-    int i, j, k;
+    //int i, j, k;
 
     trace.beginBlock("Example : TiledImage with ImageFactoryFromHDF5 - 1 block (3D)");
 
@@ -298,7 +298,7 @@ bool exampleTiledImageFromHDF5_1block3D()
       MyTiledImage tiledImage1block(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
       
       typedef MyTiledImage::OutputImage OutputImage;
-      OutputImage::Value aValue;
+      //OutputImage::Value aValue;
       
       trace.info() << tiledImage1block << std::endl;
 
@@ -370,7 +370,7 @@ bool exampleTiledImageFromImage_10blocks3D()
       MyTiledImageFIFO tiledImageFIFO_B(factImage, imageCacheReadPolicyFIFO_B, imageCacheWritePolicyWT, 10);
       
       typedef MyTiledImage::OutputImage OutputImage;
-      OutputImage::Value aValue;
+      //OutputImage::Value aValue;
       
       int cpt=0;
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
@@ -486,7 +486,7 @@ bool exampleTiledImageFromImage_10blocks3D()
 
 bool exampleTiledImageFromHDF5_10blocks3D()
 {
-    int i, j, k;
+    //int i, j, k;
     Clock clock, clock_op;
     long myTicks_op;
 
@@ -516,7 +516,7 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       MyTiledImageFIFO tiledImageFIFO_B(factImage, imageCacheReadPolicyFIFO_B, imageCacheWritePolicyWT, 10);
       
       typedef MyTiledImage::OutputImage OutputImage;
-      OutputImage::Value aValue;
+      //OutputImage::Value aValue;
       
       int cpt=0;
       trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
