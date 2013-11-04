@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file ArithmeticalDSS3d.h 
+ * @file StandardDSS6Computer.h 
  * @brief Dynamic recognition of a 3d-digital straight segment (DSS).
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
@@ -26,22 +26,22 @@
  *
  * @date 2011/06/01
  *
- * Header file for module ArithmeticalDSS3d.cpp
+ * Header file for module StandardDSS6Computer.cpp
  *
  * This file is part of the DGtal library.
  *
  * @see testArithDSS3d.cpp
  */
 
-#if defined(ArithmeticalDSS3d_RECURSES)
-#error Recursive header files inclusion detected in ArithmeticalDSS3d.h
-#else // defined(ArithmeticalDSS3d_RECURSES)
+#if defined(StandardDSS6Computer_RECURSES)
+#error Recursive header files inclusion detected in StandardDSS6Computer.h
+#else // defined(StandardDSS6Computer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ArithmeticalDSS3d_RECURSES
+#define StandardDSS6Computer_RECURSES
 
-#if !defined ArithmeticalDSS3d_h
+#if !defined StandardDSS6Computer_h
 /** Prevents repeated inclusion of headers. */
-#define ArithmeticalDSS3d_h
+#define StandardDSS6Computer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,7 +51,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
 
@@ -63,15 +63,15 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // class ArithmeticalDSS3d
+  // class StandardDSS6Computer
   /**
-   * Description of class 'ArithmeticalDSS3d' <p>
+   * Description of class 'StandardDSS6Computer' <p>
    * \brief Aim:
    * Dynamic recognition of a 3d-digital straight segment (DSS)
 
    */
   template <typename TIterator, typename TInteger, int connectivity>
-  class ArithmeticalDSS3d
+  class StandardDSS6Computer
   {
 
     // ----------------------- Types ------------------------------
@@ -85,8 +85,8 @@ namespace DGtal
 
     //requiered types
     typedef TIterator ConstIterator;
-    typedef ArithmeticalDSS3d<ConstIterator,TInteger,connectivity> Self; 
-    typedef ArithmeticalDSS3d<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef StandardDSS6Computer<ConstIterator,TInteger,connectivity> Self; 
+    typedef StandardDSS6Computer<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
 
 
     //points and vectors
@@ -108,7 +108,7 @@ namespace DGtal
     
 
     //2d-arithmeticalDSS recognition algorithm
-    typedef DGtal::ArithmeticalDSS<IteratorAdapter,TInteger,connectivity> ArithmeticalDSS2d;
+    typedef DGtal::ArithmeticalDSSComputer<IteratorAdapter,TInteger,connectivity> ArithmeticalDSSComputer2d;
     
 
     // ----------------------- Standard services ------------------------------
@@ -119,14 +119,14 @@ namespace DGtal
      * Default constructor.
      * not valid
      */
-    ArithmeticalDSS3d();
+    StandardDSS6Computer();
 
     /**
      * Constructor with initialisation
      * @param it an iterator
      * @see init
      */
-    ArithmeticalDSS3d(const ConstIterator& it);
+    StandardDSS6Computer(const ConstIterator& it);
 
     /**
      * Initialisation.
@@ -139,14 +139,14 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    ArithmeticalDSS3d ( const ArithmeticalDSS3d & other );
+    StandardDSS6Computer ( const StandardDSS6Computer & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ArithmeticalDSS3d & operator= ( const ArithmeticalDSS3d & other );
+    StandardDSS6Computer & operator= ( const StandardDSS6Computer & other );
 
     /** 
      * @return a default-constructed instance of Self.
@@ -168,7 +168,7 @@ namespace DGtal
      * (same DSS scanned in the reverse way) 
      * and 'false' otherwise
      */
-    bool operator==( const ArithmeticalDSS3d & other ) const;
+    bool operator==( const StandardDSS6Computer & other ) const;
 
     /**
      * Difference operator.
@@ -176,12 +176,12 @@ namespace DGtal
      * @return 'false' if equal
      * 'true' otherwise
      */
-    bool operator!=( const ArithmeticalDSS3d & other ) const;
+    bool operator!=( const StandardDSS6Computer & other ) const;
 
     /**
      * Destructor.
      */
-    ~ArithmeticalDSS3d(){};
+    ~StandardDSS6Computer(){};
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -236,26 +236,26 @@ namespace DGtal
        @return a const-reference on the arithmetical DSS recognition
        algorithm along the XY plane.
     */
-    const ArithmeticalDSS2d & arithmeticalDSS2dXY() const;
+    const ArithmeticalDSSComputer2d & arithmeticalDSS2dXY() const;
 
     /**
        @return a const-reference on the arithmetical DSS recognition
        algorithm along the XZ plane.
     */
-    const ArithmeticalDSS2d & arithmeticalDSS2dXZ() const;
+    const ArithmeticalDSSComputer2d & arithmeticalDSS2dXZ() const;
 
     /**
        @return a const-reference on the arithmetical DSS recognition
        algorithm along the YZ plane.
     */
-    const ArithmeticalDSS2d & arithmeticalDSS2dYZ() const;
+    const ArithmeticalDSSComputer2d & arithmeticalDSS2dYZ() const;
 
     /**
        @param i the axis orthogonal to the plane
        @return a const-reference on the arithmetical DSS recognition
        algorithm along the plane orthogonal to the \a i-th axis.
     */
-    const ArithmeticalDSS2d & arithmeticalDSS2d( Dimension i ) const;
+    const ArithmeticalDSSComputer2d & arithmeticalDSS2d( Dimension i ) const;
 
 
     // ------------------ Display ------------------------------------------
@@ -280,9 +280,9 @@ namespace DGtal
     Projector2d myProjXY, myProjXZ, myProjYZ;
 
     /// 2d-arithmeticalDSS recognition algorithms
-    ArithmeticalDSS2d myXYalgo;
-    ArithmeticalDSS2d myXZalgo;
-    ArithmeticalDSS2d myYZalgo;
+    ArithmeticalDSSComputer2d myXYalgo;
+    ArithmeticalDSSComputer2d myXZalgo;
+    ArithmeticalDSSComputer2d myYZalgo;
 
     /// begin and end iterators
     ConstIterator myBegin, myEnd;
@@ -293,19 +293,19 @@ namespace DGtal
   private:
 
     
-  }; // end of class ArithmeticalDSS3d
+  }; // end of class StandardDSS6Computer
 
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS3d'.
+   * Overloads 'operator<<' for displaying objects of class 'StandardDSS6Computer'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ArithmeticalDSS3d' to write.
+   * @param object the object of class 'StandardDSS6Computer' to write.
    * @return the output stream after the writing.
    */
   template <typename TIterator, typename TInteger, int connectivity>
   std::ostream&
-  operator<< ( std::ostream & out,  ArithmeticalDSS3d<TIterator,TInteger,connectivity> & object )
+  operator<< ( std::ostream & out,  StandardDSS6Computer<TIterator,TInteger,connectivity> & object )
   {
     object.selfDisplay( out);
     return out;
@@ -318,12 +318,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods.
-#include "DGtal/geometry/curves/ArithmeticalDSS3d.ih"
+#include "DGtal/geometry/curves/StandardDSS6Computer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ArithmeticalDSS3d_h
+#endif // !defined StandardDSS6Computer_h
 
-#undef ArithmeticalDSS3d_RECURSES
-#endif // else defined(ArithmeticalDSS3d_RECURSES)
+#undef StandardDSS6Computer_RECURSES
+#endif // else defined(StandardDSS6Computer_RECURSES)
