@@ -47,6 +47,9 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/base/CQuantity.h"
+#include "DGtal/kernel/domains/CDomain.h"
 #ifdef CPP11_ARRAY
 #include <array>
 #else
