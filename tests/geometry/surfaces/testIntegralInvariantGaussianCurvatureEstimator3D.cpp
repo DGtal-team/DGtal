@@ -151,7 +151,7 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
 
     trace.warning() << "True value: " << realValue << std::endl;
     trace.warning() << "Mean value: " << mean << std::endl;
-    trace.warning() << "Delta: " << delta << " |true - mean|: " << std::abs ( realValue - mean ) << std::endl;
+    trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
 
     if( v > delta )
     {
