@@ -309,6 +309,55 @@ namespace DGtal
   };
 
 
+  /**
+   * \brief Create a point functor from a point predicate and a domain.
+   */
+  template< typename TPointPredicate, typename TDomain, typename TValue=DGtal::int32_t >
+  struct PointFunctorFromPointPredicateAndDomain
+  {
+      typedef TPointPredicate PointPredicate;
+      typedef TDomain Domain;
+      typedef TValue Value;
+      typedef typename Domain::Point Point;
+
+      BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+      BOOST_CONCEPT_ASSERT(( CDomain< Domain > ));
+      BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
+
+      /**
+       * @brief Constructor.
+       * @param[in] aPtrPredicate a predicate on digital point
+       * @param[in] aDomain a domain on digital point
+       * @param[in] aTrueValue the returned value when a given point is inside the domain and when the predicate return true
+       * @param[in] aFalseValue the returned value when a given point is outside the domain or when the predicate return false
+       */
+      PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain,
+                                               const Value aTrueValue, const Value aFalseValue );
+
+      PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other  );
+
+      /**
+       * @brief operator ()
+       * @param[in] aPoint evaluated digital point.
+       * @return aTrueValue when aPoint is inside the domain and when the predicate return true, aFalseValue else.
+       */
+      Value operator()( const Point& aPoint ) const;
+
+      /**
+         * Assignment.
+         * @param other the object to copy.
+         * @return a reference on 'this'.
+         * Forbidden by default.
+         */
+      PointFunctorFromPointPredicateAndDomain & operator= ( const PointFunctorFromPointPredicateAndDomain & other );
+
+  private:
+      const PointPredicate* myPtrPredicate;
+      const Domain& myDomain;
+      Value myTrueValue;
+      Value myFalseValue;
+
+  };
 
 } // namespace dgtal
 

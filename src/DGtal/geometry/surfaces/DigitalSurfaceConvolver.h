@@ -52,6 +52,8 @@
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
 #include "DGtal/kernel/CCellFunctor.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/topology/SCellsFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -70,70 +72,65 @@ namespace DGtal
    * @tparam TKSpace space in which the shape is defined.
    * @tparam TKernelConstIterator iterator of cells inside the convolution kernel.
    */
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, Dimension dimension = TKSpace::dimension >
+template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TDigitalKernel, Dimension dimension = TKSpace::dimension >
 class DigitalSurfaceConvolver
 {
-  // ----------------------- Types ------------------------------------------
+public:
+
+    typedef TFunctor Functor;
+    typedef TKSpace KSpace;
+    typedef TKernelFunctor KernelFunctor;
+    typedef TDigitalKernel DigitalKernel;
+
+    typedef Z2i::Domain Domain;
+
+    typedef double Quantity;
+    typedef PointVector< dimension, Quantity > VectorQuantity;
+    typedef SimpleMatrix< Quantity, dimension, dimension > MatrixQuantity;
+    typedef SimpleMatrix< double, dimension, dimension > CovarianceMatrix;
+
+    typedef typename KSpace::SCell Spel;
+    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef Z2i::DigitalSet::ConstIterator KernelConstIterator;
+
+    typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef SCellToMidPoint< KSpace > Embedder;
+
+    //  BOOST_CONCEPT_ASSERT (( SpelFunctor< Functor > ));
+    //  BOOST_CONCEPT_ASSERT (( SpelFunctor< KernelFunctor > ));
+
+    // ----------------------- Standard services ------------------------------
 
 public:
 
-  typedef TFunctor Functor;
-  typedef TKSpace KSpace;
-  typedef TKernelFunctor KernelFunctor;
-
-  typedef double Quantity;
-  typedef PointVector< dimension, Quantity > VectorQuantity;
-  typedef SimpleMatrix< Quantity, dimension, dimension > MatrixQuantity;
-  typedef SimpleMatrix< double, dimension, dimension > CovarianceMatrix;
-
-  typedef typename KSpace::SCell Cell;
-  typedef typename KSpace::Space::Point Point;
-  typedef TKernelConstIterator KernelConstIterator;
-
-  typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
-
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-//  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
-
-  // ----------------------- Standard services ------------------------------
-
-public:
-
-  /**
+    /**
        * Constructor.
-       * 
-       * @param f a functor f(x).
-       * @param g a functor g(x).
-       * @param space space in which the shape is defined.
+       *
+       * @param[in] f a functor f(x).
+       * @param[in] g a functor g(x).
+       * @param[in] space space in which the shape is defined.
        */
-  DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
+    DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
 
-  /**
+    /**
        * Destructor.
        */
-  ~DigitalSurfaceConvolver () {}
+    ~DigitalSurfaceConvolver () {}
 
-  // ----------------------- Interface --------------------------------------
+    // ----------------------- Interface --------------------------------------
 
 public:
 
-  /**
-       * Initialize the convolver.
+    /**
+       * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
        *
-       * @param itgbegin iterator of the first cell of the kernel support.
-       * @param itgend iterator of the last cell of the kernel support (excluded).
-       * @param kOrigin center of the kernel support.
-       */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
-
-  /**
-       * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+       * Choose this init if you don't have few memory. Need to store the full kernel explicitly.
        *
-       * @param itgbegin iterator of the first spel of the kernel support.
-       * @param itgend iterator of the last spel of the kernel support (excluded).
-       * @param kOrigin center of the kernel support.
-       * @param mask Vector of PairIterators. They must be ordered using a trit ({0,1,2}) encoded array.
+       * @param[in] pOrigin center (digital point) of the kernel support.
+       * @param[in] fullKernel pair of iterators of the full kernel. first is the first iterator (of spel) of the kernel support, second is the last iterator (of spel, excluded).
+       * @param[in] masks Vector of iterators (of spel) of the first and last spel of each masks. They must be ordered using a trit ({0,1,2}) encoded array.
        * trit 0 => shifting_coord = -1
        * trit 1 => shifting_coord = 0
        * trit 2 => shifting_coord = 1
@@ -141,186 +138,365 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
+    void init ( Point pOrigin, PairIterators fullKernel, std::vector< PairIterators > masks );
 
-  /**
+    /**
+       * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+       *
+       * Choose this init if you have few memory. It use implicitly the full kernel.
+       *
+       * @param[in] pOrigin center (digital point) of the kernel support.
+       * @param[in] fullKernel pointer of the digital (full) kernel.
+       * @param[in] masks Vector of iterators (of spel) of the first and last spel of each masks. They must be ordered using a trit ({0,1,2}) encoded array.
+       * trit 0 => shifting_coord = -1
+       * trit 1 => shifting_coord = 0
+       * trit 2 => shifting_coord = 1
+       * Example in 3D :      zyx                 x  y  z
+       * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
+       * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
+       */
+    void init ( Point pOrigin, DigitalKernel * fullKernel, std::vector< PairIterators > masks );
+
+    /**
        * Convolve the kernel at a given position.
        *
-       * @param it (iterator of a) spel on the surface of the shape where the convolution is computed.
+       * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape .
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
        *
        * @return the estimated quantity at *it : (f*g)(t)
        */
-  template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
+    template< typename SurfelIterator >
+    Quantity eval ( const SurfelIterator & it );
 
-  /**
-       * Iterate the convolver between [itbegin, itend[.
+
+    /**
+       * Convolve the kernel at a given position and work with the result.
        *
-       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
-       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
-       * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam EvalFunctor type of functor on Quantity.
+       *
+       * @return the return quantity of functor after giving in parameter the result of the convolution at *it
        */
-  template< typename ConstIteratorOnCells, typename OutputIterator >
-  void eval ( const ConstIteratorOnCells & itbegin,
-              const ConstIteratorOnCells & itend,
-              OutputIterator & result );
+    template< typename SurfelIterator, typename EvalFunctor >
+    typename EvalFunctor::Value eval ( const SurfelIterator & it,
+                                       EvalFunctor functor );
 
-  /**
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ with the convolver.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
+       * @param[out] result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       */
+    template< typename SurfelIterator, typename OutputIterator >
+    void eval ( const SurfelIterator & itbegin,
+                const SurfelIterator & itend,
+                OutputIterator & result );
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ and work with the result.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
+       * @param[out] result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       * @tparam EvalFunctor type of functor on Quantity.
+       */
+    template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
+    void eval ( const SurfelIterator & itbegin,
+                const SurfelIterator & itend,
+                OutputIterator & result,
+                EvalFunctor functor );
+
+
+    /**
        * Convolve the kernel at a given position and return a covariance matrix.
        *
-       * @param it (iterator of a) spel on the surface of the shape where the covariance matrix is computed.
+       * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
        *
        * @return the covariance matrix at *it
        */
-  template< typename ConstIteratorOnCells >
-  CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it );
+    template< typename SurfelIterator >
+    CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
 
-
-  /**
-       * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
+    /**
+       * Convolve the kernel at a given position and return the result of the functor with the covariance matrix.
        *
-       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
-       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
-       * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
+       * @param[in] functor functor called with the result of the convolution.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam EvalFunctor type of functor on CovarianceMatrix.
+       *
+       * @return the result of the functor with the covariance matrix.
        */
-  template< typename ConstIteratorOnCells, typename OutputIterator >
-  void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
-                              const ConstIteratorOnCells & itend,
-                              OutputIterator & result );
+    template< typename SurfelIterator, typename EvalFunctor >
+    typename EvalFunctor::Value evalCovarianceMatrix ( const SurfelIterator & it,
+                                            EvalFunctor functor );
 
-  /**
+    /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
+       * @param[out] result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       */
+    template< typename SurfelIterator, typename OutputIterator >
+    void evalCovarianceMatrix ( const SurfelIterator & itbegin,
+                                const SurfelIterator & itend,
+                                OutputIterator & result );
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
+       * @param[out] result iterator of an array where results of functor are set.
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       * @tparam EvalFunctor type of functor on CovarianceMatrix.
+       */
+    template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
+    void evalCovarianceMatrix ( const SurfelIterator & itbegin,
+                                const SurfelIterator & itend,
+                                OutputIterator & result,
+                                EvalFunctor functor );
+
+
+    /**
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-  bool isValid () const;
-
-  // ------------------------- Private Datas --------------------------------
-
-private:
-
-  /// Const ref of the shape functor
-  const Functor & myFFunctor;
-
-  /// Const ref of the kernel functor
-  const KernelFunctor & myGFunctor;
-
-  /// Const ref of the shape Kspace
-  const KSpace & myKSpace;
-
-  /// Copy of vector of iterators for kernel partial masks
-  std::vector< PairIterators > myMask;
-
-  /// Copy of the first iterator of the kernel support (Used to iterate over it)
-  KernelConstIterator myItKernelBegin;
-  /// Copy  of the last iterator of the kernel support (Used to iterate over it)
-  KernelConstIterator myItKernelEnd;
-  /// Copy of the origin cell of the kernel.
-  Cell myKernelCellOrigin;
-
-  bool isInit;
-  bool isInitMask;
-
-  // ------------------------- Hidden services ------------------------------
+    bool isValid () const;
 
 protected:
-  /**
+
+    /**
+     * @brief computeCovarianceMatrix compute the covariance matrix from matrix of moments.
+     *
+     * @param[in] aMomentMatrix a matrix of digital moments
+     * [ sum(1)
+     *   sum(y) sum (x)
+     *   sum(x*y) sum(y*y) sum(x*x)
+     * ]
+     * @param[out] aCovarianceMatrix the result covariance matrix
+     */
+    void computeCovarianceMatrix( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+
+    /**
+     * @brief fillMoments fill the matrix of moments with a given spel.
+     *
+     * @param[out]aMomentMatrix a matrix of digital moments
+     * [ sum(1)
+     *   sum(y) sum (x)
+     *   sum(x*y) sum(y*y) sum(x*x)
+     * ]
+     * @param[in] aSpel current spel
+     * @param[in] direction true if we add the current spel, false if we remove it.
+     */
+    void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction );
+
+    static const int nbMoments;
+    static Spel defaultInnerSpel;
+    static Spel defaultOuterSpel;
+    static Quantity defaultInnerMoments[ 6 ];
+    static Quantity defaultOuterMoments[ 6 ];
+    static Quantity defaultInnerSum;
+    static Quantity defaultOuterSum;
+
+    /**
+     * @brief core_eval method used ( in intern by eval() ) to compute the Quantity on a given surfel (*it)
+     *
+     * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+     * @param[out] innerSum the result Quantity when centering with the innerSpel.
+     * @param[out] outerSum the result Quantity when centering with the outerSpel.
+     * @param[in] useLastResults if we can use last results (optimisation with masks)
+     * @param[in,out] lastInnerSpel last inner spel. Override at end of function with current inner spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterSpel last outer spel. Override at end of function with current outer spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in] lastInnerSum last Quantity when centering with inner spel. Set empty if useLastResults is false.
+     * @param[in] lastOuterSum last Quantity when centering with outer spel. Set empty if useLastResults is false.
+     *
+     * @tparam SurfelIterator type of iterator on surfel
+     */
+    template< typename SurfelIterator >
+    bool core_eval ( const SurfelIterator & it,
+                     Quantity & innerSum,
+                     Quantity & outerSum,
+                     bool useLastResults = false,
+                     Spel & lastInnerSpel = defaultInnerSpel,
+                     Spel & lastOuterSpel = defaultOuterSpel,
+                     Quantity & lastInnerSum = defaultInnerSum,
+                     Quantity & lastOuterSum = defaultOuterSum );
+
+    /**
+     * @brief core_evalCovarianceMatrix method used ( in intern by evalCovarianceMatrix() ) to compute the covariance matrix on a given surfel (*it)
+     *
+     * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+     * @param[out] innerMatrix the result covariance matrix when centering with the innerSpel.
+     * @param[out] outerMatrix the result covariance matrix when centering with the outerSpel.
+     * @param[in] useLastResults if we can use last results (optimisation with masks)
+     * @param[in,out] lastInnerSpel last inner spel. Override at end of function with current inner spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterSpel last outer spel. Override at end of function with current outer spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastInnerMoments last inner moments when centering with inner spel. Override at end of function with current inner moments (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterMoments last inner moments when centering with inner spel. Override at end of function with current outer moments (from surfel *it). Set empty if useLastResults is false.
+     *
+     * @tparam SurfelIterator type of iterator on surfel
+     */
+    template< typename SurfelIterator >
+    bool core_evalCovarianceMatrix ( const SurfelIterator & it,
+                                     CovarianceMatrix & innerMatrix,
+                                     CovarianceMatrix & outerMatrix,
+                                     bool useLastResults = false,
+                                     Spel & lastInnerSpel = defaultInnerSpel,
+                                     Spel & lastOuterSpel = defaultOuterSpel,
+                                     Quantity * lastInnerMoments = defaultInnerMoments,
+                                     Quantity * lastOuterMoments = defaultOuterMoments );
+
+
+
+    // ------------------------- Private Datas --------------------------------
+
+private:
+    /// Const ref of the shape functor
+    const Functor & myFFunctor;
+
+    /// Const ref of the kernel functor
+    const KernelFunctor & myGFunctor;
+
+    /// Const ref of the shape Kspace
+    const KSpace & myKSpace;
+
+    /// Converter Digital point -> Euclidean point
+    Embedder myEmbedder;
+
+    /// If the user uses init with masks. See init() for more information.
+    bool isInitFullMasks;
+
+    /// If the user uses init with masks and digital (full) kernel. See init() for more information.
+    bool isInitKernelAndMasks;
+
+    /// Copy of vector of iterators for kernel partial masks
+    std::vector< PairIterators > myMasks;
+
+    /// Two choice to iterate over the full kernel. See init() for more information.
+    DigitalKernel * myKernel;
+    PairIterators myKernelMask;
+
+
+    /// Copy of the origin cell of the kernel.
+    Spel myKernelSpelOrigin;
+
+    // ------------------------- Hidden services ------------------------------
+
+protected:
+    /**
        * Constructor.
        * Forbidden by default (protected to avoid g++ warnings).
        */
-  DigitalSurfaceConvolver ();
+    DigitalSurfaceConvolver ();
 
 private:
 
-  /**
+    /**
        * Copy constructor.
        * @param other the object to clone.
        * Forbidden by default.
        */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
+    DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
-  /**
+    /**
        * Assignment.
        * @param other the object to copy.
        * @return a reference on 'this'.
        * Forbidden by default.
        */
-  DigitalSurfaceConvolver & operator= ( const DigitalSurfaceConvolver & other );
+    DigitalSurfaceConvolver & operator= ( const DigitalSurfaceConvolver & other );
 
-  // ------------------------- Internals ------------------------------------
+    // ------------------------- Internals ------------------------------------
 
 private:
 
 }; // end of class DigitalSurfaceConvolver
 
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator >
-class DigitalSurfaceConvolver< TFunctor, TKernelFunctor, TKSpace, TKernelConstIterator, 2 >
+template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TDigitalKernel >
+class DigitalSurfaceConvolver< TFunctor, TKernelFunctor, TKSpace, TDigitalKernel, 2 >
 {
-  // ----------------------- Types ------------------------------------------
+    // ----------------------- Types ------------------------------------------
 
 public:
 
-  typedef TFunctor Functor;
-  typedef TKSpace KSpace;
-  typedef TKernelFunctor KernelFunctor;
+    typedef TFunctor Functor;
+    typedef TKSpace KSpace;
+    typedef TKernelFunctor KernelFunctor;
+    typedef TDigitalKernel DigitalKernel;
 
-  typedef double Quantity;
-  typedef PointVector< 2, Quantity > VectorQuantity;
-  typedef SimpleMatrix< Quantity, 2, 2 > MatrixQuantity;
-  typedef SimpleMatrix< double, 2, 2 > CovarianceMatrix;
+    typedef Z2i::Domain Domain;
 
-  typedef typename KSpace::SCell Cell;
-  typedef typename KSpace::Space::Point Point;
-  typedef TKernelConstIterator KernelConstIterator;
+    typedef double Quantity;
+    typedef PointVector< 2, Quantity > VectorQuantity;
+    typedef SimpleMatrix< Quantity, 2, 2 > MatrixQuantity;
+    typedef SimpleMatrix< double, 2, 2 > CovarianceMatrix;
 
-  typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef typename KSpace::SCell Spel;
+    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef Z2i::DigitalSet::ConstIterator KernelConstIterator;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-//  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
+    typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef SCellToMidPoint< KSpace > Embedder;
 
-  // ----------------------- Standard services ------------------------------
+    //  BOOST_CONCEPT_ASSERT (( SpelFunctor< Functor > ));
+    //  BOOST_CONCEPT_ASSERT (( SpelFunctor< KernelFunctor > ));
+
+    // ----------------------- Standard services ------------------------------
 
 public:
 
-  /**
+    /**
        * Constructor.
        *
-       * @param f a functor f(x).
-       * @param g a functor g(x).
-       * @param space space in which the shape is defined.
+       * @param[in] f a functor f(x).
+       * @param[in] g a functor g(x).
+       * @param[in] space space in which the shape is defined.
        */
-  DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
+    DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
 
-  /**
+    /**
        * Destructor.
        */
-  ~DigitalSurfaceConvolver () {}
+    ~DigitalSurfaceConvolver () {}
 
-  // ----------------------- Interface --------------------------------------
+    // ----------------------- Interface --------------------------------------
 
 public:
 
-  /**
-       * Initialize the convolver.
+    /**
+       * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
        *
-       * @param itgbegin iterator of the first cell of the kernel support.
-       * @param itgend iterator of the last cell of the kernel support (excluded).
-       * @param kOrigin center of the kernel support.
-       */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
-
-  /**
-       * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+       * Choose this init if you don't have few memory. Need to store the full kernel explicitly.
        *
-       * @param itgbegin iterator of the first spel of the kernel support.
-       * @param itgend iterator of the last spel of the kernel support (excluded).
-       * @param kOrigin center of the kernel support.
-       * @param mask Vector of iterators. They must be ordered using a trit ({0,1,2}) encoded array.
+       * @param[in] pOrigin center (digital point) of the kernel support.
+       * @param[in] fullKernel pair of iterators of the full kernel. first is the first iterator (of spel) of the kernel support, second is the last iterator (of spel, excluded).
+       * @param[in] masks Vector of iterators (of spel) of the first and last spel of each masks. They must be ordered using a trit ({0,1,2}) encoded array.
        * trit 0 => shifting_coord = -1
        * trit 1 => shifting_coord = 0
        * trit 2 => shifting_coord = 1
@@ -328,188 +504,369 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
+    void init ( Point pOrigin, PairIterators fullKernel, std::vector< PairIterators > masks );
 
-  /**
+    /**
+       * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+       *
+       * Choose this init if you have few memory. It use implicitly the full kernel.
+       *
+       * @param[in] pOrigin center (digital point) of the kernel support.
+       * @param[in] fullKernel pointer of the digital (full) kernel.
+       * @param[in] masks Vector of iterators (of spel) of the first and last spel of each masks. They must be ordered using a trit ({0,1,2}) encoded array.
+       * trit 0 => shifting_coord = -1
+       * trit 1 => shifting_coord = 0
+       * trit 2 => shifting_coord = 1
+       * Example in 3D :      zyx                 x  y  z
+       * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
+       * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
+       */
+    void init ( Point pOrigin, DigitalKernel * fullKernel, std::vector< PairIterators > masks );
+
+    /**
        * Convolve the kernel at a given position.
        *
-       * @param it (iterator of a) spel on the surface of the shape where the convolution is computed.
+       * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape .
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
        *
        * @return the estimated quantity at *it : (f*g)(t)
        */
-  template< typename ConstIteratorOnCells > Quantity eval ( const ConstIteratorOnCells & it );
+    template< typename SurfelIterator >
+    Quantity eval ( const SurfelIterator & it );
 
 
-  /**
-       * Iterate the convolver between [itbegin, itend[.
+    /**
+       * Convolve the kernel at a given position and work with the result.
        *
-       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
-       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
-       * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam EvalFunctor type of functor on Quantity.
+       *
+       * @return the return quantity of functor after giving in parameter the result of the convolution at *it
        */
-  template< typename ConstIteratorOnCells, typename OutputIterator >
-  void eval ( const ConstIteratorOnCells & itbegin,
-              const ConstIteratorOnCells & itend,
-              OutputIterator & result );
+    template< typename SurfelIterator, typename EvalFunctor >
+    typename EvalFunctor::Value eval ( const SurfelIterator & it,
+                                       EvalFunctor functor );
 
 
-  /**
+    /**
+       * Iterate the convolver between [itbegin, itend[ with the convolver.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
+       * @param[out] result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       */
+    template< typename SurfelIterator, typename OutputIterator >
+    void eval ( const SurfelIterator & itbegin,
+                const SurfelIterator & itend,
+                OutputIterator & result );
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ and work with the result.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
+       * @param[out] result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       * @tparam EvalFunctor type of functor on Quantity.
+       */
+    template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
+    void eval ( const SurfelIterator & itbegin,
+                const SurfelIterator & itend,
+                OutputIterator & result,
+                EvalFunctor functor );
+
+
+    /**
        * Convolve the kernel at a given position and return a covariance matrix.
        *
-       * @param it (iterator of a) spel on the surface of the shape where the covariance matrix is computed.
+       * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
        *
        * @return the covariance matrix at *it
        */
-  template< typename ConstIteratorOnCells >
-  CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it );
+    template< typename SurfelIterator >
+    CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
 
-
-  /**
-       * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
+    /**
+       * Convolve the kernel at a given position and return the result of the functor with the covariance matrix.
        *
-       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
-       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
-       * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
+       * @param[in] functor functor called with the result of the convolution.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam EvalFunctor type of functor on CovarianceMatrix.
+       *
+       * @return the result of the functor with the covariance matrix.
        */
-  template< typename ConstIteratorOnCells, typename OutputIterator >
-  void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
-                              const ConstIteratorOnCells & itend,
-                              OutputIterator & result );
+    template< typename SurfelIterator, typename EvalFunctor >
+    typename EvalFunctor::Value evalCovarianceMatrix ( const SurfelIterator & it,
+                                                                     EvalFunctor functor );
 
-  /**
+    /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
+       * @param[out] result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       */
+    template< typename SurfelIterator, typename OutputIterator >
+    void evalCovarianceMatrix ( const SurfelIterator & itbegin,
+                                const SurfelIterator & itend,
+                                OutputIterator & result );
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
+       * @param[out] result iterator of an array where results of functor are set.
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       * @tparam EvalFunctor type of functor on CovarianceMatrix.
+       */
+    template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
+    void evalCovarianceMatrix ( const SurfelIterator & itbegin,
+                                const SurfelIterator & itend,
+                                OutputIterator & result,
+                                EvalFunctor functor );
+
+
+    /**
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-  bool isValid () const;
-
-  // ------------------------- Private Datas --------------------------------
-
-private:
-
-  /// Const ref of the shape functor
-  const Functor & myFFunctor;
-
-  /// Const ref of the kernel functor
-  const KernelFunctor & myGFunctor;
-
-  /// Const ref of the shape Kspace
-  const KSpace & myKSpace;
-
-  /// Copy of vector of iterators for kernel partial masks
-  std::vector< PairIterators > myMask;
-
-  /// Copy of the first iterator of the kernel support (Used to iterate over it)
-  KernelConstIterator myItKernelBegin;
-  /// Copy  of the last iterator of the kernel support (Used to iterate over it)
-  KernelConstIterator myItKernelEnd;
-  /// Copy of the origin cell of the kernel.
-  Cell myKernelCellOrigin;
-
-  bool isInit;
-  bool isInitMask;
-
-  // ------------------------- Hidden services ------------------------------
+    bool isValid () const;
 
 protected:
-  /**
+
+    /**
+     * @brief computeCovarianceMatrix compute the covariance matrix from matrix of moments.
+     *
+     * @param[in] aMomentMatrix a matrix of digital moments
+     * [ sum(1)
+     *   sum(y) sum (x)
+     *   sum(x*y) sum(y*y) sum(x*x)
+     * ]
+     * @param[out] aCovarianceMatrix the result covariance matrix
+     */
+    void computeCovarianceMatrix( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+
+    /**
+     * @brief fillMoments fill the matrix of moments with a given spel.
+     *
+     * @param[out]aMomentMatrix a matrix of digital moments
+     * [ sum(1)
+     *   sum(y) sum (x)
+     *   sum(x*y) sum(y*y) sum(x*x)
+     * ]
+     * @param[in] aSpel current spel
+     * @param[in] direction true if we add the current spel, false if we remove it.
+     */
+    void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction );
+
+    static const int nbMoments;
+    static Spel defaultInnerSpel;
+    static Spel defaultOuterSpel;
+    static Quantity defaultInnerMoments[ 6 ];
+    static Quantity defaultOuterMoments[ 6 ];
+    static Quantity defaultInnerSum;
+    static Quantity defaultOuterSum;
+
+    /**
+     * @brief core_eval method used ( in intern by eval() ) to compute the Quantity on a given surfel (*it)
+     *
+     * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+     * @param[out] innerSum the result Quantity when centering with the innerSpel.
+     * @param[out] outerSum the result Quantity when centering with the outerSpel.
+     * @param[in] useLastResults if we can use last results (optimisation with masks)
+     * @param[in,out] lastInnerSpel last inner spel. Override at end of function with current inner spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterSpel last outer spel. Override at end of function with current outer spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in] lastInnerSum last Quantity when centering with inner spel. Set empty if useLastResults is false.
+     * @param[in] lastOuterSum last Quantity when centering with outer spel. Set empty if useLastResults is false.
+     *
+     * @tparam SurfelIterator type of iterator on surfel
+     */
+    template< typename SurfelIterator >
+    bool core_eval ( const SurfelIterator & it,
+                     Quantity & innerSum,
+                     Quantity & outerSum,
+                     bool useLastResults = false,
+                     Spel & lastInnerSpel = defaultInnerSpel,
+                     Spel & lastOuterSpel = defaultOuterSpel,
+                     Quantity & lastInnerSum = defaultInnerSum,
+                     Quantity & lastOuterSum = defaultOuterSum );
+
+    /**
+     * @brief core_evalCovarianceMatrix method used ( in intern by evalCovarianceMatrix() ) to compute the covariance matrix on a given surfel (*it)
+     *
+     * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+     * @param[out] innerMatrix the result covariance matrix when centering with the innerSpel.
+     * @param[out] outerMatrix the result covariance matrix when centering with the outerSpel.
+     * @param[in] useLastResults if we can use last results (optimisation with masks)
+     * @param[in,out] lastInnerSpel last inner spel. Override at end of function with current inner spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterSpel last outer spel. Override at end of function with current outer spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastInnerMoments last inner moments when centering with inner spel. Override at end of function with current inner moments (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterMoments last inner moments when centering with inner spel. Override at end of function with current outer moments (from surfel *it). Set empty if useLastResults is false.
+     *
+     * @tparam SurfelIterator type of iterator on surfel
+     */
+    template< typename SurfelIterator >
+    bool core_evalCovarianceMatrix ( const SurfelIterator & it,
+                                     CovarianceMatrix & innerMatrix,
+                                     CovarianceMatrix & outerMatrix,
+                                     bool useLastResults = false,
+                                     Spel & lastInnerSpel = defaultInnerSpel,
+                                     Spel & lastOuterSpel = defaultOuterSpel,
+                                     Quantity * lastInnerMoments = defaultInnerMoments,
+                                     Quantity * lastOuterMoments = defaultOuterMoments );
+
+
+
+    // ------------------------- Private Datas --------------------------------
+
+private:
+    /// Current dimension (= 2)
+    const Dimension dimension;
+
+    /// Const ref of the shape functor
+    const Functor & myFFunctor;
+
+    /// Const ref of the kernel functor
+    const KernelFunctor & myGFunctor;
+
+    /// Const ref of the shape Kspace
+    const KSpace & myKSpace;
+
+    /// Converter Digital point -> Euclidean point
+    Embedder myEmbedder;
+
+    /// If the user uses init with masks. See init() for more information.
+    bool isInitFullMasks;
+
+    /// If the user uses init with masks and digital (full) kernel. See init() for more information.
+    bool isInitKernelAndMasks;
+
+    /// Copy of vector of iterators for kernel partial masks
+    std::vector< PairIterators > myMasks;
+
+    /// Two choice to iterate over the full kernel. See init() for more information.
+    DigitalKernel * myKernel;
+    PairIterators myKernelMask;
+
+
+    /// Copy of the origin cell of the kernel.
+    Spel myKernelSpelOrigin;
+
+    // ------------------------- Hidden services ------------------------------
+
+protected:
+    /**
        * Constructor.
        * Forbidden by default (protected to avoid g++ warnings).
        */
-  DigitalSurfaceConvolver ();
+    DigitalSurfaceConvolver ();
 
 private:
 
-  /**
+    /**
        * Copy constructor.
        * @param other the object to clone.
        * Forbidden by default.
        */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
+    DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
-  /**
+    /**
        * Assignment.
        * @param other the object to copy.
        * @return a reference on 'this'.
        * Forbidden by default.
        */
-  DigitalSurfaceConvolver & operator= ( const DigitalSurfaceConvolver & other );
+    DigitalSurfaceConvolver & operator= ( const DigitalSurfaceConvolver & other );
 
-  // ------------------------- Internals ------------------------------------
+    // ------------------------- Internals ------------------------------------
 
 private:
 
 }; // end of class DigitalSurfaceConvolver
 
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator >
-class DigitalSurfaceConvolver< TFunctor, TKernelFunctor, TKSpace, TKernelConstIterator, 3 >
+template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TDigitalKernel >
+class DigitalSurfaceConvolver< TFunctor, TKernelFunctor, TKSpace, TDigitalKernel, 3 >
 {
-  // ----------------------- Types ------------------------------------------
+    // ----------------------- Types ------------------------------------------
 
 public:
 
-  typedef TFunctor Functor;
-  typedef TKSpace KSpace;
-  typedef TKernelFunctor KernelFunctor;
+    typedef TFunctor Functor;
+    typedef TKSpace KSpace;
+    typedef TKernelFunctor KernelFunctor;
+    typedef TDigitalKernel DigitalKernel;
 
-  typedef double Quantity;
-  typedef PointVector< 3, Quantity > VectorQuantity;
-  typedef SimpleMatrix< Quantity, 3, 3 > MatrixQuantity;
-  typedef SimpleMatrix< double, 3, 3 > CovarianceMatrix;
+    typedef Z3i::Domain Domain;
 
-  typedef typename KSpace::SCell Cell;
-  typedef typename KSpace::Space::Point Point;
-  typedef TKernelConstIterator KernelConstIterator;
+    typedef double Quantity;
+    typedef PointVector< 3, Quantity > VectorQuantity;
+    typedef SimpleMatrix< Quantity, 3, 3 > MatrixQuantity;
+    typedef SimpleMatrix< double, 3, 3 > CovarianceMatrix;
 
-  typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef typename KSpace::SCell Spel;
+    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Space::RealPoint RealPoint;
+    typedef Z3i::DigitalSet::ConstIterator KernelConstIterator;
 
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
-//  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
-  // ----------------------- Standard services ------------------------------
+    typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+    typedef SCellToMidPoint< KSpace > Embedder;
+
+    //  BOOST_CONCEPT_ASSERT (( SpelFunctor< Functor > ));
+    //  BOOST_CONCEPT_ASSERT (( SpelFunctor< KernelFunctor > ));
+
+    // ----------------------- Standard services ------------------------------
 
 public:
 
-  /**
+    /**
        * Constructor.
        *
-       * @param f a functor f(x).
-       * @param g a functor g(x).
-       * @param space space in which the shape is defined.
+       * @param[in] f a functor f(x).
+       * @param[in] g a functor g(x).
+       * @param[in] space space in which the shape is defined.
        */
-  DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
+    DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
 
-  /**
+    /**
        * Destructor.
        */
-  ~DigitalSurfaceConvolver() {}
+    ~DigitalSurfaceConvolver() {}
 
-  // ----------------------- Interface --------------------------------------
+    // ----------------------- Interface --------------------------------------
 
 public:
 
-  /**
-       * Initialize the convolver.
+    /**
+       * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
        *
-       * @param itgbegin iterator of the first cell of the kernel support.
-       * @param itgend iterator of the last cell of the kernel support (excluded).
-       * @param kOrigin center of the kernel support.
-       */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
-
-  /**
-       * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+       * Choose this init if you don't have few memory. Need to store the full kernel explicitly.
        *
-       * @param itgbegin iterator of the first spel of the kernel support.
-       * @param itgend iterator of the last spel of the kernel support (excluded).
-       * @param kOrigin center of the kernel support.
-       * @param mask Vector of iterators. They must be ordered using a trit ({0,1,2}) encoded array.
+       * @param[in] pOrigin center (digital point) of the kernel support.
+       * @param[in] fullKernel pair of iterators of the full kernel. first is the first iterator (of spel) of the kernel support, second is the last iterator (of spel, excluded).
+       * @param[in] masks Vector of iterators (of spel) of the first and last spel of each masks. They must be ordered using a trit ({0,1,2}) encoded array.
        * trit 0 => shifting_coord = -1
        * trit 1 => shifting_coord = 0
        * trit 2 => shifting_coord = 1
@@ -517,117 +874,303 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
+    void init ( Point pOrigin, PairIterators fullKernel, std::vector< PairIterators > masks );
 
-  /**
+    /**
+       * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+       *
+       * Choose this init if you have few memory. It use implicitly the full kernel.
+       *
+       * @param[in] pOrigin center (digital point) of the kernel support.
+       * @param[in] fullKernel pointer of the digital (full) kernel.
+       * @param[in] masks Vector of iterators (of spel) of the first and last spel of each masks. They must be ordered using a trit ({0,1,2}) encoded array.
+       * trit 0 => shifting_coord = -1
+       * trit 1 => shifting_coord = 0
+       * trit 2 => shifting_coord = 1
+       * Example in 3D :      zyx                 x  y  z
+       * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
+       * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
+       */
+    void init ( Point pOrigin, DigitalKernel * fullKernel, std::vector< PairIterators > masks );
+
+    /**
        * Convolve the kernel at a given position.
        *
-       * @param it (iterator of a) spel on the surface of the shape where the convolution is computed.
+       * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape .
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
        *
        * @return the estimated quantity at *it : (f*g)(t)
        */
-  template< typename ConstIteratorOnCells >
-  Quantity eval ( const ConstIteratorOnCells & it );
+    template< typename SurfelIterator >
+    Quantity eval ( const SurfelIterator & it );
 
-  /**
-       * Iterate the convolver between [itbegin, itend[.
+
+    /**
+       * Convolve the kernel at a given position and work with the result.
        *
-       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
-       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
-       * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam EvalFunctor type of functor on Quantity.
+       *
+       * @return the return quantity of functor after giving in parameter the result of the convolution at *it
        */
-  template< typename ConstIteratorOnCells, typename OutputIterator >
-  void eval ( const ConstIteratorOnCells & itbegin,
-              const ConstIteratorOnCells & itend,
-              OutputIterator & result );
+    template< typename SurfelIterator, typename EvalFunctor >
+    typename EvalFunctor::Value eval ( const SurfelIterator & it,
+                                       EvalFunctor functor );
 
-  /**
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ with the convolver.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
+       * @param[out] result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       */
+    template< typename SurfelIterator, typename OutputIterator >
+    void eval ( const SurfelIterator & itbegin,
+                const SurfelIterator & itend,
+                OutputIterator & result );
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ and work with the result.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
+       * @param[out] result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       * @tparam EvalFunctor type of functor on Quantity.
+       */
+    template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
+    void eval ( const SurfelIterator & itbegin,
+                const SurfelIterator & itend,
+                OutputIterator & result,
+                EvalFunctor functor );
+
+
+
+    /**
        * Convolve the kernel at a given position and return a covariance matrix.
        *
-       * @param it (iterator of a) spel on the surface of the shape where the covariance matrix is computed.
+       * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
        *
        * @return the covariance matrix at *it
        */
-  template< typename ConstIteratorOnCells >
-  CovarianceMatrix evalCovarianceMatrix ( const ConstIteratorOnCells & it );
+    template< typename SurfelIterator >
+    CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
 
-  /**
-       * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
+    /**
+       * Convolve the kernel at a given position and return the result of the functor with the covariance matrix.
        *
-       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
-       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
-       * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
+       * @param[in] functor functor called with the result of the convolution.
        *
-       * @tparam ConstIteratorOnCells iterator of a spel of the shape
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam EvalFunctor type of functor on CovarianceMatrix.
+       *
+       * @return the result of the functor with the covariance matrix.
        */
-  template< typename ConstIteratorOnCells, typename OutputIterator >
-  void evalCovarianceMatrix ( const ConstIteratorOnCells & itbegin,
-                              const ConstIteratorOnCells & itend,
-                              OutputIterator & result );
+    template< typename SurfelIterator, typename EvalFunctor >
+    typename EvalFunctor::Value evalCovarianceMatrix ( const SurfelIterator & it,
+                                                                     EvalFunctor functor );
 
-  /**
+    /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
+       * @param[out] result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       */
+    template< typename SurfelIterator, typename OutputIterator >
+    void evalCovarianceMatrix ( const SurfelIterator & itbegin,
+                                const SurfelIterator & itend,
+                                OutputIterator & result );
+
+    /**
+       * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+       *
+       * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
+       * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
+       * @param[out] result iterator of an array where results of functor are set.
+       * @param[in] functor functor called with the result of the convolution.
+       *
+       * @tparam SurfelIterator type of iterator of a surfel on the shape.
+       * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+       * @tparam EvalFunctor type of functor on CovarianceMatrix.
+       */
+    template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
+    void evalCovarianceMatrix ( const SurfelIterator & itbegin,
+                                const SurfelIterator & itend,
+                                OutputIterator & result,
+                                EvalFunctor functor );
+
+    /**
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-  bool isValid() const;
-
-  // ------------------------- Private Datas --------------------------------
-
-private:
-
-  /// Const ref of the shape functor
-  const Functor & myFFunctor;
-
-  /// Const ref of the kernel functor
-  const KernelFunctor & myGFunctor;
-
-  /// Const ref of the shape Kspace
-  const KSpace & myKSpace;
-
-  /// Copy of vector of iterators for kernel partial masks
-  std::vector< PairIterators > myMask;
-
-  /// Copy of the first iterator of the kernel support (Used to iterate over it)
-  KernelConstIterator myItKernelBegin;
-  /// Copy  of the last iterator of the kernel support (Used to iterate over it)
-  KernelConstIterator myItKernelEnd;
-  /// Copy of the origin cell of the kernel.
-  Cell myKernelCellOrigin;
-
-  bool isInit;
-  bool isInitMask;
-
-  // ------------------------- Hidden services ------------------------------
+    bool isValid() const;
 
 protected:
-  /**
+
+    /**
+     * @brief computeCovarianceMatrix compute the covariance matrix from matrix of moments.
+     *
+     * @param[in] aMomentMatrix a matrix of digital moments
+     * [ sum(1)
+     *   sum(z) sum(y) sum (x)
+     *   sum(y*z) sum(x*z) sum(x*y)
+     *   sum(z*z) sum(y*y) sum(x*x)
+     * ]
+     * @param[out] aCovarianceMatrix the result covariance matrix
+     */
+    void computeCovarianceMatrix ( const Quantity * aMomentMatrix, CovarianceMatrix & aCovarianceMatrix );
+
+    /**
+     * @brief fillMoments fill the matrix of moments with a given spel.
+     *
+     * @param[out]aMomentMatrix a matrix of digital moments
+     * [ sum(1)
+     *   sum(z) sum(y) sum (x)
+     *   sum(y*z) sum(x*z) sum(x*y)
+     *   sum(z*z) sum(y*y) sum(x*x)
+     * ]
+     * @param[in] aSpel current spel
+     * @param[in] direction true if we add the current spel, false if we remove it.
+     */
+    void fillMoments ( Quantity * aMomentMatrix, const Spel & aSpel, double direction );
+
+    static const int nbMoments;
+    static Spel defaultInnerSpel;
+    static Spel defaultOuterSpel;
+    static Quantity defaultInnerMoments[ 10 ];
+    static Quantity defaultOuterMoments[ 10 ];
+    static Quantity defaultInnerSum;
+    static Quantity defaultOuterSum;
+
+    /**
+     * @brief core_eval method used ( in intern by eval() ) to compute the Quantity on a given surfel (*it)
+     *
+     * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+     * @param[out] innerSum the result Quantity when centering with the innerSpel.
+     * @param[out] outerSum the result Quantity when centering with the outerSpel.
+     * @param[in] useLastResults if we can use last results (optimisation with masks)
+     * @param[in,out] lastInnerSpel last inner spel. Override at end of function with current inner spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterSpel last outer spel. Override at end of function with current outer spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in] lastInnerSum last Quantity when centering with inner spel. Set empty if useLastResults is false.
+     * @param[in] lastOuterSum last Quantity when centering with outer spel. Set empty if useLastResults is false.
+     *
+     * @tparam SurfelIterator type of iterator on surfel
+     */
+    template< typename SurfelIterator >
+    bool core_eval ( const SurfelIterator & it,
+                     Quantity & innerSum,
+                     Quantity & outerSum,
+                     bool useLastResults = false,
+                     Spel & lastInnerSpel = defaultInnerSpel,
+                     Spel & lastOuterSpel = defaultOuterSpel,
+                     Quantity & lastInnerSum = defaultInnerSum,
+                     Quantity & lastOuterSum = defaultOuterSum );
+
+    /**
+     * @brief core_evalCovarianceMatrix method used ( in intern by evalCovarianceMatrix() ) to compute the covariance matrix on a given surfel (*it)
+     *
+     * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
+     * @param[out] innerMatrix the result covariance matrix when centering with the innerSpel.
+     * @param[out] outerMatrix the result covariance matrix when centering with the outerSpel.
+     * @param[in] useLastResults if we can use last results (optimisation with masks)
+     * @param[in,out] lastInnerSpel last inner spel. Override at end of function with current inner spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterSpel last outer spel. Override at end of function with current outer spel (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastInnerMoments last inner moments when centering with inner spel. Override at end of function with current inner moments (from surfel *it). Set empty if useLastResults is false.
+     * @param[in,out] lastOuterMoments last inner moments when centering with inner spel. Override at end of function with current outer moments (from surfel *it). Set empty if useLastResults is false.
+     *
+     * @tparam SurfelIterator type of iterator on surfel
+     */
+    template< typename SurfelIterator >
+    bool core_evalCovarianceMatrix ( const SurfelIterator & it,
+                                     CovarianceMatrix & innerMatrix,
+                                     CovarianceMatrix & outerMatrix,
+                                     bool useLastResults = false,
+                                     Spel & lastInnerSpel = defaultInnerSpel,
+                                     Spel & lastOuterSpel = defaultOuterSpel,
+                                     Quantity * lastInnerMoments = defaultInnerMoments,
+                                     Quantity * lastOuterMoments = defaultOuterMoments );
+
+
+    // ------------------------- Private Datas --------------------------------
+
+private:
+    /// Current dimension (= 3)
+    const Dimension dimension;
+
+    /// Const ref of the shape functor
+    const Functor & myFFunctor;
+
+    /// Const ref of the kernel functor
+    const KernelFunctor & myGFunctor;
+
+    /// Const ref of the shape Kspace
+    const KSpace & myKSpace;
+
+    /// Converter Digital point -> Euclidean point
+    Embedder myEmbedder;
+
+    /// If the user uses init with masks. See init() for more information.
+    bool isInitFullMasks;
+
+    /// If the user uses init with masks and digital (full) kernel. See init() for more information.
+    bool isInitKernelAndMasks;
+
+    /// Copy of vector of iterators for kernel partial masks
+    std::vector< PairIterators > myMasks;
+
+    /// Two choice to iterate over the full kernel. See init() for more information.
+    DigitalKernel * myKernel;
+    PairIterators myKernelMask;
+
+
+    /// Copy of the origin cell of the kernel.
+    Spel myKernelSpelOrigin;
+
+    // ------------------------- Hidden services ------------------------------
+
+protected:
+    /**
        * Constructor.
        * Forbidden by default (protected to avoid g++ warnings).
        */
-  DigitalSurfaceConvolver ();
+    DigitalSurfaceConvolver ();
 
 private:
 
-  /**
+    /**
        * Copy constructor.
        * @param other the object to clone.
        * Forbidden by default.
        */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
+    DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
-  /**
+    /**
        * Assignment.
        * @param other the object to copy.
        * @return a reference on 'this'.
        * Forbidden by default.
        */
-  DigitalSurfaceConvolver & operator= ( const DigitalSurfaceConvolver & other );
+    DigitalSurfaceConvolver & operator= ( const DigitalSurfaceConvolver & other );
 
-  // ------------------------- Internals ------------------------------------
+    // ------------------------- Internals ------------------------------------
 
 private:
 
@@ -641,17 +1184,17 @@ private:
    * @param object the object of class 'DigitalSurfaceConvolver' to write.
    * @return the output stream after the writing.
    */
-template< typename TF,  typename TKF, typename TKS, typename TKCI, Dimension dimension >
+template< typename TF,  typename TKF, typename TKS, typename TDK, Dimension dimension >
 std::ostream&
-operator<< ( std::ostream & out, const DGtal::DigitalSurfaceConvolver< TF, TKF, TKS, TKCI, dimension > & object );
+operator<< ( std::ostream & out, const DGtal::DigitalSurfaceConvolver< TF, TKF, TKS, TDK, dimension > & object );
 
-template< typename TF,  typename TKF, typename TKS, typename TKCI >
+template< typename TF,  typename TKF, typename TKS, typename TDK >
 std::ostream&
-operator<< ( std::ostream & out, const DGtal::DigitalSurfaceConvolver< TF, TKF, TKS, TKCI, 2 > & object );
+operator<< ( std::ostream & out, const DGtal::DigitalSurfaceConvolver< TF, TKF, TKS, TDK, 2 > & object );
 
-template< typename TF,  typename TKF, typename TKS, typename TKCI >
+template< typename TF,  typename TKF, typename TKS, typename TDK >
 std::ostream&
-operator<< ( std::ostream & out, const DGtal::DigitalSurfaceConvolver<TF, TKF, TKS, TKCI, 3 > & object );
+operator<< ( std::ostream & out, const DGtal::DigitalSurfaceConvolver<TF, TKF, TKS, TDK, 3 > & object );
 
 
 } // namespace DGtal

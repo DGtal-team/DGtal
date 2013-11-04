@@ -207,10 +207,12 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-      ASSERT( myK ); 
-      Output o( myK->sKCoords(s) );
-      o /= 2;
-      return o;
+        ASSERT( myK );
+        Output o( myK->sKCoords(s) );
+        o /= 2;
+        for( unsigned int i = 0; i < o.dimension; ++i )
+            o[i] -= 0.5;
+        return o;
     } 
       
   }; // end of class SCellToMidPoint

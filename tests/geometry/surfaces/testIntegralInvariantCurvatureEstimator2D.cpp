@@ -32,7 +32,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/shapes/parametric/AccFlower2D.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -41,8 +40,8 @@
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
-#include "DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/shapes/implicit/ImplicitBall.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -58,121 +57,110 @@ using namespace DGtal;
  */
 bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 {
-  typedef AccFlower2D< Z2i::Space > MyShape;
-  typedef Z2i::KSpace::Surfel Surfel;
-  typedef GaussDigitizer< Z2i::Space, MyShape > MyGaussDigitizer;
-  typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > MyLightImplicitDigitalSurface;
-  typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
-  typedef ImageSelector< Z2i::Domain, unsigned int >::Type Image;
-  typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
-  typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
-  typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-  typedef GraphVisitorRange< Visitor > VisitorRange;
-  typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MyIIMeanEstimator;
-  typedef VisitorRange::ConstIterator SurfelConstIterator;
-  typedef MyIIMeanEstimator::Quantity Quantity;
+    typedef Z2i::Space::RealPoint RealPoint;
+    typedef Z2i::Point Point;
+    typedef Z2i::KSpace::Surfel Surfel;
+    typedef ImplicitBall<Z2i::Space> ImplicitShape;
+    typedef GaussDigitizer<Z2i::Space, ImplicitShape> DigitalShape;
+    typedef LightImplicitDigitalSurface<Z2i::KSpace,DigitalShape> Boundary;
+    typedef DigitalSurface< Boundary > MyDigitalSurface;
+    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z2i::Domain, unsigned int > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MySpelFunctor;
+    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MySpelFunctor > MyIIMeanEstimator;
+    typedef MyIIMeanEstimator::Quantity Quantity;
 
-  double max_radius_shape = 20.00217;
-  double min_radius_shape = 5.00217;
-  double re_convolution_kernel = 1.842015749;
+    double re = 10;
+    double radius = 15;
+    double realValue = 1.0/radius;
 
-  trace.beginBlock ( "Testing initialization of integral invariant 2D curvature ..." );
+    trace.beginBlock ( "Initialisation of shape ..." );
 
-  MyShape shape( 0, 0, max_radius_shape, min_radius_shape, 3, 0.0 );
+    ImplicitShape* ishape = new ImplicitShape( RealPoint( 0, 0 ), radius );
+    DigitalShape* dshape = new DigitalShape();
+    dshape->attach( *ishape );
+    dshape->init( RealPoint( -20.0, -20.0 ), RealPoint( 20.0, 20.0 ), h );
 
-  MyGaussDigitizer gaussDigShape;
-  gaussDigShape.attach( shape );
-  gaussDigShape.init( shape.getLowerBound(), shape.getUpperBound(), h );
-  Z2i::Domain domainShape = gaussDigShape.getDomain();
-  Z2i::KSpace kSpace;
-  bool space_ok = kSpace.init( domainShape.lowerBound(), domainShape.upperBound(), true );
-  if ( !space_ok )
-  {
-    trace.error() << "Error in the Khalimsky space construction." << std::endl;
-    return 2;
-  }
+    Z2i::KSpace K;
+    if ( !K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
+    {
+        trace.error() << "Problem with Khalimsky space" << std::endl;
+        return false;
+    }
 
-  Image image( domainShape );
-  DGtal::imageFromRangeAndValue( domainShape.begin(), domainShape.end(), image );
+    Surfel bel = Surfaces<Z2i::KSpace>::findABel( K, *dshape, 10000 );
+    Boundary boundary( K, *dshape, SurfelAdjacency<Z2i::KSpace::dimension>( true ), bel );
+    MyDigitalSurface surf ( boundary );
 
-  SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
-  Surfel bel = Surfaces< Z2i::KSpace >::findABel( kSpace, gaussDigShape, 100000 );
-  MyLightImplicitDigitalSurface lightImplDigSurf( kSpace, gaussDigShape, SAdj, bel );
-  MyDigitalSurface digSurfShape( lightImplDigSurf );
-
-  MyPointFunctor pointFunctor( &image, &gaussDigShape, 1 );
-  MyCellFunctor functorShape( pointFunctor, kSpace );
-  MyIIMeanEstimator estimator( kSpace, functorShape );
-
-  try
-  {
-    estimator.init( h, re_convolution_kernel );
-  }
-  catch(...)
-  {
     trace.endBlock();
-    return false;
-  }
 
-  std::vector< Quantity > resultsIICurvature;
-  std::back_insert_iterator< std::vector< Quantity > > resultsIICurvatureIterator( resultsIICurvature );
+    trace.beginBlock( "Initialisation of estimator ..." );
 
-  VisitorRange range( new Visitor( digSurfShape, *digSurfShape.begin() ) );
-  SurfelConstIterator abegin = range.begin();
-  SurfelConstIterator aend = range.end();
+    MyPointFunctor * pointFunctor = new MyPointFunctor( dshape, dshape->getDomain(), 1, 0 );
+    MySpelFunctor * functor = new MySpelFunctor( *pointFunctor, K );
 
-  trace.endBlock();
-  trace.beginBlock ( "Testing integral invariant 2D curvature computation ..." );
+    MyIIMeanEstimator * estimator = new MyIIMeanEstimator( K, *functor );
+    estimator->init( h, re );
 
-  try
-  {
-    estimator.eval( abegin, aend, resultsIICurvatureIterator );
-  }
-  catch(...)
-  {
     trace.endBlock();
-    return false;
-  }
 
-  trace.endBlock();
+    trace.beginBlock( "Eval estimator" );
 
-  typedef ParametricShapeCurvatureFunctor< MyShape > CurvatureFunctor;
-  typedef GridCurve< Z2i::KSpace >::PointsRange PointsRange;
-  typedef PointsRange::ConstIterator ConstIteratorOnPoints;
-  typedef Z2i::Space::Point Point;
-  typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, MyShape, CurvatureFunctor > MyTrueLocalEstimator;
+    std::vector< Quantity > results;
+    std::back_insert_iterator< std::vector< Quantity > > resultsIt( results );
 
-  std::vector< Point > points;
-  Surfaces< Z2i::KSpace >::track2DBoundaryPoints( points, kSpace, SAdj, gaussDigShape, bel );
-  GridCurve< Z2i::KSpace > gridcurve;
-  gridcurve.initFromVector( points );
-  PointsRange r = gridcurve.getPointsRange();
-  MyTrueLocalEstimator trueCurvatureEstimator;
-  trueCurvatureEstimator.attach ( &shape );
-  trueCurvatureEstimator.init( h, r.begin(), r.end() );
-  std::vector< MyTrueLocalEstimator::Quantity > resultsTrueCurvature;
-  std::back_insert_iterator< std::vector< MyTrueLocalEstimator::Quantity > > resultsTrueCurvatureIterator( resultsTrueCurvature );
-  trueCurvatureEstimator.eval( r.begin(), r.end(), resultsTrueCurvatureIterator );
+    VisitorRange * range;
+    VisitorConstIterator ibegin;
+    VisitorConstIterator iend;
 
-  trace.beginBlock ( "Comparing results of integral invariant 2D curvature and true local 2D curvature ..." );
+    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
+    ibegin = range->begin();
+    iend = range->end();
 
-  unsigned int rsize = r.size() - 1;
-  double L2error = 0.0;
-  double diff = 0.0;
-  for ( unsigned int i = 0; i < rsize; ++i )
-  {
-    diff = std::abs ( resultsTrueCurvature[ i ] - resultsIICurvature[ rsize - i ] );
-    L2error += diff * diff;
-  }
+    estimator->eval( ibegin, iend, resultsIt );
 
-  if (( sqrt( L2error ) / rsize ) > delta )
-  {
     trace.endBlock();
-    return false;
-  }
 
-  trace.endBlock();
-  return true;
+    trace.beginBlock ( "Comparing results of integral invariant 2D curvature ..." );
+
+    double mean = 0.0;
+    unsigned int rsize = results.size();
+
+    if( rsize == 0 )
+    {
+        trace.error() << "ERROR: surface is empty" << std::endl;
+        trace.endBlock();
+        return false;
+    }
+
+    for ( unsigned int i = 0; i < rsize; ++i )
+    {
+        mean += results[ i ];
+    }
+    mean /= rsize;
+
+    if( mean != mean ) //NaN
+    {
+        trace.error() << "ERROR: result is NaN" << std::endl;
+        trace.endBlock();
+        return false;
+    }
+
+    double v = std::abs ( realValue - mean );
+
+    trace.warning() << "True value: " << realValue << std::endl;
+    trace.warning() << "Mean value: " << mean << std::endl;
+    trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
+
+    if( v > delta )
+    {
+        trace.endBlock();
+        return false;
+    }
+    trace.endBlock();
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -180,16 +168,16 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class IntegralInvariantCurvatureEstimator2D" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << std::endl;
+    trace.beginBlock ( "Testing class IntegralInvariantCurvatureEstimator2D" );
+    trace.info() << "Args:";
+    for ( int i = 0; i < argc; ++i )
+        trace.info() << " " << argv[ i ];
+    trace.info() << std::endl;
 
-  bool res = testIntegralInvariantCurvatureEstimator2D( 0.05, 0.00334 ); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
-  trace.endBlock();
-  return res ? 0 : 1;
+    bool res = testIntegralInvariantCurvatureEstimator2D( 0.05, 0.0008 ); // && ... other tests
+    trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
+    trace.endBlock();
+    return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
