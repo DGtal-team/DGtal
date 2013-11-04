@@ -45,6 +45,30 @@ using namespace std;
 
 // New clone.
 namespace DGtal {
+  /**
+     Performs without unnecessary duplicates "parameter -> member data"
+     - A & -> A &                 // no duplication
+     - A & -> A*                  // no duplication
+     - CountedPtr<A> -> CountedPtr<A> // shared
+     - A* -> A*                   // no duplication
+     - A* -> A&                   // no duplication, exception if null
+  */
+  template <typename T>
+  struct PAlias {
+  };
+
+  /**
+     Performs without unnecessary duplicates "parameter -> member data"
+     - const A & -> const A &     // no duplication
+     - const A & -> const A*      // no duplication
+     - const A* -> const A &      // no duplication, exception if null
+     - const A* -> const A*       // no duplication
+     - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
+     - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
+  */
+  template <typename T>
+  struct PConstAlias {
+  };
 
   /**
      Performs without unnecessary duplicates "parameter -> member data"
@@ -54,17 +78,33 @@ namespace DGtal {
      - CowPtr<A> -> CowPtr<A>     // lazy duplication
      - CountedPtr<A> -> A         // immediate duplication
      - CountedPtr<A> -> CowPtr<A> // lazy duplication
+     - const A & -> A*            // immediate duplication, should be deleted at the end.            
+     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end.            
+     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end.          
+     - A* -> A*                   // acquired, should be deleted at the end.
+     - A* -> A                    // immediate duplication, acquired and deleted.
+     - A* -> CowPtr<A>            // acquired
 
      It uses a pair (const void*,enum), which does not use dynamic
      allocation. 
 
      @note (Speed) Even on a small type (here a pair<int,int>), it is
      much faster than NClone and has the advantage (wrt Clone<T>) to
-     handle nicely both const T& and CowPtr<T> as input. For
-     pair<int,int>, it is slightly faster than Clone on my laptop
-     (-3%). For a A data member, it is slower by 7% wrt direct
-     by-value passing and 20% wrt direct const reference passing.  
-     
+     handle nicely both const T& and CowPtr<T> as input. It may be
+     slightly slower than Clone (and by value or by const ref
+     parameter passing) for small objects like a pair<int,int>. This
+     is certainly due to the fact that it uses one more integer
+     register for \a myParam data member.
+
+     +--------+----------+----------+-----------+--------+--------+
+     | Type   | Context  | value    | const ref | Clone  | PClone |
+     +--------+----------+----------+-----------+--------+--------+
+     | 2xint  |i7 2.4GHz |    48ms |     48ms  |   48ms |   59ms |
+     |2xdouble|i7 2.4GHz |    48ms |     48ms  |   48ms |   49ms |
+     | 2xint  |Xeon 2.67GHz|    54ms |     54ms  |   54ms |   54ms |
+     |2xdouble|Xeon 2.67GHz|    54ms |     54ms  |   54ms | 53.5ms |
+     +--------+----------+----------+-----------+--------+--------+
+
 
      @note It prevents direct assignment to CountedPtr<T> since their
      meaning is "shared_ptr". A discussion is possible for input pointer: is
@@ -73,7 +113,7 @@ namespace DGtal {
   template <typename T> 
   class PClone
   {
-    enum Parameter { CONST_LEFT_VALUE_REF, COW_PTR, COUNTED_PTR, CLONE_IS_ERROR }; // ACQ, RREF
+    enum Parameter { CONST_LEFT_VALUE_REF, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; // ACQ
   public:
     inline ~PClone() {}
     inline PClone( const PClone & ) : myParam( CLONE_IS_ERROR ), myPtr( 0 ) { ASSERT( false ); }
@@ -83,12 +123,19 @@ namespace DGtal {
       : myParam( COW_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
     inline PClone( const CountedPtr<T> & t ) 
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+#ifdef CPP11_AUTO
+    inline PClone( T && t ) : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+#endif
+
     inline operator T() const 
     {
       switch( myParam ) {
       case CONST_LEFT_VALUE_REF: return T( * static_cast< const T* >( myPtr ) );
       case COW_PTR:   return T( * static_cast< const CowPtr<T>* >( myPtr )->get() );
       case COUNTED_PTR:   return T( * static_cast< const CountedPtr<T>* >( myPtr )->get() );
+#ifdef CPP11_AUTO
+      case RIGHT_VALUE_REF:   return T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
+#endif
       default: ASSERT( false );
         return T( * static_cast< const T* >( myPtr ) );
       }
@@ -99,6 +146,9 @@ namespace DGtal {
       case CONST_LEFT_VALUE_REF: return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
       case COW_PTR:   return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
       case COUNTED_PTR:   return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
+#ifdef CPP11_AUTO
+      case RIGHT_VALUE_REF: return CowPtr<T>( new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) ) );
+#endif
       default: ASSERT( false );
         return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
       }
@@ -236,6 +286,14 @@ public:
     std::cout << "  A1( const A1 & a ) " << std::endl;
     ++nbCreated;
   }
+#ifdef CPP11_AUTO
+  A1( A1 && a ) noexcept : data( std::move( a.data ) ) 
+  {
+    std::cout << "  A1( A1 && a ) " << std::endl;
+    ++nbCreated;
+  }
+#endif
+
   A1& operator=( const A1 & a ) 
   {
     data = a.data;
@@ -348,7 +406,7 @@ int MyPointD::nbCreated = 0;
 int MyPointD::nbDeleted = 0;
 
 //typedef Z2i::Point Point;
-typedef MyPoint Point;
+typedef MyPointD Point;
 
 
 struct TriangleByConstReference {
@@ -529,6 +587,17 @@ int main()
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
 
+#ifdef CPP11_AUTO
+  trace.beginBlock ( "PClone: #A1 with (A1 &&) to A1 member. Duplication (+1/0)" );
+  ToValueMember c40( A1( -4 ) ); // +1/0
+  trace.info() << "D: d1.value() = " << c40.value() << std::endl;
+  ++nb, nbok += A1::nbCreated==7 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+#endif
 
   int size = 40;
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
