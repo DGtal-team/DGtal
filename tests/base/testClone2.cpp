@@ -72,18 +72,18 @@ namespace DGtal {
 
   /**
      Performs without unnecessary duplicates "parameter -> member data"
-     - const A & -> A             // immediate duplication 
-     - const A & -> CowPtr<A>     // immediate duplication
-     - CowPtr<A> -> A             // immediate duplication
-     - CowPtr<A> -> CowPtr<A>     // lazy duplication
-     - CountedPtr<A> -> A         // immediate duplication
-     - CountedPtr<A> -> CowPtr<A> // lazy duplication
+     - const A & -> A             // immediate duplication (checked)
+     - A* -> A                    // immediate duplication, acquired and deleted. (checked)
+     - CountedPtr<A> -> A         // immediate duplication (checked)
+     - CowPtr<A> -> A             // immediate duplication (checked)
+     - const A & -> CowPtr<A>     // immediate duplication (checked)
+     - A* -> CowPtr<A>            // acquired (checked)
+     - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
+     - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
      - const A & -> A*            // immediate duplication, should be deleted at the end.            
      - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end.            
      - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end.          
      - A* -> A*                   // acquired, should be deleted at the end.
-     - A* -> A                    // immediate duplication, acquired and deleted.
-     - A* -> CowPtr<A>            // acquired
 
      It uses a pair (const void*,enum), which does not use dynamic
      allocation. 
@@ -113,12 +113,21 @@ namespace DGtal {
   template <typename T> 
   class PClone
   {
-    enum Parameter { CONST_LEFT_VALUE_REF, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; // ACQ
+    enum Parameter { CONST_LEFT_VALUE_REF, PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; // ACQ
+
+    struct TempPtr {
+      inline TempPtr( T* ptr ) : _ptr( ptr ) {}
+      inline ~TempPtr() { ASSERT( _ptr != 0 ); delete _ptr; }
+      T* _ptr;
+    };
+
   public:
     inline ~PClone() {}
     inline PClone( const PClone & ) : myParam( CLONE_IS_ERROR ), myPtr( 0 ) { ASSERT( false ); }
     inline PClone( const T & t ) 
       : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline PClone( T* t ) 
+      : myParam( PTR ), myPtr( static_cast<const void*>( t ) ) {} 
     inline PClone( const CowPtr<T> & t ) 
       : myParam( COW_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
     inline PClone( const CountedPtr<T> & t ) 
@@ -126,11 +135,21 @@ namespace DGtal {
 #ifdef CPP11_AUTO
     inline PClone( T && t ) : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
 #endif
-
+    
+    /**
+      - const A & -> A             // immediate duplication (checked)
+      - A* -> A                    // immediate duplication, acquired and deleted. (checked)
+      - CountedPtr<A> -> A         // immediate duplication (checked)
+      - CowPtr<A> -> A             // immediate duplication (checked)
+    */
     inline operator T() const 
     {
       switch( myParam ) {
       case CONST_LEFT_VALUE_REF: return T( * static_cast< const T* >( myPtr ) );
+      case PTR: {
+        TempPtr tmp( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
+        return T( * static_cast< const T* >( myPtr ) );
+      } // destroy acquired pointer.
       case COW_PTR:   return T( * static_cast< const CowPtr<T>* >( myPtr )->get() );
       case COUNTED_PTR:   return T( * static_cast< const CountedPtr<T>* >( myPtr )->get() );
 #ifdef CPP11_AUTO
@@ -140,10 +159,18 @@ namespace DGtal {
         return T( * static_cast< const T* >( myPtr ) );
       }
     }
+
+    /**
+      - const A & -> CowPtr<A>     // immediate duplication (checked)
+      - A* -> CowPtr<A>            // acquired (checked)
+      - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
+      - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
+    */
     inline operator CowPtr<T>() const 
     {
       switch( myParam ) {
       case CONST_LEFT_VALUE_REF: return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
+      case PTR: return CowPtr<T>( const_cast<T*>( static_cast< const T* >( myPtr ) ) );
       case COW_PTR:   return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
       case COUNTED_PTR:   return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
 #ifdef CPP11_AUTO
@@ -151,6 +178,27 @@ namespace DGtal {
 #endif
       default: ASSERT( false );
         return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
+      }
+    }
+
+    /**
+     - const A & -> A*            // immediate duplication, should be deleted at the end.            
+     - A* -> A*                   // acquired, should be deleted at the end.
+     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end.            
+     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end.          
+    */
+    inline operator T*() const
+    {
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF: return new T( * static_cast< const T* >( myPtr ) );
+      case PTR: return const_cast<T*>( static_cast< const T* >( myPtr ) );
+      case COW_PTR:   return new T( *( static_cast< const CowPtr<T>* >( myPtr )->get() ) );
+      case COUNTED_PTR:  return new T( *( static_cast< const CountedPtr<T>* >( myPtr )->get() ) );
+#ifdef CPP11_AUTO
+      case RIGHT_VALUE_REF: return new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
+#endif
+      default: ASSERT( false );
+        return new T( * static_cast< const T* >( myPtr ) );
       }
     }
 
@@ -314,14 +362,12 @@ public:
 int A1::nbCreated = 0;
 int A1::nbDeleted = 0;
 
-// Immediate duplication.
 struct ToValueMember {
   inline ToValueMember( PClone<A1> a1 ) : myA1( a1 ) {}
   inline int value() const { return myA1.data; }
   A1 myA1;
 };
 
-// Immediate duplication.
 struct ToCountedMember { // requires explicit duplication
   inline ToCountedMember( PClone<A1> a1 ) // : myA1( a1 ) {} does not compile
     : myA1( new A1( a1 ) ) {}
@@ -329,12 +375,19 @@ struct ToCountedMember { // requires explicit duplication
   CountedPtr<A1> myA1;
 };
 
-// Immediate or lazy duplication.
 struct ToCowMember {
   inline ToCowMember( PClone<A1> a1 ) : myA1( a1 ) {}
   inline int value() const { return myA1->data; }
   inline void setValue( int v ) { myA1->data = v; }
   CowPtr<A1> myA1;
+};
+
+struct ToPtrMember {
+  inline ToPtrMember( PClone<A1> a1 ) : myA1( a1 ) {}
+  inline ~ToPtrMember() { if ( myA1 != 0 ) delete myA1; }
+  inline int value() const { return myA1->data; }
+  inline void setValue( int v ) { myA1->data = v; }
+  A1* myA1;
 };
 
 
@@ -532,8 +585,8 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #A1 with (const A1 &) to CountedPtr<A1> member. Duplication (+1/0)" );
-  ToCountedMember c01( a1 ); // +1/0
-  trace.info() << "D: d1.value() = " << c01.value() << std::endl;
+  ToCountedMember c03( a1 ); // +1/0
+  trace.info() << "D: d1.value() = " << c03.value() << std::endl;
   ++nb, nbok += A1::nbCreated==3 ? 1 : 0;
   ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
@@ -587,6 +640,46 @@ int main()
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
 
+  trace.beginBlock ( "PClone: #A1 with (A1*) to A1 member. Acquisition, duplication, delete (+2/+1)" );
+  ToValueMember c10( new A1( 2 ) ); // +2/+1
+  trace.info() << "D: d1.value() = " << c10.value() << std::endl;
+  ++nb, nbok += A1::nbCreated==8 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PClone: #A1 with (A1*) to CowPtr<A1> member. Acquisition, no duplication (+1/0)" );
+  ToCowMember c12( new A1( 15 ) ); // +1/0
+  trace.info() << "D: d1.value() = " << c12.value() << std::endl;
+  ++nb, nbok += A1::nbCreated==9 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PClone: #A1 with (const A1&) to A1* member. Duplication (+1/0)" );
+  ToPtrMember c01( a1 ); // +1/0
+  trace.info() << "D: d1.value() = " << c01.value() << std::endl;
+  ++nb, nbok += A1::nbCreated==10 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PClone: #A1 with (A1*) to A1* member. Acquisition (+1/0)" );
+  ToPtrMember c11( new A1( 42 ) ); // +1/0
+  trace.info() << "D: d1.value() = " << c11.value() << std::endl;
+  ++nb, nbok += A1::nbCreated==11 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+
 #ifdef CPP11_AUTO
   trace.beginBlock ( "PClone: #A1 with (A1 &&) to A1 member. Duplication (+1/0)" );
   ToValueMember c40( A1( -4 ) ); // +1/0
@@ -598,6 +691,7 @@ int main()
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
 #endif
+
 
   int size = 40;
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
