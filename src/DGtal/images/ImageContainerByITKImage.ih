@@ -55,14 +55,14 @@ namespace DGtal
     }
 
     template <typename TDomain, typename TValue>
-    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const TDomain& domain)
-        : myITKImagePointer(ITKImage::New()), myDomain(domain)
+    ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const TDomain& aDomain)
+        : myITKImagePointer(ITKImage::New()), myDomain(aDomain)
     {
       typename ITKImage::IndexType start;
       typename ITKImage::SizeType size;
 
-      const Point lowerBound = domain.lowerBound();
-      const Point upperBound = domain.upperBound();
+      const Point lowerBound = aDomain.lowerBound();
+      const Point upperBound = aDomain.upperBound();
       const Point dec = upperBound-lowerBound;
 
       for (Dimension k = 0; k < dimension; k++)
@@ -81,6 +81,7 @@ namespace DGtal
     ImageContainerByITKImage<TDomain, TValue>::ImageContainerByITKImage(const ITKImagePointer &aRef)
         :  myITKImagePointer(aRef)
     {
+        updateDomain();
     }
 
     ///////////////////////////////////////////////////////////////////////////////

@@ -60,7 +60,6 @@ bool testProjection()
   typedef PointVector<3,int> Point3;
   typedef PointVector<2,int> Point2;
   typedef std::vector<Point3>::iterator Iterator3;
-  typedef std::vector<Point2>::iterator Iterator2;
 
   //projector
   typedef Projector<SpaceND<2,int> > Projector2; 

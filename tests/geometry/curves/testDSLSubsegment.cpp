@@ -41,7 +41,7 @@
 #include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/geometry/curves/ArithDSSIterator.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/base/Clock.h"
 
 using namespace std;
@@ -63,7 +63,7 @@ bool testDSLSubsegment(Integer modb)
 
 
   typedef ArithDSSIterator<Integer,8> DSSIterator;
-  typedef ArithmeticalDSS<DSSIterator,Integer,8> ArithDSS;
+  typedef ArithmeticalDSSComputer<DSSIterator,Integer,8> ArithDSS;
 
   typedef typename DSLSubseg::Point Point;
 
@@ -182,8 +182,6 @@ bool testDSLSubsegment(Integer modb)
 	A2[0] += A2[1];
 	Point B2 = BB;
 	B2[0] += B2[1];
-	
-	bool aBool;
 	
 	 // DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
 	 // b whereas reversedSmartDSS uses  mu <= ab-by < mu + b => -mu

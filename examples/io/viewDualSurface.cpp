@@ -75,7 +75,6 @@ void naiveConvexHull
 {
   typedef typename Vector::Component Scalar;
   // Checks all triplets of points.
-  unsigned int faces = 0;
   std::vector< unsigned int > aFace;
   for ( unsigned int i1 = 0; i1 < points.size(); ++i1 )
     for ( unsigned int i2 = 0; i2 < points.size(); ++i2 )

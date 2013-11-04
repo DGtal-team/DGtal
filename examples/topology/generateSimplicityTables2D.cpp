@@ -66,7 +66,6 @@ void
 generateSimplicityTable( const typename Object::DigitalTopology & dt,
 			 Map & map )
 {
-  typedef typename Object::DigitalTopology DigitalTopology;
   typedef typename Object::DigitalSet DigitalSet;
   typedef typename Object::Point Point;
   typedef typename DigitalSet::Domain Domain;
@@ -118,10 +117,9 @@ generateSimplicityTable( const typename Object::DigitalTopology & dt,
 template <typename Object, typename Map>
 void 
 displaySimplicityTable( Board2D & board, 
-			const typename Object::DigitalTopology & dt,
+			const typename Object::DigitalTopology & /*dt*/,
 			const Map & map )
 {
-  typedef typename Object::DigitalTopology DigitalTopology;
   typedef typename Object::DigitalSet DigitalSet;
   typedef typename Object::Point Point;
   typedef typename DigitalSet::Domain Domain;
@@ -198,7 +196,7 @@ outputTableAsArray( ostream & out,
 }
 
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   typedef std::vector<bool> ConfigMap;
 

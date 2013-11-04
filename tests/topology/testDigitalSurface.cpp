@@ -275,7 +275,6 @@ bool testExplicitDigitalSurface()
   typedef FrontierPredicate<KSpace, Image> SurfelPredicate;
   typedef ExplicitDigitalSurface<KSpace,SurfelPredicate> Frontier;
   typedef Frontier::SurfelConstIterator ConstIterator;
-  typedef Frontier::Tracker Tracker;
   typedef Frontier::SCell SCell;
   typedef Frontier::Surfel Surfel;
 
@@ -386,9 +385,7 @@ bool testLightExplicitDigitalSurface()
   typedef FrontierPredicate<KSpace, Image> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace,SurfelPredicate> Frontier;
   typedef Frontier::SurfelConstIterator ConstIterator;
-  typedef Frontier::Tracker Tracker;
   typedef Frontier::SCell SCell;
-  typedef Frontier::Surfel Surfel;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;

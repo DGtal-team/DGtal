@@ -93,7 +93,8 @@ namespace DGtal
      * @param h gridstep
      * @param d degree of the polynomial surface to fit.
      */
-    MongeJetFittingGaussianCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
+    MongeJetFittingGaussianCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, 
+					      const double h, unsigned int d = 4):
       myEmbedder(anEmbedder), myH(h), myD(d)
     {
       FATAL_ERROR_MSG(d>=2,"Polynomial surface degree must be greater than 2");
@@ -146,12 +147,11 @@ namespace DGtal
     ///Array of CGAL points
     std::vector<CGALPoint> myPoints;
 
-    ///Degree of the polynomial surface to fit
-    unsigned int myD;
-
     ///Grid Step
     double myH;
 
+    ///Degree of the polynomial surface to fit
+    unsigned int myD;
 
   }; // end of class MongeJetFittingGaussianCurvatureEstimator
 

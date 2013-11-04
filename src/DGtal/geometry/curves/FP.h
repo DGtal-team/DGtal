@@ -44,7 +44,7 @@
 #include <list>
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
@@ -58,7 +58,7 @@ namespace DGtal
   {
     /////////////////////////////////////////////////////////////////////////////
     /**
-     * \brief Aim: Abstract DSSDecorator for ArithmeticalDSS.
+     * \brief Aim: Abstract DSSDecorator for ArithmeticalDSSComputer.
      * Has 2 virtual methods returning the first and last leaning point: 
      * - firstLeaningPoint()
      * - lastLeaningPoint()
@@ -265,7 +265,7 @@ namespace DGtal
    * leaning points of segments that are maximal at the front or at the back are also
    * vertices of the FP.
    * 
-   * @see ArithmeticalDSS DSSDecorator DSSDecorator4ConvexPart DSSDecorator4ConcavePart
+   * @see ArithmeticalDSSComputer DSSDecorator DSSDecorator4ConvexPart DSSDecorator4ConcavePart
    *
    * @note T. ROUSSILLON and I. SIVIGNON, 
    * Faithful polygonal representation of the convex and concave parts of a digital curve, 
@@ -304,7 +304,7 @@ namespace DGtal
     typedef DGtal::PointVector<2, double> RealPoint;
     typedef DGtal::PointVector<2, double> RealVector;
     
-    typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSSComputer;
+    typedef DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> DSSComputer;
     
     typedef std::list<Point> Polygon;
     

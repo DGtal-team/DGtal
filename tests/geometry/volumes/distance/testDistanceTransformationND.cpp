@@ -62,8 +62,6 @@ bool testDistanceTransformND()
   typedef SpaceND<5> TSpace;
   typedef TSpace::Point Point;
   typedef HyperRectDomain<TSpace> Domain;
-  typedef HueShadeColorMap<unsigned char, 2> HueTwice;
-  typedef GrayscaleColorMap<unsigned char> Gray;
   int t[5] = {0,0,0,0,0};
   Point a ( t );
   int t2[5] = {15,15,15,15,15};

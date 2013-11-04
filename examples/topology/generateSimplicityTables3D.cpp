@@ -63,7 +63,6 @@ void
 generateSimplicityTable( const typename Object::DigitalTopology & dt,
 			 Map & map )
 {
-  typedef typename Object::DigitalTopology DigitalTopology;
   typedef typename Object::DigitalSet DigitalSet;
   typedef typename Object::Point Point;
   typedef typename DigitalSet::Domain Domain;
@@ -105,7 +104,7 @@ generateSimplicityTable( const typename Object::DigitalTopology & dt,
 
 
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   typedef std::bitset<67108864> ConfigMap; // 2^26
 

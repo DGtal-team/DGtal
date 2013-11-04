@@ -302,9 +302,9 @@ namespace DGtal
     // the index of the slice associated to the new domain.
     Integer mySliceIndex;
     TDomain3D myDomain;
-    PointVector<3, double> myCenter;
-    double myRotationAngle;
     Dimension myDimRotated;
+    double myRotationAngle;
+    PointVector<3, double> myCenter;
     Point myDefaultPoint;
   };
 
