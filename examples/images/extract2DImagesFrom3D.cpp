@@ -58,6 +58,7 @@ int main( int argc, char** argv )
    DGtal::Z3i::Point origin(150, 150, 10);
    DGtal::Z3i::Point ptUpper1(220, 220, 10);
    DGtal::Z3i::Point ptUpper2(150, 150, 50);
+   DGtal::Z3i::Point ptCenter(175, 175, 20);
    DGtal::Z2i::Domain domainImage2D (DGtal::Z2i::Point(0,0), 
 				     DGtal::Z2i::Point((ptUpper1-origin).norm(), 
 						       (ptUpper2-origin).norm())); 
@@ -76,6 +77,9 @@ int main( int argc, char** argv )
    for (unsigned int i=0; i<30; i+=10){
      std::stringstream name;
      name << "lobsterExtracted_"  << i << ".pgm";
+     std::stringstream name2;
+     name2 << "lobsterExtracted_"  << i << "V2.pgm";
+
      //! [extract2DImagesFrom3DOExtract]   
      DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(domainImage3D, origin+DGtal::Z3i::Point(i,i,0), 
 							       ptUpper1+DGtal::Z3i::Point(i,i,0), 
@@ -83,7 +87,16 @@ int main( int argc, char** argv )
      
      ImageAdapterExtractor extractedImage(image, domainImage2D, embedder, idV);
      //! [extract2DImagesFrom3DOExtract]   
+
+     //! [extract2DImagesFrom3DOExtract2]   
+     DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder2(domainImage3D, ptCenter+DGtal::Z3i::Point(i,i,0), 
+								DGtal::Z3i::RealPoint(1,-1,0), 
+								35);
+     ImageAdapterExtractor extractedImage2(image, domainImage2D, embedder2, idV);
+     //! [extract2DImagesFrom3DOExtract2]   
+
      PGMWriter< ImageAdapterExtractor>::exportPGM(name.str(), extractedImage);
+     PGMWriter< ImageAdapterExtractor>::exportPGM(name2.str(), extractedImage2);
    }
    
    // trace.endBlock();
