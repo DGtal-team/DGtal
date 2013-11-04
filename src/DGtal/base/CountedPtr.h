@@ -90,6 +90,15 @@ namespace DGtal
      * For debug.
      */
     unsigned int count() const      {return myCounter->count;}
+
+    inline T* drop() 
+    { // Gives back the pointer without deleting him. Delete only the counter.
+      T* tmp = myCounter->ptr;
+      ASSERT( myCounter->count == 1 );
+      delete myCounter;
+      myCounter = 0; 
+      return tmp;
+    }
 private:
 
     struct counter {
