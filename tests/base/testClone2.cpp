@@ -133,6 +133,7 @@ namespace DGtal {
     inline PClone( const CountedPtr<T> & t ) 
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
 #ifdef CPP11_AUTO
+    // not satisfying: create an instance.
     inline PClone( T && t ) : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
 #endif
     
@@ -183,11 +184,11 @@ namespace DGtal {
 
     /**
      - const A & -> A*            // immediate duplication, should be deleted at the end.            
-     - A* -> A*                   // acquired, should be deleted at the end.
+     - A* -> A*                   // acquired, should be deleted at the end.              (checked)
      - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end.            
      - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end.          
     */
-    inline operator T*() const
+    inline T* operator&() const
     {
       switch( myParam ) {
       case CONST_LEFT_VALUE_REF: return new T( * static_cast< const T* >( myPtr ) );
@@ -383,7 +384,7 @@ struct ToCowMember {
 };
 
 struct ToPtrMember {
-  inline ToPtrMember( PClone<A1> a1 ) : myA1( a1 ) {}
+  inline ToPtrMember( PClone<A1> a1 ) : myA1( &a1 ) {}
   inline ~ToPtrMember() { if ( myA1 != 0 ) delete myA1; }
   inline int value() const { return myA1->data; }
   inline void setValue( int v ) { myA1->data = v; }
