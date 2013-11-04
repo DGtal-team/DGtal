@@ -412,12 +412,12 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 }
 // Mesh
 
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithViewer3D *
-DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, arithm);
 }
@@ -426,7 +426,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::drawAsBalls( Viewer3D<Space, KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsBalls( Viewer3D<Space, KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsBalls(viewer, arithm);
 }
@@ -435,7 +435,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::drawAsBoundingBox( Viewer3D<Space, KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsBoundingBox( Viewer3D<Space, KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox(viewer, arithm);
 }
@@ -444,11 +444,11 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw(viewer , arithm);
 }
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 
 
 // DigitalSetBySTLSet
@@ -506,7 +506,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLVector<Domain> & aSet )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
 }
 
 template <typename Space, typename KSpace>
@@ -554,7 +554,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::HyperRectDomain<SpaceDom> & aDomain )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aDomain);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aDomain);
 }
 
 template <typename Space, typename KSpace>
@@ -603,7 +603,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const typename KSpace::Cell & aCell )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aCell);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aCell);
 }
 
 template <typename Space, typename KSpace>
@@ -623,7 +623,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, anObject);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, anObject);
 }
 
 template <typename Space, typename KSpace>
@@ -653,7 +653,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::PointVector<dim,TComponent> & aPoint )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aPoint);
+  return DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aPoint);
 }
 
 template <typename Space, typename KSpace>
@@ -709,7 +709,7 @@ inline
 DGtal::DrawableWithViewer3D *
 DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const typename KSpace::SCell & aSCell )
 {
-  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aSCell);
+  return  DGtal::Display3DFactory<Space,KSpace>::defaultStyle( str, aSCell);
 }
 
 template <typename Space, typename KSpace>

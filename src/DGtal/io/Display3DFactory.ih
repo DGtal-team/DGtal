@@ -159,12 +159,12 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display3D<Space, KSpace
 // Mesh
 
 
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsBalls( Display3D<Space, KSpace> & display,
-							 const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+							 const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
@@ -198,7 +198,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, KSpace> & display,
-							  const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+							  const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
 
   typedef TIterator ConstIterator;
@@ -316,7 +316,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
-						  const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+						  const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
   std::string mode = display.getMode( a.className() );
   if ( mode == "BoundingBox" )
@@ -328,7 +328,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       drawAsBalls( display, a );
     }
 }
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 
 
 // DigitalSetBySTLSet
@@ -339,7 +339,6 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display3D<S
 								     const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
-  typedef typename Domain::Point::Component Component;
   typedef typename std::set<Point>::const_iterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -361,7 +360,6 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpac
 							  const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
-  typedef typename Domain::Point::Component Component;
   typedef typename std::set<Point>::const_iterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -383,7 +381,6 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace>
 							const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
-  typedef typename Domain::Point::Component Component;
   typedef typename std::set<Point>::const_iterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -431,7 +428,6 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display3D<S
 								     const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
-  typedef typename Domain::Point::Component Component;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
 
   ASSERT(Domain::Space::dimension == 3);
@@ -453,9 +449,8 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpac
 							  const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
-  typedef typename Domain::Point::Component Component;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
-
+ 
   ASSERT(Domain::Space::dimension == 3);
 
   display.createNewCubeList( v.className());
@@ -476,7 +471,6 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace>
 {
   typedef typename Domain::Point Point;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
-  typedef typename Domain::Point::Component Component;
 
   ASSERT(Domain::Space::dimension == 3);
 
@@ -810,36 +804,35 @@ DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
 				   mode=="BoundingBox")||
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
   ASSERT((Space::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="Grid") ||
-         ("DGtal::Display3DFactory::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<TSpace> & aDomain ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::HyperRectDomain<Space> & aDomain ): Unknown mode "+mode)=="");
 
   if(Space::dimension == 2)
-  {
-    if (mode=="")
-      mode="BoundingBox";
-
-  }else if ( mode == "BoundingBox" )
-  {
-    display.createNewLineList(aDomain.className());
-    drawAsBoundingBox( display, aDomain );
-  }else if(( mode == "" ) || (mode == "Grid"))
-  {
-    display.createNewLineList(aDomain.className());
-    drawAsGrid( display, aDomain );
-  } else if ( mode == "Paving" )
-  {
-    display.createNewCubeList(aDomain.className());
-    drawAsPaving( display, aDomain );
-  } else if ( mode == "PavingPoints" )
-  {
-    display.createNewBallList(aDomain.className());
-    drawAsPavingBalls( display, aDomain );
-  }else if ( mode == "PavingGrids" )
-  {
-    display.createNewLineList(aDomain.className());
-    display.createNewCubeList( aDomain.className());
-    drawAsGrid( display, aDomain );
-    drawAsPaving( display, aDomain );
-  }
+    {
+      if (mode=="")
+        mode="BoundingBox";
+    }else if ( mode == "BoundingBox" )
+    {
+      display.createNewLineList(aDomain.className());
+      drawAsBoundingBox( display, aDomain );
+    }else if(( mode == "" ) || (mode == "Grid"))
+    {
+      display.createNewLineList(aDomain.className());
+      drawAsGrid( display, aDomain );
+    } else if ( mode == "Paving" )
+    {
+      display.createNewCubeList(aDomain.className());
+      drawAsPaving( display, aDomain );
+    } else if ( mode == "PavingPoints" )
+    {
+      display.createNewBallList(aDomain.className());
+      drawAsPavingBalls( display, aDomain );
+    }else if ( mode == "PavingGrids" )
+    {
+      display.createNewLineList(aDomain.className());
+      display.createNewCubeList( aDomain.className());
+      drawAsGrid( display, aDomain );
+      drawAsPaving( display, aDomain );
+    }
 }
 // HyperRectDomain
 
@@ -857,7 +850,6 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
-  bool basicMode=false;
   if(mode=="Highlighted")
     {
       factorVolSurfel = 1.1;
@@ -867,7 +859,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       display.setFillColor(DGtal::Color(180, 180, 250, 25));
     }else if(mode=="Basic")
     {
-      basicMode=true;
+      //Code
     }
 
   DGtal::Z3i::RealPoint rp = display.embedK( k );
@@ -938,7 +930,6 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
-  bool basicMode=false;
   if(mode=="Highlighted")
     {
       factorVolSurfel = 1.2;
@@ -948,7 +939,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       display.setFillColor(DGtal::Color(180, 180, 250, 25));
     }else if(mode=="Basic")
     {
-      basicMode=true;
+      //basicMode=true;
     }
 
   DGtal::Z3i::RealPoint rps = display.embedKS( sk );
@@ -977,7 +968,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
         }
       if (sk.myPositive)
         {
-          display.addCone(DGtal::Z3i::RealPoint(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 )),
+          display.addCone(DGtal::Z3i::RealPoint(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 )), 
 			  DGtal::Z3i::RealPoint(rps[0]+ (xodd? 0.5:0 ), rps[1]+ (yodd? 0.5:0 ), rps[2]+ (zodd? 0.5:0 )));
         }
       else
@@ -1132,7 +1123,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingWired( Display3D<Space, 
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5));
   display.addLine(DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5),
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5));
-
+  
   display.addLine(DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5),
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5));
   display.addLine(DGtal::Z3i::RealPoint(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5),
@@ -1376,14 +1367,6 @@ template< typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::CustomColors3D & cc3d )
 {
-  //We reset the lists
-  display.createNewLineList();
-  display.createNewBallList();
-  display.createNewCubeList();
-  display.createNewQuadList();
-  display.createNewTriangleList();
-  display.createNewPolygonList();
-
   display.setFillColor(cc3d.myFillColor);
   display.setLineColor(cc3d.myPenColor);
 }
@@ -1408,7 +1391,6 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
          ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::ShiftedKSSurfel & aTransformedSurfelPrism ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
-  bool basicMode=false;
   if(mode=="Highlighted")
     {
       factorVolSurfel = 1.2;
@@ -1418,7 +1400,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       display.setFillColor(DGtal::Color(180, 180, 250, 25));
     }else if(mode=="Basic")
     {
-      basicMode=true;
+      // basicMode=true;
     }
   DGtal::Z3i::RealPoint rps = display.embedKS(aTransformedSurfelPrism );
 

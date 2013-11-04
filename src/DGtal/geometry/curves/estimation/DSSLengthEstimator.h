@@ -51,7 +51,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/curves/GreedyDecomposition.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -83,7 +83,7 @@ namespace DGtal
 
     typedef double Quantity;
 
-    typedef ArithmeticalDSS<ConstIterator,int,4> DSSComputer;
+    typedef ArithmeticalDSSComputer<ConstIterator,int,4> DSSComputer;
     typedef typename DSSComputer::Point Point;  
     typedef typename DSSComputer::Vector Vector;  
 

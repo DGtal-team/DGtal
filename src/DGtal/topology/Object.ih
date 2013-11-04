@@ -779,15 +779,13 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhood
-( const TAdjacency & adj, const Point & p, unsigned int k ) const
+( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;
   typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
-  typedef typename Container::const_iterator ContainerConstIterator;
-  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
 
@@ -844,15 +842,13 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallComplementObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhoodInComplement
-( const TAdjacency & adj, const Point & p, unsigned int k ) const
+( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;
   typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
-  typedef typename Container::const_iterator ContainerConstIterator;
-  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
   typedef typename DigitalSetDomain<DigitalSet>::Predicate PredicateIsInX;
