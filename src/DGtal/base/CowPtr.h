@@ -97,6 +97,8 @@ public:
      * For debug.
      */
     unsigned int count() const      {return myPtr.count();}
+    inline T* drop() { return myPtr.drop(); }
+    inline bool unique() const throw() { return myPtr.unique(); }
 
   private:
 
