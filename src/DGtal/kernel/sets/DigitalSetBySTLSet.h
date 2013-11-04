@@ -101,7 +101,7 @@ namespace DGtal
      *
      * @param d any domain.
      */
-    DigitalSetBySTLSet( const Domain & d );
+    DigitalSetBySTLSet( const Domain & d, const Compare & c = Compare() );
 
     /**
      * Copy constructor.

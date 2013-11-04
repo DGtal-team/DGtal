@@ -59,8 +59,8 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::~DigitalSetBySTLSet()
  */
 template <typename Domain, typename Compare>
 inline
-DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet( const Domain & d )
-  : myDomain( d ), mySet()
+DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet( const Domain & d, const Compare & c )
+  : myDomain( d ), mySet( c )
 {
 }
 
