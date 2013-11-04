@@ -13,7 +13,9 @@
       for the Projector Functor from the BasicPointFunctors class in
       order to simplify the slice images (with example and test in 2D
       slice image extraction from 3D volume file).
-    - New basic functor: SliceRotator2D to rotate 2D Slice images from 3D volume.
+    - New basic functors:
+	- SliceRotator2D: to rotate 2D Slice images from 3D volume.
+	- Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points (useful to extract 2D image from 3D volume).
 
 *Geometry Package*
 
