@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ArithmeticalDSS.cpp
+ * @file ArithmeticalDSSComputer.cpp
  * @ingroup Examples
  * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
  * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
@@ -24,7 +24,7 @@
 
  * @date 2010/11/30
  *
- * An example file named ArithmeticalDSS.
+ * An example file named ArithmeticalDSSComputer.
  *
  * This file is part of the DGtal library.
  */
@@ -34,7 +34,7 @@
 #include "DGtal/base/Common.h"
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -52,11 +52,11 @@ int main()
 
   /////////////////////////// DSS4 //////////////////////////////////
   {
-    //! [ArithmeticalDSS4Usage]
+    //! [ArithmeticalDSSComputer4Usage]
     typedef PointVector<2,int> Point;
     typedef std::vector<Point> Range;
     typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,int,4> DSS4;  
+    typedef ArithmeticalDSSComputer<ConstIterator,int,4> DSS4;  
 
     // Input points
     Range contour;
@@ -81,9 +81,9 @@ int main()
 
     // Output parameters
     cout << theDSS4 << endl;
-    //! [ArithmeticalDSS4Usage]
+    //! [ArithmeticalDSSComputer4Usage]
             
-    //! [ArithmeticalDSS4DrawingUsage]
+    //! [ArithmeticalDSSComputer4DrawingUsage]
     // Draw the grid
     Board2D board;
   
@@ -100,16 +100,16 @@ int main()
     << theDSS4;
   
     board.saveSVG("DSS4.svg");
-    //! [ArithmeticalDSS4DrawingUsage]
+    //! [ArithmeticalDSSComputer4DrawingUsage]
   }
 
   ////////////////////// DSS8 ///////////////////////////////
   {
-    //! [ArithmeticalDSS8Usage]
+    //! [ArithmeticalDSSComputer8Usage]
     typedef PointVector<2,int> Point;
     typedef std::vector<Point> Range;
     typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,int,8> DSS8;  
+    typedef ArithmeticalDSSComputer<ConstIterator,int,8> DSS8;  
 
     // Input points
     Range boundary;
@@ -131,9 +131,9 @@ int main()
 
     // Output parameters
     cout << theDSS8 << endl;
-    //! [ArithmeticalDSS8Usage]
+    //! [ArithmeticalDSSComputer8Usage]
     
-    //! [ArithmeticalDSS8DrawingUsage]
+    //! [ArithmeticalDSSComputer8DrawingUsage]
     //Draw the pixels
     Board2D board;
     Domain domain( Point(0,0), Point(8,8) );
@@ -150,7 +150,7 @@ int main()
     << theDSS8;
     
     board.saveSVG("DSS8.svg");
-    //! [ArithmeticalDSS8DrawingUsage]
+    //! [ArithmeticalDSSComputer8DrawingUsage]
   }
 
   return 1;

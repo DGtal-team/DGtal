@@ -192,7 +192,7 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class HyperRectDomain 2D, modes: "" / "BoundingBox"  (default), "Grid", "InterGrid" **.
   - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration",  "IllustrationCustomColor".
   - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
-  - class ArithmeticalDSS3d  ,  modes: "" (default) /  "Points", "BoundingBox *".
+  - class StandardDSS6Computer  ,  modes: "" (default) /  "Points", "BoundingBox *".
   - class Mesh, modes:  "" (default) /  "Faces *".
   - class ImageContainerBySTLVector, ImageContainerBySTLMap 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
   - class ImageAdapter, ConstImageAdapter 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
