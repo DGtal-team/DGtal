@@ -385,7 +385,7 @@ should define the following methods:
 
  - bool isExtendableBackward () : return 'true' if the segment can be extended to the element pointed to by --begin() and 'false' otherwise (no extension is performed).
 
-GeometricalDSS and GeometricalDCA are both models of CBidirectionalSegmentComputer. 
+StabbingLineComputer and StabbingCircleComputer are both models of CBidirectionalSegmentComputer. 
 
 The concept CDynamicSegmentComputer is another refinement of CForwardSegmentComputer. 
 Any model of this concept should define the following method: 
@@ -398,7 +398,7 @@ CBidirectionalSegmentComputer and CDynamicSegmentComputer and should define this
  - bool retractBackward () : return 'true' and move the end of the segment to --end() if begin() != --end(), return 'false' otherwise. 
 
 
-A model of CDynamicBidirectionalSegmentComputer is ArithmeticalDSS, 
+A model of CDynamicBidirectionalSegmentComputer is ArithmeticalDSSComputer, 
 devoted to the dynamic recognition of DSSs, 
  defined as a sequence of connected points @f$ (x,y) @f$
  such that @f$ \mu \leq ax - by < \mu + \omega  @f$ 
@@ -406,13 +406,13 @@ devoted to the dynamic recognition of DSSs,
 
  Here is a short example of how to use this class in the 4-connected case:
 
- @snippet geometry/curves/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
+ @snippet geometry/curves/ArithmeticalDSSComputer.cpp ArithmeticalDSSComputer4Usage
 
  Here is a short example of how to use this class in the 8-connected case:
 
- @snippet geometry/curves/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
+ @snippet geometry/curves/ArithmeticalDSSComputer.cpp ArithmeticalDSSComputer8Usage
 
- These snippets are drawn from ArithmeticalDSS.cpp. 
+ These snippets are drawn from ArithmeticalDSSComputer.cpp. 
  
  The resulting DSSs of the two previous pieces of code are drawing below:
 
@@ -487,7 +487,7 @@ This segmentation algorithm is implemented in the class @href GreedySegmentation
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Range;
   typedef Range::const_iterator ConstIterator;
-  typedef ArithmeticalDSS<ConstIterator,int,8> SegmentComputer;
+  typedef ArithmeticalDSSComputer<ConstIterator,int,8> SegmentComputer;
 	typedef GreedySegmentation<SegmentComputer> Segmentation;
 
 	//input points
