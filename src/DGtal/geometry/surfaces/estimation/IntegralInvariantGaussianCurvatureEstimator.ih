@@ -82,6 +82,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
     radius = re;
 
     gaussFunctor.init( h, radius );
+    princCurvFunctor.init( h, radius );
 
     RealPoint rOrigin = RealPoint ( 0.0, 0.0 );
     Domain::Point pOrigin = Domain::Point( 0, 0 );
@@ -139,6 +140,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
     radius = re;
 
     gaussFunctor.init( h, radius );
+    princCurvFunctor.init( h, radius );
 
     RealPoint rOrigin = RealPoint ( 0.0, 0.0, 0.0 );
     Domain::Point pOrigin = Domain::Point( 0, 0, 0 );
