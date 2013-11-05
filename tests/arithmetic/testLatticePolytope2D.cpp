@@ -194,7 +194,7 @@ bool testLatticePolytope2D()
   board << SetMode( d.className(), "Grid" ) << d;
   board << SetMode( cip.className(), "Transparent" ) << cip;
   bool wasCut = cip.cut( h );
-  VERIFY(wasCut);
+  FATAL_ERROR(wasCut);
   board << SetMode( cip.className(), "Filled" ) << cip;
   board.saveEPS( "cip2.eps" );
   board.saveSVG( "cip2.svg" );
