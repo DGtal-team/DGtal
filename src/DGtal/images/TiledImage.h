@@ -192,6 +192,9 @@ public:
       typedef Value* pointer;
       typedef Value& reference;*/
       
+      typedef typename ImageContainer::Range::/*Output*/Iterator TileRangeIterator;
+      typedef typename Domain::Iterator BlocksIterator;
+      
       TiledIterator();
       
       /**
@@ -200,13 +203,27 @@ public:
        * @param aBlockIterator
        * @param aTiledImage pointer to the TiledImage
        */
-      TiledIterator ( typename Domain::Iterator aBlockIterator,
+      TiledIterator ( BlocksIterator aBlockIterator,
                      const TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) : myBlocksIterator ( aBlockIterator ), myTiledImage ( aTiledImage )
       {
         if ( myBlocksIterator != myTiledImage->domainCoords().end() )
         {
           myTile = myTiledImage->findTileFromCoords( (*myBlocksIterator) );
           myTileRangeIterator = myTile->range().begin();
+        }
+      }
+      
+      // PB with param "aBlockIterator" (param not necessary in fact !)
+      TiledIterator ( const Point& aPoint, BlocksIterator aBlockIterator,
+                     const TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) : myBlocksIterator ( aBlockIterator ), myTiledImage ( aTiledImage )
+      {
+        Point coords = myTiledImage->findCoordsFromPoint(aPoint);
+        
+        myBlocksIterator = myTiledImage->domainCoords().begin(coords);
+        if ( myBlocksIterator != myTiledImage->domainCoords().end() )
+        {
+          myTile = myTiledImage->findTileFromCoords( coords);
+          myTileRangeIterator = myTile->range().begin(aPoint);
         }
       }
       
@@ -376,9 +393,9 @@ public:
       /// Alias on the current tile
       ImageContainer * myTile;
       
-      typename ImageContainer::Range::/*Output*/Iterator myTileRangeIterator;
+      TileRangeIterator myTileRangeIterator;
       
-      typename Domain::Iterator myBlocksIterator;
+      BlocksIterator myBlocksIterator;
     };
 
     typedef std::reverse_iterator<TiledIterator> ReverseTiledIterator;
@@ -394,6 +411,11 @@ public:
       return TiledIterator( this->domainCoords().begin(), this );
     }
     
+    TiledIterator begin(const Point& aPoint) const
+    {
+      return TiledIterator( aPoint, this->domainCoords().begin(), this );
+    }
+    
     TiledIterator end() const
     {
       return TiledIterator( this->domainCoords().end(), this );
@@ -404,10 +426,16 @@ public:
       return ReverseTiledIterator( end() );
     }
     
-    // TODO -> aPoint
     ReverseTiledIterator rbegin(const Point& aPoint) const
     {
-      return ReverseTiledIterator( end() );
+      typename Domain::Integer i;
+      
+      Point point2;
+      for(i=0; i<Domain::dimension; i++)
+        point2[i]=(m_upperBound[i]-aPoint[i])+m_lowerBound[i];
+        
+      TiledIterator it( begin(point2) ); it++;
+      return ReverseTiledIterator(it);
     }
 
     ReverseTiledIterator rend() const
@@ -415,33 +443,24 @@ public:
       return ReverseTiledIterator( begin() );
     }
     
-    /**
-      * OutputIterator service.
-      * @return an output itertor on the first elements
-      */
     OutputIterator outputIterator()
     {
       return OutputIterator( begin() );
     }
-
-    /**
-    * ReverseOutputIterator service.
-    * @return an output itertor on the first elements
-    */
+    
+    OutputIterator outputIterator(const Point& aPoint)
+    {
+      return OutputIterator( begin(aPoint) );
+    }
+    
     ReverseOutputIterator routputIterator()
     {
-      return ReverseOutputIterator ( end() );
+      return ReverseOutputIterator( end() );
     }
-      
-    /**
-      * ReverseOutputIterator service.
-      * @param aPoint a point
-      * @return an output itertor on the point
-      */
-    // TODO -> aPoint
-    ReverseOutputIterator routputIterator ( const Point &aPoint )
+    
+    ReverseOutputIterator routputIterator(const Point &aPoint)
     {
-      return ReverseOutputIterator ( end() ) ;
+      return ReverseOutputIterator( rbegin(aPoint) );
     }
     
     /////////////////////////// Ranges  /////////////////////
@@ -518,6 +537,24 @@ public:
       
       Domain di(dMin, dMax);
       return di;      
+    }
+    
+    const Point findCoordsFromPoint(const Point & aPoint) const
+    {
+      ASSERT(myImageFactory->domain().isInside(aPoint));
+      
+      typename Domain::Integer i;
+      
+      Point low;
+      for(i=0; i<Domain::dimension; i++)
+      {
+        /*if ( (aPoint[i]-m_lowerBound[i]) < mySize[i] )
+          low[i] = 0;
+        else*/
+          low[i] = (aPoint[i]-m_lowerBound[i])/mySize[i];
+      }
+      
+      return low;      
     }
     
     const Domain findSubDomainFromCoords(const Point & aCoord) const
@@ -624,7 +661,7 @@ public:
     /**
      * Get the cacheMissRead value.
      */
-    unsigned int getCacheMissRead() const
+    unsigned int getCacheMissRead()
     {
         return myImageCache->getCacheMissRead();
     }
@@ -632,7 +669,7 @@ public:
     /**
      * Get the cacheMissWrite value.
      */
-    unsigned int getCacheMissWrite() const
+    unsigned int getCacheMissWrite()
     {
         return myImageCache->getCacheMissWrite();
     }
@@ -656,7 +693,7 @@ public:
     /**
      * Get the ticks value.
      */
-    long getTicksUpdateCache() const // TEMP_MT
+    long getTicksUpdateCache() // TEMP_MT
     {
         return myImageCache->getTicksUpdateCache();
     }
@@ -672,7 +709,7 @@ public:
     /**
      * Get the ticks value.
      */
-    long getTicksUpdate() const // TEMP_MT
+    long getTicksUpdate() // TEMP_MT
     {
         return myTicksUpdate;
     }
@@ -688,7 +725,7 @@ public:
     /**
      * Get the ticks value.
      */
-    long getTicksFindSubDomain() const // TEMP_MT
+    long getTicksFindSubDomain() // TEMP_MT
     {
         return myTicksFindSubDomain;
     }
@@ -704,7 +741,7 @@ public:
     /**
      * Get the ticks value.
      */
-    long getTicksRead() const // TEMP_MT
+    long getTicksRead() // TEMP_MT
     {
         return myTicksRead;
     }
