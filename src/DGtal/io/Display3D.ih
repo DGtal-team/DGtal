@@ -339,7 +339,7 @@ void
 DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vertices)
 {
 
-  FATAL_ERROR_MSG(vertices.size()>2, "Polygon must have at least two vertices");
+  ASSERT_MSG(vertices.size()>2, "Polygon must have at least two vertices");
 
   PolygonD3D polygon;
   for(unsigned int i=0; i< vertices.size();i++)
