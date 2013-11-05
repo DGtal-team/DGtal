@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file Clone.h
+ * @file OldClone.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/11/23
  *
- * Header file for module Clone.cpp
+ * Header file for module OldClone.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Clone_RECURSES)
-#error Recursive header files inclusion detected in Clone.h
-#else // defined(Clone_RECURSES)
+#if defined(OldClone_RECURSES)
+#error Recursive header files inclusion detected in OldClone.h
+#else // defined(OldClone_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Clone_RECURSES
+#define OldClone_RECURSES
 
-#if !defined Clone_h
+#if !defined OldClone_h
 /** Prevents repeated inclusion of headers. */
-#define Clone_h
+#define OldClone_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,25 +50,27 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Clone
+  // template class OldClone
   /**
-     Description of template class 'Clone' <p> \brief Aim: This class
+     Description of template class 'OldClone' <p> \brief Aim: This class
      encapsulates its parameter class so that to indicate to the user
      that the object will be duplicated (or cloned). Therefore the
      user is reminded to take care of the possible cost of duplicating
      the argument parameter, while he is aware that he does not have to take care
      of the lifetime of the parameter.  Note that an instance of
-     Clone<T> is itself a light object (it holds only a const
+     OldClone<T> is itself a light object (it holds only a const
      reference), the duplication takes place when the user
      instantiates its member of type T.
 
-     @note The usage of \c Clone<T> instead of \c const \c T \c & or
+     @deprecated since 0.7. Use Clone instead.
+
+     @note The usage of \c OldClone<T> instead of \c const \c T \c & or
      \c const \c T \c * in parameters is \b always \b recommended when
      the user duplicates the parameter and stores a clone of it as a
-     data member for later ise. The usage \c Clone<T> instead of \c T
+     data member for later ise. The usage \c OldClone<T> instead of \c T
      is \b recommended whenever \c T is big (the object is sometimes
      duplicated twice). When the object is small, writing either \c
-     Clone<T> or \c T is acceptable.
+     OldClone<T> or \c T is acceptable.
 
      @tparam T is any type.
 
@@ -120,7 +122,7 @@ namespace DGtal
      the library is conscious that an object, say \a b, may require
      that an instance \a a given as parameter should have a lifetime
      longer than \a b itself (case for an instance of \a B1
-     above). Classes Clone, Alias, ConstAlias exist for these
+     above). Classes OldClone, Alias, ConstAlias exist for these
      reasons. The classes above may be rewritten as follows.
      
      @code
@@ -134,14 +136,14 @@ namespace DGtal
      };
      // Cloning as data member is visible.
      struct B2 {
-       B2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B2( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a ) {}
      ...
        A myA;
      };
      // Cloning on the heap requires call to allocate(), so that the user remembers calling \c delete.
      struct B3_v1 {
-       B3_v1( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B3_v1( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a.allocate() ) {}
        ~B3_v1() { if ( myA != 0 ) delete myA; }
      ...
@@ -149,7 +151,7 @@ namespace DGtal
      };
      // Cloning on the heap with CountedPtr mechanism is straightforward.
      struct B3_v2 {
-       B3_v2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B3_v2( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a ) {}
        ~B3_v2() {} // CountedPtr takes care of delete.
      ...
@@ -157,7 +159,7 @@ namespace DGtal
      };
      // Cloning on the heap with CowPtr mechanism is straightforward.
      struct B3_v3 {
-       B3_v3( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B3_v3( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a ) {}
        ~B3_v3() {} // CountedPtr takes care of delete.
      ...
@@ -191,13 +193,13 @@ namespace DGtal
      B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note Clone have no copy constructor. 
+     @note OldClone have no copy constructor. 
 
-     @note The user should not used Clone<T> for data members (in
+     @note The user should not used OldClone<T> for data members (in
      fact, he cannot), only as a type for parameters.
    */
   template <typename T>
-  class Clone
+  class OldClone
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -205,7 +207,7 @@ namespace DGtal
     /**
        Destructor. Does nothing.
      */
-    ~Clone();
+    ~OldClone();
 
     /**
       Copy constructor.
@@ -214,7 +216,7 @@ namespace DGtal
       @note Keep in mind that Alias<T> type should not be used in class
       members (efficiency issue). 
     */
-    Clone ( const Clone & other );
+    OldClone ( const OldClone & other );
 
     /**
        Constructor from an instance of T. The object is referenced in
@@ -222,7 +224,7 @@ namespace DGtal
        instantiate a data member.
        @param t any object of type T.
     */
-    Clone( const T & t );
+    OldClone( const T & t );
 
     /**
        Constructor from a pointer to a valid instance of T. The object is referenced in
@@ -231,12 +233,12 @@ namespace DGtal
        @param ptrT any valid pointer to a object of type T.
        @pre ptrT != 0
     */
-    Clone( const T* ptrT );
+    OldClone( const T* ptrT );
 
     /**
        Cast operator to a T instance. This is only at this moment that
        the object is duplicated.  This allows things like: A a2 = a1;
-       where a1 is of type Clone<A>.
+       where a1 is of type OldClone<A>.
     */
     operator T() const;
 
@@ -249,13 +251,13 @@ namespace DGtal
     /**
        Cast operator to a CountedPtr<T> instance. This is only at this moment that
        the object is duplicated (and only once).  This allows things like: CountedPtr<A> a2 = a1;
-       where a1 is of type Clone<A>. It also allows CowPtr<A> a2 = a1;
+       where a1 is of type OldClone<A>. It also allows CowPtr<A> a2 = a1;
     */
     operator CountedPtr<T>() const;
     // /**
     //    Cast operator to a CowPtr<T> instance. This is only at this moment that
     //    the object is duplicated (and only once).  This allows things like: CowPtr<A> a2 = a1;
-    //    where a1 is of type Clone<A>.
+    //    where a1 is of type OldClone<A>.
     // */
     // operator CowPtr<T>() const;
 
@@ -274,7 +276,7 @@ namespace DGtal
      * Constructor.
      * Forbidden.
      */
-    Clone();
+    OldClone();
 
 
     /**
@@ -283,24 +285,24 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden (otherwise the user might be tempted to use it as a member).
      */
-    Clone & operator= ( const Clone & other );
+    OldClone & operator= ( const OldClone & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Clone
+  }; // end of class OldClone
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/base/Clone.ih"
+#include "DGtal/base/OldClone.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Clone_h
+#endif // !defined OldClone_h
 
-#undef Clone_RECURSES
-#endif // else defined(Clone_RECURSES)
+#undef OldClone_RECURSES
+#endif // else defined(OldClone_RECURSES)

@@ -35,6 +35,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/base/OldClone.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -227,129 +228,7 @@ namespace DGtal {
      It uses a pair (const void*,enum), which does not use dynamic
      allocation. 
 
-     @note (Speed) Even on a small type (here a pair<int,int>), it is
-     much faster than NClone and has the advantage (wrt Clone<T>) to
-     handle nicely both const T& and CowPtr<T> as input. It may be
-     slightly slower than Clone (and by value or by const ref
-     parameter passing) for small objects like a pair<int,int>. This
-     is certainly due to the fact that it uses one more integer
-     register for \a myParam data member.
-
-     +--------+----------+----------+-----------+--------+--------+
-     | Type   | Context  | value    | const ref | Clone  | PClone |
-     +--------+----------+----------+-----------+--------+--------+
-     | 2xint  |i7 2.4GHz |    48ms |     48ms  |   48ms |   59ms |
-     |2xdouble|i7 2.4GHz |    48ms |     48ms  |   48ms |   49ms |
-     | 2xint  |Xeon 2.67GHz|    54ms |     54ms  |   54ms |   54ms |
-     |2xdouble|Xeon 2.67GHz|    54ms |     54ms  |   54ms | 53.5ms |
-     +--------+----------+----------+-----------+--------+--------+
-
-
-     @note It prevents direct assignment to CountedPtr<T> since their
-     meaning is "shared_ptr". A discussion is possible for input pointer: is
-     there pointer acquisition in this case ?
   */
-  template <typename T> 
-  class PClone
-  {
-    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; // ACQ
-
-    struct TempPtr {
-      inline TempPtr( T* ptr ) : _ptr( ptr ) {}
-      inline ~TempPtr() { ASSERT( _ptr != 0 ); delete _ptr; }
-      T* _ptr;
-    };
-
-  public:
-    inline ~PClone() {}
-    inline PClone( const PClone & ) : myParam( CLONE_IS_ERROR ), myPtr( 0 ) 
-    { ASSERT(( false && "[PClone::PClone( const PClone& )] Cloning a Clone is an error." )); }
-    inline PClone( const T & t ) 
-      : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
-    inline PClone( T* t ) 
-      : myParam( PTR ), myPtr( static_cast<const void*>( t ) ) {} 
-    inline PClone( const CowPtr<T> & t ) 
-      : myParam( COW_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-    inline PClone( const CountedPtr<T> & t ) 
-      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-#ifdef CPP11_RREF_MOVE
-    // not satisfying: create an instance.
-    inline PClone( T && t ) : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
-#endif
-    
-    /**
-      - const A & -> A             // immediate duplication (checked)
-      - A* -> A                    // immediate duplication, acquired and deleted. (checked)
-      - CountedPtr<A> -> A         // immediate duplication (checked)
-      - CowPtr<A> -> A             // immediate duplication (checked)
-      - A&& -> A                   // move into member      (checked)
-    */
-    inline operator T() const 
-    {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: return T( * static_cast< const T* >( myPtr ) );
-      case PTR: {
-        TempPtr tmp( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
-        return T( * static_cast< const T* >( myPtr ) );
-      } // destroy acquired pointer.
-      case COW_PTR:   return T( * static_cast< const CowPtr<T>* >( myPtr )->get() );
-      case COUNTED_PTR:   return T( * static_cast< const CountedPtr<T>* >( myPtr )->get() );
-#ifdef CPP11_RREF_MOVE
-      case RIGHT_VALUE_REF:   return T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
-#endif
-      default: ASSERT( false );
-        return T( * static_cast< const T* >( myPtr ) );
-      }
-    }
-
-    /**
-      - const A & -> CowPtr<A>     // immediate duplication (checked)
-      - A* -> CowPtr<A>            // acquired (checked)
-      - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
-      - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
-      - A&& -> CowPtr<A>           // move into member      (checked)
-    */
-    inline operator CowPtr<T>() const 
-    {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
-      case PTR: return CowPtr<T>( const_cast<T*>( static_cast< const T* >( myPtr ) ) );
-      case COW_PTR:   return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
-      case COUNTED_PTR:   return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
-#ifdef CPP11_RREF_MOVE
-      case RIGHT_VALUE_REF: return CowPtr<T>( new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) ) );
-#endif
-      default: ASSERT( false );
-        return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
-      }
-    }
-
-    /**
-     - const A & -> A*            // immediate duplication, should be deleted at the end. (checked)
-     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end. (checked)           
-     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end. (checked)         
-     - A* -> A*                   // acquired, should be deleted at the end. (checked)      
-     - A&& -> A*                  // move into member, should be deleted at the end. (checked)
-    */
-    inline T* operator&() const
-    {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: return new T( * static_cast< const T* >( myPtr ) );
-      case PTR: return const_cast<T*>( static_cast< const T* >( myPtr ) );
-      case COW_PTR:   return new T( *( static_cast< const CowPtr<T>* >( myPtr )->get() ) );
-      case COUNTED_PTR:  return new T( *( static_cast< const CountedPtr<T>* >( myPtr )->get() ) );
-#ifdef CPP11_RREF_MOVE
-      case RIGHT_VALUE_REF: return new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
-#endif
-      default: ASSERT( false );
-        return new T( * static_cast< const T* >( myPtr ) );
-      }
-    }
-
-  private:
-    const Parameter myParam;
-    const void* const myPtr;
-  };
 
   /**
      Performs without unnecessary duplicates "parameter -> member data"
@@ -539,20 +418,20 @@ int DummyTbl::nbMoved = 0;
 
 
 struct CloneToValueMember {
-  inline CloneToValueMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline CloneToValueMember( Clone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl.value(); }
   DummyTbl myDummyTbl;
 };
 
 struct CloneToCountedMember { // requires explicit duplication
-  inline CloneToCountedMember( PClone<DummyTbl> a1 ) // : myDummyTbl( a1 ) {} does not compile
+  inline CloneToCountedMember( Clone<DummyTbl> a1 ) // : myDummyTbl( a1 ) {} does not compile
     : myDummyTbl( new DummyTbl( a1 ) ) {}
   inline int value() const { return myDummyTbl->value(); }
   CountedPtr<DummyTbl> myDummyTbl;
 };
 
 struct CloneToCowMember {
-  inline CloneToCowMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline CloneToCowMember( Clone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   inline void setValue( int v ) { myDummyTbl->setValue( v ); }
   CowPtr<DummyTbl> myDummyTbl;
@@ -560,7 +439,7 @@ struct CloneToCowMember {
 
 struct CloneToPtrMember {
   inline CloneToPtrMember() : myDummyTbl( 0 ) {}
-  inline CloneToPtrMember( PClone<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
+  inline CloneToPtrMember( Clone<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
   inline ~CloneToPtrMember() { if ( myDummyTbl != 0 ) delete myDummyTbl; else std::cerr << "[~CloneToPtrMember] error." << std::endl; }
   inline int value() const { return myDummyTbl->value(); }
   inline void setValue( int v ) { myDummyTbl->setValue( v ); }
@@ -713,6 +592,16 @@ struct TriangleByValue {
   Point _a, _b, _c;
 };
 
+struct TriangleByOldClone {
+  TriangleByOldClone( OldClone<Point> a, OldClone<Point> b, OldClone<Point> c )
+    : _a( a ), _b( b ), _c( c ) {}
+  double perimeter() const
+  {
+    return (_a - _b).norm() + (_b - _c).norm() + (_c - _a).norm();
+  }
+  Point _a, _b, _c;
+};
+
 struct TriangleByClone {
   TriangleByClone( Clone<Point> a, Clone<Point> b, Clone<Point> c )
     : _a( a ), _b( b ), _c( c ) {}
@@ -723,18 +612,8 @@ struct TriangleByClone {
   Point _a, _b, _c;
 };
 
-struct TriangleByPClone {
-  TriangleByPClone( PClone<Point> a, PClone<Point> b, PClone<Point> c )
-    : _a( a ), _b( b ), _c( c ) {}
-  double perimeter() const
-  {
-    return (_a - _b).norm() + (_b - _c).norm() + (_c - _a).norm();
-  }
-  Point _a, _b, _c;
-};
-
-struct TriangleByPCloneAndCow {
-  TriangleByPCloneAndCow( PClone<Point> a, PClone<Point> b, PClone<Point> c )
+struct TriangleByCloneAndCow {
+  TriangleByCloneAndCow( Clone<Point> a, Clone<Point> b, Clone<Point> c )
     : _a( a ), _b( b ), _c( c ) {}
   double perimeter() const
   {
@@ -952,6 +831,23 @@ bool testConstAliasCases()
   return nbok == nb;
 }
 
+/**
+   - const A & -> A             // immediate duplication (checked)
+   - A* -> A                    // immediate duplication, acquired and deleted. (checked)
+   - CountedPtr<A> -> A         // immediate duplication (checked)
+   - CowPtr<A> -> A             // immediate duplication (checked)
+   - A&& -> A                   // move into member      (checked)
+   - const A & -> CowPtr<A>     // immediate duplication (checked)
+   - A* -> CowPtr<A>            // acquired              (checked)
+   - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
+   - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
+   - A&& -> CowPtr<A>           // move into member      (checked)
+   - const A & -> A*            // immediate duplication, should be deleted at the end. (checked)
+   - A* -> A*                   // acquired, should be deleted at the end. (checked)      
+   - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end. (checked)         
+   - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end. (checked)           
+   - A&& -> A*                  // move into member, should be deleted at the end. (checked)
+*/  
 bool testCloneCases()
 {
   unsigned int nb = 0;
@@ -960,10 +856,10 @@ bool testCloneCases()
   CowPtr<DummyTbl> cow_a1( new DummyTbl( 50, 5 ) ); // +1/0
   CountedPtr<DummyTbl> counted_a1( new DummyTbl( 50, 12 ) ); // +1/0
   DummyTbl::reset();
-  trace.beginBlock ( "Testing class PClone." );
+  trace.beginBlock ( "Testing class Clone." );
 
 
-  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to DummyTbl member. Duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl &) to DummyTbl member. Duplication (+1/0)" );
   CloneToValueMember c00( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==1 ? 1 : 0;
@@ -973,7 +869,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl member. Duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl member. Duplication (+1/0)" );
   CloneToValueMember c30( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c30.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==2 ? 1 : 0;
@@ -983,7 +879,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to CountedPtr<DummyTbl> member. Duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl &) to CountedPtr<DummyTbl> member. Duplication (+1/0)" );
   CloneToCountedMember c03( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c03.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==3 ? 1 : 0;
@@ -993,7 +889,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to CowPtr<DummyTbl> member. Duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl &) to CowPtr<DummyTbl> member. Duplication (+1/0)" );
   CloneToCowMember c02( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c02.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
@@ -1003,7 +899,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (CowPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (CowPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
   CloneToCowMember c22( cow_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c22.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
@@ -1021,7 +917,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (CountedPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
   CloneToCowMember c32( counted_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c32.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==5 ? 1 : 0;
@@ -1039,7 +935,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to DummyTbl member. Acquisition, duplication, delete (+2/+1)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl*) to DummyTbl member. Acquisition, duplication, delete (+2/+1)" );
   CloneToValueMember c10( new DummyTbl( 50, 2 ) ); // +2/+1
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==8 ? 1 : 0;
@@ -1049,7 +945,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to CowPtr<DummyTbl> member. Acquisition, no duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl*) to CowPtr<DummyTbl> member. Acquisition, no duplication (+1/0)" );
   CloneToCowMember c12( new DummyTbl( 50, 15 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c12.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==9 ? 1 : 0;
@@ -1059,7 +955,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl&) to DummyTbl* member. Duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (const DummyTbl&) to DummyTbl* member. Duplication (+1/0)" );
   CloneToPtrMember c01( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==10 ? 1 : 0;
@@ -1069,7 +965,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to DummyTbl* member. Acquisition (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl*) to DummyTbl* member. Acquisition (+1/0)" );
   CloneToPtrMember c11( new DummyTbl( 50, 42 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==11 ? 1 : 0;
@@ -1079,7 +975,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (CowPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (CowPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
   CloneToPtrMember c21( cow_a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c21.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==12 ? 1 : 0;
@@ -1089,7 +985,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
   CloneToPtrMember c31( counted_a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c31.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==13 ? 1 : 0;
@@ -1100,7 +996,7 @@ bool testCloneCases()
   trace.endBlock();
 
 #ifdef CPP11_RREF_MOVE
-  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
   CloneToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c40.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==15 ? 1 : 0;
@@ -1113,7 +1009,7 @@ bool testCloneCases()
 	       << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to CowPtr<DummyTbl> member. Duplication by move (+2/+1/+1)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to CowPtr<DummyTbl> member. Duplication by move (+2/+1/+1)" );
   CloneToCowMember c42( DummyTbl( 50, -9 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c42.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==17 ? 1 : 0;
@@ -1126,7 +1022,7 @@ bool testCloneCases()
 	       << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to DummyTbl* member. Duplication by move (+2/+1/+1)" );
+  trace.beginBlock ( "Clone: #DummyTbl with (DummyTbl &&) to DummyTbl* member. Duplication by move (+2/+1/+1)" );
   CloneToCowMember c41( DummyTbl( 50, -12 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c41.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==19 ? 1 : 0;
@@ -1150,7 +1046,7 @@ bool testCloneTimings()
   unsigned int nb = 0;
   unsigned int nbok = 0;
   int size = 10;
-  trace.beginBlock ( "Testing PClone timings." );
+  trace.beginBlock ( "Testing Clone timings." );
 
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
   double t1 = computeTriangles<TriangleByValue>( size );
@@ -1172,8 +1068,8 @@ bool testCloneTimings()
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
   Point::reset();
   trace.endBlock();
-  trace.beginBlock ( "Total perimeter of triangles with by Clone parameter passing." );
-  double t3 = computeTriangles<TriangleByClone>( size );
+  trace.beginBlock ( "Total perimeter of triangles with by OldClone parameter passing." );
+  double t3 = computeTriangles<TriangleByOldClone>( size );
   trace.info() << "Perimeter is " << t3 << std::endl;
   ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
   ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
@@ -1182,8 +1078,8 @@ bool testCloneTimings()
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
   Point::reset();
   trace.endBlock();
-  trace.beginBlock ( "Total perimeter of triangles with by PClone parameter passing." );
-  double t4 = computeTriangles<TriangleByPClone>( size );
+  trace.beginBlock ( "Total perimeter of triangles with by Clone parameter passing." );
+  double t4 = computeTriangles<TriangleByClone>( size );
   trace.info() << "Perimeter is " << t4 << std::endl;
   ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
   ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
@@ -1192,8 +1088,8 @@ bool testCloneTimings()
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
   Point::reset();
   trace.endBlock();
-  trace.beginBlock ( "Total perimeter of triangles with by PCloneAndCow parameter passing." );
-  double t5 = computeTriangles<TriangleByPCloneAndCow>( size );
+  trace.beginBlock ( "Total perimeter of triangles with by CloneAndCow parameter passing." );
+  double t5 = computeTriangles<TriangleByCloneAndCow>( size );
   trace.info() << "Perimeter is " << t5 << std::endl;
   ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
   ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
@@ -1202,8 +1098,8 @@ bool testCloneTimings()
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
   Point::reset();
   trace.endBlock();
-  trace.beginBlock ( "Total perimeter of triangles with CowPtr by PCloneAndCow parameter passing." );
-  double t6 = computeTrianglesByCowPtr<TriangleByPCloneAndCow>( size );
+  trace.beginBlock ( "Total perimeter of triangles with CowPtr by CloneAndCow parameter passing." );
+  double t6 = computeTrianglesByCowPtr<TriangleByCloneAndCow>( size );
   trace.info() << "Perimeter is " << t6 << std::endl;
   ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
   ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
