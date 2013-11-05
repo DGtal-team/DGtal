@@ -110,6 +110,8 @@
     - digital sets are now also point predicates, update of
       DigitalSetDomain accordingly. As a consequence, SetPredicate is
       now deprecated.
+    - exposed Compare template parameter of underlying std::set in
+      DigitalSetBySTLSet class.
 
     - new documentation for module digital sets.
 
