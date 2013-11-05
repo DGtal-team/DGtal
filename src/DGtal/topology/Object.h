@@ -178,52 +178,6 @@ namespace DGtal
 	    Clone<DigitalSet> aPointSet,
 	    Connectedness cxn = UNKNOWN );
 
-      /**
-       * Constructor.
-       *
-       * @param aTopology the digital topology chosen for this set,
-       * smartly copied.
-       *
-       * @param aPointSet the set of points of the object. It is copied
-       * in the object.
-       *
-       * @param cxn the connectedness (default is UNKNOWN).
-       */
-      Object( CowPtr<DigitalTopology> aTopology,
-	      Clone<DigitalSet> aPointSet,
-	      Connectedness cxn = UNKNOWN );
-
-      /**
-       * Constructor.
-
-       *
-       * @param aTopology the digital topology chosen for this set, a copy of
-       * which is stored in the object.
-       *
-       * @param aPointSet the set of points of the object. It is smartly
-       * reference in the object.
-       *
-       * @param cxn the connectedness (default is UNKNOWN).
-       */
-    Object( Clone<DigitalTopology> aTopology,
-	    CowPtr<DigitalSet> aPointSet,
-	    Connectedness cxn = UNKNOWN );
-
-      /**
-       * Constructor by attachment of a dynamically allocated point set.
-       *
-       * @param aTopology the digital topology chosen for this set, a copy of
-       * which is stored in the object.
-       *
-       * @param aPointSetPtr a dynamically allocated pointer on a set of
-       * points which is afterwards handled by this (which will take
-       * care of its deletion).
-       *
-       * @param cxn the connectedness (default is UNKNOWN).
-       */
-     Object( Clone<DigitalTopology> aTopology,
-	     DigitalSet* aPointSetPtr,
-	     Connectedness cxn = UNKNOWN );
 
       /**
        * Constructor of an empty object by providing a domain.
