@@ -73,7 +73,7 @@ namespace DGtal {
     { ASSERT(( false && "[PAlias::PAlias( const CowPtr<T>& )] Aliasing a const-cow ptr is an error. Consider ConstAlias instead." )); }
     inline PAlias( const CountedPtr<T>& t ) 
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
     inline PAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
     { ASSERT(( false && "[PAlias::PAlias( T&& )] Aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
 #endif
@@ -152,7 +152,7 @@ namespace DGtal {
       : myParam( COW_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
     inline PConstAlias( const CountedPtr<T>& t ) 
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
     inline PConstAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
     { ASSERT(( false && "[PConstAlias::PConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
 #endif
@@ -272,7 +272,7 @@ namespace DGtal {
       : myParam( COW_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
     inline PClone( const CountedPtr<T> & t ) 
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
     // not satisfying: create an instance.
     inline PClone( T && t ) : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
 #endif
@@ -294,7 +294,7 @@ namespace DGtal {
       } // destroy acquired pointer.
       case COW_PTR:   return T( * static_cast< const CowPtr<T>* >( myPtr )->get() );
       case COUNTED_PTR:   return T( * static_cast< const CountedPtr<T>* >( myPtr )->get() );
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
       case RIGHT_VALUE_REF:   return T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
 #endif
       default: ASSERT( false );
@@ -316,7 +316,7 @@ namespace DGtal {
       case PTR: return CowPtr<T>( const_cast<T*>( static_cast< const T* >( myPtr ) ) );
       case COW_PTR:   return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
       case COUNTED_PTR:   return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
       case RIGHT_VALUE_REF: return CowPtr<T>( new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) ) );
 #endif
       default: ASSERT( false );
@@ -338,7 +338,7 @@ namespace DGtal {
       case PTR: return const_cast<T*>( static_cast< const T* >( myPtr ) );
       case COW_PTR:   return new T( *( static_cast< const CowPtr<T>* >( myPtr )->get() ) );
       case COUNTED_PTR:  return new T( *( static_cast< const CountedPtr<T>* >( myPtr )->get() ) );
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
       case RIGHT_VALUE_REF: return new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
 #endif
       default: ASSERT( false );
@@ -496,7 +496,7 @@ public:
     ++nbCreated;
   }
 
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
   DummyTbl( DummyTbl && a ) noexcept 
   : size( std::move( a.size ) ), allocated( std::move( a.allocated ) )
   {
@@ -1099,7 +1099,7 @@ bool testCloneCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-#ifdef CPP11_AUTO
+#ifdef CPP11_RREF_MOVE
   trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
   CloneToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c40.value() << std::endl;
