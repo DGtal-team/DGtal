@@ -109,7 +109,7 @@ namespace DGtal
     MongeJetFittingMeanCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
       myEmbedder(anEmbedder), myH(h), myD(d)
     {
-      FATAL_ERROR_MSG(d>=2,"Polynomial surface degree must be greater than 2");
+      BOOST_STATIC_ASSERT_MSG(d>=2,"Polynomial surface degree must be greater than 2");
     }
 
     /**
