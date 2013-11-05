@@ -21,7 +21,7 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2013/11/5
+ * @date 2012/11/23
  *
  * Header file for module Clone.cpp
  *
@@ -178,8 +178,7 @@ namespace DGtal
      instance is duplicated somehow. The problem is that it induces
      generally two duplications, and not only one ! It may be possible
      that the compiler optimizes things nicely but it is unclear if
-     the compiler will always do it. Furthermore, sometimes, no
-     duplication is needed (when duplicating a CowPtr for instance).
+     the compiler will always do it.
 
      @code
      struct B4 {
@@ -200,191 +199,72 @@ namespace DGtal
   template <typename T>
   class Clone
   {
-    // ----------------------- Internal classes ------------------------------
-  protected:
-
-    /// Internal class that allows to distinguish the different types of parameters.
-    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
-		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR };
-
-    /// Internal class that is used for a late deletion of an acquired pointer.
-    struct TempPtr {
-      /**
-	 Constructor from pointer.
-	 @param ptr Any pointer that is acquired by 'this'.
-      */
-      inline TempPtr( T* ptr ) : _ptr( ptr ) {}
-      /**
-	 Destructor. Performs delete on _ptr member.
-      */
-      inline ~TempPtr() { ASSERT( _ptr != 0 ); delete _ptr; }
-      /// Acquired pointer.
-      T* _ptr;
-    };
-
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
        Destructor. Does nothing.
      */
-    inline ~Clone() {}
+    ~Clone();
 
     /**
-      Copy constructor. Invalid.
+      Copy constructor.
+      @param other the object to clone.
+      
+      @note Keep in mind that Alias<T> type should not be used in class
+      members (efficiency issue). 
     */
-    inline Clone( const Clone & ) : myParam( CLONE_IS_ERROR ), myPtr( 0 ) 
-    { ASSERT(( false && "[Clone::Clone( const Clone& )] Cloning a Clone is an error." )); }
+    Clone ( const Clone & other );
 
     /**
-       Constructor from an instance of T. The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
+       Constructor from an instance of T. The object is referenced in
+       'this' and is generally immediately duplicated by the user to
+       instantiate a data member.
        @param t any object of type T.
     */
-    inline Clone( const T & t ) 
-      : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+    Clone( const T & t );
 
     /**
-       Constructor from a pointer to a valid instance of T. The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
+       Constructor from a pointer to a valid instance of T. The object is referenced in
+       'this' and is generally immediately duplicated by the user to
+       instantiate a data member.
        @param ptrT any valid pointer to a object of type T.
        @pre ptrT != 0
     */
-    inline Clone( T* ptrT ) 
-      : myParam( PTR ), myPtr( static_cast<const void*>( ptrT ) ) {} 
+    Clone( const T* ptrT );
 
     /**
-       Constructor from CowPtr<T>.  The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
-
-       @param ptrT any copy-on-write pointer to a object of type T.
+       Cast operator to a T instance. This is only at this moment that
+       the object is duplicated.  This allows things like: A a2 = a1;
+       where a1 is of type Clone<A>.
     */
-    inline Clone( const CowPtr<T> & ptrT ) 
-      : myParam( COW_PTR ), myPtr( static_cast<const void*>( &ptrT ) ) {}
+    operator T() const;
+
+    /** 
+        Allocates a T instance on the heap and returns its adress.
+        @return a pointer on the instance of T allocated on the process heap.
+    */
+    T* allocate() const;
 
     /**
-       Constructor from CountedPtr<T>.  The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
-
-       @param ptrT any shared pointer to a object of type T.
+       Cast operator to a CountedPtr<T> instance. This is only at this moment that
+       the object is duplicated (and only once).  This allows things like: CountedPtr<A> a2 = a1;
+       where a1 is of type Clone<A>. It also allows CowPtr<A> a2 = a1;
     */
-    inline Clone( const CountedPtr<T> & ptrT ) 
-      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &ptrT ) ) {}
+    operator CountedPtr<T>() const;
+    // /**
+    //    Cast operator to a CowPtr<T> instance. This is only at this moment that
+    //    the object is duplicated (and only once).  This allows things like: CowPtr<A> a2 = a1;
+    //    where a1 is of type Clone<A>.
+    // */
+    // operator CowPtr<T>() const;
 
-#ifdef CPP11_RREF_MOVE
-
-    /**
-       Constructor from right-reference value.  The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
-
-       @param ptrT any shared pointer to a object of type T.
-    */
-    inline Clone( T && t )
-      : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
-#endif // CPP11_RREF_MOVE
-
-    
-    /**
-       Cast operator to a T instance. The object is duplicated or not
-       depending on the type of input parameter.
-
-      - const A & -> A             // immediate duplication (checked)
-      - A* -> A                    // immediate duplication, acquired and deleted. (checked)
-      - CountedPtr<A> -> A         // immediate duplication (checked)
-      - CowPtr<A> -> A             // immediate duplication (checked)
-      - A&& -> A                   // move into member      (checked)
-    */
-    inline operator T() const 
-    {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
-	return T( * static_cast< const T* >( myPtr ) );
-      case PTR: {
-        TempPtr tmp( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
-        return T( * static_cast< const T* >( myPtr ) );
-      } // destroy acquired pointer.
-      case COW_PTR:
-	return T( * static_cast< const CowPtr<T>* >( myPtr )->get() );
-      case COUNTED_PTR:
-	return T( * static_cast< const CountedPtr<T>* >( myPtr )->get() );
-#ifdef CPP11_RREF_MOVE
-      case RIGHT_VALUE_REF:
-	return T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
-#endif // CPP11_RREF_MOVE
-      default: ASSERT( false && "[Clone::operator T() const] Invalid cast for given type. " );
-        return T( * static_cast< const T* >( myPtr ) );
-      }
-    }
-
-    /**
-       Cast operator to a copy-on-write pointer on T instance. The object is duplicated or not
-       depending on the type of input parameter.
-
-      - const A & -> CowPtr<A>     // immediate duplication (checked)
-      - A* -> CowPtr<A>            // acquired (checked)
-      - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
-      - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
-      - A&& -> CowPtr<A>           // move into member      (checked)
-    */
-    inline operator CowPtr<T>() const 
-    {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
-	return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
-      case PTR: 
-	return CowPtr<T>( const_cast<T*>( static_cast< const T* >( myPtr ) ) );
-      case COW_PTR:
-	return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
-      case COUNTED_PTR:
-	return CowPtr<T>( * static_cast< const CountedPtr<T>* >( myPtr ) );
-#ifdef CPP11_RREF_MOVE
-      case RIGHT_VALUE_REF:
-	return CowPtr<T>( new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) ) );
-#endif
-      default: ASSERT( false && "[Clone::operator CowPtr<T>() const] Invalid cast for given type. " );
-        return CowPtr<T>( 0 );
-      }
-    }
-
-    /**
-       Address operator that returns the address of the given T
-       instance.  The object is duplicated or not depending on the
-       type of input parameter.
-       
-       @return a pointer on an instance of T.
-
-     - const A & -> A*            // immediate duplication, should be deleted at the end. (checked)
-     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end. (checked)           
-     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end. (checked)         
-     - A* -> A*                   // acquired, should be deleted at the end. (checked)      
-     - A&& -> A*                  // move into member, should be deleted at the end. (checked)
-    */
-    inline T* operator&() const
-    {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
-	return new T( * static_cast< const T* >( myPtr ) );
-      case PTR: 
-	return const_cast<T*>( static_cast< const T* >( myPtr ) );
-      case COW_PTR:   
-	return new T( *( static_cast< const CowPtr<T>* >( myPtr )->get() ) );
-      case COUNTED_PTR:  
-	return new T( *( static_cast< const CountedPtr<T>* >( myPtr )->get() ) );
-#ifdef CPP11_RREF_MOVE
-      case RIGHT_VALUE_REF: 
-	return new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
-#endif
-      default: ASSERT( false && "[T* Clone::operator&() const] Invalid address for given type. " );
-        return 0;
-      }
-    }
-
+    // ------------------------- Protected Datas ------------------------------
+  private:
     // ------------------------- Private Datas --------------------------------
   private:
-    // Characterizes the type of the input parameter at clone instanciation.
-    const Parameter myParam;
-    // Stores the address of the input parameter for further use.
-    const void* const myPtr;
+    /// The reference to the T instance that is to be duplicated.
+    const T & myRefT;
 
 
     // ------------------------- Hidden services ------------------------------
@@ -415,7 +295,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-//#include "DGtal/base/Clone.ih"
+#include "DGtal/base/Clone.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
