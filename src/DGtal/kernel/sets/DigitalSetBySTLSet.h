@@ -243,9 +243,8 @@ namespace DGtal
      * set union to left.
      * @param aSet any other set.
      */
-    template <typename CompareR>
     DigitalSetBySTLSet<Domain, Compare> & operator+=
-    ( const DigitalSetBySTLSet<Domain, CompareR> & aSet );
+    ( const DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     // ----------------------- Model of CPointPredicate -----------------------------
   public:
@@ -273,8 +272,7 @@ namespace DGtal
      *
      * @param other_set defines the set whose complement is assigned to 'this'.
      */
-   template <typename CompareR>
-    void assignFromComplement( const DigitalSetBySTLSet<Domain, CompareR> & other_set );
+    void assignFromComplement( const DigitalSetBySTLSet<Domain, Compare> & other_set );
 
     /**
      * Computes the bounding box of this set.
