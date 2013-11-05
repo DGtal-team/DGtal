@@ -47,6 +47,10 @@
       shapes/fromPoints to shapes/ directory), iterators on mesh
       points and mesh face.
 
+*Topology Package*
+    - The class SCellToMidPoint is now deprecated. Use CanonicSCellEmbedder instead
+      to map a signed cell to its corresponding point in the Euclidean space
+
 *IO Package*
 
     - Complete refactoring of 3D viewers and boards (Viewer3D, Board3DTo2D).
