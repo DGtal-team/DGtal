@@ -43,7 +43,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( int UNUSED(argc), char** UNUSED(argv) )
 {
   trace.beginBlock ( "Example exampleArithDSSIterator" );
 
