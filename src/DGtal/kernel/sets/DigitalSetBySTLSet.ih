@@ -316,10 +316,9 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::end()
  * @param aSet any other set.
  */
 template <typename Domain, typename Compare>
-template <typename CompareR>
 inline
 DGtal::DigitalSetBySTLSet<Domain, Compare> &
-DGtal::DigitalSetBySTLSet<Domain, Compare>::operator+=( const DigitalSetBySTLSet<Domain, CompareR> & aSet )
+DGtal::DigitalSetBySTLSet<Domain, Compare>::operator+=( const DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   if ( this != &aSet )
     {
@@ -372,11 +371,10 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::computeComplement(TOutputIterator& i
  * @param other_set defines the set whose complement is assigned to 'this'.
  */
 template <typename Domain, typename Compare>
-template <typename CompareR>
 inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::assignFromComplement
-( const DigitalSetBySTLSet<Domain, CompareR> & other_set )
+( const DigitalSetBySTLSet<Domain, Compare> & other_set )
 {
   clear();
   typename Domain::ConstIterator itPoint = myDomain.begin();
