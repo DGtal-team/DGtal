@@ -43,31 +43,167 @@ using namespace DGtal;
 using namespace std;
 
 
-// New clone.
 namespace DGtal {
   /**
      Performs without unnecessary duplicates "parameter -> member data"
-     - A & -> A &                 // no duplication
-     - A & -> A*                  // no duplication
-     - CountedPtr<A> -> CountedPtr<A> // shared
-     - A* -> A*                   // no duplication
-     - A* -> A&                   // no duplication, exception if null
+     - A& -> A&                       // no duplication                    (checked)
+     - A* -> A&                       // no duplication, exception if null (checked)
+     - A& -> A*                       // no duplication                    (checked)
+     - A* -> A*                       // no duplication                    (checked)
+     - CountedPtr<A> -> CountedPtr<A> // shared                            (checked)
+     - CountedPtr<A> -> CowPtr<A>     // shared (not logical, but not preventable). (checked)
   */
   template <typename T>
   struct PAlias {
+    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; 
+  public:
+    inline ~PAlias() {}
+    inline PAlias( const PAlias& ) : myParam( CLONE_IS_ERROR ), myPtr( 0 )
+    { ASSERT(( false && "[PAlias::PAlias( const PAlias& )] Cloning an Alias is an error." )); }
+    inline PAlias( const T& ) : myParam( CONST_LEFT_VALUE_REF ), myPtr( 0 )
+    { ASSERT(( false && "[PAlias::PAlias( const T& )] Aliasing a const-ref is an error. Consider ConstAlias instead." )); }
+    inline PAlias( const T* ) : myParam( CONST_PTR ), myPtr( 0 )
+    { ASSERT(( false && "[PAlias::PAlias( const T& )] Aliasing a const-ptr is an error. Consider ConstAlias instead." )); }
+    inline PAlias( T& t ) 
+      : myParam( LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline PAlias( T* t ) 
+      : myParam( PTR ), myPtr( static_cast<const void*>( t ) ) {} 
+    inline PAlias( const CowPtr<T>& ) 
+      : myParam( COW_PTR ), myPtr( 0 )
+    { ASSERT(( false && "[PAlias::PAlias( const CowPtr<T>& )] Aliasing a const-cow ptr is an error. Consider ConstAlias instead." )); }
+    inline PAlias( const CountedPtr<T>& t ) 
+      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+#ifdef CPP11_AUTO
+    inline PAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
+    { ASSERT(( false && "[PAlias::PAlias( T&& )] Aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
+#endif
+
+    /**
+       - A& -> A&                       // no duplication
+       - A* -> A&                       // no duplication, exception if null
+    */
+    inline operator T&() const {
+      switch( myParam ) {
+      case LEFT_VALUE_REF:
+      case PTR:
+	return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
+      default: ASSERT( false && "[PAlias::operator T&() const] Invalid cast for given type. Consider passing a left-value reference or a pointer as a parameter." );
+        return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
+      }
+    }
+
+    /**
+     - A& -> A*                       // no duplication
+     - A* -> A*                       // no duplication
+    */
+    inline T* operator&() const {
+      switch( myParam ) {
+      case LEFT_VALUE_REF: 
+      case PTR:
+	return const_cast< T* >( static_cast< const T* >( myPtr ) );
+      default: ASSERT( false && "[T* PAlias::operator&() const] Invalid address operator for given type. Consider passing a left-value reference or a pointer as a parameter." );
+        return const_cast< T* >( static_cast< const T* >( myPtr ) );
+      }
+    }
+    /**
+       - CountedPtr<A> -> CountedPtr<A> // shared
+       - CountedPtr<A> -> CowPtr<A>     // shared (not logical, but not preventable).
+    */
+    inline operator CountedPtr<T>() const {
+      switch( myParam ) {
+      case COUNTED_PTR:
+	return CountedPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
+      default: ASSERT( false && "[PAlias::operator CountedPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr as a parameter." );
+        return CountedPtr<T>( 0 );
+      }
+    }
+
+  private:
+    const Parameter myParam;
+    const void* const myPtr;
+    
   };
 
   /**
      Performs without unnecessary duplicates "parameter -> member data"
-     - const A & -> const A &     // no duplication
-     - const A & -> const A*      // no duplication
-     - const A* -> const A &      // no duplication, exception if null
-     - const A* -> const A*       // no duplication
-     - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
-     - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
+     - const A & -> const A &     // no duplication                    (checked)
+     - const A* -> const A &      // no duplication, exception if null (checked)
+     - const A & -> const A*      // no duplication                    (checked)
+     - const A* -> const A*       // no duplication                    (checked)
+     - CountedPtr<A> -> CowPtr<A> // potential lazy duplication        (checked)
+     - CowPtr<A> -> CowPtr<A>     // potential lazy duplication        (checked)
   */
   template <typename T>
   struct PConstAlias {
+    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; 
+  public:
+    inline ~PConstAlias() {}
+    inline PConstAlias( const PConstAlias& ) : myParam( CLONE_IS_ERROR ), myPtr( 0 )
+    { ASSERT(( false && "[PConstAlias::PConstAlias( const PConstAlias& )] Cloning an Alias is an error." )); }
+    inline PConstAlias( const T& t )
+      : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+    // inline PConstAlias( T& ) : myParam( LEFT_VALUE_REF ), myPtr( 0 )
+    // { ASSERT(( false && "[PConstAlias::PConstAlias( T& )] Const-aliasing a ref is an error. Consider Alias instead." )); }
+    // inline PConstAlias( T*  ) : myParam( PTR ), myPtr( 0 )
+    // { ASSERT(( false && "[PConstAlias::PConstAlias( T& )] Const-aliasing a pointer is an error. Consider Alias instead." )); }
+    inline PConstAlias( const T* t )
+      : myParam( CONST_PTR ), myPtr( static_cast<const void*>( t ) ) {} 
+    inline PConstAlias( const CowPtr<T>& t ) 
+      : myParam( COW_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline PConstAlias( const CountedPtr<T>& t ) 
+      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+#ifdef CPP11_AUTO
+    inline PConstAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
+    { ASSERT(( false && "[PConstAlias::PConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
+#endif
+
+    /**
+       - const A & -> const A &     // no duplication
+       - const A* -> const A &      // no duplication, exception if null
+    */
+    inline operator const T&() const {
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF:
+      case CONST_PTR:
+	return *( static_cast< const T* >( myPtr ) );
+      default: ASSERT( false && "[PConstAlias::operator const T&() const] Invalid cast for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+        return *( static_cast< const T* >( myPtr ) );
+      }
+    }
+
+    /**
+       - const A & -> const A*      // no duplication
+       - const A* -> const A*       // no duplication
+    */
+    inline const T* operator&() const {
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF: 
+      case CONST_PTR:
+	return static_cast< const T* >( myPtr );
+      default: ASSERT( false && "[const T* PConstAlias::operator&() const] Invalid address operator for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+        return static_cast< const T* >( myPtr );
+      }
+    }
+
+    /**
+       - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
+       - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
+    */
+    inline operator CowPtr<T>() const {
+      switch( myParam ) {
+      case COUNTED_PTR:
+	return CowPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
+      case COW_PTR:
+	return CowPtr<T>( *( const_cast< CowPtr<T>* >( static_cast< const CowPtr<T>* >( myPtr ) ) ) );
+      default: ASSERT( false && "[PConstAlias::operator CowPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
+        return CowPtr<T>( 0 );
+      }
+    }
+
+  private:
+    const Parameter myParam;
+    const void* const myPtr;
+
   };
 
   /**
@@ -116,7 +252,7 @@ namespace DGtal {
   template <typename T> 
   class PClone
   {
-    enum Parameter { CONST_LEFT_VALUE_REF, PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; // ACQ
+    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; // ACQ
 
     struct TempPtr {
       inline TempPtr( T* ptr ) : _ptr( ptr ) {}
@@ -126,7 +262,8 @@ namespace DGtal {
 
   public:
     inline ~PClone() {}
-    inline PClone( const PClone & ) : myParam( CLONE_IS_ERROR ), myPtr( 0 ) { ASSERT( false ); }
+    inline PClone( const PClone & ) : myParam( CLONE_IS_ERROR ), myPtr( 0 ) 
+    { ASSERT(( false && "[PClone::PClone( const PClone& )] Cloning a Clone is an error." )); }
     inline PClone( const T & t ) 
       : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
     inline PClone( T* t ) 
@@ -358,6 +495,8 @@ public:
     std::cout << "    - copied   =" << size << std::endl;
     ++nbCreated;
   }
+
+#ifdef CPP11_AUTO
   DummyTbl( DummyTbl && a ) noexcept 
   : size( std::move( a.size ) ), allocated( std::move( a.allocated ) )
   {
@@ -367,7 +506,8 @@ public:
     ++nbCreated;
     ++nbMoved;
   }
-  
+#endif
+
   int value() const { return data[ 0 ]; }
   void setValue( int v ) const { data[ 0 ] = v; }
 
@@ -398,34 +538,88 @@ int DummyTbl::nbDeleted = 0;
 int DummyTbl::nbMoved = 0;
 
 
-struct ToValueMember {
-  inline ToValueMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+struct CloneToValueMember {
+  inline CloneToValueMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl.value(); }
   DummyTbl myDummyTbl;
 };
 
-struct ToCountedMember { // requires explicit duplication
-  inline ToCountedMember( PClone<DummyTbl> a1 ) // : myDummyTbl( a1 ) {} does not compile
+struct CloneToCountedMember { // requires explicit duplication
+  inline CloneToCountedMember( PClone<DummyTbl> a1 ) // : myDummyTbl( a1 ) {} does not compile
     : myDummyTbl( new DummyTbl( a1 ) ) {}
   inline int value() const { return myDummyTbl->value(); }
   CountedPtr<DummyTbl> myDummyTbl;
 };
 
-struct ToCowMember {
-  inline ToCowMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+struct CloneToCowMember {
+  inline CloneToCowMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   inline void setValue( int v ) { myDummyTbl->setValue( v ); }
   CowPtr<DummyTbl> myDummyTbl;
 };
 
-struct ToPtrMember {
-  inline ToPtrMember() : myDummyTbl( 0 ) {}
-  inline ToPtrMember( PClone<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
-  inline ~ToPtrMember() { if ( myDummyTbl != 0 ) delete myDummyTbl; else std::cerr << "[~ToPtrMember] error." << std::endl; }
+struct CloneToPtrMember {
+  inline CloneToPtrMember() : myDummyTbl( 0 ) {}
+  inline CloneToPtrMember( PClone<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
+  inline ~CloneToPtrMember() { if ( myDummyTbl != 0 ) delete myDummyTbl; else std::cerr << "[~CloneToPtrMember] error." << std::endl; }
   inline int value() const { return myDummyTbl->value(); }
   inline void setValue( int v ) { myDummyTbl->setValue( v ); }
   DummyTbl* myDummyTbl;
 };
+
+struct AliasToRefMember {
+  inline AliasToRefMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl.value(); }
+  DummyTbl& myDummyTbl;
+};
+
+struct AliasToPtrMember {
+  inline AliasToPtrMember( PAlias<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
+  inline int value() const { return myDummyTbl->value(); }
+  DummyTbl* myDummyTbl;
+};
+
+struct AliasToCountedMember {
+  inline AliasToCountedMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl->value(); }
+  CountedPtr<DummyTbl> myDummyTbl;
+};
+
+struct AliasToCowMember { // restricted but valid.
+  inline AliasToCowMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl->value(); }
+  CowPtr<DummyTbl> myDummyTbl;
+};
+
+struct AliasToConstRefMember { // restricted but valid.
+  inline AliasToConstRefMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl.value(); }
+  const DummyTbl& myDummyTbl;
+};
+
+struct ConstAliasToConstRefMember {
+  inline ConstAliasToConstRefMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl.value(); }
+  const DummyTbl& myDummyTbl;
+};
+
+struct ConstAliasToConstPtrMember {
+  inline ConstAliasToConstPtrMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
+  inline int value() const { return myDummyTbl->value(); }
+  const DummyTbl* myDummyTbl;
+};
+
+struct ConstAliasToCowMember { 
+  inline ConstAliasToCowMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl->value(); }
+  CowPtr<DummyTbl> myDummyTbl;
+};
+
+// struct ConstAliasToRefMember { // invalid
+//    inline ConstAliasToRefMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+//    inline int value() const { return myDummyTbl.value(); }
+//    DummyTbl& myDummyTbl;
+// };
 
 
 
@@ -591,8 +785,174 @@ computeTrianglesByCowPtr( int size )
   return total;
 }
 
+bool testAliasCases()
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  DummyTbl a1( 100, 10 ); // +1/0
+  DummyTbl* ptr_a2 = new DummyTbl( 100, 18 ); // +1/0
+  CountedPtr<DummyTbl> counted_a1( new DummyTbl( 100, 12 ) ); // +1/0
+  DummyTbl::reset();
+  trace.beginBlock ( "Testing class PAlias." );
 
-int main()
+  /*
+     - A& -> A&                       // no duplication
+     - A* -> A&                       // no duplication, exception if null
+     - A& -> A*                       // no duplication
+     - A* -> A*                       // no duplication
+     - CountedPtr<A> -> CountedPtr<A> // shared
+  */
+  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl& to DummyTbl& member. no duplication (0/0)" );
+  AliasToRefMember c00( a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c00.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl* to DummyTbl& member. no duplication (0/0)" );
+  AliasToRefMember c10( ptr_a2 ); // 0/0
+  trace.info() << "D: d1.value() = " << c10.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl& to DummyTbl* member. no duplication (0/0)" );
+  AliasToPtrMember c01( a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c01.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl* to DummyTbl* member. no duplication (0/0)" );
+  AliasToPtrMember c11( ptr_a2 ); // 0/0
+  trace.info() << "D: d1.value() = " << c11.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PAlias: #DummyTbl with CountedPtr<DummyTbl> to CountedPtr<DummyTbl> member. no duplication (0/0)" );
+  AliasToCountedMember c33( counted_a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c33.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  // const DummyTbl& const_a1 = a1; 
+  // AliasToRefMember c02( const_a1 ); // does not execute.
+  // const DummyTbl* const_ptr_a1 = &a1; 
+  // AliasToRefMember c05( const_ptr_a1 ); // does not execute.
+
+  trace.endBlock();
+
+  delete ptr_a2;
+  return nbok == nb;
+}
+
+bool testConstAliasCases()
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  DummyTbl a1( 100, 10 ); // +1/0
+  DummyTbl* ptr_a2 = new DummyTbl( 100, 18 ); // +1/0
+  CountedPtr<DummyTbl> counted_a1( new DummyTbl( 100, 12 ) ); // +1/0
+  CowPtr<DummyTbl> cow_a1( new DummyTbl( 100, 16 ) ); // +1/0
+  DummyTbl::reset();
+  trace.beginBlock ( "Testing class PConstAlias." );
+
+  /*
+     - const A & -> const A &     // no duplication
+     - const A* -> const A &      // no duplication, exception if null
+     - const A & -> const A*      // no duplication
+     - const A* -> const A*       // no duplication
+     - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
+     - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
+  */
+  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl& member. no duplication (0/0)" );
+  ConstAliasToConstRefMember c00( a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c00.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl& member. no duplication (0/0)" );
+  ConstAliasToConstRefMember c10( ptr_a2 ); // 0/0
+  trace.info() << "D: d1.value() = " << c10.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl* member. no duplication (0/0)" );
+  ConstAliasToConstPtrMember c01( a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c01.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl* member. no duplication (0/0)" );
+  ConstAliasToConstPtrMember c11( ptr_a2 ); // 0/0
+  trace.info() << "D: d1.value() = " << c11.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PConstAlias: #DummyTbl with CountedPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
+  ConstAliasToCowMember c33( counted_a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c33.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PConstAlias: #DummyTbl with CowPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
+  ConstAliasToCowMember c33_bis( cow_a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c33_bis.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  // These lines do not compile.
+  // DummyTbl& ref_a1 = PConstAlias<DummyTbl>( a1 );
+  // DummyTbl* ptr_a1( & ConstAlias<DummyTbl>( a1 ) );
+
+  trace.endBlock();
+
+  delete ptr_a2;
+  return nbok == nb;
+}
+
+bool testCloneCases()
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
@@ -600,9 +960,11 @@ int main()
   CowPtr<DummyTbl> cow_a1( new DummyTbl( 50, 5 ) ); // +1/0
   CountedPtr<DummyTbl> counted_a1( new DummyTbl( 50, 12 ) ); // +1/0
   DummyTbl::reset();
+  trace.beginBlock ( "Testing class PClone." );
+
 
   trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to DummyTbl member. Duplication (+1/0)" );
-  ToValueMember c00( a1 ); // +1/0
+  CloneToValueMember c00( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==1 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
@@ -612,7 +974,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl member. Duplication (+1/0)" );
-  ToValueMember c30( a1 ); // +1/0
+  CloneToValueMember c30( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c30.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==2 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
@@ -622,7 +984,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to CountedPtr<DummyTbl> member. Duplication (+1/0)" );
-  ToCountedMember c03( a1 ); // +1/0
+  CloneToCountedMember c03( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c03.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==3 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
@@ -632,7 +994,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to CowPtr<DummyTbl> member. Duplication (+1/0)" );
-  ToCowMember c02( a1 ); // +1/0
+  CloneToCowMember c02( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c02.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
@@ -642,7 +1004,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (CowPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
-  ToCowMember c22( cow_a1 ); // +0/0
+  CloneToCowMember c22( cow_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c22.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
@@ -660,7 +1022,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
-  ToCowMember c32( counted_a1 ); // +0/0
+  CloneToCowMember c32( counted_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c32.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==5 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
@@ -678,7 +1040,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to DummyTbl member. Acquisition, duplication, delete (+2/+1)" );
-  ToValueMember c10( new DummyTbl( 50, 2 ) ); // +2/+1
+  CloneToValueMember c10( new DummyTbl( 50, 2 ) ); // +2/+1
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==8 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
@@ -688,7 +1050,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to CowPtr<DummyTbl> member. Acquisition, no duplication (+1/0)" );
-  ToCowMember c12( new DummyTbl( 50, 15 ) ); // +1/0
+  CloneToCowMember c12( new DummyTbl( 50, 15 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c12.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==9 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
@@ -698,7 +1060,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl&) to DummyTbl* member. Duplication (+1/0)" );
-  ToPtrMember c01( a1 ); // +1/0
+  CloneToPtrMember c01( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==10 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
@@ -708,7 +1070,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to DummyTbl* member. Acquisition (+1/0)" );
-  ToPtrMember c11( new DummyTbl( 50, 42 ) ); // +1/0
+  CloneToPtrMember c11( new DummyTbl( 50, 42 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==11 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
@@ -718,7 +1080,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (CowPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
-  ToPtrMember c21( cow_a1 ); // +1/0
+  CloneToPtrMember c21( cow_a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c21.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==12 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
@@ -728,7 +1090,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
-  ToPtrMember c31( counted_a1 ); // +1/0
+  CloneToPtrMember c31( counted_a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c31.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==13 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
@@ -739,7 +1101,7 @@ int main()
 
 #ifdef CPP11_AUTO
   trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
-  ToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
+  CloneToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c40.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==15 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==2 ? 1 : 0;
@@ -752,7 +1114,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to CowPtr<DummyTbl> member. Duplication by move (+2/+1/+1)" );
-  ToCowMember c42( DummyTbl( 50, -9 ) ); // +2/+1/+1
+  CloneToCowMember c42( DummyTbl( 50, -9 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c42.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==17 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==3 ? 1 : 0;
@@ -765,7 +1127,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to DummyTbl* member. Duplication by move (+2/+1/+1)" );
-  ToCowMember c41( DummyTbl( 50, -12 ) ); // +2/+1/+1
+  CloneToCowMember c41( DummyTbl( 50, -12 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c41.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==19 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==4 ? 1 : 0;
@@ -778,8 +1140,18 @@ int main()
   trace.endBlock();
 #endif
 
+  trace.endBlock();
 
+  return nbok == nb;
+}
+
+bool testCloneTimings()
+{
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
   int size = 10;
+  trace.beginBlock ( "Testing PClone timings." );
+
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
   double t1 = computeTriangles<TriangleByValue>( size );
   trace.info() << "Perimeter is " << t1 << std::endl;
@@ -841,8 +1213,19 @@ int main()
   Point::reset();
   trace.endBlock();
 
+  trace.endBlock();
 
+  return nb == nbok;
+}
 
-  return ( nb == nbok ) ? 0 : 1;
+int main()
+{
+  bool ok = true
+    && testCloneCases() 
+    && testCloneTimings()
+    && testAliasCases()
+    && testConstAliasCases();
+
+  return ok ? 0 : 1;
 }
 /** @ingroup Tests **/
