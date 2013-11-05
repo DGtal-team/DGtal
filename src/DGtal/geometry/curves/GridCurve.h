@@ -61,6 +61,7 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/SCellsFunctors.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -416,7 +417,7 @@ namespace DGtal
 
     ///////////////////////// PointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToPoint<KSpace>, Point >  PointsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToPoint<KSpace>, Point >  PointsRange;
 
     /**
      * @return an instance of PointsRange
@@ -427,14 +428,14 @@ namespace DGtal
 
     ///////////////////////// MidPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToMidPoint<KSpace>, 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, CanonicSCellEmbedder<KSpace>,
                                typename KSpace::Space::RealPoint >  MidPointsRange; 
 
     /**
      * @return an instance of MidPointsRange
      */
     MidPointsRange getMidPointsRange() const {
-      return MidPointsRange(mySCells.begin(), mySCells.end(), new SCellToMidPoint<KSpace>(*myKPtr) );
+      return MidPointsRange(mySCells.begin(), mySCells.end(), new CanonicSCellEmbedder<KSpace>(*myKPtr) );
     } 
 
     ///////////////////////// ArrowsRange

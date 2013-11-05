@@ -137,7 +137,7 @@ public:
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    //void selfDisplay ( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
