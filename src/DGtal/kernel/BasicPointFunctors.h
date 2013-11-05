@@ -293,9 +293,9 @@ namespace DGtal
       pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ; 
       
       if(myDomain.isInside(pt))
-	return pt;
+        return pt;
       else
-	return  myDefaultPoint;
+        return  myDefaultPoint;
     }
   private:
     // position of insertion of the new dimension
@@ -368,9 +368,9 @@ namespace DGtal
 								    myFirstAxisEmbeddedDirection(Point(anUpperPointOnAxis1[0]-anOriginPoint[0],
 												       anUpperPointOnAxis1[1]-anOriginPoint[1],
 												       anUpperPointOnAxis1[2]-anOriginPoint[2])),
-                                                                   mySecondAxisEmbeddedDirection(Point(anUpperPointOnAxis2[0]-anOriginPoint[0],
-												       anUpperPointOnAxis2[1]-anOriginPoint[1],
-												       anUpperPointOnAxis2[2]-anOriginPoint[2]))
+      mySecondAxisEmbeddedDirection(Point(anUpperPointOnAxis2[0]-anOriginPoint[0],
+					  anUpperPointOnAxis2[1]-anOriginPoint[1],
+					  anUpperPointOnAxis2[2]-anOriginPoint[2]))
       
       
     {    
@@ -400,22 +400,21 @@ namespace DGtal
       double d = -anNormalVector[0]*anOriginPoint[0] - anNormalVector[1]*anOriginPoint[1] - anNormalVector[2]*anOriginPoint[2];
       typename Space::RealPoint pRefOrigin;
       if(anNormalVector[0]!=0){
-	pRefOrigin [0]= -d/anNormalVector[0];
-	pRefOrigin [1]= 0.0;
-	pRefOrigin [2]= 0.0;
+        pRefOrigin [0]= -d/anNormalVector[0];
+        pRefOrigin [1]= 0.0;
+        pRefOrigin [2]= 0.0;
       }else if (anNormalVector[1]!=0){
-	pRefOrigin [0]= 0.0;
-	pRefOrigin [1]= -d/anNormalVector[1];
-	pRefOrigin [2]= 0.0;
+        pRefOrigin [0]= 0.0;
+        pRefOrigin [1]= -d/anNormalVector[1];
+        pRefOrigin [2]= 0.0;
       }else if (anNormalVector[2]!=0){
-	pRefOrigin [0]= 0.0;
-	pRefOrigin [1]= 0.0;
-       	pRefOrigin [2]= -d/anNormalVector[2];
+        pRefOrigin [0]= 0.0;
+        pRefOrigin [1]= 0.0;
+        pRefOrigin [2]= -d/anNormalVector[2];
       }
 
       typename Space::RealPoint uDir1;
       uDir1=(pRefOrigin-anOriginPoint)/((pRefOrigin-anOriginPoint).norm());
-            
       typename Space::RealPoint uDir2;
       uDir2[0] = uDir1[1]*anNormalVector[2]-uDir1[2]*anNormalVector[1];
       uDir2[1] = uDir1[2]*anNormalVector[0]-uDir1[0]*anNormalVector[2];
