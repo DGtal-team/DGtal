@@ -57,7 +57,6 @@ bool testGenericReader()
    
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
-  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,DGtal::uint64_t> Image3Dlong;
 
   std::string filenameImage1 = testPath + "samples/cat10.vol";    
   Image3D anImportedImage1= DGtal::GenericReader<Image3D>::import(filenameImage1);
