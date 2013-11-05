@@ -42,6 +42,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/Trace.h"
 #include <boost/current_function.hpp>
+#include <string>
 
 namespace DGtal
 {
@@ -61,7 +62,7 @@ namespace DGtal
 #else
   inline
   void
-  assert_failed(const char* expr, const char* function, const char* file, long int line)
+  assert_failed(const std::string& expr, const std::string& function, const std::string& file, long int line)
   {
       trace.error()
           << " Assertion Error - assertion (" << expr << ") failed in " << function << ": "
@@ -77,7 +78,7 @@ namespace DGtal
 #else
   inline
   void
-  assert_failed_message(const char* expr, const char* message, const char* function, const char* file, long int line)
+  assert_failed_message(const std::string& expr, const std::string& message, const std::string& function, const std::string& file, long int line)
   {
       trace.error()
           << " Assertion Error - assertion (" << expr << ") failed in " << function << ": "
@@ -89,7 +90,7 @@ namespace DGtal
 
   inline
   void
-  fatal_error_failed(const char* expr, const char* function, const char* file, long int line)
+  fatal_error_failed(const std::string& expr, const std::string& function, const std::string& file, long int line)
   {
       trace.error()
           << " Fatal Error - assertion (" << expr << ") failed in " << function << ": "
@@ -100,7 +101,7 @@ namespace DGtal
 
   inline
   void
-  fatal_error_failed_message(const char* expr, const char* message, const char* function, const char* file, long int line)
+  fatal_error_failed_message(const std::string& expr, const std::string& message, const std::string& function, const std::string& file, long int line)
   {
       trace.error()
           << " Fatal Error - assertion (" << expr << ") failed in " << function << ": "
