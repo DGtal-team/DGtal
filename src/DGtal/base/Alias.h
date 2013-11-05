@@ -21,7 +21,7 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2012/11/23
+ * @date 2013/11/5
  *
  * Header file for module Alias.cpp
  *
@@ -52,19 +52,20 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Alias
   /**
-     Description of template class 'Alias' <p> \brief Aim: This class
-     encapsulates its parameter class so that to indicate to the user
-     that the object/pointer will be only aliased. Therefore the user
-     is reminded that the argument parameter is given to the function
-     without any additional cost and may be modified, while he is
-     aware that the lifetime of the argument parameter must be at
-     least as long as the object itself. Note that an instance of
-     Alias<T> is itself a light object (it holds only an enum and a
-     pointer).
+Description of template class 'Alias' <p> 
 
-     It is used in methods or functions to encapsulate the parameter
-     types. The following conversion from input parameter to data
-     member or variable are possible:
+\brief Aim: This class encapsulates its parameter class so that
+to indicate to the user that the object/pointer will be only
+aliased. Therefore the user is reminded that the argument
+parameter is given to the function without any additional cost
+and may be modified, while he is aware that the lifetime of the
+argument parameter must be at least as long as the object
+itself. Note that an instance of Alias<T> is itself a light
+object (it holds only an enum and a pointer).
+
+It is used in methods or functions to encapsulate the parameter
+types. The following conversion from input parameter to data
+member or variable are possible:
 
 |Input parameter   |    \c T&      |    \c T*      |\c CountedPtr<T>|
 |------------------|---------------|---------------|----------------|
@@ -74,95 +75,95 @@ namespace DGtal
 |To:\c CowPtr<T>   |               |               | Shared. O(1)   |
 
 
-     @note The usage of \c Alias<T> instead of \c T \c & or \c T \c *
-     in parameters is \b recommended when the lifetime of the
-     parameter must exceed the lifetime of the called
-     method/function/constructor (often the case in constructor or
-     init methods). The usage of \c T \c & or \c T \c * instead of \c
-     Alias<T> is \b recommended when the lifetime of the parameter is
-     not required to exceed the lifetime of the called
-     method/function/constructor (often the case in standard methods,
-     where the parameter is only used at some point, but not
-     referenced after in some data member).
+@note The usage of \c Alias<T> instead of \c T \c & or \c T \c *
+in parameters is \b recommended when the lifetime of the
+parameter must exceed the lifetime of the called
+method/function/constructor (often the case in constructor or
+init methods). The usage of \c T \c & or \c T \c * instead of \c
+Alias<T> is \b recommended when the lifetime of the parameter is
+not required to exceed the lifetime of the called
+method/function/constructor (often the case in standard methods,
+where the parameter is only used at some point, but not
+referenced after in some data member).
 
 
 
-     @tparam T is any type.
+@tparam T is any type.
 
-     @see ConstAlias
-     @see Clone
+@see ConstAlias
+@see Clone
 
-     It can be used as follows. Consider this simple example where
-     class \e A is a big object.
-     
-     @code
-     const int N = 10000;
-     struct A { ...
-       int table[N];
-     };
+It can be used as follows. Consider this simple example where
+class \e A is a big object.
 
-     // When looking at the signature of B1's constructor, there is an
-     // ambiguity on the role of parameter a and its life-time. Here
-     // a's lifetime should be longer than the construction. Generally
-     // the ambiguity is removed by adding comments or, for the
-     // experienced developper, by looking at other parts of the code.
+@code
+const int N = 10000;
+struct A { ...
+  int table[N];
+};
 
-     // Only aliasing, but for a long lifetime.
-     struct B1 {
-       B1( A & a ) // ambiguous, cost is O(1) here and lifetime of a should exceed constructor.
-       : myA( a ) {}
-     ...
-       A & myA;
-     };
-     @endocde
+// When looking at the signature of B1's constructor, there is an
+// ambiguity on the role of parameter a and its life-time. Here
+// a's lifetime should be longer than the construction. Generally
+// the ambiguity is removed by adding comments or, for the
+// experienced developper, by looking at other parts of the code.
 
-     Sometimes it is very important that the developper that uses
-     the library is conscious that an object, say \a b, may require
-     that an instance \a a given as parameter should have a lifetime
-     longer than \a b itself (case for an instance of \a B1
-     above). Classes \ref Clone, \ref Alias, \ref ConstAlias exist for these
-     reasons. The class above may be rewritten as follows.
-     
-     @code
-     // Aliasing for a long lifetime is visible.
-     struct B1_v2_1 {
-       B1_v2_1( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
-       : myA( a ) {}
-     ...
-       A & myA; 
-     };
+// Only aliasing, but for a long lifetime.
+struct B1 {
+  B1( A & a ) // ambiguous, cost is O(1) here and lifetime of a should exceed constructor.
+  : myA( a ) {}
+...
+  A & myA;
+};
+@endcode
 
-     // Aliasing for a long lifetime is visible.
-     struct B1_v2_2 {
-       B1_v2_2( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
-       : myA( &a ) {}
-     ...
-       A* myA;
-     };
+Sometimes it is very important that the developper that uses
+the library is conscious that an object, say \a b, may require
+that an instance \a a given as parameter should have a lifetime
+longer than \a b itself (case for an instance of \a B1
+above). Classes \ref Clone, \ref Alias, \ref ConstAlias exist for these
+reasons. The class above may be rewritten as follows.
 
-     // Aliasing for a long lifetime is visible.
-     struct B1_v2_3 {
-       B1_v2_3( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough, requires typeid(a) == CountedPtr<A> because of member.
-       : myA( &a ) {}
-     ...
-       CountedPtr<A> myA;
-     };
+@code
+// Aliasing for a long lifetime is visible.
+struct B1_v2_1 {
+  B1_v2_1( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+  : myA( a ) {}
+...
+  A & myA; 
+};
 
-     ...
-     A a1;
-     CountedPtr<A> cptr_a1( new A( a1 ) );
-     B1 ( a1 ); // not duplicated
-     B1_v2_1 ( a1 ); // not duplicated
-     B1_v2_2 ( a1 ); // not duplicated
-     B1_v2_3 ( cptr_a1 ); // not duplicated
-     @endcode
+// Aliasing for a long lifetime is visible.
+struct B1_v2_2 {
+  B1_v2_2( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+  : myA( &a ) {}
+...
+  A* myA;
+};
 
-     @note The user should not use Alias<T> instead of T* for data
-     members. It works in most cases, but there are some subtle
-     differences between the two behaviors.
+// Aliasing for a long lifetime is visible.
+struct B1_v2_3 {
+  B1_v2_3( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough, requires typeid(a) == CountedPtr<A> because of member.
+  : myA( &a ) {}
+...
+  CountedPtr<A> myA;
+};
 
-     @note Alias have a default copy constructor, so as to let the
-     user forward an Alias<T> parameter.
+...
+A a1;
+CountedPtr<A> cptr_a1( new A( a1 ) );
+B1 ( a1 ); // not duplicated
+B1_v2_1 ( a1 ); // not duplicated
+B1_v2_2 ( a1 ); // not duplicated
+B1_v2_3 ( cptr_a1 ); // not duplicated
+@endcode
+
+@note The user should not use Alias<T> instead of T* for data
+members. It works in most cases, but there are some subtle
+differences between the two behaviors.
+
+@note Alias have a default copy constructor, so as to let the
+user forward an Alias<T> parameter.
    */
   template <typename T>
   class Alias
