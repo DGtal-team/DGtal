@@ -128,7 +128,7 @@ namespace DGtal
 
     /**
      * Copy constructor.
-     * UNUSED(@param) other the object to clone.
+     * UNUSED_PARAM other the object to clone.
      */
     ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) ) 
     {
@@ -136,7 +136,7 @@ namespace DGtal
     
     /**
      * Assignment.
-     * param other the object to copy.
+     * UNUSED_PARAM other the object to copy.
      * @return a reference on 'this'.
      */
     Self & operator= ( const Self & UNUSED(other) ) 
@@ -262,8 +262,8 @@ namespace DGtal
      * Compute the Lp distance without the computation of the power
      * 1/p. I.e. only @f$ \sum |p_i- q_i|^p@f$ is given.
      * 
-     * UNUSED(@param) aP a first point
-     * UNUSED(@param) aQ a second point
+     * UNUSED_PARAM aP a first point
+     * UNUSED_PARAM aQ a second point
      * 
      * @return the power p of the l_p distance between aP and aQ.
      */    
@@ -318,13 +318,13 @@ namespace DGtal
   
     /**
      * Copy constructor.
-     * UNUSED(@param) other the object to clone.
+     * UNUSED_PARAM other the object to clone.
      */
     ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) ) {}
     
     /**
      * Assignment.
-     * UNUSED(@param) other the object to copy.
+     * UNUSED_PARAM other the object to copy.
      * @return a reference on 'this'.
      */
     Self & operator= ( const Self & UNUSED(other) ) { return *this;}

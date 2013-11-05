@@ -103,12 +103,13 @@
 #endif // defined( WIN32 )
 
 /*  Macro to cut down on compiler warnings. */
-#if 1 /*  there should be no more any compilers needing the "#else" version */
-    #define UNUSED(identifier) /* identifier */
-#else  /*  stupid, broken compiler */
-    #define UNUSED(identifier) identifier
+#if !defined(NDEBUG)
+#define UNUSED_PARAM @param
+#define UNUSED(identifier) /* identifier */
+#else
+#define UNUSED_PARAM  param
+#define UNUSED(identifier)  identifier
 #endif
-
 
 
 
