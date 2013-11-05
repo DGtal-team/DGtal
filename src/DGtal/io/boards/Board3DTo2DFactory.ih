@@ -169,46 +169,46 @@ DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & boar
    * @return the dyn. alloc. default style for this object.
    */
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 DGtal::DrawableWithBoard3DTo2D *
-DGtal::Board3DTo2DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent(board, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( board, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsGrid(board, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aSet);
 }

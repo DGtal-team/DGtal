@@ -49,7 +49,8 @@ set).
   specific properties for your set. The container is the standard
   simple associative container \c std::set (a model of
   boost::SimpleAssociativeContainer). All find, insertion and deletion
-  requests are \f$ O(\log n) \f$ complexity.
+  requests are \f$ O(\log n) \f$ complexity. Internal order can be 
+  changed by specifiing another Compare functor as template paramater.
 
 - DigitalSetBySTLVector: this representation is suited for very small
   set of points (for instance a neighborhood). The container is the standard
