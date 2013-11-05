@@ -46,112 +46,9 @@ using namespace std;
 
 namespace DGtal {
 
-  /**
-     Performs without unnecessary duplicates "parameter -> member data"
-     - const A & -> const A &     // no duplication                    (checked)
-     - const A* -> const A &      // no duplication, exception if null (checked)
-     - const A & -> const A*      // no duplication                    (checked)
-     - const A* -> const A*       // no duplication                    (checked)
-     - CountedPtr<A> -> CowPtr<A> // potential lazy duplication        (checked)
-     - CowPtr<A> -> CowPtr<A>     // potential lazy duplication        (checked)
-  */
-  template <typename T>
-  struct PConstAlias {
-    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; 
-  public:
-    inline ~PConstAlias() {}
-    inline PConstAlias( const PConstAlias& ) : myParam( CLONE_IS_ERROR ), myPtr( 0 )
-    { ASSERT(( false && "[PConstAlias::PConstAlias( const PConstAlias& )] Cloning an Alias is an error." )); }
-    inline PConstAlias( const T& t )
-      : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
-    // inline PConstAlias( T& ) : myParam( LEFT_VALUE_REF ), myPtr( 0 )
-    // { ASSERT(( false && "[PConstAlias::PConstAlias( T& )] Const-aliasing a ref is an error. Consider Alias instead." )); }
-    // inline PConstAlias( T*  ) : myParam( PTR ), myPtr( 0 )
-    // { ASSERT(( false && "[PConstAlias::PConstAlias( T& )] Const-aliasing a pointer is an error. Consider Alias instead." )); }
-    inline PConstAlias( const T* t )
-      : myParam( CONST_PTR ), myPtr( static_cast<const void*>( t ) ) {} 
-    inline PConstAlias( const CowPtr<T>& t ) 
-      : myParam( COW_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-    inline PConstAlias( const CountedPtr<T>& t ) 
-      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-#ifdef CPP11_RREF_MOVE
-    inline PConstAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[PConstAlias::PConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
-#endif
-
-    /**
-       - const A & -> const A &     // no duplication
-       - const A* -> const A &      // no duplication, exception if null
-    */
-    inline operator const T&() const {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF:
-      case CONST_PTR:
-	return *( static_cast< const T* >( myPtr ) );
-      default: ASSERT( false && "[PConstAlias::operator const T&() const] Invalid cast for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
-        return *( static_cast< const T* >( myPtr ) );
-      }
-    }
-
-    /**
-       - const A & -> const A*      // no duplication
-       - const A* -> const A*       // no duplication
-    */
-    inline const T* operator&() const {
-      switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
-      case CONST_PTR:
-	return static_cast< const T* >( myPtr );
-      default: ASSERT( false && "[const T* PConstAlias::operator&() const] Invalid address operator for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
-        return static_cast< const T* >( myPtr );
-      }
-    }
-
-    /**
-       - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
-       - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
-    */
-    inline operator CowPtr<T>() const {
-      switch( myParam ) {
-      case COUNTED_PTR:
-	return CowPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
-      case COW_PTR:
-	return CowPtr<T>( *( const_cast< CowPtr<T>* >( static_cast< const CowPtr<T>* >( myPtr ) ) ) );
-      default: ASSERT( false && "[PConstAlias::operator CowPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
-        return CowPtr<T>( 0 );
-      }
-    }
-
-  private:
-    const Parameter myParam;
-    const void* const myPtr;
-
-  };
 
   /**
-     Performs without unnecessary duplicates "parameter -> member data"
-     - const A & -> A             // immediate duplication (checked)
-     - A* -> A                    // immediate duplication, acquired and deleted. (checked)
-     - CountedPtr<A> -> A         // immediate duplication (checked)
-     - CowPtr<A> -> A             // immediate duplication (checked)
-     - A&& -> A                   // move into member      (checked)
-     - const A & -> CowPtr<A>     // immediate duplication (checked)
-     - A* -> CowPtr<A>            // acquired              (checked)
-     - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
-     - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
-     - A&& -> CowPtr<A>           // move into member      (checked)
-     - const A & -> A*            // immediate duplication, should be deleted at the end. (checked)
-     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end. (checked)           
-     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end. (checked)         
-     - A* -> A*                   // acquired, should be deleted at the end. (checked)      
-     - A&& -> A*                  // move into member, should be deleted at the end. (checked)
-
-     It uses a pair (const void*,enum), which does not use dynamic
-     allocation. 
-
-  */
-
-  /**
+     Tentative Clone.
      Performs without unnecessary duplicates "parameter -> member data"
      - const A & -> A 
      - const A & -> CowPtr<A> 
@@ -398,25 +295,25 @@ struct AliasToConstRefMember { // restricted but valid.
 };
 
 struct ConstAliasToConstRefMember {
-  inline ConstAliasToConstRefMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline ConstAliasToConstRefMember( ConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl.value(); }
   const DummyTbl& myDummyTbl;
 };
 
 struct ConstAliasToConstPtrMember {
-  inline ConstAliasToConstPtrMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
+  inline ConstAliasToConstPtrMember( ConstAlias<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   const DummyTbl* myDummyTbl;
 };
 
 struct ConstAliasToCowMember { 
-  inline ConstAliasToCowMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline ConstAliasToCowMember( ConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   CowPtr<DummyTbl> myDummyTbl;
 };
 
 // struct ConstAliasToRefMember { // invalid
-//    inline ConstAliasToRefMember( PConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+//    inline ConstAliasToRefMember( ConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
 //    inline int value() const { return myDummyTbl.value(); }
 //    DummyTbl& myDummyTbl;
 // };
@@ -586,7 +483,7 @@ computeTrianglesByCowPtr( int size )
 }
 
 /**
-   Performs without unnecessary duplicates "parameter -> member data"
+   Alias: Performs without unnecessary duplicates "parameter -> member data"
    - A& -> A&                       // no duplication                    (checked)
    - A* -> A&                       // no duplication, exception if null (checked)
    - A& -> A*                       // no duplication                    (checked)
@@ -672,6 +569,15 @@ bool testAliasCases()
   return nbok == nb;
 }
 
+/**
+   ConstAlias: Performs without unnecessary duplicates "parameter -> member data"
+   - const A & -> const A &     // no duplication                    (checked)
+   - const A* -> const A &      // no duplication, exception if null (checked)
+   - const A & -> const A*      // no duplication                    (checked)
+   - const A* -> const A*       // no duplication                    (checked)
+   - CountedPtr<A> -> CowPtr<A> // potential lazy duplication        (checked)
+   - CowPtr<A> -> CowPtr<A>     // potential lazy duplication        (checked)
+*/
 bool testConstAliasCases()
 {
   unsigned int nb = 0;
@@ -681,7 +587,7 @@ bool testConstAliasCases()
   CountedPtr<DummyTbl> counted_a1( new DummyTbl( 100, 12 ) ); // +1/0
   CowPtr<DummyTbl> cow_a1( new DummyTbl( 100, 16 ) ); // +1/0
   DummyTbl::reset();
-  trace.beginBlock ( "Testing class PConstAlias." );
+  trace.beginBlock ( "Testing class ConstAlias." );
 
   /*
      - const A & -> const A &     // no duplication
@@ -691,7 +597,7 @@ bool testConstAliasCases()
      - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
      - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
   */
-  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl& member. no duplication (0/0)" );
+  trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl& member. no duplication (0/0)" );
   ConstAliasToConstRefMember c00( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -701,7 +607,7 @@ bool testConstAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl& member. no duplication (0/0)" );
+  trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl& member. no duplication (0/0)" );
   ConstAliasToConstRefMember c10( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -711,7 +617,7 @@ bool testConstAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl* member. no duplication (0/0)" );
+  trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl& to const DummyTbl* member. no duplication (0/0)" );
   ConstAliasToConstPtrMember c01( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -721,7 +627,7 @@ bool testConstAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl* member. no duplication (0/0)" );
+  trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl* to const DummyTbl* member. no duplication (0/0)" );
   ConstAliasToConstPtrMember c11( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -731,7 +637,7 @@ bool testConstAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PConstAlias: #DummyTbl with CountedPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
+  trace.beginBlock ( "ConstAlias: #DummyTbl with CountedPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
   ConstAliasToCowMember c33( counted_a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c33.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -741,7 +647,7 @@ bool testConstAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PConstAlias: #DummyTbl with CowPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
+  trace.beginBlock ( "ConstAlias: #DummyTbl with CowPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
   ConstAliasToCowMember c33_bis( cow_a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c33_bis.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -752,7 +658,7 @@ bool testConstAliasCases()
   trace.endBlock();
 
   // These lines do not compile.
-  // DummyTbl& ref_a1 = PConstAlias<DummyTbl>( a1 );
+  // DummyTbl& ref_a1 = ConstAlias<DummyTbl>( a1 );
   // DummyTbl* ptr_a1( & ConstAlias<DummyTbl>( a1 ) );
 
   trace.endBlock();
@@ -762,6 +668,7 @@ bool testConstAliasCases()
 }
 
 /**
+   Clone: Performs without unnecessary duplicates "parameter -> member data"
    - const A & -> A             // immediate duplication (checked)
    - A* -> A                    // immediate duplication, acquired and deleted. (checked)
    - CountedPtr<A> -> A         // immediate duplication (checked)
