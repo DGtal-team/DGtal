@@ -370,14 +370,14 @@ DGtal::LatticePolytope2D<TSpace,TSequence>::
 findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside, 
          const HalfSpace & hs )
 {
-  Size nbWithin = NumberTraits<Size>::ZERO;
-  Size nb = NumberTraits<Size>::ZERO;
+  Size nbWithin = (Size) 0; // JOL: problem on macos. unsigned long has no NumberTraits. NumberTraits<Size>::ZERO;
+  Size nb = (Size) 0;       // JOL: problem on macos. unsigned long has no NumberTraits. NumberTraits<Size>::ZERO;
   Iterator it = begin();
   Iterator it_prev = it;
   Iterator it_end = end();
   it_next_is_outside = it_next_is_inside = it_end;
   if ( it == it_end ) 
-    return std::make_pair( NumberTraits<Size>::ZERO, NumberTraits<Size>::ZERO );
+    return std::make_pair( (Size) 0, (Size) 0 ); // JOL: problem on macos. unsigned long has no NumberTraits. NumberTraits<Size>::ZERO;
   bool visibility_begin_vtx; // visibility of begin vertex.
   bool visibility_prev_vtx;  // visibility of previous vertex when visiting the list.
   bool visibility_vtx;       // visibility of current vertex when visiting the list.
@@ -419,7 +419,7 @@ cut( const HalfSpace & hs )
 
   // Take care of easy cases.
   if ( nbs.first == nbs.second )               { return false; }
-  if ( nbs.first == NumberTraits<Size>::ZERO ) { clear(); return true; }
+  if ( nbs.first == (Size) 0 ) { clear(); return true; } // JOL see findCut
   
   // Otherwise, determines A1B1 and A2B2.
   twiceArea(); // result in _a;

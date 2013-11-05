@@ -184,102 +184,94 @@ namespace DGtal
     inline ~ConstAlias() {}
 
     /**
-       Constructor from const reference to an instance of T. Invalid.
-    */
-    inline ConstAlias( const T& ) : myParam( CONST_LEFT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[ConstAlias::ConstAlias( const T& )] ConstAliasing a const-ref is an error. Consider ConstConstAlias instead." )); }
-
-    /**
-       Constructor from const pointer to an instance of T. Invalid.
-    */
-    inline ConstAlias( const T* ) : myParam( CONST_PTR ), myPtr( 0 )
-    { ASSERT(( false && "[ConstAlias::ConstAlias( const T& )] ConstAliasing a const-ptr is an error. Consider ConstConstAlias instead." )); }
-
-    /**
-       Constructor from a reference to an instance of T. The object is pointed in
+       Constructor from const reference to an instance of T. The object is pointed in
        'this'.
-       @param t any reference to an object of type T.
+       @param t any const reference to an object of type T.
     */
-    inline ConstAlias( T& t ) 
-      : myParam( LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline ConstAlias( const T& t )
+      : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
 
     /**
-       Constructor from a pointer to an instance of T. The object is pointed in
+       Constructor from const pointer to an instance of T. The object is pointed in
        'this'.
-       @param t any pointer to an object of type T.
+       @param ptrT any const pointer to an object of type T.
     */
-    inline ConstAlias( T* t ) 
-      : myParam( PTR ), myPtr( static_cast<const void*>( t ) ) {}
-    
+    inline ConstAlias( const T* ptrT )
+      : myParam( CONST_PTR ), myPtr( static_cast<const void*>( ptrT ) ) {} 
+
+
     /**
-       Constructor from a const reference to a copy-on-write pointer on T. Invalid.
+       Constructor from a const reference to a copy-on-write pointer on T. The object is pointed in
+       'this'.
+       @param cowT any const reference to a copy-on-write pointer to an object of type T.
     */
-    inline ConstAlias( const CowPtr<T>& ) 
-      : myParam( COW_PTR ), myPtr( 0 )
-    { ASSERT(( false && "[ConstAlias::ConstAlias( const CowPtr<T>& )] ConstAliasing a const-cow ptr is an error. Consider ConstConstAlias instead." )); }
+    inline ConstAlias( const CowPtr<T>& cowT ) 
+      : myParam( COW_PTR ), myPtr( static_cast<const void*>( &cowT ) ) {}
 
     /**
        Constructor from a const reference to a shared pointer on T. The object is pointed in
        'this'.
-       @param t a const-reference to any shared pointer to an object of type T.
+       @param shT any const reference to a shared pointer to an object of type T.
     */
-    inline ConstAlias( const CountedPtr<T>& t ) 
-      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+    inline ConstAlias( const CountedPtr<T>& shT ) 
+      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
 
 #ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value. Invalid.
     */
     inline ConstAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[ConstAlias::ConstAlias( T&& )] ConstAliasing a rvalue ref has no meaning. Consider Clone instead." )); }
+    { ASSERT(( false && "[ConstAlias::ConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
 #endif // CPP11_RREF_MOVE
 
     /**
-       Cast operator to a T reference. The object is never
+       Cast operator to a T const-reference. The object is never
        duplicated. Allowed input parameters are:
-       - T& -> T&                       // no duplication
-       - T* -> T&                       // no duplication, exception if null
+       - const A & -> const A &     // no duplication
+       - const A* -> const A &      // no duplication, exception if null
     */
-    inline operator T&() const {
+    inline operator const T&() const {
       switch( myParam ) {
-      case LEFT_VALUE_REF:
-      case PTR:
-	return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
-      default: ASSERT( false && "[ConstAlias::operator T&() const] Invalid cast for given type. Consider passing a left-value reference or a pointer as a parameter." );
-        return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
+      case CONST_LEFT_VALUE_REF:
+      case CONST_PTR:
+	return *( static_cast< const T* >( myPtr ) );
+      default: ASSERT( false && "[ConstAlias::operator const T&() const] Invalid cast for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+        return *( static_cast< const T* >( myPtr ) );
       }
     }
 
     /**
-       Cast operator to a T pointer. The object is never
+       Cast operator to a T const-pointer. The object is never
        duplicated. Allowed input parameters are:
-     - T& -> T*                       // no duplication
-     - T* -> T*                       // no duplication
+       - const A & -> const A*      // no duplication
+       - const A* -> const A*       // no duplication
     */
-    inline T* operator&() const {
+    inline const T* operator&() const {
       switch( myParam ) {
-      case LEFT_VALUE_REF: 
-      case PTR:
-	return const_cast< T* >( static_cast< const T* >( myPtr ) );
-      default: ASSERT( false && "[T* ConstAlias::operator&() const] Invalid address operator for given type. Consider passing a left-value reference or a pointer as a parameter." );
-        return const_cast< T* >( static_cast< const T* >( myPtr ) );
+      case CONST_LEFT_VALUE_REF: 
+      case CONST_PTR:
+	return static_cast< const T* >( myPtr );
+      default: ASSERT( false && "[const T* ConstAlias::operator&() const] Invalid address operator for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+        return static_cast< const T* >( myPtr );
       }
     }
 
     /**
-       Cast operator to a shared pointer. The object is never
-       duplicated. It may be lazily duplicated if casted to a
-       CowPtr<T> and the writed. Allowed input parameters are:
+       Cast operator to a copy-on-write pointer. The object is not
+       duplicated immediately. It may be lazily duplicated if casted to a
+       CowPtr<T> and then written. Allowed input parameters are:
 
-       - CountedPtr<T> -> CountedPtr<T> // shared
-       - CountedPtr<T> -> CowPtr<T>     // shared (not logical, but not preventable).
+       - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
+       - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
     */
-    inline operator CountedPtr<T>() const {
+    inline operator CowPtr<T>() const {
       switch( myParam ) {
       case COUNTED_PTR:
-	return CountedPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
-      default: ASSERT( false && "[ConstAlias::operator CountedPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr as a parameter." );
-        return CountedPtr<T>( 0 );
+	return CowPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
+      case COW_PTR:
+	return CowPtr<T>( *( const_cast< CowPtr<T>* >( static_cast< const CowPtr<T>* >( myPtr ) ) ) );
+      default: ASSERT( false && "[ConstAlias::operator CowPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
+        return CowPtr<T>( 0 );
       }
     }
 
