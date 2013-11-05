@@ -162,40 +162,40 @@ namespace DGtal
      * @param anObject the object to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template<typename Domain>
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & anObject );
+    template<typename Domain, typename Compare>
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & anObject );
 
     /**
      * @brief drawAsPavingTransparent
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<typename Domain>
-    static void drawAsPavingTransparent( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain> & anObject );
+    template<typename Domain, typename Compare>
+    static void drawAsPavingTransparent( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain, Compare> & anObject );
 
     /**
      * @brief drawAsPaving
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<typename Domain>
-    static void drawAsPaving( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain> & anObject );
+    template<typename Domain, typename Compare>
+    static void drawAsPaving( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain, Compare> & anObject );
 
     /**
      * @brief drawAsGrid
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<typename Domain>
-    static void drawAsGrid( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain> & anObject );
+    template<typename Domain, typename Compare>
+    static void drawAsGrid( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain, Compare> & anObject );
 
     /**
      * @brief draw
      * @param display the display where to draw
      * @param anObject the object to draw
      */
-    template<typename Domain>
-    static void draw( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain> & anObject );
+    template<typename Domain, typename Compare>
+    static void draw( Display3D<Space, KSpace> & display, const DGtal::DigitalSetBySTLSet<Domain, Compare> & anObject );
     // DigitalSetBySTLSet
 
 
