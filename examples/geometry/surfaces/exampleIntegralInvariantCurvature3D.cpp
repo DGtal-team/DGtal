@@ -149,7 +149,8 @@ int main( int argc, char** argv )
     }
 
     QApplication application( argc, argv );
-    Viewer3D<> viewer;
+    typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+    Viewer viewer( KSpaceShape );
     viewer.setWindowTitle("example Integral Invariant 3D");
     viewer.show();
 
@@ -169,7 +170,7 @@ int main( int argc, char** argv )
         ++abegin;
     }
 
-    viewer << Display3D<Z3i::Space, Z3i::KSpace>::updateDisplay;
+    viewer << Viewer3D<>::updateDisplay;
 
     trace.endBlock();
     return application.exec();
