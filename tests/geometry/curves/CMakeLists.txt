@@ -17,6 +17,7 @@ SET(DGTAL_TESTS_SRC
   testArithmeticalDSS
   testArithmeticalDSSKernel
   testArithmeticalDSSComputer
+  testArithmeticalDSL
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
