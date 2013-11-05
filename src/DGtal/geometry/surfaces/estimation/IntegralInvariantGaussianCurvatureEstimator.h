@@ -76,6 +76,18 @@ struct CurvatureInformations
     Matrix3x3 vectors;
 
     friend std::ostream& operator <<(std::ostream&, const CurvatureInformations&);
+    bool operator ==( const CurvatureInformations& other)
+    {
+        return ( k1 == other.k1 && k2 == other.k2 && values == other.values && vectors == other.vectors );
+    }
+    bool operator !=( const CurvatureInformations& other)
+    {
+        return !(this->operator ==( other));
+    }
+    bool operator <( const CurvatureInformations& other)
+    {
+        return (k1 < other.k1);
+    }
 };
 
 template< typename Matrix2x2 >
