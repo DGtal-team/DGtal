@@ -157,7 +157,7 @@ You can get an access to these eight ranges through the following methods:
 - getCodesRange()
 
 
-The different ranges for a grid curve whose chain code is 1110002223333
+The different ranges for a grid curve whose chain code is 0001112223333
 are depicted below. 
 
  @image html 1cellsRange.png  "Range of 1-cells"
