@@ -54,9 +54,9 @@ namespace DGtal
   /**
      Description of template class 'ConstAlias' <p> \brief Aim: This class
      encapsulates its parameter class so that to indicate to the user
-     that the object/pointer will be only aliased. Therefore the user
+     that the object/pointer will be only const aliased (and hence left unchanged). Therefore the user
      is reminded that the argument parameter is given to the function
-     without any additional cost and may be modified, while he is
+     without any additional cost and may not be modified, while he is
      aware that the lifetime of the argument parameter must be at
      least as long as the object itself. Note that an instance of
      ConstAlias<T> is itself a light object (it holds only an enum and a
@@ -66,30 +66,27 @@ namespace DGtal
      types. The following conversion from input parameter to data
      member or variable are possible:
 
-|Input parameter   |    \c T&      |    \c T*      |\c CountedPtr<T>|
-|------------------|---------------|---------------|----------------|
-|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |
-|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |
-|To:\c CountedPtr<T>|              |               | Shared. O(1)   |
-|To:\c CowPtr<T>   |               |               | Shared. O(1)   |
+|Input parameter   |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CowPtr<T>|
+|------------------|---------------|---------------|----------------|------------|
+|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |            |
+|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |            |
+|To: \c CowPtr<T>  |               |               | Lazy. O(1)/O(N)|Lazy. O(1)/O(N)|
 
 
-     @note The usage of \c ConstAlias<T> instead of \c T \c & or \c T \c *
+     @note The usage of \c ConstAlias<T> instead of \c const \c T \c & or \c const \c T \c *
      in parameters is \b recommended when the lifetime of the
      parameter must exceed the lifetime of the called
      method/function/constructor (often the case in constructor or
-     init methods). The usage of \c T \c & or \c T \c * instead of \c
+     init methods). The usage of \c const \c T \c & or \c const \c T \c * instead of \c
      ConstAlias<T> is \b recommended when the lifetime of the parameter is
      not required to exceed the lifetime of the called
      method/function/constructor (often the case in standard methods,
      where the parameter is only used at some point, but not
      referenced after in some data member).
 
-
-
      @tparam T is any type.
 
-     @see ConstConstAlias
+     @see Alias
      @see Clone
 
      It can be used as follows. Consider this simple example where
@@ -109,18 +106,18 @@ namespace DGtal
 
      // Only aliasing, but for a long lifetime.
      struct B1 {
-       B1( A & a ) // ambiguous, cost is O(1) here and lifetime of a should exceed constructor.
+       B1( const A & a ) // ambiguous, cost is O(1) here and lifetime of a should exceed constructor.
        : myA( a ) {}
      ...
-       A & myA;
+       const A & myA;
      };
-     @endocde
+     @endcode
 
      Sometimes it is very important that the developper that uses
      the library is conscious that an object, say \a b, may require
      that an instance \a a given as parameter should have a lifetime
      longer than \a b itself (case for an instance of \a B1
-     above). Classes \ref Clone, \ref ConstAlias, \ref ConstConstAlias exist for these
+     above). Classes \ref Clone, \ref Alias, \ref ConstAlias exist for these
      reasons. The class above may be rewritten as follows.
      
      @code
@@ -129,7 +126,7 @@ namespace DGtal
        B1_v2_1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       A & myA; 
+       const A & myA; 
      };
 
      // ConstAliasing for a long lifetime is visible.
@@ -137,7 +134,7 @@ namespace DGtal
        B1_v2_2( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( &a ) {}
      ...
-       A* myA;
+       const A* myA;
      };
 
      // ConstAliasing for a long lifetime is visible.
@@ -145,19 +142,19 @@ namespace DGtal
        B1_v2_3( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough, requires typeid(a) == CountedPtr<A> because of member.
        : myA( &a ) {}
      ...
-       CountedPtr<A> myA;
+       CowPtr<A> myA;
      };
 
      ...
      A a1;
-     CountedPtr<A> cptr_a1( new A( a1 ) );
+     CowPtr<A> cow_a1( new A( a1 ) );
      B1 ( a1 ); // not duplicated
      B1_v2_1 ( a1 ); // not duplicated
      B1_v2_2 ( a1 ); // not duplicated
-     B1_v2_3 ( cptr_a1 ); // not duplicated
+     B1_v2_3 ( cow_a1 ); // not duplicated
      @endcode
 
-     @note The user should not use ConstAlias<T> instead of T* for data
+     @note The user should not use ConstAlias<T> instead of \c const \c T & for data
      members. It works in most cases, but there are some subtle
      differences between the two behaviors.
 
