@@ -102,6 +102,17 @@
 #define secured_sprintf snprintf
 #endif // defined( WIN32 )
 
+/*  Macro to cut down on compiler warnings. */
+#if 1 /*  there should be no more any compilers needing the "#else" version */
+    #define UNUSED(identifier) /* identifier */
+#else  /*  stupid, broken compiler */
+    #define UNUSED(identifier) identifier
+#endif
+
+
+
+
+
 #include "DGtal/base/Config.h"
 #include "DGtal/base/Trace.h"
 #include "DGtal/base/TraceWriterTerm.h"
