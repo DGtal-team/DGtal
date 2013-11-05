@@ -76,14 +76,17 @@ namespace DGtal {
      - A* -> A                    // immediate duplication, acquired and deleted. (checked)
      - CountedPtr<A> -> A         // immediate duplication (checked)
      - CowPtr<A> -> A             // immediate duplication (checked)
+     - A&& -> A                   // move into member      (checked)
      - const A & -> CowPtr<A>     // immediate duplication (checked)
-     - A* -> CowPtr<A>            // acquired (checked)
+     - A* -> CowPtr<A>            // acquired              (checked)
      - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
      - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
-     - const A & -> A*            // immediate duplication, should be deleted at the end.            
-     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end.            
-     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end.          
-     - A* -> A*                   // acquired, should be deleted at the end.
+     - A&& -> CowPtr<A>           // move into member      (checked)
+     - const A & -> A*            // immediate duplication, should be deleted at the end. (checked)
+     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end. (checked)           
+     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end. (checked)         
+     - A* -> A*                   // acquired, should be deleted at the end. (checked)      
+     - A&& -> A*                  // move into member, should be deleted at the end. (checked)
 
      It uses a pair (const void*,enum), which does not use dynamic
      allocation. 
@@ -142,6 +145,7 @@ namespace DGtal {
       - A* -> A                    // immediate duplication, acquired and deleted. (checked)
       - CountedPtr<A> -> A         // immediate duplication (checked)
       - CowPtr<A> -> A             // immediate duplication (checked)
+      - A&& -> A                   // move into member      (checked)
     */
     inline operator T() const 
     {
@@ -166,6 +170,7 @@ namespace DGtal {
       - A* -> CowPtr<A>            // acquired (checked)
       - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
       - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
+      - A&& -> CowPtr<A>           // move into member      (checked)
     */
     inline operator CowPtr<T>() const 
     {
@@ -183,10 +188,11 @@ namespace DGtal {
     }
 
     /**
-     - const A & -> A*            // immediate duplication, should be deleted at the end.            
-     - A* -> A*                   // acquired, should be deleted at the end.              (checked)
-     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end.            
-     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end.          
+     - const A & -> A*            // immediate duplication, should be deleted at the end. (checked)
+     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end. (checked)           
+     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end. (checked)         
+     - A* -> A*                   // acquired, should be deleted at the end. (checked)      
+     - A&& -> A*                  // move into member, should be deleted at the end. (checked)
     */
     inline T* operator&() const
     {
@@ -315,80 +321,110 @@ namespace DGtal {
 
 
 // Dummy class to test clones and aliases.
-struct A1
+struct DummyTbl
 {
-private:
-  A1();
 public:
-  ~A1()
+  typedef int Element;
+private:
+  DummyTbl();
+public:
+  ~DummyTbl()
   {
-    std::cout << "  ~A1() " << std::endl;
+    std::cout << "  ~DummyTbl() this=" << this << " data=" << data << std::endl;
+    if ( data != 0 ) {
+      std::cout << "    - freed    =" << allocated << std::endl;
+      delete[] data;
+    }
+    else 
+      std::cout << "    - nothing to do (already moved)" << std::endl;
     ++nbDeleted;
   }
-  A1( int i ) : data( i )
+  DummyTbl( int i, int val )
+    : size( 0 ), allocated( i )
   {
-    std::cout << "  A1( int i ) " << std::endl;
+    std::cout << "  DummyTbl( " << i << " ) this=" << this << std::endl;
+    data = new Element[ allocated ];
+    data[ size++ ] = val;
+    std::cout << "    - allocated=" << allocated << std::endl;
+    std::cout << "    - copied   =" << size << std::endl;
     ++nbCreated;
   }
-  A1( const A1 & a ) : data( a.data )
+  DummyTbl( const DummyTbl & a ) : size( a.size ), allocated( a.allocated )
   {
-    std::cout << "  A1( const A1 & a ) " << std::endl;
+    std::cout << "  DummyTbl( const DummyTbl & a ) this=" << this << " a=" << &a << std::endl;
+    data = new Element[ allocated ];
+    for ( int i = 0; i < size; ++i ) data[ i ] = a.data[ i ];
+    std::cout << "    - allocated=" << allocated << std::endl;
+    std::cout << "    - copied   =" << size << std::endl;
     ++nbCreated;
   }
-#ifdef CPP11_AUTO
-  A1( A1 && a ) noexcept : data( std::move( a.data ) ) 
+  DummyTbl( DummyTbl && a ) noexcept 
+  : size( std::move( a.size ) ), allocated( std::move( a.allocated ) )
   {
-    std::cout << "  A1( A1 && a ) " << std::endl;
+    data = a.data; a.data = 0;
+    std::cout << "  DummyTbl( DummyTbl && a ) this=" << this << " a=" << &a << std::endl;
+    std::cout << "    - check data: a=" << allocated << " s=" << size << std::endl; 
     ++nbCreated;
+    ++nbMoved;
   }
-#endif
+  
+  int value() const { return data[ 0 ]; }
+  void setValue( int v ) const { data[ 0 ] = v; }
 
-  A1& operator=( const A1 & a ) 
+private:
+  DummyTbl& operator=( const DummyTbl & a ) 
   {
     data = a.data;
-    std::cout << "  A1::operator=( const A1 & a ) " << std::endl;
+    std::cout << "  DummyTbl::operator=( const DummyTbl & a ) " << std::endl;
     return *this;
   }
+public:
   static void reset() {
     nbCreated = 0; 
     nbDeleted = 0;
   }
 
-  int data;
+	  Element* data;
+  int size;
+  int allocated;
 
   static int nbCreated;
   static int nbDeleted;
+  static int nbMoved;
 };
 
-int A1::nbCreated = 0;
-int A1::nbDeleted = 0;
+int DummyTbl::nbCreated = 0;
+int DummyTbl::nbDeleted = 0;
+int DummyTbl::nbMoved = 0;
+
 
 struct ToValueMember {
-  inline ToValueMember( PClone<A1> a1 ) : myA1( a1 ) {}
-  inline int value() const { return myA1.data; }
-  A1 myA1;
+  inline ToValueMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl.value(); }
+  DummyTbl myDummyTbl;
 };
 
 struct ToCountedMember { // requires explicit duplication
-  inline ToCountedMember( PClone<A1> a1 ) // : myA1( a1 ) {} does not compile
-    : myA1( new A1( a1 ) ) {}
-  inline int value() const { return myA1->data; }
-  CountedPtr<A1> myA1;
+  inline ToCountedMember( PClone<DummyTbl> a1 ) // : myDummyTbl( a1 ) {} does not compile
+    : myDummyTbl( new DummyTbl( a1 ) ) {}
+  inline int value() const { return myDummyTbl->value(); }
+  CountedPtr<DummyTbl> myDummyTbl;
 };
 
 struct ToCowMember {
-  inline ToCowMember( PClone<A1> a1 ) : myA1( a1 ) {}
-  inline int value() const { return myA1->data; }
-  inline void setValue( int v ) { myA1->data = v; }
-  CowPtr<A1> myA1;
+  inline ToCowMember( PClone<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline int value() const { return myDummyTbl->value(); }
+  inline void setValue( int v ) { myDummyTbl->setValue( v ); }
+  CowPtr<DummyTbl> myDummyTbl;
 };
 
 struct ToPtrMember {
-  inline ToPtrMember( PClone<A1> a1 ) : myA1( &a1 ) {}
-  inline ~ToPtrMember() { if ( myA1 != 0 ) delete myA1; }
-  inline int value() const { return myA1->data; }
-  inline void setValue( int v ) { myA1->data = v; }
-  A1* myA1;
+  inline ToPtrMember() : myDummyTbl( 0 ) {}
+  inline ToPtrMember( PClone<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
+  inline ~ToPtrMember() { if ( myDummyTbl != 0 ) delete myDummyTbl; else std::cerr << "[~ToPtrMember] error." << std::endl; }
+  inline int value() const { return myDummyTbl->value(); }
+  inline void setValue( int v ) { myDummyTbl->setValue( v ); }
+  DummyTbl* myDummyTbl;
 };
 
 
@@ -560,141 +596,190 @@ int main()
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
-  A1 a1( 10 ); // +1/0
-  CowPtr<A1> cow_a1( new A1( 5 ) ); // +1/0
-  CountedPtr<A1> counted_a1( new A1( 12 ) ); // +1/0
-  A1::reset();
+  DummyTbl a1( 50, 10 ); // +1/0
+  CowPtr<DummyTbl> cow_a1( new DummyTbl( 50, 5 ) ); // +1/0
+  CountedPtr<DummyTbl> counted_a1( new DummyTbl( 50, 12 ) ); // +1/0
+  DummyTbl::reset();
 
-  trace.beginBlock ( "PClone: #A1 with (const A1 &) to A1 member. Duplication (+1/0)" );
+  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to DummyTbl member. Duplication (+1/0)" );
   ToValueMember c00( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==1 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==1 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (CountedPtr<A1>) to A1 member. Duplication (+1/0)" );
+  trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl member. Duplication (+1/0)" );
   ToValueMember c30( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c30.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==2 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==2 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (const A1 &) to CountedPtr<A1> member. Duplication (+1/0)" );
+  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to CountedPtr<DummyTbl> member. Duplication (+1/0)" );
   ToCountedMember c03( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c03.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==3 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==3 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (const A1 &) to CowPtr<A1> member. Duplication (+1/0)" );
+  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl &) to CowPtr<DummyTbl> member. Duplication (+1/0)" );
   ToCowMember c02( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c02.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==4 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (CowPtr<A1> &) to CowPtr<A1> member. Lazy duplication (0/0)" );
+  trace.beginBlock ( "PClone: #DummyTbl with (CowPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
   ToCowMember c22( cow_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c22.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==4 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==4 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   c22.setValue( 17 );
   trace.info() << "D: d1.setValue( 17 ) -> now duplicating " << std::endl;
   trace.info() << "D: d1.value() = " << c22.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==5 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==5 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (CountedPtr<A1> &) to CowPtr<A1> member. Lazy duplication (0/0)" );
+  trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl> &) to CowPtr<DummyTbl> member. Lazy duplication (0/0)" );
   ToCowMember c32( counted_a1 ); // +0/0
   trace.info() << "D: d1.value() = " << c32.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==5 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==5 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   c32.setValue( 21 );
   trace.info() << "D: d1.setValue( 21 ) -> now duplicating " << std::endl;
   trace.info() << "D: d1.value() = " << c32.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==6 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==6 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (A1*) to A1 member. Acquisition, duplication, delete (+2/+1)" );
-  ToValueMember c10( new A1( 2 ) ); // +2/+1
+  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to DummyTbl member. Acquisition, duplication, delete (+2/+1)" );
+  ToValueMember c10( new DummyTbl( 50, 2 ) ); // +2/+1
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==8 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==8 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (A1*) to CowPtr<A1> member. Acquisition, no duplication (+1/0)" );
-  ToCowMember c12( new A1( 15 ) ); // +1/0
+  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to CowPtr<DummyTbl> member. Acquisition, no duplication (+1/0)" );
+  ToCowMember c12( new DummyTbl( 50, 15 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c12.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==9 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==9 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (const A1&) to A1* member. Duplication (+1/0)" );
+  trace.beginBlock ( "PClone: #DummyTbl with (const DummyTbl&) to DummyTbl* member. Duplication (+1/0)" );
   ToPtrMember c01( a1 ); // +1/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==10 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==10 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PClone: #A1 with (A1*) to A1* member. Acquisition (+1/0)" );
-  ToPtrMember c11( new A1( 42 ) ); // +1/0
+  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl*) to DummyTbl* member. Acquisition (+1/0)" );
+  ToPtrMember c11( new DummyTbl( 50, 42 ) ); // +1/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==11 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==11 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PClone: #DummyTbl with (CowPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
+  ToPtrMember c21( cow_a1 ); // +1/0
+  trace.info() << "D: d1.value() = " << c21.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==12 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PClone: #DummyTbl with (CountedPtr<DummyTbl>) to DummyTbl* member. Duplication (+1/0)" );
+  ToPtrMember c31( counted_a1 ); // +1/0
+  trace.info() << "D: d1.value() = " << c31.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==13 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
 #ifdef CPP11_AUTO
-  trace.beginBlock ( "PClone: #A1 with (A1 &&) to A1 member. Duplication (+1/0)" );
-  ToValueMember c40( A1( -4 ) ); // +1/0
+  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to DummyTbl member. Duplication by move (+2/+1/+1)" );
+  ToValueMember c40( DummyTbl( 50, -4 ) ); // +2/+1/+1
   trace.info() << "D: d1.value() = " << c40.value() << std::endl;
-  ++nb, nbok += A1::nbCreated==7 ? 1 : 0;
-  ++nb, nbok += A1::nbDeleted==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbCreated==15 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==2 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbMoved==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
-               << " nbCreated=" << A1::nbCreated 
-               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted
+               << " nbMoved=" << DummyTbl::nbMoved
+	       << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to CowPtr<DummyTbl> member. Duplication by move (+2/+1/+1)" );
+  ToCowMember c42( DummyTbl( 50, -9 ) ); // +2/+1/+1
+  trace.info() << "D: d1.value() = " << c42.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==17 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==3 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbMoved==2 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted
+               << " nbMoved=" << DummyTbl::nbMoved
+	       << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "PClone: #DummyTbl with (DummyTbl &&) to DummyTbl* member. Duplication by move (+2/+1/+1)" );
+  ToCowMember c41( DummyTbl( 50, -12 ) ); // +2/+1/+1
+  trace.info() << "D: d1.value() = " << c41.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==19 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==4 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbMoved==3 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted
+               << " nbMoved=" << DummyTbl::nbMoved
+	       << std::endl; 
   trace.endBlock();
 #endif
 
 
-  int size = 40;
+  int size = 10;
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
   double t1 = computeTriangles<TriangleByValue>( size );
   trace.info() << "Perimeter is " << t1 << std::endl;
