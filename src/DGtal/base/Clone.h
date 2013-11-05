@@ -120,7 +120,7 @@ parameter passing) for small objects like a pair<int,int>. This
 is certainly due to the fact that it uses one more integer
 register for \a myParam data member.
 
-| Type   | Context  | value    | const ref | Clone  | PClone |
+| Type   | Context  | value    | const ref | OldClone  | Clone |
 |--------|----------|----------|-----------|--------|--------|
 | 2xint  |i7 2.4GHz |    48ms |     48ms  |   48ms |   59ms |
 |2xdouble|i7 2.4GHz |    48ms |     48ms  |   48ms |   49ms |
@@ -197,10 +197,10 @@ struct B2 {
 ...
   A myA;
 };
-// Cloning on the heap requires call to allocate(), so that the user remembers calling \c delete.
+// Cloning on the heap requires address operator, so that the user remembers calling \c delete.
 struct B3_v1 {
   B3_v1( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
-  : myA( a.allocate() ) {}
+  : myA( &a ) {}
   ~B3_v1() { if ( myA != 0 ) delete myA; }
 ...
   A* myA;
@@ -249,8 +249,6 @@ struct B4 {
 A a1;
 B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
 @endcode
-
-@note Clone have no copy constructor. 
 
 @note The user should not used Clone<T> for data members (in
 fact, he cannot), only as a type for parameters.
@@ -330,7 +328,6 @@ fact, he cannot), only as a type for parameters.
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &ptrT ) ) {}
 
 #ifdef CPP11_RREF_MOVE
-
     /**
        Constructor from right-reference value.  The object is pointed in
        'this'. It is duplicated (or not) when the user claims it. 
@@ -346,11 +343,11 @@ fact, he cannot), only as a type for parameters.
        Cast operator to a T instance. The object is duplicated or not
        depending on the type of input parameter.
 
-      - const A & -> A             // immediate duplication (checked)
-      - A* -> A                    // immediate duplication, acquired and deleted. (checked)
-      - CountedPtr<A> -> A         // immediate duplication (checked)
-      - CowPtr<A> -> A             // immediate duplication (checked)
-      - A&& -> A                   // move into member      (checked)
+      - const T & -> T             // immediate duplication (checked)
+      - T* -> T                    // immediate duplication, acquired and deleted. (checked)
+      - CountedPtr<T> -> T         // immediate duplication (checked)
+      - CowPtr<T> -> T             // immediate duplication (checked)
+      - T&& -> T                   // move into member      (checked)
     */
     inline operator T() const 
     {
@@ -378,11 +375,11 @@ fact, he cannot), only as a type for parameters.
        Cast operator to a copy-on-write pointer on T instance. The object is duplicated or not
        depending on the type of input parameter.
 
-      - const A & -> CowPtr<A>     // immediate duplication (checked)
-      - A* -> CowPtr<A>            // acquired (checked)
-      - CountedPtr<A> -> CowPtr<A> // lazy duplication      (checked)
-      - CowPtr<A> -> CowPtr<A>     // lazy duplication      (checked)
-      - A&& -> CowPtr<A>           // move into member      (checked)
+      - const T & -> CowPtr<T>     // immediate duplication (checked)
+      - T* -> CowPtr<T>            // acquired (checked)
+      - CountedPtr<T> -> CowPtr<T> // lazy duplication      (checked)
+      - CowPtr<T> -> CowPtr<T>     // lazy duplication      (checked)
+      - T&& -> CowPtr<T>           // move into member      (checked)
     */
     inline operator CowPtr<T>() const 
     {
@@ -411,11 +408,11 @@ fact, he cannot), only as a type for parameters.
        
        @return a pointer on an instance of T.
 
-     - const A & -> A*            // immediate duplication, should be deleted at the end. (checked)
-     - CowPtr<A> -> A*            // immediate duplication, should be deleted at the end. (checked)           
-     - CountedPtr<A> -> A*        // immediate duplication, should be deleted at the end. (checked)         
-     - A* -> A*                   // acquired, should be deleted at the end. (checked)      
-     - A&& -> A*                  // move into member, should be deleted at the end. (checked)
+     - const T & -> T*            // immediate duplication, should be deleted at the end. (checked)
+     - CowPtr<T> -> T*            // immediate duplication, should be deleted at the end. (checked)           
+     - CountedPtr<T> -> T*        // immediate duplication, should be deleted at the end. (checked)         
+     - T* -> T*                   // acquired, should be deleted at the end. (checked)      
+     - T&& -> T*                  // move into member, should be deleted at the end. (checked)
     */
     inline T* operator&() const
     {
@@ -439,9 +436,9 @@ fact, he cannot), only as a type for parameters.
 
     // ------------------------- Private Datas --------------------------------
   private:
-    // Characterizes the type of the input parameter at clone instanciation.
+    /// Characterizes the type of the input parameter at clone instanciation.
     const Parameter myParam;
-    // Stores the address of the input parameter for further use.
+    /// Stores the address of the input parameter for further use.
     const void* const myPtr;
 
 
@@ -473,7 +470,6 @@ fact, he cannot), only as a type for parameters.
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-//#include "DGtal/base/Clone.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file Alias.ih
+ * @file OldAlias.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/11/23
  *
- * Implementation of inline methods defined in Alias.h
+ * Implementation of inline methods defined in OldAlias.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,19 +41,19 @@
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Alias<T>::~Alias()
+DGtal::OldAlias<T>::~OldAlias()
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Alias<T>::Alias()
+DGtal::OldAlias<T>::OldAlias()
   : myPtrT( 0 )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Alias<T> &
-DGtal::Alias<T>::operator=( Alias & other )
+DGtal::OldAlias<T> &
+DGtal::OldAlias<T>::operator=( OldAlias & other )
 { 
   myPtrT = other.myPtrT;
   return *this;
@@ -61,29 +61,22 @@ DGtal::Alias<T>::operator=( Alias & other )
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Alias<T>::Alias( T & t ) : myPtrT( &t )
+DGtal::OldAlias<T>::OldAlias( T & t ) : myPtrT( &t )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Alias<T>::Alias(const  Alias<T> & other ) : myPtrT( other.myPtrT )
+DGtal::OldAlias<T>::OldAlias(const  OldAlias<T> & other ) : myPtrT( other.myPtrT )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Alias<T>::Alias( T* pT ) : myPtrT( pT )
+DGtal::OldAlias<T>::OldAlias( T* pT ) : myPtrT( pT )
 {}
-//-----------------------------------------------------------------------------
-// template <typename T>
-// inline
-// DGtal::Alias<T>::operator T*() const
-// {
-//   return myPtrT;
-// }
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Alias<T>::operator T&() const
+DGtal::OldAlias<T>::operator T&() const
 {
   return *myPtrT;
 }

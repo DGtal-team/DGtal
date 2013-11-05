@@ -45,85 +45,6 @@ using namespace std;
 
 
 namespace DGtal {
-  /**
-     Performs without unnecessary duplicates "parameter -> member data"
-     - A& -> A&                       // no duplication                    (checked)
-     - A* -> A&                       // no duplication, exception if null (checked)
-     - A& -> A*                       // no duplication                    (checked)
-     - A* -> A*                       // no duplication                    (checked)
-     - CountedPtr<A> -> CountedPtr<A> // shared                            (checked)
-     - CountedPtr<A> -> CowPtr<A>     // shared (not logical, but not preventable). (checked)
-  */
-  template <typename T>
-  struct PAlias {
-    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR }; 
-  public:
-    inline ~PAlias() {}
-    inline PAlias( const PAlias& ) : myParam( CLONE_IS_ERROR ), myPtr( 0 )
-    { ASSERT(( false && "[PAlias::PAlias( const PAlias& )] Cloning an Alias is an error." )); }
-    inline PAlias( const T& ) : myParam( CONST_LEFT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[PAlias::PAlias( const T& )] Aliasing a const-ref is an error. Consider ConstAlias instead." )); }
-    inline PAlias( const T* ) : myParam( CONST_PTR ), myPtr( 0 )
-    { ASSERT(( false && "[PAlias::PAlias( const T& )] Aliasing a const-ptr is an error. Consider ConstAlias instead." )); }
-    inline PAlias( T& t ) 
-      : myParam( LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
-    inline PAlias( T* t ) 
-      : myParam( PTR ), myPtr( static_cast<const void*>( t ) ) {} 
-    inline PAlias( const CowPtr<T>& ) 
-      : myParam( COW_PTR ), myPtr( 0 )
-    { ASSERT(( false && "[PAlias::PAlias( const CowPtr<T>& )] Aliasing a const-cow ptr is an error. Consider ConstAlias instead." )); }
-    inline PAlias( const CountedPtr<T>& t ) 
-      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
-#ifdef CPP11_RREF_MOVE
-    inline PAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
-    { ASSERT(( false && "[PAlias::PAlias( T&& )] Aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
-#endif
-
-    /**
-       - A& -> A&                       // no duplication
-       - A* -> A&                       // no duplication, exception if null
-    */
-    inline operator T&() const {
-      switch( myParam ) {
-      case LEFT_VALUE_REF:
-      case PTR:
-	return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
-      default: ASSERT( false && "[PAlias::operator T&() const] Invalid cast for given type. Consider passing a left-value reference or a pointer as a parameter." );
-        return *( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
-      }
-    }
-
-    /**
-     - A& -> A*                       // no duplication
-     - A* -> A*                       // no duplication
-    */
-    inline T* operator&() const {
-      switch( myParam ) {
-      case LEFT_VALUE_REF: 
-      case PTR:
-	return const_cast< T* >( static_cast< const T* >( myPtr ) );
-      default: ASSERT( false && "[T* PAlias::operator&() const] Invalid address operator for given type. Consider passing a left-value reference or a pointer as a parameter." );
-        return const_cast< T* >( static_cast< const T* >( myPtr ) );
-      }
-    }
-    /**
-       - CountedPtr<A> -> CountedPtr<A> // shared
-       - CountedPtr<A> -> CowPtr<A>     // shared (not logical, but not preventable).
-    */
-    inline operator CountedPtr<T>() const {
-      switch( myParam ) {
-      case COUNTED_PTR:
-	return CountedPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
-      default: ASSERT( false && "[PAlias::operator CountedPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr as a parameter." );
-        return CountedPtr<T>( 0 );
-      }
-    }
-
-  private:
-    const Parameter myParam;
-    const void* const myPtr;
-    
-  };
 
   /**
      Performs without unnecessary duplicates "parameter -> member data"
@@ -447,31 +368,31 @@ struct CloneToPtrMember {
 };
 
 struct AliasToRefMember {
-  inline AliasToRefMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline AliasToRefMember( Alias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl.value(); }
   DummyTbl& myDummyTbl;
 };
 
 struct AliasToPtrMember {
-  inline AliasToPtrMember( PAlias<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
+  inline AliasToPtrMember( Alias<DummyTbl> a1 ) : myDummyTbl( &a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   DummyTbl* myDummyTbl;
 };
 
 struct AliasToCountedMember {
-  inline AliasToCountedMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline AliasToCountedMember( Alias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   CountedPtr<DummyTbl> myDummyTbl;
 };
 
 struct AliasToCowMember { // restricted but valid.
-  inline AliasToCowMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline AliasToCowMember( Alias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
   CowPtr<DummyTbl> myDummyTbl;
 };
 
 struct AliasToConstRefMember { // restricted but valid.
-  inline AliasToConstRefMember( PAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+  inline AliasToConstRefMember( Alias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl.value(); }
   const DummyTbl& myDummyTbl;
 };
@@ -664,6 +585,15 @@ computeTrianglesByCowPtr( int size )
   return total;
 }
 
+/**
+   Performs without unnecessary duplicates "parameter -> member data"
+   - A& -> A&                       // no duplication                    (checked)
+   - A* -> A&                       // no duplication, exception if null (checked)
+   - A& -> A*                       // no duplication                    (checked)
+   - A* -> A*                       // no duplication                    (checked)
+   - CountedPtr<A> -> CountedPtr<A> // shared                            (checked)
+   - CountedPtr<A> -> CowPtr<A>     // shared (not logical, but not preventable). (checked)
+*/
 bool testAliasCases()
 {
   unsigned int nb = 0;
@@ -672,7 +602,7 @@ bool testAliasCases()
   DummyTbl* ptr_a2 = new DummyTbl( 100, 18 ); // +1/0
   CountedPtr<DummyTbl> counted_a1( new DummyTbl( 100, 12 ) ); // +1/0
   DummyTbl::reset();
-  trace.beginBlock ( "Testing class PAlias." );
+  trace.beginBlock ( "Testing class Alias." );
 
   /*
      - A& -> A&                       // no duplication
@@ -681,7 +611,7 @@ bool testAliasCases()
      - A* -> A*                       // no duplication
      - CountedPtr<A> -> CountedPtr<A> // shared
   */
-  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl& to DummyTbl& member. no duplication (0/0)" );
+  trace.beginBlock ( "Alias: #DummyTbl with DummyTbl& to DummyTbl& member. no duplication (0/0)" );
   AliasToRefMember c00( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c00.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -691,7 +621,7 @@ bool testAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl* to DummyTbl& member. no duplication (0/0)" );
+  trace.beginBlock ( "Alias: #DummyTbl with DummyTbl* to DummyTbl& member. no duplication (0/0)" );
   AliasToRefMember c10( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c10.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -701,7 +631,7 @@ bool testAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl& to DummyTbl* member. no duplication (0/0)" );
+  trace.beginBlock ( "Alias: #DummyTbl with DummyTbl& to DummyTbl* member. no duplication (0/0)" );
   AliasToPtrMember c01( a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c01.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -711,7 +641,7 @@ bool testAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PAlias: #DummyTbl with DummyTbl* to DummyTbl* member. no duplication (0/0)" );
+  trace.beginBlock ( "Alias: #DummyTbl with DummyTbl* to DummyTbl* member. no duplication (0/0)" );
   AliasToPtrMember c11( ptr_a2 ); // 0/0
   trace.info() << "D: d1.value() = " << c11.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
@@ -721,7 +651,7 @@ bool testAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "PAlias: #DummyTbl with CountedPtr<DummyTbl> to CountedPtr<DummyTbl> member. no duplication (0/0)" );
+  trace.beginBlock ( "Alias: #DummyTbl with CountedPtr<DummyTbl> to CountedPtr<DummyTbl> member. no duplication (0/0)" );
   AliasToCountedMember c33( counted_a1 ); // 0/0
   trace.info() << "D: d1.value() = " << c33.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
