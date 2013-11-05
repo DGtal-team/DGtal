@@ -1248,11 +1248,11 @@ template <typename Space, typename KSpace>
 template <typename TIterator>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
-						  const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>,
+                          const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>,
 						  typename KSpace::Space::RealPoint> & object )
 {
   typedef typename KSpace::Space::RealPoint RPoint;
-  typedef ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, RPoint > Range;
+  typedef ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>, RPoint > Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );

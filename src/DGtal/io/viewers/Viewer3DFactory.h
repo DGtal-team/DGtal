@@ -487,7 +487,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Viewer3D<Space,KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, typename TKSpace::Space::RealPoint> & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<TKSpace>, typename TKSpace::Space::RealPoint> & aRangeAdapter );
     // MidPointsRange
 
     // ArrowsRange
