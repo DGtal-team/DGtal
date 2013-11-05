@@ -76,72 +76,8 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( Clone<DigitalTopology> aTopology,
   Clone<DigitalSet> aPointSet,
   Connectedness cxn )
-  : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( new DigitalSet( aPointSet ) ),
-    myConnectedness( cxn )
-{
-}
-
-/**
- * Constructor.
- *
- * @param aTopology the digital topology chosen for this set,
- * smartly copied.
- *
- * @param aPointSet the set of points of the object. It is copied
- * in the object.
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( CowPtr<DigitalTopology> aTopology,
-  Clone<DigitalSet> aPointSet,
-  Connectedness cxn )
   : myTopo( aTopology ),
-    myPointSet( new DigitalSet( aPointSet ) ),
-    myConnectedness( cxn )
-{
-}
-
-/**
- * Constructor.
- *
- * @param aTopology the digital topology chosen for this set, a copy of
- * which is stored in the object.
- *
- * @param aPointSet the set of points of the object. It is smartly
- * reference in the object.
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( Clone<DigitalTopology> aTopology,
-  CowPtr<DigitalSet> aPointSet,
-  Connectedness cxn )
-  : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( aPointSet ),
-    myConnectedness( cxn )
-{
-}
-
-/**
- * Constructor by attachment of a dynamically allocated point set.
- *
- * @param aTopology the digital topology chosen for this set, a copy of
- * which is stored in the object.
- *
- * @param aPointSetPtr a dynamically allocated pointer on a set of
- * points which is afterwards handled by this (which will take
- * care of its deletion).
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( Clone<DigitalTopology> aTopology,
-  DigitalSet* aPointSetPtr,
-  Connectedness cxn )
-  : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( aPointSetPtr ),
     myConnectedness( cxn )
 {
 }
