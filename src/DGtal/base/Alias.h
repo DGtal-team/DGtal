@@ -174,7 +174,7 @@ user forward an Alias<T> parameter.
 
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
-		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR };
+		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR, CLONE_IS_ERROR };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -227,6 +227,14 @@ user forward an Alias<T> parameter.
     inline Alias( const CountedPtr<T>& t ) 
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
 
+    /**
+       Constructor from a const reference to a shared or simple pointer on T. The object is pointed in
+       'this'.
+       @param t a const-reference to any shared or simple pointer to an object of type T.
+    */
+    inline Alias( const CountedPtrOrPtr<T>& t ) 
+      : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &t ) ) {}
+
 #ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value. Invalid.
@@ -267,20 +275,40 @@ user forward an Alias<T> parameter.
       }
     }
 
-    /**
-       Cast operator to a shared pointer. The object is never
-       duplicated. It may be lazily duplicated if casted to a
-       CowPtr<T> and the writed. Allowed input parameters are:
+    // /**
+    //    Cast operator to a shared pointer. The object is never
+    //    duplicated. It may be lazily duplicated if casted to a
+    //    CowPtr<T> and the writed. Allowed input parameters are:
 
-       - CountedPtr<T> -> CountedPtr<T> // shared
-       - CountedPtr<T> -> CowPtr<T>     // shared (not logical, but not preventable).
+    //    - CountedPtr<T> -> CountedPtr<T> // shared
+    //    - CountedPtr<T> -> CowPtr<T>     // shared (not logical, but not preventable).
+    // */
+    // inline operator CountedPtr<T>() const {
+    //   switch( myParam ) {
+    //   case COUNTED_PTR:
+    // 	return CountedPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
+    //   default: ASSERT( false && "[Alias::operator CountedPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr as a parameter." );
+    //     return CountedPtr<T>( 0 );
+    //   }
+    // }
+
+    /**
+       Cast operator to a shared pointer or to a single pointer. The object is never
+       duplicated. Allowed input parameters are:
+
+       - T&            -> CountedPtrOrPtr<T> // shared
+       - T*            -> CountedPtrOrPtr<T> // shared
+       - CountedPtr<T> -> CountedPtrOrPtr<T> // shared
     */
-    inline operator CountedPtr<T>() const {
+    inline operator CountedPtrOrPtr<T>() const {
       switch( myParam ) {
+      case LEFT_VALUE_REF: 
+      case PTR:
+	return CountedPtrOrPtr<T>( const_cast< T* >( static_cast< const T* >( myPtr ) ), false );
       case COUNTED_PTR:
-	return CountedPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
-      default: ASSERT( false && "[Alias::operator CountedPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr as a parameter." );
-        return CountedPtr<T>( 0 );
+	return CountedPtrOrPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
+      default: ASSERT( false && "[Alias::operator CountedPtrOrPtr<T>() const] Invalid cast for given type. Consider passing a reference, a pointer or a CountedPtr as a parameter." );
+        return CountedPtrOrPtr<T>( 0 );
       }
     }
 

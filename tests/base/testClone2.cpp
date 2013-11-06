@@ -33,6 +33,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/CountedPtrOrPtr.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/Clone.h"
 #include "DGtal/base/OldClone.h"
@@ -276,16 +277,11 @@ struct AliasToPtrMember {
   DummyTbl* myDummyTbl;
 };
 
-struct AliasToCountedMember {
-  inline AliasToCountedMember( Alias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
-  inline int value() const { return myDummyTbl->value(); }
-  CountedPtr<DummyTbl> myDummyTbl;
-};
 
-struct AliasToCowMember { // restricted but valid.
-  inline AliasToCowMember( Alias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+struct AliasToCountedPtrOrPtrMember {
+  inline AliasToCountedPtrOrPtrMember( Alias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
-  CowPtr<DummyTbl> myDummyTbl;
+  CountedPtrOrPtr<DummyTbl> myDummyTbl;
 };
 
 struct AliasToConstRefMember { // restricted but valid.
@@ -548,9 +544,21 @@ bool testAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "Alias: #DummyTbl with CountedPtr<DummyTbl> to CountedPtr<DummyTbl> member. no duplication (0/0)" );
-  AliasToCountedMember c33( counted_a1 ); // 0/0
-  trace.info() << "D: d1.value() = " << c33.value() << std::endl;
+  trace.beginBlock ( "Alias: #DummyTbl with DummyTbl& to CountedPtrOrPtr<DummyTbl> member. no duplication (0/0)" );
+  AliasToCountedPtrOrPtrMember c06( a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c06.value() << std::endl;
+  trace.info() << c06.myDummyTbl << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "Alias: #DummyTbl with DummyTbl* to CountedPtrOrPtr<DummyTbl> member. no duplication (0/0)" );
+  AliasToCountedPtrOrPtrMember c16( a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c16.value() << std::endl;
+  trace.info() << c16.myDummyTbl << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"

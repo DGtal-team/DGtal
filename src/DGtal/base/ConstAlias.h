@@ -66,10 +66,10 @@ namespace DGtal
      types. The following conversion from input parameter to data
      member or variable are possible:
 
-|Input parameter   |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CowPtr<T>|
+|Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CowPtr<T>|
 |------------------|---------------|---------------|----------------|------------|
-|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |            |
-|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |            |
+|To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |
+|To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |
 |To: \c CowPtr<T>  |               |               | Lazy. O(1)/O(N)|Lazy. O(1)/O(N)|
 
 
@@ -261,7 +261,7 @@ namespace DGtal
        - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
        - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
     */
-    inline operator CowPtr<T>() const {
+    inline operator const CowPtr<T>() const {
       switch( myParam ) {
       case COUNTED_PTR:
 	return CowPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );

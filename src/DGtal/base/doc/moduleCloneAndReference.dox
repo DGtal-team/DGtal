@@ -96,6 +96,7 @@ The \b programmer should explicit its \e intent to the user in an unambiguous wa
     -# \b immediate \b use. The \e argument is used immediately in \c f, it is \e not \e pointed or \e referenced for \e further \e use, and its lifetime is whatever.
     -# \b immediate \b cloning. The \e argument is cloned in \c f for \e further \b secure \e use or \e modifications, and hence its lifetime is whatever.
     -# \b long-term \b const \b aliasing. The \e argument is aliased in \c f for \e further \e use. The user is warned that he must adapt the lifetime of the argument consequently (generally the lifetime of the other object). The user knows that its argument will not be modified.
+    -# \b object \b transfer or \b pointer \b acquisition. The \e argument was dynamically allocated and you wish to transfer its ownership to another object through call of \c f. This is a \b cloning for the \e programmer induced by a specific call by the \e user with a pointer.
 -# \b input-output and \b output parameters
     -# \b immediate \b use.  The \e argument is used immediately in \c f, it is \e not \e pointed or \e referenced for \e further \e use, and its lifetime is whatever. The argument is \e modified by \c f.
     -# \b long-term \b aliasing (or \b sharing). The \e argument is aliased in \c f for \e further \e use and \e modifications. The user is warned that he must adapt the lifetime of the argument consequently (generally the lifetime of the other object). The user knows that its argument is shared by another object.
@@ -106,15 +107,67 @@ The \b programmer should explicit its \e intent to the user in an unambiguous wa
 
 We propose the following ways to pass parameters without ambiguity:
 
-| input parameter             | immediate use      | immediate cloning  | long-term const-aliasing |
-|-----------------------------|--------------------|--------------------|--------------------------|
-| basic types, small object   | `f( T t )`         | `f( Clone<T> t )`  | `f( ConstAlias<T> t )`   |
-| bigger objects              | `f( const T& t )`  | `f( Clone<T> t )`  | `f( ConstAlias<T> t )`   |
+| input parameter             | immediate use      | immediate cloning / object transfer  | long-term const-aliasing |
+|-----------------------------|--------------------|--------------------------------------|--------------------------|
+| basic types, small object   | `f( T t )`         | `f( Clone<T> t )`                    | `f( ConstAlias<T> t )`   |
+| bigger objects              | `f( const T& t )`  | `f( Clone<T> t )`                    | `f( ConstAlias<T> t )`   |
+| User must be careful of argument lifetime| no    | no                                   | yes                      |
 
-| input-output / output parameter| immediate use      | long-term aliasing |
+| input-output / output parameter| immediate use      | long-term aliasing / sharing |
 |--------------------------------|--------------------|--------------------|
 | any type/object                | `f( T& t )`        | `f( Alias<T> t )`  |
+| User must be careful of argument lifetime| no       | yes                |
+
+\note Parameter passing by \b pointer may be used in place of references in the first column, altough this is not encouraged. Indeed, you have to think about your parameter passing by pointer to determine whether it is truely an immediate use or an implicit \c Clone<T*>.
+
+\subsection moduleCloneAndReference_sec22 Argument passing for the user
+
+Classes Clone, Alias, and ConstAlias are defined in order to accept several arguments from the \e user. Symmetrically, they may be automatically converted into several types for the \e programmer. Not all combinations are allowed, but several optimizations are made, most notably by avoiding duplication if possible, by performing lazy duplication, or by moving objects.
+
+\subsubsection moduleCloneAndReference_sec221 Argument passing to a Clone parameter
+
+A parameter `( Clone<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Clone depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T, \c CowPtr<T>, \c T*. The following table sums up the different conversions \e Argument toward \e member.
+
+
+|Argument type:    |\c const \c T& |    \c T*      |\c CountedPtr<T>| \c CowPtr<T>   |\c T&& (c++11)|
+|------------------|---------------|---------------|----------------|----------------|--------------|
+|To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
+|To:\c CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
+|To:\c T*          | Dupl.  O(N)   |   Acq. O(1)   | Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
+
+where O(N) stands for the time to duplicate an instance of \c T, and with the following abbreviations:
+- \b Dupl. Object is duplicated.
+- \b Lazy. Object is lazily duplicated, meaning only when the user writes on it (which may be never).
+- \b Acq. Dynamically allocated pointer is acquired. User should take care himself of deletion only if storing the parameter with a pointer.
+- \b Move. The object is moved into the new object. This is  generally much faster than copy. This is true for instance for all classical STL containers. You can also write a specific \c  move constructor for your class.
+
+It is clear that worst case is duplication while sometimes \ref Clone
+is constant time (while guaranteeing object invariance and
+life-time).
+
+\note A conversion to \c T* means pointer acquisition. Hence the programmer should take of deletion of the object.
+Otherwise, deletion is automatic for \c T or \c CowPtr<T> member.
+
+| member:   |     \c T          |  big \c T |\c CowPtr<T>|     \c T* |
+|-----------|-------------------|-----------|------------|-----------|
+|member deletion:|  automatic   | automatic | automatic  | \b manual |
+
+
+\subsubsection moduleCloneAndReference_sec222 Argument passing to a ConstAlias parameter
+
+A parameter `( ConstAlias<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c ConstAlias depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T&, \c T*, \c CowPtr<T>. The following table sums up the different conversions \e Argument toward \e member.
+
+|Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CowPtr<T>|
+|------------------|---------------|---------------|----------------|------------|
+|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |            |
+|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |            |
+|To: \c CowPtr<T>  |               |               | Lazy. O(1)/O(N)|Lazy. O(1)/O(N)|
+
+\advanced As one can see, the \e user may force a \b secure \b long-term \b const-aliasing by giving explicitly a \c CowPtr<T> as an argument. \c CountedPtr<T> is added for convenience but may be dangerous (the object is const-aliased but may be modified by the \e user, while the \e programmer detaches the alias when writing on it.
+
+
 
 */
+
 
 } // namespace DGtal

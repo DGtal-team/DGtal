@@ -69,7 +69,7 @@ this mechanism. This is sumed up in the following table
 - \b Acq. Dynamically allocated pointer is acquired. User should take care himself of deletion only if storing the parameter with a pointer.
 - \b Move. The object is moved into the new object. This is  generally much faster than copy. This is true for instance for all classical STL containers. You can also write a specific \c  move constructor for your class.
 
-|Input parameter   |\c const \c T& |    \c T*      |\c CountedPtr<T>| \c CowPtr<T>   |\c T&& (c++11)|
+|Argument type     |\c const \c T& |    \c T*      |\c CountedPtr<T>| \c CowPtr<T>   |\c T&& (c++11)|
 |------------------|---------------|---------------|----------------|----------------|--------------|
 |To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
 |To:\c CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |

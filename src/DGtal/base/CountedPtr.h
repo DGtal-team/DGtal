@@ -48,6 +48,7 @@
 
 namespace DGtal
 {
+  template <typename T> class CountedPtrOrPtr;
 
   /////////////////////////////////////////////////////////////////////////////
   // template class CountedPtr
@@ -60,13 +61,20 @@ namespace DGtal
   template <typename T>
   class CountedPtr
   {
+  public:
+    friend class CountedPtrOrPtr<T>;
     // ----------------------- Standard services ------------------------------
   public:
+    struct Counter {
+        Counter(T* p = 0, unsigned c = 1) : ptr(p), count(c) {}
+        T*          ptr;
+        unsigned    count;
+    };
 
     typedef T element_type;
 
     explicit CountedPtr(T* p = 0) // allocate a new counter
-        : myCounter(0) { if (p) myCounter = new counter(p);}
+        : myCounter(0) { if (p) myCounter = new Counter(p);}
     ~CountedPtr()
         {release();}
     CountedPtr(const CountedPtr& r) throw()
@@ -92,7 +100,7 @@ namespace DGtal
     unsigned int count() const      {return myCounter->count;}
 
     inline T* drop() 
-    { // Gives back the pointer without deleting him. Delete only the counter.
+    { // Gives back the pointer without deleting him. Delete only the Counter.
       T* tmp = myCounter->ptr;
       ASSERT( myCounter->count == 1 );
       delete myCounter;
@@ -101,13 +109,9 @@ namespace DGtal
     }
 private:
 
-    struct counter {
-        counter(T* p = 0, unsigned c = 1) : ptr(p), count(c) {}
-        T*          ptr;
-        unsigned    count;
-    }* myCounter;
+    Counter* myCounter;
 
-    void acquire(counter* c) throw()
+    void acquire(Counter* c) throw()
     { // increment the count
         myCounter = c;
         if (c) ++c->count;
