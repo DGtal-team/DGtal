@@ -75,7 +75,6 @@ bool testSphericalAccumulator()
   accumulator.addDirection( Vector(1.1,1.1,1.1));
   trace.info()<< accumulator << std::endl;
   typedef SphericalAccumulator<Vector>::Size Size;
-  typedef SphericalAccumulator<Vector>::Quantity Quantity;
   Size i,j;
   accumulator.binCoordinates( Vector(1,1,1).getNormalized(), i,j);
   trace.info() << "Got coordinates ("<<i<<","<<j<<")"<<std::endl; 

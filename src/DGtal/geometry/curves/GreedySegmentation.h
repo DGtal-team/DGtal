@@ -72,7 +72,7 @@ namespace DGtal
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Range;
   typedef Range::const_iterator ConstIterator;
-  typedef ArithmeticalDSS<ConstIterator,int,8> SegmentComputer;
+  typedef ArithmeticalDSSComputer<ConstIterator,int,8> SegmentComputer;
   typedef GreedySegmentation<SegmentComputer> Segmentation;
 
   //input points

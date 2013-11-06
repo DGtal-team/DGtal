@@ -53,14 +53,14 @@
 
 template <typename TImageContainer, typename TFunctor>
 inline
-TImageContainer 
-DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFilename, const std::string & aDataset, 
+TImageContainer
+DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFilename, const std::string & aDataset,
 					       const Functor & aFunctor, bool topbotomOrder) throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
-  
+
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
-    
+
   hid_t         fileID;
   herr_t        hErrVal;
   hsize_t       width;
@@ -68,7 +68,6 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   hsize_t       planes;
   char          interlace[16];
   hssize_t      npals;
-  //int           i, j;
   unsigned char *imgBuf; // 'unsigned char' is mandated by the HDF5 library
 
   // Load the library -- not required on most platforms
@@ -89,7 +88,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
 
   // Get info about the image
   interlace[0] = 0;
-  hErrVal = H5IMget_image_info (fileID, aDataset.c_str(), &width, &height, &planes, interlace, &npals); 
+  hErrVal = H5IMget_image_info (fileID, aDataset.c_str(), &width, &height, &planes, interlace, &npals);
   if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
 
   // If the image is the wrong type, then throw exception
@@ -108,7 +107,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   // Read the data from the file
   hErrVal = H5IMread_image (fileID, aDataset.c_str(), imgBuf);
   if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
-  
+
   // Close the file
   hErrVal = H5Fclose(fileID);
   if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
@@ -116,19 +115,19 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   // Unload the library and free any remaining resources
   hErrVal = H5close();
   if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint2(H5E_DEFAULT, stderr); throw dgtalio; }
-  
+
   // --
-  
+
   typename TImageContainer::Point firstPoint;
   typename TImageContainer::Point lastPoint;
-      
+
   firstPoint = TImageContainer::Point::zero;
   lastPoint[0] = width-1;
   lastPoint[1] = height-1;
-  
+
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(domain);
-  
+
   for(hsize_t y=0; y<height; y++)
     for(hsize_t x=0; x<width; x++)
       {
@@ -138,44 +137,44 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
           }else{
             pt[0]=x; pt[1]=y;
           }
-          
+
           if( ((planes==1) && (npals==1)) )
             image.setValue(pt, aFunctor(imgBuf[ y*width+x ]));
           else if( ((planes==3) && (npals==0) && (strcmp(interlace, "INTERLACE_PIXEL")==0)) )
             image.setValue(pt, aFunctor(imgBuf[ ( (y*planes*width+x*planes)+(y*planes*width+x*planes+1)+(y*planes*width+x*planes+2) )/3 ]));
       }
-      
+
   free(imgBuf);
-  
+
   return image;
 }
 
 template <typename TImageContainer, typename TFunctor>
 inline
-TImageContainer 
-DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & aFilename, const std::string & aDataset, 
+TImageContainer
+DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & aFilename, const std::string & aDataset,
                                                const Functor & aFunctor) throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
-  
+
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 3));
-  
+
   const int ddim = ImageContainer::Domain::dimension;
-  
+
   // image domain
   Domain *myDomain;
   Domain aDomain;
-  
+
   // HDF5 handles
   hid_t file, dataset;
   hid_t datatype, dataspace;
-            
+
   H5T_class_t t_class;                  // data type class
   H5T_order_t order;                    // data order
   size_t      size;                     // size of the data element stored in file
   hsize_t     dims_out[ddim];              // dataset dimensions
   int         status_n, rank;
-    
+
   // Open the file and the dataset.
   file = H5Fopen(aFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
   dataset = H5Dopen2(file, aDataset.c_str(), H5P_DEFAULT);
@@ -185,7 +184,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   t_class = H5Tget_class(datatype);
   /*if (t_class == H5T_INTEGER)
     trace.info() << "Data set has INTEGER type" << std::endl;*/
-  
+
   order = H5Tget_order(datatype);
   /*if (order == H5T_ORDER_LE)
     trace.info() << "Little endian order" << std::endl;*/
@@ -197,50 +196,50 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   rank = H5Sget_simple_extent_ndims(dataspace);
   status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
   //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
-  
+
   // --
-  
+
   typedef SpaceND<ddim> TSpace;
   typename TSpace::Point low, up;
-  
+
   typename Domain::Integer d;
   for(d=0; d<ddim; d++)
   {
     low[d]=0;
     up[d]=dims_out[ddim-d-1]-1;
   }
-  
+
   myDomain = new Domain(low, up);
   aDomain = *myDomain;          // because here we want the full image
-  
+
   /* - reading HDF5- */
   hsize_t offset[ddim];        // hyperslab offset in the file
   hsize_t count[ddim];         // size of the hyperslab in the file
-  
+
   herr_t status;
   hsize_t dimsm[ddim];         // memory space dimensions
   hid_t memspace;
-  
+
   hsize_t offset_out[ddim];    // hyperslab offset in memory
   hsize_t count_out[ddim];     // size of the hyperslab in memory
-  
+
   //int i[ddim];
   int N_SUB[ddim];
-  
+
   int malloc_size=1;
   for(d=0; d<ddim; d++)
   {
     N_SUB[d] = (aDomain.upperBound()[ddim-d-1]-aDomain.lowerBound()[ddim-d-1])+1;
     malloc_size = malloc_size*N_SUB[d];
   }
-  
+
   Value *data_out = (Value*) malloc (malloc_size * sizeof(Value)); // output buffer
   if (data_out == NULL)
   {
     trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
     exit(-1);
   }
-  
+
   // Define hyperslab in the dataset.
   for(d=0; d<ddim; d++)
     offset[d] = aDomain.lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
@@ -269,7 +268,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   }
 
   OutputImage outputImage(aDomain);
-      
+
   typedef SpaceND<ddim> TSpace;
   typename TSpace::Point a, b;
   for(d=0; d<ddim; d++)
@@ -282,33 +281,31 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   /*std::vector<typename TSpace::Dimension> v(ddim);
   for(d=0; d<ddim; d++)
     v[d]=d;*/
-  
+
   int p=0;
-  for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator 
+  for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator
         it = domain/*.subRange(v, a)*/.begin(), itend = domain/*.subRange(v, a)*/.end();
-      it != itend; 
+      it != itend;
       ++it)
   {
     outputImage.setValue((*it), data_out[ p++ ]);
   }
-  
+
   H5Sclose(memspace);
-  
+
   free(data_out);
   /* - reading HDF5- */
-  
+
   delete myDomain;
-  
+
   // Close/release resources.
   H5Tclose(datatype);
   H5Dclose(dataset);
   H5Sclose(dataspace);
   H5Fclose(file);
-  
+
   return outputImage;
 }
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

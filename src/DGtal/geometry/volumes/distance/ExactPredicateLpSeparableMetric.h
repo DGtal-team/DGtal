@@ -112,6 +112,9 @@ namespace DGtal
     ///Type for distance values
     typedef double Value;
 
+    ///Self type
+    typedef ExactPredicateLpSeparableMetric<TSpace,p,TPromoted> Self;
+
     /**
      * Constructor.
      */
@@ -123,18 +126,23 @@ namespace DGtal
      */
     ~ExactPredicateLpSeparableMetric();
 
-  /**
+    /**
      * Copy constructor.
-     * @param other the object to clone.
+     * UNUSED_PARAM other the object to clone.
      */
-    ExactPredicateLpSeparableMetric ( const ExactPredicateLpSeparableMetric & other ) {}
+    ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) ) 
+    {
+    }
     
     /**
      * Assignment.
-     * @param other the object to copy.
+     * UNUSED_PARAM other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpSeparableMetric & operator= ( const ExactPredicateLpSeparableMetric & other ) { return *this;}
+    Self & operator= ( const Self & UNUSED(other) ) 
+    { 
+      return *this;
+    }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -254,12 +262,12 @@ namespace DGtal
      * Compute the Lp distance without the computation of the power
      * 1/p. I.e. only @f$ \sum |p_i- q_i|^p@f$ is given.
      * 
-     * @param aP a first point
-     * @param aQ a second point
+     * UNUSED_PARAM aP a first point
+     * UNUSED_PARAM aQ a second point
      * 
      * @return the power p of the l_p distance between aP and aQ.
      */    
-    Promoted exactDistanceRepresentation(const Point &aP, const Point &aQ) const;
+    Promoted exactDistanceRepresentation(const Point & UNUSED(aP), const Point &UNUSED(aQ)) const;
    
   
   }; // end of class ExactPredicateLpSeparableMetric
@@ -293,6 +301,9 @@ namespace DGtal
     ///Type for distance values
     typedef double Value;    
     
+    ///Self type
+    typedef ExactPredicateLpSeparableMetric<TSpace,2,TPromoted> Self;
+
     /**
      * Constructor.
      */
@@ -307,16 +318,16 @@ namespace DGtal
   
     /**
      * Copy constructor.
-     * @param other the object to clone.
+     * UNUSED_PARAM other the object to clone.
      */
-    ExactPredicateLpSeparableMetric ( const ExactPredicateLpSeparableMetric & other ) {}
+    ExactPredicateLpSeparableMetric ( const Self & UNUSED(other) ) {}
     
     /**
      * Assignment.
-     * @param other the object to copy.
+     * UNUSED_PARAM other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpSeparableMetric & operator= ( const ExactPredicateLpSeparableMetric & other ) { return *this;}
+    Self & operator= ( const Self & UNUSED(other) ) { return *this;}
 
    
     // ----------------------- Interface --------------------------------------

@@ -68,11 +68,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
-  typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
   IntegerComputer<Integer> ic;
 
   //std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;

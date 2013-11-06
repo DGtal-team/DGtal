@@ -133,7 +133,6 @@ eval ( const SCell & scell ) const
 {
     typedef BreadthFirstVisitor<DigitalSurf> MyBreadthFirstVisitor;
     typedef typename MyBreadthFirstVisitor::Node MyNode;
-    typedef typename MyBreadthFirstVisitor::Size MySize;
     MyBreadthFirstVisitor visitor ( mySurface, scell );
 
     MyNode node;
