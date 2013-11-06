@@ -46,10 +46,6 @@ int main()
 {
   trace.beginBlock ( "Example kernelDomain" );
   
-  //We create several space models.
-  typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace32;
-  typedef DGtal::SpaceND<1, DGtal::int64_t> MySpace8;
-
 #ifdef WITH_BIGINTEGER
   typedef DGtal::SpaceND<3, DGtal::BigInteger> MySpaceBIGINTEGER;
 #endif

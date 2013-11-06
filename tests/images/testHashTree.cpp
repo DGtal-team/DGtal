@@ -252,7 +252,6 @@ bool testBadKeySizes()
   typedef HyperRectDomain<SpaceType> TDomain;
   typedef TDomain::Point Point;
   Board2D board;
-  typedef HueShadeColorMap<unsigned char,2> HueTwice;
   board.setUnit(Board2D::UCentimeter);
 
 
