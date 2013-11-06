@@ -121,7 +121,7 @@ DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & boar
 
 // Mesh
 
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 /**
    * Default DGtal::Board3DTo2DFactory<Space,KSpace>::drawing style object.
    * @return the dyn. alloc. default style for this object.
@@ -130,7 +130,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithBoard3DTo2D *
-DGtal::Board3DTo2DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Board3DTo2DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, arithm);
 }
@@ -139,7 +139,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsBalls(board, arithm);
 }
@@ -147,7 +147,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox(board, arithm);
 }
@@ -155,12 +155,12 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw(board , arithm);
 }
 
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 
 
 // DigitalSetBySTLSet
@@ -169,46 +169,46 @@ DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & boar
    * @return the dyn. alloc. default style for this object.
    */
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 DGtal::DrawableWithBoard3DTo2D *
-DGtal::Board3DTo2DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent(board, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( board, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsGrid(board, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aSet);
 }

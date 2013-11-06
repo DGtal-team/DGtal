@@ -89,7 +89,7 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
     
  ### Models###
 
-     ArithmeticalDSS, CombinatorialDSS
+     ArithmeticalDSSComputer, OneBalancedWordComputer
     
  ### Notes###
 

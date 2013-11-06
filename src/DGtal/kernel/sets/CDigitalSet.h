@@ -47,7 +47,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/CowPtr.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -208,7 +208,7 @@ namespace DGtal
   private:
     T myX; // only if T is default constructible.
     Domain myDomain;
-    CountedPtr<Domain> myDomainPtr;
+    CowPtr<Domain> myDomainPtr;
     Size mySize;
     bool myBool;
     Point myPoint;

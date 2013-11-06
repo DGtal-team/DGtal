@@ -175,7 +175,7 @@ user forward an Alias<T> parameter.
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
 		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
-		     COUNTED_CONST_PTR_OR_CONST_PTR, CLONE_IS_ERROR };
+		     COUNTED_CONST_PTR_OR_CONST_PTR };
 
     // ----------------------- Standard services ------------------------------
   public:

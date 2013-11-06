@@ -111,7 +111,7 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( Clone<DigitalTopology> aTopology,
-  CountedPtr<Domain> aDomain )
+  Clone<Domain> aDomain )
   : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( new DigitalSet( aDomain ) ),
     myConnectedness( CONNECTED )
@@ -125,16 +125,16 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
  *
  * @param aDomain any domain related to the given topology.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( CowPtr<DigitalTopology> aTopology,
-  CountedPtr<Domain> aDomain )
-  : myTopo( aTopology ),
-    myPointSet( new DigitalSet( aDomain ) ),
-    myConnectedness( CONNECTED )
-{
-}
+// template <typename TDigitalTopology, typename TDigitalSet>
+// inline
+// DGtal::Object<TDigitalTopology, TDigitalSet>::Object
+// ( CowPtr<DigitalTopology> aTopology,
+//   CountedPtr<Domain> aDomain )
+//   : myTopo( aTopology ),
+//     myPointSet( new DigitalSet( aDomain ) ),
+//     myConnectedness( CONNECTED )
+// {
+// }
 
 /**
  * Destructor.
@@ -189,7 +189,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::domain() const
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-DGtal::CountedPtr<typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain>
+DGtal::CowPtr<typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain>
 DGtal::Object<TDigitalTopology, TDigitalSet>::domainPointer() const
 {
   return myPointSet->domainPointer();
@@ -745,7 +745,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Construct local domain.
   Point p1 = p - Point::diagonal(1);
   Point p2 = p + Point::diagonal(1);
-  CountedPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
+  CowPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
 
   // Construct local X.
   LocalTopology aTopology( adj, omega );
@@ -814,7 +814,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Construct local domain.
   Point p1 = p - Point::diagonal(1);
   Point p2 = p + Point::diagonal(1);
-  CountedPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
+  CowPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
 
   // Construct local Xcomp.
   LocalTopology aTopology( adj, omega );

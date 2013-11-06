@@ -153,7 +153,7 @@ namespace DGtal
      B1 ( a1 ); // not duplicated
      B1_v2_1 ( a1 ); // not duplicated
      B1_v2_2 ( a1 ); // not duplicated
-     B1_v2_3 ( counted_a1 ); // not duplicated
+     B1_v2_3 ( counted_a1 );  // not duplicated, even better the user choose a secure variant of const alias.
      @endcode
 
      @note The user should not use ConstAlias<T> instead of \c const \c T & for data
@@ -173,7 +173,7 @@ namespace DGtal
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
 		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
-		     COUNTED_CONST_PTR_OR_CONST_PTR, CLONE_IS_ERROR };
+		     COUNTED_CONST_PTR_OR_CONST_PTR };
 
     // ----------------------- Standard services ------------------------------
   public:
