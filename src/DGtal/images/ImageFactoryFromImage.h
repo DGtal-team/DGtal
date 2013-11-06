@@ -100,10 +100,11 @@ namespace DGtal
      */
     ~ImageFactoryFromImage() {}
     
-    ImageFactoryFromImage( const ImageFactoryFromImage &other )
-    {
-      myImagePtr = other.myImagePtr;
-    }
+  private:
+    
+    ImageFactoryFromImage( const ImageFactoryFromImage & other );
+    
+    ImageFactoryFromImage & operator=( const ImageFactoryFromImage & other );
 
     // ----------------------- Interface --------------------------------------
   public:

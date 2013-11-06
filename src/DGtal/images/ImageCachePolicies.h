@@ -100,11 +100,13 @@ public:
      */
     ~ImageCacheReadPolicyLAST() {}
     
-    ImageCacheReadPolicyLAST( const ImageCacheReadPolicyLAST &other )
-    {
-      myCacheImagesPtr =  other.myCacheImagesPtr;
-      myImageFactory = other.myImageFactory;
-    }
+private:
+    
+    ImageCacheReadPolicyLAST( const ImageCacheReadPolicyLAST & other );
+    
+    ImageCacheReadPolicyLAST & operator=( const ImageCacheReadPolicyLAST & other );
+    
+public:
     
     /**
      * Get the alias on the image that contains the point aPoint
@@ -203,11 +205,13 @@ public:
      */
     ~ImageCacheReadPolicyFIFO() {}
     
-    ImageCacheReadPolicyFIFO( const ImageCacheReadPolicyFIFO &other )
-    {
-      myFIFOSizeMax =  other.myFIFOSizeMax;
-      myImageFactory = other.myImageFactory;
-    }
+private:
+    
+    ImageCacheReadPolicyFIFO( const ImageCacheReadPolicyFIFO & other );
+    
+    ImageCacheReadPolicyFIFO & operator=( const ImageCacheReadPolicyFIFO & other );
+    
+public:
     
     /**
      * Get the alias on the image that contains the point aPoint
@@ -305,10 +309,13 @@ public:
      */
     ~ImageCacheWritePolicyWT() {}
     
-    ImageCacheWritePolicyWT( const ImageCacheWritePolicyWT &other )
-    {
-      myImageFactory = other.myImageFactory;
-    }
+private:
+    
+    ImageCacheWritePolicyWT( const ImageCacheWritePolicyWT & other );
+    
+    ImageCacheWritePolicyWT & operator=( const ImageCacheWritePolicyWT & other );
+    
+public:
     
     /**
     * Set a value on an image at a given position given
@@ -378,10 +385,13 @@ public:
      */
     ~ImageCacheWritePolicyWB() {}
     
-    ImageCacheWritePolicyWB( const ImageCacheWritePolicyWB &other )
-    {
-      myImageFactory = other.myImageFactory;
-    }
+private:
+    
+    ImageCacheWritePolicyWB( const ImageCacheWritePolicyWB & other );
+    
+    ImageCacheWritePolicyWB & operator=( const ImageCacheWritePolicyWB & other );
+    
+public:
     
     /**
     * Set a value on an image at a given position given

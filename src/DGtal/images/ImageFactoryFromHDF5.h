@@ -285,6 +285,12 @@ namespace DGtal
       H5Sclose(dataspace);
       H5Fclose(file);
     }
+    
+  private:
+    
+    ImageFactoryFromHDF5( const ImageFactoryFromHDF5 & other );
+    
+    ImageFactoryFromHDF5 & operator=( const ImageFactoryFromHDF5 & other );
 
     // ----------------------- Interface --------------------------------------
   public:
