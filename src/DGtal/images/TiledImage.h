@@ -267,6 +267,13 @@ namespace DGtal
       }
 
       inline
+      TiledIterator & operator=(const Value aVal)
+      {
+        (*myTileRangeIterator) = aVal;
+        return (*this);
+      }
+
+      inline
       void setValue ( const Value aVal )
       {
         (*myTileRangeIterator) = aVal;

@@ -299,6 +299,13 @@ bool testIterators()
   nbok += (*itbegino == 5) ? 1 : 0; nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
+  /*
+  Range a= tiledImage.range();
+  a.begin()
+    a.begin(point)
+  */
+
+
   trace.endBlock();
   return nbok == nb;
 }
