@@ -60,6 +60,7 @@
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 
 #include "DGtal/math/EigenValues3D.h"
+#include "DGtal/kernel/CCellFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -67,59 +68,59 @@ namespace DGtal
 
 struct CurvatureInformations
 {
-    typedef double Value;
-    typedef EigenValues3D< Value >::Vector3 Vector3;
-    typedef SimpleMatrix< Value, 3, 3 > Matrix3x3;
-    Value k1;
-    Value k2;
-    Vector3 values;
-    Matrix3x3 vectors;
+  typedef double Value;
+  typedef EigenValues3D< Value >::Vector3 Vector3;
+  typedef SimpleMatrix< Value, 3, 3 > Matrix3x3;
+  Value k1;
+  Value k2;
+  Vector3 values;
+  Matrix3x3 vectors;
 
-    friend std::ostream& operator <<(std::ostream&, const CurvatureInformations&);
-    bool operator ==( const CurvatureInformations& other)
-    {
-        return ( k1 == other.k1 && k2 == other.k2 && values == other.values && vectors == other.vectors );
-    }
-    bool operator !=( const CurvatureInformations& other)
-    {
-        return !(this->operator ==( other));
-    }
-    bool operator <( const CurvatureInformations& other)
-    {
-        return (k1 < other.k1);
-    }
+  friend std::ostream& operator <<(std::ostream&, const CurvatureInformations&);
+  bool operator ==( const CurvatureInformations& other)
+  {
+    return ( k1 == other.k1 && k2 == other.k2 && values == other.values && vectors == other.vectors );
+  }
+  bool operator !=( const CurvatureInformations& other)
+  {
+    return !(this->operator ==( other));
+  }
+  bool operator <( const CurvatureInformations& other)
+  {
+    return (k1 < other.k1);
+  }
 };
 
 template< typename Matrix2x2 >
 class GaussianCurvatureFunctor2 : std::unary_function <double,double>
 {
 public:
-    typedef double Value;
+  typedef double Value;
 
-    GaussianCurvatureFunctor2(){}
+  GaussianCurvatureFunctor2(){}
 
-    void init( const double & h, const double & r )
-    {
-        dh2 = h * h;
-        d3_r = 3.0 / r;
-        dPI_2 = M_PI / 2.0;
-        d1_r2 = 1.0 / ( r * r );
-    }
+  void init( const double & h, const double & r )
+  {
+    dh2 = h * h;
+    d3_r = 3.0 / r;
+    dPI_2 = M_PI / 2.0;
+    d1_r2 = 1.0 / ( r * r );
+  }
 
-    Value operator()(const Matrix2x2 & aInput)
-    {
-        Matrix2x2 cp_matrix = aInput;
-        cp_matrix *= dh2;
-        Value k = d3_r * ( dPI_2 - d1_r2 * cp_matrix[ 0 ] );
+  Value operator()(const Matrix2x2 & aInput)
+  {
+    Matrix2x2 cp_matrix = aInput;
+    cp_matrix *= dh2;
+    Value k = d3_r * ( dPI_2 - d1_r2 * cp_matrix[ 0 ] );
 
-        return k;
-    }
+    return k;
+  }
 
 private:
-    Value dh2; /// h*h
-    Value d3_r; /// 3/r
-    Value dPI_2; /// PI/2
-    Value d1_r2; /// 1/r^2
+  Value dh2; /// h*h
+  Value d3_r; /// 3/r
+  Value dPI_2; /// PI/2
+  Value d1_r2; /// 1/r^2
 
 };
 
@@ -127,35 +128,35 @@ template< typename Matrix2x2 >
 class PrincipalCurvatureFunctor2 : std::unary_function <double,double>
 {
 public:
-    typedef double Quantity;
-    typedef double Value;
+  typedef double Quantity;
+  typedef double Value;
 
-    PrincipalCurvatureFunctor2(){}
+  PrincipalCurvatureFunctor2(){}
 
-    void init( const double & h, const double & r )
-    {
-        dh2 = h * h;
-        d3_r = 3.0 / r;
-        dPI_2 = M_PI / 2.0;
-        d1_r2 = 1.0 / ( r * r );
-    }
+  void init( const double & h, const double & r )
+  {
+    dh2 = h * h;
+    d3_r = 3.0 / r;
+    dPI_2 = M_PI / 2.0;
+    d1_r2 = 1.0 / ( r * r );
+  }
 
-    Value operator()( const Matrix2x2 & aInput, int nothing )
-    {
-        Matrix2x2 cp_matrix = aInput;
-        cp_matrix *= dh2;
-        Value k = d3_r * ( dPI_2 - d1_r2 * cp_matrix[ 0 ] );
+  Value operator()( const Matrix2x2 & aInput, int nothing )
+  {
+    Matrix2x2 cp_matrix = aInput;
+    cp_matrix *= dh2;
+    Value k = d3_r * ( dPI_2 - d1_r2 * cp_matrix[ 0 ] );
 
-        trace.error() << "Unavailable yet." << std::endl;
+    trace.error() << "Unavailable yet." << std::endl;
 
-        return k;
-    }
+    return k;
+  }
 
 private:
-    Quantity dh2; /// h*h
-    Quantity d3_r; /// 3/r
-    Quantity dPI_2; /// PI/2
-    Quantity d1_r2; /// 1/r^2
+  Quantity dh2; /// h*h
+  Quantity d3_r; /// 3/r
+  Quantity dPI_2; /// PI/2
+  Quantity d1_r2; /// 1/r^2
 
 };
 
@@ -163,53 +164,53 @@ template< typename Matrix3x3 >
 class GaussianCurvatureFunctor3 : std::unary_function <double,double>
 {
 public:
-    typedef double Value;
-    typedef EigenValues3D< Value >::Vector3 Vector3;
+  typedef double Value;
+  typedef EigenValues3D< Value >::Vector3 Vector3;
 
-    GaussianCurvatureFunctor3(){}
+  GaussianCurvatureFunctor3(){}
 
-    void init( const double & h, const double & r )
-    {
-        double r3 = r * r * r;
-        double r6 = r3 * r3;
-        d6_PIr6 = 6.0 / ( M_PI * r6 );
-        d8_5r = 8.0 / ( 5.0 * r );
-        double h2 = h * h;
-        dh5 = h2 * h2 * h;
-    }
+  void init( const double & h, const double & r )
+  {
+    double r3 = r * r * r;
+    double r6 = r3 * r3;
+    d6_PIr6 = 6.0 / ( M_PI * r6 );
+    d8_5r = 8.0 / ( 5.0 * r );
+    double h2 = h * h;
+    dh5 = h2 * h2 * h;
+  }
 
-    Value operator()(const Matrix3x3 & aInput)
-    {
-        Matrix3x3 cp_matrix = aInput;
-        cp_matrix *= dh5;
-        Value k1,k2;
-        Matrix3x3 eigenVectors;
-        Vector3 eigenValues;
-        evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
-        return k1 * k2;
-    }
+  Value operator()(const Matrix3x3 & aInput)
+  {
+    Matrix3x3 cp_matrix = aInput;
+    cp_matrix *= dh5;
+    Value k1,k2;
+    Matrix3x3 eigenVectors;
+    Vector3 eigenValues;
+    evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
+    return k1 * k2;
+  }
 
 protected:
-    void evalk1k2(
-            Matrix3x3 & matrix,
-            Matrix3x3 & eigenVectors,
-            Vector3 & eigenValues,
-            Value & k1,
-            Value & k2 )
-    {
-        EigenValues3D< Value >::getEigenDecomposition( matrix, eigenVectors, eigenValues );
+  void evalk1k2(
+      Matrix3x3 & matrix,
+      Matrix3x3 & eigenVectors,
+      Vector3 & eigenValues,
+      Value & k1,
+      Value & k2 )
+  {
+    EigenValues3D< Value >::getEigenDecomposition( matrix, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
-        ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
+    ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
+    ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 
-        k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
-        k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
-    }
+    k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
+    k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
+  }
 
 private:
-    Value dh5; /// h^5
-    Value d6_PIr6; /// 6/(PI*r^6)
-    Value d8_5r; /// 8/(5r)
+  Value dh5; /// h^5
+  Value d6_PIr6; /// 6/(PI*r^6)
+  Value d8_5r; /// 8/(5r)
 
 };
 
@@ -217,59 +218,59 @@ template< typename Matrix3x3 >
 class PrincipalCurvatureFunctor3 : std::unary_function <double,double>
 {
 public:
-    typedef double Quantity;
-    typedef EigenValues3D< Quantity >::Vector3 Vector3;
-    typedef CurvatureInformations Value;
+  typedef double Quantity;
+  typedef EigenValues3D< Quantity >::Vector3 Vector3;
+  typedef CurvatureInformations Value;
 
-    PrincipalCurvatureFunctor3(){}
+  PrincipalCurvatureFunctor3(){}
 
-    void init( const double & h, const double & r )
-    {
-        double r3 = r * r * r;
-        double r6 = r3 * r3;
-        d6_PIr6 = 6.0 / ( M_PI * r6 );
-        d8_5r = 8.0 / ( 5.0 * r );
-        double h2 = h * h;
-        dh5 = h2 * h2 * h;
-    }
+  void init( const double & h, const double & r )
+  {
+    double r3 = r * r * r;
+    double r6 = r3 * r3;
+    d6_PIr6 = 6.0 / ( M_PI * r6 );
+    d8_5r = 8.0 / ( 5.0 * r );
+    double h2 = h * h;
+    dh5 = h2 * h2 * h;
+  }
 
-    Value operator()( const Matrix3x3 & aInput )
-    {
-        Matrix3x3 cp_matrix = aInput;
-        cp_matrix *= dh5;
-        Quantity k1,k2;
-        Matrix3x3 eigenVectors;
-        Vector3 eigenValues;
-        evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
-        Value result;
-        result.k1 = k1;
-        result.k2 = k2;
-        result.values = eigenValues;
-        result.vectors = eigenVectors;
-        return result;
-    }
+  Value operator()( const Matrix3x3 & aInput )
+  {
+    Matrix3x3 cp_matrix = aInput;
+    cp_matrix *= dh5;
+    Quantity k1,k2;
+    Matrix3x3 eigenVectors;
+    Vector3 eigenValues;
+    evalk1k2( cp_matrix, eigenVectors, eigenValues, k1, k2 );
+    Value result;
+    result.k1 = k1;
+    result.k2 = k2;
+    result.values = eigenValues;
+    result.vectors = eigenVectors;
+    return result;
+  }
 
 protected:
-    void evalk1k2(
-            Matrix3x3 & matrix,
-            Matrix3x3 & eigenVectors,
-            Vector3 & eigenValues,
-            Quantity & k1,
-            Quantity & k2 )
-    {
-        EigenValues3D< Quantity >::getEigenDecomposition( matrix, eigenVectors, eigenValues );
+  void evalk1k2(
+      Matrix3x3 & matrix,
+      Matrix3x3 & eigenVectors,
+      Vector3 & eigenValues,
+      Quantity & k1,
+      Quantity & k2 )
+  {
+    EigenValues3D< Quantity >::getEigenDecomposition( matrix, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
-        ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
+    ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
+    ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 
-        k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
-        k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
-    }
+    k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
+    k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
+  }
 
 private:
-    Quantity dh5; /// h^5
-    Quantity d6_PIr6; /// 6/(PI*r^6)
-    Quantity d8_5r; /// 8/(5r)
+  Quantity dh5; /// h^5
+  Quantity d6_PIr6; /// 6/(PI*r^6)
+  Quantity d8_5r; /// 8/(5r)
 
 };
 
@@ -305,73 +306,73 @@ template <typename TKSpace, typename TShapeFunctor, Dimension dimension = TKSpac
 class IntegralInvariantGaussianCurvatureEstimator
 {
 public:
-    typedef TKSpace KSpace;
-    typedef typename Z2i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
-    typedef typename Z2i::DigitalSet DigitalSet;
-    typedef typename KSpace::SCell Spel;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+  typedef TKSpace KSpace;
+  typedef typename Z2i::Domain Domain;
+  typedef typename KSpace::Space::RealPoint RealPoint;
+  typedef typename Z2i::DigitalSet DigitalSet;
+  typedef typename KSpace::SCell Spel;
+  typedef typename KSpace::SurfelSet SurfelSet;
+  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-    typedef int Value;
+  typedef int Value;
 
-    typedef TShapeFunctor ShapeSpelFunctor;
-    typedef ConstValueFunctor<Value> KernelSpelFunctor;
-    typedef ImplicitBall<Z2i::Space> KernelSupport;
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
-    typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
-    typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
+  typedef TShapeFunctor ShapeSpelFunctor;
+  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef ImplicitBall<Z2i::Space> KernelSupport;
+  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
+  typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
 
-    typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
 
-    typedef typename Convolver::CovarianceMatrix Matrix2x2;
+  typedef typename Convolver::CovarianceMatrix Matrix2x2;
 
-    typedef GaussianCurvatureFunctor2< Matrix2x2 > ValuesFunctor;
-    typedef PrincipalCurvatureFunctor2< Matrix2x2 > PrincipalCurvatureFunctor;
+  typedef GaussianCurvatureFunctor2< Matrix2x2 > ValuesFunctor;
+  typedef PrincipalCurvatureFunctor2< Matrix2x2 > PrincipalCurvatureFunctor;
 
-    typedef typename ValuesFunctor::Value Quantity;
-    typedef typename PrincipalCurvatureFunctor::Value PrincipalCurvatures;
+  typedef typename ValuesFunctor::Value Quantity;
+  typedef typename PrincipalCurvatureFunctor::Value PrincipalCurvatures;
 
-    typedef typename Convolver::PairIterators PairIterators;
+  typedef typename Convolver::PairIterators PairIterators;
 
-//    BOOST_CONCEPT_ASSERT (( SpelFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
 
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
 public:
-    /**
+  /**
      * Constructor.
      *
      * @param space space in which the shape is defined.
      * @param f functor on spel of the shape.
      */
-    IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
-    /**
+  /**
      * Destructor.
      */
-    ~IntegralInvariantGaussianCurvatureEstimator()
+  ~IntegralInvariantGaussianCurvatureEstimator()
+  {
+    for( unsigned int i = 0; i < kernelsSet.size(); ++i )
     {
-        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
-        {
-            delete kernelsSet[ i ];
-        }
-        kernelsSet.clear();
-        delete kernel;
-        delete digKernel;
+      delete kernelsSet[ i ];
     }
+    kernelsSet.clear();
+    delete kernel;
+    delete digKernel;
+  }
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+  /**
       * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
       *
       * @param[in] _h precision of the grid
       * @param[in] re Euclidean radius of the kernel support
       */
-    void init ( const double _h, const double re );
+  void init ( const double _h, const double re );
 
-    /**
+  /**
       * -- Gaussian curvature --
       * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
       *
@@ -381,10 +382,10 @@ public:
       *
       * @return quantity (Gaussian curvature) at position *it
       */
-    template< typename SurfelIterator >
-    Quantity eval ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  Quantity eval ( const SurfelIterator & it );
 
-    /**
+  /**
       * -- Gaussian curvature --
       * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -396,12 +397,12 @@ public:
       * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
       * @param[out] result iterator of results of the computation.
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void eval ( const SurfelIterator & itb,
-                const SurfelIterator & ite,
-                OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void eval ( const SurfelIterator & itb,
+              const SurfelIterator & ite,
+              OutputIterator & result );
 
-    /**
+  /**
       * -- Principal curvatures --
       * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
       *
@@ -412,12 +413,12 @@ public:
       * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
       * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
       */
-    template< typename SurfelIterator >
-    PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
 
 
 
-    /**
+  /**
       * -- Principal curvatures --
       * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -430,68 +431,68 @@ public:
       * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
       * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void evalPrincipalCurvatures ( const SurfelIterator & itb,
-                                   const SurfelIterator & ite,
-                                   OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void evalPrincipalCurvatures ( const SurfelIterator & itb,
+                                 const SurfelIterator & ite,
+                                 OutputIterator & result );
 
-    /**
+  /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+  void selfDisplay ( std::ostream & out ) const;
 
-    /**
+  /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+  bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Datas --------------------------------
 private:
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernels;
-    /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
-    std::vector< DigitalSet * > kernelsSet;
+  /// array of begin/end iterator of shifting masks.
+  std::vector< PairIterators > kernels;
+  /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet;
 
-    /// Euclidean kernel
-    KernelSupport * kernel;
+  /// Euclidean kernel
+  KernelSupport * kernel;
 
-    /// Digital kernel
-    DigitalShapeKernel * digKernel;
+  /// Digital kernel
+  DigitalShapeKernel * digKernel;
 
-    /// kernel functor
-    const KernelSpelFunctor myKernelFunctor;
+  /// kernel functor
+  const KernelSpelFunctor myKernelFunctor;
 
-    /// convolver
-    Convolver myConvolver;
+  /// convolver
+  Convolver myConvolver;
 
-    /// precision of the grid
-    float h;
+  /// precision of the grid
+  float h;
 
-    /// Euclidean radius of the kernel
-    float radius;
+  /// Euclidean radius of the kernel
+  float radius;
 
-    /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-    ValuesFunctor gaussFunctor;
-    PrincipalCurvatureFunctor princCurvFunctor;
+  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
+  ValuesFunctor gaussFunctor;
+  PrincipalCurvatureFunctor princCurvFunctor;
 
 private:
 
-    /**
+  /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
+  IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
-    /**
+  /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
+  IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
 }; // end of class IntegralInvariantGaussianCurvatureEstimator
 
@@ -502,73 +503,73 @@ template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>
 {
 public:
-    typedef TKSpace KSpace;
-    typedef typename Z2i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
-    typedef typename Z2i::DigitalSet DigitalSet;
-    typedef typename KSpace::SCell Spel;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+  typedef TKSpace KSpace;
+  typedef typename Z2i::Domain Domain;
+  typedef typename KSpace::Space::RealPoint RealPoint;
+  typedef typename Z2i::DigitalSet DigitalSet;
+  typedef typename KSpace::SCell Spel;
+  typedef typename KSpace::SurfelSet SurfelSet;
+  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-    typedef int Value;
+  typedef int Value;
 
-    typedef TShapeFunctor ShapeSpelFunctor;
-    typedef ConstValueFunctor<Value> KernelSpelFunctor;
-    typedef ImplicitBall<Z2i::Space> KernelSupport;
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
-    typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
-    typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
+  typedef TShapeFunctor ShapeSpelFunctor;
+  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef ImplicitBall<Z2i::Space> KernelSupport;
+  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
+  typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
 
-    typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
 
-    typedef typename Convolver::CovarianceMatrix Matrix2x2;
+  typedef typename Convolver::CovarianceMatrix Matrix2x2;
 
-    typedef GaussianCurvatureFunctor2< Matrix2x2 > ValuesFunctor;
-    typedef PrincipalCurvatureFunctor2< Matrix2x2 > PrincipalCurvatureFunctor;
+  typedef GaussianCurvatureFunctor2< Matrix2x2 > ValuesFunctor;
+  typedef PrincipalCurvatureFunctor2< Matrix2x2 > PrincipalCurvatureFunctor;
 
-    typedef typename ValuesFunctor::Value Quantity;
-    typedef typename PrincipalCurvatureFunctor::Value PrincipalCurvatures;
+  typedef typename ValuesFunctor::Value Quantity;
+  typedef typename PrincipalCurvatureFunctor::Value PrincipalCurvatures;
 
-    typedef typename Convolver::PairIterators PairIterators;
+  typedef typename Convolver::PairIterators PairIterators;
 
-//    BOOST_CONCEPT_ASSERT (( SpelFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
 
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
 public:
-    /**
+  /**
      * Constructor.
      *
      * @param space space in which the shape is defined.
      * @param f functor on spel of the shape.
      */
-    IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
-    /**
+  /**
      * Destructor.
      */
-    ~IntegralInvariantGaussianCurvatureEstimator()
+  ~IntegralInvariantGaussianCurvatureEstimator()
+  {
+    for( unsigned int i = 0; i < kernelsSet.size(); ++i )
     {
-        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
-        {
-            delete kernelsSet[ i ];
-        }
-        kernelsSet.clear();
-        delete kernel;
-        delete digKernel;
+      delete kernelsSet[ i ];
     }
+    kernelsSet.clear();
+    delete kernel;
+    delete digKernel;
+  }
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+  /**
       * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
       *
       * @param[in] _h precision of the grid
       * @param[in] re Euclidean radius of the kernel support
       */
-    void init ( const double _h, const double re );
+  void init ( const double _h, const double re );
 
-    /**
+  /**
       * -- Gaussian curvature --
       * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
       *
@@ -578,10 +579,10 @@ public:
       *
       * @return quantity (Gaussian curvature) at position *it
       */
-    template< typename SurfelIterator >
-    Quantity eval ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  Quantity eval ( const SurfelIterator & it );
 
-    /**
+  /**
       * -- Gaussian curvature --
       * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -593,12 +594,12 @@ public:
       * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
       * @param[out] result iterator of results of the computation.
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void eval ( const SurfelIterator & itb,
-                const SurfelIterator & ite,
-                OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void eval ( const SurfelIterator & itb,
+              const SurfelIterator & ite,
+              OutputIterator & result );
 
-    /**
+  /**
       * -- Principal curvatures --
       * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
       *
@@ -609,12 +610,12 @@ public:
       * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
       * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
       */
-    template< typename SurfelIterator >
-    PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
 
 
 
-    /**
+  /**
       * -- Principal curvatures --
       * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -627,69 +628,69 @@ public:
       * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
       * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void evalPrincipalCurvatures ( const SurfelIterator & itb,
-                                   const SurfelIterator & ite,
-                                   OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void evalPrincipalCurvatures ( const SurfelIterator & itb,
+                                 const SurfelIterator & ite,
+                                 OutputIterator & result );
 
-    /**
+  /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+  void selfDisplay ( std::ostream & out ) const;
 
-    /**
+  /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+  bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Datas --------------------------------
 private:
 
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernels;
-    /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
-    std::vector< DigitalSet * > kernelsSet;
+  /// array of begin/end iterator of shifting masks.
+  std::vector< PairIterators > kernels;
+  /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet;
 
-    /// Euclidean kernel
-    KernelSupport * kernel;
+  /// Euclidean kernel
+  KernelSupport * kernel;
 
-    /// Digital kernel
-    DigitalShapeKernel * digKernel;
+  /// Digital kernel
+  DigitalShapeKernel * digKernel;
 
-    /// kernel functor
-    const KernelSpelFunctor myKernelFunctor;
+  /// kernel functor
+  const KernelSpelFunctor myKernelFunctor;
 
-    /// convolver
-    Convolver myConvolver;
+  /// convolver
+  Convolver myConvolver;
 
-    /// precision of the grid
-    float h;
+  /// precision of the grid
+  float h;
 
-    /// Euclidean radius of the kernel
-    float radius;
+  /// Euclidean radius of the kernel
+  float radius;
 
-    /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-    ValuesFunctor gaussFunctor;
-    PrincipalCurvatureFunctor princCurvFunctor;
+  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
+  ValuesFunctor gaussFunctor;
+  PrincipalCurvatureFunctor princCurvFunctor;
 
 private:
 
-    /**
+  /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
+  IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
-    /**
+  /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
+  IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
 }; // end of class IntegralInvariantGaussianCurvatureEstimator for dimension = 2
 
 /**
@@ -699,75 +700,75 @@ template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>
 {
 public:
-    typedef TKSpace KSpace;
-    typedef typename Z3i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
-    typedef typename Z3i::DigitalSet DigitalSet;
-    typedef typename KSpace::SCell Spel;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+  typedef TKSpace KSpace;
+  typedef typename Z3i::Domain Domain;
+  typedef typename KSpace::Space::RealPoint RealPoint;
+  typedef typename Z3i::DigitalSet DigitalSet;
+  typedef typename KSpace::SCell Spel;
+  typedef typename KSpace::SurfelSet SurfelSet;
+  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-    typedef int Value;
+  typedef int Value;
 
-    typedef TShapeFunctor ShapeSpelFunctor;
-    typedef ConstValueFunctor<Value> KernelSpelFunctor;
-    typedef ImplicitBall<Z3i::Space> KernelSupport;
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
-    typedef GaussDigitizer< Z3i::Space, KernelSupport > DigitalShapeKernel;
-    typedef GaussDigitizer< Z3i::Space, EuclideanMinus > DigitalShape;
+  typedef TShapeFunctor ShapeSpelFunctor;
+  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef ImplicitBall<Z3i::Space> KernelSupport;
+  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef GaussDigitizer< Z3i::Space, KernelSupport > DigitalShapeKernel;
+  typedef GaussDigitizer< Z3i::Space, EuclideanMinus > DigitalShape;
 
-    typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
 
-    typedef typename Convolver::CovarianceMatrix Matrix3x3;
+  typedef typename Convolver::CovarianceMatrix Matrix3x3;
 
-    typedef GaussianCurvatureFunctor3< Matrix3x3 > ValuesFunctor;
-    typedef PrincipalCurvatureFunctor3< Matrix3x3 > PrincipalCurvatureFunctor;
+  typedef GaussianCurvatureFunctor3< Matrix3x3 > ValuesFunctor;
+  typedef PrincipalCurvatureFunctor3< Matrix3x3 > PrincipalCurvatureFunctor;
 
-    typedef typename ValuesFunctor::Value Quantity;
-    typedef typename PrincipalCurvatureFunctor::Value PrincipalCurvatures;
+  typedef typename ValuesFunctor::Value Quantity;
+  typedef typename PrincipalCurvatureFunctor::Value PrincipalCurvatures;
 
-    typedef typename EigenValues3D< Quantity >::Vector3 Vector3;
+  typedef typename EigenValues3D< Quantity >::Vector3 Vector3;
 
-    typedef typename Convolver::PairIterators PairIterators;
+  typedef typename Convolver::PairIterators PairIterators;
 
-//    BOOST_CONCEPT_ASSERT (( SpelFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
 
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
 public:
-    /**
+  /**
      * Constructor.
      *
      * @param[in] space space in which the shape is defined.
      * @param[in] f functor on spel of the shape.
      */
-    IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
-    /**
+  /**
      * Destructor.
      */
-    ~IntegralInvariantGaussianCurvatureEstimator()
+  ~IntegralInvariantGaussianCurvatureEstimator()
+  {
+    for( unsigned int i = 0; i < kernelsSet.size(); ++i )
     {
-        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
-        {
-            delete kernelsSet[ i ];
-        }
-        kernelsSet.clear();
-        delete kernel;
-        delete digKernel;
+      delete kernelsSet[ i ];
     }
+    kernelsSet.clear();
+    delete kernel;
+    delete digKernel;
+  }
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+  /**
       * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
       *
       * @param[in] _h precision of the grid
       * @param[in] re Euclidean radius of the kernel support
       */
-    void init ( const double _h, const double re );
+  void init ( const double _h, const double re );
 
-    /**
+  /**
       * -- Gaussian curvature --
       * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
       *
@@ -777,10 +778,10 @@ public:
       *
       * @return quantity (Gaussian curvature) at surfel *it
       */
-    template< typename SurfelIterator >
-    Quantity eval ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  Quantity eval ( const SurfelIterator & it );
 
-    /**
+  /**
       * -- Gaussian curvature --
       * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -792,12 +793,12 @@ public:
       * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
       * @param[out] result iterator of results of the computation.
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void eval ( const SurfelIterator & itb,
-                const SurfelIterator & ite,
-                OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void eval ( const SurfelIterator & itb,
+              const SurfelIterator & ite,
+              OutputIterator & result );
 
-    /**
+  /**
       * -- Principal curvatures --
       * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
       *
@@ -808,12 +809,12 @@ public:
       * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
       * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
       */
-    template< typename SurfelIterator >
-    PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
 
 
 
-    /**
+  /**
       * -- Principal curvatures --
       * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -826,69 +827,69 @@ public:
       * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
       * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void evalPrincipalCurvatures ( const SurfelIterator & itb,
-                                   const SurfelIterator & ite,
-                                   OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void evalPrincipalCurvatures ( const SurfelIterator & itb,
+                                 const SurfelIterator & ite,
+                                 OutputIterator & result );
 
-    /**
+  /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+  void selfDisplay ( std::ostream & out ) const;
 
-    /**
+  /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+  bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Datas --------------------------------
 private:
 
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernels;
-    /// array of shifting masks. Size = 27 for each shifting<s (0-adjacent and full kernel included)
-    std::vector< DigitalSet * > kernelsSet;
+  /// array of begin/end iterator of shifting masks.
+  std::vector< PairIterators > kernels;
+  /// array of shifting masks. Size = 27 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet;
 
-    /// Euclidean kernel
-    KernelSupport * kernel;
+  /// Euclidean kernel
+  KernelSupport * kernel;
 
-    /// Digital kernel
-    DigitalShapeKernel * digKernel;
+  /// Digital kernel
+  DigitalShapeKernel * digKernel;
 
-    /// kernel functor
-    const KernelSpelFunctor myKernelFunctor;
+  /// kernel functor
+  const KernelSpelFunctor myKernelFunctor;
 
-    /// convolver
-    Convolver myConvolver;
+  /// convolver
+  Convolver myConvolver;
 
-    /// precision of the grid
-    double h;
+  /// precision of the grid
+  double h;
 
-    /// Euclidean radius of the kernel
-    double radius;
+  /// Euclidean radius of the kernel
+  double radius;
 
-    /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-    ValuesFunctor gaussFunctor;
-    PrincipalCurvatureFunctor princCurvFunctor;
+  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
+  ValuesFunctor gaussFunctor;
+  PrincipalCurvatureFunctor princCurvFunctor;
 
 private:
 
-    /**
+  /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
+  IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
-    /**
+  /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
+  IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
 }; // end of specialization for dimension = 3
 

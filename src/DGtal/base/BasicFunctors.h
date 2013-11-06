@@ -183,7 +183,7 @@ namespace DGtal
      * @param aValue  the constant value.
      */
     ConstValueFunctor(const Value& aValue = 0)
-      :myValue(aValue) {};
+      :myValue(aValue) {}
     
     /** 
      * Operator
@@ -205,6 +205,49 @@ namespace DGtal
      */
     Value myValue;
     
+  };
+
+  /**
+   * Description of template class 'ConstValueCellFunctor' <p>
+   * \brief Aim: Define a simple functor that returns
+   * a constant quantity (0 by default).
+   *
+   * @tparam TQuantity type of the quantity
+   * @tparam TCell type of the cell
+   */
+  template <typename TQuantity, typename TCell>
+  class ConstValueCellFunctor : std::unary_function <TQuantity,TQuantity>
+  {
+  public:
+    typedef TCell Cell;
+    typedef TQuantity Quantity;
+
+    /**
+     * Constructor.
+     * @param aQuantity  the constant quantity.
+     */
+    ConstValueCellFunctor(const Quantity& aQuantity = 0)
+      :myQuantity(aQuantity) {}
+
+    /**
+     * Operator
+     *
+     * @tparam TInput type of the input object
+     *
+     * @return the constant value.
+     */
+    inline
+    Quantity operator()(const Cell& /*aInput*/) const
+    {
+      return myQuantity;
+    }
+
+  private:
+    /**
+     * value
+     */
+    Quantity myQuantity;
+
   };
 
 
