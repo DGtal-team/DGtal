@@ -131,6 +131,18 @@ bool mainTest()
     nbok++; 
   nb++; 
 
+  if ( ( dsl7.before( Point(0,0), Point(8,5) ) )
+       &&(!dsl7.before( Point(8,5), Point(0,0) ) )
+       &&( dsl7.beforeOrEqual( Point(0,0), Point(8,5) ) )
+       &&(!dsl7.beforeOrEqual( Point(8,5), Point(0,0) ) )
+       &&( dsl7.before( Point(-1,0), Point(1,0) ) )
+       &&( !dsl7.before( Point(1,0), Point(-1,0) ) )
+       &&( !dsl7.before( Point(8,5), Point(8,5) ) )
+       &&( dsl7.beforeOrEqual( Point(8,5), Point(8,5) ) )
+       )
+    nbok++; 
+  nb++; 
+
   trace.info() << "(" << nbok << "/" << nb << ") "
   	       << std::endl;
 
