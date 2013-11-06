@@ -59,7 +59,7 @@ namespace DGtal
   /**
    * \brief Aim: Represents a circle that passes through a given point
    * and that is thus uniquely defined by two other points. It is able
-   * to return for any given point its signed distance to itself 
+   * to return for any given point its signed distance to itself
    *
    * @tparam TPoint  a type of points.
    */
@@ -135,7 +135,7 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Computes the signed distance of @aP to the circle
+     * Computes the signed distance of @e aP to the circle
      * @param aP the point to be tested.
      * @return the signed distance.
      */
@@ -148,7 +148,7 @@ namespace DGtal
      * @param r  returned radius of the circle
      */
     void getParameters(double& cx, double& cy, double& r) const;
-    
+
     /**
      * @return the first (and not mutable) point through which the circle passes.
      */
@@ -156,7 +156,7 @@ namespace DGtal
     {
       return myPole;
     };
-    
+
     /**
      * @return the second point through which the circle passes.
      */
@@ -164,7 +164,7 @@ namespace DGtal
     {
       return myP;
     };
-    
+
     /**
      * @return the third point through which the circle passes.
      */
@@ -179,12 +179,12 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
-    
+
     /**
      * @return the style name used for drawing this object.
      */
     std::string className() const;
-    
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -205,11 +205,6 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-
-  private:
-
-
-
     // ------------------------- Internals ------------------------------------
   private:
 
@@ -228,7 +223,7 @@ namespace DGtal
   template <typename TPoint>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
         const CircleFrom2Points<TPoint> & object )
   {
     object.selfDisplay( out );

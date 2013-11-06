@@ -91,15 +91,12 @@ namespace DGtal
   template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
   class Display3D
   {
+  public:
 
     BOOST_CONCEPT_ASSERT((CSpace<Space>));
   public:
     //RealPoint
     typedef typename DGtal::Z3i::RealPoint RealPoint;
-
-
-    // ------------------------- Private Datas --------------------------------
-  private:
 
 
   protected:
@@ -127,7 +124,7 @@ namespace DGtal
       /// The display color of the cube.
       ///
       DGtal::Color color;
-      
+
       /// The width of a cube face
       ///
       double width;
@@ -214,13 +211,13 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
 
-
-    /// an embeder from a dgtal space point to a a real space point
-    CanonicEmbedder< Space > myEmbedder;
-    /// an embeder from a unsigned khalimsky space point to a a real space point
-    CanonicCellEmbedder< KSpace > myCellEmbedder;
-    /// an embeder from a signed khalimsky space point to a a real space point
-    CanonicSCellEmbedder< KSpace > mySCellEmbedder;
+  protected:
+    /// an embeder from a dgtal space point to a real space point
+    CanonicEmbedder< Space > *myEmbedder;
+    /// an embeder from a unsigned khalimsky space point to a real space point
+    CanonicCellEmbedder< KSpace > *myCellEmbedder;
+    /// an embeder from a signed khalimsky space point to a real space point
+    CanonicSCellEmbedder< KSpace > *mySCellEmbedder;
 
 
 
@@ -233,7 +230,12 @@ namespace DGtal
     /**
      * Destructor.
      */
-    virtual ~Display3D(){};
+    ~Display3D()
+    {
+      delete myEmbedder;
+      delete mySCellEmbedder;
+      delete myCellEmbedder;
+    };
 
     /**
      * default constructor
@@ -243,8 +245,11 @@ namespace DGtal
     {
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
-
       myBoundingPtEmptyTag = true;
+      myEmbedder= new CanonicEmbedder<Space>();
+      myCellEmbedder = new CanonicCellEmbedder<KSpace >();
+      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >();
+
     }
 
     /**
@@ -256,8 +261,9 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myCellEmbedder = CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = CanonicSCellEmbedder<KSpace >(KSEmb);
+      myEmbedder= new CanonicEmbedder<Space>();
+      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
+      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
     };
 
     /**
@@ -270,9 +276,9 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder = CanonicEmbedder<Space >(Semb);
-      myCellEmbedder = CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = CanonicSCellEmbedder<KSpace >(KSEmb);
+      myEmbedder = new CanonicEmbedder<Space >(Semb);
+      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
+      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
     };
 
 
@@ -312,6 +318,27 @@ namespace DGtal
      **/
 
     virtual DGtal::Color getLineColor();
+
+
+    /**
+     * Used to change the default embedder for point of the Digital 3D Space
+     * @param anEmbedder the new CanonicEmbedder
+     **/
+    virtual void  setSpaceEmbedder(CanonicEmbedder<Space> *anEmbedder);
+
+    /**
+     *  Used to change the default embedder for unsigned cell of Khalimsky 3D Space.
+     * @param anEmbedder the new CanonicCellEmbedder
+     **/
+    virtual void  setKSpaceEmbedder(CanonicCellEmbedder<KSpace> *anEmbedder);
+
+    /**
+     * Used to change the default embedder for signed cell of Khalimsky 3D Space.
+     * @param anEmbedder the new CanonicSCellEmbedder
+     **/
+    virtual void  setSKSpaceEmbedder(CanonicSCellEmbedder<KSpace> *anEmbedder);
+
+
 
 
 
@@ -426,7 +453,7 @@ namespace DGtal
      * Method to add specific cube. It includes several modes to
      * display the cube with and without the wire visualisation.
      *
-     * @param center cube center 
+     * @param center cube center
      * @param width the cube width.
      */
     void addCube(const RealPoint &center, double width=1.0);
@@ -551,14 +578,14 @@ namespace DGtal
      * @param dp a DGtal Point
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const Z3i::Point & dp) const ;
+    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const typename Space::Point & dp) const ;
 
     /**
      * Use to embed a signed DGtal kahlimsky cell into space
      * @param cell a kahlimsky cell
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const Z3i::SCell & cell ) const;
+    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const typename KSpace::SCell & cell ) const;
 
 
     /**
@@ -574,7 +601,7 @@ namespace DGtal
      * @param cell kahlimsky cell
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const Z3i::Cell & cell ) const;
+    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const typename KSpace::Cell & cell ) const;
 
     //---end interface
 

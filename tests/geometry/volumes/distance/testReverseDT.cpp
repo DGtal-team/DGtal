@@ -78,8 +78,6 @@ bool testReverseDT()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
-
   trace.beginBlock ( "Testing Reverse DT in 2D ..." );
   
   Z2i::Point a (2, 2 );
@@ -186,8 +184,6 @@ bool testReverseDTL1()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-
-  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
 
   trace.beginBlock ( "Testing Reverse DT in 2D with L1 metric ..." );
   

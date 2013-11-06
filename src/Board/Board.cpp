@@ -1205,7 +1205,7 @@ Board::saveTikZ( std::ostream & out, PageSize size, double margin ) const
 }
 
 void
-Board::saveTikZ( const char * filename, double pageWidth, double pageHeight, double margin ) const
+Board::saveTikZ( const char * filename, double /*pageWidth*/, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );
   saveTikZ(file, pageHeight, pageHeight, margin);
@@ -1223,32 +1223,6 @@ Board::saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double 
   transform.setBoundingBox( box, pageWidth, pageHeight, margin );
 
   out << "\\begin{tikzpicture}[anchor=south west,text depth=0,x={(1pt,0pt)},y={(0pt,-1pt)}]" << std::endl;
-
-/*
-  if ( pageWidth > 0 && pageHeight > 0 ) {
-    out << "<svg width=\""
-	 << pageWidth << "mm\" height=\""
-	 << pageHeight << "mm\" " << std::endl;
-    out << "     viewBox=\"0 0 "
- 	 << pageWidth * ppmm  << " "
- 	 << pageHeight * ppmm  << "\" " << std::endl;
-    out << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >" << std::endl;
-  } else {
-    out << "<svg width=\""
-	 << ( box.width / ppmm )  << "mm"
-	 << "\" height=\""
-	 << ( box.height / ppmm ) << "mm"
-	 << "\" " << std::endl;
-    out << "     viewBox=\"0 0 "
-	 << box.width  << " "
-	 << box.height << "\" " << std::endl;
-    out << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" >" << std::endl;
-
-  }
-
-  out << "<desc>" << filename 
-       << ", created with the Board library (Copyleft) 2007 Sebastien Fourey" 
-       << "</desc>" << std::endl;*/
 
   if ( clipping  ) {
     out << "\\clip ";

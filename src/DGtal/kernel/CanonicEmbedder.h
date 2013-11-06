@@ -79,6 +79,12 @@ namespace DGtal
   public:
     
     /**
+     * Destructor.
+     */
+    virtual ~CanonicEmbedder(){};
+
+
+    /**
        @param p any point in the Euclidean space.
        @return the digital point floor( p ).
     */
@@ -105,7 +111,7 @@ namespace DGtal
        @param dp any digital point in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
-    RealPoint embed( const Point & dp ) const;
+    virtual RealPoint embed( const Point & dp ) const;
 
     /**
        Map a digital point to its corresponding point in the Euclidean
@@ -114,7 +120,9 @@ namespace DGtal
        @param dp any digital point in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
-    RealPoint operator()( const Point & dp ) const;
+    virtual RealPoint operator()( const Point & dp ) const;
+
+
 
     // ----------------------- Interface --------------------------------------
 public:

@@ -320,7 +320,6 @@ struct FindAndGetValue<
    const typename D::Point& aPoint, 
    V& aValue)
   {
-    typedef typename D::Point P; 
     typedef typename DGtal::ImageContainerBySTLMap<D,V>::const_iterator ConstIterator; 
 
     ConstIterator it = aImg.find( aPoint ); 

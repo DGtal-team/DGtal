@@ -6,4 +6,5 @@ build/
 cmake/Install.cmake.user
 qtcreatorbuild/
 *.orig
+install
 

@@ -16,13 +16,13 @@
 
 #pragma once
 
-/** 
+/**
  * @file Assert.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/05/15
- * 
+ *
  *
  *
  * This file is part of the DGtal library.
@@ -45,9 +45,9 @@
 #include <boost/assert.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
-  
+
   /**
   * DGtal Assert function.
   * At this point, it is just a redirect to the boost/assert.hpp macro.
@@ -58,11 +58,11 @@ namespace DGtal
 #if defined(BOOST_DISABLE_ASSERT) || defined(NDEBUG)
  #define ASSERT_MSG(expr,msg) ((void)0)
 #else
-#define ASSERT_MSG(expr,msg) if (!expr) {trace.error()<<msg<<std::endl;} BOOST_ASSERT(expr)
+#define ASSERT_MSG(expr,msg) if (!(expr)) {trace.error()<<msg<<std::endl;} BOOST_ASSERT(expr)
 #endif
- 
+
 #define VERIFY(expr) BOOST_VERIFY(expr)
-#define VERIFY_MSG(expr,msg) if (!expr) {trace.error()<<msg<<std::endl;} BOOST_VERIFY(expr)
+#define VERIFY_MSG(expr,msg) if (!(expr)) {trace.error()<<msg<<std::endl;} BOOST_VERIFY(expr)
 
 
 #if defined(CHECK_ALL_PRE)
@@ -70,7 +70,7 @@ namespace DGtal
 #else // defined(CHECK_ALL_PRE)
 #define ASSERT_ALL_PRE(expr)
 #endif
-  
+
 } // namespace DGtal
 
 
