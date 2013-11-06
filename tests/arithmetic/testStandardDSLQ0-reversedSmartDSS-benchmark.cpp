@@ -50,19 +50,11 @@ bool checkSubStandardDSLQ0( const DSL & D,
                             const typename DSL::Point & A, 
                             const typename DSL::Point & B ) 
 {
-  typedef typename DSL::Fraction Fraction;
-  typedef typename DSL::Integer Integer;
-  typedef typename DSL::Quotient Quotient;
-  typedef typename DSL::Point Point;
-  typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
-
   DSL S = D.reversedSmartDSS( A, B );
-  std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
-            << S.a() << " " << S.b() << " " << S.mu() << " "
-            << A[0] << " " << A[1] << " " << B[0] << " " << B[1]
-            << std::endl;
+  // std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
+  //           << S.a() << " " << S.b() << " " << S.mu() << " "
+  //           << A[0] << " " << A[1] << " " << B[0] << " " << B[1]
+  //           << std::endl;
   return true;
 }
 
@@ -74,23 +66,33 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
-  typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
   IntegerComputer<Integer> ic;
 
+
+
   std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
+
+  
+  clock_t timeBegin, timeEnd;
+  timeBegin = clock();
+  
+
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
-      Integer a( random() % moda + 1 );
+      //Integer a( random() % moda + 1 );
+      //Integer b( random() % modb + 1 );
+      
       Integer b( random() % modb + 1 );
+      Integer a( random() % b + 1 );
+
+      
       if ( ic.gcd( a, b ) == 1 )
         {
-          for ( Integer mu = 0; mu < 5; ++mu )
+          for ( int j = 0; j < 5; ++j )
             {
-              DSL D( a, b, random() % (moda+modb) );
+	      Integer mu = random() % (moda+modb);
+              DSL D( a, b, mu );
               for ( Integer x = 0; x < 10; ++x )
                 {
                   Integer x1 = random() % modx;
@@ -102,6 +104,14 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
             }
         }
     }
+  
+  timeEnd = clock();
+  long double CPUTime;
+  CPUTime =  ((double)timeEnd-(double)timeBegin)/((double)CLOCKS_PER_SEC);  
+
+  std::cout << " " << (long double) CPUTime/(nbtries*5*10);
+    
+  
   return true;
 }
 
@@ -115,8 +125,8 @@ int main( int argc, char** argv)
   typedef SB::Fraction Fraction;
   typedef Fraction::Integer Integer;
   unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 10000;
-  Integer moda = ( argc > 2 ) ? atoll( argv[ 2 ] ) : 12000;
-  Integer modb = ( argc > 3 ) ? atoll( argv[ 3 ] ) : 12000;
+  Integer moda = ( argc > 2 ) ? atoll( argv[ 2 ] ) : 1000000000000;
+  Integer modb = ( argc > 3 ) ? atoll( argv[ 3 ] ) : 1000000000000;
   Integer modx = ( argc > 4 ) ? atoll( argv[ 4 ] ) : 1000;
   testSubStandardDSLQ0<Fraction>( nbtries, moda, modb, modx );
   return true;

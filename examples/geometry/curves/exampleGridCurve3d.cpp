@@ -29,16 +29,14 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
-
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 
   #ifdef WITH_VISU3D_QGLVIEWER
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
    #endif
 
@@ -84,7 +82,7 @@ int main( int argc, char** argv )
   bool flag = false; 
   #ifdef WITH_VISU3D_QGLVIEWER
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();
 
   if (type == "gridcurve")
@@ -111,7 +109,7 @@ int main( int argc, char** argv )
     {
       trace.info() << "Display type not known. Use option -h" << std::endl; 
     }
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   flag = application.exec();
    #endif
   

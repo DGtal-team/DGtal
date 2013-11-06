@@ -36,10 +36,10 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/topology/SCellsFunctors.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
  using namespace std;
@@ -59,8 +59,6 @@
    typedef Space::RealPoint RealPoint;
    typedef Ball3D<Space> EuclideanShape;
    typedef GaussDigitizer<Space,EuclideanShape> DigitalShape;
-   typedef ImageContainerBySTLVector<Domain,DGtal::uint8_t> Image;
-
     
    
    // -------------------------------------------------------------------------- Creating the shape
@@ -90,7 +88,6 @@
     typedef KSpace::Surfel Surfel;
     typedef KSpace::SurfelSet SurfelSet;
     typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
-    typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
 
 
     // -------------------------------------------------------------------------- Tracking the boudnadry
@@ -102,7 +99,7 @@
     
 
     QApplication application(argc,argv);
-    Viewer3D viewer;
+    Viewer3D<> viewer;
     viewer.show();
     viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
@@ -165,7 +162,7 @@ it != it_end; ++it, ++nbSurfels )
 
 
 
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
 
   return application.exec();
 }

@@ -51,7 +51,7 @@
 
 namespace DGtal
 {
-  
+
 /////////////////////////////////////////////////////////////////////////////
 // template class ExactPredicateLpPowerSeparableMetric
 /**
@@ -82,13 +82,13 @@ namespace DGtal
    * p sums (default: DGtal::int64_t)
    *
    */
-  template <typename TSpace, DGtal::uint32_t p,  
+  template <typename TSpace, DGtal::uint32_t p,
             typename TPromoted=DGtal::int64_t>
   class ExactPredicateLpPowerSeparableMetric
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
 
     ///Copy the space type
     typedef TSpace Space;
@@ -100,67 +100,65 @@ namespace DGtal
     typedef typename Point::Coordinate Abscissa;
     ///Type for vectors
     typedef typename Space::Vector Vector;
-    
+
     ///Type for internal distance values
     typedef TPromoted Promoted;
-   
+
     ///Type for internal distance values
     typedef TPromoted Weight;
     BOOST_CONCEPT_ASSERT(( CInteger<Promoted> ));
-   
+
     ///Type for Value (alias)
     typedef TPromoted Value;
- 
+
     /**
      * Constructor.
      */
     ExactPredicateLpPowerSeparableMetric();
 
-   
+
     /**
      * Destructor.
      */
     ~ExactPredicateLpPowerSeparableMetric();
 
-  /**
+    /**
      * Copy constructor.
-     * @param other the object to clone.
      */
-      ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & other ) {}
-    
+    ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & /*other*/ ) {}
+
     /**
      * Assignment.
-     * @param other the object to copy.
      * @return a reference on 'this'.
      */
-      ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & other ) { return *this;}
+    ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & /*other*/ ) { return *this;}
 
     // ----------------------- Interface --------------------------------------
   public:
 
     // ----------------------- CPowerMetric --------------------------------------
-  
 
-    /** 
+
+    /**
      *  Return the power distance of a point @a aPoint and a weighted
-     *  point (@a aQ,@a aWq) 
-     * 
+     *  point (@a aQ,@a aWq)
+     *
      * @param aPoint a point
      * @param aQ a second point
      * @param aWq weight of the second point
-     * 
+     *
      * @return the power distance between aPoint and (Q,WQ)
      */
-    Weight powerDistance(const Point &aPoint, 
-                         const Point &aQ, 
+    Weight powerDistance(const Point &aPoint,
+                         const Point &aQ,
                          const Weight &aWq) const;
 
 
-    /** 
+    /**
      * Given an origin and two points, this method decides which one
      * is closest to the origin. This method should be faster than
      * comparing distance values.
-     * 
+     *
      * @param origin the origin
      * @param first  the first point
      * @param wF the first point weight
@@ -168,15 +166,15 @@ namespace DGtal
      * @param wS the second point weight
      $
      * @return a Closest enum: FIRST, SECOND or BOTH.
-     */  
+     */
     DGtal::Closest closestPower(const Point &origin,
                                    const Point &first,
                                    const Weight &wF,
                                    const Point &second,
                                    const Weight &wS) const;
-    
+
     // ----------------------- CPowerSeparableMetric --------------------------------------
-   
+
     /**
      * Given three weighted sites (u,v,w) and a straight segment
      * [startingPoint,endPoint] along dimension dim, we detect if the
@@ -198,14 +196,14 @@ namespace DGtal
      * @param startingPoint starting point of the segment
      * @param endPoint end point of the segment
      * @param dim direction of the straight line
-     * 
+     *
      * @return true if (u,w) hides v.
-     */ 
-    bool hiddenByPower(const Point &u, 
+     */
+    bool hiddenByPower(const Point &u,
                           const Weight &wu,
                           const Point &v,
                           const Weight &wv,
-                          const Point &w, 
+                          const Point &w,
                           const Weight &ww,
                           const Point &startingPoint,
                           const Point &endPoint,
@@ -215,7 +213,7 @@ namespace DGtal
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
-     */    
+     */
     void selfDisplay ( std::ostream & out ) const;
 
     /**
@@ -227,41 +225,41 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   private:
 
-    /** 
+    /**
      * Compute the Lp distance without the computation of the power
      * 1/p. I.e. only @f$ \sum |p_i- q_i|^p@f$ is given.
-     * 
+     *
      * @param aP a first point
      * @param aQ a second point
-     * 
+     *
      * @return the power p of the l_p distance between aP and aQ.
-     */    
+     */
     Promoted exactDistanceRepresentation(const Point &aP, const Point &aQ) const;
 
-     /** 
+     /**
      * Perform a binary search on the interval [lower,upper] to
      * detect the mid-point between u and v according to the weighted l_p
      * distance.
-     * 
+     *
      * @param udim coordinate of u along dimension dim
      * @param vdim coordinate of v along dimension dim
      * @param nu  partial distance of u (sum of |xj-x_i|^p) discarding
      * the term along the dimension dim
      * @param nv partial distance of v (sum of |xj-x_i|^p) discarding
      * the term along the dimension dim
-     * @param lower interval lower bound 
+     * @param lower interval lower bound
      * @param upper interval upper bound
-     * 
+     *
      * @return the Voronoi boundary point coordinates along dimension dim.
      */
-    Abscissa binarySearchHidden(const Abscissa &udim, 
+    Abscissa binarySearchHidden(const Abscissa &udim,
                                 const Abscissa &vdim,
                                 const Promoted &nu,
                                 const Promoted &nv,
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
 
-      
+
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -283,7 +281,7 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     ///Copy the space type
     typedef TSpace Space;
     ///Type for points
@@ -292,13 +290,13 @@ namespace DGtal
     typedef typename Point::Coordinate Abscissa;
     ///Type for vectors
     typedef typename Space::Vector Vector;
-    
+
     ///Type for internal distance values
     typedef TPromoted Promoted;
-    
+
     ///Type for internal distance values
     typedef TPromoted Weight;
-    
+
     ///Type for Value (alias)
     typedef TPromoted Value;
     /**
@@ -306,51 +304,49 @@ namespace DGtal
      */
     ExactPredicateLpPowerSeparableMetric();
 
-   
+
     /**
      * Destructor.
      */
     ~ExactPredicateLpPowerSeparableMetric();
 
-  
+
     /**
      * Copy constructor.
-     * @param other the object to clone.
      */
-    ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & other ) {}
-    
+    ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & /*other*/ ) {}
+
     /**
      * Assignment.
-     * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & other ) 
+    ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & /*other*/ )
     { return *this;}
 
-   
+
     // ----------------------- Interface --------------------------------------
   public:
 
-     /** 
+     /**
      *  Return the power distance of a point @a aPoint and a weighted
-     *  point (@a aQ,@a aWq) 
-     * 
+     *  point (@a aQ,@a aWq)
+     *
      * @param aPoint aPoint
      * @param aQ another point
      * @param aWq wieght of øa aQ
-     * 
+     *
      * @return the power distance
      */
-    Weight powerDistance(const Point &aPoint, 
-                         const Point &aQ, 
+    Weight powerDistance(const Point &aPoint,
+                         const Point &aQ,
                          const Weight &aWq) const;
 
 
-   /** 
+   /**
      * Given an origin and two weighted points, this method decides
      * which one is closest to the origin. This method should be
      * faster than comparing distance values.
-     * 
+     *
      * @param origin the origin
      * @param first  the first point
      * @param wF the first point weight
@@ -358,50 +354,50 @@ namespace DGtal
      * @param wS the second point weight
      $
      * @return a Closest enum: FIRST, SECOND or BOTH.
-     */  
-    DGtal::Closest closestPower(const Point &origin, 
+     */
+    DGtal::Closest closestPower(const Point &origin,
                                    const Point &first,
                                    const Weight &wF,
                                    const Point &second,
                                    const Weight &wS) const;
-    
 
-    /** 
+
+    /**
      * Compute an exact representation of  Lp distances. We just
      *  return the sum of powers without computing the last 1/p power.
      *  I.e. only @f$ \sum |p_i- q_i|^p@f$ is given.
-     * 
+     *
      * @param aP a first point
      * @param aQ a second point
-     * 
+     *
      * @return the power p of the l_p distance between aP and aQ.
-     */    
+     */
     Promoted exactDistanceRepresentation(const Point &aP, const Point &aQ) const;
-    
+
     // ----------------------- CSeparableMetric --------------------------------------
-    /** 
+    /**
      * Given three sites (a,b,c) and a straight segment
      * [startingPoint,endPoint] along dimension dim, we detect if the
      * voronoi cells of a and c @e hide the voronoi cell of c on the
      * straight line.
      *
      * @pre both voronoi cells associated with @a a and @a b must
-     * intersect the straight line. 
-     * 
+     * intersect the straight line.
+     *
      * @param u a site
      * @param v a site
      * @param w a site
      * @param startingPoint starting point of the segment
      * @param endPoint end point of the segment
      * @param dim direction of the straight line
-     * 
+     *
      * @return true if (a,c) hides b.
-     */ 
-    bool hiddenByPower(const Point &u, 
+     */
+    bool hiddenByPower(const Point &u,
                           const Weight &wu,
                           const Point &v,
                           const Weight &wv,
-                          const Point &w, 
+                          const Point &w,
                           const Weight &ww,
                           const Point &startingPoint,
                           const Point &endPoint,
@@ -411,7 +407,7 @@ namespace DGtal
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
-     */    
+     */
     void selfDisplay ( std::ostream & out ) const;
 
     /**
@@ -423,31 +419,31 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   private:
 
-   
-     /** 
+
+     /**
      * Perform a binary search on the interval [lower,upper] to
      * detect the mid-point between u and v according to the l_p
      * distance.
-     * 
+     *
      * @param udim coordinate of u along dimension dim
      * @param vdim coordinate of v along dimension dim
      * @param nu  partial distance of u (sum of |xj-x_i|^p) discarding
      * the term along the dimension dim
      * @param nv partial distance of v (sum of |xj-x_i|^p) discarding
      * the term along the dimension dim
-     * @param lower interval lower bound 
+     * @param lower interval lower bound
      * @param upper interval upper bound
-     * 
+     *
      * @return the Voronoi boundary point coordinates along dimension dim.
      */
-    Abscissa binarySearchHidden(const Abscissa &udim, 
+    Abscissa binarySearchHidden(const Abscissa &udim,
                                 const Abscissa &vdim,
                                 const Promoted &nu,
                                 const Promoted &nv,
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
 
-      
+
     // ------------------------- Private Datas --------------------------------
   private:
 

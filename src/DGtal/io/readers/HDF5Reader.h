@@ -70,15 +70,13 @@ namespace DGtal
     typedef TFunctor Functor;
     
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
-    
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;       
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) );
 
     /** 
      * Main method to import a HDF5 image file into an instance of the 
      * template parameter ImageContainer.
      * 
-     * @param aFilename the file name to import.
      * @param aFilename the dataset name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by

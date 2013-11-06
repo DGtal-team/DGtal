@@ -9,7 +9,6 @@ SET(DGTAL_TESTS_SRC
    testOutputIteratorAdapter
    testClock
    testTrace
-   testStatistics
    testcpp11
    testCountedPtr
    testBits

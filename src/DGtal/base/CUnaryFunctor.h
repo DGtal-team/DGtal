@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

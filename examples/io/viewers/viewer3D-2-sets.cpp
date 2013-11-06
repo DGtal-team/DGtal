@@ -30,10 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,29 +48,26 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
+  //! [ExampleViewer3DSets]
  QApplication application(argc,argv);
-
- Viewer3D viewer;
+ typedef  Viewer3D<>  MyViewer;
+ MyViewer viewer;
  viewer.show();
 
  Point p1( 0, 0, 0 );
  Point p2( 10, 10 , 10 );
  Domain domain( p1, p2 );
  viewer << domain;
- 
+
  DigitalSet shape_set( domain );
  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
- 
+
  shape_set.erase(Point(3,3,3));
  shape_set.erase(Point(6,6,6));
- viewer << shape_set << Display3D::updateDisplay; 
- 
+ viewer << shape_set << MyViewer::updateDisplay;
+ //! [ExampleViewer3DSets]
  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-

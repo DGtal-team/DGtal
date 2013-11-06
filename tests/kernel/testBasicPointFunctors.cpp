@@ -35,6 +35,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 
 using namespace DGtal;
 using namespace std;
@@ -98,6 +99,59 @@ bool testProjector()
   proj2.init(v2.begin(), v2.end());
   Projector3D proj4(-1);  
   proj4.init(v4.begin(), v4.end()); 
+
+  //SliceRotator2D
+  PointVector<3, int> pt1(0,0, 0);
+  PointVector<3, int> pt2(10,10, 10);
+  HyperRectDomain<SpaceND<3, int> >  domain (pt1, pt2);
+  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, domain, 6, 1,  pt1, 0.1);
+  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
+  PointVector<2, int> pt(5,5);  
+  PointVector<2, int> pt_2(10, 9);  
+  PointVector<3, int> ptR(4,5,6);  
+  PointVector<3, int> ptR2(0, 1, 7);  
+ 
+  trace.info() << "pt " << pt << " => " << sliceRot(pt) << " == " << ptR << std::endl;
+  nbok += ( sliceRot(pt) == ptR ) ? 1 : 0; 
+  nb++;
+  
+  trace.info() << "pt " << pt_2 << " => " << sliceRot2(pt_2) << " == " << ptR2 << std::endl;
+  nbok += ( sliceRot2(pt_2) == ptR2 ) ? 1 : 0; 
+  nb++;
+
+  //Point2DEmbedderIn3D
+  PointVector<3,int> ptOrigin3D(3,3,3);
+  Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder(domain,
+									ptOrigin3D,
+									PointVector<3,int>(6,6,3),
+									PointVector<3,int>(3,3,5),
+									PointVector<3,int>(0,0,0));
+  PointVector<2, int> ptb(0, 0);  
+  PointVector<2, int> pt_2b(4, 2);  
+    trace.info() << "pt " << ptb << " => " << embedder(ptb) << " == " << PointVector<3,int>(3,3,3) << std::endl;
+  nbok += ( embedder(ptb) == PointVector<3,int>(3,3,3) ) ? 1 : 0; 
+  nb++;
+  
+  trace.info() << "pt " << pt_2b << " => " << embedder(pt_2b) << " == " << PointVector<3,int>(5,5,5) << std::endl;
+  nbok += ( embedder(pt_2b) ==  PointVector<3,int>(5,5,5)  ) ? 1 : 0; 
+  nb++;
+
+  //Point2DEmbedderIn3D (constructor from normal point)
+  PointVector<3,int> pt2Origin3D(5,5,3);
+  Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder2(domain,
+									pt2Origin3D,
+									PointVector<3,int>(0,0,3),
+									 2); 
+  PointVector<2, int> pt2b(0, 0);  
+  PointVector<2, int> pt2_2b(2, 2);  
+    trace.info() << "pt " << pt2b << " => " << embedder2(pt2b) << " == " << PointVector<3,int>(3,5,3) << std::endl;
+    nbok += ( embedder2(pt2b) == PointVector<3,int>(3,5,3) ) ? 1 : 0; 
+  nb++;
+  
+  trace.info() << "pt " << pt2_2b << " => " << embedder2(pt2_2b) << " == " << PointVector<3,int>(5,4,3) << std::endl;
+  nbok += ( embedder2(pt2_2b) ==  PointVector<3,int>(5,4,3)  ) ? 1 : 0; 
+  nb++;
+
 
   //comparison
   PointVector<3,int> res1(5,0,2); 

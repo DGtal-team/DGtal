@@ -66,7 +66,6 @@ typedef FreemanChain<int>::Vector Vector;
  */
 bool testOneBalancedWordComputer() 
 {
-  typedef Contour::ConstIterator ConstIterator;
   typedef string::const_iterator codeIterator;
   typedef OneBalancedWordComputer< list<char>::iterator, int> OneBalancedWordComputer_list;
   typedef OneBalancedWordComputer<codeIterator, int> OneBalancedWordComputer_string;
@@ -153,7 +152,7 @@ bool CompareToArithmetical()
   Contour::ConstIterator it = theContour.begin();
   TestedType C;
   C.init( it );
-  ArithmeticalDSSComputer<FreemanChain<int>::ConstIterator, int, 4> A(it);
+  ReferenceType A(it);
   A.extendForward(); 
   bool res = true;
   while ( C.end() != theContour.chain.end() ) 
@@ -179,8 +178,8 @@ bool CompareToArithmetical()
           break;
         }
       // Compare arithmetic parameters
-      if ( ( C.a() != A.a() ) || ( C.b() != A.b() ) ||
-           ( C.mu() != A.mu() ) || ( C.omega() != A.omega() ) ||
+      if ( ( C.getA() != A.a() ) || ( C.getB() != A.b() ) ||
+           ( C.getMu() != A.mu() ) || ( C.getOmega() != A.omega() ) ||
            ( C.Uf() != A.Uf() ) || ( C.Ul() != A.Ul() ) ||
            ( C.Lf() != A.Lf() ) || ( C.Ll() != A.Ll() ) 
          )
@@ -188,10 +187,10 @@ bool CompareToArithmetical()
           cout << "Arithmetic parameters error\n";
           cout <<  C << endl;
           cout <<  A << endl;
-          cout << "a()    " <<  C.a()     << " --- " <<  A.a() << "\n";
-          cout << "b()    " <<  C.b()     << " --- " <<  A.b() << "\n";
-          cout << "mu()   " <<  C.mu()    << " --- " <<  A.mu() << "\n";
-          cout << "omega()" <<  C.omega() << " --- " <<  A.omega() << "\n";
+          cout << "a()    " <<  C.getA()     << " --- " <<  A.a() << "\n";
+          cout << "b()    " <<  C.getB()     << " --- " <<  A.b() << "\n";
+          cout << "mu()   " <<  C.getMu()    << " --- " <<  A.mu() << "\n";
+          cout << "omega()" <<  C.getOmega() << " --- " <<  A.omega() << "\n";
           cout << "Uf()   " <<  C.Uf()    << " --- " <<  A.Uf() << "\n";
           cout << "Ul()   " <<  C.Ul()    << " --- " <<  A.Ul() << "\n";
           cout << "Lf()   " <<  C.Lf()    << " --- " <<  A.Lf() << "\n";
@@ -286,7 +285,7 @@ bool showGreedySegmantation()
           toShow.extendForward();
         }
       aBoard << CustomStyle( className, new CustomPenColor( Color::Blue ) ) 
-        << toShow; // draw each segment
+	     << toShow.primitive(); // draw each segment
     } 
   aBoard.saveSVG("testCombinDSS-greedy.svg");
   trace.endBlock();

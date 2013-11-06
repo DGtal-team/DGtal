@@ -655,8 +655,6 @@ DGtal::OneBalancedWordComputer<TConstIterator, TInteger >::selfDisplay ( std::os
   s += ".";
   for (int i=myLastLetter+1; i<myLastLetter+4 ; i++) 
     s += getCode( i );
-  Integer a,b,mu,omega;
-  getArithmeticalDescription(a,b,mu,omega);
   out << "[OneBalancedWordComputer]\n";
   out << "myCodes             = " << s << "\n";
   out << "myFirstPoint        = " << myFirstPoint << "\n";
@@ -669,9 +667,10 @@ DGtal::OneBalancedWordComputer<TConstIterator, TInteger >::selfDisplay ( std::os
   out << "myLeftPatternLength = " << myLeftPatternLength << "\n";
   out << "myNextBefore        = " << myNextBefore << "\n";
   out << "myNextAfter         = " << myNextAfter << "\n";
-  out << "(a,b,mu,omega)      = (" << a << ", " << b << ", " << mu << ", " <<
-    omega << ")\n"; 
-  out << "[End OneBalancedWordComputer]" << endl;
+  DSL d = getArithmeticalDescription(); 
+  out << "(a,b,mu,omega)      = (" << d.a() << ", " << d.b() << ", " 
+      << d.mu() << ", " << d.omega() << ")\n"; 
+  out << "[End OneBalancedWordComputer]" << std::endl;
 }
 
 
@@ -914,11 +913,9 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::pointEnd() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::a() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getA() const
 {
-  Integer a,b,mu,omega;
-  getArithmeticalDescription ( a, b, mu, omega);
-  return a;
+  return getArithmeticalDescription().a();
 }
 
 /**
@@ -927,11 +924,9 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::a() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::b() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getB() const
 {
-  Integer a,b,mu,omega;
-  getArithmeticalDescription ( a, b, mu, omega);
-  return b;
+  return getArithmeticalDescription().b();
 }
   
 
@@ -942,11 +937,9 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::b() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mu() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getMu() const
 {
-  Integer a,b,mu,omega;
-  getArithmeticalDescription ( a, b, mu, omega );
-  return mu;
+  return getArithmeticalDescription().mu();
 }
 
 
@@ -956,11 +949,9 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::mu() const
 template < typename TConstIterator, typename TInteger >
 inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer
-DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::omega() const
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getOmega() const
 {
-  Integer a,b,mu,omega;
-  getArithmeticalDescription ( a, b, mu, omega );
-  return omega;
+  return getArithmeticalDescription().omega();
 }
 
 
@@ -972,9 +963,11 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::omega() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getArithmeticalDescription(
-    Integer &a, Integer &b, Integer &mu, Integer &omega ) const
+typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::DSL
+DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getArithmeticalDescription() const
 {
+  DGtal::IntegerComputer<TInteger> ic;
+
   ConstPointIterator itBegin = pointBegin();
   while ( itBegin.getIndex() != myPatternBegin ) 
     itBegin++;
@@ -990,12 +983,12 @@ void DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getArithmeticalDes
   Point pe = *itEnd;
   Point po = *it;
   Vector v = pe - pb;
-  a = v[1];
-  b = v[0];
-  Integer r1 = a*pb[0] - b*pb[1];
-  Integer r2 = a*po[0] - b*po[1];
-  mu = min (r1, r2);
-  omega = ((a>0) ? a : -a) + ((b>0) ? b : -b );
+
+  Integer r1 = v[1]*pb[0] - v[0]*pb[1];
+  Integer r2 = v[1]*po[0] - v[0]*po[1];
+  Integer bound = ic.min (r1, r2);
+
+  return DSL(v[1], v[0], bound); 
 }
 
 
@@ -1105,11 +1098,8 @@ inline
 typename DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::Integer 
 DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::remainder(const Point & aPoint) const
 {
-  Integer a,b,mu,omega;
-  Integer x = aPoint[0];
-  Integer y = aPoint[1];
-  getArithmeticalDescription( a, b, mu, omega );
-  return a*x - b*y;
+  DSL d = getArithmeticalDescription();
+  return (d.a()*aPoint[0] - d.b()*aPoint[1]);
 }
 
 

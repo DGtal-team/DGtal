@@ -79,8 +79,8 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
      
     typename Iterator::SegmentComputer segment(*i); 
 
-    aBoard << SetMode(segment.className(), "BoundingBox" )
-           << segment; // draw bounding box
+    aBoard << SetMode(segment.primitive().className(), "BoundingBox" )
+           << segment.primitive(); // draw bounding box
   
   } 
 
@@ -94,9 +94,6 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 {
 
   typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
-
-  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
-  string aStyleName = "ArithmeticalDSSComputer/BoundingBox";
 
   for (Iterator i(itb); i != ite; ++i) {
      
@@ -138,8 +135,9 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
     }
 
     // draw each segment
-    aBoard << CustomStyle( aStyleName, aPenColor )
-           << *i; 
+    aBoard << SetMode(i->primitive().className(), "BoundingBox" )
+	   << CustomStyle( i->primitive().className(), aPenColor )
+           << i->primitive(); 
   
   } 
 

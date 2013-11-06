@@ -150,7 +150,7 @@ int main( int argc, char** argv )
     }
 
     QApplication application( argc, argv );
-    Viewer3D viewer;
+    Viewer3D<> viewer;
     viewer.show();
 
     typedef GradientColorMap< Quantity > Gradient;
@@ -169,7 +169,7 @@ int main( int argc, char** argv )
         ++abegin;
     }
 
-    viewer << Viewer3D::updateDisplay;
+    viewer << Viewer3D<>::updateDisplay;
 
     trace.endBlock();
     return application.exec();

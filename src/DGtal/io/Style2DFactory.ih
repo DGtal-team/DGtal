@@ -36,8 +36,6 @@
 #define UNUSED_ARGUMENT(x) (void)x
 #endif
 
-
-
 namespace DGtal
 {
 
@@ -299,7 +297,7 @@ namespace DGtal
   };
 
   /**
-   * Default style.
+   * Default style.aultDrawStyleTransparent_LatticePol
    */
   struct DefaultDrawStyleGrid_HyperRectDomain : public DrawableWithBoard2D
   {
@@ -323,7 +321,7 @@ namespace DGtal
       aboard.setLineStyle(Board2D::Shape::SolidStyle);
     }
   };
-  // ImageContainerByHashTree
+  // ImageContainerByHashTreeaultDrawStyleTransparent_LatticePol
 
 
   // ImageContainerBySTLVector
@@ -341,7 +339,7 @@ namespace DGtal
   // ImageContainerBySTLVector
   
   
-  // KhalimskyCell
+  // KhalimskyCellaultDrawStyleTransparent_LatticePol
   /**
    * Default style.
    */
@@ -517,9 +515,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CircleFrom3Points<TPoint> 
 
 
 // DigitalSetBySTLSet
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLSet<Domain> & /*s*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLSet<Domain, Compare> & /*s*/, std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DGtal::DefaultDrawStyle_DigitalSetBySTLSet;

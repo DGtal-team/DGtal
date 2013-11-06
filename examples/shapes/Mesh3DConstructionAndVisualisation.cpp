@@ -32,8 +32,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Mesh.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include <QtGui/qapplication.h>
+#include "DGtal/io/viewers/Viewer3D.h"
 //! [MeshUseInclude]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ int main( int argc, char** argv )
 
   //! [MeshUseInitDisplay]
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();     
   //! [MeshUseInitDisplay]
 
@@ -87,9 +87,10 @@ int main( int argc, char** argv )
   //! [MeshUseDisplay]
   viewer.setLineColor(Color(150,0,0,254));
   viewer << aMesh;
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   //! [MeshUseDisplay]
+  FATAL_ERROR(res);
   return true;
 }
 //                                                                           //

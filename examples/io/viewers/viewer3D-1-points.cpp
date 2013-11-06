@@ -30,8 +30,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,17 +54,14 @@ int main( int argc, char** argv )
  Point p3( 2, 3, 4 );
  Domain domain( p1, p2 );
 
- Viewer3D viewer;
+ typedef Viewer3D<> MyViewer;
+ MyViewer viewer;
  viewer.show();
- viewer << domain;  
+ viewer << domain;
  viewer << p1 << p2 << p3;
- 
- viewer<< Viewer3D::updateDisplay;
+
+ viewer<< MyViewer::updateDisplay;
  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-

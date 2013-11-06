@@ -35,11 +35,11 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -94,11 +94,8 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
   
   //------------
-  typedef Z3i::Point Point;
-
-  
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.setWindowTitle("simpleViewer");
   viewer.show();
 
@@ -158,7 +155,7 @@ int main( int argc, char** argv )
     double valDist= dtL2( (*it) );     
     Color c= gradient(valDist);
    
-    if(dtL2(*it)<=30 ){
+    if(dtL2(*it)<=30 && image(*it)>0){
       viewer << CustomColors3D(Color((float)(c.red()), 
                                      (float)(c.green()),
                                      (float)(c.blue(),205)), 
@@ -168,7 +165,7 @@ int main( int argc, char** argv )
       viewer << *it ;
     }     
   }
-  viewer<< Viewer3D::updateDisplay;
+  viewer<< Viewer3D<>::updateDisplay;
  
   return application.exec();
 }

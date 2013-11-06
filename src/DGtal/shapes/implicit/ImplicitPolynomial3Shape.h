@@ -118,14 +118,14 @@ namespace DGtal
 
     /**
        @param aPoint any point in the Euclidean space.
-       @return 'true' if the polynomial value is > 0.
+       @return 'true' if the polynomial value is < 0.
     */
     bool isInside(const RealPoint &aPoint) const;
 
     /**
        @param aPoint any point in the Euclidean space.
 
-       @return INSIDE if the polynomial value is > 0, OUTSIDE if < 0,
+       @return INSIDE if the polynomial value is < 0, OUTSIDE if > 0,
        ON otherwise.
     */
     Orientation orientation(const RealPoint &aPoint) const;
@@ -162,6 +162,17 @@ namespace DGtal
     */
     inline
     double gaussianCurvature( const RealPoint &aPoint ) const;
+
+    /**
+       Principal curvature estimation at @a aPoint
+       @pre @a aPoint must be close to the surface.
+
+       @param[in] aPoint any point in the Euclidean space.
+       @param[out] k1 first principal curvature
+       @param[out] k2 second principal curvature
+    */
+    inline
+    void principalCurvatures( const RealPoint &aPoint, double & k1, double & k2 ) const;
 
     /**
        Perform a gradient descent in order to move a point @a aPoint

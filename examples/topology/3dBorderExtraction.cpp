@@ -31,10 +31,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include <QtGui/qapplication.h>
-#include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -58,10 +57,10 @@ int main( int argc, char** argv )
  Adj6 adj6;
  Adj18 adj18;
  DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
- 
+
  typedef Z3::Point Point;
- typedef HyperRectDomain< Z3 > Domain; 
- typedef Domain::ConstIterator DomainConstIterator; 
+ typedef HyperRectDomain< Z3 > Domain;
+ typedef Domain::ConstIterator DomainConstIterator;
  typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
  typedef Object<DT6_18, DigitalSet> ObjectType;
 
@@ -82,16 +81,17 @@ int main( int argc, char** argv )
  diamond_clone.pointSet().erase( c );
  ObjectType bdiamond = diamond.border(); // one component
  ObjectType bdiamond_clone = diamond_clone.border(); // two components
- 
+
  QApplication application(argc,argv);
- Viewer3D viewer;
- viewer.show(); 
+ typedef Viewer3D<> MyViewer;
+ MyViewer viewer;
+ viewer.show();
  viewer<<  CustomColors3D(Color(250, 250,250),Color(250, 250,250));
  viewer << bdiamond_clone;
  viewer << bdiamond ;
- viewer << ClippingPlane(1,1,0,5, false) << Display3D::updateDisplay;
+ viewer << ClippingPlane(1,1,0,5, false) << MyViewer::updateDisplay;
  return application.exec();
- 
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

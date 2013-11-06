@@ -122,7 +122,7 @@ namespace DGtal {
    To avoid surfel superposition we need to increase with a small
    shift the surfel size, for this purpose you can add the following key:
    @code 
-   viewer << Viewer3D::shiftSurfelVisu; 
+   viewer << Viewer3D<>::shiftSurfelVisu; 
    @endcode
    or use the special mode "Highlighted" which increase automaticly the surfel size.
 

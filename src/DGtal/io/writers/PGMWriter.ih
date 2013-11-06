@@ -54,7 +54,7 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
   typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
 
   out.open(filename.c_str());
-
+  
   //PPM format
   if(saveASCII){
     out << "P2"<<std::endl;
@@ -126,14 +126,15 @@ PGMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
   typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
 
   Color col;
-  
   out.open(filename.c_str());
-
+  
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+  
   //PPM format
   if(saveASCII){
-    out << "P2-3D"<<std::endl;
+    out <<( (extension=="pgm")? "P2": "P2-3D" )<< std::endl;
   }else{
-    out << "P5-3D"<<std::endl;
+    out << ( (extension=="pgm")? "P5" : "P5-3D")<<std::endl;
   }
   out << "#DGtal PNM Writer"<<std::endl<<std::endl;
   out << size[0]<<" "<< size[1]<<" "<< size[2]<<std::endl;
