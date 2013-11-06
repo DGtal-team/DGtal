@@ -255,10 +255,21 @@ DGtal::ArithmeticalDSL<TC, TI, adj>::steps() const
 template <typename TC, typename TI, unsigned short adj>
 inline
 typename DGtal::ArithmeticalDSL<TC, TI, adj>::Integer
+DGtal::ArithmeticalDSL<TC, TI, adj>::remainder(const Integer& aA, 
+					       const Integer& aB, 
+					       const Point& aPoint)
+{
+  return aA * static_cast<Integer>(aPoint[0])
+    - aB * static_cast<Integer>(aPoint[1]);
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSL<TC, TI, adj>::Integer
 DGtal::ArithmeticalDSL<TC, TI, adj>::remainder(const Point& aPoint) const
 {
-  return myA * static_cast<Integer>(aPoint[0])
-    - myB * static_cast<Integer>(aPoint[1]);
+  return DGtal::ArithmeticalDSL<TC, TI, adj>::remainder(myA, myB, aPoint); 
 }
 
 //-----------------------------------------------------------------------------

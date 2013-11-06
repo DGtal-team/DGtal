@@ -55,6 +55,11 @@
 
 namespace DGtal
 {
+  //forward declaration of ArithmeticalDSS for the friendship
+  template <typename TCoordinate, 
+	    typename TInteger, 
+	    unsigned short adjacency>
+  class ArithmeticalDSS; 
 
   /////////////////////////////////////////////////////////////////////////////
   // template class ArithmeticalDSL
@@ -77,6 +82,10 @@ namespace DGtal
 	    unsigned short adjacency = 8>
   class ArithmeticalDSL
   {
+
+    // ----------------------- Friend class -----------------------------------
+  public:
+    friend class ArithmeticalDSS<TCoordinate, TInteger, adjacency>; 
 
     // ----------------------- Inner types -----------------------------------
   public:
@@ -358,6 +367,19 @@ namespace DGtal
      * over the DSL point. 
      */
     Steps steps() const; 
+
+    /**
+     * Returns the remainder of @a aPoint
+     * with respect to the direction vector
+     * of component @a aA and @a aB
+     * @param aA y-component of the direction vector
+     * @param aB x-component of the direction vector
+     * @param aPoint any point
+     * @return remainder of @a aPoint
+     */
+    static Integer remainder(const Integer& aA, 
+			     const Integer& aB, 
+			     const Point& aPoint); 
 
     /**
      * Returns the remainder of @a aPoint
