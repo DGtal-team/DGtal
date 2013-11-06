@@ -39,7 +39,7 @@
 // -----------------------------------------------------
 template <typename TP, typename TD, typename TS>
 inline
-DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, Clone<Domain> aDomain, const double alpha):
+DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAlias<Domain> aDomain, const double alpha):
   myPredicate(aPredicate), myDomain(aDomain), myAlpha(alpha)
 {
   
