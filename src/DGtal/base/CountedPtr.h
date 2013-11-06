@@ -49,6 +49,7 @@
 namespace DGtal
 {
   template <typename T> class CountedPtrOrPtr;
+  template <typename T> class CountedConstPtrOrConstPtr;
 
   /////////////////////////////////////////////////////////////////////////////
   // template class CountedPtr
@@ -63,6 +64,8 @@ namespace DGtal
   {
   public:
     friend class CountedPtrOrPtr<T>;
+    friend class CountedConstPtrOrConstPtr<T>;
+
     // ----------------------- Standard services ------------------------------
   public:
     struct Counter {

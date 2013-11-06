@@ -15,14 +15,14 @@ This module gathers classes to make easier and more readable parameter
 passing by expliciting its type in the signature of functions and
 methods. The main classes are \ref Clone, \ref Alias and \ref
 ConstAlias. They can be used in conjunction with smart pointer classes
-\ref CountedPtr and \ref CowPtr. These classes do not add a
-significant slowdown (between 0 and 10%) in elementary cases, while
-they can save 50% of time in some cases (with lazy duplication and
-move).
+\ref CountedPtr, \ref CowPtr, \ref CountedPtrOrPtr, \ref
+CountedConstPtrOrConstPtr. These classes do not add a significant
+slowdown (between 0 and 10%) in elementary cases, while they can save
+50% of time in some cases (with lazy duplication and move).
 
 [TOC]
 
-Related examples are 
+Related tests are testCloneAndAliases.cpp, testClone2.cpp.
 
 \section moduleCloneAndReference_sec1 Categories of parameter passing
 
@@ -101,7 +101,13 @@ The \b programmer should explicit its \e intent to the user in an unambiguous wa
     -# \b immediate \b use.  The \e argument is used immediately in \c f, it is \e not \e pointed or \e referenced for \e further \e use, and its lifetime is whatever. The argument is \e modified by \c f.
     -# \b long-term \b aliasing (or \b sharing). The \e argument is aliased in \c f for \e further \e use and \e modifications. The user is warned that he must adapt the lifetime of the argument consequently (generally the lifetime of the other object). The user knows that its argument is shared by another object.
 
+
 \section moduleCloneAndReference_sec2 Parameter passing with Clone, Alias and ConstAlias
+
+Classes Clone, Alias, and ConstAlias are defined in order to accept several arguments from the \e user. Symmetrically, they may be automatically converted into several types for the \e programmer. Not all combinations are allowed, but several optimizations are made, most notably by avoiding duplication if possible, by performing lazy duplication, or by moving objects. Furthermore, even for long-term aliasing, the \e user may choose at compile time between either an unsecure or secure aliasing method, depending on its application.
+
+Therefore, those three classes are useful both from an efficiency and pragmatic point of view.
+
 
 \subsection moduleCloneAndReference_sec21 Disambiguating parameter passing
 
@@ -120,11 +126,8 @@ We propose the following ways to pass parameters without ambiguity:
 
 \note Parameter passing by \b pointer may be used in place of references in the first column, altough this is not encouraged. Indeed, you have to think about your parameter passing by pointer to determine whether it is truely an immediate use or an implicit \c Clone<T*>.
 
-\subsection moduleCloneAndReference_sec22 Argument passing for the user
 
-Classes Clone, Alias, and ConstAlias are defined in order to accept several arguments from the \e user. Symmetrically, they may be automatically converted into several types for the \e programmer. Not all combinations are allowed, but several optimizations are made, most notably by avoiding duplication if possible, by performing lazy duplication, or by moving objects.
-
-\subsubsection moduleCloneAndReference_sec221 Argument passing to a Clone parameter
+\subsubsection moduleCloneAndReference_sec22 User passing an argument to a Clone parameter
 
 A parameter `( Clone<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Clone depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T, \c CowPtr<T>, \c T*. The following table sums up the different conversions \e Argument toward \e member.
 
@@ -132,8 +135,8 @@ A parameter `( Clone<T> cT )` accepts several types of arguments constructed fro
 |Argument type:    |\c const \c T& |    \c T*      |\c CountedPtr<T>| \c CowPtr<T>   |\c T&& (c++11)|
 |------------------|---------------|---------------|----------------|----------------|--------------|
 |To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
-|To:\c CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
 |To:\c T*          | Dupl.  O(N)   |   Acq. O(1)   | Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
+|To:\c CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
 
 where O(N) stands for the time to duplicate an instance of \c T, and with the following abbreviations:
 - \b Dupl. Object is duplicated.
@@ -148,23 +151,104 @@ life-time).
 \note A conversion to \c T* means pointer acquisition. Hence the programmer should take of deletion of the object.
 Otherwise, deletion is automatic for \c T or \c CowPtr<T> member.
 
-| member:   |     \c T          |  big \c T |\c CowPtr<T>|     \c T* |
-|-----------|-------------------|-----------|------------|-----------|
-|member deletion:|  automatic   | automatic | automatic  | \b manual |
+| member:   |     \c T          |\c CowPtr<T>|     \c T* |
+|-----------|-------------------|------------|-----------|
+|member deletion:|  automatic   | automatic  | \b manual |
+
+\note When choosing a `Clone<T>` parameter, the \e programmer should really consider using a `CowPtr<T>` member to store it, since it is the most versatile and optimizable variant. The only advantage of the two others storing methods (\c T  and  \c T*) is that there is one less indirection. 
+
+@code
+struct BigFatA { ... };
+
+struct B {
+  // versatile constructor. Accepts 5 different versions.
+  B( Clone<BigFatA> a ) : myOwnFat( a ) {}  
+  void f() { myOwnFat->do(); }
+  CowPtr<BigFatA> myOwnFat;
+};
+
+BigFatA a1;
+B b1( a1 ); // cloned
+B b2( new BigFatA( "I am the one " ) ); // acquired 
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+B b3( counted_ptr ); // O(1) since lazy duplication (waiting for a write).
+B b4( BigFatA( "Moving one" ) ); // this one is created directly in b4.
+@endcode
 
 
-\subsubsection moduleCloneAndReference_sec222 Argument passing to a ConstAlias parameter
+\subsubsection moduleCloneAndReference_sec23 User passing an argument to an Alias parameter
+
+A parameter `( Alias<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Alias depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T&, \c T*, \c CountedPtrOrPtr<T>. The following table sums up the different conversions \e Argument toward \e member.
+
+
+
+|Argument type     |    \c T&      |    \c T*      |\c CountedPtr<T>|\c CountedPtrOrPtr<T>|
+|------------------|---------------|---------------|----------------|---------------------|
+|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
+|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
+|To: \c CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1) | Shared. O(1)       |
+
+\note When choosing an `Alias<T>` parameter, the \e programmer should really consider using a `CountedPtrOrPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c T&  and  \c T*) is that there is one less boolean test and indirection. 
+
+
+\advanced As one can see, if the \e programmer has chosen a `CountedPtrOrPtr<T>` for storing the alias, the \e user can choose between a \b secure \b long-term \b aliasing (with a `CountedPtr<T>` or `CountedPtrOrPtr<T>` argument) or \b non \b secure \b long-term \b aliasing (with a \c T& or \c T* argument).
+
+
+@code
+struct BigFatA { ... };
+
+struct B {
+  // versatile constructor. Accepts 4 different versions.
+  B( Alias<BigFatA> a ) : mySharedFat( a ) {}
+  void f() { mySharedFat->do(); }
+  CountedPtrOrPtr<BigFatA> mySharedFat;
+};
+
+BigFatA a1;
+B b1( a1 ); // aliased (unsecure)
+BigFatA adr = new BigFatA( "I am the one " )
+B b2( adr ); // aliased
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+B b3( counted_ptr ); // secure aliased
+delete counted_ptr; // b3 is still fine.
+delete adr;
+@endcode
+
+
+\subsubsection moduleCloneAndReference_sec24  User passing an argument to a ConstAlias parameter
 
 A parameter `( ConstAlias<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c ConstAlias depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T&, \c T*, \c CowPtr<T>. The following table sums up the different conversions \e Argument toward \e member.
 
-|Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CowPtr<T>|
-|------------------|---------------|---------------|----------------|------------|
-|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |            |
-|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |            |
-|To: \c CowPtr<T>  |               |               | Lazy. O(1)/O(N)|Lazy. O(1)/O(N)|
+|Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CountedPtrOrPtr<T>|\c CountedConstPtrOrConstPtr<T>|
+|------------------|---------------|---------------|----------------|------------|---|
+|To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+|To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+|To: \c CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1)|Shared. O(1)| Shared. O(1)  |
 
-\advanced As one can see, the \e user may force a \b secure \b long-term \b const-aliasing by giving explicitly a \c CowPtr<T> as an argument. \c CountedPtr<T> is added for convenience but may be dangerous (the object is const-aliased but may be modified by the \e user, while the \e programmer detaches the alias when writing on it.
+\note When choosing a `ConstAlias<T>` parameter, the \e programmer should really consider using a `CountedConstPtrOrConstPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c const \c T&  and \c const \c T*) is that there is one less boolean test and indirection. 
 
+
+\advanced  As one can see, if the \e programmer has chosen a `CountedConstPtrOrConstPtr<T>` for storing the const alias, the \e user can choose between a \b secure \b long-term \b const-aliasing (with a `CountedPtr<T>` or `CountedPtrOrPtr<T>` or `CountedConstPtrOrConstPtr<T>` argument) or \b non \b secure \b long-term \b const-aliasing (with a \c T& or \c T* argument).
+
+@code
+struct BigFatA { ... };
+
+struct B {
+  // versatile constructor. Accepts 5 different versions.
+  B( ConstAlias<BigFatA> a ) : myConstSharedFat( a ) {}
+  void f() const { myConstSharedFat->do(); } // const method
+  CountedConstPtrOrConstPtr<BigFatA> myConstSharedFat;
+};
+
+BigFatA a1;
+B b1( a1 ); // const-aliased (unsecure)
+BigFatA adr = new BigFatA( "I am the one " )
+B b2( adr ); // aliased
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+B b3( counted_ptr ); // secure aliased
+delete counted_ptr; // b3 is still fine.
+delete adr;
+@endcode
 
 
 */

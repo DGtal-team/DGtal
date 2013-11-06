@@ -43,7 +43,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/CountedPtrOrPtr.h"
 #include "DGtal/base/CowPtr.h"
+#include "DGtal/base/CountedConstPtrOrConstPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -66,11 +68,11 @@ namespace DGtal
      types. The following conversion from input parameter to data
      member or variable are possible:
 
-|Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CowPtr<T>|
-|------------------|---------------|---------------|----------------|------------|
-|To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |
-|To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |
-|To: \c CowPtr<T>  |               |               | Lazy. O(1)/O(N)|Lazy. O(1)/O(N)|
+|Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CountedPtrOrPtr<T>|\c CountedConstPtrOrConstPtr<T>|
+|------------------|---------------|---------------|----------------|------------|---|
+|To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+|To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+|To: \c CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1)|Shared. O(1)| Shared. O(1)  |
 
 
      @note The usage of \c ConstAlias<T> instead of \c const \c T \c & or \c const \c T \c *
@@ -139,19 +141,19 @@ namespace DGtal
 
      // ConstAliasing for a long lifetime is visible.
      struct B1_v2_3 {
-       B1_v2_3( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough, requires typeid(a) == CountedPtr<A> because of member.
+       B1_v2_3( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( &a ) {}
      ...
-       CowPtr<A> myA;
+       CountedConstPtrOrConstPtr<A> myA;
      };
 
      ...
      A a1;
-     CowPtr<A> cow_a1( new A( a1 ) );
+     CountedPtr<A> counted_a1( new A( a1 ) );
      B1 ( a1 ); // not duplicated
      B1_v2_1 ( a1 ); // not duplicated
      B1_v2_2 ( a1 ); // not duplicated
-     B1_v2_3 ( cow_a1 ); // not duplicated
+     B1_v2_3 ( counted_a1 ); // not duplicated
      @endcode
 
      @note The user should not use ConstAlias<T> instead of \c const \c T & for data
@@ -170,7 +172,8 @@ namespace DGtal
 
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
-		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR };
+		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
+		     COUNTED_CONST_PTR_OR_CONST_PTR, CLONE_IS_ERROR };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -198,12 +201,12 @@ namespace DGtal
 
 
     /**
-       Constructor from a const reference to a copy-on-write pointer on T. The object is pointed in
-       'this'.
-       @param cowT any const reference to a copy-on-write pointer to an object of type T.
+       Constructor from a const reference to a copy-on-write pointer on T. Invalid.
     */
-    inline ConstAlias( const CowPtr<T>& cowT ) 
-      : myParam( COW_PTR ), myPtr( static_cast<const void*>( &cowT ) ) {}
+    inline ConstAlias( const CowPtr<T>& ) 
+      : myParam( COW_PTR ), myPtr( 0 )
+    { ASSERT(( false && "[ConstAlias::ConstAlias( const CowPtr<T>& )] Const-aliasing a a copy-on-write pointer has no meaning. Consider Clone instead." )); }
+
 
     /**
        Constructor from a const reference to a shared pointer on T. The object is pointed in
@@ -212,6 +215,22 @@ namespace DGtal
     */
     inline ConstAlias( const CountedPtr<T>& shT ) 
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
+
+    /**
+       Constructor from a const reference to a shared or simple const pointer on T. The object is pointed in
+       'this'.
+       @param shT any const reference to a shared or simple const pointer to an object of type T.
+    */
+    inline ConstAlias( const CountedPtrOrPtr<T>& shT ) 
+      : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
+
+    /**
+       Constructor from a const reference to a shared or simple const pointer on T. The object is pointed in
+       'this'.
+       @param shT any const reference to a shared or simple const pointer to an object of type T.
+    */
+    inline ConstAlias( const CountedConstPtrOrConstPtr<T>& shT ) 
+      : myParam( COUNTED_CONST_PTR_OR_CONST_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
 
 #ifdef CPP11_RREF_MOVE
     /**
@@ -254,21 +273,28 @@ namespace DGtal
     }
 
     /**
-       Cast operator to a copy-on-write pointer. The object is not
-       duplicated immediately. It may be lazily duplicated if casted to a
-       CowPtr<T> and then written. Allowed input parameters are:
+       Cast operator to a shared or simple const pointer. The object is never
+       duplicated. Allowed input parameters are:
 
-       - CountedPtr<A> -> CowPtr<A> // potential lazy duplication
-       - CowPtr<A> -> CowPtr<A>     // potential lazy duplication
+       - const A&                     -> CountedConstPtrOrConstPtr<A> // no duplication
+       - const A*                     -> CountedConstPtrOrConstPtr<A> // no duplication
+       - CountedPtr<A>                -> CountedConstPtrOrConstPtr<A> // no duplication
+       - CountedPtrOrPtr<A>           -> CountedConstPtrOrConstPtr<A> // no duplication
+       - CountedConstPtrOrConstPtr<A> -> CountedConstPtrOrConstPtr<A> // no duplication
     */
-    inline operator const CowPtr<T>() const {
+    inline operator CountedConstPtrOrConstPtr<T>() const {
       switch( myParam ) {
+      case CONST_LEFT_VALUE_REF: 
+      case CONST_PTR:
+	return CountedConstPtrOrConstPtr<T>( static_cast< const T* >( myPtr ), false );
       case COUNTED_PTR:
-	return CowPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
-      case COW_PTR:
-	return CowPtr<T>( *( const_cast< CowPtr<T>* >( static_cast< const CowPtr<T>* >( myPtr ) ) ) );
+	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtr<T>* >( myPtr ) ) );
+      case COUNTED_PTR_OR_PTR:
+	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
+      case COUNTED_CONST_PTR_OR_CONST_PTR:
+	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
       default: ASSERT( false && "[ConstAlias::operator CowPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
-        return CowPtr<T>( 0 );
+        return CountedConstPtrOrConstPtr<T>( 0, false );
       }
     }
 

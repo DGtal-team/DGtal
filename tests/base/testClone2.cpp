@@ -34,6 +34,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/base/CountedPtrOrPtr.h"
+#include "DGtal/base/CountedConstPtrOrConstPtr.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/Clone.h"
 #include "DGtal/base/OldClone.h"
@@ -302,10 +303,10 @@ struct ConstAliasToConstPtrMember {
   const DummyTbl* myDummyTbl;
 };
 
-struct ConstAliasToCowMember { 
-  inline ConstAliasToCowMember( ConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
+struct ConstAliasToCountedConstPtrOrConstPtrMember { 
+  inline ConstAliasToCountedConstPtrOrConstPtrMember( ConstAlias<DummyTbl> a1 ) : myDummyTbl( a1 ) {}
   inline int value() const { return myDummyTbl->value(); }
-  CowPtr<DummyTbl> myDummyTbl;
+  CountedConstPtrOrConstPtr<DummyTbl> myDummyTbl;
 };
 
 // struct ConstAliasToRefMember { // invalid
@@ -645,9 +646,9 @@ bool testConstAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "ConstAlias: #DummyTbl with CountedPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
-  ConstAliasToCowMember c33( counted_a1 ); // 0/0
-  trace.info() << "D: d1.value() = " << c33.value() << std::endl;
+  trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl* to CountedConstPtrOrConstPtr<DummyTbl> member. No duplication (0/0)" );
+  ConstAliasToCountedConstPtrOrConstPtrMember c17( ptr_a2 ); // 0/0
+  trace.info() << "D: d1.value() = " << c17.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
@@ -655,9 +656,19 @@ bool testConstAliasCases()
                << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
   trace.endBlock();
 
-  trace.beginBlock ( "ConstAlias: #DummyTbl with CowPtr<DummyTbl> to CowPtr<DummyTbl> member. lazy duplication (0/0)" );
-  ConstAliasToCowMember c33_bis( cow_a1 ); // 0/0
-  trace.info() << "D: d1.value() = " << c33_bis.value() << std::endl;
+  trace.beginBlock ( "ConstAlias: #DummyTbl with const DummyTbl& to CountedConstPtrOrConstPtr<DummyTbl> member. No duplication (0/0)" );
+  ConstAliasToCountedConstPtrOrConstPtrMember c07( a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c07.value() << std::endl;
+  ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
+  ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << DummyTbl::nbCreated 
+               << " nbDeleted=" << DummyTbl::nbDeleted << std::endl; 
+  trace.endBlock();
+
+  trace.beginBlock ( "ConstAlias: #DummyTbl with CountedPtr<DummyTbl> to CountedConstPtrOrConstPtr<DummyTbl> member. No duplication (0/0)" );
+  ConstAliasToCountedConstPtrOrConstPtrMember c37( counted_a1 ); // 0/0
+  trace.info() << "D: d1.value() = " << c37.value() << std::endl;
   ++nb, nbok += DummyTbl::nbCreated==0 ? 1 : 0;
   ++nb, nbok += DummyTbl::nbDeleted==0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"

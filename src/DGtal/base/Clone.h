@@ -64,11 +64,6 @@ hand, the Clone class is smart enough to enforce duplication \b
 only \b if \b needed. Substantial speed-up can be achieve through
 this mechanism. This is sumed up in the following table
 
-- \b Dupl. Object is duplicated.
-- \b Lazy. Object is lazily duplicated, meaning only when the user writes on it (which may be never).
-- \b Acq. Dynamically allocated pointer is acquired. User should take care himself of deletion only if storing the parameter with a pointer.
-- \b Move. The object is moved into the new object. This is  generally much faster than copy. This is true for instance for all classical STL containers. You can also write a specific \c  move constructor for your class.
-
 |Argument type     |\c const \c T& |    \c T*      |\c CountedPtr<T>| \c CowPtr<T>   |\c T&& (c++11)|
 |------------------|---------------|---------------|----------------|----------------|--------------|
 |To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
@@ -261,7 +256,8 @@ fact, he cannot), only as a type for parameters.
 
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
-		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, CLONE_IS_ERROR };
+		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
+		     COUNTED_CONST_PTR_OR_CONST_PTR, CLONE_IS_ERROR };
 
     /// Internal class that is used for a late deletion of an acquired pointer.
     struct TempPtr {
