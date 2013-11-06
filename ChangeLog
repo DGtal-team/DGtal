@@ -60,6 +60,7 @@
     - Adding missing PPM Reader.
     - Adding missing DICOM reader (with ITK library)
     - Adding ITK reader and ITK writer
+    - OpenInventor (SOQT/Coin3D) based viewer has been removed (please consider release 0.6 if interested).
 
 *Image Package*
 
