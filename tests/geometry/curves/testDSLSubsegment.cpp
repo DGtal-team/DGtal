@@ -162,7 +162,7 @@ bool testDSLSubsegment(Integer modb)
   trace.info() << std::endl;
   
   int error3 = 0;
-  trace.beginBlock("Compare with ReversedSmartDSS for 4-connected DSL");
+  trace.beginBlock("Compare DSLSubsegment/FareyFan with ReversedSmartDSS for 4-connected DSL");
   for(unsigned int i = 0; i<l; i++)
     for(unsigned int j = i+1; j<l; j++)
       {
@@ -183,11 +183,10 @@ bool testDSLSubsegment(Integer modb)
 	Point B2 = BB;
 	B2[0] += B2[1];
 	
-	bool aBool;
 	
-	 // DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
-	 // b whereas reversedSmartDSS uses  mu <= ab-by < mu + b => -mu
-	 // is introduced in order to compare the results  
+	// DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
+	// b whereas reversedSmartDSS uses  mu <= ab-by < mu + b => -mu
+	// is introduced in order to compare the results  
 	
 	DSLSubseg D2(a,a+b,-mu,A2,B2,"farey");
 	// The result is (aa,getB()-aa, nu)
@@ -209,7 +208,7 @@ bool testDSLSubsegment(Integer modb)
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
   typedef DGtal::int64_t Integer;
   typedef LightSternBrocot<Integer,DGtal::int32_t> LSB;

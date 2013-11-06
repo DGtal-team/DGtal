@@ -879,7 +879,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu, Integer n)
 {
   BOOST_CONCEPT_ASSERT((CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
@@ -1026,7 +1026,6 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
       }
     else  //the facet is upper triangular,
       {
-	IntegerComputer<Integer> ic;
 	Integer g = ic.gcd(inf[1] + sup[1],inf[0]+sup[0]);
 	*resAlphaP = (inf[1]+sup[1])/g;
 	*resAlphaQ = (inf[0]+sup[0])/g;
@@ -1044,6 +1043,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 {
   Point inf, sup;
   DGtal::IntegerComputer<Integer> ic;
+  RayC rr;
+
 
   if(found == false)
     // r is not the highest ray on A
@@ -1060,7 +1061,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 	}
       else
 	{ // compute the ray juste above r
-	  RayC rr = raySup(fp,fq,r);
+	  rr = raySup(fp,fq,r);
 	  // compute the fraction following f in the Farey Series
 	  // given by the slope of rr
 	  if(ic.max(rr.x,n-rr.x)>ic.max(r.x,n-r.x))
@@ -1101,7 +1102,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 	    // A is not a multiple point. Check if the vertex above A
 	    // is a multiple point
 	    Integer h = -fp*r.x + r.y*fq +1;
-	    RayC rr = smartRayOfSmallestSlope(fp,fq,gp,gq,h);
+	    rr = smartRayOfSmallestSlope(fp,fq,gp,gq,h);
 	    if(fq<=ic.max(rr.x,n-rr.x))
 	      {  //the vertex above A is a
 		// multiple point -> A is the solution
@@ -1114,7 +1115,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
                 Vector v(fq,fp);
 		convexHullHarPeled(v,ic.max(r.x,n-r.x),&inf,&sup);
 		// Let C be the point on r with abscissa equal to inf.
-		RayC rr = raySup(inf[1],inf[0],r); // ray above r passing through C
+		rr = raySup(inf[1],inf[0],r); // ray above r passing through C
 		if(rr.x == r.x) // r is the highest ray passing through C
 		  { // C is the solution
 		    *resAlphaP = inf[1];
@@ -1134,7 +1135,6 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 			// order given by the ray rr, then the
 			// mediant is the solution. Otherwise, sup is
 			// the solution.
-			IntegerComputer<Integer> ic;
 			Integer g = ic.gcd(inf[1] + sup[1],inf[0]+sup[0]);
 			if((inf[0]+sup[0])/g <= ic.max(rr.x,n-rr.x))
 			  {
@@ -1360,10 +1360,6 @@ template <typename TInteger, typename TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point &A, Point &B)
 {
-  Integer n = B[0] - A[0];
-
-
-  Integer rA = a*A[0]-b*A[1] + mu;
   Integer rB = a*B[0]-b*B[1] + mu;
 
   Vector l(b,a);
