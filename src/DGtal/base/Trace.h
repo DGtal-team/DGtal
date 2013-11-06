@@ -46,7 +46,6 @@
 
 #include "DGtal/base/Config.h"
 #include "DGtal/base/Clock.h"
-#include "DGtal/base/Assert.h"
 #include "DGtal/base/TraceWriter.h"
 #include "DGtal/base/TraceWriterTerm.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -233,6 +232,7 @@ namespace DGtal
   
 } // namespace DGtal
 
+#include "DGtal/base/Assert.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions
