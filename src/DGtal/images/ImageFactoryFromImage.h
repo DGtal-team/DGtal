@@ -99,6 +99,11 @@ namespace DGtal
      * Does nothing
      */
     ~ImageFactoryFromImage() {}
+    
+    ImageFactoryFromImage( const ImageFactoryFromImage &other )
+    {
+      myImagePtr = other.myImagePtr;
+    }
 
     // ----------------------- Interface --------------------------------------
   public:

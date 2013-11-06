@@ -138,16 +138,17 @@ namespace DGtal
       //delete clock; // TEMP_MT
     }
 
-
-    TiledImage( const TiledImage &other)
+    TiledImage( const TiledImage &other )
     {
+      myN =  other.myN;
       myImageFactory = other.myImageFactory;
       myReadPolicy = other.myReadPolicy;
       myWritePolicy = other.myWritePolicy;
-      myImageCache = new MyImageCache(myImageFactory, other.myReadPolicy, other.myWritePolicy);
+
+      myImageCache = new MyImageCache(myImageFactory, myReadPolicy, myWritePolicy);
+
       m_lowerBound = myImageFactory->domain().lowerBound();
       m_upperBound = myImageFactory->domain().upperBound();
-      myN =  other.myN;
 
       for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
         mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
