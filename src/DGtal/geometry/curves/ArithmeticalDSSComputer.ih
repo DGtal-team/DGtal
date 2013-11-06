@@ -242,7 +242,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::primitive() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getRemainder(const Point & aPoint) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::remainder(const Point & aPoint) const
 {
   return myDSS.remainder( aPoint );
 }
@@ -251,27 +251,27 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getRemainder(const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getRemainder(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::remainder(const ConstIterator & it) const
 {
-  return getRemainder(*it);
+  return remainder(*it);
 }
 
 //-------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getPosition(const Point & aPoint) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::position(const Point & aPoint) const
 {
-  return myDSS.orthongonalPosition( aPoint );
+  return myDSS.directionalPosition( aPoint );
 }
 
 //-------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getPosition(const ConstIterator & it) const
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::position(const ConstIterator & it) const
 {
-  return getPosition(*it);
+  return position(*it);
 }
 
 //-------------------------------------------------------------------------
@@ -314,7 +314,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isInDSS(const Cons
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getA() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::a() const 
 {
   return myDSS.a();
 }
@@ -323,7 +323,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getA() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getB() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::b() const 
 {
   return myDSS.b();
 }
@@ -332,7 +332,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getB() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getMu() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::mu() const 
 {
   return myDSS.mu();
 }
@@ -341,7 +341,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getMu() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 TInteger
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getOmega() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::omega() const 
 {
   return myDSS.omega();
 }
@@ -350,7 +350,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getOmega() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUf() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Uf() const 
 {
   return myDSS.Uf();
 }
@@ -359,7 +359,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUf() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUl() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ul() const 
 {
   return myDSS.Ul();
 }
@@ -368,7 +368,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getUl() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLf() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Lf() const 
 {
   return myDSS.Lf();
 }
@@ -377,7 +377,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLf() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLl() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Ll() const 
 {
   return myDSS.Ll();
 }
@@ -386,36 +386,18 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLl() const
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getBackPoint() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::back() const 
 {
-  return myDSS.myF();
+  return myDSS.back();
 }
 
 //-------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getFrontPoint() const 
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::front() const 
 {
-  return myDSS.myL();
-}
-
-//-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
-inline
-typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getFirstPoint() const 
-{
-  return myDSS.myF();
-}
-
-//-------------------------------------------------------------------------
-template <typename TIterator, typename TInteger, unsigned short adjacency>
-inline
-typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Point
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::getLastPoint() const 
-{
-  return myDSS.myL();
+  return myDSS.front();
 }
 
 //-------------------------------------------------------------------------

@@ -173,37 +173,37 @@ DGtal::StabbingLineComputer<TConstIterator>::end() const
 template <typename TConstIterator>
 inline
 typename DGtal::StabbingLineComputer<TConstIterator>::Point
-DGtal::StabbingLineComputer<TConstIterator>::getUf() const
+DGtal::StabbingLineComputer<TConstIterator>::Uf() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
-  return myPreimagePtr->getUf();
+  return myPreimagePtr->Uf();
 }
 
 template <typename TConstIterator>
 inline
 typename DGtal::StabbingLineComputer<TConstIterator>::Point
-DGtal::StabbingLineComputer<TConstIterator>::getUl() const
+DGtal::StabbingLineComputer<TConstIterator>::Ul() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
-  return myPreimagePtr->getUl();
+  return myPreimagePtr->Ul();
 }
 
 template <typename TConstIterator>
 inline
 typename DGtal::StabbingLineComputer<TConstIterator>::Point
-DGtal::StabbingLineComputer<TConstIterator>::getLf() const
+DGtal::StabbingLineComputer<TConstIterator>::Lf() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
-  return myPreimagePtr->getLf();
+  return myPreimagePtr->Lf();
 }
 
 template <typename TConstIterator>
 inline
 typename DGtal::StabbingLineComputer<TConstIterator>::Point
-DGtal::StabbingLineComputer<TConstIterator>::getLl() const
+DGtal::StabbingLineComputer<TConstIterator>::Ll() const
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
-  return myPreimagePtr->getLl();
+  return myPreimagePtr->Ll();
 }
 
 template <typename TConstIterator>

@@ -84,12 +84,12 @@ algorithm(const TIterator& itb,
   while ( (longestDSS.end() != ite)&&(longestDSS.extendForward()) ) 
     {
       //store the first upper leaning point
-      if (longestDSS.getUf() != vTmpU.back()) {
-	vTmpU.push_back(longestDSS.getUf());
+      if (longestDSS.Uf() != vTmpU.back()) {
+	vTmpU.push_back(longestDSS.Uf());
       }
       //store the first lower leaning point
-      if (longestDSS.getLf() != vTmpL.back()) {
-	vTmpL.push_back(longestDSS.getLf());
+      if (longestDSS.Lf() != vTmpL.back()) {
+	vTmpL.push_back(longestDSS.Lf());
       }
     }
 
@@ -226,7 +226,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
   ASSERT( aDSS.isExtendableForward() == false ); 
 
-  if ( aDSS.getRemainder( aDSS.end() ) < (aDSS.getMu()) ) 
+  if ( aDSS.remainder( aDSS.end() ) < (aDSS.mu()) ) 
     {      //concave part
       return new details
 	::DSSDecorator4ConcavePart<typename Adapter::DSS>(aDSS);

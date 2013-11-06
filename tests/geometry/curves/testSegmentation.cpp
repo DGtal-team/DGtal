@@ -115,21 +115,21 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
       PointIterator end = i->end();
 
       //parameters
-      int mu = i->getMu();
-      int omega = i->getOmega();
+      int mu = i->mu();
+      int omega = i->omega();
 
       //configurations
-      if ( (i->getRemainder(begin)<=mu-1)&&
-           (i->getRemainder(end)<=mu-1) ) {                //concave
+      if ( (i->remainder(begin)<=mu-1)&&
+           (i->remainder(end)<=mu-1) ) {                //concave
         aPenColor = new CustomPenColor( Color::Green);
-      } else if ( (i->getRemainder(begin)>=mu+omega)&&
-            (i->getRemainder(end)>=mu+omega) ) {           //convex
+      } else if ( (i->remainder(begin)>=mu+omega)&&
+            (i->remainder(end)>=mu+omega) ) {           //convex
         aPenColor = new CustomPenColor( Color::Blue );
-      } else if ( (i->getRemainder(begin)>=mu+omega)&&
-            (i->getRemainder(end)<=mu-1) ) {               //convex to concave
+      } else if ( (i->remainder(begin)>=mu+omega)&&
+            (i->remainder(end)<=mu-1) ) {               //convex to concave
         aPenColor = new CustomPenColor( Color::Yellow );
-      } else if ( (i->getRemainder(begin)<=mu-1)&&
-            (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
+      } else if ( (i->remainder(begin)<=mu-1)&&
+            (i->remainder(end)>=mu+omega) ) {           //concave to convex
         aPenColor = new CustomPenColor( Color::Yellow );
       } else {                                                    //pb
         aPenColor = new CustomPenColor( Color::Red );

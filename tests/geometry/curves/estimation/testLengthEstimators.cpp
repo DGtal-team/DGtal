@@ -115,15 +115,24 @@ bool testLengthEstimatorsOnBall(double radius, double h)
                 << " error in creating KSpace." << std::endl;
       return false;
     }
-  try {
 
-    // Extracts shape boundary
-    SurfelAdjacency<KSpace::dimension> SAdj( true );
-    SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+  SurfelAdjacency<KSpace::dimension> SAdj( true );
+  SCell bel; 
+  try 
+    {
+      bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+    }    
+  catch ( InputException e )
+    {
+      std::cerr << " "
+                << " error in finding a bel." << std::endl;
+      return false;
+    }
+
     // Getting the consecutive surfels of the 2D boundary
     std::vector<Point> points;
     Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
-    trace.info() << "# tracking..." << endl;
+    trace.info() << "#tracking..." << endl;
     // Create GridCurve
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
@@ -143,12 +152,12 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     BLUElength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
     RosenProffittLocalLengthEstimator< GridCurve<KSpace>::ArrowsRange::ConstIterator > RosenProffittlength;
     RosenProffittlength.init(h, ra.begin(), ra.end(), gridcurve.isClosed());
-    DSSLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > DSSlength;
-    DSSlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    MLPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > MLPlength;
-    MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
-    FPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > FPlength;
-    FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    DSSLengthEstimator< GridCurve<KSpace>::PointsRange::ConstCirculator > DSSlength;
+    DSSlength.init(h, rp.c(), rp.c());
+    // MLPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > MLPlength;
+    // MLPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
+    // FPLengthEstimator< GridCurve<KSpace>::PointsRange::ConstIterator > FPlength;
+    // FPlength.init(h, rp.begin(), rp.end(), gridcurve.isClosed());
 
     trace.info() << "#Estimations" <<std::endl;
     trace.info() << "#h true naive 1-sqrt(2) BLUE RosenProffitt DSS MLP FP " <<std::endl;
@@ -157,17 +166,10 @@ bool testLengthEstimatorsOnBall(double radius, double h)
                  << " " << locallength.eval() 
                  << " " << BLUElength.eval() 
                  << " " << RosenProffittlength.eval() 
-                 <<  " " << DSSlength.eval() 
-                 << " " << MLPlength.eval() 
-                 <<  " " << FPlength.eval() << std::endl;
-
-  }    
-  catch ( InputException e )
-    {
-      std::cerr << " "
-                << " error in finding a bel." << std::endl;
-      return false;
-    }
+		 <<  " " << DSSlength.eval() 
+                 // << " " << MLPlength.eval() 
+                 // <<  " " << FPlength.eval() 
+		 << std::endl;
 
 
 
@@ -305,6 +307,7 @@ int main( int argc, char** argv )
     && testLengthEstimatorsOnBall(r,0.1)
     && testLengthEstimatorsOnBall(r,0.01)
     && testLengthEstimatorsOnBall(r,0.001)
+    && testLengthEstimatorsOnBall(r,0.0001)
     && testDisplay(r,0.9);
   ;
 
