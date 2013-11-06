@@ -22,6 +22,7 @@ SET(DGTAL_EXAMPLES_SRC
   exampleConstImageAdapter
   exampleTiledImage
   extract2DImagesFrom3D
+  extract2DSlicesImagesFrom3D
 )
 
 if( WITH_HDF5 )

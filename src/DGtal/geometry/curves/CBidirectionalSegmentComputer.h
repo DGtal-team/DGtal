@@ -79,7 +79,7 @@ Description of \b concept '\b CBidirectionalSegmentComputer' <p>
     
  ### Models###
 
-   ArithmeticalDSS3d, GeometricalDSS, GeometricalDCA    
+   StandardDSS6Computer, StabbingLineComputer, StabbingCircleComputer    
 
  ### Notes###
 

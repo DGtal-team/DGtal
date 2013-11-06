@@ -55,6 +55,9 @@
 #ifdef WITH_MAGICK
 #include "DGtal/io/readers/MagickReader.h"
 #endif
+#ifdef WITH_ITK
+#include "DGtal/io/readers/DicomReader.h"
+#endif
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -67,10 +70,10 @@ namespace DGtal
   /**
    * Description of template class 'GenericReader' <p>
    * \brief Aim: Provide a mechanism to load with the bestloader according to an image (2D or 3D) filename (by parsing the extension).
-   *  
+   *
    * The typical use is very simple:
    * - First include the header of the generic reader (and StdDefs) and define image type:
-   @code 
+   @code
    #include "DGTal/io/readers/GenericReader.h"
    #include "DGtal/helpers/StdDefs.h"
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
@@ -91,27 +94,22 @@ namespace DGtal
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
    *
-   *
-   *
    */
-
-
-
   template <typename TContainer, int Tdim=TContainer::Point::dimension >
   struct GenericReader
   {
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
-    
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;
+
     /**
      * Import a volume nd image file.  For the special format of raw
      * image, the default parameter of the image size must be given in the optional function vector parameter (dimSpace) .
      * @param filename the image filename to imported.
-     * @param dimSpace a vector containing the n dimensional image size. 
+     * @param dimSpace a vector containing the n dimensional image size.
      *
      **/
 
-    static TContainer import(const std::string &filename, 
-			     std::vector<unsigned int> dimSpace= std::vector<unsigned int > () )  throw(DGtal::IOException);
+    static TContainer import(const std::string &filename,
+                             std::vector<unsigned int> dimSpace= std::vector<unsigned int > () )  throw(DGtal::IOException);
   };
 
 
@@ -122,33 +120,30 @@ namespace DGtal
   template <typename TContainer>
   struct GenericReader<TContainer, 3 >
   {
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;
     /**
      * Import a volume image file.  For the special format of raw
-     * image, the default parameter x,y,z need to be updated
-     * according to the dimension of the image.
+     * image, the default parameter x,y, z need to be updated
+     * according to the dimension if the image.
      *
      * @param filename the image filename to be imported.
-     * @param datasetName the dataset name to import.
-     * @param x the size in the x direction. 
-     * @param y the size in the y direction. 
-     * @param z the size in the z direction. 
+     * @param x the size in the x direction.
+     * @param y the size in the y direction.
+     * @param z the size in the z direction.
      *
      **/
 
-    static TContainer import(const std::string &filename, const std::string &datasetName="UInt8Array3D",
-                             unsigned int x=0, unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
-    
- 
-    
-     /**
+    static TContainer import(const std::string &filename,  unsigned int x=0,
+                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
+
+
+
+    /**
      * Import an image file by specifying a value functor
-     *  (used for gray scale image format: vol, longvol, pgm3D, h5, raw). 
-     * 
+     *  (used for gray scale image format: vol, longvol, pgm3D, raw).
+     *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char , TContainer::Value > ).
-     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
-     * @param datasetName the dataset name to import.
      * @param x x
      * @param y y
      * @param z z
@@ -156,35 +151,42 @@ namespace DGtal
      **/
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
-					     const TFunctor &aFunctor,
-                                             const std::string &datasetName="UInt8Array3D",
-					     unsigned int x=0, unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException){
-      BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ; 
+                                             const TFunctor &aFunctor,
+                                             unsigned int x=0,
+                                             unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException){
+      BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
       DGtal::IOException dgtalio;
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
-      
-      if(extension=="vol"){
-	return  VolReader<TContainer>::importVol( filename, aFunctor );
-      }else  if(extension=="longvol"){
-	return  LongvolReader<TContainer>::importLongvol( filename, aFunctor  );
-      }else  if(extension=="pgm3d"|| extension=="pgm3D" || extension=="p3d" || extension=="pgm"){
-	return PGMReader<TContainer>::importPGM3D(filename, aFunctor);
-      } else if(extension=="raw"){
-	ASSERT(x!=0 && y!=0 && z!=0); 
-	typename TContainer::Point pt (x,y,z);
-	return RawReader< TContainer >::importRaw8 ( filename, pt, aFunctor  );
-      }
-#ifdef WITH_HDF5
-      else if (extension=="h5"){
-        return HDF5Reader<TContainer>::importHDF5_3D(filename, datasetName, aFunctor); 
-      }
-#endif      
-      else{
-	trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-	throw dgtalio;
-      }
-    }
 
+      if(extension=="vol")
+        return  VolReader<TContainer>::importVol( filename, aFunctor );
+
+      if(extension=="longvol")
+        return  LongvolReader<TContainer>::importLongvol( filename, aFunctor  );
+
+      if(extension=="pgm3d"|| extension=="pgm3D" || extension=="p3d" || extension=="pgm")
+        return PGMReader<TContainer>::importPGM3D(filename, aFunctor);
+
+      if(extension=="raw")
+        {
+          ASSERT(x!=0 && y!=0 && z!=0);
+          typename TContainer::Point pt (x,y,z);
+          return RawReader< TContainer >::importRaw8 ( filename, pt, aFunctor  );
+        }
+
+#ifdef WITH_HDF5
+      if (extension=="h5")
+        return HDF5Reader<TContainer>::importHDF5_3D(filename, datasetName, aFunctor);
+#endif
+
+#ifdef WITH_ITK
+      if(extension=="dcm")
+        return DicomReader<TContainer>::importDicom(filename, aFunctor);
+#endif
+
+      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+      throw dgtalio;
+    }
   };
 
   /**
@@ -194,100 +196,90 @@ namespace DGtal
   template <typename TContainer>
   struct GenericReader<TContainer, 2>
   {
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;
 
     /**
      * Import a volume image file.  For the special format h5 (you need to set WITH_HDF5 of cmake build),
-     *  the default parameter datasetName needs to be set.
+     *  the default parameter datasetName needs to be updated
+     * according to the dimension if the image.
      *
      * @param filename the image filename to be imported.
-     * @param datasetName the dataset name to import.
      *
      **/
-    
-    static TContainer import(const std::string &filename,  const std::string &datasetName="empty")  throw(DGtal::IOException);
+
+    static TContainer import(const std::string &filename)  throw(DGtal::IOException);
 
 
     /**
      * Import an image file by specifying a color encoder functor
      *  (used only for color image format ppm, ( gif, jpeg, ... if the
-     *  magick image lib is installed).
-     * 
+     *  magick image lib is installed) .
+     *
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
-     * @param filename the image filename to be imported.
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     *  image.
      *
      **/
     template<typename TFunctor>
-    static TContainer importWithColorFunctor(const std::string &filename, 
-					     const  TFunctor &aFunctor)  throw(DGtal::IOException){
-          
-      BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::Color> )) ;    
+    static TContainer importWithColorFunctor(const std::string &filename,
+                                             const  TFunctor &aFunctor)  throw(DGtal::IOException){
+
+      BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::Color> )) ;
       DGtal::IOException dgtalio;
       //Getting image extension
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
-      
-      if(extension=="ppm"){
-	return PPMReader<TContainer>::importPPM(filename, aFunctor);
-      }
-      else if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp"){
+
+      if(extension=="ppm")
+        return PPMReader<TContainer>::importPPM(filename, aFunctor);
+
+      if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp")
+        {
 #ifdef WITH_MAGICK
-    MagickReader<TContainer> reader;
-    return reader.importImage( filename, aFunctor );      
-#else 
-    trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
-    throw dgtalio;
+          MagickReader<TContainer> reader;
+          return reader.importImage( filename, aFunctor );
+#else
+          trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
+          throw dgtalio;
 #endif
-      }else{
-	trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-	throw dgtalio;
-      }
+        }
 
-
-   }
+      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+      throw dgtalio;
+    }
 
 
     /**
      * Import an image file by specifying a value functor used for
-     *  grayscale image.  For the special format h5 (you need to set
-     *  WITH_HDF5 of cmake build), the default parameter datasetName
-     *  needs to be set.
+     *  grayscale image.
      *
-     *  
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, TContainer::Value > ).
-     * @param filename the image filename to be imported.
-     * @param aFunctor to transform input unsigned char of image value into the given image type. 
-     * @param datasetName the dataset name to import.
+     * @param aFunctor to transform input unsigned char of image value into the given image type.
+     *  image.
      *
      **/
     template<typename TFunctor>
-    static TContainer importWithValueFunctor(const std::string &filename, 
-					     const  TFunctor &aFunctor,  
-					     const std::string &datasetName="empty")  throw(DGtal::IOException){
-      BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;    
-	  
+    static TContainer importWithValueFunctor(const std::string &filename,
+                                             const  TFunctor &aFunctor)  throw(DGtal::IOException){
+      BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, typename TContainer::Value > )) ;
+
       DGtal::IOException dgtalio;
       //Getting image extension
       std::string extension = filename.substr(filename.find_last_of(".") + 1);
-      
-      if(extension=="pgm"){
-	return PGMReader<TContainer>::importPGM(filename, aFunctor);
-      }
+
+      if(extension=="pgm")
+        return PGMReader<TContainer>::importPGM(filename, aFunctor);
+
 #ifdef WITH_HDF5
-      else if (extension=="h5"){
-	return HDF5Reader<TContainer>::importHDF5(filename, datasetName, aFunctor); 
-      }
+      if (extension=="h5")
+        return HDF5Reader<TContainer>::importHDF5(filename, datasetName, aFunctor);
 #endif
-      else{
-	trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
-	throw dgtalio;
-      }
-      
+
+      trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+      throw dgtalio;
+
     }
 
-
-
- };
+  };
 
 
 } // namespace DGtal

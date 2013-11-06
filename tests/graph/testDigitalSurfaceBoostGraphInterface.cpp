@@ -96,7 +96,7 @@ struct my_vertex_copier {
   {}
 
   void operator()( const Vertex1& v1, const Vertex2& v2 ) const {
-    std::size_t idx = myIndexMap[ v1 ];
+    //  std::size_t idx = myIndexMap[ v1 ];
     // Does not work !
     // put( graph_vertex_index, v2, idx);
     surfel_position pos;
@@ -107,7 +107,7 @@ struct my_vertex_copier {
 };
 template <typename Graph1, typename Graph2>
 struct my_edge_copier {
-  my_edge_copier(const Graph1& g1, Graph2& g2)
+  my_edge_copier(const Graph1& UNUSED(g1), Graph2& UNUSED(g2))
   {}
   template <typename Edge1, typename Edge2>
   void operator()(const Edge1& /*v1*/, Edge2& /*v2*/) const {
@@ -134,7 +134,6 @@ bool testDigitalSurfaceBoostGraphInterface()
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
-  typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
   // Implicit shape is an ellipse
   trace.beginBlock( "Constructing implicit shape." );

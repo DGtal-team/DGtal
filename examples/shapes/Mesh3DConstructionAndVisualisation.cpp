@@ -90,6 +90,7 @@ int main( int argc, char** argv )
   viewer << Viewer3D<>::updateDisplay;
   bool res = application.exec();
   //! [MeshUseDisplay]
+  FATAL_ERROR(res);
   return true;
 }
 //                                                                           //
