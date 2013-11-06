@@ -323,10 +323,10 @@ void DGtal::Display2DFactory::draw(Board2D & aBoard, const DGtal::CircleFrom3Poi
 
 
 // DigitalSetBySTLSet
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
-           const DGtal::DigitalSetBySTLSet<Domain> & s )
+           const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
   typedef typename Domain::Point Point;
   typedef typename std::set<Point>::const_iterator ConstIterator;
