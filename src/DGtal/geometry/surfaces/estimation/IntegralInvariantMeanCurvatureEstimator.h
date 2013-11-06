@@ -51,6 +51,7 @@
 #include "DGtal/shapes/EuclideanShapesDecorator.h"
 
 #include "DGtal/shapes/implicit/ImplicitBall.h"
+#include "DGtal/kernel/CCellFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -62,28 +63,28 @@ class MeanCurvatureFunctor3 : std::unary_function <double,double>
 {
 public:
 
-    MeanCurvatureFunctor3(){}
+  MeanCurvatureFunctor3(){}
 
-    void init( const double & h, const double & r )
-    {
-        d8_3r = 8.0 / ( 3.0 * r );
-        double r2 = r * r;
-        d_4_PIr4 = 4.0 / ( M_PI * r2 * r2 );
-        dh3 = h * h * h;
-    }
+  void init( const double & h, const double & r )
+  {
+    d8_3r = 8.0 / ( 3.0 * r );
+    double r2 = r * r;
+    d_4_PIr4 = 4.0 / ( M_PI * r2 * r2 );
+    dh3 = h * h * h;
+  }
 
-    Quantity operator()(const Quantity & aInput)
-    {
-        Quantity cp_quantity = aInput;
-        cp_quantity *= dh3;
+  Quantity operator()(const Quantity & aInput)
+  {
+    Quantity cp_quantity = aInput;
+    cp_quantity *= dh3;
 
-        return d8_3r - d_4_PIr4 * cp_quantity;
-    }
+    return d8_3r - d_4_PIr4 * cp_quantity;
+  }
 
 private:
-    Quantity dh3;
-    Quantity d8_3r;
-    Quantity d_4_PIr4;
+  Quantity dh3;
+  Quantity d8_3r;
+  Quantity d_4_PIr4;
 
 };
 
@@ -92,29 +93,29 @@ class MeanCurvatureFunctor2 : std::unary_function <double,double>
 {
 public:
 
-    MeanCurvatureFunctor2(){}
+  MeanCurvatureFunctor2(){}
 
-    void init( const double & h, const double & r )
-    {
-        d1_r2 = 1.0 / ( r * r );
-        dPI_2 = M_PI / 2.0;
-        d3_r = 3.0 / r;
-        dh2 = h * h;
-    }
+  void init( const double & h, const double & r )
+  {
+    d1_r2 = 1.0 / ( r * r );
+    dPI_2 = M_PI / 2.0;
+    d3_r = 3.0 / r;
+    dh2 = h * h;
+  }
 
-    Quantity operator()(const Quantity & aInput)
-    {
-        Quantity cp_quantity = aInput;
-        cp_quantity *= dh2;
+  Quantity operator()(const Quantity & aInput)
+  {
+    Quantity cp_quantity = aInput;
+    cp_quantity *= dh2;
 
-        return d3_r * ( dPI_2 - d1_r2 * cp_quantity );
-    }
+    return d3_r * ( dPI_2 - d1_r2 * cp_quantity );
+  }
 
 private:
-    Quantity dh2;
-    Quantity d3_r;
-    Quantity dPI_2;
-    Quantity d1_r2;
+  Quantity dh2;
+  Quantity d3_r;
+  Quantity dPI_2;
+  Quantity d1_r2;
 
 };
 
@@ -147,67 +148,67 @@ template <typename TKSpace, typename TShapeFunctor, Dimension dimension = TKSpac
 class IntegralInvariantMeanCurvatureEstimator
 {
 public:
-    typedef TKSpace KSpace;
-    typedef typename Z2i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
-    typedef typename Z2i::DigitalSet DigitalSet;
-    typedef typename KSpace::SCell Cell;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+  typedef TKSpace KSpace;
+  typedef typename Z2i::Domain Domain;
+  typedef typename KSpace::Space::RealPoint RealPoint;
+  typedef typename Z2i::DigitalSet DigitalSet;
+  typedef typename KSpace::SCell Spel;
+  typedef typename KSpace::SurfelSet SurfelSet;
+  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-    typedef double Quantity;
-    typedef int Value;
+  typedef double Quantity;
+  typedef int Value;
 
-    typedef TShapeFunctor ShapeSpelFunctor;
-    typedef ConstValueFunctor<Value> KernelSpelFunctor;
-    typedef ImplicitBall<Z2i::Space> KernelSupport;
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
-    typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
-    typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
+  typedef TShapeFunctor ShapeSpelFunctor;
+  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef ImplicitBall<Z2i::Space> KernelSupport;
+  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
+  typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
 
-    typedef MeanCurvatureFunctor2< Quantity > ValuesFunctor;
+  typedef MeanCurvatureFunctor2< Quantity > ValuesFunctor;
 
-    typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
-    typedef typename Convolver::PairIterators PairIterators;
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
+  typedef typename Convolver::PairIterators PairIterators;
 
-    //    BOOST_CONCEPT_ASSERT (( SpelFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
 
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
 public:
-    /**
+  /**
      * Constructor.
      *
      * @param[in] space space in which the shape is defined.
      * @param[in] f functor on spel of the shape.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
-    /**
+  /**
      * Destructor.
      */
-    ~IntegralInvariantMeanCurvatureEstimator()
+  ~IntegralInvariantMeanCurvatureEstimator()
+  {
+    for( unsigned int i = 0; i < kernelsSet.size(); ++i )
     {
-        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
-        {
-            delete kernelsSet[ i ];
-        }
-        kernelsSet.clear();
-        delete kernel;
-        delete digKernel;
+      delete kernelsSet[ i ];
     }
+    kernelsSet.clear();
+    delete kernel;
+    delete digKernel;
+  }
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+  /**
       * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
       *
       * @param[in] _h precision of the grid
       * @param[in] re Euclidean radius of the kernel support
       */
-    void init ( const double _h, const double re );
+  void init ( const double _h, const double re );
 
-    /**
+  /**
       * -- Mean curvature --
       * Compute the integral invariant mean curvature at surfel *it of a shape.
       *
@@ -217,11 +218,11 @@ public:
       *
       * @return quantity (mean curvature) at surfel *it
       */
-    template< typename SurfelIterator >
-    Quantity eval ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  Quantity eval ( const SurfelIterator & it );
 
 
-    /**
+  /**
       * -- Mean curvature --
       * Compute the integral invariant mean curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -233,68 +234,68 @@ public:
       * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
       * @param[out] result iterator of results of the computation.
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void eval ( const SurfelIterator & itb,
-                const SurfelIterator & ite,
-                OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void eval ( const SurfelIterator & itb,
+              const SurfelIterator & ite,
+              OutputIterator & result );
 
-    /**
+  /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+  void selfDisplay ( std::ostream & out ) const;
 
-    /**
+  /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+  bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Datas --------------------------------
 private:
 
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernels;
-    /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
-    std::vector< DigitalSet * > kernelsSet;
+  /// array of begin/end iterator of shifting masks.
+  std::vector< PairIterators > kernels;
+  /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet;
 
-    /// Euclidean kernel
-    KernelSupport * kernel;
+  /// Euclidean kernel
+  KernelSupport * kernel;
 
-    /// Digital kernel
-    DigitalShapeKernel * digKernel;
+  /// Digital kernel
+  DigitalShapeKernel * digKernel;
 
-    /// kernel functor
-    const KernelSpelFunctor myKernelFunctor;
+  /// kernel functor
+  const KernelSpelFunctor myKernelFunctor;
 
-    /// convolver
-    Convolver myConvolver;
+  /// convolver
+  Convolver myConvolver;
 
-    /// precision of the grid
-    double h;
+  /// precision of the grid
+  double h;
 
-    /// Euclidean radius of the kernel
-    double radius;
+  /// Euclidean radius of the kernel
+  double radius;
 
-    /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-    ValuesFunctor meanFunctor;
+  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
+  ValuesFunctor meanFunctor;
 
 private:
 
-    /**
+  /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+  IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
 
-    /**
+  /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+  IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
 
 }; // end of class IntegralInvariantMeanCurvatureEstimator
 
@@ -305,67 +306,67 @@ template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>
 {
 public:
-    typedef TKSpace KSpace;
-    typedef typename Z2i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
-    typedef typename Z2i::DigitalSet DigitalSet;
-    typedef typename KSpace::SCell Cell;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+  typedef TKSpace KSpace;
+  typedef typename Z2i::Domain Domain;
+  typedef typename KSpace::Space::RealPoint RealPoint;
+  typedef typename Z2i::DigitalSet DigitalSet;
+  typedef typename KSpace::SCell Spel;
+  typedef typename KSpace::SurfelSet SurfelSet;
+  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-    typedef double Quantity;
-    typedef int Value;
+  typedef double Quantity;
+  typedef int Value;
 
-    typedef TShapeFunctor ShapeSpelFunctor;
-    typedef ConstValueFunctor<Value> KernelSpelFunctor;
-    typedef ImplicitBall<Z2i::Space> KernelSupport;
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
-    typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
-    typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
+  typedef TShapeFunctor ShapeSpelFunctor;
+  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef ImplicitBall<Z2i::Space> KernelSupport;
+  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
+  typedef GaussDigitizer< Z2i::Space, EuclideanMinus > DigitalShape;
 
-    typedef MeanCurvatureFunctor2< Quantity > ValuesFunctor;
+  typedef MeanCurvatureFunctor2< Quantity > ValuesFunctor;
 
-    typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
-    typedef typename Convolver::PairIterators PairIterators;
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
+  typedef typename Convolver::PairIterators PairIterators;
 
-    //    BOOST_CONCEPT_ASSERT (( SpelFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
 
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
 public:
-    /**
+  /**
      * Constructor.
      *
      * @param[in] space space in which the shape is defined.
      * @param[in] f functor on spel of the shape.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
-    /**
+  /**
      * Destructor.
      */
-    ~IntegralInvariantMeanCurvatureEstimator()
+  ~IntegralInvariantMeanCurvatureEstimator()
+  {
+    for( unsigned int i = 0; i < kernelsSet.size(); ++i )
     {
-        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
-        {
-            delete kernelsSet[ i ];
-        }
-        kernelsSet.clear();
-        delete kernel;
-        delete digKernel;
+      delete kernelsSet[ i ];
     }
+    kernelsSet.clear();
+    delete kernel;
+    delete digKernel;
+  }
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+  /**
       * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
       *
       * @param[in] _h precision of the grid
       * @param[in] re Euclidean radius of the kernel support
       */
-    void init ( const double _h, const double re );
+  void init ( const double _h, const double re );
 
-    /**
+  /**
       * -- Mean curvature --
       * Compute the integral invariant mean curvature at surfel *it of a shape.
       *
@@ -375,11 +376,11 @@ public:
       *
       * @return quantity (mean curvature) at surfel *it
       */
-    template< typename SurfelIterator >
-    Quantity eval ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  Quantity eval ( const SurfelIterator & it );
 
 
-    /**
+  /**
       * -- Mean curvature --
       * Compute the integral invariant mean curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -391,68 +392,68 @@ public:
       * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
       * @param[out] result iterator of results of the computation.
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void eval ( const SurfelIterator & itb,
-                const SurfelIterator & ite,
-                OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void eval ( const SurfelIterator & itb,
+              const SurfelIterator & ite,
+              OutputIterator & result );
 
-    /**
+  /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+  void selfDisplay ( std::ostream & out ) const;
 
-    /**
+  /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+  bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Datas --------------------------------
 private:
 
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernels;
-    /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
-    std::vector< DigitalSet * > kernelsSet;
+  /// array of begin/end iterator of shifting masks.
+  std::vector< PairIterators > kernels;
+  /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet;
 
-    /// Euclidean kernel
-    KernelSupport * kernel;
+  /// Euclidean kernel
+  KernelSupport * kernel;
 
-    /// Digital kernel
-    DigitalShapeKernel * digKernel;
+  /// Digital kernel
+  DigitalShapeKernel * digKernel;
 
-    /// kernel functor
-    const KernelSpelFunctor myKernelFunctor;
+  /// kernel functor
+  const KernelSpelFunctor myKernelFunctor;
 
-    /// convolver
-    Convolver myConvolver;
+  /// convolver
+  Convolver myConvolver;
 
-    /// precision of the grid
-    double h;
+  /// precision of the grid
+  double h;
 
-    /// Euclidean radius of the kernel
-    double radius;
+  /// Euclidean radius of the kernel
+  double radius;
 
-    /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-    ValuesFunctor meanFunctor;
+  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
+  ValuesFunctor meanFunctor;
 
 private:
 
-    /**
+  /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+  IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
 
-    /**
+  /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+  IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
 }; // end of class IntegralInvariantMeanCurvatureEstimator for dimension = 2
 
 /**
@@ -462,67 +463,67 @@ template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>
 {
 public:
-    typedef TKSpace KSpace;
-    typedef typename Z3i::Domain Domain;
-    typedef typename KSpace::Space::RealPoint RealPoint;
-    typedef typename Z3i::DigitalSet DigitalSet;
-    typedef typename KSpace::SCell Cell;
-    typedef typename KSpace::SurfelSet SurfelSet;
-    typedef typename SurfelSet::const_iterator ConstIteratorKernel;
+  typedef TKSpace KSpace;
+  typedef typename Z3i::Domain Domain;
+  typedef typename KSpace::Space::RealPoint RealPoint;
+  typedef typename Z3i::DigitalSet DigitalSet;
+  typedef typename KSpace::SCell Spel;
+  typedef typename KSpace::SurfelSet SurfelSet;
+  typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-    typedef double Quantity;
-    typedef int Value;
+  typedef double Quantity;
+  typedef int Value;
 
-    typedef TShapeFunctor ShapeSpelFunctor;
-    typedef ConstValueFunctor<Value> KernelSpelFunctor;
-    typedef ImplicitBall<Z3i::Space> KernelSupport;
-    typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
-    typedef GaussDigitizer< Z3i::Space, KernelSupport > DigitalShapeKernel;
-    typedef GaussDigitizer< Z3i::Space, EuclideanMinus > DigitalShape;
+  typedef TShapeFunctor ShapeSpelFunctor;
+  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef ImplicitBall<Z3i::Space> KernelSupport;
+  typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
+  typedef GaussDigitizer< Z3i::Space, KernelSupport > DigitalShapeKernel;
+  typedef GaussDigitizer< Z3i::Space, EuclideanMinus > DigitalShape;
 
-    typedef MeanCurvatureFunctor3< Quantity > ValuesFunctor;
+  typedef MeanCurvatureFunctor3< Quantity > ValuesFunctor;
 
-    typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
-    typedef typename Convolver::PairIterators PairIterators;
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, KSpace, DigitalShapeKernel> Convolver;
+  typedef typename Convolver::PairIterators PairIterators;
 
-    //    BOOST_CONCEPT_ASSERT (( SpelFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
 
-    // ----------------------- Standard services ------------------------------
+  // ----------------------- Standard services ------------------------------
 public:
-    /**
+  /**
      * Constructor.
      *
      * @param[in] space space in which the shape is defined.
      * @param[in] f functor on spel of the shape.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
-    /**
+  /**
      * Destructor.
      */
-    ~IntegralInvariantMeanCurvatureEstimator()
+  ~IntegralInvariantMeanCurvatureEstimator()
+  {
+    for( unsigned int i = 0; i < kernelsSet.size(); ++i )
     {
-        for( unsigned int i = 0; i < kernelsSet.size(); ++i )
-        {
-            delete kernelsSet[ i ];
-        }
-        kernelsSet.clear();
-        delete kernel;
-        delete digKernel;
+      delete kernelsSet[ i ];
     }
+    kernelsSet.clear();
+    delete kernel;
+    delete digKernel;
+  }
 
-    // ----------------------- Interface --------------------------------------
+  // ----------------------- Interface --------------------------------------
 public:
 
-    /**
+  /**
       * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
       *
       * @param[in] _h precision of the grid
       * @param[in] re Euclidean radius of the kernel support
       */
-    void init ( const double _h, const double re );
+  void init ( const double _h, const double re );
 
-    /**
+  /**
       * -- Mean curvature --
       * Compute the integral invariant mean curvature at surfel *it of a shape.
       *
@@ -532,10 +533,10 @@ public:
       *
       * @return quantity (mean curvature) at surfel *it
       */
-    template< typename SurfelIterator >
-    Quantity eval ( const SurfelIterator & it );
+  template< typename SurfelIterator >
+  Quantity eval ( const SurfelIterator & it );
 
-    /**
+  /**
       * -- Mean curvature --
       * Compute the integral invariant mean curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
@@ -547,68 +548,68 @@ public:
       * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
       * @param[out] result iterator of results of the computation.
       */
-    template< typename SurfelIterator, typename OutputIterator >
-    void eval ( const SurfelIterator & itb,
-                const SurfelIterator & ite,
-                OutputIterator & result );
+  template< typename SurfelIterator, typename OutputIterator >
+  void eval ( const SurfelIterator & itb,
+              const SurfelIterator & ite,
+              OutputIterator & result );
 
-    /**
+  /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+  void selfDisplay ( std::ostream & out ) const;
 
-    /**
+  /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isValid() const;
+  bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Datas --------------------------------
 private:
 
-    /// array of begin/end iterator of shifting masks.
-    std::vector< PairIterators > kernels;
-    /// array of shifting masks. Size = 27 for each shifting<s (0-adjacent and full kernel included)
-    std::vector< DigitalSet * > kernelsSet;
+  /// array of begin/end iterator of shifting masks.
+  std::vector< PairIterators > kernels;
+  /// array of shifting masks. Size = 27 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet;
 
-    /// Euclidean kernel
-    KernelSupport * kernel;
+  /// Euclidean kernel
+  KernelSupport * kernel;
 
-    /// Digital kernel
-    DigitalShapeKernel * digKernel;
+  /// Digital kernel
+  DigitalShapeKernel * digKernel;
 
-    /// kernel functor
-    const KernelSpelFunctor myKernelFunctor;
+  /// kernel functor
+  const KernelSpelFunctor myKernelFunctor;
 
-    /// convolver
-    Convolver myConvolver;
+  /// convolver
+  Convolver myConvolver;
 
-    /// precision of the grid
-    double h;
+  /// precision of the grid
+  double h;
 
-    /// Euclidean radius of the kernel
-    double radius;
+  /// Euclidean radius of the kernel
+  double radius;
 
-    /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-    ValuesFunctor meanFunctor;
+  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
+  ValuesFunctor meanFunctor;
 
 private:
 
-    /**
+  /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
+  IntegralInvariantMeanCurvatureEstimator ( const IntegralInvariantMeanCurvatureEstimator & other );
 
-    /**
+  /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
+  IntegralInvariantMeanCurvatureEstimator & operator= ( const IntegralInvariantMeanCurvatureEstimator & other );
 
 }; // end of specialization for dimension = 3
 
