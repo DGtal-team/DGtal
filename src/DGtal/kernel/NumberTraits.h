@@ -969,18 +969,18 @@ namespace DGtal
     }
     static ReturnType min()
     {
-      VERIFY(!"UnBounded interger type does not support min() function");
+      FATAL_ERROR_MSG(false, "UnBounded interger type does not support min() function");
       return ZERO;
     }
     static ReturnType max()
     {
-      VERIFY(!"UnBounded interger type does not support max() function");
+      FATAL_ERROR_MSG(false, "UnBounded interger type does not support max() function");
       return ZERO;
     }
 
     static unsigned int digits()
     {
-      VERIFY(!"UnBounded interger type does not support digits() function");
+      FATAL_ERROR_MSG(false, "UnBounded interger type does not support digits() function");
       return 0;
     }
     static BoundEnum isBounded()
