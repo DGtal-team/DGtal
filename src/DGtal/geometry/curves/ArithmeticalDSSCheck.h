@@ -101,19 +101,6 @@ namespace DGtal
     bool checkPointsRemainder(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS);
 
     /**
-     * Checks the shift vector and the DSS steps, 
-     * which depend on the octant/quadrant of the DSS.
-     * @param aDSS any DSS
-     * @pre the DSS contains more than one point, 
-     * ie a and b are not both null. 
-     * @return 'true' if the members of @a aDSS are consistent, 'false' otherwise.
-     */
-    template <typename TCoordinate, 
-	      typename TInteger,  
-	      unsigned short adjacency>
-    bool checkShiftAndSteps(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS);
-
-    /**
      * Checks whether a DSS is valid or not.
      * NB: in logarithmic time (in order to check
      * that a and b are relatively prime)

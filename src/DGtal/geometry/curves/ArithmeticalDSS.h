@@ -49,10 +49,9 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 
-#include "DGtal/geometry/curves/ArithmeticalDSSKernel.h"
+#include "DGtal/geometry/curves/ArithmeticalDSL.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
-#include "DGtal/geometry/curves/ArithmeticalDSL.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -101,6 +100,13 @@ namespace DGtal
 
     // ----------------------- Standard services ------------------------------
   public:
+
+    /**
+     * Simple constructor. 
+     * All members of the bounding DSL are set to zero
+     * and all point members are set to @a aPoint
+     */
+    ArithmeticalDSS(const Point& aPoint);
 
     /**
      * Constructor.
@@ -566,20 +572,6 @@ namespace DGtal
      * @see retractForward retractBackward
      */
     void retractUpdateParameters( const Vector& aNewDirection );
-
-    /**
-     * Tests whether @a aStep is one of the two steps of the DSS, 
-     * stored in @a mySteps or not. 
-     *
-     * @param aStep any step to test
-     * @pre steps of @a mySteps should not be null
-     * @return 'true' if @a aStep is one of the two steps of the DSS,
-     * 'false' otherwise.
-     *
-     * @see isExtendableForward
-     */
-    bool isOneOfTheTwoSteps( const Vector& aStep ) const; 
-
 
 
     // ------------------------- Protected Datas ------------------------------
