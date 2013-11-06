@@ -13,7 +13,9 @@
       for the Projector Functor from the BasicPointFunctors class in
       order to simplify the slice images (with example and test in 2D
       slice image extraction from 3D volume file).
-    - New basic functor: SliceRotator2D to rotate 2D Slice images from 3D volume.
+    - New basic functors:
+	- SliceRotator2D: to rotate 2D Slice images from 3D volume.
+	- Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points (useful to extract 2D image from 3D volume).
 
 *Geometry Package*
 
@@ -59,6 +61,7 @@
     - New display of 2D and 3D image in Display3D class (implemented in Viewer3D only).
     - Adding missing PPM Reader.
     - Adding missing DICOM reader (with ITK library)
+    - Adding ITK reader and ITK writer
 
 *Image Package*
 
@@ -111,6 +114,8 @@
     - digital sets are now also point predicates, update of
       DigitalSetDomain accordingly. As a consequence, SetPredicate is
       now deprecated.
+    - exposed Compare template parameter of underlying std::set in
+      DigitalSetBySTLSet class.
 
     - new documentation for module digital sets.
 

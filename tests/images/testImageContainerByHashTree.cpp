@@ -168,7 +168,6 @@ int main ( int argc, char** argv )
   trace.info() << std::endl;
 
   typedef SpaceND<5> Space;
-  typedef Space::Point Point;
   typedef HyperRectDomain<Space> Dom;
   typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> Tree;
   Tree tree ( 12,5,1 );

@@ -68,6 +68,8 @@ namespace detail
 * \brief Aim: 
 *  Checks whether type @a IC has a nested type called 'Type' or not.
 *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
+*  NB: to avoid various compiler issues, we use BOOST_STATIC_CONSTANT according to 
+*  http://www.boost.org/development/int_const_guidelines.html
 *  @tparam IC any iterator or circulator
 */
   template <typename IC> 
@@ -82,46 +84,59 @@ namespace detail
     template <typename C>
     static no& test(...);
 
-    static const bool value; 
+    BOOST_STATIC_CONSTANT(bool, value = sizeof(test<IC>(0)) == sizeof(yes));  
   };
   
+/////////////////////////////////////////////////////////////////////////////
+/**
+* Description of template class 'IsCirculatorFromType' <p>
+* \brief Aim: 
+* In order to check whether type @a IC is a circular or a classical iterator, 
+* the nested type called 'Type' is read.  
+*  @tparam IC any iterator or circulator
+*/
+  //default (for iterator type)
+  template <typename IC, typename ICType> 
+  struct IsCirculatorFromType 
+  {
+    BOOST_STATIC_CONSTANT(bool, value = false);  
+  };
+
+  //specialization for circulator type
   template <typename IC> 
-  const bool HasNestedTypeType<IC>::value = sizeof(test<IC>(0)) == sizeof(yes); 
+  struct IsCirculatorFromType<IC, CirculatorType> 
+  {
+    BOOST_STATIC_CONSTANT(bool, value = true);  
+  };
 
 /////////////////////////////////////////////////////////////////////////////
 /**
 * Description of template class 'IsCirculator' <p>
 * \brief Aim: 
 *  Checks whether type @a IC is a circular or a classical iterator.
-*  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
-*  Static value set to 'true' for a circulator.  
+*  Static value set to 'true' for a circulator, 'false' otherwise.   
+*  1) if type @a IC has no nested type 'Type', it is a classical iterator
+* and 'false' is returned. 
+*  2) if type @a IC has a nested type 'Type', 'true' is returned 
+* is 'Type' is CirculatorType, 'false' otherwise. 
+*  @see IsCirculatorFromType
 *  @tparam IC any iterator or circulator
 */
-  template <typename IC, bool flagHasNestedTypeType = false> 
+  //default (there is no nested type called 'Type') 
+  template <typename IC, bool flagHasNestedTypeCalledType = false> 
   struct IsCirculator 
   {
-    static const bool value; 
+    BOOST_STATIC_CONSTANT(bool, value = false);  
   };
-  template <typename IC, bool flagHasNestedTypeType> 
-  const bool IsCirculator<IC, flagHasNestedTypeType>::value = false; 
 
-
+  //specialization if there is a nested type called 'Type'
   template <typename IC> 
   struct IsCirculator<IC,true> 
   {
-    //from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
-    typedef char yes[1]; 
-    typedef char no[2]; 
-    
-    static yes& test(CirculatorType);
-
-    static no& test(IteratorType);
-
-    static const bool value; 
+    typedef IsCirculatorFromType<IC, typename IC::Type> IsCirculatorHelper;
+    BOOST_STATIC_CONSTANT(bool, value = IsCirculatorHelper::value); 
   };
 
-  template <typename IC> 
-  const bool IsCirculator<IC, true>::value = ( sizeof(test(typename IC::Type())) == sizeof(yes) ); 
 } //namespace detail
 
 /////////////////////////////////////////////////////////////////////////////
@@ -129,18 +144,15 @@ namespace detail
 * Description of template class 'IsCirculator' <p>
 * \brief Aim: 
 *  Checks whether type @a IC is a circular or a classical iterator.
-*  1) if type @a IC has no nested type 'Type', it is a classical iterator. 
-*  2) if type @a IC has a nested type 'Type', this type is returned.
-*  Static value set to 'true' for a circulator.  
+*  Static value set to 'true' for a circulator, 'false' otherwise.   
 *  @tparam IC any iterator or circulator
 */
 template <typename IC> 
 struct IsCirculator 
 {
-  static const bool value; 
+  typedef detail::IsCirculator<IC, detail::HasNestedTypeType<IC>::value > IsCirculatorHelper; 
+  BOOST_STATIC_CONSTANT(bool, value = IsCirculatorHelper::value); 
 };
-  template <typename IC> 
-  const bool IsCirculator<IC>::value = detail::IsCirculator<IC, detail::HasNestedTypeType<IC>::value >::value; 
 
 namespace detail
 {

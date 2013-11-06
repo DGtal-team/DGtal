@@ -41,7 +41,7 @@
 #include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/arithmetic/StandardDSLQ0.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -565,9 +565,7 @@ bool testStandardDSLQ0()
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
-  typedef typename DSL::Point2I Point2I;
   typedef typename DSL::Vector2I Vector2I;
 
   BOOST_CONCEPT_ASSERT(( CPointPredicate< DSL > ));
@@ -622,14 +620,9 @@ bool checkSubStandardDSLQ0( const DSL & D,
                             const typename DSL::Point & A, 
                             const typename DSL::Point & B ) 
 {
-  typedef typename DSL::Fraction Fraction;
   typedef typename DSL::Integer Integer;
-  typedef typename DSL::Quotient Quotient;
-  typedef typename DSL::Point Point;
   typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
-  typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
+  typedef ArithmeticalDSSComputer<ConstIterator, Integer, 4> ADSS;
 
   DSL S = D.reversedSmartDSS( A, B );
   ConstIterator it = D.begin( A );
@@ -664,12 +657,7 @@ bool testSubStandardDSLQ0()
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
-  typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
-  typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
   IntegerComputer<Integer> ic;
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -718,7 +706,6 @@ bool testLighterSternBrocot()
   unsigned int nb = 0;
   typedef DGtal::BigInteger Integer;
   typedef LighterSternBrocot<Integer, DGtal::int32_t, DGtal::StdMapRebinder> SB;
-  typedef SB::Fraction Fraction;
   trace.beginBlock ( "Testing block: init fractions." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
@@ -748,10 +735,9 @@ bool testLighterSternBrocot()
 template <typename SB>
 bool testContinuedFraction()
 {
-  typedef typename SB::Integer Integer;
   typedef typename SB::Quotient Quotient;
-  typedef typename SB::Fraction Fraction;
   typedef typename SB::Fraction::ConstIterator ConstIterator;
+  typedef typename SB::Fraction Fraction;
 
   Fraction f;
   std::vector<Quotient> quotients;
@@ -786,9 +772,6 @@ bool testContinuedFraction()
 template <typename SB>
 bool testContinuedFractions()
 {
-  typedef typename SB::Integer Integer;
-  typedef typename SB::Quotient Quotient;
-  typedef typename SB::Fraction Fraction;
   unsigned int nbtests = 1000;
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -843,8 +826,7 @@ template <typename SB>
 bool 
 testAncestors()
 {
-  typedef typename SB::Fraction Fraction; 
-  typedef typename Fraction::Integer Integer; 
+  typedef typename SB::Fraction Fraction;
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename DSL::Point Point;
 

@@ -67,7 +67,6 @@ template<typename Image, typename Pred, typename Metric>
 bool checkVoronoi(Image &result,Pred &pointPredicate, Metric &metric)
 {
   typedef typename Image::Domain Domain;
-  typedef typename Image::Domain::Vector Vector;
   
   for(typename Domain::ConstIterator it = result.domain().begin(),
           itend=result.domain().end();

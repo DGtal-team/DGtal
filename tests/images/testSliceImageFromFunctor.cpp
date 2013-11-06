@@ -60,7 +60,6 @@ bool testSliceImageFromFunctor()
   std::string filename = testPath + "samples/cat10.vol";
   trace.beginBlock ( "Testing block ..." );
   typedef  DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char>  Image3D;
-  typedef  DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char>  Image2D;
 
   typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::Projector< DGtal::Z3i::Space>,
 				   Image3D::Value,  DGtal::DefaultFunctor >  MySliceImageAdapter;

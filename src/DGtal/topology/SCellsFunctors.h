@@ -365,7 +365,7 @@ namespace DGtal
     Output operator()(const Input& s) const
     {
       ASSERT( myK ); 
-      Input pixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
       return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
       
@@ -440,7 +440,7 @@ namespace DGtal
     Output operator()(const Input& s) const
     {
       ASSERT( myK ); 
-      Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input pixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
       return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
       
@@ -518,9 +518,9 @@ namespace DGtal
     {
       ASSERT( myK ); 
       //inner point
-      Input innerPixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input innerPixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
       //outer point
-      Input outerPixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input outerPixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
 
       return Output(myK->sCoords( innerPixel ),myK->sCoords( outerPixel ));
     }
