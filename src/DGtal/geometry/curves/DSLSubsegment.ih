@@ -883,7 +883,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
 {
   BOOST_CONCEPT_ASSERT((CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
-
+  
 
   Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x;
 
@@ -1027,6 +1027,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
     else  //the facet is upper triangular,
       {
 	Integer g = ic.gcd(inf[1] + sup[1],inf[0]+sup[0]);
+
 	*resAlphaP = (inf[1]+sup[1])/g;
 	*resAlphaQ = (inf[0]+sup[0])/g;
 	*resBetaP = -(*resAlphaP)*r.x+(*resAlphaQ)*r.y;

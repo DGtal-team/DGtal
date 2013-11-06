@@ -850,7 +850,6 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it, 
 			const DCA& aDCA) const 
       {
-	typedef typename DCA::ConstIterator ConstIterator; 
 	typedef typename DCA::Pair Pair; 
 	typedef typename DCA::Point Point;
 	typedef typename Point::Coordinate Coordinate; 
@@ -877,7 +876,7 @@ namespace DGtal
   	  {
 	    //separating straight line and normal vector
 	    double a, b, c; 
-	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c);
+	    aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c);
 	    //norm
 	    double n = std::sqrt(a*a + b*b); 
   	    return Value( a/n, b/n ); 
@@ -949,7 +948,6 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it, 
 			const DCA& aDCA, const double& aH) const 
       {
-	typedef typename DCA::ConstIterator ConstIterator; 
 	typedef typename DCA::Pair Pair; 
 	typedef typename DCA::Point Point;
 	typedef typename Point::Coordinate Coordinate; 
@@ -976,7 +974,7 @@ namespace DGtal
   	  {
 	    //separating straight line
 	    double a, b, c; 
-	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c); 
+	    aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c); 
 	    //norm
 	    double n = std::sqrt(a*a + b*b); 
   	    //points

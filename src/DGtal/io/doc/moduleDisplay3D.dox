@@ -96,32 +96,32 @@ Then we can display some 3D primitives:
 
 
 
-\section DGtalGLV_Boas3DTo2D Static visualization from Board2Dto3D
+\section DGtalGLV_Boas3DTo2D Alternative visualization without QGLViewer dependency 
 
 
- The same visualization can be obtain with the Board2Dto3D class. You
-just need to adapt the camera settings (see example: <a href="io_2boards_2dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
+There are two ways to obtain an alternative visualization without the dependency of the 3D interactive viewer:
+      - Static display by using Board2Dto3D.
+      - Export the 3d objects into 3d files (OBJ format) with Board3D.
 
+\subsection DGtalGLV_StaticDisplay Static display
 
-@code
-Board3DTo2D<> board;
-board << domain;
-board << p1 << p2 << p3;
+ The same visualization can be obtain with the Board2Dto3D class. You just need to adapt the camera settings (see example io/boards/dgtalBoard3DTo2D-1-points.cpp).
 
-board << CameraPosition(2.500000, 2.500000, 16.078199)
-       << CameraDirection(0.000000, 0.000000, -1.000000)
-       << CameraUpVector(0.000000, 1.000000, 0.000000);
-board << CameraZNearFar(4.578200, 22.578199);
-board.saveCairo("dgtalCairo-1-points.pdf", Board3DTo2D::CairoPDF, 600*2, 400*2);
-@endcode
+@snippet io/boards/dgtalBoard3DTo2D-1-points.cpp ExampleBoard3DTo2D
 
 This example should provides a comparable visualization.
 
 
 
+\subsection DGtalGLV_OBJExport Export objects with Board3D
+To export 3d objects into OBJ format you need simply to use the Board3D class which inherits to the Display3D class. You can for instance follow these steps:
+ 
 
+@snippet io/boards/dgtalBoard3D-1-points.cpp ExampleBoard3DExport
 
+And then visualize the resulting obj and mtl file by using for instance blender:
 
+\image html   dgtalBoard3D-1-points.png "Visualisation of exported OBJ file with blender."
 
 
 
@@ -131,26 +131,10 @@ This example should provides a comparable visualization.
 * The Viewer3D class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
 *
 *
-* @code
 
- QApplication application(argc,argv);
- Viewer3D<> viewer;
- viewer.show();
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
- Domain domain( p1, p2 );
- viewer << domain;
+  @snippet io/viewers/viewer3D-2-sets.cpp ExampleViewer3DSets
 
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-
- shape_set.erase(Point(3,3,3));
- shape_set.erase(Point(6,6,6));
- viewer << shape_set << Viewer3D<>::updateDisplay;
-
- @endcode
 *
 * You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
@@ -208,7 +192,7 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class HyperRectDomain 2D, modes: "" / "BoundingBox"  (default), "Grid", "InterGrid" **.
   - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration",  "IllustrationCustomColor".
   - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
-  - class ArithmeticalDSS3d  ,  modes: "" (default) /  "Points", "BoundingBox *".
+  - class StandardDSS6Computer  ,  modes: "" (default) /  "Points", "BoundingBox *".
   - class Mesh, modes:  "" (default) /  "Faces *".
   - class ImageContainerBySTLVector, ImageContainerBySTLMap 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
   - class ImageAdapter, ConstImageAdapter 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
@@ -459,86 +443,125 @@ You will obtain such a visualization:
 
 
 /**
+Example of digital point visualization  with Viewer3D.
+@see DGtalGLV_Viewer3D 
 \example io/viewers/viewer3D-1-points.cpp
+ \image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
+ *
+*/
+
+/**
+Example of digital point visualization with Viewer3D.
+@see \ref DGtalGLV_VisualizationDigitalSet
+\example io/viewers/viewer3D-2-sets.cpp
+\image html simple3dVisu2.png "Digital point visualization  with Viewer3D."   
+*
+*/
+
+
+/**
+Example of 6-18 digital Adjacencies visualization  with Viewer3D.
+@see \ref DGtalGLV_ModeEx
+\example io/viewers/viewer3D-3-objects.cpp
+ \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
+*
+*/
+
+/*
+Example of default visualization of a digital point sets with the associated domain
+@see \ref DGtalGLV_ModeExamplesDomain
+\example io/viewers/viewer3D-4-modes.cpp
+\image html visuModeDefault.png "Default visualization of a digital point sets with the associated domain "
 *
 */
 
 /**
-\example io/viewers/viewer3D-2-sets.cpp
-*
-*/
-/**
-\example io/viewers/viewer3D-3-objects.cpp
-*
-*/
-/**
-\example io/viewers/viewer3D-4-modes.cpp
-*
-*/
-/**
+Example of a custom display
+@see \ref DGtalGLV_Custom
 \example io/viewers/viewer3D-5-custom.cpp
-*
+\image html visuModeCustom.png "Example of several custom display ." width=5cm
 */
+
 /**
+Example of visualization after adding two clipping planes
+@see \ref DGtalGLV_CLipping
+\image html  visuClipping2.png "Visualization after adding a second clipping plane (1,0,0,-4.9) ."
 \example io/viewers/viewer3D-6-clipping.cpp
 *
 */
 
+
 /**
+Example of digital point visualization with Board3DTo2D.
+@see \ref DGtalGLV_VisualizationDigitalSet
 \example io/boards/dgtalBoard3DTo2D-1-points.cpp
+\image html dgtalBoard3DTo2D-1-points.png "Digital point visualization  with Board3DTo2D."   
 *
 */
 
 /**
+Example of digital set visualization with Board3DTo2D.
+@see \ref DGtalGLV_VisualizationDigitalSet
 \example io/boards/dgtalBoard3DTo2D-2-sets.cpp
+\image html dgtalBoard3DTo2D-2-sets.png "Digital set visualization  with Board3DTo2D."   
 *
 */
 
 /**
+Example of digital point visualization with Board3DTo2D (wireframe visualisation).
+@see \ref DGtalGLV_VisualizationDigitalSet
 \example io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
+\image html dgtalBoard3DTo2D-2bis-sets-wireframe.png "Digital point visualization  with Board3DTo2D (wireframe visualisation))."   
 *
 */
 
 /**
+Example of 6-18 digital Adjacencies visualization  with Board3DTo2D.
+@see \ref DGtalGLV_ModeEx
 \example io/boards/dgtalBoard3DTo2D-3-objects.cpp
+\image html dgtalBoard3DTo2D-3-objects.png " 6-18 digital Adjacencies visualization  with Board3DTo2D."
 *
 */
 
 
 
-/**
+/*
+Example of default visualization of a digital point sets with the associated domain (with Board3DTo2D)
+@see \ref DGtalGLV_ModeExamplesDomain
 \example io/boards/dgtalBoard3DTo2D-4-modes.cpp
+\image html visuModeDefault.png "Default visualization of a digital point sets with the associated domain (with Board3DTo2D) "
 *
 */
 
 
-
 /**
+Example of a custom display (with Board3DTo2D)
+@see \ref DGtalGLV_Custom
 \example io/boards/dgtalBoard3DTo2D-5-custom.cpp
+\image html dgtalBoard3DTo2D-5-custom.png "Example of several custom display  (with Board3DTo2D)." width=5cm 
+*/
+
+/**
+Ball visualisation (with Board3DTo2D)
+@see \ref DGtalGLV_CLipping
+\image html  dgtalBoard3DTo2D-6.png "Ball visualization (with Board3DTo2D) ."
+\example io/boards/dgtalBoard3DTo2D-6.cpp 
 *
 */
 
 
-
 /**
-\example io/boards/dgtalBoard3DTo2D-6.cpp
-*
-*/
-
-
-/**
+Khalimsky Signed Cell Visualization (with Board3DTo2D) 
+\image html dgtalBoard3DTo2D-KSCell.png "Khalimsky Signed Cell Visualization (with Board3DTo2D)"
 \example io/boards/dgtalBoard3DTo2D-KSCell.cpp
 *
 */
 
-
-
 /**
    \image html  view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
 \example io/viewers/viewer3D-4bis-illustrationMode.cpp
-
-*
 */
+
 /**
    \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualization."
    \example io/viewers/viewer3D-8-2Dimages.cpp
@@ -550,10 +573,29 @@ You will obtain such a visualization:
    \example io/viewers/viewer3D-9-3Dimages.cpp
 *
 */
+/**
+   Example of digital point export with Display3D.
+   @see \ref DGtalGLV_OBJExport	
+   \image html  dgtalBoard3D-1-points.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+   \example io/boards/dgtalBoard3D-1-points.cpp
+*
+*/
 
+/**
+   Example of Khalimsky Signed Cell export with Display3D.
+   @see \ref DGtalGLV_OBJExport	
+   \image html  dgtalBoard3D-2-ks.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+   \example io/boards/dgtalBoard3D-2-ks.cpp
+*
+*/
 
-
-
+/**
+   Example of clipped object export with Display3D.
+   @see \ref DGtalGLV_OBJExport	
+   \image html  dgtalBoard3D-6-clipping.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
+   \example io/boards/dgtalBoard3D-6-clipping.cpp
+*
+*/
 
 
 

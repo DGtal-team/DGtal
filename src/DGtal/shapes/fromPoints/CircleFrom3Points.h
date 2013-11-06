@@ -58,7 +58,7 @@ namespace DGtal
   /**
    * \brief Aim: Represents a circle uniquely
    * defined by three 2D points and that is able
-   * to return for any given 2D point its signed distance to itself 
+   * to return for any given 2D point its signed distance to itself
    *
    * @tparam TPoint  a type of points.
    */
@@ -67,7 +67,7 @@ namespace DGtal
   {
 
     BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
-    
+
     // ----------------------- associated types ------------------------------
   public:
 
@@ -124,7 +124,7 @@ namespace DGtal
   public:
 
     /**
-     * Computes the signed distance of @aP to the circle
+     * Computes the signed distance of @e aP to the circle
      * @param aP the point to be tested.
      * @return the signed distance.
      */
@@ -136,7 +136,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-  
+
     /**
      * Computes the parameters of the circle
      * @param cx  returned x-coordinate of the circle
@@ -150,7 +150,7 @@ namespace DGtal
      * @return circle curvature
      */
     double getCurvature() const;
-    
+
     /**
      * @return the first point through which the circle passes.
      */
@@ -158,7 +158,7 @@ namespace DGtal
     {
       return myP;
     };
-    
+
     /**
      * @return the second point through which the circle passes.
      */
@@ -166,7 +166,7 @@ namespace DGtal
     {
       return myQ;
     };
-    
+
     /**
      * @return the third point through which the circle passes.
      */
@@ -183,13 +183,13 @@ namespace DGtal
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
      * @return the style name used for drawing this object.
      */
     std::string className() const;
 
-    
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -233,7 +233,7 @@ namespace DGtal
   template <typename TPoint>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
         const CircleFrom3Points<TPoint> & object )
   {
     object.selfDisplay( out );
