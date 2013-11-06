@@ -52,13 +52,13 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class H5DSpecializations
   /**
    * Description of template class 'H5DSpecializations' <p>
    * \brief Aim: implements HDF5 reading and writing for specialized type T.
-   * 
+   *
    * @tparam TImageFactory an image factory type (model of CImageFactory).
    * @tparam T a type.
    */
@@ -66,15 +66,15 @@ namespace DGtal
   struct H5DSpecializations
   {
     // ----------------------- Standard services ------------------------------
-    
+
     typedef TImageFactory ImageFactory;
     typedef typename ImageFactory::OutputImage::Value Value;
-    
+
     static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out);
     static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in);
 
   }; // end of class H5DSpecializations
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class H5DSpecializations
   /**
@@ -85,22 +85,22 @@ namespace DGtal
   struct H5DSpecializations<TImageFactory, DGtal::uint8_t>
   {
     // ----------------------- Standard services ------------------------------
-    
+
     typedef TImageFactory ImageFactory;
     typedef typename ImageFactory::OutputImage::Value Value;
-    
+
     static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
     {
       return H5Dread(anImageFactory.dataset, H5T_NATIVE_UINT8, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
     }
-    
+
     static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
     {
       return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_UINT8, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
     }
 
   }; // end of class H5DSpecializations
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class H5DSpecializations
   /**
@@ -111,22 +111,22 @@ namespace DGtal
   struct H5DSpecializations<TImageFactory, DGtal::int32_t>
   {
     // ----------------------- Standard services ------------------------------
-    
+
     typedef TImageFactory ImageFactory;
     typedef typename ImageFactory::OutputImage::Value Value;
-    
+
     static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
     {
       return H5Dread(anImageFactory.dataset, H5T_NATIVE_INT32, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
     }
-    
+
     static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
     {
       return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_INT32, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
     }
 
   }; // end of class H5DSpecializations
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class H5DSpecializations
   /**
@@ -137,22 +137,22 @@ namespace DGtal
   struct H5DSpecializations<TImageFactory, DGtal::int64_t>
   {
     // ----------------------- Standard services ------------------------------
-    
+
     typedef TImageFactory ImageFactory;
     typedef typename ImageFactory::OutputImage::Value Value;
-    
+
     static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
     {
       return H5Dread(anImageFactory.dataset, H5T_NATIVE_INT64, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
     }
-    
+
     static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
     {
       return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_INT64, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
     }
 
   }; // end of class H5DSpecializations
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class H5DSpecializations
   /**
@@ -163,33 +163,33 @@ namespace DGtal
   struct H5DSpecializations<TImageFactory, double>
   {
     // ----------------------- Standard services ------------------------------
-    
+
     typedef TImageFactory ImageFactory;
     typedef typename ImageFactory::OutputImage::Value Value;
-    
+
     static int H5DreadS(ImageFactory &anImageFactory, hid_t memspace, Value *data_out)
     {
       return H5Dread(anImageFactory.dataset, H5T_NATIVE_DOUBLE, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_out);
     }
-    
+
     static int H5DwriteS(ImageFactory &anImageFactory, hid_t memspace, Value *data_in)
     {
       return H5Dwrite(anImageFactory.dataset, H5T_NATIVE_DOUBLE, memspace, anImageFactory.dataspace, H5P_DEFAULT, data_in);
     }
 
   }; // end of class H5DSpecializations
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // Template class ImageFactoryFromHDF5
   /**
    * Description of template class 'ImageFactoryFromHDF5' <p>
    * \brief Aim: implements a factory from an HDF5 file.
-   * 
+   *
    * @tparam TImageContainer an image container type (model of CImage).
-   * 
+   *
    * The factory images production (images are copied, so it's a creation process) is done with the function 'requestImage'
    * so the deletion must be done with the function 'detachImage'.
-   * 
+   *
    * The update of the original image is done with the function 'flushImage'.
    */
   template <typename TImageContainer>
@@ -199,19 +199,19 @@ namespace DGtal
     // ----------------------- Types ------------------------------
 
   public:
-    typedef ImageFactoryFromHDF5<TImageContainer> Self; 
-    
+    typedef ImageFactoryFromHDF5<TImageContainer> Self;
+
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
     typedef typename ImageContainer::Domain Domain;
-    
+
     ///New types
     typedef ImageContainer OutputImage;
     typedef typename OutputImage::Value Value;
-    
+
     BOOST_CONCEPT_ASSERT(( CBoundedNumber< Value > ));
 
     // ----------------------- Standard services ------------------------------
@@ -227,47 +227,46 @@ namespace DGtal
       myFilename(aFilename), myDataset(aDataset)
     {
       const int ddim = Domain::dimension;
-            
-      H5T_class_t t_class;                  // data type class
-      H5T_order_t order;                    // data order
-      size_t      size;                     // size of the data element stored in file
+
+      // H5T_class_t t_class;                  // data type class
       hsize_t     dims_out[ddim];              // dataset dimensions
-      int         status_n, rank;
-        
+      herr_t status_n;
+
       // Open the file and the dataset.
       file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
       dataset = H5Dopen2(file, myDataset.c_str(), H5P_DEFAULT);
 
       // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
       datatype = H5Dget_type(dataset); // datatype handle
-      t_class = H5Tget_class(datatype);
+      // t_class = H5Tget_class(datatype);
       /*if (t_class == H5T_INTEGER)
         trace.info() << "Data set has INTEGER type" << std::endl;*/
-      
-      order = H5Tget_order(datatype);
+
+      //order = H5Tget_order(datatype);
       /*if (order == H5T_ORDER_LE)
         trace.info() << "Little endian order" << std::endl;*/
 
-      size  = H5Tget_size(datatype);
+      //size  = H5Tget_size(datatype);
       //trace.info() << "Data size is " << (int)size << std::endl;
 
       dataspace = H5Dget_space(dataset); // dataspace handle
-      rank = H5Sget_simple_extent_ndims(dataspace);
+      //rank = H5Sget_simple_extent_ndims(dataspace);
+
       status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
       //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
-      
+
       // --
-      
+
       typedef SpaceND<ddim> TSpace;
       typename TSpace::Point low, up;
-      
+
       typename Domain::Integer d;
       for(d=0; d<ddim; d++)
       {
         low[d]=0;
         up[d]=dims_out[ddim-d-1]-1;
       }
-      
+
       myDomain = new Domain(low, up);
     }
 
@@ -277,9 +276,9 @@ namespace DGtal
     ~ImageFactoryFromHDF5()
     {
       delete myDomain;
-      
+
       // --
-      
+
       // Close/release resources.
       H5Tclose(datatype);
       H5Dclose(dataset);
@@ -291,7 +290,7 @@ namespace DGtal
   public:
 
     /////////////////// Domains //////////////////
-    
+
     /**
      * Returns a reference to the underlying image domain.
      *
@@ -304,7 +303,7 @@ namespace DGtal
 
     /////////////////// Accessors //////////////////
 
-    
+
     /////////////////// API //////////////////
 
     /**
@@ -324,45 +323,45 @@ namespace DGtal
 
     /**
      * Returns a pointer of an OutputImage created with the Domain aDomain.
-     * 
+     *
      * @param aDomain the domain.
-     * 
+     *
      * @return an ImagePtr.
      */
     OutputImage * requestImage(const Domain &aDomain) // time consuming
     {
       const int ddim = Domain::dimension;
-      
+
       // --
-      
+
       hsize_t offset[ddim];        // hyperslab offset in the file
       hsize_t count[ddim];         // size of the hyperslab in the file
-      
+
       herr_t status;
       hsize_t dimsm[ddim];         // memory space dimensions
       hid_t memspace;
-      
+
       hsize_t offset_out[ddim];    // hyperslab offset in memory
       hsize_t count_out[ddim];     // size of the hyperslab in memory
-      
+
       //int i[ddim];
       int N_SUB[ddim];
       typename Domain::Integer d;
-      
+
       int malloc_size=1;
       for(d=0; d<ddim; d++)
       {
         N_SUB[d] = (aDomain.upperBound()[ddim-d-1]-aDomain.lowerBound()[ddim-d-1])+1;
         malloc_size = malloc_size*N_SUB[d];
       }
-      
+
       Value *data_out = (Value*) malloc (malloc_size * sizeof(Value)); // output buffer
       if (data_out == NULL)
       {
         trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
         exit(-1);
       }
-      
+
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)
         offset[d] = aDomain.lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
@@ -390,14 +389,14 @@ namespace DGtal
         trace.error() << " H5DSpecializations/H5Dread error" << std::endl;
         exit(-2);
       }
-    
+
       OutputImage* outputImage = new OutputImage(aDomain);
       if (outputImage == NULL)
       {
         trace.error() << "outputImage new error in requestImage: " << std::endl;
         exit(-3);
       }
-          
+
       typedef SpaceND<ddim> TSpace;
       typename TSpace::Point a, b;
       for(d=0; d<ddim; d++)
@@ -410,71 +409,71 @@ namespace DGtal
       /*std::vector<typename TSpace::Dimension> v(ddim);
       for(d=0; d<ddim; d++)
         v[d]=d;*/
-      
+
       int p=0;
-      for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator 
+      for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator
             it = hrdomain/*.subRange(v, a)*/.begin(), itend = hrdomain/*.subRange(v, a)*/.end();
-          it != itend; 
+          it != itend;
           ++it)
       {
         outputImage->setValue((*it), data_out[ p++ ]);
       }
-      
+
       H5Sclose(memspace);
-      
+
       // --
-      
+
       free(data_out);
-        
+
       return outputImage;
     }
-    
+
     /**
      * Flush (i.e. write/synchronize) an OutputImage.
-     * 
+     *
      * @param outputImage the OutputImage.
      */
     void flushImage(OutputImage* outputImage)
     {
       const int ddim = Domain::dimension;
-      
+
       // --
-      
+
       hsize_t offset[ddim];        // hyperslab offset in the file
       hsize_t count[ddim];         // size of the hyperslab in the file
-      
+
       herr_t status;
       hsize_t dimsm[ddim];         // memory space dimensions
       hid_t memspace;
-      
+
       hsize_t offset_in[ddim];    // hyperslab offset in memory
       hsize_t count_in[ddim];     // size of the hyperslab in memory
-      
+
       //int i[ddim];
       int N_SUB[ddim];
       typename Domain::Integer d;
-      
+
       int malloc_size=1;
       for(d=0; d<ddim; d++)
       {
         N_SUB[d] = (outputImage->domain().upperBound()[ddim-d-1]-outputImage->domain().lowerBound()[ddim-d-1])+1;
         malloc_size = malloc_size*N_SUB[d];
       }
-      
+
       Value *data_in = (Value*) malloc (malloc_size * sizeof(Value)); // input buffer
       /*if (data_in == NULL)
       {
         trace.error() << "data_in malloc error in flushImage: " << (malloc_size * sizeof(Value)) << std::endl;
         exit;
       }*/
-      
+
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)
         offset[d] = outputImage->domain().lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
       for(d=0; d<ddim; d++)
         count[d] = N_SUB[d];
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
-      
+
       // Define the memory dataspace.
       for(d=0; d<ddim; d++)
         dimsm[d] = N_SUB[d];
@@ -486,7 +485,10 @@ namespace DGtal
       for(d=0; d<ddim; d++)
         count_in[d] = N_SUB[d];
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
-      
+
+      //TODO
+      // Add throw() on status
+
       typedef SpaceND<ddim> TSpace;
       typename TSpace::Point a, b;
       for(d=0; d<ddim; d++)
@@ -499,30 +501,30 @@ namespace DGtal
       std::vector<typename TSpace::Dimension> v(ddim);
       for(d=0; d<ddim; d++)
         v[d]=d;
-      
+
       int p=0;
-      for( typename HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
+      for( typename HyperRectDomain<TSpace>::ConstSubRange::ConstIterator
             it = hrdomain.subRange(v, a).begin(), itend = hrdomain.subRange(v, a).end();
-          it != itend; 
+          it != itend;
           ++it)
       {
         data_in[ p++ ] = outputImage->operator()((*it));
       }
-      
+
       // Write data from hyperslab in memory into the hyperslab in the file.
       //status = H5Dwrite(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_in);
       status = H5DSpecializations<Self, Value>::H5DwriteS(*this, memspace, data_in);
-      
+
       H5Sclose(memspace);
-      
+
       // --
-      
+
       free(data_in);
     }
-    
+
     /**
      * Free (i.e. delete) an OutputImage.
-     * 
+     *
      * @param outputImage the OutputImage.
      */
     void detachImage(OutputImage* outputImage)
@@ -536,19 +538,19 @@ namespace DGtal
      * Default constructor.
      */
     ImageFactoryFromHDF5() {}
-    
+
     // ------------------------- Private Datas --------------------------------
   protected:
 
     /// Alias on the image domain
     Domain *myDomain;
-    
+
     /// HDF5 filename and datasetname
     const std::string myFilename;
     const std::string myDataset;
 
   public://private:
-    
+
     // HDF5 handles
     hid_t file, dataset;
     hid_t datatype, dataspace;

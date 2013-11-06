@@ -51,78 +51,78 @@ bool testSimple()
     unsigned int nb = 0;
 
     trace.beginBlock("Testing simple TiledImage");
-    
+
     typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
     VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,16)));
-    
+
     int i = 1;
     for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
         *it = i++;
 
     trace.info() << "ORIGINAL image: " << image << endl;
-    
+
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
     typedef MyImageFactoryFromImage::OutputImage OutputImage;
     MyImageFactoryFromImage imageFactoryFromImage(image);
-    
+
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
-    
+
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
-    
+
     typedef MyTiledImage::OutputImage OutputImage;
     OutputImage::Value aValue;
-    
+
     trace.info() << "Read value for Point 4,2: " << tiledImage(Z2i::Point(4,2)) << endl;
-    nbok += (tiledImage(Z2i::Point(4,2)) == 20) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(4,2)) == 20) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 10,6: " << tiledImage(Z2i::Point(10,6)) << endl;
-    nbok += (tiledImage(Z2i::Point(10,6)) == 90) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(10,6)) == 90) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     aValue = 1; tiledImage.setValue(Z2i::Point(11,7), aValue);
     trace.info() << "Write value for Point 11,7: " << aValue << endl;
-    nbok += (tiledImage(Z2i::Point(11,7)) == 1) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(11,7)) == 1) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 2,3: " << tiledImage(Z2i::Point(2,3)) << endl;
-    nbok += (tiledImage(Z2i::Point(2,3)) == 34) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(2,3)) == 34) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 16,1: " << tiledImage(Z2i::Point(16,1)) << endl;
-    nbok += (tiledImage(Z2i::Point(16,1)) == 16) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(16,1)) == 16) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     aValue = 128; tiledImage.setValue(Z2i::Point(16,1), aValue);
     trace.info() << "Write value for Point 16,1: " << aValue << endl;
-    nbok += (tiledImage(Z2i::Point(16,1)) == 128) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(16,1)) == 128) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
     nbok += (image(Z2i::Point(16,1)) == 128) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.endBlock();
-    
+
     return nbok == nb;
 }
 
@@ -132,51 +132,51 @@ bool test3d()
     unsigned int nb = 0;
 
     trace.beginBlock("Testing 3d TiledImage");
-    
+
     typedef ImageContainerBySTLVector<Z3i::Domain, int> VImage;
     VImage image(Z3i::Domain(Z3i::Point(1,1,1), Z3i::Point(4,4,4)));
-    
+
     int i = 1;
     for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
         *it = i++;
 
     trace.info() << "ORIGINAL image: " << image << endl;
-    
+
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
     typedef MyImageFactoryFromImage::OutputImage OutputImage;
     MyImageFactoryFromImage imageFactoryFromImage(image);
-    
+
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
-    
+
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
-    
+
     typedef MyTiledImage::OutputImage OutputImage;
-    
+
     trace.info() << "Read value for Point 1,1,1: " << tiledImage(Z3i::Point(1,1,1)) << endl;
-    nbok += (tiledImage(Z3i::Point(1,1,1)) == 1) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(1,1,1)) == 1) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 4,4,4: " << tiledImage(Z3i::Point(4,4,4)) << endl;
-    nbok += (tiledImage(Z3i::Point(4,4,4)) == 64) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(4,4,4)) == 64) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 4,3,2: " << tiledImage(Z3i::Point(4,3,2)) << endl;
-    nbok += (tiledImage(Z3i::Point(4,3,2)) == 28) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(4,3,2)) == 28) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.endBlock();
-    
+
     return nbok == nb;
 }
 
@@ -186,7 +186,7 @@ bool test_range_constRange()
     unsigned int nb = 0;
 
     trace.beginBlock("Testing range/constRange with TiledImage");
-    
+
     typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
 
     VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(10,10)));
@@ -198,30 +198,30 @@ bool test_range_constRange()
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
     MyImageFactoryFromImage imageFactoryFromImage(image);
-    
+
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
-    
+
     typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
     // writing values
-    const int maximalValue = tiledImage.domain().size(); 
-    MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator(); 
+    const int maximalValue = tiledImage.domain().size();
+    MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
     for (int i = 0; i < maximalValue; ++i)
     {
       //*it++ = i;
       it.setValue(i); it++;
     }
 
-    // reading values 
-    MyTiledImage::ConstRange r = tiledImage.constRange(); 
-    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
+    // reading values
+    MyTiledImage::ConstRange r = tiledImage.constRange();
+    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") );
     cout << endl;
-    
+
     std::vector<int> to_vector(100);
     std::copy(r.begin(), r.end(), to_vector.begin());
     for (int i = 0; i < 100; i++)
@@ -237,13 +237,73 @@ bool test_range_constRange()
         nbok += false ? 1 : 0; nb++;
       }
     }
-    
+
     cout << endl;
-    
+
     trace.endBlock();
-    
+
     return nbok == nb;
 }
+
+bool testIterators()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock("Testing iterators in TiledImage");
+
+  typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
+  VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(10,10)));
+  for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+    *it = 10;
+  trace.info() << "ORIGINAL image: " << image << endl;
+  typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
+  typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+  MyImageFactoryFromImage imageFactoryFromImage(image);
+
+  typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+  typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+  MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
+  MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+
+  typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+  BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+  MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+
+  tiledImage.setValue( Z2i::Point(5,5), 42);
+  tiledImage.setValue( Z2i::Point(1,1), 1);
+
+  //Typedefs
+  typedef MyTiledImage::ConstIterator ConstIterator;
+  typedef MyTiledImage::OutputIterator OutputIterator;
+  typedef MyTiledImage::Range Range;
+  typedef MyTiledImage::ConstRange ConstRange;
+
+  ConstIterator itbegin = tiledImage.constRange().begin();
+  trace.info() << "Value at range begin (1) = "<< *itbegin << std::endl;
+  nbok += (*itbegin == 1) ? 1 : 0; nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  ConstIterator itbegin2 = tiledImage.constRange().begin(Z2i::Point(5,5));
+  trace.info() << "Value at range begin from point (42) = "<< *itbegin2 << std::endl;
+  nbok += (*itbegin2 == 42) ? 1 : 0; nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  OutputIterator itbegino = tiledImage.range().begin();
+  trace.info() << "Value at range begin (1) = "<< *itbegino << std::endl;
+  nbok += (*itbegino == 1) ? 1 : 0; nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  *itbegino = 5;
+  trace.info() << "Value at range begin after writing (5) = "<< *itbegino << std::endl;
+  nbok += (*itbegino == 5) ? 1 : 0; nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  trace.endBlock();
+  return nbok == nb;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -256,7 +316,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testSimple() && test3d() && test_range_constRange(); // && ... other tests
+    bool res = testIterators() && testSimple() && test3d() && test_range_constRange(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();

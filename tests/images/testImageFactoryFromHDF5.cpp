@@ -119,7 +119,8 @@ bool writeHDF5_2D()
 #define DATASETNAME_2D_TILED    "Int64Array2D"
 #define RANK_2D_TILED           2
 
-bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TILED, int _NY_2D_TILED)
+bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED,
+                        int _NX_2D_TILED, int _NY_2D_TILED)
 {
     hid_t               file, dataset;                          // file and dataset handles
     hid_t               datatype, dataspace;                    // handles
@@ -306,133 +307,133 @@ bool writeHDF5_3D_TILED()
 bool test2D_int32()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;  
-  
+  unsigned int nb = 0;
+
   trace.beginBlock("Testing ImageFactoryFromHDF5 (2D)");
-  
+
   typedef ImageSelector<Z2i::Domain, DGtal::int32_t>::Type Image;
-  
+
   // 1) ImageFactoryFromHDF5
   typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
   MyImageFactoryFromHDF5 factImage(H5FILE_NAME, DATASETNAME_2D);
-  
+
   typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
-    
+
   Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));
   OutputImage *image1 = factImage.requestImage(domain1);
   OutputImage::ConstRange r1 = image1->constRange();
   cout << "image1: "; std::copy( r1.begin(), r1.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-  
+
   Z2i::Domain domain1b(Z2i::Point(0,0), Z2i::Point(2,2));
   OutputImage *image1b = factImage.requestImage(domain1b);
   OutputImage::ConstRange r1b = image1b->constRange();
   cout << "image1b: "; std::copy( r1b.begin(), r1b.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-  
+
   Z2i::Domain domain2(Z2i::Point(2,0), Z2i::Point(3,1));
   OutputImage *image2 = factImage.requestImage(domain2);
   OutputImage::ConstRange r2 = image2->constRange();
   cout << "image2: "; std::copy( r2.begin(), r2.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-      
+
   Z2i::Domain domain3(Z2i::Point(0,2), Z2i::Point(1,3));
   OutputImage *image3 = factImage.requestImage(domain3);
   OutputImage::ConstRange r3 = image3->constRange();
   cout << "image3: "; std::copy( r3.begin(), r3.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-      
+
   Z2i::Domain domain4(Z2i::Point(2,2), Z2i::Point(3,3));
   OutputImage *image4 = factImage.requestImage(domain4);
   OutputImage::ConstRange r4 = image4->constRange();
   cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-  
+
   Z2i::Domain domain5(Z2i::Point(3,2), Z2i::Point(5,4));
   OutputImage *image5 = factImage.requestImage(domain5);
   OutputImage::ConstRange r5 = image5->constRange();
   cout << "image5: "; std::copy( r5.begin(), r5.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-    
+
   // 2) ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT
   trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT" << endl;
-  
+
   typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyLAST;
   typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
   MyImageCacheReadPolicyLAST imageCacheReadPolicyLAST(factImage);
   MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
-  
+
   typedef ImageCache<OutputImage, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyImageCache;
   MyImageCache imageCache(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT);
   OutputImage::Value aValue;
-  
+
   trace.info() << "READING from cache (empty cache): " << imageCache << endl;
-  if (imageCache.read(Z2i::Point(2,2), aValue)) 
+  if (imageCache.read(Z2i::Point(2,2), aValue))
     trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
   else
     trace.info() << "READ: Point 2,2 is not in an image from cache." << endl;
-  nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0; 
+  nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0;
   nb++;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  
-  imageCache.update(domain1); // image1
-  
-  trace.info() << "READING from cache (not empty but wrong domain): " << imageCache << endl;
-  if (imageCache.read(Z2i::Point(2,2), aValue)) 
-    trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
-  else
-    trace.info() << "READ: Point 2,2 is not in an image from cache." << endl;
-  nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0; 
-  nb++;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  
-  imageCache.update(domain4); // image4
-  
-  trace.info() << "READING from cache (not empty but good domain): " << imageCache << endl;
-  if (imageCache.read(Z2i::Point(2,2), aValue)) 
-    trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
-  else
-    trace.info() << "READ: Point 2,2 is not in an image from cache." << endl; 
-  nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 4)) == true ) ? 1 : 0; 
-  nb++;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  
-  trace.info() << "WRITING from cache (not empty but good domain): " << imageCache << endl;
-  aValue = 22;
-  if (imageCache.write(Z2i::Point(2,2), aValue)) 
-    trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;
-  else
-    trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl; 
-  nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 22)) == true ) ? 1 : 0; 
-  nb++;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  
-  imageCache.update(domain3); // image3
-  
-  trace.info() << "WRITING from cache (not empty but wrong domain): " << imageCache << endl;
-  aValue = 22;
-  if (imageCache.write(Z2i::Point(2,2), aValue)) 
-    trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;
-  else
-    trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl; 
-  nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0; 
-  nb++;
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   imageCache.update(domain1); // image1
-  
+
+  trace.info() << "READING from cache (not empty but wrong domain): " << imageCache << endl;
+  if (imageCache.read(Z2i::Point(2,2), aValue))
+    trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
+  else
+    trace.info() << "READ: Point 2,2 is not in an image from cache." << endl;
+  nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0;
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  imageCache.update(domain4); // image4
+
+  trace.info() << "READING from cache (not empty but good domain): " << imageCache << endl;
+  if (imageCache.read(Z2i::Point(2,2), aValue))
+    trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
+  else
+    trace.info() << "READ: Point 2,2 is not in an image from cache." << endl;
+  nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 4)) == true ) ? 1 : 0;
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  trace.info() << "WRITING from cache (not empty but good domain): " << imageCache << endl;
+  aValue = 22;
+  if (imageCache.write(Z2i::Point(2,2), aValue))
+    trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;
+  else
+    trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl;
+  nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 22)) == true ) ? 1 : 0;
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  imageCache.update(domain3); // image3
+
+  trace.info() << "WRITING from cache (not empty but wrong domain): " << imageCache << endl;
+  aValue = 22;
+  if (imageCache.write(Z2i::Point(2,2), aValue))
+    trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;
+  else
+    trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl;
+  nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0;
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  imageCache.update(domain1); // image1
+
   trace.info() << "WRITING from cache (not empty but good domain): " << imageCache << endl;
   aValue = 7;
-  if (imageCache.write(Z2i::Point(0,0), aValue)) 
+  if (imageCache.write(Z2i::Point(0,0), aValue))
     trace.info() << "WRITE: Point 0,0 is in an image from cache, value: " << aValue << endl;
   else
-    trace.info() << "WRITE: Point 0,0 is not in an image from cache." << endl; 
-  nbok += ( (imageCache.read(Z2i::Point(0,0), aValue) && (aValue == 7)) == true ) ? 1 : 0; 
+    trace.info() << "WRITE: Point 0,0 is not in an image from cache." << endl;
+  nbok += ( (imageCache.read(Z2i::Point(0,0), aValue) && (aValue == 7)) == true ) ? 1 : 0;
   nb++;
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  
+
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -442,66 +443,66 @@ bool testTiledImage2D_int64()
     unsigned int nb = 0;
 
     trace.beginBlock("Testing TiledImage with ImageFactoryFromHDF5 (2D)");
-    
+
     typedef ImageSelector<Z2i::Domain, DGtal::int64_t>::Type Image;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
     MyImageFactoryFromHDF5 factImage("testImageFactoryFromHDF5_TILED_2D.h5", DATASETNAME_2D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
-    
+
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
-    
+
     typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
-    
+
     typedef MyTiledImage::OutputImage OutputImage;
     OutputImage::Value aValue;
-    
+
     trace.info() << "Read value for Point 3,1: " << tiledImage(Z2i::Point(3,1)) << endl;
-    nbok += (tiledImage(Z2i::Point(3,1)) == 20) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(3,1)) == 20) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 9,5: " << tiledImage(Z2i::Point(9,5)) << endl;
-    nbok += (tiledImage(Z2i::Point(9,5)) == 90) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(9,5)) == 90) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     aValue = 1; tiledImage.setValue(Z2i::Point(10,6), aValue);
     trace.info() << "Write value for Point 10,6: " << aValue << endl;
-    nbok += (tiledImage(Z2i::Point(10,6)) == 1) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(10,6)) == 1) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 1,2: " << tiledImage(Z2i::Point(1,2)) << endl;
-    nbok += (tiledImage(Z2i::Point(1,2)) == 34) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(1,2)) == 34) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 15,0: " << tiledImage(Z2i::Point(15,0)) << endl;
-    nbok += (tiledImage(Z2i::Point(15,0)) == 16) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(15,0)) == 16) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     aValue = 128; tiledImage.setValue(Z2i::Point(15,0), aValue);
     trace.info() << "Write value for Point 15,0: " << aValue << endl;
-    nbok += (tiledImage(Z2i::Point(15,0)) == 128) ? 1 : 0; 
+    nbok += (tiledImage(Z2i::Point(15,0)) == 128) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.endBlock();
-    
+
     return nbok == nb;
 }
 
@@ -511,72 +512,72 @@ bool testTiledImage3D_double()
     unsigned int nb = 0;
 
     trace.beginBlock("Testing TiledImage with ImageFactoryFromHDF5 (3D)");
-    
+
     typedef ImageSelector<Z3i::Domain, double>::Type Image;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
     MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
-    
+
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
-    
+
     typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
     MyTiledImage tiledImage(factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 2);
-    
+
     typedef MyTiledImage::OutputImage OutputImage;
     OutputImage::Value aValue;
-    
+
     trace.info() << "Read value for Point 0,0,0: " << tiledImage(Z3i::Point(0,0,0)) << endl;
-    nbok += (tiledImage(Z3i::Point(0,0,0)) == 1) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(0,0,0)) == 1) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 3,1,0: " << tiledImage(Z3i::Point(3,1,0)) << endl;
-    nbok += (tiledImage(Z3i::Point(3,1,0)) == 14) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(3,1,0)) == 14) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 9,5,2: " << tiledImage(Z3i::Point(9,5,2)) << endl;
-    nbok += (tiledImage(Z3i::Point(9,5,2)) == 220) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(9,5,2)) == 220) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     aValue = 1.1; tiledImage.setValue(Z3i::Point(3,6,5), aValue);
     trace.info() << "Write value for Point 3,6,5: " << aValue << endl;
-    nbok += (tiledImage(Z3i::Point(3,6,5)) == 1.1) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(3,6,5)) == 1.1) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 1,2,4: " << tiledImage(Z3i::Point(1,2,4)) << endl;
-    nbok += (tiledImage(Z3i::Point(1,2,4)) == 342) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(1,2,4)) == 342) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.info() << "Read value for Point 8,6,3: " << tiledImage(Z3i::Point(8,6,3)) << endl;
-    nbok += (tiledImage(Z3i::Point(8,6,3)) == 309) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(8,6,3)) == 309) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     aValue = 125.5; tiledImage.setValue(Z3i::Point(8,6,3), aValue);
     trace.info() << "Write value for Point 8,6,3: " << aValue << endl;
-    nbok += (tiledImage(Z3i::Point(8,6,3)) == 125.5) ? 1 : 0; 
+    nbok += (tiledImage(Z3i::Point(8,6,3)) == 125.5) ? 1 : 0;
     nb++;
-    
+
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
+
     trace.endBlock();
-    
+
     return nbok == nb;
 }
 
@@ -593,9 +594,9 @@ int main( int argc, char** argv )
 
     bool res = true;
     res = res && writeHDF5_2D() && test2D_int32();
-    
+
     res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D.h5", 16, 16) && testTiledImage2D_int64();
-    
+
     res = res && writeHDF5_3D_TILED_for_easy_reading();
     res = res && writeHDF5_3D_TILED();
     res = res && testTiledImage3D_double();
