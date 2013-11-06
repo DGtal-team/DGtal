@@ -207,7 +207,7 @@ bool testDSLSubsegment(Integer modb)
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int UNUSED(argc), char** UNUSED(argv) )
 {
   typedef DGtal::int64_t Integer;
   typedef LightSternBrocot<Integer,DGtal::int32_t> LSB;

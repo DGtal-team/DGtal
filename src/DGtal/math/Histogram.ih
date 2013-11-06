@@ -242,7 +242,7 @@ DGtal::Histogram<TQuantity, TBinner>::isValid() const
 template <typename TQuantity, typename TBinner>
 inline
 void
-DGtal::Histogram<TQuantity, TBinner>::prepare( Bin size )
+DGtal::Histogram<TQuantity, TBinner>::prepare( Bin aSize )
 {
   myHistogram.resize( myBinner->size(), 0 );
   myCumulativeHistogram.resize( myBinner->size(), 0 );
