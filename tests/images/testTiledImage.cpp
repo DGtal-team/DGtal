@@ -276,8 +276,8 @@ bool testIterators()
   //Typedefs
   typedef MyTiledImage::ConstIterator ConstIterator;
   typedef MyTiledImage::OutputIterator OutputIterator;
-  typedef MyTiledImage::Range Range;
-  typedef MyTiledImage::ConstRange ConstRange;
+  //typedef MyTiledImage::Range Range;
+  //typedef MyTiledImage::ConstRange ConstRange;
 
   ConstIterator itbegin = tiledImage.constRange().begin();
   trace.info() << "Value at range begin (1) = "<< *itbegin << std::endl;

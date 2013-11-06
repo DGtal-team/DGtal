@@ -176,6 +176,8 @@ namespace DGtal
 
       clock = new(Clock); // TEMP_MT
       myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
+      
+      return *this;
     }
 
     // ----------------------- Interface --------------------------------------

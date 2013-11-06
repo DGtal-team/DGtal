@@ -118,9 +118,10 @@ bool writeHDF5_2D()
 
 #define DATASETNAME_2D_TILED    "Int64Array2D"
 #define RANK_2D_TILED           2
+#define _NX_2D_TILED		16
+#define _NY_2D_TILED		16
 
-bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED,
-                        int _NX_2D_TILED, int _NY_2D_TILED)
+bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED)
 {
     hid_t               file, dataset;                          // file and dataset handles
     hid_t               datatype, dataspace;                    // handles
@@ -595,7 +596,7 @@ int main( int argc, char** argv )
     bool res = true;
     res = res && writeHDF5_2D() && test2D_int32();
 
-    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D.h5", 16, 16) && testTiledImage2D_int64();
+    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D.h5") && testTiledImage2D_int64();
 
     res = res && writeHDF5_3D_TILED_for_easy_reading();
     res = res && writeHDF5_3D_TILED();

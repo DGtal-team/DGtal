@@ -719,9 +719,9 @@ bool exampleTiledImageFromHDF5_10blocks3D()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( /*int argc, char** argv*/ )
 {
-    if (argc==1)
+    //if (argc==1)
       writeHDF5_3D_TILED();
     
     /*exampleOLDTiledImage3D() && */exampleImage3D();
