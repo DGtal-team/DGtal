@@ -188,18 +188,18 @@ namespace DGtal
        * @param domain any domain related to the given topology.
        */
     Object( Clone<DigitalTopology> aTopology,
-	    CountedPtr<Domain> domain );
+	    Clone<Domain> domain );
 
-      /**
-       * Constructor of an empty object by providing a domain.
-       *
-       * @param aTopology the digital topology chosen for this set,
-       * smartly copied.
-       *
-       * @param aDomain any domain related to the given topology.
-       */
-      Object( CowPtr<DigitalTopology> aTopology,
-	      CountedPtr<Domain> aDomain );
+      // /**
+      //  * Constructor of an empty object by providing a domain.
+      //  *
+      //  * @param aTopology the digital topology chosen for this set,
+      //  * smartly copied.
+      //  *
+      //  * @param aDomain any domain related to the given topology.
+      //  */
+      // Object( CowPtr<DigitalTopology> aTopology,
+      // 	      CountedPtr<Domain> aDomain );
 
       /**
        * Copy constructor.
@@ -235,7 +235,7 @@ namespace DGtal
       /**
        * A counted pointer to the embedding domain.
        */
-      CountedPtr<Domain> domainPointer() const;
+      CowPtr<Domain> domainPointer() const;
 
       /**
        * A const reference on the point set defining the points of the

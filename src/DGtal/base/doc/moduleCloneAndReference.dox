@@ -127,7 +127,7 @@ We propose the following ways to pass parameters without ambiguity:
 \note Parameter passing by \b pointer may be used in place of references in the first column, altough this is not encouraged. Indeed, you have to think about your parameter passing by pointer to determine whether it is truely an immediate use or an implicit \c Clone<T*>.
 
 
-\subsubsection moduleCloneAndReference_sec22 User passing an argument to a Clone parameter
+\subsection moduleCloneAndReference_sec22 User passing an argument to a Clone parameter
 
 A parameter `( Clone<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Clone depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T, \c CowPtr<T>, \c T*. The following table sums up the different conversions \e Argument toward \e member.
 
@@ -176,7 +176,7 @@ B b4( BigFatA( "Moving one" ) ); // this one is created directly in b4.
 @endcode
 
 
-\subsubsection moduleCloneAndReference_sec23 User passing an argument to an Alias parameter
+\subsection moduleCloneAndReference_sec23 User passing an argument to an Alias parameter
 
 A parameter `( Alias<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Alias depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T&, \c T*, \c CountedPtrOrPtr<T>. The following table sums up the different conversions \e Argument toward \e member.
 
@@ -215,7 +215,7 @@ delete adr;
 @endcode
 
 
-\subsubsection moduleCloneAndReference_sec24  User passing an argument to a ConstAlias parameter
+\subsection moduleCloneAndReference_sec24  User passing an argument to a ConstAlias parameter
 
 A parameter `( ConstAlias<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c ConstAlias depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T&, \c T*, \c CowPtr<T>. The following table sums up the different conversions \e Argument toward \e member.
 

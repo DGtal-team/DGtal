@@ -58,37 +58,9 @@ template <typename Domain>
 inline
 DGtal::DigitalSetBySTLVector<Domain>::DigitalSetBySTLVector
 ( Clone<Domain> d )
-  : myDomain( new Domain( d ) ), myVector()
-{
-}
-
-/**
- * Constructor.
- * Creates the empty set in the domain [d].
- *
- * @param ptrD any pointer on a dyn. alloc. domain, which is
- * acquired by this object.
- */
-template <typename Domain>
-inline
-DGtal::DigitalSetBySTLVector<Domain>::DigitalSetBySTLVector( Domain* ptrD )
-  : myDomain( ptrD ), myVector()
-{
-}
-
-/**
- * Constructor.
- * Creates the empty set in the domain [d].
- *
- * @param d any counted pointer on domain.
- */
-template <typename Domain>
-inline
-DGtal::DigitalSetBySTLVector<Domain>::DigitalSetBySTLVector( CountedPtr<Domain> d )
   : myDomain( d ), myVector()
 {
 }
-
 
 /**
  * Copy constructor.
@@ -134,7 +106,7 @@ DGtal::DigitalSetBySTLVector<Domain>::domain() const
 
 template <typename Domain>
 inline
-DGtal::CountedPtr<Domain> 
+DGtal::CowPtr<Domain> 
 DGtal::DigitalSetBySTLVector<Domain>::domainPointer() const
 {
   return myDomain;

@@ -276,7 +276,6 @@ bool testExplicitDigitalSurface()
   typedef ExplicitDigitalSurface<KSpace,SurfelPredicate> Frontier;
   typedef Frontier::SurfelConstIterator ConstIterator;
   typedef Frontier::SCell SCell;
-  typedef Frontier::Surfel Surfel;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;

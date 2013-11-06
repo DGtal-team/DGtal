@@ -124,8 +124,7 @@ register for \a myParam data member.
 
 
 @note It prevents direct assignment to CountedPtr<T> since their
-meaning is "shared_ptr". A discussion is possible for input pointer: is
-there pointer acquisition in this case ?
+meaning is "shared_ptr". 
 
 
 It can be used as follows. Consider this simple example where
@@ -245,8 +244,7 @@ A a1;
 B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
 @endcode
 
-@note The user should not used Clone<T> for data members (in
-fact, he cannot), only as a type for parameters.
+@note The user should not used Clone<T> for data members, only as a type for parameters.
 */
   template <typename T>
   class Clone
@@ -257,7 +255,7 @@ fact, he cannot), only as a type for parameters.
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
 		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
-		     COUNTED_CONST_PTR_OR_CONST_PTR, CLONE_IS_ERROR };
+		     COUNTED_CONST_PTR_OR_CONST_PTR };
 
     /// Internal class that is used for a late deletion of an acquired pointer.
     struct TempPtr {
@@ -283,10 +281,11 @@ fact, he cannot), only as a type for parameters.
     inline ~Clone() {}
 
     /**
-      Copy constructor. Invalid.
+      Copy constructor. The cloning is just forwarded.
+      @param other the clone object to clone
     */
-    inline Clone( const Clone & ) : myParam( CLONE_IS_ERROR ), myPtr( 0 ) 
-    { ASSERT(( false && "[Clone::Clone( const Clone& )] Cloning a Clone is an error." )); }
+    inline Clone( const Clone & other ) 
+      : myParam( other.myParam ), myPtr( other.myPtr ) {}
 
     /**
        Constructor from an instance of T. The object is pointed in

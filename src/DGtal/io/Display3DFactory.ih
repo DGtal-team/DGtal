@@ -159,12 +159,12 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display3D<Space, KSpace
 // Mesh
 
 
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsBalls( Display3D<Space, KSpace> & display,
-							 const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+							 const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
@@ -198,7 +198,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display3D<Space, KSpace> & display,
-							  const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+							  const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
 
   typedef TIterator ConstIterator;
@@ -316,7 +316,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
-						  const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
+						  const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & a )
 {
   std::string mode = display.getMode( a.className() );
   if ( mode == "BoundingBox" )
@@ -328,15 +328,15 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       drawAsBalls( display, a );
     }
 }
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 
 
 // DigitalSetBySTLSet
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display3D<Space, KSpace> & display,
-								     const DGtal::DigitalSetBySTLSet<Domain> & s )
+								     const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
   typedef typename Domain::Point Point;
   typedef typename std::set<Point>::const_iterator ConstIterator;
@@ -354,10 +354,10 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent( Display3D<S
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpace> & display,
-							  const DGtal::DigitalSetBySTLSet<Domain> & s )
+							  const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
   typedef typename Domain::Point Point;
   typedef typename std::set<Point>::const_iterator ConstIterator;
@@ -375,10 +375,10 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpac
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace> & display,
-							const DGtal::DigitalSetBySTLSet<Domain> & s )
+							const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
   typedef typename Domain::Point Point;
   typedef typename std::set<Point>::const_iterator ConstIterator;
@@ -395,10 +395,10 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsGrid( Display3D<Space, KSpace>
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
-						  const DGtal::DigitalSetBySTLSet<Domain> & s )
+						  const DGtal::DigitalSetBySTLSet<Domain, Compare> & s )
 {
   ASSERT(Domain::Space::dimension == 3);
 

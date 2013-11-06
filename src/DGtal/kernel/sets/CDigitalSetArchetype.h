@@ -49,6 +49,7 @@
 #include <set>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +116,7 @@ namespace DGtal
     /**
      * @return the embedding domain.
      */
-    CountedPtr<Domain> domainPointer() const { return DummyObject< CountedPtr<Domain> >::get(); }
+    CowPtr<Domain> domainPointer() const { return DummyObject< CowPtr<Domain> >::get(); }
 
     // ----------------------- Standard Set services --------------------------
   public:
