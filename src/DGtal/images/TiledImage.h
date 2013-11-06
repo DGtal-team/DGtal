@@ -134,7 +134,7 @@ namespace DGtal
      */
     ~TiledImage()
     {
-      delete myImageCache;
+      //delete myImageCache;
       //delete clock; // TEMP_MT
     }
 
@@ -147,6 +147,7 @@ namespace DGtal
       myImageCache = new MyImageCache(myImageFactory, other.myReadPolicy, other.myWritePolicy);
       m_lowerBound = myImageFactory->domain().lowerBound();
       m_upperBound = myImageFactory->domain().upperBound();
+      myN =  other.myN;
 
       for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
         mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
