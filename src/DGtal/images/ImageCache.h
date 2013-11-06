@@ -127,23 +127,14 @@ public:
      */
     ~ImageCache()
     {
-      //delete clock; // TEMP_MT
+      delete clock; // TEMP_MT
     }
     
-    ImageCache( const ImageCache &other )
-    {
-      myImageFactoryPtr =  other.myImageFactoryPtr;
-      myReadPolicy = other.myReadPolicy;
-      myWritePolicy = other.myWritePolicy;
-      
-      myReadPolicy->clearCache();
-      
-      cacheMissRead = 0;
-      cacheMissWrite = 0;
-      
-      clock = new(Clock); // TEMP_MT
-      myTicksUpdateCache = 0;
-    }
+private:
+    
+    ImageCache( const ImageCache & other );
+        
+    ImageCache & operator=( const ImageCache & other );
 
     // ----------------------- Interface --------------------------------------
 public:

@@ -137,8 +137,29 @@ namespace DGtal
       //delete myImageCache;
       //delete clock; // TEMP_MT
     }
+    
+  public:
 
     TiledImage( const TiledImage &other )
+    {
+      myN =  other.myN;
+      myImageFactory = other.myImageFactory;
+      myReadPolicy = other.myReadPolicy;
+      myWritePolicy = other.myWritePolicy;
+
+      myImageCache = new MyImageCache(myImageFactory, myReadPolicy, myWritePolicy);
+
+      m_lowerBound = myImageFactory->domain().lowerBound();
+      m_upperBound = myImageFactory->domain().upperBound();
+
+      for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
+        mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
+
+      clock = new(Clock); // TEMP_MT
+      myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
+    }
+    
+    TiledImage & operator=( const TiledImage & other )
     {
       myN =  other.myN;
       myImageFactory = other.myImageFactory;
@@ -267,12 +288,12 @@ namespace DGtal
         return (*myTileRangeIterator);
       }
 
-      inline
+      /*inline
       TiledIterator & operator=(const Value aVal)
       {
         (*myTileRangeIterator) = aVal;
         return (*this);
-      }
+      }*/
 
       inline
       void setValue ( const Value aVal )
