@@ -262,63 +262,51 @@ Steps:
     /**
      * @return an Integer of value @a myA.
      */
-    Integer getA() const;
+    Integer a() const;
     /**
      * @return an Integer of value @a myB.
      */
-    Integer getB() const;
+    Integer b() const;
     /**
      * @return an Integer of value @a myMu.
      */
-    Integer getMu() const;
+    Integer mu() const;
     /**
      * @return an Integer of value @a myOmega.
      */
-    Integer getOmega() const;
+    Integer omega() const;
     /**
      * Accessor to the first upper leaning point
      * @return first upper leaning point.
      */
-    Point getUf() const;
+    Point Uf() const;
     /**
      * Accessor to the last upper leaning point
      * @return last upper leaning point.
      */
-    Point getUl() const;
+    Point Ul() const;
     /**
      * Accessor to the first lower leaning point
      * @return first lower leaning point.
      */
-    Point getLf() const;
+    Point Lf() const;
     /**
      * Accessor to the last lower leaning point
      * @return last lower leaning point.
      */
-    Point getLl() const;
+    Point Ll() const;
     /**
      * Accessor to the first added point to the DSS
      * @return the first point of the DSS.
      * @see getFirstPoint
      */
-    Point getBackPoint() const ;
+    Point back() const ;
     /**
      * Accessor to the last added point to the DSS
      * @return the last point of the DSS.
      * @see getLastPoint
      */
-    Point getFrontPoint() const ;
-    /**
-     * Accessor to the first added point to the DSS
-     * @return the first point of the DSS.
-     * @see getBackPoint
-     */
-    Point getFirstPoint() const ;
-    /**
-     * Accessor to the last added point to the DSS
-     * @return the last point of the DSS.
-     * @see getFrontPoint
-     */
-    Point getLastPoint() const;
+    Point front() const ;
     /**
      * @return begin iterator of the DSS range.
      */
@@ -343,7 +331,7 @@ Steps:
      * @param it an iterator on points
      * @return the remainder of @a *it.
      */
-    Integer getRemainder(const ConstIterator & it) const;
+    Integer remainder(const ConstIterator & it) const;
 
     /**
      * Computes the remainder of a point
@@ -351,7 +339,7 @@ Steps:
      * @param aPoint the point whose remainder is returned 
      * @return @a myA * @a aPoint[0] - @a myB * @a aPoint[1].
      */
-    Integer getRemainder( const Point& aPoint ) const;
+    Integer remainder( const Point& aPoint ) const;
 
     /**
      * Computes the position of a point
@@ -359,7 +347,7 @@ Steps:
      * @param it an iterator on points
      * @return the position of @a *it.
      */
-    Integer getPosition(const ConstIterator & it) const;
+    Integer position(const ConstIterator & it) const;
 
     /**
      * Computes the position of a point
@@ -367,7 +355,7 @@ Steps:
      * @param aPoint the point whose position is returned 
      * @return @a myA * @a aPoint[0] + @a myB * @a aPoint[1].
      */
-    Integer getPosition( const Point& aPoint ) const;
+    Integer position( const Point& aPoint ) const;
 
     /**
      * Checks whether a point is in the DSL

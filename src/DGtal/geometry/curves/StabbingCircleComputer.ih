@@ -259,10 +259,10 @@ DGtal::StabbingCircleComputer<TConstIterator>::isCircularlySeparable(
   
   if (isOK)
     {//points of support
-      Pf = thePreimage.getUf(); 
-      Pl = thePreimage.getUl(); 
-      Qf = thePreimage.getLf(); 
-      Ql = thePreimage.getLl();
+      Pf = thePreimage.Uf(); 
+      Pl = thePreimage.Ul(); 
+      Qf = thePreimage.Lf(); 
+      Ql = thePreimage.Ll();
       return true; 
     } else return false; 
 }

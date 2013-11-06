@@ -172,30 +172,30 @@ bool CompareToArithmetical()
           C.retractForward();
         }
       // Compare positions
-      if ( ( C.getFirstPoint() != A.getFirstPoint() ) || ( C.getLastPoint() != A.getLastPoint() )  )
+      if ( ( C.back() != A.back() ) || ( C.front() != A.front() )  )
         {
           res = false;
           cout << "Equality test error\n";
           break;
         }
       // Compare arithmetic parameters
-      if ( ( C.getA() != A.getA() ) || ( C.getB() != A.getB() ) ||
-           ( C.getMu() != A.getMu() ) || ( C.getOmega() != A.getOmega() ) ||
-           ( C.getUf() != A.getUf() ) || ( C.getUl() != A.getUl() ) ||
-           ( C.getLf() != A.getLf() ) || ( C.getLl() != A.getLl() ) 
+      if ( ( C.a() != A.a() ) || ( C.b() != A.b() ) ||
+           ( C.mu() != A.mu() ) || ( C.omega() != A.omega() ) ||
+           ( C.Uf() != A.Uf() ) || ( C.Ul() != A.Ul() ) ||
+           ( C.Lf() != A.Lf() ) || ( C.Ll() != A.Ll() ) 
          )
         {
           cout << "Arithmetic parameters error\n";
           cout <<  C << endl;
           cout <<  A << endl;
-          cout << "getA()    " <<  C.getA()     << " --- " <<  A.getA() << "\n";
-          cout << "getB()    " <<  C.getB()     << " --- " <<  A.getB() << "\n";
-          cout << "getMu()   " <<  C.getMu()    << " --- " <<  A.getMu() << "\n";
-          cout << "getOmega()" <<  C.getOmega() << " --- " <<  A.getOmega() << "\n";
-          cout << "getUf()   " <<  C.getUf()    << " --- " <<  A.getUf() << "\n";
-          cout << "getUl()   " <<  C.getUl()    << " --- " <<  A.getUl() << "\n";
-          cout << "getLf()   " <<  C.getLf()    << " --- " <<  A.getLf() << "\n";
-          cout << "getLl()   " <<  C.getLl()    << " --- " <<  A.getLl() << endl;
+          cout << "a()    " <<  C.a()     << " --- " <<  A.a() << "\n";
+          cout << "b()    " <<  C.b()     << " --- " <<  A.b() << "\n";
+          cout << "mu()   " <<  C.mu()    << " --- " <<  A.mu() << "\n";
+          cout << "omega()" <<  C.omega() << " --- " <<  A.omega() << "\n";
+          cout << "Uf()   " <<  C.Uf()    << " --- " <<  A.Uf() << "\n";
+          cout << "Ul()   " <<  C.Ul()    << " --- " <<  A.Ul() << "\n";
+          cout << "Lf()   " <<  C.Lf()    << " --- " <<  A.Lf() << "\n";
+          cout << "Ll()   " <<  C.Ll()    << " --- " <<  A.Ll() << endl;
           res = false;
           break;
         }

@@ -323,69 +323,69 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
   //let us take the pair of projection planes for which
   //the common coordinate of the main vector cannot be 0
 
-  if (myXYalgo.getB() != 0) { //XY-plane, XZ-plane
+  if (myXYalgo.b() != 0) { //XY-plane, XZ-plane
 
-    Integer a1 = myXYalgo.getB();
-    Integer b1 = myXYalgo.getA();
-    Integer a2 = myXZalgo.getB();
-    Integer c1 = myXZalgo.getA();
+    Integer a1 = myXYalgo.b();
+    Integer b1 = myXYalgo.a();
+    Integer a2 = myXZalgo.b();
+    Integer c1 = myXZalgo.a();
 
     direction = Point3d(a1*a2,a2*b1,a1*c1);	
 
-    Integer mu1 = myXYalgo.getMu();
-    Integer mu2 = myXZalgo.getMu();
+    Integer mu1 = myXYalgo.mu();
+    Integer mu2 = myXZalgo.mu();
     double y = (double) -NumberTraits<TInteger>::castToInt64_t(mu1) / a1;
     double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / a2;
     intercept = PointD3d(0,y,z);
 
-    Integer omega1 = myXYalgo.getOmega()-1;
-    Integer omega2 = myXZalgo.getOmega()-1;
+    Integer omega1 = myXYalgo.omega()-1;
+    Integer omega2 = myXZalgo.omega()-1;
     double ty = (double) -NumberTraits<TInteger>::castToInt64_t(omega1) / a1;
     double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / a2;
     thickness = PointD3d(0,ty,tz);
 
   } else {                     
 
-    if (myXYalgo.getA() != 0) {//XY-plane, YZ-plane
+    if (myXYalgo.a() != 0) {//XY-plane, YZ-plane
 
-      Integer a1 = myXYalgo.getB();
-      Integer b1 = myXYalgo.getA();
-      Integer b2 = myYZalgo.getB();
-      Integer c2 = myYZalgo.getA();
+      Integer a1 = myXYalgo.b();
+      Integer b1 = myXYalgo.a();
+      Integer b2 = myYZalgo.b();
+      Integer c2 = myYZalgo.a();
 
       direction = Point3d(b1*a1,b1*b2,b2*c2);
 
-      Integer mu1 = myXYalgo.getMu();
-      Integer mu2 = myYZalgo.getMu();
+      Integer mu1 = myXYalgo.mu();
+      Integer mu2 = myYZalgo.mu();
       double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
       double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
       intercept = PointD3d(x,0,z);
 
-      Integer omega1 = myXYalgo.getOmega()-1;
-      Integer omega2 = myYZalgo.getOmega()-1;
+      Integer omega1 = myXYalgo.omega()-1;
+      Integer omega2 = myYZalgo.omega()-1;
       double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
       double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
       thickness = PointD3d(tx,0,tz);
 
     } else {                  
 
-      if (myYZalgo.getA() != 0) {//YZ-plane, XZ-plane
+      if (myYZalgo.a() != 0) {//YZ-plane, XZ-plane
 
-        Integer b2 = myYZalgo.getB();
-        Integer c2 = myYZalgo.getA();
-        Integer a2 = myXZalgo.getB();
-        Integer c1 = myXZalgo.getA();
+        Integer b2 = myYZalgo.b();
+        Integer c2 = myYZalgo.a();
+        Integer a2 = myXZalgo.b();
+        Integer c1 = myXZalgo.a();
 
         direction = Point3d(c2*a2,c1*b2,c1*c2);	
 
-        Integer mu1 = myYZalgo.getMu();
-        Integer mu2 = myXZalgo.getMu();
+        Integer mu1 = myYZalgo.mu();
+        Integer mu2 = myXZalgo.mu();
         double y = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / c2;
         double x = (double) NumberTraits<TInteger>::castToInt64_t(mu2) / c1;
         intercept = PointD3d(x,y,0);
 
-        Integer omega1 = myYZalgo.getOmega()-1;
-        Integer omega2 = myXZalgo.getOmega()-1;
+        Integer omega1 = myYZalgo.omega()-1;
+        Integer omega2 = myXZalgo.omega()-1;
         double ty = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / c2;
         double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega2) / c1;
         thickness = PointD3d(tx,ty,0);
