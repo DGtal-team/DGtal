@@ -190,17 +190,6 @@ namespace DGtal
     Object( Clone<DigitalTopology> aTopology,
 	    Clone<Domain> domain );
 
-      // /**
-      //  * Constructor of an empty object by providing a domain.
-      //  *
-      //  * @param aTopology the digital topology chosen for this set,
-      //  * smartly copied.
-      //  *
-      //  * @param aDomain any domain related to the given topology.
-      //  */
-      // Object( CowPtr<DigitalTopology> aTopology,
-      // 	      CountedPtr<Domain> aDomain );
-
       /**
        * Copy constructor.
        * @param other the object to clone.
