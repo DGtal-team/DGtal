@@ -6,6 +6,13 @@
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 
+*Base Package*
+
+    - complete rewriting of Clone, Alias and ConstAlias
+      classes. Parameter passing is now documented with a standardized
+      method to determine parameters unambiguously. Associated classed
+      CowPtr, CountedPtrOrPtr and CountedConstPtrOrConstPtr are now used
+      in conjunction with the previous classes.
 
 *Kernel Package*
 
@@ -16,6 +23,15 @@
     - New basic functors:
 	- SliceRotator2D: to rotate 2D Slice images from 3D volume.
 	- Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points (useful to extract 2D image from 3D volume).
+    - Sets have been updated to own their domain with a copy-on-write pointer, in order to avoid some inconsistencies.
+
+*Topology Package*
+
+    - Fixing bugs in Object::isSimple for some digital
+      topologies. Speed of Object::isSimple has been improved. Homotopic
+      thinning is much faster (even without a precomputed simplicity
+      table).
+    - Objects have been updated to use Clone services.
 
 *Geometry Package*
 
