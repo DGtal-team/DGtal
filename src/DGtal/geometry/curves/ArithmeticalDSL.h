@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <utility>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/ReverseIterator.h"
