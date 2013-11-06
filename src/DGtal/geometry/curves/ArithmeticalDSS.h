@@ -52,6 +52,7 @@
 #include "DGtal/geometry/curves/ArithmeticalDSSKernel.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
+#include "DGtal/geometry/curves/ArithmeticalDSL.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -85,140 +86,18 @@ namespace DGtal
     typedef TCoordinate Coordinate; 
     typedef TInteger Integer; 
 
-    typedef DGtal::PointVector<2, Coordinate> Point; 
+    typedef ArithmeticalDSL<Coordinate, Integer, adjacency> DSL; 
+    typedef typename DSL::Point Point; 
     typedef SpaceND<2, Coordinate> Space; 
     typedef Point Element; 
     typedef Point Vector; 
-    typedef std::pair<Vector,Vector> Steps; 
-
+    typedef typename DSL::Steps Steps; 
 
     typedef DGtal::PointVector<2, double> PointD; 
 
-    /**
-     * \brief Aim: This class aims at representing an iterator
-     * that provides a way to scan the points of a DSS
-     * It is both a model of readable iterator and of
-     * bidirectional iterator. 
-     */
-    class ConstIterator : public 
-    std::iterator<std::bidirectional_iterator_tag, 
-		  Point, int, Point*, Point> 
-    {
-      // ------------------------- Private data -----------------------
-    private:
 
-      /// Constant aliasing pointer to the DSS visited by the iterator
-      const ArithmeticalDSS* myDSSPtr;
-
-      /// The current point
-      Point  myCurrentPoint;
-
-      /// Quantity to add to the current remainder
-      Integer  myQuantityToAdd;
-
-      /// Quantity to remove to the current remainder
-      Integer  myQuantityToRemove;
-
-      /// Remainder of the current point
-      Integer  myCurrentRemainder;
-
-      // ------------------------- Standard services -----------------------
-    public:
-
-      /**
-       * Default constructor (not valid).
-       */
-      ConstIterator();
-
-      /**
-       * Constructor.
-       * @param aDSS an arithmetical DSS
-       * @param aPoint a point of the DSL containing @a aDSS
-       */
-      ConstIterator( const ArithmeticalDSS* aDSS, const Point& aPoint ); 
-
-      /**
-       * Copy constructor.
-       * @param aOther the iterator to clone.
-       */
-      ConstIterator( const ConstIterator & aOther );
-      /**
-       * Assignment.
-       * @param aOther the iterator to copy.
-       * @return a reference on 'this'.
-       */
-      ConstIterator& operator= ( const ConstIterator & aOther );
-
-      /**
-       * Destructor. Does nothing.
-       */
-      ~ConstIterator(); 
-
-      // ------------------------- iteration services -------------------------
-    public:
-
-      /**
-       * @return the current point
-       */
-      Point operator*() const;
-
-      /**
-       * Moves @a myCurrentPoint to the next point of the DSS
-       */
-      void next(); 
-
-      /**
-       * Pre-increment.
-       * Goes to the next point of the DSS.
-       */
-      ConstIterator& operator++(); 
-
-      /**
-       * Post-increment.
-       * Goes to the next point of the DSS.
-       */
-      ConstIterator operator++(int); 
-
-      /**
-       * Moves @a myCurrentPoint to the previous point of the DSS
-       */
-      void previous();
-
-      /**
-       * Pre-decrement.
-       * Goes to the previous point in the DSS.
-       */
-      ConstIterator& operator--();
-
-      /**
-       * Post-decrement.
-       * Goes to the previous point in the DSS.
-       */
-      ConstIterator operator--(int);
-
-      /**
-       * Equality operator.
-       *
-       * @param aOther the iterator to compare with 
-       * (must be defined on the same DSS).
-       *
-       * @return 'true' if their current points coincide.
-       */
-      bool operator== ( const ConstIterator & aOther ) const;
-
-      /**
-       * Inequality operator.
-       *
-       * @param aOther the iterator to compare with 
-       * (must be defined on the same DSS).
-       *
-       * @return 'true' if their current points differ.
-       */
-      bool operator!= ( const ConstIterator & aOther ) const;
-
-    }; //end of inner class ConstIterator
-    
-    typedef DGtal::ReverseIterator<ConstIterator> ConstReverseIterator; 
+    typedef typename DSL::ConstIterator ConstIterator; 
+    typedef typename DSL::ConstReverseIterator ConstReverseIterator; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -232,8 +111,7 @@ namespace DGtal
      *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
-     * @param aMu intercept
-     * @param aOmega thickness
+     * @param aLowerBound intercept
      * @param aF the first point
      * @param aL the last point
      * @param aUf the first upper point
@@ -245,7 +123,7 @@ namespace DGtal
      * to a point of remainder r +  @a aOmega
      */
     ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
-		    const Integer& aMu, const Integer& aOmega, 
+		    const Integer& aLowerBound, const Integer& aUpperBound, 
 		    const Point& aF, const Point& aL,
 		    const Point& aUf, const Point& aUl,
 		    const Point& aLf, const Point& aLl, 
@@ -433,6 +311,11 @@ namespace DGtal
      * over the DSS point. 
      */
     Steps steps() const; 
+
+    /**
+     * @return the bounding DSL
+     */
+    DSL boundingDSL() const; 
 
     /**
      * Returns the remainder of @a aPoint
@@ -728,40 +611,11 @@ namespace DGtal
      */
     Point myLl;
 
-    // -------------------- steps ---------------------------------------------
+    //------------------------ DSL ---------------------------------------------
     /**
-     * Pair of steps used to iterate over the DSS points
+     * Bounding DSL of minimal parameters
      */
-    Steps mySteps;
-    /**
-     * Shift vector (translating a point of remainder r to a point of remainder r+omega) 
-     */
-    Vector myShift;
-
-    //------------------------ parameters of the DSL --------------------------
-    /**
-     * y-component of the direction vector
-     */
-    Coordinate myA;
-    /**
-     * x-component of the direction vector
-     */
-    Coordinate myB;
-    /**
-     * Lower intercept
-     * NB: for any upper leaning point U, we have remainder(U) == myLowerBound.
-     * NB: myLowerBound <= myUpperBound
-     */
-    Integer myLowerBound;
-    /**
-     * Upper intercept
-     * NB: for any lower leaning point L, we have remainder(L) == myUpperBound.
-     * NB: if myA and myB are not both null, myUpperBound == myLowerBound + omega() - 1
-     * NB: myLowerBound <= myUpperBound
-     */
-    Integer myUpperBound;
-
-
+    DSL myDSL; 
 
   }; // end of class ArithmeticalDSS
 
