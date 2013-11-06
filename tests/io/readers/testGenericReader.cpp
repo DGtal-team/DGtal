@@ -93,7 +93,7 @@ bool testGenericReader()
   nb++;
 #ifdef WITH_HDF5
   std::string filenameImageh5 = testPath + "samples/cat10.h5";    
-  Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5, "/UInt8Array3D");
+  Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5);
   DGtal::Z3i::Domain domainh5 = anImportedImageh5.domain(); 
   unsigned int size0Imgh5= domainh5.upperBound()[0]-domainh5.lowerBound()[0]+1;
   unsigned int size1Imgh5= domainh5.upperBound()[1]-domainh5.lowerBound()[1]+1;

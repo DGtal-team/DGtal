@@ -176,7 +176,7 @@ namespace DGtal
 
 #ifdef WITH_HDF5
       if (extension=="h5")
-        return HDF5Reader<TContainer>::importHDF5_3D(filename, datasetName, aFunctor);
+        return HDF5Reader<TContainer>::importHDF5_3D(filename, "UInt8Array3D", aFunctor);
 #endif
 
 #ifdef WITH_ITK
@@ -271,7 +271,7 @@ namespace DGtal
 
 #ifdef WITH_HDF5
       if (extension=="h5")
-        return HDF5Reader<TContainer>::importHDF5(filename, datasetName, aFunctor);
+        return HDF5Reader<TContainer>::importHDF5(filename, "image8bit", aFunctor);
 #endif
 
       trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
