@@ -113,7 +113,7 @@ namespace DGtal
      * @param anAlpha noise parameter between ]0,1[.
      */
     KanungoNoise(ConstAlias<PointPredicate> aPredicate,
-                 Clone<Domain> aDomain,
+                 ConstAlias<Domain> aDomain,
                  const double anAlpha);
      
     /**
