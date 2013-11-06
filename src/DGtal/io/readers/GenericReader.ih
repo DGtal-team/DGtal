@@ -41,7 +41,8 @@
 template <typename TContainer, int TDim>
 inline
 TContainer
-DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename, std::vector<unsigned int> dimSpace)  throw(DGtal::IOException){
+DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename,
+                                               std::vector<unsigned int> dimSpace)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
   if(extension!="raw")
