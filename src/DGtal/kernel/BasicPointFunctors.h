@@ -228,8 +228,8 @@ namespace DGtal
      */
     
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, 
-		    const Integer &sliceIndex,  const Dimension &dimRotated,
-		    double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+                    const Integer &sliceIndex,  const Dimension &dimRotated,
+                    double rotationAngle, const Point &defautPoint = Point(0,0,0)):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
       myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defautPoint)
     {
@@ -250,7 +250,7 @@ namespace DGtal
      */
     
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
-		    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defautPoint = Point(0,0,0)):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
       myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defautPoint)
     {
@@ -271,21 +271,21 @@ namespace DGtal
       Dimension pos=0;
       std::vector<Dimension> indexesRotate;
       for( Dimension i=0; i<pt.size(); i++)
-	{
-	  if(i!=myPosDimAdded)
-	    {
-	      pt[i]= aPoint[pos];
-	      pos++; 
-	    }else
-	    {
-	      pt[i]=mySliceIndex;
-	    }
-	}
+        {
+          if(i!=myPosDimAdded)
+            {
+              pt[i]= aPoint[pos];
+              pos++; 
+            }else
+            {
+              pt[i]=mySliceIndex;
+            }
+        }
       for( Dimension i=0; i<pt.size(); i++)
-	{
-	  if(i!=myDimRotated)
-	    indexesRotate.push_back(i);
-	}
+        {
+          if(i!=myDimRotated)
+            indexesRotate.push_back(i);
+        }
       double d1 = pt[indexesRotate[0]] - myCenter[indexesRotate[0]];
       double d2 = pt[indexesRotate[1]] - myCenter[indexesRotate[1]];
       
@@ -360,17 +360,17 @@ namespace DGtal
      */
     
     Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg, 
-			 const Point &anOriginPoint, const Point &anUpperPointOnAxis1,
-			 const Point &anUpperPointOnAxis2,
-			 const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
-								    myOriginPointEmbeddedIn3D(anOriginPoint),
-								    myDefaultPoint (aDefautPoint),
-								    myFirstAxisEmbeddedDirection(Point(anUpperPointOnAxis1[0]-anOriginPoint[0],
-												       anUpperPointOnAxis1[1]-anOriginPoint[1],
-												       anUpperPointOnAxis1[2]-anOriginPoint[2])),
+                         const Point &anOriginPoint, const Point &anUpperPointOnAxis1,
+                         const Point &anUpperPointOnAxis2,
+                         const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
+                                                                    myOriginPointEmbeddedIn3D(anOriginPoint),
+                                                                    myDefaultPoint (aDefautPoint),
+                                                                    myFirstAxisEmbeddedDirection(Point(anUpperPointOnAxis1[0]-anOriginPoint[0],
+                                                                                                       anUpperPointOnAxis1[1]-anOriginPoint[1],
+                                                                                                       anUpperPointOnAxis1[2]-anOriginPoint[2])),
       mySecondAxisEmbeddedDirection(Point(anUpperPointOnAxis2[0]-anOriginPoint[0],
-					  anUpperPointOnAxis2[1]-anOriginPoint[1],
-					  anUpperPointOnAxis2[2]-anOriginPoint[2]))
+                                          anUpperPointOnAxis2[1]-anOriginPoint[1],
+                                          anUpperPointOnAxis2[2]-anOriginPoint[2]))
       
       
     {    
@@ -392,10 +392,10 @@ namespace DGtal
      */
    
     Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg, 
-			 const Point &anOriginPoint, const typename Space::RealPoint & anNormalVector,
-			 const typename Point::Component  &anWidth,
-			 const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
-								    myDefaultPoint (aDefautPoint)
+                         const Point &anOriginPoint, const typename Space::RealPoint & anNormalVector,
+                         const typename Point::Component  &anWidth,
+                         const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
+                                                                    myDefaultPoint (aDefautPoint)
     {
       double d = -anNormalVector[0]*anOriginPoint[0] - anNormalVector[1]*anOriginPoint[1] - anNormalVector[2]*anOriginPoint[2];
       typename Space::RealPoint pRefOrigin;
@@ -442,16 +442,15 @@ namespace DGtal
     Point  operator()(const TPoint2D& aPoint) const
     {
       Point pt = myOriginPointEmbeddedIn3D;
-      for( Dimension i=0; i<pt.size(); i++)
-	{
-	  pt[i] = pt[i]+aPoint[0]*myFirstAxisEmbeddedDirection[i];
-	  pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
-	}
+      for( Dimension i=0; i<pt.size(); i++){
+        pt[i] = pt[i]+aPoint[0]*myFirstAxisEmbeddedDirection[i];
+        pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
+      }
 
       if(myDomain.isInside(pt))
-	return pt;
+        return pt;
       else
-	return  myDefaultPoint;
+        return  myDefaultPoint;
     }
 
   private:
