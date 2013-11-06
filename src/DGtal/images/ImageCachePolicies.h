@@ -100,6 +100,12 @@ public:
      */
     ~ImageCacheReadPolicyLAST() {}
     
+    ImageCacheReadPolicyLAST( const ImageCacheReadPolicyLAST &other )
+    {
+      myCacheImagesPtr =  other.myCacheImagesPtr;
+      myImageFactory = other.myImageFactory;
+    }
+    
     /**
      * Get the alias on the image that contains the point aPoint
      * or NULL if no image in the cache contains the point aPoint.
@@ -197,6 +203,12 @@ public:
      */
     ~ImageCacheReadPolicyFIFO() {}
     
+    ImageCacheReadPolicyFIFO( const ImageCacheReadPolicyFIFO &other )
+    {
+      myFIFOSizeMax =  other.myFIFOSizeMax;
+      myImageFactory = other.myImageFactory;
+    }
+    
     /**
      * Get the alias on the image that contains the point aPoint
      * or NULL if no image in the cache contains the point aPoint.
@@ -293,6 +305,11 @@ public:
      */
     ~ImageCacheWritePolicyWT() {}
     
+    ImageCacheWritePolicyWT( const ImageCacheWritePolicyWT &other )
+    {
+      myImageFactory = other.myImageFactory;
+    }
+    
     /**
     * Set a value on an image at a given position given
     * by aPoint.
@@ -360,6 +377,11 @@ public:
      * Does nothing
      */
     ~ImageCacheWritePolicyWB() {}
+    
+    ImageCacheWritePolicyWB( const ImageCacheWritePolicyWB &other )
+    {
+      myImageFactory = other.myImageFactory;
+    }
     
     /**
     * Set a value on an image at a given position given
