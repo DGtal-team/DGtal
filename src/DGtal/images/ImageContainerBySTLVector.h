@@ -150,8 +150,6 @@ namespace DGtal
     /// range of values
     BOOST_CONCEPT_ASSERT ( ( CLabel<TValue> ) );
     typedef TValue Value;
-    // obsolete
-    // typedef SimpleConstRange<typename vector<Value>::const_iterator > ConstRange;
 
     /////////////////// Data members //////////////////
 
