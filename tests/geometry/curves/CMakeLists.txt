@@ -15,7 +15,7 @@ SET(DGTAL_TESTS_SRC
   # testBinomialConvolver
   testFrechetShortcut	
   testArithmeticalDSS
-  testArithmeticalDSSKernel
+  testArithmeticalDSLKernel
   testArithmeticalDSSComputer
   testArithmeticalDSL
   )

@@ -41,6 +41,22 @@
 template <typename TC, typename TI, unsigned short adj>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>
+::ArithmeticalDSS(const Point& aPoint)
+  : myF(aPoint), myL(aPoint), 
+    myUf(aPoint), myUl(aPoint), 
+    myLf(aPoint), myLl(aPoint), 
+    myDSL( NumberTraits<TC>::ZERO, 
+	   NumberTraits<TC>::ZERO, 
+	   NumberTraits<TI>::ZERO, 
+	   NumberTraits<TI>::ZERO, 
+	   std::make_pair(Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO)), 
+	   Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO) )
+{
+}
+
+template <typename TC, typename TI, unsigned short adj>
+inline
+DGtal::ArithmeticalDSS<TC, TI, adj>
 ::ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
 		  const Integer& aLowerBound, const Integer& aUpperBound, 
 		  const Point& aF, const Point& aL,
@@ -98,7 +114,7 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
       Iterator it = aItb; 
       //construction from the begin iterator
       Point p = *it; 
-      ArithmeticalDSS(p, p); 
+      this->ArithmeticalDSS(p); 
       //extension
       for (++it; it != aIte; ++it)
 	  extendForward(*it); 
@@ -147,11 +163,11 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::negate() const
 {
-  return ArithmeticalDSS(-myDSL.myA, -myDSL.myB, 
-			 -myDSL.myUpperBound, -myDSL.myLowerBound, 
-			 myL, myF, myLl, myLf, myUl, myUf, 
-			 std::make_pair(-myDSL.mySteps.first, -myDSL.mySteps.second), 
-			 -myDSL.myShift);  
+  return this->ArithmeticalDSS(-myDSL.myA, -myDSL.myB, 
+			       -myDSL.myUpperBound, -myDSL.myLowerBound, 
+			       myL, myF, myLl, myLf, myUl, myUf, 
+			       std::make_pair(-myDSL.mySteps.first, -myDSL.mySteps.second), 
+			       -myDSL.myShift);  
 }
 
 //-----------------------------------------------------------------------------
@@ -498,8 +514,8 @@ isExtendableForward( const Point& aNewPoint ) const
   //if the two steps are initialized 
   else 
     {
-      //if there are less than two steps
-      if (isOneOfTheTwoSteps(step)) 
+      //if there are only two steps
+      if ( (step == myDSL.mySteps.first) || (step == myDSL.mySteps.second ) )
   	{
       	Integer r = remainder(aNewPoint);
 
@@ -680,19 +696,7 @@ retractBackward()
       //if the next point is the last one
       if (next == myL)
 	{
-	  myF = next; 
-	  myUf = next; 
-	  myLf = next; 
-	  ASSERT( myUl == next ); 
-	  ASSERT( myLl == next ); 
-	  myDSL.myA = NumberTraits<Coordinate>::ZERO; 
-	  myDSL.myB = NumberTraits<Coordinate>::ZERO;  
-	  myDSL.myLowerBound = NumberTraits<Integer>::ZERO; 
-	  myDSL.myUpperBound = NumberTraits<Integer>::ZERO; 
-	  myDSL.mySteps.first[0] = NumberTraits<Coordinate>::ZERO; 
-	  myDSL.mySteps.first[1] = NumberTraits<Coordinate>::ZERO; 
-	  myDSL.myShift[0] = NumberTraits<Coordinate>::ZERO; 
-	  myDSL.myShift[1] = NumberTraits<Coordinate>::ZERO; 
+	  this->ArithmeticalDSS(next); 
 	  return true; 
 	}
       //otherwise
@@ -789,20 +793,6 @@ retractUpdateParameters( const Vector& aNewDirection )
       myDSL.mySteps = DGtal::ArithmeticalDSLKernel<TC,adj>::steps(myDSL.myA, myDSL.myB); 
       myDSL.myShift = DGtal::ArithmeticalDSLKernel<TC,adj>::shift(myDSL.myA, myDSL.myB); 
     }
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
-isOneOfTheTwoSteps(const Vector& aStep) const
-{
-  ASSERT( (myDSL.mySteps.first[0] != NumberTraits<Coordinate>::ZERO)
-	  ||(myDSL.mySteps.first[1] != NumberTraits<Coordinate>::ZERO) );  
-  ASSERT( (myDSL.mySteps.second[0] != NumberTraits<Coordinate>::ZERO)
-	  ||(myDSL.mySteps.second[1] != NumberTraits<Coordinate>::ZERO) );  
-  return ( (aStep == myDSL.mySteps.first) || (aStep == myDSL.mySteps.second ) ); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
