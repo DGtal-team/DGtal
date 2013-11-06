@@ -464,9 +464,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CircleFrom3Points<TPoint> 
 
 
 // DigitalSetBySTLSet
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLSet<Domain> & /*s*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLSet<Domain, Compare> & /*s*/, std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DGtal::DefaultDrawStyle_DigitalSetBySTLSet;
