@@ -1,0 +1,120 @@
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/*!
+   
+@page moduleCloneAndReference Parameter passing, cloning and referencing
+
+@writers Jacques-Olivier Lachaud
+
+Part of the \ref packageBase.
+
+This module gathers classes to make easier and more readable parameter
+passing by expliciting its type in the signature of functions and
+methods. The main classes are \ref Clone, \ref Alias and \ref
+ConstAlias. They can be used in conjunction with smart pointer classes
+\ref CountedPtr and \ref CowPtr. These classes do not add a
+significant slowdown (between 0 and 10%) in elementary cases, while
+they can save 50% of time in some cases (with lazy duplication and
+move).
+
+[TOC]
+
+Related examples are 
+
+\section moduleCloneAndReference_sec1 Categories of parameter passing
+
+In the following, the \b programmer is the one that has written the
+function/method \c f being called, while the \b user is the one that
+has written the code that calls \c f.
+
+\subsection moduleCloneAndReference_sec11 Parameter passing in C++
+
+From a C++ point of view, you may pass an object of type \c T as
+parameter to \c f through the following mechanism:
+
+- by \b value with \c f(\c T \c t ). It is \e mostly used when passing
+  native types (like \c int, \c bool, etc), small objects like
+  iterators, as \b input. It indicates to the user that its argument
+  is \b duplicated (at least once) and \b not \b modified. The user
+  may also give a \b right-\b value object as parameter, though \b
+  without \b move possibility.
+
+- by \b const \b reference with \c f(\c const \c T& \c t ). This form
+  is \e generally used as an \b alternative to \b passing-by-value, to
+  pass bigger objects as \b input. It may \e sometimes indicate to the
+  user that the argument is \b const \b referenced in \c f for further
+  uses, especially when \c f is a constructor/method of another object. It
+  is \b unclear whether the <b> lifetime of the argument should exceed
+  the lifetime of \c f </b>. This fact is clarified generally by the
+  documentation.
+
+- by \b const \b pointer with \c f(\c const \c T* \c ptrT ). This form
+  is \e sometimes used as an alternative to passing-by-value, to pass
+  bigger objects as \b input while authorizing an invalid object (null
+  pointer). Although this form is more C-like, it may be used in some
+  C++ situation (like creating or destroying relations between
+  objects). It may \e sometimes indicate to the user that the argument
+  is \b const \b pointed in \c f for further uses, especially when \c
+  f is a constructor/method of another object. It is \b unclear
+  whether the <b> lifetime of the argument should exceed the lifetime
+  of \c f </b>. This fact is clarified generally by the documentation.
+  here also.
+
+- by \b reference with \c f(\c T& \c t ). It is \e generally used for
+  \b modifying an object (\b input-output or \b output). It
+  may \e sometimes indicate to the user that the argument is \b
+  referenced in \c f for further uses and
+  modifications, especially when \c f is a constructor/method of an
+  object. It is \b unclear whether the <b> lifetime of the
+  argument should exceed the lifetime of \c f </b>. This fact is
+  clarified generally by the documentation.
+
+- by \b pointer with \c f( \c T* \c ptrT ). This form is \e sometimes
+  used as an alternative to passing-by-reference for \b modifying an
+  object (\b input-output or \b output). Although this form is more
+  C-like, it may be used also for specifying \b acquisition of the
+  object (which should then have been dynamically allocated).  It may
+  \e sometimes indicate to the user that the argument is \b pointed in
+  \c f for further uses and modifications, especially when \c f is a
+  constructor/method of an object. It is \b unclear whether the <b>
+  lifetime of the argument should exceed the lifetime of \c f
+  </b>. This fact is clarified generally by the documentation.
+ 
+The preceding discussion shows that standard parameter passing is \e
+ambiguous by nature, since each parameter passing method has several
+meanings. The user is forced to checked carefully the documentation
+(at best) or the full code to see how parameters are used.
+
+\subsection moduleCloneAndReference_sec12 Alternative definition for parameter passing
+
+The \b programmer should explicit its \e intent to the user in an unambiguous way directly in the signature of \c f. We propose the following taxonomy:
+
+-# \b input parameters
+    -# \b immediate \b use. The \e argument is used immediately in \c f, it is \e not \e pointed or \e referenced for \e further \e use, and its lifetime is whatever.
+    -# \b immediate \b cloning. The \e argument is cloned in \c f for \e further \b secure \e use or \e modifications, and hence its lifetime is whatever.
+    -# \b long-term \b const \b aliasing. The \e argument is aliased in \c f for \e further \e use. The user is warned that he must adapt the lifetime of the argument consequently (generally the lifetime of the other object). The user knows that its argument will not be modified.
+-# \b input-output and \b output parameters
+    -# \b immediate \b use.  The \e argument is used immediately in \c f, it is \e not \e pointed or \e referenced for \e further \e use, and its lifetime is whatever. The argument is \e modified by \c f.
+    -# \b long-term \b aliasing (or \b sharing). The \e argument is aliased in \c f for \e further \e use and \e modifications. The user is warned that he must adapt the lifetime of the argument consequently (generally the lifetime of the other object). The user knows that its argument is shared by another object.
+
+\section moduleCloneAndReference_sec2 Parameter passing with Clone, Alias and ConstAlias
+
+\subsection moduleCloneAndReference_sec21 Disambiguating parameter passing
+
+We propose the following ways to pass parameters without ambiguity:
+
+| input parameter             | immediate use      | immediate cloning  | long-term const-aliasing |
+|-----------------------------|--------------------|--------------------|--------------------------|
+| basic types, small object   | `f( T t )`         | `f( Clone<T> t )`  | `f( ConstAlias<T> t )`   |
+| bigger objects              | `f( const T& t )`  | `f( Clone<T> t )`  | `f( ConstAlias<T> t )`   |
+
+| input-output / output parameter| immediate use      | long-term aliasing |
+|--------------------------------|--------------------|--------------------|
+| any type/object                | `f( T& t )`        | `f( Alias<T> t )`  |
+
+*/
+
+} // namespace DGtal
