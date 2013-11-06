@@ -57,7 +57,6 @@ using namespace DGtal;
 bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
 {
     typedef Z3i::Space::RealPoint RealPoint;
-    typedef Z3i::Point Point;
     typedef Z3i::KSpace::Surfel Surfel;
     typedef ImplicitBall<Z3i::Space> ImplicitShape;
     typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
