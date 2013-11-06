@@ -18,9 +18,9 @@
 
 /**
  * @file SimpleBidirectionalConstRangeFromPoint.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- * @date 2012/03/27
+ * @date 2013/11/06
  *
  *
  * Header file for module SimpleBidirectionalConstRangeFromPoint.h
@@ -77,6 +77,7 @@ namespace DGtal
 
     public:
 
+      typedef TPoint Point;
 
       typedef TConstIterator ConstIterator;
       typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
@@ -189,8 +190,8 @@ namespace DGtal
        */
       ConstIterator begin ( const Point &aPoint ) const
       {
-        ICICICICCICICICCI;
-          }
+        // TODO
+      }
 
       /**
        * Iterator service.
@@ -216,7 +217,7 @@ namespace DGtal
        */
       ConstReverseIterator rbegin ( const Point &aPoint ) const
       {
-        return ConstReverseIterator ( this->end() + myDistance ( aPoint ) );
+        // TODO
       }
 
 

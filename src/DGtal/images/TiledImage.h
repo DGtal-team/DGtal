@@ -50,6 +50,8 @@
 #include "DGtal/base/Alias.h"
 
 #include "DGtal/images/ImageCache.h"
+
+#include "DGtal/base/SimpleBidirectionalConstRangeFromPoint.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -97,8 +99,10 @@ namespace DGtal
     typedef TImageCacheWritePolicy ImageCacheWritePolicy;
     typedef ImageCache<OutputImage, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy > MyImageCache;
 
-    typedef Self ConstRange;
+    //typedef Self ConstRange;
     typedef Self Range;
+    
+    typedef typename ImageContainer::Difference Difference;
 
     // ----------------------- Standard services ------------------------------
 
@@ -558,7 +562,26 @@ namespace DGtal
     }
 
     /////////////////////////// Ranges  /////////////////////
+    
+    typedef SimpleBidirectionalConstRangeFromPoint<ConstIterator,Point > ConstRange;
+    //typedef SimpleBidirectionalConstRangeFromPoint<ConstIterator,Point > Range;
+    
+    /**
+     * @return the range providing begin and end
+     * iterators to scan the values of image.
+     */
+    ConstRange constRange() const
+    {
+      return ConstRange( this->begin(), this->end() );
+    }
 
+    /**
+     * @return the range providing begin and end
+     * iterators to scan the values of image.
+     */
+    //Range range();
+
+#if(0)
     /**
      * Returns the range of the underlying image
      * to iterate over its values
@@ -569,6 +592,7 @@ namespace DGtal
     {
       return *this;
     }
+#endif
 
     /**
      * Returns the range of the underlying image
