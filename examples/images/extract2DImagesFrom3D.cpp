@@ -45,6 +45,8 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+const int IMAGE_PATCH_WIDTH = 70;
+
 int main( int argc, char** argv )
 {
   //! [extract2DImagesFrom3DType]
@@ -58,11 +60,13 @@ int main( int argc, char** argv )
    DGtal::Z3i::Point origin(150, 150, 10);
    DGtal::Z3i::Point ptUpper1(220, 220, 10);
    DGtal::Z3i::Point ptUpper2(150, 150, 50);
-   DGtal::Z3i::Point ptCenter(175, 175, 20);
    DGtal::Z2i::Domain domainImage2D (DGtal::Z2i::Point(0,0), 
 				     DGtal::Z2i::Point((ptUpper1-origin).norm(), 
 						       (ptUpper2-origin).norm())); 
    //! [extract2DImagesFrom3DOrigin3D]   
+   DGtal::Z3i::Point ptCenter(175, 175, 20);
+   DGtal::Z2i::Domain domainImage2D2 (DGtal::Z2i::Point(0,0), 
+                                      DGtal::Z2i::Point(IMAGE_PATCH_WIDTH, IMAGE_PATCH_WIDTH)); 
    
    
    // Importing a 3D image 
@@ -92,7 +96,7 @@ int main( int argc, char** argv )
      DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder2(domainImage3D, ptCenter+DGtal::Z3i::Point(i,i,0), 
 								DGtal::Z3i::RealPoint(1,-1,0), 
 								35);
-     ImageAdapterExtractor extractedImage2(image, domainImage2D, embedder2, idV);
+     ImageAdapterExtractor extractedImage2(image, domainImage2D2, embedder2, idV);
      //! [extract2DImagesFrom3DOExtract2]   
 
      PGMWriter< ImageAdapterExtractor>::exportPGM(name.str(), extractedImage);
