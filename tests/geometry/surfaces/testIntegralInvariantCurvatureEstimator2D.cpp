@@ -58,7 +58,6 @@ using namespace DGtal;
 bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 {
     typedef Z2i::Space::RealPoint RealPoint;
-    typedef Z2i::Point Point;
     typedef Z2i::KSpace::Surfel Surfel;
     typedef ImplicitBall<Z2i::Space> ImplicitShape;
     typedef GaussDigitizer<Z2i::Space, ImplicitShape> DigitalShape;
