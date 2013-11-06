@@ -228,9 +228,7 @@ namespace DGtal
     {
       const int ddim = Domain::dimension;
 
-      // H5T_class_t t_class;                  // data type class
       hsize_t     dims_out[ddim];              // dataset dimensions
-      herr_t status_n;
 
       // Open the file and the dataset.
       file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
@@ -252,7 +250,7 @@ namespace DGtal
       dataspace = H5Dget_space(dataset); // dataspace handle
       //rank = H5Sget_simple_extent_ndims(dataspace);
 
-      status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
+      /*status_n = */H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
       //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
 
       // --
@@ -448,7 +446,7 @@ namespace DGtal
       hsize_t offset[ddim];        // hyperslab offset in the file
       hsize_t count[ddim];         // size of the hyperslab in the file
 
-      herr_t status;
+      //herr_t status;
       hsize_t dimsm[ddim];         // memory space dimensions
       hid_t memspace;
 
@@ -478,7 +476,10 @@ namespace DGtal
         offset[d] = outputImage->domain().lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
       for(d=0; d<ddim; d++)
         count[d] = N_SUB[d];
-      status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+      /*status = */H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+      
+      // TODO
+      // Add throw() on status
 
       // Define the memory dataspace.
       for(d=0; d<ddim; d++)
@@ -490,9 +491,9 @@ namespace DGtal
         offset_in[d] = 0;
       for(d=0; d<ddim; d++)
         count_in[d] = N_SUB[d];
-      status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
+      /*status = */H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
 
-      //TODO
+      // TODO
       // Add throw() on status
 
       typedef SpaceND<ddim> TSpace;
@@ -519,7 +520,10 @@ namespace DGtal
 
       // Write data from hyperslab in memory into the hyperslab in the file.
       //status = H5Dwrite(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_in);
-      status = H5DSpecializations<Self, Value>::H5DwriteS(*this, memspace, data_in);
+      /*status = */H5DSpecializations<Self, Value>::H5DwriteS(*this, memspace, data_in);
+      
+      // TODO
+      // Add throw() on status
 
       H5Sclose(memspace);
 
