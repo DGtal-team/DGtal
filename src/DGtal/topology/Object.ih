@@ -118,23 +118,6 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 {
 }
 
-/**
- * Constructor of an empty object by providing a domain.
- *
- * @param aTopology the digital topology chosen for this set, smartly copied.
- *
- * @param aDomain any domain related to the given topology.
- */
-// template <typename TDigitalTopology, typename TDigitalSet>
-// inline
-// DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-// ( CowPtr<DigitalTopology> aTopology,
-//   CountedPtr<Domain> aDomain )
-//   : myTopo( aTopology ),
-//     myPointSet( new DigitalSet( aDomain ) ),
-//     myConnectedness( CONNECTED )
-// {
-// }
 
 /**
  * Destructor.
