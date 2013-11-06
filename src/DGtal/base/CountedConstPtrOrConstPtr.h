@@ -17,47 +17,47 @@
 #pragma once
 
 /**
- * @file CountedPtrOrPtr.h
+ * @file CountedConstPtrOrConstPtr.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2013/11/06
  *
- * Header file for module CountedPtrOrPtr.cpp
+ * Header file for module CountedConstPtrOrConstPtr.cpp
  *
  * Taken from http://ootips.org/yonat/4dev/smart-pointers.html
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CountedPtrOrPtr_RECURSES)
-#error Recursive header files inclusion detected in CountedPtrOrPtr.h
-#else // defined(CountedPtrOrPtr_RECURSES)
+#if defined(CountedConstPtrOrConstPtr_RECURSES)
+#error Recursive header files inclusion detected in CountedConstPtrOrConstPtr.h
+#else // defined(CountedConstPtrOrConstPtr_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CountedPtrOrPtr_RECURSES
+#define CountedConstPtrOrConstPtr_RECURSES
 
-#if !defined CountedPtrOrPtr_h
+#if !defined CountedConstPtrOrConstPtr_h
 /** Prevents repeated inclusion of headers. */
-#define CountedPtrOrPtr_h
+#define CountedConstPtrOrConstPtr_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/CountedPtrOrPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-  template <typename T> class CountedConstPtrOrConstPtr;
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class CountedPtrOrPtr
+  // template class CountedConstPtrOrConstPtr
   /**
-   * Description of template class 'CountedPtrOrPtr' <p> \brief Aim:
-   * Smart or simple pointer on \c T. It can be a smart pointer based
+   * Description of template class 'CountedConstPtrOrConstPtr' <p> \brief Aim:
+   * Smart or simple const pointer on \c T. It can be a smart pointer based
    * on reference counts or a simple pointer on \c T depending of a
-   * boolean value. This is useful when instantiating from an Alias<T>
+   * boolean value. This is useful when instantiating from a ConstAlias<T>
    * object, letting the user specify if it uses smart pointers or
    * simply pointers.
    *
@@ -65,10 +65,11 @@ namespace DGtal
    * @see CountedPtr
    */
   template <typename T>
-  class CountedPtrOrPtr
+  class CountedConstPtrOrConstPtr
   {
   public:
-    friend class CountedConstPtrOrConstPtr<T>;
+    friend class CountedPtr<T>;
+    friend class CountedPtrOrPtr<T>;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -79,26 +80,26 @@ namespace DGtal
     /**
        allocate a new counter (smart if isCountedPtr==true)
     */
-    inline explicit CountedPtrOrPtr( T* p = 0, bool isCountedPtr = true )
+    inline explicit CountedConstPtrOrConstPtr( const T* p = 0, bool isCountedPtr = true )
       : myAny(0), myIsCountedPtr( isCountedPtr )
     { 
       if ( isCountedPtr ) {
-	if (p) myAny = static_cast<void*>( new Counter( p ) );
+	if (p) myAny = static_cast<void*>( new Counter( const_cast<T*>( p ) ) );
       }
       else
-	myAny = static_cast<void*>( p );
+	myAny = const_cast<void*>( static_cast<const void*>( p ) );
     }
 
-    ~CountedPtrOrPtr()
+    ~CountedConstPtrOrConstPtr()
     { if ( myIsCountedPtr ) release(); }
 
-    CountedPtrOrPtr( const CountedPtr<T> & r ) throw()
+    CountedConstPtrOrConstPtr( const CountedPtr<T> & r ) throw()
       : myIsCountedPtr( true )
     { 
       acquire(r.myCounter); 
     }
 
-    CountedPtrOrPtr(const CountedPtrOrPtr& r) throw()
+    CountedConstPtrOrConstPtr(const CountedConstPtrOrConstPtr& r) throw()
       : myIsCountedPtr( r.myIsCountedPtr )
     { 
       if ( myIsCountedPtr )
@@ -107,7 +108,16 @@ namespace DGtal
 	myAny = r.myAny;
     }
 
-    CountedPtrOrPtr& operator=(const CountedPtrOrPtr& r)
+    CountedConstPtrOrConstPtr(const CountedPtrOrPtr<T>& r) throw()
+      : myIsCountedPtr( r.myIsCountedPtr )
+    { 
+      if ( myIsCountedPtr )
+	acquire( r.counterPtr() ); 
+      else
+	myAny = r.myAny;
+    }
+
+    CountedConstPtrOrConstPtr& operator=(const CountedConstPtrOrConstPtr& r)
     {
       if ( this != & r ) {
 	if ( myIsCountedPtr ) release();
@@ -118,7 +128,18 @@ namespace DGtal
       return *this;
     }
 
-    CountedPtrOrPtr& operator=(const CountedPtr<T>& r)
+    CountedConstPtrOrConstPtr& operator=(const CountedPtrOrPtr<T>& r)
+    {
+      if ( this != & r ) {
+	if ( myIsCountedPtr ) release();
+	if ( r.myIsCountedPtr ) acquire( r.myCounter );
+	else myAny = r.myAny;
+	myIsCountedPtr = r.myIsCountedPtr;
+      }
+      return *this;
+    }
+
+    CountedConstPtrOrConstPtr& operator=(const CountedPtr<T>& r)
     {
       if ( this != & r ) {
 	if ( myIsCountedPtr ) release();
@@ -128,9 +149,9 @@ namespace DGtal
       return *this;
     }
 
-    T& operator*()  const throw()   { return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); }
-    T* operator->() const throw()   { return myIsCountedPtr ? counterPtr()->ptr : ptr(); }
-    T* get()        const throw()   { return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) : ptr(); }
+    const T& operator*()  const throw()   { return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); }
+    const T* operator->() const throw()   { return myIsCountedPtr ? counterPtr()->ptr : ptr(); }
+    const T* get()        const throw()   { return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) : ptr(); }
     bool unique()   const throw()
     {
       return myIsCountedPtr
@@ -143,7 +164,7 @@ namespace DGtal
      */
     unsigned int count() const      { return myIsCountedPtr ? counterPtr()->count : 0; }
 
-    inline T* drop() 
+    inline const T* drop() 
     { // Gives back the pointer without deleting him. Delete only the counter.
       if ( myIsCountedPtr ) {
 	T* tmp = counterPtr()->ptr;
@@ -214,30 +235,30 @@ private:
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class CountedPtrOrPtr
+  }; // end of class CountedConstPtrOrConstPtr
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'CountedPtrOrPtr'.
+   * Overloads 'operator<<' for displaying objects of class 'CountedConstPtrOrConstPtr'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'CountedPtrOrPtr' to write.
+   * @param object the object of class 'CountedConstPtrOrConstPtr' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const CountedPtrOrPtr<T> & object );
+  operator<< ( std::ostream & out, const CountedConstPtrOrConstPtr<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/base/CountedPtrOrPtr.ih"
+#include "DGtal/base/CountedConstPtrOrConstPtr.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CountedPtrOrPtr_h
+#endif // !defined CountedConstPtrOrConstPtr_h
 
-#undef CountedPtrOrPtr_RECURSES
-#endif // else defined(CountedPtrOrPtr_RECURSES)
+#undef CountedConstPtrOrConstPtr_RECURSES
+#endif // else defined(CountedConstPtrOrConstPtr_RECURSES)

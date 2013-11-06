@@ -67,12 +67,11 @@ It is used in methods or functions to encapsulate the parameter
 types. The following conversion from input parameter to data
 member or variable are possible:
 
-|Input parameter   |    \c T&      |    \c T*      |\c CountedPtr<T>|
-|------------------|---------------|---------------|----------------|
-|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |
-|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |
-|To:\c CountedPtr<T>|              |               | Shared. O(1)   |
-|To:\c CowPtr<T>   |               |               | Shared. O(1)   |
+|Argument type     |    \c T&      |    \c T*      |\c CountedPtr<T>|\c CountedPtrOrPtr<T>|
+|------------------|---------------|---------------|----------------|---------------------|
+|To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
+|To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
+|To: \c CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1) | Shared. O(1)        |
 
 
 @note The usage of \c Alias<T> instead of \c T \c & or \c T \c *
@@ -143,10 +142,10 @@ struct B1_v2_2 {
 
 // Aliasing for a long lifetime is visible.
 struct B1_v2_3 {
-  B1_v2_3( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough, requires typeid(a) == CountedPtr<A> because of member.
+  B1_v2_3( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
   : myA( &a ) {}
 ...
-  CountedPtr<A> myA;
+  CountedPtrOrPtr<A> myA;
 };
 
 ...
@@ -155,7 +154,8 @@ CountedPtr<A> cptr_a1( new A( a1 ) );
 B1 ( a1 ); // not duplicated
 B1_v2_1 ( a1 ); // not duplicated
 B1_v2_2 ( a1 ); // not duplicated
-B1_v2_3 ( cptr_a1 ); // not duplicated
+B1_v2_3 ( a1 ); // not duplicated
+B1_v2_3 ( cptr_a1 ); // not duplicated, even better the user choose a secure variant of alias.
 @endcode
 
 @note The user should not use Alias<T> instead of T* for data
@@ -174,7 +174,8 @@ user forward an Alias<T> parameter.
 
     /// Internal class that allows to distinguish the different types of parameters.
     enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
-		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR, CLONE_IS_ERROR };
+		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
+		     COUNTED_CONST_PTR_OR_CONST_PTR, CLONE_IS_ERROR };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -275,30 +276,14 @@ user forward an Alias<T> parameter.
       }
     }
 
-    // /**
-    //    Cast operator to a shared pointer. The object is never
-    //    duplicated. It may be lazily duplicated if casted to a
-    //    CowPtr<T> and the writed. Allowed input parameters are:
-
-    //    - CountedPtr<T> -> CountedPtr<T> // shared
-    //    - CountedPtr<T> -> CowPtr<T>     // shared (not logical, but not preventable).
-    // */
-    // inline operator CountedPtr<T>() const {
-    //   switch( myParam ) {
-    //   case COUNTED_PTR:
-    // 	return CountedPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
-    //   default: ASSERT( false && "[Alias::operator CountedPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr as a parameter." );
-    //     return CountedPtr<T>( 0 );
-    //   }
-    // }
-
     /**
        Cast operator to a shared pointer or to a single pointer. The object is never
        duplicated. Allowed input parameters are:
 
-       - T&            -> CountedPtrOrPtr<T> // shared
-       - T*            -> CountedPtrOrPtr<T> // shared
-       - CountedPtr<T> -> CountedPtrOrPtr<T> // shared
+       - T&                 -> CountedPtrOrPtr<T> // shared
+       - T*                 -> CountedPtrOrPtr<T> // shared
+       - CountedPtr<T>      -> CountedPtrOrPtr<T> // shared
+       - CountedPtrOrPtr<T> -> CountedPtrOrPtr<T> // shared
     */
     inline operator CountedPtrOrPtr<T>() const {
       switch( myParam ) {
@@ -306,7 +291,9 @@ user forward an Alias<T> parameter.
       case PTR:
 	return CountedPtrOrPtr<T>( const_cast< T* >( static_cast< const T* >( myPtr ) ), false );
       case COUNTED_PTR:
-	return CountedPtrOrPtr<T>( *( const_cast< CountedPtr<T>* >( static_cast< const CountedPtr<T>* >( myPtr ) ) ) );
+	return CountedPtrOrPtr<T>( *( static_cast< const CountedPtr<T>* >( myPtr ) ) );
+      case COUNTED_PTR_OR_PTR:
+	return CountedPtrOrPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
       default: ASSERT( false && "[Alias::operator CountedPtrOrPtr<T>() const] Invalid cast for given type. Consider passing a reference, a pointer or a CountedPtr as a parameter." );
         return CountedPtrOrPtr<T>( 0 );
       }
