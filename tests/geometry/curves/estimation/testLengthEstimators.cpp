@@ -89,7 +89,6 @@ bool testLengthEstimatorsOnBall(double radius, double h)
   typedef KSpace::SCell SCell;
   typedef GridCurve<KSpace>::PointsRange PointsRange;
   typedef GridCurve<KSpace>::ArrowsRange ArrowsRange;
-  typedef PointsRange::ConstIterator ConstIteratorOnPoints;
 
 
   //Forme
@@ -192,7 +191,6 @@ bool testDisplay(double radius, double h)
   typedef GridCurve<KSpace>::PointsRange PointsRange;
   typedef GridCurve<KSpace>::ArrowsRange ArrowsRange;
   typedef GridCurve<KSpace>::SCellsRange SCellsRange;
-  typedef PointsRange::ConstIterator ConstIteratorOnPoints;
 
 
   //Forme

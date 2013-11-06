@@ -5,30 +5,30 @@ compiler:
   - clang
 
 env:
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true" 
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true" 
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true" 
-  - BTYPE="-DCMAKE_BUILD_TYPE=Release" 
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug" 
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_ITK=true -DBUILD_TESTING=ON"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON"
 
 before_script:
-  - sudo apt-get -qq install libboost-program-options-dev libcairo2-dev libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev
+  - sudo apt-get -qq install libboost-program-options-dev libcairo2-dev libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev
 
 
 
 matrix:
   exclude:
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true" 
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON"
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true" 
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true" 
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_ITK=true -DBUILD_TESTING=ON"
     - compiler: clang
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug"
- 
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON"
 
-script: 
+
+script:
   - cmake . $BTYPE
   - make DGtal
   - make DGtalIO
@@ -39,5 +39,5 @@ script:
   - cd ..
   - make
 
-after_script: 
+after_script:
   - "make test"

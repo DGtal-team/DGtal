@@ -84,15 +84,15 @@ namespace DGtal
    *
    * @code
 
-  PointVector<3,int> p(3,1,5): 
+   PointVector<3,int> p(3,1,5): 
 
-  Projector<SpaceND<2,int> > proj; 
-  proj( p ) //== (3,1)
+   Projector<SpaceND<2,int> > proj; 
+   proj( p ) //== (3,1)
 
-  ...
-  //v (2, 0): selection of the 2nd and 0th basis vectors
-  proj.init(v.begin(), v.end()); 
-  proj( p ) //== (5,3)
+   ...
+   //v (2, 0): selection of the 2nd and 0th basis vectors
+   proj.init(v.begin(), v.end()); 
+   proj( p ) //== (5,3)
 
    * @endcode
    *
@@ -155,7 +155,7 @@ namespace DGtal
     template<typename TInputPoint>
     Point operator()( const TInputPoint& aPoint ) const;
 
-   private: 
+  private: 
     /**
      * Array storing the coordinates that are copied from 
      * the input point to its projection (order matters)
@@ -169,7 +169,7 @@ namespace DGtal
      * Default integer set to coordinates of the projected point
      * not in the input point
      */
-     Integer myDefaultInteger; 
+    Integer myDefaultInteger; 
 
   }; // end of class ConstantPointFunctors
   
@@ -177,7 +177,301 @@ namespace DGtal
 
 
 
-} // namespace DGtal
+  /**
+   * Description of template class 'SliceRotator2D' <p> \brief Special
+   * Point Functor that adds one dimension to a 2D point and apply on
+   * it a rotation of angle alpha according to a given direction and
+   * the domain center. It also checks if the resulting point is
+   * inside the 3D domain, else it returns a particular point (by
+   * default the point at domain origin (from the domain method
+   * lowerBound()).
+   *
+   * Ex: a Point P (10, 9) in the domain (defined (0,0,0) (10,10,10))
+   * given in 3D by adding the dimension in Z (2) with slice num 7: =>
+   * P(10, 9, 7) and after a rotation of PI from center of slice domain (5,5, 7)
+   * will give P(0,1,7). 
+   * To apply this example you can test it with:
+   * @code 
+   // Defining the domain
+   PointVector<3, int> pt1(0,0, 0);
+   PointVector<3, int> pt2(10,10, 10);
+   HyperRectDomain<SpaceND<3, int> >  domain (pt1, pt2);
+   // The functor on axis rotation set to 2 with new Z slice num=7 and angle 3.15: 
+   SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
+   PointVector<2, int> pt_2(10, 9);  
+   trace.info() <<  sliceRot2(pt_2);
+   @endcode
+   *
+   *
+   * @tparam TDomain3D the type of the 3d domain. 
+   * @tparam TInteger specifies the integer number type used to define the space. 
+   *
+   */
+  template <typename TDomain3D, typename TInteger =  DGtal::int32_t >
+  class SliceRotator2D
+  {
+  public:
+        
+    typedef SpaceND< 3, TInteger>  Space;
+    typedef typename Space::Dimension Dimension; 
+    typedef typename Space::Point Point; 
+    typedef typename Space::Integer Integer; 
+    
+    /** 
+     * Constructor.
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param rotationAngle the angle of rotation (in radians).
+     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     */
+    
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, 
+                    const Integer &sliceIndex,  const Dimension &dimRotated,
+                    double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defautPoint)
+    {
+      myCenter[0] = ((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
+      myCenter[1] = ((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
+      myCenter[2] = ((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
+      myCenter[dimAdded]=sliceIndex;
+    };
+    /** 
+     * Constructor.
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param ptCenter the rotation center.
+     * @param rotationAngle the angle of rotation (in radians).
+     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     */
+    
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defautPoint)
+    {
+      myDefaultPoint = Point(0,0,0);
+    };
+    
+    /** 
+     * The operator just recover the 3D Point associated to the SliceRotator2D parameters.
+     * @param[in] aPoint point of the input domain (of dimension N-1).
+     * 
+     * @return the point of dimension 3.
+     */
+    template <typename TPointDimMinus>
+    inline
+    Point  operator()(const TPointDimMinus& aPoint) const
+    {
+      Point pt;
+      Dimension pos=0;
+      std::vector<Dimension> indexesRotate;
+      for( Dimension i=0; i<pt.size(); i++)
+        {
+          if(i!=myPosDimAdded)
+            {
+              pt[i]= aPoint[pos];
+              pos++; 
+            }else
+            {
+              pt[i]=mySliceIndex;
+            }
+        }
+      for( Dimension i=0; i<pt.size(); i++)
+        {
+          if(i!=myDimRotated)
+            indexesRotate.push_back(i);
+        }
+      double d1 = pt[indexesRotate[0]] - myCenter[indexesRotate[0]];
+      double d2 = pt[indexesRotate[1]] - myCenter[indexesRotate[1]];
+      
+      pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + d1*cos(myRotationAngle)-d2*sin(myRotationAngle) ; 
+      pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ; 
+      
+      if(myDomain.isInside(pt))
+        return pt;
+      else
+        return  myDefaultPoint;
+    }
+  private:
+    // position of insertion of the new dimension
+    Dimension myPosDimAdded;
+    // the index of the slice associated to the new domain.
+    Integer mySliceIndex;
+    TDomain3D myDomain;
+    Dimension myDimRotated;
+    double myRotationAngle;
+    PointVector<3, double> myCenter;
+    Point myDefaultPoint;
+  };
+
+
+  /**
+   * Description of template class 'Point2DEmbedderIn3D' <p> \brief
+   * Aim: Functor that embeds a 2D point into a 3D space from two axis
+   * vectors and an origin point given in the 3D space.
+   *
+   * It also checks if the resulting point is inside the 3D domain,
+   * else it returns a particular point (by default the point at
+   * domain origin (from the domain method lowerBound())).
+   *   
+   * It can be used to extract 2D images from volumetric files. For
+   * instance (see full example images/extract2DImagesFrom3D.cpp): 
+   *
+   * - First some image types and ConstImageAdapter are defined to exploit the functor:
+   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DType
+   *
+   * - Then, we define the origin point and axis vector used to extract 2D image values and we also deduce the associated 2D domain:
+   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOrigin3D
+   *
+   * - The 2D image we can now be  constructed from the embeder and from the ConstImageAdapter class:
+   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOExtract
+   *   
+   * - Alternatively, you can also construct the same functor from a reference center point, a normal, and a size:
+   * @snippet examples/images/extract2DImagesFrom3d.cpp extract2DImagesFrom3DOExtract2
+   *  
+   *
+   * @see tests/kernel/testBasicPointFunctors.cpp 
+   * @tparam TDomain3D the type of the 3d domain. 
+   * @tparam TInteger specifies the integer number type used to define the space. 
+   *
+   */
+  template <typename TDomain3D, typename TInteger =  DGtal::int32_t >
+  class Point2DEmbedderIn3D
+  {
+  public:
+        
+    typedef SpaceND< 3, TInteger>  Space;
+    typedef typename Space::Point Point; 
+    typedef typename Space::Integer Integer; 
+    
+    /** 
+     * Constructor.
+     * Construct the functor from an origin 3D point, and two other 3D points defining the upper part of the 2D domain.
+     * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain. 
+     * @param anOriginPoint the origin point given in the 3D domain. 
+     * @param anUpperPointOnAxis1 the upper point given in the 3D domain to define the first axis of the 2D domain.
+     * @param anUpperPointOnAxis2 the upper point given in the 3D domain to define the second axis of the 2D domain.
+     * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     */
+    
+    Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg, 
+                         const Point &anOriginPoint, const Point &anUpperPointOnAxis1,
+                         const Point &anUpperPointOnAxis2,
+                         const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
+                                                                    myOriginPointEmbeddedIn3D(anOriginPoint),
+                                                                    myDefaultPoint (aDefautPoint),
+                                                                    myFirstAxisEmbeddedDirection(Point(anUpperPointOnAxis1[0]-anOriginPoint[0],
+                                                                                                       anUpperPointOnAxis1[1]-anOriginPoint[1],
+                                                                                                       anUpperPointOnAxis1[2]-anOriginPoint[2])),
+      mySecondAxisEmbeddedDirection(Point(anUpperPointOnAxis2[0]-anOriginPoint[0],
+                                          anUpperPointOnAxis2[1]-anOriginPoint[1],
+                                          anUpperPointOnAxis2[2]-anOriginPoint[2]))
+      
+      
+    {    
+      myFirstAxisEmbeddedDirection /= myFirstAxisEmbeddedDirection.norm();
+      mySecondAxisEmbeddedDirection /= mySecondAxisEmbeddedDirection.norm();
+    }
+
+
+    /** 
+     * Constructor.
+     * Construct the functor from an origin 3D point, an normal vector (normal to the 2D domain), and a width.
+     * The points of an 2D domain are embedded in 3D by using a normal vector giving the direction of the 2D domain embedded in the 3D space. 
+     * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain. 
+     * @param anOriginPoint the center point given in the 3D domain. 
+     * @param anNormalVector the normal vector to the 2d domain embedded in 3D. 
+     * @param anWidth the width to determine the 2d domain bounds.
+     * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     *
+     */
+   
+    Point2DEmbedderIn3D( const TDomain3D &aDomain3DImg, 
+                         const Point &anOriginPoint, const typename Space::RealPoint & anNormalVector,
+                         const typename Point::Component  &anWidth,
+                         const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
+                                                                    myDefaultPoint (aDefautPoint)
+    {
+      double d = -anNormalVector[0]*anOriginPoint[0] - anNormalVector[1]*anOriginPoint[1] - anNormalVector[2]*anOriginPoint[2];
+      typename Space::RealPoint pRefOrigin;
+      if(anNormalVector[0]!=0){
+        pRefOrigin [0]= -d/anNormalVector[0];
+        pRefOrigin [1]= 0.0;
+        pRefOrigin [2]= 0.0;
+      }else if (anNormalVector[1]!=0){
+        pRefOrigin [0]= 0.0;
+        pRefOrigin [1]= -d/anNormalVector[1];
+        pRefOrigin [2]= 0.0;
+      }else if (anNormalVector[2]!=0){
+        pRefOrigin [0]= 0.0;
+        pRefOrigin [1]= 0.0;
+        pRefOrigin [2]= -d/anNormalVector[2];
+      }
+
+      typename Space::RealPoint uDir1;
+      uDir1=(pRefOrigin-anOriginPoint)/((pRefOrigin-anOriginPoint).norm());
+      typename Space::RealPoint uDir2;
+      uDir2[0] = uDir1[1]*anNormalVector[2]-uDir1[2]*anNormalVector[1];
+      uDir2[1] = uDir1[2]*anNormalVector[0]-uDir1[0]*anNormalVector[2];
+      uDir2[2] = uDir1[0]*anNormalVector[1]-uDir1[1]*anNormalVector[0];
+      
+      uDir2/=uDir2.norm();
+
+      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth + uDir2*anWidth;
+      myFirstAxisEmbeddedDirection = -uDir1;
+      mySecondAxisEmbeddedDirection = -uDir2;
+      
+    }
+
+   
+
+
+    /** 
+     * The operator just recover the 3D Point associated to the Point2DEmbederIn3D parameters.
+     * @param[in] aPoint point of the input domain (of dimension 2).
+     * 
+     * @return the point of dimension 3.
+     */
+    template <typename TPoint2D>
+    inline
+    Point  operator()(const TPoint2D& aPoint) const
+    {
+      Point pt = myOriginPointEmbeddedIn3D;
+      for( Dimension i=0; i<pt.size(); i++){
+        pt[i] = pt[i]+aPoint[0]*myFirstAxisEmbeddedDirection[i];
+        pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
+      }
+
+      if(myDomain.isInside(pt))
+        return pt;
+      else
+        return  myDefaultPoint;
+    }
+
+  private:
+    TDomain3D myDomain;
+    
+    // Origin (or lower point) of the 2D image embedded in the 3D domain 
+    Point  myOriginPointEmbeddedIn3D;    
+
+    // Point giving the direction of the embedded first axis of the 2D image.
+    typename Space::RealPoint myFirstAxisEmbeddedDirection;
+
+    // Point giving the direction of the embedded second axis of the 2D image.
+    typename Space::RealPoint mySecondAxisEmbeddedDirection;
+    
+    Point myDefaultPoint;
+
+  };
+
+
+
+} // namespace dgtal
 
 
 ///////////////////////////////////////////////////////////////////////////////

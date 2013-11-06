@@ -141,7 +141,7 @@ DGtal::Trace::beginBlock(const std::string &keyword)
 inline long
 DGtal::Trace::endBlock()
 {
-  long tick;
+  double tick;
   Clock *localClock;
 
   ASSERT (myCurrentLevel >0);

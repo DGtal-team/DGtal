@@ -115,7 +115,6 @@ bool testPublicSercives()
 {
   typedef FreemanChain<int> FreemanChain;
   typedef FreemanChain::Point Point;
-  typedef FreemanChain::Vector Vector;
   typedef FreemanChain::ConstIterator Iterator;
 
   trace.beginBlock ( "Testing public sercives" );
@@ -336,8 +335,6 @@ bool testStaticServices()
 {
   typedef FreemanChain<int> FreemanChain;
   typedef FreemanChain::Point Point;
-  typedef FreemanChain::Vector Vector;
-  typedef FreemanChain::ConstIterator Iterator;
   typedef std::vector<unsigned int> numVector;
   bool test = false;
   int nbOk = 0;

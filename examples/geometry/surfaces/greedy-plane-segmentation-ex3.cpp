@@ -37,9 +37,9 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/Display3D.h"
 
+#include "DGtal/io/Display3D.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
@@ -227,7 +227,7 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-ex3-segment]
 
   //! [greedy-plane-segmentation-ex3-visualization]
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show(); 
   Color col( 255, 255, 120 );
   for ( std::map<Vertex,SegmentedPlane*>::const_iterator 
@@ -237,7 +237,7 @@ int main( int argc, char** argv )
       viewer << CustomColors3D( it->second->color, it->second->color );
       viewer << ks.unsigns( it->first );
     }
-  viewer << Display3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   //! [greedy-plane-segmentation-ex3-visualization]
 
   //! [greedy-plane-segmentation-ex3-freeMemory]

@@ -1,6 +1,8 @@
 /**
  *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as
+ *  it under the terms of the GNU
+
+ Lesser General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or  (at your option) any later version.
  *
@@ -21,7 +23,7 @@
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2013/04/27
- * 
+ *
  * @brief
  *
  * Implementation of inline methods defined in DrawWithDisplay3DModifier.h
@@ -33,7 +35,7 @@
 // Implementation of inline methods                                          //
 
 inline
-std::string 
+std::string
 DGtal::DrawWithDisplay3DModifier::className() const
 {
   return "DrawWithDisplay3DModifier";
@@ -41,15 +43,15 @@ DGtal::DrawWithDisplay3DModifier::className() const
 
 
 inline
-std::string 
+std::string
 DGtal::CustomStyle3D::className() const
 {
   return "CustomStyle3D";
 }
 
 
-inline 
-double * 
+inline
+double *
 DGtal::ClippingPlane::getEquation()
 {
   double *r = new double[4];
@@ -58,12 +60,8 @@ DGtal::ClippingPlane::getEquation()
   r[2] = myC;
   r[3] = myD;
   return r;
-} 
+}
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-

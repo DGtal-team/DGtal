@@ -89,7 +89,6 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
   typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> Surface;
   typedef Surface::SurfelConstIterator ConstIterator;
-  typedef Surface::Tracker Tracker;
   typedef Surface::Surfel Surfel;
   
 
@@ -118,7 +117,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor> Reporter;
   
-  Functor estimator(CanonicSCellEmbedder<KSpace>(surface.space()));
+  Functor estimator(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
                     
   Reporter reporter(surface, l2Metric, estimator);
   

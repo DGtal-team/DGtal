@@ -31,8 +31,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include <QtGui/qapplication.h>
+
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -46,25 +47,26 @@ int main( int argc, char** argv )
 {
   // for 3D display with Viewer3D
   QApplication application(argc,argv);
-  
+
   KSpace K;
-  Point plow(0,0,0);  
+  Point plow(0,0,0);
   Point pup(3,3,2);
   Domain domain( plow, pup );
   K.init( plow, pup, true );
-  
-  Viewer3D viewer;  
+
+  typedef Viewer3D<Space, KSpace> MyViewer;
+  MyViewer viewer(K);
   viewer.show();
-  viewer << SetMode3D( domain.className(), "Paving" );
-  
+  //viewer << SetMode3D( domain.className(), "Paving" );
+
   SCell ptlow = K.sPointel( plow ); // pointel (0*2,0*2, 0*2)
   SCell ptup1 = K.sPointel( pup );  // pointel (3*2,3*2, 2*2)
   SCell ptup2 = K.sTranslation( ptup1, Point::diagonal() ); // pointel (4*2, 4*2, 3*2)
 
-  viewer << ptlow << ptup1 << ptup2; 
-  
+  viewer << ptlow << ptup1 << ptup2;
+
   // drawing cells of dimension 0
-  SCell p1= K.sCell(Point(0,0,2),false);  // pointel (0*2,0*2,2*2)  
+  SCell p1= K.sCell(Point(0,0,2),false);  // pointel (0*2,0*2,2*2)
   SCell p2= K.sCell(Point(0,2,2));  // ...
   SCell p3= K.sCell(Point(2,2,2),false);
   SCell p4= K.sCell(Point(2,0,2));
@@ -73,13 +75,13 @@ int main( int argc, char** argv )
   SCell p7= K.sCell(Point(2,2,4), false);
   SCell p8= K.sCell(Point(2,0,4));
   viewer << p1 << p2 << p3 << p4 << p5 << p6 << p7 << p8;
-  
+
   // drawing Cells of dimension 1
   SCell linel0 = K.sCell( Point( 1, 0, 2 ) );  // linel (2*1+1, 0, 2*2)
   SCell linel1 = K.sCell( Point( 1, 2, 2 ) );  // ...
-  SCell linel2 = K.sCell( Point( 0, 1, 2 ) ); 
-  SCell linel3 = K.sCell( Point( 2, 1, 2 ) ); 
-  
+  SCell linel2 = K.sCell( Point( 0, 1, 2 ) );
+  SCell linel3 = K.sCell( Point( 2, 1, 2 ) );
+
   SCell linel4 = K.sCell( Point( 1, 0, 4 ) );
   SCell linel5 = K.sCell( Point( 1, 2, 4 ) );
   SCell linel6 = K.sCell( Point( 0, 1, 4 ) );
@@ -90,31 +92,33 @@ int main( int argc, char** argv )
   SCell linel10 = K.sCell( Point( 2, 0, 3 ) );
   SCell linel11 = K.sCell( Point( 2, 2, 3 ) );
 
-  
+
   SCell linel12 = K.sCell( Point( 3, 2, 2 ) );
-  
+
   viewer << linel0<< linel1<< linel2 << linel3 ;
   viewer << linel4<< linel5<< linel6 << linel7 ;
   viewer << linel8<< linel9<< linel10 << linel11 << linel12;
- 
+
   // drawing cells of dimension 2
-  
+
   SCell surfelA = K.sCell( Point( 2, 1, 3 ) ); // surfel (2*2,2*1+1,2*3+1)
-  SCell surfelB = K.sCell( Point( 1, 0, 1 ) ); // surfel (2*1,2*0,2*1+1) 
-  SCell surfelC = K.sCell( Point( 2, 1, 1 ),false ); // surfel (2*2,2*1+1,2*1+1) 
+  SCell surfelB = K.sCell( Point( 1, 0, 1 ) ); // surfel (2*1,2*0,2*1+1)
+  SCell surfelC = K.sCell( Point( 2, 1, 1 ),false ); // surfel (2*2,2*1+1,2*1+1)
   viewer << surfelA << surfelB << surfelC;
 
-  // drawing cells of dimension 3  
+  // drawing cells of dimension 3
   SCell vox1 = K.sCell( Point( 3, 3, 3 ) ); // voxel (2*3+1,2*3+1,2*3+1)
-  SCell vox2 = K.sCell( Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)  
+  SCell vox2 = K.sCell( Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)
   viewer << vox1 << vox2;
-  
+
+
   viewer << CameraPosition(-2.9, 2.96, 2.64)
    << CameraDirection(0.6, -0.43, 0.65)
    << CameraUpVector(0.32, 0.900, 0.29);
-  viewer<< Viewer3D::updateDisplay;
+
+  viewer<< MyViewer::updateDisplay;
   return application.exec();
- 
+
   return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////

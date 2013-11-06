@@ -287,6 +287,7 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
 {
   bool different = false;
   Integer l = length();
+  
   ASSERT( ( 0 <= posA ) && ( posA < posB ) && ( posB <= l ) );
   if ( slope().p() == 0 || slope().q() == 0 ) // trivial pattern
     {

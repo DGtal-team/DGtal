@@ -46,15 +46,16 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include <QtGui/qapplication.h>
 
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
 
+#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -76,7 +77,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
     QApplication application ( argc,argv );
-    Viewer3D viewer;
+    DGtal::Viewer3D<> viewer;
 
     std::string filename = testPath + "samples/cat10.vol";
 
@@ -126,6 +127,8 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
     viewer.show();
 
+    DGtal::Color lineColorSave = viewer.getLineColor();
+    viewer.setLineColor( DGtal::Color ( 200,20,20 ));
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
@@ -133,11 +136,14 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
         Point center = ks.sCoords ( *itbis );
         MyEstimator::Quantity normal = myNormalEstimator.eval ( itbis );
-        viewer.addLine ( center[0],center[1],center[2],
-                         center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2],
-                         DGtal::Color ( 200,20,20 ), 1.0 );
+
+        viewer.addLine ( center,
+                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
+					       center[1]-3*normal[1],
+					       center[2]-3*normal[2]), 1.0 );
     }
-    viewer<< Viewer3D::updateDisplay;
+    viewer.setLineColor( lineColorSave);
+    viewer<< Viewer3D<>::updateDisplay;
 
     //Convolution kernel
     GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
@@ -153,6 +159,8 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
 
     viewer<< CustomColors3D ( Color ( 200, 0, 0 ),Color ( 200, 0,0 ) );
+    lineColorSave = viewer.getLineColor();
+    viewer.setLineColor( DGtal::Color ( 200,20,20 ));
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
@@ -160,11 +168,13 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
         Point center = ks.sCoords ( *itbis );
         MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
-        viewer.addLine ( center[0],center[1],center[2],
-                         center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2],
-                         DGtal::Color ( 20,200,20 ), 1.0 );
+        viewer.addLine ( center,
+                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
+					       center[1]-3*normal[1],
+					       center[2]-3*normal[2]), 1.0 );
     }
-    viewer<< Viewer3D::updateDisplay;
+    viewer.setLineColor( lineColorSave);
+    viewer<< Viewer3D<>::updateDisplay;
 
 
     nbok += true ? 1 : 0;

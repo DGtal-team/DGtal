@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -67,10 +68,11 @@ namespace DGtal
     /**
      * Constructor.
      *
-     * @param anEmbedder any model of CSCellEmbedder
+     * @param [in] anEmbedder any model of CSCellEmbedder.
+     * @param [in] h a grid step
      */
-    DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder ):
-    myEmbedder(anEmbedder)
+    DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder , const double h):
+      myEmbedder(anEmbedder), myH(h)
     {
       myCpt=0;
     }
@@ -84,7 +86,7 @@ namespace DGtal
      * Push a surfel to the estimator. For this dummy estimator,
      * we just count the number of surfels.
      */
-    void pushSurfel(const Surfel &aSurfel)
+    void pushSurfel(const Surfel &/*aSurfel*/)
     {
       myCpt++;
     }
@@ -92,12 +94,15 @@ namespace DGtal
     /**
      * @return the estimated quantity.
      */
-    Quantity eval(const double h) {return myCpt; } const
+    Quantity eval( ) const {return myCpt; } 
     
     /**
      * Reset the estimator.
      */
-    void reset() { myCpt = 0;}
+    void reset() 
+    { 
+      myCpt = NumberTraits<Quantity>::ZERO;
+    }
     
   private:
     
@@ -111,6 +116,9 @@ namespace DGtal
     
     ///Surfel counter.
     Quantity myCpt;
+
+    ///Grid step
+    double myH;
   };
   
     

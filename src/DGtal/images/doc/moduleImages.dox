@@ -43,8 +43,8 @@ In addition, they must have a range, returned by the `range` method,
 providing output iterators.  
 
 Different models of images are available: ImageContainerBySTLVector, 
-ImageContainerBySTLMap, and --- coming soon --- experimental::ImageContainerByHashTree, 
- experimental::ImageContainerByITKImage, a wrapper for ITK images. 
+ImageContainerBySTLMap, ImageContainerByITKImage (a wrapper for ITK images)
+and --- coming soon --- experimental::ImageContainerByHashTree.
 
  \section dgtalImagesDetails Let us go into details 
 
@@ -420,9 +420,17 @@ from point functors or other images: imageFromFunctor and imageFromImage.
 }
 
 /**
-*  Example of 2D images extraction from 3D images.
+*  Example of 2D slice images extraction from 3D images.
 
    \image html lobsterSliceZ_20.png   "Example of resulting 2D slices images of the sample/lobster.vol file."
+
+* \example images/extract2DSlicesImagesFrom3D.cpp
+**/
+
+/**
+*  Example of 2D images extraction from 3D images.
+
+   \image html lobster2DExtract.png   "Example of one of the  resulting 2D  images of the sample/lobster.vol file (with increased size)."
 
 * \example images/extract2DImagesFrom3D.cpp
 **/

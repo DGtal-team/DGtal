@@ -54,7 +54,7 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Example simple example of 3DViewer" );
   
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.setWindowTitle("simpleExample3DViewer");
   viewer.show();  
   
@@ -66,7 +66,7 @@ int main( int argc, char** argv )
   
   trace.warning() << "Constructing a ring DigitalSet  ... ";
   DigitalSet shape_set( domain );
-  for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
+  for (Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
     {
       if ( ((*it - c ).norm() <= 25) && ((*it - c ).norm() >= 18)
      && ( (((*it)[0] <= 3)&& ((*it)[0] >= -3))|| (((*it)[1] <= 3)&& ((*it)[1] >= -3)))){
@@ -75,35 +75,38 @@ int main( int argc, char** argv )
     }
   trace.warning() << "  [Done]";
   
-
-  Object6_26 shape( dt6_26, shape_set );
-  int nb_simple=0; 
   int layer = 0;
+  
+  Object6_26 shape( dt6_26,  shape_set );
+  int nb_simple=0; 
   do 
     {
       DigitalSet & S = shape.pointSet();
       std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-  if ( shape.isSimple( *it ) )
-    Q.push( it );
+      for ( DigitalSet::Iterator it = S.begin(); 
+	    it != S.end(); ++it )
+	if ( shape.isSimple( *it ) )
+	  Q.push( it );
       nb_simple = 0;
       while ( ! Q.empty() )
-  {
-    DigitalSet::Iterator it = Q.front();
-    Q.pop();
-    if ( shape.isSimple( *it ) )
-      {
-        cerr << "point simple " << (*it) << endl; 
-        S.erase( *it );
-        ++nb_simple;
-      }
-  }
-      ++layer;
+	{
+	  DigitalSet::Iterator it = Q.front();
+	  Q.pop();
+	  if ( shape.isSimple( *it ) )
+	    {
+	      S.erase( *it );
+	      ++nb_simple;
+	    }
+	}
     }
   while ( nb_simple != 0 );
-
   DigitalSet & S = shape.pointSet();
+  
 
+
+  ++layer;// avant dernier{ avant while
+  //cerr << "point simple " << (*it) << endl; // avant S.erase
+  
   // Display by using two different list to manage OpenGL transparency.
 
   viewer << SetMode3D( shape_set.className(), "Paving" );
@@ -114,7 +117,7 @@ int main( int argc, char** argv )
   viewer << CustomColors3D(Color(250, 0,0, 25), Color(250, 0,0, 5));
   viewer << shape_set;
 
-  viewer<< Viewer3D::updateDisplay;
+  viewer<< Viewer3D<>::updateDisplay;
    
   
   trace.endBlock();

@@ -850,7 +850,6 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it, 
 			const DCA& aDCA) const 
       {
-	typedef typename DCA::ConstIterator ConstIterator; 
 	typedef typename DCA::Pair Pair; 
 	typedef typename DCA::Point Point;
 	typedef typename Point::Coordinate Coordinate; 
@@ -949,7 +948,6 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it, 
 			const DCA& aDCA, const double& aH) const 
       {
-	typedef typename DCA::ConstIterator ConstIterator; 
 	typedef typename DCA::Pair Pair; 
 	typedef typename DCA::Point Point;
 	typedef typename Point::Coordinate Coordinate; 

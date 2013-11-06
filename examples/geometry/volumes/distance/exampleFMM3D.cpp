@@ -32,7 +32,6 @@
 
 #include <iostream>
 #include <QtGui/qapplication.h>
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/base/Common.h"
@@ -41,6 +40,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "ConfigExamples.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 
  
 using namespace std;
@@ -83,8 +83,6 @@ int main( int argc, char** argv )
   typedef ConstImageAdapter<LabelImage, Domain, DefaultFunctor, bool, Thresholder<LabelImage::Value> > BinaryImage;
   typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
-  typedef Frontier::SurfelConstIterator SurfelIterator;
-
   
   //reading image
   std::string imageFileName = examplesPath + "samples/Al.100.vol"; 
@@ -162,7 +160,7 @@ int main( int argc, char** argv )
   //////////////////////////////////////////////////////////////////////////////////
   //visualisation
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();
 
   //
@@ -185,7 +183,7 @@ int main( int argc, char** argv )
 	       << std::endl;  
   viewer << ClippingPlane(a,b,c,mu); 
   
-  viewer << Viewer3D::updateDisplay;
+  viewer << Viewer3D<>::updateDisplay;
   return application.exec();
 }
 //                                                                           //
