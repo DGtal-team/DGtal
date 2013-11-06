@@ -64,7 +64,6 @@ int main( int argc, char** argv )
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef BigInteger Integer;
 
   COBANaivePlane<Z3, BigInteger> plane;
   plane.init( 2, 100, 1, 1 );

@@ -67,7 +67,7 @@ DGtal::InexactPredicateLpSeparableMetric<T>::distanceLp (const Point &aP,
 template <typename T>
 inline
 typename DGtal::InexactPredicateLpSeparableMetric<T>::Value
-DGtal::InexactPredicateLpSeparableMetric<T>::local (const Point &aP, 
+DGtal::InexactPredicateLpSeparableMetric<T>::local (const Point &/*aP*/, 
 						    const Vector &aDir) const
 {
   double res= 0.0;
