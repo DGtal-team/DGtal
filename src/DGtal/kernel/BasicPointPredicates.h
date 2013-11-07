@@ -208,7 +208,7 @@ namespace DGtal
     typedef TPointPredicate PointPredicate;
     BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> ));
     typedef typename PointPredicate::Point Point;
-   
+
     /**
      * Constructor from predicates and bool Functor.
      */
@@ -265,7 +265,7 @@ namespace DGtal
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPointPredicate1, typename TPointPredicate2,
-	    typename TBinaryFunctor = BoolFunction2 >
+      typename TBinaryFunctor = BoolFunction2 >
   struct BinaryPointPredicate
   {
     typedef TPointPredicate1 PointPredicate1;
@@ -273,11 +273,11 @@ namespace DGtal
     typedef typename PointPredicate1::Point Point;
     typedef typename PointPredicate2::Point Point2;
 
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > )); 
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > )); 
-    BOOST_CONCEPT_ASSERT (( boost::BinaryFunction< TBinaryFunctor, bool, bool, bool > )); 
-    BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value )); 
-    
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_CONCEPT_ASSERT (( boost::BinaryFunction< TBinaryFunctor, bool, bool, bool > ));
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
+
     /**
        Constructor from predicates and bool Functor.
        @param pred1 the left predicate.
