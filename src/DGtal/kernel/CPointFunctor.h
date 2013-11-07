@@ -54,52 +54,50 @@ Description of \b concept '\b CPointFunctor' <p>
      @ingroup Concepts
 
 @brief Aim: Defines a functor on points.
-     
+
  Associates values to points.
-    
+
  ### Refinement of CUnaryFunctor
-    
+
  ### Associated types
  - Point : specifies the type for a point (inner type).
  - Value : specifies the type for a value (inner type).
-    
+
  ### Notation
      - \t X : A type that is a model of CPointFunctor
      - \t x : Object of type \t X
      - \t p : Object of type Point
      - \t v : Object of type Value
-    
+
  ### Definitions
-    
+
  ### Valid expressions and semantics
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|     
-|Apply function | \t x( \t p)|                     | \c v        |                  |the value of the function \t x at point \t p | | |         
-    
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|Apply function | \t x( \t p)|                     | \c v        |                  |the value of the function \t x at point \t p | | |
+
  ### Invariants
-    
- - Shapes and images are models of (refinements of) this concept  
-    
+
+ - Shapes and images are models of (refinements of) this concept
+
  ### Notes###
    */
   template <typename T>
-  struct CPointFunctor
+  struct CPointFunctor : CUnaryFunctor<T, typename T::Point, typename T::Value>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Point Point;
     typedef typename T::Value Value;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,Value> ));
-
     // ------------------------- Private Datas --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CPointFunctor
-  
+
 } // namespace DGtal
 
 //                                                                           //
