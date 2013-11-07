@@ -93,16 +93,18 @@ int main( /*int argc, char** argv*/ )
     
     // here we create read and write policies
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
-    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    //typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    typedef ImageCacheWritePolicyWB<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWB;
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
-    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+    //MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+    MyImageCacheWritePolicyWB imageCacheWritePolicyWB(imageFactoryFromImage);
     
     // here we create the TiledImage
-    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
+    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWB> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CConstBidirectionalRangeFromPoint< MyTiledImage > ));
     //BOOST_CONCEPT_ASSERT(( CBidirectionalOutputRangeFromPoint< MyTiledImage::Range, typename MyTiledImage::Value > ));
     BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWB, 4);
 //! [TiledImage_creation]
     
     trace.info() << "tiledImage image: " << tiledImage << endl;
@@ -194,16 +196,15 @@ int main( /*int argc, char** argv*/ )
       MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator(); 
       for (int ii = 0; ii < maximalValue; ++ii)
       {
-        //*it++ = 10;  // TODO : don't work
-        it.setValue(10); it++;
+        *it++ = 10; // TODO : don't work with WT
+        //it.setValue(10); it++;
       }
     }
-    trace.info() << "--> cacheMissRead:" << tiledImage.getCacheMissRead() << endl;
     trace.endBlock();
     
     // ---
     
-    cpt=sumC=0; tiledImage.clearCacheAndResetCacheMisses();
+    cpt=sumC=0;
     trace.beginBlock("test ConstIterator");
     for(VImage::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
         it != itend; ++it)

@@ -180,77 +180,12 @@ bool test3d()
     return nbok == nb;
 }
 
-bool test_range_constRange()
-{
-    unsigned int nbok = 0;
-    unsigned int nb = 0;
-
-    trace.beginBlock("Testing range/constRange with TiledImage");
-
-    typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
-
-    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(10,10)));
-    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
-        *it = 10;
-
-    trace.info() << "ORIGINAL image: " << image << endl;
-
-    typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
-    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
-    MyImageFactoryFromImage imageFactoryFromImage(image);
-
-    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
-    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
-    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
-    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
-
-    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
-    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
-
-    // writing values
-    const int maximalValue = tiledImage.domain().size();
-    MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
-    for (int i = 0; i < maximalValue; ++i)
-    {
-      //*it++ = i; // TODO : don't work
-      it.setValue(i); it++;
-    }
-
-    // reading values
-    MyTiledImage::ConstRange r = tiledImage.constRange();
-    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") );
-    cout << endl;
-
-    std::vector<int> to_vector(100);
-    std::copy(r.begin(), r.end(), to_vector.begin());
-    for (int i = 0; i < 100; i++)
-    {
-      if (to_vector[i]==i)
-      {
-        cout << "ok, ";
-        nbok += true ? 1 : 0; nb++;
-      }
-      else
-      {
-        cout << "!ok -> " << to_vector[i] << ", "; 
-        nbok += false ? 1 : 0; nb++;
-      }
-    }
-
-    cout << endl;
-
-    trace.endBlock();
-
-    return nbok == nb;
-}
-
 bool testIterators()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock("Testing iterators in TiledImage");
+  trace.beginBlock("Testing iterators with TiledImage");
 
   typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
   VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(10,10)));
@@ -273,11 +208,9 @@ bool testIterators()
   tiledImage.setValue( Z2i::Point(5,5), 42 );
   tiledImage.setValue( Z2i::Point(1,1), 1 );
 
-  //Typedefs
+  // typedefs
   typedef MyTiledImage::ConstIterator ConstIterator;
   typedef MyTiledImage::OutputIterator OutputIterator;
-  //typedef MyTiledImage::Range Range;
-  //typedef MyTiledImage::ConstRange ConstRange;
 
   ConstIterator itbegin = tiledImage.constRange().begin();
   trace.info() << "Value at range begin (1) = "<< *itbegin << std::endl;
@@ -299,18 +232,99 @@ bool testIterators()
   nbok += (*itbegino == 5) ? 1 : 0; nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  /*
-  Range a= tiledImage.range();
-  a.begin()
-    a.begin(point)
-  */
-
   trace.endBlock();
   
   return nbok == nb;
 }
 
+bool test_range_constRange()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
 
+    trace.beginBlock("Testing range/constRange with TiledImage");
+
+    typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
+
+    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(10,10)));
+    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+        *it = 10;
+
+    trace.info() << "ORIGINAL image: " << image << endl;
+
+    typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
+    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    MyImageFactoryFromImage imageFactoryFromImage(image);
+
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+    //typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    typedef ImageCacheWritePolicyWB<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWB;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
+    //MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+    MyImageCacheWritePolicyWB imageCacheWritePolicyWB(imageFactoryFromImage);
+
+    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWB> MyTiledImage;
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWB, 4);
+
+    // writing values
+    const int maximalValue = tiledImage.domain().size();
+    MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
+    for (int i = 0; i < maximalValue; ++i)
+    {
+      *it++ = i; // TODO : don't work with WT
+      //it.setValue(i); it++;
+    }
+
+    // reading values
+    MyTiledImage::ConstRange r = tiledImage.constRange();
+    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") );
+    cout << endl;
+
+    std::vector<int> to_vector(100);
+    std::copy(r.begin(), r.end(), to_vector.begin());
+    for (int i = 0; i < 100; i++)
+    {
+      if (to_vector[i]==i)
+      {
+        cout << "ok, ";
+        nbok += true ? 1 : 0; nb++;
+      }
+      else
+      {
+        cout << "!ok -> " << to_vector[i] << ", "; 
+        nbok += false ? 1 : 0; nb++;
+      }
+    }
+    cout << endl;
+    
+    cout << endl;
+    
+    // reading values
+    std::copy( r.begin(Z2i::Point(7,7)), r.end(), std::ostream_iterator<int>(cout,", ") );
+    cout << endl;
+
+    std::vector<int> to_vector2(28);
+    std::copy(r.begin(Z2i::Point(7,7)), r.end(), to_vector2.begin());
+    for (int i = 0; i < 28; i++)
+    {
+      if (to_vector2[i]==i+72)
+      {
+        cout << "ok, ";
+        nbok += true ? 1 : 0; nb++;
+      }
+      else
+      {
+        cout << "!ok -> " << to_vector2[i] << ", "; 
+        nbok += false ? 1 : 0; nb++;
+      }
+    }
+    cout << endl;
+
+    trace.endBlock();
+
+    return nbok == nb;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -323,7 +337,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testIterators() && testSimple() && test3d() && test_range_constRange(); // && ... other tests
+    bool res = testSimple() && test3d() && testIterators() && test_range_constRange(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
