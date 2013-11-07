@@ -51,8 +51,8 @@
 
 #include "DGtal/images/ImageCache.h"
 
-#include "DGtal/base/SimpleBidirectionalConstRangeFromPoint.h"
-#include "DGtal/base/SimpleBidirectionalRangeFromPoint.h"
+#include "DGtal/base/TiledImageBidirectionalConstRangeFromPoint.h"
+#include "DGtal/base/TiledImageBidirectionalRangeFromPoint.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -137,16 +137,56 @@ namespace DGtal
     ~TiledImage()
     {
       delete myImageCache;
+      
       delete clock; // TEMP_MT
     }
     
   private:
 
-    TiledImage( const TiledImage &other );
+  public:
+
+    TiledImage( const TiledImage &other )
+    {
+      myN =  other.myN;
+      myImageFactory = other.myImageFactory;
+      myReadPolicy = other.myReadPolicy;
+      myWritePolicy = other.myWritePolicy;
+
+      myImageCache = new MyImageCache(myImageFactory, myReadPolicy, myWritePolicy);
+
+      m_lowerBound = myImageFactory->domain().lowerBound();
+      m_upperBound = myImageFactory->domain().upperBound();
+
+      for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
+        mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
+
+      clock = new(Clock); // TEMP_MT
+      myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
+    }
     
-  public: // TODO : private ???
-    
-    TiledImage & operator=( const TiledImage & other );
+    TiledImage & operator=( const TiledImage & other )
+    {
+        if ( this != &other )
+        {
+          myN =  other.myN;
+          myImageFactory = other.myImageFactory;
+          myReadPolicy = other.myReadPolicy;
+          myWritePolicy = other.myWritePolicy;
+
+          myImageCache = new MyImageCache(myImageFactory, myReadPolicy, myWritePolicy);
+
+          m_lowerBound = myImageFactory->domain().lowerBound();
+          m_upperBound = myImageFactory->domain().upperBound();
+
+          for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
+            mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
+
+          clock = new(Clock); // TEMP_MT
+          myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
+        }
+
+        return *this;
+    }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -528,8 +568,8 @@ namespace DGtal
 
     /////////////////////////// Ranges  /////////////////////
     
-    typedef SimpleBidirectionalConstRangeFromPoint<ConstIterator,Point > ConstRange;
-    typedef SimpleBidirectionalRangeFromPoint<ConstIterator,OutputIterator,Point > Range;
+    typedef TiledImageBidirectionalConstRangeFromPoint<TiledImage > ConstRange;
+    typedef TiledImageBidirectionalRangeFromPoint<TiledImage > Range;
     
     /**
      * @return the range providing begin and end
@@ -537,7 +577,7 @@ namespace DGtal
      */
     ConstRange constRange() const
     {
-      return ConstRange( this->begin(), this->end() );
+      return ConstRange( this );
     }
 
     /**
@@ -546,7 +586,7 @@ namespace DGtal
      */
     Range range()
     {
-      return Range( this->begin(), this->end() );
+      return Range( this );
     }
 
     /////////////////// API ///////////////////////
@@ -814,10 +854,6 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   private:
-    /**
-     * Default constructor.
-     */
-    TiledImage() {}
 
     /// for clock counting
     long myTicksUpdate, myTicksFindSubDomain, myTicksRead;
