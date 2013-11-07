@@ -52,7 +52,7 @@ namespace DGtal
   // template class DigitalTopologyTraits
   /**
      Description of template class 'DigitalTopologyTraits' <p>
-     \brief Aim: the traits classes for DigitalTopology<> types.
+     \brief Aim: the traits classes for DigitalTopology types.
      
      @tparam TForegroundAdjacency any model of CAdjacency.
      @tparam TBackgroundAdjacency any model of CAdjacency.
@@ -61,13 +61,13 @@ namespace DGtal
      The traits are specialized for the classical (4,8) and (8,4)
      adjacencies in 2D and (6,18), (6,26), (26,6) and (18,6)
      adjacencies in 3D, following the works of Bertrand and
-     Couprie. They specify for GEODESIC_NEIGHBORHOOD_SIZE:
+     Couprie (@cite Bertrand2007a). They specify for GEODESIC_NEIGHBORHOOD_SIZE:
      
      - 2 for (4,8) and (8,4) -> ok
-     - 2 for (6,26) -> changed to 1
-     - 3 for (6,18) -> changed to 2
-     - 2 for (18,6) -> changed to 3
-     - 1 for (26,6) -> changed to 2
+     - 1 for (6,26) (previously set to 2 by @cite Bertrand2007a)
+     - 2 for (6,18) (previously set to 3 by @cite Bertrand2007a)
+     - 3 for (18,6) (previously set to 2 by @cite Bertrand2007a)
+     - 2 for (26,6) (previously set to 1 by @cite Bertrand2007a)
    */
   template <typename TForegroundAdjacency, typename TBackgroundAdjacency, Dimension dim>
   struct DigitalTopologyTraits
@@ -78,7 +78,7 @@ namespace DGtal
   }; // end of class DigitalTopologyTraits
 
   /**
-     Specialization for any 2D Space, for topology (4,8).
+     \brief Aim: Specialization of the traits classes for DigitalTopology types for any 2D Space, for topology (4,8).
   */
   template <typename TSpace>
   struct DigitalTopologyTraits< MetricAdjacency< TSpace, 1>,
@@ -91,7 +91,7 @@ namespace DGtal
   };
 
   /**
-     Specialization for any 2D Space, for topology (8,4).
+     \brief Aim: Specialization of the traits classes for DigitalTopology types for any 2D Space, for topology (8,4).
   */
   template <typename TSpace>
   struct DigitalTopologyTraits< MetricAdjacency< TSpace, 2>,
@@ -104,7 +104,7 @@ namespace DGtal
   };
 
   /**
-     Specialization for any 3D Space, for topology (6,26).
+     \brief Aim: Specialization of the traits classes for DigitalTopology types for any 2D Space, for topology (6,26).
   */
   template <typename TSpace>
   struct DigitalTopologyTraits< MetricAdjacency< TSpace, 1>,
@@ -117,7 +117,7 @@ namespace DGtal
   };
 
   /**
-     Specialization for any 3D Space, for topology (6,18).
+     \brief Aim: Specialization of the traits classes for DigitalTopology types for any 2D Space, for topology (6,18).
   */
   template <typename TSpace>
   struct DigitalTopologyTraits< MetricAdjacency< TSpace, 1>,
@@ -130,7 +130,7 @@ namespace DGtal
   };
 
   /**
-     Specialization for any 3D Space, for topology (18,6).
+     \brief Aim: Specialization of the traits classes for DigitalTopology types for any 2D Space, for topology (18,6).
   */
   template <typename TSpace>
   struct DigitalTopologyTraits< MetricAdjacency< TSpace, 2>,
@@ -143,7 +143,7 @@ namespace DGtal
   };
 
   /**
-     Specialization for any 3D Space, for topology (26,6).
+     \brief Aim: Specialization of the traits classes for DigitalTopology types for any 2D Space, for topology (26,6).
   */
   template <typename TSpace>
   struct DigitalTopologyTraits< MetricAdjacency< TSpace, 3>,
