@@ -199,40 +199,40 @@ namespace DGtal
      * @param aSet the set to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template<typename Domain>
-    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief drawAsPavingTransparent
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void drawAsPavingTransparent( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void drawAsPavingTransparent( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief drawAsPaving
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief drawAsGrid
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief draw
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
     // DigitalSetBySTLSet
 
 

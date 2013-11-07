@@ -203,45 +203,45 @@ namespace DGtal
    * @param aSet the set to draw
    * @return the dyn. alloc. default style for this object.
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief drawAsPavingTransparent
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief drawAsPaving
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief drawAsGrid
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief draw
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
   // DigitalSetBySTLSet
 
 

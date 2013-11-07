@@ -128,8 +128,8 @@ static void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
     
     
 // DigitalSetBySTLSet
-template<typename Domain>
-static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain> & );
+template<typename Domain, typename Compare>
+static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & );
 // DigitalSetBySTLSet
     
     
