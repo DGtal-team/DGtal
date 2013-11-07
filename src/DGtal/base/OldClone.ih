@@ -41,24 +41,24 @@
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldClone<T>::~OldClone()
+DGtal::deprecated::Clone<T>::~Clone()
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldClone<T>::OldClone( const T & t ) 
+DGtal::deprecated::Clone<T>::Clone( const T & t ) 
   : myRefT( t )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldClone<T>::OldClone( const OldClone<T> & other ) 
+DGtal::deprecated::Clone<T>::Clone( const deprecated::Clone<T> & other ) 
   : myRefT( other.myRefT )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldClone<T>::OldClone( const T* ptrT )
+DGtal::deprecated::Clone<T>::Clone( const T* ptrT )
   : myRefT( *ptrT )
 {
   ASSERT( ptrT != 0 );
@@ -66,7 +66,7 @@ DGtal::OldClone<T>::OldClone( const T* ptrT )
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldClone<T>::operator T() const
+DGtal::deprecated::Clone<T>::operator T() const
 { 
   return T( myRefT ); 
 }
@@ -74,14 +74,14 @@ DGtal::OldClone<T>::operator T() const
 template <typename T>
 inline
 T*
-DGtal::OldClone<T>::allocate() const
+DGtal::deprecated::Clone<T>::allocate() const
 { 
   return new T( myRefT ); 
 }
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldClone<T>::operator CountedPtr<T>() const
+DGtal::deprecated::Clone<T>::operator CountedPtr<T>() const
 { 
   return CountedPtr<T>( allocate() ); // duplicated once 
 }
