@@ -48,7 +48,7 @@
 
     - With an optional binding with CGAL and Eigen3, new curvature and
       normal vector estimators have been added. For instance, you can
-      now estimate curvature from polyonomial surface fitting (Jet
+      now estimate curvature from polynomial surface fitting (Jet
       Fitting) and Monge forms.
 
     - Minor improvements in the spherical accumulator.
