@@ -92,7 +92,6 @@ namespace DGtal
        * and one functor.
        * @param itb begin iterator.
        * @param ite end iterator.
-       * @param aDistance functor used to adapt on-the-fly the elements of the range
        *
        */
       SimpleBidirectionalConstRangeFromPoint ( const TConstIterator& itb, const TConstIterator& ite )
@@ -191,6 +190,7 @@ namespace DGtal
       ConstIterator begin ( const Point &aPoint ) const
       {
         // TODO
+        return ConstIterator ( myBegin );
       }
 
       /**
@@ -218,6 +218,7 @@ namespace DGtal
       ConstReverseIterator rbegin ( const Point &aPoint ) const
       {
         // TODO
+        return ConstReverseIterator ( this->end() );
       }
 
 
