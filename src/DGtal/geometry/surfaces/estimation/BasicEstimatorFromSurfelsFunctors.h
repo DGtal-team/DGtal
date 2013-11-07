@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +86,7 @@ namespace DGtal
      * Push a surfel to the estimator. For this dummy estimator,
      * we just count the number of surfels.
      */
-    void pushSurfel(const Surfel &aSurfel)
+    void pushSurfel(const Surfel &/*aSurfel*/)
     {
       myCpt++;
     }
@@ -93,12 +94,15 @@ namespace DGtal
     /**
      * @return the estimated quantity.
      */
-    Quantity eval( ) {return myCpt; } const
+    Quantity eval( ) const {return myCpt; } 
     
     /**
      * Reset the estimator.
      */
-    void reset() { myCpt = 0;}
+    void reset() 
+    { 
+      myCpt = NumberTraits<Quantity>::ZERO;
+    }
     
   private:
     

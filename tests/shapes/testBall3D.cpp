@@ -59,8 +59,6 @@
    typedef Space::RealPoint RealPoint;
    typedef Ball3D<Space> EuclideanShape;
    typedef GaussDigitizer<Space,EuclideanShape> DigitalShape;
-   typedef ImageContainerBySTLVector<Domain,DGtal::uint8_t> Image;
-
     
    
    // -------------------------------------------------------------------------- Creating the shape
@@ -90,7 +88,6 @@
     typedef KSpace::Surfel Surfel;
     typedef KSpace::SurfelSet SurfelSet;
     typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
-    typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
 
 
     // -------------------------------------------------------------------------- Tracking the boudnadry

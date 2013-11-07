@@ -67,7 +67,6 @@ int main( int argc, char** argv )
 {
 
   typedef ImageContainerBySTLVector<Z3i::Domain,  unsigned char > Image3D;
-  typedef ImageContainerBySTLVector<Z2i::Domain,  unsigned char > Image2D;
   QApplication application(argc,argv);
   typedef Viewer3D<> MyViewer ;
   MyViewer viewer;

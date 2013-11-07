@@ -52,7 +52,6 @@ checkCut( LatticePolytope2D & cip,
           typename LatticePolytope2D::HalfSpace hs )
 {
   trace.beginBlock ( "Check cut, see <cip.eps> and <cip2.eps>" );
-  typedef typename LatticePolytope2D::Space Space;
   typedef typename LatticePolytope2D::Domain Domain;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   typedef typename DigitalSet::ConstIterator ConstIterator;
@@ -195,6 +194,7 @@ bool testLatticePolytope2D()
   board << SetMode( d.className(), "Grid" ) << d;
   board << SetMode( cip.className(), "Transparent" ) << cip;
   bool wasCut = cip.cut( h );
+  FATAL_ERROR(wasCut);
   board << SetMode( cip.className(), "Filled" ) << cip;
   board.saveEPS( "cip2.eps" );
   board.saveSVG( "cip2.svg" );
@@ -228,9 +228,6 @@ bool exhaustiveTestLatticePolytope2D()
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
-  typedef typename CIP::ConstIterator ConstIterator;
-  typedef typename CIP::SizeCouple SizeCouple;
-  typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
 
   CIP cip;
   cip.pushBack( Point( 0, 0 ) );
@@ -261,10 +258,10 @@ bool exhaustiveTestLatticePolytope2D()
         }
       int g = IntegerComputer<int>::staticGcd( x , y );
       x /= g; y /= g;
-      int c = myRandom( 4 ) *x + myRandom( 4 ) * y + myRandom( 40 ) + 40;
-      for ( unsigned int i = 0; i < 10; ++i, c -= myRandom( 40 ) )
+      int cc = myRandom( 4 ) *x + myRandom( 4 ) * y + myRandom( 40 ) + 40;
+      for ( unsigned int i = 0; i < 10; ++i, cc -= myRandom( 40 ) )
         {
-          HalfSpace h( Vector( x, y ), c );
+          HalfSpace h( Vector( x, y ), cc );
           trace.info() << "[" << j << " size=" << cip2.size() << "]"
                        << " cut by (" << x << "," << y << ")," << c << std::endl;
           ++nb, nbok += checkCut( cip2, h ) ? 1 : 0;
@@ -291,14 +288,10 @@ bool specificTestLatticePolytope2D()
   
   typedef typename Space::Point Point;
   typedef typename Space::Vector Vector;
-  typedef typename Space::Integer Integer;
   typedef LatticePolytope2D<Space> CIP;
-  typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
-  typedef typename CIP::Iterator Iterator;
   typedef typename CIP::ConstIterator ConstIterator;
-  typedef typename CIP::SizeCouple SizeCouple;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
 
   CIP cip;
@@ -344,7 +337,6 @@ checkOutputConvexHullBorder()
   typedef typename Space::Vector Vector;
   typedef typename Space::Integer Integer;
   typedef LatticePolytope2D<Space> CIP;
-  typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;

@@ -354,14 +354,14 @@ namespace DGtal
     {}
 
     unsigned int myIndex;
+    const TImageType *myImage;
     int myTranslateX;
     int myTranslateY;
     int myTranslateZ;
+    const TFunctor &myFunctor;
     double myRotationAngle;
     typename Viewer3D<>::ImageDirection  myRotationDir;
-    const TImageType *myImage;
-    const TFunctor &myFunctor;
-  };
+   };
 
 
 
