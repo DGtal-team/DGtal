@@ -92,7 +92,8 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
 template <typename TContainer>
 inline
 TContainer
-DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const std::string & datasetName)  throw(DGtal::IOException){
+DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, 
+					    const std::string & UNUSED(datasetName))  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   //Getting image extension
   std::string extension = filename.substr(filename.find_last_of(".") + 1);

@@ -297,7 +297,7 @@ bool testCOBANaivePlane()
   Point pt0( 0, 0, 0 );
   plane.init( 2, 100, 3, 2 );
   bool pt0_inside = plane.extend( pt0 );
-  VERIFY(pt0_inside);
+  FATAL_ERROR(pt0_inside);
 
   trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
                << std::endl;

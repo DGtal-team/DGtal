@@ -38,6 +38,7 @@
 /** Prevents repeated inclusion of headers. */
 #define ITKWriter_h
 
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/BasicFunctors.h"
