@@ -465,11 +465,11 @@ namespace DGtal
       }
 
       Value *data_in = (Value*) malloc (malloc_size * sizeof(Value)); // input buffer
-      /*if (data_in == NULL)
+      if (data_in == NULL)
       {
         trace.error() << "data_in malloc error in flushImage: " << (malloc_size * sizeof(Value)) << std::endl;
-        exit;
-      }*/
+        exit(-1);
+      }
 
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)

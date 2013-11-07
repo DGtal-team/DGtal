@@ -194,7 +194,7 @@ int main( /*int argc, char** argv*/ )
       MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator(); 
       for (int ii = 0; ii < maximalValue; ++ii)
       {
-        //*it++ = 10;
+        //*it++ = 10;  // TODO : don't work
         it.setValue(10); it++;
       }
     }
