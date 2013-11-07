@@ -213,14 +213,14 @@ bool test_range_constRange()
     MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
     for (int i = 0; i < maximalValue; ++i)
     {
-      //*it++ = i;
+      //*it++ = i; // TODO : don't work
       it.setValue(i); it++;
     }
 
     // reading values
     MyTiledImage::ConstRange r = tiledImage.constRange();
-    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") );
-    cout << endl;
+    //std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); // TODO : if not commented, problem with the code below
+    //cout << endl;
 
     std::vector<int> to_vector(100);
     std::copy(r.begin(), r.end(), to_vector.begin());

@@ -144,7 +144,7 @@ namespace DGtal
 
     TiledImage( const TiledImage &other );
     
-  public: // TODO private ???
+  public: // TODO : private ???
     
     TiledImage & operator=( const TiledImage & other );
 
@@ -438,7 +438,6 @@ namespace DGtal
       return TiledIterator( this->domainCoords().begin(), this );
     }
 
-
     ConstIterator begin(const Point& aPoint) const
     {
       Point coords = this->findBlockCoordsFromPoint(aPoint);
@@ -504,6 +503,8 @@ namespace DGtal
     {
       return ReverseTiledIterator( begin() );
     }
+    
+    // ---
 
     OutputIterator outputIterator()
     {
