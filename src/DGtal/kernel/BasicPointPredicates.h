@@ -227,7 +227,7 @@ namespace DGtal
     bool operator()( const Point & p ) const;
 
     /// The PointPredicate that is inversed.
-    PointPredicate myPredPtr;
+    PointPredicate myPred;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -257,7 +257,7 @@ namespace DGtal
     bool operator()( const Point & p ) const;
 
     /// Reference point.
-    const Point & myPoint;
+    Point myPoint;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -350,7 +350,7 @@ namespace DGtal
     typedef TPredicate Predicate;
     typedef typename PointFunctor::Point Point; 
 
-		//BOOST_CONCEPT_ASSERT(( CPointPredicate< PointFunctorPredicate<TPointFunctor, TPredicate> > ));
+		BOOST_CONCEPT_ASSERT(( CPointPredicate< PointFunctorPredicate<TPointFunctor, TPredicate> > ));
 
     /**
        Constructor from an PointFunctor and a predicate
@@ -361,33 +361,15 @@ namespace DGtal
         const Predicate & aPred );
 
     /**
-       Copy constructor.
-       @param other the object to copy
-      */
-    PointFunctorPredicate(  const PointFunctorPredicate& other );
-
-    /**
-       Assignement
-       @param other the object to copy
-       @return reference to the current object
-     */
-    PointFunctorPredicate& operator=( const PointFunctorPredicate& other );
-
-    /**
-       Destructor
-     */
-    ~PointFunctorPredicate();
-
-    /**
      * @param p any point.
      * @return the value of the predicate at this point.
      */
     bool operator()( const Point & p ) const;
 
-    /// aliasing pointer to the PointFunctor.
-    const PointFunctor* myFun;
-    /// aliasing pointer to the predicate.
-    const Predicate* myPred;
+    /// copy of the PointFunctor.
+    PointFunctor myFun;
+    /// copy of the predicate.
+    Predicate myPred;
   };
 
 } // namespace DGtal
