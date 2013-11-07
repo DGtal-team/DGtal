@@ -75,7 +75,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
     /**
     * @brief Aim: describes, in a cellular space of dimension n, 
-    a closed of open sequence of signed d-cells (or d-scells), 
+    a closed or open sequence of signed d-cells (or d-scells), 
     d being either equal to 1 or (n-1). 
 
     For instance, the topological boundary of a simply connected 
@@ -90,7 +90,7 @@ namespace DGtal
      For instance, you can read a grid curve from a data file, 
      which contains the (digital) coordinates of the 0-cells (pointels) in nd: 
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveFromDataFile
-     Note that if the first and last 0-scells of the file have the same coordinates (i)
+    Note that if the first and last 0-scells of the file have the same coordinates (i)
      or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
      as closed, ie. scells directly incident to the last signed cell and indirectly incident 
      to the first signed cell are the same.

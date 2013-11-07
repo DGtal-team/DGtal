@@ -124,7 +124,7 @@ bool testSCellsFunctors()
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     K2::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
-    nbok += ( aPoint == K2::Point(-1,0) ) ? 1 : 0; 
+    nbok += ( aPoint == K2::Point(0,0) ) ? 1 : 0; 
     nb++;
   }
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -137,7 +137,7 @@ bool testSCellsFunctors()
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     K2::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
-    nbok += ( aPoint == K2::Point(0,0) ) ? 1 : 0; 
+    nbok += ( aPoint == K2::Point(-1,0) ) ? 1 : 0; 
     nb++;
   }
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -150,8 +150,8 @@ bool testSCellsFunctors()
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     std::pair<K2::Point, K2::Point> aPair = m( s );
     trace.info() << s << aPair.first << aPair.second <<std::endl;  
-    K2::Point p1(-1,0); 
-    K2::Point p2(0,0); 
+    K2::Point p1(0,0); 
+    K2::Point p2(-1,0); 
     nbok += ( ((aPair.first == p1) && (aPair.second == p2)) ) ? 1 : 0; 
     nb++;
   }  
