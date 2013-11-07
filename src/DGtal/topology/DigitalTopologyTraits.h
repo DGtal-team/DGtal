@@ -61,13 +61,13 @@ namespace DGtal
      The traits are specialized for the classical (4,8) and (8,4)
      adjacencies in 2D and (6,18), (6,26), (26,6) and (18,6)
      adjacencies in 3D, following the works of Bertrand and
-     Couprie. They specify for GEODESIC_NEIGHBORHOOD_SIZE:
+     Couprie (@cite Bertrand2007a). They specify for GEODESIC_NEIGHBORHOOD_SIZE:
      
      - 2 for (4,8) and (8,4) -> ok
-     - 2 for (6,26) -> changed to 1
-     - 3 for (6,18) -> changed to 2
-     - 2 for (18,6) -> changed to 3
-     - 1 for (26,6) -> changed to 2
+     - 1 for (6,26) (previously set to 2 by @cite Bertrand2007a)
+     - 2 for (6,18) (previously set to 3 by @cite Bertrand2007a)
+     - 3 for (18,6) (previously set to 2 by @cite Bertrand2007a)
+     - 2 for (26,6) (previously set to 1 by @cite Bertrand2007a)
    */
   template <typename TForegroundAdjacency, typename TBackgroundAdjacency, Dimension dim>
   struct DigitalTopologyTraits
