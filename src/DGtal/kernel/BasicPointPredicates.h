@@ -68,6 +68,7 @@ namespace DGtal
   struct ConstantPointPredicate
   {
     typedef TPoint Point;
+		BOOST_CONCEPT_ASSERT(( CPointPredicate< ConstantPointPredicate<Point, boolCst> > ));
 
     /**
      * @param p any point.
@@ -88,7 +89,6 @@ namespace DGtal
   template <typename TPoint>
   struct TruePointPredicate : public ConstantPointPredicate<TPoint,true>
   {
-      typedef TPoint Point;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,6 @@ namespace DGtal
   template <typename TPoint>
   struct FalsePointPredicate : public ConstantPointPredicate<TPoint,false>
   {
-      typedef TPoint Point;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -118,6 +117,8 @@ namespace DGtal
   struct IsLowerPointPredicate
   {
     typedef TPoint Point;
+		BOOST_CONCEPT_ASSERT(( CPointPredicate< IsLowerPointPredicate<Point> > ));
+
     /**
      * Constructor from upper bound.
      */
@@ -146,6 +147,8 @@ namespace DGtal
   struct IsUpperPointPredicate
   {
     typedef TPoint Point;
+		BOOST_CONCEPT_ASSERT(( CPointPredicate< IsUpperPointPredicate<Point> > ));
+
     /**
      * Constructor from lower bound.
      */
@@ -173,6 +176,9 @@ namespace DGtal
   struct IsWithinPointPredicate
   {
     typedef TPoint Point;
+		//FIXME
+		//BOOST_CONCEPT_ASSERT(( CPointPredicate< IsWithinPointPredicate<Point> > ));
+
     /**
      * Constructor from lower bound and upper bound.
      */
@@ -204,27 +210,24 @@ namespace DGtal
   struct NotPointPredicate
   {
     typedef TPointPredicate PointPredicate;
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> )); 
-   
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > )); 
     typedef typename PointPredicate::Point Point;
-
+		//FIXME
+		//BOOST_CONCEPT_ASSERT(( CPointPredicate< NotPointPredicate<PointPredicate> > ));
+   
     /**
      * Constructor from predicates and bool Functor.
      */
     NotPointPredicate( const PointPredicate & pred );
 
-    /**
-     * Assignment operator.
-     */
-    NotPointPredicate &operator=( const NotPointPredicate & pred );
    /**
      * @param p any point.
      * @return the value of the predicate at this point.
      */
     bool operator()( const Point & p ) const;
 
-    /// An alias to the  PointPredicate that is inversed.
-    const PointPredicate * myPredPtr;
+    /// The PointPredicate that is inversed.
+    PointPredicate myPredPtr;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -240,6 +243,7 @@ namespace DGtal
   struct EqualPointPredicate
   {
     typedef TPoint Point;
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< EqualPointPredicate<Point> > )); 
 
     /**
      * Constructor from a point.
@@ -253,7 +257,7 @@ namespace DGtal
     bool operator()( const Point & p ) const;
 
     /// Reference point.
-    Point myPoint;
+    const Point & myPoint;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -274,13 +278,14 @@ namespace DGtal
     typedef TPointPredicate1 PointPredicate1;
     typedef TPointPredicate2 PointPredicate2;
     typedef typename PointPredicate1::Point Point;
-    // should be the same.
-    BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value)); 
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate1> )); 
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate2> )); 
-    
     typedef typename PointPredicate2::Point Point2;
 
+		//FIXME
+    //BOOST_CONCEPT_ASSERT (( CPointPredicate< BinaryPointPredicate<PointPredicate1, PointPredicate2, TBinaryFunctor> > )); 
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > )); 
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > )); 
+    BOOST_STATIC_ASSERT(( boost::is_same<Point, Point2>::value )); 
+    
     /**
        Constructor from predicates and bool Functor.
        @param pred1 the left predicate.
@@ -344,6 +349,8 @@ namespace DGtal
     typedef TPointFunctor PointFunctor;
     typedef TPredicate Predicate;
     typedef typename PointFunctor::Point Point; 
+
+		//BOOST_CONCEPT_ASSERT(( CPointPredicate< PointFunctorPredicate<TPointFunctor, TPredicate> > ));
 
     /**
        Constructor from an PointFunctor and a predicate
