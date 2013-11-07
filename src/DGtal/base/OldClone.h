@@ -63,7 +63,7 @@ namespace DGtal
      reference), the duplication takes place when the user
      instantiates its member of type T.
 
-     @deprecated since 0.7. Use Clone instead.
+     @deprecated since 0.7. Use ::DGtal::Clone instead.
 
      @note The usage of \c deprecated::Clone<T> instead of \c const \c T \c & or
      \c const \c T \c * in parameters is \b always \b recommended when
@@ -75,8 +75,8 @@ namespace DGtal
 
      @tparam T is any type.
 
-     @see Alias
-     @see ConstAlias
+     @see deprecated::Alias
+     @see deprecated::ConstAlias
 
      It can be used as follows. Consider this simple example where
      class \e A is a big object. Then we define three classes \e B1,
@@ -217,7 +217,7 @@ namespace DGtal
       @note Keep in mind that Alias<T> type should not be used in class
       members (efficiency issue). 
     */
-    Clone ( const deprecated::Clone & other );
+    Clone ( const DGtal::deprecated::Clone<T> & other );
 
     /**
        Constructor from an instance of T. The object is referenced in
@@ -280,7 +280,7 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden (otherwise the user might be tempted to use it as a member).
      */
-    deprecated::Clone & operator= ( const deprecated::Clone & other );
+    DGtal::deprecated::Clone<T> & operator= ( const DGtal::deprecated::Clone<T> & other );
 
     // ------------------------- Internals ------------------------------------
   private:
