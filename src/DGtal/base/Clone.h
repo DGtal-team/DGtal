@@ -110,12 +110,12 @@ type T (or CowPtr<T> or T* member).
 @note (Speed) Even on a small type (here a pair<int,int>), it is
 much faster than NClone and has the advantage (wrt Clone<T>) to
 handle nicely both const T& and CowPtr<T> as input. It may be
-slightly slower than Clone (and by value or by const ref
+slightly slower than deprecated::Clone (and by value or by const ref
 parameter passing) for small objects like a pair<int,int>. This
 is certainly due to the fact that it uses one more integer
 register for \a myParam data member.
 
-| Type   | Context  | value    | const ref | OldClone  | Clone |
+| Type   | Context  | value    | const ref | deprecated::Clone  | Clone |
 |--------|----------|----------|-----------|--------|--------|
 | 2xint  |i7 2.4GHz |    48ms |     48ms  |   48ms |   59ms |
 |2xdouble|i7 2.4GHz |    48ms |     48ms  |   48ms |   49ms |
