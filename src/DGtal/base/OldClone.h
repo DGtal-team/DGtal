@@ -48,29 +48,30 @@
 
 namespace DGtal
 {
+  namespace deprecated {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class OldClone
+  // template class deprecated::Clone
   /**
-     Description of template class 'OldClone' <p> \brief Aim: This class
+     Description of template class 'deprecated::Clone' <p> \brief Aim: This class
      encapsulates its parameter class so that to indicate to the user
      that the object will be duplicated (or cloned). Therefore the
      user is reminded to take care of the possible cost of duplicating
      the argument parameter, while he is aware that he does not have to take care
      of the lifetime of the parameter.  Note that an instance of
-     OldClone<T> is itself a light object (it holds only a const
+     deprecated::Clone<T> is itself a light object (it holds only a const
      reference), the duplication takes place when the user
      instantiates its member of type T.
 
      @deprecated since 0.7. Use Clone instead.
 
-     @note The usage of \c OldClone<T> instead of \c const \c T \c & or
+     @note The usage of \c deprecated::Clone<T> instead of \c const \c T \c & or
      \c const \c T \c * in parameters is \b always \b recommended when
      the user duplicates the parameter and stores a clone of it as a
-     data member for later ise. The usage \c OldClone<T> instead of \c T
+     data member for later ise. The usage \c deprecated::Clone<T> instead of \c T
      is \b recommended whenever \c T is big (the object is sometimes
      duplicated twice). When the object is small, writing either \c
-     OldClone<T> or \c T is acceptable.
+     deprecated::Clone<T> or \c T is acceptable.
 
      @tparam T is any type.
 
@@ -122,7 +123,7 @@ namespace DGtal
      the library is conscious that an object, say \a b, may require
      that an instance \a a given as parameter should have a lifetime
      longer than \a b itself (case for an instance of \a B1
-     above). Classes OldClone, Alias, ConstAlias exist for these
+     above). Classes deprecated::Clone, Alias, ConstAlias exist for these
      reasons. The classes above may be rewritten as follows.
      
      @code
@@ -136,14 +137,14 @@ namespace DGtal
      };
      // Cloning as data member is visible.
      struct B2 {
-       B2( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B2( deprecated::Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a ) {}
      ...
        A myA;
      };
      // Cloning on the heap requires call to allocate(), so that the user remembers calling \c delete.
      struct B3_v1 {
-       B3_v1( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B3_v1( deprecated::Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a.allocate() ) {}
        ~B3_v1() { if ( myA != 0 ) delete myA; }
      ...
@@ -151,7 +152,7 @@ namespace DGtal
      };
      // Cloning on the heap with CountedPtr mechanism is straightforward.
      struct B3_v2 {
-       B3_v2( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B3_v2( deprecated::Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a ) {}
        ~B3_v2() {} // CountedPtr takes care of delete.
      ...
@@ -159,7 +160,7 @@ namespace DGtal
      };
      // Cloning on the heap with CowPtr mechanism is straightforward.
      struct B3_v3 {
-       B3_v3( OldClone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       B3_v3( deprecated::Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a ) {}
        ~B3_v3() {} // CountedPtr takes care of delete.
      ...
@@ -193,13 +194,13 @@ namespace DGtal
      B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note OldClone have no copy constructor. 
+     @note deprecated::Clone have no copy constructor. 
 
-     @note The user should not used OldClone<T> for data members (in
+     @note The user should not used deprecated::Clone<T> for data members (in
      fact, he cannot), only as a type for parameters.
    */
   template <typename T>
-  class OldClone
+  class Clone
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -207,7 +208,7 @@ namespace DGtal
     /**
        Destructor. Does nothing.
      */
-    ~OldClone();
+    ~Clone();
 
     /**
       Copy constructor.
@@ -216,7 +217,7 @@ namespace DGtal
       @note Keep in mind that Alias<T> type should not be used in class
       members (efficiency issue). 
     */
-    OldClone ( const OldClone & other );
+    Clone ( const deprecated::Clone & other );
 
     /**
        Constructor from an instance of T. The object is referenced in
@@ -224,7 +225,7 @@ namespace DGtal
        instantiate a data member.
        @param t any object of type T.
     */
-    OldClone( const T & t );
+    Clone( const T & t );
 
     /**
        Constructor from a pointer to a valid instance of T. The object is referenced in
@@ -233,12 +234,12 @@ namespace DGtal
        @param ptrT any valid pointer to a object of type T.
        @pre ptrT != 0
     */
-    OldClone( const T* ptrT );
+    Clone( const T* ptrT );
 
     /**
        Cast operator to a T instance. This is only at this moment that
        the object is duplicated.  This allows things like: A a2 = a1;
-       where a1 is of type OldClone<A>.
+       where a1 is of type deprecated::Clone<A>.
     */
     operator T() const;
 
@@ -251,15 +252,9 @@ namespace DGtal
     /**
        Cast operator to a CountedPtr<T> instance. This is only at this moment that
        the object is duplicated (and only once).  This allows things like: CountedPtr<A> a2 = a1;
-       where a1 is of type OldClone<A>. It also allows CowPtr<A> a2 = a1;
+       where a1 is of type deprecated::Clone<A>. It also allows CowPtr<A> a2 = a1;
     */
     operator CountedPtr<T>() const;
-    // /**
-    //    Cast operator to a CowPtr<T> instance. This is only at this moment that
-    //    the object is duplicated (and only once).  This allows things like: CowPtr<A> a2 = a1;
-    //    where a1 is of type OldClone<A>.
-    // */
-    // operator CowPtr<T>() const;
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -276,7 +271,7 @@ namespace DGtal
      * Constructor.
      * Forbidden.
      */
-    OldClone();
+    Clone();
 
 
     /**
@@ -285,13 +280,14 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden (otherwise the user might be tempted to use it as a member).
      */
-    OldClone & operator= ( const OldClone & other );
+    deprecated::Clone & operator= ( const deprecated::Clone & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class OldClone
+  }; // end of class deprecated::Clone
 
+  } // namespace deprecated
 } // namespace DGtal
 
 
