@@ -204,8 +204,8 @@ namespace DGtal
   struct NotPointPredicate
   {
     typedef TPointPredicate PointPredicate;
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> )); 
-   
+    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> ));
+
     typedef typename PointPredicate::Point Point;
 
     /**
@@ -231,8 +231,8 @@ namespace DGtal
   // template class EqualPointPredicate
   /**
    * Description of template class 'EqualPointPredicate' <p> \brief Aim:
-   * The predicate returns true when the point given as argument equals 
-   * the reference point given at construction. 
+   * The predicate returns true when the point given as argument equals
+   * the reference point given at construction.
    *
    * @tparam TPoint point type.
    */
@@ -267,7 +267,7 @@ namespace DGtal
    * @tparam TPointPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
-  template <typename TPointPredicate1, typename TPointPredicate2, 
+  template <typename TPointPredicate1, typename TPointPredicate2,
 	    typename TBinaryFunctor = BoolFunction2 >
   struct BinaryPointPredicate
   {
@@ -275,10 +275,10 @@ namespace DGtal
     typedef TPointPredicate2 PointPredicate2;
     typedef typename PointPredicate1::Point Point;
     // should be the same.
-    BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value)); 
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate1> )); 
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate2> )); 
-    
+    BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value));
+    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate1> ));
+    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate2> ));
+
     typedef typename PointPredicate2::Point Point2;
 
     /**
@@ -333,25 +333,29 @@ namespace DGtal
    * in the point functor.
    *
    * @tparam TPointFunctor a model of CPointFunctor.
-   * @tparam TPredicate a type of predicate on values
+   * @tparam TPredicate a type of predicate on values (model of CPredicate)
    */
   template <typename TPointFunctor, typename TPredicate>
   struct PointFunctorPredicate
   {
-    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));  
-    BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));  
+    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));
+    BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));
 
     typedef TPointFunctor PointFunctor;
     typedef TPredicate Predicate;
-    typedef typename PointFunctor::Point Point; 
+    typedef typename PointFunctor::Point Point;
+
+
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< PointFunctorPredicate<TPointFunctor,TPredicate> > ));
 
     /**
        Constructor from an PointFunctor and a predicate
        @param aFun an point functor.
        @param aPred a predicate.
      */
-    PointFunctorPredicate( const PointFunctor & aFun,
-        const Predicate & aPred );
+    PointFunctorPredicate( ConstAlias<PointFunctor> aFun,
+                           ConstAlias<Predicate>  aPred ):
+      myFun(&aFun), myPred(&aPred) {}
 
     /**
        Copy constructor.
