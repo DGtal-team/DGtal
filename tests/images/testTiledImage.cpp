@@ -209,13 +209,13 @@ bool test_range_constRange()
     MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
     // writing values
-    /*const int maximalValue = tiledImage.domain().size();
+    const int maximalValue = tiledImage.domain().size();
     MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
     for (int i = 0; i < maximalValue; ++i)
     {
       //*it++ = i;
       it.setValue(i); it++;
-    }*/
+    }
 
     // reading values
     MyTiledImage::ConstRange r = tiledImage.constRange();
@@ -233,7 +233,7 @@ bool test_range_constRange()
       }
       else
       {
-        cout << "!ok, ";
+        cout << "!ok -> " << to_vector[i] << ", "; 
         nbok += false ? 1 : 0; nb++;
       }
     }
@@ -270,8 +270,8 @@ bool testIterators()
   BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
   MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 
-  tiledImage.setValue( Z2i::Point(5,5), 42);
-  tiledImage.setValue( Z2i::Point(1,1), 1);
+  tiledImage.setValue( Z2i::Point(5,5), 42 );
+  tiledImage.setValue( Z2i::Point(1,1), 1 );
 
   //Typedefs
   typedef MyTiledImage::ConstIterator ConstIterator;
@@ -284,10 +284,10 @@ bool testIterators()
   nbok += (*itbegin == 1) ? 1 : 0; nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  ConstIterator itbegin2 = tiledImage.constRange().begin(Z2i::Point(5,5));
+  /*ConstIterator itbegin2 = tiledImage.constRange().begin(Z2i::Point(5,5));
   trace.info() << "Value at range begin from point (42) = "<< *itbegin2 << std::endl;
   nbok += (*itbegin2 == 42) ? 1 : 0; nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
 
   OutputIterator itbegino = tiledImage.range().begin();
   trace.info() << "Value at range begin (1) = "<< *itbegino << std::endl;
@@ -306,6 +306,7 @@ bool testIterators()
   */
 
   trace.endBlock();
+  
   return nbok == nb;
 }
 
@@ -322,7 +323,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = /*testIterators() && */testSimple() && test3d() && test_range_constRange(); // && ... other tests
+    bool res = testIterators() && testSimple() && test3d() && test_range_constRange(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
