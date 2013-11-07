@@ -48,6 +48,10 @@
 #include <vector>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/Clone.h"
+#include "DGtal/base/Alias.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,15 +60,21 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSetBySTLVector
   /**
-   * Description of template class 'DigitalSetBySTLVector' <p> \brief
-   * Aim: Realizes the concept CDigitalSet by using the STL container
-   * std::vector.
-   *
-   * It thus describes a modifiable set of points within the given
-   * domain [Domain].
-   *
-   * @tparam TDomain a realization of the concept CDomain.
-   * @see CDigitalSet,CDomain
+    Description of template class 'DigitalSetBySTLVector' <p> \brief
+    Aim: Realizes the concept CDigitalSet by using the STL container
+    std::vector.
+   
+    It thus describes a modifiable set of points within the given
+    domain [Domain].
+   
+    @tparam TDomain a realization of the concept CDomain.
+    @see CDigitalSet,CDomain
+
+    @since 0.7 Domains are now hold with counted pointers and no more
+    only aliased. The problem was related to returning sets with a
+    locally constructed domain. With CountedPtr, you are sure that the
+    domain remains valid during the lifetime of your set.
+ 
    */
   template <typename TDomain>
   class DigitalSetBySTLVector
@@ -93,7 +103,7 @@ namespace DGtal
      *
      * @param d any domain.
      */
-    DigitalSetBySTLVector( const Domain & d );
+    DigitalSetBySTLVector( Clone<Domain> d );
 
     /**
      * Copy constructor.
@@ -113,6 +123,10 @@ namespace DGtal
      */
     const Domain & domain() const;
 
+    /**
+     * @return a copy-on-write pointer on the embedding domain.
+     */
+    CowPtr<Domain> domainPointer() const;
 
     // ----------------------- Standard Set services --------------------------
   public:
@@ -303,9 +317,10 @@ namespace DGtal
   protected:
     
     /**
-     * The associated domain.
+     * The associated domain. The pointed domain may be changed but it
+     * remains valid during the lifetime of the set.
      */
-    const Domain & myDomain;
+    CowPtr<Domain> myDomain;
 
     /**
      * The container storing the points of the set.

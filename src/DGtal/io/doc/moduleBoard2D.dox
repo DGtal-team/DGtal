@@ -97,7 +97,7 @@ parameter.
   
 \subsection dgtal_dgtalboard_sec13 Mode selection: the example of digital objects
   
-Some digital elements (like Object, PointVector, ArithmeticalDSS)
+Some digital elements (like Object, PointVector, ArithmeticalDSSComputer)
 may have several possible ways to be rendered as a graphical
 object. For instance, a pixel may be seen more as a point or more
 as a unit square in the plane. In the same idea, a digital object
@@ -154,13 +154,13 @@ is always default mode).
 - class PointVector, modes: "" / "Both", "Paving", "Grid"
 - class Object, modes: "", "DrawAdjacencies"
 - class HyperRectDomain, modes: "" / "Grid", "Paving"
-- class ArithmeticalDSS, modes: "" / "BoundingBox", "Points"
+- class ArithmeticalDSSComputer, modes: "" / "BoundingBox", "Points"
 - class FreemanChain, modes: "" / "Grid", "InterGrid"
 - class GridCurve, modes: "" / "Fill"
 - class LatticePolytope2D, modes: "" / "Transparent", "Filled"
   
 For instance, to change the drawing mode for the next object \c dss of type
-ArithmeticalDSS, you may use the line
+ArithmeticalDSSComputer, you may use the line
  \code
  board << SetMode( dss.className(), "BoundingBox" );
  \endcode

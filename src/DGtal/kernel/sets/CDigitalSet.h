@@ -47,6 +47,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CowPtr.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -103,6 +104,7 @@ namespace DGtal
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 | Get domain    | \a x.domain() |                  | \c Domain   |                  | returns the domain of this set | | O(1), should be returned by reference |         
+| Get counted pointer on domain    | \a x.domainPointer() |                  | \c CountedPtr<Domain>   |                  | returns a counted pointer on the domain of this set | | O(1) |         
 | Number of elements | \a x.size() |                 | \c Size     |                  | returns the number of elements of this set. | | at most linear in the number of elements |         
 | Empty container test | \a x.empty() |            | \c bool     |                  | returns true iff the number of elements is zero, always faster than \c x.size() == 0 | | amortized constant time |         
 | Insert point  | \a x.insert( p ) |               |             |                  | Inserts point \a p in the set | | |         
@@ -158,9 +160,30 @@ namespace DGtal
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalSet )
     {
+      checkConstConstraints();
+      checkNonConstConstraints();
+      // look at CInteger.h for testing tags.
+    }
+    /**
+       This method checks const methods when a non-const version exist.
+    */
+    void checkConstConstraints() const
+    {
       ConceptUtils::sameType( myDomain, myX.domain() );
+      ConceptUtils::sameType( myDomainPtr, myX.domainPointer() );
       ConceptUtils::sameType( mySize, myX.size() );
       ConceptUtils::sameType( myBool, myX.empty() );
+
+      ConceptUtils::sameType( myConstIterator, myX.find( myPoint ) );
+      ConceptUtils::sameType( myConstIterator, myX.begin() );
+      ConceptUtils::sameType( myConstIterator, myX.end() );
+    }
+
+    /**
+       This method checks non-const methods when a const version exist.
+    */
+    void checkNonConstConstraints()
+    {
       myX.insert( myPoint );
       // template <typename PointInputIterator>
       //   BOOST_CONCEPT_REQUIRES
@@ -176,25 +199,6 @@ namespace DGtal
       myX.computeComplement( myOutputIt );
       myX.assignFromComplement( myX );
       myX.computeBoundingBox( myPoint, myPoint );
-      checkConstConstraints();
-      checkNonConstConstraints();
-      // look at CInteger.h for testing tags.
-    }
-    /**
-       This method checks const methods when a non-const version exist.
-    */
-    void checkConstConstraints() const
-    {
-      ConceptUtils::sameType( myConstIterator, myX.find( myPoint ) );
-      ConceptUtils::sameType( myConstIterator, myX.begin() );
-      ConceptUtils::sameType( myConstIterator, myX.end() );
-    }
-
-    /**
-       This method checks non-const methods when a const version exist.
-    */
-    void checkNonConstConstraints()
-    {
       ConceptUtils::sameType( myIterator, myX.find( myPoint ) );
       ConceptUtils::sameType( myIterator, myX.begin() );
       ConceptUtils::sameType( myIterator, myX.end() );
@@ -204,6 +208,7 @@ namespace DGtal
   private:
     T myX; // only if T is default constructible.
     Domain myDomain;
+    CowPtr<Domain> myDomainPtr;
     Size mySize;
     bool myBool;
     Point myPoint;
