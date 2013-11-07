@@ -60,7 +60,7 @@ bool checkSubArithmeticDSS( const DSL & D,
   ADSS dss;
   dss.init( it );
   while ( ( dss.end() != it_end )
-          && ( dss.extendForward() ) ) {}
+          && ( dss.extendFront() ) ) {}
   std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
             << dss.a() << " " << dss.b() << " " << dss.mu() << " "
             << A[0] << " " << A[1] << " " << B[0] << " " << B[1] 

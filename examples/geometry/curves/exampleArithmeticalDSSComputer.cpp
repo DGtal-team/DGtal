@@ -76,7 +76,7 @@ int main()
     DSSComputer theDSSComputer;    
     theDSSComputer.init( contour.begin() );
     while ( ( theDSSComputer.end() != contour.end() )
-          &&( theDSSComputer.extendForward() ) ) {}
+          &&( theDSSComputer.extendFront() ) ) {}
 
     // Output parameters
     cout << theDSSComputer << endl;

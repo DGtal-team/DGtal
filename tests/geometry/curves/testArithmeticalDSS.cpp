@@ -301,7 +301,7 @@ void extensionTest(const DSS& dss,
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.info() << "to front " << newPointToFront << std::endl;
-  if (dss.isExtendableForward( newPointToFront ) == code)
+  if (dss.isExtendableFront( newPointToFront ) == code)
     nbok++;
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -309,13 +309,13 @@ void extensionTest(const DSS& dss,
   DSS mdss = dss; //local and modifiable copy
   if (code == 0)
     {
-      if ( (!mdss.extendForward(newPointToFront)) )
+      if ( (!mdss.extendFront(newPointToFront)) )
 	nbok++;
       nb++; 
     }
   else
     {
-      if ( (mdss.extendForward(newPointToFront))&&(mdss.isValid()) )
+      if ( (mdss.extendFront(newPointToFront))&&(mdss.isValid()) )
 	nbok++;
       nb++; 
       std::cerr << mdss.isValid() << std::endl; 
@@ -324,7 +324,7 @@ void extensionTest(const DSS& dss,
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.info() << "to back " << newPointToBack << std::endl;
-  if (dss.isExtendableBackward( newPointToBack ) == code)
+  if (dss.isExtendableBack( newPointToBack ) == code)
     nbok++;
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -332,13 +332,13 @@ void extensionTest(const DSS& dss,
   mdss = dss; //local and modifiable copy
   if (code == 0)
     {
-      if ( (!mdss.extendBackward(newPointToBack)) )
+      if ( (!mdss.extendBack(newPointToBack)) )
 	nbok++;
       nb++; 
     }
   else
     {
-      if ( (mdss.extendBackward(newPointToBack))&&(mdss.isValid()) )
+      if ( (mdss.extendBack(newPointToBack))&&(mdss.isValid()) )
 	nbok++;
       nb++; 
       std::cerr << mdss.isValid() << std::endl; 
@@ -378,7 +378,7 @@ void retractionTest(const DSS& dss,
   //forward test
   Point first = mdss.back(); 
   trace.info() << "remove " << first << std::endl; 
-  if ( ( (mdss.retractBackward()) 
+  if ( ( (mdss.retractBack()) 
 	 && (mdss.isValid())
 	 && (mdss(first) == false) ) == res )
     nbok++; 
@@ -387,7 +387,7 @@ void retractionTest(const DSS& dss,
 
   if (res)
     {
-      if ( (mdss.extendBackward(first))
+      if ( (mdss.extendBack(first))
 	   && (mdss.isValid()) && (mdss == dss) )
 	nbok++; 
       nb++;
@@ -397,7 +397,7 @@ void retractionTest(const DSS& dss,
   //backward test
   Point last = mdss.front(); 
   trace.info() << "remove " << last << std::endl; 
-  if ( ( (mdss.retractForward()) 
+  if ( ( (mdss.retractFront()) 
 	 && (mdss.isValid())
 	 && (mdss(last) == false) ) == res )
     nbok++; 
@@ -407,7 +407,7 @@ void retractionTest(const DSS& dss,
 
   if (res) 
     {
-      if ( (mdss.extendForward(last))
+      if ( (mdss.extendFront(last))
 	   && (mdss.isValid()) && (mdss == dss) )
 	nbok++; 
       nb++; 
@@ -685,14 +685,14 @@ bool compatibleStepsTest(const DSS& dss)
 
   ////////////////// forward extension
   DSS mdss = dss; 
-  if ( mdss.extendForward(mdss.front()-dss.shift()+dss.steps().first) )
+  if ( mdss.extendFront(mdss.front()-dss.shift()+dss.steps().first) )
     nbok++; 
   nb++; 
 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
   mdss = dss; 
-  if ( !mdss.extendForward(mdss.front()-dss.shift()) )
+  if ( !mdss.extendFront(mdss.front()-dss.shift()) )
     nbok++; 
   nb++; 
 
@@ -700,7 +700,7 @@ bool compatibleStepsTest(const DSS& dss)
 	       << std::endl;
 
   mdss = dss; 
-  if ( !mdss.extendForward(mdss.front()-dss.shift()-dss.steps().first) )
+  if ( !mdss.extendFront(mdss.front()-dss.shift()-dss.steps().first) )
     nbok++; 
   nb++; 
 
@@ -709,14 +709,14 @@ bool compatibleStepsTest(const DSS& dss)
 
   ////////////////// backward extension
   mdss = dss; 
-  if ( mdss.extendBackward(mdss.back()+dss.shift()-dss.steps().first) )
+  if ( mdss.extendBack(mdss.back()+dss.shift()-dss.steps().first) )
     nbok++; 
   nb++; 
 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
   mdss = dss; 
-  if ( !mdss.extendBackward(mdss.back()+dss.shift()) )
+  if ( !mdss.extendBack(mdss.back()+dss.shift()) )
     nbok++; 
   nb++; 
 
@@ -724,7 +724,7 @@ bool compatibleStepsTest(const DSS& dss)
 	       << std::endl;
 
   mdss = dss; 
-  if ( !mdss.extendBackward(mdss.back()+dss.shift()+dss.steps().first) )
+  if ( !mdss.extendBack(mdss.back()+dss.shift()+dss.steps().first) )
     nbok++; 
   nb++; 
 

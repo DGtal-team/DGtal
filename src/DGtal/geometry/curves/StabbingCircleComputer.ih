@@ -290,7 +290,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::init(const ConstIterator& anIt)
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward()
+DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -321,13 +321,13 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward()
 	      if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
     
-      if ( mySegPtr->extendForward() ) isOK = true; 
+      if ( mySegPtr->extendFront() ) isOK = true; 
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
@@ -341,7 +341,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward()
 	      if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront(): impossible case") ); 
 	}
     }
   
@@ -351,7 +351,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::extendForward()
+DGtal::StabbingCircleComputer<TConstIterator>::extendFront()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -388,13 +388,13 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendForward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendForward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendFront(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
 
-      if ( mySegPtr->extendForward() ) isOK = true; 
+      if ( mySegPtr->extendFront() ) isOK = true; 
       else
 	{ 
 	  Point Pf, Pl, Qf, Ql; 
@@ -418,7 +418,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendForward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendForward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendFront(): impossible case") ); 
 	}
     }
   
@@ -432,7 +432,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBackward()
+DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBack()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -469,13 +469,13 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBackward()
 	      if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
 
-      if ( mySegPtr->extendBackward() ) isOK = true; 
+      if ( mySegPtr->extendBack() ) isOK = true; 
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
@@ -491,7 +491,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBackward()
 	      if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") ); 
 	}
     }
   
@@ -501,7 +501,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBackward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::extendBackward()
+DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -544,13 +544,13 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBackward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
 
-      if ( mySegPtr->extendBackward() ) isOK = true; 
+      if ( mySegPtr->extendBack() ) isOK = true; 
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
@@ -576,7 +576,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBackward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBackward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") ); 
 	}
     }
   

@@ -93,7 +93,7 @@ bool testDSS4drawing()
   trace.info() << theDSS4Computer << std::endl;
 
   while ( (theDSS4Computer.end() != contour.end())
-    &&(theDSS4Computer.extendForward()) ) {}
+    &&(theDSS4Computer.extendFront()) ) {}
 
   trace.info() << theDSS4Computer << std::endl;
 
@@ -149,7 +149,7 @@ bool testDSS8drawing()
   trace.info() << theDSS8Computer << std::endl;
 
   while ( (theDSS8Computer.end()!=boundary.end())
-	  &&(theDSS8Computer.extendForward()) ) {}
+	  &&(theDSS8Computer.extendFront()) ) {}
 
   trace.info() << theDSS8Computer << std::endl;
 
@@ -179,7 +179,7 @@ bool testDSS8drawing()
  * checking consistency between extension and retractation.
  *
  */
-bool testExtendRetractForward()
+bool testExtendRetractFront()
 {
 
   typedef PointVector<2,int> Point;
@@ -214,7 +214,7 @@ bool testExtendRetractForward()
   v1.push_back( c.primitive() );   
 
   while ( (c.end() != contour.end())
-    &&(c.extendForward()) ) {
+    &&(c.extendFront()) ) {
     v1.push_back( c.primitive() );
   }
   ASSERT(contour.size() == v1.size()); 
@@ -226,7 +226,7 @@ bool testExtendRetractForward()
   rc.init( contour.rbegin() ); 
 
   while ( (rc.end() != contour.rend())
-          &&(rc.extendForward()) ) 
+          &&(rc.extendFront()) ) 
     {
     }
 
@@ -234,7 +234,7 @@ bool testExtendRetractForward()
   trace.info() << "removing" << std::endl;
 
   v2.push_front( rc.primitive() );
-  while (rc.retractBackward()) {
+  while (rc.retractBack()) {
     v2.push_front( rc.primitive() );
   }    
   ASSERT(v1.size() == v2.size());
@@ -271,7 +271,7 @@ bool testIsInsideForOneQuadrant(const Iterator& k, const Iterator& l, const Iter
 
   theDSS4.init( k );
   while ( (theDSS4.end() != l )
-          &&(theDSS4.extendForward()) ) {}
+          &&(theDSS4.extendFront()) ) {}
 
   ASSERT( theDSS4.isValid() ); 
 
@@ -402,7 +402,7 @@ bool testBIGINTEGER()
   DSS4 theDSS4;
   theDSS4.init( contour.begin() );
   while ( (theDSS4.end() != contour.end())
-          &&(theDSS4.extendForward()) ) {}
+          &&(theDSS4.extendFront()) ) {}
 
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
@@ -446,9 +446,9 @@ bool testCorner()
   DSS8 theDSS8;
   theDSS8.init(boundary.begin());
   std::cerr << theDSS8 << std::endl; 
-  theDSS8.extendForward();
+  theDSS8.extendFront();
   std::cerr << theDSS8 << std::endl; 
-  bool res = ( !theDSS8.extendForward() );
+  bool res = ( !theDSS8.extendFront() );
   std::cerr << theDSS8 << std::endl; 
 
   trace.endBlock();
@@ -483,7 +483,7 @@ int main(int argc, char **argv)
   
   bool res = testDSS4drawing() 
     && testDSS8drawing()
-    && testExtendRetractForward()
+    && testExtendRetractFront()
     && testCorner()
 #ifdef WITH_BIGINTEGER
     && testBIGINTEGER()

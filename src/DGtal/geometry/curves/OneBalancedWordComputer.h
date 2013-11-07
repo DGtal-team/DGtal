@@ -492,28 +492,28 @@ namespace DGtal
        *  
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool isExtendableForward();
+      bool isExtendableFront();
 
       /**
        * Tests whether the current DSS can be extended at the front.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendForward();
+      bool extendFront();
 
       /**
        * Tests whether the current DSS can be extended at the back.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendBackward();
+      bool extendBack();
 
       /**
        * Tests whether the current DSS can be extended at the back.
        *  
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool isExtendableBackward();
+      bool isExtendableBack();
 
       /**
        * Removes the first point of the DSS (at back). 
@@ -522,7 +522,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the first point is removed, 'false' otherwise.
        */
-      bool retractForward();
+      bool retractBack();
 
       /**
        * Removes the last point of the DSS (at front).
@@ -531,7 +531,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the last point is removed, 'false' otherwise.
        */
-      bool retractBackward();
+      bool retractFront();
 
       /**
        * Set the position of the first point of the DSS.

@@ -164,7 +164,7 @@ template <typename SC>
 void maximalExtension(SC& s, const typename SC::ConstIterator& end, IteratorType ) {
   //stop if s.end() == end
   while ( (s.end() != end)
-       && (s.extendForward()) ) {}
+       && (s.extendFront()) ) {}
 }
 
 /**
@@ -175,11 +175,11 @@ void maximalExtension(SC& s, const typename SC::ConstIterator& /*end*/, Circulat
 {
   //stop if the segment is the whole range
   const typename SC::ConstIterator newEnd( s.begin() ); 
-  while ( (s.extendForward())
+  while ( (s.extendFront())
     && (s.end() != newEnd) ) {}
 }
 /**
- * Calls s.extendForward() while possible
+ * Calls s.extendFront() while possible
  * @param s any instance of segment computer 
  * @param end any ConstIterator
  * @tparam SC any model of segment computer 
@@ -198,8 +198,8 @@ template <typename SC>
 void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin, IteratorType ) {
   //extend one more time if s.begin() == begin
   while ( (s.begin() != begin)
-       && (s.extendBackward()) ) {}
-  if (s.begin() == begin) s.extendBackward();
+       && (s.extendBack()) ) {}
+  if (s.begin() == begin) s.extendBack();
 }
 
 /**
@@ -209,12 +209,12 @@ template <typename SC>
 void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin, CirculatorType ) {
   //stop if the segment is the whole range
   const typename SC::ConstIterator newBegin( s.end() ); 
-  while ( (s.extendBackward())
+  while ( (s.extendBack())
        && (s.begin() != newBegin) ) {}
 }
 
 /**
- * Calls s.extendBackward() while possible
+ * Calls s.extendBack() while possible
  * @param s any instance of (bidirectional) segment computer
  * @param begin any ConstIterator
  * @tparam SC any model of CBidirectionalSegmentComputer
@@ -243,17 +243,17 @@ bool maximalSymmetricExtension(SC& s,
   while (flagOk)  {
     if (flagForward) {
       flagForward = false; 
-      if ( s.end() != end ) flagOk = s.extendForward();
+      if ( s.end() != end ) flagOk = s.extendFront();
       else flagOk = false; 
     } else {
       flagForward = true; 
-      if ( s.begin() != begin ) flagOk = s.extendBackward();
+      if ( s.begin() != begin ) flagOk = s.extendBack();
       else flagOk = false; 
     } 
   }
   //extend one more time if s.begin() == begin
   if (s.begin() != begin ) {
-    if (s.extendBackward()) return !s.extendForward(); 
+    if (s.extendBack()) return !s.extendFront(); 
     else return false; 
   } else {
     return !flagForward; 
@@ -277,17 +277,17 @@ bool maximalSymmetricExtension(SC& s,
   while ( (flagOk) && ( s.end() != s.begin() ) )  {
     if (flagForward) {
       flagForward = false; 
-      flagOk = s.extendForward(); 
+      flagOk = s.extendFront(); 
     } else {
       flagForward = true; 
-      flagOk = s.extendBackward(); 
+      flagOk = s.extendBack(); 
     } 
   }
   return !flagForward; 
 }
 
 /**
- * Calls alternatively s.extendForward() and s.extendBackward() 
+ * Calls alternatively s.extendFront() and s.extendBack() 
  * while it is possible
  * @param s any instance of (bidirectional)segment computer 
  * @param begin begin iterator of a range
@@ -308,7 +308,7 @@ bool maximalSymmetricExtension(SC& s,
 
 
 /**
- * Calls s.retractForward() while s.isExtendableForward()
+ * Calls s.retractBack() while s.isExtendableFront()
  * returns false 
  * @param s any instance of segment computer 
  * @param end any ConstIterator
@@ -318,16 +318,16 @@ template <typename SC>
 void maximalRetraction(SC& s, const typename SC::ConstIterator& end) 
 {
   if ( isNotEmpty<typename SC::ConstIterator>(s.end(),end) ) {
-    while ( (! s.isExtendableForward() ) 
-          &&(s.retractForward() ) )  {}  
+    while ( (! s.isExtendableFront() ) 
+          &&(s.retractBack() ) )  {}  
   } else {
-    while ( s.retractForward() ) {} 
+    while ( s.retractBack() ) {} 
   }
 }
 
 /**
- * Calls s.retractBackward() 
- * while s.isExtendableBackward() returns false 
+ * Calls s.retractFront() 
+ * while s.isExtendableBack() returns false 
  * @param s any instance of segment computer 
  * @param begin any ConstIterator
  * @tparam SC any model of segment computer 
@@ -336,10 +336,10 @@ template <typename SC>
 void oppositeEndMaximalRetraction(SC& s, const typename SC::ConstIterator& begin) 
 {
   if ( isNotEmpty<typename SC::ConstIterator>(s.begin(),begin) ) {
-    while ( (! s.isExtendableBackward() ) 
-          &&(s.retractBackward() ) ) {}  
+    while ( (! s.isExtendableBack() ) 
+          &&(s.retractFront() ) ) {}  
   } else {
-    while ( s.retractBackward() ) {} 
+    while ( s.retractFront() ) {} 
   }
 }
 

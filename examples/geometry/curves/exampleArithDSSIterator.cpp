@@ -65,7 +65,7 @@ int main( int UNUSED(argc), char** UNUSED(argv) )
   // equal to xMax. 
   ArithDSS myDSS(it);
   
-  while ( (*(myDSS.end()))[0] <=xMax && myDSS.extendForward())
+  while ( (*(myDSS.end()))[0] <=xMax && myDSS.extendFront())
     {}
   
   //Display the result.

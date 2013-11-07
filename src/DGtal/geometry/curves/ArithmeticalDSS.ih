@@ -118,7 +118,7 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
       *this = ArithmeticalDSS(p); 
       //extension
       for (++it; it != aIte; ++it)
-	  extendForward(*it); 
+	  extendFront(*it); 
     }
   else
     {
@@ -464,7 +464,7 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 unsigned short int
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-isExtendableForward( const Point& aNewPoint ) const
+isExtendableFront( const Point& aNewPoint ) const
 {
   Vector step = aNewPoint - myL; 
   Coordinate deviation = DGtal::ArithmeticalDSLKernel<TC,adj>::norm(step[0], step[1]);
@@ -550,9 +550,9 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 unsigned short int
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-isExtendableBackward( const Point& aNewPoint ) const
+isExtendableBack( const Point& aNewPoint ) const
 {
-  return negate().isExtendableForward( aNewPoint ); 
+  return negate().isExtendableFront( aNewPoint ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -560,14 +560,14 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-extendForward( const Point& aNewPoint )
+extendFront( const Point& aNewPoint )
 {
   //true if the DSS can be extended to aNewPoint
   //false otherwise
   bool flag = true; 
  
   //code that tells how to update the DSS
-  unsigned short int res = isExtendableForward(aNewPoint);
+  unsigned short int res = isExtendableFront(aNewPoint);
 
   switch (res)
     {
@@ -651,11 +651,11 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-extendBackward( const Point& aNewPoint )
+extendBack( const Point& aNewPoint )
 {
-  //call extendForward to the opposite
+  //call extendFront to the opposite
   DGtal::ArithmeticalDSS<TC, TI, adj> opposite = negate();
-  bool flag = opposite.extendForward(aNewPoint);
+  bool flag = opposite.extendFront(aNewPoint);
  
   if (flag) //update '*this' if required
     *this = opposite.negate(); 
@@ -668,11 +668,11 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-retractForward()
+retractFront()
 {
-  //call retractBackward to the opposite
+  //call retractBack to the opposite
   DGtal::ArithmeticalDSS<TC, TI, adj> opposite = negate();
-  bool hasBeenRetracted = opposite.retractBackward();
+  bool hasBeenRetracted = opposite.retractBack();
  
   if (hasBeenRetracted) //update '*this' if required
     *this = opposite.negate(); 
@@ -685,7 +685,7 @@ template <typename TC, typename TI, unsigned short adj>
 inline
 bool
 DGtal::ArithmeticalDSS<TC, TI, adj>::
-retractBackward()
+retractBack()
 {
   if (myF == myL)
     return false; 
