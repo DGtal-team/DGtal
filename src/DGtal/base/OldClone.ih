@@ -52,7 +52,7 @@ DGtal::deprecated::Clone<T>::Clone( const T & t )
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::deprecated::Clone<T>::Clone( const deprecated::Clone<T> & other ) 
+DGtal::deprecated::Clone<T>::Clone( const DGtal::deprecated::Clone<T> & other ) 
   : myRefT( other.myRefT )
 {}
 //-----------------------------------------------------------------------------
