@@ -100,7 +100,7 @@ template <typename TPointPredicate>
 inline
 DGtal::NotPointPredicate<TPointPredicate>
 ::NotPointPredicate( const PointPredicate & pred )
-  : myPredPtr( pred )
+  : myPred( pred )
 {
 }
 //------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ bool
 DGtal::NotPointPredicate<TPointPredicate>
 ::operator()( const Point & p ) const
 {
-  return ! myPredPtr( p );
+  return ! myPred( p );
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate>
@@ -186,36 +186,7 @@ inline
 DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
 ::PointFunctorPredicate( const PointFunctor & aFun,
       const Predicate & aPred)
-  : myFun( &aFun ), myPred( &aPred )
-{
-}
-//------------------------------------------------------------------------------
-template <typename TPointFunctor, typename TPredicate>
-inline
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
-::PointFunctorPredicate( const PointFunctorPredicate& other )
-  : myFun( other.myFun), myPred( other.myPred )
-{
-}
-//------------------------------------------------------------------------------
-template <typename TPointFunctor, typename TPredicate>
-inline
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>&
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
-::operator=( const PointFunctorPredicate& other )
-{
-  if (this != &other)
-    {
-      myFun = other.myFun; 
-      myPred = other.myPred; 
-    }
-    return *this;
-}
-//------------------------------------------------------------------------------
-template <typename TPointFunctor, typename TPredicate>
-inline
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
-::~PointFunctorPredicate()
+  : myFun( aFun ), myPred( aPred )
 {
 }
 //------------------------------------------------------------------------------
@@ -225,7 +196,7 @@ bool
 DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
 ::operator()( const Point & p ) const
 {
-  return myPred->operator()( myFun->operator()( p ) );
+  return myPred( myFun( p ) );
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
