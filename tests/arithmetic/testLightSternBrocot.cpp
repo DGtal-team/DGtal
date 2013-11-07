@@ -627,7 +627,7 @@ bool checkSubStandardDSLQ0( const DSL & D,
   ADSS dss;
   dss.init( it );
   while ( ( dss.end() != it_end )
-          && ( dss.extendForward() ) ) {}
+          && ( dss.extendFront() ) ) {}
   bool ok = S.a() == dss.a() 
     &&  S.b() == dss.b() 
     &&  S.mu() == dss.mu(); 

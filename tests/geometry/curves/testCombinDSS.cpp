@@ -103,19 +103,19 @@ bool testOneBalancedWordComputer()
   int nbRetract = 0;
   while ( C3.end() != theContour.chain.end() )
     {
-      bool b1 = C1.extendForward();
-      bool b2 = C2.extendForward();
-      bool b3 = C3.extendForward();
-      bool b4 = C4.extendForward();
+      bool b1 = C1.extendFront();
+      bool b2 = C2.extendFront();
+      bool b3 = C3.extendFront();
+      bool b4 = C4.extendFront();
       if ( b1 && b2 && b3 && b4 )
         {
         }
       else if ( !b1 && !b2 && !b3 && !b4 )
         {
-          C1.retractForward();
-          C2.retractForward();
-          C3.retractForward();
-          C4.retractForward();
+          C1.retractBack();
+          C2.retractBack();
+          C3.retractBack();
+          C4.retractBack();
           ++nbRetract;
         }
       else
@@ -153,12 +153,12 @@ bool CompareToArithmetical()
   TestedType C;
   C.init( it );
   ReferenceType A(it);
-  A.extendForward(); 
+  A.extendFront(); 
   bool res = true;
   while ( C.end() != theContour.chain.end() ) 
     {
-      bool a = A.extendForward();
-      bool c = C.extendForward();
+      bool a = A.extendFront();
+      bool c = C.extendFront();
       if ( a ^ c )
         {
           res = false;
@@ -167,10 +167,12 @@ bool CompareToArithmetical()
         }
       else if ( ! a )
         {
-          A.retractForward();
-          C.retractForward();
+          A.retractBack();
+          C.retractBack();
         }
       // Compare positions
+      std::cerr << C << A << std::endl
+		<< C.back() << A.back() << C.front() << A.front() << std::endl; 
       if ( ( C.back() != A.back() ) || ( C.front() != A.front() )  )
         {
           res = false;
@@ -282,7 +284,7 @@ bool showGreedySegmantation()
       arithDSS toShow( segment.pointBegin() );
       while( toShow.end() != segment.pointEnd() )
         {
-          toShow.extendForward();
+          toShow.extendFront();
         }
       aBoard << CustomStyle( className, new CustomPenColor( Color::Blue ) ) 
 	     << toShow.primitive(); // draw each segment

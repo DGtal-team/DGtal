@@ -120,7 +120,7 @@ bool testDSLSubsegment(Integer modb)
 	DSSIterator  it(a,b,-mu,A);
 	ArithDSS myDSS(it);
 	
-	while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
+	while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendFront())
 	  {}
 	
 	// If results are different, count an error

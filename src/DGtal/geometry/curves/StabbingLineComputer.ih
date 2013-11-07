@@ -348,7 +348,7 @@ DGtal::StabbingLineComputer<TConstIterator>::isOppositeEndConvex()
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingLineComputer<TConstIterator>::isExtendableForward()
+DGtal::StabbingLineComputer<TConstIterator>::isExtendableFront()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -376,7 +376,7 @@ DGtal::StabbingLineComputer<TConstIterator>::isExtendableForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingLineComputer<TConstIterator>::extendForward()
+DGtal::StabbingLineComputer<TConstIterator>::extendFront()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -415,7 +415,7 @@ DGtal::StabbingLineComputer<TConstIterator>::extendForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingLineComputer<TConstIterator>::isExtendableBackward()
+DGtal::StabbingLineComputer<TConstIterator>::isExtendableBack()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -445,7 +445,7 @@ DGtal::StabbingLineComputer<TConstIterator>::isExtendableBackward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::StabbingLineComputer<TConstIterator>::extendBackward()
+DGtal::StabbingLineComputer<TConstIterator>::extendBack()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 

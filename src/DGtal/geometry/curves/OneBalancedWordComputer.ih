@@ -211,7 +211,7 @@ DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::getReverse() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendForward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendFront()
 {
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
@@ -280,7 +280,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendBackward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendBack()
 {
   Code letterRead = getCode( myFirstLetter - 1 );
   Code letterExpected = getCode( myNextBefore );
@@ -374,7 +374,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendBackward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractForward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractBack()
 {
 
   if ( myNextBefore != myPatternEnd ) {
@@ -461,7 +461,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractBackward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractFront()
 {
   if ( myNextAfter != myPatternBegin ) {
     // Normal case
@@ -543,7 +543,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::retractBackward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableForward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableFront()
 {
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
@@ -573,7 +573,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableForwar
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableBackward()
+bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::isExtendableBack()
 {
   Code letterRead = getCode( myFirstLetter - 1);
   Code letterExpected = getCode( myNextBefore );

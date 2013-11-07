@@ -421,9 +421,9 @@ namespace DGtal
      * 7:  weakly exterior on the left
      * 8: weakly exterior on the right
      * 9: strongly interior
-     * @see extend isExtendableBackward
+     * @see extend isExtendableBack
      */
-    unsigned short int isExtendableForward( const Point& aNewPoint ) const;
+    unsigned short int isExtendableFront( const Point& aNewPoint ) const;
 
     /**
      * Tests whether the union between a new point, 
@@ -445,9 +445,9 @@ namespace DGtal
      * 7:  weakly exterior on the left
      * 8: weakly exterior on the right
      * 9: strongly interior
-     * @see extend isExtendableForward
+     * @see extend isExtendableFront
      */
-    unsigned short int isExtendableBackward( const Point& aNewPoint ) const;
+    unsigned short int isExtendableBack( const Point& aNewPoint ) const;
 
     /**
      * Tests whether the union between a point, 
@@ -459,9 +459,9 @@ namespace DGtal
      * @param aNewPoint the point to add
      * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
-     * @see isExtendableForward extendBackward
+     * @see isExtendableFront extendBack
      */
-    bool extendForward( const Point& aNewPoint );
+    bool extendFront( const Point& aNewPoint );
     /**
      * Tests whether the union between a point, 
      * which is located at the back of the DSS,
@@ -472,9 +472,9 @@ namespace DGtal
      * @param aNewPoint the point to add
      * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
-     * @see isExtendableBackward extendForward
+     * @see isExtendableBack extendFront
      */
-    bool extendBackward( const Point& aNewPoint );
+    bool extendBack( const Point& aNewPoint );
 
     /**
      * Removes the front point of the DSS 
@@ -485,7 +485,7 @@ namespace DGtal
      *
      * @see retract
      */
-    bool retractForward();
+    bool retractFront();
 
     /**
      * Removes the back point of the DSS
@@ -496,7 +496,7 @@ namespace DGtal
      *
      * @see retract
      */
-    bool retractBackward();
+    bool retractBack();
 
     // ------------------------- Display services ------------------------------
     /**
@@ -551,7 +551,7 @@ namespace DGtal
      * @return 'true' is the slope has to be updated, 
      * 'false' otherwise
      *
-     * @see retractForward retractBackward
+     * @see retractFront retractBack
      */
     bool retractUpdateLeaningPoints( const Vector& aDirection, 
 				     const Point& aFirst,
@@ -569,7 +569,7 @@ namespace DGtal
      *
      * @param aDirection direction vector
      *
-     * @see retractForward retractBackward
+     * @see retractFront retractBack
      */
     void retractUpdateParameters( const Vector& aNewDirection );
 

@@ -227,13 +227,13 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator!=(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendForward()
+DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendFront()
 {
-  if( isExtendableForward() ) {
+  if( isExtendableFront() ) {
 
-    bool XYflag = myXYalgo.extendForward();
-    bool XZflag = myXZalgo.extendForward();
-    bool YZflag = myYZalgo.extendForward();
+    bool XYflag = myXYalgo.extendFront();
+    bool XZflag = myXZalgo.extendFront();
+    bool YZflag = myYZalgo.extendFront();
     ASSERT( (XYflag)&&(XZflag)&&(YZflag) );
 
     myEnd++;
@@ -250,16 +250,16 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::extendForward()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::StandardDSS6Computer<TIterator, TInteger,connectivity>::isExtendableForward()
+DGtal::StandardDSS6Computer<TIterator, TInteger,connectivity>::isExtendableFront()
 {
   //projection on xy-plane
-  bool XYflag = myXYalgo.isExtendableForward();
+  bool XYflag = myXYalgo.isExtendableFront();
   
   //projection on xz-plane
-  bool XZflag = myXZalgo.isExtendableForward();
+  bool XZflag = myXZalgo.isExtendableFront();
   
   //projection on yz-plane
-  bool YZflag = myYZalgo.isExtendableForward();
+  bool YZflag = myYZalgo.isExtendableFront();
   
   if ( (XYflag)&&(XZflag)&&(YZflag) ) 
     return true;

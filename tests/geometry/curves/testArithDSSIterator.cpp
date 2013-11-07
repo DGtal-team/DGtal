@@ -58,7 +58,7 @@ bool testArithDSSIterator()
 
   int absMax=8;
   
-  while ( (*(myDSS.end()))[0] <=absMax && myDSS.extendForward())
+  while ( (*(myDSS.end()))[0] <=absMax && myDSS.extendFront())
     {}
   
   std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu() << " " <<   std::endl; 

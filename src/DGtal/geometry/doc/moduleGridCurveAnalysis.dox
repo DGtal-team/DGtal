@@ -336,9 +336,9 @@ in addition the following methods:
 
  - void init ( const Iterator& it ) : set the segment to the element pointed to by it.
 
- - bool extendForward () : return 'true' and extend the segment to the element pointed to by end() if it is possible, return 'false' and does not extend the segment otherwise. 
+ - bool extendFront () : return 'true' and extend the segment to the element pointed to by end() if it is possible, return 'false' and does not extend the segment otherwise. 
 
- - bool isExtendableForward () : return 'true' if the segment can be extended to the element pointed to by end() and 'false' otherwise (no extension is performed).
+ - bool isExtendableFront () : return 'true' if the segment can be extended to the element pointed to by end() and 'false' otherwise (no extension is performed).
 
 Detecting a segment in a range looks like this: 
 
@@ -346,7 +346,7 @@ Detecting a segment in a range looks like this:
     //s is a segment computer
     //[begin,end) is a range
 		s.init( begin );
-    while ( (s.end() != end) && (s.extendForward()) ) {} 
+    while ( (s.end() != end) && (s.extendFront()) ) {} 
  @endcode
 
 If the underlying structure is closed, 
@@ -356,7 +356,7 @@ infinite loops are avoided as follows:
     //s is a segment computer
     //c is a circulator
 		s.init( c );
-    while ( (s.end() != s.begin()) && (s.extendForward()) ) {} 
+    while ( (s.end() != s.begin()) && (s.extendFront()) ) {} 
  @endcode
  
 Like any model of CIncrementalSegmentComputer, a model of 
@@ -381,21 +381,21 @@ contrary to bidirectional segment computers.
 Any model of CBidirectionalSegmentComputer, which is a refinement of CForwardSegmentComputer, 
 should define the following methods:
 
- - bool extendBackward () : return 'true' and extend the segment to the element pointed to by --begin() if it is possible, return 'false' and does not extend the segment otherwise.
+ - bool extendBack () : return 'true' and extend the segment to the element pointed to by --begin() if it is possible, return 'false' and does not extend the segment otherwise.
 
- - bool isExtendableBackward () : return 'true' if the segment can be extended to the element pointed to by --begin() and 'false' otherwise (no extension is performed).
+ - bool isExtendableBack () : return 'true' if the segment can be extended to the element pointed to by --begin() and 'false' otherwise (no extension is performed).
 
 StabbingLineComputer and StabbingCircleComputer are both models of CBidirectionalSegmentComputer. 
 
 The concept CDynamicSegmentComputer is another refinement of CForwardSegmentComputer. 
 Any model of this concept should define the following method: 
 
- - bool retractForward () : return 'true' and move the beginning of the segment to ++begin() if ++begin() != end(), return 'false' otherwise. 
+ - bool retractBack () : return 'true' and move the beginning of the segment to ++begin() if ++begin() != end(), return 'false' otherwise. 
 
 Finally, the concept CDynamicBidirectionalSegmentComputer is a refinement of both 
 CBidirectionalSegmentComputer and CDynamicSegmentComputer and should define this extra method:
  
- - bool retractBackward () : return 'true' and move the end of the segment to --end() if begin() != --end(), return 'false' otherwise. 
+ - bool retractFront () : return 'true' and move the end of the segment to --end() if begin() != --end(), return 'false' otherwise. 
 
 
 A model of CDynamicBidirectionalSegmentComputer is ArithmeticalDSSComputer, 
@@ -570,7 +570,7 @@ The resulting segmentations are shown in the figures below:
 
 
 The complexity of the greedy segmentation algorithm relies on the 
-complexity of the extendForward() method of the segment computer. If it
+complexity of the extendFront() method of the segment computer. If it
 runs in (possibly amortized) constant time, then the complexity 
 of the segmentation is linear in the length of the range. 
 

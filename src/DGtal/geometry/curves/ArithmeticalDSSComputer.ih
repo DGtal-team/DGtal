@@ -148,29 +148,29 @@ operator!=( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & other 
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 bool 
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableForward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableFront()
 {
-  return myDSS.isExtendableForward( *myEnd ); 
+  return myDSS.isExtendableFront( *myEnd ); 
 }
 
 //--------------------------------------------------------------------
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 bool 
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableBackward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isExtendableBack()
 {
   ConstIterator it = myBegin; 
   --it; 
-  return myDSS.isExtendableBackward( *it ); 
+  return myDSS.isExtendableBack( *it ); 
 }
 
 //-----------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 bool 
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendForward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendFront()
 {
-  if (myDSS.extendForward(*myEnd))
+  if (myDSS.extendFront(*myEnd))
     {
       ++myEnd;
       return true; 
@@ -183,11 +183,11 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendForward()
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 bool 
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendBackward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendBack()
 {
   ConstIterator it = myBegin; 
   --it; 
-  if (myDSS.extendBackward(*it))
+  if (myDSS.extendBack(*it))
     {
       myBegin = it;
       return true; 
@@ -200,9 +200,9 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::extendBackward()
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 bool 
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractForward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractFront()
 {
-  if (myDSS.retractForward())
+  if (myDSS.retractFront())
     {
       ++myBegin;
       return true; 
@@ -215,9 +215,9 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractForward()
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 bool 
-DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractBackward()
+DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractBack()
 {
-  if (myDSS.retractBackward())
+  if (myDSS.retractBack())
     {
       --myEnd;
       return true; 

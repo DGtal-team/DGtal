@@ -88,27 +88,27 @@ namespace DGtal
        * Tells whether the underlying segment can be extended or not
        * @return 'true' if extendable, 'false' otherwise
        */
-      bool isExtendableForward() const
+      bool isExtendableFront() const
       {
-        return myDSS->isExtendableForward(); 
+        return myDSS->isExtendableFront(); 
       }
       /**
        * Extends the underlying segment (if possible)
        * @return 'true' if the segment has been extended,
        * 'false' otherwise
        */
-      bool extendForward()
+      bool extendFront()
       {
-        return myDSS->extendForward(); 
+        return myDSS->extendFront(); 
       }
       /**
        * Retracts the underlying segment (if possible)
        * @return 'true' if the segment has been retracted,
        * 'false' otherwise
        */
-      bool retractForward()
+      bool retractBack()
       {
-        return myDSS->retractForward(); 
+        return myDSS->retractBack(); 
       }
       /**
        * End of the underlying segment
