@@ -305,12 +305,12 @@ namespace DGtal
         return (*this);
       }*/
 
-      inline
+      /*inline
       void setValue ( const Value aVal )
       {
         (*myTileRangeIterator) = aVal;
-        myTiledImage->myImageFactory->flushImage(myTile); // TEMP
-      }
+        //myTiledImage->myImageFactory->flushImage(myTile); // TEMP
+      }*/
 
       /**
        * Operator ==

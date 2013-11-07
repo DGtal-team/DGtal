@@ -241,7 +241,7 @@ bool exampleTiledImageFromImage_1block3D()
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
       typedef TiledImage<ImageV, MyImageFactoryFromImage, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
-      //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+      BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
       MyTiledImage tiledImage1block(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
       
       typedef MyTiledImage::OutputImage OutputImage;
@@ -294,7 +294,7 @@ bool exampleTiledImageFromHDF5_1block3D()
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
-      //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+      BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
       MyTiledImage tiledImage1block(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 1);
       
       typedef MyTiledImage::OutputImage OutputImage;
@@ -362,10 +362,11 @@ bool exampleTiledImageFromImage_10blocks3D()
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
       typedef TiledImage<ImageV, MyImageFactoryFromImage, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
-      //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+      BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
       MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 10);
       
       typedef TiledImage<ImageV, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFIFO;
+      BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFIFO > ));
       MyTiledImageFIFO tiledImageFIFO_A(factImage, imageCacheReadPolicyFIFO_A, imageCacheWritePolicyWT, 10);
       MyTiledImageFIFO tiledImageFIFO_B(factImage, imageCacheReadPolicyFIFO_B, imageCacheWritePolicyWT, 10);
       
@@ -508,10 +509,11 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT> MyTiledImage;
-      //BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
+      BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
       MyTiledImage tiledImage(factImage, imageCacheReadPolicyLAST, imageCacheWritePolicyWT, 10);
       
       typedef TiledImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFIFO;
+      BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFIFO > ));
       MyTiledImageFIFO tiledImageFIFO_A(factImage, imageCacheReadPolicyFIFO_A, imageCacheWritePolicyWT, 10);
       MyTiledImageFIFO tiledImageFIFO_B(factImage, imageCacheReadPolicyFIFO_B, imageCacheWritePolicyWT, 10);
       
