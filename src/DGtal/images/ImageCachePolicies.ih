@@ -127,7 +127,7 @@ DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::writeInPage(TIma
 template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::flushPage(TImageContainer * anImageContainer)
+DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::flushPage(TImageContainer * UNUSED(anImageContainer))
 {
 }
 

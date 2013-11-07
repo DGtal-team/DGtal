@@ -45,6 +45,10 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
+#include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/Clone.h"
+#include "DGtal/base/Alias.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/topology/Topology.h"
@@ -170,56 +174,10 @@ namespace DGtal
        *
        * @param cxn the connectedness (default is UNKNOWN).
        */
-      Object( const DigitalTopology & aTopology,
-          const DigitalSet & aPointSet,
-          Connectedness cxn = UNKNOWN );
+    Object( Clone<DigitalTopology> aTopology,
+	    Clone<DigitalSet> aPointSet,
+	    Connectedness cxn = UNKNOWN );
 
-      /**
-       * Constructor.
-       *
-       * @param aTopology the digital topology chosen for this set,
-       * smartly copied.
-       *
-       * @param aPointSet the set of points of the object. It is copied
-       * in the object.
-       *
-       * @param cxn the connectedness (default is UNKNOWN).
-       */
-      Object( const CowPtr<DigitalTopology> & aTopology,
-          const DigitalSet & aPointSet,
-          Connectedness cxn = UNKNOWN );
-
-      /**
-       * Constructor.
-
-       *
-       * @param aTopology the digital topology chosen for this set, a copy of
-       * which is stored in the object.
-       *
-       * @param aPointSet the set of points of the object. It is smartly
-       * reference in the object.
-       *
-       * @param cxn the connectedness (default is UNKNOWN).
-       */
-      Object( const DigitalTopology & aTopology,
-          const CowPtr<DigitalSet> & aPointSet,
-          Connectedness cxn = UNKNOWN );
-
-      /**
-       * Constructor by attachment of a dynamically allocated point set.
-       *
-       * @param aTopology the digital topology chosen for this set, a copy of
-       * which is stored in the object.
-       *
-       * @param aPointSetPtr a dynamically allocated pointer on a set of
-       * points which is afterwards handled by this (which will take
-       * care of its deletion).
-       *
-       * @param cxn the connectedness (default is UNKNOWN).
-       */
-      Object( const DigitalTopology & aTopology,
-          DigitalSet* aPointSetPtr,
-          Connectedness cxn = UNKNOWN );
 
       /**
        * Constructor of an empty object by providing a domain.
@@ -229,19 +187,8 @@ namespace DGtal
        *
        * @param domain any domain related to the given topology.
        */
-      Object( const DigitalTopology & aTopology,
-          const Domain & domain );
-
-      /**
-       * Constructor of an empty object by providing a domain.
-       *
-       * @param aTopology the digital topology chosen for this set,
-       * smartly copied.
-       *
-       * @param aDomain any domain related to the given topology.
-       */
-      Object( const CowPtr<DigitalTopology> & aTopology,
-          const Domain & aDomain );
+    Object( Clone<DigitalTopology> aTopology,
+	    Clone<Domain> domain );
 
       /**
        * Copy constructor.
@@ -273,6 +220,11 @@ namespace DGtal
        * A const reference to the embedding domain.
        */
       const Domain & domain() const;
+
+      /**
+       * A counted pointer to the embedding domain.
+       */
+      CowPtr<Domain> domainPointer() const;
 
       /**
        * A const reference on the point set defining the points of the

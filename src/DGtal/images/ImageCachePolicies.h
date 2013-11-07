@@ -88,7 +88,7 @@ public:
     typedef typename TImageContainer::Value Value;
     
     ImageCacheReadPolicyLAST(Alias<ImageFactory> anImageFactory):
-      myCacheImagesPtr(NULL),  myImageFactory(anImageFactory)
+      myCacheImagesPtr(NULL),  myImageFactory(&anImageFactory)
     {
     }
 
@@ -168,7 +168,7 @@ public:
     typedef typename TImageContainer::Value Value;
     
     ImageCacheReadPolicyFIFO(Alias<ImageFactory> anImageFactory, int aFIFOSizeMax=10):
-       myFIFOSizeMax(aFIFOSizeMax), myImageFactory(anImageFactory)
+       myFIFOSizeMax(aFIFOSizeMax), myImageFactory(&anImageFactory)
     {
     }
 
@@ -249,7 +249,7 @@ public:
     typedef typename TImageContainer::Value Value;
     
     ImageCacheWritePolicyWT(Alias<ImageFactory> anImageFactory):
-      myImageFactory(anImageFactory)
+      myImageFactory(&anImageFactory)
     {
     }
 
@@ -317,7 +317,7 @@ public:
     typedef typename TImageContainer::Value Value;
     
     ImageCacheWritePolicyWB(Alias<ImageFactory> anImageFactory):
-      myImageFactory(anImageFactory)
+      myImageFactory(&anImageFactory)
     {
     }
 

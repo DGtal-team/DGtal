@@ -32,7 +32,9 @@
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/topology/DigitalTopologyTraits.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
+#include "DGtal/graph/Expander.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,7 +57,7 @@
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object()
-    : myTopo( 0 ), myPointSet( 0 ), myConnectedness( UNKNOWN )
+  : myTopo( 0 ), myPointSet( 0 ), myConnectedness( UNKNOWN )
 {
 }
 
@@ -71,75 +73,11 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object()
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const DigitalTopology & aTopology,
-    const DigitalSet & aPointSet,
-    Connectedness cxn )
-    : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( new DigitalSet( aPointSet ) ),
-    myConnectedness( cxn )
-{
-}
-
-/**
- * Constructor.
- *
- * @param aTopology the digital topology chosen for this set,
- * smartly copied.
- *
- * @param aPointSet the set of points of the object. It is copied
- * in the object.
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const CowPtr<DigitalTopology> & aTopology,
-    const DigitalSet & aPointSet,
-    Connectedness cxn )
-    : myTopo( aTopology ),
-    myPointSet( new DigitalSet( aPointSet ) ),
-    myConnectedness( cxn )
-{
-}
-
-/**
- * Constructor.
- *
- * @param aTopology the digital topology chosen for this set, a copy of
- * which is stored in the object.
- *
- * @param aPointSet the set of points of the object. It is smartly
- * reference in the object.
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const TDigitalTopology & aTopology,
-    const CowPtr<DigitalSet> & aPointSet,
-    Connectedness cxn )
-    : myTopo( new DigitalTopology( aTopology ) ),
+( Clone<DigitalTopology> aTopology,
+  Clone<DigitalSet> aPointSet,
+  Connectedness cxn )
+  : myTopo( aTopology ),
     myPointSet( aPointSet ),
-    myConnectedness( cxn )
-{
-}
-
-/**
- * Constructor by attachment of a dynamically allocated point set.
- *
- * @param aTopology the digital topology chosen for this set, a copy of
- * which is stored in the object.
- *
- * @param aPointSetPtr a dynamically allocated pointer on a set of
- * points which is afterwards handled by this (which will take
- * care of its deletion).
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const TDigitalTopology & aTopology,
-    DigitalSet* aPointSetPtr,
-    Connectedness cxn )
-    : myTopo( new DigitalTopology( aTopology ) ),
-    myPointSet( pointSet ),
     myConnectedness( cxn )
 {
 }
@@ -155,7 +93,7 @@ template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( const Object & other )
-    : myTopo( other.myTopo ),
+  : myTopo( other.myTopo ),
     myPointSet( other.myPointSet ),
     myConnectedness( other.myConnectedness )
 {
@@ -172,31 +110,14 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const TDigitalTopology & aTopology,
-    const Domain & aDomain )
-    : myTopo( new DigitalTopology( aTopology ) ),
+( Clone<DigitalTopology> aTopology,
+  Clone<Domain> aDomain )
+  : myTopo( new DigitalTopology( aTopology ) ),
     myPointSet( new DigitalSet( aDomain ) ),
     myConnectedness( CONNECTED )
 {
 }
 
-/**
- * Constructor of an empty object by providing a domain.
- *
- * @param aTopology the digital topology chosen for this set, smartly copied.
- *
- * @param aDomain any domain related to the given topology.
- */
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-DGtal::Object<TDigitalTopology, TDigitalSet>::Object
-( const CowPtr<DigitalTopology> & aTopology,
-    const Domain & aDomain )
-    : myTopo( aTopology ),
-    myPointSet( new DigitalSet( aDomain ) ),
-    myConnectedness( CONNECTED )
-{
-}
 
 /**
  * Destructor.
@@ -247,6 +168,14 @@ const typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain &
 DGtal::Object<TDigitalTopology, TDigitalSet>::domain() const
 {
   return myPointSet->domain();
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::CowPtr<typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain>
+DGtal::Object<TDigitalTopology, TDigitalSet>::domainPointer() const
+{
+  return myPointSet->domainPointer();
 }
 
 
@@ -327,7 +256,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::neighborhood
   tmp_local_points.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
-  SmallObject neighA( myTopo, pointSet().domain() );
+  SmallObject neighA( myTopo, pointSet().domainPointer() );
   const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
@@ -404,7 +333,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::properNeighborhood
   adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
-  SmallObject neighA( myTopo, pointSet().domain() );
+  SmallObject neighA( myTopo, pointSet().domainPointer() );
   const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
@@ -475,7 +404,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
   // Intermediate container that is fast writable.
   const DigitalSet & mySet = pointSet();
   Object<DigitalTopology, DigitalSet> output( topology(),
-      domain() );
+					      mySet.domainPointer() );
   DigitalSet & outputSet = output.pointSet();
 
   // Loop on all points of the set.
@@ -539,7 +468,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // first component.
   BreadthFirstVisitor< Object, std::set<Vertex> > visitor( *this, p );
   while ( ! visitor.finished() ) visitor.expand();
-  DigitalSet visited( domain() );
+  DigitalSet visited( domainPointer() );
   visited.insertNew( visitor.markedVertices().begin(),
                      visitor.markedVertices().end() );
   *it++ = Object( myTopo, visited, CONNECTED );
@@ -551,7 +480,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     {
       BreadthFirstVisitor< Object, std::set<Vertex> > visitor2( *this, p );
       while ( ! visitor2.finished() ) visitor2.expand();
-      DigitalSet visited2( domain() );
+      DigitalSet visited2( domainPointer() );
       visited2.insertNew( visitor2.markedVertices().begin(),
                           visitor2.markedVertices().end() );
       *it++ = Object( myTopo, visited2, CONNECTED );
@@ -779,7 +708,7 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhood
-( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
+( const TAdjacency & adj, const Point & p, unsigned int k ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;
@@ -789,18 +718,17 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
 
-  DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
   Container tmp_local_points;
   std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
-  alpha.writeNeighbors( back_ins_it, p, limitedX.predicate() );
+  alpha.writeNeighbors( back_ins_it, p, *myPointSet ); // p is not a neighbor itself.
 
   // Construct local domain.
   Point p1 = p - Point::diagonal(1);
   Point p2 = p + Point::diagonal(1);
-  LocalDomain aDomain( p1, p2 );
+  CowPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
 
   // Construct local X.
   LocalTopology aTopology( adj, omega );
@@ -814,7 +742,13 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     ( X, neighAdj.pointSet().begin(),
       neighAdj.pointSet().end() );
   while ( ! visitor.finished() )
-    visitor.expand();
+    {
+      typename LocalObject::Size d = visitor.current().second;
+      if ( d < k )       visitor.expand(); // we need to go further
+      else if ( d == k ) visitor.ignore(); // no need to go further
+      else break; // to far away, we exit
+    }
+  visitor.terminate();
   SmallObject geodesicN( this->topology(), aDomain );
   geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
                                   visitor.markedVertices().end()  );
@@ -842,7 +776,7 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallComplementObject
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::geodesicNeighborhoodInComplement
-( const TAdjacency & adj, const Point & p, unsigned int /*k*/ ) const
+( const TAdjacency & adj, const Point & p, unsigned int k ) const
 {
   // Local types.
   typedef std::vector<Vertex> Container;
@@ -851,24 +785,19 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
   typedef Object<LocalTopology, SmallSet> LocalObject;
   typedef HyperRectDomain<Space> LocalDomain;
-  typedef typename DigitalSetDomain<DigitalSet>::Predicate PredicateIsInX;
-  DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
+  // DigitalSetDomain<DigitalSet> limitedX( *myPointSet );
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
   Container tmp_local_points;
   std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
-  NotPointPredicate<PredicateIsInX> not_pred_is_in_X( limitedX.predicate() );
+  NotPointPredicate<DigitalSet> not_pred_is_in_X( *myPointSet );
   alpha.writeNeighbors( back_ins_it, p, not_pred_is_in_X );
 
   // Construct local domain.
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  LocalDomain aDomain( p1, p2 );
+  Point p1 = p - Point::diagonal(1);
+  Point p2 = p + Point::diagonal(1);
+  CowPtr<LocalDomain> aDomain( new LocalDomain( p1, p2 ) );
 
   // Construct local Xcomp.
   LocalTopology aTopology( adj, omega );
@@ -882,7 +811,14 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
     ( Xcomp, neighAdj.pointSet().begin(),
       neighAdj.pointSet().end() );
   while ( ! visitor.finished() )
-    visitor.expand();
+    {
+      typename LocalObject::Size d = visitor.current().second;
+      if ( d < k )       visitor.expand(); // we need to go further
+      else if ( d == k ) visitor.ignore(); // no need to go further
+      else break; // to far away, we exit
+    }
+  visitor.terminate();
+	
   SmallComplementObject geodesicN( this->topology().reverseTopology(),
                                    aDomain ); 
   geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
@@ -918,16 +854,21 @@ bool
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::isSimple( const Point & v ) const
 {
+  static const int kappa_n = 
+    DigitalTopologyTraits< ForegroundAdjacency, BackgroundAdjacency, Space::dimension >::GEODESIC_NEIGHBORHOOD_SIZE;
+  static const int lambda_n = 
+    DigitalTopologyTraits< BackgroundAdjacency, ForegroundAdjacency, Space::dimension >::GEODESIC_NEIGHBORHOOD_SIZE;
+
   SmallObject Gkappa_X
   = geodesicNeighborhood( topology().kappa(),
-      v, Space::dimension );
+			  v, kappa_n ); // Space::dimension );
   if ( Gkappa_X.computeConnectedness() == CONNECTED )
   {
     if ( Gkappa_X.pointSet().empty() )
       return false;
     SmallComplementObject Glambda_compX
-    = geodesicNeighborhoodInComplement( topology().lambda(),
-        v, Space::dimension );
+      = geodesicNeighborhoodInComplement( topology().lambda(),
+					  v, lambda_n ); // Space::dimension );
     return ( Glambda_compX.computeConnectedness()
 	     == CONNECTED )
       && ( ! Glambda_compX.pointSet().empty() );

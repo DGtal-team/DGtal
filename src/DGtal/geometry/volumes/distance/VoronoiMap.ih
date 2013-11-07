@@ -232,10 +232,10 @@ inline
 DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
                                           ConstAlias<PointPredicate> aPredicate,
                                           ConstAlias<SeparableMetric> aMetric):
-  myDomainPtr(aDomain), myPointPredicatePtr(aPredicate),
-  myMetricPtr(aMetric)
+  myDomainPtr(&aDomain), myPointPredicatePtr(&aPredicate),
+  myMetricPtr(&aMetric)
 {
-  myImagePtr = CountedPtr<OutputImage>( new OutputImage(*aDomain) );
+  myImagePtr = CountedPtr<OutputImage>( new OutputImage(aDomain) );
   compute();
 }
 

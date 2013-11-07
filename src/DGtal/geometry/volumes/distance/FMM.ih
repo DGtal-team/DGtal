@@ -169,8 +169,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       SCellToIncidentPoints<KSpace> func( aK ); 
       typename SCellToIncidentPoints<KSpace>::Output points = func( *it ); 
       //assignement
-      insertAndAlwaysSetValue( aImg, aSet, points.first, k*aValue ); 
-      insertAndAlwaysSetValue( aImg, aSet, points.second, -k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, points.first, -k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, points.second, k*aValue ); 
     }
 }
 
@@ -233,8 +233,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       Value vout = computerOut( it->second );
 
       //assignement
-      insertAndAlwaysSetValue( aImg, aSet, it->first, k*vin ); 
-      insertAndAlwaysSetValue( aImg, aSet, it->second, -k*vout );  
+      insertAndAlwaysSetValue( aImg, aSet, it->first, -k*vin ); 
+      insertAndAlwaysSetValue( aImg, aSet, it->second, k*vout );  
     }
 }
 
@@ -253,8 +253,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   aSet.clear(); 
   for (TIteratorOnPairs it = itb; it != ite; ++it) 
     {
-      insertAndAlwaysSetValue( aImg, aSet, it->first, k*aValue ); 
-      insertAndAlwaysSetValue( aImg, aSet, it->second, -k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, it->first, -k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, it->second, k*aValue ); 
     }
 }
 
