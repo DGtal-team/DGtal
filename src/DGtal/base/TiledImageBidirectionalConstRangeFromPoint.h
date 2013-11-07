@@ -17,28 +17,28 @@
 #pragma once
 
 /**
- * @file SimpleBidirectionalConstRangeFromPoint.h
+ * @file TiledImageBidirectionalConstRangeFromPoint.h
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2013/11/06
  *
  *
- * Header file for module SimpleBidirectionalConstRangeFromPoint.h
+ * Header file for module TiledImageBidirectionalConstRangeFromPoint.h
  *
  * This file contains the definition of basic functors.
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(SimpleBidirectionalConstRangeFromPoint_RECURSES)
-#error Recursive header files inclusion detected in SimpleBidirectionalConstRangeFromPoint.h
-#else // defined(SimpleBidirectionalConstRangeFromPoint_RECURSES)
+#if defined(TiledImageBidirectionalConstRangeFromPoint_RECURSES)
+#error Recursive header files inclusion detected in TiledImageBidirectionalConstRangeFromPoint.h
+#else // defined(TiledImageBidirectionalConstRangeFromPoint_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define SimpleBidirectionalConstRangeFromPoint_RECURSES
+#define TiledImageBidirectionalConstRangeFromPoint_RECURSES
 
-#if !defined SimpleBidirectionalConstRangeFromPoint_h
+#if !defined TiledImageBidirectionalConstRangeFromPoint_h
 /** Prevents repeated inclusion of headers. */
-#define SimpleBidirectionalConstRangeFromPoint_h
+#define TiledImageBidirectionalConstRangeFromPoint_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -54,7 +54,7 @@ namespace DGtal
 
 
   ///////////////////////////////////////////////////////////////////////////////
-  // class SimpleBidirectionalConstRangeFromPoint
+  // class TiledImageBidirectionalConstRangeFromPoint
   ///////////////////////////////////////////////////////////////////////////////
 
   /**
@@ -66,55 +66,49 @@ namespace DGtal
    *
    * @see ConstRangeAdapter
    */
-  template <typename TConstIterator, typename TPoint>
+  template <typename TTiledImage>
 
-  class SimpleBidirectionalConstRangeFromPoint
+  class TiledImageBidirectionalConstRangeFromPoint
   {
 
-      BOOST_CONCEPT_ASSERT ( ( boost::BidirectionalIterator<TConstIterator> ) );
+      BOOST_CONCEPT_ASSERT ( ( boost::BidirectionalIterator<typename TTiledImage::ConstIterator> ) );
 
       // ------------------------- inner types --------------------------------
 
     public:
+      
+      typedef TTiledImage TiledImage;
 
-      typedef TPoint Point;
+      typedef typename TiledImage::Point Point;
 
-      typedef TConstIterator ConstIterator;
+      typedef typename TiledImage::ConstIterator ConstIterator;
       typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
       typedef Circulator<ConstIterator> ConstCirculator;
       typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
       // ------------------------- standard services --------------------------------
-
-      /**
-       * Standard constructor from two iterators
-       * and one functor.
-       * @param itb begin iterator.
-       * @param ite end iterator.
-       *
-       */
-      SimpleBidirectionalConstRangeFromPoint ( const TConstIterator& itb, const TConstIterator& ite )
-        : myBegin ( itb ), myEnd ( ite ) {}
+      
+      TiledImageBidirectionalConstRangeFromPoint ( const TiledImage *ti )
+        : myti ( ti ) {}
 
       /**
        * Copy constructor.
        * @param other the iterator to clone.
        */
-      SimpleBidirectionalConstRangeFromPoint ( const SimpleBidirectionalConstRangeFromPoint & other )
-          : myBegin ( other.myBegin ), myEnd ( other.myEnd ) {}
+      TiledImageBidirectionalConstRangeFromPoint ( const TiledImageBidirectionalConstRangeFromPoint & other )
+          : myti ( other.myti ) {}
 
       /**
        * Assignment.
        * @param other the iterator to copy.
        * @return a reference on 'this'.
        */
-      SimpleBidirectionalConstRangeFromPoint& operator= ( const SimpleBidirectionalConstRangeFromPoint & other )
+      TiledImageBidirectionalConstRangeFromPoint& operator= ( const TiledImageBidirectionalConstRangeFromPoint & other )
       {
         if ( this != &other )
         {
-          myBegin = other.myBegin;
-          myEnd = other.myEnd;
+          myti = other.myti;
         }
 
         return *this;
@@ -123,7 +117,7 @@ namespace DGtal
       /**
        * Destructor. Does nothing.
        */
-      ~SimpleBidirectionalConstRangeFromPoint() {}
+      ~TiledImageBidirectionalConstRangeFromPoint() {}
 
       /**
        * Checks the validity/consistency of the object.
@@ -142,9 +136,9 @@ namespace DGtal
       void selfDisplay ( std::ostream & out ) const
       {
         typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value;
-        out << "[SimpleBidirectionalConstRangeFromPoint]" << std::endl;
+        out << "[TiledImageBidirectionalConstRangeFromPoint]" << std::endl;
         out << "\t";
-        std::copy ( myBegin, myEnd, std::ostream_iterator<Value> ( out, ", " ) );
+        std::copy ( myti->begin(), myti->end(), std::ostream_iterator<Value> ( out, ", " ) );
         out << std::endl;
       }
 
@@ -153,21 +147,15 @@ namespace DGtal
        */
       std::string className() const
       {
-        return "SimpleBidirectionalConstRangeFromPoint";
+        return "TiledImageBidirectionalConstRangeFromPoint";
       }
 
 
       // ------------------------- private data --------------------------------
 
     private:
-      /**
-       * Begin underlying iterator
-       */
-      TConstIterator myBegin;
-      /**
-       * End underlying iterator
-       */
-      TConstIterator myEnd;
+      
+      const TTiledImage *myti;
 
     // ------------------------- iterator services --------------------------------
 
@@ -179,7 +167,7 @@ namespace DGtal
        */
       ConstIterator begin() const
       {
-        return ConstIterator ( myBegin );
+        return ConstIterator ( myti->begin() );
       }
 
 
@@ -189,8 +177,7 @@ namespace DGtal
        */
       ConstIterator begin ( const Point &aPoint ) const
       {
-        // TODO
-        return ConstIterator ( myBegin );
+        return ConstIterator ( myti->begin(aPoint) );
       }
 
       /**
@@ -199,7 +186,7 @@ namespace DGtal
        */
       ConstIterator end() const
       {
-        return ConstIterator ( myEnd );
+        return ConstIterator ( myti->end() );
       }
 
       /**
@@ -217,8 +204,7 @@ namespace DGtal
        */
       ConstReverseIterator rbegin ( const Point &aPoint ) const
       {
-        // TODO
-        return ConstReverseIterator ( this->end() );
+        return ConstReverseIterator ( myti->rbegin(aPoint) );
       }
 
 
@@ -249,14 +235,14 @@ namespace DGtal
         return ConstReverseCirculator ( this->c() );
       }
 
-  }; //end class SimpleBidirectionalConstRangeFromPoint
+  }; //end class TiledImageBidirectionalConstRangeFromPoint
 
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#endif // !defined SimpleBidirectionalConstRangeFromPoint_h
+#endif // !defined TiledImageBidirectionalConstRangeFromPoint_h
 
-#undef SimpleBidirectionalConstRangeFromPoint_RECURSES
-#endif // else defined(SimpleBidirectionalConstRangeFromPoint_RECURSES)
+#undef TiledImageBidirectionalConstRangeFromPoint_RECURSES
+#endif // else defined(TiledImageBidirectionalConstRangeFromPoint_RECURSES)

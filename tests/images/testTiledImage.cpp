@@ -219,8 +219,8 @@ bool test_range_constRange()
 
     // reading values
     MyTiledImage::ConstRange r = tiledImage.constRange();
-    //std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); // TODO : if not commented, problem with the code below
-    //cout << endl;
+    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") );
+    cout << endl;
 
     std::vector<int> to_vector(100);
     std::copy(r.begin(), r.end(), to_vector.begin());
@@ -284,10 +284,10 @@ bool testIterators()
   nbok += (*itbegin == 1) ? 1 : 0; nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  /*ConstIterator itbegin2 = tiledImage.constRange().begin(Z2i::Point(5,5));
+  ConstIterator itbegin2 = tiledImage.constRange().begin(Z2i::Point(5,5));
   trace.info() << "Value at range begin from point (42) = "<< *itbegin2 << std::endl;
   nbok += (*itbegin2 == 42) ? 1 : 0; nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   OutputIterator itbegino = tiledImage.range().begin();
   trace.info() << "Value at range begin (1) = "<< *itbegino << std::endl;
