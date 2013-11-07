@@ -50,35 +50,35 @@ template <typename PointFunctor1,typename Predicate1, typename PointFunctor2, ty
 bool
 testPointPredicateConcepts()
 {
-		// PointFunctorPredicate
-		typedef PointFunctorPredicate<PointFunctor1, Predicate1> PointPredicate1;
-		BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
-		typedef PointFunctorPredicate<PointFunctor2, Predicate2> PointPredicate2;
-		BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    // PointFunctorPredicate
+    typedef PointFunctorPredicate<PointFunctor1, Predicate1> PointPredicate1;
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
+    typedef PointFunctorPredicate<PointFunctor2, Predicate2> PointPredicate2;
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
 
-		// Binary PointPredicate
-		typedef std::logical_and<bool> BinaryFunctor;
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< BinaryPointPredicate<PointPredicate1, PointPredicate2, BinaryFunctor> > )); 
+    // Binary PointPredicate
+    typedef std::logical_and<bool> BinaryFunctor;
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< BinaryPointPredicate<PointPredicate1, PointPredicate2, BinaryFunctor> > ));
 
-		// NotPointPredicate
-		BOOST_CONCEPT_ASSERT(( CPointPredicate< NotPointPredicate<PointPredicate1> > ));
-		BOOST_CONCEPT_ASSERT(( CPointPredicate< NotPointPredicate<PointPredicate2> > ));
+    // NotPointPredicate
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< NotPointPredicate<PointPredicate1> > ));
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< NotPointPredicate<PointPredicate2> > ));
 
-		typedef typename PointFunctor1::Point Point;
-		// EqualPointPredicate
-    BOOST_CONCEPT_ASSERT(( CPointPredicate< EqualPointPredicate<Point> > )); 
-		// IsWithinPointPredicate
-		BOOST_CONCEPT_ASSERT(( CPointPredicate< IsWithinPointPredicate<Point> > ));
-		// IsUpperPointPredicate
-		BOOST_CONCEPT_ASSERT(( CPointPredicate< IsUpperPointPredicate<Point> > ));
-		// IsLowerPointPredicate
-		BOOST_CONCEPT_ASSERT(( CPointPredicate< IsLowerPointPredicate<Point> > ));
-		// TruePointPredicate
-		BOOST_CONCEPT_ASSERT(( CPointPredicate< TruePointPredicate<Point> > ));
-		// FalsePointPredicate
-		BOOST_CONCEPT_ASSERT(( CPointPredicate< FalsePointPredicate<Point> > ));
+    typedef typename PointFunctor1::Point Point;
+    // EqualPointPredicate
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< EqualPointPredicate<Point> > ));
+    // IsWithinPointPredicate
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< IsWithinPointPredicate<Point> > ));
+    // IsUpperPointPredicate
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< IsUpperPointPredicate<Point> > ));
+    // IsLowerPointPredicate
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< IsLowerPointPredicate<Point> > ));
+    // TruePointPredicate
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< TruePointPredicate<Point> > ));
+    // FalsePointPredicate
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< FalsePointPredicate<Point> > ));
 
-		return true;
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -93,11 +93,11 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = true;
-	typedef ImageSelector<Z3i::Domain, int>::Type IntImage;
-	typedef std::binder2nd< std::less<int> > IntPredicate;
-	typedef ImageSelector<Z3i::Domain, float>::Type FloatImage;
-	typedef std::binder2nd< std::greater<float> > FloatPredicate;
-	res &= testPointPredicateConcepts<IntImage, IntPredicate, FloatImage, FloatPredicate>();
+  typedef ImageSelector<Z3i::Domain, int>::Type IntImage;
+  typedef std::binder2nd< std::less<int> > IntPredicate;
+  typedef ImageSelector<Z3i::Domain, float>::Type FloatImage;
+  typedef std::binder2nd< std::greater<float> > FloatPredicate;
+  res &= testPointPredicateConcepts<IntImage, IntPredicate, FloatImage, FloatPredicate>();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
