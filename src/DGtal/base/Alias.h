@@ -71,21 +71,28 @@ member or variable are possible:
 |------------------|---------------|---------------|----------------|---------------------|
 |To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
-|To: \c CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1) | Shared. O(1)        |
+|To: \ref CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
+
+For the last row (case where the \e programmer choose a \ref
+CountedPtrOrPtr to hold the const alias), the \e user
+can thus enforce a \b secure aliasing by handling a variant
+of \ref CountedPtr as argument. In this case, even if the aliased
+object is destroyed in the caller context, it still exists in the
+callee context.
 
 
-@note The usage of \c Alias<T> instead of \c T \c & or \c T \c *
+@note The usage of \ref Alias<T> instead of \c T \c & or \c T \c *
 in parameters is \b recommended when the lifetime of the
 parameter must exceed the lifetime of the called
 method/function/constructor (often the case in constructor or
-init methods). The usage of \c T \c & or \c T \c * instead of \c
+init methods). 
+
+@note The usage of \c T \c & or \c T \c * instead of \ref
 Alias<T> is \b recommended when the lifetime of the parameter is
 not required to exceed the lifetime of the called
 method/function/constructor (often the case in standard methods,
 where the parameter is only used at some point, but not
 referenced after in some data member).
-
-
 
 @tparam T is any type.
 

@@ -252,24 +252,6 @@ struct FByCloneHeap {
   A1* myA1;
 };
 
-// Invalid since 0.7
-// struct FByCloneCountedPtr {
-//   FByCloneCountedPtr( Clone<A1> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
-//     : myA1( a )
-//   {
-//     std::cout << "  FByCloneCountedPtr( Clone<A1> a ) " << myA1 << std::endl;
-//   }
-
-//   ~FByCloneCountedPtr() {}
-
-//   int value() const
-//   {
-//     return myA1->data;
-//   }
-
-//   CountedPtr<A1> myA1;
-// };
-
 struct FByCloneCowPtr {
   FByCloneCowPtr( Clone<A1> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
     : myA1( a )
@@ -333,15 +315,6 @@ int main()
                << " nbCreated=" << A1::nbCreated 
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
-  // Invalid to clone a counted pointer since 0.7
-  // trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into CountedPtr (Clone)." );
-  // FByCloneCountedPtr fe2( a1 ); // +1/0
-  // ++nb, nbok += A1::nbCreated==6 ? 1 : 0;
-  // ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
-  // trace.info() << "(" << nbok << "/" << nb << ")"
-  //              << " nbCreated=" << A1::nbCreated 
-  //              << " nbDeleted=" << A1::nbDeleted << std::endl; 
-  // trace.endBlock();
   trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into CowPtr (Clone)." );
   FByCloneCowPtr fe3( a1 ); // +1/0
   ++nb, nbok += A1::nbCreated==6 ? 1 : 0;
@@ -351,7 +324,7 @@ int main()
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
 
-  int size = 40;
+  int size = 20;
   trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
   double t1 = computeTriangles<TriangleByValue>( size );
   trace.info() << "Perimeter is " << t1 << std::endl;

@@ -61,7 +61,6 @@ parameter to \c f through the following mechanism:
   f is a constructor/method of another object. It is \b unclear
   whether the <b> lifetime of the argument should exceed the lifetime
   of \c f </b>. This fact is clarified generally by the documentation.
-  here also.
 
 - by \b reference with \c f(\c T& \c t ). It is \e generally used for
   \b modifying an object (\b input-output or \b output). It
@@ -93,7 +92,7 @@ meanings. The user is forced to checked carefully the documentation
 The \b programmer should explicit its \e intent to the user in an unambiguous way directly in the signature of \c f. We propose the following taxonomy:
 
 -# \b input parameters
-    -# \b immediate \b use. The \e argument is used immediately in \c f, it is \e not \e pointed or \e referenced for \e further \e use, and its lifetime is whatever.
+    -# \b immediate \b use. The \e argument is used immediately in \c f, it is \e not \e pointed nor \e referenced for \e further \e use, and its lifetime is whatever.
     -# \b immediate \b cloning. The \e argument is cloned in \c f for \e further \b secure \e use or \e modifications, and hence its lifetime is whatever.
     -# \b long-term \b const \b aliasing. The \e argument is aliased in \c f for \e further \e use. The user is warned that he must adapt the lifetime of the argument consequently (generally the lifetime of the other object). The user knows that its argument will not be modified.
     -# \b object \b transfer or \b pointer \b acquisition. The \e argument was dynamically allocated and you wish to transfer its ownership to another object through call of \c f. This is a \b cloning for the \e programmer induced by a specific call by the \e user with a pointer.
@@ -124,19 +123,21 @@ We propose the following ways to pass parameters without ambiguity:
 | any type/object                | `f( T& t )`        | `f( Alias<T> t )`  |
 | User must be careful of argument lifetime| no       | yes                |
 
-\note Parameter passing by \b pointer may be used in place of references in the first column, altough this is not encouraged. Indeed, you have to think about your parameter passing by pointer to determine whether it is truely an immediate use or an implicit \c Clone<T*>.
+\note Parameter passing by \b pointer may be used in place of references in the first column, altough this is not encouraged. Indeed, you have to think about your parameter passing by pointer to determine whether it is truely an immediate use or an implicit \c Clone<T*>. You may use a parameter passing by \b pointer in the following cases:
+- you wish to alias / const-alias an object that may be \e null (0) in some cases, like in an optional object association. In this case, you should use a \b pointer member.
+- you are manipulating arrays: pointers relate to cells of your array and are in fact \e iterators passed by value. Perhaps consider a typedef to remove ambiguity.
 
 
 \subsection moduleCloneAndReference_sec22 User passing an argument to a Clone parameter
 
-A parameter `( Clone<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Clone depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T, \c CowPtr<T>, \c T*. The following table sums up the different conversions \e Argument toward \e member.
+A parameter `( Clone<T> cT )` accepts several types of arguments constructed from \c T. The true behavior of \c Clone depends also on the way the \e programmer uses the object \c cT in the function/method. The object \c cT may be used to initialize 3 different types of object (often a data member): \c T, \c T*, \ref CowPtr<T>. The following table sums up the different conversions \e Argument toward \e member.
 
 
 |Argument type:    |\c const \c T& |    \c T*      |\c CountedPtr<T>| \c CowPtr<T>   |\c T&& (c++11)|
 |------------------|---------------|---------------|----------------|----------------|--------------|
 |To:\c T           | Dupl.  O(N)   |Acq. Dupl. O(N)| Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
 |To:\c T*          | Dupl.  O(N)   |   Acq. O(1)   | Dupl. O(N)     | Dupl. O(N)     | Move. O(1)   |
-|To:\c CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
+|To:\ref CowPtr<T>   | Dupl.  O(N)   |   Acq. O(1)   | Lazy. O(1)/O(N)| Lazy. O(1)/O(N)| Move. O(1)   |
 
 where O(N) stands for the time to duplicate an instance of \c T, and with the following abbreviations:
 - \b Dupl. Object is duplicated.
@@ -148,7 +149,7 @@ It is clear that worst case is duplication while sometimes \ref Clone
 is constant time (while guaranteeing object invariance and
 life-time).
 
-\note A conversion to \c T* means pointer acquisition. Hence the programmer should take of deletion of the object.
+\note A conversion to \c T* means pointer acquisition. Hence the programmer should take care of deletion of the object.
 Otherwise, deletion is automatic for \c T or \c CowPtr<T> member.
 
 | member:   |     \c T          |\c CowPtr<T>|     \c T* |
@@ -186,7 +187,7 @@ A parameter `( Alias<T> cT )` accepts several types of arguments constructed fro
 |------------------|---------------|---------------|----------------|---------------------|
 |To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
-|To: \c CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1) | Shared. O(1)       |
+|To: \ref CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
 
 \note When choosing an `Alias<T>` parameter, the \e programmer should really consider using a `CountedPtrOrPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c T&  and  \c T*) is that there is one less boolean test and indirection. 
 
@@ -223,7 +224,7 @@ A parameter `( ConstAlias<T> cT )` accepts several types of arguments constructe
 |------------------|---------------|---------------|----------------|------------|---|
 |To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
 |To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
-|To: \c CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1)|Shared. O(1)| Shared. O(1)  |
+|To: \ref CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure|Shared. O(1), \b secure| Shared. O(1), \b secure|
 
 \note When choosing a `ConstAlias<T>` parameter, the \e programmer should really consider using a `CountedConstPtrOrConstPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c const \c T&  and \c const \c T*) is that there is one less boolean test and indirection. 
 

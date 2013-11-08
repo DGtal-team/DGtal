@@ -8,7 +8,7 @@
 
 *Base Package*
 
-    - complete rewriting of Clone, Alias and ConstAlias
+    - Complete rewriting of Clone, Alias and ConstAlias
       classes. Parameter passing is now documented with a standardized
       method to determine parameters unambiguously. Associated classed
       CowPtr, CountedPtrOrPtr and CountedConstPtrOrConstPtr are now used
