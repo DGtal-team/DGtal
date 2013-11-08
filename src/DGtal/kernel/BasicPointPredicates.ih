@@ -38,7 +38,7 @@ template <typename TPoint, bool boolCst>
 inline
 bool
 DGtal::ConstantPointPredicate<TPoint,boolCst>
-::operator()( const Point & p ) const
+::operator()( const Point & UNUSED(p) ) const
 {
   return boolCst;
 }

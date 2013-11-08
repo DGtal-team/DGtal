@@ -55,7 +55,7 @@ bool testUmbrellaComputer()
   typedef GaussDigitizer<Space,EuclideanShape>::Domain Domain;
   typedef LightImplicitDigitalSurface<KSpace,DigitalShape> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
-  typedef Boundary::Tracker Tracker;
+  //typedef Boundary::Tracker Tracker;
   typedef Boundary::Surfel Surfel;
   typedef Boundary::DigitalSurfaceTracker DigitalSurfaceTracker;
   typedef DigitalSurface<Boundary> MyDigitalSurface;
@@ -146,11 +146,11 @@ bool testCombinatorialSurface()
   typedef GaussDigitizer<Space,EuclideanShape>::Domain Domain;
   typedef LightImplicitDigitalSurface<KSpace,DigitalShape> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
-  typedef Boundary::Tracker Tracker;
+  //typedef Boundary::Tracker Tracker;
   typedef Boundary::Surfel Surfel;
-  typedef Boundary::DigitalSurfaceTracker DigitalSurfaceTracker;
+  //typedef Boundary::DigitalSurfaceTracker DigitalSurfaceTracker;
   typedef DigitalSurface<Boundary> MyDigitalSurface;
-  typedef UmbrellaComputer<DigitalSurfaceTracker> MyUmbrellaComputer;
+  //typedef UmbrellaComputer<DigitalSurfaceTracker> MyUmbrellaComputer;
   typedef DigitalSurface<Boundary>::Face Face;
   typedef DigitalSurface<Boundary>::Arc Arc;
   typedef DigitalSurface<Boundary>::Vertex Vertex;
