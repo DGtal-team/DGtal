@@ -47,7 +47,7 @@ template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputer()
-  : myDSS( Point(0,0), Point(0,0) ), myBegin(), myEnd()
+  : myDSS( Point(0,0) ), myBegin(), myEnd()
 {
 }
 
@@ -57,8 +57,9 @@ template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 ArithmeticalDSSComputer(const ConstIterator& it)
-  : myDSS( *it, *it ), myBegin(it), myEnd(it)
+  : myDSS( *it ), myBegin(it), myEnd(it)
 {
+  ++myEnd; 
 }
 
 //-----------------------------------------------------------------------------
@@ -71,7 +72,7 @@ init(const ConstIterator& it)
   myEnd = it; 
   ++myEnd; 
   Point p = *it; 
-  myDSS = DSS( p, p ); 
+  myDSS = DSS( p ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -204,7 +205,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractFront()
 {
   if (myDSS.retractFront())
     {
-      ++myBegin;
+      --myEnd; 
       return true; 
     }
   else 
@@ -219,7 +220,7 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::retractBack()
 {
   if (myDSS.retractBack())
     {
-      --myEnd;
+      ++myBegin;
       return true; 
     }
   else 
@@ -424,7 +425,7 @@ inline
 bool
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::isValid() const
 {
-  return myDSS.isValid(); 
+  return ( (myDSS.isValid())&&(isNotEmpty(myBegin,myEnd)) ); 
 }
 
 //-----------------------------------------------------------------
