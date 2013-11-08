@@ -65,6 +65,10 @@
       shapes/fromPoints to shapes/ directory), iterators on mesh
       points and mesh face.
 
+*Topology Package*
+    - The class SCellToMidPoint is now deprecated. Use CanonicSCellEmbedder instead
+      to map a signed cell to its corresponding point in the Euclidean space
+
 *IO Package*
 
     - Complete refactoring of 3D viewers and boards (Viewer3D, Board3DTo2D).
@@ -76,6 +80,7 @@
     - Adding missing PPM Reader.
     - Adding missing DICOM reader (with ITK library)
     - Adding ITK reader and ITK writer
+    - OpenInventor (SOQT/Coin3D) based viewer has been removed (please consider release 0.6 if interested).
 
 *Image Package*
 

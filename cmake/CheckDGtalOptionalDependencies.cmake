@@ -22,8 +22,6 @@ OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
-OPTION(WITH_COIN3D-SOQT "With COIN3D & SOQT for 3D visualization (Qt required)." OFF)
-
 
 IF(WITH_C11)
 SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
@@ -96,14 +94,6 @@ message(STATUS "      WITH_QGLVIEWER    true    (Qt/QGLViewer based 3D Viewer)")
 ELSE(WITH_QGLVIEWER)
 message(STATUS "      WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)")
 ENDIF(WITH_QGLVIEWER)
-
-IF(WITH_COIN3D-SOQT)
-SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ )
-message(STATUS "      WITH_COIN3D-SOQT  true    (OpenInventor based 3D Viewer)")
-ELSE(WITH_COIN3D-SOQT)
-message(STATUS "      WITH_COIN3D-SOQT  false   (OpenInventor based 3D Viewer)")
-ENDIF(WITH_COIN3D-SOQT)
-
 
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
@@ -287,43 +277,6 @@ ELSE(WITH_HDF5)
 ENDIF(WITH_HDF5)
 
 # -----------------------------------------------------------------------------
-# Look for Coin3D, SoQt for 3D display.
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-SET(COIN3D_FOUND_DGTAL 0)
-SET(SOQT_FOUND_DGTAL 0)
- IF(WITH_COIN3D-SOQT)
-  find_package(COIN3D REQUIRED)
-  if ( COIN3D_FOUND )
-    set(COIN3D_FOUND_DGTAL 1)
-    message(STATUS "Coin3d found.")
-    ADD_DEFINITIONS(-DWITH_COIN3D)
-    include_directories( ${COIN3D_INCLUDE_DIR} )
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${COIN3D_LIBRARY})
-    SET(DGtalLibInc ${DGtalLibInc} ${COIN3D_INCLUDE_DIR})
-  else ( COIN3D_FOUND )
-    message(FATAL_ERROR " Coin3d not found. Check the cmake variables associated to this package or disable it." )
-  endif ( COIN3D_FOUND )
-
-  find_package(SOQT REQUIRED)
-  if ( SOQT_FOUND )
-    SET(SOQT_FOUND_DGTAL 1)
-    message(STATUS  "SoQt found. ")
-    ADD_DEFINITIONS("-DWITH_SOQT ")
-    include_directories( ${SOQT_INCLUDE_DIR} )
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${SOQT_LIBRARY})
-    SET(DGtalLibInc ${DGtalLibInc} ${SOQT_INCLUDE_DIR})
-  else ( SOQT_FOUND )
-    message(FATAL_ERROR  "SoQt not found." Check the cmake variables associated to this package or disable it. )
-  endif ( SOQT_FOUND )
-ENDIF(WITH_COIN3D-SOQT)
-
-if ( COIN3D_FOUND AND SOQT_FOUND )
-  SET ( WITH_VISU3D_IV 1 )
-  ADD_DEFINITIONS("-DWITH_VISU3D_IV")
-endif( COIN3D_FOUND  AND SOQT_FOUND )
-
-# -----------------------------------------------------------------------------
 # Look for QGLViewer for 3D display.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
@@ -364,7 +317,7 @@ endif(NOT WITH_VISU3D_QGLVIEWER)
 # Look for Qt (if LibqglViewer or coin3D are set).
 # -----------------------------------------------------------------------------
 set(QT4_FOUND_DGTAL 0)
-IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
+IF( WITH_QGLVIEWER)
   find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
   if ( QT4_FOUND )
     set(QT4_FOUND_DGTAL 1)
@@ -377,7 +330,7 @@ IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
   else ( QT4_FOUND )
     message(FATAL_ERROR  "Qt4 not found.  Check the cmake variables associated to this package or disable it." )
   endif ( QT4_FOUND )
-ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
+ENDIF( WITH_QGLVIEWER)
 
 # -----------------------------------------------------------------------------
 # Look for OpenMP
