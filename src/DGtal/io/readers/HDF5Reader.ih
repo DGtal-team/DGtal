@@ -169,33 +169,18 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   hid_t file, dataset;
   hid_t datatype, dataspace;
 
-  H5T_class_t t_class;                  // data type class
-  H5T_order_t order;                    // data order
-  size_t      size;                     // size of the data element stored in file
-  hsize_t     dims_out[ddim];              // dataset dimensions
-  int         status_n, rank;
+  hsize_t dims_out[ddim];              // dataset dimensions
 
   // Open the file and the dataset.
-  file = H5Fopen(aFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
+  file = H5Fopen(aFilename.c_str(), H5F_ACC_RDWR, H5P_DEFAULT);
   dataset = H5Dopen2(file, aDataset.c_str(), H5P_DEFAULT);
 
   // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
   datatype = H5Dget_type(dataset); // datatype handle
-  t_class = H5Tget_class(datatype);
-  /*if (t_class == H5T_INTEGER)
-    trace.info() << "Data set has INTEGER type" << std::endl;*/
-
-  order = H5Tget_order(datatype);
-  /*if (order == H5T_ORDER_LE)
-    trace.info() << "Little endian order" << std::endl;*/
-
-  size  = H5Tget_size(datatype);
-  //trace.info() << "Data size is " << (int)size << std::endl;
 
   dataspace = H5Dget_space(dataset); // dataspace handle
-  rank = H5Sget_simple_extent_ndims(dataspace);
-  status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
-  //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
+
+  H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
 
   // --
 
@@ -236,8 +221,8 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   Value *data_out = (Value*) malloc (malloc_size * sizeof(Value)); // output buffer
   if (data_out == NULL)
   {
-    trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
-    exit(-1);
+    trace.error() << "data_out malloc error in importHDF5_3D: " << (malloc_size * sizeof(Value)) << std::endl;
+    throw dgtalio;
   }
 
   // Define hyperslab in the dataset.
@@ -246,6 +231,11 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   for(d=0; d<ddim; d++)
     count[d] = N_SUB[d];
   status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+  if (status)
+  {
+    trace.error() << " H5Sselect_hyperslab from dataspace error" << std::endl;
+    throw dgtalio;
+  }
 
   // Define the memory dataspace.
   for(d=0; d<ddim; d++)
@@ -258,13 +248,18 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5_3D(const std::string & 
   for(d=0; d<ddim; d++)
     count_out[d] = N_SUB[d];
   status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_out, NULL, count_out, NULL);
+  if (status)
+  {
+    trace.error() << " H5Sselect_hyperslab from memspace error" << std::endl;
+    throw dgtalio;
+  }
 
   // Read data from hyperslab in the file into the hyperslab in memory.
   status = H5Dread(dataset, H5T_NATIVE_UINT8, memspace, dataspace, H5P_DEFAULT, data_out);
   if (status)
   {
     trace.error() << " H5Dread error" << std::endl;
-    exit(-2);
+    throw dgtalio;
   }
 
   OutputImage outputImage(aDomain);

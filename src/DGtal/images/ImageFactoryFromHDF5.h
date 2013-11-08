@@ -320,8 +320,10 @@ namespace DGtal
      *
      * @return an ImagePtr.
      */
-    OutputImage * requestImage(const Domain &aDomain) // time consuming
+    OutputImage * requestImage(const Domain &aDomain) throw(DGtal::IOException) // time consuming
     {
+      DGtal::IOException dgtalio;
+      
       const int ddim = Domain::dimension;
 
       // --
@@ -336,7 +338,6 @@ namespace DGtal
       hsize_t offset_out[ddim];    // hyperslab offset in memory
       hsize_t count_out[ddim];     // size of the hyperslab in memory
 
-      //int i[ddim];
       int N_SUB[ddim];
       typename Domain::Integer d;
 
@@ -351,7 +352,7 @@ namespace DGtal
       if (data_out == NULL)
       {
         trace.error() << "data_out malloc error in requestImage: " << (malloc_size * sizeof(Value)) << std::endl;
-        exit(-1);
+        throw dgtalio;
       }
 
       // Define hyperslab in the dataset.
@@ -360,6 +361,11 @@ namespace DGtal
       for(d=0; d<ddim; d++)
         count[d] = N_SUB[d];
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+      if (status)
+      {
+        trace.error() << " H5Sselect_hyperslab from dataspace error" << std::endl;
+        throw dgtalio;
+      }
 
       // Define the memory dataspace.
       for(d=0; d<ddim; d++)
@@ -372,21 +378,26 @@ namespace DGtal
       for(d=0; d<ddim; d++)
         count_out[d] = N_SUB[d];
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_out, NULL, count_out, NULL);
+      if (status)
+      {
+        trace.error() << " H5Sselect_hyperslab from memspace error" << std::endl;
+        throw dgtalio;
+      }
 
       // Read data from hyperslab in the file into the hyperslab in memory.
       //status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_out);
       status = H5DSpecializations<Self, Value>::H5DreadS(*this, memspace, data_out);
       if (status)
       {
-        trace.error() << " H5DSpecializations/H5Dread error" << std::endl;
-        exit(-2);
+        trace.error() << " H5DSpecializations/H5DreadS error" << std::endl;
+        throw dgtalio;
       }
 
       OutputImage* outputImage = new OutputImage(aDomain);
       if (outputImage == NULL)
       {
         trace.error() << "outputImage new error in requestImage: " << std::endl;
-        exit(-3);
+        throw dgtalio;
       }
 
       typedef SpaceND<ddim> TSpace;
@@ -421,8 +432,10 @@ namespace DGtal
      *
      * @param outputImage the OutputImage.
      */
-    void flushImage(OutputImage* outputImage)
+    void flushImage(OutputImage* outputImage) throw(DGtal::IOException) 
     {
+      DGtal::IOException dgtalio;
+      
       const int ddim = Domain::dimension;
 
       // --
@@ -430,7 +443,7 @@ namespace DGtal
       hsize_t offset[ddim];        // hyperslab offset in the file
       hsize_t count[ddim];         // size of the hyperslab in the file
 
-      //herr_t status;
+      herr_t status;
       hsize_t dimsm[ddim];         // memory space dimensions
       hid_t memspace;
 
@@ -452,7 +465,7 @@ namespace DGtal
       if (data_in == NULL)
       {
         trace.error() << "data_in malloc error in flushImage: " << (malloc_size * sizeof(Value)) << std::endl;
-        exit(-1);
+        throw dgtalio;
       }
 
       // Define hyperslab in the dataset.
@@ -460,10 +473,12 @@ namespace DGtal
         offset[d] = outputImage->domain().lowerBound()[ddim-d-1]-myDomain->lowerBound()[ddim-d-1];
       for(d=0; d<ddim; d++)
         count[d] = N_SUB[d];
-      /*status = */H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
-      
-      // TODO
-      // Add throw() on status
+      status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+      if (status)
+      {
+        trace.error() << " H5Sselect_hyperslab from dataspace error" << std::endl;
+        throw dgtalio;
+      }
 
       // Define the memory dataspace.
       for(d=0; d<ddim; d++)
@@ -475,10 +490,12 @@ namespace DGtal
         offset_in[d] = 0;
       for(d=0; d<ddim; d++)
         count_in[d] = N_SUB[d];
-      /*status = */H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
-
-      // TODO
-      // Add throw() on status
+      status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
+      if (status)
+      {
+        trace.error() << " H5Sselect_hyperslab from memspace error" << std::endl;
+        throw dgtalio;
+      }
 
       typedef SpaceND<ddim> TSpace;
       typename TSpace::Point a, b;
@@ -504,10 +521,12 @@ namespace DGtal
 
       // Write data from hyperslab in memory into the hyperslab in the file.
       //status = H5Dwrite(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_in);
-      /*status = */H5DSpecializations<Self, Value>::H5DwriteS(*this, memspace, data_in);
-      
-      // TODO
-      // Add throw() on status
+      status = H5DSpecializations<Self, Value>::H5DwriteS(*this, memspace, data_in);
+      if (status)
+      {
+        trace.error() << " H5DSpecializations/H5DwriteS error" << std::endl;
+        throw dgtalio;
+      }
 
       H5Sclose(memspace);
 
