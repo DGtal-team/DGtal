@@ -222,7 +222,7 @@ namespace DGtal
      */
     AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage,
                                  ConstAlias<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(anImage),
+                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my2DImage(&anImage),
                                                                                          myFunctor(aFunctor),
                                                                                          myMode(aMode)
     {
@@ -268,7 +268,7 @@ namespace DGtal
      */
     AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage,
                                  ConstAlias<TFunctor> aFunctor,
-                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(anImage),
+                                 typename Viewer3D<Space,KSpace>::TextureMode aMode= 1): my3DImage(&anImage),
                                                                                          myFunctor(aFunctor),
                                                                                          myMode(aMode)
     {

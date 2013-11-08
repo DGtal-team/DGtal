@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file Clone.ih
+ * @file OldClone.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/11/23
  *
- * Implementation of inline methods defined in Clone.h
+ * Implementation of inline methods defined in OldClone.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,24 +41,24 @@
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Clone<T>::~Clone()
+DGtal::OldClone<T>::~OldClone()
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Clone<T>::Clone( const T & t ) 
+DGtal::OldClone<T>::OldClone( const T & t ) 
   : myRefT( t )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Clone<T>::Clone( const Clone<T> & other ) 
+DGtal::OldClone<T>::OldClone( const OldClone<T> & other ) 
   : myRefT( other.myRefT )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Clone<T>::Clone( const T* ptrT )
+DGtal::OldClone<T>::OldClone( const T* ptrT )
   : myRefT( *ptrT )
 {
   ASSERT( ptrT != 0 );
@@ -66,7 +66,7 @@ DGtal::Clone<T>::Clone( const T* ptrT )
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Clone<T>::operator T() const
+DGtal::OldClone<T>::operator T() const
 { 
   return T( myRefT ); 
 }
@@ -74,14 +74,14 @@ DGtal::Clone<T>::operator T() const
 template <typename T>
 inline
 T*
-DGtal::Clone<T>::allocate() const
+DGtal::OldClone<T>::allocate() const
 { 
   return new T( myRefT ); 
 }
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::Clone<T>::operator CountedPtr<T>() const
+DGtal::OldClone<T>::operator CountedPtr<T>() const
 { 
   return CountedPtr<T>( allocate() ); // duplicated once 
 }

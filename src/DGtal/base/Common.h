@@ -88,6 +88,18 @@
 #define secured_sprintf snprintf
 #endif // defined( WIN32 )
 
+/*  Macro to cut down on compiler warnings. */
+#if !defined(NDEBUG)
+#define UNUSED_PARAM @param
+#define UNUSED(identifier) /* identifier */
+#else
+#define UNUSED_PARAM  param
+#define UNUSED(identifier)  identifier
+#endif
+
+
+
+
 #include "DGtal/base/Config.h"
 #include "DGtal/base/Trace.h"
 #include "DGtal/base/TraceWriterTerm.h"

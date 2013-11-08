@@ -46,7 +46,7 @@
 
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/boards/DrawWithBoard3DTo2DModifier.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/StandardDSS6Computer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -156,7 +156,7 @@ namespace DGtal
 
 
 
-  // ArithmeticalDSS3d
+  // StandardDSS6Computer
   /**
    * Default drawing style object.
    * @param str the name of the class
@@ -165,7 +165,7 @@ namespace DGtal
    */
   template <typename TIterator, typename TInteger, int connectivity>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  defaultStyle( std::string str, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
   template <typename TIterator, typename TInteger, int connectivity>
   /**
@@ -174,7 +174,7 @@ namespace DGtal
    * @param arithm the arithm to draw
    */
   static void
-  drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  drawAsBalls( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
   /**
    * @brief drawAsBoundingBox
@@ -183,7 +183,7 @@ namespace DGtal
    */
   template <typename TIterator, typename TInteger, int connectivity>
   static void
-  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+  drawAsBoundingBox( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
   template <typename TIterator, typename TInteger, int connectivity>
   /**
@@ -192,8 +192,8 @@ namespace DGtal
    * @param arithm the arithm to draw
    */
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
-  // ArithmeticalDSS3d
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
+  // StandardDSS6Computer
 
 
   // DigitalSetBySTLSet
@@ -203,45 +203,45 @@ namespace DGtal
    * @param aSet the set to draw
    * @return the dyn. alloc. default style for this object.
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static DGtal::DrawableWithBoard3DTo2D *
-  defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief drawAsPavingTransparent
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  drawAsPavingTransparent( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief drawAsPaving
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  drawAsPaving( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief drawAsGrid
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  drawAsGrid( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
   /**
    * @brief draw
    * @param board the board where to draw
    * @param aSet the set to draw
    */
-  template<typename Domain>
+  template<typename Domain, typename Compare>
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
   // DigitalSetBySTLSet
 
 
@@ -524,7 +524,7 @@ namespace DGtal
   template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter );
   // MidPointsRange
 
   // ArrowsRange

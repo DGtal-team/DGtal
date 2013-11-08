@@ -48,6 +48,10 @@
 #include <set>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/Clone.h"
+#include "DGtal/base/Alias.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -66,26 +70,31 @@ namespace DGtal
     within some given domain.
 
     This is the most versatile implementation for a set of point, and
-    is essentially a wrapper to std::set<Point>. It added the notion
+    is essentially a wrapper to std::set<Point>. It adds the notion
     of domain.
 
     Model of CDigitalSet.
+
+    @since 0.7 Domains are now hold with copy on write pointers and no more
+    only aliased. The problem was related to returning sets with a
+    locally constructed domain. With CowPtr, you are sure that the
+    domain remains valid during the lifetime of your set.
    */
-  template <typename TDomain>
+  template <typename TDomain, typename TCompare = std::less<typename TDomain::Point> >
   class DigitalSetBySTLSet
   {
   public:
- 
-    ///Concept checks
-    BOOST_CONCEPT_ASSERT(( CDomain< TDomain > ));
-    
     typedef TDomain Domain;
-    typedef DigitalSetBySTLSet<Domain> Self;
+    typedef TCompare Compare;
+    typedef DigitalSetBySTLSet<Domain, Compare> Self;
     typedef typename Domain::Space Space;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
     typedef typename std::set<Point>::iterator Iterator;
     typedef typename std::set<Point>::const_iterator ConstIterator;
+
+    ///Concept checks
+    BOOST_CONCEPT_ASSERT(( CDomain< TDomain > ));
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -101,7 +110,7 @@ namespace DGtal
      *
      * @param d any domain.
      */
-    DigitalSetBySTLSet( const Domain & d );
+    DigitalSetBySTLSet( Clone<Domain> d, const Compare & c = Compare() );
 
     /**
      * Copy constructor.
@@ -121,6 +130,11 @@ namespace DGtal
      */
     const Domain & domain() const;
 
+    /**
+     * @return a copy on write pointer on the embedding domain.
+     */
+    CowPtr<Domain> domainPointer() const;
+
     // ----------------------- Standard Set services --------------------------
   public:
 
@@ -133,7 +147,7 @@ namespace DGtal
      * @return 'true' iff the set is empty (no element).
      */
     bool empty() const;
-     
+
     /**
      * Adds point [p] to this set.
      *
@@ -179,7 +193,7 @@ namespace DGtal
 
     /**
      * Removes point [p] from the set.
-     * 
+     *
      * @param p the point to remove.
      * @return the number of removed elements (0 or 1).
      */
@@ -187,7 +201,7 @@ namespace DGtal
 
     /**
      * Removes the point pointed by [it] from the set.
-     * 
+     *
      * @param it an iterator on this set.
      * Note: generally faster than giving just the point.
      */
@@ -243,8 +257,8 @@ namespace DGtal
      * set union to left.
      * @param aSet any other set.
      */
-    DigitalSetBySTLSet<Domain> & operator+=
-    ( const DigitalSetBySTLSet<Domain> & aSet );
+    DigitalSetBySTLSet<Domain, Compare> & operator+=
+    ( const DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     // ----------------------- Model of CPointPredicate -----------------------------
   public:
@@ -257,14 +271,14 @@ namespace DGtal
 
     // ----------------------- Other Set services -----------------------------
   public:
-    
+
     /**
      * Computes the complement in the domain of this set
      * @param ito an output iterator
      * @tparam TOutputIterator a model of output iterator
      */
    template< typename TOutputIterator >
-    void computeComplement(TOutputIterator& ito) const; 
+    void computeComplement(TOutputIterator& ito) const;
 
     /**
      * Builds the complement in the domain of the set [other_set] in
@@ -272,8 +286,8 @@ namespace DGtal
      *
      * @param other_set defines the set whose complement is assigned to 'this'.
      */
-    void assignFromComplement( const DigitalSetBySTLSet<Domain> & other_set ); 
-    
+    void assignFromComplement( const DigitalSetBySTLSet<Domain, Compare> & other_set );
+
     /**
      * Computes the bounding box of this set.
      *
@@ -304,18 +318,19 @@ namespace DGtal
   protected:
 
     /**
-     * The associated domain;
+     * The associated domain. The pointed domain may be changed but it
+     * remains valid during the lifetime of the set.
      */
-    const Domain & myDomain;
+    CowPtr<Domain> myDomain;
 
     /**
      * The container storing the points of the set.
      */
-    std::set<Point> mySet;
+    std::set<Point, Compare> mySet;
 
 
   public:
-    
+
 
 
     // --------------- CDrawableWithBoard2D realization ---------------------
@@ -323,7 +338,7 @@ namespace DGtal
 
     /**
      * Default drawing style object.
-     * @return the dyn. alloc. default style for this object. 
+     * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
@@ -358,9 +373,9 @@ namespace DGtal
    * @param object the object of class 'DigitalSetBySTLSet' to write.
    * @return the output stream after the writing.
    */
-  template <typename Domain>
+  template <typename Domain, typename Compare>
   std::ostream&
-  operator<< ( std::ostream & out, const DigitalSetBySTLSet<Domain> & object );
+  operator<< ( std::ostream & out, const DigitalSetBySTLSet<Domain, Compare> & object );
 
 } // namespace DGtal
 

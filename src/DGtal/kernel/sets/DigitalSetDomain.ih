@@ -49,7 +49,7 @@ template <typename TDigitalSet>
 inline
 DGtal::DigitalSetDomain<TDigitalSet>
 ::DigitalSetDomain ( ConstAlias<DigitalSet> aSet )
-  : mySet( aSet )
+  : mySet( &aSet )
 {
   mySet->computeBoundingBox( myLowerBound, myUpperBound );
 }

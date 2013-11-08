@@ -88,6 +88,15 @@ DGtal::DigitalSetFromMap<TMapImage>::domain() const
   return myImgPtr->domain();
 }
 
+// ------------------------------------------------------------------------
+template <typename TMapImage>
+inline
+DGtal::CowPtr<typename DGtal::DigitalSetFromMap<TMapImage>::Domain>
+DGtal::DigitalSetFromMap<TMapImage>::domainPointer() const
+{
+  return CowPtr<Domain>( new Domain( myImgPtr->domain() ) );
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////

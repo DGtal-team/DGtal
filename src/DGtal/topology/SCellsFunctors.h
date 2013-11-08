@@ -135,6 +135,11 @@ namespace DGtal
       
   }; // end of class SCellToPoint
 
+  /**
+   * SCellToMidPoint is now deprecated. Please use CanonicSCellEmbedder instead.
+   */
+  namespace deprecated
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToMidPoint
   /**
@@ -210,11 +215,13 @@ namespace DGtal
       ASSERT( myK ); 
       Output o( myK->sKCoords(s) );
       o /= 2;
+      for( unsigned int i = 0; i < o.dimension; ++i )
+          o[i] -= 0.5;
       return o;
     } 
       
   }; // end of class SCellToMidPoint
-
+  } // end of namespace deprecated
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToArrow
   /**
@@ -363,7 +370,7 @@ namespace DGtal
     Output operator()(const Input& s) const
     {
       ASSERT( myK ); 
-      Input pixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
       return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
       
@@ -438,7 +445,7 @@ namespace DGtal
     Output operator()(const Input& s) const
     {
       ASSERT( myK ); 
-      Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input pixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
       return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
       
@@ -516,9 +523,9 @@ namespace DGtal
     {
       ASSERT( myK ); 
       //inner point
-      Input innerPixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input innerPixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
       //outer point
-      Input outerPixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
+      Input outerPixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
 
       return Output(myK->sCoords( innerPixel ),myK->sCoords( outerPixel ));
     }

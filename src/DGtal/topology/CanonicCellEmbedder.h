@@ -117,7 +117,7 @@ namespace DGtal
        space.
        
        @param cell any unsigned cell in the digital space.
-       @return its canconical embedding in the Euclidean space.
+       @return its canonical embedding in the Euclidean space.
     */
     RealPoint embed( const Cell & cell ) const;
 
@@ -126,7 +126,7 @@ namespace DGtal
        space.
        
        @param cell any unsigned cell in the digital space.
-       @return its canconical embedding in the Euclidean space.
+       @return its canonical embedding in the Euclidean space.
     */
     RealPoint operator()( const Cell & cell ) const;
 

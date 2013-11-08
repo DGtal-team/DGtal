@@ -730,8 +730,8 @@ private:
    * \brief Aim: Functor allowing to rescale a value.
    * Values of the initial scale [initMin,initMax] are rescaled to the new scale [newMin,newMax].
    *
-   * @tparam TInput the type of values on the inital scale.
-   * @tparam TOutput the type of values on the new scale.
+   * @tparam TInputType the type of values on the inital scale.
+   * @tparam TOutputType the type of values on the new scale.
    */
   template<typename TInputType, typename TOutputType>
   struct RescalingFunctor
