@@ -104,7 +104,7 @@ DGtal::CanonicCellEmbedder<TKSpace>::operator()( const Cell & cell ) const
   Point dp = myKSpace->uKCoords( cell );
   RealPoint p;
   for ( Dimension i = 0; i < dp.size(); ++i )
-    p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] ) / 2;
+    p[ i ] = ( NumberTraits<Integer>::castToDouble( dp[ i ] ) / 2.0 ) - 0.5; /// In Khalimsky Space, 0-Cells have even coordinates, while in the embedding, voxel centers have integer coordinates, we need to shift all coordinates by -1/2
   return p;
 }
 //-----------------------------------------------------------------------------

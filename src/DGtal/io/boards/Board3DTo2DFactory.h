@@ -524,7 +524,7 @@ namespace DGtal
   template <typename TIterator>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-                    const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter );
+                    const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter );
   // MidPointsRange
 
   // ArrowsRange
