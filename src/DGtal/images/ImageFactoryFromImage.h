@@ -192,16 +192,13 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    ImageFactoryFromImage() {}
+    //ImageFactoryFromImage() {}
     
     // ------------------------- Private Datas --------------------------------
   protected:
 
     /// Alias on the image container
     ImageContainer * myImagePtr;
-
-  private:
-
 
     // ------------------------- Internals ------------------------------------
   private:

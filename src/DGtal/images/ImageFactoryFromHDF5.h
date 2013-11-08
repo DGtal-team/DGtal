@@ -79,7 +79,7 @@ namespace DGtal
   // template class H5DSpecializations
   /**
    * Description of template class 'H5DSpecializations' <p>
-   * \brief Aim:
+   * \brief Aim: implements HDF5 reading and writing for specialized type DGtal::uint8_t.
    */
   template <typename TImageFactory>
   struct H5DSpecializations<TImageFactory, DGtal::uint8_t>
@@ -105,7 +105,7 @@ namespace DGtal
   // template class H5DSpecializations
   /**
    * Description of template class 'H5DSpecializations' <p>
-   * \brief Aim:
+   * \brief Aim: implements HDF5 reading and writing for specialized type DGtal::int32_t.
    */
   template <typename TImageFactory>
   struct H5DSpecializations<TImageFactory, DGtal::int32_t>
@@ -131,7 +131,7 @@ namespace DGtal
   // template class H5DSpecializations
   /**
    * Description of template class 'H5DSpecializations' <p>
-   * \brief Aim:
+   * \brief Aim: implements HDF5 reading and writing for specialized type DGtal::int64_t.
    */
   template <typename TImageFactory>
   struct H5DSpecializations<TImageFactory, DGtal::int64_t>
@@ -157,7 +157,7 @@ namespace DGtal
   // template class H5DSpecializations
   /**
    * Description of template class 'H5DSpecializations' <p>
-   * \brief Aim:
+   * \brief Aim: implements HDF5 reading and writing for specialized type double.
    */
   template <typename TImageFactory>
   struct H5DSpecializations<TImageFactory, double>
@@ -228,30 +228,18 @@ namespace DGtal
     {
       const int ddim = Domain::dimension;
 
-      hsize_t     dims_out[ddim];              // dataset dimensions
+      hsize_t dims_out[ddim];              // dataset dimensions
 
       // Open the file and the dataset.
-      file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
+      file = H5Fopen(myFilename.c_str(), H5F_ACC_RDWR, H5P_DEFAULT);
       dataset = H5Dopen2(file, myDataset.c_str(), H5P_DEFAULT);
 
       // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
       datatype = H5Dget_type(dataset); // datatype handle
-      // t_class = H5Tget_class(datatype);
-      /*if (t_class == H5T_INTEGER)
-        trace.info() << "Data set has INTEGER type" << std::endl;*/
-
-      //order = H5Tget_order(datatype);
-      /*if (order == H5T_ORDER_LE)
-        trace.info() << "Little endian order" << std::endl;*/
-
-      //size  = H5Tget_size(datatype);
-      //trace.info() << "Data size is " << (int)size << std::endl;
 
       dataspace = H5Dget_space(dataset); // dataspace handle
-      //rank = H5Sget_simple_extent_ndims(dataspace);
 
-      /*status_n = */H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
-      //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
+      H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
 
       // --
 
@@ -410,13 +398,9 @@ namespace DGtal
       }
       HyperRectDomain<TSpace> hrdomain(a,b);
 
-      /*std::vector<typename TSpace::Dimension> v(ddim);
-      for(d=0; d<ddim; d++)
-        v[d]=d;*/
-
       int p=0;
-      for( typename HyperRectDomain<TSpace>/*::ConstSubRange*/::ConstIterator
-            it = hrdomain/*.subRange(v, a)*/.begin(), itend = hrdomain/*.subRange(v, a)*/.end();
+      for( typename HyperRectDomain<TSpace>::ConstIterator
+            it = hrdomain.begin(), itend = hrdomain.end();
           it != itend;
           ++it)
       {
@@ -547,7 +531,7 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    ImageFactoryFromHDF5() {}
+    //ImageFactoryFromHDF5() {}
 
     // ------------------------- Private Datas --------------------------------
   protected:
@@ -559,7 +543,7 @@ namespace DGtal
     const std::string myFilename;
     const std::string myDataset;
 
-  public://private:
+  public:
 
     // HDF5 handles
     hid_t file, dataset;

@@ -93,18 +93,16 @@ int main( /*int argc, char** argv*/ )
     
     // here we create read and write policies
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
-    //typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
-    typedef ImageCacheWritePolicyWB<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWB;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
     MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
-    //MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
-    MyImageCacheWritePolicyWB imageCacheWritePolicyWB(imageFactoryFromImage);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
     // here we create the TiledImage
-    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWB> MyTiledImage;
+    typedef TiledImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImage;
     //BOOST_CONCEPT_ASSERT(( CConstBidirectionalRangeFromPoint< MyTiledImage > ));
     //BOOST_CONCEPT_ASSERT(( CBidirectionalOutputRangeFromPoint< MyTiledImage::Range, typename MyTiledImage::Value > ));
     BOOST_CONCEPT_ASSERT(( CImage< MyTiledImage > ));
-    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWB, 4);
+    MyTiledImage tiledImage(imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 //! [TiledImage_creation]
     
     trace.info() << "tiledImage image: " << tiledImage << endl;
@@ -116,7 +114,7 @@ int main( /*int argc, char** argv*/ )
     
     // ---
     
-    int cpt, sumcRp, sumcRrp, sumTp, sumTm, sumTrp, sumC;
+    /*int cpt, sumcRp, sumcRrp, sumTp, sumTm, sumTrp, sumC;
     
     cpt=sumcRp=0;
     trace.beginBlock("test ConstRange");
@@ -214,7 +212,7 @@ int main( /*int argc, char** argv*/ )
           cpt++;
         }
     trace.info() << "Cpt: " << cpt << " - sumC: " << sumC << endl;
-    trace.endBlock();
+    trace.endBlock();*/
     
     // ---
 

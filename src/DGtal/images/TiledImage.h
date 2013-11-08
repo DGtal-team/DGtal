@@ -92,7 +92,10 @@ namespace DGtal
     typedef typename ImageContainer::Domain Domain;
     typedef typename ImageContainer::Point Point;
     typedef typename ImageContainer::Value Value;
+    
+    typedef typename ImageContainer::Difference Difference;
 
+    ///Types
     typedef TImageFactory ImageFactory;
     typedef typename ImageFactory::OutputImage OutputImage;
 
@@ -100,8 +103,6 @@ namespace DGtal
     typedef TImageCacheWritePolicy ImageCacheWritePolicy;
     typedef ImageCache<OutputImage, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy > MyImageCache;
     
-    typedef typename ImageContainer::Difference Difference;
-
     // ----------------------- Standard services ------------------------------
 
   public:
@@ -126,9 +127,6 @@ namespace DGtal
 
       for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
         mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
-
-      clock = new(Clock); // TEMP_MT
-      myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
     }
 
     /**
@@ -137,14 +135,16 @@ namespace DGtal
     ~TiledImage()
     {
       delete myImageCache;
-      
-      delete clock; // TEMP_MT
     }
     
   private:
 
   public:
 
+    /**
+      * Copy constructor.
+      * @param other the TiledImage to clone.
+      */
     TiledImage( const TiledImage &other )
     {
       myN =  other.myN;
@@ -159,11 +159,13 @@ namespace DGtal
 
       for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
         mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
-
-      clock = new(Clock); // TEMP_MT
-      myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
     }
     
+    /**
+      * Assignment.
+      * @param other the TiledImage to copy.
+      * @return a reference on 'this'.
+      */
     TiledImage & operator=( const TiledImage & other )
     {
         if ( this != &other )
@@ -180,9 +182,6 @@ namespace DGtal
 
           for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
             mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
-
-          clock = new(Clock); // TEMP_MT
-          myTicksUpdate = myTicksFindSubDomain = myTicksRead = 0;
         }
 
         return *this;
@@ -203,7 +202,12 @@ namespace DGtal
       return myImageFactory->domain();
     }
 
-    const Domain domainCoords() const
+    /**
+     * Returns the block coords domain.
+     *
+     * @return the block coords domain.
+     */
+    const Domain domainBlockCoords() const
     {
       Point lowerBoundCords, upperBoundCoords;
 
@@ -239,78 +243,59 @@ namespace DGtal
         typedef Value* pointer;
         typedef Value& reference;*/
 
-      typedef typename ImageContainer::Range::/*Output*/Iterator TileRangeIterator;
-      typedef typename Domain::Iterator BlocksIterator;
+      typedef typename ImageContainer::Range::/*Output*/Iterator TiledRangeIterator;
+      typedef typename Domain::Iterator BlockCoordsIterator;
 
       //TiledIterator();
 
       /**
        * Constructor.
        *
-       * @param aBlockIterator
+       * @param aBlockCoordsIterator a block coords iterator
        * @param aTiledImage pointer to the TiledImage
        */
-      TiledIterator ( BlocksIterator aBlockIterator,
+      TiledIterator ( BlockCoordsIterator aBlockCoordsIterator,
                       const TiledImage<ImageContainer, ImageFactory,
                       ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) :  myTiledImage ( aTiledImage ),
-                                                                                     myBlocksIterator ( aBlockIterator )
+                                                                                     myBlockCoordsIterator ( aBlockCoordsIterator )
       {
-        if ( myBlocksIterator != myTiledImage->domainCoords().end() )
+        if ( myBlockCoordsIterator != myTiledImage->domainBlockCoords().end() )
           {
-            myTile = myTiledImage->findTileFromBlockCoords( (*myBlocksIterator) );
-            myTileRangeIterator = myTile->range().begin();
+            myTile = myTiledImage->findTileFromBlockCoords( (*myBlockCoordsIterator) );
+            myTiledRangeIterator = myTile->range().begin();
           }
       }
 
       /**
        * Constructor.
        *
-       * @param aBlockIterator
+       * @param aBlockCoordsIterator a block coords iterator
+       * @param aPoint a point
        * @param aTiledImage pointer to the TiledImage
        */
-      TiledIterator ( BlocksIterator aBlockIterator,
+      TiledIterator ( BlockCoordsIterator aBlockCoordsIterator,
                       const Point& aPoint,
                       const TiledImage<ImageContainer, ImageFactory,
                       ImageCacheReadPolicy, ImageCacheWritePolicy> *aTiledImage ) :  myTiledImage ( aTiledImage ),
-                                                                                     myBlocksIterator ( aBlockIterator )
+                                                                                     myBlockCoordsIterator ( aBlockCoordsIterator )
       {
-        if ( myBlocksIterator != myTiledImage->domainCoords().end() )
+        if ( myBlockCoordsIterator != myTiledImage->domainBlockCoords().end() )
           {
-            myTile = myTiledImage->findTileFromBlockCoords( (*myBlocksIterator) );
-            myTileRangeIterator = myTile->range().begin(aPoint);
+            myTile = myTiledImage->findTileFromBlockCoords( (*myBlockCoordsIterator) );
+            myTiledRangeIterator = myTile->range().begin(aPoint);
           }
       }
 
       /**
        * operator *
        *
-       * @return the value associated to the current TiledIterator position.
+       * @return the value associated to the current TiledRangeIterator position.
        */
-      /*inline
-        const Value & operator*() const
-        {
-        return (*myTileRangeIterator);
-        }*/
-
       inline
       Value & operator*()
       {
-        return (*myTileRangeIterator);
+        return (*myTiledRangeIterator);
       }
-
-      /*inline
-      TiledIterator & operator=(const Value aVal)
-      {
-        (*myTileRangeIterator) = aVal;
-        return (*this);
-      }*/
-
-      /*inline
-      void setValue ( const Value aVal )
-      {
-        (*myTileRangeIterator) = aVal;
-        //myTiledImage->myImageFactory->flushImage(myTile); // TEMP
-      }*/
 
       /**
        * Operator ==
@@ -320,7 +305,7 @@ namespace DGtal
       inline
       bool operator== ( const TiledIterator &it ) const
       {
-        return ( ( this->myBlocksIterator == it.myBlocksIterator ) && ( this->myTileRangeIterator == it.myTileRangeIterator ) );
+        return ( ( this->myBlockCoordsIterator == it.myBlockCoordsIterator ) && ( this->myTiledRangeIterator == it.myTiledRangeIterator ) );
       }
 
       /**
@@ -331,10 +316,10 @@ namespace DGtal
       inline
       bool operator!= ( const TiledIterator &it ) const
       {
-        if ( myBlocksIterator == myTiledImage->domainCoords().end() )
+        if ( myBlockCoordsIterator == myTiledImage->domainBlockCoords().end() )
           return false;
 
-        return ( ( this->myBlocksIterator != it.myBlocksIterator ) || ( this->myTileRangeIterator != it.myTileRangeIterator ) );
+        return ( ( this->myBlockCoordsIterator != it.myBlockCoordsIterator ) || ( this->myTiledRangeIterator != it.myTiledRangeIterator ) );
       }
 
       /**
@@ -344,19 +329,19 @@ namespace DGtal
       inline
       void nextLexicographicOrder()
       {
-        myTileRangeIterator++;
+        myTiledRangeIterator++;
 
-        if ( myTileRangeIterator != myTile->range().end() )
+        if ( myTiledRangeIterator != myTile->range().end() )
           return;
         else
           {
-            myBlocksIterator++;
+            myBlockCoordsIterator++;
 
-            if ( myBlocksIterator == myTiledImage->domainCoords().end() )
+            if ( myBlockCoordsIterator == myTiledImage->domainBlockCoords().end() )
               return;
 
-            myTile = myTiledImage->findTileFromBlockCoords( (*myBlocksIterator) );
-            myTileRangeIterator = myTile->range().begin();
+            myTile = myTiledImage->findTileFromBlockCoords( (*myBlockCoordsIterator) );
+            myTiledRangeIterator = myTile->range().begin();
           }
       }
 
@@ -391,14 +376,14 @@ namespace DGtal
       void prevLexicographicOrder()
       {
         // -- IF we are at the end... (reverse, --)
-        if ( myBlocksIterator == myTiledImage->domainCoords().end() )
+        if ( myBlockCoordsIterator == myTiledImage->domainBlockCoords().end() )
           {
-            myBlocksIterator--;
+            myBlockCoordsIterator--;
 
-            myTile = myTiledImage->findTileFromBlockCoords( (*myBlocksIterator) );
+            myTile = myTiledImage->findTileFromBlockCoords( (*myBlockCoordsIterator) );
 
-            myTileRangeIterator = myTile->range().end();
-            myTileRangeIterator--;
+            myTiledRangeIterator = myTile->range().end();
+            myTiledRangeIterator--;
 
             return;
           }
@@ -406,22 +391,22 @@ namespace DGtal
 
         // ---
 
-        if ( myTileRangeIterator != myTile->range().begin() )
+        if ( myTiledRangeIterator != myTile->range().begin() )
           {
-            myTileRangeIterator--;
+            myTiledRangeIterator--;
             return;
           }
         else
           {
-            if ( myBlocksIterator == myTiledImage->domainCoords().begin() )
+            if ( myBlockCoordsIterator == myTiledImage->domainBlockCoords().begin() )
               return;
 
-            myBlocksIterator--;
+            myBlockCoordsIterator--;
 
-            myTile = myTiledImage->findTileFromBlockCoords( (*myBlocksIterator) );
+            myTile = myTiledImage->findTileFromBlockCoords( (*myBlockCoordsIterator) );
 
-            myTileRangeIterator = myTile->range().end();
-            myTileRangeIterator--;
+            myTiledRangeIterator = myTile->range().end();
+            myTiledRangeIterator--;
           }
       }
 
@@ -454,9 +439,11 @@ namespace DGtal
       /// Alias on the current tile
       ImageContainer * myTile;
 
-      TileRangeIterator myTileRangeIterator;
+      /// Current tiled range iterator
+      TiledRangeIterator myTiledRangeIterator;
 
-      BlocksIterator myBlocksIterator;
+      /// Current block coords iterator
+      BlockCoordsIterator myBlockCoordsIterator;
     };
 
 
@@ -470,34 +457,34 @@ namespace DGtal
 
     ConstIterator begin() const
     {
-      return TiledIterator( this->domainCoords().begin(), this );
+      return TiledIterator( this->domainBlockCoords().begin(), this );
     }
 
     OutputIterator begin()
     {
-      return TiledIterator( this->domainCoords().begin(), this );
+      return TiledIterator( this->domainBlockCoords().begin(), this );
     }
 
     ConstIterator begin(const Point& aPoint) const
     {
       Point coords = this->findBlockCoordsFromPoint(aPoint);
-      return TiledIterator(  this->domainCoords().begin(coords), aPoint, this );
+      return TiledIterator(  this->domainBlockCoords().begin(coords), aPoint, this );
     }
 
     OutputIterator begin(const Point& aPoint)
     {
       Point coords = this->findBlockCoordsFromPoint(aPoint);
-      return TiledIterator(  this->domainCoords().begin(coords), aPoint, this );
+      return TiledIterator(  this->domainBlockCoords().begin(coords), aPoint, this );
     }
 
     ConstIterator end() const
     {
-      return TiledIterator( this->domainCoords().end(), this );
+      return TiledIterator( this->domainBlockCoords().end(), this );
     }
 
     OutputIterator end()
     {
-      return TiledIterator( this->domainCoords().end(), this );
+      return TiledIterator( this->domainBlockCoords().end(), this );
     }
 
     ConstReverseIterator rbegin() const
@@ -573,7 +560,7 @@ namespace DGtal
     
     /**
      * @return the range providing begin and end
-     * iterators to scan the values of image.
+     * iterators (with this) to scan the values of image.
      */
     ConstRange constRange() const
     {
@@ -582,7 +569,7 @@ namespace DGtal
 
     /**
      * @return the range providing begin and end
-     * iterators to scan the values of image.
+     * iterators (with this) to scan the values of image.
      */
     Range range()
     {
@@ -639,11 +626,10 @@ namespace DGtal
     }
 
     /**
+     * Get the block coords containing aPoint.
      *
-     *
-     * @param aPoint
-     *
-     * @return
+     * @param aPoint the point.
+     * @return the block coords containing aPoint.
      */
     const Point findBlockCoordsFromPoint(const Point & aPoint) const
     {
@@ -663,9 +649,15 @@ namespace DGtal
       return low;
     }
 
+    /**
+     * Get the domain with his block coords.
+     *
+     * @param aCoord the block coords.
+     * @return the domain.
+     */
     const Domain findSubDomainFromBlockCoords(const Point & aCoord) const
     {
-      ASSERT(domainCoords().isInside(aCoord));
+      ASSERT(domainBlockCoords().isInside(aCoord));
 
       typename DGtal::Dimension i;
 
@@ -682,10 +674,16 @@ namespace DGtal
       Domain di(dMin, dMax);
       return di;
     }
-
+    
+    /**
+     * Returns an ImageContainer pointer for the block coords aCoord.
+     * 
+     * @param aCoord the block coords.
+     * @return an ImageContainer pointer.
+     */
     ImageContainer * findTileFromBlockCoords(const Point & aCoord) const
     {
-      ASSERT(domainCoords().isInside(aCoord));
+      ASSERT(domainBlockCoords().isInside(aCoord));
 
       Domain d = findSubDomainFromBlockCoords( aCoord );
       ImageContainer *tile = myImageCache->getPage(d);
@@ -705,37 +703,27 @@ namespace DGtal
      * @param aPoint the point.
      * @return the value at aPoint.
      */
-    Value operator()(const Point & aPoint)// const // TEMP_MT
+    Value operator()(const Point & aPoint) const
     {
       ASSERT(myImageFactory->domain().isInside(aPoint));
 
       typename OutputImage::Value aValue;
       bool res;
 
-      clock->startClock();
       res = myImageCache->read(aPoint, aValue);
-      myTicksRead += clock->stopClock();
 
       if (res)
         return aValue;
       else
         {
-          //trace.beginBlock("incCacheMissRead");
           myImageCache->incCacheMissRead();
           Domain d;
 
-          clock->startClock();
           d = findSubDomain(aPoint);
-          myTicksFindSubDomain += clock->stopClock();
 
-          clock->startClock();
           myImageCache->update(d);
-          myTicksUpdate += clock->stopClock();
 
-          clock->startClock();
           myImageCache->read(aPoint, aValue);
-          myTicksRead += clock->stopClock();
-          //trace.endBlock();
 
           return aValue;
         }
@@ -788,77 +776,6 @@ namespace DGtal
       myImageCache->clearCacheAndResetCacheMisses();
     }
 
-    /**
-     * Clear the ticks value.
-     */
-    void clearTicksUpdateCache() // TEMP_MT
-    {
-      myImageCache->clearTicksUpdateCache();
-    }
-
-    /**
-     * Get the ticks value.
-     */
-    long getTicksUpdateCache() // TEMP_MT
-    {
-      return myImageCache->getTicksUpdateCache();
-    }
-
-    /**
-     * Clear the ticks value.
-     */
-    void clearTicksUpdate() // TEMP_MT
-    {
-      myTicksUpdate = 0;
-    }
-
-    /**
-     * Get the ticks value.
-     */
-    long getTicksUpdate() // TEMP_MT
-    {
-      return myTicksUpdate;
-    }
-
-    /**
-     * Clear the ticks value.
-     */
-    void clearTicksFindSubDomain() // TEMP_MT
-    {
-      myTicksFindSubDomain = 0;
-    }
-
-    /**
-     * Get the ticks value.
-     */
-    long getTicksFindSubDomain() // TEMP_MT
-    {
-      return myTicksFindSubDomain;
-    }
-
-    /**
-     * Clear the ticks value.
-     */
-    void clearTicksRead() // TEMP_MT
-    {
-      myTicksRead = 0;
-    }
-
-    /**
-     * Get the ticks value.
-     */
-    long getTicksRead() // TEMP_MT
-    {
-      return myTicksRead;
-    }
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-
-    /// for clock counting
-    long myTicksUpdate, myTicksFindSubDomain, myTicksRead;
-    Clock *clock; // TEMP_MT
-
     // ------------------------- Private Datas --------------------------------
   protected:
 
@@ -876,9 +793,11 @@ namespace DGtal
 
     /// domain lower and upper bound
     Point m_lowerBound, m_upperBound;
-
+    
+    /// TImageCacheReadPolicy pointer
     TImageCacheReadPolicy *myReadPolicy;
 
+    /// TImageCacheWritePolicy pointer
     TImageCacheWritePolicy *myWritePolicy;
 
     // ------------------------- Internals ------------------------------------
