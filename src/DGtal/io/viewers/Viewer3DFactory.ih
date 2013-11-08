@@ -761,7 +761,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
-                              const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter )
+                              const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aRangeAdapter);
 }
