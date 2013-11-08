@@ -57,9 +57,9 @@ using namespace DGtal;
 template <typename Integer,typename Fraction>
 bool testDSLSubsegment(Integer modb)
 {
-  typedef long double Number;
+  //typedef long double Number;
   typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
-  typedef DGtal::DSLSubsegment<Integer,Number> DSLSubsegD;
+  //typedef DGtal::DSLSubsegment<Integer,Number> DSLSubsegD;
 
 
   typedef ArithDSSIterator<Integer,8> DSSIterator;
