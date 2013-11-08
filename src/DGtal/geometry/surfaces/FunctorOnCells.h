@@ -90,8 +90,8 @@ namespace DGtal
       * @param[in] space Khalimsky space in which the shape is defined.
       */
     FunctorOnCells (  Alias< FunctorOnPoints > functor, ConstAlias< KSpace > space )
-      : f(functor),
-        myKSpace(space)
+      : f(&functor),
+        myKSpace(&space)
     {}
 
     /**

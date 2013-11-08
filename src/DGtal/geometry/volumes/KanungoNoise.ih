@@ -47,7 +47,7 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
   double p;
   
   //We copy the point set
-  mySet = new  DigitalSet(  aDomain );
+  mySet = new  DigitalSet( new Domain( aDomain ) );
 
   typedef ExactPredicateLpSeparableMetric< typename Domain::Space, 2> L2;
   typedef DistanceTransformation< typename Domain::Space, PointPredicate, L2> DTPredicate;

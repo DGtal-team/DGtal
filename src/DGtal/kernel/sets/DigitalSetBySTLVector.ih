@@ -57,7 +57,7 @@ DGtal::DigitalSetBySTLVector<Domain>::~DigitalSetBySTLVector()
 template <typename Domain>
 inline
 DGtal::DigitalSetBySTLVector<Domain>::DigitalSetBySTLVector
-( const Domain & d )
+( Clone<Domain> d )
   : myDomain( d ), myVector()
 {
 }
@@ -85,8 +85,8 @@ DGtal::DigitalSetBySTLVector<Domain> &
 DGtal::DigitalSetBySTLVector<Domain>::operator=
 ( const DigitalSetBySTLVector & other )
 {
-  ASSERT( ( myDomain.lowerBound() <= other.myDomain.lowerBound() )
-    && ( myDomain.upperBound() >= other.myDomain.upperBound() )
+  ASSERT( ( domain().lowerBound() <= other.domain().lowerBound() )
+    && ( domain().upperBound() >= other.domain().upperBound() )
     && "This domain should include the domain of the other set in case of assignment." );
   myVector = other.myVector;
   return *this;
@@ -101,8 +101,17 @@ inline
 const Domain & 
 DGtal::DigitalSetBySTLVector<Domain>::domain() const
 {
+  return *myDomain;
+}
+
+template <typename Domain>
+inline
+DGtal::CowPtr<Domain> 
+DGtal::DigitalSetBySTLVector<Domain>::domainPointer() const
+{
   return myDomain;
 }
+
 
 
 // ----------------------- Standard Set services --------------------------
@@ -140,7 +149,7 @@ inline
 void
 DGtal::DigitalSetBySTLVector<Domain>::insert( const Point & p )
 {
-  // ASSERT( myDomain.isInside( p ) );
+  // ASSERT( domain().isInside( p ) );
   Iterator it = find( p );
   if ( it == end() ) 
     myVector.push_back( p );
@@ -180,7 +189,7 @@ inline
 void
 DGtal::DigitalSetBySTLVector<Domain>::insertNew( const Point & p )
 {
-  // ASSERT( myDomain.isInside( p ) );
+  // ASSERT( domain().isInside( p ) );
   ASSERT( find( p ) == end() );
   myVector.push_back( p );
 }
@@ -416,8 +425,8 @@ inline
 void
 DGtal::DigitalSetBySTLVector<Domain>::computeComplement(TOutputIterator& ito) const
 {
-  typename Domain::ConstIterator itPoint = myDomain.begin();
-  typename Domain::ConstIterator itEnd = myDomain.end();
+  typename Domain::ConstIterator itPoint = domain().begin();
+  typename Domain::ConstIterator itEnd = domain().end();
   while ( itPoint != itEnd ) {
     if ( std::find( begin(), end(), *itPoint ) == end() ) {
       *ito++ = *itPoint;
@@ -439,8 +448,8 @@ DGtal::DigitalSetBySTLVector<Domain>::assignFromComplement
 ( const DigitalSetBySTLVector<Domain> & other_set )
 {
   clear();
-  typename Domain::ConstIterator itPoint = myDomain.begin();
-  typename Domain::ConstIterator itEnd = myDomain.end();
+  typename Domain::ConstIterator itPoint = domain().begin();
+  typename Domain::ConstIterator itEnd = domain().end();
   while ( itPoint != itEnd ) {
     if ( std::find( other_set.begin(),
         other_set.end(),
@@ -476,8 +485,8 @@ DGtal::DigitalSetBySTLVector<Domain>::computeBoundingBox
     }
   else
     {
-      lower = myDomain.upperBound();
-      upper = myDomain.lowerBound();
+      lower = domain().upperBound();
+      upper = domain().lowerBound();
     }
 }
 
