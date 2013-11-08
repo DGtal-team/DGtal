@@ -171,8 +171,6 @@ bool CompareToArithmetical()
           C.retractBack();
         }
       // Compare positions
-      std::cerr << C << A << std::endl
-		<< C.back() << A.back() << C.front() << A.front() << std::endl; 
       if ( ( C.back() != A.back() ) || ( C.front() != A.front() )  )
         {
           res = false;

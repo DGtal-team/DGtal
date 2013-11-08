@@ -453,7 +453,7 @@ void
 DGtal::ArithmeticalDSS<TC, TI, adj>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ArithmeticalDSS] ";
-  out << myDSL << std::endl; 
+  out << myDSL; 
   out << "from " << myF << " to " << myL << std::endl; 
   out << "upper leaning points: " << myUf << " " << myUl << std::endl;  
   out << "lower leaning points: " << myLf << " " << myLl; 
