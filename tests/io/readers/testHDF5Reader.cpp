@@ -82,7 +82,6 @@ bool testHDF5_3DReader()
 
   typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
-  typedef TDomain::Point Point;
   
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
