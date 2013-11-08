@@ -37,9 +37,11 @@
 #include "DGtal/base/CountedConstPtrOrConstPtr.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/Clone.h"
-#include "DGtal/base/OldClone.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/OldClone.h"
+#include "DGtal/base/OldAlias.h"
+#include "DGtal/base/OldConstAlias.h"
 #include "DGtal/helpers/StdDefs.h"
 
 using namespace DGtal;
@@ -408,7 +410,7 @@ struct TriangleByValue {
 };
 
 struct TriangleByOldClone {
-  TriangleByOldClone( OldClone<Point> a, OldClone<Point> b, OldClone<Point> c )
+  TriangleByOldClone( deprecated::Clone<Point> a, deprecated::Clone<Point> b, deprecated::Clone<Point> c )
     : _a( a ), _b( b ), _c( c ) {}
   double perimeter() const
   {
@@ -924,7 +926,7 @@ bool testCloneTimings()
                << " nbDeleted=" << Point::nbDeleted << std::endl; 
   Point::reset();
   trace.endBlock();
-  trace.beginBlock ( "Total perimeter of triangles with by OldClone parameter passing." );
+  trace.beginBlock ( "Total perimeter of triangles with by deprecated::Clone parameter passing." );
   double t3 = computeTriangles<TriangleByOldClone>( size );
   trace.info() << "Perimeter is " << t3 << std::endl;
   ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
