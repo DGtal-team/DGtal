@@ -58,11 +58,11 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////////
 
   /**
-   * @brief Aim: model of CBidirectionalRangeFromPoint that adapts any range of elements
+   * @brief Aim: model of CBidirectionalRangeFromPoint that adapts a TiledImage range of elements
    * bounded by two iterators [itb, ite) and provides services to
-   * (circularly)iterate over it (in a read-only manner).
+   * (circularly)iterate over it.
    *
-   * @tparam TIterator the type of the iterator to adapt (at least bidirectional)
+   * @tparam TTiledImage the type of the TiledImage with his const iterator to adapt (at least bidirectional)
    *
    * @see RangeAdapter
    */
@@ -97,12 +97,8 @@ namespace DGtal
       // ------------------------- standard services --------------------------------
 
       /**
-       * Standard constructor from two iterators
-       * and one functor.
-       * @param itb begin iterator.
-       * @param ite end iterator.
-       * @param aDistance functor used to adapt on-the-fly the elements of the range
-       *
+       * Standard constructor from a TiledImage.
+       * @param ti pointer on a TiledImage.
        */
       TiledImageBidirectionalRangeFromPoint ( const TiledImage *ti )
         : myti ( ti ) {}
@@ -185,7 +181,6 @@ namespace DGtal
         return Iterator ( myti->begin() );
       }
 
-
       /**
        * Iterator service.
        * @param aPoint a Point
@@ -204,7 +199,6 @@ namespace DGtal
       {
         return ConstIterator ( myti->begin() );
       }
-
 
       /**
        * Iterator service.
@@ -272,8 +266,6 @@ namespace DGtal
         return ReverseOutputIterator ( myti->begin(aPoint) );
       }
 
-
-
       /**
        * Iterator service.
        * @return rbegin iterator
@@ -293,7 +285,6 @@ namespace DGtal
         return ReverseIterator ( myti->rbegin(aPoint) );
       }
 
-
       /**
        * Iterator service.
        * @return rend iterator
@@ -302,7 +293,6 @@ namespace DGtal
       {
         return ReverseIterator ( this->begin() );
       }
-
 
       /**
        * Iterator service.
@@ -322,7 +312,6 @@ namespace DGtal
       {
         return ConstReverseIterator ( myti->rbegin(aPoint) );
       }
-
 
       /**
        * Iterator service.

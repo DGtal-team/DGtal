@@ -275,8 +275,6 @@ bool exampleTiledImageFromImage_1block3D()
 
 bool exampleTiledImageFromHDF5_1block3D()
 {
-    //int i, j, k;
-
     trace.beginBlock("Example : TiledImage with ImageFactoryFromHDF5 - 1 block (3D)");
 
       typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
@@ -329,8 +327,6 @@ bool exampleTiledImageFromHDF5_1block3D()
 bool exampleTiledImageFromImage_10blocks3D()
 {
     int i, j, k;
-    Clock clock, clock_op;
-    long myTicks_op;
 
     trace.beginBlock("Example : TiledImage with ImageFactoryFromImage - 10 blocks (3D)");
 
@@ -374,109 +370,67 @@ bool exampleTiledImageFromImage_10blocks3D()
       //OutputImage::Value aValue;
       
       int cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT - TiledIterator");
       for(MyTiledImageFIFO::TiledIterator it = tiledImageFIFO_A.begin(), itend = tiledImageFIFO_A.end();
           it != itend; ++it)
-          {
-            clock_op.startClock();            
+          {      
             if ((*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();            
+              cpt++;           
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_A.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_A.getTicksRead() << " ms" << endl; tiledImageFIFO_A.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_A.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_A.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_A.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_A.clearTicksUpdateCache(); tiledImageFIFO_A.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       cpt=0; tiledImageFIFO_A.clearCacheAndResetCacheMisses();
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT");
       for(ImageV::Domain::ConstIterator it = tiledImageFIFO_A.domain().begin(), itend = tiledImageFIFO_A.domain().end();
           it != itend; ++it)
           {
-            clock_op.startClock();            
             if (tiledImageFIFO_A(*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();            
+              cpt++;          
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_A.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_A.getTicksRead() << " ms" << endl; tiledImageFIFO_A.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_A.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_A.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_A.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_A.clearTicksUpdateCache(); tiledImageFIFO_A.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       // ---
       
       cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT - TiledIterator");
       for(MyTiledImageFIFO::TiledIterator it = tiledImageFIFO_B.begin(), itend = tiledImageFIFO_B.end();
           it != itend; ++it)
-          {
-            clock_op.startClock();            
+          {        
             if ((*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();           
+              cpt++;          
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_B.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_B.getTicksRead() << " ms" << endl; tiledImageFIFO_B.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_B.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_B.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_B.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_B.clearTicksUpdateCache(); tiledImageFIFO_B.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       cpt=0; tiledImageFIFO_B.clearCacheAndResetCacheMisses();
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT");
       for(ImageV::Domain::ConstIterator it = tiledImageFIFO_B.domain().begin(), itend = tiledImageFIFO_B.domain().end();
           it != itend; ++it)
           {
-            clock_op.startClock();            
             if (tiledImageFIFO_B(*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();           
+              cpt++;          
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_B.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_B.getTicksRead() << " ms" << endl; tiledImageFIFO_B.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_B.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_B.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_B.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_B.clearTicksUpdateCache(); tiledImageFIFO_B.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       // ---
 
       cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT - TiledIterator");
       for(MyTiledImage::TiledIterator it = tiledImage.begin(), itend = tiledImage.end();
           it != itend; ++it)
           {
-            clock_op.startClock();            
             if ((*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();            
+              cpt++;            
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImage.getTicksRead() << " ms" << endl; tiledImage.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImage.getTicksFindSubDomain() << " ms" << endl; tiledImage.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImage.getTicksUpdateCache() << " ms (with " << tiledImage.getTicksUpdate() << " ms)" << endl; tiledImage.clearTicksUpdateCache(); tiledImage.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       cpt=0; tiledImage.clearCacheAndResetCacheMisses();
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT");
       for(ImageV::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
           it != itend; ++it)
           {
-            clock_op.startClock();            
             if (tiledImage(*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();            
+              cpt++;            
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImage.getTicksRead() << " ms" << endl; tiledImage.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImage.getTicksFindSubDomain() << " ms" << endl; tiledImage.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImage.getTicksUpdateCache() << " ms (with " << tiledImage.getTicksUpdate() << " ms)" << endl; tiledImage.clearTicksUpdateCache(); tiledImage.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
     trace.endBlock();
@@ -487,10 +441,6 @@ bool exampleTiledImageFromImage_10blocks3D()
 
 bool exampleTiledImageFromHDF5_10blocks3D()
 {
-    //int i, j, k;
-    Clock clock, clock_op;
-    long myTicks_op;
-
     trace.beginBlock("Example : TiledImage with ImageFactoryFromHDF5 - 10 blocks (3D)");
 
       typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
@@ -521,109 +471,67 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       //OutputImage::Value aValue;
       
       int cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT - TiledIterator");
       for(MyTiledImageFIFO::TiledIterator it = tiledImageFIFO_A.begin(), itend = tiledImageFIFO_A.end();
           it != itend; ++it)
           {
-            clock_op.startClock();
             if ((*it) == 1)
               cpt++;
-            myTicks_op += clock_op.stopClock();
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_A.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_A.getTicksRead() << " ms" << endl; tiledImageFIFO_A.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_A.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_A.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_A.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_A.clearTicksUpdateCache(); tiledImageFIFO_A.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       cpt=0; tiledImageFIFO_A.clearCacheAndResetCacheMisses();
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(10)/WT");
       for(Image::Domain::ConstIterator it = tiledImageFIFO_A.domain().begin(), itend = tiledImageFIFO_A.domain().end();
           it != itend; ++it)
           {
-            clock_op.startClock();
             if (tiledImageFIFO_A(*it) == 1)
               cpt++;
-            myTicks_op += clock_op.stopClock();
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_A.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_A.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_A.getTicksRead() << " ms" << endl; tiledImageFIFO_A.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_A.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_A.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_A.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_A.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_A.clearTicksUpdateCache(); tiledImageFIFO_A.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       // ---
       
       cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT - TiledIterator");
       for(MyTiledImageFIFO::TiledIterator it = tiledImageFIFO_B.begin(), itend = tiledImageFIFO_B.end();
           it != itend; ++it)
           {
-            clock_op.startClock();            
             if ((*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();           
+              cpt++;           
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_B.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_B.getTicksRead() << " ms" << endl; tiledImageFIFO_B.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_B.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_B.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_B.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_B.clearTicksUpdateCache(); tiledImageFIFO_B.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       cpt=0; tiledImageFIFO_B.clearCacheAndResetCacheMisses();
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - FIFO(5)/WT");
       for(Image::Domain::ConstIterator it = tiledImageFIFO_B.domain().begin(), itend = tiledImageFIFO_B.domain().end();
           it != itend; ++it)
           {
-            clock_op.startClock();            
             if (tiledImageFIFO_B(*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();           
+              cpt++;          
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImageFIFO_B.getCacheMissRead() << " - cacheMissWrite:" << tiledImageFIFO_B.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImageFIFO_B.getTicksRead() << " ms" << endl; tiledImageFIFO_B.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImageFIFO_B.getTicksFindSubDomain() << " ms" << endl; tiledImageFIFO_B.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImageFIFO_B.getTicksUpdateCache() << " ms (with " << tiledImageFIFO_B.getTicksUpdate() << " ms)" << endl; tiledImageFIFO_B.clearTicksUpdateCache(); tiledImageFIFO_B.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       // ---
 
       cpt=0;
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT - TiledIterator"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT - TiledIterator");
       for(MyTiledImage::TiledIterator it = tiledImage.begin(), itend = tiledImage.end();
           it != itend; ++it)
           {
-            clock_op.startClock();
             if ((*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();            
+              cpt++;           
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImage.getTicksRead() << " ms" << endl; tiledImage.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImage.getTicksFindSubDomain() << " ms" << endl; tiledImage.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImage.getTicksUpdateCache() << " ms (with " << tiledImage.getTicksUpdate() << " ms)" << endl; tiledImage.clearTicksUpdateCache(); tiledImage.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
       cpt=0; tiledImage.clearCacheAndResetCacheMisses();
-      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT"); clock.startClock(); myTicks_op=0;
+      trace.beginBlock("Counting ones in the tiled image - 10x10x10 blocks - LAST/WT");
       for(Image::Domain::ConstIterator it = tiledImage.domain().begin(), itend = tiledImage.domain().end();
           it != itend; ++it)
           {
-            clock_op.startClock();
             if (tiledImage(*it) == 1)
-              cpt++;
-            myTicks_op += clock_op.stopClock();            
+              cpt++;           
           }
-      trace.info() << "Cpt: " << cpt << " - cacheMissRead:" << tiledImage.getCacheMissRead() << " - cacheMissWrite:" << tiledImage.getCacheMissWrite() << endl;
-      trace.info() << "All read time: " << tiledImage.getTicksRead() << " ms" << endl; tiledImage.clearTicksRead();
-      trace.info() << "All findSubDomain time: " << tiledImage.getTicksFindSubDomain() << " ms" << endl; tiledImage.clearTicksFindSubDomain();
-      trace.info() << "All update time with inside all updateCache (so all requestImage...) time: " << tiledImage.getTicksUpdateCache() << " ms (with " << tiledImage.getTicksUpdate() << " ms)" << endl; tiledImage.clearTicksUpdateCache(); tiledImage.clearTicksUpdate();
-      trace.info() << "Block time with inside all op time : " << clock.stopClock() << " ms (with " << myTicks_op << " ms)" <<endl;
       trace.endBlock();
       
     trace.endBlock();
@@ -655,7 +563,7 @@ bool exampleTiledImageFromHDF5_10blocks3D()
       typedef ImageSelector<Z3i::Domain, DGtal::uint8_t>::Type Image;
 
       typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
+      MyImageFactoryFromHDF5 factImage(H5FILE_NAME_3D_TILED, DATASETNAME_3D);
 
       typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
       

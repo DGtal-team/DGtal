@@ -58,11 +58,11 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////////
 
   /**
-   * @brief Aim: model of CConstBidirectionalRangeFromPoint that adapts any range of elements
+   * @brief Aim: model of CConstBidirectionalRangeFromPoint that adapts a TiledImage range of elements
    * bounded by two iterators [itb, ite) and provides services to
    * (circularly)iterate over it (in a read-only manner).
    *
-   * @tparam TConstIterator the type of the iterator to adapt (at least bidirectional)
+   * @tparam TTiledImage the type of the TiledImage with his const iterator to adapt (at least bidirectional)
    *
    * @see ConstRangeAdapter
    */
@@ -89,6 +89,10 @@ namespace DGtal
 
       // ------------------------- standard services --------------------------------
       
+      /**
+       * Standard constructor from a TiledImage.
+       * @param ti pointer on a TiledImage.
+       */
       TiledImageBidirectionalConstRangeFromPoint ( const TiledImage *ti )
         : myti ( ti ) {}
 
@@ -170,7 +174,6 @@ namespace DGtal
         return ConstIterator ( myti->begin() );
       }
 
-
       /**
        * Iterator service.
        * @return begin iterator
@@ -206,7 +209,6 @@ namespace DGtal
       {
         return ConstReverseIterator ( myti->rbegin(aPoint) );
       }
-
 
       /**
        * Iterator service.

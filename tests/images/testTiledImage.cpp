@@ -272,8 +272,7 @@ bool test_range_constRange()
     MyTiledImage::Range::OutputIterator it = tiledImage.range().outputIterator();
     for (int i = 0; i < maximalValue; ++i)
     {
-      *it++ = i; // TODO : don't work with WT
-      //it.setValue(i); it++;
+      *it++ = i;
     }
 
     // reading values

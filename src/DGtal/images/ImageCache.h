@@ -116,9 +116,6 @@ public:
       
       cacheMissRead = 0;
       cacheMissWrite = 0;
-      
-      clock = new(Clock); // TEMP_MT
-      myTicksUpdateCache = 0;
     }
     
     /**
@@ -127,7 +124,6 @@ public:
      */
     ~ImageCache()
     {
-      delete clock; // TEMP_MT
     }
     
 private:
@@ -243,29 +239,13 @@ public:
       cacheMissRead = 0;
       cacheMissWrite = 0;
     }
-    
-    /**
-     * Clear the ticks value.
-     */
-    void clearTicksUpdateCache() // TEMP_MT
-    {
-        myTicksUpdateCache=0;
-    }
-    
-    /**
-     * Get the ticks value.
-     */
-    long getTicksUpdateCache() // TEMP_MT
-    {
-        return myTicksUpdateCache;
-    }
 
     // ------------------------- Protected Datas ------------------------------
 private:
     /**
      * Default constructor.
      */
-    ImageCache() {}
+    //ImageCache() {}
     
     // ------------------------- Private Datas --------------------------------
 protected:
@@ -279,12 +259,9 @@ protected:
     
 private:
     
+    /// cache miss values
     unsigned int cacheMissRead;
     unsigned int cacheMissWrite;
-    
-    /// for clock counting
-    long myTicksUpdateCache;
-    Clock *clock; // TEMP_MT
 
     // ------------------------- Internals ------------------------------------
 private:
