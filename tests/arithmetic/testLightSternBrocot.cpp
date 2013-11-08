@@ -38,7 +38,7 @@
 #include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/arithmetic/StandardDSLQ0.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -619,7 +619,7 @@ bool checkSubStandardDSLQ0( const DSL & D,
 {
   typedef typename DSL::Integer Integer;
   typedef typename DSL::ConstIterator ConstIterator;
-   typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
+  typedef ArithmeticalDSSComputer<ConstIterator, Integer, 4> ADSS;
 
   DSL S = D.reversedSmartDSS( A, B );
   ConstIterator it = D.begin( A );
@@ -656,6 +656,7 @@ bool testSubStandardDSLQ0()
   typedef typename Fraction::Integer Integer;
   typedef typename DSL::Point Point;
    IntegerComputer<Integer> ic;
+
   unsigned int nbok = 0;
   unsigned int nb = 0;
 

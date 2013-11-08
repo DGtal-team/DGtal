@@ -49,7 +49,7 @@
 
 #include "DGtal/base/Circulator.h"
 
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/geometry/curves/GreedySegmentation.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
@@ -95,8 +95,8 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 
   typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
 
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string aStyleName = "ArithmeticalDSS/BoundingBox";
+  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
+  string aStyleName = "ArithmeticalDSSComputer/BoundingBox";
 
   for (Iterator i(itb); i != ite; ++i) {
      
@@ -154,7 +154,7 @@ void segmentationIntoDSSs(const Iterator& itb, const Iterator& ite,
                           const string& aMode, Board& aBoard)
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
-  typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
+  typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> RecognitionAlgorithm;
   typedef GreedySegmentation<RecognitionAlgorithm> Segmentation;
 
   RecognitionAlgorithm algo;
@@ -179,7 +179,7 @@ void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite,
                                  const string& aMode, Board& aBoard)
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
-  typedef ArithmeticalDSS<Iterator,Coordinate,4> RecognitionAlgorithm;
+  typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> RecognitionAlgorithm;
   typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
   RecognitionAlgorithm algo;
@@ -911,7 +911,7 @@ bool SaturatedSegmentationTest()
 
   Circulator<ConstIterator> c(vPts.begin(), vPts.begin(), vPts.end() ); 
 
-  typedef ArithmeticalDSS<ConstCirculator,Coordinate,4> RecognitionAlgorithm;
+  typedef ArithmeticalDSSComputer<ConstCirculator,Coordinate,4> RecognitionAlgorithm;
   typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
   trace.beginBlock("saturated Segmentation");

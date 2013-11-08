@@ -243,11 +243,12 @@ inline
 DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
                                       ConstAlias<WeightImage> aWeightImage,
                                       ConstAlias<PowerSeparableMetric> aMetric):
-  myDomainPtr(aDomain), myMetricPtr(aMetric),
-  myWeightImagePtr(aWeightImage)
+  myDomainPtr(&aDomain), 
+  myMetricPtr(&aMetric),
+  myWeightImagePtr(&aWeightImage)
   
 {
-  myImagePtr = CountedPtr<OutputImage>(new OutputImage(*aDomain));
+  myImagePtr = CountedPtr<OutputImage>(new OutputImage(aDomain));
   compute();
 }
 

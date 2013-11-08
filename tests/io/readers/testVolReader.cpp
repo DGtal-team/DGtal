@@ -63,7 +63,6 @@ bool testVolReader()
 
   typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
-  typedef TDomain::Point Point;
   
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
@@ -110,7 +109,6 @@ bool testIOException()
 
   typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
-  typedef TDomain::Point Point;
   
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;

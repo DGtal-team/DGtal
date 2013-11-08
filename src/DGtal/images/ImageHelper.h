@@ -373,8 +373,8 @@ namespace DGtal
                             ConstAlias< PointPredicate > aPointPred,
                             Value aVal = NumberTraits< Value >::ONE,
                             bool reverseValues = false )
-      : myImage(anImage),
-        myPointPred(aPointPred),
+      : myImage(&anImage),
+        myPointPred(&aPointPred),
         myVal(aVal),
         reverse(reverseValues)
     {}

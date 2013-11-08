@@ -35,7 +35,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "DGtal/geometry/curves/ArithDSSIterator.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 
 
 using namespace std;
@@ -43,13 +43,13 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( int UNUSED(argc), char** UNUSED(argv) )
 {
   trace.beginBlock ( "Example exampleArithDSSIterator" );
 
   typedef Z2i::Integer Integer;
   typedef ArithDSSIterator<Integer,8> DSSIterator;
-  typedef ArithmeticalDSS<DSSIterator,Integer,8> ArithDSS;
+  typedef ArithmeticalDSSComputer<DSSIterator,Integer,8> ArithDSS;
   typedef Z2i::Point Point;
   
   Point A(1,5);

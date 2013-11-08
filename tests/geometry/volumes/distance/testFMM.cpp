@@ -469,7 +469,7 @@ bool testDisplayDTFromCircle(int size)
     //init
     Image map( d ); 
     Set set(map); 
-    GridCurve<KSpace>::OuterPointsRange r = gc.getOuterPointsRange();
+    GridCurve<KSpace>::InnerPointsRange r = gc.getInnerPointsRange();
     FMM::initFromPointsRange(r.begin(), r.end(), map, set, 0.5); 
 
     //computation
@@ -502,7 +502,7 @@ bool testDisplayDTFromCircle(int size)
     //init
     Image map( d ); 
     Set set(map); 
-    GridCurve<KSpace>::InnerPointsRange r = gc.getInnerPointsRange();
+    GridCurve<KSpace>::OuterPointsRange r = gc.getOuterPointsRange();
     FMM::initFromPointsRange(r.begin(), r.end(), map, set, 0.5); 
 
     //computation
@@ -535,7 +535,7 @@ bool testDisplayDTFromCircle(int size)
     Image map( d ); 
     Set set(map); 
     GridCurve<KSpace>::IncidentPointsRange r = gc.getIncidentPointsRange();
-    FMM::initFromIncidentPointsRange(r.begin(), r.end(), map, set, 0.5, true); 
+    FMM::initFromIncidentPointsRange(r.begin(), r.end(), map, set, 0.5); 
 
     //computation
     FMM fmm(map, set, dp); 

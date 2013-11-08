@@ -15,47 +15,77 @@
  **/
 
 /**
- * @file IVViewer.ih
+ * @file CountedPtrOrPtr.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2010/12/04
+ * @date 2013/11/6
  *
- * Implementation of inline methods defined in IVViewer.h
+ * Implementation of inline methods defined in CountedPtrOrPtr.h
  *
  * This file is part of the DGtal library.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of inline methods.
-///////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline functions and external operators                 //
+// Interface - public :
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'IVViewer'.
+ * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
- * @param object the object of class 'IVViewer' to write.
- * @return the output stream after the writing.
  */
+template <typename T>
+inline
+void
+DGtal::CountedPtrOrPtr<T>::selfDisplay ( std::ostream & out ) const
+{
+  if (isValid()) {
+    if ( myIsCountedPtr )
+      out << "[CountedPtrOrPtr nbcounts =" << counterPtr()->count << "]";
+    else 
+      out << "[CountedPtrOrPtr is ptr at " << ptr() << "]";
+  }
+  else
+    out << "[CountedPtrOrPtr to NULL]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::CountedPtrOrPtr<T>::isValid() const
+{
+  return myAny != 0;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                  const IVViewer & object )
+      const CountedPtrOrPtr<T> & object )
 {
-    object.selfDisplay ( out );
-    return out;
+  object.selfDisplay( out );
+  return out;
 }
 
 //                                                                           //

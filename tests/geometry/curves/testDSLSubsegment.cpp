@@ -41,7 +41,7 @@
 #include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/geometry/curves/ArithDSSIterator.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/base/Clock.h"
 
 using namespace std;
@@ -63,7 +63,7 @@ bool testDSLSubsegment(Integer modb)
 
 
   typedef ArithDSSIterator<Integer,8> DSSIterator;
-  typedef ArithmeticalDSS<DSSIterator,Integer,8> ArithDSS;
+  typedef ArithmeticalDSSComputer<DSSIterator,Integer,8> ArithDSS;
 
   typedef typename DSLSubseg::Point Point;
 
@@ -162,7 +162,7 @@ bool testDSLSubsegment(Integer modb)
   trace.info() << std::endl;
   
   int error3 = 0;
-  trace.beginBlock("Compare with ReversedSmartDSS for 4-connected DSL");
+  trace.beginBlock("Compare DSLSubsegment/FareyFan with ReversedSmartDSS for 4-connected DSL");
   for(unsigned int i = 0; i<l; i++)
     for(unsigned int j = i+1; j<l; j++)
       {
@@ -182,10 +182,10 @@ bool testDSLSubsegment(Integer modb)
 	A2[0] += A2[1];
 	Point B2 = BB;
 	B2[0] += B2[1];
-	
-	 // DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
-	 // b whereas reversedSmartDSS uses  mu <= ab-by < mu + b => -mu
-	 // is introduced in order to compare the results  
+		
+	// DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
+	// b whereas reversedSmartDSS uses  mu <= ab-by < mu + b 
+	// => -mu is introduced in order to compare the results  
 	
 	DSLSubseg D2(a,a+b,-mu,A2,B2,"farey");
 	// The result is (aa,getB()-aa, nu)
@@ -207,7 +207,7 @@ bool testDSLSubsegment(Integer modb)
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
   typedef DGtal::int64_t Integer;
   typedef LightSternBrocot<Integer,DGtal::int32_t> LSB;

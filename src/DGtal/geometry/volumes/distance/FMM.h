@@ -384,7 +384,7 @@ namespace DGtal
      * Initialize @a aImg and @a aSet from the points 
      * incident to the signed cells of the range [@a itb , @a ite ) 
      * Assign to the inner points a distance equal to - @a aValue 
-     * if @a aFlagIsPositive is 'false' (default) but @a aValue otherwise, 
+     * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise, 
      * and conversely for the outer points.  
      *
      * @param itb begin iterator (on signed cells)
@@ -395,16 +395,20 @@ namespace DGtal
      */
     template <typename KSpace, typename TIteratorOnBels>
     static void initFromBelsRange(const KSpace& aK, 
-				    const TIteratorOnBels& itb, const TIteratorOnBels& ite, 
-				    Image& aImg, AcceptedPointSet& aSet, 
-				    const Value& aValue, 
-				   bool aFlagIsPositive = false);
+				  const TIteratorOnBels& itb, const TIteratorOnBels& ite, 
+				  Image& aImg, AcceptedPointSet& aSet, 
+				  const Value& aValue, 
+				  bool aFlagIsPositive = true);
+
     /**
      * Initialize @a aImg and @a aSet from the points 
-     * incident to the signed cells of the range [@a itb , @a ite ) 
-     * Assign to the inner points a distance equal to - @a aValue 
-     * if @a aFlagIsPositive is 'false' (default) but @a aValue otherwise, 
-     * and conversely for the outer points.  
+     * incident to the signed cells of the range [@a itb , @a ite ). 
+     * If @a aFlagIsPositive is 'true' (default), assign to the 
+     * inner points a negative distance interpolated from 
+     * the distance values of the neighbors given by the function @a aF 
+     * and assign to the outer points a positive distance interpolated 
+     * from the distance values of the neighbors given by the function @a aF. 
+     * Swap the signs if @a aFlagIsPositive is 'false'. 
      *
      * @param itb begin iterator (on signed cells)
      * @param ite end iterator (on signed cells)
@@ -414,17 +418,17 @@ namespace DGtal
      */
     template <typename KSpace, typename TIteratorOnBels, typename TImplicitFunction>
     static void initFromBelsRange(const KSpace& aK, 
-				    const TIteratorOnBels& itb, const TIteratorOnBels& ite,
+				  const TIteratorOnBels& itb, const TIteratorOnBels& ite,
 				  const TImplicitFunction& aF, 
-				    Image& aImg, AcceptedPointSet& aSet, 
-				   bool aFlagIsPositive = false);
+				  Image& aImg, AcceptedPointSet& aSet, 
+				  bool aFlagIsPositive = true);
 
 
     /**
      * Initialize @a aImg and @a aSet from the inner and outer points 
      * of the range [@a itb , @a ite ) of pairs of points.  
      * Assign to the inner points a distance equal to - @a aValue 
-     * if @a aFlagIsPositive is 'false' (default) but @a aValue otherwise, 
+     * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise, 
      * and conversely for the outer points.  
      *
      * @param itb begin iterator (on points)
@@ -437,7 +441,7 @@ namespace DGtal
     static void initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
 				   Image& aImg, AcceptedPointSet& aSet, 
 				   const Value& aValue, 
-				   bool aFlagIsPositive = false);
+				   bool aFlagIsPositive = true);
 
   private:
 

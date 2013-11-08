@@ -92,7 +92,7 @@ An object x satisfying this concept may then be used as:
  ### Invariants
    
  ### Models
-    ArithmeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
+    ArithmeticalDSSComputer, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    
  ### Notes
     @todo ImageContainerByHashTree does not implement setStyle(Board2D &).

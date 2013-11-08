@@ -92,7 +92,7 @@ namespace DGtal
      * @param anImage alias on the underlying image container.
      */
     ImageFactoryFromImage(Alias<ImageContainer> anImage):
-      myImagePtr(anImage)
+      myImagePtr(&anImage)
     {
     }
 

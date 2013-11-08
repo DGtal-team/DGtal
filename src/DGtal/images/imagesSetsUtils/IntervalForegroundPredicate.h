@@ -78,7 +78,7 @@ namespace DGtal
     IntervalForegroundPredicate(ConstAlias<Image> aImage,
                                 const Value minVal, 
                                 const Value maxVal): 
-      myImage(aImage), myMaxVal(maxVal), myMinVal(minVal) {};
+      myImage(&aImage), myMaxVal(maxVal), myMinVal(minVal) {};
     
     /** 
      * @return True if the point belongs to the value interval.

@@ -61,6 +61,7 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/SCellsFunctors.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +75,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
     /**
     * @brief Aim: describes, in a cellular space of dimension n, 
-    a closed of open sequence of signed d-cells (or d-scells), 
+    a closed or open sequence of signed d-cells (or d-scells), 
     d being either equal to 1 or (n-1). 
 
     For instance, the topological boundary of a simply connected 
@@ -89,7 +90,7 @@ namespace DGtal
      For instance, you can read a grid curve from a data file, 
      which contains the (digital) coordinates of the 0-cells (pointels) in nd: 
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveFromDataFile
-     Note that if the first and last 0-scells of the file have the same coordinates (i)
+    Note that if the first and last 0-scells of the file have the same coordinates (i)
      or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
      as closed, ie. scells directly incident to the last signed cell and indirectly incident 
      to the first signed cell are the same.
@@ -416,7 +417,7 @@ namespace DGtal
 
     ///////////////////////// PointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToPoint<KSpace>, Point >  PointsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToPoint<KSpace>, Point >  PointsRange;
 
     /**
      * @return an instance of PointsRange
@@ -427,14 +428,14 @@ namespace DGtal
 
     ///////////////////////// MidPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToMidPoint<KSpace>, 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, CanonicSCellEmbedder<KSpace>,
                                typename KSpace::Space::RealPoint >  MidPointsRange; 
 
     /**
      * @return an instance of MidPointsRange
      */
     MidPointsRange getMidPointsRange() const {
-      return MidPointsRange(mySCells.begin(), mySCells.end(), new SCellToMidPoint<KSpace>(*myKPtr) );
+      return MidPointsRange(mySCells.begin(), mySCells.end(), new CanonicSCellEmbedder<KSpace>(*myKPtr) );
     } 
 
     ///////////////////////// ArrowsRange
