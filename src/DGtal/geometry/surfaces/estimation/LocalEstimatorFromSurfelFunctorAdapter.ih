@@ -35,10 +35,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 template <typename DigitalSurf, typename TMetric,  typename Functor>
 inline
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric, Functor>::LocalEstimatorFromSurfelFunctorAdapter(ConstAlias<DigitalSurf> aSurf,
-                                                                                                        ConstAlias<Metric> aMetric,
-                                                                                                        Alias<Functor> afunctor):
-mySurface(aSurf),  myFunctor(afunctor), myMetric(aMetric), myEmbedder(Embedder( mySurface->space()))
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric, Functor>::LocalEstimatorFromSurfelFunctorAdapter
+(ConstAlias<DigitalSurf> aSurf,
+ ConstAlias<Metric> aMetric,
+ Alias<Functor> afunctor)
+  : mySurface(&aSurf),  myFunctor(&afunctor), myMetric(&aMetric), myEmbedder(Embedder( mySurface->space()))
 {
   myInit = false;
 }

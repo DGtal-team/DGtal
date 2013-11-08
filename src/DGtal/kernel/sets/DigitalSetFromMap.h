@@ -44,6 +44,7 @@
 #include <map>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CowPtr.h"
 
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/IteratorAdapter.h"
@@ -146,6 +147,11 @@ namespace DGtal
      * @return the embedding domain.
      */
     const Domain & domain() const;
+
+    /**
+     * @return a counted pointer on the embedding domain.
+     */
+    CowPtr<Domain> domainPointer() const;
 
     /**
      * @return the number of elements in the set.

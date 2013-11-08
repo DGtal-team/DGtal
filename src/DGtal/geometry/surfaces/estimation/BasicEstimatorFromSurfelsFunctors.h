@@ -72,7 +72,7 @@ namespace DGtal
      * @param [in] h a grid step
      */
     DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder , const double h):
-      myEmbedder(anEmbedder), myH(h)
+      myEmbedder(&anEmbedder), myH(h)
     {
       myCpt=0;
     }
