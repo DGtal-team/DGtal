@@ -52,6 +52,7 @@
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
 #include "DGtal/kernel/CCellFunctor.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

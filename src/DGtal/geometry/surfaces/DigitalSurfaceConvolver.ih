@@ -929,7 +929,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
     MatrixQuantity XXT;
     VectorQuantity Sa;
 
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
+    CanonicSCellEmbedder< KSpace > midpoint( myKSpace );
 
     for (int line = 0; line < dimension; ++line)
     {
@@ -1012,7 +1012,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
     MatrixQuantity XXT;
     VectorQuantity Sa;
 
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
+    CanonicSCellEmbedder< KSpace > midpoint( myKSpace );
 
     DGtal::Dimension dimension = 2;
 
@@ -1097,7 +1097,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
     MatrixQuantity XXT;
     VectorQuantity Sa;
 
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
+    CanonicSCellEmbedder< KSpace > midpoint( myKSpace );
 
     DGtal::Dimension dimension = 3;
 
@@ -1229,7 +1229,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     int offset = 0;
 
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
+    CanonicSCellEmbedder< KSpace > midpoint( myKSpace );
 
     unsigned int total = 0;
 #ifdef DEBUG_VERBOSE
@@ -1725,7 +1725,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     int offset = 0;
 
-    SCellToMidPoint< KSpace > midpoint( myKSpace );
+    CanonicSCellEmbedder< KSpace > midpoint( myKSpace );
 
 
     unsigned int total = 0;
