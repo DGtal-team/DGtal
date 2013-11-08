@@ -62,6 +62,7 @@
 #include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -452,7 +453,7 @@ namespace DGtal
      * @param anObject the object to draw
      */
     static void draw( Display3D<Space, KSpace> & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>,
+                      const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>,
                       typename TKSpace::Space::RealPoint> & anObject );
     // MidPointsRange
 
