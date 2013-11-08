@@ -54,37 +54,50 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ConstAlias
   /**
-     Description of template class 'ConstAlias' <p> \brief Aim: This class
-     encapsulates its parameter class so that to indicate to the user
-     that the object/pointer will be only const aliased (and hence left unchanged). Therefore the user
-     is reminded that the argument parameter is given to the function
-     without any additional cost and may not be modified, while he is
-     aware that the lifetime of the argument parameter must be at
-     least as long as the object itself. Note that an instance of
-     ConstAlias<T> is itself a light object (it holds only an enum and a
-     pointer).
+     Description of template class 'ConstAlias' <p> \brief Aim: This
+     class encapsulates its parameter class so that to indicate to the
+     user that the object/pointer will be only const aliased (and
+     hence left unchanged). Therefore the \b user is reminded that the
+     argument parameter is given to the function without any
+     additional cost and may not be modified, while he is aware that
+     the lifetime of the argument parameter must be at least as long
+     as the object itself. Note that an instance of ConstAlias<T> is
+     itself a light object (it holds only an enum and a pointer).
 
      It is used in methods or functions to encapsulate the parameter
      types. The following conversion from input parameter to data
      member or variable are possible:
 
-|Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CountedPtrOrPtr<T>|\c CountedConstPtrOrConstPtr<T>|
-|------------------|---------------|---------------|----------------|------------|---|
-|To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
-|To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
-|To: \c CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1)|Shared. O(1)| Shared. O(1)  |
+     |Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CountedPtrOrPtr<T>|\c CountedConstPtrOrConstPtr<T>|
+     |------------------|---------------|---------------|----------------|------------|---|
+     |To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+     |To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+     |To: \ref CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure |Shared. O(1), \b secure| Shared. O(1), \b secure |
 
+     For the last row (case where the \e programmer choose a \ref
+     CountedConstPtrOrConstPtr to hold the const alias), the \e user
+     can thus enforce a \b secure const aliasing by handling a variant
+     of \ref CountedPtr as argument. In this case, even if the aliased
+     object is destroyed in the caller context, it still exists in the
+     callee context.
 
-     @note The usage of \c ConstAlias<T> instead of \c const \c T \c & or \c const \c T \c *
+     @note The usage of \ref ConstAlias<T> instead of \c const \c T \c & or \c const \c T \c *
      in parameters is \b recommended when the lifetime of the
      parameter must exceed the lifetime of the called
      method/function/constructor (often the case in constructor or
-     init methods). The usage of \c const \c T \c & or \c const \c T \c * instead of \c
-     ConstAlias<T> is \b recommended when the lifetime of the parameter is
-     not required to exceed the lifetime of the called
-     method/function/constructor (often the case in standard methods,
-     where the parameter is only used at some point, but not
+     init methods). 
+
+     @note The usage of \c const \c T \c & or \c const \c T \c *
+     instead of \ref ConstAlias<T> is \b recommended when the lifetime
+     of the parameter is not required to exceed the lifetime of the
+     called method/function/constructor (often the case in standard
+     methods, where the parameter is only used at some point, but not
      referenced after in some data member).
+
+     @note If the \e developer (not the \e user) wishes to enforce a
+     \b secure const aliasing in all cases, he should probably clone
+     the argument, hence use class \ref Clone.
+
 
      @tparam T is any type.
 
