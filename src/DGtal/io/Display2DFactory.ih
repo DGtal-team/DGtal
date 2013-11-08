@@ -696,11 +696,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // MidPointsRange
 template <typename TIterator, typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+           const ConstRangeAdapter<TIterator, CanonicSCellEmbedder<TKSpace>,
            typename TKSpace::Space::RealPoint> & object )
 {
     typedef typename TKSpace::Space::RealPoint RPoint;
-    typedef ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, RPoint > Range; 
+    typedef ConstRangeAdapter<TIterator, CanonicSCellEmbedder<TKSpace>, RPoint > Range;
     typedef typename Range::ConstIterator ConstIterator; 
 
     ConstIterator it ( object.begin() ); 

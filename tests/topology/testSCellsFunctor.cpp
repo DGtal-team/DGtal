@@ -32,6 +32,7 @@
 #include "DGtal/base/CUnaryFunctor.h"
 
 #include "DGtal/topology/SCellsFunctors.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 
@@ -91,7 +92,7 @@ bool testSCellsFunctors()
   {
     typedef KhalimskySpaceND<2> K2;
     K2 theKSpace; 
-    SCellToMidPoint<K2> m(theKSpace); 
+    CanonicSCellEmbedder<K2> m(theKSpace);
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     K2::Space::RealPoint aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
@@ -188,7 +189,7 @@ int main( int argc, char** argv )
   //concepts
   typedef KhalimskySpaceND<2> K2;
   checkingConcepts<SCellToPoint<K2>, K2::SCell, K2::Point >(); 
-  checkingConcepts<SCellToMidPoint<K2>, K2::SCell, K2::Space::RealPoint >(); 
+  checkingConcepts<CanonicSCellEmbedder<K2>, K2::SCell, K2::Space::RealPoint >();
   checkingConcepts<SCellToArrow<K2>, K2::SCell, std::pair<K2::Point, K2::Vector> >(); 
   checkingConcepts<SCellToInnerPoint<K2>, K2::SCell, K2::Point >(); 
   checkingConcepts<SCellToOuterPoint<K2>, K2::SCell, K2::Point >(); 
