@@ -103,7 +103,7 @@ template <typename TPointPredicate>
 inline
 DGtal::NotPointPredicate<TPointPredicate>
 ::NotPointPredicate( ConstAlias<PointPredicate> pred )
-  : myPred( pred )
+  : myPred( &pred )
 {
 }
 //------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ template <typename TPointPredicate1, typename TPointPredicate2, typename TBinary
 inline
 DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
 ::BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<TBinaryFunctor> boolFunctor )
-  : myPred1( pred1 ), myPred2( pred2 ), myBoolFunctor( boolFunctor )
+  : myPred1( &pred1 ), myPred2( &pred2 ), myBoolFunctor( &boolFunctor )
 {
 }
 //------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ template <typename TPointFunctor, typename TPredicate>
 inline
 DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
 ::PointFunctorPredicate( ConstAlias<PointFunctor> aFun, ConstAlias<Predicate> aPred )
-    : myFun(aFun), myPred(aPred)
+    : myFun(&aFun), myPred(&aPred)
 {
 }
 //------------------------------------------------------------------------------
