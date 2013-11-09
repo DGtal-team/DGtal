@@ -43,11 +43,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/base/ReverseIterator.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/arithmetic/IntegerComputer.h"
 
 #include "DGtal/geometry/curves/ArithmeticalDSL.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"

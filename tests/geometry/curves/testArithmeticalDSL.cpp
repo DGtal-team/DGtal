@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <boost/iterator/iterator_concepts.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/geometry/curves/ArithmeticalDSL.h"
@@ -222,7 +223,7 @@ bool rangeTest(const DSL& dsl)
 	 ( (it != itEnd)&&(res)&&(c<100) ); 
 	 ++it, ++c)
       {
-	trace.info() << *it << " ";  
+	trace.info() << "(" << it->operator[](0) << "," << it->operator[](1) << ") ";  
 	if ( !dsl(*it) )
 	  res = false; 
       }
@@ -239,13 +240,15 @@ bool rangeTest(const DSL& dsl)
 
   {//backward pass
     typedef typename DSL::ConstReverseIterator I; 
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<I> )); 
+    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<I> ));
     bool res = true; 
     int c = 0; 
     for (I it = dsl.rbegin(last), itEnd = dsl.rend(first); 
 	 ( (it != itEnd)&&(res)&&(c<100) ); 
 	 ++it, ++c)
       {
-	trace.info() << *it << " ";  
+	trace.info() << "(" << it->operator[](0) << "," << it->operator[](1) << ") ";  
 	if ( !dsl(*it) )
 	  res = false; 
       }

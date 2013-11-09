@@ -181,6 +181,8 @@ inline
 bool
 DGtal::ArithmeticalDSL<TC, TI, adj>::checkShiftAndSteps() const
 {
+  ASSERT( (myA != 0) || (myB != 0) ); 
+
   bool flagIsValid; //'true' if valid, 'false' otherwise
 
   if (mySteps != DGtal::ArithmeticalDSLKernel<TC,adj>::steps(myA, myB))
@@ -191,6 +193,8 @@ DGtal::ArithmeticalDSL<TC, TI, adj>::checkShiftAndSteps() const
 	      ||(mySteps.second[1] != NumberTraits<Coordinate>::ZERO) )
 	    &&( (mySteps.first - mySteps.second) != myShift ) )
     flagIsValid = false;
+  else if ( remainder( myShift ) != (myUpperBound - myLowerBound + NumberTraits<Integer>::ONE) )
+    flagIsValid = false; 
   else 
     flagIsValid = true; 
 
@@ -446,19 +450,17 @@ DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::~ConstIterator()
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
-typename DGtal::ArithmeticalDSL<TC, TI, adj>::Point 
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-operator*() const
+typename DGtal::ArithmeticalDSL<TC, TI, adj>::Point const
+DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::dereference() const 
 {
-  return myCurrentPoint;
+  return myCurrentPoint; 
 }
 
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
 void
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-next()
+DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::increment()
 {
   myCurrentRemainder += myQuantityToAdd; 
   if ( myCurrentRemainder <= myDSLPtr->myUpperBound )
@@ -475,32 +477,8 @@ next()
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
-typename DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator&
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-operator++()
-{
-  this->next(); 
-  return *this;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-typename DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-operator++(int)
-{
-  ConstIterator tmp(*this);
-  this->next();
-  return tmp;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
 void
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-previous()
+DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::decrement()
 {
   myCurrentRemainder -= myQuantityToAdd; 
   if ( myCurrentRemainder >= myDSLPtr->myLowerBound )
@@ -517,47 +495,14 @@ previous()
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
-typename DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator&
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-operator--()
-{
-  this->previous();
-  return *this;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-typename DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-operator--(int)
-{
-  ConstIterator tmp(*this);
-  this->previous();
-  return tmp;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
 bool
 DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-operator==(const ConstIterator& aOther) const
+equal(const ConstIterator& aOther) const
 {
   ASSERT( myDSLPtr == aOther.myDSLPtr );
   return myCurrentPoint == aOther.myCurrentPoint;
 }
 
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-bool
-DGtal::ArithmeticalDSL<TC, TI, adj>::ConstIterator::
-operator!=(const ConstIterator& aOther) const
-{
-  ASSERT( myDSLPtr == aOther.myDSLPtr );
-  return myCurrentPoint != aOther.myCurrentPoint;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 //                        Aliases                                            //

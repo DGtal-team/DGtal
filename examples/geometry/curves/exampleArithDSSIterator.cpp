@@ -69,7 +69,7 @@ int main( int UNUSED(argc), char** UNUSED(argv) )
     {}
   
   //Display the result.
-  std::cout << myDSS.getA() << " " << myDSS.getB() << " " << myDSS.getMu();
+  std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu();
   
   trace.endBlock();
   return 0;

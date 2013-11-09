@@ -101,16 +101,20 @@ namespace DGtal
 
     typedef std::pair<Vector,Vector> Steps; 
 
-
     /**
      * \brief Aim: This class aims at representing an iterator
      * that provides a way to scan the points of a DSL
      * It is both a model of readable iterator and of
-     * bidirectional iterator. 
+     * bidirectional iterator.
      */
-    class ConstIterator : public 
-    std::iterator<std::bidirectional_iterator_tag, 
-		  Point, int, Point*, Point> 
+    class ConstIterator
+      : public boost::iterator_facade<ConstIterator, //derived type, the ConstIterator class itself 
+				      Point const,   //value type
+				      boost::bidirectional_traversal_tag, //traversal tag
+				      Point const    //reference type
+				      //NB: since there is no underlying container, we cannot return
+				      //a reference. 
+				      >
     {
       // ------------------------- Private data -----------------------
     private:
@@ -118,7 +122,7 @@ namespace DGtal
       /// Constant aliasing pointer to the DSL visited by the iterator
       const ArithmeticalDSL* myDSLPtr;
 
-      /// The current point
+      /// The current point 
       Point  myCurrentPoint;
 
       /// Quantity to add to the current remainder
@@ -163,47 +167,25 @@ namespace DGtal
       ~ConstIterator(); 
 
       // ------------------------- iteration services -------------------------
-    public:
+    private:
+      friend class boost::iterator_core_access;
 
       /**
+       * Dereference operator
        * @return the current point
        */
-      Point operator*() const;
+      Point const dereference() const; 
 
       /**
        * Moves @a myCurrentPoint to the next point of the DSL
        */
-      void next(); 
-
-      /**
-       * Pre-increment.
-       * Goes to the next point of the DSL.
-       */
-      ConstIterator& operator++(); 
-
-      /**
-       * Post-increment.
-       * Goes to the next point of the DSL.
-       */
-      ConstIterator operator++(int); 
+      void increment(); 
 
       /**
        * Moves @a myCurrentPoint to the previous point of the DSL
        */
-      void previous();
-
-      /**
-       * Pre-decrement.
-       * Goes to the previous point in the DSL.
-       */
-      ConstIterator& operator--();
-
-      /**
-       * Post-decrement.
-       * Goes to the previous point in the DSL.
-       */
-      ConstIterator operator--(int);
-
+      void decrement(); 
+ 
       /**
        * Equality operator.
        *
@@ -212,20 +194,9 @@ namespace DGtal
        *
        * @return 'true' if their current points coincide.
        */
-      bool operator== ( const ConstIterator & aOther ) const;
+      bool equal(const ConstIterator& aOther) const; 
+    };
 
-      /**
-       * Inequality operator.
-       *
-       * @param aOther the iterator to compare with 
-       * (must be defined on the same DSL).
-       *
-       * @return 'true' if their current points differ.
-       */
-      bool operator!= ( const ConstIterator & aOther ) const;
-
-    }; //end of inner class ConstIterator
-    
     typedef DGtal::ReverseIterator<ConstIterator> ConstReverseIterator; 
 
     // ----------------------- Standard services ------------------------------
@@ -326,6 +297,8 @@ namespace DGtal
      * Checks the consistency between the slope parameters, ie. 
      * @a myA , @a myB and the translating vectors @a myShift , 
      * @a mySteps  
+     * @return 'true' if ok, 'false' otherwise
+     * @pre @a myA and @a myB mustn't be both null
      */
     bool checkShiftAndSteps() const;
 
@@ -363,6 +336,7 @@ namespace DGtal
      * of remainder r to a point of remainder r+omega
      */
     Vector shift() const; 
+
     /**
      * @return the two vectors used to iterate
      * over the DSL point. 
