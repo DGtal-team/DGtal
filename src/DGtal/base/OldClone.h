@@ -62,7 +62,7 @@ namespace DGtal
      reference), the duplication takes place when the user
      instantiates its member of type T.
 
-     @deprecated since 0.7. Use Clone instead.
+     @remark deprecated since 0.7. Use Clone instead.
 
      @note The usage of \c OldClone<T> instead of \c const \c T \c & or
      \c const \c T \c * in parameters is \b always \b recommended when
