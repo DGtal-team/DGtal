@@ -277,31 +277,31 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // template class IntegralInvariantGaussianCurvatureEstimator
 /**
-   * Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
-   * \brief Aim: This class implement a Integral Invariant Gaussian curvature estimation.
-   *
-   * @see related article:
-   *       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
-   *       Estimators in Digital Geometry. DGCI 2013. Retrieved from
-   *       https://liris.cnrs.fr/publis/?id=5866
-   *
-   * The algorithm we propose uses covariance matrix to approximate Gaussian curvature.
-   * To compute the covariance matrix on each surfel of the surface, we convolve a kernel (ImplicitBall) around
-   * the surface.
-   * The result covariance matrix give us principal curvatures and principal directions by computing
-   * respectively eigenvectors and eigenvalues on it.
-   * Theorical multigrid convergence is proved with principal curvatures, with a convergence speed of O(h^1/3)
-   * with hypothesis about the shape geometry and the convolution kernel radius.
-   * Experimental results showed a multigrid convergence for principal curvatures.
-   *
-   * Some optimization are available when we set a range of 0-adjacent surfels to the estimator.
-   *
-   * @tparam TKSpace space in which the shape is defined.
-   * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
-   * @tparam dimension dimension of the shape. Let default value to use the correct specialization.
-   *
-   * @see exampleIntegralInvariantGaussianCurvature3D.cpp testIntegralInvariantGaussianCurvature3D.cpp
-   */
+* Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
+* \brief Aim: This class implement a Integral Invariant Gaussian curvature estimation.
+*
+* @see related article:
+*       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
+*       Estimators in Digital Geometry. DGCI 2013. Retrieved from
+*       https://liris.cnrs.fr/publis/?id=5866
+*
+* The algorithm we propose uses covariance matrix to approximate Gaussian curvature.
+* To compute the covariance matrix on each surfel of the surface, we convolve a kernel (ImplicitBall) around
+* the surface.
+* The result covariance matrix give us principal curvatures and principal directions by computing
+* respectively eigenvectors and eigenvalues on it.
+* Theorical multigrid convergence is proved with principal curvatures, with a convergence speed of O(h^1/3)
+* with hypothesis about the shape geometry and the convolution kernel radius.
+* Experimental results showed a multigrid convergence for principal curvatures.
+*
+* Some optimization are available when we set a range of 0-adjacent surfels to the estimator.
+*
+* @tparam TKSpace space in which the shape is defined.
+* @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
+* @tparam dimension dimension of the shape. Let default value to use the correct specialization.
+*
+* @see exampleIntegralInvariantGaussianCurvature3D.cpp testIntegralInvariantGaussianCurvature3D.cpp
+*/
 template <typename TKSpace, typename TShapeFunctor, Dimension dimension = TKSpace::dimension>
 class IntegralInvariantGaussianCurvatureEstimator
 {
@@ -340,16 +340,16 @@ public:
   // ----------------------- Standard services ------------------------------
 public:
   /**
-     * Constructor.
-     *
-     * @param space space in which the shape is defined.
-     * @param f functor on spel of the shape.
-     */
+  * Constructor.
+  *
+  * @param space space in which the shape is defined.
+  * @param f functor on spel of the shape.
+  */
   IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
   /**
-     * Destructor.
-     */
+  * Destructor.
+  */
   ~IntegralInvariantGaussianCurvatureEstimator()
   {
     for( unsigned int i = 0; i < kernelsSet.size(); ++i )
@@ -365,140 +365,133 @@ public:
 public:
 
   /**
-      * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
-      *
-      * @param[in] _h precision of the grid
-      * @param[in] re Euclidean radius of the kernel support
-      */
+  * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
+  *
+  * @param[in] _h precision of the grid
+  * @param[in] re Euclidean radius of the kernel support
+  */
   void init ( const double _h, const double re );
 
   /**
-      * -- Gaussian curvature --
-      * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
-      *
-      * @tparam SurfelIterator type of Iterator on a Surfel
-      *
-      * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant Gaussian curvature.
-      *
-      * @return quantity (Gaussian curvature) at position *it
-      */
+  * -- Gaussian curvature --
+  * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
+  *
+  * @tparam SurfelIterator type of Iterator on a Surfel
+  *
+  * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant Gaussian curvature.
+  *
+  * @return quantity (Gaussian curvature) at position *it
+  */
   template< typename SurfelIterator >
   Quantity eval ( const SurfelIterator & it );
 
   /**
-      * -- Gaussian curvature --
-      * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam SurfelIterator type of Iterator on a Surfel
-      * @tparam OutputIterator type of Iterator of a list of Quantity
-      *
-      * @param[in] ite iterator of the begin surfel on the shape we want compute the integral invariant Gaussian curvature.
-      * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
-      * @param[out] result iterator of results of the computation.
-      */
+  * -- Gaussian curvature --
+  * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
+  * Return the result on an OutputIterator (param).
+  *
+  * @tparam SurfelIterator type of Iterator on a Surfel
+  * @tparam OutputIterator type of Iterator of a list of Quantity
+  *
+  * @param[in] ite iterator of the begin surfel on the shape we want compute the integral invariant Gaussian curvature.
+  * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
+  * @param[out] result iterator of results of the computation.
+  */
   template< typename SurfelIterator, typename OutputIterator >
   void eval ( const SurfelIterator & itb,
               const SurfelIterator & ite,
               OutputIterator & result );
 
   /**
-      * -- Principal curvatures --
-      * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
-      *
-      * @tparam SurfelIterator iterator on a Surfel
-      *
-      * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant principal curvatures.
-      *
-      * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
-      * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
-      */
+  * -- Principal curvatures --
+  * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
+  *
+  * @tparam SurfelIterator iterator on a Surfel
+  *
+  * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant principal curvatures.
+  *
+  * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
+  * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
+  */
   template< typename SurfelIterator >
   PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
 
 
 
   /**
-      * -- Principal curvatures --
-      * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam SurfelIterator iterator on a Surfel
-      * @tparam OutputIterator iterator of array of PrincipalCurvatures
-      *
-      * @param[in] ite iterator of the begin surfel on the shape where we compute the integral invariant principal curvatures.
-      * @param[in] itb iterator of the end surfel (excluded) on the shape where we compute the integral invariant principal curvatures.
-      * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
-      * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
-      */
+  * -- Principal curvatures --
+  * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
+  * Return the result on an OutputIterator (param).
+  *
+  * @tparam SurfelIterator iterator on a Surfel
+  * @tparam OutputIterator iterator of array of PrincipalCurvatures
+  *
+  * @param[in] ite iterator of the begin surfel on the shape where we compute the integral invariant principal curvatures.
+  * @param[in] itb iterator of the end surfel (excluded) on the shape where we compute the integral invariant principal curvatures.
+  * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
+  * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
+  */
   template< typename SurfelIterator, typename OutputIterator >
   void evalPrincipalCurvatures ( const SurfelIterator & itb,
                                  const SurfelIterator & ite,
                                  OutputIterator & result );
 
   /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
+  * Writes/Displays the object on an output stream.
+  * @param out the output stream where the object is written.
+  */
   void selfDisplay ( std::ostream & out ) const;
 
   /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
+  * Checks the validity/consistency of the object.
+  * @return 'true' if the object is valid, 'false' otherwise.
+  */
   bool isValid() const;
 
   // ------------------------- Private Datas --------------------------------
 private:
-  /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators > kernels;
-  /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
-  std::vector< DigitalSet * > kernelsSet;
 
-  /// Euclidean kernel
-  KernelSupport * kernel;
+  std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  /// Digital kernel
-  DigitalShapeKernel * digKernel;
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
 
-  /// kernel functor
-  const KernelSpelFunctor myKernelFunctor;
+  KernelSupport * kernel; ///< Euclidean kernel
 
-  /// convolver
-  Convolver myConvolver;
+  DigitalShapeKernel * digKernel; ///< Digital kernel
 
-  /// precision of the grid
-  float h;
+  const KernelSpelFunctor myKernelFunctor; ///< Kernel functor (on Spel)
 
-  /// Euclidean radius of the kernel
-  float radius;
+  Convolver myConvolver; ///< Convolver
 
-  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-  ValuesFunctor gaussFunctor;
+  double h; ///< precision of the grid
+
+  double radius; ///< Euclidean radius of the kernel
+
+  ValuesFunctor gaussFunctor; ///< Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
   PrincipalCurvatureFunctor princCurvFunctor;
 
 private:
 
   /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
+  * Copy constructor.
+  * @param other the object to clone.
+  * Forbidden by default.
+  */
   IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
   /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
+  * Assignment.
+  * @param other the object to copy.
+  * @return a reference on 'this'.
+  * Forbidden by default.
+  */
   IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
 }; // end of class IntegralInvariantGaussianCurvatureEstimator
 
 /**
-      * Specialization for dimension = 2
-      */
+* Specialization for dimension = 2
+*/
 template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>
 {
@@ -537,16 +530,16 @@ public:
   // ----------------------- Standard services ------------------------------
 public:
   /**
-     * Constructor.
-     *
-     * @param space space in which the shape is defined.
-     * @param f functor on spel of the shape.
-     */
+  * Constructor.
+  *
+  * @param space space in which the shape is defined.
+  * @param f functor on spel of the shape.
+  */
   IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
   /**
-     * Destructor.
-     */
+  * Destructor.
+  */
   ~IntegralInvariantGaussianCurvatureEstimator()
   {
     for( unsigned int i = 0; i < kernelsSet.size(); ++i )
@@ -562,140 +555,132 @@ public:
 public:
 
   /**
-      * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
-      *
-      * @param[in] _h precision of the grid
-      * @param[in] re Euclidean radius of the kernel support
-      */
+  * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
+  *
+  * @param[in] _h precision of the grid
+  * @param[in] re Euclidean radius of the kernel support
+  */
   void init ( const double _h, const double re );
 
   /**
-      * -- Gaussian curvature --
-      * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
-      *
-      * @tparam SurfelIterator type of Iterator on a Surfel
-      *
-      * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant Gaussian curvature.
-      *
-      * @return quantity (Gaussian curvature) at position *it
-      */
+  * -- Gaussian curvature --
+  * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
+  *
+  * @tparam SurfelIterator type of Iterator on a Surfel
+  *
+  * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant Gaussian curvature.
+  *
+  * @return quantity (Gaussian curvature) at position *it
+  */
   template< typename SurfelIterator >
   Quantity eval ( const SurfelIterator & it );
 
   /**
-      * -- Gaussian curvature --
-      * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam SurfelIterator type of Iterator on a Surfel
-      * @tparam OutputIterator type of Iterator of a list of Quantity
-      *
-      * @param[in] ite iterator of the begin surfel on the shape we want compute the integral invariant Gaussian curvature.
-      * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
-      * @param[out] result iterator of results of the computation.
-      */
+  * -- Gaussian curvature --
+  * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
+  * Return the result on an OutputIterator (param).
+  *
+  * @tparam SurfelIterator type of Iterator on a Surfel
+  * @tparam OutputIterator type of Iterator of a list of Quantity
+  *
+  * @param[in] ite iterator of the begin surfel on the shape we want compute the integral invariant Gaussian curvature.
+  * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
+  * @param[out] result iterator of results of the computation.
+  */
   template< typename SurfelIterator, typename OutputIterator >
   void eval ( const SurfelIterator & itb,
               const SurfelIterator & ite,
               OutputIterator & result );
 
   /**
-      * -- Principal curvatures --
-      * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
-      *
-      * @tparam SurfelIterator iterator on a Surfel
-      *
-      * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant principal curvatures.
-      *
-      * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
-      * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
-      */
+  * -- Principal curvatures --
+  * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
+  *
+  * @tparam SurfelIterator iterator on a Surfel
+  *
+  * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant principal curvatures.
+  *
+  * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
+  * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
+  */
   template< typename SurfelIterator >
   PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
 
 
 
   /**
-      * -- Principal curvatures --
-      * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam SurfelIterator iterator on a Surfel
-      * @tparam OutputIterator iterator of array of PrincipalCurvatures
-      *
-      * @param[in] ite iterator of the begin surfel on the shape where we compute the integral invariant principal curvatures.
-      * @param[in] itb iterator of the end surfel (excluded) on the shape where we compute the integral invariant principal curvatures.
-      * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
-      * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
-      */
+  * -- Principal curvatures --
+  * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
+  * Return the result on an OutputIterator (param).
+  *
+  * @tparam SurfelIterator iterator on a Surfel
+  * @tparam OutputIterator iterator of array of PrincipalCurvatures
+  *
+  * @param[in] ite iterator of the begin surfel on the shape where we compute the integral invariant principal curvatures.
+  * @param[in] itb iterator of the end surfel (excluded) on the shape where we compute the integral invariant principal curvatures.
+  * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
+  * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
+  */
   template< typename SurfelIterator, typename OutputIterator >
   void evalPrincipalCurvatures ( const SurfelIterator & itb,
                                  const SurfelIterator & ite,
                                  OutputIterator & result );
 
   /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
+  * Writes/Displays the object on an output stream.
+  * @param out the output stream where the object is written.
+  */
   void selfDisplay ( std::ostream & out ) const;
 
   /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
+  * Checks the validity/consistency of the object.
+  * @return 'true' if the object is valid, 'false' otherwise.
+  */
   bool isValid() const;
 
   // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators > kernels;
-  /// array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
-  std::vector< DigitalSet * > kernelsSet;
+  std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  /// Euclidean kernel
-  KernelSupport * kernel;
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
 
-  /// Digital kernel
-  DigitalShapeKernel * digKernel;
+  KernelSupport * kernel; ///< Euclidean kernel
 
-  /// kernel functor
-  const KernelSpelFunctor myKernelFunctor;
+  DigitalShapeKernel * digKernel; ///< Digital kernel
 
-  /// convolver
-  Convolver myConvolver;
+  const KernelSpelFunctor myKernelFunctor; ///< Kernel functor (on Spel)
 
-  /// precision of the grid
-  float h;
+  Convolver myConvolver; ///< Convolver
 
-  /// Euclidean radius of the kernel
-  float radius;
+  double h; ///< precision of the grid
 
-  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-  ValuesFunctor gaussFunctor;
+  double radius; ///< Euclidean radius of the kernel
+
+  ValuesFunctor gaussFunctor; ///< Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
   PrincipalCurvatureFunctor princCurvFunctor;
 
 private:
 
   /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
+  * Copy constructor.
+  * @param other the object to clone.
+  * Forbidden by default.
+  */
   IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
   /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
+  * Assignment.
+  * @param other the object to copy.
+  * @return a reference on 'this'.
+  * Forbidden by default.
+  */
   IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
 }; // end of class IntegralInvariantGaussianCurvatureEstimator for dimension = 2
 
 /**
-    * Specialization for dimension = 3
-    */
+* Specialization for dimension = 3
+*/
 template <typename TKSpace, typename TShapeFunctor>
 class IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>
 {
@@ -736,16 +721,16 @@ public:
   // ----------------------- Standard services ------------------------------
 public:
   /**
-     * Constructor.
-     *
-     * @param[in] space space in which the shape is defined.
-     * @param[in] f functor on spel of the shape.
-     */
+  * Constructor.
+  *
+  * @param[in] space space in which the shape is defined.
+  * @param[in] f functor on spel of the shape.
+  */
   IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
 
   /**
-     * Destructor.
-     */
+  * Destructor.
+  */
   ~IntegralInvariantGaussianCurvatureEstimator()
   {
     for( unsigned int i = 0; i < kernelsSet.size(); ++i )
@@ -761,134 +746,126 @@ public:
 public:
 
   /**
-      * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
-      *
-      * @param[in] _h precision of the grid
-      * @param[in] re Euclidean radius of the kernel support
-      */
+  * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
+  *
+  * @param[in] _h precision of the grid
+  * @param[in] re Euclidean radius of the kernel support
+  */
   void init ( const double _h, const double re );
 
   /**
-      * -- Gaussian curvature --
-      * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
-      *
-      * @tparam SurfelIterator type of Iterator on a Surfel
-      *
-      * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant Gaussian curvature.
-      *
-      * @return quantity (Gaussian curvature) at surfel *it
-      */
+  * -- Gaussian curvature --
+  * Compute the integral invariant Gaussian curvature at surfel *it of a shape.
+  *
+  * @tparam SurfelIterator type of Iterator on a Surfel
+  *
+  * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant Gaussian curvature.
+  *
+  * @return quantity (Gaussian curvature) at surfel *it
+  */
   template< typename SurfelIterator >
   Quantity eval ( const SurfelIterator & it );
 
   /**
-      * -- Gaussian curvature --
-      * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam SurfelIterator type of Iterator on a Surfel
-      * @tparam OutputIterator type of Iterator of an array of Quantity
-      *
-      * @param[in] ite iterator of the begin surfel on the shape we want compute the integral invariant Gaussian curvature.
-      * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
-      * @param[out] result iterator of results of the computation.
-      */
+  * -- Gaussian curvature --
+  * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
+  * Return the result on an OutputIterator (param).
+  *
+  * @tparam SurfelIterator type of Iterator on a Surfel
+  * @tparam OutputIterator type of Iterator of an array of Quantity
+  *
+  * @param[in] ite iterator of the begin surfel on the shape we want compute the integral invariant Gaussian curvature.
+  * @param[in] itb iterator of the end surfel (excluded) on the shape we want compute the integral invariant Gaussiaan curvature.
+  * @param[out] result iterator of results of the computation.
+  */
   template< typename SurfelIterator, typename OutputIterator >
   void eval ( const SurfelIterator & itb,
               const SurfelIterator & ite,
               OutputIterator & result );
 
   /**
-      * -- Principal curvatures --
-      * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
-      *
-      * @tparam SurfelIterator iterator on a Surfel
-      *
-      * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant principal curvatures.
-      *
-      * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
-      * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
-      */
+  * -- Principal curvatures --
+  * Compute the integral invariant Gaussian curvature on surfel *it of a shape.
+  *
+  * @tparam SurfelIterator iterator on a Surfel
+  *
+  * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant principal curvatures.
+  *
+  * @return a struct with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
+  * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
+  */
   template< typename SurfelIterator >
   PrincipalCurvatures evalPrincipalCurvatures ( const SurfelIterator & it );
 
 
 
   /**
-      * -- Principal curvatures --
-      * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
-      * Return the result on an OutputIterator (param).
-      *
-      * @tparam SurfelIterator iterator on a Surfel
-      * @tparam OutputIterator iterator of array of PrincipalCurvatures
-      *
-      * @param[in] ite iterator of the begin surfel on the shape where we compute the integral invariant principal curvatures.
-      * @param[in] itb iterator of the end surfel (excluded) on the shape where we compute the integral invariant principal curvatures.
-      * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
-      * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
-      */
+  * -- Principal curvatures --
+  * Compute the integral invariant Gaussian curvature from two surfels (from *itb to *ite (exclude) ) of a shape.
+  * Return the result on an OutputIterator (param).
+  *
+  * @tparam SurfelIterator iterator on a Surfel
+  * @tparam OutputIterator iterator of array of PrincipalCurvatures
+  *
+  * @param[in] ite iterator of the begin surfel on the shape where we compute the integral invariant principal curvatures.
+  * @param[in] itb iterator of the end surfel (excluded) on the shape where we compute the integral invariant principal curvatures.
+  * @param[out] result iterator of structs with principal curvatures value of Integral Invariant estimator at surfel *it, and eigenVectors
+  * and eigenValues resulting of the covariance matrix (see above: struct CurvatureInformations )
+  */
   template< typename SurfelIterator, typename OutputIterator >
   void evalPrincipalCurvatures ( const SurfelIterator & itb,
                                  const SurfelIterator & ite,
                                  OutputIterator & result );
 
   /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
+  * Writes/Displays the object on an output stream.
+  * @param out the output stream where the object is written.
+  */
   void selfDisplay ( std::ostream & out ) const;
 
   /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
+  * Checks the validity/consistency of the object.
+  * @return 'true' if the object is valid, 'false' otherwise.
+  */
   bool isValid() const;
 
   // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators > kernels;
-  /// array of shifting masks. Size = 27 for each shifting<s (0-adjacent and full kernel included)
-  std::vector< DigitalSet * > kernelsSet;
+  std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  /// Euclidean kernel
-  KernelSupport * kernel;
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 27 for each shifting<s (0-adjacent and full kernel included)
 
-  /// Digital kernel
-  DigitalShapeKernel * digKernel;
+  KernelSupport * kernel; ///< Euclidean kernel
 
-  /// kernel functor
-  const KernelSpelFunctor myKernelFunctor;
+  DigitalShapeKernel * digKernel; ///< Digital kernel
 
-  /// convolver
-  Convolver myConvolver;
+  const KernelSpelFunctor myKernelFunctor; ///< Kernel functor (on Spel)
 
-  /// precision of the grid
-  double h;
+  Convolver myConvolver; ///< Convolver
 
-  /// Euclidean radius of the kernel
-  double radius;
+  double h; ///< precision of the grid
 
-  /// Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
-  ValuesFunctor gaussFunctor;
+  double radius; ///< Euclidean radius of the kernel
+
+  ValuesFunctor gaussFunctor; ///< Functor to transform covarianceMatrix to Quantity/PrincipalCurvatures
   PrincipalCurvatureFunctor princCurvFunctor;
 
 private:
 
   /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
+  * Copy constructor.
+  * @param other the object to clone.
+  * Forbidden by default.
+  */
   IntegralInvariantGaussianCurvatureEstimator ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
   /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
+  * Assignment.
+  * @param other the object to copy.
+  * @return a reference on 'this'.
+  * Forbidden by default.
+  */
   IntegralInvariantGaussianCurvatureEstimator & operator= ( const IntegralInvariantGaussianCurvatureEstimator & other );
 
 }; // end of specialization for dimension = 3
@@ -902,11 +879,11 @@ private:
 
 
 /**
-   * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantGaussianCurvatureEstimator'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'IntegralInvariantGaussianCurvatureEstimator' to write.
-   * @return the output stream after the writing.
-   */
+* Overloads 'operator<<' for displaying objects of class 'IntegralInvariantGaussianCurvatureEstimator'.
+* @param out the output stream where the object is written.
+* @param object the object of class 'IntegralInvariantGaussianCurvatureEstimator' to write.
+* @return the output stream after the writing.
+*/
 template <typename TKS, typename TSF, Dimension dimension>
 std::ostream&
 operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, dimension> & object );
