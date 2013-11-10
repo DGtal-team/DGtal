@@ -161,8 +161,8 @@ DGtal::ArithmeticalDSL<TC, TI, adj>::isValid() const
 
   if ( (myA != 0) || (myB != 0) )
     {
-      Integer gcd = IntegerComputer<Integer>::staticGcd(myA, myB); 
-      if (gcd != NumberTraits<Integer>::ONE) 
+      Integer gcd = IntegerComputer<Coordinate>::staticGcd(myA, myB); 
+      if (gcd != NumberTraits<Coordinate>::ONE) 
 	flagIsValid = false; //a,b must be relatively prime
       else if (!checkShiftAndSteps())
 	flagIsValid = false; //redondant parameters must be consistent
