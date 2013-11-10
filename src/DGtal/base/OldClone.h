@@ -63,7 +63,7 @@ namespace DGtal
      reference), the duplication takes place when the user
      instantiates its member of type T.
 
-     @deprecated since 0.7. Use ::DGtal::Clone instead.
+     @remark deprecated since 0.7. Use Clone instead.
 
      @note The usage of \c deprecated::Clone<T> instead of \c const \c T \c & or
      \c const \c T \c * in parameters is \b always \b recommended when
@@ -81,7 +81,7 @@ namespace DGtal
      It can be used as follows. Consider this simple example where
      class \e A is a big object. Then we define three classes \e B1,
      \e B2 and \e B3, that uses some instance of \e A.
-     
+
      @code
      const int N = 10000;
      struct A { ...
@@ -112,7 +112,7 @@ namespace DGtal
      struct B3 {
        B3( const A & a ) // ambiguous, cost is O(N) here
        { myA = new A( a ); }
-       ~B3() 
+       ~B3()
        { if ( myA != 0 ) delete myA; }
      ...
        A* myA;
@@ -125,14 +125,14 @@ namespace DGtal
      longer than \a b itself (case for an instance of \a B1
      above). Classes deprecated::Clone, Alias, ConstAlias exist for these
      reasons. The classes above may be rewritten as follows.
-     
+
      @code
      // Aliasing for a long lifetime is visible.
      struct B1 {
        B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       const A & myA; 
+       const A & myA;
        // or Const A* myA;
      };
      // Cloning as data member is visible.
@@ -185,7 +185,7 @@ namespace DGtal
 
      @code
      struct B4 {
-       B4( A a ) // not ambiguous, but cost is O(2N) here. 
+       B4( A a ) // not ambiguous, but cost is O(2N) here.
        : myA( a ) {}
      ...
        A myA;
@@ -194,7 +194,7 @@ namespace DGtal
      B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note deprecated::Clone have no copy constructor. 
+     @note deprecated::Clone have no copy constructor.
 
      @note The user should not used deprecated::Clone<T> for data members (in
      fact, he cannot), only as a type for parameters.
@@ -213,9 +213,9 @@ namespace DGtal
     /**
       Copy constructor.
       @param other the object to clone.
-      
+
       @note Keep in mind that Alias<T> type should not be used in class
-      members (efficiency issue). 
+      members (efficiency issue).
     */
     Clone ( const DGtal::deprecated::Clone<T> & other );
 
@@ -243,7 +243,7 @@ namespace DGtal
     */
     operator T() const;
 
-    /** 
+    /**
         Allocates a T instance on the heap and returns its adress.
         @return a pointer on the instance of T allocated on the process heap.
     */
