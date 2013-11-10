@@ -81,14 +81,14 @@ bool testSimpleExpander()
 
   trace.beginBlock ( "(4,8) Filling ..." );
 
-  typedef int Integer;                // choose your digital line here.
+  //typedef int Integer;                // choose your digital line here.
   typedef SpaceND<2> Z2;          // Z^2
   typedef Z2::Point Point;
   typedef MetricAdjacency<Z2, 1> Adj4; // 4-adjacency type
   typedef MetricAdjacency<Z2, 2> Adj8; // 8-adjacency type
   typedef DigitalTopology< Adj8, Adj4 > DT8_4; //8,4 topology type
   typedef HyperRectDomain< Z2 > Domain;
-  typedef Domain::ConstIterator DomainConstIterator;
+  //typedef Domain::ConstIterator DomainConstIterator;
   typedef DigitalSetSelector < Domain, BIG_DS + HIGH_BEL_DS >::Type DigitalSet;
   typedef Object<DT8_4, DigitalSet> ObjectType;
 
@@ -225,7 +225,7 @@ bool testLayers()
 
   trace.beginBlock ( "(4,8) Filling ..." );
 
-  typedef Domain::ConstIterator DomainConstIterator;
+  //typedef Domain::ConstIterator DomainConstIterator;
   typedef Object8_4 ObjectType;
   typedef Object4_8 ObjectTypeReverseTopo;
   typedef Expander<ObjectTypeReverseTopo> ObjectExpanderReverseTopo;

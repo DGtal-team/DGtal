@@ -73,8 +73,7 @@ namespace DGtal {
     inline ~NClone() {}
 
     /**
-      Copy constructor.
-      @param other the object to clone.
+      Copy constructor. Invalid.
     */
     inline NClone ( const NClone & ) { ASSERT( false ); }
 

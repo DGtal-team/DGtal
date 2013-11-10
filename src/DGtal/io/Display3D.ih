@@ -258,7 +258,6 @@ void
 DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint &p2,
 					   const RealPoint &p3, const RealPoint &p4)
 {
-
   if(myQuadSetList.size() == 0 )
     {
       createNewQuadList("quad");
@@ -276,7 +275,7 @@ DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint 
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
     {
-      trace.error()<< "Warning quad not added due to identical vertex... "<<std::endl;
+      trace.warning()<< "Warning quad not added due to identical vertex... "<<std::endl;
       return;
     }
   aQuad.point1=p1;
