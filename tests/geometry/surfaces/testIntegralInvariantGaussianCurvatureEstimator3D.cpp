@@ -164,6 +164,13 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
   }
   mean /= rsize;
 
+
+  trace.info() << "Computed: "<<mean<<std::endl;
+  trace.info() << "Expected: "<<realValue<<"  delta="<<delta<<std::endl;
+  trace.info() << "abs= "<< std::abs ( realValue - mean ) <<std::endl;
+
+
+
   if ( std::abs ( realValue - mean ) > delta )
   {
     trace.endBlock();
