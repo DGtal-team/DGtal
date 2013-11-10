@@ -57,7 +57,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 @b Modules
 
 - \ref moduleGridCurveAnalysis  (Tristan Roussillon)
- - Digital straight segments --- coming soon ---
+ - \ref moduleDSSRecognition (Tristan Roussillon) 
  - Digital circular arcs     --- coming soon ---
  - Other 
  - \ref moduleFrechetShortcut (Isabelle Sivignon)

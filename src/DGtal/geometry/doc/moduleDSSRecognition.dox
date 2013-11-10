@@ -1,0 +1,187 @@
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/*!
+   
+@page moduleDSSRecognition Recognition of Digital Straight Segments  
+
+@author Tristan Roussillon
+
+Part of the \ref packageGeometry.
+
+This module gathers classes that represents and recognize digital straight segments. 
+
+
+At this point, we focus on the arithmetical representation of [Reveilles, 1991 : \cite Reveilles_1991_thesis]
+and the corresponding recognition algorithm proposed by [Debled and Reveilles, 1995 : \cite Debled_1995_ijprai]. 
+
+In the future, other approaches will be also documented here (see StabbingLineComputer and OneBalancedWordComputer for instance). 
+
+<!--
+everything is gathered in classes COBANaivePlane and
+COBAGenericNaivePlane, which are additive primitive computers.  File
+viewer3D-7-planes.cpp gives a very simple example of use-case. File
+greedy-plane-segmentation.cpp is a non trivial example that uses this
+plane recognition algorithm.
+-->
+
+[TOC]
+
+\section moduleDSSRecognition-arith Arithmetical Approach
+
+The basic class is ArithmeticalDSSComputer, which contains dynamic recognition algorithms. It is a model of CDynamicSegmentComputer. 
+Each instance of ArithmeticalDSSComputer uses an instance of ArithmeticalDSS as an internal representation.  
+Instances of ArithmeticalDSS use an instance of ArithmeticalDSL, as the bounding digital straight line of minimal parameters.  
+
+\subsection moduleDSSRecognition-arith-DSL Representation of Digital Straight Line
+
+A digital straight line (DSL for short) of slope \f$ a/b \f$ (with \f$ a,b, \in \mathbb{Z} \f$, \f$ \gcd(a,b) = 1 \f$), 
+intercept \f$ \mu \in \mathbb{Z} \f$ and thickness \f$ \omega \in \mathbb{Z} \f$, 
+which is conveniently denoted by \f$ D(a,b,\mu,\omega) \f$, 
+is the set of digital points \f$ (x,y) \in \mathbb{Z}^2 \f$ such that \f$ \mu \leq ax - by < \mu + \omega \f$
+[Reveilles, 1991 : \cite Reveilles_1991_thesis]. 
+
+Any DSL such that \f$ \omega = \max(|a|,|b|) \f$ (resp. \f$ \omega = |a| + |b| \f$) is said to be naive 
+(resp. standard) and is simply 8-connected (resp. 4-connected) [Reveilles, 1991 : \cite Reveilles_1991_thesis]. 
+
+For instance, the naive DSL \f$ D(2,5,0,5) \f$ is depicted below: 
+@image html NaiveDSL.png "Example of Naive DSL"
+@image latex NaiveDSL.png "Example of Naive DSL" width=5cm
+
+The standard DSL \f$ D(2,5,0,7) \f$ is thicker: 
+@image html StandardDSL.png "Standard DSL of same slope and same intercept"
+@image latex StandardDSL.png "Standard DSL of same slope and same intercept" width=5cm
+
+From now on, let us assume that \f$ \omega \f$ is either equal to \f$\max(|a|,|b|) \f$ (naive case) 
+or to \f$ |a| + |b| \f$ (standard case).  
+Then, any DSL is merely denoted by \f$ D(a,b,\mu) \f$. 
+
+As a quick start, a naive DSL can be declared and instanciated as follows: 
+
+@snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLNaiveCtor
+
+Then, within a window defined by two points (called firstPoint and lastPoint below),
+you can iterate over the DSL points: 
+
+@snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLIteration
+
+\note Note the difference of semantic between method ArithmeticalDSL.begin(), 
+which returns an iterator pointing to the input point, and method ArithmeticalDSL.end(), 
+which returns an iterator pointing \e past to the input point. 
+
+In the standard case, it is enough to replace \e Naive by \e Standard. 
+
+@snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLStandardCtor
+
+The whole example may be found in exampleArithmeticalDSL.cpp. 
+
+Classes NaiveDSL and StandardDSL are both aliases of the class ArithmeticalDSL, 
+which represents either a naive or a standard DSL. 
+It gathers the generic code that represents the DSL in any octant. 
+ArithmeticalDSL is a model of CPointFunctor, ie. it has a function operator 
+ArithmeticalDSL.operator\(\) that returns 'true' iff the input point belongs 
+to the DSL. ArithmeticalDSL also provides services to iterate over the DSL points 
+from any point belonging to the DSL.
+ArithmeticalDSL is a model of CConstBidirectionalRange that has inner types called 
+ArithmeticalDSL::ConstIterator and ArithmeticalDSL::ConstReverseIterator, 
+both models of readable iterator and bidirectional iterator.
+The reader may have a look at the increment and decrement operator of
+ArithmeticalDSL::ConstIterator (ie. ArithmeticalDSL::ConstIterator.increment and 
+ArithmeticalDSL::ConstIterator.decrement) to check the genericity of the code.     
+The part of the code that depends on the arithmetical thickness (either naive or standard) 
+is located in the class ArithmeticalDSLKernel.  
+   
+\note The arithmetical representation by the parameters \f$ a, b \f$ and \f$ \mu \f$
+is redondant. Exactly two representations describe one DSL. 
+For instance, \f$ D(2,5,0) \f$ and \f$ D(-2,-5,-5) \f$ corresponds 
+to the same set of points. This representation is thus interesting, since it
+includes an orientation preferably chosen to iterate over the DSL points from any point 
+belonging to the DSL. In order to get a representation from another one, you must use
+method ArithmeticalDSL.negate(). 
+
+@image html StandardDSL.png "D(2,5,0) and D(-2,-5,-5) represents the same set of points"
+@image latex StandardDSL.png "D(2,5,0) and D(-2,-5,-5) represents the same set of points" width=5cm
+
+\note Note also that method ArithmeticalDSL.equalsTo() compare two representations
+and returns 'true' iff the parameters \f$ a, b \f$ and \f$ \mu \f$ of the two 
+representations are equal. However, the equality operator ArithmeticalDSL.operator==
+compare two sets of points and returns 'true' iff the two sets of points are equal, 
+whatever the orientation. 
+
+ArithmeticalDSL stores as data members not only the parameters \f$ a, b \f$ and \f$ \mu \f$,
+but also redondant parameters described below. These extra parameters are useful to efficiently iterate over 
+the DSL points. 
+
+- myA of type ArithmeticalDSL::Coordinate: \f$ a \f$ -parameter of the DSL, 
+equal to the y-component of the direction vector
+- myB of type ArithmeticalDSL::Coordinate: \f$ b \f$ -parameter of the DSL, 
+equal to the x-component of the direction vector  
+- myLowerBound of type ArithmeticalDSL::Integer: \f$ \mu \f$ -parameter of the DSL 
+that defines the lower leaning line \f$ ax - by = \mu \f$. 
+- myUpperBound of type ArithmeticalDSL::Integer: integer equal to \f$ \mu + \omega - 1 \f$ 
+that defines the upper leaning line. 
+- myShift of type ArithmeticalDSL::Vector: vector \f$ s \f$ that translates any point of remainder \f$ r = ax - by \f$ 
+to a point of remainder \f$ r + \omega \f$. Note that \f$ s \f$ is equal to 0 in the special case
+where \f$ \omega = 0 \f$, ie. \f$ a \f$ and \f$ b \f$ are both null.      
+- mySteps of type ArithmeticalDSL::Steps (STL pair of Vector): couple of vectors \f$ v \f$ and \f$ w \f$ 
+used to iterate over the DSL points so that a given DSL point \f$ p \f$ is followed by 
+its unique neighbor point \f$ q \f$ belonging to the DSL in the chosen orientation.
+Obviously, these two vectors are equal to 0 in the invalid case where \f$ \omega = 0 \f$. Moreover, 
+the first vector is equal to the direction vector, while the second one is equal to 0, if \f$ \omega = 1 \f$, 
+ie. if the lower leaning line and the upper leaning line are counfounded. Though, in the general case, 
+the first vector translates any point \f$ p \f$ of remainder \f$ r \f$ to its neighbor point \f$ q \f$ 
+of remainder greater than or equal to \f$ r \f$, while the second one is such that \f$ v - w = s \f$. 
+
+\note Data members myShift and mySteps are computed with respect to myA and myB in ArithmeticalDSLKernel
+
+For instance, a naive DSL of same slope is depicted in the first three octants. 
+Vectors mySteps.first (\f$ v \f$), mySteps.second (\f$ w \f$) and myShift (\f$ s \f$),
+ are repectively depicted in blue, green and red.  
+ 
+@image html ArithmeticalDSL-8-0-5-8.png "Naive DSL D(5,8,0)"
+@image latex ArithmeticalDSL-8-0-5-8.png "Naive DSL D(5,8,0)" width=5cm
+
+@image html ArithmeticalDSL-8-1-8-5.png "Naive DSL D(8,5,0)"
+@image latex ArithmeticalDSL-8-1-8-5.png "Naive DSL D(8,5,0)" width=5cm
+
+@image html ArithmeticalDSL-8-2-8-m5.png "Naive DSL D(8,-5,0)"
+@image latex ArithmeticalDSL-8-2-8-m5.png "Naive DSL D(8,-5,0)" width=5cm
+
+Other octants and specific cases are generated in exampleArithmeticalDSL.cpp. 
+
+\note You may have noticed that myLowerBound (\f$ \mu \f$) is a member of type Integer, 
+whereas myA (\f$ a \f$) and myB (\f$ b \f$) are members of type Coordinate.  
+For any lower leaning point of coordinates \f$ (x, y) \f$ such that \f$ ax - by = \mu \f$, 
+myLowerBound may require \f$ 2n+1 \f$ bits if \f$ a \f$ and \f$ b \f$ are stored with \f$ n \f$ bits.
+Therefore, NaiveDSL and StandardDSL have not only one template parameter, but two. 
+The first one for the coordinate type, the second one, which should be greater, for the 
+intercepts and remainders. 
+
+You can set the second template parameter as follows in order to avoid any overflow: 
+
+@snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLNaiveCtorTypes
+
+\note To end, note that an instance of ArithmeticalDSL is valid iff parameters \f$ a \f$ and \f$ b \f$ are not both null, 
+are relatively prime, and all the redondant parameters are consistents (see ArithmeticalDSL.isValid()
+and ArithmeticalDSL.checkShiftAndSteps()). 
+
+\subsection moduleDSSRecognition-arith-DSS Representation of Digital Straight Segments
+
+//leaning points
+
+//validation
+
+//factory
+
+\subsection moduleDSSRecognition-arith-DSSRec Recognition of Digital Straight Segments
+
+//extension
+
+//retraction
+
+*/
+
+
+}
