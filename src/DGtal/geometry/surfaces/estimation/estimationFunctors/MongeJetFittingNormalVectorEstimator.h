@@ -88,7 +88,7 @@ namespace DGtal
      * @param d degree of the polynomial surface to fit.
      */
     MongeJetFittingNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
-      myEmbedder(anEmbedder), myH(h), myD(d) 
+      myEmbedder(&anEmbedder), myH(h), myD(d)
     {
       FATAL_ERROR_MSG(d>=2, "Polynomial surface degree must be greater than 2");
     }

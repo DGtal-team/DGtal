@@ -112,7 +112,7 @@ public:
      * @param aWritePolicy alias on a write policy.
      */
     ImageCache(Alias<ImageFactory> anImageFactory, Alias<ReadPolicy> aReadPolicy, Alias<WritePolicy> aWritePolicy):
-      myImageFactoryPtr(anImageFactory), myReadPolicy(aReadPolicy), myWritePolicy(aWritePolicy)
+      myImageFactoryPtr(&anImageFactory), myReadPolicy(&aReadPolicy), myWritePolicy(&aWritePolicy)
     {
     }
 

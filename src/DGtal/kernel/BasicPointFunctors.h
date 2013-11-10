@@ -462,14 +462,14 @@ namespace DGtal
     // Origin (or lower point) of the 2D image embedded in the 3D domain 
     Point  myOriginPointEmbeddedIn3D;    
 
+    Point myDefaultPoint;
+
     // Point giving the direction of the embedded first axis of the 2D image.
     typename Space::RealPoint myFirstAxisEmbeddedDirection;
 
     // Point giving the direction of the embedded second axis of the 2D image.
     typename Space::RealPoint mySecondAxisEmbeddedDirection;
     
-    Point myDefaultPoint;
-
   };
 
 

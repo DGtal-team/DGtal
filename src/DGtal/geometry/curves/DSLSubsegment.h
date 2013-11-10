@@ -575,8 +575,8 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param alpha an alpha
-       * @param beta a beta
+       * @param alpha DSL slope
+       * @param beta DSL intercept
        * @param n order of the Farey Fan
        * @param [out] flagRayFound pointer on a boolean, used to check whether localizeRay
        * should be called ot not
@@ -601,13 +601,12 @@ namespace DGtal
        * @param a DSL a parameter
        * @param b DSL b parameter
        * @param mu DSL my parameter
-       * @param n order of the Farey Fan
        * @return a ray
        */
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq,
-                       Integer r, Number a, Number b, Number mu,  Integer n);
-
-
+                       Integer r, Number a, Number b, Number mu, Integer n);
+      
+      
       /**
        * Compute the closest ray below the point (alpha,beta) passing
        * through the point (fp/fq,r/fq) in the Farey fan of order n
@@ -619,8 +618,8 @@ namespace DGtal
        * ladder
        * @param gq denominator of the greatest fraction of the
        * ladder
-       * @param alpha an alpha(?)
-       * @param beta a beta(?)
+       * @param alpha DSL slope
+       * @param beta DSL intercept
        * @param n order of the Farey Fan
        * @return a ray
        */

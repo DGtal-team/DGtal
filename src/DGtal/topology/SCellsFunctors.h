@@ -135,6 +135,11 @@ namespace DGtal
       
   }; // end of class SCellToPoint
 
+  /**
+   * SCellToMidPoint is now deprecated. Please use CanonicSCellEmbedder instead.
+   */
+  namespace deprecated
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToMidPoint
   /**
@@ -207,16 +212,16 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-        ASSERT( myK );
-        Output o( myK->sKCoords(s) );
-        o /= 2;
-        for( unsigned int i = 0; i < o.dimension; ++i )
-            o[i] -= 0.5;
-        return o;
+      ASSERT( myK ); 
+      Output o( myK->sKCoords(s) );
+      o /= 2;
+      for( unsigned int i = 0; i < o.dimension; ++i )
+          o[i] -= 0.5;
+      return o;
     } 
       
   }; // end of class SCellToMidPoint
-
+  } // end of namespace deprecated
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToArrow
   /**

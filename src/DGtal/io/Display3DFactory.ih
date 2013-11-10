@@ -82,12 +82,8 @@ DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
           c = c*radius;
           d = d*radius;
 
-          DGtal::Z3i::RealPoint rpa = display.embed( a );
-          DGtal::Z3i::RealPoint rpb = display.embed( b );
-          DGtal::Z3i::RealPoint rpc = display.embed( c );
-          DGtal::Z3i::RealPoint rpd = display.embed( d );
           display.setFillColor( cmap(aAccumulator.count(i,j)));
-          display.addQuad(rpa, rpb, rpc, rpd);
+          display.addQuad(a, b, c, d);
         }
     }
   display.setFillColor( saveFillColor);
@@ -450,7 +446,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( Display3D<Space, KSpac
 {
   typedef typename Domain::Point Point;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
- 
+
   ASSERT(Domain::Space::dimension == 3);
 
   display.createNewCubeList( v.className());
@@ -968,7 +964,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
         }
       if (sk.myPositive)
         {
-          display.addCone(DGtal::Z3i::RealPoint(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 )), 
+          display.addCone(DGtal::Z3i::RealPoint(rps[0]- (xodd? 0.5:0 ), rps[1]- (yodd? 0.5:0 ), rps[2]- (zodd? 0.5:0 )),
 			  DGtal::Z3i::RealPoint(rps[0]+ (xodd? 0.5:0 ), rps[1]+ (yodd? 0.5:0 ), rps[2]+ (zodd? 0.5:0 )));
         }
       else
@@ -1123,7 +1119,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsPavingWired( Display3D<Space, 
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5));
   display.addLine(DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]+0.5, rp[2]+0.5),
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5));
-  
+
   display.addLine(DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]-0.5),
 		  DGtal::Z3i::RealPoint(rp[0]-0.5, rp[1]-0.5, rp[2]+0.5));
   display.addLine(DGtal::Z3i::RealPoint(rp[0]+0.5, rp[1]-0.5, rp[2]-0.5),
@@ -1239,11 +1235,11 @@ template <typename Space, typename KSpace>
 template <typename TIterator>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
-						  const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>,
+                          const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>,
 						  typename KSpace::Space::RealPoint> & object )
 {
   typedef typename KSpace::Space::RealPoint RPoint;
-  typedef ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, RPoint > Range;
+  typedef ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>, RPoint > Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );

@@ -95,7 +95,7 @@ namespace DGtal
      * @param h gridstep.
      */
     LinearLeastSquareFittingNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h):
-      myEmbedder(anEmbedder), myH(h)
+      myEmbedder(&anEmbedder), myH(h)
     {
     }
 
