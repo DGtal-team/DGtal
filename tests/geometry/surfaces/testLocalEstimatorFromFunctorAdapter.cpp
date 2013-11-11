@@ -126,11 +126,12 @@ bool testLocalEstimatorFromFunctorAdapter()
 
   trace.beginBlock("Creating  adapter");
   typedef DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor> Reporter;
+  typedef ConstValueFunctor< double > ConvFunctor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, ConvFunctor> Reporter;
 
   Functor estimator(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
 
-  Reporter reporter(surface, l2Metric, estimator);
+  Reporter reporter(surface, l2Metric, estimator , ConvFunctor(1.0));
 
   reporter.init(1, 5);
   Functor::Quantity val = reporter.eval( surface.begin());
