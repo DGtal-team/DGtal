@@ -129,18 +129,24 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef ConstValueFunctor< double > ConvFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, ConvFunctor> Reporter;
 
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, GaussianKernelFunctor> ReporterGaussian;
+
   Functor estimator(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
 
   Reporter reporter(surface, l2Metric, estimator , ConvFunctor(1.0));
 
+  //We just test the init for Gaussian
+  ReporterGaussian reporterGaussian(surface, l2Metric, estimator , GaussianKernelFunctor(1.0));
+  reporterGaussian.init(1,5);
+
   reporter.init(1, 5);
-  Functor::Quantity val = reporter.eval( surface.begin());
+  Functor::Quantity val = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 5= "<<val << std::endl;
   nbok += (val == 124) ? 1 : 0;
   nb++;
 
   reporter.init(1, 20);
-  Functor::Quantity val2 = reporter.eval( surface.begin());
+  Functor::Quantity val2 = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 20= "<<val2 << std::endl;
   nbok += (val2 == 398) ? 1 : 0;
   nb++;
