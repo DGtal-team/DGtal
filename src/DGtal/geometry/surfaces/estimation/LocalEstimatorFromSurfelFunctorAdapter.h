@@ -130,9 +130,6 @@ namespace DGtal
     ///Quantity type
     typedef typename TFunctorOnSurfel::Quantity Quantity;
 
-    ///Surfel const iterator
-    typedef typename DigitalSurface::SurfelConstIterator SurfelConstIterator;
-
   private:
 
     ///Embedded and type definitions
