@@ -62,16 +62,16 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     ///Inner type
     typedef TDistance Distance;
 
 
     /**
-     * @return 1.0 whatever the distance is. 
-     */    
+     * @return 1.0 whatever the distance is.
+     */
     inline
-    double operator()(const Distance &/*aDisplacment*/) const
+    double operator()(const Distance &/*aDisplacement*/) const
     {
       return 1.0;
     }
@@ -94,9 +94,9 @@ namespace DGtal
     ///Inner type for the topological distance.
     typedef TDistance Distance;
 
-    /** 
+    /**
      * Constructor
-     * 
+     *
      * @param sigma Gaussian sigma parameter.
      */
     GaussianConvolutionWeights(const double sigma): mySigma(sigma)
@@ -105,11 +105,11 @@ namespace DGtal
       myCoef2 = 1.0/(2.0*M_PI);
     }
 
-    /** 
+    /**
      * Return a Gaussian weight from a distance to the gaussian
-     * function center. 
+     * function center.
      *
-     * @param aDisplacment distance to the center  
+     * @param aDisplacment distance to the center
      * @return the weight
      */
     inline
