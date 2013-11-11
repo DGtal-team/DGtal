@@ -412,12 +412,12 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 }
 // Mesh
 
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::DrawableWithViewer3D *
-DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, arithm);
 }
@@ -426,7 +426,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::drawAsBalls( Viewer3D<Space, KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsBalls( Viewer3D<Space, KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsBalls(viewer, arithm);
 }
@@ -435,7 +435,7 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::drawAsBoundingBox( Viewer3D<Space, KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsBoundingBox( Viewer3D<Space, KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox(viewer, arithm);
 }
@@ -444,55 +444,55 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm )
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw(viewer , arithm);
 }
-// ArithmeticalDSS3d
+// StandardDSS6Computer
 
 
 // DigitalSetBySTLSet
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 DGtal::DrawableWithViewer3D *
-DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Viewer3DFactory<Space,KSpace>::defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   return DGtal::Display3DFactory<Space,KSpace>::defaultStyle(str, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::drawAsPavingTransparent( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsPavingTransparent( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsPavingTransparent(viewer, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::drawAsPaving( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsPaving( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsPaving( viewer, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::drawAsGrid( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Viewer3DFactory<Space,KSpace>::drawAsGrid( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::drawAsGrid(viewer, aSet);
 }
 
 template <typename Space, typename KSpace>
-template<typename Domain>
+template<typename Domain, typename Compare>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet )
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aSet);
 }
@@ -761,7 +761,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer,
-                              const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter )
+                              const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aRangeAdapter);
 }

@@ -46,7 +46,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/geometry/curves/GreedyDecomposition.h"
 
@@ -73,7 +73,7 @@ bool testDec4()
   typedef int Coordinate;
   typedef FreemanChain<Coordinate> ContourType; 
 
-  typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSSComputer<ContourType::ConstIterator,Coordinate,4> PrimitiveType;
   
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
@@ -105,7 +105,7 @@ bool testDec4()
     compteur++;
     PrimitiveType segment(*i); 
     trace.info() << segment << std::endl;  //standard output
-    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+    aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" )
            << segment; // draw each segment  
   
   } 
@@ -127,7 +127,7 @@ bool testDec8()
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point> ContourType;
-  typedef ArithmeticalDSS<ContourType::iterator,Coordinate,8> PrimitiveType;
+  typedef ArithmeticalDSSComputer<ContourType::iterator,Coordinate,8> PrimitiveType;
   
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
@@ -169,7 +169,7 @@ bool testDec8()
     trace.info() << "Segment " << compteur << std::endl;
     PrimitiveType segment(*i);     
     trace.info() << segment << std::endl;  //standard output
-    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+    aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" )
            << segment; // draw each segment    
   } 
 
@@ -191,7 +191,7 @@ bool testDisconnectedCurve()
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point> ContourType;
-  typedef ArithmeticalDSS<ContourType::iterator,Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSSComputer<ContourType::iterator,Coordinate,4> PrimitiveType;
   
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
@@ -261,7 +261,7 @@ bool testClosedCurvesProcessedAsClosed()
 
 
   typedef FreemanChain<int> Contour4; 
-  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
+  typedef ArithmeticalDSSComputer<Contour4::ConstIterator,int,4> DSS4;
   typedef GreedyDecomposition<DSS4> Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
@@ -279,8 +279,8 @@ bool testClosedCurvesProcessedAsClosed()
   aBoard << SetMode( "PointVector", "Grid" )
           << theContour;
   //for each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string className = "ArithmeticalDSS/BoundingBox";
+  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
+  string className = "ArithmeticalDSSComputer/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
@@ -308,7 +308,7 @@ bool testClosedCurvesProcessedAsOpen()
   trace.beginBlock ( "Test for closed curves processed as open" );
 
   typedef FreemanChain<int> Contour4; 
-  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
+  typedef ArithmeticalDSSComputer<Contour4::ConstIterator,int,4> DSS4;
   typedef GreedyDecomposition<DSS4> Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
@@ -326,8 +326,8 @@ bool testClosedCurvesProcessedAsOpen()
   aBoard << SetMode( "PointVector", "Grid" )
           << theContour;
   //for each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string className = "ArithmeticalDSS/BoundingBox";
+  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
+  string className = "ArithmeticalDSSComputer/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
@@ -355,7 +355,7 @@ bool testOpenCurvesProcessedAsClosed()
   trace.beginBlock ( "Test for open curves processed as closed" );
 
   typedef FreemanChain<int> Contour4; 
-  typedef ArithmeticalDSS<Contour4::ConstIterator,int,4> DSS4;
+  typedef ArithmeticalDSSComputer<Contour4::ConstIterator,int,4> DSS4;
   typedef GreedyDecomposition<DSS4> Decomposition4;
 
   // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
@@ -373,8 +373,8 @@ bool testOpenCurvesProcessedAsClosed()
   aBoard << SetMode( "PointVector", "Grid" )
           << theContour;
   //for each segment
-  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string className = "ArithmeticalDSS/BoundingBox";
+  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
+  string className = "ArithmeticalDSSComputer/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
@@ -400,7 +400,7 @@ bool testNoPoint()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSSComputer<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
   std::vector<Point> curve;
@@ -431,7 +431,7 @@ bool testOnePoint()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSSComputer<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
   
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
@@ -446,7 +446,7 @@ bool testOnePoint()
     Board2D aBoard;
     aBoard << curve.at(0);
     //for each segment
-    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+    aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
     for ( DecompositionType::SegmentIterator i = theDecomposition.begin();
                                         i != theDecomposition.end(); ++i ) 
       {
@@ -473,7 +473,7 @@ bool testTwoEndIterators()
 {
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
+  typedef ArithmeticalDSSComputer<std::vector<Point>::iterator,Coordinate,4> PrimitiveType;
   
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
@@ -510,7 +510,7 @@ bool testOneDSS()
 
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
-  typedef ArithmeticalDSS<std::vector<Point>::iterator,Coordinate,8> PrimitiveType;
+  typedef ArithmeticalDSSComputer<std::vector<Point>::iterator,Coordinate,8> PrimitiveType;
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
   std::vector<Point> curve;
@@ -544,7 +544,7 @@ bool testOneDSS()
     ++compteur;
     PrimitiveType segment(*i);     
     trace.info() << segment << std::endl;  //standard output
-    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+    aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" )
            << segment; // draw each segment    
   } 
 
@@ -566,7 +566,7 @@ bool testDec8Reverse()
   typedef int Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point> ContourType;
-  typedef ArithmeticalDSS<ContourType::reverse_iterator,Coordinate,8> PrimitiveType;
+  typedef ArithmeticalDSSComputer<ContourType::reverse_iterator,Coordinate,8> PrimitiveType;
   typedef GreedyDecomposition<PrimitiveType> DecompositionType;
 
   std::vector<Point> curve;
@@ -603,7 +603,7 @@ curve.push_back(Point(9,1));
     trace.info() << "Segment " << compteur << std::endl;
     PrimitiveType segment(*i);     
     trace.info() << segment << std::endl;  //standard output
-    aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
+    aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" )
            << segment; // draw each segment    
   } 
 

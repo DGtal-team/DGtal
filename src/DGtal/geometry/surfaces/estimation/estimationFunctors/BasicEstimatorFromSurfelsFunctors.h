@@ -73,7 +73,7 @@ namespace DGtal
      */
     DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder ,
                               const double h):
-      myEmbedder(anEmbedder), myH(h)
+      myEmbedder(&anEmbedder), myH(h)
     {
       myCpt=0;
     }

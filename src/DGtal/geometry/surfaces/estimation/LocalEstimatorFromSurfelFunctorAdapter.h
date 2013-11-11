@@ -177,6 +177,7 @@ namespace DGtal
      * @return the estimated quantity at *it
      * @param [in] it the surfel iterator at which we evaluate the quantity.
      */
+    template< typename SurfelConstIterator>
     Quantity eval(const SurfelConstIterator& it) const;
 
     /**
@@ -187,7 +188,7 @@ namespace DGtal
      * @param [in,out] result resulting output iterator
      *
      */
-    template <typename OutputIterator>
+    template< typename SurfelConstIterator, typename OutputIterator>
     OutputIterator eval(const SurfelConstIterator& itb,
                         const SurfelConstIterator& ite,
                         OutputIterator result) const;

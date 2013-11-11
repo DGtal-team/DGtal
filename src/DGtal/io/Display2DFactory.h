@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/math/AngleLinearMinimizer.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
@@ -52,8 +52,8 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/geometry/curves/FP.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
-#include "DGtal/geometry/curves/GeometricalDSS.h"
-#include "DGtal/geometry/curves/GeometricalDCA.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
+#include "DGtal/geometry/curves/StabbingCircleComputer.h"
 #include "DGtal/geometry/curves/FrechetShortcut.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
@@ -65,6 +65,7 @@
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 //#include "DGtal/io/boards/Board2D.h"
 
@@ -89,18 +90,18 @@ static void draw( DGtal::Board2D & board, const DGtal::AngleLinearMinimizer & );
 // AngleLinearMinimizer
     
     
-// ArithmeticalDSS
+// ArithmeticalDSSComputer
 template <typename TIterator, typename TInteger, int connectivity>
   static void drawAsBoundingBox( DGtal::Board2D & aBoard, 
-			  const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
+			  const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
 
 template <typename TIterator, typename TInteger, int connectivity>
   static void drawAsDigitalPoints( DGtal::Board2D & aBoard, 
-			    const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
+			    const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
 
 template <typename TIterator, typename TInteger, int connectivity>
-  static void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
-// ArithmeticalDSS
+  static void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
+// ArithmeticalDSSComputer
     
     
 // CircleFrom2Points
@@ -128,8 +129,8 @@ static void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
     
     
 // DigitalSetBySTLSet
-template<typename Domain>
-static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain> & );
+template<typename Domain, typename Compare>
+static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain, Compare> & );
 // DigitalSetBySTLSet
     
     
@@ -160,15 +161,15 @@ static void draw( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> &
 // FreemanChain
     
     
-// GeometricalDSS
+// StabbingLineComputer
 template <typename TConstIterator>
-static void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDSS<TConstIterator> & );
-// GeometricalDSS
+static void draw(DGtal::Board2D & aBoard, const DGtal::StabbingLineComputer<TConstIterator> & );
+// StabbingLineComputer
 
-// GeometricalDCA
+// StabbingCircleComputer
 template <typename TConstIterator>
-static void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDCA<TConstIterator> & );
-// GeometricalDCA
+static void draw(DGtal::Board2D & aBoard, const DGtal::StabbingCircleComputer<TConstIterator> & );
+// StabbingCircleComputer
 
 
 //FrechetShortcut
@@ -200,7 +201,7 @@ static void draw( DGtal::Board2D & aBoard,
 // MidPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+           const ConstRangeAdapter<TIterator, CanonicSCellEmbedder<TKSpace>,
            typename TKSpace::Space::RealPoint> & object );
 // MidPointsRange
 
