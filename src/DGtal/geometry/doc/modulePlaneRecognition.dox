@@ -363,7 +363,7 @@ ChordNaivePlaneComputer (see above).
 \section modulePlaneRecognition_sec3 Incremental or additive plane recognition
 
 Incremental and additive plane recognition are done in exactly the
-same way for all five classes COBANaivePlaneComputer,
+same way for all six classes COBANaivePlaneComputer,
 COBAGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer,
 ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer,
 ChordGenericStandardPlaneComputer. They are illustrated in examples
@@ -372,7 +372,7 @@ and viewer3D-7bis-stdplane.cpp.
 
 \subsection modulePlaneRecognition_sec31 Incremental plane recognition
 
-These five classes are models of CIncrementalPrimitiveComputer. They
+These six classes are models of CIncrementalPrimitiveComputer. They
 all have an internal state that store a current parallel strip that
 contains all points previously inserted. Furthermore, they provide
 methods \b extend( \a p ) and \b isExtendable( \a p ) to insert a
@@ -422,7 +422,7 @@ extend directly whenever possible.
 
 \subsection modulePlaneRecognition_sec32 Additive plane recognition
 
-These five classes are models of CAdditivePrimitiveComputer. They all
+These six classes are models of CAdditivePrimitiveComputer. They all
 have an internal state that store a current parallel strip that
 contains all points previously inserted. Furthermore, they provide
 templated methods \b extend( \a it, \a itE ) and \b isExtendable( \a
@@ -464,29 +464,29 @@ std::pair<Z3i::Integer,Z3i::Integer> width =
 \section modulePlaneRecognition_sec5 Comparative evaluation of COBA and Chord algorithm
 
 For now, there are only two computers for computing a ParallelStrip
-primitive: the ChordNaivePlaneComputer (1) and the
-COBANaivePlaneComputer (2).
+primitive: the ChordNaivePlaneComputer (CHORD) and the
+COBANaivePlaneComputer (COBA).
 
--# Complexity: (2) has a better worst time complexity than (1),
-   but neither (1) nor (2) has an easy bound on the number of
+-# Complexity: (COBA) has a better worst time complexity than (CHORD),
+   but neither (CHORD) nor (COBA) has an easy bound on the number of
    global recomputation (traversal of all input points to
-   recompute a valid direction).
--# Big integers: (1) requires (significantly) smaller integers
-   than (2). For instance, int64_t are required for diameter
-   greater than 25 for (1) instead of 14000 for (2).
--# Practical speed: both algorithms are very comparable. (1) seems
-   slightly faster than (2) on average (but this was not tested on
+   recompute a valid direction). From experiments, asymptotic behavior seems quasi-linear.
+-# Big integers: (CHORD) requires (significantly) smaller integers
+   than (COBA). For instance, \ref int64_t are required for diameter
+   greater than 25 for (COBA) instead of 14000 for (CHORD).
+-# Practical speed: both algorithms are very comparable. (CHORD) seems
+   slightly faster than (COBA) on average (but this was not tested on
    many architecture). According to the graph below, obtained with
    programs testCOBANaivePlaneComputer-benchmark.cpp and
-   testChordNaivePlaneComputer-benchmark.cpp, (1) is faster for a
-   number of points below 200 while (2) is best for a big number of
+   testChordNaivePlaneComputer-benchmark.cpp, (CHORD) is faster for a
+   number of points below 200 while (COBA) is best for a big number of
    points. However, if the diameter is not too big,
    ChordNaivePlaneComputer with \ref int64_t seems always faster.
 -# Exactness: Both algorithms do not return the smallest possible
    arithmetic parameters for the plane, but only a rational
    approximation.
--# Services: Algorithm (1) can be transformed to find the exact
-   axis width of a given set of points, (2) is not suited for that
+-# Services: Algorithm (CHORD) can be transformed to find the exact
+   axis width of a given set of points, (COBA) is not suited for that
    task.
 
 @image html coba-chord-benchmark.png "Evaluation of computation times of COBA and Chord algorithms according to the number of points. Times are in ms. We did not put the graph of COBANaivePlaneComputer with int64_t since we cannot exceed a diameter of 500. In this benchmark, the diameter was always 10 times the number of points."

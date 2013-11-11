@@ -77,7 +77,7 @@ namespace DGtal
      */
     SimpleThresholdForegroundPredicate(ConstAlias<Image> aImage,
 				       const Value value):
-      myImage(aImage), myVal(value) {};
+      myImage(&aImage), myVal(value) {};
     
     /** 
      * @return True if the point belongs to the value interval.

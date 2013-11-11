@@ -83,6 +83,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFu
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename DigitalSurf, typename TMetric,   typename Functor, typename ConvFunctor>
+template< typename SurfelConstIterator >
 inline
 typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::Quantity
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::eval ( const SurfelConstIterator& it ) const
@@ -108,12 +109,12 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFu
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename DigitalSurf, typename TMetric,   typename Functor, typename ConvFunctor>
-template <typename OutputIterator>
+template <typename SurfelConstIterator, typename OutputIterator>
 inline
 OutputIterator
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::eval (const SurfelConstIterator& itb,
-                                                                            const SurfelConstIterator& ite,
-                                                                            OutputIterator result ) const
+                                                                                              const SurfelConstIterator& ite,
+                                                                                              OutputIterator result ) const
 {
   for ( SurfelConstIterator it = itb; it != ite; ++it )
   {

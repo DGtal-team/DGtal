@@ -21,6 +21,7 @@ SET(DGTAL_TESTS_SRC
    testIteratorFunctions
    testIteratorCirculatorTraits
    testCloneAndAliases
+   testClone2
    testOwningOrAliasingPtr
    )
 

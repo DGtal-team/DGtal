@@ -166,8 +166,8 @@ int main( int argc, char** argv )
     typedef short Value;
     typedef ImageContainerBySTLVector<Domain,Value> VImage;
     typedef ImageContainerBySTLMap<Domain,Value> MImage;
-    typedef experimental::ImageContainerByHashTree<Domain,Value> HImage;
-    typedef Image<VImage > LImage;
+    // TODO typedef experimental::ImageContainerByHashTree<Domain,Value> HImage;
+    // TODO typedef Image<VImage > LImage;
 
     /// tests
     VImage vi(d);

@@ -46,7 +46,7 @@
 
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
-#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/StandardDSS6Computer.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -156,7 +156,7 @@ namespace DGtal
 
 
 
-    // ArithmeticalDSS3d
+    // StandardDSS6Computer
     /**
      * Default drawing style object.
      * @param str the name of the class
@@ -164,7 +164,7 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     template <typename TIterator, typename TInteger, int connectivity>
-    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
     /**
      * @brief drawAsBalls
@@ -172,7 +172,7 @@ namespace DGtal
      * @param arithm the arithm to draw
      */
     template <typename TIterator, typename TInteger, int connectivity>
-    static void drawAsBalls( Viewer3D<Space,KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+    static void drawAsBalls( Viewer3D<Space,KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
     /**
      * @brief drawAsBoundingBox
@@ -180,7 +180,7 @@ namespace DGtal
      * @param arithm the arithm to draw
      */
     template <typename TIterator, typename TInteger, int connectivity>
-    static void drawAsBoundingBox( Viewer3D<Space,KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
+    static void drawAsBoundingBox( Viewer3D<Space,KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
     /**
      * @brief draw
@@ -188,8 +188,8 @@ namespace DGtal
      * @param arithm the arithm to draw
      */
     template <typename TIterator, typename TInteger, int connectivity>
-    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & arithm );
-    // ArithmeticalDSS3d
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
+    // StandardDSS6Computer
 
 
     // DigitalSetBySTLSet
@@ -199,40 +199,40 @@ namespace DGtal
      * @param aSet the set to draw
      * @return the dyn. alloc. default style for this object.
      */
-    template<typename Domain>
-    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief drawAsPavingTransparent
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void drawAsPavingTransparent( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void drawAsPavingTransparent( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief drawAsPaving
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief drawAsGrid
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
      * @brief draw
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
-    template<typename Domain>
-    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain> & aSet );
+    template<typename Domain, typename Compare>
+    static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
     // DigitalSetBySTLSet
 
 
@@ -487,7 +487,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Viewer3D<Space,KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, typename TKSpace::Space::RealPoint> & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<TKSpace>, typename TKSpace::Space::RealPoint> & aRangeAdapter );
     // MidPointsRange
 
     // ArrowsRange

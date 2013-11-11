@@ -117,7 +117,7 @@ namespace DGtal
        space.
        
        @param cell any signed cell in the digital space.
-       @return its canconical embedding in the Euclidean space.
+       @return its canonical embedding in the Euclidean space.
     */
     RealPoint embed( const SCell & cell ) const;
 
@@ -126,7 +126,7 @@ namespace DGtal
        space.
        
        @param cell any signed cell in the digital space.
-       @return its canconical embedding in the Euclidean space.
+       @return its canonical embedding in the Euclidean space.
     */
     RealPoint operator()( const SCell & cell ) const;
 
@@ -137,7 +137,7 @@ public:
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    //void selfDisplay ( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
