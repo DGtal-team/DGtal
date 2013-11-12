@@ -1,0 +1,95 @@
+/**
+ * @file moduleLocalEstimatorsFromSurfel.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/11/03
+ *
+ * Documentation file for feature LocalEstimatorsFromSurfel
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page LocalEstimatorsFromSurfel Local digital surface estimators from surfel functors
+@writers David Coeurjolly
+
+[TOC]
+
+
+\section sectLocalEstimatorsFromSurfel1 Introduction
+
+
+Many estimators of local quantities, such as curvature or normal
+vector field, on a digital surface can be defined locally as a
+function which associates a quantity to a local surface surfel patch
+centered at the surfel @e s.  Such local estimators are characterized
+by:
+
+- a digital surface in which the computation is performed;
+
+- a functor to call on surfels in the neighborhood;
+
+- a metric to specificy the shape of the neighborhood to consider;
+
+- a radius to define the neighborhood (ball for the specified metric);
+
+- as any estimator, a gridstep @a h.
+
+When evaluating the estimator at a given surfel, neighboring surfels
+are traversed (using a DistanceBreadthFirstVisitor parametrized by the
+specified metric) and each surfel is sent to the surfel functor.
+
+\section sectLocalEstimImpDetails Implementation details
+
+In DGtal, we implement this class of estimator using the generic
+LocalEstimatorsFromSurfel class. Such class is parametrized by the
+following template parameters:
+-  a model of digital surface concept (CDigitalSurfaceContainer)
+-  a model of CMetric to be used in the neighborhood construction.
+-  a functor to define the  estimator on surfel set (model of
+CLocalEstimatorFromSurfelFunctor)
+-  a convolution function to weight neighboring surfels.
+-  an embedder to map surfels to real point (model of CSCellEmbedder)
+
+This class provides three main methods:
+
+- @e init(h,radius): to init the estimators for a given gridstep and a
+  given kernel neighborhood.
+- @e eval( aSurfelIterator ): the evaluate the functor at @a
+  aSurfelIterator.
+- @e eval( aSurfelItBegin, aSurfelItEnd): evaluate the estimator on a
+  range of surfels.
+
+The core of the estimators are thus specified in the surfel functor
+(model of CLocalEstimatorFromSurfelFunctor). In DGtal, we have defined
+several functors:
+
+- MongeJetFittingGaussianCurvatureEstimator,
+  MongeJetFittingMeanCurvatureEstimator,
+  MongeJetFittingNormalVectorEstimator,
+  MongeJetFittingPrincipalCurvaturesEstimator: return differential quantity
+  by  a polynomial surface  fitting @cite CGal, @cite Cazals2005 . These  estimators require CGAL  and Eigen3 dependency
+  (WITH_CGAL, WITH_EIGEN).
+
+- LinearLeastSquareFittingNormalVectorEstimator: normal vector
+  estimation from least square fitting of the embedded sufel points.
+
+- ElementaryConvolutionNormalVectorEstimator: normal vector estimation
+  based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998)
+
+
+
+
+\section sectLocalEstimatorsFromSurfel2 Examples
+
+
+*/
+
+}
