@@ -113,11 +113,11 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
 
     //Convolution kernel
-    ConstantConvolutionWeights< MyDigitalSurface::Size > kernel;
+    deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > kernel;
 
     //Estimator definition
     typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-            ConstantConvolutionWeights< MyDigitalSurface::Size > > MyEstimator;
+                                                  deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > > MyEstimator;
     MyEstimator myNormalEstimator ( digSurf, kernel );
 
     myNormalEstimator.init ( 1.0, 5 );
@@ -150,7 +150,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
     //Estimator definition
     typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-            GaussianConvolutionWeights< MyDigitalSurface::Size > > MyEstimatorGaussian;
+                                                  deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > > MyEstimatorGaussian;
     MyEstimatorGaussian myNormalEstimatorG ( digSurf, Gkernel );
 
     myNormalEstimatorG.init ( 1.0, 15 );
