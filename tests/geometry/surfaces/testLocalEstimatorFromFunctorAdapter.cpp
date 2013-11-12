@@ -48,6 +48,8 @@
 
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+
 
 #ifdef WITH_CGAL
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
@@ -169,6 +171,7 @@ bool testConcepts()
   typedef CanonicSCellEmbedder<Z3i::KSpace> Embedder;
   trace.beginBlock("Checking concepts");
   BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< DummyEstimatorFromSurfels<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
 
 #ifdef WITH_CGAL
   BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));

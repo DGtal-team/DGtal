@@ -46,6 +46,8 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/topology/CSCellEmbedder.h"
+#include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/CMetric.h"
 #include "DGtal/base/BasicFunctors.h"
@@ -93,15 +95,17 @@ namespace DGtal
    * function in the ambient space (not a geodesic one for instance) on
    * canonical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
-   *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurface)
+   *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurfaceContainer)
    *  @tparam TMetric any model of CMetric to be used in the neighborhood construction.
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
-   *
+   *  @tparam TSCellEmbedder any model of CSCellEmbedder (default type
+   *  is CanonicSCellEmbedder)
    */
   template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel,
-            typename TConvolutionFunctor >
+            typename TConvolutionFunctor ,
+            typename TSCellEmbedder = CanonicSCellEmbedder<typename TDigitalSurface::KSpace> >
   class LocalEstimatorFromSurfelFunctorAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -111,6 +115,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
     BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurface> ));
 
     ///Digital surface type
     typedef TDigitalSurface DigitalSurface;
@@ -133,7 +138,7 @@ namespace DGtal
   private:
 
     ///Embedded and type definitions
-    typedef CanonicSCellEmbedder<typename DigitalSurface::KSpace> Embedder;
+    typedef TSCellEmbedder Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
     typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
     typedef DistanceBreadthFirstVisitor<DigitalSurface, VertexFunctor> Visitor;
