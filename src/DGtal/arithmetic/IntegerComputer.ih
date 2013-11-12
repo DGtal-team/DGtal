@@ -480,10 +480,11 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
   
   _m_v[ 0 ] = _m_bezout[ 2 ][ k ];
   _m_v[ 1 ] = _m_bezout[ 3 ][ k ];
-  
-  if ( isNegative( a ) ) _m_v[ 0 ] = -_m_v[ 0 ];
-  if ( isNegative( b ) ) _m_v[ 1 ] = -_m_v[ 1 ];
-  //_m_v *= c;
+
+  _m_v *= c / _m_bezout[ 0 ][ k ]; // c / gcd(a,b)
+  if ( isNegative( a ) ) _m_v[ 0 ] = - _m_v[ 0 ];
+  if ( isNegative( b ) ) _m_v[ 1 ] = - _m_v[ 1 ];
+  ASSERT( (a*_m_v[ 0 ]+b*_m_v[ 1 ]) == c );
   return _m_v;
 }
 //-----------------------------------------------------------------------------
