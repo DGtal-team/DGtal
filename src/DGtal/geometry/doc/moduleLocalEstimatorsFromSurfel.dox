@@ -89,10 +89,22 @@ source code of any of its models.
 
 \section sectLocalEstimatorsFromSurfel2 Usage Example
 
-In this section, we give a step by step example.
+In this section, we give a step by step example (see @ref exampleEstimatorFromSurfelFunctors.cpp) . Let's start by
+defining a digital surface from a implicit digital ellipse.
+
+@snippet exampleEstimatorFromSurfelFunctors.cpp SurfelFunctorsInit
+
+We then define some types
+
+@snippet exampleEstimatorFromSurfelFunctors.cpp SurfelFunctorsType
 
 
 
+@snippet exampleEstimatorFromSurfelFunctors.cpp SurfelFunctorsInstances
+
+
+
+@snippet exampleEstimatorFromSurfelFunctors.cpp SurfelFunctorsEstim
 
 
 
