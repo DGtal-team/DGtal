@@ -100,12 +100,9 @@ namespace DGtal
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
-   *  @tparam TSCellEmbedder any model of CSCellEmbedder (default type
-   *  is CanonicSCellEmbedder)
    */
   template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel,
-            typename TConvolutionFunctor ,
-            typename TSCellEmbedder = CanonicSCellEmbedder<typename TDigitalSurface::KSpace> >
+            typename TConvolutionFunctor>
   class LocalEstimatorFromSurfelFunctorAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -138,7 +135,7 @@ namespace DGtal
   private:
 
     ///Embedded and type definitions
-    typedef TSCellEmbedder Embedder;
+    typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
     typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
     typedef DistanceBreadthFirstVisitor<DigitalSurface, VertexFunctor> Visitor;
