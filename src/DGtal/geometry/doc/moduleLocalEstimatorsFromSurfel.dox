@@ -56,7 +56,6 @@ following template parameters:
 -  a functor to define the  estimator on surfel set (model of
 CLocalEstimatorFromSurfelFunctor)
 -  a convolution function to weight neighboring surfels.
--  an embedder to map surfels to real point (model of CSCellEmbedder)
 
 This class provides three main methods:
 
@@ -84,10 +83,17 @@ several functors:
 - ElementaryConvolutionNormalVectorEstimator: normal vector estimation
   based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998)
 
+@advanced Implementing your own surfel patch based estimator is quite
+simple. Please have a look to CLocalEstimatorFromSurfelFunctor or the
+source code of any of its models.
+
+\section sectLocalEstimatorsFromSurfel2 Usage Example
+
+In this section, we give a step by step example.
 
 
 
-\section sectLocalEstimatorsFromSurfel2 Examples
+
 
 
 */

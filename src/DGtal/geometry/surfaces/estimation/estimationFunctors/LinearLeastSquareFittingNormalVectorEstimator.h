@@ -95,7 +95,7 @@ namespace DGtal
      * @param h gridstep.
      */
     LinearLeastSquareFittingNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h):
-      myEmbedder(anEmbedder), myH(h)
+      myEmbedder(&anEmbedder), myH(h)
     {
     }
 
@@ -105,10 +105,10 @@ namespace DGtal
      * @param aSurf a surfel to add
      * @param aDistance distance to the origin surfel
      */
-    void pushSurfel(const Surfel & aSurf
+    void pushSurfel(const Surfel & aSurf,
                     const double aDistance)
     {
-      BOOST_VERIFY(aDistance == aDistance)
+      BOOST_VERIFY(aDistance == aDistance);
       RealPoint p = myEmbedder->operator()(aSurf);
       CGALPoint pp(p[0],p[1],p[2]);
       myPoints.push_back(pp);
