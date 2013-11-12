@@ -386,9 +386,9 @@ href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
        \a b. Uses the extended Euclid algorithm to do it, whose
        complexity is bounded by max(log(a),log(b)).
 
-       @param a any integer.
-       @param b any integer.
-       @param c any integer (see above).
+       @param a any non-null integer.
+       @param b any non-null integer.
+       @param c any integer multiple of gcd(|a|,|b|).
        @return the vector (x,y) solution to a x + b y = c.
      */
     Vector2I extendedEuclid( IntegerParamType a, IntegerParamType b, 

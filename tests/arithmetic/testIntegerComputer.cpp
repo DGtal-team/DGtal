@@ -161,7 +161,7 @@ bool testExtendedEuclid( const IntegerComputer<Integer> & ic )
   Integer g = ic.gcd( a, b );
   trace.info() << "a / b = " << a << " / " << b 
                << " gcd=" << g << std::endl;
-  Point2I v = ic.extendedEuclid( a, b, 1 );
+  Point2I v = ic.extendedEuclid( a, b, g );
   trace.info() << "Bezout = " << v[ 0 ] << "," << v[ 1 ] << std::endl;
   Integer rem = a * v[ 0 ] + b * v[ 1 ];
   nbok += rem == g ? 1 : 0; 
