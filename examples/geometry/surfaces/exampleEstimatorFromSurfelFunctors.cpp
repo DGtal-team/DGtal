@@ -128,32 +128,34 @@ int main( int argc, char** argv )
   FunctorNormal estimatorN(CanonicSCellEmbedder<KSpace>(surface.space()),1.0);
   FunctorNormalLeast estimatorL(CanonicSCellEmbedder<KSpace>(surface.space()),1.0);
 
-  ReporterK reporterK(surface, l2Metric, estimatorK , ConstFunctor(1.0));
-  ReporterH reporterH(surface, l2Metric, estimatorH , ConstFunctor(1.0));
-  ReporterNormal reporterN(surface, l2Metric, estimatorN , ConstFunctor(1.0));
-  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , ConstFunctor(1.0));
+  ConstFunctor constFunctor(1.0);
+
+  ReporterK reporterK(surface, l2Metric, estimatorK , constFunctor);
+  ReporterH reporterH(surface, l2Metric, estimatorH , constFunctor);
+  ReporterNormal reporterN(surface, l2Metric, estimatorN ,constFunctor);
+  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , constFunctor);
 #endif
 
   FunctorNormalElem estimatorNormalElem(CanonicSCellEmbedder<KSpace>(surface.space()),1.0);
   ///sigma = 2.0 for the gaussian smoothing
+  GaussianKernelFunctor gaussian(2.0);
   ReporterNormalElem reporterElem(surface, l2Metric,
-                                  estimatorNormalElem, GaussianKernelFunctor(2.0));
+                                  estimatorNormalElem, gaussian);
   //! [SurfelFunctorsInstances]
-
 
   //! [SurfelFunctorsEstim]
 #ifdef WITH_CGAL
-  reporterK.init(1, 5);
-  reporterH.init(1, 5);
-  reporterN.init(1, 5);
-  reporterL.init(1, 5);
+  reporterK.init(1.0, 5.0);
+  reporterH.init(1.0, 5.0);
+  reporterN.init(1.0, 5.0);
+  reporterL.init(1.0, 5.0);
   FunctorGaussian::Quantity valK = reporterK.eval( surface.begin());
   FunctorMean::Quantity valH = reporterH.eval( surface.begin());
   FunctorNormal::Quantity valN = reporterN.eval( surface.begin());
   FunctorNormalLeast::Quantity valL = reporterL.eval( surface.begin());
 #endif
 
-  reporterElem.init(1, 5);
+  reporterElem.init(1.0, 5.0);
   FunctorNormalLeast::Quantity valElem = reporterElem.eval( surface.begin());
 
 #ifdef WITH_CGAL
