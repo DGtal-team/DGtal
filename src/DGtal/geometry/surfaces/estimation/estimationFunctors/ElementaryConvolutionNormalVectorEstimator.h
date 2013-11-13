@@ -46,10 +46,6 @@
 #include <iostream>
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
-
-//CGAL
-#include <CGAL/Cartesian.h>
-#include <CGAL/Monge_via_jet_fitting.h>
 #include <vector>
 
 //////////////////////////////////////////////////////////////////////////////
