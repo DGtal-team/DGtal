@@ -64,6 +64,8 @@ namespace DGtal
      as the object itself. Note that an instance of ConstAlias<T> is
      itself a light object (it holds only an enum and a pointer).
 
+     (For a complete description, see \ref moduleCloneAndReference).
+
      It is used in methods or functions to encapsulate the parameter
      types. The following conversion from input parameter to data
      member or variable are possible:
@@ -74,6 +76,10 @@ namespace DGtal
      |To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
      |To: \ref CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure |Shared. O(1), \b secure| Shared. O(1), \b secure |
 
+     Argument conversion to member is \b automatic except when
+     converting to a pointer \c const \c T*: the \b address operator
+     (\c operator&) must be used in this case.
+
      For the last row (case where the \e programmer choose a \ref
      CountedConstPtrOrConstPtr to hold the const alias), the \e user
      can thus enforce a \b secure const aliasing by handling a variant
@@ -81,11 +87,11 @@ namespace DGtal
      object is destroyed in the caller context, it still exists in the
      callee context.
 
-     @note The usage of \ref ConstAlias<T> instead of \c const \c T \c & or \c const \c T \c *
-     in parameters is \b recommended when the lifetime of the
-     parameter must exceed the lifetime of the called
+     @note The usage of \ref ConstAlias<T> instead of \c const \c T \c
+     & or \c const \c T \c * in parameters is \b recommended when the
+     lifetime of the parameter must exceed the lifetime of the called
      method/function/constructor (often the case in constructor or
-     init methods). 
+     init methods).
 
      @note The usage of \c const \c T \c & or \c const \c T \c *
      instead of \ref ConstAlias<T> is \b recommended when the lifetime
@@ -147,7 +153,7 @@ namespace DGtal
      // ConstAliasing for a long lifetime is visible.
      struct B1_v2_2 {
        B1_v2_2( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
-       : myA( &a ) {}
+       : myA( &a ) {} // Note the use of the address operator because of the pointer member
      ...
        const A* myA;
      };
@@ -155,7 +161,7 @@ namespace DGtal
      // ConstAliasing for a long lifetime is visible.
      struct B1_v2_3 {
        B1_v2_3( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
-       : myA( &a ) {}
+       : myA( a ) {}
      ...
        CountedConstPtrOrConstPtr<A> myA;
      };
