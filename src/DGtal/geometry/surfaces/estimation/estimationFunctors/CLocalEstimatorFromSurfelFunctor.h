@@ -91,7 +91,9 @@ LocalEstimatorFromSurfelFunctorAdapter.
   MongeJetFittingMeanCurvatureEstimator (if WITH_CGAL),
   MongeJetFittingPrincipalCurvaturesEstimator (if WITH_CGAL),
   MongeJetFittingNormalVectorEstimator (if WITH_CGAL),
-  LinearLeastSquareFittingNormalVectorEstimator (if WITH_CGAL)
+  LinearLeastSquareFittingNormalVectorEstimator (if WITH_CGAL),
+  ElementaryConvolutionNormalVectorEstimator
+
 ### Notes
 
 @tparam T the type that should be a model of CLocalEstimatorFromSurfelFunctor.
