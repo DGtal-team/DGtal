@@ -122,7 +122,7 @@ private:
   T myX; // do not require T to be default constructible.
   SCell myP;
   RealPoint myRP;
-  const KSpace &myK;
+  const KSpace myK;
 
     // ------------------------- Internals ------------------------------------
 private:
