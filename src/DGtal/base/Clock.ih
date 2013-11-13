@@ -70,10 +70,10 @@ DGtal::Clock::startClock()
 }
 
 
-//- @return the time (in ms) since the last 'startClock()'.
+//- @return the time (in ms) since the last 'startClock()' or 'restartClock()'.
 inline
 double 
-DGtal::Clock::stopClock()
+DGtal::Clock::stopClock() const
 {
 
 #ifdef WIN32
@@ -101,6 +101,45 @@ DGtal::Clock::stopClock()
 
   return (( current.tv_sec - myTimerStart.tv_sec) *1000 +
 	  ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);  
+#endif
+
+}
+
+inline
+double 
+DGtal::Clock::restartClock()
+{
+
+#ifdef WIN32
+  clock_t last_tick = clock();
+  if (last_tick == (clock_t) -1)
+    {
+      cerr << "[Clock::stopClock] Erreur sur 'clock()'." << endl;
+    }
+  const double delta = ((double) 1000.0 * (double)(last_tick - myFirstTick)
+		 / (double) CLOCKS_PER_SEC);
+	myFirstTick = last_tick;
+	return delta;
+#else
+  struct timespec current;
+
+#ifdef __MACH__ // OS X does not have clock_gettime, use clock_get_time
+  clock_serv_t cclock;
+  mach_timespec_t mts;
+  host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
+  clock_get_time(cclock, &mts);
+  mach_port_deallocate(mach_task_self(), cclock);
+  current.tv_sec = mts.tv_sec;
+  current.tv_nsec = mts.tv_nsec;
+#else
+  clock_gettime(CLOCK_REALTIME, &current); //Linux gettime
+#endif
+
+  const double delta = (( current.tv_sec - myTimerStart.tv_sec) *1000 +
+	  ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);  
+	myTimerStart.tv_sec = current.tv_sec;
+	myTimerStart.tv_nsec = current.tv_nsec;
+	return delta;
 #endif
 
 }
