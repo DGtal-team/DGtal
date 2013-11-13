@@ -99,7 +99,7 @@ void
 DGtal::Trace::reset()
 {
   myProgressBarCurrent = -1;
-	myProgressBarRotation = 0;
+  myProgressBarRotation = 0;
   myCurrentLevel = 0;
   myCurrentPrefix = "";
   //FIXME may leak??
@@ -128,7 +128,7 @@ DGtal::Trace::beginBlock(const std::string &keyword)
   myCurrentPrefix += TRACE_PATTERN;
   myKeywordStack.push(keyword);
   myProgressBarCurrent = -1;
-	myProgressBarRotation = 0;
+  myProgressBarRotation = 0;
 
   //Block timer start
   Clock *c = new(Clock);
@@ -233,7 +233,7 @@ DGtal::Trace::progressBar(const double currentValue, const double maximumValue)
   if (dotz == myProgressBarCurrent) return;
 
   myProgressBarCurrent = dotz;
-	myProgressBarRotation++;
+  myProgressBarRotation++;
 
   // create the "meter"
   int ii=0;
@@ -249,9 +249,9 @@ DGtal::Trace::progressBar(const double currentValue, const double maximumValue)
       myWriter.outputStream()<< " ";
     }
   // and back to line begin - do not forget the fflush to avoid output buffering problems!
-	
-	const static std::string rotation_string("|\\-/");
-	myProgressBarRotation %= 4;
+
+  const static std::string rotation_string("|\\-/");
+  myProgressBarRotation %= 4;
 
   myWriter.outputStream()<< "] " << rotation_string[myProgressBarRotation] << " " << (int)(fraction*100)<<"/100\r";
   myWriter.outputStream().flush();

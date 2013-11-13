@@ -191,8 +191,8 @@ namespace DGtal
     ///Progress bar current position
     int myProgressBarCurrent;
 
-		///Progress bar rotation position
-		unsigned int myProgressBarRotation;
+    ///Progress bar rotation position
+    unsigned int myProgressBarRotation;
 
     // ------------------------- Hidden services ------------------------------
   protected:
