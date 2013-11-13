@@ -164,7 +164,7 @@ int main( int argc, char** argv )
   trace.info() << "Normal Vector (from Monge form) = "<<valN<< std::endl;
   trace.info() << "Normal Vector (linear least square) = "<<valL<< std::endl;
 #endif
-  trace.info() << "Normal Vector (Elmementary conv) = "<<valElem<< std::endl;
+  trace.info() << "Normal Vector (Elementary conv) = "<<valElem<< std::endl;
   //! [SurfelFunctorsEstim]
 
   return 0;
