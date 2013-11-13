@@ -189,7 +189,7 @@ namespace DGtal
     std::stack<Clock*> myClockStack;
 
     ///Progress bar current position
-    unsigned int myProgressBarCurrent;
+    int myProgressBarCurrent;
 
     // ------------------------- Hidden services ------------------------------
   protected:
