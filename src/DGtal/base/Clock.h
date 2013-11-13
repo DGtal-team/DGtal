@@ -16,7 +16,7 @@
 
 #pragma once
 
-/** 
+/**
  * @file Clock.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -24,7 +24,7 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2009/12/11
- * 
+ *
  * Header file for module Clock.cpp
  *
  * This file is part of the DGtal library (backported from Imagene)
@@ -63,12 +63,12 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
   // class Clock
-  /** 
+  /**
    * Description of class 'Clock' <p>
    * Aim: To provide functions to start and stop a timer. Is useful to get
    * performance of algorithms.
@@ -113,15 +113,15 @@ namespace DGtal
      * @return the time (in ms) since the last 'startClock()' or 'restartClock()'.
      */
     double restartClock();
-    
+
     /**
      * Constructor.
      *
      */
     Clock();
-    
+
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~Clock();
 
@@ -149,7 +149,7 @@ namespace DGtal
 #else
     struct timespec myTimerStart;
 #endif
-    
+
   }; // end of class Clock
 
 
@@ -166,8 +166,8 @@ namespace DGtal
       object.selfDisplay( out );
       return out;
     }
-  
-  
+
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
