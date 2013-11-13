@@ -14,14 +14,14 @@
  *
  **/
 
-/** 
+/**
  * @file Clock.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2009/12/11
- * 
- * Implementation of methods defined in Clock.h 
+ *
+ * Implementation of methods defined in Clock.h
  *
  * This file is part of the DGtal library (backported from Imagene)
  */
@@ -44,7 +44,7 @@ DGtal::Clock::Clock()
 
 //- Starts a clock.
 inline
-void 
+void
 DGtal::Clock::startClock()
 {
 
@@ -72,7 +72,7 @@ DGtal::Clock::startClock()
 
 //- @return the time (in ms) since the last 'startClock()' or 'restartClock()'.
 inline
-double 
+double
 DGtal::Clock::stopClock() const
 {
 
@@ -83,7 +83,7 @@ DGtal::Clock::stopClock() const
       cerr << "[Clock::stopClock] Erreur sur 'clock()'." << endl;
     }
   return (double) ((double) 1000.0 * (double)(last_tick - myFirstTick)
-		 / (double) CLOCKS_PER_SEC);
+     / (double) CLOCKS_PER_SEC);
 #else
   struct timespec current;
 
@@ -100,13 +100,13 @@ DGtal::Clock::stopClock() const
 #endif
 
   return (( current.tv_sec - myTimerStart.tv_sec) *1000 +
-	  ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);  
+    ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);
 #endif
 
 }
 
 inline
-double 
+double
 DGtal::Clock::restartClock()
 {
 
@@ -117,9 +117,9 @@ DGtal::Clock::restartClock()
       cerr << "[Clock::stopClock] Erreur sur 'clock()'." << endl;
     }
   const double delta = ((double) 1000.0 * (double)(last_tick - myFirstTick)
-		 / (double) CLOCKS_PER_SEC);
-	myFirstTick = last_tick;
-	return delta;
+     / (double) CLOCKS_PER_SEC);
+  myFirstTick = last_tick;
+  return delta;
 #else
   struct timespec current;
 
@@ -136,10 +136,10 @@ DGtal::Clock::restartClock()
 #endif
 
   const double delta = (( current.tv_sec - myTimerStart.tv_sec) *1000 +
-	  ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);  
-	myTimerStart.tv_sec = current.tv_sec;
-	myTimerStart.tv_nsec = current.tv_nsec;
-	return delta;
+    ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);
+  myTimerStart.tv_sec = current.tv_sec;
+  myTimerStart.tv_nsec = current.tv_nsec;
+  return delta;
 #endif
 
 }
@@ -147,7 +147,7 @@ DGtal::Clock::restartClock()
 
 
 /**
- * Destructor. 
+ * Destructor.
  */
 inline
 DGtal::Clock::~Clock()
@@ -164,7 +164,7 @@ DGtal::Clock::~Clock()
  * @param out the output stream where the object is written.
  */
 inline
-void 
+void
 DGtal::Clock::selfDisplay( std::ostream & out ) const
 {
   out << "[Clock]";
@@ -175,7 +175,7 @@ DGtal::Clock::selfDisplay( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 inline
-bool 
+bool
 DGtal::Clock::isValid() const
 {
   return true;
