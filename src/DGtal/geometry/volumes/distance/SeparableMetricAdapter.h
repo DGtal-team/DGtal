@@ -113,9 +113,9 @@ namespace DGtal
 
     /**
      * Copy constructor. (CopyConstruticle concept)
-     * UNUSED_PARAM other the object to clone.
+     * @param other the object to clone.
      */
-    SeparableMetricAdapter ( const SeparableMetricAdapter & UNUSED(other) ) : myMetric(other.myMetric) {}
+    SeparableMetricAdapter ( const SeparableMetricAdapter &other ) : myMetric(other.myMetric) {}
 
     /**
      * Assignment. (Assignable concept)

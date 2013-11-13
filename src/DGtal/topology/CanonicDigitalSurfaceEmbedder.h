@@ -113,7 +113,7 @@ namespace DGtal
     */
     const KSpace & space() const
     {
-      mySurface->container().space();
+      return mySurface->container().space();
     }
 
 
