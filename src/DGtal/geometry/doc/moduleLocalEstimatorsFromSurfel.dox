@@ -22,6 +22,8 @@ namespace DGtal {
 
 [TOC]
 
+Part of the \ref packageGeometry.
+
 
 \section sectLocalEstimatorsFromSurfel1 Introduction
 
