@@ -104,9 +104,15 @@ namespace DGtal
 
     /**
      * Stops the clock.
-     * @return the time (in ms) since the last 'startClock()'.
+     * @return the time (in ms) since the last 'startClock()' or 'restartClock()'.
      */
-    double stopClock();
+    double stopClock() const;
+
+    /**
+     * Restart the clock.
+     * @return the time (in ms) since the last 'startClock()' or 'restartClock()'.
+     */
+    double restartClock();
     
     /**
      * Constructor.
