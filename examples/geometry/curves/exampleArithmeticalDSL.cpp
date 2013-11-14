@@ -35,7 +35,9 @@
 
 #include "DGtal/io/boards/Board2D.h"
 
+//! [ArithmeticalDSLHeader]
 #include "DGtal/geometry/curves/ArithmeticalDSL.h"
+//! [ArithmeticalDSLHeader]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -113,7 +115,7 @@ void exampleStandardDSL()
   using namespace Z2i; 
 
   //! [ArithmeticalDSLStandardCtor]
-  // Construct a naive DSL from a, b, mu
+  // Construct a standard DSL from a, b, mu
   StandardDSL<Integer> line( 2, 5, 0 ); 
   //! [ArithmeticalDSLStandardCtor]
 
@@ -358,16 +360,18 @@ void exampleArithmeticalDSLTypes()
 {
   trace.beginBlock ( "Naive DSLs" );
 
-  using namespace Z2i; 
-
-  //! [ArithmeticalDSLNaiveCtorTypes]
-  // // Use the default type, ie. short int
-  // NaiveDSL<short int> line1( 17711, 28657, 1607895256 ); 
-  // //NB: 1 607 895 256 is the remainder of the point (32 767,-32 767)
+  // // Do not use the default type for the intercepts ! 
+  // NaiveDSL<DGtal::int16_t> line1( 17711, 28657, 1607895256 ); 
+  // //NB: 1 607 895 256 is not representable by the type DGtal::int16_t, 
+  // //even if it is the remainder of the point (32 767,-32 767)
+  // //whose coordinates are representable by the type DGtal::int16_t
   // trace.info() << line1; //KO
 
-  NaiveDSL<short int, long int> line2( 17711, 28657, 1607895256 ); 
-  trace.info() << line2; //ok 
+  //! [ArithmeticalDSLNaiveCtorTypes]
+  NaiveDSL<DGtal::int16_t, DGtal::int32_t> line2( 17711, 28657, 1607895256 ); 
+  //NB: 1 607 895 256 is the remainder of the point (32 767,-32 767), 
+  //whose coordinates are representable by the type DGtal::int16_t
+  trace.info() << line2 << line2.isValid(); //ok 
   //! [ArithmeticalDSLNaiveCtorTypes]
 
   trace.endBlock(); 
