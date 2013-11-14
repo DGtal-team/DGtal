@@ -29,10 +29,14 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <exception>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/boards/Board2D.h"
+
+//! [ArithmeticalDSSHeader]
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
+//! [ArithmeticalDSSHeader]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -40,7 +44,308 @@ using namespace DGtal;
 using namespace Z2i; 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief Function that illustrates the basic usage of
+ * a naive DSS. 
+ */
+void exampleNaiveDSS()
+{
+  trace.beginBlock ( "Naive DSS" );
 
+  using namespace Z2i; 
+
+  //! [ArithmeticalDSSNaiveCtor]
+  // Construct a naive DSS
+  NaiveDSS8<Integer> segment( 5, 8,                   //slope
+			      Point(0,0), Point(8,5), //ending points 
+			      Point(0,0), Point(8,5), //upper points
+			      Point(3,1), Point(3,1)  //lower points
+			      );
+  //! [ArithmeticalDSSNaiveCtor]
+
+  // Trace to the standard output
+  trace.info() << segment << std::endl; 
+
+  //! [ArithmeticalDSSIteration]
+  // Trace the position and remainder of each point
+  for (NaiveDSS8<Integer>::ConstIterator 
+	 it = segment.begin(), 
+	 ite = segment.end(); 
+       it != ite; ++it )
+    {
+      trace.info() << "(" 
+		   << segment.directionalPosition( *it ) << ","
+		   << segment.remainder( *it ) 
+		   << ") "; 
+    }
+  //! [ArithmeticalDSSIteration]
+  trace.info() << std::endl; 
+
+  //! [NaiveDSS8DrawingUsage]
+  Board2D board;
+  
+  // Draw the grid
+  Domain domain( Point(0,0), Point(8,5) );
+  board << SetMode(domain.className(), "Grid")
+	<< domain;    
+  
+  //Draw the points of the DSS
+  board << SetMode("PointVector", "Both");
+  board << SetMode(segment.className(), "Points") 
+	<< segment;
+
+  // Draw the bounding box
+  board << SetMode(segment.className(), "BoundingBox") 
+  	<< segment;
+  //! [NaiveDSS8DrawingUsage]
+
+
+  // Save
+  board.saveSVG("NaiveDSS8.svg");
+#ifdef WITH_CAIRO
+  board.saveCairo("NaiveDSS8.png", Board2D::CairoPNG);
+#endif
+
+  trace.endBlock();
+}
+
+
+/**
+ * @brief Function that illustrates the basic usage of
+ * a standard DSS. 
+ */
+void exampleStandardDSS()
+{
+  trace.beginBlock ( "Standard DSS" );
+
+  using namespace Z2i; 
+
+  //! [ArithmeticalDSSStandardCtor]
+  // Construct a standard DSS
+  StandardDSS4<Integer> segment( 5, 8,                   //slope
+				 Point(0,0), Point(8,5), //ending points 
+				 Point(0,0), Point(8,5), //upper points
+				 Point(4,1), Point(4,1)  //lower points
+				 );
+  //! [ArithmeticalDSSStandardCtor]
+
+  // Trace to the standard output
+  trace.info() << segment << std::endl; 
+
+  // Display the DSS with a domain on a board
+  Domain domain( Point(0,0), Point(8,5) );
+  Board2D board;
+
+  //! [StandardDSS4DrawingUsage] 
+  // Draw the grid
+  board << SetMode(domain.className(), "Grid")
+	<< domain;    
+
+  // Draw the points of the DSS
+  board << SetMode("PointVector", "Grid")
+	<< SetMode(segment.className(), "Points") 
+	<< segment;
+
+  // Draw the bounding box
+  board << SetMode(segment.className(), "BoundingBox") 
+	<< segment;
+  //! [StandardDSS4DrawingUsage]
+
+  // Save
+  board.saveSVG("StandardDSS4.svg");
+#ifdef WITH_CAIRO
+  board.saveCairo("StandardDSS4.png", Board2D::CairoPNG);
+#endif
+
+  board.clear(); 
+  //! [ArithmeticalDSSDrawingUsage]
+  // Draw the pixels
+  board << SetMode(domain.className(), "Paving")
+	<< domain;    
+  
+  //Draw the points of the DSS
+  board << SetMode("PointVector", "Both");
+  board << SetMode(segment.className(), "Points") 
+	<< segment;
+
+  // Draw the bounding box
+  board << SetMode(segment.className(), "BoundingBox") 
+	<< segment;
+  //! [ArithmeticalDSSDrawingUsage]
+
+  board.saveSVG("StandardDSS4bis.svg");
+#ifdef WITH_CAIRO
+  board.saveCairo("StandardDSS4bis.png", Board2D::CairoPNG);
+#endif
+
+  trace.endBlock();
+}
+
+/**
+ * @brief Function showing the different ways
+ * of constructing DSSs. 
+ */
+void exampleConstructors()
+{
+  trace.beginBlock ( "DSSs constructions" );
+
+  using namespace Z2i; 
+
+  {
+    //! [ArithmeticalDSSNaiveCtorUpperPoints]
+    // Construct a naive DSS from two upper leaning points
+    NaiveDSS8<Integer> segment( Point(0,0), Point(8,5), true ); 
+    //or simply NaiveDSS8<Integer> segment( Point(0,0), Point(8,5) ); 
+    //! [ArithmeticalDSSNaiveCtorUpperPoints]
+    trace.info() << segment << std::endl; 
+  }
+
+  {
+    //! [ArithmeticalDSSNaiveCtorLowerPoints]
+    // Construct a naive DSS from two lower leaning points
+    NaiveDSS8<Integer> segment( Point(0,0), Point(8,5), false ); 
+    //! [ArithmeticalDSSNaiveCtorLowerPoints]
+    trace.info() << segment << std::endl; 
+  }
+
+  std::vector<Point> r; //container for DSS points
+  {
+    //! [ArithmeticalDSSNaiveCtorParam]
+    // Custom a naive DSS 
+    NaiveDSS8<Integer> segment( 5, 8,                   //slope
+				Point(0,0), Point(8,5), //ending points 
+				Point(0,0), Point(8,5), //upper points
+				Point(3,1), Point(3,1)  //lower points
+				);
+    //You should be sure that your object is valid before using it
+    if (!segment.isValid()) throw std::exception(); 
+    //! [ArithmeticalDSSNaiveCtorParam]
+    trace.info() << segment << std::endl; 
+
+    //copy the DSS points into the container r
+    std::copy( segment.begin(), segment.end(), std::back_inserter(r) ); 
+  }
+
+  {
+    //! [ArithmeticalDSSNaiveCtorRange]
+    // Construct a DSS from a range of points  
+    NaiveDSS8<Integer> segment( r.begin(), r.end() );
+    //! [ArithmeticalDSSNaiveCtorRange]
+    trace.info() << segment << std::endl; 
+  }
+
+
+  trace.endBlock();
+}
+
+/**
+ * @brief Function showing how a DSS can be extended and retracted. 
+ */
+void exampleUpdate()
+{
+  trace.beginBlock ( "DSS update" );
+
+  using namespace Z2i; 
+
+  //Construction --------------------------------------------------
+  //! [ArithmeticalDSSUpdateInit]
+  Point M(11, 7); 
+  NaiveDSS8<Integer> S( 5, 8,       //slope 
+			Point(0,0), Point(10,6), //ending points 
+			Point(0,0), Point(8,5), //upper points
+			Point(3,1), Point(3,1)  //lower points
+			);
+  //! [ArithmeticalDSSUpdateInit]
+
+  //this segment should be valid: 
+  if (!S.isValid()) throw std::exception();
+  // Store a copy before any operation
+  NaiveDSS8<Integer> copyOfS = S; 
+
+  trace.info() << S << std::endl;
+
+
+  //Display ------------------------------------------------------  
+  {
+    Board2D board;
+
+    // Draw the grid
+    Domain domain( Point(0,0), M );
+    board << SetMode(domain.className(), "Grid")
+	  << domain;    
+    // Draw the points of the DSS and its bounding box
+    board << SetMode("PointVector", "Both");
+    board << SetMode(S.className(), "Points") 
+	  << S
+	  << SetMode(S.className(), "BoundingBox") 
+	  << S;
+    // Draw the orthonormal base
+    board.drawArrow(0.0, 0.0, 1.0, 0.0); 
+    board.drawArrow(0.0, 0.0, 0.0, 1.0); 
+    // Draw M
+    board << SetMode(M.className(), "Both")
+	  << CustomStyle( M.className(), new CustomColors( Color(255,0,0), Color(192, 0, 0)) )
+	  << M; 
+
+
+    // Save
+    board.saveSVG("NaiveDSS8ExtInit.svg");
+#ifdef WITH_CAIRO
+    board.saveCairo("NaiveDSS8ExtInit.png", Board2D::CairoPNG);
+#endif
+  }
+
+  // Extension -----------------------------------------------------
+  //! [ArithmeticalDSSUpdateExtension]
+  bool resExtention = S.extendFront( M ); 
+  //! [ArithmeticalDSSUpdateExtension]
+  //this segment should be extended: 
+  if (!resExtention) throw std::exception(); 
+
+  trace.info() << S << std::endl; 
+
+  //Display ------------------------------------------------------  
+  {
+    Board2D board;
+
+    // Draw the grid
+    Domain domain( Point(0,0), M );
+    board << SetMode(domain.className(), "Grid")
+	  << domain;    
+    // Draw the points of the DSS and its bounding box
+    board << SetMode("PointVector", "Both");
+    board << SetMode(S.className(), "Points") 
+	  << S
+	  << SetMode(S.className(), "BoundingBox") 
+	  << S;
+    // Draw the orthonormal base
+    board.drawArrow(0.0, 0.0, 1.0, 0.0); 
+    board.drawArrow(0.0, 0.0, 0.0, 1.0); 
+
+    // Save
+    board.saveSVG("NaiveDSS8ExtDone.svg");
+#ifdef WITH_CAIRO
+    board.saveCairo("NaiveDSS8ExtDone.png", Board2D::CairoPNG);
+#endif
+  }
+    
+  // Retraction ----------------------------------------------------
+  //! [ArithmeticalDSSUpdateRetraction]
+  bool resRetraction = S.retractFront(); 
+  //! [ArithmeticalDSSUpdateRetraction]
+  //this segment should be retracted: 
+  if (!resRetraction) throw std::exception(); 
+
+  trace.info() << S << std::endl; 
+
+  // Comparaison ----------------------------------------------------
+  //! [ArithmeticalDSSUpdateConclu]
+  //this segment and the previous copy should be equal: 
+  if ( !S.equalsTo(copyOfS) ) throw std::exception(); 
+  //! [ArithmeticalDSSUpdateConclu]
+
+  trace.endBlock();
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,95 +357,10 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  {
-    std::string filename = "DSS4.svg";
-
-    //DSS type
-    typedef StandardDSS4<DGtal::int32_t> DSS;
-    typedef DSS::Point Point; 
-  
-    DSS theDSS( Point(0,0), Point(8,5) ); 
-  
-    //! [StandardDSS4DrawingUsage]
-    Board2D board;
-  
-    // Draw the grid
-    Domain domain( Point(0,0), Point(8,5) );
-    board << SetMode(domain.className(), "Grid")
-  	  << domain;    
-
-    // Draw the points of the DSS
-    board << SetMode("PointVector", "Grid")
-  	  << SetMode(theDSS.className(), "Points") 
-  	  << theDSS;
-
-    // Draw the bounding box
-    board << SetMode(theDSS.className(), "BoundingBox") 
-  	  << theDSS;
-  
-    board.saveSVG( filename.c_str() );
-    //! [StandardDSS4DrawingUsage]
-  }
-
-  {
-    std::string filename = "DSS4bis.svg";
-
-    //DSS type
-    typedef ArithmeticalDSS<DGtal::int32_t, DGtal::int32_t, 4> DSS;
-    typedef DSS::Point Point; 
-  
-    DSS theDSS( Point(0,0), Point(8,5) ); 
-  
-    //! [ArithmeticalDSSDrawingUsage]
-    Board2D board;
-  
-    // Draw the pixels
-    Domain domain( Point(0,0), Point(8,5) );
-    board << SetMode(domain.className(), "Paving")
-	  << domain;    
-  
-    //Draw the points of the DSS
-    board << SetMode("PointVector", "Both");
-    board << SetMode(theDSS.className(), "Points") 
-	  << theDSS;
-
-    // Draw the bounding box
-    board << SetMode(theDSS.className(), "BoundingBox") 
-	  << theDSS;
-  
-    board.saveSVG( filename.c_str() );
-    //! [ArithmeticalDSSDrawingUsage]
-  }
-
-  {
-    std::string filename = "DSS8.svg";
-
-    //DSS type
-    typedef NaiveDSS8<DGtal::int32_t> DSS;
-    typedef DSS::Point Point; 
-  
-    DSS theDSS( Point(0,0), Point(8,5) ); 
-  
-    //! [NaiveDSS8DrawingUsage]
-    Board2D board;
-  
-    // Draw the pixels
-    Domain domain( Point(0,0), Point(8,5) );
-    board << SetMode(domain.className(), "Paving")
-  	  << domain;    
-  
-    //Draw the points of the DSS
-    board << SetMode("PointVector", "Both");
-    board << SetMode(theDSS.className(), "Points") 
-  	  << theDSS;
-
-    // Draw the bounding box
-    board << SetMode(theDSS.className(), "BoundingBox") 
-  	  << theDSS;
-  
-    board.saveSVG( filename.c_str() );
-    //! [NaiveDSS8DrawingUsage]
-  }
+  exampleNaiveDSS(); 
+  exampleStandardDSS(); 
+  exampleConstructors(); 
+  exampleUpdate(); 
 
   trace.endBlock();
   return 0;

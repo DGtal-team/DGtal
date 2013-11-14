@@ -17,12 +17,10 @@
 /**
  * @file ArithmeticalDSSComputer.cpp
  * @ingroup Examples
- * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
- * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
-
- * @date 2010/11/30
+ *
+ * @date 2013/11/14
  *
  * An example file named ArithmeticalDSSComputer.
  *
@@ -32,17 +30,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/BasicTypes.h"
+#include "DGtal/helpers/StdDefs.h"
+
+//! [ArithmeticalDSSComputerHeader]
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+//! [ArithmeticalDSSComputerHeader]
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
-#include "DGtal/geometry/curves/FreemanChain.h"
-#include "DGtal/base/BasicTypes.h"
-#include "DGtal/io/boards/Board2D.h"
-#include "DGtal/helpers/StdDefs.h"
 
 using namespace std;
 using namespace DGtal;
-using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -50,60 +48,49 @@ int main()
 {
   
 
-  /////////////////////////// DSS4 //////////////////////////////////
-  {
-    //! [ArithmeticalDSSComputer4Usage]
-    typedef PointVector<2,int> Point;
-    typedef std::vector<Point> Range;
-    typedef std::vector<Point>::const_iterator ConstIterator;
-    typedef ArithmeticalDSSComputer<ConstIterator,int,4> DSSComputer;  
+  using namespace Z2i;
 
-    // Input points
-    Range contour;
-    contour.push_back(Point(0,0));
-    contour.push_back(Point(1,0));
-    contour.push_back(Point(1,1));
-    contour.push_back(Point(2,1));
-    contour.push_back(Point(3,1));
-    contour.push_back(Point(3,2));
-    contour.push_back(Point(4,2));
-    contour.push_back(Point(5,2));
-    contour.push_back(Point(6,2));
-    contour.push_back(Point(6,3));
-    contour.push_back(Point(6,4));
+  //! [ArithmeticalDSSComputerStandardCtor]
+  // Container of digital points
+  typedef std::vector<Z2::Point> Container;
+  // Iterator on the container
+  typedef Container::const_iterator ConstIterator;
+  // StandardDSS4 computer
+  typedef ArithmeticalDSSComputer<ConstIterator, DGtal::int64_t, 4> DSSComputer;  
+  // Construction of the computer
+  DSSComputer theDSSComputer;    
+  //! [ArithmeticalDSSComputerStandardCtor]
+
+  // Input points
+  Container contour;
+  contour.push_back(Z2::Point(0,0));
+  contour.push_back(Z2::Point(1,0));
+  contour.push_back(Z2::Point(1,1));
+  contour.push_back(Z2::Point(2,1));
+  contour.push_back(Z2::Point(3,1));
+  contour.push_back(Z2::Point(3,2));
+  contour.push_back(Z2::Point(4,2));
+  contour.push_back(Z2::Point(5,2));
+  contour.push_back(Z2::Point(6,2));
+  contour.push_back(Z2::Point(6,3));
+  contour.push_back(Z2::Point(6,4));
     
-    // Add points while it is possible
-    DSSComputer theDSSComputer;    
-    theDSSComputer.init( contour.begin() );
-    while ( ( theDSSComputer.end() != contour.end() )
-          &&( theDSSComputer.extendFront() ) ) {}
+  //! [ArithmeticalDSSComputerStandardExtension]
+  // Add points while it is possible
+  theDSSComputer.init( contour.begin() );
+  while ( ( theDSSComputer.end() != contour.end() ) &&
+	  ( theDSSComputer.extendFront() ) ) {}
+  //! [ArithmeticalDSSComputerStandardExtension]
 
-    // Output parameters
-    cout << theDSSComputer << endl;
-    //! [ArithmeticalDSSComputer4Usage]
+  // Trace to the standard output
+  cout << theDSSComputer << endl;
 
-    DSSComputer::Primitive theDSS = theDSSComputer.primitive();  
-  
-    // Display on board
-    string filename = "DSS.svg"; 
-    Board2D board;
-  
-    // Draw the grid
-    Domain domain( Point(0,0), Point(8,5) );
-    board << SetMode(domain.className(), "Grid")
-  	  << domain;    
+  //! [ArithmeticalDSSComputerStandardPrimitive]
+  DSSComputer::Primitive theDSS = theDSSComputer.primitive();  
+  //! [ArithmeticalDSSComputerStandardPrimitive]
 
-    // Draw the points of the DSS
-    board << SetMode("PointVector", "Grid")
-  	  << SetMode(theDSS.className(), "Points") 
-  	  << theDSS;
-
-    // Draw the bounding box
-    board << SetMode(theDSS.className(), "BoundingBox") 
-  	  << theDSS;
-  
-    board.saveSVG( filename.c_str() );
-  }
+  // Trace to the standard output
+  cout << theDSS << endl;
 
   return 1;
 }
