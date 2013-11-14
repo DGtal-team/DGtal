@@ -156,6 +156,20 @@ IF(WITH_GMP)
   ELSE(GMP_FOUND)
     message(FATAL_ERROR "GMP not found. Check the cmake variables associated to this package or disable it." )
   ENDIF(GMP_FOUND)
+
+  ##Checking the "std::cout << mpz_class"
+  try_compile( GMP_HAS_IOSTREAM
+    ${CMAKE_BINARY_DIR}/CMakeTmp
+    ${CMAKE_SOURCE_DIR}/cmake/src/gmp/gmpstream.cpp
+    COMPILE_DEFINITIONS "-I${GMP_INCLUDE_DIR}"
+    OUTPUT_VARIABLE OUTPUT
+    )
+  if ( GMP_HAS_IOSTREAM )
+    add_definitions("-DGMP_HAS_IOSTREAM")
+    message(STATUS "   * GMPXX has iostream capabilities")
+  ELSE(GMP_HAS_IOSTREAM)
+    message(STATUS "   * GMPXX does not have iostream capabilities")
+  endif (GMP_HAS_IOSTREAM )
 ENDIF(WITH_GMP)
 
 # -----------------------------------------------------------------------------
