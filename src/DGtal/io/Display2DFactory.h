@@ -66,6 +66,7 @@
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 
 //#include "DGtal/io/boards/Board2D.h"
 
@@ -214,7 +215,7 @@ static void draw( DGtal::Board2D & aBoard,
 // MidPointsRange
 template <typename TIterator, typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+           const ConstRangeAdapter<TIterator, CanonicSCellEmbedder<TKSpace>,
            typename TKSpace::Space::RealPoint> & object );
 // MidPointsRange
 

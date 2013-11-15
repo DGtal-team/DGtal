@@ -73,7 +73,7 @@ namespace DGtal
    * - ArithmeticalDSS::retractFront and ArithmeticalDSS::retractBack based on 
    * [Lachaud et. al., 2007, Th. 5 : \cite LachaudIVC2007]. 
    *
-   * See @ref moduleDSSRecognition for further details. See also
+   * See @ref moduleArithDSSReco for further details. See also
    * NaiveDSS8 and StandardDSS4, which are aliases of this class. 
    *
    * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
@@ -720,7 +720,7 @@ namespace DGtal
    * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSHeader
    *
    * See the documentation of NaiveDSS8 for a longer example 
-   * and see @ref moduleDSSRecognition for further details. 
+   * and see @ref moduleArithDSSReco for further details. 
    *
    * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
    * the slope parameters. 
@@ -829,7 +829,7 @@ namespace DGtal
    * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSUpdateRetraction
    * This method implements the algorithm proposed in [Lachaud et. al., 2007 : \cite LachaudIVC2007]. 
    * 
-   * See @ref moduleDSSRecognition for further details. 
+   * See @ref moduleArithDSSReco for further details. 
    *
    * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
    * the slope parameters. 

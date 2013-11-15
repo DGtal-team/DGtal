@@ -38,7 +38,7 @@ template <typename TPoint, bool boolCst>
 inline
 bool
 DGtal::ConstantPointPredicate<TPoint,boolCst>
-::operator()( const Point & p ) const
+::operator()( const Point & UNUSED(p) ) const
 {
   return boolCst;
 }
@@ -48,7 +48,8 @@ inline
 DGtal::IsLowerPointPredicate<TPoint>
 ::IsLowerPointPredicate( const Point & upperBound )
   : myUpperBound( upperBound )
-{}
+{
+}
 //------------------------------------------------------------------------------
 template <typename TPoint>
 inline
@@ -65,7 +66,8 @@ inline
 DGtal::IsUpperPointPredicate<TPoint>
 ::IsUpperPointPredicate( const Point & lowerBound )
   : myLowerBound( lowerBound )
-{}
+{
+}
 //------------------------------------------------------------------------------
 template <typename TPoint>
 inline
@@ -83,7 +85,8 @@ DGtal::IsWithinPointPredicate<TPoint>
 ::IsWithinPointPredicate( const Point & lowerBound,
         const Point & upperBound )
   : myLowerBound( lowerBound ), myUpperBound( upperBound )
-{}
+{
+}
 //------------------------------------------------------------------------------
 template <typename TPoint>
 inline
@@ -99,8 +102,8 @@ DGtal::IsWithinPointPredicate<TPoint>
 template <typename TPointPredicate>
 inline
 DGtal::NotPointPredicate<TPointPredicate>
-::NotPointPredicate( const PointPredicate & pred )
-  : myPredPtr( &pred )
+::NotPointPredicate( ConstAlias<PointPredicate> pred )
+  : myPred( &pred )
 {
 }
 //------------------------------------------------------------------------------
@@ -110,17 +113,7 @@ bool
 DGtal::NotPointPredicate<TPointPredicate>
 ::operator()( const Point & p ) const
 {
-  return ! myPredPtr->operator()( p );
-}
-//------------------------------------------------------------------------------
-template <typename TPointPredicate>
-inline
-
-DGtal::NotPointPredicate<TPointPredicate>&
-DGtal::NotPointPredicate<TPointPredicate>::operator=( const DGtal::NotPointPredicate<TPointPredicate> & p )
-{
-  myPredPtr = p.myPredPtr;
-  return *this;
+  return !(*myPred)( p );
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate>
@@ -143,101 +136,36 @@ DGtal::EqualPointPredicate<TPointPredicate>
 template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
 inline
 DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
-::BinaryPointPredicate( const PointPredicate1 & pred1,
-      const PointPredicate2 & pred2,
-      const TBinaryFunctor & boolFunctor )
+::BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<TBinaryFunctor> boolFunctor )
   : myPred1( &pred1 ), myPred2( &pred2 ), myBoolFunctor( &boolFunctor )
 {
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
 inline
-DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
-::BinaryPointPredicate( const BinaryPointPredicate& other )
-  : myPred1( other.pred1 ), myPred2( other.pred2 ), myBoolFunctor( other.boolFunctor )
-{
-}
-//------------------------------------------------------------------------------
-template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
-inline
-DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>&
-DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
-::operator=( const BinaryPointPredicate& other )
-{
-  if (this != &other)
-    {
-      myPred1 = other.myPred1; 
-      myPred2 = other.myPred2; 
-      myBoolFunctor = other.myBoolFunctor; 
-    }
-    return *this; 
-}
-//------------------------------------------------------------------------------
-template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
-inline
-DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
-::~BinaryPointPredicate()
-{
-}
-//------------------------------------------------------------------------------
-template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
-inline
-bool 
+bool
 DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
 ::operator()( const Point & p ) const
 {
-  return myBoolFunctor->operator()( myPred1->operator()( p ), 
-				    myPred2->operator()( p ) );
-}
-
-//------------------------------------------------------------------------------
-template <typename TPointFunctor, typename TPredicate>
-inline
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
-::PointFunctorPredicate( const PointFunctor & aFun,
-      const Predicate & aPred)
-  : myFun( &aFun ), myPred( &aPred )
-{
+  return myBoolFunctor->operator()( myPred1->operator()( p ),
+            myPred2->operator()( p ) );
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
 DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
-::PointFunctorPredicate( const PointFunctorPredicate& other )
-  : myFun( other.myFun), myPred( other.myPred )
+::PointFunctorPredicate( ConstAlias<PointFunctor> aFun, ConstAlias<Predicate> aPred )
+    : myFun(&aFun), myPred(&aPred)
 {
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>&
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
-::operator=( const PointFunctorPredicate& other )
-{
-  if (this != &other)
-    {
-      myFun = other.myFun; 
-      myPred = other.myPred; 
-    }
-    return *this;
-}
-//------------------------------------------------------------------------------
-template <typename TPointFunctor, typename TPredicate>
-inline
-DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
-::~PointFunctorPredicate()
-{
-}
-//------------------------------------------------------------------------------
-template <typename TPointFunctor, typename TPredicate>
-inline
-bool 
+bool
 DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
 ::operator()( const Point & p ) const
 {
-  return myPred->operator()( myFun->operator()( p ) );
+  return (*myPred)( (*myFun)( p ) );
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

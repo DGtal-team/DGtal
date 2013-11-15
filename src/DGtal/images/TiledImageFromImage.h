@@ -115,7 +115,7 @@ public:
                         Alias<ImageCacheReadPolicy> aReadPolicy,
                         Alias<ImageCacheWritePolicy> aWritePolicy,
                         typename ImageContainer::Domain::Integer N):
-      myImagePtr(anImage),  myN(N), myImageFactoryFromImage(anImageFactoryFromImage)
+      myImagePtr(&anImage),  myN(N), myImageFactoryFromImage(&anImageFactoryFromImage)
     {
         myImageCache = new MyImageCache(myImageFactoryFromImage, aReadPolicy, aWritePolicy);
         

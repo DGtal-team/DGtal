@@ -438,9 +438,9 @@ bool testDraw()
   typedef Object<DT48, MediumSet> ObjectType;
   typedef Object<DT84, MediumSet> ObjectType84;
 
-  typedef ObjectType::SmallSet SmallSet;
-  typedef Object<DT48, SmallSet> SmallObjectType;
-  typedef ObjectType::Size Size;
+  //typedef ObjectType::SmallSet SmallSet;
+  //typedef Object<DT48, SmallSet> SmallObjectType;
+  //typedef ObjectType::Size Size;
 
   // Adj4 adj4( domain );
   // Adj8 adj8( domain );

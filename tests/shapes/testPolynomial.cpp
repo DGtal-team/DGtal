@@ -155,7 +155,7 @@ int main( int argc, char** argv )
 
   double minCurv = 1;
   double maxCurv = 0;
-  SCellToMidPoint< KSpace > midpoint( K );
+  CanonicSCellEmbedder< KSpace > midpoint( K );
   for ( std::set< SCell >::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
         it != it_end; ++it)
   {

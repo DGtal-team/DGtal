@@ -73,20 +73,34 @@ int main( int argc, char** argv )
   shape_set.insertNew( *it );
       }
     }
-  trace.warning() << "  [Done]";
+  trace.warning() << "  [Done]" << std::endl;
   
-  int layer = 0;
-  
-  Object6_26 shape( dt6_26,  shape_set );
+  trace.beginBlock ( "Thinning" );
+  Object18_6 shape( dt18_6,  shape_set );
   int nb_simple=0; 
+  DigitalSet::Iterator it, itE;
   do 
     {
       DigitalSet & S = shape.pointSet();
       std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); 
-	    it != S.end(); ++it )
+      it = S.begin(); 
+      itE = S.end();
+#ifdef WITH_OPENMP
+      std::vector<DigitalSet::Iterator> v( S.size() );
+      std::vector<uint8_t> b( v.size() );
+      for ( size_t i = 0; it != itE; ++it, ++i )
+	v[ i ] = it;
+#pragma omp parallel for schedule(dynamic)
+      for ( size_t i = 0; i < v.size(); ++i )
+	b[ i ] = shape.isSimple( *(v[ i ]) );
+
+      for ( size_t i = 0; i < v.size(); ++i )
+	if ( b[ i ] ) Q.push( v[ i ] ); 
+#else
+      for ( ; it != itE; ++it )
 	if ( shape.isSimple( *it ) )
 	  Q.push( it );
+#endif
       nb_simple = 0;
       while ( ! Q.empty() )
 	{
@@ -101,12 +115,8 @@ int main( int argc, char** argv )
     }
   while ( nb_simple != 0 );
   DigitalSet & S = shape.pointSet();
-  
+  trace.endBlock();
 
-
-  ++layer;// avant dernier{ avant while
-  //cerr << "point simple " << (*it) << endl; // avant S.erase
-  
   // Display by using two different list to manage OpenGL transparency.
 
   viewer << SetMode3D( shape_set.className(), "Paving" );

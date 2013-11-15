@@ -441,9 +441,9 @@ bool testDraw()
   typedef Object<DT48, MediumSet> ObjectType;
   typedef Object<DT84, MediumSet> ObjectType84;
 
-  typedef ObjectType::SmallSet SmallSet;
-  typedef Object<DT48, SmallSet> SmallObjectType;
-  typedef ObjectType::Size Size;
+  //typedef ObjectType::SmallSet SmallSet;
+  //typedef Object<DT48, SmallSet> SmallObjectType;
+  //typedef ObjectType::Size Size;
 
   // Adj4 adj4( domain );
   // Adj8 adj8( domain );
@@ -547,7 +547,7 @@ bool testSimplePoints2D()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::Z2i::Point Point;
-  typedef Domain::ConstIterator DomainConstIterator; 
+  //typedef Domain::ConstIterator DomainConstIterator; 
  
   Point p1( -17, -17 );
   Point p2( 17, 17 );

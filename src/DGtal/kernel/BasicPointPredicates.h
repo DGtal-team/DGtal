@@ -47,7 +47,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicBoolFunctions.h"
-#include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/base/CPredicate.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -88,7 +89,6 @@ namespace DGtal
   template <typename TPoint>
   struct TruePointPredicate : public ConstantPointPredicate<TPoint,true>
   {
-      typedef TPoint Point;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,6 @@ namespace DGtal
   template <typename TPoint>
   struct FalsePointPredicate : public ConstantPointPredicate<TPoint,false>
   {
-      typedef TPoint Point;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -118,6 +117,7 @@ namespace DGtal
   struct IsLowerPointPredicate
   {
     typedef TPoint Point;
+
     /**
      * Constructor from upper bound.
      */
@@ -146,6 +146,7 @@ namespace DGtal
   struct IsUpperPointPredicate
   {
     typedef TPoint Point;
+
     /**
      * Constructor from lower bound.
      */
@@ -173,6 +174,7 @@ namespace DGtal
   struct IsWithinPointPredicate
   {
     typedef TPoint Point;
+
     /**
      * Constructor from lower bound and upper bound.
      */
@@ -204,35 +206,30 @@ namespace DGtal
   struct NotPointPredicate
   {
     typedef TPointPredicate PointPredicate;
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> )); 
-   
+    BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> ));
     typedef typename PointPredicate::Point Point;
 
     /**
      * Constructor from predicates and bool Functor.
      */
-    NotPointPredicate( const PointPredicate & pred );
+    NotPointPredicate( ConstAlias<PointPredicate> pred );
 
-    /**
-     * Assignment operator.
-     */
-    NotPointPredicate &operator=( const NotPointPredicate & pred );
    /**
      * @param p any point.
      * @return the value of the predicate at this point.
      */
     bool operator()( const Point & p ) const;
 
-    /// An alias to the  PointPredicate that is inversed.
-    const PointPredicate * myPredPtr;
+    /// The PointPredicate that is inversed.
+    const PointPredicate* myPred;
   };
 
   /////////////////////////////////////////////////////////////////////////////
   // template class EqualPointPredicate
   /**
    * Description of template class 'EqualPointPredicate' <p> \brief Aim:
-   * The predicate returns true when the point given as argument equals 
-   * the reference point given at construction. 
+   * The predicate returns true when the point given as argument equals
+   * the reference point given at construction.
    *
    * @tparam TPoint point type.
    */
@@ -267,19 +264,19 @@ namespace DGtal
    * @tparam TPointPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
-  template <typename TPointPredicate1, typename TPointPredicate2, 
-	    typename TBinaryFunctor = BoolFunction2 >
+  template <typename TPointPredicate1, typename TPointPredicate2,
+      typename TBinaryFunctor = BoolFunction2 >
   struct BinaryPointPredicate
   {
     typedef TPointPredicate1 PointPredicate1;
     typedef TPointPredicate2 PointPredicate2;
     typedef typename PointPredicate1::Point Point;
-    // should be the same.
-    BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value)); 
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate1> )); 
-    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate2> )); 
-    
     typedef typename PointPredicate2::Point Point2;
+
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_CONCEPT_ASSERT (( boost::BinaryFunction< TBinaryFunctor, bool, bool, bool > ));
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
 
     /**
        Constructor from predicates and bool Functor.
@@ -288,27 +285,7 @@ namespace DGtal
        @param boolFunctor the binary function used to combine pred1
        and pred2.
      */
-    BinaryPointPredicate( const PointPredicate1 & pred1,
-        const PointPredicate2 & pred2,
-        const TBinaryFunctor & boolFunctor );
-
-    /**
-       Copy constructor.
-       @param other the object to copy
-      */
-    BinaryPointPredicate(  const BinaryPointPredicate& other );
-
-    /**
-       Assignement
-       @param other the object to copy
-       @return reference to the current object
-     */
-    BinaryPointPredicate& operator=( const BinaryPointPredicate& other );
-
-    /**
-       Destructor
-     */
-    ~BinaryPointPredicate();
+    BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<TBinaryFunctor> boolFunctor );
 
     /**
      * @param p any point.
@@ -333,43 +310,24 @@ namespace DGtal
    * in the point functor.
    *
    * @tparam TPointFunctor a model of CPointFunctor.
-   * @tparam TPredicate a type of predicate on values
+   * @tparam TPredicate a type of predicate on values (model of CPredicate)
    */
   template <typename TPointFunctor, typename TPredicate>
   struct PointFunctorPredicate
   {
-    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));  
-    BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));  
+    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));
+    BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));
 
     typedef TPointFunctor PointFunctor;
     typedef TPredicate Predicate;
-    typedef typename PointFunctor::Point Point; 
+    typedef typename PointFunctor::Point Point;
 
     /**
        Constructor from an PointFunctor and a predicate
        @param aFun an point functor.
        @param aPred a predicate.
      */
-    PointFunctorPredicate( const PointFunctor & aFun,
-        const Predicate & aPred );
-
-    /**
-       Copy constructor.
-       @param other the object to copy
-      */
-    PointFunctorPredicate(  const PointFunctorPredicate& other );
-
-    /**
-       Assignement
-       @param other the object to copy
-       @return reference to the current object
-     */
-    PointFunctorPredicate& operator=( const PointFunctorPredicate& other );
-
-    /**
-       Destructor
-     */
-    ~PointFunctorPredicate();
+    PointFunctorPredicate( ConstAlias<PointFunctor> aFun, ConstAlias<Predicate> aPred );
 
     /**
      * @param p any point.
@@ -377,9 +335,9 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
-    /// aliasing pointer to the PointFunctor.
+    /// alias of the PointFunctor.
     const PointFunctor* myFun;
-    /// aliasing pointer to the predicate.
+    /// alias of the predicate.
     const Predicate* myPred;
   };
 

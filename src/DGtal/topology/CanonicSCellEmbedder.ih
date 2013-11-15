@@ -104,7 +104,7 @@ DGtal::CanonicSCellEmbedder<TKSpace>::operator()( const SCell & scell ) const
   Point dp = myKSpace->sKCoords( scell );
   RealPoint p;
   for ( Dimension i = 0; i < dp.size(); ++i )
-    p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] ) / 2;
+    p[ i ] = ( NumberTraits<Integer>::castToDouble( dp[ i ] ) / 2.0 ) - 0.5; /// In Khalimsky Space, 0-SCells have even coordinates, while in the embedding, voxel centers have integer coordinates, we need to shift all coordinates by -1/2.
   return p;
 }
 //-----------------------------------------------------------------------------
@@ -124,7 +124,7 @@ DGtal::CanonicSCellEmbedder<TKSpace>::isValid( ) const
  * @param object the object of class 'CanonicSCellEmbedder' to write.
  * @return the output stream after the writing.
  */
-template <typename TKSpace>
+/*template <typename TKSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
@@ -132,7 +132,7 @@ DGtal::operator<< ( std::ostream & out,
 {
     object.selfDisplay ( out );
     return out;
-}
+}*/
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

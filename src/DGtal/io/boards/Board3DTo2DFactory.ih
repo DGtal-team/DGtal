@@ -511,7 +511,7 @@ template <typename TIterator>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, CanonicSCellEmbedder<KSpace>, typename KSpace::Space::RealPoint> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }
