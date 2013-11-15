@@ -77,7 +77,7 @@ namespace DGtal
    * These methods are specialized with respect to the chosen adjacency 
    * 8 (default) or 4. 
    *
-   * @ref moduleDSSRecognition
+   * @ref moduleArithDSSReco
    *
    * @tparam TCoordinate a model of integer for the DGtal point coordinates
    * @tparam adajency integer equal to 8 (default) for naive (simply 8-connected) DSL, 

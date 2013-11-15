@@ -48,6 +48,10 @@
 #include <set>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/Clone.h"
+#include "DGtal/base/Alias.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -66,10 +70,15 @@ namespace DGtal
     within some given domain.
 
     This is the most versatile implementation for a set of point, and
-    is essentially a wrapper to std::set<Point>. It added the notion
+    is essentially a wrapper to std::set<Point>. It adds the notion
     of domain.
 
     Model of CDigitalSet.
+
+    @since 0.7 Domains are now hold with copy on write pointers and no more
+    only aliased. The problem was related to returning sets with a
+    locally constructed domain. With CowPtr, you are sure that the
+    domain remains valid during the lifetime of your set.
    */
   template <typename TDomain, typename TCompare = std::less<typename TDomain::Point> >
   class DigitalSetBySTLSet
@@ -101,7 +110,7 @@ namespace DGtal
      *
      * @param d any domain.
      */
-    DigitalSetBySTLSet( const Domain & d, const Compare & c = Compare() );
+    DigitalSetBySTLSet( Clone<Domain> d, const Compare & c = Compare() );
 
     /**
      * Copy constructor.
@@ -120,6 +129,11 @@ namespace DGtal
      * @return the embedding domain.
      */
     const Domain & domain() const;
+
+    /**
+     * @return a copy on write pointer on the embedding domain.
+     */
+    CowPtr<Domain> domainPointer() const;
 
     // ----------------------- Standard Set services --------------------------
   public:
@@ -304,9 +318,10 @@ namespace DGtal
   protected:
 
     /**
-     * The associated domain;
+     * The associated domain. The pointed domain may be changed but it
+     * remains valid during the lifetime of the set.
      */
-    const Domain & myDomain;
+    CowPtr<Domain> myDomain;
 
     /**
      * The container storing the points of the set.

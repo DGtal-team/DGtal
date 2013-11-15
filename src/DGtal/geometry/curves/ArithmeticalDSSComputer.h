@@ -64,7 +64,7 @@ namespace DGtal
    * to the dynamic recognition of digital straight segments (DSS) along any 
    * sequence of digital points. 
    *
-   * See @ref moduleDSSRecognition for further details. See also classes 
+   * See @ref moduleArithDSSReco for further details. See also classes 
    * NaiveDSS8Computer and StandardDSS4Computer, which are aliases of this class. 
    *
    * @tparam TIterator type of iterator on 2d digital points,
@@ -444,7 +444,7 @@ namespace DGtal
    * The extention is simply done as follows: 
    * @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardExtension
    *
-   * See @ref moduleDSSRecognition for further details. 
+   * See @ref moduleArithDSSReco for further details. 
    *
    * @tparam TIterator type of iterator on 2d digital points,
    * at least readable and forward. 
@@ -502,7 +502,7 @@ namespace DGtal
    * to the dynamic recognition of naive and simply 8-connected digital straight 
    * segments (DSS) along any sequence of digital points. 
    *
-   * See @ref moduleDSSRecognition for further details. See also
+   * See @ref moduleArithDSSReco for further details. See also
    * exampleArithmeticalDSSComputer.cpp for a basic example using
    * StandardDSS4Computer. The use of NaiveDSS8Computer is quite similar. 
    *

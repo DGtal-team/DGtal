@@ -55,11 +55,12 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::~DigitalSetBySTLSet()
  * Constructor.
  * Creates the empty set in the domain [d].
  *
- * @param d any domain.
+ * @param d any counted pointer on domain.
  */
 template <typename Domain, typename Compare>
 inline
-DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet( const Domain & d, const Compare & c )
+DGtal::DigitalSetBySTLSet<Domain, Compare>::DigitalSetBySTLSet
+( Clone<Domain> d, const Compare & c )
   : myDomain( d ), mySet( c )
 {
 }
@@ -85,8 +86,8 @@ inline
 DGtal::DigitalSetBySTLSet<Domain, Compare> &
 DGtal::DigitalSetBySTLSet<Domain, Compare>::operator= ( const DigitalSetBySTLSet<Domain, Compare> & other )
 {
-  ASSERT( ( myDomain.lowerBound() <= other.myDomain.lowerBound() )
-    && ( myDomain.upperBound() >= other.myDomain.upperBound() )
+  ASSERT( ( domain().lowerBound() <= other.domain().lowerBound() )
+    && ( domain().upperBound() >= other.domain().upperBound() )
     && "This domain should include the domain of the other set in case of assignment." );
   mySet = other.mySet;
   return *this;
@@ -100,6 +101,14 @@ template <typename Domain, typename Compare>
 inline
 const Domain &
 DGtal::DigitalSetBySTLSet<Domain, Compare>::domain() const
+{
+  return *myDomain;
+}
+
+template <typename Domain, typename Compare>
+inline
+DGtal::CowPtr<Domain> 
+DGtal::DigitalSetBySTLSet<Domain, Compare>::domainPointer() const
 {
   return myDomain;
 }
@@ -144,7 +153,7 @@ inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::insert( const Point & p )
 {
-  // ASSERT( myDomain.isInside( p ) );
+  // ASSERT( domain().isInside( p ) );
   mySet.insert( p );
 }
 
@@ -180,7 +189,7 @@ inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::insertNew( const Point & p )
 {
-  // ASSERT( myDomain.isInside( p ) );
+  // ASSERT( domain().isInside( p ) );
   mySet.insert( p );
 }
 
@@ -354,8 +363,8 @@ inline
 void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::computeComplement(TOutputIterator& ito) const
 {
-  typename Domain::ConstIterator itPoint = myDomain.begin();
-  typename Domain::ConstIterator itEnd = myDomain.end();
+  typename Domain::ConstIterator itPoint = domain().begin();
+  typename Domain::ConstIterator itEnd = domain().end();
   while ( itPoint != itEnd ) {
     if ( find( *itPoint ) == end() ) {
       *ito++ = *itPoint;
@@ -377,8 +386,8 @@ DGtal::DigitalSetBySTLSet<Domain, Compare>::assignFromComplement
 ( const DigitalSetBySTLSet<Domain, Compare> & other_set )
 {
   clear();
-  typename Domain::ConstIterator itPoint = myDomain.begin();
-  typename Domain::ConstIterator itEnd = myDomain.end();
+  typename Domain::ConstIterator itPoint = domain().begin();
+  typename Domain::ConstIterator itEnd = domain().end();
   while ( itPoint != itEnd ) {
     if ( other_set.find( *itPoint ) == other_set.end() ) {
       insert( *itPoint );
@@ -401,8 +410,8 @@ void
 DGtal::DigitalSetBySTLSet<Domain, Compare>::computeBoundingBox
 ( Point & lower, Point & upper ) const
 {
-  lower = myDomain.upperBound();
-  upper = myDomain.lowerBound();
+  lower = domain().upperBound();
+  upper = domain().lowerBound();
   ConstIterator it = begin();
   ConstIterator itEnd = end();
   while ( it != itEnd ) {

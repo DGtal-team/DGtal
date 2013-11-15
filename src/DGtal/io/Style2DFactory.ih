@@ -632,7 +632,7 @@ defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToPoint<TKSpa
 // MidPointsRange
 template <typename TIterator, typename TKSpace>
 DGtal::DrawableWithBoard2D* 
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::SCellToMidPoint<TKSpace>, 
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::CanonicSCellEmbedder<TKSpace>,
              typename TKSpace::Space::RealPoint> & /*object*/, 
              std::string mode = "" )
 {

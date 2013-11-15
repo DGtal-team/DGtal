@@ -83,7 +83,7 @@ namespace DGtal
    // equivalent to ArithmeticalDSL<DGtal::int32_t, DGtal::int64_t> line( 17711, 28657, 1607895256 );
    @endcode
    *  
-   * See @ref moduleDSSRecognition for further details.  
+   * See @ref moduleArithDSSReco for further details.  
    *
    * This class is a model of CPointFunctor and of CConstBidirectionalRange. 
    *
@@ -150,7 +150,7 @@ namespace DGtal
      * of DSL classes as follows:
      * @snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLIteration
      *
-     * See @ref moduleDSSRecognition for further details.  
+     * See @ref moduleArithDSSReco for further details.  
      *
      * @see ArithmeticalDSL NaiveDSL StandardDSL 
      * @see exampleArithmeticalDSL.cpp
@@ -579,7 +579,7 @@ namespace DGtal
    * A standard DSL can be declared and constructed as follows: 
    * @snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLStandardCtor
    *
-   * See @ref moduleDSSRecognition for further details.  
+   * See @ref moduleArithDSSReco for further details.  
    *
    * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
    * the slope parameters. 
@@ -645,7 +645,7 @@ namespace DGtal
    * you can iterate over the DSL points: 
    * @snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLIteration
    *
-   * See @ref moduleDSSRecognition for further details.  
+   * See @ref moduleArithDSSReco for further details.  
    *
    * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
    * the slope parameters. 

@@ -68,6 +68,8 @@ bool testImplicitFunctionModels()
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitBall3D > ));
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitNorm1Ball2D > ));
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitNorm1Ball3D > ));
+  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitHyperCube2D > ));
+  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitHyperCube3D > ));
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitRoundedHyperCube2D > ));
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitRoundedHyperCube3D > ));
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitPolynomial3Shape > ));
