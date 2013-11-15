@@ -45,9 +45,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/ReverseIterator.h"
+#include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 
 #include "DGtal/geometry/curves/ArithmeticalDSLKernel.h"
@@ -65,18 +65,38 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ArithmeticalDSL
   /**
-   * Description of template class 'ArithmeticalDSL' <p>
    * \brief Aim: This class represents a naive (resp. standard) 
-   * digital straight line (DSL), ie. a set of digital points
-   * \f$ (x,y) \in \mathbb{Z}^2 \f$ such that 
-   * \f$ \mu <= ax - by < \mu + \omega \f$ 
-   * with \f$ \gcd(a,b) = 1 \f$ and \f$ \omega = \max(|a|,|b|) \f$
-   * (resp. \f$ \omega = |a| + |b| \f$). 
-   * 
-   * @tparam TCoordinate a model of integer for the DGtal point coordinates
-   * @tparam TInteger a model of integer for the DSL parameters mu and omega
-   * @tparam adajency a integer equal to 8 (default) for naive DSL, 
+   * digital straight line (DSL), ie. the set of digital points 
+   * \f$ (x,y) \in \mathbb{Z}^2 \f$ such that \f$ \mu \leq ax - by < \mu + \omega \f$
+   * with \f$ a,b,\mu,\omega \in \mathbb{Z} \f$, \f$ \gcd(a,b) = 1 \f$ 
+   * and \f$ \omega = \max(|a|,|b|) \f$ (resp. \f$ \omega = |a| + |b| \f$). 
+   * Note that any DSL such that \f$ \omega = \max(|a|,|b|) \f$ (resp. \f$ \omega = |a| + |b| \f$) 
+   * is simply 8-connected (resp. 4-connected). 
+   *
+   * [Reveilles, 1991 : \cite Reveilles_1991_thesis]. 
+   *
+   * A naive DSL can be declared and constructed as follows: 
+   @code 
+   #include "DGtal/arithmetic/geometry/curves/ArithmeticalDSL.h" 
+   ...
+   ArithmeticalDSL<DGtal::int32_t, DGtal::int64_t, 8> line( 17711, 28657, 1607895256 ); 
+   // equivalent to ArithmeticalDSL<DGtal::int32_t, DGtal::int64_t> line( 17711, 28657, 1607895256 );
+   @endcode
+   *  
+   * See @ref moduleDSSRecognition for further details.  
+   *
+   * This class is a model of CPointFunctor and of CConstBidirectionalRange. 
+   *
+   * In the standard case, it is enough to replace 8 by 4. 
+   * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
+   * the slope parameters. 
+   * @tparam TInteger a model of integer for the intercepts and the remainders
+   * that represents a larger range of integers than TCoordinate. 
+   * @tparam adajency an unsigned integer equal to 8 (default) for naive DSL, 
    * and 4 for standard DSL. 
+   *
+   * @see ArithmeticalDSL NaiveDSL StandardDSL 
+   * @see exampleArithmeticalDSL.cpp
    */
   template <typename TCoordinate, 
 	    typename TInteger = TCoordinate, 
@@ -91,29 +111,57 @@ namespace DGtal
     // ----------------------- Inner types -----------------------------------
   public:
 
-    typedef TCoordinate Coordinate; 
+    /**
+     * Type used for the points coordinates
+     * and the slope parameters. 
+     */
+    typedef TCoordinate Coordinate;
+    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> )); 
+    /**
+     * Type used for the intercepts and the remainders. 
+     */
     typedef TInteger Integer; 
+    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
 
-    typedef DGtal::PointVector<2, Coordinate> Point; 
-    typedef SpaceND<2, Coordinate> Space; 
-    typedef Point Element; 
-    typedef Point Vector; 
-
+    /**
+     * Type of digital plane. 
+     */
+    typedef typename ArithmeticalDSLKernel<Coordinate,adjacency>::Space Space; 
+    /**
+     * Type of point.  
+     */
+    typedef typename Space::Point Point; 
+    /**
+     * Type of vector.  
+     */
+    typedef typename Space::Vector Vector; 
+    /**
+     * Type of step vectors, defined as STL pair of vectors.  
+     */
     typedef std::pair<Vector,Vector> Steps; 
 
     /**
      * \brief Aim: This class aims at representing an iterator
-     * that provides a way to scan the points of a DSL
+     * that provides a way to scan the points of a DSL. 
      * It is both a model of readable iterator and of
      * bidirectional iterator.
+     *
+     * Instances of this class are returned by begin and end methods
+     * of DSL classes as follows:
+     * @snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLIteration
+     *
+     * See @ref moduleDSSRecognition for further details.  
+     *
+     * @see ArithmeticalDSL NaiveDSL StandardDSL 
+     * @see exampleArithmeticalDSL.cpp
      */
     class ConstIterator
       : public boost::iterator_facade<ConstIterator, //derived type, the ConstIterator class itself 
 				      Point const,   //value type
 				      boost::bidirectional_traversal_tag, //traversal tag
 				      Point const    //reference type
-				      //NB: since there is no underlying container, we cannot return
-				      //a reference. 
+				      //NB: since there is no underlying container, 
+				      //we cannot return a reference. 
 				      >
     {
       // ------------------------- Private data -----------------------
@@ -197,6 +245,9 @@ namespace DGtal
       bool equal(const ConstIterator& aOther) const; 
     };
 
+    /**
+     * Type of const reverse iterator, adapted from ConstIterator.  
+     */
     typedef DGtal::ReverseIterator<ConstIterator> ConstReverseIterator; 
 
     // ----------------------- Standard services ------------------------------
@@ -214,8 +265,7 @@ namespace DGtal
      * @param aLowerIntercept lower intercept 
      * @param aUpperIntercept upper intercept
      * @param aSteps pair of steps used to iterate over the DSL points
-     * @param aShift shift vector translating a point of remainder r 
-     * to a point of remainder r +  @a aOmega
+     * @param aShift shift vector 
      */
     ArithmeticalDSL(const Coordinate& aA, const Coordinate& aB, 
 		    const Integer& aLowerIntercept, const Integer& aUpperIntercept, 
@@ -246,9 +296,8 @@ namespace DGtal
     ArithmeticalDSL& operator= ( const ArithmeticalDSL & aOther );
 
     /**
-     * Returns a copy of '*this' with a reverse orientation, ie. 
-     * with parameters @a -myA ,  @a -myB ,  
-     * @a -myUpperIntercept , @a -myLowerIntercept.
+     * Returns a copy of '*this' with a reverse orientation, ie. with parameters 
+     * ( -@a myA , -@a myB , -@a myUpperIntercept , -@a myLowerIntercept).
      * @return the negation of '*this'.
      */
     ArithmeticalDSL negate () const;
@@ -298,7 +347,7 @@ namespace DGtal
      * @a myA , @a myB and the translating vectors @a myShift , 
      * @a mySteps  
      * @return 'true' if ok, 'false' otherwise
-     * @pre @a myA and @a myB mustn't be both null
+     * @pre @a myA and @a myB must not be both null
      */
     bool checkShiftAndSteps() const;
 
@@ -322,31 +371,30 @@ namespace DGtal
     Coordinate b() const; 
 
     /**
-     * @return mu parameter, the intercept
+     * @return mu parameter, the intercept \f$ \mu \f$
      */
     Integer mu() const; 
 
     /**
-     * @return omega parameter, the thickness
+     * @return the arithmetical thickness \f$ \omega \f$
      */
     Integer omega() const; 
 
     /**
-     * @return the shift vector translating a point
-     * of remainder r to a point of remainder r+omega
+     * @return the shift vector (translating a point
+     * of remainder \f$ r \f$ to a point of remainder \f$ r+\omega \f$). 
      */
     Vector shift() const; 
 
     /**
-     * @return the two vectors used to iterate
-     * over the DSL point. 
+     * @return the two vectors used to iterate over the DSL points. 
      */
     Steps steps() const; 
 
     /**
      * Returns the remainder of @a aPoint
      * with respect to the direction vector
-     * of component @a aA and @a aB
+     * of components @a aA and @a aB
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
      * @param aPoint any point
@@ -381,7 +429,7 @@ namespace DGtal
      * @param aPoint the point whose position is returned 
      * @return the position
      */
-    Integer directionalPosition(const Point& aPoint) const; 
+    Integer position(const Point& aPoint) const; 
 
     /**
      * Returns a boolean equal to 'true' if @a aP1 is 
@@ -391,7 +439,7 @@ namespace DGtal
      * @param aP2 any point
      * @return 'true' is @a aP2 is strictly before @a aP2, 
      * 'false' otherwise
-     * @see beforeOrEqual directionalPosition
+     * @see beforeOrEqual position
      */
     bool before (const Point& aP1, const Point& aP2) const; 
 
@@ -403,7 +451,7 @@ namespace DGtal
      * @param aP2 any point
      * @return 'true' is @a aP2 is before or equal to @a aP2, 
      * 'false' otherwise
-     * @see before directionalPosition
+     * @see before position
      */
     bool beforeOrEqual (const Point& aP1, const Point& aP2) const; 
 
@@ -460,20 +508,16 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   protected:
 
-    // -------------------- steps ---------------------------------------------
+    // -------------------------vectors ---------------------------------------
     /**
-     * Pair of steps used to iterate over the DSL points
-     * NB: the first one is always the steps starting from an upper leaning point
-     * of remainder @a myLowerBound 
-     * NB: the second one can be equal to (0,0) in the degenerated case, ie. when 
-     * - @a myA or @a myB is equal to 0, 
-     * - @a myA == @a myB in the naive case. 
-     * In the other cases, the first step minus the second step is always equal to 
-     * vector @a myShift
+     * Pair of steps used to iterate over the DSL points. They are computed
+     * from @a myA and @a myB in ArithmeticalDSLKernel. 
+     * @see ArithmeticalDSLKernel::steps
      */
     Steps mySteps;
     /**
-     * Shift vector (translating a point of remainder r to a point of remainder r+omega) 
+     * Shift vector. It is computed from @a myA and @a myB in ArithmeticalDSLKernel. 
+     * @see ArithmeticalDSLKernel::shift 
      */
     Vector myShift;
 
@@ -487,16 +531,16 @@ namespace DGtal
      */
     Coordinate myB;
     /**
-     * Lower intercept
-     * NB: for any upper leaning point U, we have remainder(U) == myLowerBound.
-     * NB: myLowerBound <= myUpperBound
+     * Lower intercept. Invariants: 
+     * - for any upper leaning point U, we have remainder(U) == @a myLowerBound.
+     * - @a myLowerBound <= @a myUpperBound
      */
     Integer myLowerBound;
     /**
-     * Upper intercept
-     * NB: for any lower leaning point L, we have remainder(L) == myUpperBound.
-     * NB: if myA and myB are not both null, myUpperBound == myLowerBound + omega() - 1
-     * NB: myLowerBound <= myUpperBound
+     * Upper intercept. Invariants: 
+     * - for any lower leaning point L, we have remainder(L) == @a myUpperBound.
+     * - if @a myA and @a myB are not both null, @a myUpperBound == @a myLowerBound + omega() - 1
+     * - @a myLowerBound <= @a myUpperBound
      */
     Integer myUpperBound;
 
@@ -523,23 +567,41 @@ namespace DGtal
 namespace DGtal
 {
   /**
-   * Description of class 'StandardDSL4' <p> Aim: 
-   * represents standard DSL. 
+   * \brief Aim: This class is an alias of ArithmeticalDSS for standard DSL. 
+   * It represents a standard digital straight line (DSL), ie. the set of digital points 
+   * \f$ (x,y) \in \mathbb{Z}^2 \f$ such that \f$ \mu \leq ax - by < \mu + \omega \f$
+   * with \f$ a,b,\mu,\omega \in \mathbb{Z} \f$, \f$ \gcd(a,b) = 1 \f$ 
+   * and \f$ \omega = |a| + |b| \f$. Note that any DSL such that 
+   * \f$ \omega = |a| + |b| \f$ is simply 4-connected.
    *
-   * @tparam  TCoordinate a model of integer for the points coordinates
-   * @tparam  TInteger a model of integer for the DSL parameters
+   * [Reveilles, 1991 : \cite Reveilles_1991_thesis]. 
    *
-   * @see ArithmeticalDSL
+   * A standard DSL can be declared and constructed as follows: 
+   * @snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLStandardCtor
+   *
+   * See @ref moduleDSSRecognition for further details.  
+   *
+   * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
+   * the slope parameters. 
+   * @tparam TInteger a model of integer for the intercepts and the remainders
+   * that represents a larger range of integers than TCoordinate. 
+   *
+   * This class is a model of CPointFunctor and of CConstBidirectionalRange. 
+   *
+   * @see ArithmeticalDSL NaiveDSL StandardDSL 
+   * @see exampleArithmeticalDSL.cpp
    */
   template <typename TCoordinate, typename TInteger = TCoordinate>
   class StandardDSL: 
     public ArithmeticalDSL<TCoordinate, TInteger, 4>
   {
   public: 
+    /**
+     * Type of base class.
+     */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 4> Super; 
 
   public: 
-
     /**
      * Constructor.
      *
@@ -567,19 +629,42 @@ namespace DGtal
   }; 
 
   /**
-   * Description of class 'NaiveDSL' <p> Aim: 
-   * represents a naive DSL. 
+   * \brief Aim: This class is an alias of ArithmeticalDSS for naive DSL. 
+   * It represents a naive digital straight line (DSL), ie. the set of digital points 
+   * \f$ (x,y) \in \mathbb{Z}^2 \f$ such that \f$ \mu \leq ax - by < \mu + \omega \f$
+   * with \f$ a,b,\mu,\omega \in \mathbb{Z} \f$, \f$ \gcd(a,b) = 1 \f$ 
+   * and \f$ \omega = \max(|a|,|b|) \f$. Note that any DSL such that 
+   * \f$ \omega = \max(|a|,|b|) \f$ is simply 8-connected.
    *
-   * @tparam  TCoordinate a model of integer for the points coordinates
-   * @tparam  TInteger a model of integer for the DSL parameters
+   * [Reveilles, 1991 : \cite Reveilles_1991_thesis]. 
    *
-   * @see ArithmeticalDSL
+   * As a quick start, a naive DSL can be declared and constructed as follows: 
+   * @snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLNaiveCtor
+   *
+   * Then, within a window defined by two points (called firstPoint and lastPoint below),
+   * you can iterate over the DSL points: 
+   * @snippet geometry/curves/exampleArithmeticalDSL.cpp ArithmeticalDSLIteration
+   *
+   * See @ref moduleDSSRecognition for further details.  
+   *
+   * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
+   * the slope parameters. 
+   * @tparam TInteger a model of integer for the intercepts and the remainders
+   * that represents a larger range of integers than TCoordinate. 
+   *
+   * This class is a model of CPointFunctor and of CConstBidirectionalRange. 
+   *
+   * @see ArithmeticalDSL NaiveDSL StandardDSL 
+   * @see exampleArithmeticalDSL.cpp
    */
   template <typename TCoordinate, typename TInteger = TCoordinate>
   class NaiveDSL: 
     public ArithmeticalDSL<TCoordinate, TInteger, 8>
   {
   public: 
+    /**
+     * Type of base class.
+     */
     typedef ArithmeticalDSL<TCoordinate, TInteger, 8> Super; 
 
   public: 

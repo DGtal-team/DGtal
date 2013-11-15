@@ -43,9 +43,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/NumberTraits.h"
 
 #include "DGtal/geometry/curves/ArithmeticalDSL.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
@@ -58,18 +55,36 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ArithmeticalDSS
   /**
-   * Description of template class 'ArithmeticalDSS' <p>
    * \brief Aim: This class represents a naive (resp. standard) 
    * digital straight segment (DSS), ie. the sequence of 
-   * simply 8- (resp. 4-)connected digital points between @a myF and @a myL
-   * and contained in the naive (resp. standard) digital straight
-   * line (DSL) of parameters @a myA @a myB @a myMu @a myOmega.  
-   *
+   * simply 8- (resp. 4-)connected digital points contained in a 
+   * naive (resp. standard) digital straight line (DSL) between 
+   * two points of it. 
    * 
-   * @tparam TCoordinate a model of integer for the DGtal point coordinate
-   * @tparam TInteger a model of integer for the DSS parameters (a, b, mu, omega)
-   * @tparam adajency a integer equal to 8 (default) for naive and 8-connected DSS, 
-   * and 4 for standard and 4-connected DSS. 
+   * Obviously, a given DSS belongs to infinitely many DSLs, but one of them has minimal parameters, 
+   * ie has a minimal \f$ \omega \f$. ArithmeticalDSS uses this minimal bounding DSL to represent
+   * its slope and its intercept.  
+   * ArithmeticalDSS stores as data members not only this minimal bounding DSL,
+   * but also its ending points as well as the first and last lower and upper leaning points,
+   * due to the role that these points play in the update algorithms. 
+   * Indeed, ArithmeticalDSS provides some methods to update its internal representation:
+   * - ArithmeticalDSS::extendFront and ArithmeticalDSS::extendBack based on 
+   * the incremental recognition algorithm of [Debled and Reveilles, 1995 : \cite Debled_1995_ijprai]. 
+   * - ArithmeticalDSS::retractFront and ArithmeticalDSS::retractBack based on 
+   * [Lachaud et. al., 2007, Th. 5 : \cite LachaudIVC2007]. 
+   *
+   * See @ref moduleDSSRecognition for further details. See also
+   * NaiveDSS8 and StandardDSS4, which are aliases of this class. 
+   *
+   * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
+   * the slope parameters. 
+   * @tparam TInteger a model of integer for the intercepts and the remainders
+   * that represents a larger range of integers than TCoordinate. 
+   *
+   * This class is a model of CPointFunctor and of CConstBidirectionalRange. 
+   *
+   * @see ArithmeticalDSL NaiveDSL StandardDSL 
+   * @see exampleArithmeticalDSL.cpp exampleArithmeticalDSS.cpp
    */
   template <typename TCoordinate, 
 	    typename TInteger = TCoordinate, 
@@ -77,24 +92,62 @@ namespace DGtal
   class ArithmeticalDSS
   {
 
+    // ----------------------- static members -----------------------------------
+  public:
+    /**
+     * Adjacency of the DSL. 
+     */
+    static const unsigned short foregroundAdjacency = adjacency;
+ 
     // ----------------------- Inner types -----------------------------------
   public:
 
-    typedef TCoordinate Coordinate; 
+    /**
+     * Type used for the points coordinates
+     * and the slope parameters. 
+     */
+    typedef TCoordinate Coordinate;
+    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> )); 
+    /**
+     * Type used for the intercepts and the remainders. 
+     */
     typedef TInteger Integer; 
+    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
 
+    /**
+     * Type of the bounding DSL. 
+     */
     typedef ArithmeticalDSL<Coordinate, Integer, adjacency> DSL; 
+    /**
+     * Type of digital space. 
+     */
+    typedef typename DSL::Space Space; 
+    /**
+     * Type of point. 
+     */
     typedef typename DSL::Point Point; 
-    typedef SpaceND<2, Coordinate> Space; 
-    typedef Point Element; 
-    typedef Point Vector; 
+    /**
+     * Type of vector. 
+     */
+    typedef typename DSL::Vector Vector; 
+    /**
+     * Type of steps (defined as a STL pair of vectors). 
+     */
     typedef typename DSL::Steps Steps; 
-
-    typedef DGtal::PointVector<2, double> PointD; 
-
-
+    /**
+     * Type of iterator. 
+     */
     typedef typename DSL::ConstIterator ConstIterator; 
+    /**
+     * Type of reverse iterator. 
+     */
     typedef typename DSL::ConstReverseIterator ConstReverseIterator; 
+
+    /**
+     * Type of embedded points 
+     * @see project
+     */
+    typedef DGtal::PointVector<2, double> PointD; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -123,8 +176,7 @@ namespace DGtal
      * @param aLf the first lower point
      * @param aLl the last lower point
      * @param aSteps pair of steps used to iterate over the DSS points
-     * @param aShift shift vector translating a point of remainder r 
-     * to a point of remainder r +  @a aOmega
+     * @param aShift shift vector 
      */
     ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
 		    const Integer& aLowerBound, const Integer& aUpperBound, 
@@ -202,7 +254,7 @@ namespace DGtal
 
     /**
      * Returns a copy of '*this' with a reverse orientation, ie. 
-     * with parameters @a -myA ,  @a -myB ,  @a -myMu , @a myOmega
+     * with parameters -@a myA ,  -@a myB , -@a myUpperBound , -@a myLowerBound
      * and swapped leaning points. 
      * @return the negation of '*this'.
      */
@@ -256,32 +308,54 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * @return a parameter (y-component of the direction vector)
+     * @return the bounding DSL of minimal parameters
+     * NB: since we return a const reference, you must
+     * copy the result, if you want to keep it beyond 
+     * the object's existence. 
+     */
+    const DSL& dsl() const; 
+
+    /**
+     * @return a parameter of the bounding DSL of minimal parameters
      */
     Coordinate a() const; 
 
     /**
-     * @return b parameter (x-component of the direction vector)
+     * @return b parameter of the bounding DSL of minimal parameters
      */
     Coordinate b() const; 
 
     /**
-     * @return mu parameter, the intercept
+     * @return mu parameter, 
+     * the intercept of the bounding DSL of minimal parameters
      */
     Integer mu() const; 
 
     /**
-     * @return omega parameter, the thickness
+     * @return omega parameter, 
+     * the thickness of the bounding DSL of minimal parameters
      */
     Integer omega() const; 
 
     /**
-     * @return first point of the DSS
+     * @return the shift vector 
+     */
+    Vector shift() const; 
+    /**
+     * @return the couple of vectors used to iterate
+     * over the DSS point. 
+     */
+    Steps steps() const; 
+
+    /**
+     * @return back point of the DSS, ie. 
+     * first visited point equal to * ArithmeticalDSS::begin()
      */
     Point back() const; 
 
     /**
-     * @return last point of the DSS
+     * @return front point of the DSS, ie. 
+     * last visited point equal to * - - ArithmeticalDSS::end()
      */
     Point front() const; 
 
@@ -304,22 +378,6 @@ namespace DGtal
      * @return last lower leaning point of the DSS
      */
     Point Ll() const; 
-
-    /**
-     * @return the shift vector translating a point
-     * of remainder r to a point of remainder r+omega
-     */
-    Vector shift() const; 
-    /**
-     * @return the two vectors used to iterate
-     * over the DSS point. 
-     */
-    Steps steps() const; 
-
-    /**
-     * @return the bounding DSL
-     */
-    DSL boundingDSL() const; 
 
     /**
      * Returns the remainder of @a aPoint
@@ -346,11 +404,35 @@ namespace DGtal
      * @param aPoint the point whose position is returned 
      * @return the position
      */
-    Integer directionalPosition(const Point& aPoint) const; 
+    Integer position(const Point& aPoint) const; 
+
+    /**
+     * Returns a boolean equal to 'true' if @a aP1 is 
+     * located (strictly) before @a aP2 in the direction 
+     * orthogonal to @a myShift, 'false' otherwise. 
+     * @param aP1 any point
+     * @param aP2 any point
+     * @return 'true' is @a aP2 is strictly before @a aP2, 
+     * 'false' otherwise
+     * @see beforeOrEqual position
+     */
+    bool before (const Point& aP1, const Point& aP2) const; 
+
+    /**
+     * Returns a boolean equal to 'true' if @a aP1 is 
+     * located before @a aP2 or is equal to @a aP2, 
+     * 'false' otherwise. 
+     * @param aP1 any point
+     * @param aP2 any point
+     * @return 'true' is @a aP2 is before or equal to @a aP2, 
+     * 'false' otherwise
+     * @see before position
+     */
+    bool beforeOrEqual (const Point& aP1, const Point& aP2) const; 
 
     /**
      * @return 'true' if @a aPoint is in the DSL
-     * of minimal parameters containing (*this), 
+     * of minimal parameters containing this segment, 
      * 'false' otherwise. 
      * @param aPoint any point
      */
@@ -375,25 +457,25 @@ namespace DGtal
     // ----------------------- Iterator services -------------------------------
     /**
      * @return begin iterator,
-     * which points to the first point returned by back() 
+     * which points to the point returned by ArithmeticalDSS::back() 
      */
     ConstIterator begin() const; 
 
     /**
      * @return end iterator, 
-     * which points after the last point returned by front() 
+     * which points after the point returned by ArithmeticalDSS::front() 
      */
     ConstIterator end() const; 
 
     /**
      * @return begin reverse iterator,
-     * which points to the last point returned by front() 
+     * which points to the point returned by ArithmeticalDSS::front() 
      */
     ConstReverseIterator rbegin() const; 
 
     /**
      * @return end iterator, 
-     * which points before the first point returned by back() 
+     * which points before the point returned by ArithmeticalDSS::back() 
      */
     ConstReverseIterator rend() const; 
 
@@ -407,7 +489,7 @@ namespace DGtal
      * @param aNewPoint a point to test
      * 
      * @return an integer equal to 0 if the union between 
-     * aNewPoint and *this is not a DSS, but strictly greater 
+     * @a aNewPoint and the segment is not a DSS, but strictly greater 
      * than 0 otherwise. The value gives the way of updating
      *  the members of the DSS: 
      * 1:  initialization of the first step
@@ -418,7 +500,7 @@ namespace DGtal
      * 6: weakly interior on the right
      * 7:  weakly exterior on the left
      * 8: weakly exterior on the right
-     * 9: strongly interior
+     * 9: strongly interior, nothing to update
      * @see extend isExtendableBack
      */
     unsigned short int isExtendableFront( const Point& aNewPoint ) const;
@@ -431,7 +513,7 @@ namespace DGtal
      * @param aNewPoint the point to test
      * 
      * @return an integer equal to 0 if the union between 
-     * aNewPoint and *this is not a DSS, but strictly greater 
+     * @a aNewPoint and the segment is not a DSS, but strictly greater 
      * than 0 otherwise. The value gives the way of updating
      *  the members of the DSS: 
      * 1:  initialization of the first step
@@ -442,7 +524,7 @@ namespace DGtal
      * 6: weakly interior on the right
      * 7:  weakly exterior on the left
      * 8: weakly exterior on the right
-     * 9: strongly interior
+     * 9: strongly interior, nothing to update
      * @see extend isExtendableFront
      */
     unsigned short int isExtendableBack( const Point& aNewPoint ) const;
@@ -450,7 +532,7 @@ namespace DGtal
     /**
      * Tests whether the union between a point, 
      * which is located at the front of the DSS,
-     * and the DSS is a DSS. 
+     * and the DSS is still a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
      *
@@ -463,7 +545,7 @@ namespace DGtal
     /**
      * Tests whether the union between a point, 
      * which is located at the back of the DSS,
-     * and the DSS is a DSS. 
+     * and the DSS is still a DSS. 
      * Computes the parameters of the new DSS 
      * with the adding point if true.
      *
@@ -561,9 +643,7 @@ namespace DGtal
 				     const Point& aLastAtRemovalSide);
 
     /**
-     * Updates the parameters of the DSS
-     * (slope, intercept, thickness, steps, 
-     * shift vector) after the retraction. 
+     * Updates the parameters of the bounding DSL after the retraction. 
      *
      * @param aDirection direction vector
      *
@@ -627,15 +707,30 @@ namespace DGtal
 // Aliases
 namespace DGtal
 {
-  /**
-   * Description of class 'StandardDSS4' <p> Aim: 
-   * represents a sequence of 4-connected digital points
-   * contained in a standard DSL. 
+  /*
+   * \brief Aim: This class represents a standard digital straight segment (DSS), 
+   * ie. the sequence of simply 4-connected digital points contained in a 
+   * standard digital straight line (DSL) between two points of it. 
+   * This class is an alias of ArithmeticalDSS. 
    *
-   * @tparam  TCoordinate a model of integer for the points coordinates
-   * @tparam  TInteger a model of integer for the DSL parameters
+   * A 4-connected DSS can be declared and constructed as follows: 
+   * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSStandardCtor
    *
-   * @see ArithmeticalDSS
+   * This requires the following include: 
+   * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSHeader
+   *
+   * See the documentation of NaiveDSS8 for a longer example 
+   * and see @ref moduleDSSRecognition for further details. 
+   *
+   * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
+   * the slope parameters. 
+   * @tparam TInteger a model of integer for the intercepts and the remainders
+   * that represents a larger range of integers than TCoordinate. 
+   *
+   * This class is a model of CPointFunctor and of CConstBidirectionalRange. 
+   *
+   * @see ArithmeticalDSL NaiveDSL StandardDSL 
+   * @see exampleArithmeticalDSL.cpp exampleArithmeticalDSS.cpp
    */
   template <typename TCoordinate, typename TInteger = TCoordinate>
   class StandardDSS4: 
@@ -712,14 +807,39 @@ namespace DGtal
   }; 
 
   /**
-   * Description of class 'NaiveDSS8' <p> Aim: 
-   * represents a sequence of 8-connected digital points
-   * contained in a naive DSL. 
+   * \brief Aim: This class represents a standard digital straight segment (DSS), 
+   * ie. the sequence of simply 8-connected digital points contained in a 
+   * naive digital straight line (DSL) between two points of it. 
+   * This class is an alias of ArithmeticalDSS. 
    *
-   * @tparam  TCoordinate a model of integer for the points coordinates
-   * @tparam  TInteger a model of integer for the DSL parameters
+   * A 8-connected naive DSS can be declared and constructed as follows: 
+   * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtor
    *
-   * @see ArithmeticalDSS
+   * You can iterate over the whole set of DSS points as follows:  
+   * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSIteration
+   *
+   * In addition, you can draw either the points of a DSS or its bounding box with Board2D:  
+   * @snippet geometry/curves/exampleArithmeticalDSS.cpp NaiveDSS8DrawingUsage 
+   *
+   * Extending a DSS to a point simply connected to its front is done as follows: 
+   * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSUpdateExtension
+   * This method implements the algorithm proposed in [Debled and Reveilles, 1995 : \cite Debled_1995_ijprai].
+   *
+   * The following code just undoes the previous extension: 
+   * @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSUpdateRetraction
+   * This method implements the algorithm proposed in [Lachaud et. al., 2007 : \cite LachaudIVC2007]. 
+   * 
+   * See @ref moduleDSSRecognition for further details. 
+   *
+   * @tparam TCoordinate a model of integer for the DGtal point coordinates and 
+   * the slope parameters. 
+   * @tparam TInteger a model of integer for the intercepts and the remainders
+   * that represents a larger range of integers than TCoordinate. 
+   *
+   * This class is a model of CPointFunctor and of CConstBidirectionalRange. 
+   *
+   * @see ArithmeticalDSL NaiveDSL StandardDSL 
+   * @see exampleArithmeticalDSL.cpp exampleArithmeticalDSS.cpp
    */
   template <typename TCoordinate, typename TInteger = TCoordinate>
   class NaiveDSS8: 

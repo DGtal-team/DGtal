@@ -226,6 +226,15 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::isValid() const
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
+const typename DGtal::ArithmeticalDSS<TC, TI, adj>::DSL&
+DGtal::ArithmeticalDSS<TC, TI, adj>::dsl() const
+{
+  return myDSL; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
 typename DGtal::ArithmeticalDSS<TC, TI, adj>::Coordinate
 DGtal::ArithmeticalDSS<TC, TI, adj>::a() const
 {
@@ -257,6 +266,24 @@ typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
 DGtal::ArithmeticalDSS<TC, TI, adj>::omega() const
 {
   return myDSL.omega(); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Vector
+DGtal::ArithmeticalDSS<TC, TI, adj>::shift() const
+{
+  return myDSL.shift(); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+typename DGtal::ArithmeticalDSS<TC, TI, adj>::Steps
+DGtal::ArithmeticalDSS<TC, TI, adj>::steps() const
+{
+  return myDSL.steps(); 
 }
 
 //-----------------------------------------------------------------------------
@@ -316,33 +343,6 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::Ll() const
 //-----------------------------------------------------------------------------
 template <typename TC, typename TI, unsigned short adj>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Vector
-DGtal::ArithmeticalDSS<TC, TI, adj>::shift() const
-{
-  return myDSL.shift(); 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Steps
-DGtal::ArithmeticalDSS<TC, TI, adj>::steps() const
-{
-  return myDSL.steps(); 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::DSL
-DGtal::ArithmeticalDSS<TC, TI, adj>::boundingDSL() const
-{
-  return myDSL; 
-}
-
-//-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
-inline
 typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
 DGtal::ArithmeticalDSS<TC, TI, adj>::remainder(const Point& aPoint) const
 {
@@ -362,9 +362,27 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::orthogonalPosition(const Point& aPoint) con
 template <typename TC, typename TI, unsigned short adj>
 inline
 typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
-DGtal::ArithmeticalDSS<TC, TI, adj>::directionalPosition(const Point& aPoint) const
+DGtal::ArithmeticalDSS<TC, TI, adj>::position(const Point& aPoint) const
 {
-  return myDSL.directionalPosition(aPoint); 
+  return myDSL.position(aPoint); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>::before(const Point& aP1, const Point& aP2) const
+{
+  return myDSL.before(aP1, aP2); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TC, typename TI, unsigned short adj>
+inline
+bool
+DGtal::ArithmeticalDSS<TC, TI, adj>::beforeOrEqual(const Point& aP1, const Point& aP2) const
+{
+  return myDSL.beforeOrEqual(aP1, aP2); 
 }
 
 //-----------------------------------------------------------------------------
@@ -384,9 +402,9 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::isInDSS(const Point& aPoint) const
 {
   if (isInDSL(aPoint))
     {
-      Integer s = directionalPosition(aPoint);
-      Integer s1 = directionalPosition(myF);
-      Integer s2 = directionalPosition(myL);
+      Integer s = position(aPoint);
+      Integer s1 = position(myF);
+      Integer s2 = position(myL);
 
       if (s1 == s2)
 	return (aPoint == myF); 
@@ -807,10 +825,10 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::
 project( const Point& aM, double aR ) const
 {
   //casts
-  double aa = (double) NumberTraits<Coordinate>::castToInt64_t(myDSL.myA);
-  double bb = (double) NumberTraits<Coordinate>::castToInt64_t(myDSL.myB);
-  double xm = (double) NumberTraits<Integer>::castToInt64_t(aM[0]);
-  double ym = (double) NumberTraits<Integer>::castToInt64_t(aM[1]);
+  double aa = NumberTraits<Coordinate>::castToDouble(myDSL.myA);
+  double bb = NumberTraits<Coordinate>::castToDouble(myDSL.myB);
+  double xm = NumberTraits<Integer>::castToDouble(aM[0]);
+  double ym = NumberTraits<Integer>::castToDouble(aM[1]);
 
   //computation
   double d2 = ( aa * aa + bb * bb );
@@ -828,7 +846,7 @@ typename DGtal::ArithmeticalDSS<TC, TI, adj>::PointD
 DGtal::ArithmeticalDSS<TC, TI, adj>::
 project( const Point& aM, const Point& aP ) const
 {
-  double r = (double) NumberTraits<Integer>::castToInt64_t(remainder(aP));
+  double r = NumberTraits<Integer>::castToDouble(remainder(aP));
   return project(aM,r);
 }
 

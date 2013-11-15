@@ -56,7 +56,7 @@ int main()
   // Iterator on the container
   typedef Container::const_iterator ConstIterator;
   // StandardDSS4 computer
-  typedef ArithmeticalDSSComputer<ConstIterator, DGtal::int64_t, 4> DSSComputer;  
+  typedef StandardDSS4Computer<ConstIterator> DSSComputer;  
   // Construction of the computer
   DSSComputer theDSSComputer;    
   //! [ArithmeticalDSSComputerStandardCtor]

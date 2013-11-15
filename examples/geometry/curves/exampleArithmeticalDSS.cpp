@@ -74,7 +74,7 @@ void exampleNaiveDSS()
        it != ite; ++it )
     {
       trace.info() << "(" 
-		   << segment.directionalPosition( *it ) << ","
+		   << segment.position( *it ) << ","
 		   << segment.remainder( *it ) 
 		   << ") "; 
     }

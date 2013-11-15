@@ -52,29 +52,20 @@ bool testArithDSSIterator()
   Point p(3,2);
   MyIterator it(2,5,-4,p);
   
-  typedef ArithmeticalDSSComputer<MyIterator> ArithDSS;
+  typedef NaiveDSS8<int> ArithDSS;
 
-  ArithDSS myDSS(it);
+  ArithDSS myDSS(p, p);
 
   int absMax=8;
   
-  while ( (*(myDSS.end()))[0] <=absMax && myDSS.extendFront())
+  while ( (*it)[0] <=absMax && myDSS.extendFront(*++it))
     {}
   
   std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu() << " " <<   std::endl; 
   
-  
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return nbok == nb;
+  return ( (myDSS.a() == 2) &&
+	   (myDSS.b() == 5) &&
+	   (myDSS.mu() == -4) ); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
