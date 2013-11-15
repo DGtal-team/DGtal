@@ -10,7 +10,6 @@ SET(DGTAL_EXAMPLES_SRC
   exampleArithmeticalDSS
   exampleArithmeticalDSSComputer
   exampleDSLSubsegment
-  exampleArithDSSIterator
   exampleArithmeticalDSL
 )
 

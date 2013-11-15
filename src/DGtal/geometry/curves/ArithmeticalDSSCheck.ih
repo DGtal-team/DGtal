@@ -107,15 +107,15 @@ checkPointsPosition(const ArithmeticalDSS<TC,TI,adj>& aDSS)
   typedef typename ArithmeticalDSS<TC,TI,adj>::Vector V;
   V v(aDSS.b(), aDSS.a()); 
   //Length of direction vector
-  TI lv = aDSS.directionalPosition(v); 
+  TI lv = aDSS.position(v); 
 
   //Position of end points and leaning points
-  TI posBack = aDSS.directionalPosition(aDSS.back()); 
-  TI posUf = aDSS.directionalPosition(aDSS.Uf()); 
-  TI posLf = aDSS.directionalPosition(aDSS.Lf()); 
-  TI posUl = aDSS.directionalPosition(aDSS.Ul()); 
-  TI posLl = aDSS.directionalPosition(aDSS.Ll()); 
-  TI posFront = aDSS.directionalPosition(aDSS.front()); 
+  TI posBack = aDSS.position(aDSS.back()); 
+  TI posUf = aDSS.position(aDSS.Uf()); 
+  TI posLf = aDSS.position(aDSS.Lf()); 
+  TI posUl = aDSS.position(aDSS.Ul()); 
+  TI posLl = aDSS.position(aDSS.Ll()); 
+  TI posFront = aDSS.position(aDSS.front()); 
 
   bool isValid = ( ((posUf - posBack) < lv)
 		   && ((posLf - posBack) < lv)
@@ -150,7 +150,7 @@ checkAll(const ArithmeticalDSS<TC,TI,adj>& aDSS)
   else 
     {
 
-      if (!aDSS.boundingDSL().isValid()) 
+      if (!aDSS.dsl().isValid()) 
 	isValid = false; 
       else if (!checkPointsRemainder(aDSS))
 	isValid = false; 

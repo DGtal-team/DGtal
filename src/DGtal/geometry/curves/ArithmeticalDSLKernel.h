@@ -43,7 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/kernel/PointVector.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,18 +53,38 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template struct ArithmeticalDSLKernel
   /**
-   * Description of template struct 'ArithmeticalDSLKernel' <p>
-   * \brief Aim: Small tool that provide static methods
-   * returning the shift vector (ie. vector translating a point of
-   * remainder r to a point of remainder r+omega), the step vectors
-   * (ie. vectors used to iterate over the points of a DSL) and the 
-   * norm of any vector. 
+   * \brief Aim: Small class that contains the code that depends
+   * on the arithmetical thickness (either naive or standard) 
+   * of a digital straight line (DSL). It provides mainly two
+   * static methods:
+   * - ArithmeticalDSLKernel::shift that returns the shift vector of a DSL
+   * from its slope parameters \f$ a \f$ and \f$ b \f$.
+   * ie. the vector \f$ s \f$ translating a point of remainder \f$ r \f$ to a point 
+   * of remainder \f$ r + \omega \f$ 
+   * - ArithmeticalDSLKernel::steps that returns the step vectors of a DSL
+   * ie. the couple of vectors \f$ v \f$ and \f$ w \f$ used to iterate over 
+   * the points of a DSL in an orientation given by the DSL parameters 
+   * \f$ a \f$ and \f$ b \f$.
+   * Obviously, these two vectors are equal to 0 if \f$ \omega = 0 \f$ (not valid DSL). 
+   * Moreover, the first vector (\f$ v \f$) is equal to the direction vector, 
+   * while the second one (\f$ w \f$) is equal to 0, if \f$ \omega = 1 \f$, 
+   * ie. if the lower leaning line and the upper leaning line are counfounded. 
+   * Though, in the general case, the first vector (\f$ v \f$) translates any point \f$ p \f$ 
+   * of remainder \f$ r \f$ to its unique neighbor point \f$ q \f$ of remainder 
+   * \b greater than or equal to \f$ r \f$, while the second one (\f$ w \f$) is 
+   * such that \f$ v - w = s \f$. 
+   *
    * These methods are specialized with respect to the chosen adjacency 
    * 8 (default) or 4. 
    *
-   * @tparam TCoordinate a model of integer for the DGtal point coordinate
-   * @tparam adajency integer equal to 8 (default) for 8-connected DSL, 
-   * and 4 for 4-connected DSL. 
+   * @ref moduleDSSRecognition
+   *
+   * @tparam TCoordinate a model of integer for the DGtal point coordinates
+   * @tparam adajency integer equal to 8 (default) for naive (simply 8-connected) DSL, 
+   * and 4 for standard (simply 4-connected) DSL. 
+   *
+   * @see ArithmeticalDSL 
+   * @see exampleArithmeticalDSL.cpp
    */
   template <typename TCoordinate, 
 	    unsigned short adjacency = 8>
@@ -72,64 +93,88 @@ namespace DGtal
 
     // ----------------------- Inner types ------------------------------------
   public:
-    typedef DGtal::PointVector<2,TCoordinate> Vector; 
+    /**
+     * Type of the digital plane. 
+     */
+    typedef SpaceND<2, TCoordinate> Space; 
+    /**
+     * Type of the shift vector.
+     */
+    typedef typename Space::Vector Vector;  
+    /**
+     * Type of the step vectors, defined as a STL pair of Vector
+     */
     typedef std::pair<Vector, Vector> Steps; 
 
     // ----------------------- static members ---------------------------------
   public:
+    /**
+     * Adjacency used for the DSL
+     */
     static const unsigned short ForegroundAdjacency = 8;  //adjacency
+    /**
+     * Adjacency used for the complement
+     */
     static const unsigned short BackgroundAdjacency = 4; //complementary adjacency
 
     // ----------------------- static methods ---------------------------------
   public:
     /**
      * Given parameters @a a and @a b, this method computes the shift vector
-     * translating a point of remainder r to a point of remainder r+omega.
+     * translating a point of remainder \f$ r \f$ to a point of remainder \f$ r + \omega \f$
+     *
+     * NB: The shift vector is set to (0,0) if \f$ \omega = 0 \f$, 
+     * ie. @a a and @a b are both null. 
+     *
+     * NB: If ( @a a , @a b ) lies between two octants (resp. quadrants) 
+     * (eg. @a b > 0 and @a a = 0), the shift vector of the next octant 
+     * (resp. quadrant) is chosen with respect to the counter-clockwise orientation.
      *
      * @param a a-parameter
      * @param b b-parameter
-     * @tparam TInteger a model of integer for the parameters
-     * @return shift vector
+     * @tparam TInteger a model of integer for the parameters @a a and @a b
+     * @return the shift vector
      *
-     * NB: The shift vector is set to (0,0) if @a a and @a b are both null. 
-     * If ( @a a , @a b ) lies between two octant (resp. quadrant) (eg. b>0
-     * and a=0), the shift vector of the next octant (resp. quadrant) is 
-     * chosen with respect to the counter-clockwise orientation.
-     *
-     * @see steps
+     * @see exampleArithmeticalDSL.cpp
      */
     template <typename TInteger>
     static Vector shift(const TInteger& a, const TInteger& b); 
 
     /**
      * Given parameters @a a and @a b, this method returns
-     * the two vectors that are used to iterate over the points 
-     * of a DSL of slope a/b.
+     * the two step vectors, ie. the vectors that are used 
+     * to iterate over the points of a DSL of slope @a a / @a b.
      *
-     * The first vector translates any point to a point of greater remainder, 
-     * whereas the second one translates any point to a point of smaller remainder. 
-     * Moreover, the difference between the first and the second vectors is equal 
-     * to the shift vector. 
-     * @see shift
+     * In the general case, the first vector \f$ v \f$ translates any point \f$ p \f$ 
+     * of remainder \f$ r \f$ to its unique neighbor point \f$ q \f$ of remainder 
+     * greater than or equal to \f$ r \f$, while the second one \f$ w \f$ is 
+     * such that \f$ v - w = s \f$. 
+     *
+     * NB: The two vectors are set to (0,0) if \f$ \omega = 0 \f$, 
+     * ie. @a a and @a b are both null.
+     *
+     * NB: The second vector is set to (0,0) if \f$ \omega = 1 \f$, 
+     * ie. if either @a a or @a b is null, if either @a a == @a b 
+     * or either @a a == - @a b in the naive case.  
      *
      * @param a a-parameter
      * @param b b-parameter
-     * @tparam TInteger a model of integer for the parameters
-     * @return the pair of steps
+     * @tparam TInteger a model of integer for the parameters @a a and @a b
+     * @return the the pair of steps
      *
-     * NB: The two vectors are set to (0,0) if @a a and @a b are both null.
-     * The second vector is set to (0,0) if either @a a or @a b is null. 
+     * @see exampleArithmeticalDSL.cpp
      */
     template <typename TInteger>
     static Steps steps(const TInteger& a, const TInteger& b); 
 
     /**
-     * Returns the Linf (for the 8-adjacency) or L1 norm (for the 4-adjacency) 
+     * Returns the \f$ L_{\infty} \f$ (for the 8-adjacency) 
+     * or the \f$ L_1 \f$ norm (for the 4-adjacency) 
      * of two integers  @a a and @a b, 
      *
      * @param a a-parameter
      * @param b b-parameter
-     * @tparam TInteger a model of integer for the parameters
+     * @tparam TInteger a model of integer for the parameters @a a and @a b
      * @return the norm
      */
     template<typename TInteger>
@@ -143,7 +188,8 @@ namespace DGtal
   {
     // ----------------------- Inner types ------------------------------------
   public:
-    typedef DGtal::PointVector<2,TCoordinate> Vector; 
+    typedef SpaceND<2, TCoordinate> Space; 
+    typedef typename Space::Vector Vector; 
     typedef std::pair<Vector, Vector> Steps; 
 
     // ----------------------- static members ---------------------------------

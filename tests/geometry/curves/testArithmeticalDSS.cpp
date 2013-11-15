@@ -669,10 +669,10 @@ bool compatibleStepsTest(const DSS& dss)
   trace.beginBlock ( "directional Position..." );
 
   trace.info() << "shift: " << dss.shift() 
-	       << ", front pos: " << dss.directionalPosition( dss.front() )
-	       << ", back pos:  " << dss.directionalPosition( dss.back() ) << std::endl; 
-  if ( dss.directionalPosition( dss.front() ) 
-       > dss.directionalPosition( dss.back() ) )
+	       << ", front pos: " << dss.position( dss.front() )
+	       << ", back pos:  " << dss.position( dss.back() ) << std::endl; 
+  if ( dss.position( dss.front() ) 
+       > dss.position( dss.back() ) )
     nbok++; 
   nb++; 
 

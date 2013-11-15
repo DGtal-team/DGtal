@@ -247,7 +247,7 @@ bool showGreedySegmantation()
 
   typedef OneBalancedWordComputer<string::const_iterator,int> combinDSS;
   typedef GreedySegmentation<combinDSS> Decomposition;
-  typedef ArithmeticalDSSComputer< combinDSS::ConstPointIterator, int, 4> arithDSS;
+  typedef StandardDSS4<int> arithDSS;
 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
@@ -263,8 +263,6 @@ bool showGreedySegmantation()
    << SetMode( "PointVector", "Grid" )
    << theContour;
   //for each segment
-  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
-  string className = "ArithmeticalDSSComputer/BoundingBox";
   Point p;
   p[0] = 31;
   p[1] = 16;
@@ -279,13 +277,14 @@ bool showGreedySegmantation()
       p = *( --( --( segment.pointEnd() )));
 
       // Build an ArithmeticDSS from the OneBalancedWordComputer.
-      arithDSS toShow( segment.pointBegin() );
-      while( toShow.end() != segment.pointEnd() )
-        {
-          toShow.extendFront();
-        }
-      aBoard << CustomStyle( className, new CustomPenColor( Color::Blue ) ) 
-	     << toShow.primitive(); // draw each segment
+      arithDSS toShow( *segment.pointBegin(), *segment.pointBegin() );
+      for (combinDSS::ConstPointIterator it = segment.pointBegin(), 
+	     itEnd = segment.pointEnd(); it != itEnd; ++it )
+	toShow.extendFront( *it );
+      
+      aBoard << SetMode( toShow.className(), "BoundingBox" )
+	     << CustomStyle( toShow.className()+"/BoundingBox", new CustomPenColor( Color::Blue ) ) 
+	     << toShow; // draw each segment
     } 
   aBoard.saveSVG("testCombinDSS-greedy.svg");
   trace.endBlock();

@@ -104,7 +104,7 @@ On the other hand, there is a one-to-one mapping between a DSL point and its pos
 For instance, for each x-coordinate \f$ x \f$, there is one and only one point \f$ (x,y) \in \mathbb{Z}^2 \f$ 
 that belongs to the \b naive DSL \f$ D(2,5,0) \f$. Similarly, for each value \f$ x+y \f$, 
 there is one and only one point \f$ (x,y) \in \mathbb{Z}^2  \f$ that belongs to the \b standard DSL \f$ D(2,5,0) \f$. 
-Method ArithmeticalDSL.directionalPosition() returns 
+Method ArithmeticalDSL.position() returns 
 the position of any input point, whereas methods ArithmeticalDSL.before() and 
 ArithmeticalDSL.beforeOrEqual() provide a way of comparing the position of two given points, 
 with respect to the orientation given by \f$ a \f$ and \f$ b \f$.  
@@ -142,7 +142,7 @@ ie. if the lower leaning line and the upper leaning line are counfounded. Though
 the first vector translates any point \f$ p \f$ of remainder \f$ r \f$ to its neighbor point \f$ q \f$ 
 of remainder greater than or equal to \f$ r \f$, while the second one is such that \f$ v - w = s \f$. 
 
-\note Data member myShift (resp. mySteps) are computed with respect to myA and myB in 
+\note Data member myShift (resp. mySteps) is computed with respect to myA and myB in 
 ArithmeticalDSLKernel::steps() (resp. ArithmeticalDSLKernel::shift()).
 ArithmeticalDSLKernel contains the part of the code that depends on the arithmetical thickness 
 (either naive or standard).  
@@ -180,7 +180,7 @@ We list below the main methods of ArithmeticalDSL:
   - ArithmeticalDSL::negate()
   - ArithmeticalDSL::remainder()
   - ArithmeticalDSL::isInDSL() (called in ArithmeticalDSL::operator())
-  - ArithmeticalDSL::directionalPosition()
+  - ArithmeticalDSL::position()
   - ArithmeticalDSL::before()
   - ArithmeticalDSL::beforeOrEqual()
 
@@ -224,8 +224,8 @@ As a quick start, a 8-connected naive DSS can be declared and constructed as fol
 You can iterate over the whole set of DSS points as follows:  
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSIteration
 
-In addition, you can draw either the points of a DSS or its bounding box with Board2D, 
-because ArithmeticalDSS has two drawing modes: "Points" and "BoundingBox".  
+In addition, you can draw either the points of a DSS or its bounding box with Board2D 
+(there are two drawing modes: "Points" and "BoundingBox").  
 @snippet geometry/curves/exampleArithmeticalDSS.cpp NaiveDSS8DrawingUsage 
 
 The result of this short example taken from exampleArithmeticalDSS.cpp is presented below: 
@@ -274,7 +274,7 @@ due to the role that these points play in the recognition algorithm
 
 We list below the main methods of ArithmeticalDSS: 
 - accessor to the bounding DSL of minimal parameters
-  - ArithmeticalDSS::boundingDSL()
+  - ArithmeticalDSS::dsl()
 - iteration services
   - ArithmeticalDSS::begin()
   - ArithmeticalDSS::end()

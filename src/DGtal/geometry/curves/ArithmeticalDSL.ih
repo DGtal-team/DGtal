@@ -290,7 +290,7 @@ DGtal::ArithmeticalDSL<TC, TI, adj>::orthogonalPosition(const Point& aPoint) con
 template <typename TC, typename TI, unsigned short adj>
 inline
 typename DGtal::ArithmeticalDSL<TC, TI, adj>::Integer
-DGtal::ArithmeticalDSL<TC, TI, adj>::directionalPosition(const Point& aPoint) const
+DGtal::ArithmeticalDSL<TC, TI, adj>::position(const Point& aPoint) const
 {
   return ( -static_cast<Integer>(myShift[1]) * static_cast<Integer>(aPoint[0])
     +static_cast<Integer>(myShift[0]) * static_cast<Integer>(aPoint[1]) );
@@ -302,7 +302,7 @@ inline
 bool
 DGtal::ArithmeticalDSL<TC, TI, adj>::before(const Point& aP1, const Point& aP2) const
 {
-  return ( directionalPosition( aP1 ) < directionalPosition( aP2 ) ); 
+  return ( position( aP1 ) < position( aP2 ) ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -311,7 +311,7 @@ inline
 bool
 DGtal::ArithmeticalDSL<TC, TI, adj>::beforeOrEqual(const Point& aP1, const Point& aP2) const
 {
-  return ( directionalPosition( aP1 ) <= directionalPosition( aP2 ) ); 
+  return ( position( aP1 ) <= position( aP2 ) ); 
 }
 
 //-----------------------------------------------------------------------------
