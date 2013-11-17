@@ -1305,8 +1305,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
             {
               glVertex3f ( (it_s->vertices).at(j)[0], (it_s->vertices).at(j)[1], (it_s->vertices).at ( j )[2] );
             }
+          glEnd();
         }
-      glEnd();
     }
   glEndList();
 
