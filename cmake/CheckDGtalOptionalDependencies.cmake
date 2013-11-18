@@ -158,12 +158,14 @@ IF(WITH_GMP)
   ENDIF(GMP_FOUND)
 
   ##Checking the "std::cout << mpz_class"
+  message(STATUS  "-I${GMP_INCLUDE_DIR} -l${GMPXX_LIBRARIES} -l${GMP_LIBRARIES}")
   try_compile( GMP_HAS_IOSTREAM
     ${CMAKE_BINARY_DIR}/CMakeTmp
     ${CMAKE_SOURCE_DIR}/cmake/src/gmp/gmpstream.cpp
-    COMPILE_DEFINITIONS "-I${GMP_INCLUDE_DIR}"
+    COMPILE_DEFINITIONS "-I${GMP_INCLUDE_DIR} -l${GMPXX_LIBRARIES} -l${GMP_LIBRARIES}"
     OUTPUT_VARIABLE OUTPUT
     )
+  message(STATUS ${OUTPUT})
   if ( GMP_HAS_IOSTREAM )
     add_definitions("-DGMP_HAS_IOSTREAM")
     message(STATUS "   * GMPXX has iostream capabilities")
