@@ -398,17 +398,17 @@ and by changing the "BoundingBox" mode by "InterGrid" you will obtain the follow
 See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer.
 
 
-\section DGtalGLV_Images3D Adding 3D  image visualization
+\section DGtalGLV_Images3D Adding 3D image visualization
 
 In the same way a 3D image can be displayed. By following the same stream operator you will obtain such example of display:
 \image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm
 \image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets."
 
-See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp
+See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp
 
 
 
-\section DGtalGLV_Images3D Adding Custom  Image visualization in 3D
+\section DGtalGLV_Images3Dcustom Customming Slice Image visualization 
 
 By default an image is displayed in gray scale levels from its scalar
 values. However it is possible to display color texture image by using
