@@ -108,6 +108,13 @@ namespace DGtal
   public:
     friend class ArithmeticalDSS<TCoordinate, TInteger, adjacency>; 
 
+    // ----------------------- static members -----------------------------------
+  public:
+    /**
+     * Adjacency of the DSL. 
+     */
+    static const unsigned short foregroundAdjacency = adjacency;
+
     // ----------------------- Inner types -----------------------------------
   public:
 

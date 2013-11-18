@@ -162,19 +162,6 @@ void exampleStandardDSL()
   trace.endBlock();
 }
 
-
-template <typename DSL, typename Coordinate>
-struct DSLTrait
-{
-  static const unsigned short adjacency = 8; 
-}; 
-
-template <typename Coordinate>
-struct DSLTrait <StandardDSL<Coordinate>, Coordinate>
-{
-  static const unsigned short adjacency = 4; 
-};
-
 /**
  * @brief Function that draws the steps and the shift vector
  * of a DSL of slope @a a / @a b and intercept 0. 
@@ -296,7 +283,7 @@ void drawArithmeticalDSL(typename DSL::Integer a,
   // Save
   std::stringstream ssFileName; 
   ssFileName << "ArithmeticalDSL"
-	     << "-" << DSLTrait<DSL, typename DSL::Coordinate>::adjacency
+	     << "-" << DSL::foregroundAdjacency
 	     << "-" << octant
 	     << "-" << a << "-" << b
 	     << ".png"; 

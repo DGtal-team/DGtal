@@ -92,7 +92,7 @@ inline
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::ArithmeticalDSS(const Point& aF, const Point& aL, 
 		  const bool& areOnTheUpperLine)
-  : myDSL( 0, 0, 0 )
+  : myDSL( NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO, NumberTraits<TI>::ZERO )
 {
   typedef DGtal::ArithmeticalDSSFactory<TC, TI, adj> Factory; 
 
@@ -108,7 +108,7 @@ template <typename Iterator>
 inline
 DGtal::ArithmeticalDSS<TC, TI, adj>
 ::ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte)  throw( InputException )
-  : myDSL( 0, 0, 0 )
+  : myDSL( NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO, NumberTraits<TI>::ZERO )
 {
   if (aItb != aIte)
     {
