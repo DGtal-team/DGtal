@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testArithmeticalDSSKernel.cpp
+ * @file testArithmeticalDSLKernel.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/07/03
  *
- * Functions for testing class ArithmeticalDSSKernel.
+ * Functions for testing class ArithmeticalDSLKernel.
  *
  * This file is part of the DGtal library.
  */
@@ -31,14 +31,14 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/geometry/curves/ArithmeticalDSSKernel.h"
+#include "DGtal/geometry/curves/ArithmeticalDSLKernel.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ArithmeticalDSSKernel.
+// Functions for testing class ArithmeticalDSLKernel.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * General test. 
@@ -58,14 +58,14 @@ bool test(const Integer& a, const Integer& b)
   
   trace.beginBlock ( "testing general cases..." );
 
-  typename ArithmeticalDSSKernel<Coordinate, adj>::Steps steps = 
-    ArithmeticalDSSKernel<Coordinate, adj>::steps(a, b); 
+  typename ArithmeticalDSLKernel<Coordinate, adj>::Steps steps = 
+    ArithmeticalDSLKernel<Coordinate, adj>::steps(a, b); 
 
   trace.info() << " step1: " << steps.first << std::endl;
   trace.info() << " step2: " << steps.second << std::endl;
 
-  typename ArithmeticalDSSKernel<Coordinate, adj>::Vector shift = 
-    ArithmeticalDSSKernel<Coordinate, adj>::shift(a, b);   
+  typename ArithmeticalDSLKernel<Coordinate, adj>::Vector shift = 
+    ArithmeticalDSLKernel<Coordinate, adj>::shift(a, b);   
 
   trace.info() << " shift: " << shift << std::endl;
 
@@ -100,15 +100,15 @@ bool specialCases(const Integer& a, const Integer& b)
 
   trace.info() << " a " << a << " b " << b << std::endl;
 
-  typename ArithmeticalDSSKernel<Coordinate, adj>::Steps steps = 
-    ArithmeticalDSSKernel<Coordinate, adj>::steps(a, b); 
+  typename ArithmeticalDSLKernel<Coordinate, adj>::Steps steps = 
+    ArithmeticalDSLKernel<Coordinate, adj>::steps(a, b); 
 
   trace.info() << " step1: " << steps.first << std::endl;
   trace.info() << " step2: " << steps.second << std::endl;
 
-  typedef typename ArithmeticalDSSKernel<Coordinate, adj>::Vector Vector; 
+  typedef typename ArithmeticalDSLKernel<Coordinate, adj>::Vector Vector; 
   Vector shift = 
-    ArithmeticalDSSKernel<Coordinate, adj>::shift(a, b);   
+    ArithmeticalDSLKernel<Coordinate, adj>::shift(a, b);   
 
   trace.info() << " shift: " << shift << std::endl;
 
@@ -164,7 +164,7 @@ bool specialCases(const Integer& a, const Integer& b)
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class ArithmeticalDSSKernel" );
+  trace.beginBlock ( "Testing class ArithmeticalDSLKernel" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
