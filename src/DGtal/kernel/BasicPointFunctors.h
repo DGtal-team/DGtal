@@ -448,9 +448,16 @@ namespace DGtal
       }
 
       if(myDomain.isInside(pt))
-        return pt;
+        {          
+          return pt;
+        }
       else
-        return  myDefaultPoint;
+        {
+#ifdef DEBUG_VERBOSE
+          trace.warning() << "Warning pt outside the 3D domain " << pt << std::endl;
+#endif
+          return  myDefaultPoint;
+        }
     }
 
   private:
