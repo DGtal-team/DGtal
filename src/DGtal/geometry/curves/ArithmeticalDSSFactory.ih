@@ -125,11 +125,11 @@ bezoutVector(const Coordinate& aA,
 {
   ASSERT( (aR == 1)||(aR == -1) ); 
 
-  //compute the shortest Bezout vector
+  //compute one Bezout vector
   IntegerComputer<Coordinate> computer; 
-  Vector v = computer.extendedEuclid2(aA, -aB, aR ); 
+  Vector v = computer.extendedEuclid3(aA, -aB, aR); 
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
- 
+
   //compute the one whose component
   //have a sign equal to the direction
   //vector components
