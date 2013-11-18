@@ -51,17 +51,17 @@ checkOnePoint(const ArithmeticalDSS<TC,TI,adj>& aDSS)
   //Vector type redefinition 
   typedef typename ArithmeticalDSS<TC,TI,adj>::Vector V;
  
-  return ( (aDSS.a()==0)
-	   &&(aDSS.b()==0)
-	   &&(aDSS.mu()==0)
-	   &&(aDSS.omega()==0)
+  return ( (aDSS.a()==NumberTraits<TC>::ZERO)
+	   &&(aDSS.b()==NumberTraits<TC>::ZERO)
+	   &&(aDSS.mu()==NumberTraits<TI>::ZERO)
+	   &&(aDSS.omega()==NumberTraits<TI>::ZERO)
 	   &&(aDSS.Uf()==aDSS.back())
 	   &&(aDSS.Lf()==aDSS.back())
 	   &&(aDSS.Ul()==aDSS.front())
 	   &&(aDSS.Ll()==aDSS.front())
-	   &&(aDSS.shift()==V(0,0))
-	   &&(aDSS.steps().first==V(0,0))
-	   &&(aDSS.steps().second==V(0,0)) ); 
+	   &&(aDSS.shift()==V(NumberTraits<TC>::ZERO,NumberTraits<TC>::ZERO))
+	   &&(aDSS.steps().first==V(NumberTraits<TC>::ZERO,NumberTraits<TC>::ZERO))
+	   &&(aDSS.steps().second==V(NumberTraits<TC>::ZERO,NumberTraits<TC>::ZERO)) ); 
 }
 
 //-----------------------------------------------------------------------------
