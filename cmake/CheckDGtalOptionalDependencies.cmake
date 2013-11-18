@@ -158,18 +158,22 @@ IF(WITH_GMP)
   ENDIF(GMP_FOUND)
 
   ##Checking the "std::cout << mpz_class"
+  ## (issues with some g++ compiler on MACOS
   try_compile( GMP_HAS_IOSTREAM
     ${CMAKE_BINARY_DIR}/CMakeTmp
     ${CMAKE_SOURCE_DIR}/cmake/src/gmp/gmpstream.cpp
     COMPILE_DEFINITIONS "-I${GMP_INCLUDE_DIR} ${GMPXX_LIBRARIES} ${GMP_LIBRARIES}"
+    LINK_LIBRARIES  ${GMPXX_LIBRARIES} ${GMP_LIBRARIES}
     OUTPUT_VARIABLE OUTPUT
     )
+  message(status ${OUTPUT})
   if ( GMP_HAS_IOSTREAM )
     add_definitions("-DGMP_HAS_IOSTREAM")
     message(STATUS "   * GMPXX has iostream capabilities")
   ELSE(GMP_HAS_IOSTREAM)
     message(STATUS "   * GMPXX does not have iostream capabilities")
-  endif (GMP_HAS_IOSTREAM )
+    message(FATAL_ERROR "GMP has been found but there is a link isuse with some g++ versions. Please check your system or disable the GMP dependency." )
+ endif (GMP_HAS_IOSTREAM )
 ENDIF(WITH_GMP)
 
 # -----------------------------------------------------------------------------
