@@ -127,7 +127,7 @@ bezoutVector(const Coordinate& aA,
 
   //compute one Bezout vector
   IntegerComputer<Coordinate> computer; 
-  Vector v = computer.extendedEuclid3(aA, -aB, aR); 
+  Vector v = computer.extendedEuclid(aA, -aB, aR); 
   ASSERT( (aA*v[0]-aB*v[1]) == aR );
 
   //compute the one whose component
