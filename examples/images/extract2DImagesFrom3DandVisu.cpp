@@ -91,7 +91,7 @@ int main( int argc, char** argv )
   }
 
   // Visu extraction from points
-  const int IMAGE_PATCH_WIDTH = 30;
+  const int IMAGE_PATCH_WIDTH = 40;
   
 
   DGtal::Z3i::Point ptCenter(175, 175, 20);
@@ -101,7 +101,7 @@ int main( int argc, char** argv )
 
   DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(image.domain(), ptCenter, 
                                                             DGtal::Z3i::RealPoint(1,-1,1), 
-                                                            35);
+                                                            IMAGE_PATCH_WIDTH);
   
   ImageAdapterExtractor extractedImage(image, domainImage2D, embedder, idV);
   viewer << extractedImage;

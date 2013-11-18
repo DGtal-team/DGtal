@@ -386,7 +386,7 @@ namespace DGtal
      * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain. 
      * @param anOriginPoint the center point given in the 3D domain. 
      * @param anNormalVector the normal vector to the 2d domain embedded in 3D. 
-     * @param anWidth the width to determine the 2d domain bounds.
+     * @param anWidth the width to determine the 2d domain bounds (the resulting 2d domain will be a square of lenght anWidth).
      * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
      *
      */
@@ -422,7 +422,7 @@ namespace DGtal
       
       uDir2/=uDir2.norm();
 
-      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth + uDir2*anWidth;
+      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth/2 + uDir2*anWidth/2;
       myFirstAxisEmbeddedDirection = -uDir1;
       mySecondAxisEmbeddedDirection = -uDir2;
       
