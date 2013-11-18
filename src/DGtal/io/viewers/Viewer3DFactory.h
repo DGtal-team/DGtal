@@ -722,6 +722,14 @@ namespace DGtal
      * @param anUpdate the update to set
      */
     static void
+    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateImage3DEmbedding<Space, KSpace> & anUpdate);
+
+    /**
+     * @brief draw
+     * @param viewer the viewer where to draw
+     * @param anUpdate the update to set
+     */
+    static void
     draw( Viewer3D<Space,KSpace> &viewer, const DGtal::Update2DDomainPosition<Space, KSpace> & anUpdate);
 
     /**
