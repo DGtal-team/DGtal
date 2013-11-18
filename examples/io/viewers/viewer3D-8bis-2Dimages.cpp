@@ -52,8 +52,10 @@ int main( int argc, char** argv )
 
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,  unsigned char > Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  unsigned char > Image2D;
+  //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
                                    Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+  //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
   QApplication application(argc,argv);
   typedef Viewer3D<> MyViewer;
   MyViewer viewer;
@@ -81,7 +83,7 @@ int main( int argc, char** argv )
     DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(imageVol.domain(), 
                                                               ptCenter+DGtal::Z3i::RealPoint(200.0*cos(alpha),100.0*sin(alpha)), 
                                                               DGtal::Z3i::RealPoint(cos(alpha),sin(alpha),cos(2.0*alpha)), 
-                                                              IMAGE_PATCH_WIDTH/2);
+                                                              IMAGE_PATCH_WIDTH);
     ImageAdapterExtractor extractedImage(imageVol, domainImage2D, embedder, idV);
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceExtract]
 
