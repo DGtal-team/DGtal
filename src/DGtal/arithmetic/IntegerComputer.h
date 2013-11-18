@@ -386,10 +386,20 @@ href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
        \a b. Uses the extended Euclid algorithm to do it, whose
        complexity is bounded by max(log(a),log(b)).
 
-       @param a any integer.
-       @param b any integer.
-       @param c any integer (see above).
-       @return the vector (x,y) solution to a x + b y = c.
+       The solution is chosen such that:
+       - when \a c > 0, 
+         - \a a > 0 implies \a x >= 0, thus sgn(\a y)=-sgn(\a b)
+         - \a a < 0 implies \a x <= 0, thus sgn(\a y)=-sgn(\a b)
+       - when \a c < 0, 
+         - \a a > 0 implies \a x <= 0, thus sgn(\a y)=sgn(\a b)
+         - \a a < 0 implies \a x >= 0, thus sgn(\a y)=sgn(\a b)
+       - abs(\a x) <= abs(\a b * \a c )
+       - abs(\a y) < abs(\a a * \a c )
+
+       @param a any non-null integer.
+       @param b any non-null integer.
+       @param c any integer multiple of gcd(|a|,|b|).
+       @return a vector (x,y) solution to a x + b y = c.
      */
     Vector2I extendedEuclid( IntegerParamType a, IntegerParamType b, 
                              IntegerParamType c ) const;
