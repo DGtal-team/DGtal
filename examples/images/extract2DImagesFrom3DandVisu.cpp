@@ -94,7 +94,7 @@ int main( int argc, char** argv )
   const int IMAGE_PATCH_WIDTH = 40;
   
 
-  DGtal::Z3i::Point ptCenter(175, 175, 20);
+  DGtal::Z3i::Point ptCenter(155, 155, 20);
   DGtal::Z2i::Domain domainImage2D (DGtal::Z2i::Point(0,0), 
                                     DGtal::Z2i::Point(IMAGE_PATCH_WIDTH, IMAGE_PATCH_WIDTH)); 
   
