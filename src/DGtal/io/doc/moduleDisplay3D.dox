@@ -369,7 +369,9 @@ It also possible to remove the visualization of the transparent clipping plane b
  viewer << ClippingPlane(0,1,0.3,-10, false);
 @endcode
 
-\section DGtalGLV_Images Adding 2D slice image visualization
+\section DGtalGLV_Images Adding 2D image visualization in 3D
+
+\subsection DGtalGLV_ImagesSlices Adding 2D slice images
 
 With the Viewer3D class it is possible to display 2D slice image from a volume one. It can be done in few steps (see example of io/viewers/viewer3D-8-2Dimages.cpp) :
 
@@ -396,6 +398,39 @@ and by changing the "BoundingBox" mode by "InterGrid" you will obtain the follow
 
 
 See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer.
+
+
+\subsection DGtalGLV_ImagesEmbedded Adding 2D images (from any embedding) 
+
+The slice images are not the only way to display 2D images in 3D. An
+2D image can also be extracted and embedded in 3D by using a single
+embed functor (Point2DEmbedderIn3D). The example
+io/viewers/viewer3D-8bis-2Dimages.cpp illustrates such a display.
+
+
+First we  need to add the header file associated to the  Point2DEmbedderIn3D:
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceHeader
+
+Then, the type definition of ConstImageAdapter is added: 
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceType
+
+The resulting 2D domain can be deduced from the width used in the functor:
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceParam
+
+The embeder then be used to extract the image:
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceExtract
+
+and used to display the image with the correct coordinates:
+
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceDisplay
+
+
+Such example will produce such a representation:
+ \image html  viewer3D-8bis.png  "Illustration of the 2D image  visualization." width=5cm
+ \image latex  viewer3D-8bis.png  "Illustration of the 2D image visualization."
+
+
+
 
 
 \section DGtalGLV_Images3D Adding 3D image visualization
@@ -569,6 +604,14 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
 
 *
 */
+
+/**
+ *  Example of 2D image display in 3D by 3D embedding. 
+ *
+ * \image html viewer3D-8bis.png "Illustration of multiple 2D image extraction and visualisation  from 3D embedding"
+ * \example io/viewers/viewer3D-8bis-2Dimages.cpp
+ */
+
 /**
    \image html  viewer3D-9.png  "Illustration of the 3D image visualization."
    \example io/viewers/viewer3D-9-3Dimages.cpp
@@ -597,7 +640,6 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
    \example io/boards/dgtalBoard3D-6-clipping.cpp
 *
 */
-
 
 
 
