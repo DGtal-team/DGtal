@@ -552,6 +552,64 @@ extendedEuclid2( IntegerParamType a, IntegerParamType b,
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
+typename DGtal::IntegerComputer<TInteger>::Vector2I
+DGtal::IntegerComputer<TInteger>::
+extendedEuclid3( IntegerParamType a, IntegerParamType b,
+                IntegerParamType c ) const
+{
+  if( isZero( a ) ) return Point2I( NumberTraits<Integer>::ZERO, b * c );
+  if( isZero( b ) ) return Point2I( a * c, NumberTraits<Integer>::ZERO );
+
+  for ( unsigned int i = 0; i < 4; ++i )
+    _m_bezout[ i ].clear();
+
+  _m_bezout[ 0 ].push_back( abs( a ) );
+  _m_bezout[ 0 ].push_back( abs( b ) );
+  _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ZERO );
+  _m_bezout[ 2 ].push_back( NumberTraits<Integer>::ONE );
+  _m_bezout[ 2 ].push_back( NumberTraits<Integer>::ZERO );
+  _m_bezout[ 3 ].push_back( NumberTraits<Integer>::ZERO );
+  _m_bezout[ 3 ].push_back( NumberTraits<Integer>::ONE );
+  
+  unsigned int k = 0; // index of the iteration during the computation.
+  while( isNotZero( _m_bezout[ 0 ][ k+1 ] ) )
+    {
+      _m_bezout[ 1 ].push_back( _m_bezout[ 0 ][ k ]
+                                / _m_bezout[ 0 ][ k+1 ] );
+      _m_bezout[ 0 ].push_back( _m_bezout[ 0 ][ k ]
+                                % _m_bezout[ 0 ][ k+1 ] );
+      _m_bezout[ 2 ].push_back( _m_bezout[ 2 ][ k ]
+                                - _m_bezout[ 1 ][ k+1 ]
+                                * _m_bezout[ 2 ][ k+1 ] );
+      _m_bezout[ 3 ].push_back( _m_bezout[ 3 ][ k ]
+                                - _m_bezout[ 1 ][ k+1 ]
+                                *_m_bezout[ 3 ][ k+1 ] );
+      ++k;
+    }
+  
+  _m_v[ 0 ] = _m_bezout[ 2 ][ k ];
+  _m_v[ 1 ] = _m_bezout[ 3 ][ k ];
+  if ( k % 2 != 0 )
+    { // odd case
+      _m_v[ 0 ] = abs( b ) + _m_bezout[ 2 ][ k ];
+      _m_v[ 1 ] = -abs( a ) + _m_bezout[ 3 ][ k ];
+    }
+  // choose sgn(a) = sgn(x) when x != 0, iff c > 0
+  // |x| <= |bc|, |y| < |ac|
+  _m_v *= c / _m_bezout[ 0 ][ k ]; // c / gcd(a,b)
+  if ( isNegative( a ) ) _m_v[ 0 ] = - _m_v[ 0 ];
+  if ( isNegative( b ) ) _m_v[ 1 ] = - _m_v[ 1 ];
+  // std::cout << "a * x + b * y == c, "
+  // << a << " * " << _m_v[ 0 ] << " + " << b << " * " << _m_v[ 1 ] << " == " << c << std::endl;
+  ASSERT( (a*_m_v[ 0 ]+b*_m_v[ 1 ]) == c );
+  ASSERT( isNegative( c ) || ( ( isPositive( a ) == isPositive( _m_v[ 0 ] ) ) || isZero( _m_v[ 0 ] ) ) );
+  ASSERT( isPositive( c ) || ( ( isPositive( a ) == isNegative( _m_v[ 0 ] ) ) || isZero( _m_v[ 0 ] ) ) );
+  ASSERT( abs( _m_v[ 0 ] ) <= abs( b*c ) );
+  ASSERT( abs( _m_v[ 1 ] ) < abs( a*c ) );
+  return _m_v;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
