@@ -232,8 +232,6 @@ namespace DGtal
     /**
      * Operator
      *
-     * @tparam TInput type of the input object
-     *
      * @return the constant value.
      */
     inline

@@ -256,7 +256,7 @@ private:
 
   std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
 
   KernelSupport * kernel; ///< Euclidean kernel
 
@@ -406,7 +406,7 @@ private:
 
   std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
 
   KernelSupport * kernel; ///< Euclidean kernel
 
@@ -554,7 +554,7 @@ private:
 
   std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
 
   KernelSupport * kernel; ///< Euclidean kernel
 

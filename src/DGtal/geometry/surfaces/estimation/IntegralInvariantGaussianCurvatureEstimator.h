@@ -103,7 +103,6 @@ public:
   {
     dh2 = h * h;
     d3_r = 3.0 / r;
-    dPI_2 = M_PI / 2.0;
     d1_r2 = 1.0 / ( r * r );
   }
 
@@ -111,7 +110,7 @@ public:
   {
     Matrix2x2 cp_matrix = aInput;
     cp_matrix *= dh2;
-    Value k = d3_r * ( dPI_2 - d1_r2 * cp_matrix[ 0 ] );
+    Value k = d3_r * ( M_PI_2 - d1_r2 * cp_matrix[ 0 ] );
 
     return k;
   }
@@ -119,7 +118,6 @@ public:
 private:
   Value dh2; /// h*h
   Value d3_r; /// 3/r
-  Value dPI_2; /// PI/2
   Value d1_r2; /// 1/r^2
 
 };
@@ -137,7 +135,6 @@ public:
   {
     dh2 = h * h;
     d3_r = 3.0 / r;
-    dPI_2 = M_PI / 2.0;
     d1_r2 = 1.0 / ( r * r );
   }
 
@@ -145,7 +142,7 @@ public:
   {
     Matrix2x2 cp_matrix = aInput;
     cp_matrix *= dh2;
-    Value k = d3_r * ( dPI_2 - d1_r2 * cp_matrix[ 0 ] );
+    Value k = d3_r * ( M_PI_2 - d1_r2 * cp_matrix[ 0 ] );
 
     trace.error() << "Unavailable yet." << std::endl;
 
@@ -155,7 +152,6 @@ public:
 private:
   Quantity dh2; /// h*h
   Quantity d3_r; /// 3/r
-  Quantity dPI_2; /// PI/2
   Quantity d1_r2; /// 1/r^2
 
 };
@@ -453,7 +449,7 @@ private:
 
   std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
 
   KernelSupport * kernel; ///< Euclidean kernel
 
@@ -643,7 +639,7 @@ private:
 
   std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
 
   KernelSupport * kernel; ///< Euclidean kernel
 
@@ -834,7 +830,7 @@ private:
 
   std::vector< PairIterators > kernels; ///< array of begin/end iterator of shifting masks.
 
-  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 27 for each shifting<s (0-adjacent and full kernel included)
+  std::vector< DigitalSet * > kernelsSet; ///< Array of shifting masks. Size = 27 for each shifting (0-adjacent and full kernel included)
 
   KernelSupport * kernel; ///< Euclidean kernel
 

@@ -70,7 +70,7 @@ namespace DGtal
    * @tparam TFunctor a model of a functor for the shape to convolve ( f(x) ).
    * @tparam TKernelFunctor a model of a functor for the convolution kernel ( g(x) ).
    * @tparam TKSpace space in which the shape is defined.
-   * @tparam TKernelConstIterator iterator of cells inside the convolution kernel.
+   * @tparam TDigitalKernel type of a convolution kernel (ImplicitBall in general case).
    */
 template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TDigitalKernel, Dimension dimension = TKSpace::dimension >
 class DigitalSurfaceConvolver
@@ -126,7 +126,7 @@ public:
   /**
   * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
-  * Choose this init if you don't have few memory. Need to store the full kernel explicitly.
+  * Stores the full kernel explicitly: choose this init if you have a lot of memory or if your kernel is small.
   *
   * @param[in] pOrigin center (digital point) of the kernel support.
   * @param[in] fullKernel pair of iterators of the full kernel. first is the first iterator (of spel) of the kernel support, second is the last iterator (of spel, excluded).
@@ -145,7 +145,7 @@ public:
   /**
   * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
-  * Choose this init if you have few memory. It use implicitly the full kernel.
+  * Stores the kernel implicitly: choose this init if you have not a lot of memory available or if your kernel size is big.
   *
   * @param[in] pOrigin center (digital point) of the kernel support.
   * @param[in] fullKernel pointer of the digital (full) kernel.
@@ -162,7 +162,7 @@ public:
               ConstAlias< std::vector< PairIterators > > masks );
 
   /**
-  * Convolve the kernel at a given position.
+  * Convolve the kernel at a position \a it.
   *
   * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
   *
@@ -175,7 +175,7 @@ public:
 
 
   /**
-  * Convolve the kernel at a given position and work with the result.
+  * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
   *
   * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
   * @param[in] functor functor called with the result of the convolution.
@@ -191,7 +191,7 @@ public:
 
 
   /**
-  * Iterate the convolver between [itbegin, itend[ with the convolver.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -206,7 +206,7 @@ public:
               OutputIterator & result );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and work with the result.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -225,7 +225,7 @@ public:
 
 
   /**
-  * Convolve the kernel at a given position and return a covariance matrix.
+  * Convolve the kernel at a position \a it.
   *
   * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
   *
@@ -237,7 +237,7 @@ public:
   CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
 
   /**
-  * Convolve the kernel at a given position and return the result of the functor with the covariance matrix.
+  * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
   *
   * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
   * @param[in] functor functor called with the result of the convolution.
@@ -252,7 +252,7 @@ public:
                                                      EvalFunctor functor );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -267,7 +267,7 @@ public:
                               OutputIterator & result );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -318,7 +318,7 @@ protected:
    */
   void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction );
 
-  static const int nbMoments; ///< the number of moments is dependant to the dimension. In 2D, it's 6. (see method fillMoments())
+  static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2 (see method fillMoments())
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Spel defaultOuterSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Quantity defaultInnerMoments[ 6 ]; ///< default array of Quantity, used as default parameter in core_evalCovarianceMatrix function
@@ -488,7 +488,7 @@ public:
   /**
   * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
-  * Choose this init if you don't have few memory. Need to store the full kernel explicitly.
+  * Stores the full kernel explicitly: choose this init if you have a lot of memory or if your kernel is small.
   *
   * @param[in] pOrigin center (digital point) of the kernel support.
   * @param[in] fullKernel pair of iterators of the full kernel. first is the first iterator (of spel) of the kernel support, second is the last iterator (of spel, excluded).
@@ -507,7 +507,7 @@ public:
   /**
   * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
-  * Choose this init if you have few memory. It use implicitly the full kernel.
+  * Stores the kernel implicitly: choose this init if you have not a lot of memory available or if your kernel size is big.
   *
   * @param[in] pOrigin center (digital point) of the kernel support.
   * @param[in] fullKernel pointer of the digital (full) kernel.
@@ -524,7 +524,7 @@ public:
               ConstAlias< std::vector< PairIterators > > masks );
 
   /**
-  * Convolve the kernel at a given position.
+  * Convolve the kernel at a position \a it.
   *
   * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
   *
@@ -537,7 +537,7 @@ public:
 
 
   /**
-  * Convolve the kernel at a given position and work with the result.
+  * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
   *
   * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
   * @param[in] functor functor called with the result of the convolution.
@@ -553,7 +553,7 @@ public:
 
 
   /**
-  * Iterate the convolver between [itbegin, itend[ with the convolver.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -568,7 +568,7 @@ public:
               OutputIterator & result );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and work with the result.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -587,7 +587,7 @@ public:
 
 
   /**
-  * Convolve the kernel at a given position and return a covariance matrix.
+  * Convolve the kernel at a position \a it.
   *
   * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
   *
@@ -599,7 +599,7 @@ public:
   CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
 
   /**
-  * Convolve the kernel at a given position and return the result of the functor with the covariance matrix.
+  * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
   *
   * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
   * @param[in] functor functor called with the result of the convolution.
@@ -614,7 +614,7 @@ public:
                                                      EvalFunctor functor );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -629,7 +629,7 @@ public:
                               OutputIterator & result );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -680,7 +680,7 @@ protected:
    */
   void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction );
 
-  static const int nbMoments; ///< the number of moments is dependant to the dimension. In 2D, it's 6. (see method fillMoments())
+  static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2. (see method fillMoments())
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Spel defaultOuterSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Quantity defaultInnerMoments[ 6 ]; ///< default array of Quantity, used as default parameter in core_evalCovarianceMatrix function
@@ -855,7 +855,7 @@ public:
   /**
    * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
    *
-   * Choose this init if you don't have few memory. Need to store the full kernel explicitly.
+   * Stores the full kernel explicitly: choose this init if you have a lot of memory or if your kernel is small
    *
    * @param[in] pOrigin center (digital point) of the kernel support.
    * @param[in] fullKernel pair of iterators of the full kernel. first is the first iterator (of spel) of the kernel support, second is the last iterator (of spel, excluded).
@@ -874,7 +874,7 @@ public:
   /**
   * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
-  * Choose this init if you have few memory. It use implicitly the full kernel.
+  * Stores the kernel implicitly: choose this init if you have not a lot of memory available or if your kernel size is big.
   *
   * @param[in] pOrigin center (digital point) of the kernel support.
   * @param[in] fullKernel pointer of the digital (full) kernel.
@@ -891,7 +891,7 @@ public:
               ConstAlias< std::vector< PairIterators > > masks );
 
   /**
-  * Convolve the kernel at a given position.
+  * Convolve the kernel at a position \a it.
   *
   * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
   *
@@ -904,7 +904,7 @@ public:
 
 
   /**
-  * Convolve the kernel at a given position and work with the result.
+  * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
   *
   * @param[in] it (iterator of a) surfel of the shape where the convolution is computed.
   * @param[in] functor functor called with the result of the convolution.
@@ -920,7 +920,7 @@ public:
 
 
   /**
-  * Iterate the convolver between [itbegin, itend[ with the convolver.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -935,7 +935,7 @@ public:
               OutputIterator & result );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and work with the result.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -953,9 +953,8 @@ public:
               EvalFunctor functor );
 
 
-
   /**
-  * Convolve the kernel at a given position and return a covariance matrix.
+  * Convolve the kernel at a position \a it.
   *
   * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
   *
@@ -967,7 +966,7 @@ public:
   CovarianceMatrix evalCovarianceMatrix ( const SurfelIterator & it );
 
   /**
-  * Convolve the kernel at a given position and return the result of the functor with the covariance matrix.
+  * Convolve the kernel at a position \a it and applies the functor \a functor on the result.
   *
   * @param[in] it (iterator of a) surfel of the shape where the covariance matrix is computed.
   * @param[in] functor functor called with the result of the convolution.
@@ -982,7 +981,7 @@ public:
                                                      EvalFunctor functor );
 
   /**
-  * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and outputs results sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -997,17 +996,17 @@ public:
                               OutputIterator & result );
 
   /**
-   * Iterate the convolver between [itbegin, itend[ and return a covariance matrix for each position.
-   *
-   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
-   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
-   * @param[out] result iterator of an array where results of functor are set.
-   * @param[in] functor functor called with the result of the convolution.
-   *
-   * @tparam SurfelIterator type of iterator of a surfel on the shape.
-   * @tparam OutputIterator type of iterator on an array when Quantity are stored.
-   * @tparam EvalFunctor type of functor on CovarianceMatrix.
-   */
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
+  *
+  * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
+  * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
+  * @param[out] result iterator of an array where results of functor are set.
+  * @param[in] functor functor called with the result of the convolution.
+  *
+  * @tparam SurfelIterator type of iterator of a surfel on the shape.
+  * @tparam OutputIterator type of iterator on an array when Quantity are stored.
+  * @tparam EvalFunctor type of functor on CovarianceMatrix.
+  */
   template< typename SurfelIterator, typename OutputIterator, typename EvalFunctor >
   void evalCovarianceMatrix ( const SurfelIterator & itbegin,
                               const SurfelIterator & itend,
@@ -1049,7 +1048,7 @@ protected:
    */
   void fillMoments ( Quantity * aMomentMatrix, const Spel & aSpel, double direction );
 
-  static const int nbMoments; ///< the number of moments is dependant to the dimension. In 3D, it's 10. (see method fillMoments())
+  static const int nbMoments; ///< the number of moments is dependent to the dimension. In 3D, they are 10 moments such that p+q+s <= 2 (see method fillMoments())
   static Spel defaultInnerSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Spel defaultOuterSpel; ///< default Spel, used as default parameter in core_eval and core_evalCovarianceMatrix functions
   static Quantity defaultInnerMoments[ 10 ]; ///< default array of Quantity, used as default parameter in core_evalCovarianceMatrix function
