@@ -402,13 +402,13 @@ See more details on this example io/viewers/viewer3D-8-2DSliceImages.cpp or from
 
 \subsection DGtalGLV_ImagesEmbedded Adding 2D images (from any embedding) 
 
-The slice images are not the only way to display 2D images in 3D. An
+The slice images are not the only way to display 2D images in 3D. A
 2D image can also be extracted and embedded in 3D by using a single
-embed functor (Point2DEmbedderIn3D). The example
+embedding functor (Point2DEmbedderIn3D). The example
 io/viewers/viewer3D-8bis-2Dimages.cpp illustrates such a display.
 
 
-First we  need to add the header file associated to the  Point2DEmbedderIn3D:
+First we  need to add the header file associated with the  Point2DEmbedderIn3D:
 @snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceHeader
 
 Then, the type definition of ConstImageAdapter is added: 
@@ -417,7 +417,7 @@ Then, the type definition of ConstImageAdapter is added:
 The resulting 2D domain can be deduced from the width used in the functor:
 @snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceParam
 
-The embeder then be used to extract the image:
+The embedder then be used to extract the image:
 @snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceExtract
 
 and used to display the image with the correct coordinates:
@@ -443,7 +443,7 @@ See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp
 
 
 
-\section DGtalGLV_Images3Dcustom Customming Slice Image visualization 
+\section DGtalGLV_Images3Dcustom Customizing Slice Image visualization 
 
 By default an image is displayed in gray scale levels from its scalar
 values. However it is possible to display color texture image by using
