@@ -61,7 +61,7 @@ namespace DGtal
      the parameter is not a problem for the function. On the other
      hand, the Clone class is smart enough to enforce duplication \b
      only \b if \b needed. Substantial speed-up can be achieve through
-     this mechanism. 
+     this mechanism.
 
      (For a complete description, see \ref moduleCloneAndReference).
 
@@ -110,7 +110,7 @@ namespace DGtal
      |member deletion:|  automatic   |  \b manual | automatic |
      |conversion:| automatic: `b(a)` |  address: `b(&a)`| automatic: `b(a)` |
 
-     \note When choosing a `Clone<T>` parameter, the \e programmer should really consider using a `CowPtr<T>` member to store it, since it is the most versatile and optimizable variant. The only advantage of the two others storing methods (\c T  and  \c T*) is that there is one less indirection. 
+     \note When choosing a `Clone<T>` parameter, the \e programmer should really consider using a `CowPtr<T>` member to store it, since it is the most versatile and optimizable variant. The only advantage of the two others storing methods (\c T  and  \c T*) is that there is one less indirection.
 
      @note Note that an instance of Clone<T> is itself a light object (it
      holds only a const enum and const pointer), the duplication (if
@@ -140,7 +140,7 @@ namespace DGtal
 
 
      @note It prevents direct assignment to CountedPtr<T> since their
-     meaning is "shared_ptr". 
+     meaning is "shared_ptr".
 
 
      It can be used as follows. Consider this simple example where
@@ -177,7 +177,7 @@ namespace DGtal
      struct B3 {
      B3( const A & a ) // ambiguous, cost is O(N) here
      { myA = new A( a ); }
-     ~B3() 
+     ~B3()
      { if ( myA != 0 ) delete myA; }
      ...
      A* myA;
@@ -197,7 +197,7 @@ namespace DGtal
      B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
      : myA( a ) {}
      ...
-     const A & myA; 
+     const A & myA;
      // or Const A* myA;
      };
      // Cloning as data member is visible.
@@ -251,7 +251,7 @@ namespace DGtal
 
      @code
      struct B4 {
-     B4( A a ) // not ambiguous, but cost is O(2N) here. 
+     B4( A a ) // not ambiguous, but cost is O(2N) here.
      : myA( a ) {}
      ...
      A myA;
@@ -269,7 +269,7 @@ namespace DGtal
   protected:
 
     /// Internal class that allows to distinguish the different types of parameters.
-    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
+    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR,
 		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
 		     COUNTED_CONST_PTR_OR_CONST_PTR };
 
@@ -300,56 +300,56 @@ namespace DGtal
       Copy constructor. The cloning is just forwarded.
       @param other the clone object to clone
     */
-    inline Clone( const Clone & other ) 
+    inline Clone( const Clone & other )
       : myParam( other.myParam ), myPtr( other.myPtr ) {}
 
     /**
        Constructor from an instance of T. The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
+       'this'. It is duplicated (or not) when the user claims it.
        @param t any object of type T.
     */
-    inline Clone( const T & t ) 
+    inline Clone( const T & t )
       : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
 
     /**
        Constructor from a pointer to a valid instance of T. The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
+       'this'. It is duplicated (or not) when the user claims it.
        @param ptrT any valid pointer to a object of type T.
        @pre ptrT != 0
     */
-    inline Clone( T* ptrT ) 
-      : myParam( PTR ), myPtr( static_cast<const void*>( ptrT ) ) {} 
+    inline Clone( T* ptrT )
+      : myParam( PTR ), myPtr( static_cast<const void*>( ptrT ) ) {}
 
     /**
        Constructor from CowPtr<T>.  The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
+       'this'. It is duplicated (or not) when the user claims it.
 
        @param ptrT any copy-on-write pointer to a object of type T.
     */
-    inline Clone( const CowPtr<T> & ptrT ) 
+    inline Clone( const CowPtr<T> & ptrT )
       : myParam( COW_PTR ), myPtr( static_cast<const void*>( &ptrT ) ) {}
 
     /**
        Constructor from CountedPtr<T>.  The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
+       'this'. It is duplicated (or not) when the user claims it.
 
        @param ptrT any shared pointer to a object of type T.
     */
-    inline Clone( const CountedPtr<T> & ptrT ) 
+    inline Clone( const CountedPtr<T> & ptrT )
       : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &ptrT ) ) {}
 
 #ifdef CPP11_RREF_MOVE
     /**
        Constructor from right-reference value.  The object is pointed in
-       'this'. It is duplicated (or not) when the user claims it. 
+       'this'. It is duplicated (or not) when the user claims it.
 
-       @param ptrT any shared pointer to a object of type T.
+       @param t any shared pointer to a object of type T.
     */
     inline Clone( T && t )
       : myParam( RIGHT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
 #endif // CPP11_RREF_MOVE
 
-    
+
     /**
        Cast operator to a T instance. The object is duplicated or not
        depending on the type of input parameter.
@@ -360,10 +360,10 @@ namespace DGtal
       - CowPtr<T> -> T             // immediate duplication (checked)
       - T&& -> T                   // move into member      (checked)
     */
-    inline operator T() const 
+    inline operator T() const
     {
       switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
+      case CONST_LEFT_VALUE_REF:
 	return T( * static_cast< const T* >( myPtr ) );
       case PTR: {
         TempPtr tmp( const_cast< T* >( static_cast< const T* >( myPtr ) ) );
@@ -392,12 +392,12 @@ namespace DGtal
       - CowPtr<T> -> CowPtr<T>     // lazy duplication      (checked)
       - T&& -> CowPtr<T>           // move into member      (checked)
     */
-    inline operator CowPtr<T>() const 
+    inline operator CowPtr<T>() const
     {
       switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
+      case CONST_LEFT_VALUE_REF:
 	return CowPtr<T>( new T( * static_cast< const T* >( myPtr ) ) );
-      case PTR: 
+      case PTR:
 	return CowPtr<T>( const_cast<T*>( static_cast< const T* >( myPtr ) ) );
       case COW_PTR:
 	return CowPtr<T>( * static_cast< const CowPtr<T>* >( myPtr ) );
@@ -416,28 +416,28 @@ namespace DGtal
        Address operator that returns the address of the given T
        instance.  The object is duplicated or not depending on the
        type of input parameter.
-       
+
        @return a pointer on an instance of T.
 
      - const T & -> T*            // immediate duplication, should be deleted at the end. (checked)
-     - CowPtr<T> -> T*            // immediate duplication, should be deleted at the end. (checked)           
-     - CountedPtr<T> -> T*        // immediate duplication, should be deleted at the end. (checked)         
-     - T* -> T*                   // acquired, should be deleted at the end. (checked)      
+     - CowPtr<T> -> T*            // immediate duplication, should be deleted at the end. (checked)
+     - CountedPtr<T> -> T*        // immediate duplication, should be deleted at the end. (checked)
+     - T* -> T*                   // acquired, should be deleted at the end. (checked)
      - T&& -> T*                  // move into member, should be deleted at the end. (checked)
     */
     inline T* operator&() const
     {
       switch( myParam ) {
-      case CONST_LEFT_VALUE_REF: 
+      case CONST_LEFT_VALUE_REF:
 	return new T( * static_cast< const T* >( myPtr ) );
-      case PTR: 
+      case PTR:
 	return const_cast<T*>( static_cast< const T* >( myPtr ) );
-      case COW_PTR:   
+      case COW_PTR:
 	return new T( *( static_cast< const CowPtr<T>* >( myPtr )->get() ) );
-      case COUNTED_PTR:  
+      case COUNTED_PTR:
 	return new T( *( static_cast< const CountedPtr<T>* >( myPtr )->get() ) );
 #ifdef CPP11_RREF_MOVE
-      case RIGHT_VALUE_REF: 
+      case RIGHT_VALUE_REF:
 	return new T( std::move( * const_cast<T*>( static_cast< const T* >( myPtr ) ) ) );
 #endif
       default: ASSERT( false && "[T* Clone::operator&() const] Invalid address for given type. " );
