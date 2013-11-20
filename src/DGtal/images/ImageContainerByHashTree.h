@@ -149,15 +149,16 @@ namespace DGtal
     typedef Point Vertex;
 
     /// static constants
-    static const typename Domain::Dimension dimension;
-    static const typename Domain::Dimension dim ;
-    static const unsigned int NbChildrenPerNode ;
-    static const HashKey ROOT_KEY;
+    BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension); 
+    BOOST_STATIC_CONSTANT( Dimension, dim = Domain::dimension);
+    typedef POW<2, dimension> PowHelper;  
+    BOOST_STATIC_CONSTANT( unsigned int, NbChildrenPerNode = PowHelper::VALUE); 
+    BOOST_STATIC_CONSTANT( HashKey, ROOT_KEY = static_cast<THashKey>(1)); 
 
     /// domain should be rectangular
     //(since constructed from two points as a bounding box)
     BOOST_STATIC_ASSERT ((boost::is_same< Domain,
-                                          HyperRectDomain<SpaceND<dimension, Integer> > >::value));
+                                          HyperRectDomain<typename Domain::Space > >::value));
 
     /// values range
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
@@ -775,7 +776,7 @@ namespace DGtal
 
 
     // myN is number of children per node.
-    static const unsigned int myN;
+    BOOST_STATIC_CONSTANT( unsigned int, myN = NbChildrenPerNode );
 
 
   public:
