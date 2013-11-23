@@ -439,7 +439,7 @@ namespace DGtal
      */
     template <typename TPoint2D>
     inline
-    Point  operator()(const TPoint2D& aPoint) const
+    Point  operator()(const TPoint2D& aPoint, bool chechInsideDomain=true) const
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
@@ -447,7 +447,7 @@ namespace DGtal
         pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
       }
 
-      if(myDomain.isInside(pt))
+      if(myDomain.isInside(pt)|| !chechInsideDomain)
         {          
           return pt;
         }
