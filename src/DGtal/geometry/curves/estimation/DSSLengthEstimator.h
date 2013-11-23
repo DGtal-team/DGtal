@@ -19,7 +19,7 @@
 /**
  * @file DSSLengthEstimator.h
  * @brief Segments the digital curve into DSS and computes the length of the
- * resulting polygon. 
+ * resulting polygon.
  *
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
@@ -62,14 +62,14 @@ namespace DGtal
   // template class DSSLengthEstimator
   /**
    * Description of template class 'DSSLengthEstimator' <p>
-   * \brief Aim: a model of CGlobalCurveEstimator that 
+   * \brief Aim: a model of CGlobalCurveEstimator that
    * segments the digital curve into DSS and computes
    * the length of the resulting (not uniquely defined)
-   * polygon. 
+   * polygon.
    *
-   * Model of @href CGlobalCurveGeometricEstimator.
+   * Model of @ref CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnPoints. 
+   * @tparam TConstIterator a model of CConstIteratorOnPoints.
    */
   template <typename TConstIterator>
   class DSSLengthEstimator
@@ -84,45 +84,45 @@ namespace DGtal
     typedef double Quantity;
 
     typedef ArithmeticalDSSComputer<ConstIterator,int,4> DSSComputer;
-    typedef typename DSSComputer::Point Point;  
-    typedef typename DSSComputer::Vector Vector;  
+    typedef typename DSSComputer::Point Point;
+    typedef typename DSSComputer::Vector Vector;
 
     /**
      * Default Constructor.
      */
     DSSLengthEstimator();
-    
-    
+
+
     /**
      * Destructor.
      */
     ~DSSLengthEstimator();
 
-  
+
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /** 
+
+    /**
      * Initialize the measure computation.
-     * 
+     *
      * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
      * @param isClosed true if the input range is closed.
      */
     void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
-    
 
-    /** 
+
+    /**
      * Computation of the l1 length of the curve.
      * Complexity: O(|Range|)
      * @pre init() method must be called before.
-     * 
+     *
      * @return the curve length.
      */
     Quantity eval( ) const;
 
- 
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -137,7 +137,7 @@ namespace DGtal
 
       // ------------------------- Private Datas --------------------------------
   private:
-    
+
     ///Grid size.
     double myH;
 
