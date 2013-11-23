@@ -92,7 +92,7 @@ namespace DGtal
     typedef typename ImageContainer::Domain Domain;
     typedef typename ImageContainer::Point Point;
     typedef typename ImageContainer::Value Value;
-    
+
     typedef typename ImageContainer::Difference Difference;
 
     ///Types
@@ -102,7 +102,7 @@ namespace DGtal
     typedef TImageCacheReadPolicy ImageCacheReadPolicy;
     typedef TImageCacheWritePolicy ImageCacheWritePolicy;
     typedef ImageCache<OutputImage, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy > MyImageCache;
-    
+
     // ----------------------- Standard services ------------------------------
 
   public:
@@ -118,7 +118,7 @@ namespace DGtal
                Alias<ImageCacheReadPolicy> aReadPolicy,
                Alias<ImageCacheWritePolicy> aWritePolicy,
                typename Domain::Integer N):
-      myN(N), myImageFactory(anImageFactory), myReadPolicy(aReadPolicy), myWritePolicy(aWritePolicy)
+      myN(N), myImageFactory(&anImageFactory), myReadPolicy(&aReadPolicy), myWritePolicy(&aWritePolicy)
     {
       myImageCache = new MyImageCache(myImageFactory, myReadPolicy, myWritePolicy);
 
@@ -136,7 +136,7 @@ namespace DGtal
     {
       delete myImageCache;
     }
-    
+
   private:
 
   public:
@@ -160,7 +160,7 @@ namespace DGtal
       for(typename DGtal::Dimension i=0; i<Domain::dimension; i++)
         mySize[i] = (m_upperBound[i]-m_lowerBound[i]+1)/myN;
     }
-    
+
     /**
       * Assignment.
       * @param other the TiledImage to copy.
@@ -530,7 +530,7 @@ namespace DGtal
     {
       return ReverseTiledIterator( begin() );
     }
-    
+
     // ---
 
     OutputIterator outputIterator()
@@ -554,10 +554,10 @@ namespace DGtal
     }
 
     /////////////////////////// Ranges  /////////////////////
-    
+
     typedef TiledImageBidirectionalConstRangeFromPoint<TiledImage > ConstRange;
     typedef TiledImageBidirectionalRangeFromPoint<TiledImage > Range;
-    
+
     /**
      * @return the range providing begin and end
      * iterators (with this) to scan the values of image.
@@ -674,10 +674,10 @@ namespace DGtal
       Domain di(dMin, dMax);
       return di;
     }
-    
+
     /**
      * Returns an ImageContainer pointer for the block coords aCoord.
-     * 
+     *
      * @param aCoord the block coords.
      * @return an ImageContainer pointer.
      */
@@ -793,7 +793,7 @@ namespace DGtal
 
     /// domain lower and upper bound
     Point m_lowerBound, m_upperBound;
-    
+
     /// TImageCacheReadPolicy pointer
     TImageCacheReadPolicy *myReadPolicy;
 
