@@ -192,14 +192,14 @@ namespace DGtal
     {
       ZNear = _near; ZFar = _far;
     }
-    
+
     /**
      * Set the open gl scale of x,y,z axis. It doesn't change the
      * geometry of anything, it is just visualisation parameter
      * (useful to produce more realistic 3D volume display)
      * @param sx the scale on the x axis.
      * @param sy the scale on the y axis.
-     * @param sz the scale on the z axis.     
+     * @param sz the scale on the z axis.
      *
      **/
     void setGLScale(float sx, float sy, float sz)
@@ -209,7 +209,7 @@ namespace DGtal
       myGLScaleFactorZ=sz;
     }
 
-    
+
     /// the 3 possible axes for the image direction
     enum ImageDirection {xDirection, yDirection, zDirection };
     /// the modes of representation of an image
@@ -549,8 +549,8 @@ namespace DGtal
      * @param xTranslation the image translation in the x direction (default 0).
      * @param yTranslation the image translation in the y direction (default 0).
      * @param zTranslation the image translation in the z direction (default 0).
-     * @param rotationAngle the angle of rotation. 
-      * @param rotationDir the rotation is applied around the given direction. 
+     * @param rotationAngle the angle of rotation.
+      * @param rotationDir the rotation is applied around the given direction.
       **/
     template <typename TImageType, typename TFunctor>
 
@@ -610,45 +610,45 @@ namespace DGtal
                              double yTranslation, double zTranslation);
 
     /**
-     * @brief compute2DDomainLineRepresentation
+     * compute2DDomainLineRepresentation
      * @param anImageDomain the image domain
      * @param delta the delte for computing
-     * @return
+     * @return a vector of lined3D
      */
     std::vector<typename DGtal::Viewer3D< Space , KSpace >::LineD3D>
     compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
 
     /**
-     * @brief compute2DDomainLineRepresentation
+     * compute2DDomainLineRepresentation
      * @param anImageDomain the image domain
-     * @return
+     * @return  a vector of lined3D
      */
     std::vector<typename DGtal::Viewer3D< Space , KSpace >::LineD3D>
     compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
 
-    
+
     /**
-     * Rotate an lineD3D from its two extremity points.   
+     * Rotate an lineD3D from its two extremity points.
      *
      * @param aLine (returns) the line to be rotated.
      * @param pt the center of rotation.
      * @param angleRotation the angle of rotation.
-     * @param dirRotation the rotation will be applied around this direction. 
+     * @param dirRotation the rotation will be applied around this direction.
      **/
 
     void  rotateLineD3D(typename DGtal::Display3D<Space, KSpace>::LineD3D &aLine, DGtal::PointVector<3, int> pt,
-			double angleRotation, ImageDirection dirRotation);       
+			double angleRotation, ImageDirection dirRotation);
 
 
 
     /**
-     * Rotate an Image2DDomainD3D from its bounding points and from its grid line.   
+     * Rotate an Image2DDomainD3D from its bounding points and from its grid line.
      *
      * @param anDom (returns) the domain to be rotated.
      * @param angle the angle of rotation.
-     * @param rotationDir the rotation will be applied around this direction. 
+     * @param rotationDir the rotation will be applied around this direction.
      **/
-    
+
     void  rotateDomain(Image2DDomainD3D &anDom, double angle, ImageDirection rotationDir);
 
 
@@ -888,7 +888,7 @@ namespace DGtal
                                                     myMode(aGLImg.myMode),
 						    myTextureFitX(aGLImg.myTextureFitX),
                                                     myTextureFitY(aGLImg.myTextureFitY)
-                                                   
+
       {
         point1[0]=aGLImg.point1[0]; point1[1]=aGLImg.point1[1]; point1[2]=aGLImg.point1[2];
         point2[0]=aGLImg.point2[0]; point2[1]=aGLImg.point2[1]; point2[2]=aGLImg.point2[2];
@@ -983,22 +983,22 @@ namespace DGtal
     };
 
 
-    
+
   public:
     /**
      * Rotate Image2DDomainD3D or TextureImage  vertex from a given
      * angle and a rotation direction. The center of rotation is defined
      * from the image center point.
-     * 
+     *
      * @tparam  TImageORDomain the type object to be rotated (should  be an Image2DDomainD3D or a TextureImage)
      * @param anImageOrDom (returns) the domain or image to be rotated.
      * @param angle the angle of the rotation.
      * @param rotationDir the rotation is applied around this axis direction.
      **/
-    
+
     template<typename TImageORDomain>
-    static 
-    void 
+    static
+    void
     rotateImageVertex(TImageORDomain &anImageOrDom, double angle, ImageDirection rotationDir){
       double xB = (anImageOrDom.point1[0]+anImageOrDom.point2[0]+anImageOrDom.point3[0]+anImageOrDom.point4[0])/4.0;
       double yB = (anImageOrDom.point1[1]+anImageOrDom.point2[1]+anImageOrDom.point3[1]+anImageOrDom.point4[1])/4.0;
@@ -1007,11 +1007,11 @@ namespace DGtal
       rotatePoint( anImageOrDom.point2[0],  anImageOrDom.point2[1], anImageOrDom.point2[2],   xB, yB, zB, angle, rotationDir);
       rotatePoint( anImageOrDom.point3[0],  anImageOrDom.point3[1], anImageOrDom.point3[2],   xB, yB, zB, angle, rotationDir);
       rotatePoint( anImageOrDom.point4[0],  anImageOrDom.point4[1], anImageOrDom.point4[2],   xB, yB, zB, angle, rotationDir);
-    
+
     }
 
     /**
-     * Rotate a vertex from a given angle, a center point and a rotation direction. 
+     * Rotate a vertex from a given angle, a center point and a rotation direction.
      * @param  x the x coordinate of the point to rotated (return).
      * @param  y the y coordinate of the point to rotated (return).
      * @param  z the z coordinate of the point to rotated (return).
@@ -1021,12 +1021,12 @@ namespace DGtal
      * @param rotationAngle the angle of the rotation.
      * @param rotationDir the rotation is applied around this axis direction.
      **/
-  
-    static  
-    void  rotatePoint(double &x, double &y, double &z, 
+
+    static
+    void  rotatePoint(double &x, double &y, double &z,
 		      double cx, double cy, double cz,
 		      double rotationAngle, ImageDirection rotationDir);
-    
+
 
 
 
@@ -1056,17 +1056,17 @@ namespace DGtal
 
     //the default width of the mesh line
     float myMeshDefaultLineWidth;
-    
+
     // To apply openGL ajustment only on visualisation
     float myGLScaleFactorX;
     float myGLScaleFactorY;
     float myGLScaleFactorZ;
-    
+
     /// Used to store all displayed images
     std::vector<TextureImage> myGSImageList;
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
-    
+
 
   }; // end of class Viewer3D
 
