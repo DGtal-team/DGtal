@@ -46,38 +46,38 @@
 
 namespace DGtal
 {
-  namespace deprecated 
+  namespace deprecated
   {
-    
+
   /////////////////////////////////////////////////////////////////////////////
   // template class GreedyDecomposition
   /**
-   * @warning This class is deprecated since GreedySegmentation has been created. 
-   * This class is used in @href testDecomposition.cpp @href DSSLengthEstimator.ih and @href displayContours.cpp, 
-   * but GreedySegmentation will be preferred in the future. 
+   * @warning This class is deprecated since GreedySegmentation has been created.
+   * This class is used in @ref testDecomposition.cpp @href DSSLengthEstimator.ih and @href displayContours.cpp,
+   * but GreedySegmentation will be preferred in the future.
    *
    * Description of template class 'GreedyDecomposition' <p>
-   * \brief Aim: Computes the greedy decomposition of a sequence 
+   * \brief Aim: Computes the greedy decomposition of a sequence
    * into segments (the last element of a given segment is the first one
    * one of the next segment).
-    
+
    * This class is a model of CDecomposition.
-   * 
+   *
    * This class is templated by 'TSegment', a model of CSegmentComputer
-   * that is able to manage the on-line recognition of a given class of 
+   * that is able to manage the on-line recognition of a given class of
    * segments (4-connected DSS, 8-connected DSS, thick segment, etc.)
-   * 'TSegment' must have an internal type 'ConstIterator' that is a means of 
-   * of accessing the sequence elements. 
+   * 'TSegment' must have an internal type 'ConstIterator' that is a means of
+   * of accessing the sequence elements.
    * 'TSegment' must have the methods init() and extendForward() taking as input
    * a parameter of type 'Iterator'. The extend method must return a boolean
    * equal to TRUE if the extension is possible and has been successfully
    * performed and FALSE otherwise.
    *
    * In the short example below, a digital curve stored in a STL vector
-   * is decomposed into 8-connected DSSs whose parameters are sent to 
+   * is decomposed into 8-connected DSSs whose parameters are sent to
    * the standard output.
-   * @code 
-   
+   * @code
+
   //types definition
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Sequence;
@@ -100,19 +100,19 @@ namespace DGtal
   //Segmentation
   DSS dssRecognition;
   Decomposition theDecomposition(curve.begin(), curve.end(), dssRecognition, false);
-         
+
   Decomposition::SegmentIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
     DSS currentSegment(*i);
     trace.info() << currentSegment << std::endl;  //standard output
-  } 
+  }
 
    * @endcode
    *
    * If you want to get the DSSs decomposition of the digital curve
    * when it is scanned in the reverse way, you can use the reverse
-   * iterator of the STL vector:   
-   * @code 
+   * iterator of the STL vector:
+   * @code
 ...
   typedef Sequence::const_reverse_iterator ConstReverseIterator;
 ...
@@ -125,7 +125,7 @@ namespace DGtal
   class GreedyDecomposition
   {
 
-  public: 
+  public:
 
     typedef TSegment Segment;
     typedef typename Segment::ConstIterator Iterator;
@@ -136,12 +136,12 @@ namespace DGtal
 
 
     /**
-     * This class is an iterator on a digital curve 
+     * This class is an iterator on a digital curve
      * storing the current segment.
      */
     class SegmentIterator
     {
-           
+
          // ------------------------- data -----------------------
     private:
 
@@ -152,13 +152,13 @@ namespace DGtal
 
 
       /**
-       * An iterator of the digital curve  
+       * An iterator of the digital curve
        * at the front of the current segment
        */
       Iterator myFront;
 
       /**
-       * An iterator of the contour 
+       * An iterator of the contour
        * at the back of the current segment
        */
       Iterator myBack;
@@ -168,19 +168,19 @@ namespace DGtal
        * The current segment
        */
       Segment  mySegment;
-      
+
 
       /**
        * A flag equal to TRUE if the current segment
-       * intersects the next one, FALSE otherwise 
-       * (and FALSE if the current segment is the last one) 
+       * intersects the next one, FALSE otherwise
+       * (and FALSE if the current segment is the last one)
        */
       bool  myFlagIntersectNext;
 
       /**
        * A flag equal to TRUE if the current segment
-       * intersects the previous one, FALSE otherwise 
-       * (and FALSE if the current segment is the first one) 
+       * intersects the previous one, FALSE otherwise
+       * (and FALSE if the current segment is the first one)
        */
       bool  myFlagIntersectPrevious;
 
@@ -189,7 +189,7 @@ namespace DGtal
       // ------------------------- Standard services -----------------------
     public:
        friend class GreedyDecomposition<TSegment>;
-         
+
 
 
       /**
@@ -209,22 +209,22 @@ namespace DGtal
        * @param aOther the iterator to clone.
        */
       SegmentIterator( const SegmentIterator & aOther );
-    
+
       /**
        * Assignment.
        * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
       SegmentIterator& operator=( const SegmentIterator & aOther );
-    
+
       /**
        * Destructor. Does nothing.
        */
       ~SegmentIterator();
-    
+
       // ------------------------- iteration services -------------------------
     public:
-      
+
       /**
        * @return the current segment
        */
@@ -241,7 +241,7 @@ namespace DGtal
        * Nb: complexity in O(n).
        */
       SegmentIterator& operator++();
-      
+
       /**
        * Goes to the next segment on the contour (if possible).
        * Nb: complexity in O(n).
@@ -275,7 +275,7 @@ namespace DGtal
       /**
        * Equality operator.
        *
-       * @param aOther the iterator to compare with 
+       * @param aOther the iterator to compare with
        *
        * @return 'true' if their current positions coincide.
        * (same front and back iterators)
@@ -285,7 +285,7 @@ namespace DGtal
       /**
        * Inequality operator.
        *
-       * @param aOther the iterator to compare with 
+       * @param aOther the iterator to compare with
        *
        * @return 'true' if their current positions differs.
        * (different front and back iterators)
@@ -294,15 +294,15 @@ namespace DGtal
 
     // ----------------------- hidden services --------------------------------------
 
-      private: 
+      private:
 
       /**
-       * Computes the longest possible segment from 
+       * Computes the longest possible segment from
        * two consecutive points.
        * Nb: complexity in O(n).
        */
       void longestSegment();
-      
+
       /**
        * Checks if the current segment intersects the next one (if exists).
        * @param it a given iterator
@@ -329,9 +329,9 @@ namespace DGtal
      * @param aFlag a boolean equal to TRUE to decompose the digital
      * curve as a closed one, FALSE otherwise
      */
-    GreedyDecomposition(const Iterator& aBegin, 
-                        const Iterator& aEnd, 
-                        const Segment& aSegment, 
+    GreedyDecomposition(const Iterator& aBegin,
+                        const Iterator& aEnd,
+                        const Segment& aSegment,
                         const bool& aFlag);
 
     /**
@@ -343,9 +343,9 @@ namespace DGtal
      * @param aFlag a boolean equal to TRUE to decompose the digital
      * curve as a closed one, FALSE otherwise
      */
-    void init(const Iterator& aBegin, 
-              const Iterator& aEnd, 
-              const Segment& aSegment, 
+    void init(const Iterator& aBegin,
+              const Iterator& aEnd,
+              const Segment& aSegment,
               const bool& aFlag);
 
 
