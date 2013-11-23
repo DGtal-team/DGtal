@@ -42,13 +42,15 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include <iterator>
+#include <iostream>
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "boost/concept_check.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
 
 
@@ -58,11 +60,11 @@ namespace DGtal
 
   /**
    * @brief Aim: model of CConstRange that adapts any range of elements
-   * bounded by two iterators [itb, ite) and provides services to 
-   * (circularly)iterate over it (in a read-only manner). 
+   * bounded by two iterators [itb, ite) and provides services to
+   * (circularly)iterate over it (in a read-only manner).
    *
    * @tparam TConstIterator the type of the iterator to adapt
-   * (at least bidirectional) 
+   * (at least bidirectional)
    *
    * @see ConstRangeAdapter
    */
@@ -70,12 +72,12 @@ namespace DGtal
   class SimpleConstRange
   {
 
-    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<TConstIterator> )); 
+    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<TConstIterator> ));
 
     // ------------------------- inner types --------------------------------
-  public: 
-  
-    typedef TConstIterator ConstIterator; 
+  public:
+
+    typedef TConstIterator ConstIterator;
     typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     typedef Circulator<ConstIterator> ConstCirculator;
@@ -100,14 +102,14 @@ namespace DGtal
      */
     SimpleConstRange( const SimpleConstRange & other )
       : myBegin(other.myBegin), myEnd(other.myEnd) {}
-  
+
     /**
      * Assignment.
      * @param other the iterator to copy.
      * @return a reference on 'this'.
      */
     SimpleConstRange& operator= ( const SimpleConstRange & other )
-    {  
+    {
       if ( this != &other )
 	{
 	  myBegin = other.myBegin;
@@ -126,19 +128,19 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const { return true; }
-  
+
     // ------------------------- display --------------------------------
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const 
+    void selfDisplay ( std::ostream & out ) const
     {
-      typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
-      out << "[SimpleConstRange]" << std::endl; 
-      out << "\t"; 
-      std::copy( myBegin, myEnd, ostream_iterator<Value>(out, ", ") ); 
-      out << std::endl; 
+      typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value;
+      out << "[SimpleConstRange]" << std::endl;
+      out << "\t";
+      std::copy( myBegin, myEnd, std::ostream_iterator<Value>(out, ", ") );
+      out << std::endl;
     }
 
     /**
@@ -148,18 +150,18 @@ namespace DGtal
     {
       return "SimpleConstRange";
     }
-  
+
 
     // ------------------------- private data --------------------------------
-  private: 
+  private:
     /**
      * Begin underlying iterator
      */
-    TConstIterator myBegin; 
+    TConstIterator myBegin;
     /**
      * End underlying iterator
      */
-    TConstIterator myEnd; 
+    TConstIterator myEnd;
 
     // ------------------------- iterator services --------------------------------
   public:

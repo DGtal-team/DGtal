@@ -48,6 +48,7 @@ This package gathers many concepts and stand-alone classes that are used in othe
 
 - \ref moduleIteratorsRanges (Tristan Roussillon)
 - \ref Smart pointers --- coming soon ---
+- \ref moduleCloneAndReference (Jacques-Olivier Lachaud)
 
 @b Package @b Concepts @b Overview
 - \ref packageBaseConcepts

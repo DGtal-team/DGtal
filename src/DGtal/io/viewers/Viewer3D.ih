@@ -1203,7 +1203,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     {
       for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
-          glColor4ub ( it_s->color.blue(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
+          glColor4ub ( it_s->color.red(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
           glNormal3f ( it_s->nx, it_s->ny ,it_s->nz );
           glVertex3f ( it_s->point1[0], it_s->point1[1], it_s->point1[2] );
           glVertex3f ( it_s->point2[0], it_s->point2[1], it_s->point2[2] );
@@ -1305,8 +1305,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
             {
               glVertex3f ( (it_s->vertices).at(j)[0], (it_s->vertices).at(j)[1], (it_s->vertices).at ( j )[2] );
             }
+          glEnd();
         }
-      glEnd();
     }
   glEndList();
 

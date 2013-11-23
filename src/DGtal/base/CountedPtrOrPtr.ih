@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file Clone.ih
+ * @file CountedPtrOrPtr.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2012/11/23
+ * @date 2013/11/6
  *
- * Implementation of inline methods defined in Clone.h
+ * Implementation of inline methods defined in CountedPtrOrPtr.h
  *
  * This file is part of the DGtal library.
  */
@@ -38,52 +38,39 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-//-----------------------------------------------------------------------------
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
 template <typename T>
 inline
-DGtal::Clone<T>::~Clone()
-{}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::Clone<T>::Clone( const T & t ) 
-  : myRefT( t )
-{}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::Clone<T>::Clone( const Clone<T> & other ) 
-  : myRefT( other.myRefT )
-{}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::Clone<T>::Clone( const T* ptrT )
-  : myRefT( *ptrT )
+void
+DGtal::CountedPtrOrPtr<T>::selfDisplay ( std::ostream & out ) const
 {
-  ASSERT( ptrT != 0 );
+  if (isValid()) {
+    if ( myIsCountedPtr )
+      out << "[CountedPtrOrPtr nbcounts =" << counterPtr()->count << "]";
+    else 
+      out << "[CountedPtrOrPtr is ptr at " << ptr() << "]";
+  }
+  else
+    out << "[CountedPtrOrPtr to NULL]";
 }
-//-----------------------------------------------------------------------------
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
 template <typename T>
 inline
-DGtal::Clone<T>::operator T() const
-{ 
-  return T( myRefT ); 
-}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-T*
-DGtal::Clone<T>::allocate() const
-{ 
-  return new T( myRefT ); 
-}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::Clone<T>::operator CountedPtr<T>() const
-{ 
-  return CountedPtr<T>( allocate() ); // duplicated once 
+bool
+DGtal::CountedPtrOrPtr<T>::isValid() const
+{
+  return myAny != 0;
 }
 
 
@@ -91,6 +78,15 @@ DGtal::Clone<T>::operator CountedPtr<T>() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out,
+      const CountedPtrOrPtr<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

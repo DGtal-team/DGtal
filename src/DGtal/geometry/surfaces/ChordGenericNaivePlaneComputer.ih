@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file COBAGenericNaivePlane.ih
+ * @file ChordGenericNaivePlaneComputer.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/09/20
  *
- * Implementation of inline methods defined in COBAGenericNaivePlane.h
+ * Implementation of inline methods defined in ChordGenericNaivePlaneComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -39,25 +39,25 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-~COBAGenericNaivePlane()
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+~ChordGenericNaivePlaneComputer()
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-COBAGenericNaivePlane()
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+ChordGenericNaivePlaneComputer()
 { // Object is invalid
   _axesToErase.reserve( 3 );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-COBAGenericNaivePlane( const COBAGenericNaivePlane & other )
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+ChordGenericNaivePlaneComputer( const ChordGenericNaivePlaneComputer & other )
   : myAxes( other.myAxes )
 {
   for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end();
@@ -66,11 +66,11 @@ COBAGenericNaivePlane( const COBAGenericNaivePlane & other )
   _axesToErase.reserve( 3 );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger> &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-operator=( const COBAGenericNaivePlane & other )
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar> &
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+operator=( const ChordGenericNaivePlaneComputer & other )
 {
   if ( this != &other )
     {
@@ -82,29 +82,20 @@ operator=( const COBAGenericNaivePlane & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 DGtal::Dimension
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 active() const
 {
   ASSERT( myAxes.size() > 0 );
   return myAxes[ 0 ];
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
-inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::MyIntegerComputer &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-ic() const
-{
-  return myComputers[ active() ].ic();
-}
-//-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 clear()
 {
   myAxes.clear();
@@ -115,79 +106,88 @@ clear()
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-init( InternalInteger diameter, 
-      InternalInteger widthNumerator,
-      InternalInteger widthDenominator )
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+init( InternalScalar widthNumerator,
+      InternalScalar widthDenominator )
 {
   clear();
   for ( unsigned int i = 0; i < 3; ++i )
-    myComputers[ i ].init( i, diameter, widthNumerator, widthDenominator );
+    myComputers[ i ].init( i, widthNumerator, widthDenominator );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::Size
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 size() const
 {
   return myComputers[ active() ].size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 empty() const
 {
   return myComputers[ active() ].empty();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+begin() const
+{
+  return myComputers[ active() ].begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::ConstIterator
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+end() const
+{
+  return myComputers[ active() ].end();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::Size
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 max_size() const
 {
   return myComputers[ active() ].max_size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::Size
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 maxSize() const
 {
   return max_size();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
-inline
-typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Size
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-complexity() const
-{
-  return myComputers[ active() ].complexity();
-}
-//-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 operator()( const Point & p ) const
 {
   return myComputers[ active() ].operator()( p );
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-extendAsIs( const Point & p )
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+extendAsIs( const InputPoint & p )
 { 
   ASSERT( isValid() );
   unsigned int nbok = 0;
@@ -215,10 +215,10 @@ extendAsIs( const Point & p )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-extend( const Point & p )
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+extend( const InputPoint & p )
 {
   ASSERT( isValid() );
   unsigned int nbok = 0;
@@ -244,10 +244,10 @@ extend( const Point & p )
   return false;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
-isExtendable( const Point & p ) const
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+isExtendable( const InputPoint & p ) const
 {
   ASSERT( isValid() );
   unsigned int nbok = 0;
@@ -259,10 +259,10 @@ isExtendable( const Point & p ) const
   return nbok != 0;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 extend( TInputIterator it, TInputIterator itE )
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -291,10 +291,10 @@ extend( TInputIterator it, TInputIterator itE )
   return false;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 template <typename TInputIterator>
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 isExtendable( TInputIterator it, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
@@ -309,51 +309,60 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   return nbok != 0;
 }
 
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
+inline
+typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::Primitive
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
+primitive() const
+{
+  return myComputers[ active() ].primitive();
+}
 
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 template <typename Vector3D>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 getNormal( Vector3D & normal ) const
 {
   myComputers[ active() ].getNormal( normal );
 }
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 template <typename Vector3D>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 getUnitNormal( Vector3D & normal ) const
 {
   myComputers[ active() ].getUnitNormal( normal );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 getBounds( double & min, double & max ) const
 {
   myComputers[ active() ].getBounds( min, max );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-const typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Point &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+const typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::InputPoint &
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 minimalPoint() const
 {
   return myComputers[ active() ].minimalPoint();
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
-const typename DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::Point &
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::
+const typename DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::InputPoint &
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 maximalPoint() const
 {
   return myComputers[ active() ].maximalPoint();
@@ -368,12 +377,14 @@ maximalPoint() const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 void
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[COBAGenericNaivePlane";
+  double min, max;
+  double N[ 3 ];
+  out << "[ChordGenericNaivePlaneComputer";
   for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
         axIt != axItE; ++axIt )
     out << " " << myComputers[ *axIt ];
@@ -384,10 +395,10 @@ DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostre
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 bool
-DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::isValid() const
+DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::isValid() const
 {
   return myComputers[ active() ].isValid();
 }
@@ -400,11 +411,11 @@ DGtal::COBAGenericNaivePlane<TSpace, TInternalInteger>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TSpace, typename TInternalInteger>
+template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const COBAGenericNaivePlane<TSpace, TInternalInteger> & object )
+		  const ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -412,5 +423,4 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
 

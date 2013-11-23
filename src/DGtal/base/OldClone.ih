@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ConstAlias.ih
+ * @file OldClone.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/11/23
  *
- * Implementation of inline methods defined in ConstAlias.h
+ * Implementation of inline methods defined in OldClone.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,52 +41,53 @@
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::ConstAlias<T>::~ConstAlias()
+DGtal::deprecated::Clone<T>::~Clone()
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::ConstAlias<T>::ConstAlias()
-  : myPtrT( 0 )
+DGtal::deprecated::Clone<T>::Clone( const T & t ) 
+  : myRefT( t )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::ConstAlias<T> &
-DGtal::ConstAlias<T>::operator=( ConstAlias<T> & other )
+DGtal::deprecated::Clone<T>::Clone( const DGtal::deprecated::Clone<T> & other ) 
+  : myRefT( other.myRefT )
+{}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
+DGtal::deprecated::Clone<T>::Clone( const T* ptrT )
+  : myRefT( *ptrT )
+{
+  ASSERT( ptrT != 0 );
+}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
+DGtal::deprecated::Clone<T>::operator T() const
 { 
-  myPtrT = other.myPtrT;
-  return *this;
+  return T( myRefT ); 
 }
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::ConstAlias<T>::ConstAlias( const T & t ) : myPtrT( &t )
-{}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::ConstAlias<T>::ConstAlias( const ConstAlias<T> & other ) : myPtrT( other.myPtrT )
-{}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::ConstAlias<T>::ConstAlias( const T* pT ) : myPtrT( pT )
-{}
-//-----------------------------------------------------------------------------
-template <typename T>
-inline
-DGtal::ConstAlias<T>::operator const T*() const
-{
-  return myPtrT;
+T*
+DGtal::deprecated::Clone<T>::allocate() const
+{ 
+  return new T( myRefT ); 
 }
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::ConstAlias<T>::operator const T&() const
-{
-  return *myPtrT;
+DGtal::deprecated::Clone<T>::operator CountedPtr<T>() const
+{ 
+  return CountedPtr<T>( allocate() ); // duplicated once 
 }
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
