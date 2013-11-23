@@ -6,6 +6,13 @@
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 
+*Base Package*
+
+    - Complete rewriting of Clone, Alias and ConstAlias
+      classes. Parameter passing is now documented with a standardized
+      method to determine parameters unambiguously. Associated classed
+      CowPtr, CountedPtrOrPtr and CountedConstPtrOrConstPtr are now used
+      in conjunction with the previous classes.
 
 *Kernel Package*
 
@@ -16,6 +23,15 @@
     - New basic functors:
 	- SliceRotator2D: to rotate 2D Slice images from 3D volume.
 	- Point2DEmbedderIn3D: a simple functor to embed in 3d a 2d points (useful to extract 2D image from 3D volume).
+    - Sets have been updated to own their domain with a copy-on-write pointer, in order to avoid some inconsistencies.
+
+*Topology Package*
+
+    - Fixing bugs in Object::isSimple for some digital
+      topologies. Speed of Object::isSimple has been improved. Homotopic
+      thinning is much faster (even without a precomputed simplicity
+      table).
+    - Objects have been updated to use Clone services.
 
 *Geometry Package*
 
@@ -32,7 +48,7 @@
 
     - With an optional binding with CGAL and Eigen3, new curvature and
       normal vector estimators have been added. For instance, you can
-      now estimate curvature from polyonomial surface fitting (Jet
+      now estimate curvature from polynomial surface fitting (Jet
       Fitting) and Monge forms.
 
     - Minor improvements in the spherical accumulator.
@@ -42,6 +58,15 @@
       convex hulls or Farey Fan. Also works when the DSL
       characteristics are not integers.
 
+    - Chord algorithm for (naive) plane recognition and width computation.
+    - New organization for computing primitives. Introduction of the concept
+      of PrimitiveComputer and specialization. COBA algorithm and Chord algorithm
+      are now models of AdditivePrimitiveComputer.
+    - Introduction of the primitive ParallelStrip, computed by COBA and Chord algorithms
+    - New documentation for planarity decision, plane recognition and width computation.
+      Quantitative and qualitative evaluation of COBA and Chord algorithm.
+    - Bug fix in COBA algorithm when extending an empty computer with a group of points.
+    - add standard plane recognition with adapter classes both for COBA and Chord algorithm.
 
 *Shape Package*
 

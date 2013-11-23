@@ -21,7 +21,7 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2012/11/23
+ * @date 2013/11/5
  *
  * Header file for module ConstAlias.cpp
  *
@@ -42,6 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/CountedPtrOrPtr.h"
+#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/CountedConstPtrOrConstPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,37 +54,64 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ConstAlias
   /**
-     Description of template class 'ConstAlias' <p> \brief Aim: This class
-     encapsulates its parameter class so that to indicate to the user
-     that the object/pointer will be only aliased. Therefore the user
-     is reminded that the argument parameter is given to the function
-     without any additional cost and may be modified, while he is
-     aware that the lifetime of the argument parameter must be at
-     least as long as the object itself. Note that an instance of
-     ConstAlias<T> is itself a light object (it holds only a pointer).
+     Description of template class 'ConstAlias' <p> \brief Aim: This
+     class encapsulates its parameter class so that to indicate to the
+     user that the object/pointer will be only const aliased (and
+     hence left unchanged). Therefore the \b user is reminded that the
+     argument parameter is given to the function without any
+     additional cost and may not be modified, while he is aware that
+     the lifetime of the argument parameter must be at least as long
+     as the object itself. Note that an instance of ConstAlias<T> is
+     itself a light object (it holds only an enum and a pointer).
+
+     (For a complete description, see \ref moduleCloneAndReference).
 
      It is used in methods or functions to encapsulate the parameter
-     types.
+     types. The following conversion from input parameter to data
+     member or variable are possible:
 
-     @note The usage of \c ConstAlias<T> instead of \c const \c T \c &
-     or of \c const \c T \c * in parameters is \b recommended when the
+     |Argument          |\c const \c T& |\c const \c T* |\c CountedPtr<T>|\c CountedPtrOrPtr<T>|\c CountedConstPtrOrConstPtr<T>|
+     |------------------|---------------|---------------|----------------|------------|---|
+     |To: \c const T&   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+     |To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
+     |To: \ref CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure |Shared. O(1), \b secure| Shared. O(1), \b secure |
+
+     Argument conversion to member is \b automatic except when
+     converting to a pointer \c const \c T*: the \b address operator
+     (\c operator&) must be used in this case.
+
+     For the last row (case where the \e programmer choose a \ref
+     CountedConstPtrOrConstPtr to hold the const alias), the \e user
+     can thus enforce a \b secure const aliasing by handling a variant
+     of \ref CountedPtr as argument. In this case, even if the aliased
+     object is destroyed in the caller context, it still exists in the
+     callee context.
+
+     @note The usage of \ref ConstAlias<T> instead of \c const \c T \c
+     & or \c const \c T \c * in parameters is \b recommended when the
      lifetime of the parameter must exceed the lifetime of the called
      method/function/constructor (often the case in constructor or
-     init methods). The usage of \c const \c T \c & or \c const \c T
-     \c * instead of \c ConstAlias<T> is \b recommended when the
-     lifetime of the parameter is not required to exceed the lifetime
-     of the called method/function/constructor (often the case in
-     standard methods, where the parameter is only used at some point,
-     but not referenced after in some data member).
+     init methods).
+
+     @note The usage of \c const \c T \c & or \c const \c T \c *
+     instead of \ref ConstAlias<T> is \b recommended when the lifetime
+     of the parameter is not required to exceed the lifetime of the
+     called method/function/constructor (often the case in standard
+     methods, where the parameter is only used at some point, but not
+     referenced after in some data member).
+
+     @note If the \e developer (not the \e user) wishes to enforce a
+     \b secure const aliasing in all cases, he should probably clone
+     the argument, hence use class \ref Clone.
+
 
      @tparam T is any type.
 
-     @see ConstAlias
+     @see Alias
      @see Clone
 
      It can be used as follows. Consider this simple example where
-     class \e A is a big object. Then we define three classes \e B1,
-     \e B2 and \e B3, that uses some instance of \e A.
+     class \e A is a big object.
      
      @code
      const int N = 10000;
@@ -88,11 +119,11 @@ namespace DGtal
        int table[N];
      };
 
-     // Each B1, B2 or B3 uses A, but we do not know if A will be copied
-     // or just referenced by only looking at the declaration of
-     // the method. Generally the ambiguity is removed by adding
-     // comments or, for the experienced developper, by looking at
-     // other parts of the code.
+     // When looking at the signature of B1's constructor, there is an
+     // ambiguity on the role of parameter a and its life-time. Here
+     // a's lifetime should be longer than the construction. Generally
+     // the ambiguity is removed by adding comments or, for the
+     // experienced developper, by looking at other parts of the code.
 
      // Only aliasing, but for a long lifetime.
      struct B1 {
@@ -101,198 +132,217 @@ namespace DGtal
      ...
        const A & myA;
      };
-     // Copying as data member (stack or heap depending on B2 instance)
-     struct B2 {
-       B2( const A & a ) // ambiguous, cost is O(N) here
-       : myA( a ) {}
-     ...
-       A myA;
-     };
-     // Copying on heap and data member pointing on it.
-     struct B3 {
-       B3( const A & a ) // ambiguous, cost is O(N) here
-       { myA = new A( a ); }
-       ~B3() 
-       { if ( myA != 0 ) delete myA; }
-     ...
-       A* myA;
-     };
      @endcode
 
-     Sometimes it is also very important that the developper that uses
+     Sometimes it is very important that the developper that uses
      the library is conscious that an object, say \a b, may require
      that an instance \a a given as parameter should have a lifetime
      longer than \a b itself (case for an instance of \a B1
-     above). Classes Clone, Alias, ConstAlias exist for these
-     reasons. The classes above may be rewritten as follows.
+     above). Classes \ref Clone, \ref Alias, \ref ConstAlias exist for these
+     reasons. The class above may be rewritten as follows.
      
      @code
-     // Aliasing for a long lifetime is visible.
-     struct B1 {
-       B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+     // ConstAliasing for a long lifetime is visible.
+     struct B1_v2_1 {
+       B1_v2_1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
        const A & myA; 
-       // or Const A* myA;
      };
-     // Cloning as data member is visible.
-     struct B2 {
-       B2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+
+     // ConstAliasing for a long lifetime is visible.
+     struct B1_v2_2 {
+       B1_v2_2( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+       : myA( &a ) {} // Note the use of the address operator because of the pointer member
+     ...
+       const A* myA;
+     };
+
+     // ConstAliasing for a long lifetime is visible.
+     struct B1_v2_3 {
+       B1_v2_3( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       A myA;
+       CountedConstPtrOrConstPtr<A> myA;
      };
-     // Cloning on the heap requires call to allocate(), so that the user remembers calling \c delete.
-     struct B3_v1 {
-       B3_v1( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
-       : myA( a.allocate() ) {}
-       ~B3_v1() { if ( myA != 0 ) delete myA; }
-     ...
-       A* myA;
-     };
-     // Cloning on the heap with CountedPtr mechanism is straightforward.
-     struct B3_v2 {
-       B3_v2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
-       : myA( a ) {}
-       ~B3_v2() {} // CountedPtr takes care of delete.
-     ...
-       CountedPtr<A> myA;
-     };
-     // Cloning on the heap with CowPtr mechanism is straightforward.
-     struct B3_v3 {
-       B3_v3( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
-       : myA( a ) {}
-       ~B3_v3() {} // CountedPtr takes care of delete.
-     ...
-       CowPtr<A> myA;
-     };
+
      ...
      A a1;
-     B1 b( a1 );    // do not duplicate a1
-     B2 bb( a1 );   // duplicate a1
-     B2 bbb( &a1 ); // also duplicate a1 !
-     B3_v1 c1( a1 ); // duplicate a1 on the heap
-     B3_v2 c1( a1 ); // duplicate a1 on the heap
-     B3_v3 c1( a1 ); // duplicate a1 on the heap
+     CountedPtr<A> counted_a1( new A( a1 ) );
+     B1 ( a1 ); // not duplicated
+     B1_v2_1 ( a1 ); // not duplicated
+     B1_v2_2 ( a1 ); // not duplicated
+     B1_v2_3 ( counted_a1 );  // not duplicated, even better the user choose a secure variant of const alias.
      @endcode
 
-     A last question could be why are we not just passing the instance
-     of A by value. This, for sure, would tell the developper that the
-     instance is duplicated somehow. The problem is that it induces
-     generally two duplications, and not only one ! It may be possible
-     that the compiler optimizes things nicely but it is unclear if
-     the compiler will always do it.
+     @note The user should not use ConstAlias<T> instead of \c const \c T & for data
+     members. It works in most cases, but there are some subtle
+     differences between the two behaviors.
 
-     @code
-     struct B4 {
-       B4( A a ) // not ambiguous, but cost is O(2N) here. 
-       : myA( a ) {}
-     ...
-       A myA;
-     };
-     A a1;
-     B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
-     @endcode
-
-     @note The user should not use ConstAlias<T> instead of const T*
-     for data members. It works in most cases, but there are some
-     subtle differences between the two behaviors.
-
-     @note ConstAlias has no copy constructor. Indeed, if it had one,
-     there is an ambiguity when duplicating an alias between the copy
-     constructor or the T* cast followed by the T* constructor.
+     @note ConstAlias have a default copy constructor, so as to let the
+     user forward an ConstAlias<T> parameter.
    */
   template <typename T>
   class ConstAlias
   {
+
+    // ----------------------- Internal classes ------------------------------
+  protected:
+
+    /// Internal class that allows to distinguish the different types of parameters.
+    enum Parameter { CONST_LEFT_VALUE_REF, LEFT_VALUE_REF, PTR, CONST_PTR, 
+		     COW_PTR, COUNTED_PTR, RIGHT_VALUE_REF, COUNTED_PTR_OR_PTR,
+		     COUNTED_CONST_PTR_OR_CONST_PTR };
+
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
        Destructor. Does nothing.
      */
-    ~ConstAlias();
+    inline ~ConstAlias() {}
 
     /**
-     * Constructor.
-     */
-    ConstAlias();
-
-    /**
-      Copy constructor.
-      @param other the object to clone.
-      
-      @note Keep in mind that Alias<T> type should not be used in class
-      members (efficiency issue). 
- 
+       Constructor from const reference to an instance of T. The object is pointed in
+       'this'.
+       @param t any const reference to an object of type T.
     */
-    ConstAlias ( const ConstAlias & other );
+    inline ConstAlias( const T& t )
+      : myParam( CONST_LEFT_VALUE_REF ), myPtr( static_cast<const void*>( &t ) ) {}
+
+    /**
+       Constructor from const pointer to an instance of T. The object is pointed in
+       'this'.
+       @param ptrT any const pointer to an object of type T.
+    */
+    inline ConstAlias( const T* ptrT )
+      : myParam( CONST_PTR ), myPtr( static_cast<const void*>( ptrT ) ) {} 
+
+
+    /**
+       Constructor from a const reference to a copy-on-write pointer on T. Invalid.
+    */
+    inline ConstAlias( const CowPtr<T>& ) 
+      : myParam( COW_PTR ), myPtr( 0 )
+    { ASSERT(( false && "[ConstAlias::ConstAlias( const CowPtr<T>& )] Const-aliasing a a copy-on-write pointer has no meaning. Consider Clone instead." )); }
+
+
+    /**
+       Constructor from a const reference to a shared pointer on T. The object is pointed in
+       'this'.
+       @param shT any const reference to a shared pointer to an object of type T.
+    */
+    inline ConstAlias( const CountedPtr<T>& shT ) 
+      : myParam( COUNTED_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
+
+    /**
+       Constructor from a const reference to a shared or simple const pointer on T. The object is pointed in
+       'this'.
+       @param shT any const reference to a shared or simple const pointer to an object of type T.
+    */
+    inline ConstAlias( const CountedPtrOrPtr<T>& shT ) 
+      : myParam( COUNTED_PTR_OR_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
+
+    /**
+       Constructor from a const reference to a shared or simple const pointer on T. The object is pointed in
+       'this'.
+       @param shT any const reference to a shared or simple const pointer to an object of type T.
+    */
+    inline ConstAlias( const CountedConstPtrOrConstPtr<T>& shT ) 
+      : myParam( COUNTED_CONST_PTR_OR_CONST_PTR ), myPtr( static_cast<const void*>( &shT ) ) {}
+
+#ifdef CPP11_RREF_MOVE
+    /**
+       Constructor from right-reference value. Invalid.
+    */
+    inline ConstAlias( T&& ) : myParam( RIGHT_VALUE_REF ), myPtr( 0 )
+    { ASSERT(( false && "[ConstAlias::ConstAlias( T&& )] Const-aliasing a rvalue ref has no meaning. Consider Clone instead." )); }
+#endif // CPP11_RREF_MOVE
+
+    /**
+       Cast operator to a T const-reference. The object is never
+       duplicated. Allowed input parameters are:
+       - const A & -> const A &     // no duplication
+       - const A* -> const A &      // no duplication, exception if null
+    */
+    inline operator const T&() const {
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF:
+      case CONST_PTR:
+	return *( static_cast< const T* >( myPtr ) );
+      default: ASSERT( false && "[ConstAlias::operator const T&() const] Invalid cast for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+        return *( static_cast< const T* >( myPtr ) );
+      }
+    }
+
+    /**
+       Cast operator to a T const-pointer. The object is never
+       duplicated. Allowed input parameters are:
+       - const A & -> const A*      // no duplication
+       - const A* -> const A*       // no duplication
+    */
+    inline const T* operator&() const {
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF: 
+      case CONST_PTR:
+	return static_cast< const T* >( myPtr );
+      default: ASSERT( false && "[const T* ConstAlias::operator&() const] Invalid address operator for given type. Consider passing a const left-value reference or a const pointer as a parameter." );
+        return static_cast< const T* >( myPtr );
+      }
+    }
+
+    /**
+       Cast operator to a shared or simple const pointer. The object is never
+       duplicated. Allowed input parameters are:
+
+       - const A&                     -> CountedConstPtrOrConstPtr<A> // no duplication
+       - const A*                     -> CountedConstPtrOrConstPtr<A> // no duplication
+       - CountedPtr<A>                -> CountedConstPtrOrConstPtr<A> // no duplication
+       - CountedPtrOrPtr<A>           -> CountedConstPtrOrConstPtr<A> // no duplication
+       - CountedConstPtrOrConstPtr<A> -> CountedConstPtrOrConstPtr<A> // no duplication
+    */
+    inline operator CountedConstPtrOrConstPtr<T>() const {
+      switch( myParam ) {
+      case CONST_LEFT_VALUE_REF: 
+      case CONST_PTR:
+	return CountedConstPtrOrConstPtr<T>( static_cast< const T* >( myPtr ), false );
+      case COUNTED_PTR:
+	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtr<T>* >( myPtr ) ) );
+      case COUNTED_PTR_OR_PTR:
+	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
+      case COUNTED_CONST_PTR_OR_CONST_PTR:
+	return CountedConstPtrOrConstPtr<T>( *( static_cast< const CountedPtrOrPtr<T>* >( myPtr ) ) );
+      default: ASSERT( false && "[ConstAlias::operator CowPtr<T>() const] Invalid cast for given type. Consider passing a CountedPtr or a CowPtr as a parameter." );
+        return CountedConstPtrOrConstPtr<T>( 0, false );
+      }
+    }
+
+    // ------------------------- Private Datas --------------------------------
+  private:
+    /// Characterizes the type of the input parameter at clone instanciation.
+    const Parameter myParam;
+    /// Stores the address of the input parameter for further use.
+    const void* const myPtr;
+    
+
+    // ------------------------- Internals ------------------------------------
+  private:
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
+     * Forbidden (otherwise the user might be tempted to use it as a member).
      */
-    ConstAlias & operator= ( ConstAlias & other );
-
-    /**
-       Constructor from an instance of T. The object is pointed in
-       'this'.
-       @param t any object of type T.
-    */
-    ConstAlias( const T & t );
-
-    /**
-       Constructor from a pointer of T. The pointer is copied in
-       'this'.
-       @param ptrT any pointer to a object of type T or 0.
-    */
-    ConstAlias( const T* ptrT );
-
-    /**
-       Cast operator to a reference to T instance. Gives access to the
-       instance of T.  This allows things like: A a2 = a1; where a1 is
-       of type ConstAlias<A>.
-    */
-    operator const T&() const;
-    /**
-       Cast operator to a pointer to a T instance. Gives access to the
-       instance of T.  This allows things like: A* a2 = a1; where a1 is
-       of type ConstAlias<A>.
-    */
-    operator const T*() const;
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    /// The pointer to the instance of T.
-    const T* myPtrT;
-
-    // ------------------------- Hidden services ------------------------------
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
+    ConstAlias & operator= ( const ConstAlias & other );
 
   }; // end of class ConstAlias
-
-
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'ConstAlias'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'ConstAlias' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename T>
-  std::ostream&
-  operator<< ( std::ostream & out, const ConstAlias<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/base/ConstAlias.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

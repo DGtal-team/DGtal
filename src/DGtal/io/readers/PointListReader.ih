@@ -46,7 +46,7 @@
 
 template<typename TPoint>
 inline
-std::vector<TPoint> 
+std::vector<TPoint>
 DGtal::PointListReader<TPoint>::getPointsFromFile (const std::string &filename,  std::vector<unsigned int> aVectPosition)
 {
   std::ifstream infile;
@@ -58,7 +58,7 @@ DGtal::PointListReader<TPoint>::getPointsFromFile (const std::string &filename, 
 
 template<typename TPoint>
 inline
-std::vector<TPoint> 
+std::vector<TPoint>
 DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std::vector<unsigned int>  aVectPosition)
 {
   if(aVectPosition.size()==0){
@@ -77,7 +77,7 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
       unsigned int nbFound=0;
       TPoint p;
       while ( in_str.good()&& (nbFound<TPoint::dimension)){
-  bool isOK = (in_str >> val);
+  bool isOK = !!(in_str >> val); //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
   for(unsigned int j=0; j< TPoint::dimension; j++){
     if (isOK && (idx == aVectPosition.at(j)) ){
       nbFound++;
@@ -85,7 +85,7 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
     }
   }
   ++idx;
-      }      
+      }
       if(nbFound==TPoint::dimension){
   vectResult.push_back(p);
       }
@@ -101,7 +101,7 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
 
 template<typename TPoint>
 inline
-std::vector< std::vector<TPoint> > 
+std::vector< std::vector<TPoint> >
 DGtal::PointListReader<TPoint>::getPolygonsFromFile(const std::string &filename){
   std::ifstream infile;
   infile.open (filename.c_str(), std::ifstream::in);
@@ -111,7 +111,7 @@ DGtal::PointListReader<TPoint>::getPolygonsFromFile(const std::string &filename)
 
 template<typename TPoint>
 inline
-std::vector< std::vector<TPoint> > 
+std::vector< std::vector<TPoint> >
 DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
   std::vector< std::vector< TPoint > > vectResult;
   std::string str;
@@ -122,8 +122,8 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
       std::istringstream in_str( str );
       double x=0.0, y=0.0;
       while ( in_str.good()){
-  bool isOK = (in_str >> x);
-  isOK = isOK &&  (in_str >>y);
+        bool isOK = !!(in_str >> x);  //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
+  isOK = isOK &&  !!(in_str >>y);  //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
   if(isOK){
     TPoint p;
     p[0]=x;
@@ -140,8 +140,8 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
 }
 
 
-  
-  
+
+
 
 
 
@@ -172,10 +172,8 @@ DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &fil
         }
     }
     getline(infile, str );
-  }  
+  }
   return vectResult;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

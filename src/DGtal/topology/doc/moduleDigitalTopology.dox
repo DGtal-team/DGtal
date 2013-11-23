@@ -462,6 +462,7 @@ Finally the result can simply be displayed using Viewer3D:
 
    @see \ref dgtal_topology_sec3_5
 
+   @image html visuThinning-18-6.png  "Resulting 3d thinning with the 18_6 object"
    @image html visuThinning.png  "Resulting 3d thinning with the 6_26 object"
 
    \example topology/homotopicThinning3D.cpp

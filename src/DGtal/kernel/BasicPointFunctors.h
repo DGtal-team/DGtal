@@ -112,7 +112,7 @@ namespace DGtal
     
     typedef S Space; 
     typedef typename Space::Dimension Dimension;
-    static const Dimension dimension;
+    BOOST_STATIC_CONSTANT( Dimension, dimension = Space::dimension );
     typedef typename Space::Integer Integer; 
     typedef typename Space::Point Point; 
 
@@ -161,9 +161,9 @@ namespace DGtal
      * the input point to its projection (order matters)
      */
 #ifdef CPP11_ARRAY
-    std::array<Dimension, Space::dimension> myDims; 
+    std::array<Dimension, dimension> myDims; 
 #else
-    boost::array<Dimension, Space::dimension> myDims; 
+    boost::array<Dimension, dimension> myDims; 
 #endif
     /**
      * Default integer set to coordinates of the projected point
@@ -459,14 +459,14 @@ namespace DGtal
     // Origin (or lower point) of the 2D image embedded in the 3D domain 
     Point  myOriginPointEmbeddedIn3D;    
 
+    Point myDefaultPoint;
+
     // Point giving the direction of the embedded first axis of the 2D image.
     typename Space::RealPoint myFirstAxisEmbeddedDirection;
 
     // Point giving the direction of the embedded second axis of the 2D image.
     typename Space::RealPoint mySecondAxisEmbeddedDirection;
     
-    Point myDefaultPoint;
-
   };
 
 
