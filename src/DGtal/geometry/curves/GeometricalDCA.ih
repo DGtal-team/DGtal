@@ -290,7 +290,7 @@ DGtal::GeometricalDCA<TConstIterator>::init(const ConstIterator& anIt)
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
+DGtal::GeometricalDCA<TConstIterator>::isExtendableFront()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -321,13 +321,13 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
 	      if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendableForward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendableFront(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
     
-      if ( mySegPtr->extendForward() ) isOK = true; 
+      if ( mySegPtr->extendFront() ) isOK = true; 
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
@@ -341,7 +341,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
 	      if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendableForward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::isExtendableFront(): impossible case") ); 
 	}
     }
   
@@ -351,7 +351,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::extendForward()
+DGtal::GeometricalDCA<TConstIterator>::extendFront()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -388,13 +388,13 @@ DGtal::GeometricalDCA<TConstIterator>::extendForward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendForward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendFront(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
 
-      if ( mySegPtr->extendForward() ) isOK = true; 
+      if ( mySegPtr->extendFront() ) isOK = true; 
       else
 	{ 
 	  Point Pf, Pl, Qf, Ql; 
@@ -418,7 +418,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendForward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendForward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendFront(): impossible case") ); 
 	}
     }
   
@@ -432,7 +432,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendForward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
+DGtal::GeometricalDCA<TConstIterator>::isExtendableBack()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -469,13 +469,13 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
 	      if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBack(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
 
-      if ( mySegPtr->extendBackward() ) isOK = true; 
+      if ( mySegPtr->extendBack() ) isOK = true; 
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
@@ -491,7 +491,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
 	      if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBack(): impossible case") ); 
 	}
     }
   
@@ -501,7 +501,7 @@ DGtal::GeometricalDCA<TConstIterator>::isExtendableBackward()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDCA<TConstIterator>::extendBackward()
+DGtal::GeometricalDCA<TConstIterator>::extendBack()
 {
   ASSERT( mySegPtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -544,13 +544,13 @@ DGtal::GeometricalDCA<TConstIterator>::extendBackward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") );  
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBack(): impossible case") );  
 	}
     
     } else
     { //not initialized yet
 
-      if ( mySegPtr->extendBackward() ) isOK = true; 
+      if ( mySegPtr->extendBack() ) isOK = true; 
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
@@ -576,7 +576,7 @@ DGtal::GeometricalDCA<TConstIterator>::extendBackward()
 		  isOK = true; 
 		}
 	    }
-	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBackward(): impossible case") ); 
+	  else ASSERT( false && ("DGtal::GeometricalDCA<TConstIterator>::extendBack(): impossible case") ); 
 	}
     }
   

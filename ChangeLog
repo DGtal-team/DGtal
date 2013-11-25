@@ -35,6 +35,15 @@
 
 *Geometry Package*
 
+    - New classes to deal with arithmetical digital straight segments. 
+      Now the representation of the primitives and their recognition 
+      along a discrete structure are separated. The unique class ArithmeticalDSS, 
+      which was a segment computer, has been replaced by mainly three classes: 
+      ArithmeticalDSL, ArithmeticalDSS and ArithmeticalDSSComputer. 
+      This is described in a doc page of the geometry package.
+      Note that Backward/Forward suffixes have been renamed into Back/Front. 
+      Moreover, get prefixes for data members accessors have been removed. 
+	
     - Generic adapter to transform a metric (model of CMetric) with
       monotonic (see doc) properties to a separable metric (model of
       CSeparableMetric) which can be used in

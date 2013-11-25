@@ -211,7 +211,7 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::getReverse() const
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendForward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendFront()
 {
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
@@ -280,7 +280,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendBackward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendBack()
 {
   Code letterRead = getCode( myFirstLetter - 1 );
   Code letterExpected = getCode( myNextBefore );
@@ -374,7 +374,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendBackward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractForward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractBack()
 {
 
   if ( myNextBefore != myPatternEnd ) {
@@ -461,7 +461,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractBackward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractFront()
 {
   if ( myNextAfter != myPatternBegin ) {
     // Normal case
@@ -543,7 +543,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractBackward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableForward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableFront()
 {
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
@@ -573,7 +573,7 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableForward()
  */
 template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableBackward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableBack()
 {
   Code letterRead = getCode( myFirstLetter - 1);
   Code letterExpected = getCode( myNextBefore );

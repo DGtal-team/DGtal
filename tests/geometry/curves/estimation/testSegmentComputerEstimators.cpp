@@ -84,7 +84,7 @@ bool testTangentFromDSS(
     TangentAngleFromDSSEstimator<DSSComputer> f; 
     f.attach(dss); 
     double q1 = f.eval(itb); 
-    double q2 = std::atan2((double)dss.getA(),(double)dss.getB());
+    double q2 = std::atan2((double)dss.a(),(double)dss.b());
     trace.info() << "Tangent orientation : " << q1 << " == " << q2 << endl;
     nbok += (std::abs(q1 - q2) < epsilon)?1:0;
     nb++; 
@@ -96,7 +96,7 @@ bool testTangentFromDSS(
     typedef typename TangentVectorFromDSSEstimator<DSSComputer>::Quantity Quantity; 
     f.attach(dss); 
     Quantity q1 = f.eval(itb); 
-    Quantity q2 = Quantity(dss.getB(), dss.getA()); 
+    Quantity q2 = Quantity(dss.b(), dss.a()); 
     trace.info() << "Tangent vector : " << q1 << " == " << q2 << endl;
     nbok += (q1 == q2)?1:0; 
     nb++; 
@@ -108,8 +108,8 @@ bool testTangentFromDSS(
     typedef typename TangentFromDSSEstimator<DSSComputer>::Quantity Quantity; 
     f.attach(dss); 
     Quantity q1 = f.eval(itb); 
-    double n = std::sqrt( (double)dss.getA()*dss.getA() + (double)dss.getB()*dss.getB() );
-    Quantity q2 = Quantity((double)dss.getB()/n, (double)dss.getA()/n); 
+    double n = std::sqrt( (double)dss.a()*dss.a() + (double)dss.b()*dss.b() );
+    Quantity q2 = Quantity((double)dss.b()/n, (double)dss.a()/n); 
     trace.info() << "Normalized tangent vector : " << q1 << " == " << q2 << endl;
     nbok += ((std::abs(q1[0] - q2[0]) < epsilon)&&(std::abs(q1[1] - q2[1]) < epsilon))?1:0; 
     nb++; 

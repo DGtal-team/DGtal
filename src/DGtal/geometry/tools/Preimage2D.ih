@@ -422,7 +422,7 @@ DGtal::Preimage2D<Shape>::isValid() const
 template <typename Shape>
 inline
 typename DGtal::Preimage2D<Shape>::Point
-DGtal::Preimage2D<Shape>::getUf() const
+DGtal::Preimage2D<Shape>::Uf() const
 {
     return *myPHull.rbegin();
 }
@@ -430,7 +430,7 @@ DGtal::Preimage2D<Shape>::getUf() const
 template <typename Shape>
 inline
 typename DGtal::Preimage2D<Shape>::Point
-DGtal::Preimage2D<Shape>::getUl() const
+DGtal::Preimage2D<Shape>::Ul() const
 {
     return *myPHull.begin();
 }
@@ -438,7 +438,7 @@ DGtal::Preimage2D<Shape>::getUl() const
 template <typename Shape>
 inline
 typename DGtal::Preimage2D<Shape>::Point
-DGtal::Preimage2D<Shape>::getLf() const
+DGtal::Preimage2D<Shape>::Lf() const
 {
     return *myQHull.rbegin();
 }
@@ -446,7 +446,7 @@ DGtal::Preimage2D<Shape>::getLf() const
 template <typename Shape>
 inline
 typename DGtal::Preimage2D<Shape>::Point
-DGtal::Preimage2D<Shape>::getLl() const
+DGtal::Preimage2D<Shape>::Ll() const
 {
     return *myQHull.begin();
 }
@@ -460,23 +460,23 @@ DGtal::Preimage2D<Shape>::getSeparatingStraightLine(
   double& gamma) const
 {
   //critical points
-  Point Uf = getUf();
-  Point Ul = getUl();
-  Point Lf = getLf();
-  Point Ll = getLl();
+  Point localUf = Uf();
+  Point localUl = Ul();
+  Point localLf = Lf();
+  Point localLl = Ll();
 
   //parameters
   typedef typename Point::Coordinate Coordinate; 
   
-  double a = -NumberTraits<Coordinate>::castToDouble(Ll[1]-Uf[1]);
-  double b = NumberTraits<Coordinate>::castToDouble(Ll[0]-Uf[0]);
-  double c = -NumberTraits<Coordinate>::castToDouble(Uf[0])*a 
-                     -NumberTraits<Coordinate>::castToDouble(Uf[1])*b;
+  double a = -NumberTraits<Coordinate>::castToDouble(localLl[1]-localUf[1]);
+  double b = NumberTraits<Coordinate>::castToDouble(localLl[0]-localUf[0]);
+  double c = -NumberTraits<Coordinate>::castToDouble(localUf[0])*a 
+                     -NumberTraits<Coordinate>::castToDouble(localUf[1])*b;
   
-  double ap = -NumberTraits<Coordinate>::castToDouble(Ul[1]-Lf[1]);
-  double bp = NumberTraits<Coordinate>::castToDouble(Ul[0]-Lf[0]);
-  double cp = -NumberTraits<Coordinate>::castToDouble(Lf[0])*ap 
-                      -NumberTraits<Coordinate>::castToDouble(Lf[1])*bp;
+  double ap = -NumberTraits<Coordinate>::castToDouble(localUl[1]-localLf[1]);
+  double bp = NumberTraits<Coordinate>::castToDouble(localUl[0]-localLf[0]);
+  double cp = -NumberTraits<Coordinate>::castToDouble(localLf[0])*ap 
+                      -NumberTraits<Coordinate>::castToDouble(localLf[1])*bp;
 
   double x, y; 
   double det = (ap*b-bp*a); 

@@ -154,18 +154,18 @@ is always default mode).
 - class PointVector, modes: "" / "Both", "Paving", "Grid"
 - class Object, modes: "", "DrawAdjacencies"
 - class HyperRectDomain, modes: "" / "Grid", "Paving"
-- class ArithmeticalDSSComputer, modes: "" / "BoundingBox", "Points"
+- class ArithmeticalDSS, modes: "" / "BoundingBox", "Points"
 - class FreemanChain, modes: "" / "Grid", "InterGrid"
 - class GridCurve, modes: "" / "Fill"
 - class LatticePolytope2D, modes: "" / "Transparent", "Filled"
   
 For instance, to change the drawing mode for the next object \c dss of type
-ArithmeticalDSSComputer, you may use the line
+ArithmeticalDSS, you may use the line
  \code
  board << SetMode( dss.className(), "BoundingBox" );
  \endcode
 
- If you wish to display both the points of a DSS an its bounding
+ If you wish to display both the points of a DSS and its bounding
  box, you must draw it twice, as follows:
  \code
  board << SetMode( dss.className(), "BoundingBox" ) << dss
@@ -316,11 +316,8 @@ This program (see full source at dgtalBoard2D-4-colormaps.cpp) outputs the follo
   
 More precisely, several styles may be applied before some drawable element is displayed. They are called in this order.
   1. the default style (always applied)
- 
   2. the user-specified style for default mode (when defined)
-
   3. the default style for the current mode (applied only if mode is not default, i.e. different from "")
-
   4. the user-specified style for the current mode (applied only if mode is not default, i.e. different from "", and defined)
   
 Therefore, if you change the drawing \b mode of a drawable element and if you wish to have a specific behavior, you must attach the custom style to the mode style of your object. For instance, if your object is \c p and the mode is "Special", there is some line:
@@ -329,7 +326,7 @@ Therefore, if you change the drawing \b mode of a drawable element and if you wi
  board << CustomStyle( p.className() +"/Special", new ... );
  \endcode
   
-Another example involving ArithmeticDSS is greedy-dss-decomposition.cpp. It outputs the following graphics:
+Another example involving ArithmeticalDSS is greedy-dss-decomposition.cpp. It outputs the following graphics:
   
 \image html dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition "
 \image latex dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition" width=5cm

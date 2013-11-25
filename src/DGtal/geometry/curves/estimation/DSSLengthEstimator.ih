@@ -71,24 +71,49 @@ template <typename T>
 inline
 void
 DGtal::DSSLengthEstimator<T>::init(const double h, 
-     const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed)
+				   const ConstIterator& itb, const ConstIterator& ite)
 {
   myH = h;
   myIsInitBefore = true;
   myRep.clear();
 
-  //segments into DSS
+  //segments into DSSs
   DSSComputer computer; 
-  deprecated::GreedyDecomposition<DSSComputer> decomposition ( itb, ite, computer, isClosed ); 
+  GreedySegmentation<DSSComputer> decomposition ( itb, ite, computer ); 
 
   //computes the resulting polygonal representation
-  typename deprecated::GreedyDecomposition<DSSComputer>::SegmentIterator segIt = decomposition.begin(); 
-  for ( ; segIt != decomposition.end(); ++segIt ) {
-    myRep.push_back( *segIt.getBack() );
-  } 
+  typename GreedySegmentation<DSSComputer>::SegmentComputerIterator segIt = decomposition.begin();  
+  typename GreedySegmentation<DSSComputer>::SegmentComputerIterator segItEnd = decomposition.end(); 
+  for ( ; segIt != segItEnd; ++segIt ) 
+    {
+      myRep.push_back( segIt->back() );
+   } 
   //last point
-  ConstIterator i( segIt.getFront() ); 
-  myRep.push_back(*--i); 
+  myRep.push_back(lastPoint(ite)); 
+}
+
+template <typename T>
+inline
+typename DGtal::DSSLengthEstimator<T>::Point
+DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite)
+{
+  return lastPoint(ite, typename DGtal::IteratorCirculatorTraits<ConstIterator>::Type()); 
+}
+
+template <typename T>
+inline
+typename DGtal::DSSLengthEstimator<T>::Point
+DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& ite, IteratorType)
+{
+  return *--ite; 
+}
+
+template <typename T>
+inline
+typename DGtal::DSSLengthEstimator<T>::Point
+DGtal::DSSLengthEstimator<T>::lastPoint(const ConstIterator& c, CirculatorType)
+{
+  return *c; 
 }
 
 template <typename T>
