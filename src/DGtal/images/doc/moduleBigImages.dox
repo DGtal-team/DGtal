@@ -79,6 +79,9 @@ Moreover, it must have the following methods:
   - `getPage`, which takes a point as input parameter
 and returns an ImageContainer pointer on the image that contains the point or NULL if no image in the cache contains that point.
 
+  - `getPage`, which takes a domain as input parameter
+and returns an ImageContainer pointer on the image that contains the domain or NULL if no image in the cache contains that domain.
+
   - `getPageToDetach`, which returns an ImageContainer pointer on the image that we have to detach or NULL if no image have to be detached.
 
   - `updateCache`, which takes a domain as input parameter
@@ -102,9 +105,15 @@ in order to flush the image on disk according to the defined cache policy.
 
 \section dgtalBigImagesModels Models
 
-\subsection dgtalBigImagesFactoryModels ImageFactoryFromImage
+\subsection dgtalBigImagesImageFactoryModels Image factory models
+
+\subsubsection dgtalBigImagesImageFactoryFromImageModel ImageFactoryFromImage
 
 The ImageFactoryFromImage model is a rather simple one. It implements a factory to produce images from a "bigger/original" one according to a given domain.
+
+\subsubsection dgtalBigImagesImageFactoryFromHDF5Model ImageFactoryFromHDF5
+
+The ImageFactoryFromHDF5 (with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/) model is similar to ImageFactoryFromImage: it implements a factory to produce images from an HDF5 "dataset/file" according to a given domain.
 
 \subsection dgtalBigImagesCachePoliciesModels Cache policies models
 
