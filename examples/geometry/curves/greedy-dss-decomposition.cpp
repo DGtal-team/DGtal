@@ -64,29 +64,33 @@ int main( )
   // Construct the Freeman chain
   Contour4 theContour( ss );
 
-  //Segmentation
+  // Segmentation
   Decomposition4 theDecomposition( theContour.begin(),theContour.end(),DSS4() );
+
+  // Draw the domain and the contour
   Point p1( 0, 0 );
   Point p2( 31, 31 );
   Domain domain( p1, p2 );
   Board2D aBoard;
   aBoard << SetMode( domain.className(), "Grid" )
-   << domain
-   << SetMode( "PointVector", "Grid" )
-   << theContour;
-  //for each segment
-  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
-  string className = "ArithmeticalDSSComputer/BoundingBox";
-  for ( Decomposition4::SegmentComputerIterator i = theDecomposition.begin();
-  i != theDecomposition.end(); ++i ) 
+	 << domain
+	 << SetMode( "PointVector", "Grid" )
+	 << theContour;
+
+  // Draw each segment
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string className = "ArithmeticalDSS/BoundingBox";
+  for ( Decomposition4::SegmentComputerIterator 
+	  it = theDecomposition.begin(),
+	  itEnd = theDecomposition.begin();
+	it != itEnd; ++it ) 
     {
-      DSS4 segment(*i);
-      std::cout << segment << std::endl;
       aBoard << CustomStyle( className, 
-           new CustomPenColor( Color::Blue ) )
-       << segment; // draw each segment
-      
+			     new CustomPenColor( Color::Blue ) )
+	     << it->primitive();
     } 
+
+  
   aBoard.saveSVG("dgtalboard-5-greedy-dss.svg");
   aBoard.saveSVG("dgtalboard-5-greedy-dss.eps");
 

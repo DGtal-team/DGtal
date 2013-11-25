@@ -35,6 +35,15 @@
 
 *Geometry Package*
 
+    - New classes to deal with arithmetical digital straight segments. 
+      Now the representation of the primitives and their recognition 
+      along a discrete structure are separated. The unique class ArithmeticalDSS, 
+      which was a segment computer, has been replaced by mainly three classes: 
+      ArithmeticalDSL, ArithmeticalDSS and ArithmeticalDSSComputer. 
+      This is described in a doc page of the geometry package.
+      Note that Backward/Forward suffixes have been renamed into Back/Front. 
+      Moreover, get prefixes for data members accessors have been removed. 
+	
     - Generic adapter to transform a metric (model of CMetric) with
       monotonic (see doc) properties to a separable metric (model of
       CSeparableMetric) which can be used in
@@ -85,7 +94,6 @@
     - A new display of 2D and 3D image in Viewer3D.
     - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
     - New GenericReader and Generic Writer for both 2D, 3D and ND images.
-    - New display of 2D and 3D image in Display3D class (implemented in Viewer3D only).
     - Adding missing PPM Reader.
     - Adding missing DICOM reader (with ITK library)
     - Adding ITK reader and ITK writer

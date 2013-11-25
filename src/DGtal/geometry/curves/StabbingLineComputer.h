@@ -188,22 +188,22 @@ namespace DGtal
     /**
      * @return first upper leaning point.
      */
-    Point getUf() const;
+    Point Uf() const;
 
     /**
      * @return last upper leaning point.
      */
-    Point getUl() const;
+    Point Ul() const;
 
     /**
      * @return first lower leaning point.
      */
-    Point getLf() const;
+    Point Lf() const;
 
     /**
      * @return last lower leaning point.
      */
-    Point getLl() const;
+    Point Ll() const;
 
     /**
      * @return 'true' if CW, 'false' if CCW
@@ -244,7 +244,7 @@ namespace DGtal
      * @return 'true' if the segment is extended
      * and 'false' otherwise.
      */
-    bool extendForward();
+    bool extendFront();
 
     /**
      * Forward extension test.
@@ -252,7 +252,7 @@ namespace DGtal
      * @return 'true' if the segment can be extended
      * and 'false' otherwise.
      */
-    bool isExtendableForward();
+    bool isExtendableFront();
 
     /**
      * Decide whether the extension of the segment
@@ -261,7 +261,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a concave part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isExtendableForward() returns 'false'
+     * NB: a true returned value implies that isExtendableFront() returns 'false'
      */
     bool isConcave();
 
@@ -272,7 +272,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a convex part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isExtendableForward() returns 'false'
+     * NB: a true returned value implies that isExtendableFront() returns 'false'
      */
     bool isConvex();
 
@@ -282,7 +282,7 @@ namespace DGtal
      * @return 'true' if the segment is extended
      * and 'false' otherwise.
      */
-    bool extendBackward();
+    bool extendBack();
 
     /**
      * Backward extension test.
@@ -290,7 +290,7 @@ namespace DGtal
      * @return 'true' if the segment can be extended
      * and 'false' otherwise.
      */
-    bool isExtendableBackward();
+    bool isExtendableBack();
 
     /**
      * Decide whether the extension of the segment
@@ -299,7 +299,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a concave part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isExtendableBackward() returns 'false'
+     * NB: a true returned value implies that isExtendableBack() returns 'false'
      */
     bool isOppositeEndConcave();
 
@@ -310,7 +310,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a convex part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isExtendableBackward() returns 'false'
+     * NB: a true returned value implies that isExtendableBack() returns 'false'
      */
     bool isOppositeEndConvex();
 

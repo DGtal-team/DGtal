@@ -654,7 +654,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::operator!=(
 template <typename TIterator, typename TInteger>
 inline
 bool
-DGtal::FrechetShortcut<TIterator,TInteger>::extendForward()
+DGtal::FrechetShortcut<TIterator,TInteger>::extendFront()
 {
   bool flag = (updateWidth() && updateBackpath());
   
@@ -668,7 +668,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::extendForward()
 template <typename TIterator, typename TInteger>
 inline
 bool
-DGtal::FrechetShortcut<TIterator,TInteger>::isExtendableForward()
+DGtal::FrechetShortcut<TIterator,TInteger>::isExtendableFront()
 {
   
   return (testUpdateWidth() && testUpdateBackpath());

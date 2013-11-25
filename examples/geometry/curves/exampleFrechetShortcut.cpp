@@ -83,7 +83,7 @@ int main( int argc, char** argv )
   
   s.init( r.begin() );
   while ( ( s.end() != r.end() )
-  	  &&( s.extendForward() ) ) {}
+  	  &&( s.extendFront() ) ) {}
   
 
 
