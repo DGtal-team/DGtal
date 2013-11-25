@@ -369,46 +369,81 @@ It also possible to remove the visualization of the transparent clipping plane b
  viewer << ClippingPlane(0,1,0.3,-10, false);
 @endcode
 
-\section DGtalGLV_Images Adding 2D slice image visualization
+\section DGtalGLV_Images Adding 2D image visualization in 3D
 
-With the Viewer3D class it is possible to display 2D slice image from a volume one. It can be done in few steps (see example of io/viewers/viewer3D-8-2Dimages.cpp) :
+\subsection DGtalGLV_ImagesSlices Adding 2D slice images
 
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImages
+With the Viewer3D class it is possible to display 2D slice image from a volume one. It can be done in few steps (see example of io/viewers/viewer3D-8-2DSliceImages.cpp) :
+
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImages
 
 And the display them using the classic stream operator:
 
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImages
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesDisplayImages
 
 Finally you can adjust the image setting with the Display3DModifier UpdateImagePosition and UpdateImageData object:
 
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImages
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DModifImages
 
 You will obtain such a visualization:
  \image html  viewer3D-8.png  "Illustration of the 2D image slice visualization." width=5cm
  \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualization."
 
 You can also change the default mode by using:
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DChangeMode
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DChangeMode
 and by changing the "BoundingBox" mode by "InterGrid" you will obtain the following visualization:
  \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization with InterGrid mode." width=5cm
  \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization."
 
 
 
-See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer.
+See more details on this example io/viewers/viewer3D-8-2DSliceImages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer.
 
 
-\section DGtalGLV_Images3D Adding 3D  image visualization
+\subsection DGtalGLV_ImagesEmbedded Adding 2D images (from any embedding) 
+
+The slice images are not the only way to display 2D images in 3D. A
+2D image can also be extracted and embedded in 3D by using a single
+embedding functor (Point2DEmbedderIn3D). The example
+io/viewers/viewer3D-8bis-2Dimages.cpp illustrates such a display.
+
+
+First we  need to add the header file associated with the  Point2DEmbedderIn3D:
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceHeader
+
+Then, the type definition of ConstImageAdapter is added: 
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceType
+
+The resulting 2D domain can be deduced from the width used in the functor:
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceParam
+
+The embedder then be used to extract the image:
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceExtract
+
+and used to display the image with the correct coordinates:
+
+@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceDisplay
+
+
+This example will produce such a visualization:
+ \image html  viewer3D-8bis.png  "Illustration of the 2D image  visualization." width=5cm
+ \image latex  viewer3D-8bis.png  "Illustration of the 2D image visualization."
+
+
+
+
+
+\section DGtalGLV_Images3D Adding 3D image visualization
 
 In the same way a 3D image can be displayed. By following the same stream operator you will obtain such example of display:
 \image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm
 \image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets."
 
-See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp
+See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp
 
 
 
-\section DGtalGLV_Images3D Adding Custom  Image visualization in 3D
+\section DGtalGLV_Images3Dcustom Customizing Slice Image visualization 
 
 By default an image is displayed in gray scale levels from its scalar
 values. However it is possible to display color texture image by using
@@ -422,18 +457,18 @@ For instance the previous examples can easily displayed with color map:
 
 First we generate a color functor to generate unsigned integer interpreted as RGB color:
 - Adding the header to use  hueShadeMap:
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
 
 with a functor to transform integer representing grayscale to integer representing color:
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
 
 
 - Instead to use directly the image and the stream operator we add the AddTextureImage2DWithFunctor object:
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesDisplayImagesColor
 
 
 - Note that also can update the image position image data as in the previous example and we need to recall the functor function if we want to keep the same data interpretation :
-@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
+@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DModifImagesColor
 
 You will obtain such a visualization:
  \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualization." width=5cm
@@ -565,10 +600,18 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
 
 /**
    \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualization."
-   \example io/viewers/viewer3D-8-2Dimages.cpp
+   \example io/viewers/viewer3D-8-2DSliceImages.cpp
 
 *
 */
+
+/**
+ *  Example of 2D image display in 3D by 3D embedding. 
+ *
+ * \image html viewer3D-8bis.png "Illustration of multiple 2D image extraction and visualisation  from 3D embedding"
+ * \example io/viewers/viewer3D-8bis-2Dimages.cpp
+ */
+
 /**
    \image html  viewer3D-9.png  "Illustration of the 3D image visualization."
    \example io/viewers/viewer3D-9-3Dimages.cpp
@@ -597,7 +640,6 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
    \example io/boards/dgtalBoard3D-6-clipping.cpp
 *
 */
-
 
 
 

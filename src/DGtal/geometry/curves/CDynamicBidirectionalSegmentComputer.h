@@ -75,7 +75,7 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
       </tr>
        <tr> 
         <td class=CName> backward retraction  </td> 
-        <td class=CExpression> x.retractBackward()     </td>
+        <td class=CExpression> x.retractFront()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool   </td>
         <td class=CPrecondition>    </td> 
@@ -105,7 +105,7 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
     // Methods
     BOOST_CONCEPT_USAGE( CDynamicBidirectionalSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.retractBackward() );
+      ConceptUtils::sameType( myB, myX.retractFront() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

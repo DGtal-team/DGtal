@@ -48,121 +48,152 @@ using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef FreemanChain<int> Range; 
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Drawing a segmentation
+ * @brief Function that draws the maximal segments 
+ * with a color that depends on the local convexity:
+ * - blue in a convex part, 
+ * - green in a concave part, 
+ * - yellow in an inflection part (both convex and concave), 
+ * - black in an end part (of a connected part). 
+ *
+ * @param itb begin iterator on an ArithmeticalDSSComputer 
+ * @param itb end iterator on an ArithmeticalDSSComputer
+ * @param aBoard board to draw
+ * 
+ * @tparam Iterator a model of forward iterator and 
+ * CSegmentComputerIterator 
+ * @tparam Board a Board2D type
  */
 template <typename Iterator, typename Board>
 void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 {
-  
-  typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
 
-  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
-  string aStyleName = "ArithmeticalDSSComputer/BoundingBox";
+  //choose the drawing mode
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  //prepare the drawing style and the pen color
+  string aStyleName = "ArithmeticalDSS/BoundingBox";
+  CustomPenColor* aPenColor;
 
+  //for each maximal segment
   for (Iterator i(itb); i != ite; ++i) {
      
-    //choose pen color
-    CustomPenColor* aPenColor;
+    //get the current maximal segment
+    typedef typename Iterator::SegmentComputer::Primitive DSS; 
+    DSS maximalDSS = i->primitive(); 
 
+    //if located at the end of a connected part
     if ( !(i.intersectNext() && i.intersectPrevious()) ) {
 
       aPenColor = new CustomPenColor( Color::Black );
 
+      //otherwise
     } else {
 
-      //end points
+      //get the points located before and after the maximal segment
+      typedef typename DSS::Point Point; 
+      Point beforeFirst = *(--(i->begin())); 
+      Point afterLast = *(i->end());
 
-      PointIterator begin = i->begin();  --begin; 
-      PointIterator end = i->end();
-
-      //parameters
-      int mu = i->getMu();
-      int omega = i->getOmega();
+      //remainders and bounds
+      typedef typename DSS::Integer Integer; 
+      Integer r1 = maximalDSS.remainder(beforeFirst); 
+      Integer r2 = maximalDSS.remainder(afterLast); 
+      Integer mu = maximalDSS.mu();
+      Integer omega = maximalDSS.omega();
 
       //configurations
-      if ( (i->getRemainder(begin)<=mu-1)&&
-           (i->getRemainder(end)<=mu-1) ) {                //concave
+      if ( (r1<=mu-1)&&(r2<=mu-1) ) {                    //concave
         aPenColor = new CustomPenColor( Color::Green);
-      } else if ( (i->getRemainder(begin)>=mu+omega)&&
-            (i->getRemainder(end)>=mu+omega) ) {           //convex
+      } else if ( (r1>=mu+omega)&&(r2>=mu+omega) ) {     //convex
         aPenColor = new CustomPenColor( Color::Blue );
-      } else if ( (i->getRemainder(begin)>=mu+omega)&&
-            (i->getRemainder(end)<=mu-1) ) {               //convex to concave
+      } else if ( (r1>=mu+omega)&&(r2<=mu-1) ) {         //convex to concave
         aPenColor = new CustomPenColor( Color::Yellow );
-      } else if ( (i->getRemainder(begin)<=mu-1)&&
-            (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
+      } else if ( (r1<=mu-1)&&(r2>=mu+omega) ) {         //concave to convex
         aPenColor = new CustomPenColor( Color::Yellow );
-      } else {                                                    //pb
+      } else {                                           //pb
         aPenColor = new CustomPenColor( Color::Red );
       }
 
     }
 
-    // draw each segment
+    // draw the maximal segment on the board
     aBoard << CustomStyle( aStyleName, aPenColor )
-           << *i; 
+           << maximalDSS; 
   
   } 
 
 }
 
 /**
- * saturated segmentation of a range
+ * @brief Perform a saturated segmentation into 
+ * maximal digital straight segments of a given 
+ * range of integer points and draw the result.  
+ * @param itb begin iterator
+ * @param ite end iterator
+ * @param aBoard board to draw
+ * 
+ * @tparam Iterator a model of forward iterator on 
+ * digital points 
+ * @tparam Board a Board2D type
  */
 template <typename Iterator, typename Board>
 void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite, 
                                  Board& aBoard)
 {
   typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
+
+  //choose the primitive computer and the segmentation 
   typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> RecognitionAlgorithm;
   typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
+  //create the segmentation 
   RecognitionAlgorithm algo;
   Segmentation s(itb,ite,algo);
   
-  typename Segmentation::SegmentComputerIterator i = s.begin();
-  typename Segmentation::SegmentComputerIterator end = s.end();
-
-  drawCCP<typename Segmentation::SegmentComputerIterator, Board>
-  (i,end,aBoard); 
-
+  //draw the result
+  drawCCP(s.begin(), s.end(), aBoard); 
 }
 
 
+/**
+ * @brief Program that draws the maximal segments
+ * of digital curve whose chain code may be given 
+ * as an argument. The chain code must be a sequence
+ *  of characters belonging to the set {0,1,2,3}.   
+ * @param argc number of arguments
+ * @param argv array of arguments
+ * @return 0
+ */
 int main( int argc, char** argv )
 {
 
   trace.beginBlock ( "Example convex-and-concave-parts" );
 
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+  Board2D aBoard; //create a board
 
-
+  //create a chain code
   string codes; 
   if (argc >= 2) codes = argv[1];
   else codes = "030030330303303030300001010101101011010000030330303303030300001010110101011010000033"; 
 
   stringstream ss(stringstream::in | stringstream::out);
   ss << "0 0 " << codes << endl;
-  Range theContour( ss );
+  FreemanChain<int> theContour( ss );
   
   trace.info() << "Processing of " << ss.str() << endl;
 
-  //Maximal Segments
-  Board2D aBoard;
+  //draw the digital contour
   aBoard
    << SetMode( "PointVector", "Grid" )
    << theContour;
 
+  //draw the maximal segments
   segmentationIntoMaximalDSSs(theContour.begin(), theContour.end(), aBoard);
 
+  //save the drawing
   aBoard.saveSVG("convex-and-concave-parts.svg");
 
   trace.endBlock();
