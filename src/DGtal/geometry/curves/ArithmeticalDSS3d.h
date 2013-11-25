@@ -193,7 +193,7 @@ namespace DGtal
      * with the adding point if true.
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool extendForward();
+    bool extendFront();
     
     
     /** 
@@ -201,7 +201,7 @@ namespace DGtal
      *
      * @return 'true' if yes, 'false' otherwise
      */   
-    bool isExtendableForward();
+    bool isExtendableFront();
 
     // ------------------------- Accessors ------------------------------
 

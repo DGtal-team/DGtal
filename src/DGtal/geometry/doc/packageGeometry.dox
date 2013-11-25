@@ -57,8 +57,8 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 @b Modules
 
 - \ref moduleGridCurveAnalysis  (Tristan Roussillon)
- - Digital straight segments, Digital circular arcs, ...     --- documentation coming soon ---
- - \ref moduleFrechetShortcut (Isabelle Sivignon)
+  - \ref moduleArithDSSReco (Tristan Roussillon) 
+  - \ref moduleFrechetShortcut (Isabelle Sivignon)
 
 - Geometric estimators
   - DSS / DCA / .. based estimators      --- documentation coming soon but have a look to models of CSegmentComputerEstimator ---

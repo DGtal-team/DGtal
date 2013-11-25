@@ -111,7 +111,7 @@ namespace DGtal
       typedef Point Value;
 
       // stl iterator types.
-      typedef std::input_iterator_tag iterator_category;
+      typedef std::forward_iterator_tag iterator_category;
       typedef Point value_type;
       typedef std::ptrdiff_t difference_type; 
       typedef const Point* pointer;

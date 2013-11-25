@@ -50,7 +50,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/GreedyDecomposition.h"
+//#include "DGtal/base/IteratorTraits.h"
+#include "DGtal/geometry/curves/GreedySegmentation.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -108,9 +109,8 @@ namespace DGtal
      * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
-     * @param isClosed true if the input range is closed.
      */
-    void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
+    void init( const double h, const ConstIterator& itb, const ConstIterator& ite);
     
 
     /** 
@@ -166,6 +166,10 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+
+    Point lastPoint (const ConstIterator& ite); 
+    Point lastPoint (const ConstIterator& c, CirculatorType); 
+    Point lastPoint (const ConstIterator& ite, IteratorType); 
 
   }; // end of class DSSLengthEstimator
 
