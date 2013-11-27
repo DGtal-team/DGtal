@@ -243,9 +243,6 @@ namespace DGtal
     ///Distance functor
     const Metric * myMetric;
 
-    ///Convolution functor
-    const ConvolutionFunctor *myConvFunctor;
-
     ///Grid step
     double myH;
 
@@ -254,6 +251,9 @@ namespace DGtal
 
     ///Embedder object
     const Embedder myEmbedder;
+
+    ///Convolution functor
+    const ConvolutionFunctor *myConvFunctor;
 
     ///Ball radius
     Value myRadius;
