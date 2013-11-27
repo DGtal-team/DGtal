@@ -271,7 +271,7 @@ namespace DGtal
         updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
       }
 
-     
+
       /**
        * Update the domain direction from a specific normal direction
        * (Viewer3D::xDirection, Viewer3D::yDirection or Viewer3D::zDirection) and image position
@@ -416,12 +416,12 @@ namespace DGtal
        * @param aPoint4 the fourth image point (lower bound point in first dimension and upper in the second dimentsion)
        */
       void
-      updateImage3DEmbedding( DGtal::Z3i::RealPoint aPoint1, 
-                              DGtal::Z3i::RealPoint aPoint2, 
-                              DGtal::Z3i::RealPoint aPoint3, 
+      updateImage3DEmbedding( DGtal::Z3i::RealPoint aPoint1,
+                              DGtal::Z3i::RealPoint aPoint2,
+                              DGtal::Z3i::RealPoint aPoint3,
                               DGtal::Z3i::RealPoint aPoint4)
       {
-        point1 = aPoint1;  point2 = aPoint2; point3 = aPoint3;   point4 = aPoint4;  
+        point1 = aPoint1;  point2 = aPoint2; point3 = aPoint3;   point4 = aPoint4;
         myDirection=undefDirection;
       }
 
@@ -597,17 +597,17 @@ namespace DGtal
 
     /**
      * Update the  vertex coordinates of the image embedded in 3D.
-     * @param imageIndex corresponds to the chronoloigic index given by the fuction (addTextureImage).
-     * @param myNewPoint1 the new first point position embedded in 3D associated the lower point of the 2D image.  
-     * @param myNewPoint2 the new second point position embedded in 3D (in CCW order).
-     * @param myNewPoint3 the new third point position embedded in 3D  associated the upper point of the 2D image.  
-     * @param myNewPoint4 the new fourth point position  embedded in 3D (in CCW order).
+     * @param anImageIndex corresponds to the chronoloigic index given by the fuction (addTextureImage).
+     * @param aPoint1 the new first point position embedded in 3D associated the lower point of the 2D image.
+     * @param aPoint2 the new second point position embedded in 3D (in CCW order).
+     * @param aPoint3 the new third point position embedded in 3D  associated the upper point of the 2D image.
+     * @param aPoint4 the new fourth point position  embedded in 3D (in CCW order).
      */
     void updateEmbeddingTextureImage(unsigned int anImageIndex,
                                      typename Space::Point aPoint1, typename Space::Point aPoint2,
                                      typename Space::Point aPoint3, typename Space::Point aPoint4);
-    
-    
+
+
 
     /**
      * add an 2D image in a 3d space
@@ -646,7 +646,7 @@ namespace DGtal
      * compute2DDomainLineRepresentation
      * @param anImageDomain the image domain
      * @param delta the delte for computing
-     * @return a vector of lined3D
+     * @return the vector containing the line domain representation.
      */
     std::vector<typename DGtal::Viewer3D< Space , KSpace >::LineD3D>
     compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
@@ -654,7 +654,7 @@ namespace DGtal
     /**
      * compute2DDomainLineRepresentation
      * @param anImageDomain the image domain
-     * @return  a vector of lined3D
+     * @return the vector containing the line domain representation.
      */
     std::vector<typename DGtal::Viewer3D< Space , KSpace >::LineD3D>
     compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
