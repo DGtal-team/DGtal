@@ -70,8 +70,8 @@ int main( int argc, char** argv )
  Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
- 
- 
+  
+ trace.beginBlock("Testing Viewer with Image Embedder ");
  Point pcenter( 10, 20, 20 );
  Point pcenterImg( 10, 20, 20 );
 
@@ -133,13 +133,12 @@ int main( int argc, char** argv )
 
  viewer << Viewer3D<>::updateDisplay;
 
- return application.exec();
- // return bool res = application.exec();
- // trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
- //trace.endBlock();
- //return res ? 0 : 1;
-
  
+ bool res = application.exec();
+ trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+ trace.endBlock();
+ return res ? 0 : 1;
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
