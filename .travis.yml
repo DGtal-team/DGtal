@@ -22,8 +22,6 @@ matrix:
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON"
     - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
-    - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CGAL=true -DWITH_EIGEN=true -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_ITK=true -DBUILD_TESTING=ON"
     - compiler: clang
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON"
 
