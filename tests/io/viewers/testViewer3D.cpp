@@ -74,8 +74,8 @@ int main( int argc, char** argv )
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  
-
-
+ 
+ trace.beginBlock ( "Testing class for  Viewer3D" );
 
 
  Point p1( 14, 14, 14 );
