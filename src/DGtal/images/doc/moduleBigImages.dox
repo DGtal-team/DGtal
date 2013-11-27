@@ -157,7 +157,7 @@ The tiled image is created from an existing image and with four parameters:
 - An alias to a write policy.
 - and a parameter to describe the number of tiles we want for each dimension.
 
- @note It is important to take into account that read and write
+@note It is important to take into account that read and write
 policies are passed as aliases in the TiledImage constructor, so for
 example, if two TiledImage instances are successively created with the
 same read policy instance, the state of the cache for a given time is
