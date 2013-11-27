@@ -162,10 +162,10 @@ namespace DGtal
      * The first (resp. third) point correspondts to the lower (res. upper) point according the 3 directions and the order should be given CCW. 
      *
      * @param anIndex the index of the image to be modified (should be less than the number of image added in the current Viewer3D).
-     * @param myNewPoint1 the new first point position embedded in 3D associated the lower point of the 2D image.  
-     * @param myNewPoint2 the new second point position embedded in 3D (in CCW order).
-     * @param myNewPoint3 the new third point position embedded in 3D  associated the upper point of the 2D image.  
-     * @param myNewPoint4 the new fourth point position  embedded in 3D (in CCW order).
+     * @param aPoint1 the new first point position embedded in 3D associated the lower point of the 2D image.  
+     * @param aPoint2 the new second point position embedded in 3D (in CCW order).
+     * @param aPoint3 the new third point position embedded in 3D  associated the upper point of the 2D image.  
+     * @param aPoint4 the new fourth point position  embedded in 3D (in CCW order).
      *
      **/
     UpdateImage3DEmbedding(unsigned int anIndex, 
