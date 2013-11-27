@@ -89,7 +89,7 @@ int main( int argc, char** argv )
 
  Viewer3D<Space, KSpace> viewer(K);
  viewer.show();
-  
+ trace.beginBlock ( "Testing display KSCell in Viewer 3D" );  
  //viewer << SetMode3D( domain.className(), "Paving" );
  // if the domain is visible can't see the cubes inside
  // viewer << domain; 
@@ -136,11 +136,11 @@ int main( int argc, char** argv )
  viewer << pointelA << pointelB << pointelC << linelAC;
  
  viewer <<  Viewer3D<>::updateDisplay;
- application.exec();
-
  
+ bool res =  application.exec();
+ trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
  trace.endBlock();
- return true;
+ return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
