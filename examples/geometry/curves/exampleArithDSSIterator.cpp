@@ -65,11 +65,11 @@ int main( int UNUSED(argc), char** UNUSED(argv) )
   // equal to xMax. 
   ArithDSS myDSS(it);
   
-  while ( (*(myDSS.end()))[0] <=xMax && myDSS.extendForward())
+  while ( (*(myDSS.end()))[0] <=xMax && myDSS.extendFront())
     {}
   
   //Display the result.
-  std::cout << myDSS.getA() << " " << myDSS.getB() << " " << myDSS.getMu();
+  std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu();
   
   trace.endBlock();
   return 0;

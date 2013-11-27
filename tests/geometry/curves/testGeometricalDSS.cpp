@@ -104,15 +104,15 @@ bool testGeometricalDSS(const TCurve& curve)
     ConstIterator itBegin (r.begin()); 
     ConstIterator itEnd (r.end()); 
     s.init( itBegin+1 );
-    while ( (s.end() != itEnd) && (s.isExtendableForward()) && (s.extendForward()) ) {}
+    while ( (s.end() != itEnd) && (s.isExtendableFront()) && (s.extendFront()) ) {}
     trace.info() << s << endl; 
     double a, b, c; 
     s.getParameters(a,b,c); 
     trace.info() << a << " " << b << " " << c << endl; 
 
     t.init( (itBegin + (itEnd - itBegin)/2) ); 
-    while ( (t.end() != itEnd) && (t.extendForward()) 
-         && (t.begin() != itBegin) && (t.extendBackward()) ) {}
+    while ( (t.end() != itEnd) && (t.extendFront()) 
+         && (t.begin() != itBegin) && (t.extendBack()) ) {}
     trace.info() << t << endl; 
 
     trace.info() << "backward extension " << endl; 
@@ -120,7 +120,7 @@ bool testGeometricalDSS(const TCurve& curve)
     ConstReverseIterator ritBegin (t.end()); 
     ConstReverseIterator ritEnd (r.rend()); 
     rs.init( ritBegin );
-    while ( (rs.end() != ritEnd) && (rs.isExtendableForward()) && (rs.extendForward()) ) {}
+    while ( (rs.end() != ritEnd) && (rs.isExtendableFront()) && (rs.extendFront()) ) {}
     trace.info() << rs << endl; 
     double ap, bp, cp; 
     rs.getParameters(ap,bp,cp); 
@@ -128,8 +128,8 @@ bool testGeometricalDSS(const TCurve& curve)
 
     typename GeometricalDSS<ConstIterator>::Reverse rt = t.getReverse(); 
     rt.init( (ritBegin + (ritEnd - ritBegin)/2) ); 
-    while ( (rt.begin() != ritBegin) && (rt.extendBackward())
-         && (rt.end() != ritEnd) && (rt.extendForward()) ) {}
+    while ( (rt.begin() != ritBegin) && (rt.extendBack())
+         && (rt.end() != ritEnd) && (rt.extendFront()) ) {}
     trace.info() << rt << endl; 
 
     trace.info() << "comparison... " << endl; 
@@ -167,7 +167,7 @@ bool drawingTestGeometricalDSS(const TCurve& curve)
   GeometricalDSS<ConstIterator> s;
   ConstIterator itEnd (r.end()); 
   s.init( r.begin() );
-  while ( (s.end() != itEnd) && (s.extendForward()) ) {}
+  while ( (s.end() != itEnd) && (s.extendFront()) ) {}
 
   double a, b, c; 
   s.getParameters(a,b,c); 

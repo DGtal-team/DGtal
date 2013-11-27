@@ -78,8 +78,8 @@ Description of \b concept '\b CIncrementalSegmentComputer' <p>
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 | Initialization| x.init(i)  |                     |void         |                  |set a segment to i |x is valid and P is true | O(1) |
-| Extension test| x.isExtendableForward()|         |bool         | x is valid and P is true | check whether x can be extended to x.end() or not | x is valid and P is true | |
-| Extension     | x.extendForward()|               |bool         | x is valid and P is true | check whether x can be extended to x.end() or not, extend only if true | x is valid and P is true | |
+| Extension test| x.isExtendableFront()|         |bool         | x is valid and P is true | check whether x can be extended to x.end() or not | x is valid and P is true | |
+| Extension     | x.extendFront()|               |bool         | x is valid and P is true | check whether x can be extended to x.end() or not, extend only if true | x is valid and P is true | |
     
  ### Invariants###
 
@@ -117,8 +117,8 @@ for ( ConstIterator it = s.begin(),
     {
       myX.init(myI);     
 
-      ConceptUtils::sameType( myB, myX.isExtendableForward() );
-      ConceptUtils::sameType( myB, myX.extendForward() );
+      ConceptUtils::sameType( myB, myX.isExtendableFront() );
+      ConceptUtils::sameType( myB, myX.extendFront() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

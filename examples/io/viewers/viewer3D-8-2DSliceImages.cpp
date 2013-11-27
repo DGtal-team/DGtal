@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file viewer3D-7-2Dimages.cpp
+ * @file viewer3D-8-2DSliceImages.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2013/04/29
  *
- * An example file named viewer3D-8-2Dimages.
+ * An example file named viewer3D-8-2DSliceImages .
  *
  * This file is part of the DGtal library.
  */

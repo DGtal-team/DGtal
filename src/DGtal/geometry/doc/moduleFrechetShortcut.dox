@@ -332,7 +332,7 @@ In DGtal, the FrechetShortcut should be used with a Curve object, using its Poin
 @snippet geometry/curves/exampleFrechetShortcut.cpp FrechetShortcutUsage
 
 
-The function DGtal::FrechetShortcut::extendForward() is called when a new point is added to the current shortcut. It calls DGtal::FrechetShortcut::updateWidth() and DGtal::FrechetShortcut::updateBackpath(). 
+The function DGtal::FrechetShortcut::extendFront() is called when a new point is added to the current shortcut. It calls DGtal::FrechetShortcut::updateWidth() and DGtal::FrechetShortcut::updateBackpath(). 
 
 The function DGtal::FrechetShortcut::updateWidth() implements the update of the width @f$\omega(i,j)@f$ and uses the subclass 
 DGtal::FrechetShortcut::Cone for the cone definition and manipulation.  

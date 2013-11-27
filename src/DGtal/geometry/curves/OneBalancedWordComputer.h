@@ -52,6 +52,7 @@
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/geometry/curves/ArithmeticalDSL.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -113,6 +114,8 @@ namespace DGtal
       //The basic steps associate to the codes are given by a function `f: Code -> Vector` 
       typedef Vector (*DisplacementFct) (Code);
 
+      //DSL
+      typedef ArithmeticalDSL<TInteger, TInteger, 4> DSL; 
 
     private :
       /**
@@ -489,28 +492,28 @@ namespace DGtal
        *  
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool isExtendableForward();
+      bool isExtendableFront();
 
       /**
        * Tests whether the current DSS can be extended at the front.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendForward();
+      bool extendFront();
 
       /**
        * Tests whether the current DSS can be extended at the back.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendBackward();
+      bool extendBack();
 
       /**
        * Tests whether the current DSS can be extended at the back.
        *  
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool isExtendableBackward();
+      bool isExtendableBack();
 
       /**
        * Removes the first point of the DSS (at back). 
@@ -519,7 +522,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the first point is removed, 'false' otherwise.
        */
-      bool retractForward();
+      bool retractBack();
 
       /**
        * Removes the last point of the DSS (at front).
@@ -528,7 +531,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the last point is removed, 'false' otherwise.
        */
-      bool retractBackward();
+      bool retractFront();
 
       /**
        * Set the position of the first point of the DSS.
@@ -544,14 +547,10 @@ namespace DGtal
       void translate( const Vector & v );
 
       /**
-       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
-       * @param (returns) 'a' from the equation mu <= ax-by < mu + omega
-       * @param (returns) 'b' from the equation mu <= ax-by < mu + omega
-       * @param (returns) 'mu' from the equation mu <= ax-by < mu + omega
-       * @param (returns) 'omega' from the equation mu <= ax-by < mu + omega
+       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega, ie
+       * the bounding DSL of minimal parameters
        */
-      void getArithmeticalDescription( Integer &a, Integer &b, Integer
-          &mu, Integer &omega) const;
+      DSL getArithmeticalDescription() const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
@@ -596,7 +595,7 @@ namespace DGtal
        * @param aPoint a point whose remainder is returned
        * @returns the remaindre of aPoint
        */
-      Integer getRemainder(const Point & aPoint) const;
+      Integer remainder(const Point & aPoint) const;
 
       /**
        * Computes the leaning points of the DSS
@@ -615,7 +614,7 @@ namespace DGtal
        * leaning point is computed.
        * @return first upper leaning point.
        */
-      Point getUf() const;
+      Point Uf() const;
 
       /**
        * Accessor to the last upper leaning point
@@ -623,7 +622,7 @@ namespace DGtal
        * leaning point is computed.
        * @return last upper leaning point.
        */
-      Point getUl() const;
+      Point Ul() const;
 
       /**
        * Accessor to the first lower leaning point
@@ -631,7 +630,7 @@ namespace DGtal
        * leaning point is computed.
        * @return first lower leaning point.
        */
-      Point getLf() const;
+      Point Lf() const;
 
       /**
        * Accessor to the last lower leaning point
@@ -639,7 +638,7 @@ namespace DGtal
        * leaning point is computed.
        * @return last lower leaning point.
        */
-      Point getLl() const;
+      Point Ll() const;
 
       /**
        * Performs some basic tests to check the validity of the DSS. 
@@ -691,13 +690,13 @@ namespace DGtal
        * Accessor to the first added point to the DSS
        * @return point.
        */
-      Point getFirstPoint() const;
+      Point back() const;
 
       /**
        * Accessor to the last added point to the DSS
        * @return point.
        */
-      Point getLastPoint() const;
+      Point front() const;
 
       /**
        * Accessor to the first added point to the DSS

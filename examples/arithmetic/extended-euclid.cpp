@@ -56,7 +56,7 @@ int main( int argc, char** argv )
   Integer c( argv[ 3 ] );
   IC ic;
   Integer g = ic.gcd( a, b );
-  if ( ic.isZero( g ) )
+  if ( ic.isZero( a ) || ic.isZero( b ) )
     {
       std::cerr << "[Error] parameters a and b should be non-null." << std::endl;
       return 1;
@@ -74,7 +74,8 @@ int main( int argc, char** argv )
   Integer d = a*X[ 0 ] + b*X[ 1 ];
   if ( c != d )
     {
-      std::cerr << "[Internal Error] Output of extended Euclid algorithm is incorrect." << std::endl;
+      std::cerr << "[Internal Error] Output of extended Euclid algorithm is incorrect: " << d << " != " << c 
+                << ". This should not happen." << std::endl;
       return 3;
     }
   //! [extended-euclid-process]
