@@ -133,11 +133,11 @@ int main( int argc, char** argv )
 
  viewer << Viewer3D<>::updateDisplay;
 
-
- return bool res = application.exec();
- trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
- trace.endBlock();
- return res ? 0 : 1;
+ return application.exec();
+ // return bool res = application.exec();
+ // trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+ //trace.endBlock();
+ //return res ? 0 : 1;
 
  
 }
