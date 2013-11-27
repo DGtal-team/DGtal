@@ -46,14 +46,15 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class 3DDomain2DView" );
+
  
 
  QApplication application(argc,argv);
  Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
-
+ trace.beginBlock ( "Testing class 3DDomain2DView" );
+ 
  Z2i::Point p1( 0, 0 );
  Z2i::Point p2( 10, 15 );
  
@@ -106,8 +107,10 @@ int main( int argc, char** argv )
  viewer << DGtal::Translate2DDomain(8, 40, 20 ,20);  
 
  viewer <<  Viewer3D<>::updateDisplay;
-
+ 
  bool res = application.exec();
+ trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+ trace.endBlock();
  return res ? 0 : 1;
 }
 //                                                                           //
