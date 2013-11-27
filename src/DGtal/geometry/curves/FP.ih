@@ -81,15 +81,15 @@ algorithm(const TIterator& itb,
   DSSComputer longestDSS;
   longestDSS.init(itb); 
 	  
-  while ( (longestDSS.end() != ite)&&(longestDSS.extendForward()) ) 
+  while ( (longestDSS.end() != ite)&&(longestDSS.extendFront()) ) 
     {
       //store the first upper leaning point
-      if (longestDSS.getUf() != vTmpU.back()) {
-	vTmpU.push_back(longestDSS.getUf());
+      if (longestDSS.Uf() != vTmpU.back()) {
+	vTmpU.push_back(longestDSS.Uf());
       }
       //store the first lower leaning point
-      if (longestDSS.getLf() != vTmpL.back()) {
-	vTmpL.push_back(longestDSS.getLf());
+      if (longestDSS.Lf() != vTmpL.back()) {
+	vTmpL.push_back(longestDSS.Lf());
       }
     }
 
@@ -142,7 +142,7 @@ algorithm(const TIterator& itb,
   }
 
   //last removing step
-  while ( longestDSS.retractForward() ) {
+  while ( longestDSS.retractBack() ) {
     //store the last leaning point
     if (adapter->lastLeaningPoint() != myPolygon.back()) {
       myPolygon.push_back(adapter->lastLeaningPoint());
@@ -167,9 +167,9 @@ algorithm(const TIterator& itb,
   DSSComputer currentDSS; 
   currentDSS.init( itb ); 
   //forward extension
-  while ( currentDSS.extendForward() ) {}
+  while ( currentDSS.extendFront() ) {}
   //backward extension
-  while ( currentDSS.extendBackward() ) {}
+  while ( currentDSS.extendBack() ) {}
 
   //std::cerr << "First MS" << std::endl << currentDSS << std::endl; 
 
@@ -224,9 +224,9 @@ DGtal::FP<TIterator,TInteger,connectivity>
 ::initConvexityConcavity( typename Adapter::DSS &aDSS ) 
 {
 
-  ASSERT( aDSS.isExtendableForward() == false ); 
+  ASSERT( aDSS.isExtendableFront() == false ); 
 
-  if ( aDSS.getRemainder( aDSS.end() ) < (aDSS.getMu()) ) 
+  if ( aDSS.remainder( aDSS.end() ) < (aDSS.mu()) ) 
     {      //concave part
       return new details
 	::DSSDecorator4ConcavePart<typename Adapter::DSS>(aDSS);
@@ -248,7 +248,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
   //std::cerr << "Removing step " << currentDSS << std::endl; 
 
-  ASSERT( adapter->isExtendableForward() == false ); 
+  ASSERT( adapter->isExtendableFront() == false ); 
 
   //store the last leaning point 
   //if the first and last leaning points 
@@ -258,9 +258,9 @@ DGtal::FP<TIterator,TInteger,connectivity>
   }
 
   //removing step
-  while ( !adapter->isExtendableForward() ) {
+  while ( !adapter->isExtendableFront() ) {
     //remove a point from the back
-    if ( adapter->retractForward() ) {
+    if ( adapter->retractBack() ) {
       //store the last leaning point
       ASSERT( myPolygon.size() > 0 ); 
       if (adapter->lastLeaningPoint() != myPolygon.back()) {
@@ -285,7 +285,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
   //std::cerr << "Adding step " << currentDSS << std::endl; 
 
-  ASSERT( adapter->isExtendableForward() == true ); 
+  ASSERT( adapter->isExtendableFront() == true ); 
 
   //remove the last leaning point 
   //if the first and last leaning points 
@@ -296,7 +296,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
   }    
 
   //adding step
-  while ( (adapter->end() != itEnd)&&(adapter->extendForward()) ) {
+  while ( (adapter->end() != itEnd)&&(adapter->extendFront()) ) {
     //store the first leaning point
     ASSERT( myPolygon.size() > 0 ); 
     if (adapter->firstLeaningPoint() != myPolygon.back()) {
@@ -317,7 +317,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
   //std::cerr << "Adding step " << currentDSS << std::endl; 
 
-  ASSERT( adapter->isExtendableForward() == true ); 
+  ASSERT( adapter->isExtendableFront() == true ); 
 
   //remove the last leaning point 
   //if the first and last leaning points 
@@ -328,7 +328,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
   }    
 
   //adding step
-  while ( adapter->extendForward() ) {
+  while ( adapter->extendFront() ) {
     //store the first leaning point
     ASSERT( myPolygon.size() > 0 ); 
     if (adapter->firstLeaningPoint() != myPolygon.back()) {

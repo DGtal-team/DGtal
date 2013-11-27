@@ -103,19 +103,19 @@ bool testOneBalancedWordComputer()
   int nbRetract = 0;
   while ( C3.end() != theContour.chain.end() )
     {
-      bool b1 = C1.extendForward();
-      bool b2 = C2.extendForward();
-      bool b3 = C3.extendForward();
-      bool b4 = C4.extendForward();
+      bool b1 = C1.extendFront();
+      bool b2 = C2.extendFront();
+      bool b3 = C3.extendFront();
+      bool b4 = C4.extendFront();
       if ( b1 && b2 && b3 && b4 )
         {
         }
       else if ( !b1 && !b2 && !b3 && !b4 )
         {
-          C1.retractForward();
-          C2.retractForward();
-          C3.retractForward();
-          C4.retractForward();
+          C1.retractBack();
+          C2.retractBack();
+          C3.retractBack();
+          C4.retractBack();
           ++nbRetract;
         }
       else
@@ -153,12 +153,12 @@ bool CompareToArithmetical()
   TestedType C;
   C.init( it );
   ReferenceType A(it);
-  A.extendForward(); 
+  A.extendFront(); 
   bool res = true;
   while ( C.end() != theContour.chain.end() ) 
     {
-      bool a = A.extendForward();
-      bool c = C.extendForward();
+      bool a = A.extendFront();
+      bool c = C.extendFront();
       if ( a ^ c )
         {
           res = false;
@@ -167,34 +167,34 @@ bool CompareToArithmetical()
         }
       else if ( ! a )
         {
-          A.retractForward();
-          C.retractForward();
+          A.retractBack();
+          C.retractBack();
         }
       // Compare positions
-      if ( ( C.getFirstPoint() != A.getFirstPoint() ) || ( C.getLastPoint() != A.getLastPoint() )  )
+      if ( ( C.back() != A.back() ) || ( C.front() != A.front() )  )
         {
           res = false;
           cout << "Equality test error\n";
           break;
         }
       // Compare arithmetic parameters
-      if ( ( C.getA() != A.getA() ) || ( C.getB() != A.getB() ) ||
-           ( C.getMu() != A.getMu() ) || ( C.getOmega() != A.getOmega() ) ||
-           ( C.getUf() != A.getUf() ) || ( C.getUl() != A.getUl() ) ||
-           ( C.getLf() != A.getLf() ) || ( C.getLl() != A.getLl() ) 
+      if ( ( C.getA() != A.a() ) || ( C.getB() != A.b() ) ||
+           ( C.getMu() != A.mu() ) || ( C.getOmega() != A.omega() ) ||
+           ( C.Uf() != A.Uf() ) || ( C.Ul() != A.Ul() ) ||
+           ( C.Lf() != A.Lf() ) || ( C.Ll() != A.Ll() ) 
          )
         {
           cout << "Arithmetic parameters error\n";
           cout <<  C << endl;
           cout <<  A << endl;
-          cout << "getA()    " <<  C.getA()     << " --- " <<  A.getA() << "\n";
-          cout << "getB()    " <<  C.getB()     << " --- " <<  A.getB() << "\n";
-          cout << "getMu()   " <<  C.getMu()    << " --- " <<  A.getMu() << "\n";
-          cout << "getOmega()" <<  C.getOmega() << " --- " <<  A.getOmega() << "\n";
-          cout << "getUf()   " <<  C.getUf()    << " --- " <<  A.getUf() << "\n";
-          cout << "getUl()   " <<  C.getUl()    << " --- " <<  A.getUl() << "\n";
-          cout << "getLf()   " <<  C.getLf()    << " --- " <<  A.getLf() << "\n";
-          cout << "getLl()   " <<  C.getLl()    << " --- " <<  A.getLl() << endl;
+          cout << "a()    " <<  C.getA()     << " --- " <<  A.a() << "\n";
+          cout << "b()    " <<  C.getB()     << " --- " <<  A.b() << "\n";
+          cout << "mu()   " <<  C.getMu()    << " --- " <<  A.mu() << "\n";
+          cout << "omega()" <<  C.getOmega() << " --- " <<  A.omega() << "\n";
+          cout << "Uf()   " <<  C.Uf()    << " --- " <<  A.Uf() << "\n";
+          cout << "Ul()   " <<  C.Ul()    << " --- " <<  A.Ul() << "\n";
+          cout << "Lf()   " <<  C.Lf()    << " --- " <<  A.Lf() << "\n";
+          cout << "Ll()   " <<  C.Ll()    << " --- " <<  A.Ll() << endl;
           res = false;
           break;
         }
@@ -247,7 +247,7 @@ bool showGreedySegmantation()
 
   typedef OneBalancedWordComputer<string::const_iterator,int> combinDSS;
   typedef GreedySegmentation<combinDSS> Decomposition;
-  typedef ArithmeticalDSSComputer< combinDSS::ConstPointIterator, int, 4> arithDSS;
+  typedef StandardDSS4<int> arithDSS;
 
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
@@ -263,8 +263,6 @@ bool showGreedySegmantation()
    << SetMode( "PointVector", "Grid" )
    << theContour;
   //for each segment
-  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
-  string className = "ArithmeticalDSSComputer/BoundingBox";
   Point p;
   p[0] = 31;
   p[1] = 16;
@@ -279,13 +277,14 @@ bool showGreedySegmantation()
       p = *( --( --( segment.pointEnd() )));
 
       // Build an ArithmeticDSS from the OneBalancedWordComputer.
-      arithDSS toShow( segment.pointBegin() );
-      while( toShow.end() != segment.pointEnd() )
-        {
-          toShow.extendForward();
-        }
-      aBoard << CustomStyle( className, new CustomPenColor( Color::Blue ) ) 
-        << toShow; // draw each segment
+      arithDSS toShow( *segment.pointBegin(), *segment.pointBegin() );
+      for (combinDSS::ConstPointIterator it = segment.pointBegin(), 
+	     itEnd = segment.pointEnd(); it != itEnd; ++it )
+	toShow.extendFront( *it );
+      
+      aBoard << SetMode( toShow.className(), "BoundingBox" )
+	     << CustomStyle( toShow.className()+"/BoundingBox", new CustomPenColor( Color::Blue ) ) 
+	     << toShow; // draw each segment
     } 
   aBoard.saveSVG("testCombinDSS-greedy.svg");
   trace.endBlock();

@@ -133,6 +133,7 @@ IF(WITH_C11)
       SET(C11_FEATURES "${C11_FEATURES} std::move rvalue-reference(&&)")
     ENDIF()
     MESSAGE(STATUS "Supported c++11 features: [${C11_FEATURES} ]")
+    ADD_DEFINITIONS("-DWITH_C11 ")
   ELSE()
     MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
   ENDIF()
@@ -156,6 +157,23 @@ IF(WITH_GMP)
   ELSE(GMP_FOUND)
     message(FATAL_ERROR "GMP not found. Check the cmake variables associated to this package or disable it." )
   ENDIF(GMP_FOUND)
+
+  ##Checking the "std::cout << mpz_class"
+  ## (issues with some g++ compiler on MACOS
+  try_compile( GMP_HAS_IOSTREAM
+    ${CMAKE_BINARY_DIR}/CMakeTmp
+    ${CMAKE_SOURCE_DIR}/cmake/src/gmp/gmpstream.cpp
+    COMPILE_DEFINITIONS "-I${GMP_INCLUDE_DIR} ${GMPXX_LIBRARIES} ${GMP_LIBRARIES}"
+    LINK_LIBRARIES  ${GMPXX_LIBRARIES} ${GMP_LIBRARIES}
+    OUTPUT_VARIABLE OUTPUT
+    )
+  if ( GMP_HAS_IOSTREAM )
+    add_definitions("-DGMP_HAS_IOSTREAM")
+    message(STATUS "   * GMPXX has iostream capabilities")
+  ELSE(GMP_HAS_IOSTREAM)
+    message(STATUS "   * GMPXX does not have iostream capabilities")
+    message(FATAL_ERROR "GMP has been found but there is a link isuse with some g++ versions. Please check your system or disable the GMP dependency." )
+ endif (GMP_HAS_IOSTREAM )
 ENDIF(WITH_GMP)
 
 # -----------------------------------------------------------------------------

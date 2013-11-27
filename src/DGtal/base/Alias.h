@@ -63,6 +63,8 @@ argument parameter must be at least as long as the object
 itself. Note that an instance of Alias<T> is itself a light
 object (it holds only an enum and a pointer).
 
+(For a complete description, see \ref moduleCloneAndReference).
+
 It is used in methods or functions to encapsulate the parameter
 types. The following conversion from input parameter to data
 member or variable are possible:
@@ -72,6 +74,10 @@ member or variable are possible:
 |To: \c T&         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: \ref CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
+
+Argument conversion to member is \b automatic except when converting
+to a pointer \c T*: the \b address operator (\c operator&) must be used in
+this case.
 
 For the last row (case where the \e programmer choose a \ref
 CountedPtrOrPtr to hold the const alias), the \e user
@@ -142,7 +148,7 @@ struct B1_v2_1 {
 // Aliasing for a long lifetime is visible.
 struct B1_v2_2 {
   B1_v2_2( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
-  : myA( &a ) {}
+  : myA( &a ) {} // Note the use of the address operator because of the pointer member
 ...
   A* myA;
 };
@@ -150,7 +156,7 @@ struct B1_v2_2 {
 // Aliasing for a long lifetime is visible.
 struct B1_v2_3 {
   B1_v2_3( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
-  : myA( &a ) {}
+  : myA( a ) {}
 ...
   CountedPtrOrPtr<A> myA;
 };

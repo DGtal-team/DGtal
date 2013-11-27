@@ -109,15 +109,13 @@ int main()
 
     //! [imageGridCurveEstimator-lengthEstimation]
     //length estimation based on a DSS segmentation
-    DSSLengthEstimator< Range::ConstIterator > DSSlength;
-    DSSlength.init(1, r.begin(), r.end(), c.isClosed());
-    double length = DSSlength.eval();
-    trace.info() << "Length: " << length << std::endl; 
+    DSSLengthEstimator< Range::ConstCirculator > DSSlength;
+    DSSlength.init(1, r.c(), r.c());
+    trace.info() << "Length: " << DSSlength.eval() << std::endl; 
     //! [imageGridCurveEstimator-lengthEstimation]
-    
+
     //DSS segmentation display
-    typedef Z2i::Curve::PointsRange::ConstCirculator ConstCirculator; 
-    typedef ArithmeticalDSSComputer<ConstCirculator,int,4> SegmentComputer;
+    typedef ArithmeticalDSSComputer<Range::ConstCirculator,int,4> SegmentComputer;
     typedef GreedySegmentation<SegmentComputer> Segmentation;
 
     Segmentation theSegmentation( r.c(), r.c(), SegmentComputer() );
@@ -127,8 +125,9 @@ int main()
     DGtal::Board2D aBoard;
     aBoard << SetMode("PointVector", "Grid");
     for ( ; i != end; ++i) {
-      aBoard << SetMode(i->className(), "Points") << *i; 
-      aBoard << SetMode(i->className(), "BoundingBox") << *i; 
+      SegmentComputer::Primitive dss = i->primitive(); 
+      aBoard << SetMode(dss.className(), "Points") << dss; 
+      aBoard << SetMode(dss.className(), "BoundingBox") << dss; 
     } 
     aBoard.saveEPS("DisplayDSSSegmentationTuto3.eps");
   

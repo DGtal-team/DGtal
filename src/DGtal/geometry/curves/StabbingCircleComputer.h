@@ -245,28 +245,28 @@ namespace DGtal
      *
      * NB: linear in the size of the segment is the worst case
      */
-    bool extendForward();
+    bool extendFront();
 
     /**
      * Forward extension test.
      *
      * NB: linear in the size of the segment is the worst case
      */
-    bool isExtendableForward();
+    bool isExtendableFront();
 
     /**
      * Backward extension of the segment.
      *
      * NB: linear in the size of the segment is the worst case
      */
-    bool extendBackward();
+    bool extendBack();
 
     /**
      * Backward extension test.
      *
      * NB: linear in the size of the segment is the worst case
      */
-    bool isExtendableBackward();
+    bool isExtendableBack();
 
     //------------------ display -------------------------------
     /**
