@@ -30,8 +30,8 @@ This part of the manual describes how to build DGtal on Linux, Mac OS X and Wind
 The DGtal library uses <a href="http://www.cmake.org">cmake</a> to
 manage the project build on various systems.
 
-
-To build DGtal in is minimal configuration, you need at least these dependencies:
+To build DGtal in is minimal configuration, you need at least these
+dependencies:
 
 - \e cmake (optionally cmake-gui),
 - \e c++ compiler (g++, clang++, ...)
