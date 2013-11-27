@@ -23,20 +23,3 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 
 
 
-### Visu INVENTOR
-
-
-SET(DGTALIV_TESTS_SRC
-   testIVViewer
-   volIVViewer
-   )
-
-if ( WITH_VISU3D_IV )
-
-  FOREACH(FILE ${DGTALIV_TESTS_SRC})
-    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} DGtalIO DGtal
-                            ${DGtalLibDependencies})
-  ENDFOREACH(FILE)
-
-endif ( WITH_VISU3D_IV )
