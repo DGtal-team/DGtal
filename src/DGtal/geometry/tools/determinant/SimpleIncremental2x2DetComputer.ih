@@ -51,7 +51,8 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer()
     myDY (NumberTraits<ResultInteger>::ZERO),  
     myADY (NumberTraits<ResultInteger>::ZERO),  
     myBDX (NumberTraits<ResultInteger>::ZERO),  
-    myDDet (NumberTraits<ResultInteger>::ZERO)  
+    myDDet (NumberTraits<ResultInteger>::ZERO), 
+    myZero (NumberTraits<ResultInteger>::ZERO)
 {
 }
 
@@ -70,7 +71,8 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer(c
     myDY (aOther.myDY), 
     myADY (aOther.myADY),  
     myBDX (aOther.myBDX), 
-    myDDet (aOther.myDDet) 
+    myDDet (aOther.myDDet),
+    myZero (aOther.myZero)
 {
 }
 
@@ -116,7 +118,7 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::init(const ArgumentInteger& aA, c
   myB = static_cast<ResultInteger>(aB);
   //clear members used to memorize old values
   myX = NumberTraits<ResultInteger>::ZERO; 
-  myY = NumberTraits<ResultInteger>::ZERO; 
+  myY = NumberTraits<ResultInteger>::ZERO;  
   myDet = NumberTraits<ResultInteger>::ZERO; 
 }
 
@@ -129,15 +131,31 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger&
   //compute the difference with the last second column vector
   myDX = aX - static_cast<ResultInteger>(myX); 
   myDY = aY - static_cast<ResultInteger>(myY); 
-  //partial determinant
-  myADY = myA * myDY;
-  myBDX = myB * myDX;
-  myDDet = myADY - myBDX;
-  //determinant
-  myDet += myDDet; 
+
   //memorize the second column vector for the next computation
   myX = aX; 
   myY = aY; 
+
+  if (myDX == NumberTraits<ResultInteger>::ZERO)
+    {
+      partialComputation(); 
+    }
+  else if (myDX == NumberTraits<ResultInteger>::ONE)
+    { 
+      myDet -= myB; 
+      partialComputation(); 
+    }
+  else if (myDX == -NumberTraits<ResultInteger>::ONE)
+    { 
+      myDet += myB;
+      partialComputation(); 
+    }
+  else
+    {
+      myBDX = myB * myDX;
+      myDet -= myBDX;
+      partialComputation(); 
+    }
   return myDet; 
 }
 
@@ -150,6 +168,31 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger&
 {
   init(aA,aB); 
   return operator()(aX, aY); 
+}
+
+
+// ---------------------------------------------------------------------------
+template <typename TI, typename TO>
+inline
+void
+DGtal::SimpleIncremental2x2DetComputer<TI,TO>::partialComputation() const
+{
+  if (myDY != NumberTraits<ResultInteger>::ZERO)
+    {
+      if (myDY == NumberTraits<ResultInteger>::ONE)
+	{ 
+	  myDet += myA;
+	}
+      else if (myDY == -NumberTraits<ResultInteger>::ONE)
+	{ 
+	  myDet -= myA;
+	}
+      else
+	{
+	  myADY = myA * myDY;
+	  myDet += myADY;
+	}
+    }
 }
 
 // ---------------------------------------------------------------------------

@@ -252,12 +252,20 @@ namespace DGtal
      */
     mutable ResultInteger myDDet; 
 
+    const ResultInteger myZero; 
     // ------------------------- Hidden services ------------------------------
   protected:
 
 
     // ------------------------- Internals ------------------------------------
   private:
+
+    /**
+     * Update @a myDet with respect to the new value of @a myDY.
+     * @pre @a myDY should be updated first
+     * @see operator()
+     */
+    void partialComputation() const;
 
   }; // end of class SimpleIncremental2x2DetComputer
 

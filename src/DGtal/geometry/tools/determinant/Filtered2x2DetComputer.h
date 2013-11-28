@@ -90,8 +90,7 @@ namespace DGtal
      * Type of integer for the input coefficients of the 2x2 matrix
      */
     typedef typename TDetComputer::ArgumentInteger ArgumentInteger; 
-    //TDetComputer must take input coefficients of type double
-    BOOST_STATIC_ASSERT(( boost::is_same<double,ArgumentInteger>::value ));
+    //NB. TDetComputer should take input coefficients of type float, double or long double
     //this type must adhere to IEC-559 / IEEE-754 standard.
     BOOST_STATIC_ASSERT(( std::numeric_limits<ArgumentInteger>::is_iec559 )); 
 
