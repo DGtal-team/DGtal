@@ -2,7 +2,7 @@ SET(DGTAL_TESTS_SRC
   testImageSimple
   testImageAdapter
   testImageCache
-  testTiledImageFromImage
+  testTiledImage
   testConstImageAdapter
   testImage
   testImageSpanIterators
@@ -11,6 +11,11 @@ SET(DGTAL_TESTS_SRC
   testHashTree
   testSliceImageFromFunctor
   )
+
+if( WITH_HDF5 )
+  SET(DGTAL_TESTS_SRC ${DGTAL_TESTS_SRC} 
+  testImageFactoryFromHDF5)
+endif( WITH_HDF5 )
 
 SET(DGTAL_BENCH_SRC
   testImageContainerBenchmark

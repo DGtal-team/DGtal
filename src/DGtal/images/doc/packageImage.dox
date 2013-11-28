@@ -26,7 +26,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -34,7 +34,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page packageImage Image package
-   
+
 @managers David Coeurjolly
 
 @since 0.4
@@ -48,7 +48,7 @@ This package aims to implement Image models and data-structures.
 
 @b Modules
  - \ref moduleImages (Tristan Roussillon, David Coeurjolly, Martial Tola)
- - \ref moduleBigImages (Martial Tola)
+ - \ref moduleBigImages (Martial Tola, David Coeurjolly)
 
  @b Package @b Concepts @b Overview
  - \ref packageImageConcepts
