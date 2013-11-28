@@ -111,17 +111,17 @@ bool test_RestartClock()
 
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = cos(tmp+i);
-	sleep(.02);
+	usleep(20000);
   tick_accum += c_accum.restartClock();
 
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = cos(tmp+i);
-	sleep(.02);
+	usleep(20000);
   tick_accum += c_accum.restartClock();
 
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = cos(tmp+i);
-	sleep(.02);
+	usleep(20000);
   tick_accum += c_accum.restartClock();
 
   tick_total = c_total.stopClock();

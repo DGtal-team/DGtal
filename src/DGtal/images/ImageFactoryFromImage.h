@@ -45,7 +45,6 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Alias.h"
-#include "DGtal/images/ImageContainerBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -77,11 +76,10 @@ namespace DGtal
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Domain Domain;
-    typedef typename TImageContainer::Value Value;
+    typedef typename ImageContainer::Domain Domain;
     
     ///New types
-    typedef ImageContainerBySTLVector<Domain, Value> OutputImage;
+    typedef ImageContainer OutputImage;
 
     // ----------------------- Standard services ------------------------------
 
@@ -101,12 +99,27 @@ namespace DGtal
      * Does nothing
      */
     ~ImageFactoryFromImage() {}
+    
+  private:
+    
+    ImageFactoryFromImage( const ImageFactoryFromImage & other );
+    
+    ImageFactoryFromImage & operator=( const ImageFactoryFromImage & other );
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /////////////////// Domains //////////////////
-
+      
+    /**
+     * Returns a reference to the underlying image domain.
+     *
+     * @return a reference to the domain.
+     */
+    const Domain & domain() const
+    {
+        return myImagePtr->domain();
+    }
 
     /////////////////// Accessors //////////////////
 
@@ -139,8 +152,8 @@ namespace DGtal
     {
       OutputImage* outputImage = new OutputImage(aDomain);
       
-      typename OutputImage::Domain::Iterator it = outputImage->domain().begin();
-      typename OutputImage::Domain::Iterator it_end = outputImage->domain().end();
+      typename Domain::Iterator it = outputImage->domain().begin();
+      typename Domain::Iterator it_end = outputImage->domain().end();
       for (; it != it_end; ++it)
       {
         outputImage->setValue(*it, (*myImagePtr)(*it));
@@ -156,8 +169,8 @@ namespace DGtal
      */
     void flushImage(OutputImage* outputImage)
     {
-      typename OutputImage::Domain::Iterator it = outputImage->domain().begin();
-      typename OutputImage::Domain::Iterator it_end = outputImage->domain().end();
+      typename Domain::Iterator it = outputImage->domain().begin();
+      typename Domain::Iterator it_end = outputImage->domain().end();
       for (; it != it_end; ++it)
       {
         myImagePtr->setValue(*it, (*outputImage)(*it));
@@ -179,16 +192,13 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    ImageFactoryFromImage() {}
+    //ImageFactoryFromImage() {}
     
     // ------------------------- Private Datas --------------------------------
   protected:
 
     /// Alias on the image container
     ImageContainer * myImagePtr;
-
-  private:
-
 
     // ------------------------- Internals ------------------------------------
   private:
