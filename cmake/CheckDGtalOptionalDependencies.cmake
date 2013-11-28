@@ -168,7 +168,6 @@ IF(WITH_GMP)
     OUTPUT_VARIABLE OUTPUT
     )
 
-  message(status ${OUTPUT})
   if ( GMP_HAS_IOSTREAM )
     add_definitions("-DGMP_HAS_IOSTREAM")
     message(STATUS "   * GMPXX has iostream capabilities")
