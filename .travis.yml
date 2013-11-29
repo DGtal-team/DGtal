@@ -19,8 +19,8 @@ before_script:
   - wget https://gforge.inria.fr/frs/download.php/32994/CGAL-4.3.tar.gz
   - tar zxvf CGAL-4.3.tar.gz && cd CGAL-4.3
   - cmake . -DWITH_Eigen3=true -DWITH_GMPXX=true -DWITH_LAPACK=true -DWITH_BLAS=true
-  - make >! /dev/bull
-  - sudo make install >! /dev/null
+  - make -s
+  - sudo make install -s
   - cd ..
 
 
