@@ -21,7 +21,7 @@ before_script:
   - cmake . -DWITH_Eigen3=true -DWITH_GMPXX=true -DWITH_LAPACK=true -DWITH_BLAS=true
   - make -s
   - sudo make install -s
-  - cd ..
+  - cd ../..
 
 
 
