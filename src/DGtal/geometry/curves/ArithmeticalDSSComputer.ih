@@ -87,7 +87,7 @@ ArithmeticalDSSComputer ( const ArithmeticalDSSComputer<TIterator,TInteger,adjac
 //-----------------------------------------------------------------------------
 template <typename TIterator, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::Self&
+typename DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>&
 DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::
 operator=( const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & other )
 {
