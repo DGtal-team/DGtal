@@ -93,8 +93,8 @@ bool testEmbedder()
   typedef DigitalSurface<DigitalSurfaceContainer> MyDigitalSurface;
   typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> MyDSEmbedder1;
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder1 > ));
-  typedef ConstantConvolutionWeights< MyDigitalSurface::Size > Kernel;
-  typedef LocalConvolutionNormalVectorEstimator
+  typedef deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > Kernel;
+  typedef deprecated::LocalConvolutionNormalVectorEstimator
     < MyDigitalSurface, Kernel > MyEstimator;
   typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < MyDSEmbedder1, MyEstimator > MyDSEmbedder2;

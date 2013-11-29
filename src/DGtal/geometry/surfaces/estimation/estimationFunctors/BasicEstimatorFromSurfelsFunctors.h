@@ -48,80 +48,85 @@
 
 namespace DGtal
 {
-  
+
   template<typename TSurfel, typename TSCellEmbedder>
   struct DummyEstimatorFromSurfels
   {
   public:
-    
+
     ///Surfel type
     typedef TSurfel Surfel;
-    
+
     ///Embedder type
     typedef TSCellEmbedder SCellEmbedder;
-    
+
     BOOST_CONCEPT_ASSERT(( CSCellEmbedder<SCellEmbedder> ));
-    
+
     ///Type of output values
     typedef int Quantity;
-    
+
     /**
      * Constructor.
      *
      * @param [in] anEmbedder any model of CSCellEmbedder.
      * @param [in] h a grid step
      */
-    DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder , const double h):
+    DummyEstimatorFromSurfels(ConstAlias<SCellEmbedder> anEmbedder ,
+                              const double h):
       myEmbedder(&anEmbedder), myH(h)
     {
       myCpt=0;
     }
-    
+
     /**
      * Destructor
      */
     ~DummyEstimatorFromSurfels() {}
-    
+
     /**
      * Push a surfel to the estimator. For this dummy estimator,
      * we just count the number of surfels.
      */
-    void pushSurfel(const Surfel &/*aSurfel*/)
+    void pushSurfel(const Surfel &aSurfel,
+                    const double aDistance)
     {
+      BOOST_VERIFY(aDistance == aDistance);
+      BOOST_VERIFY(aSurfel == aSurfel);
+
       myCpt++;
     }
-    
+
     /**
      * @return the estimated quantity.
      */
-    Quantity eval( ) const {return myCpt; } 
-    
+    Quantity eval( ) const {return myCpt; }
+
     /**
      * Reset the estimator.
      */
-    void reset() 
-    { 
+    void reset()
+    {
       myCpt = NumberTraits<Quantity>::ZERO;
     }
-    
+
   private:
-    
+
     /**
      * Private default constructor.
      */
     DummyEstimatorFromSurfels();
-    
+
     ///ConstAlias of the Embedder
     const SCellEmbedder * myEmbedder;
-    
+
     ///Surfel counter.
     Quantity myCpt;
 
     ///Grid step
     double myH;
   };
-  
-    
+
+
 } // namespace DGtal
 
 

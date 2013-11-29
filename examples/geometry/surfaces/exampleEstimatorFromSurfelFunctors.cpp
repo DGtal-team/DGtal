@@ -15,45 +15,48 @@
  **/
 
 /**
- * @file testLocalEstimatorFromFunctorAdapter.cpp
- * @ingroup Tests
+ * @file exampleEstimatorFromSurfelFunctors.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/05/28
  *
- * Functions for testing class LocalEstimatorFromFunctorAdapter.
+ * Header file for module LocalEstimatorFromSurfelFunctorAdapter.cpp
  *
  * This file is part of the DGtal library.
  */
-
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/base/BasicFunctors.h"
-#include "DGtal/graph/GraphVisitorRange.h"
-#include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/shapes/Shapes.h"
-#include "DGtal/topology/CanonicSCellEmbedder.h"
-#include "DGtal/graph/DistanceBreadthFirstVisitor.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
-#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
-#include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
+
+// Shape constructors
+#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/images/ImageHelper.h"
+#include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/graph/DepthFirstVisitor.h"
+#include "DGtal/graph/GraphVisitorRange.h"
+#include "DGtal/shapes/Shapes.h"
+
+#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
+#ifdef WITH_CGAL
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingMeanCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/LinearLeastSquareFittingNormalVectorEstimator.h"
+#endif
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+#include "DGtal/base/BasicFunctors.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
-///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class LocalEstimatorFromFunctorAdapter.
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename TPoint3>
@@ -75,102 +78,97 @@ struct ImplicitDigitalEllipse3 {
 };
 
 
-/**
- * Example of a test. To be completed.
- *
- */
-bool testLocalEstimatorFromFunctorAdapter()
+int main( int argc, char** argv )
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  trace.beginBlock ( "Testing init ..." );
-
+  //! [SurfelFunctorsInit]
   using namespace Z3i;
   typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
   typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> Surface;
-  //typedef Surface::SurfelConstIterator ConstIterator;
-  //typedef Surface::Tracker Tracker;
   typedef Surface::Surfel Surfel;
 
-
-  trace.beginBlock("Creating Surface");
   Point p1( -10, -10, -10 );
   Point p2( 10, 10, 10 );
   KSpace K;
-  nbok += K.init( p1, p2, true ) ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-               << "K.init() is ok" << std::endl;
+  K.init( p1, p2, true );
   ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
   Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
   Surface surface( K, ellipse,
-                    SurfelAdjacency<KSpace::dimension>( true ), bel );
-  trace.endBlock();
+                   SurfelAdjacency<KSpace::dimension>( true ), bel );
+  //! [SurfelFunctorsInit]
 
-  trace.beginBlock("Creating  adapters");
+
+  //! [SurfelFunctorsType]
+#ifdef WITH_CGAL
   typedef MongeJetFittingGaussianCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorGaussian;
   typedef MongeJetFittingMeanCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorMean;
   typedef MongeJetFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
   typedef LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
 
-  typedef ConstValueFunctor< double > ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorGaussian, ConvFunctor> ReporterK;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorMean, ConvFunctor> ReporterH;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
+  //constant convolution functor
+  typedef ConstValueFunctor<double> ConstFunctor;
 
-  FunctorGaussian estimatorK(CanonicSCellEmbedder<KSpace>(surface.space()),1);
-  FunctorMean estimatorH(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
-  FunctorNormal estimatorN(CanonicSCellEmbedder<KSpace>(surface.space()),1);
-  FunctorNormalLeast estimatorL(CanonicSCellEmbedder<KSpace>(surface.space()),1);
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorGaussian, ConstFunctor> ReporterK;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorMean, ConstFunctor> ReporterH;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormal, ConstFunctor> ReporterNormal;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormalLeast, ConstFunctor> ReporterNormalLeast;
+#endif
 
-  ReporterK reporterK(surface, l2Metric, estimatorK , ConvFunctor(1.0));
-  ReporterH reporterH(surface, l2Metric, estimatorH , ConvFunctor(1.0));
-  ReporterNormal reporterN(surface, l2Metric, estimatorN , ConvFunctor(1.0));
-  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , ConvFunctor(1.0));
+  ///For Elmentary convolution, we specify a Gaussian convolution
+  ///kernel from the BasicFunctors.h file
+  typedef ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalElem;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric,
+                                                 FunctorNormalElem, GaussianKernelFunctor> ReporterNormalElem;
+  //! [SurfelFunctorsType]
 
-  reporterK.init(1, 5);
-  reporterH.init(1, 5);
-  reporterN.init(1, 5);
-  reporterL.init(1, 5);
 
+  //! [SurfelFunctorsInstances]
+#ifdef WITH_CGAL
+  ///Creating functors for h=1.0
+  FunctorGaussian estimatorK(CanonicSCellEmbedder<KSpace>(surface.space()),1.0);
+  FunctorMean estimatorH(CanonicSCellEmbedder<KSpace>(surface.space()), 1.0);
+  FunctorNormal estimatorN(CanonicSCellEmbedder<KSpace>(surface.space()),1.0);
+  FunctorNormalLeast estimatorL(CanonicSCellEmbedder<KSpace>(surface.space()),1.0);
+
+  ConstFunctor constFunctor(1.0);
+
+  ReporterK reporterK(surface, l2Metric, estimatorK , constFunctor);
+  ReporterH reporterH(surface, l2Metric, estimatorH , constFunctor);
+  ReporterNormal reporterN(surface, l2Metric, estimatorN ,constFunctor);
+  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , constFunctor);
+#endif
+
+  FunctorNormalElem estimatorNormalElem(CanonicSCellEmbedder<KSpace>(surface.space()),1.0);
+  ///sigma = 2.0 for the gaussian smoothing
+  GaussianKernelFunctor gaussian(2.0);
+  ReporterNormalElem reporterElem(surface, l2Metric,
+                                  estimatorNormalElem, gaussian);
+  //! [SurfelFunctorsInstances]
+
+  //! [SurfelFunctorsEstim]
+#ifdef WITH_CGAL
+  reporterK.init(1.0, 5.0);
+  reporterH.init(1.0, 5.0);
+  reporterN.init(1.0, 5.0);
+  reporterL.init(1.0, 5.0);
   FunctorGaussian::Quantity valK = reporterK.eval( surface.begin());
   FunctorMean::Quantity valH = reporterH.eval( surface.begin());
   FunctorNormal::Quantity valN = reporterN.eval( surface.begin());
   FunctorNormalLeast::Quantity valL = reporterL.eval( surface.begin());
+#endif
 
+  reporterElem.init(1.0, 5.0);
+  FunctorNormalElem::Quantity valElem = reporterElem.eval( surface.begin());
 
+#ifdef WITH_CGAL
   trace.info() << "Gaussian = "<<valK <<std::endl;
   trace.info() << "Mean = "<<valH<< std::endl;
   trace.info() << "Normal Vector (from Monge form) = "<<valN<< std::endl;
   trace.info() << "Normal Vector (linear least square) = "<<valL<< std::endl;
+#endif
+  trace.info() << "Normal Vector (Elementary conv) = "<<valElem<< std::endl;
+  //! [SurfelFunctorsEstim]
 
-  trace.endBlock();
-  trace.endBlock();
-
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-
-  return nbok == nb;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// Standard services - public :
-
-int main( int argc, char** argv )
-{
-  trace.beginBlock ( "Testing class LocalEstimatorFromFunctorAdapter" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
-
-  bool res = testLocalEstimatorFromFunctorAdapter(); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  return res ? 0 : 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

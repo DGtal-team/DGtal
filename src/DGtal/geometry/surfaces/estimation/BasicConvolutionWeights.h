@@ -42,92 +42,102 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
- #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class ConstantConvolutionWeight
-  /**
-   * Description of template class 'ConstantConvolutionWeights' <p>
-   * \brief Aim: implement a trivial constant convolution kernel which
-   * returns 1 to each distance.
-   *
-   *   @tparam TDistance type for topological distances.
-   */
-  template <typename TDistance>
-  class ConstantConvolutionWeights
+  namespace deprecated
   {
-    // ----------------------- Standard services ------------------------------
-  public:
-    
-    ///Inner type
-    typedef TDistance Distance;
-
-
+    /////////////////////////////////////////////////////////////////////////////
+    // template class ConstantConvolutionWeight
     /**
-     * @return 1.0 whatever the distance is. 
-     */    
-    inline
-    double operator()(const Distance &/*aDisplacment*/) const
-    {
-      return 1.0;
-    }
-  };
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class ConstantConvolutionWeight
-  /**
-   * Description of template class 'GaussianConvolutionWeights' <p>
-   * \brief Aim: implement a Gaussian centered convolution kernel.
-   *
-   *   @tparam TDistance type for  topological distances.
-   */
-  template <typename TDistance>
-  class GaussianConvolutionWeights
-  {
-    // ----------------------- Standard services ------------------------------
-  public:
-
-    ///Inner type for the topological distance.
-    typedef TDistance Distance;
-
-    /** 
-     * Constructor
-     * 
-     * @param sigma Gaussian sigma parameter.
-     */
-    GaussianConvolutionWeights(const double sigma): mySigma(sigma)
-    {
-      myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
-      myCoef2 = 1.0/(2.0*M_PI);
-    }
-
-    /** 
-     * Return a Gaussian weight from a distance to the gaussian
-     * function center. 
+     * Description of template class 'ConstantConvolutionWeights' <p>
+     * \brief Aim: implement a trivial constant convolution kernel which
+     * returns 1 to each distance.
      *
-     * @param aDisplacment distance to the center  
-     * @return the weight
+     *
+     * @warning moved to deprecated since 0.7. Please consider using
+     * LocalEstimatorFromFunctorAdapter.
+     *
+     *
+     *   @tparam TDistance type for topological distances.
      */
-    inline
-    double operator()(const Distance &aDisplacment) const
+    template <typename TDistance>
+    class ConstantConvolutionWeights
     {
-      return myCoef*exp(-NumberTraits<Distance>::castToDouble(aDisplacment)*
-        NumberTraits<Distance>::castToDouble(aDisplacment)*myCoef2);
-    }
+      // ----------------------- Standard services ------------------------------
+    public:
 
-     ///Internal Sigma value;
-    double mySigma;
-
-    ///Precomputed constant coefs.
-    double myCoef;
-    double myCoef2;
-  };
+      ///Inner type
+      typedef TDistance Distance;
 
 
+      /**
+       * @return 1.0 whatever the distance is.
+       */
+      inline
+      double operator()(const Distance &/*aDisplacement*/) const
+      {
+        return 1.0;
+      }
+    };
+
+    /////////////////////////////////////////////////////////////////////////////
+    // template class ConstantConvolutionWeight
+    /**
+     * Description of template class 'GaussianConvolutionWeights' <p>
+     * \brief Aim: implement a Gaussian centered convolution kernel.
+     *
+     * @warning moved to deprecated since 0.7. Please consider using
+     * LocalEstimatorFromFunctorAdapter.
+     *
+     *
+     *   @tparam TDistance type for  topological distances.
+     */
+    template <typename TDistance>
+    class GaussianConvolutionWeights
+    {
+      // ----------------------- Standard services ------------------------------
+    public:
+
+      ///Inner type for the topological distance.
+      typedef TDistance Distance;
+
+      /**
+       * Constructor
+       *
+       * @param sigma Gaussian sigma parameter.
+       */
+      GaussianConvolutionWeights(const double sigma): mySigma(sigma)
+      {
+        myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
+        myCoef2 = 1.0/(2.0*M_PI);
+      }
+
+      /**
+       * Return a Gaussian weight from a distance to the gaussian
+       * function center.
+       *
+       * @param aDisplacment distance to the center
+       * @return the weight
+       */
+      inline
+      double operator()(const Distance &aDisplacment) const
+      {
+        return myCoef*exp(-NumberTraits<Distance>::castToDouble(aDisplacment)*
+                          NumberTraits<Distance>::castToDouble(aDisplacment)*myCoef2);
+      }
+
+      ///Internal Sigma value;
+      double mySigma;
+
+      ///Precomputed constant coefs.
+      double myCoef;
+      double myCoef2;
+    };
+
+  }
 
 
 } // namespace DGtal

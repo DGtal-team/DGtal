@@ -17,43 +17,35 @@
 #pragma once
 
 /**
- * @file LinearLeastSquareFittingNormalVectorEstimator.h
+ * @file ElementaryConvolutionNormalVectorEstimator.h
  * @brief Computes the true quantity to each element of a range associated to a parametric shape.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/05/31
  *
- * Header file for module LinearLeastSquareFittingNormalVectorEstimator.cpp
+ * Header file for module ElementaryConvolutionNormalVectorEstimator.cpp
  *
  * This file is part of the DGtal library.
  *
  * @see testLengthEstimators.cpp, testTrueLocalEstimator.cpp
  */
 
-#if defined(LinearLeastSquareFittingNormalVectorEstimator_RECURSES)
-#error Recursive header files inclusion detected in LinearLeastSquareFittingNormalVectorEstimator.h
-#else // defined(LinearLeastSquareFittingNormalVectorEstimator_RECURSES)
+#if defined(ElementaryConvolutionNormalVectorEstimator_RECURSES)
+#error Recursive header files inclusion detected in ElementaryConvolutionNormalVectorEstimator.h
+#else // defined(ElementaryConvolutionNormalVectorEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define LinearLeastSquareFittingNormalVectorEstimator_RECURSES
+#define ElementaryConvolutionNormalVectorEstimator_RECURSES
 
-#if !defined LinearLeastSquareFittingNormalVectorEstimator_h
+#if !defined ElementaryConvolutionNormalVectorEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define LinearLeastSquareFittingNormalVectorEstimator_h
+#define ElementaryConvolutionNormalVectorEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
-
-#ifndef WITH_CGAL
-#error You need to have activated CGAL (WITH_CGAL) to include this file.
-#endif
-
-//CGAL
-#include <CGAL/Cartesian.h>
-#include <CGAL/linear_least_squares_fitting_3.h>
 #include <vector>
 
 //////////////////////////////////////////////////////////////////////////////
@@ -61,20 +53,24 @@
 namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
-  // template class LinearLeastSquareFittingNormalVectorEstimator
+  // template class ElementaryConvolutionNormalVectorEstimator
   /**
-   * Description of template class 'LinearLeastSquareFittingNormalVectorEstimator' <p>
-   * \brief Aim: Estimates normal vector using CGAL linear least
-   * suqares plane fitting.
+   * Description of template class 'ElementaryConvolutionNormalVectorEstimator' <p>
+   * \brief Aim: Estimates normal vector  by
+   * convolution of elementary normal vector to adjacent surfel.
    *
-   * model of CLocalEstimatorFromSurfelFunctor
+   * To each @f$n-1@f$ signed surfel, an elementary inward normal vector
+   * can be defined. At a given surfel, this functor will compute the
+   * weighted average of elementary normal vectors in the
+   * neighborihood.
    *
+   * Model of CLocalEstimatorFromSurfelFunctor.
    *
    * @tparam TSurfel type of surfels
-   * @tparam TEmbedder type of functors which embed surfel to R^3
+   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
    */
   template <typename TSurfel, typename TEmbedder>
-  class LinearLeastSquareFittingNormalVectorEstimator
+  class ElementaryConvolutionNormalVectorEstimator
   {
   public:
 
@@ -83,49 +79,43 @@ namespace DGtal
     typedef typename SCellEmbedder::RealPoint RealPoint;
     typedef RealPoint Quantity;
 
-    typedef CGAL::Cartesian<double> CGALKernel;
-    typedef CGALKernel::Point_3  CGALPoint;
-    typedef CGALKernel::Plane_3  CGALPlane;
-    typedef CGALKernel::Vector_3  CGALVector;
-
     /**
      * Constructor.
      *
      * @param anEmbedder embedder to map surfel to R^n.
-     * @param h gridstep.
+     * @param h grid step
      */
-    LinearLeastSquareFittingNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h):
+    ElementaryConvolutionNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder,
+                                         const double h):
       myEmbedder(&anEmbedder), myH(h)
     {
+      myWeightedVector = RealPoint().diagonal(0.0);
     }
 
     /**
      * Add the geometrical embedding of a surfel to the point list
      *
      * @param aSurf a surfel to add
-     * @param aDistance distance to the origin surfel
+     * @param aDistance  distance of aSurf to the neighborhood boundary
      */
     void pushSurfel(const Surfel & aSurf,
                     const double aDistance)
     {
-      BOOST_VERIFY(aDistance == aDistance);
-      RealPoint p = myEmbedder->operator()(aSurf);
-      CGALPoint pp(p[0],p[1],p[2]);
-      myPoints.push_back(pp);
+      RealPoint elementary;
+      Dimension i = myEmbedder->space().sOrthDir ( aSurf );
+      elementary[ i ] = myEmbedder->space().sDirect ( aSurf, i ) ? 1 : -1;
+
+      myWeightedVector += aDistance *elementary;
     }
 
     /**
-     * Evaluate the normal vector from linear least squares fitting.
+     * Evaluate the normal vector from Monge form.
      *
      * @return the mean curvature
      */
     Quantity eval( )
     {
-      CGALPlane plane;
-      CGAL::linear_least_squares_fitting_3(myPoints.begin(),myPoints.end(), plane, CGAL::Dimension_tag<0>());
-      CGALVector v = plane.orthogonal_vector();
-      RealPoint vv(v.x(),v.y(),v.z());
-      return vv.getNormalized();
+      return myWeightedVector.getNormalized();
     }
 
     /**
@@ -134,7 +124,6 @@ namespace DGtal
      */
     void reset()
     {
-      myPoints.clear();
     }
 
 
@@ -144,14 +133,12 @@ namespace DGtal
     const SCellEmbedder * myEmbedder;
 
     ///Array of CGAL points
-    std::vector<CGALPoint> myPoints;
+    RealPoint myWeightedVector;
 
-    ///Grid Step
+    //Grid step
     double myH;
 
-
-
-  }; // end of class LinearLeastSquareFittingNormalVectorEstimator
+  }; // end of class ElementaryConvolutionNormalVectorEstimator
 
 } // namespace DGtal
 
@@ -159,7 +146,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined LinearLeastSquareFittingNormalVectorEstimator_h
+#endif // !defined ElementaryConvolutionNormalVectorEstimator_h
 
-#undef LinearLeastSquareFittingNormalVectorEstimator_RECURSES
-#endif // else defined(LinearLeastSquareFittingNormalVectorEstimator_RECURSES)
+#undef ElementaryConvolutionNormalVectorEstimator_RECURSES
+#endif // else defined(ElementaryConvolutionNormalVectorEstimator_RECURSES)

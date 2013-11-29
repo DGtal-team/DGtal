@@ -61,13 +61,13 @@ namespace DGtal
     Combines a digital surface embedder with a normal vector estimator
     to get a model of CDigitalSurfaceEmbedder and CWithGradientMap.
     (also default constructible, copy constructible, assignable).
-   
+
     @tparam TDigitalSurfaceEmbedder a model of digital surface embedder.
     @tparam TNormalVectorEstimator the type of normal vector estimator.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
-  
+
   template < typename TDigitalSurfaceEmbedder,
              typename TNormalVectorEstimator >
   class DigitalSurfaceEmbedderWithNormalVectorEstimator
@@ -79,7 +79,7 @@ namespace DGtal
 
     typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
     typedef TNormalVectorEstimator NormalVectorEstimator;
-    
+
     typedef typename DigitalSurfaceEmbedder::KSpace KSpace;
     typedef typename DigitalSurfaceEmbedder::Surface Surface;
     typedef typename DigitalSurfaceEmbedder::SCell SCell;
@@ -103,14 +103,14 @@ namespace DGtal
     */
     DigitalSurfaceEmbedderWithNormalVectorEstimator();
 
-    /** 
+    /**
        Assignment.
        @param other the object to clone.
        @return a reference to 'this'.
     */
     Self & operator=( const Self & other );
-    
-    /** 
+
+    /**
         Constructor.
         @param aDSEmbedder any digital surface embedder.
         @param anEstimator a normal vector estimator
@@ -119,16 +119,16 @@ namespace DGtal
     ( const DigitalSurfaceEmbedder & aDSEmbedder,
       const NormalVectorEstimator & anEstimator );
 
-    /** 
+    /**
        Copy Constructor.
        @param other the object to clone.
     */
     DigitalSurfaceEmbedderWithNormalVectorEstimator
     ( const Self & other );
 
-    /** 
+    /**
      * Destructor.
-     */    
+     */
     ~DigitalSurfaceEmbedderWithNormalVectorEstimator();
 
     // ----------------------- Interface --------------------------------------
@@ -137,7 +137,7 @@ namespace DGtal
     /**
        Maps a signed cell to its corresponding point in the Euclidean
        space. Uses the given embedder.
-       
+
        @param scell any signed cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -147,6 +147,14 @@ namespace DGtal
        @return the associated digital surface.
      */
     const Surface & surface() const;
+
+    /**
+       @return the associated khalimsky space.
+    */
+    const KSpace & space() const
+    {
+      return myDSEmbedder->space();
+    }
 
     /**
        @return the gradient map associated to this embedder, i.e. a
@@ -160,10 +168,10 @@ namespace DGtal
        NormalVectorEstimator.
      */
     RealVector gradient( const SCell & scell ) const;
-   
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
 
      * Writes/Displays the object on an output stream.
@@ -181,15 +189,15 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-   
+
     ///A pointer on the digital surface
     const DigitalSurfaceEmbedder* myDSEmbedder;
     /// A pointer on the normal vector estimator.
     const NormalVectorEstimator* myEstimator;
-   
+
     // ------------------------- Hidden services ------------------------------
   protected:
-    
+
   }; // end of class DigitalSurfaceEmbedderWithNormalVectorEstimator
 
   /**
@@ -264,7 +272,7 @@ namespace DGtal
    */
   template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator> & object );
 
 } // namespace DGtal
