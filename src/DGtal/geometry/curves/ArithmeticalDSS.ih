@@ -45,13 +45,13 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   : myF(aPoint), myL(aPoint), 
     myUf(aPoint), myUl(aPoint), 
     myLf(aPoint), myLl(aPoint), 
-    myDSL( NumberTraits<TC>::ZERO, 
-	   NumberTraits<TC>::ZERO, 
-	   NumberTraits<TI>::ZERO, 
-	   NumberTraits<TI>::ZERO, 
-	   std::make_pair( Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO), 
-			   Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO) ), 
-	   Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO) )
+    myDSL( NumberTraits<TCoordinate>::ZERO, 
+	   NumberTraits<TCoordinate>::ZERO, 
+	   NumberTraits<TInteger>::ZERO, 
+	   NumberTraits<TInteger>::ZERO, 
+	   std::make_pair( Vector(NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO), 
+			   Vector(NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO) ), 
+	   Vector(NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO) )
 {
 }
 
@@ -92,7 +92,7 @@ inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Point& aF, const Point& aL, 
 		  const bool& areOnTheUpperLine)
-  : myDSL( NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO, NumberTraits<TI>::ZERO )
+  : myDSL( NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO, NumberTraits<TInteger>::ZERO )
 {
   typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory; 
 
@@ -108,7 +108,7 @@ template <typename Iterator>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte)  throw( InputException )
-  : myDSL( NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO, NumberTraits<TI>::ZERO )
+  : myDSL( NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO, NumberTraits<TInteger>::ZERO )
 {
   if (aItb != aIte)
     {
@@ -865,9 +865,9 @@ className() const
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TCoordinate, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
 	     const typename Super::Point& aF, const typename Super::Point& aL,
 	     const typename Super::Point& aUf, const typename Super::Point& aUl,
@@ -876,36 +876,36 @@ StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordin
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TCoordinate, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL, 
 	     const bool& isOnTheUpperLine)
   : Super(aF, aL, isOnTheUpperLine) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
-DGtal::StandardDSS4<TCoordinate, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4(const Iterator& aItb, const Iterator& aIte) throw( InputException )
   : Super(aItb, aIte) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TCoordinate, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4 ( const StandardDSS4 & aOther )
   : Super( aOther ) 
 {} 
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TCoordinate, TI>& 
-DGtal::StandardDSS4<TCoordinate, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>& 
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 operator= ( const StandardDSS4 & aOther )
 {
   if (this != & aOther)
@@ -914,9 +914,9 @@ operator= ( const StandardDSS4 & aOther )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TCoordinate, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
 	     const typename Super::Point& aF, const typename Super::Point& aL,
 	     const typename Super::Point& aUf, const typename Super::Point& aUl,
@@ -925,36 +925,36 @@ NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TCoordinate, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL, 
 	  const bool& isOnTheUpperLine)
   : Super(aF, aL, isOnTheUpperLine) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
-DGtal::NaiveDSS8<TCoordinate, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const Iterator& aItb, const Iterator& aIte) throw( InputException )
   : Super(aItb, aIte) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TCoordinate, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8 ( const NaiveDSS8 & aOther )
   : Super( aOther ) 
 {} 
 
 //-----------------------------------------------------------------------------
-template <typename TCoordinate, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TCoordinate, TI>& 
-DGtal::NaiveDSS8<TCoordinate, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>& 
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 operator= ( const NaiveDSS8 & aOther )
 {
   if (this != & aOther)
