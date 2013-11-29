@@ -75,7 +75,7 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(con
       DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency> dsl(u[1], u[0], mu); 
 
       //lower leaning points
-      if ( dsl.steps().second == Vector(NumberTraits<TC>::ZERO,NumberTraits<TC>::ZERO) )
+      if ( dsl.steps().second == Vector(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO) )
 	{ //specific case: there is only one step, 
 	  //ie. either a == 0, or b == 0, or 
 	  //(a == 1 and b == 1) in the naive case

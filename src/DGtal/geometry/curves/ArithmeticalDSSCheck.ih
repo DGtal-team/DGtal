@@ -51,17 +51,17 @@ checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
   //Vector type redefinition 
   typedef typename ArithmeticalDSS<TCoordinate,TInteger,adjacency>::Vector V;
  
-  return ( (aDSS.a()==NumberTraits<TC>::ZERO)
-	   &&(aDSS.b()==NumberTraits<TC>::ZERO)
-	   &&(aDSS.mu()==NumberTraits<TI>::ZERO)
-	   &&(aDSS.omega()==NumberTraits<TI>::ZERO)
+  return ( (aDSS.a()==NumberTraits<TCoordinate>::ZERO)
+	   &&(aDSS.b()==NumberTraits<TCoordinate>::ZERO)
+	   &&(aDSS.mu()==NumberTraits<TInteger>::ZERO)
+	   &&(aDSS.omega()==NumberTraits<TInteger>::ZERO)
 	   &&(aDSS.Uf()==aDSS.back())
 	   &&(aDSS.Lf()==aDSS.back())
 	   &&(aDSS.Ul()==aDSS.front())
 	   &&(aDSS.Ll()==aDSS.front())
-	   &&(aDSS.shift()==V(NumberTraits<TC>::ZERO,NumberTraits<TC>::ZERO))
-	   &&(aDSS.steps().first==V(NumberTraits<TC>::ZERO,NumberTraits<TC>::ZERO))
-	   &&(aDSS.steps().second==V(NumberTraits<TC>::ZERO,NumberTraits<TC>::ZERO)) ); 
+	   &&(aDSS.shift()==V(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO))
+	   &&(aDSS.steps().first==V(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO))
+	   &&(aDSS.steps().second==V(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO)) ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -107,15 +107,15 @@ checkPointsPosition(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
   typedef typename ArithmeticalDSS<TCoordinate,TInteger,adjacency>::Vector V;
   V v(aDSS.b(), aDSS.a()); 
   //Length of direction vector
-  TI lv = aDSS.position(v); 
+  TInteger lv = aDSS.position(v); 
 
   //Position of end points and leaning points
-  TI posBack = aDSS.position(aDSS.back()); 
-  TI posUf = aDSS.position(aDSS.Uf()); 
-  TI posLf = aDSS.position(aDSS.Lf()); 
-  TI posUl = aDSS.position(aDSS.Ul()); 
-  TI posLl = aDSS.position(aDSS.Ll()); 
-  TI posFront = aDSS.position(aDSS.front()); 
+  TInteger posBack = aDSS.position(aDSS.back()); 
+  TInteger posUf = aDSS.position(aDSS.Uf()); 
+  TInteger posLf = aDSS.position(aDSS.Lf()); 
+  TInteger posUl = aDSS.position(aDSS.Ul()); 
+  TInteger posLl = aDSS.position(aDSS.Ll()); 
+  TInteger posFront = aDSS.position(aDSS.front()); 
 
   bool isValid = ( ((posUf - posBack) < lv)
 		   && ((posLf - posBack) < lv)
