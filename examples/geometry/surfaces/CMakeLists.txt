@@ -1,8 +1,8 @@
 
 SET(DGTAL_EXAMPLES_SRC
 	exampleIntegralInvariantCurvature2D
+	exampleEstimatorFromSurfelFunctors
 )
-
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
@@ -18,10 +18,9 @@ if (  WITH_VISU3D_QGLVIEWER )
 	greedy-plane-segmentation-ex3
 	exampleIntegralInvariantCurvature3D
    )
-  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
+  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC})
    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} DGtalIO DGtal)   
+    target_link_libraries ( ${FILE} DGtalIO DGtal)
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )
-

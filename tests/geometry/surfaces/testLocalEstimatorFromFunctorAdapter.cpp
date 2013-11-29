@@ -43,8 +43,21 @@
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
-#include "DGtal/geometry/surfaces/estimation/BasicEstimatorFromSurfelsFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/CLocalEstimatorFromSurfelFunctor.h"
+
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+
+
+#ifdef WITH_CGAL
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingMeanCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/LinearLeastSquareFittingNormalVectorEstimator.h"
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -90,7 +103,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> Surface;
   typedef Surface::SurfelConstIterator ConstIterator;
   typedef Surface::Surfel Surfel;
-  
+
 
   trace.beginBlock("Creating Surface");
   Point p1( -10, -10, -10 );
@@ -112,36 +125,63 @@ bool testLocalEstimatorFromFunctorAdapter()
   }
   trace.info() << nbsurfels << " surfels found." << std::endl;
   trace.endBlock();
-  
+
   trace.beginBlock("Creating  adapter");
   typedef DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor> Reporter;
-  
+  typedef ConstValueFunctor< double > ConvFunctor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, ConvFunctor> Reporter;
+
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, GaussianKernelFunctor> ReporterGaussian;
+
   Functor estimator(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
-                    
-  Reporter reporter(surface, l2Metric, estimator);
-  
+
+  Reporter reporter(surface, l2Metric, estimator , ConvFunctor(1.0));
+
+  //We just test the init for Gaussian
+  ReporterGaussian reporterGaussian(surface, l2Metric, estimator , GaussianKernelFunctor(1.0));
+  reporterGaussian.init(1,5);
+
   reporter.init(1, 5);
-  Functor::Quantity val = reporter.eval( surface.begin());
+  Functor::Quantity val = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 5= "<<val << std::endl;
   nbok += (val == 124) ? 1 : 0;
   nb++;
- 
+
   reporter.init(1, 20);
-  Functor::Quantity val2 = reporter.eval( surface.begin());
+  Functor::Quantity val2 = reporter.eval( surface.begin() );
   trace.info() <<  "Value with radius 20= "<<val2 << std::endl;
   nbok += (val2 == 398) ? 1 : 0;
   nb++;
-  
+
   trace.endBlock();
   trace.endBlock();
-  
+
   nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
-  
+
   return nbok == nb;
+}
+
+
+bool testConcepts()
+{
+  typedef Z3i::KSpace::Surfel Surfel;
+  typedef CanonicSCellEmbedder<Z3i::KSpace> Embedder;
+  trace.beginBlock("Checking concepts");
+  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< DummyEstimatorFromSurfels<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
+
+#ifdef WITH_CGAL
+  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< LinearLeastSquareFittingNormalVectorEstimator<Surfel,Embedder > >));
+#endif
+
+  trace.endBlock();
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -155,7 +195,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testLocalEstimatorFromFunctorAdapter(); // && ... other tests
+  bool res = testConcepts() &&  testLocalEstimatorFromFunctorAdapter(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

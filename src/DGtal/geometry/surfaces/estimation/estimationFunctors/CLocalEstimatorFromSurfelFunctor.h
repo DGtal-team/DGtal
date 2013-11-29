@@ -77,16 +77,22 @@ LocalEstimatorFromSurfelFunctorAdapter.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Constructor from Embedder      | X(anEmbedder,h)  | anEmbedder of type @e SCellEmbedder , h of type  const double  |               |              | construct an instance from an SCEll embedder  |                |            |
-| push a surfel      | x.pushSurfel(aSurfel)  | aSurfel of type @e Surfel   |       void        |              | push a surfel to the estimator  |                |            |
+| Constructor from Embedder and gridstep     | X(anEmbedder,h)  | anEmbedder of type @e SCellEmbedder , h of type  const double  |               |              | construct an instance from an SCell embedder  |                |            |
+| push a surfel      | x.pushSurfel(aSurfel, aDistance)  | aSurfel of type @e const @e Surfel, aDistance of type double |       void        |              | push a surfel to the estimator,  @e aDistance is the distance of the surfel to the local visitor boundary (for the visitor metric)   |                |            |
 | evaluate the estimator      | v = x.eval()  | |  v of type @e Quantity  |              | evaluate to the estimator  |                |            |
-| reset       |  x.eval()  |  |  void  |              | reset the estimator  |                |            |
+| reset       |  x.reset()  |  |  void  |              | reset the estimator  |                |            |
 
 ### Invariants
 
 ### Models
 
-  DummyEstimatorFromSurfels
+  DummyEstimatorFromSurfels,
+  MongeJetFittingGaussianCurvatureEstimator (if WITH_CGAL),
+  MongeJetFittingMeanCurvatureEstimator (if WITH_CGAL),
+  MongeJetFittingPrincipalCurvaturesEstimator (if WITH_CGAL),
+  MongeJetFittingNormalVectorEstimator (if WITH_CGAL),
+  LinearLeastSquareFittingNormalVectorEstimator (if WITH_CGAL),
+  ElementaryConvolutionNormalVectorEstimator
 
 ### Notes
 
@@ -97,7 +103,7 @@ struct CLocalEstimatorFromSurfelFunctor
 {
     // ----------------------- Concept checks ------------------------------
 public:
-   
+
   typedef typename T::Quantity Quantity;
   typedef typename T::SCellEmbedder SCellEmbedder;
   typedef typename T::Surfel Surfel;
@@ -110,17 +116,18 @@ public:
   {
     ConceptUtils::sameType( myQ, myX.eval( ) );
     myX.reset( );
-    myX.pushSurfel( myA );
-    
+    myX.pushSurfel( myCA, myDist );
   }
-  
+
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Surfel myA;
+  const Surfel myCA;
   Quantity myQ;
   SCellEmbedder myEmb;
   double myH;
+  double myDist;
 
     // ------------------------- Internals ------------------------------------
 private:
