@@ -22,7 +22,7 @@
  *
  * @date 2013/11/22
  *
- * Functions for testing models of COrientationFunctor.
+ * Functions for testing models of COrientationFunctor2d.
  *
  * This file is part of the DGtal library.
  */
@@ -34,7 +34,7 @@
 
 #include "DGtal/geometry/tools/determinant/Simple2x2DetComputer.h"
 
-#include "DGtal/geometry/tools/determinant/COrientationFunctor.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2d.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2dBy2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2dBySimpleMatrix.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -48,12 +48,12 @@ using namespace DGtal;
 /**
  * Example of a test. To be completed.
  * @param f any orientation functor
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 template<typename OrientationFunctor>
 bool testOrientationFunctors(OrientationFunctor f)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
