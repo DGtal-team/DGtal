@@ -40,7 +40,7 @@
 #include "DGtal/geometry/tools/determinant/AvnaimEtAl2x2DetSignComputer.h"
 #include "DGtal/geometry/tools/determinant/Filtered2x2DetComputer.h"
 
-#include "DGtal/geometry/tools/determinant/COrientationFunctor.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2d.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2dBy2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2dBySimpleMatrix.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -221,12 +221,12 @@ DGtal::BigInteger signedRandomBigInt62 ()
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool randomTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -263,12 +263,12 @@ bool randomTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n 
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool nullSameVectorsTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q; 
@@ -303,12 +303,12 @@ bool nullSameVectorsTest(OrientationFunctor f, RandomFunctor gen, const DGtal::i
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool nullZeroVectorTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q; 
@@ -344,12 +344,12 @@ bool nullZeroVectorTest(OrientationFunctor f, RandomFunctor gen, const DGtal::in
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool nullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -394,12 +394,12 @@ bool nullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool quasiNullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -448,12 +448,12 @@ bool quasiNullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t
  *
  * @param f a functor to run
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 template<typename OrientationFunctor>
 bool incTest(OrientationFunctor f, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -497,7 +497,7 @@ bool incTest(OrientationFunctor f, const DGtal::int32_t n = 1000000)
  * time of all available functors for random points whose 
  * coordinates are within [-2^30 ; 2^30[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 bool incTestComparison()
 {
@@ -559,7 +559,7 @@ bool incTestComparison()
  * time of all available functors for random points whose 
  * coordinates are within [-2^30 ; 2^30[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 bool randomTest30All()
 {
@@ -694,7 +694,7 @@ bool randomTest30All()
  * time of all available functors for random points whose 
  * coordinates are within [-2^52 ; 2^52[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 bool randomTest52All()
 {
@@ -834,7 +834,7 @@ bool randomTest52All()
  * time of all available functors for random points whose 
  * coordinates are within [-2^62 ; 2^62[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor
+ * @tparam OrientationFunctor a model of COrientationFunctor2d
  */
 bool randomTest62All()
 {
