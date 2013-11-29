@@ -405,7 +405,7 @@ IF(WITH_CGAL)
     ADD_DEFINITIONS("-DWITH_CGAL ")
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${CGAL_LIBRARIES} ${CGAL_3D_PARTY-LIBRARIES} )
     ## Making sure that CGAL got the Eigen3 flag
-    ADD_DEFINITIONS("-DWITH_Eigen3 ")
+    ADD_DEFINITIONS("-DWITH_Eigen3 -DWITH_LAPACK ")
     message(STATUS "CGAL found.")
   ENDIF(CGAL_FOUND)
 ENDIF(WITH_CGAL)
