@@ -40,16 +40,16 @@
 
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSSCheck::
-checkOnePoint(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()==aDSS.back()); 
 
   //Vector type redefinition 
-  typedef typename ArithmeticalDSS<TC,TI,adj>::Vector V;
+  typedef typename ArithmeticalDSS<TCoordinate,TInteger,adjacency>::Vector V;
  
   return ( (aDSS.a()==NumberTraits<TC>::ZERO)
 	   &&(aDSS.b()==NumberTraits<TC>::ZERO)
@@ -65,11 +65,11 @@ checkOnePoint(const ArithmeticalDSS<TC,TI,adj>& aDSS)
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSSCheck::
-checkPointsRemainder(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()!=aDSS.back()); 
 
@@ -95,16 +95,16 @@ checkPointsRemainder(const ArithmeticalDSS<TC,TI,adj>& aDSS)
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSSCheck::
-checkPointsPosition(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+checkPointsPosition(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
   ASSERT(aDSS.front()!=aDSS.back()); 
 
   //Vector type redefinition 
-  typedef typename ArithmeticalDSS<TC,TI,adj>::Vector V;
+  typedef typename ArithmeticalDSS<TCoordinate,TInteger,adjacency>::Vector V;
   V v(aDSS.b(), aDSS.a()); 
   //Length of direction vector
   TI lv = aDSS.position(v); 
@@ -133,11 +133,11 @@ checkPointsPosition(const ArithmeticalDSS<TC,TI,adj>& aDSS)
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
 DGtal::ArithmeticalDSSCheck::
-checkAll(const ArithmeticalDSS<TC,TI,adj>& aDSS)
+checkAll(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 { 
   //'true' if valid, 'false' otherwise
   bool isValid;  
