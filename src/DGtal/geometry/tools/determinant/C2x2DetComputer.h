@@ -61,7 +61,7 @@ namespace DGtal
 
      ### Invariant
 
-     The result is guaranteed to be: 
+     The returned value, which is a model of CSignedNumber, is guaranteed to be: 
      - strictly positive if the determinant is strictly positive
      - striclty negative if the determinant is strictly negative
      - zero if the determinant is null

@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/kernel/CPointFunctor.h"
+#include "DGtal/kernel/CSignedNumber.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,7 +64,7 @@ namespace DGtal
       to the first two ones: 'operator()' takes an input point and 
       returns a signed value.  
 
-     The returned value is guaranteed to be: 
+     The returned value, which is a model of CSignedNumber, is guaranteed to be: 
      - zero if the three points belong to the same line
      - strictly positive if the three points are counter-clockwise oriented
      - striclty negative if the three points are clockwise oriented
@@ -97,6 +98,8 @@ namespace DGtal
   {
     // ----------------------- Concept checks ------------------------------
   public:
+
+    BOOST_CONCEPT_ASSERT(( CSignedNumber< typename T::Value > ));
 
     BOOST_CONCEPT_USAGE( COrientationFunctor2d )
     {

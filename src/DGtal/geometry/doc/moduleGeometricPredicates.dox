@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleGeometricPredicates Documentation for moduleGeometricPredicates
+@page moduleGeometricPredicates Implementation of geometric predicates
 @writers Tristan Roussillon
 [TOC]
 
@@ -33,7 +33,8 @@ Orientation tests are just predicates (returning a boolean)
 adapted from models of COrientationFunctor2d. 
 
 Models of COrientationFunctor2d must be initialized from two points \f$ P, Q \f$
-and provide an operator() taking a third point \f$ R \f$ as argument and returning a value: 
+and provide an operator() taking a third point \f$ R \f$ as argument and returning a 
+signed value: 
 - equal to 0 if \f$ P, Q, R \f$ belong to the same line  
 - strictly positive if \f$ R \f$ belongs to the open half-plane lying on the left of the oriented line \f$ (PQ) \f$ 
 (ie. \f$ P, Q, R \f$ are counter-clockwise oriented)  
@@ -55,17 +56,17 @@ Then, you can combine this functor with a tool that thresholds the returned valu
 order to get a predicate: 
 @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateDefinition
 
-The test is now done in two steps: 
- - an initialisation step, which can be done either before or after the construction of 
-   the predicate, provided that the chosen predicate is an adapter that stores an alias 
-   of your orientation functor (not a clone). 
-   @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorInitialization
+The test is now done in two steps. 
+First, you must initialize your functor. This can be done either before or after 
+the construction of the predicate, provided that the chosen predicate is an adapter 
+that stores an alias of your functor (not a clone). 
+@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorInitialization
+Next, the test can be performed as follows: 
+@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateUsage
 
- - a test step. 
-   @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateUsage
 
-
-This small example, which may be found in exampleOrientationFunctors2d.cpp, requires the following headers: 
+\note This small example, which may be found in exampleOrientationFunctors2d.cpp, 
+requires the following headers: 
 @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorIncludes
 
 
@@ -161,10 +162,10 @@ with random \f$ k, l, \vec{u}_x  \vec{u}_y \f$ (null determinants).
  5. \f$ P = (0,0) \f$ and \f$ Q-P = k\vec{u} + \epsilon, R-P = l\vec{u} + \epsilon \f$ 
 with random \f$ k, l, \vec{u}_x  \vec{u}_y \f$ and \f$ \epsilon \f$ (determinants close to zero).  
 
-For coordinates of \f$ 30 \f$ bits, lying within the range \f$ ]2^{30}; 2^{30}[ \f$, 
+For coordinates of \f$ 30 \f$ bits, 
 we obtain the following results (running times are in seconds): 
 
-| method\input              |   1. |   2. |   3. |   4. |   5. |
+| method vs input           |   1. |   2. |   3. |   4. |   5. |
 |---------------------------|------|------|------|------|------|
 | 3x3-int32-int64           | 0.28 | 0.18 | 0.18 | 0.13 | 0.18 |
 | 3x3-int32-BigInt          | 2.54 |  2.3 |  2.4 | 2.34 | 2.36 |
@@ -178,19 +179,18 @@ Best methods are `3x3-int32-int64` and `2x2-int32-int64`.
 We therefore recommend to use `3x3-int32-int64`, whose type 
 is simpler to define. 
 
-\note As expected `2x2-avnaim++-int32-double` performs well, 
-excepted for null determinants (columns 2, 3 and 4), 
-because more steps are required
-in such cases to take a decision.  
+\note 
+ - As expected `2x2-avnaim++-int32-double` performs well, 
+   excepted for null determinants (columns 2, 3 and 4), 
+   because more steps are required in such cases to take a decision.  
+ - `2x2-int32-BigInt` outperforms `3x3-int32-BigInt` because 
+   the allocation/desallocation of BigIntegers, which represent
+   a substantial part of running time, is minimized in Simple2x2DetComputer. 
 
-\note `2x2-int32-BigInt` outperforms `3x3-int32-BigInt` because 
-the allocation/desallocation of BigIntegers, which represent
- a substantial part of running time, is minimized in Simple2x2DetComputer. 
-
-For coordinates of \f$ 52 \f$ bits, lying within the range \f$ ]2^{52}; 2^{52}[ \f$, 
+For coordinates of \f$ 52 \f$ bits, 
 we obtain the following results: 
 
-| method\input               |   1. |   2. |   3. |   4. |   5. |
+| method vs input            |   1. |   2. |   3. |   4. |   5. |
 |----------------------------|------|------|------|------|------|
 | 3x3-double-BigInt          | 3.32 | 3.02 | 3.01 |  2.7 | 2.75 |
 | 2x2-double-BigInt          | 1.08 | 0.91 | 0.72 | 0.76 | 0.84 |
@@ -206,10 +206,10 @@ The best method is the lazy implementation of
 using the \f$ 53 \f$ bits of the mantissa of the double data type, 
 ie. `2x2-avnaim++-double-double` (last line).  
 
-For coordinates of \f$ 62 \f$ bits, lying within the range \f$ ]2^{62}; 2^{62}[ \f$, 
+For coordinates of \f$ 62 \f$ bits,
 we obtain the following results:
 
-| method\input                  |   1. |   2. |   3. |   4. |   5. |
+| method vs input               |   1. |   2. |   3. |   4. |   5. |
 |-------------------------------|------|------|------|------|------|
 | 3x3-BigInt-BigInt             |  7.4 | 6.62 | 4.89 |  2.4 | 2.54 |
 | 2x2-BigInt-BigInt             | 4.76 | 3.54 | 3.49 | 1.28 | 1.44 |
