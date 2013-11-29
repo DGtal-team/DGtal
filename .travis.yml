@@ -18,7 +18,7 @@ before_script:
   - tar zxvf CGAL-4.3.tar.gz && cd CGAL-4.3
   - cmake . -DWITH_Eigen3=true -DWITH_GMPXX=true
   - make && sudo make install
-  - cd
+  - cd ..
 
 
 
