@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testPointListReader.cpp
+ * @file testNumbersReader.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2011/04/01
+ * @date 2013/11/30
  *
- * Functions for testing class PointListReader.
+ * Functions for testing class NumbersReader.
  *
  * This file is part of the DGtal library.
  */
@@ -30,9 +30,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/PointListReader.h"
+#include "DGtal/io/readers/NumbersReader.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/curves/FreemanChain.h" 
 
 #include "ConfigTest.h"
 
@@ -43,42 +42,30 @@ using namespace DGtal;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class PointListReader.
+// Functions for testing class NumbersReader.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testPointListReader()
+bool testNumberReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing reading point list ..." );  
+  trace.beginBlock ( "Testing reading Integers ..." );  
   std::string filename = testPath + "samples/pointList1.pl";
-  std::vector<unsigned int> vectPos;
-  vectPos.push_back(1);
-  vectPos.push_back(2);
-  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename,
-                     vectPos);
-  for(unsigned int k=0;k < vectPoints.size(); k++){
-    trace.info() << " pt: "<< vectPoints.at(k)<< endl;
+
+  vector<unsigned int> vectIntegers = NumbersReader<unsigned int>::getNumbersFromFile(filename, 1);
+  for(unsigned int k=0;k < vectIntegers.size(); k++){
+    trace.info() << " integer: "<< vectIntegers.at(k)<< endl;
   }
-  nbok += (vectPoints.size()==4) ? 1 : 0; 
+  nbok += (vectIntegers.at(0)==2 && vectIntegers.at(1)==44 && vectIntegers.at(2)==23 
+           && vectIntegers.at(3)==1) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   trace.endBlock();
   
-  trace.beginBlock ( "Testing reading point list ..." );
-  std::string filenameFC = testPath + "samples/freemanChainSample.fc";
-  std::vector< FreemanChain< int > > vectFC = PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (filenameFC); 
-  for(unsigned int i=0; i< vectFC.size(); i++){
-    FreemanChain<int> fc = vectFC.at(i);
-    trace.info() << "Freeman chain " << i << ": " << fc.x0 << " " << fc.y0 << " " << fc.chain << endl;
-  }
-  nbok += (vectFC.size()==5) ? 1 : 0; 
-  nb++;
-  trace.endBlock();
   return nbok == nb;
 }
 
@@ -87,14 +74,14 @@ bool testPointListReader()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class PointListReader" );
+  trace.beginBlock ( "Testing class NumbersReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
   
   
-  bool res = testPointListReader(); // && ... other tests
+  bool res = testNumberReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
