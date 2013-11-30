@@ -108,6 +108,7 @@
     - A new display of 2D and 3D image in Viewer3D.
     - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
     - New GenericReader and Generic Writer for both 2D, 3D and ND images.
+    - Adding a Number Reader.
     - Adding missing PPM Reader.
     - Adding missing DICOM reader (with ITK library)
     - Adding ITK reader and ITK writer

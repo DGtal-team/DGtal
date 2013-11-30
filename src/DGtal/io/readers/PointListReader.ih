@@ -77,17 +77,17 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
       unsigned int nbFound=0;
       TPoint p;
       while ( in_str.good()&& (nbFound<TPoint::dimension)){
-  bool isOK = !!(in_str >> val); //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
-  for(unsigned int j=0; j< TPoint::dimension; j++){
-    if (isOK && (idx == aVectPosition.at(j)) ){
-      nbFound++;
-      p[j]=val;
-    }
-  }
-  ++idx;
+        bool isOK = !!(in_str >> val); //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
+        for(unsigned int j=0; j< TPoint::dimension; j++){
+          if (isOK && (idx == aVectPosition.at(j)) ){
+            nbFound++;
+            p[j]=val;
+          }
+        }
+        ++idx;
       }
       if(nbFound==TPoint::dimension){
-  vectResult.push_back(p);
+        vectResult.push_back(p);
       }
     }
     getline(in, str );
@@ -175,5 +175,12 @@ DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &fil
   }
   return vectResult;
 }
+
+
+
+
+
+
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

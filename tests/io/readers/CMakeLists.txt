@@ -4,6 +4,7 @@ SET(DGTAL_TESTS_SRC_IO_READERS
        testRawReader
        testGenericReader
        testPointListReader
+       testNumbersReader
        testMeshReader
        testMPolynomialReader )
 
