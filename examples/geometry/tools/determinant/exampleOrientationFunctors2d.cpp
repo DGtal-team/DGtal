@@ -40,9 +40,8 @@
 #include "DGtal/geometry/tools/determinant/Filtered2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2dBy2x2DetComputer.h"
 //! [FunctorIncludes]
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2dBySimpleMatrix.h"
-#include "DGtal/base/BasicFunctors.h"
-#include "DGtal/kernel/BasicPointFunctors.h"
 //! [FunctorIncludes]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -78,21 +77,27 @@ basicUsage()
 
   //! [PredicateDefinition]
   //geometric predicate
-  typedef Thresholder<DGtal::int32_t> ValuePredicate; 
-  ValuePredicate lessThanOrEqualToZeroPredicate( 0 ); 
-  PointFunctorPredicate<OrientationFunctor, ValuePredicate > 
-    pointPredicate( orientationFunctor, lessThanOrEqualToZeroPredicate ); 
+  PredicateFromOrientationFunctor2D<OrientationFunctor> 
+    pointPredicate( orientationFunctor ); 
   //! [PredicateDefinition]
 
   //! [FunctorInitialization]
   //initialization
-  orientationFunctor.init( P, Q ); 
+  pointPredicate.init( P, Q ); 
+  //which is equivalent to 
+  //orientationFunctor.init( P, Q );
+  //because the predicate store a pointer to the functor
   //! [FunctorInitialization]
 
+  bool isCCW; 
   //! [PredicateUsage]
   //decision
-  return ( pointPredicate( R ) ); 
+  isCCW = pointPredicate( R ); 
+  //which is equivalent to the following shortcut:
+  //isCCW = pointPredicate( P, Q, R ); 
   //! [PredicateUsage]
+
+  return isCCW; 
 }
 
 void
@@ -138,6 +143,7 @@ advice()
   //! [FunctorDefinition62bis]
   }
 
+#ifdef WITH_BIGINTEGER
   {
   //! [FunctorDefinition62plus]
   //for arbitrary coordinates
@@ -146,6 +152,8 @@ advice()
   typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> Functor; 
   //! [FunctorDefinition62plus]
   }
+#endif
+
 }
 
 int main( int argc, char** argv )
@@ -157,6 +165,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   basicUsage(); 
+  advice(); 
 
   trace.endBlock();
   return 0;
