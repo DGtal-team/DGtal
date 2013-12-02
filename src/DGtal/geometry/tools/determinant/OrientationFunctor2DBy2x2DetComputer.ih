@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file OrientationFunctor2dBy2x2DetComputer.ih
+ * @file OrientationFunctor2DBy2x2DetComputer.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/22
  *
- * Implementation of inline methods defined in OrientationFunctor2dBy2x2DetComputer.h
+ * Implementation of inline methods defined in OrientationFunctor2DBy2x2DetComputer.h
  *
  * This file is part of the DGtal library.
  */
@@ -40,7 +40,7 @@
 template <typename TP, typename TDC>
 inline
 void
-DGtal::OrientationFunctor2dBy2x2DetComputer<TP,TDC>::init( const Point& aP, const Point& aQ )
+DGtal::OrientationFunctor2DBy2x2DetComputer<TP,TDC>::init( const Point& aP, const Point& aQ )
 {
   myA = static_cast<ArgumentInteger>( aP[0] ); 
   myB = static_cast<ArgumentInteger>( aP[1] ); 
@@ -52,8 +52,8 @@ DGtal::OrientationFunctor2dBy2x2DetComputer<TP,TDC>::init( const Point& aP, cons
 // ----------------------------------------------------------------------------
 template <typename TP, typename TDC>
 inline
-typename DGtal::OrientationFunctor2dBy2x2DetComputer<TP,TDC>::Value
-DGtal::OrientationFunctor2dBy2x2DetComputer<TP,TDC>::operator()( const Point& aR ) const
+typename DGtal::OrientationFunctor2DBy2x2DetComputer<TP,TDC>::Value
+DGtal::OrientationFunctor2DBy2x2DetComputer<TP,TDC>::operator()( const Point& aR ) const
 {
   return myDetComputer( static_cast<ArgumentInteger>( aR[0] ) - myA, 
 			static_cast<ArgumentInteger>( aR[1] ) - myB ); 
@@ -63,16 +63,16 @@ DGtal::OrientationFunctor2dBy2x2DetComputer<TP,TDC>::operator()( const Point& aR
 template <typename TP, typename TDC>
 inline
 void
-DGtal::OrientationFunctor2dBy2x2DetComputer<TP,TDC>::selfDisplay ( std::ostream & out ) const
+DGtal::OrientationFunctor2DBy2x2DetComputer<TP,TDC>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[OrientationFunctor2dBy2x2DetComputer]";
+  out << "[OrientationFunctor2DBy2x2DetComputer]";
 }
 
 // ----------------------------------------------------------------------------
 template <typename TP, typename TDC>
 inline
 bool
-DGtal::OrientationFunctor2dBy2x2DetComputer<TP,TDC>::isValid() const
+DGtal::OrientationFunctor2DBy2x2DetComputer<TP,TDC>::isValid() const
 {
   return true;
 }
@@ -86,7 +86,7 @@ template <typename TP, typename TDC>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const OrientationFunctor2dBy2x2DetComputer<TP,TDC> & object )
+		    const OrientationFunctor2DBy2x2DetComputer<TP,TDC> & object )
 {
   object.selfDisplay( out );
   return out;

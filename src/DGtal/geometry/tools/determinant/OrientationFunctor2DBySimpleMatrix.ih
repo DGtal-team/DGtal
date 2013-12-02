@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file OrientationFunctor2dBySimpleMatrix.ih
+ * @file OrientationFunctor2DBySimpleMatrix.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/22
  *
- * Implementation of inline methods defined in OrientationFunctor2dBySimpleMatrix.h
+ * Implementation of inline methods defined in OrientationFunctor2DBySimpleMatrix.h
  *
  * This file is part of the DGtal library.
  */
@@ -40,7 +40,7 @@
 template <typename TP, typename TI>
 inline
 void
-DGtal::OrientationFunctor2dBySimpleMatrix<TP,TI>::init( const Point& aP, const Point& aQ )
+DGtal::OrientationFunctor2DBySimpleMatrix<TP,TI>::init( const Point& aP, const Point& aQ )
 {
   myMatrix.setComponent( 0, 0, static_cast<Integer>( aP[0] ) ); 
   myMatrix.setComponent( 0, 1, static_cast<Integer>( aP[1] ) ); 
@@ -53,8 +53,8 @@ DGtal::OrientationFunctor2dBySimpleMatrix<TP,TI>::init( const Point& aP, const P
 // ----------------------------------------------------------------------------
 template <typename TP, typename TI>
 inline
-typename DGtal::OrientationFunctor2dBySimpleMatrix<TP,TI>::Value
-DGtal::OrientationFunctor2dBySimpleMatrix<TP,TI>::operator()( const Point& aR ) const
+typename DGtal::OrientationFunctor2DBySimpleMatrix<TP,TI>::Value
+DGtal::OrientationFunctor2DBySimpleMatrix<TP,TI>::operator()( const Point& aR ) const
 {
   myMatrix.setComponent( 2, 0, static_cast<Integer>( aR[0] ) ); 
   myMatrix.setComponent( 2, 1, static_cast<Integer>( aR[1] ) ); 
@@ -66,16 +66,16 @@ DGtal::OrientationFunctor2dBySimpleMatrix<TP,TI>::operator()( const Point& aR ) 
 template <typename TP, typename TI>
 inline
 void
-DGtal::OrientationFunctor2dBySimpleMatrix<TP,TI>::selfDisplay ( std::ostream & out ) const
+DGtal::OrientationFunctor2DBySimpleMatrix<TP,TI>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[OrientationFunctor2dBySimpleMatrix]";
+  out << "[OrientationFunctor2DBySimpleMatrix]";
 }
 
 // ----------------------------------------------------------------------------
 template <typename TP, typename TI>
 inline
 bool
-DGtal::OrientationFunctor2dBySimpleMatrix<TP,TI>::isValid() const
+DGtal::OrientationFunctor2DBySimpleMatrix<TP,TI>::isValid() const
 {
   return true;
 }
@@ -89,7 +89,7 @@ template <typename TP, typename TI>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const OrientationFunctor2dBySimpleMatrix<TP,TI> & object )
+		    const OrientationFunctor2DBySimpleMatrix<TP,TI> & object )
 {
   object.selfDisplay( out );
   return out;

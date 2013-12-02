@@ -1,6 +1,6 @@
 SET(DGTAL_TESTS_SRC
   test2x2DetComputers
-  testOrientationFunctors2d)
+  testOrientationFunctors2D)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
@@ -10,7 +10,7 @@ ENDFOREACH(FILE)
 
 
 SET(DGTAL_BENCH_SRC
-   testOrientationFunctors2d-benchmark
+   testOrientationFunctors2D-benchmark
   )
 
 #Benchmark target

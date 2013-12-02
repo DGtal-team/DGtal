@@ -30,9 +30,9 @@ We provide below several solutions to cope with such problems.
 \section sectmoduleGeometricPredicates1 Orientation test in two dimension
 
 Orientation tests are just predicates (returning a boolean) 
-adapted from models of COrientationFunctor2d. 
+adapted from models of COrientationFunctor2D. 
 
-Models of COrientationFunctor2d must be initialized from two points \f$ P, Q \f$
+Models of COrientationFunctor2D must be initialized from two points \f$ P, Q \f$
 and provide an operator() taking a third point \f$ R \f$ as argument and returning a 
 signed value: 
 - equal to 0 if \f$ P, Q, R \f$ belong to the same line  
@@ -44,34 +44,34 @@ signed value:
 \subsection subsectmoduleGeometricPredicates11 Basic usage
 
 Let us assume that we are working with the following domain: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp DomainDefinition
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp DomainDefinition
 
 To determine the orientation of the three following points 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp ProblemStatement
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp ProblemStatement
 
 you must construct an orientation functor as follows: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorDefinition
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorDefinition
 
 Then, you can adapt this functor in order to get a predicate: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateDefinition
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp PredicateDefinition
 
 The default behavior of PredicateFromOrientationFunctor2D is to return 'true' for 
 strictly positive functor values. 
 
 The test can be done in one or two separate steps as follows: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorInitialization
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateUsage
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorInitialization
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp PredicateUsage
 
 
-\note This small example, which may be found in exampleOrientationFunctors2d.cpp, 
+\note This small example, which may be found in exampleOrientationFunctors2D.cpp, 
 requires the following headers: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorIncludes
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorIncludes
 
 
 \subsection subsectmoduleGeometricPredicates12 List of available functors
 
 Two useful classes have been implemented: 
- - OrientationFunctor2dBySimpleMatrix, an orientation functor based on the determinant of a 3x3 matrix:
+ - OrientationFunctor2DBySimpleMatrix, an orientation functor based on the determinant of a 3x3 matrix:
 
    \f$ 
    \begin{vmatrix}
@@ -81,7 +81,7 @@ Two useful classes have been implemented:
    \end{vmatrix} 
    \f$
  
- - OrientationFunctor2dBy2x2DetComputer, an orientation functor that reduces the computation to 
+ - OrientationFunctor2DBy2x2DetComputer, an orientation functor that reduces the computation to 
    the determinant of a 2x2 matrix: 
 
    \f$ 
@@ -91,7 +91,7 @@ Two useful classes have been implemented:
    \end{vmatrix} 
    \f$
 
-   OrientationFunctor2dBy2x2DetComputer delegates the computation of this determinant to a model of C2x2DetComputer.  
+   OrientationFunctor2DBy2x2DetComputer delegates the computation of this determinant to a model of C2x2DetComputer.  
    - Simple2x2DetComputer, which merely computes \f$ (Q_x - P_x)(R_y - P_y) - (Q_y - P_y)(R_x - P_x) \f$.  
    - AvnaimEtAl2x2DetSignComputer, an implementation of [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997]
      that returns the sign of the determinant without increasing the size of the entries. 
@@ -106,49 +106,49 @@ The sum \f$ x+y \f$ may require \f$ b+1 \f$ bits and the product
 \f$ xy \f$ may require \f$ 2b \f$ bits. 
 Consequently, we can determine the number of bits required for the computation.  
 If the coordinates of the points are \f$ b \f$-bits integers, 
-both OrientationFunctor2dBySimpleMatrix 
-and OrientationFunctor2dBy2x2DetComputer with Simple2x2DetComputer
+both OrientationFunctor2DBySimpleMatrix 
+and OrientationFunctor2DBy2x2DetComputer with Simple2x2DetComputer
 may return determinant values of \f$ 2b + 3 \f$ bits. 
-However, OrientationFunctor2dBy2x2DetComputer with AvnaimEtAl2x2DetSignComputer
+However, OrientationFunctor2DBy2x2DetComputer with AvnaimEtAl2x2DetSignComputer
 only require integers of \f$ b+1 \f$ bits. 
 
 \subsection subsectmoduleGeometricPredicates13 How to avoid overflows ?
 
 For coordinates of \f$ 30 \f$ bits, lying within the range \f$ ]2^{30}; 2^{30}[ \f$, 
-we recommand to use OrientationFunctor2dBySimpleMatrix with DGtal::int64_t as result type. 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorDefinition30
+we recommand to use OrientationFunctor2DBySimpleMatrix with DGtal::int64_t as result type. 
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorDefinition30
 
 For coordinates of \f$ 52 \f$ bits, lying within the range \f$ ]2^{52}; 2^{52}[ \f$, 
-we recommand to use OrientationFunctor2dBy2x2DetComputer with a lazy implementation of 
+we recommand to use OrientationFunctor2DBy2x2DetComputer with a lazy implementation of 
 [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997] using the \f$ 53 \f$ bits of 
 the mantissa of the double-precision floating-point data type. 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorDefinition52
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorDefinition52
 
 For coordinates of \f$ 62 \f$ bits, lying within the range \f$ ]-2^{62}; 2^{62}[ \f$, 
-we recommand to use OrientationFunctor2dBy2x2DetComputer with an implementation of 
+we recommand to use OrientationFunctor2DBy2x2DetComputer with an implementation of 
 [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997] using DGtal::int64_t as 
 a working type. 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorDefinition62
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorDefinition62
 
-For greater coordinates, we recommand to use OrientationFunctor2dBy2x2DetComputer
+For greater coordinates, we recommand to use OrientationFunctor2DBy2x2DetComputer
 together with Simple2x2DetComputer using DGtal::BigInteger as integral types (WITH_GMP ON). 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorDefinition62plus
+@snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorDefinition62plus
 
 \subsection subsectmoduleGeometricPredicates14 Benchmark
 
 Experimental tests justify the above recommendations. 
-In testOrientationFunctors2d-benchmark.cpp, we compare several methods: 
-- `3x3` : OrientationFunctor2dBySimpleMatrix
-- `2x2` : OrientationFunctor2dBy2x2DetComputer with Simple2x2DetComputer
-- `2x2-avnaim` : OrientationFunctor2dBy2x2DetComputer with AvnaimEtAl2x2DetSignComputer
-- `2x2-avnaim++` : a combination of OrientationFunctor2dBy2x2DetComputer, Filtered2x2DetComputer 
+In testOrientationFunctors2D-benchmark.cpp, we compare several methods: 
+- `3x3` : OrientationFunctor2DBySimpleMatrix
+- `2x2` : OrientationFunctor2DBy2x2DetComputer with Simple2x2DetComputer
+- `2x2-avnaim` : OrientationFunctor2DBy2x2DetComputer with AvnaimEtAl2x2DetSignComputer
+- `2x2-avnaim++` : a combination of OrientationFunctor2DBy2x2DetComputer, Filtered2x2DetComputer 
 and AvnaimEtAl2x2DetSignComputer 
 
 Input and output types follow the name of the method. For instance, the `3x3-int32-int64`-method
 runs on coordinates of type DGtal::int32_t and return a determinant of type DGtal::int64_t.  
  
 We runned all the above methods on a laptop (Intel core i5 2.50GHz, 4GB RAM) with Ubuntu 12.04. 
-testOrientationFunctors2d-benchmark.cpp was compiled in Release mode with gcc 4.6.3. 
+testOrientationFunctors2D-benchmark.cpp was compiled in Release mode with gcc 4.6.3. 
 
 We performed 1 million orientation tests 
 on five different kinds of inputs:   

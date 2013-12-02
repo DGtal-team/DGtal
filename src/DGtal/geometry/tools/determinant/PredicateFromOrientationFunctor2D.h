@@ -45,7 +45,7 @@
 
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/geometry/tools/determinant/COrientationFunctor2d.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,21 +55,21 @@ namespace DGtal
   // template class PredicateFromOrientationFunctor2D
   /**
    * Description of template class 'PredicateFromOrientationFunctor2D' <p>
-   * \brief Aim: Small adapter to models of COrientationFunctor2d. 
+   * \brief Aim: Small adapter to models of COrientationFunctor2D. 
    * It is a model of CPointPredicate. It is also a ternary predicate on points, 
    * useful for basic geometric tasks such as convex hull computation. 
    *
    * Once a orientation functor is defined, you can adapt it as follows: 
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateDefinition
+   * @snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp PredicateDefinition
    *
    * The test can be done in one or two separate steps as follows: 
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorInitialization
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateUsage
+   * @snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorInitialization
+   * @snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp PredicateUsage
    *
    * The default behavior is to return 'true' for strictly positive functor values.
    * You can however custom this behavior with the last two template parameters. 
    *
-   * @tparam TOrientationFunctor a model of COrientationFunctor2d
+   * @tparam TOrientationFunctor a model of COrientationFunctor2D
    * @tparam acceptNeg bool equal to 'true' to get a predicate returning 'true' 
    * for strictly negative values of the functor, but equal to 'false' to get a predicate 
    * returning 'true' for strictly positive values (default). 
@@ -86,7 +86,7 @@ namespace DGtal
      * Type of the adapter orientation functor
      */
     typedef TOrientationFunctor Functor; 
-    BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<Functor> )); 
+    BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<Functor> )); 
     
     /**
      * Type of input points
