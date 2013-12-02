@@ -1,5 +1,5 @@
 SET(DGTAL_EXAMPLES_SRC
-   exampleOrientationFunctors2d
+   exampleOrientationFunctors2D
 )
 
 

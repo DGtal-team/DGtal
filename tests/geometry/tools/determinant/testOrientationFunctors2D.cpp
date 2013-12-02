@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testOrientationFunctors2d.cpp
+ * @file testOrientationFunctors2D.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/22
  *
- * Functions for testing models of COrientationFunctor2d.
+ * Functions for testing models of COrientationFunctor2D.
  *
  * This file is part of the DGtal library.
  */
@@ -34,9 +34,9 @@
 
 #include "DGtal/geometry/tools/determinant/Simple2x2DetComputer.h"
 
-#include "DGtal/geometry/tools/determinant/COrientationFunctor2d.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2dBy2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2dBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2D.h"
+#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBy2x2DetComputer.h"
+#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -48,12 +48,12 @@ using namespace DGtal;
 /**
  * Example of a test. To be completed.
  * @param f any orientation functor
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 template<typename OrientationFunctor>
 bool testOrientationFunctors(OrientationFunctor f)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<OrientationFunctor> )); 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -103,10 +103,10 @@ int main( int argc, char** argv )
   bool res = true; 
 
   typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-  typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> Functor1; 
+  typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> Functor1; 
   res = res && testOrientationFunctors( Functor1() );
  
-  typedef OrientationFunctor2dBySimpleMatrix<Point, DGtal::int32_t> Functor2; 
+  typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::int32_t> Functor2; 
   res = res && testOrientationFunctors( Functor2() );
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

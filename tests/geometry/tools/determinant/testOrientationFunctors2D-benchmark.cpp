@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testOrientationFunctors2d-benchmark.cpp
+ * @file testOrientationFunctors2D-benchmark.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -40,9 +40,9 @@
 #include "DGtal/geometry/tools/determinant/AvnaimEtAl2x2DetSignComputer.h"
 #include "DGtal/geometry/tools/determinant/Filtered2x2DetComputer.h"
 
-#include "DGtal/geometry/tools/determinant/COrientationFunctor2d.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2dBy2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2dBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2D.h"
+#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBy2x2DetComputer.h"
+#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -225,12 +225,12 @@ DGtal::BigInteger signedRandomBigInt62 ()
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool randomTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -267,12 +267,12 @@ bool randomTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n 
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool nullSameVectorsTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q; 
@@ -307,12 +307,12 @@ bool nullSameVectorsTest(OrientationFunctor f, RandomFunctor gen, const DGtal::i
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool nullZeroVectorTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q; 
@@ -348,12 +348,12 @@ bool nullZeroVectorTest(OrientationFunctor f, RandomFunctor gen, const DGtal::in
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool nullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -398,12 +398,12 @@ bool nullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 
  * @param f a functor to run
  * @param gen a generator providing random numbers
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 template<typename OrientationFunctor, typename RandomFunctor>
 bool quasiNullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -452,12 +452,12 @@ bool quasiNullTest(OrientationFunctor f, RandomFunctor gen, const DGtal::int32_t
  *
  * @param f a functor to run
  * @param n number of tries 
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 template<typename OrientationFunctor>
 bool incTest(OrientationFunctor f, const DGtal::int32_t n = 1000000)
 {
-  BOOST_CONCEPT_ASSERT(( COrientationFunctor2d<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<OrientationFunctor> )); 
 
   typedef typename OrientationFunctor::Point Point; 
   Point P, Q, R; 
@@ -501,7 +501,7 @@ bool incTest(OrientationFunctor f, const DGtal::int32_t n = 1000000)
  * time of all available functors for random points whose 
  * coordinates are within [-2^30 ; 2^30[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 bool incTestComparison()
 {
@@ -516,7 +516,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-int32-int64 "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl; 
   }
@@ -524,7 +524,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-inc-int32-int64 "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl;   
   }
@@ -533,7 +533,7 @@ bool incTestComparison()
     std::cout << "2x2-avnaim++-int32-double "; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, FDetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, FDetComputer> F; 
     incTest( F() );
     std::cout << std::endl;   
   }
@@ -542,7 +542,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-int32-BigInt "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl; 
   }
@@ -550,7 +550,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-inc-int32-BigInt "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl;   
   }
@@ -563,7 +563,7 @@ bool incTestComparison()
  * time of all available functors for random points whose 
  * coordinates are within [-2^30 ; 2^30[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 bool randomTest30All()
 {
@@ -579,7 +579,7 @@ bool randomTest30All()
   {
     srand(seed); 
     std::cout << "3x3-int32-int64 "; 
-    typedef OrientationFunctor2dBySimpleMatrix<Point, DGtal::int64_t> F; 
+    typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::int64_t> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -591,7 +591,7 @@ bool randomTest30All()
   { 
     srand(seed); 
     std::cout << "3x3-int32-BigInt "; 
-    typedef OrientationFunctor2dBySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -604,7 +604,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-int32-int64 "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -617,7 +617,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-int32-BigInt "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -630,7 +630,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-inc-int32-int64 "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -643,7 +643,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-inc-int32-BigInt "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -656,7 +656,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-avnaim-int32-int32 "; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int32_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -668,7 +668,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-avnaim-int32-double "; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -681,7 +681,7 @@ bool randomTest30All()
     std::cout << "2x2-avnaim++-int32-double "; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, FDetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -698,7 +698,7 @@ bool randomTest30All()
  * time of all available functors for random points whose 
  * coordinates are within [-2^52 ; 2^52[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 bool randomTest52All()
 {
@@ -714,7 +714,7 @@ bool randomTest52All()
     srand(seed); 
     std::cout << "3x3-double-BigInt ";  
     typedef PointVector<2, double> Point; 
-    typedef OrientationFunctor2dBySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -727,7 +727,7 @@ bool randomTest52All()
     std::cout << "2x2-double-BigInt "; 
     typedef PointVector<2, double> Point; 
     typedef Simple2x2DetComputer<double, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -740,7 +740,7 @@ bool randomTest52All()
     std::cout << "2x2-inc-double-BigInt "; 
     typedef PointVector<2, double> Point; 
     typedef SimpleIncremental2x2DetComputer<double, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -754,7 +754,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-int64-int64 "; 
     typedef PointVector<2, DGtal::int64_t> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt52 );
     nullSameVectorsTest( F(), signedRandomInt52 );
     nullZeroVectorTest( F(), signedRandomInt52 ); 
@@ -767,7 +767,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-double-int64 "; 
     typedef PointVector<2, double> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -780,7 +780,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-int64-double "; 
     typedef PointVector<2, DGtal::int64_t> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt52 );
     nullSameVectorsTest( F(), signedRandomInt52 );
     nullZeroVectorTest( F(), signedRandomInt52 ); 
@@ -793,7 +793,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-double-double "; 
     typedef PointVector<2, double> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -807,7 +807,7 @@ bool randomTest52All()
     typedef PointVector<2, DGtal::int64_t> Point;  
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, FDetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomInt52 );
     nullSameVectorsTest( F(), signedRandomInt52 );
     nullZeroVectorTest( F(), signedRandomInt52 ); 
@@ -821,7 +821,7 @@ bool randomTest52All()
     typedef PointVector<2, double> Point;  
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, FDetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -838,7 +838,7 @@ bool randomTest52All()
  * time of all available functors for random points whose 
  * coordinates are within [-2^62 ; 2^62[.
  * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2d
+ * @tparam OrientationFunctor a model of COrientationFunctor2D
  */
 bool randomTest62All()
 {
@@ -854,7 +854,7 @@ bool randomTest62All()
     srand(seed); 
     std::cout << "3x3-BigInt-BigInt ";  
     typedef PointVector<2, DGtal::BigInteger> Point; 
-    typedef OrientationFunctor2dBySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomBigInt62 );
     nullSameVectorsTest( F(), signedRandomBigInt62 );
     nullZeroVectorTest( F(), signedRandomBigInt62 ); 
@@ -867,7 +867,7 @@ bool randomTest62All()
     std::cout << "2x2-BigInt-BigInt "; 
     typedef PointVector<2, DGtal::BigInteger> Point; 
     typedef Simple2x2DetComputer<DGtal::BigInteger, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomBigInt62 );
     nullSameVectorsTest( F(), signedRandomBigInt62 );
     nullZeroVectorTest( F(), signedRandomBigInt62 ); 
@@ -880,7 +880,7 @@ bool randomTest62All()
     std::cout << "2x2-inc-BigInt-BigInt "; 
     typedef PointVector<2, DGtal::BigInteger> Point; 
     typedef SimpleIncremental2x2DetComputer<DGtal::BigInteger, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomBigInt62 );
     nullSameVectorsTest( F(), signedRandomBigInt62 );
     nullZeroVectorTest( F(), signedRandomBigInt62 ); 
@@ -894,7 +894,7 @@ bool randomTest62All()
     std::cout << "2x2-avnaim-int64-int64 "; 
     typedef PointVector<2, DGtal::int64_t> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, DetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt62 );
     nullSameVectorsTest( F(), signedRandomInt62 );
     nullZeroVectorTest( F(), signedRandomInt62 ); 
@@ -908,7 +908,7 @@ bool randomTest62All()
     typedef PointVector<2, DGtal::int64_t> Point;  
     typedef AvnaimEtAl2x2DetSignComputer<long double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2dBy2x2DetComputer<Point, FDetComputer> F; 
+    typedef OrientationFunctor2DBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomInt62 );
     nullSameVectorsTest( F(), signedRandomInt62 );
     nullZeroVectorTest( F(), signedRandomInt62 ); 

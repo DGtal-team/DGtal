@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file COrientationFunctor2d.h
+ * @file COrientationFunctor2D.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/22
  *
- * Header file for concept COrientationFunctor2d.cpp
+ * Header file for concept COrientationFunctor2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(COrientationFunctor2d_RECURSES)
-#error Recursive header files inclusion detected in COrientationFunctor2d.h
-#else // defined(COrientationFunctor2d_RECURSES)
+#if defined(COrientationFunctor2D_RECURSES)
+#error Recursive header files inclusion detected in COrientationFunctor2D.h
+#else // defined(COrientationFunctor2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define COrientationFunctor2d_RECURSES
+#define COrientationFunctor2D_RECURSES
 
-#if !defined COrientationFunctor2d_h
+#if !defined COrientationFunctor2D_h
 /** Prevents repeated inclusion of headers. */
-#define COrientationFunctor2d_h
+#define COrientationFunctor2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,9 +51,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class COrientationFunctor2d
+  // class COrientationFunctor2D
   /**
-     Description of \b concept '\b COrientationFunctor2d' <p>
+     Description of \b concept '\b COrientationFunctor2D' <p>
      @ingroup Concepts
      @brief Aim: This concept gathers models used to perform
      an orientation test given three points. These three points
@@ -77,7 +77,7 @@ namespace DGtal
      - Value type of the result, at least a model of CSignedNumber
 
      ### Notation
-     - \e X : A type that is a model of COrientationFunctor2d
+     - \e X : A type that is a model of COrientationFunctor2D
      - \e x : object of type X
      - \e a , \e b : objects of type Point
 
@@ -89,19 +89,19 @@ namespace DGtal
 
      ### Models
   
-     OrientationFunctor2dBy2x2DetComputer
+     OrientationFunctor2DBy2x2DetComputer
 
-     @tparam T the type that should be a model of COrientationFunctor2d.
+     @tparam T the type that should be a model of COrientationFunctor2D.
   */
   template <typename T>
-  struct COrientationFunctor2d : CPointFunctor<T>
+  struct COrientationFunctor2D : CPointFunctor<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
 
     BOOST_CONCEPT_ASSERT(( CSignedNumber< typename T::Value > ));
 
-    BOOST_CONCEPT_USAGE( COrientationFunctor2d )
+    BOOST_CONCEPT_USAGE( COrientationFunctor2D )
     {
       myX.init( myA, myB );
     }
@@ -113,14 +113,14 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept COrientationFunctor2d
+  }; // end of concept COrientationFunctor2D
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined COrientationFunctor2d_h
+#endif // !defined COrientationFunctor2D_h
 
-#undef COrientationFunctor2d_RECURSES
-#endif // else defined(COrientationFunctor2d_RECURSES)
+#undef COrientationFunctor2D_RECURSES
+#endif // else defined(COrientationFunctor2D_RECURSES)
