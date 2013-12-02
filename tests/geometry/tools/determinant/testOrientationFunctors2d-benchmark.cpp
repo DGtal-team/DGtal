@@ -124,6 +124,7 @@ DGtal::int64_t randomInt62 ()
 }
 
 
+#ifdef WITH_BIGINTEGER
 /**
  * @return a random integer of type DGtal::BigInteger
  * lying in the range [0 ; 2^62[
@@ -137,6 +138,7 @@ DGtal::BigInteger randomBigInt62 ()
       * 1073741824 ) 
     * 4; 
 }
+#endif
 
 /**
  * @return a random (signed) integer of type DGtal::int32_t
@@ -198,6 +200,7 @@ DGtal::int64_t signedRandomInt62 ()
     return ((rand() % 2) ? x : -x);
 }
 
+#ifdef WITH_BIGINTEGER
 /**
  * @return a random (signed) integer of type DGtal::BigInteger
  * lying in the range [-2^62 ; 2^62[
@@ -210,6 +213,7 @@ DGtal::BigInteger signedRandomBigInt62 ()
   else 
     return -x;
 }
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // Tests Functions 

@@ -52,16 +52,14 @@ To determine the orientation of the three following points
 you must construct an orientation functor as follows: 
 @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorDefinition
 
-Then, you can combine this functor with a tool that thresholds the returned value in 
-order to get a predicate: 
+Then, you can adapt this functor in order to get a predicate: 
 @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateDefinition
 
-The test is now done in two steps. 
-First, you must initialize your functor. This can be done either before or after 
-the construction of the predicate, provided that the chosen predicate is an adapter 
-that stores an alias of your functor (not a clone). 
+The default behavior of PredicateFromOrientationFunctor2D is to return 'true' for 
+strictly positive functor values. 
+
+The test can be done in one or two separate steps as follows: 
 @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp FunctorInitialization
-Next, the test can be performed as follows: 
 @snippet geometry/tools/determinant/exampleOrientationFunctors2d.cpp PredicateUsage
 
 
