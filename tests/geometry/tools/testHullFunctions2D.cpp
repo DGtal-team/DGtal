@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/geometry/tools/ConvexHull2DHelpers.h"
+#include "DGtal/geometry/tools/Hull2DHelpers.h"
 
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
@@ -62,7 +62,7 @@ bool testHullFunctions2D()
     predicate( orientationFunctor ); 
 
   //functions namespace
-  using namespace ConvexHull2D;
+  using namespace Hull2D;
 
   trace.beginBlock ( "Testing openGrahamScan" );
 

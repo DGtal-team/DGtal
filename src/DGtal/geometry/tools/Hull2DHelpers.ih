@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ConvexHull2DHelpers.ih
+ * @file Hull2DHelpers.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/02
  *
- * Implementation of inline methods defined in ConvexHull2DHelpers.h
+ * Implementation of inline methods defined in Hull2DHelpers.h
  *
  * This file is part of the DGtal library.
  */
