@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file NumbersReader.h
+ * @file TableReader.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2013/11/30
  *
- * Header file for module NumbersReader.cpp
+ * Header file for module TableReader.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(NumbersReader_RECURSES)
-#error Recursive header files inclusion detected in NumbersReader.h
-#else // defined(NumbersReader_RECURSES)
+#if defined(TableReader_RECURSES)
+#error Recursive header files inclusion detected in TableReader.h
+#else // defined(TableReader_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define NumbersReader_RECURSES
+#define TableReader_RECURSES
 
-#if !defined NumbersReader_h
+#if !defined TableReader_h
 /** Prevents repeated inclusion of headers. */
-#define NumbersReader_h
+#define TableReader_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,9 +50,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class NumbersReader
+  // class TableReader
   /**
-   * Description of class 'NumbersReader' <p> 
+   * Description of class 'TableReader' <p> 
    *  \brief Aim: Implements method to read a set of numbers represented in each line of a file.
    *
    *
@@ -65,56 +65,56 @@ namespace DGtal
    * 
    *  @code
    *  #include "DGtal/helpers/StdDefs.h"
-   *  #include "DGtal/io/readers/NumbersReader.h"
+   *  #include "DGtal/io/readers/TableReader.h"
    *  .... 
    *  string filename= "testFile.dat"; 
-   *  vector<Z2i::Point> vectPoints = NumbersReader<unsigned int>::getPointsFromFile(filename);
+   *  vector<Z2i::Point> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename);
    * @endcode 
    * and you can specifying the point position:
    *  @code
-   *  vector<unsigned int> vectPoints = NumbersReader<unsigned int>::getPointsFromFile(filename, 2);
+   *  vector<unsigned int> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename, 2);
    *  @endcode
    *   
-   * @see testNumbersReader.cpp
+   * @see testTableReader.cpp
    * @tparam TNumber the type fo the integer to be read.
    **/
 
   template <typename TNumber>
-  struct  NumbersReader
+  struct  TableReader
   {
     // ----------------------- Standard services ------------------------------
   public:
   
   
     /** 
-     * Method to import a vector containing a list of integers given
-     * in an input stream. One integer is extracted on each line of the input
+     * Method to import a vector containing a list of elements given
+     * in an input stream. One element is extracted on each line of the input
      * stream.  Blank line or line beginning with "#" are skipped.
      *
      * @param in the input stream.
-     * @param aPosition the position of indices where the integer has to extracted.
-     * @return a vector containing the set of integer.
+     * @param aPosition the position of indices where the element has to be extracted.
+     * @return a vector containing the set of elements.
      **/
     static std::vector< TNumber >  
-    getNumbersFromFile (const std::string & aFilename, 
+    getColumnElementsFromFile (const std::string & aFilename, 
                         unsigned int aPosition);  
     
     /** 
-     * Method to import a vector containing a list of integers given
-     * in a file. One integer is extracted on each line of the input
-     * stream.  Blank line or line beginning with "#" are skipped.
+     * Method to import a vector containing a list of elements given
+     * in a file. One element is extracted on each line of the input
+     * file.  Blank line or line beginning with "#" are skipped.
      *
      * @param in the input file.
-     * @param aPosition the position of indices where the integer has to extracted.
-     * @return a vector containing the set of integer.
+     * @param aPosition the position of indices where the elements has to be extracted.
+     * @return a vector containing the set of elements.
      **/
     
     static std::vector< TNumber >  
-    getNumbersFromInputStream (std::istream &in, 
+    getColumnElementsFromInputStream (std::istream &in, 
                                unsigned int aPosition);  
   
 
-  }; // end of class NumbersReader
+  }; // end of class TableReader
 
 
 
@@ -123,13 +123,13 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/readers/NumbersReader.ih"
+#include "DGtal/io/readers/TableReader.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined NumbersReader_h
+#endif // !defined TableReader_h
 
-#undef NumbersReader_RECURSES
-#endif // else defined(NumbersReader_RECURSES)
+#undef TableReader_RECURSES
+#endif // else defined(TableReader_RECURSES)

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file NumbersReader.ih
+ * @file TableReader.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2013/11/30
  *
- * Implementation of inline methods defined in NumbersReader.h
+ * Implementation of inline methods defined in TableReader.h
  *
  * This file is part of the DGtal library.
  */
@@ -47,19 +47,19 @@
 template<typename TNumber>
 inline
 std::vector<TNumber>
-DGtal::NumbersReader<TNumber>::getNumbersFromFile (const std::string &aFilename,  unsigned int aPosition)
+DGtal::TableReader<TNumber>::getColumnElementsFromFile (const std::string &aFilename,  unsigned int aPosition)
 {
   std::ifstream infile;
   infile.open (aFilename.c_str(), std::ifstream::in);
-  return NumbersReader<TNumber>::getNumbersFromInputStream(infile, aPosition);
+  return TableReader<TNumber>::getColumnElementsFromInputStream(infile, aPosition);
 }
 
 
 template<typename TNumber>
 inline
 std::vector< TNumber >  
-DGtal::NumbersReader<TNumber>::getNumbersFromInputStream (std::istream &in, 
-                                                          unsigned int aPosition)
+DGtal::TableReader<TNumber>::getColumnElementsFromInputStream (std::istream &in, 
+                                                               unsigned int aPosition)
 {
   std::vector<TNumber> vectResult;
   std::string str;

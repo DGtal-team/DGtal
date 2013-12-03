@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/NumbersReader.h"
+#include "DGtal/io/readers/TableReader.h"
 #include "DGtal/helpers/StdDefs.h"
 
 #include "ConfigTest.h"
@@ -42,7 +42,7 @@ using namespace DGtal;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class NumbersReader.
+// Functions for testing class TableReader.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
@@ -56,12 +56,25 @@ bool testNumberReader()
   trace.beginBlock ( "Testing reading Integers ..." );  
   std::string filename = testPath + "samples/pointList1.pl";
 
-  vector<unsigned int> vectIntegers = NumbersReader<unsigned int>::getNumbersFromFile(filename, 1);
+  vector<unsigned int> vectIntegers = TableReader<unsigned int>::getColumnElementsFromFile(filename, 1);
   for(unsigned int k=0;k < vectIntegers.size(); k++){
     trace.info() << " integer: "<< vectIntegers.at(k)<< endl;
   }
   nbok += (vectIntegers.at(0)==2 && vectIntegers.at(1)==44 && vectIntegers.at(2)==23 
            && vectIntegers.at(3)==1) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
+  trace.endBlock();
+  
+
+  trace.beginBlock ( "Testing reading string ..." );  
+
+  vector<std::string> vectStrings = TableReader<std::string>::getColumnElementsFromFile(filename, 1);
+  for(unsigned int k=0;k < vectStrings.size(); k++){
+    trace.info() << " string: "<< vectStrings.at(k)<< endl;
+  }
+  nbok += (vectStrings.at(0)=="2" && vectStrings.at(1)=="44" && vectStrings.at(2)=="23" 
+           && vectStrings.at(3)=="1") ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   trace.endBlock();
@@ -74,7 +87,7 @@ bool testNumberReader()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class NumbersReader" );
+  trace.beginBlock ( "Testing class TableReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
