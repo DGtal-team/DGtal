@@ -38,26 +38,26 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Point& aPoint)
   : myF(aPoint), myL(aPoint), 
     myUf(aPoint), myUl(aPoint), 
     myLf(aPoint), myLl(aPoint), 
-    myDSL( NumberTraits<TC>::ZERO, 
-	   NumberTraits<TC>::ZERO, 
-	   NumberTraits<TI>::ZERO, 
-	   NumberTraits<TI>::ZERO, 
-	   std::make_pair( Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO), 
-			   Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO) ), 
-	   Vector(NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO) )
+    myDSL( NumberTraits<TCoordinate>::ZERO, 
+	   NumberTraits<TCoordinate>::ZERO, 
+	   NumberTraits<TInteger>::ZERO, 
+	   NumberTraits<TInteger>::ZERO, 
+	   std::make_pair( Vector(NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO), 
+			   Vector(NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO) ), 
+	   Vector(NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO) )
 {
 }
 
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
 		  const Integer& aLowerBound, const Integer& aUpperBound, 
 		  const Point& aF, const Point& aL,
@@ -72,9 +72,9 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Coordinate& aA, const Coordinate& aB, 
 		  const Point& aF, const Point& aL,
 		  const Point& aUf, const Point& aUl,
@@ -87,14 +87,14 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Point& aF, const Point& aL, 
 		  const bool& areOnTheUpperLine)
-  : myDSL( NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO, NumberTraits<TI>::ZERO )
+  : myDSL( NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO, NumberTraits<TInteger>::ZERO )
 {
-  typedef DGtal::ArithmeticalDSSFactory<TC, TI, adj> Factory; 
+  typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory; 
 
   if (areOnTheUpperLine)
     *this = Factory::createPattern(aF, aL); 
@@ -103,12 +103,12 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 template <typename Iterator>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte)  throw( InputException )
-  : myDSL( NumberTraits<TC>::ZERO, NumberTraits<TC>::ZERO, NumberTraits<TI>::ZERO )
+  : myDSL( NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO, NumberTraits<TInteger>::ZERO )
 {
   if (aItb != aIte)
     {
@@ -127,10 +127,10 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>
-::ArithmeticalDSS(const ArithmeticalDSS<TC, TI, adj>& aOther)
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::ArithmeticalDSS(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther)
   : 
   myF(aOther.myF), myL(aOther.myL),
   myUf(aOther.myUf), myUl(aOther.myUl), myLf(aOther.myLf), myLl(aOther.myLl),
@@ -138,11 +138,11 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>&
-DGtal::ArithmeticalDSS<TC, TI, adj>
-::operator=(const ArithmeticalDSS<TC, TI, adj>& aOther)
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>&
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::operator=(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther)
 {
   if ( this != &aOther )
     {
@@ -158,10 +158,10 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>
-DGtal::ArithmeticalDSS<TC, TI, adj>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::negate() const
 {
   return ArithmeticalDSS(-myDSL.myA, -myDSL.myB, 
@@ -172,11 +172,11 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>
-::equalsTo(const ArithmeticalDSS<TC, TI, adj>& aOther) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::equalsTo(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
 {
   return ( (myUf == aOther.myUf) && 
 	   (myUl == aOther.myUl) &&  
@@ -188,217 +188,217 @@ DGtal::ArithmeticalDSS<TC, TI, adj>
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>
-::operator==(const ArithmeticalDSS<TC, TI, adj>& aOther) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::operator==(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
 {
   return ( equalsTo(aOther) || equalsTo(aOther.negate()) ); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>
-::operator!=(const ArithmeticalDSS<TC, TI, adj>& aOther) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::operator!=(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aOther) const
 {
   return !( operator==(aOther) ); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-DGtal::ArithmeticalDSS<TC, TI, adj>::~ArithmeticalDSS()
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::~ArithmeticalDSS()
 {
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::isValid() const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isValid() const
 {
   return ArithmeticalDSSCheck::checkAll(*this); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-const typename DGtal::ArithmeticalDSS<TC, TI, adj>::DSL&
-DGtal::ArithmeticalDSS<TC, TI, adj>::dsl() const
+const typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::DSL&
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::dsl() const
 {
   return myDSL; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Coordinate
-DGtal::ArithmeticalDSS<TC, TI, adj>::a() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Coordinate
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::a() const
 {
   return myDSL.a(); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Coordinate
-DGtal::ArithmeticalDSS<TC, TI, adj>::b() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Coordinate
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::b() const
 {
   return myDSL.b(); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
-DGtal::ArithmeticalDSS<TC, TI, adj>::mu() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::mu() const
 {
   return myDSL.mu(); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
-DGtal::ArithmeticalDSS<TC, TI, adj>::omega() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::omega() const
 {
   return myDSL.omega(); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Vector
-DGtal::ArithmeticalDSS<TC, TI, adj>::shift() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Vector
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::shift() const
 {
   return myDSL.shift(); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Steps
-DGtal::ArithmeticalDSS<TC, TI, adj>::steps() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Steps
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::steps() const
 {
   return myDSL.steps(); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
-DGtal::ArithmeticalDSS<TC, TI, adj>::back() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::back() const
 {
   return myF; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
-DGtal::ArithmeticalDSS<TC, TI, adj>::front() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::front() const
 {
   return myL; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
-DGtal::ArithmeticalDSS<TC, TI, adj>::Uf() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Uf() const
 {
   return myUf; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
-DGtal::ArithmeticalDSS<TC, TI, adj>::Ul() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Ul() const
 {
   return myUl; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
-DGtal::ArithmeticalDSS<TC, TI, adj>::Lf() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Lf() const
 {
   return myLf; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Point
-DGtal::ArithmeticalDSS<TC, TI, adj>::Ll() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Point
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Ll() const
 {
   return myLl; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
-DGtal::ArithmeticalDSS<TC, TI, adj>::remainder(const Point& aPoint) const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::remainder(const Point& aPoint) const
 {
   return myDSL.remainder(aPoint); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
-DGtal::ArithmeticalDSS<TC, TI, adj>::orthogonalPosition(const Point& aPoint) const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::orthogonalPosition(const Point& aPoint) const
 {
   return myDSL.orthogonalPosition(aPoint); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::Integer
-DGtal::ArithmeticalDSS<TC, TI, adj>::position(const Point& aPoint) const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::position(const Point& aPoint) const
 {
   return myDSL.position(aPoint); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::before(const Point& aP1, const Point& aP2) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::before(const Point& aP1, const Point& aP2) const
 {
   return myDSL.before(aP1, aP2); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::beforeOrEqual(const Point& aP1, const Point& aP2) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::beforeOrEqual(const Point& aP1, const Point& aP2) const
 {
   return myDSL.beforeOrEqual(aP1, aP2); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::isInDSL(const Point& aPoint) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSL(const Point& aPoint) const
 {
   return myDSL(aPoint); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::isInDSS(const Point& aPoint) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isInDSS(const Point& aPoint) const
 {
   if (isInDSL(aPoint))
     {
@@ -418,28 +418,28 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::isInDSS(const Point& aPoint) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::operator()(const Point& aPoint) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::operator()(const Point& aPoint) const
 {
   return isInDSS(aPoint); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::ConstIterator
-DGtal::ArithmeticalDSS<TC, TI, adj>::begin() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstIterator
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::begin() const
 {
   return ConstIterator(&myDSL, myF);
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::ConstIterator
-DGtal::ArithmeticalDSS<TC, TI, adj>::end() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstIterator
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::end() const
 {
   ConstIterator it(&myDSL, myL); 
   it++; 
@@ -447,28 +447,28 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::end() const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::ConstReverseIterator
-DGtal::ArithmeticalDSS<TC, TI, adj>::rbegin() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstReverseIterator
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::rbegin() const
 {
   return ConstReverseIterator( end() );
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::ConstReverseIterator
-DGtal::ArithmeticalDSS<TC, TI, adj>::rend() const
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::ConstReverseIterator
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::rend() const
 {
   return ConstReverseIterator( begin() );
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 void
-DGtal::ArithmeticalDSS<TC, TI, adj>::selfDisplay ( std::ostream & out ) const
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ArithmeticalDSS] ";
   out << myDSL; 
@@ -478,14 +478,14 @@ DGtal::ArithmeticalDSS<TC, TI, adj>::selfDisplay ( std::ostream & out ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 unsigned short int
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 isExtendableFront( const Point& aNewPoint ) const
 {
   Vector step = aNewPoint - myL; 
-  Coordinate deviation = DGtal::ArithmeticalDSLKernel<TC,adj>::norm(step[0], step[1]);
+  Coordinate deviation = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm(step[0], step[1]);
  
   //if the two last points are confounded OK
   if (deviation == NumberTraits<Coordinate>::ZERO) 
@@ -512,7 +512,7 @@ isExtendableFront( const Point& aNewPoint ) const
   	{
 	  //if the two steps are compatible OK
 	  Vector v = step - myDSL.mySteps.first; 
-	  if ( DGtal::ArithmeticalDSLKernel<TC,DGtal::ArithmeticalDSLKernel<TC,adj>::BackgroundAdjacency>
+	  if ( DGtal::ArithmeticalDSLKernel<TCoordinate,DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::BackgroundAdjacency>
 	       ::norm(v[0], v[1]) == NumberTraits<Coordinate>::ONE )
 	    {
 	      Integer r = remainder(aNewPoint);
@@ -564,20 +564,20 @@ isExtendableFront( const Point& aNewPoint ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 unsigned short int
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 isExtendableBack( const Point& aNewPoint ) const
 {
   return negate().isExtendableFront( aNewPoint ); 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 extendFront( const Point& aNewPoint )
 {
   //true if the DSS can be extended to aNewPoint
@@ -599,7 +599,7 @@ extendFront( const Point& aNewPoint )
       myL = aNewPoint; 
       myUl = aNewPoint; 
       myLl = aNewPoint;
-      myDSL.myShift = DGtal::ArithmeticalDSLKernel<TC,adj>::shift(myDSL.myA, myDSL.myB); 
+      myDSL.myShift = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(myDSL.myA, myDSL.myB); 
       break; 
     case 2: //first step repeated
       myL = aNewPoint; 
@@ -614,7 +614,7 @@ extendFront( const Point& aNewPoint )
       myL = aNewPoint; 
       myUl = aNewPoint; 
       myLf = myLl; 
-      myDSL.mySteps = DGtal::ArithmeticalDSLKernel<TC,adj>::steps(myDSL.myA, myDSL.myB);
+      myDSL.mySteps = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::steps(myDSL.myA, myDSL.myB);
       myDSL.myShift = myDSL.mySteps.first-myDSL.mySteps.second; 
       break; 
     case 4: //second step init on the right
@@ -625,7 +625,7 @@ extendFront( const Point& aNewPoint )
       myL = aNewPoint; 
       myLl = aNewPoint; 
       myUf = myUl; 
-      myDSL.mySteps = DGtal::ArithmeticalDSLKernel<TC,adj>::steps(myDSL.myA, myDSL.myB);
+      myDSL.mySteps = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::steps(myDSL.myA, myDSL.myB);
       myDSL.myShift = myDSL.mySteps.first-myDSL.mySteps.second; 
       break; 
     case 5: //weakly interior on the left
@@ -665,14 +665,14 @@ extendFront( const Point& aNewPoint )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 extendBack( const Point& aNewPoint )
 {
   //call extendFront to the opposite
-  DGtal::ArithmeticalDSS<TC, TI, adj> opposite = negate();
+  DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency> opposite = negate();
   bool flag = opposite.extendFront(aNewPoint);
  
   if (flag) //update '*this' if required
@@ -682,14 +682,14 @@ extendBack( const Point& aNewPoint )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 retractFront()
 {
   //call retractBack to the opposite
-  DGtal::ArithmeticalDSS<TC, TI, adj> opposite = negate();
+  DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency> opposite = negate();
   bool hasBeenRetracted = opposite.retractBack();
  
   if (hasBeenRetracted) //update '*this' if required
@@ -699,10 +699,10 @@ retractFront()
 } 
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 retractBack()
 {
   if (myF == myL)
@@ -756,10 +756,10 @@ retractBack()
 } 
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 bool
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 retractUpdateLeaningPoints( const Vector& aDirection, 
 			    const Point& aFirst, 
 			    const Point& aLast, 
@@ -775,13 +775,13 @@ retractUpdateLeaningPoints( const Vector& aDirection,
       Coordinate k; //number of repetition of newDirection
       
       Vector toLastAtRemovalSide = aLastAtRemovalSide - aFirst; 
-      k = DGtal::ArithmeticalDSLKernel<TC,adj>::norm(toLastAtRemovalSide[1], toLastAtRemovalSide[0])
-	/ DGtal::ArithmeticalDSLKernel<TC,adj>::norm(newDirection[1], newDirection[0]); 
+      k = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm(toLastAtRemovalSide[1], toLastAtRemovalSide[0])
+	/ DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm(newDirection[1], newDirection[0]); 
       aFirstAtRemovalSide = aLastAtRemovalSide - newDirection*k; 
 
       Vector toLast = aLast - aFirstAtOppositeSide; 
-      k = DGtal::ArithmeticalDSLKernel<TC,adj>::norm(toLast[1], toLast[0])
-	/ DGtal::ArithmeticalDSLKernel<TC,adj>::norm(newDirection[1], newDirection[0]);
+      k = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm(toLast[1], toLast[0])
+	/ DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::norm(newDirection[1], newDirection[0]);
       aLastAtOppositeSide = aFirstAtOppositeSide + newDirection*k; 
       return true; 
     }
@@ -793,10 +793,10 @@ retractUpdateLeaningPoints( const Vector& aDirection,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 void
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 retractUpdateParameters( const Vector& aNewDirection )
 {
   //update of the slope
@@ -809,8 +809,8 @@ retractUpdateParameters( const Vector& aNewDirection )
   if (myUf == myLf) 
     {
       ASSERT( myUl == myLl );
-      myDSL.mySteps = DGtal::ArithmeticalDSLKernel<TC,adj>::steps(myDSL.myA, myDSL.myB); 
-      myDSL.myShift = DGtal::ArithmeticalDSLKernel<TC,adj>::shift(myDSL.myA, myDSL.myB); 
+      myDSL.mySteps = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::steps(myDSL.myA, myDSL.myB); 
+      myDSL.myShift = DGtal::ArithmeticalDSLKernel<TCoordinate,adjacency>::shift(myDSL.myA, myDSL.myB); 
     }
 }
 
@@ -818,10 +818,10 @@ retractUpdateParameters( const Vector& aNewDirection )
 //                     Drawing services                                      //
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::PointD
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::PointD
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 project( const Point& aM, double aR ) const
 {
   //casts
@@ -840,10 +840,10 @@ project( const Point& aM, double aR ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TC, TI, adj>::PointD
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::PointD
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 project( const Point& aM, const Point& aP ) const
 {
   double r = NumberTraits<Integer>::castToDouble(remainder(aP));
@@ -851,10 +851,10 @@ project( const Point& aM, const Point& aP ) const
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 std::string
-DGtal::ArithmeticalDSS<TC, TI, adj>::
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::
 className() const
 {
   return "ArithmeticalDSS";
@@ -865,9 +865,9 @@ className() const
 ///////////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TC, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
 	     const typename Super::Point& aF, const typename Super::Point& aL,
 	     const typename Super::Point& aUf, const typename Super::Point& aUl,
@@ -876,36 +876,36 @@ StandardDSS4(const typename Super::Coordinate& aA, const typename Super::Coordin
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TC, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL, 
 	     const bool& isOnTheUpperLine)
   : Super(aF, aL, isOnTheUpperLine) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
-DGtal::StandardDSS4<TC, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4(const Iterator& aItb, const Iterator& aIte) throw( InputException )
   : Super(aItb, aIte) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TC, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 StandardDSS4 ( const StandardDSS4 & aOther )
   : Super( aOther ) 
 {} 
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::StandardDSS4<TC, TI>& 
-DGtal::StandardDSS4<TC, TI>::
+DGtal::StandardDSS4<TCoordinate, TInteger>& 
+DGtal::StandardDSS4<TCoordinate, TInteger>::
 operator= ( const StandardDSS4 & aOther )
 {
   if (this != & aOther)
@@ -914,9 +914,9 @@ operator= ( const StandardDSS4 & aOther )
 }
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TC, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate& aB, 
 	     const typename Super::Point& aF, const typename Super::Point& aL,
 	     const typename Super::Point& aUf, const typename Super::Point& aUl,
@@ -925,36 +925,36 @@ NaiveDSS8(const typename Super::Coordinate& aA, const typename Super::Coordinate
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TC, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL, 
 	  const bool& isOnTheUpperLine)
   : Super(aF, aL, isOnTheUpperLine) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
-DGtal::NaiveDSS8<TC, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const Iterator& aItb, const Iterator& aIte) throw( InputException )
   : Super(aItb, aIte) 
 {}
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TC, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8 ( const NaiveDSS8 & aOther )
   : Super( aOther ) 
 {} 
 
 //-----------------------------------------------------------------------------
-template <typename TC, typename TI>
+template <typename TCoordinate, typename TInteger>
 inline
-DGtal::NaiveDSS8<TC, TI>& 
-DGtal::NaiveDSS8<TC, TI>::
+DGtal::NaiveDSS8<TCoordinate, TInteger>& 
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
 operator= ( const NaiveDSS8 & aOther )
 {
   if (this != & aOther)
@@ -965,11 +965,11 @@ operator= ( const NaiveDSS8 & aOther )
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TC, typename TI, unsigned short adj>
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const ArithmeticalDSS<TC, TI, adj> & object )
+		    const ArithmeticalDSS<TCoordinate, TInteger, adjacency> & object )
 {
   object.selfDisplay( out );
   return out;

@@ -160,14 +160,14 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    ArithmeticalDSSComputer ( const Self & other );
+    ArithmeticalDSSComputer ( const ArithmeticalDSSComputer & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    Self& operator= ( const Self & other );
+    ArithmeticalDSSComputer& operator= ( const ArithmeticalDSSComputer & other );
 
     /** 
      * @return a default-constructed instance of Self 
@@ -186,7 +186,7 @@ namespace DGtal
      * and the ranges of the two objects match,
      * 'false' otherwise
      */
-    bool operator==( const Self & other ) const;
+    bool operator==( const ArithmeticalDSSComputer & other ) const;
 
     /**
      * Difference operator.
@@ -194,7 +194,7 @@ namespace DGtal
      * @return 'false' if equal
      * 'true' otherwise
      */
-    bool operator!=( const Self & other ) const;
+    bool operator!=( const ArithmeticalDSSComputer & other ) const;
 
     /**
      * Destructor.

@@ -168,7 +168,8 @@ namespace DGtal
      *
      * @param aA y-component of the direction vector
      * @param aB x-component of the direction vector
-     * @param aLowerBound intercept
+     * @param aLowerBound lower intercept
+     * @param aUpperBound upper intercept
      * @param aF the first point
      * @param aL the last point
      * @param aUf the first upper point
@@ -645,7 +646,7 @@ namespace DGtal
     /**
      * Updates the parameters of the bounding DSL after the retraction. 
      *
-     * @param aDirection direction vector
+     * @param aNewDirection direction vector
      *
      * @see retractFront retractBack
      */
