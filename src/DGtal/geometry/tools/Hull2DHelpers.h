@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file ConvexHull2DHelpers.h
+ * @file Hull2DHelpers.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/02
  *
- * Header file for module ConvexHull2DHelpers.cpp
+ * Header file for module Hull2DHelpers.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ConvexHull2DHelpers_RECURSES)
-#error Recursive header files inclusion detected in ConvexHull2DHelpers.h
-#else // defined(ConvexHull2DHelpers_RECURSES)
+#if defined(Hull2DHelpers_RECURSES)
+#error Recursive header files inclusion detected in Hull2DHelpers.h
+#else // defined(Hull2DHelpers_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ConvexHull2DHelpers_RECURSES
+#define Hull2DHelpers_RECURSES
 
-#if !defined ConvexHull2DHelpers_h
+#if !defined Hull2DHelpers_h
 /** Prevents repeated inclusion of headers. */
-#define ConvexHull2DHelpers_h
+#define Hull2DHelpers_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,10 +52,10 @@ namespace DGtal
 {
 
   /**
-   * @namespace ConvexHull2D gathers useful functions to compute 
+   * @namespace Hull2D gathers useful functions to compute 
    * and return the convex hull of a range of 2D points. 
    */
-  namespace ConvexHull2D
+  namespace Hull2D
   {
 
     /**
@@ -220,12 +220,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/tools/ConvexHull2DHelpers.ih"
+#include "DGtal/geometry/tools/Hull2DHelpers.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ConvexHull2DHelpers_h
+#endif // !defined Hull2DHelpers_h
 
-#undef ConvexHull2DHelpers_RECURSES
-#endif // else defined(ConvexHull2DHelpers_RECURSES)
+#undef Hull2DHelpers_RECURSES
+#endif // else defined(Hull2DHelpers_RECURSES)
