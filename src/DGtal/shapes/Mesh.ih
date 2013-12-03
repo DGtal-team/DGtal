@@ -222,7 +222,8 @@ DGtal::Mesh<TPoint>::nbVertex() const
 template<typename TPoint>
 inline
 const DGtal::Color & 
-DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const{
+DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const
+{
   if(mySaveFaceColor){
     return myFaceColorList.at(i);
   }else{
@@ -231,8 +232,13 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const{
 }
 
 
-
-
+template<typename TPoint>
+inline
+bool 
+DGtal::Mesh<TPoint>::isStoringFaceColors() const
+{
+  return mySaveFaceColor;
+}
 
 
 
