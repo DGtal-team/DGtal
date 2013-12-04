@@ -50,6 +50,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/base/ConstAlias.h"
 #ifdef CPP11_ARRAY
 #include <array>
 #else
@@ -495,7 +496,7 @@ namespace DGtal
        * @param[in] aTrueValue the returned value when a given point is inside the domain and when the predicate return true
        * @param[in] aFalseValue the returned value when a given point is outside the domain or when the predicate return false
        */
-      PointFunctorFromPointPredicateAndDomain( const PointPredicate* aPtrPredicate, const Domain& aDomain,
+      PointFunctorFromPointPredicateAndDomain( ConstAlias< PointPredicate > aPtrPredicate, ConstAlias< Domain > aDomain,
                                                const Value aTrueValue, const Value aFalseValue );
 
       PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other  );
@@ -516,8 +517,8 @@ namespace DGtal
       PointFunctorFromPointPredicateAndDomain & operator= ( const PointFunctorFromPointPredicateAndDomain & other );
 
   private:
-      const PointPredicate* myPtrPredicate;
-      const Domain& myDomain;
+      const PointPredicate * myPtrPredicate;
+      const Domain * myDomain;
       Value myTrueValue;
       Value myFalseValue;
 

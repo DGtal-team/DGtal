@@ -393,7 +393,7 @@ private:
 
   bool isInitKernelAndMasks; ///< If the user uses init with masks and digital (full) kernel. See init() for more information.
 
-  const std::vector< PairIterators > * myMasks; ///< Copy of vector of iterators for kernel partial masks
+  const std::vector< PairIterators > * myMasks; ///< Pointer of vector of iterators for kernel partial masks
 
   const DigitalKernel * myKernel; ///< Two choice to iterate over the full kernel. See init() for more information.
   const PairIterators * myKernelMask; ///< Two choice to iterate over the full kernel. See init() for more information.
@@ -757,7 +757,7 @@ private:
 
   bool isInitKernelAndMasks; ///< If the user uses init with masks and digital (full) kernel. See init() for more information.
 
-  const std::vector< PairIterators > * myMasks; ///< Copy of vector of iterators for kernel partial masks
+  const std::vector< PairIterators > * myMasks; ///< Pointer of vector of iterators for kernel partial masks
 
   const DigitalKernel * myKernel; ///< Two choice to iterate over the full kernel. See init() for more information.
   const PairIterators * myKernelMask; ///< Two choice to iterate over the full kernel. See init() for more information.
@@ -1124,7 +1124,7 @@ private:
 
   bool isInitKernelAndMasks; ///< If the user uses init with masks and digital (full) kernel. See init() for more information.
 
-  const std::vector< PairIterators > * myMasks; ///< Copy of vector of iterators for kernel partial masks
+  const std::vector< PairIterators > * myMasks; ///< Pointer of vector of iterators for kernel partial masks
 
   const DigitalKernel * myKernel; ///< Two choice to iterate over the full kernel. See init() for more information.
   const PairIterators * myKernelMask; ///< Two choice to iterate over the full kernel. See init() for more information.

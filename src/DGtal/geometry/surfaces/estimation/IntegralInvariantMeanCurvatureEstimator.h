@@ -136,7 +136,7 @@ private:
 * and the convolution kernel radius.
 * Experimental results showed a multigrid convergence.
 *
-* Some optimization are available when we set a range of 0-adjacent surfels to the estimator.
+* Some optimization is available when we set a range of 0-adjacent surfels to the estimator.
 *
 * @tparam TKSpace space in which the shape is defined.
 * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
