@@ -33,6 +33,8 @@ before_script:
 matrix:
   exclude:
     - compiler: gcc
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_ITK=true -DBUILD_TESTING=ON"
+    - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON"
     - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
