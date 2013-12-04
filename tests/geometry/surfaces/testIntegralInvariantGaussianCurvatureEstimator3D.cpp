@@ -56,109 +56,107 @@ using namespace DGtal;
  */
 bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
 {
-    typedef Z3i::Space::RealPoint RealPoint;
-    typedef Z3i::KSpace::Surfel Surfel;
-    typedef ImplicitBall<Z3i::Space> ImplicitShape;
-    typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
-    typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
-    typedef DigitalSurface< Boundary > MyDigitalSurface;
-    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-    typedef GraphVisitorRange< Visitor > VisitorRange;
-    typedef typename VisitorRange::ConstIterator VisitorConstIterator;
-    typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
-    typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MySpelFunctor;
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MySpelFunctor > MyIIGaussianEstimator;
-    typedef MyIIGaussianEstimator::Quantity Quantity;
+  typedef Z3i::Space::RealPoint RealPoint;
+  typedef Z3i::KSpace::Surfel Surfel;
+  typedef Z3i::Domain Domain;
+  typedef ImplicitBall<Z3i::Space> ImplicitShape;
+  typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
+  typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
+  typedef DigitalSurface< Boundary > MyDigitalSurface;
+  typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+  typedef GraphVisitorRange< Visitor > VisitorRange;
+  typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+  typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
+  typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MySpelFunctor;
+  typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MySpelFunctor > MyIIGaussianEstimator;
+  typedef MyIIGaussianEstimator::Quantity Quantity;
 
-    double re = 5;
-    double radius = 5;
-    double realValue = 1.0/(radius * radius);
+  double re = 5;
+  double radius = 5;
+  double realValue = 1.0/(radius * radius);
 
-    trace.beginBlock ( "Initialisation of shape ..." );
+  trace.beginBlock ( "Initialisation of shape ..." );
 
-    ImplicitShape* ishape = new ImplicitShape( RealPoint( 0, 0, 0 ), radius );
-    DigitalShape* dshape = new DigitalShape();
-    dshape->attach( *ishape );
-    dshape->init( RealPoint( -10.0, -10.0, -10.0 ), RealPoint( 10.0, 10.0, 10.0 ), h );
+  ImplicitShape ishape( RealPoint( 0, 0, 0 ), radius );
+  DigitalShape dshape;
+  dshape.attach( ishape );
+  dshape.init( RealPoint( -10.0, -10.0, -10.0 ), RealPoint( 10.0, 10.0, 10.0 ), h );
 
-    Z3i::KSpace K;
-    if ( !K.init( dshape->getLowerBound(), dshape->getUpperBound(), true ) )
-    {
-        trace.error() << "Problem with Khalimsky space" << std::endl;
-        return false;
-    }
+  Z3i::KSpace K;
+  if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
+  {
+    trace.error() << "Problem with Khalimsky space" << std::endl;
+    return false;
+  }
 
-    Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, *dshape, 10000 );
-    Boundary boundary( K, *dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
-    MyDigitalSurface surf ( boundary );
+  Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, dshape, 10000 );
+  Boundary boundary( K, dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
+  MyDigitalSurface surf ( boundary );
 
+  trace.endBlock();
+
+  trace.beginBlock( "Initialisation of estimator ..." );
+
+  Domain domain = dshape.getDomain();
+  MyPointFunctor pointFunctor( dshape, domain, 1, 0 );
+  MySpelFunctor functor( pointFunctor, K );
+
+  MyIIGaussianEstimator estimator( K, functor );
+  estimator.init( h, re );
+
+  trace.endBlock();
+
+  trace.beginBlock( "Eval estimator" );
+
+  std::vector< Quantity > results;
+  std::back_insert_iterator< std::vector< Quantity > > resultsIt( results );
+
+  VisitorRange range( new Visitor( surf, *surf.begin() ));
+  VisitorConstIterator ibegin = range.begin();
+  VisitorConstIterator iend = range.end();
+
+  estimator.eval( ibegin, iend, resultsIt );
+
+  trace.endBlock();
+
+  trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
+
+  double mean = 0.0;
+  unsigned int rsize = results.size();
+
+  if( rsize == 0 )
+  {
+    trace.error() << "ERROR: surface is empty" << std::endl;
     trace.endBlock();
+    return false;
+  }
 
-    trace.beginBlock( "Initialisation of estimator ..." );
+  for ( unsigned int i = 0; i < rsize; ++i )
+  {
+    mean += results[ i ];
+  }
+  mean /= rsize;
 
-    MyPointFunctor * pointFunctor = new MyPointFunctor( dshape, dshape->getDomain(), 1, 0 );
-    MySpelFunctor * functor = new MySpelFunctor( *pointFunctor, K );
-
-    MyIIGaussianEstimator * estimator = new MyIIGaussianEstimator( K, *functor );
-    estimator->init( h, re );
-
+  if( mean != mean ) //NaN
+  {
+    trace.error() << "ERROR: result is NaN" << std::endl;
     trace.endBlock();
+    return false;
+  }
 
-    trace.beginBlock( "Eval estimator" );
+  double v = std::abs ( realValue - mean );
 
-    std::vector< Quantity > results;
-    std::back_insert_iterator< std::vector< Quantity > > resultsIt( results );
+  trace.warning() << "True value: " << realValue << std::endl;
+  trace.warning() << "Mean value: " << mean << std::endl;
+  trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
 
-    VisitorRange * range;
-    VisitorConstIterator ibegin;
-    VisitorConstIterator iend;
-
-    range = new VisitorRange( new Visitor( surf, *surf.begin() ));
-    ibegin = range->begin();
-    iend = range->end();
-
-    estimator->eval( ibegin, iend, resultsIt );
-
+  if( v > delta )
+  {
     trace.endBlock();
-
-    trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
-
-    double mean = 0.0;
-    unsigned int rsize = results.size();
-
-    if( rsize == 0 )
-    {
-        trace.error() << "ERROR: surface is empty" << std::endl;
-        trace.endBlock();
-        return false;
-    }
-
-    for ( unsigned int i = 0; i < rsize; ++i )
-    {
-        mean += results[ i ];
-    }
-    mean /= rsize;
-
-    if( mean != mean ) //NaN
-    {
-        trace.error() << "ERROR: result is NaN" << std::endl;
-        trace.endBlock();
-        return false;
-    }
-
-    double v = std::abs ( realValue - mean );
-
-    trace.warning() << "True value: " << realValue << std::endl;
-    trace.warning() << "Mean value: " << mean << std::endl;
-    trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
-
-    if( v > delta )
-    {
-        trace.endBlock();
-        return false;
-    }
-    trace.endBlock();
-    return true;
+    return false;
+  }
+  trace.endBlock();
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

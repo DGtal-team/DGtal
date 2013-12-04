@@ -284,13 +284,13 @@ private:
 * The algorithm we propose uses covariance matrix to approximate Gaussian curvature.
 * To compute the covariance matrix on each surfel of the surface, we convolve a kernel (ImplicitBall) around
 * the surface.
-* The result covariance matrix give us principal curvatures and principal directions by computing
+* The resulting covariance matrix gives us principal curvatures and principal directions by computing
 * respectively eigenvectors and eigenvalues on it.
 * Theorical multigrid convergence is proved with principal curvatures, with a convergence speed of O(h^1/3)
 * with hypothesis about the shape geometry and the convolution kernel radius.
 * Experimental results showed a multigrid convergence for principal curvatures.
 *
-* Some optimization are available when we set a range of 0-adjacent surfels to the estimator.
+* Some optimization is available when we set a range of 0-adjacent surfels to the estimator.
 *
 * @tparam TKSpace space in which the shape is defined.
 * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
