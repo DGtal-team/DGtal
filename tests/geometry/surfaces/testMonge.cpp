@@ -119,15 +119,17 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
 
-  FunctorGaussian estimatorK(CanonicSCellEmbedder<KSpace>(surface.space()),1);
-  FunctorMean estimatorH(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
-  FunctorNormal estimatorN(CanonicSCellEmbedder<KSpace>(surface.space()),1);
-  FunctorNormalLeast estimatorL(CanonicSCellEmbedder<KSpace>(surface.space()),1);
+  CanonicSCellEmbedder<KSpace> embedder(surface.space());
+  FunctorGaussian estimatorK(embedder,1);
+  FunctorMean estimatorH(embedder, 1);
+  FunctorNormal estimatorN(embedder,1);
+  FunctorNormalLeast estimatorL(embedder,1);
 
-  ReporterK reporterK(surface, l2Metric, estimatorK , ConvFunctor(1.0));
-  ReporterH reporterH(surface, l2Metric, estimatorH , ConvFunctor(1.0));
-  ReporterNormal reporterN(surface, l2Metric, estimatorN , ConvFunctor(1.0));
-  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , ConvFunctor(1.0));
+  ConvFunctor convFunc(1.0);
+  ReporterK reporterK(surface, l2Metric, estimatorK , convFunc);
+  ReporterH reporterH(surface, l2Metric, estimatorH , convFunc);
+  ReporterNormal reporterN(surface, l2Metric, estimatorN , convFunc);
+  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , convFunc);
 
   reporterK.init(1, 5);
   reporterH.init(1, 5);

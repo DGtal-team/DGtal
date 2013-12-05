@@ -111,13 +111,15 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display3D<Space, KSpace
 							 const DGtal::Mesh<TPoint> & aMesh )
 {
   DGtal::Color fillColorSave = display.getFillColor();
+  bool useGlobalColor =  !aMesh.isStoringFaceColors();
   display.createNewQuadList(aMesh.className());
   for(unsigned int i=0; i< aMesh.nbFaces(); i++)
     {
       typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);
       unsigned int aNum = aFace.size();
-      display.setFillColor(aMesh.getFaceColor(i));
-
+      if(!useGlobalColor){
+        display.setFillColor(aMesh.getFaceColor(i));
+      }
       if(aNum==4)
         {
           TPoint p1 = aMesh.getVertex(aFace.at(0));
@@ -139,9 +141,6 @@ void DGtal::Display3DFactory<Space,KSpace>::drawAsFaces( Display3D<Space, KSpace
           for(unsigned int j=0; j< aFace.size(); j++)
             {
               typename Display3D<Space, KSpace>::RealPoint point(aMesh.getVertex(aFace.at(j)));
-              //point.x= aMesh.getVertex(aFace.at(j))[0];
-              //point.y= aMesh.getVertex(aFace.at(j))[1];
-              //point.z= aMesh.getVertex(aFace.at(j))[2];
               vectPoly.push_back(point);
             }
           display.addPolygon(vectPoly);
