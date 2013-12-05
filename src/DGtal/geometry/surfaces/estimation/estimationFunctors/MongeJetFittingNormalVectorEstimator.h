@@ -60,9 +60,20 @@ namespace DGtal
   // template class MongeJetFittingNormalVectorEstimator
   /**
    * Description of template class 'MongeJetFittingNormalVectorEstimator' <p>
-   * \brief Aim: Estimates normal vector using CGAL Jet Fitting and Monge Form.
+   * \brief Aim: Estimates normal vector using CGAL Jet Fitting and
+   * Monge Form.
+   *
+   * As discussed in MongeJetFittingMeanCurvatureEstimator, only the
+   * estimated normal vector is given up to a sign. Hence, depending
+   * on the local orientation of the surface, you would problably have
+   * to reverse the estimated vector @f$ \vec{n} @f$ to @f$
+   * -\vec{n}@f$.
    *
    * model of CLocalEstimatorFromSurfelFunctor
+   *
+   *
+   * @tparam TSurfel type of surfels
+   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
    */
   template <typename TSurfel, typename TEmbedder>
   class MongeJetFittingNormalVectorEstimator
@@ -70,7 +81,7 @@ namespace DGtal
   public:
 
     typedef TSurfel Surfel;
-    typedef TEmbedder SCellEmbedder;  
+    typedef TEmbedder SCellEmbedder;
     typedef typename SCellEmbedder::RealPoint RealPoint;
     typedef RealPoint Quantity;
 
@@ -80,60 +91,65 @@ namespace DGtal
     typedef CGAL::Monge_via_jet_fitting<CGALKernel>  CGALMongeViaJet;
     typedef CGALMongeViaJet::Monge_form CGALMongeForm;
 
-    /** 
+    /**
      * Constructor.
-     * 
+     *
      * @param anEmbedder embedder to map surfel to R^n.
      * @param h grid step
-     * @param d degree of the polynomial surface to fit.
+     * @param d degree of the polynomial surface to fit (default d=4).
      */
-    MongeJetFittingNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
+    MongeJetFittingNormalVectorEstimator(ConstAlias<SCellEmbedder> anEmbedder,
+                                         const double h, unsigned int d = 4):
       myEmbedder(&anEmbedder), myH(h), myD(d)
     {
       FATAL_ERROR_MSG(d>=2, "Polynomial surface degree must be greater than 2");
     }
 
-    /** 
+    /**
      * Add the geometrical embedding of a surfel to the point list
-     * 
+     *
      * @param aSurf a surfel to add
-     */    
-    void pushSurfel(const Surfel & aSurf)
+     * @param aDistance  distance of aSurf to the neighborhood boundary
+     */
+    void pushSurfel(const Surfel & aSurf,
+                    const double aDistance)
     {
+      BOOST_VERIFY(aDistance == aDistance);
+
       RealPoint p = myEmbedder->operator()(aSurf);
       CGALPoint pp(p[0]*myH,p[1]*myH,p[2]*myH);
       myPoints.push_back(pp);
     }
-    
-    /** 
+
+    /**
      * Evaluate the normal vector from Monge form.
-     * 
+     *
      * @return the mean curvature
-     */    
+     */
     Quantity eval( )
     {
       CGALMongeForm monge_form;
       CGALMongeViaJet monge_fit;
-      
-      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4); 
-      
+
+      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (2<myD)? myD : 2);
+
       CGALVector v= monge_form.normal_direction (  );
-      
+
       return RealPoint(v.x(),v.y(),v.z());
     }
-    
-    /** 
+
+    /**
      * Reset the point list.
-     * 
+     *
      */
     void reset()
     {
       myPoints.clear();
     }
-    
+
 
   private:
-    
+
     ///Alias of the geometrical embedder
     const SCellEmbedder * myEmbedder;
 
@@ -142,10 +158,10 @@ namespace DGtal
 
      //Grid step
     double myH;
-    
+
     ///Degree of the polynomial surface to fit
     unsigned int myD;
-    
+
   }; // end of class MongeJetFittingNormalVectorEstimator
 
 } // namespace DGtal

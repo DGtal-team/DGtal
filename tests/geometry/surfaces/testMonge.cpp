@@ -41,7 +41,7 @@
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
-#include "DGtal/geometry/surfaces/estimation/BasicEstimatorFromSurfelsFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingMeanCurvatureEstimator.h"
@@ -113,20 +113,21 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef MongeJetFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
   typedef LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
 
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorGaussian> ReporterK;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorMean> ReporterH;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormal> ReporterNormal;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormalLeast> ReporterNormalLeast;
+  typedef ConstValueFunctor< double > ConvFunctor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorGaussian, ConvFunctor> ReporterK;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorMean, ConvFunctor> ReporterH;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
 
   FunctorGaussian estimatorK(CanonicSCellEmbedder<KSpace>(surface.space()),1);
   FunctorMean estimatorH(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
   FunctorNormal estimatorN(CanonicSCellEmbedder<KSpace>(surface.space()),1);
   FunctorNormalLeast estimatorL(CanonicSCellEmbedder<KSpace>(surface.space()),1);
 
-  ReporterK reporterK(surface, l2Metric, estimatorK);
-  ReporterH reporterH(surface, l2Metric, estimatorH);
-  ReporterNormal reporterN(surface, l2Metric, estimatorN);
-  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL);
+  ReporterK reporterK(surface, l2Metric, estimatorK , ConvFunctor(1.0));
+  ReporterH reporterH(surface, l2Metric, estimatorH , ConvFunctor(1.0));
+  ReporterNormal reporterN(surface, l2Metric, estimatorN , ConvFunctor(1.0));
+  ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , ConvFunctor(1.0));
 
   reporterK.init(1, 5);
   reporterH.init(1, 5);
@@ -142,7 +143,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   trace.info() << "Gaussian = "<<valK <<std::endl;
   trace.info() << "Mean = "<<valH<< std::endl;
   trace.info() << "Normal Vector (from Monge form) = "<<valN<< std::endl;
-  trace.info() << "Normal Vector (linear least square) = "<<valN<< std::endl;
+  trace.info() << "Normal Vector (linear least square) = "<<valL<< std::endl;
 
   trace.endBlock();
   trace.endBlock();

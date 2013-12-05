@@ -57,17 +57,21 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 @b Modules
 
 - \ref moduleGridCurveAnalysis  (Tristan Roussillon)
- - Digital straight segments --- coming soon ---
- - Digital circular arcs     --- coming soon ---
- - Other 
- - \ref moduleFrechetShortcut (Isabelle Sivignon)
+  - \ref moduleArithDSSReco (Tristan Roussillon) 
+  - \ref moduleFrechetShortcut (Isabelle Sivignon)
 
-- Geometric estimators  ---coming soon---  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
-	- \ref moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (David Coeurjolly, Jacques-Olivier Lachaud, Jérémy Levallois)
+
+- \ref modulePlaneRecognition (Jacques-Olivier Lachaud)
+ - \ref moduleCOBANaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
+ - Chord algorithm for plane recognition (Jacques-Olivier Lachaud, Yan Gerard, Isabelle Debled-Rennesson, Paul Zimmermann) --- documentation coming soon ---
+
+- Geometric estimators
+  - DSS / DCA / .. based estimators      --- documentation coming soon but have a look to models of CSegmentComputerEstimator ---
+  - \ref moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (Jérémy Levallois, David Coeurjolly, Jacques-Olivier Lachaud)
+  - \ref LocalEstimatorsFromSurfel (David Coeurjolly)
+
 
 - \ref moduleVolumetric (David Coeurjolly)
-
-- \ref moduleNaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
 
 @b Package @b Concepts @b Overview
 
@@ -81,7 +85,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 - voronoimap2D.cpp
 - distancetransform3D.cpp
 - distancetransform2D.cpp
-- viewer3D-7-planes.cpp , greedy-plane-segmentation.cpp  , greedy-plane-segmentation-ex2.cpp 
+- viewer3D-7-planes.cpp , viewer3D-7bis-planes.cpp , viewer3D-7-stdplane.cpp , viewer3D-7bis-stdplane.cpp , greedy-plane-segmentation.cpp  , greedy-plane-segmentation-ex2.cpp
 
 */
 

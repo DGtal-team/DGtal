@@ -150,11 +150,12 @@ is constant time (while guaranteeing object invariance and
 life-time).
 
 \note A conversion to \c T* means pointer acquisition. Hence the programmer should take care of deletion of the object.
-Otherwise, deletion is automatic for \c T or \c CowPtr<T> member.
+Otherwise, deletion is automatic for \c T or \c CowPtr<T> member. Furthermore, a conversion to a \c T* requires the use of the address operator (\c operator&) by the \e developer. If argument is `Clone<T> a`, and member name is `b`:
 
-| member:   |     \c T          |\c CowPtr<T>|     \c T* |
+|member type:|     \c T          |     \c T*  |\c CowPtr<T>|
 |-----------|-------------------|------------|-----------|
-|member deletion:|  automatic   | automatic  | \b manual |
+|member deletion:|  automatic   |  \b manual | automatic |
+|conversion:| automatic: `b(a)` |  address: `b(&a)`| automatic: `b(a)` |
 
 \note When choosing a `Clone<T>` parameter, the \e programmer should really consider using a `CowPtr<T>` member to store it, since it is the most versatile and optimizable variant. The only advantage of the two others storing methods (\c T  and  \c T*) is that there is one less indirection. 
 
@@ -173,9 +174,29 @@ B b1( a1 ); // cloned
 B b2( new BigFatA( "I am the one " ) ); // acquired 
 CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
 B b3( counted_ptr ); // O(1) since lazy duplication (waiting for a write).
-B b4( BigFatA( "Moving one" ) ); // this one is created directly in b4.
+B b4( BigFatA( "Moving one" ) ); // this one is created directly in b4 (with c++11).
 @endcode
 
+This version acquires the given argument. Note the use of the address operator \c operator& and the \c delete in the destructor.
+
+@code
+struct BigFatA { ... };
+
+struct B {
+  // versatile constructor. Accepts 5 different versions.
+  B( Clone<BigFatA> a ) : myAcquiredFat( &a ) {} // note the address operator
+  ~B() { delete myAcquiredFat; }                 // required because of pointer acquisition
+  void f() { myOwnFat->do(); }
+  BigFatA* myAcquiredFat;
+};
+
+BigFatA a1;
+B b1( a1 ); // cloned
+B b2( new BigFatA( "I am the one " ) ); // acquired 
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+B b3( counted_ptr ); // duplicated
+B b4( BigFatA( "Moving one" ) ); // this one is created directly in b4 (with c++11).
+@endcode
 
 \subsection moduleCloneAndReference_sec23 User passing an argument to an Alias parameter
 
@@ -190,6 +211,13 @@ A parameter `( Alias<T> cT )` accepts several types of arguments constructed fro
 |To: \ref CountedPtrOrPtr<T>| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
 
 \note When choosing an `Alias<T>` parameter, the \e programmer should really consider using a `CountedPtrOrPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c T&  and  \c T*) is that there is one less boolean test and indirection. 
+
+\note A conversion to a \c T* requires the use of the address operator (\c operator&) by the \e developer. If argument is `Alias<T> a`, and member name is `b`:
+
+|member type:|    \c T&         |     \c T*        |\c CountedPtrOrPtr<T>|
+|-----------|-------------------|------------------|-----------|
+|conversion:| automatic: `b(a)` |  address: `b(&a)`| automatic: `b(a)` |
+
 
 
 \advanced As one can see, if the \e programmer has chosen a `CountedPtrOrPtr<T>` for storing the alias, the \e user can choose between a \b secure \b long-term \b aliasing (with a `CountedPtr<T>` or `CountedPtrOrPtr<T>` argument) or \b non \b secure \b long-term \b aliasing (with a \c T& or \c T* argument).
@@ -227,6 +255,12 @@ A parameter `( ConstAlias<T> cT )` accepts several types of arguments constructe
 |To: \ref CountedConstPtrOrConstPtr<T>|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure|Shared. O(1), \b secure| Shared. O(1), \b secure|
 
 \note When choosing a `ConstAlias<T>` parameter, the \e programmer should really consider using a `CountedConstPtrOrConstPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c const \c T&  and \c const \c T*) is that there is one less boolean test and indirection. 
+
+\note A conversion to a `const T*` requires the use of the address operator (\c operator&) by the \e developer. If argument is `ConstAlias<T> a`, and member name is `b`:
+
+|member type:| \c const \c T&   |  \c const \c T*  |\c CountedConstPtrOrConstPtr<T>|
+|-----------|-------------------|------------------|-----------|
+|conversion:| automatic: `b(a)` |  address: `b(&a)`| automatic: `b(a)` |
 
 
 \advanced  As one can see, if the \e programmer has chosen a `CountedConstPtrOrConstPtr<T>` for storing the const alias, the \e user can choose between a \b secure \b long-term \b const-aliasing (with a `CountedPtr<T>` or `CountedPtrOrPtr<T>` or `CountedConstPtrOrConstPtr<T>` argument) or \b non \b secure \b long-term \b const-aliasing (with a \c T& or \c T* argument).

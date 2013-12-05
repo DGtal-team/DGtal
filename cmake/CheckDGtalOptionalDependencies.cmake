@@ -133,6 +133,7 @@ IF(WITH_C11)
       SET(C11_FEATURES "${C11_FEATURES} std::move rvalue-reference(&&)")
     ENDIF()
     MESSAGE(STATUS "Supported c++11 features: [${C11_FEATURES} ]")
+    ADD_DEFINITIONS("-DWITH_C11 ")
   ELSE()
     MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
   ENDIF()
@@ -156,6 +157,25 @@ IF(WITH_GMP)
   ELSE(GMP_FOUND)
     message(FATAL_ERROR "GMP not found. Check the cmake variables associated to this package or disable it." )
   ENDIF(GMP_FOUND)
+
+  try_compile(
+    GMP_HAS_IOSTREAM
+    ${CMAKE_BINARY_DIR}
+    ${PROJECT_SOURCE_DIR}/cmake/src/gmp/gmpstream.cpp
+    CMAKE_FLAGS
+    -DINCLUDE_DIRECTORIES:STRING=${GMP_INCLUDE_DIR}
+    -DLINK_LIBRARIES:STRING=${GMPXX_LIBRARIES}\;${GMP_LIBRARIES}
+    OUTPUT_VARIABLE OUTPUT
+    )
+
+  if ( GMP_HAS_IOSTREAM )
+    add_definitions("-DGMP_HAS_IOSTREAM")
+    message(STATUS "   * GMPXX has iostream capabilities")
+  ELSE(GMP_HAS_IOSTREAM)
+    message(STATUS ${OUTPUT})
+    message(STATUS "   * GMPXX does not have iostream capabilities")
+    message(FATAL_ERROR "GMP has been found but there is a link isuse with some g++ versions. Please check your system or disable the GMP dependency." )
+  endif (GMP_HAS_IOSTREAM )
 ENDIF(WITH_GMP)
 
 # -----------------------------------------------------------------------------
@@ -377,13 +397,15 @@ IF(WITH_CGAL)
     message(FATAL_ERROR "CGAL needs GMP and Eigen3. You must active WITH_GMP and WITH_EIGEN flags and have the associated package installed.")
   ENDIF()
 
-  find_package(CGAL COMPONENTS Core Eigen3)
+  find_package(CGAL COMPONENTS Core Eigen3 BLAS LAPACK)
   IF(CGAL_FOUND)
     include( ${CGAL_USE_FILE} )
     SET(CGAL_FOUND_DGTAL 1)
     ADD_DEFINITIONS("-DCGAL_EIGEN3_ENABLED   ")
     ADD_DEFINITIONS("-DWITH_CGAL ")
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${CGAL_LIBRARIES} ${CGAL_3D_PARTY-LIBRARIES} )
+    ## Making sure that CGAL got the Eigen3 flag
+    ADD_DEFINITIONS("-DWITH_Eigen3 -DWITH_LAPACK ")
     message(STATUS "CGAL found.")
   ENDIF(CGAL_FOUND)
 ENDIF(WITH_CGAL)

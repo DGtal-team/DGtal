@@ -65,11 +65,13 @@ namespace DGtal
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
- * The policy is done with 3 functions:
+ * The policy is done with 5 functions:
  * 
- *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a domain or NULL if no image in the cache contains that domain
  *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
  *  - updateCache :             for updating the cache according to the cache policy
+ *  - clearCache :              for clearing the cache
  */
 template <typename TImageContainer, typename TImageFactory>
 class ImageCacheReadPolicyLAST
@@ -98,6 +100,14 @@ public:
      */
     ~ImageCacheReadPolicyLAST() {}
     
+private:
+    
+    ImageCacheReadPolicyLAST( const ImageCacheReadPolicyLAST & other );
+    
+    ImageCacheReadPolicyLAST & operator=( const ImageCacheReadPolicyLAST & other );
+    
+public:
+    
     /**
      * Get the alias on the image that contains the point aPoint
      * or NULL if no image in the cache contains the point aPoint.
@@ -107,6 +117,16 @@ public:
      * @return the alias on the image container or NULL pointer.
      */
     ImageContainer * getPage(const Point & aPoint);
+    
+    /**
+     * Get the alias on the image that matchs the domain aDomain
+     * or NULL if no image in the cache matchs the domain aDomain.
+     * 
+     * @param aDomain the domain.
+     *
+     * @return the alias on the image container or NULL pointer.
+     */
+    ImageContainer * getPage(const Domain & aDomain);
     
     /**
      * Get the alias on the image that we have to detach
@@ -122,6 +142,11 @@ public:
      * @param aDomain the domain.
      */
     void updateCache(const Domain &aDomain);
+    
+    /**
+     * Clear the cache.
+     */
+    void clearCache();
     
 protected:
     
@@ -145,11 +170,13 @@ protected:
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
- * The policy is done with 3 functions:
+ * The policy is done with 5 functions:
  * 
- *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a point or NULL if no image in the cache contains that point
+ *  - getPage :                 for getting the alias on the image that contains a domain or NULL if no image in the cache contains that domain
  *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
  *  - updateCache :             for updating the cache according to the cache policy
+ *  - clearCache :              for clearing the cache
  */
 template <typename TImageContainer, typename TImageFactory>
 class ImageCacheReadPolicyFIFO
@@ -178,6 +205,14 @@ public:
      */
     ~ImageCacheReadPolicyFIFO() {}
     
+private:
+    
+    ImageCacheReadPolicyFIFO( const ImageCacheReadPolicyFIFO & other );
+    
+    ImageCacheReadPolicyFIFO & operator=( const ImageCacheReadPolicyFIFO & other );
+    
+public:
+    
     /**
      * Get the alias on the image that contains the point aPoint
      * or NULL if no image in the cache contains the point aPoint.
@@ -187,6 +222,16 @@ public:
      * @return the alias on the image container or NULL pointer.
      */
     ImageContainer * getPage(const Point & aPoint);
+    
+    /**
+     * Get the alias on the image that matchs the domain aDomain
+     * or NULL if no image in the cache matchs the domain aDomain.
+     * 
+     * @param aDomain the domain.
+     *
+     * @return the alias on the image container or NULL pointer.
+     */
+    ImageContainer * getPage(const Domain & aDomain);
     
     /**
      * Get the alias on the image that we have to detach
@@ -203,13 +248,18 @@ public:
      */
     void updateCache(const Domain &aDomain);
     
+    /**
+     * Clear the cache.
+     */
+    void clearCache();
+    
 protected:
     
     /// Alias on the images cache
     std::deque <ImageContainer *> myFIFOCacheImages;
     
     /// Size max of the FIFO
-    int myFIFOSizeMax;
+    unsigned int myFIFOSizeMax;
     
     /// Alias on the image factory
     ImageFactory * myImageFactory;
@@ -258,6 +308,14 @@ public:
      * Does nothing
      */
     ~ImageCacheWritePolicyWT() {}
+    
+private:
+    
+    ImageCacheWritePolicyWT( const ImageCacheWritePolicyWT & other );
+    
+    ImageCacheWritePolicyWT & operator=( const ImageCacheWritePolicyWT & other );
+    
+public:
     
     /**
     * Set a value on an image at a given position given
@@ -326,6 +384,14 @@ public:
      * Does nothing
      */
     ~ImageCacheWritePolicyWB() {}
+    
+private:
+    
+    ImageCacheWritePolicyWB( const ImageCacheWritePolicyWB & other );
+    
+    ImageCacheWritePolicyWB & operator=( const ImageCacheWritePolicyWB & other );
+    
+public:
     
     /**
     * Set a value on an image at a given position given

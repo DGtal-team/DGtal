@@ -46,6 +46,8 @@
 
 namespace DGtal
 {
+  namespace deprecated
+  {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CConvolutionWeights
@@ -56,6 +58,7 @@ Description of \b concept '\b CConvolutionWeights' <p>
 
      CConvolutionWeights models are functor mappings displacement vectors to real values.
 
+@warning deprecated since 0.7
 
  ### Refinement of CopyConstructible, Assignable
 
@@ -116,7 +119,7 @@ Description of \b concept '\b CConvolutionWeights' <p>
   private:
 
   }; // end of concept CConvolutionWeights
-
+  }
 } // namespace DGtal
 
 //                                                                           //

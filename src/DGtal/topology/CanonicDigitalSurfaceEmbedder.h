@@ -91,7 +91,7 @@ namespace DGtal
     CanonicDigitalSurfaceEmbedder();
 
     /**
-       Constructor from surface. 
+       Constructor from surface.
     */
     CanonicDigitalSurfaceEmbedder( const Surface & aSurface );
 
@@ -109,14 +109,24 @@ namespace DGtal
     Self & operator=( const Self & other );
 
     /**
+       @return the Khalimsky space.
+    */
+    const KSpace & space() const
+    {
+      return mySurface->container().space();
+    }
+
+
+    /**
        @return the digital surface.
     */
     const Surface & surface() const;
 
+
     /**
        Map a signed cell to its corresponding point in the Euclidean
        space.
-       
+
        @param cell any signed cell in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
@@ -125,7 +135,7 @@ namespace DGtal
     /**
        Map a signed cell to its corresponding point in the Euclidean
        space.
-       
+
        @param cell any signed cell in the digital space.
        @return its canconical embedding in the Euclidean space.
     */

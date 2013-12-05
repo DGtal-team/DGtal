@@ -341,7 +341,7 @@ public:
   * @param space space in which the shape is defined.
   * @param f functor on spel of the shape.
   */
-  IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > f );
 
   /**
   * Destructor.
@@ -531,7 +531,7 @@ public:
   * @param space space in which the shape is defined.
   * @param f functor on spel of the shape.
   */
-  IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > f );
 
   /**
   * Destructor.
@@ -722,7 +722,7 @@ public:
   * @param[in] space space in which the shape is defined.
   * @param[in] f functor on spel of the shape.
   */
-  IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & f );
+  IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > f );
 
   /**
   * Destructor.

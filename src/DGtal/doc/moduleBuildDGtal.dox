@@ -4,13 +4,13 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/05/04
- * 
+ *
  * Documentation file for feature FAQDGtalCmake
  *
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -21,7 +21,7 @@ namespace DGtal {
 @writers David Coeurjolly - Martial Tola
 
 
-This part of the manual describes how to build DGtal on Linux, Mac OS X and Windows. 
+This part of the manual describes how to build DGtal on Linux, Mac OS X and Windows.
 
 [TOC]
 
@@ -30,50 +30,44 @@ This part of the manual describes how to build DGtal on Linux, Mac OS X and Wind
 The DGtal library uses <a href="http://www.cmake.org">cmake</a> to
 manage the project build on various systems.
 
-
-To build DGtal in is minimal configuration, you need at least these dependencies:
+To build DGtal in is minimal configuration, you need at least these
+dependencies:
 
 - \e cmake (optionally cmake-gui),
 - \e c++ compiler (g++, clang++, ...)
-- \e boost >= 1.46.0 
+- \e boost >= 1.46.0
 
-To build DGtal in is full configuration, you need these dependencies too:
+To build DGtal in is full configuration, you may need these dependencies too:
 
 - \e gmp,
 - \e cairo,
 - \e qglviewer,
 - \e graphicsmagick,
-- \e insighttoolkit (ITK).
+- \e insighttoolkit (ITK),
+- \e [HDF5](http://www.hdfgroup.org/HDF5/)
+- \e [CGAL](http://cgal.org) (build with Eigen enabled)
+- \e [Eigen] (http://eigen.tuxfamily.org/index.php?title=Main_Page)
+
 
 If you want to generate the documentation, you would need:
-- \e doxygen >= 1.8.0, 
+- \e doxygen >= 1.8.0,
 - \e graphviz.
 
 
 \subsection linux Build on Linux-based distributions
 
-From a clean Ubuntu installation, if you want to build DGtal with all
-dependencies, you may have to  download and install the following packages:
-@code
-sudo apt-get install cmake g++  libboost-dev 
-sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
-libgraphicsmagick++1-dev libinsighttoolkit3-dev doxygen graphviz
-@endcode
-\warning Note that on the actual Debian linux distribution (version 6)  you need to install the boost library from the main official site (http://www.boost.org/users/download/) since the full debian boost package is actually not given. 
-
 To build DGtal from the source archive, we use the CMake tool to
 generate a Makefile or a project file for various IDE (KDevelop,
-Xcode, Codeblock...) 
+Xcode, Codeblock...).  In most linux distributions, all mandatory and
+optional dependencies are available as packages (debian, ubuntu,
+...). Please refer to your package manager to find the appropriate
+package name and versions.
 
 
 An important feature of cmake is the "out-of-source" build
 process. Let us suppose that DGtal sources are in the DGTALSOURCES
-folder. Hence, in a terminal you can create a build folder:
-@code
-cd DGTALSOURCES
-mkdir build
-cd build
-@endcode
+folder. Hence, in a terminal you can create a build folder: @code cd
+DGTALSOURCES mkdir build cd build @endcode
 
 Next, use the cmake command to generate your Unix Makefile project
 (default generator on Unix/Linux) like below for the minimal DGtal configuration:
@@ -88,7 +82,7 @@ cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true
 
 If no error occurs, you can build the DGtal lib and install it:
 @code
-make 
+make
 sudo make install
 @endcode
 
@@ -97,7 +91,7 @@ sudo make install
 
 Then, since recent Mac OS systems are unix-like operating systems, the
 easiest way to compile DGtal with cmake/make is to follow Linux-based
-instructions from source code archive. 
+instructions from source code archive.
 
 If you use  <a href="http://mxcl.github.com/homebrew/">Homebrew</a>
 package manager on Mac, DGtal is available in the package repository:
@@ -110,8 +104,40 @@ brew options dgtal
 @endcode
 
 
+\section cmakeDGtal Main DGtal cmake options
+
+In DGtal CMakeLists.txt, several options can be specified to custom the
+library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) such as:
+  - \e CMAKE_BUILD_TYPE
+     - \b Debug: debug mode (e.g. C++ debug flags, DEBUG variable, ...)
+     - \b Release: release build (e.g. optimized C++ compiler options, NDEBUG variable, ...)
+  - \e CMAKE_INSTALL_PREFIX: a string containing the DGtal install path
+  (e.g. by default on some linux: "/usr/local/").
+
+Beside these options, user can also specify these options:
+
+- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: ON)
+- \e BUILD_TESTING (ON/OFF): to build the test suite (default: OFF)
+
+- \e VERBOSE (ON/OFF): to define the \e VERBOSE variable
+ (default: OFF). If set to ON, verbose
+ messages are traced out.
+
+- \e DEBUG_VERBOSE (ON/OFF): to define the \e DEBUG_VERBOSE variable
+ (default: OFF). If set to ON, verbose
+debug messages are traced out.
+
+
+- \e \b BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) but \b must be \b OFF actually on \b Windows
+
+
 
 \subsection win Build on Windows / Visual Studio
+
+This section is highly experimental, building DGtal with Visual Studio
+may be challenging. If your are working on MS Windows, please consider
+building DGtal within cygwin or MinGW environments.
+
 
 First of all,
 
@@ -152,7 +178,7 @@ Prefix = $(QTDIR)
 @code
 qmake -t vclib QGLViewer.pro -spec win32-msvc2008
 @endcode
-- open the \b QGLViewer.vcproj (in QGLViewer folder) with Visual Studio and compile in \b Win32 \b Release mode and then in \b Win32 \b Debug mode 
+- open the \b QGLViewer.vcproj (in QGLViewer folder) with Visual Studio and compile in \b Win32 \b Release mode and then in \b Win32 \b Debug mode
 - library files are then in "QGLViewer\release" and in "QGLViewer\debug"
 
 \subsubsection vs2010-64 Procedure with Visual Studio Express 2010 and 64 bit libraries
@@ -196,7 +222,7 @@ Prefix = $(QTDIR)
 SetEnv /Release /x64
 qmake -t vclib QGLViewer.pro -spec win32-msvc2010
 @endcode
-- open the \b QGLViewer.vcxproj (in QGLViewer folder) with Visual Studio and compile in \b x64 \b Release mode and then in \b x64 \b Debug mode 
+- open the \b QGLViewer.vcxproj (in QGLViewer folder) with Visual Studio and compile in \b x64 \b Release mode and then in \b x64 \b Debug mode
 - library files are then in "QGLViewer\release" and in "QGLViewer\debug"
 
 
@@ -228,31 +254,6 @@ Once the Visual Studio project as been  created, you just have to simply open it
 with VS and compile it (but for the moment there are still compilation errors on Windows with some modules...).
 
 
-\section cmakeDGtal DGtal cmake options
-
-In DGtal CMakeLists.txt, several options can be specified to custom the
-library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) such as:
-  - \e CMAKE_BUILD_TYPE
-     - \b Debug: debug mode (e.g. C++ debug flags, DEBUG variable, ...)
-     - \b Release: release build (e.g. optimized C++ compiler options, NDEBUG variable, ...)
-  - \e CMAKE_INSTALL_PREFIX: a string containing the DGtal install path
-  (e.g. by default on some linux: "/usr/local/").
-
-Beside these options, user can also specify these options:
-
-- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: ON)
-- \e BUILD_TESTING (ON/OFF): to build the test suite (default: ON)
-
-- \e VERBOSE (ON/OFF): to define the \e VERBOSE variable
- (default: OFF). If set to ON, verbose
- messages are traced out.
-
-- \e DEBUG_VERBOSE (ON/OFF): to define the \e DEBUG_VERBOSE variable
- (default: OFF). If set to ON, verbose
-debug messages are traced out.
-
-
-- \e \b BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) but \b must be \b OFF actually on \b Windows!
 */
 
 }

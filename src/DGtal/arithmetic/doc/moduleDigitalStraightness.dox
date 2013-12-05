@@ -15,7 +15,7 @@ Part of the \ref packageArithmetic.
 This part of the manual describes digital straightness from a
 combinatoric and arithmetic point of view.  It tells you how to create
 patterns, digital straight lines in the first quadrant, and how to
-compute subsegments in sublinear time (algorithms SmartDSS [Said, Lachaud, Feschet 2009 : \cite Said_2009_dgci ] and ReversedSmartDSS [Said, Lachaud 2011 : \cite Said_2011_dgci]).
+compute subsegments in sublinear time (algorithms SmartDSS [Said, Lachaud, Feschet 2009 : \cite Said_2009_dgci ] and ReversedSmartDSS [Said, Lachaud 2011 : \cite Said_2011_dgci]). Full proofs and details on these two algorithms are given in [Lachaud, Said 2013 : \cite Lachaud_2013-dam-ap ].
 
 [TOC]
 

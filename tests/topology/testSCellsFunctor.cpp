@@ -96,7 +96,7 @@ bool testSCellsFunctors()
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
     K2::Space::RealPoint aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
-    nbok += ( aPoint == K2::Space::RealPoint(0,0.5) ) ? 1 : 0; 
+    nbok += ( aPoint == K2::Space::RealPoint(-0.5,0) ) ? 1 : 0;
     nb++;
   }  
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;

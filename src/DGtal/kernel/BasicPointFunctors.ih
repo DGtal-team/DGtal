@@ -31,10 +31,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-
-template <typename S> 
-const typename S::Dimension DGtal::Projector<S>::dimension = S::dimension;
-
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,12 +96,13 @@ void
 DGtal::Projector<S>::initAddOneDim( const Dimension &newDim)
 { 
   std::vector<Dimension> vectDims;
+  Dimension maxIndex = dimension; 
   Dimension aCurrentPos = 0;
   Dimension k=0;
   for ( ; k < dimension; ++k)
   {
     if(k==newDim){
-      vectDims.push_back(dimension);
+      vectDims.push_back(maxIndex);
     }else{
       vectDims.push_back(aCurrentPos);
       aCurrentPos++;

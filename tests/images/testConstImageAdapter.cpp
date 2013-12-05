@@ -105,7 +105,9 @@ int main( int argc, char** argv )
   //! [ConstImageAdapterConstruction]
   DefaultFunctor g;
   Thresholder<Image::Value> t( thresholdValue );
-  ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> > a(img, d, g, t); 
+  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> > MyConstImageAdapter;
+  BOOST_CONCEPT_ASSERT(( CConstImage< MyConstImageAdapter > ));
+  MyConstImageAdapter a(img, d, g, t); 
   //! [ConstImageAdapterConstruction]
 
   //display values 

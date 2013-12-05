@@ -41,19 +41,19 @@
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldAlias<T>::~OldAlias()
+DGtal::deprecated::Alias<T>::~Alias()
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldAlias<T>::OldAlias()
+DGtal::deprecated::Alias<T>::Alias()
   : myPtrT( 0 )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldAlias<T> &
-DGtal::OldAlias<T>::operator=( OldAlias & other )
+DGtal::deprecated::Alias<T> &
+DGtal::deprecated::Alias<T>::operator=( DGtal::deprecated::Alias<T> & other )
 { 
   myPtrT = other.myPtrT;
   return *this;
@@ -61,22 +61,22 @@ DGtal::OldAlias<T>::operator=( OldAlias & other )
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldAlias<T>::OldAlias( T & t ) : myPtrT( &t )
+DGtal::deprecated::Alias<T>::Alias( T & t ) : myPtrT( &t )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldAlias<T>::OldAlias(const  OldAlias<T> & other ) : myPtrT( other.myPtrT )
+DGtal::deprecated::Alias<T>::Alias(const  DGtal::deprecated::Alias<T> & other ) : myPtrT( other.myPtrT )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldAlias<T>::OldAlias( T* pT ) : myPtrT( pT )
+DGtal::deprecated::Alias<T>::Alias( T* pT ) : myPtrT( pT )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
-DGtal::OldAlias<T>::operator T&() const
+DGtal::deprecated::Alias<T>::operator T&() const
 {
   return *myPtrT;
 }

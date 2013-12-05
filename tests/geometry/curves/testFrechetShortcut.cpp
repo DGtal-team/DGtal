@@ -104,7 +104,7 @@ bool testFrechetShortcut()
   trace.info() << s << std::endl;
   
   while ( (s.end() != contour.end())
-    &&(s.extendForward()) ) {}
+    &&(s.extendFront()) ) {}
   
   trace.info() << s << std::endl;
   

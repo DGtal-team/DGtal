@@ -41,21 +41,21 @@
 
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & shapeFunctor )
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
     : myKernelFunctor(NumberTraits<Quantity>::ONE),
       myConvolver(shapeFunctor, myKernelFunctor, space)
 {}
 
 template <typename TKSpace, typename TShapeFunctor>
 inline
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & shapeFunctor )
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
     : myKernelFunctor(NumberTraits<Quantity>::ONE),
       myConvolver(shapeFunctor, myKernelFunctor, space)
 {}
 
 template <typename TKSpace, typename TShapeFunctor>
 inline
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeSpelFunctor & shapeFunctor )
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
     : myKernelFunctor(NumberTraits<Quantity>::ONE),
       myConvolver(shapeFunctor, myKernelFunctor, space)
 {}

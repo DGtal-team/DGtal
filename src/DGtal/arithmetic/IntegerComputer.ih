@@ -480,10 +480,23 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
   
   _m_v[ 0 ] = _m_bezout[ 2 ][ k ];
   _m_v[ 1 ] = _m_bezout[ 3 ][ k ];
-  
-  if ( isNegative( a ) ) _m_v[ 0 ] = -_m_v[ 0 ];
-  if ( isNegative( b ) ) _m_v[ 1 ] = -_m_v[ 1 ];
-  //_m_v *= c;
+  if ( k % 2 != 0 )
+    { // odd case
+      _m_v[ 0 ] = abs( b ) + _m_bezout[ 2 ][ k ];
+      _m_v[ 1 ] = -abs( a ) + _m_bezout[ 3 ][ k ];
+    }
+  // choose sgn(a) = sgn(x) when x != 0, iff c > 0
+  // |x| <= |bc|, |y| < |ac|
+  _m_v *= c / _m_bezout[ 0 ][ k ]; // c / gcd(a,b)
+  if ( isNegative( a ) ) _m_v[ 0 ] = - _m_v[ 0 ];
+  if ( isNegative( b ) ) _m_v[ 1 ] = - _m_v[ 1 ];
+  // std::cout << "a * x + b * y == c, " 
+  //           << a << " * " << _m_v[ 0 ] << " + " << b << " * " << _m_v[ 1 ] << " == " << c << std::endl;
+  ASSERT( (a*_m_v[ 0 ]+b*_m_v[ 1 ]) == c );
+  ASSERT( isNegative( c ) || ( ( isPositive( a ) == isPositive( _m_v[ 0 ] ) ) || isZero( _m_v[ 0 ] ) ) );
+  ASSERT( isPositive( c ) || ( ( isPositive( a ) == isNegative( _m_v[ 0 ] ) ) || isZero( _m_v[ 0 ] ) ) );
+  ASSERT( abs( _m_v[ 0 ] ) <= abs( b*c ) );
+  ASSERT( abs( _m_v[ 1 ] ) < abs( a*c ) );
   return _m_v;
 }
 //-----------------------------------------------------------------------------

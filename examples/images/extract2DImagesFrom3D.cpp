@@ -95,7 +95,7 @@ int main( int argc, char** argv )
      //! [extract2DImagesFrom3DOExtract2]   
      DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder2(domainImage3D, ptCenter+DGtal::Z3i::Point(i,i,0), 
 								DGtal::Z3i::RealPoint(1,-1,0), 
-								35);
+								IMAGE_PATCH_WIDTH);
      ImageAdapterExtractor extractedImage2(image, domainImage2D2, embedder2, idV);
      //! [extract2DImagesFrom3DOExtract2]   
 

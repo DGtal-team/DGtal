@@ -98,7 +98,7 @@ int main( int argc, char** argv )
  Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
- 
+ trace.beginBlock("Testing Viewer with 3D Image View ");
  
  Point p1( 0, 0, 0 );
  Point p2( 125, 188, 0 );
