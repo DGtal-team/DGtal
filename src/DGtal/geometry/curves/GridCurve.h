@@ -106,7 +106,7 @@ namespace DGtal
 
      In 2d, the grid curve can be drawn in a vector graphics file as follows:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveToGraphics
-     See @ref dgtal_dgtalboard to learn more about the 2d drawing mechanism
+     See @ref moduleBoard2D to learn more about the 2d drawing mechanism
      used in DGtal. 
 
      Moreover, this object provides several ranges as nested types: 

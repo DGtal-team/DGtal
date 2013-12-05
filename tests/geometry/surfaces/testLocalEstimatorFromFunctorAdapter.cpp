@@ -133,12 +133,15 @@ bool testLocalEstimatorFromFunctorAdapter()
 
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor, GaussianKernelFunctor> ReporterGaussian;
 
-  Functor estimator(CanonicSCellEmbedder<KSpace>(surface.space()), 1);
+  CanonicSCellEmbedder<KSpace> embedder(surface.space());
+  Functor estimator(embedder, 1);
 
-  Reporter reporter(surface, l2Metric, estimator , ConvFunctor(1.0));
+  ConvFunctor convFunc(1.0);
+  Reporter reporter(surface, l2Metric, estimator , convFunc);
 
   //We just test the init for Gaussian
-  ReporterGaussian reporterGaussian(surface, l2Metric, estimator , GaussianKernelFunctor(1.0));
+  GaussianKernelFunctor gaussKernelFunc(1.0);
+  ReporterGaussian reporterGaussian(surface, l2Metric, estimator , gaussKernelFunc);
   reporterGaussian.init(1,5);
 
   reporter.init(1, 5);
