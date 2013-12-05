@@ -40,9 +40,8 @@
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
-#include "DGtal/math/MPolynomial.h"
-#include "DGtal/io/readers/MPolynomialReader.h"
-#include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/shapes/implicit/ImplicitBall.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -57,118 +56,101 @@ using namespace DGtal;
  */
 bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
 {
+  typedef Z3i::Space::RealPoint RealPoint;
   typedef Z3i::KSpace::Surfel Surfel;
-  typedef Z3i::Space::RealPoint::Coordinate Ring;
-  typedef MPolynomial< 3, Ring > Polynomial3;
-  typedef MPolynomialReader< 3, Ring > Polynomial3Reader;
-  typedef ImplicitPolynomial3Shape< Z3i::Space > MyShape;
-  typedef GaussDigitizer< Z3i::Space, MyShape > MyGaussDigitizer;
-  typedef LightImplicitDigitalSurface< Z3i::KSpace, MyGaussDigitizer > MyLightImplicitDigitalSurface;
-  typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
-  typedef ImageSelector< Z3i::Domain, unsigned int >::Type Image;
-  typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
-  typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
+  typedef Z3i::Domain Domain;
+  typedef ImplicitBall<Z3i::Space> ImplicitShape;
+  typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
+  typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
+  typedef DigitalSurface< Boundary > MyDigitalSurface;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
-  typedef VisitorRange::ConstIterator SurfelConstIterator;
-  typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyIIMeanEstimator;
+  typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+  typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
+  typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MySpelFunctor;
+  typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MySpelFunctor > MyIIMeanEstimator;
   typedef MyIIMeanEstimator::Quantity Quantity;
-  typedef MyShape::RealPoint RealPoint;
 
-  std::string poly_str = "x^2 + y^2 + z^2 - 25";
-  double border_min[3] = { -10, -10, -10 };
-  double border_max[3] = { 10, 10, 10 };
-  double re_convolution_kernel = 4.217163327;
-  double realValue = 0.2; // = 1/r
+  double re = 5;
+  double radius = 5;
+  double realValue = 1.0/radius;
 
-  trace.beginBlock ( "Testing integral invariant 3D Mean curvature initialization ..." );
+  trace.beginBlock ( "Initialisation of shape ..." );
 
-  Polynomial3 poly;
-  Polynomial3Reader reader;
-  std::string::const_iterator iter = reader.read ( poly, poly_str.begin(), poly_str.end() );
-  if ( iter != poly_str.end() )
+  ImplicitShape ishape( RealPoint( 0, 0, 0 ), radius );
+  DigitalShape dshape;
+  dshape.attach( ishape );
+  dshape.init( RealPoint( -10.0, -10.0, -10.0 ), RealPoint( 10.0, 10.0, 10.0 ), h );
+
+  Z3i::KSpace K;
+  if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
   {
-    std::cerr << "ERROR: I read only <"
-              << poly_str.substr( 0, iter - poly_str.begin() )
-              << ">, and I built P=" << poly << std::endl;
+    trace.error() << "Problem with Khalimsky space" << std::endl;
     return false;
   }
 
-  MyShape shape( poly );
-
-  MyGaussDigitizer gaussDigShape;
-  gaussDigShape.attach( shape );
-  gaussDigShape.init( RealPoint( border_min ), RealPoint( border_max ), h );
-  Z3i::Domain domain = gaussDigShape.getDomain();
-  Z3i::KSpace kSpace;
-  bool space_ok = kSpace.init( domain.lowerBound(), domain.upperBound(), true );
-  if (!space_ok)
-  {
-    trace.error() << "Error in the Khalimsky space construction."<<std::endl;
-    return false;
-  }
-
-  Image image( domain );
-  DGtal::imageFromRangeAndValue( domain.begin(), domain.end(), image );
-
-  SurfelAdjacency< Z3i::KSpace::dimension > SAdj( true );
-  Surfel bel = Surfaces< Z3i::KSpace >::findABel( kSpace, gaussDigShape, 100000 );
-  MyLightImplicitDigitalSurface lightImplDigSurf( kSpace, gaussDigShape, SAdj, bel );
-  MyDigitalSurface digSurfShape( lightImplDigSurf );
-
-  MyPointFunctor pointFunctor( &image, &gaussDigShape, 1, true );
-  MyCellFunctor functorShape ( pointFunctor, kSpace );
-  MyIIMeanEstimator estimator ( kSpace, functorShape );
-
-  try
-  {
-    estimator.init( h, re_convolution_kernel );
-  }
-  catch(...)
-  {
-    trace.endBlock();
-    return false;
-  }
-
-  std::vector< Quantity > resultsIICurvature;
-  std::back_insert_iterator< std::vector< Quantity > > resultsIICurvatureIterator( resultsIICurvature );
-
-  VisitorRange range( new Visitor( digSurfShape, *digSurfShape.begin() ) );
-  SurfelConstIterator abegin = range.begin();
-  SurfelConstIterator aend = range.end();
+  Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, dshape, 10000 );
+  Boundary boundary( K, dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
+  MyDigitalSurface surf ( boundary );
 
   trace.endBlock();
-  trace.beginBlock ( "Testing integral invariant 3D mean curvature computation ..." );
 
-  try
-  {
-    estimator.eval( abegin, aend, resultsIICurvatureIterator );
-  }
-  catch(...)
-  {
-    trace.endBlock();
-    return false;
-  }
+  trace.beginBlock( "Initialisation of estimator ..." );
+
+  Domain domain = dshape.getDomain();
+  MyPointFunctor pointFunctor( dshape, domain, 1, 0 );
+  MySpelFunctor functor( pointFunctor, K );
+
+  MyIIMeanEstimator estimator( K, functor );
+  estimator.init( h, re );
+
+  trace.endBlock();
+
+  trace.beginBlock( "Eval estimator" );
+
+  std::vector< Quantity > results;
+  std::back_insert_iterator< std::vector< Quantity > > resultsIt( results );
+
+  VisitorRange range( new Visitor( surf, *surf.begin() ));
+  VisitorConstIterator ibegin = range.begin();
+  VisitorConstIterator iend = range.end();
+
+  estimator.eval( ibegin, iend, resultsIt );
 
   trace.endBlock();
 
   trace.beginBlock ( "Comparing results of integral invariant 3D mean curvature ..." );
 
   double mean = 0.0;
-  unsigned int rsize = resultsIICurvature.size();
+  unsigned int rsize = results.size();
+
+  if( rsize == 0 )
+  {
+    trace.error() << "ERROR: surface is empty" << std::endl;
+    trace.endBlock();
+    return false;
+  }
 
   for ( unsigned int i = 0; i < rsize; ++i )
   {
-    mean += resultsIICurvature[ i ];
+    mean += results[ i ];
   }
   mean /= rsize;
 
-  trace.info() << "Computed: "<<mean<<std::endl;
-  trace.info() << "Expected: "<<realValue<<"  delta="<<delta<<std::endl;
-  trace.info() << "abs= "<< std::abs ( realValue - mean ) <<std::endl;
+  if( mean != mean ) //NaN
+  {
+    trace.error() << "ERROR: result is NaN" << std::endl;
+    trace.endBlock();
+    return false;
+  }
 
+  double v = std::abs ( realValue - mean );
 
-  if ( std::abs ( realValue - mean ) > delta )
+  trace.warning() << "True value: " << realValue << std::endl;
+  trace.warning() << "Mean value: " << mean << std::endl;
+  trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
+
+  if ( v > delta )
   {
     trace.endBlock();
     return false;
@@ -190,7 +172,7 @@ int main( int argc, char** argv )
   trace.info() << std::endl;
 
   bool res = testIntegralInvariantMeanCurvatureEstimator3D( 0.6, 0.008 ); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Errors in test." ) << std::endl;
+  trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;
 }

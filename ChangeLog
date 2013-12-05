@@ -70,6 +70,8 @@
 
     - Minor improvements in the spherical accumulator.
 
+    - Improvement of integral invariant estimators. They also allow to estimate principal curvatures.
+
     - New algorithms to compute the minimal characteristics of a
       Digital Straight Line subsegment in logarithmic time using local
       convex hulls or Farey Fan. Also works when the DSL

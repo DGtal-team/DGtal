@@ -204,6 +204,47 @@ namespace DGtal
      * value
      */
     Value myValue;
+    
+  };
+
+  /**
+   * Description of template class 'ConstValueCellFunctor' <p>
+   * \brief Aim: Define a simple functor that returns
+   * a constant quantity (0 by default).
+   *
+   * @tparam TQuantity type of the quantity
+   * @tparam TCell type of the cell
+   */
+  template <typename TQuantity, typename TCell>
+  class ConstValueCellFunctor : std::unary_function <TQuantity,TQuantity>
+  {
+  public:
+    typedef TCell Cell;
+    typedef TQuantity Quantity;
+
+    /**
+     * Constructor.
+     * @param aQuantity  the constant quantity.
+     */
+    ConstValueCellFunctor(const Quantity& aQuantity = 0)
+      :myQuantity(aQuantity) {}
+
+    /**
+     * Operator
+     *
+     * @return the constant value.
+     */
+    inline
+    Quantity operator()(const Cell& /*aInput*/) const
+    {
+      return myQuantity;
+    }
+
+  private:
+    /**
+     * value
+     */
+    Quantity myQuantity;
 
   };
 
@@ -336,7 +377,7 @@ class Thresholder
      * Constructor.
      * @param aT  the threshold value (default 0).
      */
-    Thresholder(const Input& aT = 0):myT(aT) {};
+    Thresholder(const Input& aT = 0):myT(aT) {}
     /**
     * Compares  @a aI to @ myT.
     * @param aI  any input value
@@ -365,7 +406,7 @@ struct Thresholder<T,false,false>
 
     typedef T Input;
 
-    Thresholder(const Input& aT = 0):myT(aT) {};
+    Thresholder(const Input& aT = 0):myT(aT) {}
 
     bool operator()(const Input& aI) const {
     std::greater<Input> c;
@@ -385,7 +426,7 @@ struct Thresholder<T,false,true>
 
     typedef T Input;
 
-    Thresholder(const Input& aT = 0):myT(aT) {};
+    Thresholder(const Input& aT = 0):myT(aT) {}
     bool operator()(const Input& aI) const {
     std::greater_equal<Input> c;
     return c(aI,myT);
@@ -405,7 +446,7 @@ struct Thresholder<T,true,false>
 
     typedef T Input;
 
-    Thresholder(const Input& aT = 0):myT(aT) {};
+    Thresholder(const Input& aT = 0):myT(aT) {}
 
     bool operator()(const Input& aI) const {
     std::less<Input> c;
@@ -426,7 +467,7 @@ struct Thresholder<T,true,true>
 
     typedef T Input;
 
-    Thresholder(const Input& aT = 0):myT(aT) {};
+    Thresholder(const Input& aT = 0):myT(aT) {}
 
     bool operator()(const Input& aI) const {
     std::less_equal<Input> c;
@@ -550,7 +591,7 @@ public:
    */
   IntervalThresholder(const Input& low, const Input& up)
     : myTlow( low), myTup ( up ),
-      myPred( myTlow, myTup, AndBoolFct2() ) {};
+      myPred( myTlow, myTup, AndBoolFct2() ) {}
 
   /**
    * Compares  @a aI to @ myT.
