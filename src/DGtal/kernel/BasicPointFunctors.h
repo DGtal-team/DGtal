@@ -116,7 +116,7 @@ namespace DGtal
     
     typedef S Space; 
     typedef typename Space::Dimension Dimension;
-    static const Dimension dimension;
+    BOOST_STATIC_CONSTANT( Dimension, dimension = Space::dimension );
     typedef typename Space::Integer Integer; 
     typedef typename Space::Point Point; 
 
@@ -165,9 +165,9 @@ namespace DGtal
      * the input point to its projection (order matters)
      */
 #ifdef CPP11_ARRAY
-    std::array<Dimension, Space::dimension> myDims; 
+    std::array<Dimension, dimension> myDims; 
 #else
-    boost::array<Dimension, Space::dimension> myDims; 
+    boost::array<Dimension, dimension> myDims; 
 #endif
     /**
      * Default integer set to coordinates of the projected point
@@ -390,7 +390,7 @@ namespace DGtal
      * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain. 
      * @param anOriginPoint the center point given in the 3D domain. 
      * @param anNormalVector the normal vector to the 2d domain embedded in 3D. 
-     * @param anWidth the width to determine the 2d domain bounds.
+     * @param anWidth the width to determine the 2d domain bounds (the resulting 2d domain will be a square of length anWidth).
      * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
      *
      */
@@ -426,7 +426,7 @@ namespace DGtal
       
       uDir2/=uDir2.norm();
 
-      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth + uDir2*anWidth;
+      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth/2 + uDir2*anWidth/2;
       myFirstAxisEmbeddedDirection = -uDir1;
       mySecondAxisEmbeddedDirection = -uDir2;
       
@@ -443,7 +443,7 @@ namespace DGtal
      */
     template <typename TPoint2D>
     inline
-    Point  operator()(const TPoint2D& aPoint) const
+    Point  operator()(const TPoint2D& aPoint, bool chechInsideDomain=true) const
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
@@ -451,10 +451,17 @@ namespace DGtal
         pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
       }
 
-      if(myDomain.isInside(pt))
-        return pt;
+      if(myDomain.isInside(pt)|| !chechInsideDomain)
+        {          
+          return pt;
+        }
       else
-        return  myDefaultPoint;
+        {
+#ifdef DEBUG_VERBOSE
+          trace.warning() << "Warning pt outside the 3D domain " << pt << std::endl;
+#endif
+          return  myDefaultPoint;
+        }
     }
 
   private:

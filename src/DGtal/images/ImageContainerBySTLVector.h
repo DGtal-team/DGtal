@@ -140,18 +140,15 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef Point Vertex;
 
-    /// static constants
-    static const typename Domain::Dimension dimension;
+    BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension ); 
 
     /// domain should be rectangular
     BOOST_STATIC_ASSERT ( ( boost::is_same< Domain,
-                            HyperRectDomain<SpaceND<dimension, Integer> > >::value ) );
+					    HyperRectDomain< typename Domain::Space > >::value ) );
 
     /// range of values
     BOOST_CONCEPT_ASSERT ( ( CLabel<TValue> ) );
     typedef TValue Value;
-    // obsolete
-    // typedef SimpleConstRange<typename vector<Value>::const_iterator > ConstRange;
 
     /////////////////// Data members //////////////////
 

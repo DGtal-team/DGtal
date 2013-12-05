@@ -14,14 +14,14 @@
  *
  **/
 
-/** 
+/**
  * @file Clock.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2009/12/11
- * 
- * Implementation of methods defined in Clock.h 
+ *
+ * Implementation of methods defined in Clock.h
  *
  * This file is part of the DGtal library (backported from Imagene)
  */
@@ -44,7 +44,7 @@ DGtal::Clock::Clock()
 
 //- Starts a clock.
 inline
-void 
+void
 DGtal::Clock::startClock()
 {
 
@@ -52,7 +52,7 @@ DGtal::Clock::startClock()
   myFirstTick = clock();
   if (myFirstTick == (clock_t) -1)
     {
-      cerr << "[Clock::startClock] Erreur sur 'clock()'." << endl;
+      cerr << "[Clock::startClock] Error: can't start clock." << endl;
     }
 #else
 #ifdef __MACH__ // OS X does not have clock_gettime, use clock_get_time
@@ -70,20 +70,20 @@ DGtal::Clock::startClock()
 }
 
 
-//- @return the time (in ms) since the last 'startClock()'.
+//- @return the time (in ms) since the last 'startClock()' or 'restartClock()'.
 inline
-double 
-DGtal::Clock::stopClock()
+double
+DGtal::Clock::stopClock() const
 {
 
 #ifdef WIN32
   clock_t last_tick = clock();
   if (last_tick == (clock_t) -1)
     {
-      cerr << "[Clock::stopClock] Erreur sur 'clock()'." << endl;
+      cerr << "[Clock::stopClock] Error: can't stop clock." << endl;
     }
   return (double) ((double) 1000.0 * (double)(last_tick - myFirstTick)
-		 / (double) CLOCKS_PER_SEC);
+     / (double) CLOCKS_PER_SEC);
 #else
   struct timespec current;
 
@@ -100,7 +100,46 @@ DGtal::Clock::stopClock()
 #endif
 
   return (( current.tv_sec - myTimerStart.tv_sec) *1000 +
-	  ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);  
+    ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);
+#endif
+
+}
+
+inline
+double
+DGtal::Clock::restartClock()
+{
+
+#ifdef WIN32
+  clock_t last_tick = clock();
+  if (last_tick == (clock_t) -1)
+    {
+      cerr << "[Clock::stopClock] Error: can't restart clock." << endl;
+    }
+  const double delta = ((double) 1000.0 * (double)(last_tick - myFirstTick)
+     / (double) CLOCKS_PER_SEC);
+  myFirstTick = last_tick;
+  return delta;
+#else
+  struct timespec current;
+
+#ifdef __MACH__ // OS X does not have clock_gettime, use clock_get_time
+  clock_serv_t cclock;
+  mach_timespec_t mts;
+  host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
+  clock_get_time(cclock, &mts);
+  mach_port_deallocate(mach_task_self(), cclock);
+  current.tv_sec = mts.tv_sec;
+  current.tv_nsec = mts.tv_nsec;
+#else
+  clock_gettime(CLOCK_REALTIME, &current); //Linux gettime
+#endif
+
+  const double delta = (( current.tv_sec - myTimerStart.tv_sec) *1000 +
+    ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);
+  myTimerStart.tv_sec = current.tv_sec;
+  myTimerStart.tv_nsec = current.tv_nsec;
+  return delta;
 #endif
 
 }
@@ -108,7 +147,7 @@ DGtal::Clock::stopClock()
 
 
 /**
- * Destructor. 
+ * Destructor.
  */
 inline
 DGtal::Clock::~Clock()
@@ -125,7 +164,7 @@ DGtal::Clock::~Clock()
  * @param out the output stream where the object is written.
  */
 inline
-void 
+void
 DGtal::Clock::selfDisplay( std::ostream & out ) const
 {
   out << "[Clock]";
@@ -136,7 +175,7 @@ DGtal::Clock::selfDisplay( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 inline
-bool 
+bool
 DGtal::Clock::isValid() const
 {
   return true;

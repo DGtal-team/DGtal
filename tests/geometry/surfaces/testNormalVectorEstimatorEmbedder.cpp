@@ -113,12 +113,12 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
 
     trace.beginBlock ( "Compute and output surface <cat10-constant.off> with trivial normals." );
     //Convolution kernel
-    ConstantConvolutionWeights<MyDigitalSurface::Size> kernel;
+    deprecated::ConstantConvolutionWeights<MyDigitalSurface::Size> kernel;
 
     //Estimator definition
-    typedef LocalConvolutionNormalVectorEstimator
-    < MyDigitalSurface,
-    ConstantConvolutionWeights<MyDigitalSurface::Size> > MyConstantEstimator;
+    typedef deprecated::LocalConvolutionNormalVectorEstimator
+      < MyDigitalSurface,
+        deprecated::ConstantConvolutionWeights<MyDigitalSurface::Size> > MyConstantEstimator;
     BOOST_CONCEPT_ASSERT ( ( CNormalVectorEstimator< MyConstantEstimator > ) );
     MyConstantEstimator myNormalEstimator ( digSurf, kernel );
 
@@ -145,11 +145,11 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
     trace.beginBlock ( "Compute and output surface <cat10-gaussian.off> with gaussian convoluted normals." );
 
     //Convolution kernel
-    GaussianConvolutionWeights < MyDigitalSurface::Size > Gkernel ( 4.0 );
+    deprecated::GaussianConvolutionWeights < MyDigitalSurface::Size > Gkernel ( 4.0 );
 
     //Estimator definition
-    typedef LocalConvolutionNormalVectorEstimator  < MyDigitalSurface,
-            GaussianConvolutionWeights< MyDigitalSurface::Size>  > MyGaussianEstimator;
+    typedef deprecated::LocalConvolutionNormalVectorEstimator  < MyDigitalSurface,
+                                                                 deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size>  > MyGaussianEstimator;
     BOOST_CONCEPT_ASSERT ( ( CNormalVectorEstimator< MyGaussianEstimator > ) );
     MyGaussianEstimator myNormalEstimatorG ( digSurf, Gkernel );
 
@@ -194,7 +194,9 @@ int main ( int argc, char** argv )
     bool res = testLocalConvolutionNormalVectorEstimator ( argc,argv ); // && ... other tests
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
-    return true;
+
+    return res ? 0 : 1;
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

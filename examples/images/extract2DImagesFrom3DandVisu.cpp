@@ -38,7 +38,7 @@
 #include "DGtal/images/ConstImageAdapter.h"
 #include "ConfigExamples.h"
 #include "DGtal/io/viewers/Viewer3D.h"
-
+#include "DGtal/kernel/BasicPointFunctors.h"
 
 #include <QtGui/qapplication.h>
 
@@ -65,6 +65,10 @@ int main( int argc, char** argv )
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::Projector< Z3i::Space>,
    				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+  
+  typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
+   				   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+
   DGtal::Projector<DGtal::Z2i::Space>  invFunctor(2);
   // Importing a 3D image 
   std::string filename = examplesPath + "samples/lobster.vol";
@@ -86,6 +90,29 @@ int main( int argc, char** argv )
     pos++;
   }
 
+  // Visu extraction from points
+  const int IMAGE_PATCH_WIDTH = 40;
+  
+
+  DGtal::Z3i::Point ptCenter(155, 155, 20);
+  DGtal::Z2i::Domain domainImage2D (DGtal::Z2i::Point(0,0), 
+                                    DGtal::Z2i::Point(IMAGE_PATCH_WIDTH, IMAGE_PATCH_WIDTH)); 
+  
+
+  DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(image.domain(), ptCenter, 
+                                                            DGtal::Z3i::RealPoint(1,-1,1), 
+                                                            IMAGE_PATCH_WIDTH);
+  
+  ImageAdapterExtractor extractedImage(image, domainImage2D, embedder, idV);
+  viewer << extractedImage;
+  viewer << DGtal::UpdateImage3DEmbedding<Z3i::Space, Z3i::KSpace>(pos, 
+                                                                   embedder(Z2i::Point(0,0)),
+                                                                   embedder(Z2i::Point(IMAGE_PATCH_WIDTH,0)),
+                                                                   embedder(domainImage2D.upperBound()),
+                                                                   embedder(Z2i::RealPoint(0, IMAGE_PATCH_WIDTH)));
+  
+                                   
+                                   
   viewer << DGtal::Viewer3D<>::updateDisplay;
     
 

@@ -47,29 +47,31 @@
 namespace DGtal
 {
 
+  namespace deprecated {
+
   /////////////////////////////////////////////////////////////////////////////
-  // template class OldAlias
+  // template class deprecated::Alias
   /**
-     Description of template class 'OldAlias' <p> \brief Aim: This class
+     Description of template class 'deprecated::Alias' <p> \brief Aim: This class
      encapsulates its parameter class so that to indicate to the user
      that the object/pointer will be only aliased. Therefore the user
      is reminded that the argument parameter is given to the function
      without any additional cost and may be modified, while he is
      aware that the lifetime of the argument parameter must be at
      least as long as the object itself. Note that an instance of
-     OldAlias<T> is itself a light object (it holds only a pointer).
+     deprecated::Alias<T> is itself a light object (it holds only a pointer).
 
      It is used in methods or functions to encapsulate the parameter
      types.
 
-     @deprecated since 0.7. Use Alias instead.
+     @remark since 0.7. Use ::DGtal::Alias instead.
 
-     @note The usage of \c OldAlias<T> instead of \c T \c & or \c T \c *
+     @note The usage of \c deprecated::Alias<T> instead of \c T \c & or \c T \c *
      in parameters is \b recommended when the lifetime of the
      parameter must exceed the lifetime of the called
      method/function/constructor (often the case in constructor or
      init methods). The usage of \c T \c & or \c T \c * instead of \c
-     OldAlias<T> is \b recommended when the lifetime of the parameter is
+     deprecated::Alias<T> is \b recommended when the lifetime of the parameter is
      not required to exceed the lifetime of the called
      method/function/constructor (often the case in standard methods,
      where the parameter is only used at some point, but not
@@ -77,13 +79,13 @@ namespace DGtal
 
      @tparam T is any type.
 
-     @see ConstOldAlias
-     @see Clone
+     @see deprecated::ConstAlias
+     @see deprecated::Clone
 
      It can be used as follows. Consider this simple example where
      class \e A is a big object. Then we define three classes \e B1,
      \e B2 and \e B3, that uses some instance of \e A.
-     
+
      @code
      const int N = 10000;
      struct A { ...
@@ -114,7 +116,7 @@ namespace DGtal
      struct B3 {
        B3( const A & a ) // ambiguous, cost is O(N) here
        { myA = new A( a ); }
-       ~B3() 
+       ~B3()
        { if ( myA != 0 ) delete myA; }
      ...
        A* myA;
@@ -127,14 +129,14 @@ namespace DGtal
      longer than \a b itself (case for an instance of \a B1
      above). Classes Clone, OldAlias, ConstOldAlias exist for these
      reasons. The classes above may be rewritten as follows.
-     
+
      @code
-     // OldAliasing for a long lifetime is visible.
+     // Aliasing for a long lifetime is visible.
      struct B1 {
-       B1( ConstOldAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+       B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       const A & myA; 
+       const A & myA;
        // or Const A* myA;
      };
      // Cloning as data member is visible.
@@ -187,7 +189,7 @@ namespace DGtal
 
      @code
      struct B4 {
-       B4( A a ) // not ambiguous, but cost is O(2N) here. 
+       B4( A a ) // not ambiguous, but cost is O(2N) here.
        : myA( a ) {}
      ...
        A myA;
@@ -196,16 +198,16 @@ namespace DGtal
      B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note The user should not use OldAlias<T> instead of T* for data
+     @note The user should not use deprecated::Alias<T> instead of T* for data
      members. It works in most cases, but there are some subtle
      differences between the two behaviors.
 
-     @note OldAlias have no copy constructor. Indeed, if they had one,
+     @note deprecated::Alias have no copy constructor. Indeed, if they had one,
      there is an ambiguity when duplicating an alias between the copy
      constructor or the T* cast followed by the T* constructor.
    */
   template <typename T>
-  class OldAlias
+  class Alias
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -213,47 +215,47 @@ namespace DGtal
     /**
        Destructor. Does nothing.
      */
-    ~OldAlias();
+    ~Alias();
 
     /**
      * Constructor.
      */
-    OldAlias();
+    Alias();
 
     /**
       Copy constructor.
       @param other the object to clone.
-          
-      @note Keep in mind that OldAlias<T> type should not be used in class
-      members (efficiency issue). 
+
+      @note Keep in mind that Alias<T> type should not be used in class
+      members (efficiency issue).
     */
-    OldAlias ( const OldAlias & other );
+    Alias ( const DGtal::deprecated::Alias<T> & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    OldAlias & operator= ( OldAlias & other );
+    DGtal::deprecated::Alias<T> & operator= ( DGtal::deprecated::Alias<T> & other );
 
     /**
        Constructor from an instance of T. The object is pointed in
        'this'.
        @param t any object of type T.
     */
-    OldAlias( T & t );
+    Alias( T & t );
 
     /**
        Constructor from a pointer of T. The pointer is copied in
        'this'.
        @param ptrT any pointer to a object of type T or 0.
     */
-    OldAlias( T* ptrT );
+    Alias( T* ptrT );
 
     /**
        Cast operator to a reference to T instance. Gives access to the
        instance of T.  This allows things like: A a2 = a1; where a1 is
-       of type OldAlias<A>.
+       of type deprecated::Alias<A>.
     */
     operator T&() const;
 
@@ -271,35 +273,37 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   public:
 
-    /**
+    /*
        Hidden copy constructor.
        @param other the object to clone.
-       
+
        It is not defined private since it must be accessible (see
        warning below otherwise).
 
-       Warning: C++98 requires an accessible copy constructor for class 'DGtal::OldAlias<A1>'
+       Warning: C++98 requires an accessible copy constructor for class 'DGtal::deprecated::Alias<A1>'
        when binding a reference to a temporary; was private [-Wbind-to-temporary-copy]
     */
-    //OldAlias ( const OldAlias & other );
+    //Alias ( const deprecated::Alias & other );
 
 
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class OldAlias
+  }; // end of class deprecated::Alias
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'OldAlias'.
+   * Overloads 'operator<<' for displaying objects of class 'deprecated::Alias'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'OldAlias' to write.
+   * @param object the object of class 'deprecated::Alias' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const OldAlias<T> & object );
+  operator<< ( std::ostream & out, const DGtal::deprecated::Alias<T> & object );
+
+  } // namespace deprecated
 
 } // namespace DGtal
 

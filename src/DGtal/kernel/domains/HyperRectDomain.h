@@ -102,9 +102,6 @@ namespace DGtal
     // typedef TSpace Space;
     typedef TSpace Space;
 
-    // static constants
-    static const typename Space::Dimension dimension;
-
     typedef HyperRectDomain<Space> Domain;
     typedef typename Space::Point Point;
     typedef typename Space::Integer Integer;
@@ -112,6 +109,8 @@ namespace DGtal
     typedef typename Space::Dimension Dimension;
     typedef typename Space::Size Size;
     typedef typename Point::Coordinate Coordinate; // TODO REVOIR LES NOMS.... RECUPERER DANS SPACE
+
+    BOOST_STATIC_CONSTANT(Dimension, dimension = Space::dimension); 
 
     ///Typedef of domain iterators
     typedef HyperRectDomain_Iterator<Point> Iterator;

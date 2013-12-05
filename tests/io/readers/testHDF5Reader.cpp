@@ -73,6 +73,46 @@ bool testHDF5Reader()
   return nbok == nb;
 }
 
+bool testHDF5_3DReader()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing hdf5 3D reader ..." );
+
+  typedef SpaceND<3> Space4Type;
+  typedef HyperRectDomain<Space4Type> TDomain;
+  
+  //Default image selector = STLVector
+  typedef ImageSelector<TDomain, unsigned char>::Type Image;
+  
+  
+  std::string filename = testPath + "samples/cat10.h5";
+  Image image = HDF5Reader<Image>::importHDF5_3D( filename, "/UInt8Array3D" );
+  
+  trace.info() << image <<endl;
+  
+  nbok += true ? 1 : 0; 
+  nb++;
+
+  unsigned int nbval=0;
+  for(Image::ConstIterator it=image.begin(), itend=image.end();
+      it != itend;   ++it)
+    if ( (*it) != 0)
+      nbval++;
+  
+  trace.info() << "Number of points with (val!=0)  = "<<nbval<<endl;
+
+  nbok += ( nbval == 8043)  ? 1 : 0; 
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -84,7 +124,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testHDF5Reader(); // && ... other tests
+  bool res = testHDF5Reader() && testHDF5_3DReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

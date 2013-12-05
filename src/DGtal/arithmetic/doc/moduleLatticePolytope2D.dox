@@ -19,7 +19,7 @@ module is the class LatticePolytope2D, which represents these
 polytopes. This module is a possible solution for solving \b integer \b
 linear \b programming in the \b plane. It is thus the basis for the
 COBA algorithm for \b recognizing \b digital \b planes (see
-COBANaivePlane).
+COBANaivePlaneComputer).
 
 [TOC]
 
