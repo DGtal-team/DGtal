@@ -43,6 +43,7 @@
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingPrincipalCurvaturesEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingMeanCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingNormalVectorEstimator.h"
@@ -109,40 +110,47 @@ bool testLocalEstimatorFromFunctorAdapter()
 
   trace.beginBlock("Creating  adapters");
   typedef MongeJetFittingGaussianCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorGaussian;
+  typedef MongeJetFittingPrincipalCurvaturesEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorPrincipalCurvatures;
   typedef MongeJetFittingMeanCurvatureEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorMean;
   typedef MongeJetFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
   typedef LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
 
   typedef ConstValueFunctor< double > ConvFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorGaussian, ConvFunctor> ReporterK;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorPrincipalCurvatures, ConvFunctor> Reporterk1k2;
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorMean, ConvFunctor> ReporterH;
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
   typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
 
   CanonicSCellEmbedder<KSpace> embedder(surface.space());
   FunctorGaussian estimatorK(embedder,1);
+  FunctorPrincipalCurvatures estimatork1k2(embedder,1);
   FunctorMean estimatorH(embedder, 1);
   FunctorNormal estimatorN(embedder,1);
   FunctorNormalLeast estimatorL(embedder,1);
 
   ConvFunctor convFunc(1.0);
   ReporterK reporterK(surface, l2Metric, estimatorK , convFunc);
+  Reporterk1k2 reporterk1k2(surface, l2Metric, estimatork1k2 , convFunc);
   ReporterH reporterH(surface, l2Metric, estimatorH , convFunc);
   ReporterNormal reporterN(surface, l2Metric, estimatorN , convFunc);
   ReporterNormalLeast reporterL(surface, l2Metric, estimatorL , convFunc);
 
   reporterK.init(1, 5);
+  reporterk1k2.init(1, 5);
   reporterH.init(1, 5);
   reporterN.init(1, 5);
   reporterL.init(1, 5);
 
   FunctorGaussian::Quantity valK = reporterK.eval( surface.begin());
+  FunctorPrincipalCurvatures::Quantity valk1k2 = reporterk1k2.eval( surface.begin());
   FunctorMean::Quantity valH = reporterH.eval( surface.begin());
   FunctorNormal::Quantity valN = reporterN.eval( surface.begin());
   FunctorNormalLeast::Quantity valL = reporterL.eval( surface.begin());
 
 
   trace.info() << "Gaussian = "<<valK <<std::endl;
+  trace.info() << "k1 = " << valk1k2.k1 << " , k2 = " << valk1k2.k2 <<std::endl;
   trace.info() << "Mean = "<<valH<< std::endl;
   trace.info() << "Normal Vector (from Monge form) = "<<valN<< std::endl;
   trace.info() << "Normal Vector (linear least square) = "<<valL<< std::endl;

@@ -71,7 +71,7 @@ namespace DGtal
    * model of CLocalEstimatorFromSurfelFunctor.
    *
    * @tparam TSurfel type of surfels
-   * @tparam TEmbedder type of functors which embed surfel to R^3
+   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
    */
   template <typename TSurfel, typename TEmbedder>
   class MongeJetFittingPrincipalCurvaturesEstimator
@@ -106,9 +106,13 @@ namespace DGtal
      * Add the geometrical embedding of a surfel to the point list
      *
      * @param aSurf a surfel to add
+     * @param aDistance distance of aSurf to the neighborhood boundary
      */
-    void pushSurfel(const Surfel & aSurf)
+    void pushSurfel(const Surfel & aSurf,
+                    const double aDistance)
     {
+      BOOST_VERIFY(aDistance==aDistance);
+
       RealPoint p = myEmbedder->operator()(aSurf);
       CGALPoint pp(p[0]*myH,p[1]*myH,p[2]*myH);
       myPoints.push_back(pp);
@@ -124,7 +128,7 @@ namespace DGtal
       CGALMongeForm monge_form;
       CGALMongeViaJet monge_fit;
 
-      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4);
+      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (2<myD)? myD : 2);
 
       double k1 = monge_form.principal_curvatures ( 0 );
       double k2 = monge_form.principal_curvatures ( 1 );
@@ -152,11 +156,11 @@ namespace DGtal
     ///Array of CGAL points
     std::vector<CGALPoint> myPoints;
 
-    ///Degree of the polynomial surface to fit
-    unsigned int myD;
-
     ///Grid Step
     double myH;
+
+    ///Degree of the polynomial surface to fit
+    unsigned int myD;
 
 
   }; // end of class MongeJetFittingPrincipalCurvaturesEstimator
