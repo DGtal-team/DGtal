@@ -56,7 +56,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -67,7 +66,7 @@ int main( int argc, char** argv )
     {
         trace.error() << "Usage: " << argv[0]
                                << " <fileName.vol> <threshold> <re_convolution_kernel>" << std::endl;
-        trace.error() << "Example : "<< argv[0] << " Al.150.vol 0 7.39247665" << std::endl;
+        trace.error() << "Example : "<< argv[0] << " Al.150.vol 0 7" << std::endl;
         return 0;
     }
 
@@ -78,7 +77,7 @@ int main( int argc, char** argv )
     trace.info() << endl;
 
     double h = 1.0;
-    unsigned int threshold = atoi( argv[ 2 ] );
+    unsigned int threshold = std::atoi( argv[ 2 ] );
 
     /// Construction of the shape from vol file
     typedef ImageSelector< Z3i::Domain, unsigned int >::Type Image;
@@ -120,7 +119,7 @@ int main( int argc, char** argv )
 
     /// Integral Invariant stuff
     //! [IntegralInvariantUsage]
-    double re_convolution_kernel = atof(argv[3]);
+    double re_convolution_kernel = std::atof(argv[3]);
 
     typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
     typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
@@ -150,7 +149,9 @@ int main( int argc, char** argv )
     }
 
     QApplication application( argc, argv );
-    Viewer3D<> viewer;
+    typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+    Viewer viewer( KSpaceShape );
+    viewer.setWindowTitle("example Integral Invariant 3D");
     viewer.show();
 
     typedef GradientColorMap< Quantity > Gradient;
