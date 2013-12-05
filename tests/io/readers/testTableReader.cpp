@@ -69,11 +69,11 @@ bool testNumberReader()
 
   trace.beginBlock ( "Testing reading string ..." );  
 
-  vector<std::string> vectStrings = TableReader<std::string>::getColumnElementsFromFile(filename, 1);
+  vector<std::string> vectStrings = TableReader<std::string>::getColumnElementsFromFile(filename, 2);
   for(unsigned int k=0;k < vectStrings.size(); k++){
     trace.info() << " string: "<< vectStrings.at(k)<< endl;
   }
-  nbok += (vectStrings.at(0)=="2" && vectStrings.at(1)=="44" && vectStrings.at(2)=="23" 
+  nbok += (vectStrings.at(0)=="3" && vectStrings.at(1)=="4" && vectStrings.at(2)=="9" 
            && vectStrings.at(3)=="1") ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;

@@ -34,6 +34,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <fstream>
+#include <limits> 
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -73,15 +74,22 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
     if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
       std::istringstream in_str( str );
       unsigned int idx = 0;
-      typename TPoint::Component val;
+      std::string val;
       unsigned int nbFound=0;
       TPoint p;
-      while ( in_str.good()&& (nbFound<TPoint::dimension)){
-        bool isOK = !!(in_str >> val); //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
-        for(unsigned int j=0; j< TPoint::dimension; j++){
-          if (isOK && (idx == aVectPosition.at(j)) ){
-            nbFound++;
-            p[j]=val;
+      while ( !in_str.fail()&& (nbFound<TPoint::dimension)){
+        in_str >> val;
+        if(!in_str.fail()){          
+          std::istringstream valFromStr( val );
+          typename TPoint::Component valConverted;
+          valFromStr >> valConverted;
+          if(!valFromStr.fail()){
+            for(unsigned int j=0; j< TPoint::dimension; j++){
+              if (idx == aVectPosition.at(j) ){
+                nbFound++;
+                p[j]=valConverted;
+              }
+            }
           }
         }
         ++idx;
@@ -93,7 +101,6 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
     getline(in, str );
   }
   return vectResult;
-
 }
 
 
@@ -120,19 +127,25 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
     if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
       std::vector <TPoint> aContour;
       std::istringstream in_str( str );
-      double x=0.0, y=0.0;
-      while ( in_str.good()){
-        bool isOK = !!(in_str >> x);  //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
-  isOK = isOK &&  !!(in_str >>y);  //Ulgy fix to clang++ issue http://www.mavetju.org/mail/view_thread.php?list=freebsd-ports&id=3586822&thread=yes
-  if(isOK){
-    TPoint p;
-    p[0]=x;
-    p[1]=y;
-    aContour.push_back(p);
-  }
-      }
+      std::string  valStr="";
+      typename TPoint::Component aVal;
+      bool isOK = true;
+      TPoint p;
+      unsigned int index =0;
+      while ( in_str.good() ){
+        in_str >> valStr;
+        std::istringstream word_str( valStr );
+        word_str >> p[index];
+        isOK = isOK &&  !word_str.fail();
+        index++;
+        if(isOK && index % (TPoint::dimension)==0){
+          aContour.push_back(p);
+          index=0;
+        }
+      }      
       vectResult.push_back(aContour);
     }
+
     getline(in, str );
   }
   return vectResult;
@@ -175,12 +188,5 @@ DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &fil
   }
   return vectResult;
 }
-
-
-
-
-
-
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
