@@ -70,7 +70,9 @@
 
     - Minor improvements in the spherical accumulator.
 
-    - Improvement of integral invariant estimators. They also allow to estimate principal curvatures.
+    - Improvement of integral invariant estimators (better memory footprint, ...). 
+      They also allow to estimate principal curvatures using Covariance matrix.
+      Covariance matrix is also "masks" based, so the computation is efficient.
 
     - New algorithms to compute the minimal characteristics of a
       Digital Straight Line subsegment in logarithmic time using local
