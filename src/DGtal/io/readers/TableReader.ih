@@ -44,31 +44,31 @@
 
 
 
-template<typename TNumber>
+template<typename TQuantity>
 inline
-std::vector<TNumber>
-DGtal::TableReader<TNumber>::getColumnElementsFromFile (const std::string &aFilename,  unsigned int aPosition)
+std::vector<TQuantity>
+DGtal::TableReader<TQuantity>::getColumnElementsFromFile (const std::string &aFilename,  unsigned int aPosition)
 {
   std::ifstream infile;
   infile.open (aFilename.c_str(), std::ifstream::in);
-  return TableReader<TNumber>::getColumnElementsFromInputStream(infile, aPosition);
+  return TableReader<TQuantity>::getColumnElementsFromInputStream(infile, aPosition);
 }
 
 
-template<typename TNumber>
+template<typename TQuantity>
 inline
-std::vector< TNumber >  
-DGtal::TableReader<TNumber>::getColumnElementsFromInputStream (std::istream &in, 
+std::vector< TQuantity >  
+DGtal::TableReader<TQuantity>::getColumnElementsFromInputStream (std::istream &in, 
                                                                unsigned int aPosition)
 {
-  std::vector<TNumber> vectResult;
+  std::vector<TQuantity> vectResult;
   std::string str;
   getline(in, str );
   while ( in.good() ){
     if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
       std::istringstream in_str( str );
       std::string wordVal;
-      TNumber val;
+      TQuantity val;
       bool found = false;
       unsigned int idx = 0;
       while ( in_str.good()&& !found){
