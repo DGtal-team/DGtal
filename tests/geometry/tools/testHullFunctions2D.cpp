@@ -178,12 +178,12 @@ bool testHullFunctions2D()
 
   trace.endBlock();
 
-  trace.beginBlock ( "Testing closedGrahamScan" );
+  trace.beginBlock ( "Testing closedGrahamScanFromVertex" );
 
   trace.info() << "zero point" << endl;
   {
     Container input, output; 
-    closedGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
     if (output.size() == 0)
       nbok++; 
     nb++; 
@@ -194,9 +194,9 @@ bool testHullFunctions2D()
   {
     Container input, output; 
     input.push_back( Point(1,1) ); 
-    closedGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
     if ( (output.size() == 1) &&
-	 (output.back() == Point(1,1)) )
+  	 (output.back() == Point(1,1)) )
       nbok++; 
     nb++; 
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -207,10 +207,10 @@ bool testHullFunctions2D()
     Container input, output; 
     input.push_back( Point(1,1) ); 
     input.push_back( Point(1,2) ); 
-    closedGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
     if ( (output.size() == 2) &&
-	 (output.at(0) == Point(1,1)) &&
-	 (output.at(1) == Point(1,2)) )
+  	 (output.at(0) == Point(1,1)) &&
+  	 (output.at(1) == Point(1,2)) )
       nbok++; 
     nb++; 
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -226,15 +226,15 @@ bool testHullFunctions2D()
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
     cout << endl; 
 
-    closedGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
     cout << endl; 
 
     if ( (output.size() == 3) &&
-	 (output.at(0) == Point(0,0)) &&
-	 (output.at(1) == Point(5,0)) &&
-	 (output.at(2) == Point(10,5)) )
+  	 (output.at(0) == Point(0,0)) &&
+  	 (output.at(1) == Point(5,0)) &&
+  	 (output.at(2) == Point(10,5)) )
       nbok++; 
     nb++; 
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -252,42 +252,17 @@ bool testHullFunctions2D()
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
     cout << endl; 
 
-    closedGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
     cout << endl; 
 
     if ( (output.size() == 5) &&
-	 (output.at(0) == Point(0,-1)) &&
-	 (output.at(1) == Point(1,0)) &&
-	 (output.at(2) == Point(1,5)) &&
-	 (output.at(3) == Point(-5,5))&&
-	 (output.at(4) == Point(-5,0)) )
-      nbok++; 
-    nb++; 
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  }
-
-  trace.info() << "removing the first points" << endl;
-  { 
-    Container input, output; 
-    input.push_back( Point(0,0) ); 
-    input.push_back( Point(1,0) ); 
-    input.push_back( Point(1,5) ); 
-    input.push_back( Point(-5,-1) ); 
-    copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
-
-    closedGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
-    //the first point (0,0) is removed because (-5,-1) (0,0) and (1,0) are not CCW-oriented
-
-    copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
-
-    if ( (output.size() == 3) &&
-	 (output.at(0) == Point(1,0)) &&
-	 (output.at(1) == Point(1,5)) &&
-	 (output.at(2) == Point(-5,-1)) )
+  	 (output.at(0) == Point(0,-1)) &&
+  	 (output.at(1) == Point(1,0)) &&
+  	 (output.at(2) == Point(1,5)) &&
+  	 (output.at(3) == Point(-5,5))&&
+  	 (output.at(4) == Point(-5,0)) )
       nbok++; 
     nb++; 
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;

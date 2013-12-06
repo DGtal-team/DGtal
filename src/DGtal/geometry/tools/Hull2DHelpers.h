@@ -42,10 +42,14 @@
 // Inclusions
 #include <iostream>
 #include <list>
+#include <vector>
 #include "boost/utility.hpp"
 
 #include "DGtal/base/Common.h"
-#include "DGtal/base/IteratorTraits.h"
+#include "DGtal/base/IteratorCirculatorTraits.h"
+#include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
+#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,89 +62,58 @@ namespace DGtal
   namespace Hull2D
   {
 
+
     /**
      * @brief Procedure that updates the hull when
      * an extra point @a aNewPoint is considered: 
-     * the sets of the last three consecutive points, ie. @a aNewPoint
-     * and the last two points of the container, should be oriented 
-     * such that the predicate @a aPredicate returns 'true'. 
-     * Otherwise, the last point of the container is removed and the
-     * orientation is tested again until the predicate returns 'true'
-     * (or the container is empty). 
-     * @see grahamScan   
+     * while the last three consecutive points, ie. @a aNewPoint
+     * and the last two points of the container are not oriented 
+     * such that the predicate @a aPredicate returns 'true',  
+     * the last point of the container is removed. 
+     * @see Hull2D::buildHull
      * 
-     * @param aContainer (returned) stack-like container
+     * @param aSequence (returned) sequence of points
      * @param aNewPoint new point
      * @param aPredicate point predicate  
      * 
-     * @tparam Container a model of 'back-pushable' sequence container 
-     * @tparam Point a model of points    
+     * @tparam Sequence a model of back insertion sequence 
+     * @tparam Point a model of point    
      * @tparam Predicate a model of ternary predicate 
      */
-    template <typename Container, typename Point, typename Predicate>
-    void updateHull(Container& aContainer, const Point& aNewPoint, const Predicate& aPredicate)
-    {
-      Point Q = aContainer.back(); 
-      aContainer.pop_back(); 
-      if (aContainer.size() != 0) 
-	{
-	  Point P = aContainer.back(); 
-	  while ( ( !aPredicate(P,Q,aNewPoint) )&&(aContainer.size() != 0) )
-	    {
-	      //remove Q
-	      std::cerr << Q << " removed" << std::endl; 
-	      Q = P; 
-	      aContainer.pop_back(); 
-	      if (aContainer.size() != 0) 
-	        P = aContainer.back(); 
-	    }
-	  //add Q
-	  aContainer.push_back(Q); 
-	}
-    }
+    template <typename Sequence, 
+	      typename Point, 
+	      typename Predicate>
+    void updateHull(Sequence& aSequence, 
+		    const Point& aNewPoint, 
+		    const Predicate& aPredicate); 
 
     /**
-     * @brief Procedure that retrieves the vertices of 
-     * the hull of a range of 2D points [@e itb , @e ite )
-     * and that stores them in an input container @e aContainer. 
-     * @see grahamScan   
-     * 
-     * @param aContainer (returned) stack-like container
+     * @brief Procedure that retrieves the vertices of the convex hull 
+     * of a weakly externally visible polygon (WEK) in linear-time. 
+     * This technique is called Sklansky's scan, Graham's scan or 3-coins algorithm.  
+     * It works for all WEK [Toussaint and Avis, 1982 : \cite ToussaintAvis1982].  
+     *
+     * @param aSequence (returned) sequence of points
      * @param itb begin iterator
      * @param ite end iterator 
      * @param aPredicate predicate  
      * 
-     * @tparam Container a model of 'back-pushable' sequence container 
+     * @tparam Sequence a model of back insertion sequence 
      * @tparam ForwardIterator a model of forward iterator
      * @tparam Predicate a model of ternary predicate
      */
-    template <typename Container, typename ForwardIterator, typename Predicate>
-    void buildHull(Container& aContainer, 
-		   const ForwardIterator& itb, const ForwardIterator& ite,
-		   const Predicate& aPredicate)
-    {
-      //for all points
-      for(ForwardIterator it = itb; it != ite; ++it)
-	{
-	  if(aContainer.size() < 2)
-	    {
-	      aContainer.push_back( *it ); 
-	    }
-	  else
-	    {
-	      //we update the hull so that the predicate returns 'true'
-	      //for each sets of three consecutive points
-	      updateHull(aContainer, *it, aPredicate); 
-	      //add new point
-	      aContainer.push_back( *it ); 
-	    }
-	}//end for all points
-    }
+    template <typename Sequence, 
+	      typename ForwardIterator, 
+	      typename Predicate>
+    void buildHull(Sequence& aSequence, 
+		   const ForwardIterator& itb, 
+		   const ForwardIterator& ite,
+		   const Predicate& aPredicate); 
 
     /**
-     * @brief Procedure that retrieves the vertices
-     * of the hull of a sorted list of 2D points
-     * by the well-known Graham's scan.  
+     * @brief Procedure that retrieves the vertices of the convex hull 
+     * of a weakly externally visible polygon (WEK) in linear-time. 
+     * @see Hull2D::buildHull
      * 
      * @param itb begin iterator
      * @param ite end iterator 
@@ -151,24 +124,84 @@ namespace DGtal
      * @tparam OutputIterator a model of output iterator   
      * @tparam Predicate a model of ternary predicate
      */
-    template <typename ForwardIterator, typename OutputIterator, typename Predicate>
-    void openGrahamScan(const ForwardIterator& itb, const ForwardIterator& ite,  
-			OutputIterator res, const Predicate& aPredicate)
-    {
-      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
-      std::list<Point> container; 
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate>
+    void openGrahamScan(const ForwardIterator& itb, 
+			const ForwardIterator& ite,  
+			OutputIterator res, 
+			const Predicate& aPredicate); 
 
-      //hull computation
-      buildHull(container, itb, ite, aPredicate); 
-
-      //copy
-      std::copy(container.begin(), container.end(), res); 
-    }
+    /**
+     * @brief Procedure that retrieves the vertices of the convex hull 
+     * of a weakly externally visible polygon (WEK) in linear-time. 
+     * @see Hull2D::buildHull
+     * 
+     * @param itb begin iterator
+     * @param ite end iterator 
+     * @param res output iterator used to export the retrieved points
+     * @param aPredicate any ternary predicate  
+     *
+     * @pre we assume that the starting point of the polygon 
+     * is an extremal point. 
+     *
+     * @tparam ForwardIterator a model of forward iterator
+     * @tparam OutputIterator a model of output iterator   
+     * @tparam Predicate a model of ternary predicate
+     */
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate>
+    void closedGrahamScanFromVertex(const ForwardIterator& itb, 
+				    const ForwardIterator& ite,  
+				    OutputIterator res, 
+				    const Predicate& aPredicate); 
 
     /**
      * @brief Procedure that retrieves the vertices
-     * of the hull of a sorted circular list of 2D points
-     * by the well-known Graham's scan.  
+     * of the convex hull of a set of 2D points given by 
+     * the range [ @a itb , @a ite ). 
+     * This procedure follows the well-known Graham's algorithm
+     * [Graham, 1972 : \cite Graham1972]
+     * - choose a pole and sort the points in order of increasing angle about the pole
+     * with the given comparator. 
+     * - scan the sorted list of points and remove some points so that the given 
+     * predicate returns 'true' for all sets of three consecutive points. 
+     * @see Hull2D::closedGrahamScanFromVertex
+     * 
+     * @param itb begin iterator
+     * @param ite end iterator 
+     * @param res output iterator used to export the retrieved points
+     * @param aPredicate any ternary predicate  
+     * @param aPolarComparator any polar comparator 
+     * 
+     * @tparam ForwardIterator a model of forward iterator
+     * @tparam OutputIterator a model of output iterator   
+     * @tparam Predicate a model of ternary predicate
+     * @tparam PolarComparator a model of CPolarPointComparatorBy2x2DetComputer
+     * By default, PolarPointComparatorBy2x2DetComputer is chosen. 
+     */
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate, 
+	      typename PolarComparator >
+    void grahamConvexHullAlgorithm(const ForwardIterator& itb, 
+				   const ForwardIterator& ite,  
+				   OutputIterator res, 
+				   const Predicate& aPredicate, 
+				   PolarComparator& aPolarComparator); 
+
+
+    /**
+     * @brief Procedure that retrieves the vertices
+     * of the hull of a set of 2D points given by 
+     * the range [ @a itb , @a ite ). 
+     * This procedure follows the well-known monotone-chain algorithm
+     * due to [Andrew, 1979 : \cite Andrew1979]
+     * - first, points are sorted along the horizontal axis. 
+     * - then, the lower and upper convex hull are computed by a simple
+     * Graham scan. 
+     * @see Hull2D::openGrahamScan
      * 
      * @param itb begin iterator
      * @param ite end iterator 
@@ -179,39 +212,13 @@ namespace DGtal
      * @tparam OutputIterator a model of output iterator   
      * @tparam Predicate a model of ternary predicate
      */
-    template <typename ForwardIterator, typename OutputIterator, typename Predicate>
-    void closedGrahamScan(const ForwardIterator& itb, const ForwardIterator& ite,  
-			  OutputIterator res, const Predicate& aPredicate)
-    {
-      typedef typename std::iterator_traits<ForwardIterator>::value_type Point; 
-      std::list<Point> container; 
-
-      //hull computation
-      buildHull(container, itb, ite, aPredicate); 
-
-      if (container.size() > 3)
-	{
-	  //we update the hull to take into account the starting point
-	  updateHull(container, *container.begin(), aPredicate); 
-
-	  //we update the hull to take into account the first vertices
-	  Point last = container.back();  
-	  typename std::list<Point>::iterator it = container.begin(); 
-	  typename std::list<Point>::iterator itEnd = container.end();
-	  ASSERT( it != itEnd ); //because the container has at least three points
-	  ++it; //we advance the iterator until the predicate returns 'true'
-	  while ( (it != itEnd) && 
-	  	  ( !aPredicate( last, *boost::prior(it), *it ) ) ) 
-	    ++it; 
-	  //partial copy
-	  std::copy( (--it), itEnd, res);  
-	}
-      else //full copy
-	std::copy(container.begin(), container.end(), res); 
-
-    }
-
-
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate >
+    void andrewConvexHullAlgorithm(const ForwardIterator& itb, 
+				   const ForwardIterator& ite,  
+				   OutputIterator res, 
+				   const Predicate& aPredicate ); 
   } // namespace convexHull2D
 
 
