@@ -76,10 +76,10 @@ namespace DGtal
    *  @endcode
    *   
    * @see testTableReader.cpp
-   * @tparam TNumber the type fo the integer to be read.
+   * @tparam TQuantity the type fo the integer to be read.
    **/
 
-  template <typename TNumber>
+  template <typename TQuantity>
   struct  TableReader
   {
     // ----------------------- Standard services ------------------------------
@@ -95,7 +95,7 @@ namespace DGtal
      * @param aPosition the position of indices where the element has to be extracted.
      * @return a vector containing the set of elements.
      **/
-    static std::vector< TNumber >  
+    static std::vector< TQuantity >  
     getColumnElementsFromFile (const std::string & aFilename, 
                         unsigned int aPosition);  
     
@@ -109,7 +109,7 @@ namespace DGtal
      * @return a vector containing the set of elements.
      **/
     
-    static std::vector< TNumber >  
+    static std::vector< TQuantity >  
     getColumnElementsFromInputStream (std::istream &in, 
                                unsigned int aPosition);  
   
