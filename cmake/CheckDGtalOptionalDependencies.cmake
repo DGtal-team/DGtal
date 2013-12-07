@@ -23,6 +23,27 @@ OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
 
+
+
+#----------------------------------
+# Checking clang version on APPLE
+#
+# When using clang 5.0, DGtal must
+# be compiled with C11 features
+#----------------------------------
+IF (APPLE)
+  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    EXECUTE_PROCESS( COMMAND ${CMAKE_CXX_COMPILER} --version OUTPUT_VARIABLE clang_full_version_string )
+    string (REGEX REPLACE ".*LLVM version ([0-9]).*" "\\1" CLANG_VERSION_STRING ${clang_full_version_string})
+    if (CLANG_VERSION_STRING VERSION_GREATER 4)
+      SET(WITH_C11 ON)
+      MESSAGE(STATUS "You are using Clang >= 5.0, I'm forcing the WITH_C11 option")
+    endif()
+  endif()
+endif()
+MESSAGE(STATUS " ")
+#---------------------------------
+
 IF(WITH_C11)
 SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
 message(STATUS "      WITH_C11          true    (C++ compiler C11 features)")
@@ -138,7 +159,6 @@ IF(WITH_C11)
     MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
   ENDIF()
 ENDIF(WITH_C11)
-
 
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)

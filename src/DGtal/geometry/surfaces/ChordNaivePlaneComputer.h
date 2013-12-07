@@ -62,12 +62,12 @@ namespace DGtal
     pieces of digital planes of given axis width [ Gerard,
     Debled-Rennesson, Zimmermann, 2005 ]. When the width is 1, it
     corresponds to naive planes. The axis is specified at
-    initialization of the object. 
-   
+    initialization of the object.
+
     This class is an implementation of Gerard, Debled-Rennesson,
     Zimmermann, 2005: An elementary digital plane recognition
     algorithm, @cite Gerard_2005_dam.
-   
+
     As a (3D) geometric primitive computer, it obeys the concept
     CAdditivePrimitiveComputer. It is copy constructible, assignable.
     It has methods \ref extend(), extend( InputIterator,
@@ -76,15 +76,15 @@ namespace DGtal
     all the distinct points \c p such that 'extend(\c p )' was
     successful. It is thus a model of boost::ForwardContainer (non
     mutable). It is iterable (inner type ConstIterator, begin(),
-    end()). You may clear() it. 
-       
+    end()). You may clear() it.
+
     It is also a model of CPointPredicate (returns 'true' iff a point
     is within the current bounds).
-   
+
     \par Note on complexity: According to the paper, the
      worst-case complexity is \f$ O(n^7) \f$ (in its non-incremental
      form). However, the observed complexity is quasi-linear.
-   
+
     \par Note on execution times: The user should favor int32_t or
      int64_t instead of BigInteger whenever possible. When the point
      components are smaller than 14000, int32_t are sufficient. For
@@ -92,7 +92,7 @@ namespace DGtal
      sufficient. For greater diameters, it is necessary to use
      BigInteger.
 
-    \par What is the best algorithm to check if a set of digital points is some (naive) plane ? 
+    \par What is the best algorithm to check if a set of digital points is some (naive) plane ?
 
     We discuss only this question between ChordNaivePlaneComputer (1)
      and COBANaivePlaneComputer (2) (see also \ref
@@ -123,14 +123,14 @@ namespace DGtal
     typedef SpaceND<3,int> Z3;
     typedef ChordNaivePlaneComputer< Z3, Z3::Point, int64_t > NaivePlaneComputer;
     NaivePlaneComputer plane;
-    plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive 
+    plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive
     plane.extend( Point( 10, 0, 0 ) ); // return 'true'
     plane.extend( Point( 0, 8, 0 ) );  // return 'true'
     plane.extend( Point( 0, 0, 6 ) );  // return 'true'
     plane.extend( Point( 5, 5, 5 ) );  // return 'false'
     // There is no naive plane going through the 3 first points and the last one.
     @endcode
-   
+
     Model of boost::DefaultConstructible, boost::CopyConstructible,
     boost::Assignable, boost::ForwardContainer,
     CAdditivePrimitiveComputer, CPointPredicate.
@@ -143,15 +143,15 @@ namespace DGtal
     TSpace::Point, but this is not compulsory. You may for instance
     wish to manipulate floating-point value points. This is possible,
     but you have to choose the type TInternalScalar accordingly.
-   
+
     @tparam TInternalScalar specifies the type of scalar used in
     internal computations, generally a more precise type than
     TInputPoint::Component. For instance, for digital points, the type
     should be able to hold integers of order \f$(2*D)^2\f$ if D is the
     diameter of the set of digital points.
-   
+
    */
-  template < typename TSpace, 
+  template < typename TSpace,
              typename TInputPoint,
              typename TInternalScalar >
   class ChordNaivePlaneComputer
@@ -256,21 +256,21 @@ namespace DGtal
      * \a widthDenominator (default is 1/1, i.e. naive plane).
      */
     void init( Dimension axis,
-               InternalScalar widthNumerator = NumberTraits< InternalScalar >::ONE, 
+               InternalScalar widthNumerator = NumberTraits< InternalScalar >::ONE,
                InternalScalar widthDenominator = NumberTraits< InternalScalar >::ONE );
 
     /**
        Useful to compute the axis width of a given range of points (public static version).
 
        @tparam TInputIterator any model of InputIterator on InputPoint.
-       
+
        @param[in] axis the main axis (0,1,2) for x, y or z.
        @param[in] itB an iterator on the first element of the range of 3D points.
        @param[in] itE an iterator after the last element of the range of 3D points.
        @return the axis width as a pair numerator/denominator.
     */
     template <typename TInputIterator>
-    static 
+    static
     std::pair<InternalScalar, InternalScalar>
     computeAxisWidth( Dimension axis, TInputIterator itB, TInputIterator itE );
 
@@ -404,7 +404,7 @@ namespace DGtal
        Useful to check if a given set of points has a valid axis width (public version).
 
        @tparam TInputIterator any model of InputIterator on InputPoint.
-       
+
        @param[in] itB an iterator on the first element of the range of 3D points.
        @param[in] itE an iterator after the last element of the range of 3D points.
        @return 'true' iff the set of points given by range [itB,itE) has a valid width.
@@ -417,7 +417,7 @@ namespace DGtal
        Useful to compute the axis width of a given range of points (public version).
 
        @tparam TInputIterator any model of InputIterator on InputPoint.
-       
+
        @param[in] itB an iterator on the first element of the range of 3D points.
        @param[in] itE an iterator after the last element of the range of 3D points.
        @return the axis width as a pair numerator/denominator.
@@ -448,7 +448,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param[in,out] normal the current normal vector 
+     * @param[in,out] normal the current normal vector
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
@@ -462,7 +462,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param[in,out] normal the current unit normal vector 
+     * @param[in,out] normal the current unit normal vector
      */
     template <typename Vector3D>
     void getUnitNormal( Vector3D & normal ) const;
@@ -533,7 +533,7 @@ namespace DGtal
     Dimension x,y;             /**< the two other axes used in all subsequent computations. */
     InternalScalar myWidth0;   /**< the plane width as a positive rational number myWidth0/myWidth1 */
     InternalScalar myWidth1;   /**< the plane width as a positive rational number myWidth0/myWidth1 */
-    mutable InputPointSet myPointSet;/**< the set of points within the plane, mutable since its state may temporarily be changed during some computations. */ 
+    mutable InputPointSet myPointSet;/**< the set of points within the plane, mutable since its state may temporarily be changed during some computations. */
     State myState;             /**< the current state that defines the plane being recognized. */
     mutable State _state;      /**< Temporary state used in computations. */
     mutable InternalScalar _d; /**< temporary variable used in some computations. */
@@ -599,9 +599,9 @@ namespace DGtal
 
     /**
        Sets up a consistent initial normal direction given the output
-       of findTriangle (state.nbValid, state.A, state.B, state.C). 
+       of findTriangle (state.nbValid, state.A, state.B, state.C).
 
-       @param[in,out] the modified state.
+       @param[in,out] state the modified state.
     */
     void setUpNormal( State & state ) const;
 
@@ -609,7 +609,7 @@ namespace DGtal
        Sets up a consistent initial normal direction given the output
        of findTriangle (state.nbValid == 1).
 
-       @param[in,out] the modified state.
+       @param[in,out] state the modified state.
     */
     void setUpNormal1( State & state ) const;
 
@@ -617,15 +617,15 @@ namespace DGtal
        Sets up a consistent initial normal direction given the output
        of findTriangle (state.nbValid == 2, state.A).
 
-       @param[in,out] the modified state.
+       @param[in,out] state the modified state.
     */
     void setUpNormal2( State & state ) const;
 
     /**
        Sets up a consistent initial normal direction given the output
-       of findTriangle (state.nbValid == 3, state.A, state.B, state.C). 
+       of findTriangle (state.nbValid == 3, state.A, state.B, state.C).
 
-       @param[in,out] the modified state.
+       @param[in,out] state the modified state.
     */
     void setUpNormal3( State & state ) const;
 
@@ -657,7 +657,7 @@ namespace DGtal
     /**
        Puts in (A,B,C) the new current triangle. We choose the
        triangle of the tetrahedron A,B,C,M having the highest
-       intersection with Oz. 
+       intersection with Oz.
 
        @param state the current state of the algorithm, state.A,
        state.B and state.C should represent the current triangle.
@@ -704,7 +704,7 @@ namespace DGtal
     template <typename TInputIterator>
     unsigned int findTriangle2( State & state, TInputIterator itB, TInputIterator itE ) const;
     template <typename TInputIterator1, typename TInputIterator2>
-    unsigned int findMixedTriangle( State & state, 
+    unsigned int findMixedTriangle( State & state,
                                     TInputIterator1 itB1, TInputIterator1 itE1,
                                     TInputIterator2 itB2, TInputIterator2 itE2 ) const;
 
@@ -720,7 +720,7 @@ namespace DGtal
        contains the main axis height of the current triangle.
     */
     void computeHeight( State & state ) const;
-    
+
     /**
        Computes a new normal according to the given values of state.A, state.B, state.C.
 
@@ -735,8 +735,8 @@ namespace DGtal
        Useful to check if a given set of points has a valid axis width.
 
        @tparam TInputIterator any model of InputIterator on InputPoint.
-       
-       @param[out] the resulting state, if you need to have a look.
+
+       @param[out] state the resulting state, if you need to have a look.
        @param[in] itB an iterator on the first element of the range of 3D points.
        @param[in] itE an iterator after the last element of the range of 3D points.
        @return 'true' iff the set of points given by range [itB,itE) has a valid width.
@@ -750,8 +750,8 @@ namespace DGtal
        Useful to compute the axis width of a given range of points.
 
        @tparam TInputIterator any model of InputIterator on InputPoint.
-       
-       @param[out] the resulting state, if you need to have a look.
+
+       @param[out] state the resulting state, if you need to have a look.
        @param[in] itB an iterator on the first element of the range of 3D points.
        @param[in] itE an iterator after the last element of the range of 3D points.
        @return the axis width as a pair numerator/denominator.
@@ -793,7 +793,7 @@ namespace DGtal
    */
   template <typename TSpace, typename TInputPoint, typename TInternalScalar>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ChordNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar> & object );
 
 } // namespace DGtal
