@@ -78,7 +78,7 @@ struct ImplicitDigitalEllipse3 {
 };
 
 
-int main( int argc, char** argv )
+int main(  )
 {
   //! [SurfelFunctorsInit]
   using namespace Z3i;
