@@ -1,6 +1,6 @@
 # Define to test PointListReader ...
 1 2 3
-1 44 4
-1 23 4
+1,4 44 4
+2.0 23 9 3
 #0  0 0 
-1 1 1
+22.4 1 1
