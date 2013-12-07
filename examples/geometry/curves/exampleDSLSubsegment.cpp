@@ -46,21 +46,21 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( )
 {
   trace.beginBlock ( "Example exampleDSLSubsegment" );
-  
+
 
   typedef DGtal::int32_t Integer;
   typedef long double Number;
-  
+
   // Define the DSLSubsegment: the first template parameter specifies
   // the type of integer used for computations, the second one is the
   // type of the input DSL characteristics (Integer in this case).
   typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
-  
+
   typedef DSLSubseg::Point Point;
-    
+
   // Define the two endpoints of the subsegment
   Point A(1,5);
   Point B(6,9);
@@ -69,26 +69,26 @@ int main( int argc, char** argv )
   // 8-connected DSL of characteristics (2,3,15). The algorithm using
   // the Farey fan is used in this case. If the string is set to
   // "localCH", the algorithm using local convex hull is used: the
-  // result is the same but the computation time is a bit longer.  
+  // result is the same but the computation time is a bit longer.
   DSLSubseg D1(2,3,15,A,B,"farey");
-  
+
   // Display the result
   std::cout << "a=" << D1.getA() << " b=" << D1.getB() << " mu=" << D1.getMu() << std::endl;
-  
+
   // Define a DSL subsegment with floating-point input
-  // characteristics. 
+  // characteristics.
   typedef DGtal::DSLSubsegment<Integer,Number> DSLSubsegD;
-  
+
   // Same as before, except that the last parameter is the precision used for
   // floating-point geometric predicates. The algorithm used is an
   // adaptation of the Farey fan algorithm for floating-point input data.
   DSLSubsegD D2(0.6666,5,A,B,0.00005);
-  
+
   // Display the result
   std::cout << "a=" << D2.getA() << " b=" << D2.getB() << " mu=" << D2.getMu() << std::endl;
-  
 
-  
+
+
   trace.endBlock();
   return 0;
 }

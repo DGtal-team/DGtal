@@ -53,8 +53,8 @@ DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::ParallelStrip()
 template <typename TSpace, bool muIncluded, bool muPlusNuIncluded>
 inline
 DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::ParallelStrip
-( Scalar mu, const RealVector & N, Scalar nu )
-  : myMu( mu ), myN( N ), myNu( nu )
+( Scalar aMu, const RealVector & N, Scalar aNu )
+  : myMu( aMu ), myN( N ), myNu( aNu )
 {
   Scalar l = myN.norm();
   if ( l != 1.0 ) {
@@ -76,7 +76,7 @@ DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::ParallelStrip
 //-----------------------------------------------------------------------------
 template <typename TSpace, bool muIncluded, bool muPlusNuIncluded>
 inline
-DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>& 
+DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>&
 DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::operator=( const ParallelStrip & other )
 {
   if ( this != &other )
@@ -98,7 +98,7 @@ DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::mu() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, bool muIncluded, bool muPlusNuIncluded>
 inline
-const typename DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::RealVector& 
+const typename DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::RealVector&
 DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::normal() const
 {
   return myN;
@@ -210,7 +210,7 @@ inline
 void
 DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ParallelStrip " << mu() 
+  out << "[ParallelStrip " << mu()
       << ( muIncluded ? " <= " : " < " )
       << "( " << myN[ 0 ];
   for ( Dimension i = 1; i < Space::dimension; ++i )
@@ -241,7 +241,7 @@ DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::isValid() const
 template <typename TSpace, bool muIncluded, bool muPlusNuIncluded>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const ParallelStrip<TSpace, muIncluded, muPlusNuIncluded> & object )
 {
   object.selfDisplay( out );
@@ -250,5 +250,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
