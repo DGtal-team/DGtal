@@ -45,7 +45,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( )
 {
    typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
    typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
@@ -54,15 +54,15 @@ int main( int argc, char** argv )
 
    DGtal::Projector<Z2i::Space >  proj(2);
 
-   // Importing a 3D image 
+   // Importing a 3D image
    std::string filename = examplesPath + "samples/lobster.vol";
-   Image3D image = VolReader<Image3D>::importVol( filename ); 
+   Image3D image = VolReader<Image3D>::importVol( filename );
    DGtal::Z2i::Domain domain(proj(image.domain().lowerBound()),
 			     proj(image.domain().upperBound()));
    DGtal::DefaultFunctor idV;
-    
+
    trace.beginBlock ( "Example extract2DImagesFrom3D" );
-   
+
    // Extracting 2D slices ... and export them in the pgm format.
    for (unsigned int i=0; i<30; i+=10){
      std::stringstream name;
@@ -71,7 +71,7 @@ int main( int argc, char** argv )
      SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
      PGMWriter<SliceImageAdapter>::exportPGM(name.str(), sliceImageZ);
    }
-   
+
    // trace.endBlock();
    return 0;
 }

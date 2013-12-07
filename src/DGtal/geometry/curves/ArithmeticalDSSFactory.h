@@ -48,26 +48,26 @@ namespace DGtal
 {
 
   //forward declaration of ArithmeticalDSS
-  template <typename TCoordinate, 
-	    typename TInteger, 
+  template <typename TCoordinate,
+	    typename TInteger,
 	    unsigned short adjacency>
-  class ArithmeticalDSS; 
+  class ArithmeticalDSS;
 
   /////////////////////////////////////////////////////////////////////////////
   // template class ArithmeticalDSSFactory
   /**
    * Description of template class 'ArithmeticalDSSFactory' <p>
    * \brief Aim: Set of static methods that create digital straight segments (DSS)
-   * from some input parameters, eg. patterns (or reversed patterns) from two 
-   * upper leaning points (or lower leaning points). 
+   * from some input parameters, eg. patterns (or reversed patterns) from two
+   * upper leaning points (or lower leaning points).
    *
    * @tparam TCoordinate a model of integer for the DGtal point coordinate
    * @tparam TInteger a model of integer for the DSS parameters (a, b, mu, omega)
-   * @tparam adajency a integer equal to 8 (default) for naive and 8-connected DSS, 
-   * and 4 for standard and 4-connected DSS. 
+   * @tparam adjacency a integer equal to 8 (default) for naive and 8-connected DSS,
+   * and 4 for standard and 4-connected DSS.
    */
-  template <typename TCoordinate, 
-	    typename TInteger = TCoordinate, 
+  template <typename TCoordinate,
+	    typename TInteger = TCoordinate,
 	    unsigned short adjacency = 8>
   class ArithmeticalDSSFactory
   {
@@ -75,35 +75,35 @@ namespace DGtal
     // ----------------------- Inner types -----------------------------------
   public:
 
-    typedef TCoordinate Coordinate; 
-    typedef TInteger Integer; 
+    typedef TCoordinate Coordinate;
+    typedef TInteger Integer;
 
-    typedef DGtal::PointVector<2, Coordinate> Point; 
-    typedef Point Vector; 
-    typedef std::pair<Vector,Vector> Steps; 
+    typedef DGtal::PointVector<2, Coordinate> Point;
+    typedef Point Vector;
+    typedef std::pair<Vector,Vector> Steps;
 
-    typedef ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS; 
+    typedef ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
 
     // ----------------------- Creation methods ------------------------------
   public:
 
     /**
-     * @brief Method that creates a DSS that is a pattern 
-     * or a repetition of a pattern from two input digital points, 
-     * viewed as upper leaning points. 
+     * @brief Method that creates a DSS that is a pattern
+     * or a repetition of a pattern from two input digital points,
+     * viewed as upper leaning points.
      * @param aF first input digital point
      * @param aL second input digital point
      *
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    static DSS createPattern(const Point& aF, const Point& aL); 
+    static DSS createPattern(const Point& aF, const Point& aL);
 
     /**
-     * @brief Method that creates a DSS that is a reversed pattern 
-     * or a repetition of a reversed pattern from two input digital points, 
-     * viewed as lower leaning points. Creates the pattern from 
-     * @a aL to @a aF and negates the result. 
+     * @brief Method that creates a DSS that is a reversed pattern
+     * or a repetition of a reversed pattern from two input digital points,
+     * viewed as lower leaning points. Creates the pattern from
+     * @a aL to @a aF and negates the result.
      *
      * @see createPattern
      *
@@ -113,7 +113,7 @@ namespace DGtal
      * NB: logarithmic-time in the greatest component of the vector
      * starting from @a aF and pointing to @a aL
      */
-    static DSS createReversedPattern(const Point& aF, const Point& aL); 
+    static DSS createReversedPattern(const Point& aF, const Point& aL);
 
     // ----------------------- Internals -------------------------------------
   private:
@@ -122,20 +122,20 @@ namespace DGtal
      * Returns the bezout vector (u,v) of a given
      * direction vector of slope @a aA / @a aB
      * such that u and @a aB (resp. v and @a aA)
-     * have the same sign.  
-     * @return bezout vector 
+     * have the same sign.
+     * @return bezout vector
      * @param aA y-component of the direction vector
      * @param aB x-component of the dirention vector
      * @param aR a remainder equal to either 1 or -1
-     * 
+     *
      * @see createPattern
      *
      * NB: this method uses the extended Euclid's algorithm
-     * and runs in logarithmic time. 
+     * and runs in logarithmic time.
      */
-    static Vector bezoutVector(const Coordinate& aA, 
-			       const Coordinate& aB, 
-			       const Coordinate& aR); 
+    static Vector bezoutVector(const Coordinate& aA,
+			       const Coordinate& aB,
+			       const Coordinate& aR);
 
 
   }; // end of class ArithmeticalDSSFactory
