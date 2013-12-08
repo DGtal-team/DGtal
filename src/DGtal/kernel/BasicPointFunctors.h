@@ -407,16 +407,24 @@ namespace DGtal
         pRefOrigin [0]= -d/anNormalVector[0];
         pRefOrigin [1]= 0.0;
         pRefOrigin [2]= 0.0;
+        if(pRefOrigin==anOriginPoint){
+          pRefOrigin[1]=-1.0;
+        }
       }else if (anNormalVector[1]!=0){
         pRefOrigin [0]= 0.0;
         pRefOrigin [1]= -d/anNormalVector[1];
         pRefOrigin [2]= 0.0;
+        if(pRefOrigin==anOriginPoint){
+          pRefOrigin[0]=-1.0;
+        }
       }else if (anNormalVector[2]!=0){
         pRefOrigin [0]= 0.0;
         pRefOrigin [1]= 0.0;
         pRefOrigin [2]= -d/anNormalVector[2];
+        if(pRefOrigin==anOriginPoint){
+          pRefOrigin[0]=-1.0;
+        }
       }
-
       typename Space::RealPoint uDir1;
       uDir1=(pRefOrigin-anOriginPoint)/((pRefOrigin-anOriginPoint).norm());
       typename Space::RealPoint uDir2;
