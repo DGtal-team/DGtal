@@ -65,7 +65,7 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   typedef DigitalSurface< Boundary > MyDigitalSurface;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
-  typedef typename VisitorRange::ConstIterator VisitorConstIterator;
+  typedef VisitorRange::ConstIterator VisitorConstIterator;
   typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
   typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MySpelFunctor;
   typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MySpelFunctor > MyIIMeanEstimator;
