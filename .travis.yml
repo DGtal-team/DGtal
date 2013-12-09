@@ -54,6 +54,4 @@ script:
   - make
   - cd ..
   - make
-
-after_script:
-  - "make test"
+  - make test
