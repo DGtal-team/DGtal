@@ -34,7 +34,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <fstream>
-#include <limits> 
+#include <limits>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -79,7 +79,7 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
       TPoint p;
       while ( !in_str.fail()&& (nbFound<TPoint::dimension)){
         in_str >> val;
-        if(!in_str.fail()){          
+        if(!in_str.fail()){
           std::istringstream valFromStr( val );
           typename TPoint::Component valConverted;
           valFromStr >> valConverted;
@@ -128,7 +128,6 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
       std::vector <TPoint> aContour;
       std::istringstream in_str( str );
       std::string  valStr="";
-      typename TPoint::Component aVal;
       bool isOK = true;
       TPoint p;
       unsigned int index =0;
@@ -142,7 +141,7 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
           aContour.push_back(p);
           index=0;
         }
-      }      
+      }
       vectResult.push_back(aContour);
     }
 
