@@ -40,59 +40,80 @@ namespace DGtal
   {
 
     //----------------------------------------------------------------------------
-    template <typename Sequence, typename Point, typename Predicate>
-    void updateHull(Sequence& aSequence, const Point& aNewPoint, const Predicate& aPredicate)
+    template <typename Stack, typename Point, typename Predicate>
+    inline
+    void updateHullWithStack(Stack& aStack, const Point& aNewPoint, const Predicate& aPredicate)
     {
-      BOOST_CONCEPT_ASSERT(( boost::FrontInsertionSequence<Sequence> ));
+      BOOST_CONCEPT_ASSERT(( CStack<Stack> ));
 
-      Point Q = aSequence.back(); 
-      aSequence.pop_back(); 
-      if (aSequence.size() != 0) 
+      Point Q = aStack.top(); 
+      aStack.pop(); 
+      if (aStack.size() != 0) 
 	{
-	  Point P = aSequence.back(); 
-	  while ( ( !aPredicate(P,Q,aNewPoint) )&&(aSequence.size() != 0) )
+	  Point P = aStack.top(); 
+	  while ( ( !aPredicate(P,Q,aNewPoint) )&&(aStack.size() != 0) )
 	    {
 	      //remove Q
 	      Q = P; 
-	      aSequence.pop_back(); 
-	      if (aSequence.size() != 0) 
-		P = aSequence.back(); 
+	      aStack.pop(); 
+	      if (aStack.size() != 0) 
+		P = aStack.top(); 
 	    }
 	  //add Q
-	  aSequence.push_back(Q); 
+	  aStack.push(Q); 
 	}
     }
 
     //----------------------------------------------------------------------------
-    template <typename Sequence, typename ForwardIterator, typename Predicate>
-    void buildHull(Sequence& aSequence, 
-		   const ForwardIterator& itb, const ForwardIterator& ite,
-		   const Predicate& aPredicate)
+    template <typename Stack, typename Point, typename Predicate>
+    inline
+    void updateHullWithAdaptedStack(Stack aStack, const Point& aNewPoint, const Predicate& aPredicate)
     {
-      BOOST_CONCEPT_ASSERT(( boost::FrontInsertionSequence<Sequence> ));
+      updateHullWithStack( aStack, aNewPoint, aPredicate ); 
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename Stack, typename ForwardIterator, typename Predicate>
+    inline
+    void buildHullWithStack(Stack& aStack, 
+			    const ForwardIterator& itb, const ForwardIterator& ite,
+			    const Predicate& aPredicate)
+    {
+      BOOST_CONCEPT_ASSERT(( CStack<Stack> ));
       BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
 
       //for all points
       for(ForwardIterator it = itb; it != ite; ++it)
 	{
-	  if(aSequence.size() < 2)
+	  if(aStack.size() < 2)
 	    {
-	      aSequence.push_back( *it ); 
+	      aStack.push( *it ); 
 	    }
 	  else
 	    {
 	      //we update the hull so that the predicate returns 'true'
 	      //for each sets of three consecutive points
-	      updateHull(aSequence, *it, aPredicate); 
+	      updateHullWithStack(aStack, *it, aPredicate); 
 	      //add new point
-	      aSequence.push_back( *it ); 
+	      aStack.push( *it ); 
 	    }
 	}//end for all points
     }
 
     //----------------------------------------------------------------------------
+    template <typename Stack, typename ForwardIterator, typename Predicate>
+    inline
+    void buildHullWithAdaptedStack(Stack aStack, 
+				   const ForwardIterator& itb, const ForwardIterator& ite,
+				   const Predicate& aPredicate)
+    {
+      buildHullWithStack( aStack, itb, ite, aPredicate ); 
+    }
+
+    //----------------------------------------------------------------------------
     template <typename ForwardIterator, typename OutputIterator, typename Predicate>
+    inline
     void openGrahamScan(const ForwardIterator& itb, const ForwardIterator& ite,  
 			OutputIterator res, const Predicate& aPredicate)
     {
@@ -103,17 +124,18 @@ namespace DGtal
       BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
 
       //container
-      std::list<Point> container; 
+      std::deque<Point> container; 
 
       //hull computation
-      buildHull(container, itb, ite, aPredicate); 
-
-      //copy
+      buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate ); 
+  
+      //Copy
       std::copy(container.begin(), container.end(), res); 
     }
 
     //----------------------------------------------------------------------------
     template <typename ForwardIterator, typename OutputIterator, typename Predicate>
+    inline
     void closedGrahamScanFromVertex(const ForwardIterator& itb, const ForwardIterator& ite,  
 				    OutputIterator res, const Predicate& aPredicate)
     {
@@ -124,14 +146,14 @@ namespace DGtal
       BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
 
       //container
-      std::list<Point> container; 
+      std::deque<Point> container; 
 
       //hull computation
-      buildHull(container, itb, ite, aPredicate); 
+      buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate); 
 
       //we update the hull to take into account the starting point
       if ( container.size() > 3 )
-	updateHull(container, container.front(), aPredicate); 
+	updateHullWithAdaptedStack( backStack(container), container.front(), aPredicate ); 
       
       std::copy(container.begin(), container.end(), res); 
     }
@@ -141,6 +163,7 @@ namespace DGtal
 	      typename OutputIterator, 
 	      typename Predicate, 
 	      typename PolarComparator >
+    inline
     void grahamConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
 				   OutputIterator res, 
 				   const Predicate& aPredicate, 
@@ -151,6 +174,7 @@ namespace DGtal
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+      BOOST_CONCEPT_ASSERT(( CPolarPointComparator2D<PolarComparator> )); 
 
       if ( itb != ite )
 	{
@@ -178,6 +202,7 @@ namespace DGtal
     template <typename ForwardIterator, 
 	      typename OutputIterator, 
 	      typename Predicate >
+    inline
     void andrewConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
 				   OutputIterator res, 
 				   const Predicate& aPredicate )
