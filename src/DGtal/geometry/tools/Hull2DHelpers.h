@@ -47,9 +47,9 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/IteratorCirculatorTraits.h"
-#include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
-#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.h"
+#include "DGtal/base/BackInsertionSequenceToStackAdapter.h"
+#include "DGtal/base/CStack.h"
+#include "DGtal/geometry/tools/CPolarPointComparator2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,7 +57,8 @@ namespace DGtal
 
   /**
    * @namespace Hull2D gathers useful functions to compute 
-   * and return the convex hull of a range of 2D points. 
+   * and return the convex hull or the alpha-shape of a range 
+   * of 2D points. 
    */
   namespace Hull2D
   {
@@ -70,22 +71,44 @@ namespace DGtal
      * and the last two points of the container are not oriented 
      * such that the predicate @a aPredicate returns 'true',  
      * the last point of the container is removed. 
-     * @see Hull2D::buildHull
+     * @see Hull2D::buildHullWithStack
      * 
-     * @param aSequence (returned) sequence of points
+     * @param aStack reference to the stack of retrieved vertices
      * @param aNewPoint new point
      * @param aPredicate point predicate  
      * 
-     * @tparam Sequence a model of back insertion sequence 
+     * @tparam Stack a model of CStack 
      * @tparam Point a model of point    
      * @tparam Predicate a model of ternary predicate 
      */
-    template <typename Sequence, 
+    template <typename Stack, 
 	      typename Point, 
 	      typename Predicate>
-    void updateHull(Sequence& aSequence, 
-		    const Point& aNewPoint, 
-		    const Predicate& aPredicate); 
+    void updateHullWithStack(Stack& aStack, 
+			     const Point& aNewPoint, 
+			     const Predicate& aPredicate); 
+
+    /**
+     * @brief Procedure that calls Hull2D::updateHullWithStack
+     * on a copy of the stack object used to retrieved the hull
+     * vertices. Useful when the first argument is a stack adapter
+     * returned by a function: it must be copied before being
+     * passed by reference in Hull2D::updateHullWithStack. 
+     * 
+     * @param aStack stack copy
+     * @param aNewPoint new point
+     * @param aPredicate point predicate  
+     * 
+     * @tparam Stack a model of CStack 
+     * @tparam Point a model of point    
+     * @tparam Predicate a model of ternary predicate 
+     */
+    template <typename Stack, 
+	      typename Point, 
+	      typename Predicate>
+    void updateHullWithAdaptedStack(Stack aStack, 
+				    const Point& aNewPoint, 
+				    const Predicate& aPredicate); 
 
     /**
      * @brief Procedure that retrieves the vertices of the convex hull 
@@ -93,35 +116,63 @@ namespace DGtal
      * This technique is called Sklansky's scan, Graham's scan or 3-coins algorithm.  
      * It works for all WEK [Toussaint and Avis, 1982 : \cite ToussaintAvis1982].  
      *
-     * @param aSequence (returned) sequence of points
+     * @param aStack reference to the stack of retrieved vertices
      * @param itb begin iterator
      * @param ite end iterator 
      * @param aPredicate predicate  
      * 
-     * @tparam Sequence a model of back insertion sequence 
-     * @tparam ForwardIterator a model of forward iterator
+     * @tparam Stack a model of CStack
+     * @tparam ForwardIterator a model of forward and readable iterator
      * @tparam Predicate a model of ternary predicate
+     *
+     * @see Hull2D::updateHullWithStack
      */
-    template <typename Sequence, 
+    template <typename Stack, 
 	      typename ForwardIterator, 
 	      typename Predicate>
-    void buildHull(Sequence& aSequence, 
-		   const ForwardIterator& itb, 
-		   const ForwardIterator& ite,
-		   const Predicate& aPredicate); 
+    void buildHullWithStack(Stack& aStack, 
+			    const ForwardIterator& itb, 
+			    const ForwardIterator& ite,
+			    const Predicate& aPredicate); 
+
+    /**
+     * @brief Procedure that calls Hull2D::buildHullWithStack
+     * on a copy of the stack object used to retrieved the hull
+     * vertices. Useful when the first argument is a stack adapter
+     * returned by a function: it must be copied before being
+     * passed by reference in Hull2D::buildHullWithStack. 
+     *
+     * @param aStack stack copy
+     * @param itb begin iterator
+     * @param ite end iterator 
+     * @param aPredicate predicate  
+     * 
+     * @tparam Stack a model of CStack 
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam Predicate a model of ternary predicate
+     *
+     * @see Hull2D::buildHullWithStack
+     */
+    template <typename Stack, 
+	      typename ForwardIterator, 
+	      typename Predicate>
+    void buildHullWithAdaptedStack(Stack aStack, 
+				   const ForwardIterator& itb, 
+				   const ForwardIterator& ite,
+				   const Predicate& aPredicate); 
 
     /**
      * @brief Procedure that retrieves the vertices of the convex hull 
      * of a weakly externally visible polygon (WEK) in linear-time. 
-     * @see Hull2D::buildHull
+     * @see Hull2D::buildHullWithStack
      * 
      * @param itb begin iterator
      * @param ite end iterator 
      * @param res output iterator used to export the retrieved points
      * @param aPredicate any ternary predicate  
      * 
-     * @tparam ForwardIterator a model of forward iterator
-     * @tparam OutputIterator a model of output iterator   
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam OutputIterator a model of incremental and writable iterator   
      * @tparam Predicate a model of ternary predicate
      */
     template <typename ForwardIterator, 
@@ -135,7 +186,7 @@ namespace DGtal
     /**
      * @brief Procedure that retrieves the vertices of the convex hull 
      * of a weakly externally visible polygon (WEK) in linear-time. 
-     * @see Hull2D::buildHull
+     * @see Hull2D::buildHullWithStack
      * 
      * @param itb begin iterator
      * @param ite end iterator 
@@ -145,8 +196,8 @@ namespace DGtal
      * @pre we assume that the starting point of the polygon 
      * is an extremal point. 
      *
-     * @tparam ForwardIterator a model of forward iterator
-     * @tparam OutputIterator a model of output iterator   
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam OutputIterator a model of incremental and writable iterator   
      * @tparam Predicate a model of ternary predicate
      */
     template <typename ForwardIterator, 
@@ -175,11 +226,10 @@ namespace DGtal
      * @param aPredicate any ternary predicate  
      * @param aPolarComparator any polar comparator 
      * 
-     * @tparam ForwardIterator a model of forward iterator
-     * @tparam OutputIterator a model of output iterator   
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam OutputIterator a model of incremental and writable iterator   
      * @tparam Predicate a model of ternary predicate
-     * @tparam PolarComparator a model of CPolarPointComparatorBy2x2DetComputer
-     * By default, PolarPointComparatorBy2x2DetComputer is chosen. 
+     * @tparam PolarComparator a model of CPolarPointComparator2D. 
      */
     template <typename ForwardIterator, 
 	      typename OutputIterator, 
@@ -208,8 +258,8 @@ namespace DGtal
      * @param res output iterator used to export the retrieved points
      * @param aPredicate any ternary predicate  
      * 
-     * @tparam ForwardIterator a model of forward iterator
-     * @tparam OutputIterator a model of output iterator   
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam OutputIterator a model of incrementable and writable iterator   
      * @tparam Predicate a model of ternary predicate
      */
     template <typename ForwardIterator, 

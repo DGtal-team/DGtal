@@ -77,13 +77,13 @@ DGtal::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>&
 DGtal::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 ::operator=( const PolarPointComparatorBy2x2DetComputer & other )
 {
-  if (*this != other)
+  if (this != &other)
     {
       myPole = other.myPole; 
       myDetComputer = other.myDetComputer;
       myThresholder = other.myThresholder; 
     }
-  return this; 
+  return *this; 
 }
 
 // ------------------------------------------------------------------------

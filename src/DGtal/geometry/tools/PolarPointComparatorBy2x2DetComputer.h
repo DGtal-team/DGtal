@@ -53,10 +53,9 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class PolarPointComparatorBy2x2DetComputer
   /**
-   * \brief Aim: Class that implements a binary predicate, which is able to 
-   * compare the polar position of two given points \f$ P, Q \f$ with respect 
-   * to a third one \f$ O \f$, called the pole. 
-   * We compare the oriented angles lying between the horizontal line
+   * \brief Aim: Class that implements a binary point predicate, which is able to 
+   * compare the position of two given points \f$ P, Q \f$ around a pole \f$ O \f$. 
+   * More precisely, it compares the oriented angles lying between the horizontal line
    * passing by \f$ O \$f and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
    * (in a counter-clockwise orientation). 
    *
@@ -137,7 +136,6 @@ namespace DGtal
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
-     * Forbidden by default.
      */
     PolarPointComparatorBy2x2DetComputer & operator= ( const PolarPointComparatorBy2x2DetComputer & other );
 
