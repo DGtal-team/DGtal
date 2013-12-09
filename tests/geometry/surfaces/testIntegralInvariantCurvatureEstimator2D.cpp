@@ -123,7 +123,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   trace.beginBlock ( "Comparing results of integral invariant 2D curvature ..." );
 
   double mean = 0.0;
-  unsigned int rsize = results.size();
+  double rsize = static_cast<double>(results.size());
 
   if( rsize == 0 )
   {
@@ -171,7 +171,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << std::endl;
 
-  bool res = testIntegralInvariantCurvatureEstimator2D( 0.05, 0.0008 ); // && ... other tests
+  bool res = testIntegralInvariantCurvatureEstimator2D( 0.05, 0.002 ); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;
