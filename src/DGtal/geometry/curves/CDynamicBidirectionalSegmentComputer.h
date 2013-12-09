@@ -55,50 +55,32 @@ namespace DGtal
   /**
 Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
      @ingroup Concepts
-     @brief Aim: Defines the concept describing a dynamic and bidirectional 
-    segment computer,  ie. a model of CSegment that can extend and retract itself 
-    in either direction.  
-     
- ### Refinement of CBidirectionalSegmentComputer and CDynamicSegmentComputer 
-    
+     @brief Aim: Defines the concept describing a dynamic and bidirectional
+    segment computer,  ie. a model of CSegment that can extend and retract itself
+    in either direction.
+
+ ### Refinement of CBidirectionalSegmentComputer and CDynamicSegmentComputer
+
  ### Valid expressions and semantics
-     <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-       <tr> 
-        <td class=CName> backward retraction  </td> 
-        <td class=CExpression> x.retractFront()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> bool   </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> returns 'true' if --x.end() != x.begin() (and decrements the end iterator), 'false' otherwise </td> 
-        <td class=CPostCondition>       </td> 
-        <td class=CComplexity>    </td>
-      </tr>
 
-     </table>
 
-    
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Backward retraction | x.retractFront() |      |bool         |                  | returns 'true' if --x.end() != x.begin() (and decrements the end iterator), 'false' otherwise | | |
+
+
  ### Models###
 
      ArithmeticalDSSComputer, OneBalancedWordComputer
-    
+
  ### Notes###
 
 @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
    */
-  template <typename T> 
-  struct CDynamicBidirectionalSegmentComputer : 
-  CBidirectionalSegmentComputer<T>, 
-  CDynamicSegmentComputer<T>
+  template <typename T>
+  struct CDynamicBidirectionalSegmentComputer :
+    CBidirectionalSegmentComputer<T>,
+    CDynamicSegmentComputer<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -110,12 +92,12 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // only if T is default constructible.
-    bool myB; 
-  
+    bool myB;
+
     // ------------------------- Internals ------------------------------------
   private:
   }; // end of concept CDynamicBidirectionalSegmentComputer
-  
+
 } // namespace DGtal
 
 //                                                                           //

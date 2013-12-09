@@ -52,19 +52,19 @@ using namespace Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Function that draws the maximal segments 
+ * @brief Function that draws the maximal segments
  * with a color that depends on the local convexity:
- * - blue in a convex part, 
- * - green in a concave part, 
- * - yellow in an inflection part (both convex and concave), 
- * - black in an end part (of a connected part). 
+ * - blue in a convex part,
+ * - green in a concave part,
+ * - yellow in an inflection part (both convex and concave),
+ * - black in an end part (of a connected part).
  *
- * @param itb begin iterator on an ArithmeticalDSSComputer 
- * @param itb end iterator on an ArithmeticalDSSComputer
+ * @param itb begin iterator on an ArithmeticalDSSComputer
+ * @param ite end iterator on an ArithmeticalDSSComputer
  * @param aBoard board to draw
- * 
- * @tparam Iterator a model of forward iterator and 
- * CSegmentComputerIterator 
+ *
+ * @tparam Iterator a model of forward iterator and
+ * CSegmentComputerIterator
  * @tparam Board a Board2D type
  */
 template <typename Iterator, typename Board>
@@ -79,10 +79,10 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 
   //for each maximal segment
   for (Iterator i(itb); i != ite; ++i) {
-     
+
     //get the current maximal segment
-    typedef typename Iterator::SegmentComputer::Primitive DSS; 
-    DSS maximalDSS = i->primitive(); 
+    typedef typename Iterator::SegmentComputer::Primitive DSS;
+    DSS maximalDSS = i->primitive();
 
     //if located at the end of a connected part
     if ( !(i.intersectNext() && i.intersectPrevious()) ) {
@@ -93,14 +93,14 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
     } else {
 
       //get the points located before and after the maximal segment
-      typedef typename DSS::Point Point; 
-      Point beforeFirst = *(--(i->begin())); 
+      typedef typename DSS::Point Point;
+      Point beforeFirst = *(--(i->begin()));
       Point afterLast = *(i->end());
 
       //remainders and bounds
-      typedef typename DSS::Integer Integer; 
-      Integer r1 = maximalDSS.remainder(beforeFirst); 
-      Integer r2 = maximalDSS.remainder(afterLast); 
+      typedef typename DSS::Integer Integer;
+      Integer r1 = maximalDSS.remainder(beforeFirst);
+      Integer r2 = maximalDSS.remainder(afterLast);
       Integer mu = maximalDSS.mu();
       Integer omega = maximalDSS.omega();
 
@@ -121,48 +121,48 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 
     // draw the maximal segment on the board
     aBoard << CustomStyle( aStyleName, aPenColor )
-           << maximalDSS; 
-  
-  } 
+           << maximalDSS;
+
+  }
 
 }
 
 /**
- * @brief Perform a saturated segmentation into 
- * maximal digital straight segments of a given 
- * range of integer points and draw the result.  
+ * @brief Perform a saturated segmentation into
+ * maximal digital straight segments of a given
+ * range of integer points and draw the result.
  * @param itb begin iterator
  * @param ite end iterator
  * @param aBoard board to draw
- * 
- * @tparam Iterator a model of forward iterator on 
- * digital points 
+ *
+ * @tparam Iterator a model of forward iterator on
+ * digital points
  * @tparam Board a Board2D type
  */
 template <typename Iterator, typename Board>
-void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite, 
+void segmentationIntoMaximalDSSs(const Iterator& itb, const Iterator& ite,
                                  Board& aBoard)
 {
-  typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate; 
+  typedef typename IteratorCirculatorTraits<Iterator>::Value::Coordinate Coordinate;
 
-  //choose the primitive computer and the segmentation 
+  //choose the primitive computer and the segmentation
   typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> RecognitionAlgorithm;
   typedef SaturatedSegmentation<RecognitionAlgorithm> Segmentation;
 
-  //create the segmentation 
+  //create the segmentation
   RecognitionAlgorithm algo;
   Segmentation s(itb,ite,algo);
-  
+
   //draw the result
-  drawCCP(s.begin(), s.end(), aBoard); 
+  drawCCP(s.begin(), s.end(), aBoard);
 }
 
 
 /**
  * @brief Program that draws the maximal segments
- * of digital curve whose chain code may be given 
+ * of digital curve whose chain code may be given
  * as an argument. The chain code must be a sequence
- *  of characters belonging to the set {0,1,2,3}.   
+ *  of characters belonging to the set {0,1,2,3}.
  * @param argc number of arguments
  * @param argv array of arguments
  * @return 0
@@ -175,14 +175,14 @@ int main( int argc, char** argv )
   Board2D aBoard; //create a board
 
   //create a chain code
-  string codes; 
+  string codes;
   if (argc >= 2) codes = argv[1];
-  else codes = "030030330303303030300001010101101011010000030330303303030300001010110101011010000033"; 
+  else codes = "030030330303303030300001010101101011010000030330303303030300001010110101011010000033";
 
   stringstream ss(stringstream::in | stringstream::out);
   ss << "0 0 " << codes << endl;
   FreemanChain<int> theContour( ss );
-  
+
   trace.info() << "Processing of " << ss.str() << endl;
 
   //draw the digital contour

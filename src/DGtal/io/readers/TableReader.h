@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/FreemanChain.h" 
+#include "DGtal/geometry/curves/FreemanChain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class TableReader
   /**
-   * Description of class 'TableReader' <p> 
+   * Description of class 'TableReader' <p>
    *  \brief Aim: Implements method to read a set of numbers represented in each line of a file.
    *
    *
@@ -60,21 +60,21 @@ namespace DGtal
    * given in a single line. Blank line or line beginning with "#" are
    * skipped.
    *
-   *  
+   *
    * Simple example:
-   * 
+   *
    *  @code
    *  #include "DGtal/helpers/StdDefs.h"
    *  #include "DGtal/io/readers/TableReader.h"
-   *  .... 
-   *  string filename= "testFile.dat"; 
+   *  ....
+   *  string filename= "testFile.dat";
    *  vector<Z2i::Point> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename);
-   * @endcode 
+   * @endcode
    * and you can specifying the point position:
    *  @code
    *  vector<unsigned int> vectPoints = TableReader<unsigned int>::getColumnElementsFromFile(filename, 2);
    *  @endcode
-   *   
+   *
    * @see testTableReader.cpp
    * @tparam TQuantity the type fo the integer to be read.
    **/
@@ -84,22 +84,22 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-  
-  
-    /** 
+
+
+    /**
      * Method to import a vector containing a list of elements given
      * in an input stream. One element is extracted on each line of the input
      * stream.  Blank line or line beginning with "#" are skipped.
      *
-     * @param in the input stream.
+     * @param aFilename a file name
      * @param aPosition the position of indices where the element has to be extracted.
      * @return a vector containing the set of elements.
      **/
-    static std::vector< TQuantity >  
-    getColumnElementsFromFile (const std::string & aFilename, 
-                        unsigned int aPosition);  
-    
-    /** 
+    static std::vector< TQuantity >
+    getColumnElementsFromFile (const std::string & aFilename,
+                               unsigned int aPosition);
+
+    /**
      * Method to import a vector containing a list of elements given
      * in a file. One element is extracted on each line of the input
      * file.  Blank line or line beginning with "#" are skipped.
@@ -108,11 +108,11 @@ namespace DGtal
      * @param aPosition the position of indices where the elements has to be extracted.
      * @return a vector containing the set of elements.
      **/
-    
-    static std::vector< TQuantity >  
-    getColumnElementsFromInputStream (std::istream &in, 
-                               unsigned int aPosition);  
-  
+
+    static std::vector< TQuantity >
+    getColumnElementsFromInputStream (std::istream &in,
+                                      unsigned int aPosition);
+
 
   }; // end of class TableReader
 
