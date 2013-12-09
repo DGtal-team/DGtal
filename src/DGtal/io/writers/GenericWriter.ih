@@ -48,8 +48,8 @@
 
 template <typename TContainer, int TDim, typename TValue, typename TFunctor >
 inline
-bool 
-DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exportFile(const std::string &filename, 
+bool
+DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exportFile(const std::string &filename,
 							 const TContainer &anImage,
 							 const TFunctor & aFunctor)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -58,7 +58,7 @@ DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exportFile(const std::
     trace.error() << "Extension " << extension<< " not yet implemented in n dimension (only raw images are actually implemented in Nd." << std::endl;
     throw dgtalio;
   }else{
-    return RawWriter< TContainer >::exportRaw8 ( filename, anImage, aFunctor  );	
+    return RawWriter< TContainer >::exportRaw8 ( filename, anImage, aFunctor  );
   }
 
   return true;
@@ -71,7 +71,7 @@ DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exportFile(const std::
 template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::string &filename, 
+DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::string &filename,
 						      const TContainer &anImage, const std::string & datasetName,
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -87,7 +87,7 @@ DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::str
 #endif
   {
     trace.error() << "Value type of " << extension<< "  file extension should be unsigned char." << std::endl;
-    throw dgtalio;   
+    throw dgtalio;
   }else{
     trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
     throw dgtalio;
@@ -101,8 +101,8 @@ DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::str
 template <typename TContainer, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exportFile(const std::string &filename, 
-								       const TContainer &anImage, 
+DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exportFile(const std::string &filename,
+								       const TContainer &anImage,
 								       const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -121,9 +121,9 @@ DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exportFile(const
 template <typename TContainer, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename, 
-						      const TContainer &anImage, const std::string & datasetName,
-						      const TFunctor & aFunctor )  throw(DGtal::IOException){
+DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename,
+                                                                         const TContainer &anImage, const std::string & UNUSED(datasetName),
+                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
@@ -150,15 +150,15 @@ DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const s
 template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exportFile(const std::string &filename, 
-						      const TContainer &anImage, 
+DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exportFile(const std::string &filename,
+						      const TContainer &anImage,
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
   if(extension=="pgm"|| extension=="ppm" ||extension=="pbm"){
     trace.error() << "Value type of " << extension<< "  file extension should be unsigned char." << std::endl;
-    throw dgtalio;   
+    throw dgtalio;
   }else{
     trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
     throw dgtalio;
@@ -203,5 +203,3 @@ DGtal::operator >> ( const TImageContainer & aContainer,  const std::string & aF
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
