@@ -37,6 +37,8 @@
 #include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2By2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/OrientationFunctor2BySimpleMatrix.h"
+
+#include "DGtal/geometry/tools/determinant/RadiusFunctor2.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -88,6 +90,158 @@ bool testOrientationFunctors(OrientationFunctor f)
   return nbok == nb;
 }
 
+/**
+ * Example of a test. To be completed.
+ */
+bool testRadiusFunctor()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  typedef PointVector<2, DGtal::int16_t> Point; 
+  typedef Simple2x2DetComputer<DGtal::int16_t, DGtal::int64_t> DetComputer; 
+  typedef RadiusFunctor2<Point, DetComputer> RadiusFunctor; 
+  BOOST_CONCEPT_ASSERT(( COrientationFunctor2<RadiusFunctor> )); 
+  typedef RadiusFunctor::Value Value; 
+
+  Value res; 
+
+  trace.beginBlock ( "Infinite radius..." );
+
+  RadiusFunctor f_inf; //infinite radius by default 
+  trace.info() << f_inf << " " << f_inf.isValid() << endl; 
+
+  f_inf.init( Point(0,0), Point(5,2) );
+  res = f_inf( Point(7,3) ); 
+  trace.info() << res << " > 0 " << std::endl; 
+  if ( res > NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  f_inf.init( Point(0,0), Point(5,2) );
+  res = f_inf( Point(8,3) ); 
+  trace.info() << res << " < 0 " << std::endl; 
+  if ( res < NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  f_inf.init( Point(0,0), Point(5,2) );
+  res = f_inf( Point(10,4) ); 
+  trace.info() << res << " == 0 " << std::endl; 
+  if ( res == NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  RadiusFunctor f_inf2(false); //infinite radius too, but with another orientation 
+  trace.info() << f_inf2 << " " << f_inf2.isValid() << endl; 
+
+  f_inf2.init( Point(0,0), Point(5,2) );
+  res = f_inf2( Point(7,3) ); 
+  trace.info() << res << " < 0 " << std::endl; 
+  if ( res < NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  f_inf2.init( Point(0,0), Point(5,2) );
+  res = f_inf2( Point(8,3) ); 
+  trace.info() << res << " > 0 " << std::endl; 
+  if ( res > NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  f_inf2.init( Point(0,0), Point(5,2) );
+  res = f_inf2( Point(10,4) ); 
+  trace.info() << res << " == 0 " << std::endl; 
+  if ( res == NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  trace.endBlock();
+
+  trace.beginBlock ( "Finite radius..." );
+
+  RadiusFunctor f5(true, 25, 1); //radius 5 with positive orientation 
+  trace.info() << f5 << " " << f5.isValid() << endl; 
+
+  f5.init( Point(5,0), Point(0,5) );
+  res = f5( Point(4,1) ); 
+  trace.info() << res << " > 0 " << std::endl; 
+  if ( res > NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f5( Point(3,1) ); 
+  trace.info() << res << " > 0 " << std::endl; 
+  if ( res > NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f5( Point(5,1) ); 
+  trace.info() << res << " < 0 " << std::endl; 
+  if ( res < NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f5( Point(3,4) ); 
+  trace.info() << res << " == 0 " << std::endl; 
+  if ( res == NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  RadiusFunctor f52(false, 25, 1); //radius 5 with negative orientation 
+  trace.info() << f52 << " " << f52.isValid() << endl; 
+
+  f52.init( Point(5,0), Point(0,5) );
+  res = f52( Point(4,1) ); 
+  trace.info() << res << " < 0 " << std::endl; 
+  if ( res < NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f52( Point(3,1) ); 
+  trace.info() << res << " < 0 " << std::endl; 
+  if ( res < NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f52( Point(5,1) ); 
+  trace.info() << res << " > 0 " << std::endl; 
+  if ( res > NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f52( Point(3,4) ); 
+  trace.info() << res << " == 0 " << std::endl; 
+  if ( res == NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  res = f52( Point(4,3) ); 
+  trace.info() << res << " == 0 " << std::endl; 
+  if ( res == NumberTraits<Value>::ZERO )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
+  trace.endBlock();
+
+  
+  return nbok == nb;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 int main( int argc, char** argv )
@@ -108,6 +262,8 @@ int main( int argc, char** argv )
  
   typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::int32_t> Functor2; 
   res = res && testOrientationFunctors( Functor2() );
+
+  res = res && testRadiusFunctor(); 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
