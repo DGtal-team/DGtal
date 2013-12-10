@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file exampleOrientationFunctors2D.cpp
+ * @file exampleOrientationFunctors2.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/28
  *
- * An example file named exampleOrientationFunctors2D.
+ * An example file named exampleOrientationFunctors2.
  *
  * This file is part of the DGtal library.
  */
@@ -38,10 +38,10 @@
 #include "DGtal/geometry/tools/determinant/SimpleIncremental2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/AvnaimEtAl2x2DetSignComputer.h"
 #include "DGtal/geometry/tools/determinant/Filtered2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBy2x2DetComputer.h"
+#include "DGtal/geometry/tools/determinant/OrientationFunctor2By2x2DetComputer.h"
 //! [FunctorIncludes]
-#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
+#include "DGtal/geometry/tools/determinant/OrientationFunctor2BySimpleMatrix.h"
 //! [FunctorIncludes]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -71,13 +71,13 @@ basicUsage()
 
   //! [FunctorDefinition]
   //orientation functor
-  typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::int32_t> OrientationFunctor; 
+  typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::int32_t> OrientationFunctor; 
   OrientationFunctor orientationFunctor;
   //! [FunctorDefinition]
 
   //! [PredicateDefinition]
   //geometric predicate
-  PredicateFromOrientationFunctor2D<OrientationFunctor> 
+  PredicateFromOrientationFunctor2<OrientationFunctor> 
     pointPredicate( orientationFunctor ); 
   //! [PredicateDefinition]
 
@@ -107,7 +107,7 @@ advice()
   //! [FunctorDefinition30]
   //for coordinates of 30 (not zero) bits
   typedef PointVector<2, DGtal::int32_t> Point; 
-  typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::int64_t> Functor; 
+  typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::int64_t> Functor; 
   //! [FunctorDefinition30]
   }
 
@@ -119,7 +119,7 @@ advice()
   //typedef PointVector<2, double> Point;  
   typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
   typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-  typedef OrientationFunctor2DBy2x2DetComputer<Point, FDetComputer> Functor; 
+  typedef OrientationFunctor2By2x2DetComputer<Point, FDetComputer> Functor; 
   //! [FunctorDefinition52]
   }
 
@@ -128,7 +128,7 @@ advice()
   //for coordinates of 62 (not zero) bits
   typedef PointVector<2, DGtal::int64_t> Point; 
   typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-  typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> Functor; 
+  typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> Functor; 
   //! [FunctorDefinition62]
   }
 
@@ -139,7 +139,7 @@ advice()
   typedef PointVector<2, DGtal::int64_t> Point;  
   typedef AvnaimEtAl2x2DetSignComputer<long double> DetComputer; 
   typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-  typedef OrientationFunctor2DBy2x2DetComputer<Point, FDetComputer> Functor; 
+  typedef OrientationFunctor2By2x2DetComputer<Point, FDetComputer> Functor; 
   //! [FunctorDefinition62bis]
   }
 
@@ -149,7 +149,7 @@ advice()
   //for arbitrary coordinates
   typedef PointVector<2, DGtal::BigInteger> Point; 
   typedef Simple2x2DetComputer<DGtal::BigInteger> DetComputer; 
-  typedef OrientationFunctor2DBy2x2DetComputer<Point, DetComputer> Functor; 
+  typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> Functor; 
   //! [FunctorDefinition62plus]
   }
 #endif
@@ -158,7 +158,7 @@ advice()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example exampleOrientationFunctors2D" );
+  trace.beginBlock ( "Example exampleOrientationFunctors2" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];

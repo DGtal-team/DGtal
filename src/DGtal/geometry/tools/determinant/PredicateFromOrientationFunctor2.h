@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file PredicateFromOrientationFunctor2D.h
+ * @file PredicateFromOrientationFunctor2.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/02
  *
- * Header file for module PredicateFromOrientationFunctor2D.cpp
+ * Header file for module PredicateFromOrientationFunctor2.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(PredicateFromOrientationFunctor2D_RECURSES)
-#error Recursive header files inclusion detected in PredicateFromOrientationFunctor2D.h
-#else // defined(PredicateFromOrientationFunctor2D_RECURSES)
+#if defined(PredicateFromOrientationFunctor2_RECURSES)
+#error Recursive header files inclusion detected in PredicateFromOrientationFunctor2.h
+#else // defined(PredicateFromOrientationFunctor2_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define PredicateFromOrientationFunctor2D_RECURSES
+#define PredicateFromOrientationFunctor2_RECURSES
 
-#if !defined PredicateFromOrientationFunctor2D_h
+#if !defined PredicateFromOrientationFunctor2_h
 /** Prevents repeated inclusion of headers. */
-#define PredicateFromOrientationFunctor2D_h
+#define PredicateFromOrientationFunctor2_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -45,31 +45,31 @@
 
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/geometry/tools/determinant/COrientationFunctor2D.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class PredicateFromOrientationFunctor2D
+  // template class PredicateFromOrientationFunctor2
   /**
-   * Description of template class 'PredicateFromOrientationFunctor2D' <p>
-   * \brief Aim: Small adapter to models of COrientationFunctor2D. 
+   * Description of template class 'PredicateFromOrientationFunctor2' <p>
+   * \brief Aim: Small adapter to models of COrientationFunctor2. 
    * It is a model of CPointPredicate. It is also a ternary predicate on points, 
    * useful for basic geometric tasks such as convex hull computation. 
    *
    * Once a orientation functor is defined, you can adapt it as follows: 
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp PredicateDefinition
+   * @snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp PredicateDefinition
    *
    * The test can be done in one or two separate steps as follows: 
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp FunctorInitialization
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2D.cpp PredicateUsage
+   * @snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorInitialization
+   * @snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp PredicateUsage
    *
    * The default behavior is to return 'true' for strictly positive functor values.
    * You can however custom this behavior with the last two template parameters. 
    *
-   * @tparam TOrientationFunctor a model of COrientationFunctor2D
+   * @tparam TOrientationFunctor a model of COrientationFunctor2
    * @tparam acceptNeg bool equal to 'true' to get a predicate returning 'true' 
    * for strictly negative values of the functor, but equal to 'false' to get a predicate 
    * returning 'true' for strictly positive values (default). 
@@ -78,7 +78,7 @@ namespace DGtal
    * values (default).  
    */
   template <typename TOrientationFunctor, bool acceptNeg = false, bool acceptZero = false >
-  class PredicateFromOrientationFunctor2D
+  class PredicateFromOrientationFunctor2
   {
     // ----------------------- Types ------------------------------------------
   public: 
@@ -86,7 +86,7 @@ namespace DGtal
      * Type of the adapter orientation functor
      */
     typedef TOrientationFunctor Functor; 
-    BOOST_CONCEPT_ASSERT(( COrientationFunctor2D<Functor> )); 
+    BOOST_CONCEPT_ASSERT(( COrientationFunctor2<Functor> )); 
     
     /**
      * Type of input points
@@ -106,7 +106,7 @@ namespace DGtal
      * Constructor
      * @param aFunctor any orientation functor to alias
      */
-    PredicateFromOrientationFunctor2D( Alias<Functor> aFunctor );
+    PredicateFromOrientationFunctor2( Alias<Functor> aFunctor );
 
     /**
      * Initialization of @a myFunctor
@@ -156,30 +156,30 @@ namespace DGtal
     const MyThresholder myThresholder; 
 
 
-  }; // end of class PredicateFromOrientationFunctor2D
+  }; // end of class PredicateFromOrientationFunctor2
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'PredicateFromOrientationFunctor2D'.
+   * Overloads 'operator<<' for displaying objects of class 'PredicateFromOrientationFunctor2'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'PredicateFromOrientationFunctor2D' to write.
+   * @param object the object of class 'PredicateFromOrientationFunctor2' to write.
    * @return the output stream after the writing.
    */
   template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
   std::ostream&
-  operator<< ( std::ostream & out, const PredicateFromOrientationFunctor2D<TOrientationFunctor, acceptNeg, acceptZero > & object );
+  operator<< ( std::ostream & out, const PredicateFromOrientationFunctor2<TOrientationFunctor, acceptNeg, acceptZero > & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.ih"
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined PredicateFromOrientationFunctor2D_h
+#endif // !defined PredicateFromOrientationFunctor2_h
 
-#undef PredicateFromOrientationFunctor2D_RECURSES
-#endif // else defined(PredicateFromOrientationFunctor2D_RECURSES)
+#undef PredicateFromOrientationFunctor2_RECURSES
+#endif // else defined(PredicateFromOrientationFunctor2_RECURSES)
