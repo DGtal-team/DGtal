@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file PredicateFromOrientationFunctor2D.ih
+ * @file PredicateFromOrientationFunctor2.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/02
  *
- * Implementation of inline methods defined in PredicateFromOrientationFunctor2D.h
+ * Implementation of inline methods defined in PredicateFromOrientationFunctor2.h
  *
  * This file is part of the DGtal library.
  */
@@ -38,8 +38,8 @@
 // ------------------------------------------------------------------------
 template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
-DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZero>
-::PredicateFromOrientationFunctor2D(Alias<Functor> aFunctor)
+DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
+::PredicateFromOrientationFunctor2(Alias<Functor> aFunctor)
   : myFunctorPtr(&aFunctor), myThresholder()
 {
 }
@@ -48,7 +48,7 @@ DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZer
 template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 void
-DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZero>
+DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::init (const Point& aPoint1, const Point& aPoint2 )
 {
   myFunctorPtr->init( aPoint1, aPoint2 ); 
@@ -58,7 +58,7 @@ DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZer
 template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 bool
-DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZero>
+DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::operator() (const Point& aPoint ) const
 {
   return myThresholder( myFunctorPtr->operator()( aPoint ) ); 
@@ -68,7 +68,7 @@ DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZer
 template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 bool
-DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZero>
+DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::operator() (const Point& aPoint1, const Point& aPoint2, const Point& aPoint3 ) const
 {
   myFunctorPtr->init( aPoint1, aPoint2 ); 
@@ -79,10 +79,10 @@ DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZer
 template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 void
-DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZero>
+DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::selfDisplay ( std::ostream & out ) const
 {
-  out << "[PredicateFromOrientationFunctor2D<"; 
+  out << "[PredicateFromOrientationFunctor2<"; 
   if (isValid()) 
     out << (*myFunctorPtr);  
   else
@@ -94,7 +94,7 @@ DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZer
 template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 bool
-DGtal::PredicateFromOrientationFunctor2D<TOrientationFunctor,acceptNeg,acceptZero>
+DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::isValid() const
 {
   return (myFunctorPtr != 0);
@@ -109,7 +109,7 @@ template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const PredicateFromOrientationFunctor2D<TOrientationFunctor, acceptNeg, acceptZero> & object )
+		    const PredicateFromOrientationFunctor2<TOrientationFunctor, acceptNeg, acceptZero> & object )
 {
   object.selfDisplay( out );
   return out;
