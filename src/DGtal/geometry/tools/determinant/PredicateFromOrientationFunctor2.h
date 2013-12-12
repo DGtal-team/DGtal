@@ -60,11 +60,11 @@ namespace DGtal
    * useful for basic geometric tasks such as convex hull computation. 
    *
    * Once a orientation functor is defined, you can adapt it as follows: 
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp PredicateDefinition
+   * @snippet geometry/tools/determinant/exampleInHalfPlane.cpp PredicateDefinition
    *
    * The test can be done in one or two separate steps as follows: 
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorInitialization
-   * @snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp PredicateUsage
+   * @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorInitialization
+   * @snippet geometry/tools/determinant/exampleInHalfPlane.cpp PredicateUsage
    *
    * The default behavior is to return 'true' for strictly positive functor values.
    * You can however custom this behavior with the last two template parameters. 

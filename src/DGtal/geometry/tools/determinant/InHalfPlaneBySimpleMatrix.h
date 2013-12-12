@@ -17,40 +17,42 @@
 #pragma once
 
 /**
- * @file OrientationFunctor2By2x2DetComputer.h
+ * @file InHalfPlaneBySimpleMatrix.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/22
  *
- * Header file for module OrientationFunctor2By2x2DetComputer.cpp
+ * Header file for module InHalfPlaneBySimpleMatrix.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(OrientationFunctor2By2x2DetComputer_RECURSES)
-#error Recursive header files inclusion detected in OrientationFunctor2By2x2DetComputer.h
-#else // defined(OrientationFunctor2By2x2DetComputer_RECURSES)
+#if defined(InHalfPlaneBySimpleMatrix_RECURSES)
+#error Recursive header files inclusion detected in InHalfPlaneBySimpleMatrix.h
+#else // defined(InHalfPlaneBySimpleMatrix_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define OrientationFunctor2By2x2DetComputer_RECURSES
+#define InHalfPlaneBySimpleMatrix_RECURSES
 
-#if !defined OrientationFunctor2By2x2DetComputer_h
+#if !defined InHalfPlaneBySimpleMatrix_h
 /** Prevents repeated inclusion of headers. */
-#define OrientationFunctor2By2x2DetComputer_h
+#define InHalfPlaneBySimpleMatrix_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/geometry/tools/determinant/C2x2DetComputer.h"
+#include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/kernel/CEuclideanRing.h"
+#include "DGtal/kernel/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class OrientationFunctor2By2x2DetComputer
+  // template class InHalfPlaneBySimpleMatrix
   /**
    * \brief Aim: Class that implements an orientation functor, ie. 
    * it provides a way to compute the orientation of three given 2d points. 
@@ -58,16 +60,14 @@ namespace DGtal
    * - zero if the three points belong to the same line
    * - strictly positive if the three points are counter-clockwise oriented
    * - striclty negative if the three points are clockwise oriented. 
-   * The orientation test is reduced to the computation of the determinant of
-   * a 2x2 matrix, the implementation of which is delegated to a determinant 
-   * computer. 
+   * The orientation test is performed by the evaluation of the determinant 
+   * of a 3x3 matrix stored into an instance of SimpleMatrix. 
    *
    * Basic usage: 
    @code
    ...
    typedef Z2i::Point Point; 
-   typedef Simple2x2DetComputer<Z2i::Integer> DeterminantComputer; 
-   typedef OrientationFunctor2By2x2DetComputer<Point, DeterminantComputer> MyType; 
+   typedef InHalfPlaneBySimpleMatrix<Point, Z2i::Integer> MyType; 
 
    MyType orientationTest; 
    orientationTest.init( Point(0,0), Point(5,2) ); 
@@ -76,19 +76,18 @@ namespace DGtal
    @endcode
    *
    * @tparam TPoint a model of point
-   * @tparam TDetComputer a model of C2x2DetComputer
+   * @tparam TInteger a model of integer for the 3x3 matrix entries and the result, 
+   * at least a model of CEuclideanRing
    *
-   * NB: The robustness of the computation depends on the robustness of the determinant 
-   * computer. 
-   * However, in order to be sure that the result will be exact, you should be sure that 
-   * the chosen determinant computer can safely deal with integers coded with b+1 bits 
-   * if the points coordinates are coded with b bits. 
-   * 
-   * @see Simple2x2DetComputer SimpleIncremental2x2DetComputer 
-   * AvnaimEtAl2x2DetComputer FilteredDetComputer
+   * NB. In order to be sure that the result will be exact, you should be sure that 
+   * TInteger can represent integers with 2b+3 bits if the points coordinates
+   * are coded with b bits. 
+   *
+   * @see SimpleMatrix
+   * @see InHalfPlaneBy2x2DetComputer
    */
-  template <typename TPoint, typename TDetComputer>
-  class OrientationFunctor2By2x2DetComputer
+  template <typename TPoint, typename TInteger>
+  class InHalfPlaneBySimpleMatrix
   {
     // ----------------------- Types  ------------------------------------
   public:
@@ -99,47 +98,62 @@ namespace DGtal
     typedef TPoint Point; 
 
     /**
-     * Type of determinant computer
+     * Type of point array
      */
-    typedef TDetComputer DetComputer; 
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
+    typedef boost::array<Point,2> PointArray;
+    /**
+     * Type used to represent the size of the array
+     */
+    typedef typename PointArray::size_type SizeArray; 
+    /**
+     * static size of the array, ie. 2
+     */
+    static const SizeArray size = PointArray::static_size; 
 
     /**
-     * Type of input integers for the determinant computer
+     * Type of matrix integral entries
      *
-     * NB: the type of the points coordinates are casted into ArgumentInteger
-     * before being passed to the determinant computer. 
+     * NB: the type of the points coordinates are casted into Integer
+     * before being stored into the matrix. 
      */
-    typedef typename TDetComputer::ArgumentInteger ArgumentInteger;
+    typedef TInteger Integer;
+    BOOST_CONCEPT_ASSERT(( CEuclideanRing<Integer> )); 
+
+    /**
+     * Type of matrix
+     */
+    typedef SimpleMatrix<Integer, 3, 3> Matrix;
 
     /**
      * Type of integer for the result
      */
-    typedef typename TDetComputer::ResultInteger Value; 
-
-    // ----------------------- Standard services ------------------------------
-  public:
-
+    typedef Integer Value; 
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Initialisation.
+     * Initialisation. The first two column vectors are stored into @a myMatrix
      * @param aP first point
      * @param aQ second point
      */
     void init(const Point& aP, const Point& aQ);
 
     /**
+     * Initialisation. The first two column vectors are stored into @a myMatrix
+     * @param aA array of two points
+     */
+    void init(const PointArray& aA);
+
+    /**
      * Main operator.
-     * @warning OrientationFunctor2By2x2DetComputer::init() should be called before
+     * @warning InHalfPlaneBy2x2DetComputer::init() should be called before
      * @param aR any point to test
      * @return orientation of the three points @a aP @a aQ @a aR : 
      * - zero if the three points belong to the same line
      * - strictly positive if the three points are counter-clockwise oriented
      * - striclty negative if the three points are clockwise oriented
-     * @see OrientationFunctor2By2x2DetComputer::init()
+     * @see InHalfPlaneBy2x2DetComputer::init()
      */
     Value operator()(const Point& aR) const;
 
@@ -155,47 +169,39 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
     // ------------------------- Private Datas --------------------------------
   private:
 
-
-    // ------------------------- Internals ------------------------------------
-  private:
     /**
-     * Coordinates of the first point.
+     * 3x3 matrix whose determinant provides the expected result
      */
-    ArgumentInteger myA, myB; 
-    /**
-     * A 2x2 determinant computer
-     */
-    mutable DetComputer myDetComputer; 
+    mutable Matrix myMatrix; 
 
-  }; // end of class OrientationFunctor2By2x2DetComputer
+
+  }; // end of class InHalfPlaneBySimpleMatrix
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'OrientationFunctor2By2x2DetComputer'.
+   * Overloads 'operator<<' for displaying objects of class 'InHalfPlaneBySimpleMatrix'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'OrientationFunctor2By2x2DetComputer' to write.
+   * @param object the object of class 'InHalfPlaneBySimpleMatrix' to write.
    * @return the output stream after the writing.
    */
-  template <typename TPoint, typename TDetComputer>
+  template <typename TPoint, typename TInteger>
   std::ostream&
-  operator<< ( std::ostream & out, const OrientationFunctor2By2x2DetComputer<TPoint, TDetComputer> & object );
+  operator<< ( std::ostream & out, const InHalfPlaneBySimpleMatrix<TPoint, TInteger> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2By2x2DetComputer.ih"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined OrientationFunctor2By2x2DetComputer_h
+#endif // !defined InHalfPlaneBySimpleMatrix_h
 
-#undef OrientationFunctor2By2x2DetComputer_RECURSES
-#endif // else defined(OrientationFunctor2By2x2DetComputer_RECURSES)
+#undef InHalfPlaneBySimpleMatrix_RECURSES
+#endif // else defined(InHalfPlaneBySimpleMatrix_RECURSES)

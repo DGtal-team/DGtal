@@ -43,8 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/kernel/CPointFunctor.h"
-#include "DGtal/kernel/CSignedNumber.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,26 +54,13 @@ namespace DGtal
   /**
      Description of \b concept '\b COrientationFunctor2' <p>
      @ingroup Concepts
-     @brief Aim: This concept gathers models used to perform
-     an orientation test given three points. These three points
-     are provided in two steps so that this concept is a refinement
-     of CPointFunctor: 
-      - First, we set the first two points by method 'init'. 
-      - Then, we look at the position of the third point with respect
-      to the first two ones: 'operator()' takes an input point and 
-      returns a signed value.  
-
-     The returned value, which is a model of CSignedNumber, is guaranteed to be: 
-     - zero if the three points belong to the same line
-     - strictly positive if the three points are counter-clockwise oriented
-     - striclty negative if the three points are clockwise oriented
+     @brief Aim: This concept is a refinement of COrientationFunctor, 
+     useful for simple algebraic curves that can be uniquely defined 
+     by only two points.  
      
-     ### Refinement of CPointFunctor
+     ### Refinement of COrientationFunctor
 
      ### Associated types
-     As a refinement of CPointFunctor, it has the following nested types: 
-     - Point type of input points
-     - Value type of the result, at least a model of CSignedNumber
 
      ### Notation
      - \e X : A type that is a model of COrientationFunctor2
@@ -83,23 +69,21 @@ namespace DGtal
 
      ### Valid expressions and semantics
 
-     | Name           | Expression  | Type requirements  | Return type | Precondition | Semantics         | Post condition | Complexity |
-     |----------------+-------------+--------------------+-------------+--------------+-------------------+----------------+------------|
-     | initialization | x.init(a,b) | a and b are points |             |              | memorizes a and b |                | constant   |
+     | Name           | Expression  | Type requirements  | Return type | Precondition | Semantics   | Post condition | Complexity |
+     |----------------+-------------+--------------------+-------------+--------------+-------------+----------------+------------|
+     | initialization | x.init(a,b) | a and b are points |             |              |             |                | constant   |
 
      ### Models
   
-     OrientationFunctor2By2x2DetComputer
+     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix RadiusFunctor
 
      @tparam T the type that should be a model of COrientationFunctor2.
   */
   template <typename T>
-  struct COrientationFunctor2 : CPointFunctor<T>
+  struct COrientationFunctor2 : COrientationFunctor<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-
-    BOOST_CONCEPT_ASSERT(( CSignedNumber< typename T::Value > ));
 
     BOOST_CONCEPT_USAGE( COrientationFunctor2 )
     {
@@ -109,9 +93,6 @@ namespace DGtal
   private:
     T myX; 
     typename T::Point myA, myB;
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of concept COrientationFunctor2
 

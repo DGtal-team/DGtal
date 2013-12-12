@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testOrientationFunctors2.cpp
+ * @file testInHalfPlane.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -35,17 +35,17 @@
 #include "DGtal/geometry/tools/determinant/Simple2x2DetComputer.h"
 
 #include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2By2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2BySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBy2x2DetComputer.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
 
-#include "DGtal/geometry/tools/determinant/RadiusFunctor2.h"
+#include "DGtal/geometry/tools/determinant/RadiusFunctor.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class OrientationFunctors.
+// Functions for testing class InHalfPlane.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
@@ -53,7 +53,7 @@ using namespace DGtal;
  * @tparam OrientationFunctor a model of COrientationFunctor2
  */
 template<typename OrientationFunctor>
-bool testOrientationFunctors(OrientationFunctor f)
+bool testInHalfPlane(OrientationFunctor f)
 {
   BOOST_CONCEPT_ASSERT(( COrientationFunctor2<OrientationFunctor> )); 
 
@@ -100,7 +100,7 @@ bool testRadiusFunctor()
 
   typedef PointVector<2, DGtal::int16_t> Point; 
   typedef Simple2x2DetComputer<DGtal::int16_t, DGtal::int64_t> DetComputer; 
-  typedef RadiusFunctor2<Point, DetComputer> RadiusFunctor; 
+  typedef RadiusFunctor<Point, DetComputer> RadiusFunctor; 
   BOOST_CONCEPT_ASSERT(( COrientationFunctor2<RadiusFunctor> )); 
   typedef RadiusFunctor::Value Value; 
 
@@ -246,7 +246,7 @@ bool testRadiusFunctor()
 // Standard services - public :
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class OrientationFunctors" );
+  trace.beginBlock ( "Testing class InHalfPlane" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -257,11 +257,11 @@ int main( int argc, char** argv )
   bool res = true; 
 
   typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-  typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> Functor1; 
-  res = res && testOrientationFunctors( Functor1() );
+  typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor1; 
+  res = res && testInHalfPlane( Functor1() );
  
-  typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::int32_t> Functor2; 
-  res = res && testOrientationFunctors( Functor2() );
+  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int32_t> Functor2; 
+  res = res && testInHalfPlane( Functor2() );
 
   res = res && testRadiusFunctor(); 
 

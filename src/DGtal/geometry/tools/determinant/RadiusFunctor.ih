@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file RadiusFunctor2.ih
+ * @file RadiusFunctor.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/10
  *
- * Implementation of inline methods defined in RadiusFunctor2.h
+ * Implementation of inline methods defined in RadiusFunctor.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,8 +41,8 @@
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TDetComputer>
 inline
-DGtal::RadiusFunctor2<TPoint, TDetComputer>::
-RadiusFunctor2(bool isPositive, 
+DGtal::RadiusFunctor<TPoint, TDetComputer>::
+RadiusFunctor(bool isPositive, 
 	       const Integer& aNum2, 
 	       const Integer& aDen2)
   : myIsCCW( isPositive ), 
@@ -78,7 +78,7 @@ RadiusFunctor2(bool isPositive,
 template <typename TPoint, typename TDetComputer>
 inline
 void 
-DGtal::RadiusFunctor2<TPoint, TDetComputer>::
+DGtal::RadiusFunctor<TPoint, TDetComputer>::
 init ( const Point& aP, const Point& aQ )
 {
   myP = aP;
@@ -92,8 +92,18 @@ init ( const Point& aP, const Point& aQ )
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TDetComputer>
 inline
-typename DGtal::RadiusFunctor2<TPoint, TDetComputer>::Value
-DGtal::RadiusFunctor2<TPoint, TDetComputer>::
+void 
+DGtal::RadiusFunctor<TPoint, TDetComputer>::
+init ( const PointArray& aA )
+{
+  init( aA[0], aA[1] ); 
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TDetComputer>
+inline
+typename DGtal::RadiusFunctor<TPoint, TDetComputer>::Value
+DGtal::RadiusFunctor<TPoint, TDetComputer>::
 operator() ( const Point& aR ) const
 {
   myR = aR; 
@@ -133,10 +143,10 @@ operator() ( const Point& aR ) const
 template <typename TPoint, typename TDetComputer>
 inline
 void
-DGtal::RadiusFunctor2<TPoint, TDetComputer>::
+DGtal::RadiusFunctor<TPoint, TDetComputer>::
 selfDisplay ( std::ostream & out ) const
 {
-  out << "[RadiusFunctor2]" << std::endl;
+  out << "[RadiusFunctor]" << std::endl;
   out << " radius: sqrt(" << myNum2 << "/" << myDen2 << ")"; 
   if (myIsCCW) 
     out << "+"; 
@@ -149,7 +159,7 @@ selfDisplay ( std::ostream & out ) const
 template <typename TPoint, typename TDetComputer>
 inline
 bool
-DGtal::RadiusFunctor2<TPoint, TDetComputer>::
+DGtal::RadiusFunctor<TPoint, TDetComputer>::
 isValid() const
 {
   return ( (myNum2 > NumberTraits<Integer>::ZERO) &&
@@ -164,7 +174,7 @@ template <typename TPoint, typename TDetComputer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const RadiusFunctor2<TPoint, TDetComputer> & object )
+		    const RadiusFunctor<TPoint, TDetComputer> & object )
 {
   object.selfDisplay( out );
   return out;

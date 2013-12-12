@@ -19,7 +19,6 @@ namespace DGtal {
 /*!
 @page moduleGeometricPredicates Implementation of geometric predicates
 @writers Tristan Roussillon
-[TOC]
 
 Several algorithms of the \ref packageGeometry rely on geometric predicates. 
 For instance, any convex hull algorithm relies on an orientation test. 
@@ -27,51 +26,112 @@ If the test is not exact or if it is not robust to possible overflows,
 the algorithm can return an incorrect result or can even infinitely loop. 
 We provide below several solutions to cope with such problems. 
 
-\section sectmoduleGeometricPredicates1 Orientation test in two dimension
+[TOC]
 
-Orientation tests are just predicates (returning a boolean) 
-adapted from models of COrientationFunctor2. 
+\section sectmoduleGeometricPredicates0 Introduction
 
-Models of COrientationFunctor2 must be initialized from two points \f$ P, Q \f$
-and provide an operator() taking a third point \f$ R \f$ as argument and returning a 
-signed value: 
+In our framework, we consider points in a space of dimension \f$ n \f$. 
+The orientation of \f$ k+1 \f$ points \f$ (p_1, \ldots, p_{k+1}) \f$
+ is given by the sign of the algebraic distance between \f$ p_{k+1} \f$ 
+and an algebraic variety, chosen such that it is uniquely defined 
+by the first \f$ k \f$ points \f$ (p_1, \ldots, p_{k}) \f$. 
+
+An algebraic variety is the set of points where a given \f$n\f$-variate polynomial \f$ \mathcal{P} \f$
+is evaluated to zero, ie. \f$ \{ x \in \mathbb{R}^n | \mathcal{P}(x) = 0 \} \f$. 
+ We consider only \f$ n\f$-variate polynomials that are sums of exactly \f$ k+1 \f$ monomials, 
+so that they are uniquely defined by exactly \f$ k \f$ points. 
+The algebraic distance of \f$ p_{k+1} \f$ to the algebraic variety of polynomial \f$ \mathcal{P} \f$ is  
+equal to \f$ \mathcal{P}(p_{k+1}) \f$. 
+
+Examples of algebraic varieties are: 
+- in two dimensions
+  - line (\f$ k = 2 \f$)
+  - circle (\f$ k = 3 \f$)
+  - circle of given radius and orientation (\f$ k = 2 \f$) 
+  - circle passing by a given point (\f$ k = 2 \f$) 
+- in three dimensions
+  - plane (\f$ k = 3 \f$)
+  - sphere (\f$ k = 4 \f$)
+
+The main concept of this module is COrientationFunctor, but there are also
+refinements, which are specific to small polynomials: COrientationFunctor2 and COrientationFunctor3. 
+
+Geometric predicates, which return a boolean, usually adapt models of COrientationFunctor, 
+which return an algebraic distance, 
+so that either
+- strictly positive values, 
+- non-negative values, 
+- strictly negative values, 
+- or non-positive values
+are accepted. 
+
+PredicateFromOrientationFunctor2 is an example of such adapter. 
+
+Models of COrientationFunctor provide a method init() taking a static array of \f$ k \f$ points 
+\f$ (p_1, \ldots, p_{k}) \f$ as argument. This initialization step is geometrically 
+equivalent to defining the unique shape \f$ \mathcal{S} \f$ passing by these \f$ k \f$ points. 
+Models of COrientationFunctor are also refinements of CPointFunctor. 
+As such, they provide a parenthesis operator, which takes an extra point 
+\f$ p_{k+1} \f$ as argument and returns a signed value that is: 
+- 0 if \f$ p_{k+1} \f$ is lying on \f$ \mathcal{S} \f$.
+- strictly negative if \f$ p_{k+1} \f$ belongs to the @a interior of \f$ \mathcal{S} \f$.  
+- strictly positive if \f$ p_{k+1} \f$ belongs to the @a exterior of \f$ \mathcal{S} \f$. 
+
+@note @a Interior and @a exterior are not geometric concepts, but algebraic ones: 
+they depend on the lexicographic order of the points. For example, for a circle 
+passing by three points in the plane, the geometric interior coincides 
+with the algebraic interior iff the three points are counter-clockwise oriented.  
+
+\section sectmoduleGeometricPredicates1 Orientation of three points in the plane
+
+In order to determine whether 3 given points are aligned, clockwise oriented
+or counter-clockwise oriented, we provide several predicates. They are actually
+adaptations of some models of COrientationFunctor2, devoted to the computation 
+of the distance of a point to a line. 
+
+Instances of such classes must be initialized from two points \f$ P, Q \f$
+and provide a parenthesis operator taking a third point \f$ R \f$ as argument and 
+returning a signed value. 
+
+The resulting value may be interpreted as follows:  
 - equal to 0 if \f$ P, Q, R \f$ belong to the same line  
 - strictly positive if \f$ R \f$ belongs to the open half-plane lying on the left of the oriented line \f$ (PQ) \f$ 
 (ie. \f$ P, Q, R \f$ are counter-clockwise oriented)  
 - strictly negative if \f$ R \f$ belongs to the open half-plane lying on the right of the oriented line \f$ (PQ) \f$
 (ie. \f$ P, Q, R \f$ are clockwise oriented)
 
+
 \subsection subsectmoduleGeometricPredicates11 Basic usage
 
 Let us assume that we are working with the following domain: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp DomainDefinition
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp DomainDefinition
 
-To determine the orientation of the three following points 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp ProblemStatement
+To determine the orientation of the three following points... 
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp ProblemStatement
 
-you must construct an orientation functor as follows: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorDefinition
+...you must construct an orientation functor as follows: 
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition
 
 Then, you can adapt this functor in order to get a predicate: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp PredicateDefinition
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp PredicateDefinition
 
 The default behavior of PredicateFromOrientationFunctor2 is to return 'true' for 
 strictly positive functor values. 
 
 The test can be done in one or two separate steps as follows: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorInitialization
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp PredicateUsage
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorInitialization
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp PredicateUsage
 
 
-\note This small example, which may be found in exampleOrientationFunctors2.cpp, 
+\note This small example, which may be found in exampleInHalfPlane.cpp, 
 requires the following headers: 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorIncludes
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorIncludes
 
 
 \subsection subsectmoduleGeometricPredicates12 List of available functors
 
 Two useful classes have been implemented: 
- - OrientationFunctor2BySimpleMatrix, an orientation functor based on the determinant of a 3x3 matrix:
+ - InHalfPlaneBySimpleMatrix, an orientation functor based on the determinant of a 3x3 matrix:
 
    \f$ 
    \begin{vmatrix}
@@ -81,7 +141,7 @@ Two useful classes have been implemented:
    \end{vmatrix} 
    \f$
  
- - OrientationFunctor2By2x2DetComputer, an orientation functor that reduces the computation to 
+ - InHalfPlaneBy2x2DetComputer, an orientation functor that reduces the computation to 
    the determinant of a 2x2 matrix: 
 
    \f$ 
@@ -91,64 +151,64 @@ Two useful classes have been implemented:
    \end{vmatrix} 
    \f$
 
-   OrientationFunctor2By2x2DetComputer delegates the computation of this determinant to a model of C2x2DetComputer.  
+   InHalfPlaneBy2x2DetComputer delegates the computation of this determinant to a model of C2x2DetComputer.  
    - Simple2x2DetComputer, which merely computes \f$ (Q_x - P_x)(R_y - P_y) - (Q_y - P_y)(R_x - P_x) \f$.  
    - AvnaimEtAl2x2DetSignComputer, an implementation of [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997]
-     that returns the sign of the determinant without increasing the size of the entries. 
+     that returns the sign of the determinant without increasing the size of the matrix entries. 
    - Filtered2x2DetComputer, which is a lazy adapter of any other determinant computer: the adaptee is only used 
      for determinants close to zero. 
 
 All these implementations return an exact value (or sign), provided that 
 the result type is well chosen with respect to the coordinates of the points. 
 
-Let \f$ x \f$ and \f$ y \f$ be two \f$ b \f$-bits integers. 
-The sum \f$ x+y \f$ may require \f$ b+1 \f$ bits and the product 
-\f$ xy \f$ may require \f$ 2b \f$ bits. 
-Consequently, we can determine the number of bits required for the computation.  
+Let \f$ x \f$ and \f$ x' \f$ be respectively \f$ b \f$-bits and \f$ b' \f$-bits integers. 
+The sum \f$ x+x' \f$ may require \f$ \max(b,b')+1 \f$ bits and the product 
+\f$ xx' \f$ may require \f$ b+b' \f$ bits. 
+Consequently, we can determine the number of bits required for the different computations.  
 If the coordinates of the points are \f$ b \f$-bits integers, 
-both OrientationFunctor2BySimpleMatrix 
-and OrientationFunctor2By2x2DetComputer with Simple2x2DetComputer
+both InHalfPlaneBySimpleMatrix 
+and InHalfPlaneBy2x2DetComputer with Simple2x2DetComputer
 may return determinant values of \f$ 2b + 3 \f$ bits. 
-However, OrientationFunctor2By2x2DetComputer with AvnaimEtAl2x2DetSignComputer
+However, InHalfPlaneBy2x2DetComputer with AvnaimEtAl2x2DetSignComputer
 only require integers of \f$ b+1 \f$ bits. 
 
 \subsection subsectmoduleGeometricPredicates13 How to avoid overflows ?
 
 For coordinates of \f$ 30 \f$ bits, lying within the range \f$ ]2^{30}; 2^{30}[ \f$, 
-we recommand to use OrientationFunctor2BySimpleMatrix with DGtal::int64_t as result type. 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorDefinition30
+we recommand to use InHalfPlaneBySimpleMatrix with DGtal::int64_t as result type. 
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition30
 
 For coordinates of \f$ 52 \f$ bits, lying within the range \f$ ]2^{52}; 2^{52}[ \f$, 
-we recommand to use OrientationFunctor2By2x2DetComputer with a lazy implementation of 
+we recommand to use InHalfPlaneBy2x2DetComputer with a lazy implementation of 
 [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997] using the \f$ 53 \f$ bits of 
 the mantissa of the double-precision floating-point data type. 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorDefinition52
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition52
 
 For coordinates of \f$ 62 \f$ bits, lying within the range \f$ ]-2^{62}; 2^{62}[ \f$, 
-we recommand to use OrientationFunctor2By2x2DetComputer with an implementation of 
+we recommand to use InHalfPlaneBy2x2DetComputer with an implementation of 
 [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997] using DGtal::int64_t as 
 a working type. 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorDefinition62
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition62
 
-For greater coordinates, we recommand to use OrientationFunctor2By2x2DetComputer
+For greater coordinates, we recommand to use InHalfPlaneBy2x2DetComputer
 together with Simple2x2DetComputer using DGtal::BigInteger as integral types (WITH_GMP ON). 
-@snippet geometry/tools/determinant/exampleOrientationFunctors2.cpp FunctorDefinition62plus
+@snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition62plus
 
 \subsection subsectmoduleGeometricPredicates14 Benchmark
 
 Experimental tests justify the above recommendations. 
-In testOrientationFunctors2-benchmark.cpp, we compare several methods: 
-- `3x3` : OrientationFunctor2BySimpleMatrix
-- `2x2` : OrientationFunctor2By2x2DetComputer with Simple2x2DetComputer
-- `2x2-avnaim` : OrientationFunctor2By2x2DetComputer with AvnaimEtAl2x2DetSignComputer
-- `2x2-avnaim++` : a combination of OrientationFunctor2By2x2DetComputer, Filtered2x2DetComputer 
+In testInHalfPlane-benchmark.cpp, we compare several methods: 
+- `3x3` : InHalfPlaneBySimpleMatrix
+- `2x2` : InHalfPlaneBy2x2DetComputer with Simple2x2DetComputer
+- `2x2-avnaim` : InHalfPlaneBy2x2DetComputer with AvnaimEtAl2x2DetSignComputer
+- `2x2-avnaim++` : a combination of InHalfPlaneBy2x2DetComputer, Filtered2x2DetComputer 
 and AvnaimEtAl2x2DetSignComputer 
 
 Input and output types follow the name of the method. For instance, the `3x3-int32-int64`-method
 runs on coordinates of type DGtal::int32_t and return a determinant of type DGtal::int64_t.  
  
 We runned all the above methods on a laptop (Intel core i5 2.50GHz, 4GB RAM) with Ubuntu 12.04. 
-testOrientationFunctors2-benchmark.cpp was compiled in Release mode with gcc 4.6.3. 
+testInHalfPlane-benchmark.cpp was compiled in Release mode with gcc 4.6.3. 
 
 We performed 1 million orientation tests 
 on five different kinds of inputs:   
@@ -220,8 +280,6 @@ If this implementation is available on your system, you should use
 `2x2-avnaim++-int64-longdouble` in order to perform faster computations
 in the case of (quasi)-collinear (but not confunded) points (columns 4 and 5). 
 
-
-<!-- CValue -->
 
 <!-- \section sectmoduleGeometricPredicates2 Incircle test -->
 
