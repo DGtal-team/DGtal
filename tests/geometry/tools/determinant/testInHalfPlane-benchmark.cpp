@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testOrientationFunctors2-benchmark.cpp
+ * @file testInHalfPlane-benchmark.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -41,8 +41,8 @@
 #include "DGtal/geometry/tools/determinant/Filtered2x2DetComputer.h"
 
 #include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2By2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2BySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBy2x2DetComputer.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -516,7 +516,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-int32-int64 "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl; 
   }
@@ -524,7 +524,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-inc-int32-int64 "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl;   
   }
@@ -533,7 +533,7 @@ bool incTestComparison()
     std::cout << "2x2-avnaim++-int32-double "; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, FDetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> F; 
     incTest( F() );
     std::cout << std::endl;   
   }
@@ -542,7 +542,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-int32-BigInt "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl; 
   }
@@ -550,7 +550,7 @@ bool incTestComparison()
     srand(seed); 
     std::cout << "2x2-inc-int32-BigInt "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     incTest( F() );
     std::cout << std::endl;   
   }
@@ -579,7 +579,7 @@ bool randomTest30All()
   {
     srand(seed); 
     std::cout << "3x3-int32-int64 "; 
-    typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::int64_t> F; 
+    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int64_t> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -591,7 +591,7 @@ bool randomTest30All()
   { 
     srand(seed); 
     std::cout << "3x3-int32-BigInt "; 
-    typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -604,7 +604,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-int32-int64 "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -617,7 +617,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-int32-BigInt "; 
     typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -630,7 +630,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-inc-int32-int64 "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -643,7 +643,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-inc-int32-BigInt "; 
     typedef SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -656,7 +656,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-avnaim-int32-int32 "; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int32_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -668,7 +668,7 @@ bool randomTest30All()
     srand(seed); 
     std::cout << "2x2-avnaim-int32-double "; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -681,7 +681,7 @@ bool randomTest30All()
     std::cout << "2x2-avnaim++-int32-double "; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, FDetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomInt30 );
     nullSameVectorsTest( F(), signedRandomInt30 );
     nullZeroVectorTest( F(), signedRandomInt30 ); 
@@ -714,7 +714,7 @@ bool randomTest52All()
     srand(seed); 
     std::cout << "3x3-double-BigInt ";  
     typedef PointVector<2, double> Point; 
-    typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -727,7 +727,7 @@ bool randomTest52All()
     std::cout << "2x2-double-BigInt "; 
     typedef PointVector<2, double> Point; 
     typedef Simple2x2DetComputer<double, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -740,7 +740,7 @@ bool randomTest52All()
     std::cout << "2x2-inc-double-BigInt "; 
     typedef PointVector<2, double> Point; 
     typedef SimpleIncremental2x2DetComputer<double, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -754,7 +754,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-int64-int64 "; 
     typedef PointVector<2, DGtal::int64_t> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt52 );
     nullSameVectorsTest( F(), signedRandomInt52 );
     nullZeroVectorTest( F(), signedRandomInt52 ); 
@@ -767,7 +767,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-double-int64 "; 
     typedef PointVector<2, double> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -780,7 +780,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-int64-double "; 
     typedef PointVector<2, DGtal::int64_t> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt52 );
     nullSameVectorsTest( F(), signedRandomInt52 );
     nullZeroVectorTest( F(), signedRandomInt52 ); 
@@ -793,7 +793,7 @@ bool randomTest52All()
     std::cout << "2x2-avnaim-double-double "; 
     typedef PointVector<2, double> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -807,7 +807,7 @@ bool randomTest52All()
     typedef PointVector<2, DGtal::int64_t> Point;  
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, FDetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomInt52 );
     nullSameVectorsTest( F(), signedRandomInt52 );
     nullZeroVectorTest( F(), signedRandomInt52 ); 
@@ -821,7 +821,7 @@ bool randomTest52All()
     typedef PointVector<2, double> Point;  
     typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, FDetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomDouble52 );
     nullSameVectorsTest( F(), signedRandomDouble52 );
     nullZeroVectorTest( F(), signedRandomDouble52 ); 
@@ -854,7 +854,7 @@ bool randomTest62All()
     srand(seed); 
     std::cout << "3x3-BigInt-BigInt ";  
     typedef PointVector<2, DGtal::BigInteger> Point; 
-    typedef OrientationFunctor2BySimpleMatrix<Point, DGtal::BigInteger> F; 
+    typedef InHalfPlaneBySimpleMatrix<Point, DGtal::BigInteger> F; 
     randomTest( F(), signedRandomBigInt62 );
     nullSameVectorsTest( F(), signedRandomBigInt62 );
     nullZeroVectorTest( F(), signedRandomBigInt62 ); 
@@ -867,7 +867,7 @@ bool randomTest62All()
     std::cout << "2x2-BigInt-BigInt "; 
     typedef PointVector<2, DGtal::BigInteger> Point; 
     typedef Simple2x2DetComputer<DGtal::BigInteger, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomBigInt62 );
     nullSameVectorsTest( F(), signedRandomBigInt62 );
     nullZeroVectorTest( F(), signedRandomBigInt62 ); 
@@ -880,7 +880,7 @@ bool randomTest62All()
     std::cout << "2x2-inc-BigInt-BigInt "; 
     typedef PointVector<2, DGtal::BigInteger> Point; 
     typedef SimpleIncremental2x2DetComputer<DGtal::BigInteger, DGtal::BigInteger> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomBigInt62 );
     nullSameVectorsTest( F(), signedRandomBigInt62 );
     nullZeroVectorTest( F(), signedRandomBigInt62 ); 
@@ -894,7 +894,7 @@ bool randomTest62All()
     std::cout << "2x2-avnaim-int64-int64 "; 
     typedef PointVector<2, DGtal::int64_t> Point; 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, DetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
     randomTest( F(), signedRandomInt62 );
     nullSameVectorsTest( F(), signedRandomInt62 );
     nullZeroVectorTest( F(), signedRandomInt62 ); 
@@ -908,7 +908,7 @@ bool randomTest62All()
     typedef PointVector<2, DGtal::int64_t> Point;  
     typedef AvnaimEtAl2x2DetSignComputer<long double> DetComputer; 
     typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-    typedef OrientationFunctor2By2x2DetComputer<Point, FDetComputer> F; 
+    typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> F; 
     randomTest( F(), signedRandomInt62 );
     nullSameVectorsTest( F(), signedRandomInt62 );
     nullZeroVectorTest( F(), signedRandomInt62 ); 
@@ -925,7 +925,7 @@ bool randomTest62All()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class OrientationFunctors-benchmark" );
+  trace.beginBlock ( "Testing class InHalfPlane-benchmark" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];

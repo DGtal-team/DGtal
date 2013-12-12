@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file RadiusFunctor2.h
+ * @file RadiusFunctor.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/10
  *
- * Header file for module RadiusFunctor2.cpp
+ * Header file for module RadiusFunctor.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(RadiusFunctor2_RECURSES)
-#error Recursive header files inclusion detected in RadiusFunctor2.h
-#else // defined(RadiusFunctor2_RECURSES)
+#if defined(RadiusFunctor_RECURSES)
+#error Recursive header files inclusion detected in RadiusFunctor.h
+#else // defined(RadiusFunctor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define RadiusFunctor2_RECURSES
+#define RadiusFunctor_RECURSES
 
-#if !defined RadiusFunctor2_h
+#if !defined RadiusFunctor_h
 /** Prevents repeated inclusion of headers. */
-#define RadiusFunctor2_h
+#define RadiusFunctor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,7 +51,7 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class RadiusFunctor2
+  // template class RadiusFunctor
   /**
    * \brief Aim: This class implements an orientation functor that  
    * provides a way to determine the position of a given point with 
@@ -95,7 +95,7 @@ namespace DGtal
    ...
    typedef Z2i::Point Point; 
    typedef Simple2x2DetComputer<Z2i::BigInteger> DeterminantComputer; 
-   typedef RadiusFunctor2<Point, DeterminantComputer> Functor; 
+   typedef RadiusFunctor<Point, DeterminantComputer> Functor; 
 
    Functor functor(true, 25, 1); //circles of radius 5, directly oriented 
    functor.init( Point(5,0), Point(0,5) ); 
@@ -108,7 +108,7 @@ namespace DGtal
    * @tparam TDetComputer a model of C2x2DetComputer
    */
   template <typename TPoint, typename TDetComputer>
-  class RadiusFunctor2
+  class RadiusFunctor
   {
     // ----------------------- Inner types ------------------------------------
   public:
@@ -116,6 +116,20 @@ namespace DGtal
      * Type of input points
      */
     typedef TPoint Point; 
+
+    /**
+     * Type of point array
+     */
+    typedef boost::array<Point,2> PointArray;
+    /**
+     * Type used to represent the size of the array
+     */
+    typedef typename PointArray::size_type SizeArray; 
+    /**
+     * static size of the array, ie. 2
+     */
+    static const SizeArray size = PointArray::static_size; 
+
     /**
      * Type of determinant computer
      */
@@ -155,7 +169,7 @@ namespace DGtal
      * negative, we take their opposite. It @a aDen2 is zero, the 
      * radius is assumed to tend to infinite. 
      */
-    RadiusFunctor2(bool isPositive = true, 
+    RadiusFunctor(bool isPositive = true, 
 		   const Integer& aNum2 = NumberTraits<Integer>::ONE, 
 		   const Integer& aDen2 = NumberTraits<Integer>::ZERO);
 
@@ -163,14 +177,14 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    RadiusFunctor2 ( const RadiusFunctor2 & other );
+    RadiusFunctor ( const RadiusFunctor & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    RadiusFunctor2 & operator= ( const RadiusFunctor2 & other );
+    RadiusFunctor & operator= ( const RadiusFunctor & other );
 
     /**
      * Initialization from two points.
@@ -180,8 +194,14 @@ namespace DGtal
     void init( const Point& aP, const Point& aQ ); 
 
     /**
+     * Initialisation from two points. 
+     * @param aA array of two points
+     */
+    void init(const PointArray& aA);
+
+    /**
      * Main operator.
-     * @warning RadiusFunctor2By2x2DetComputer::init() should be called before
+     * @warning RadiusFunctorBy2x2DetComputer::init() should be called before
      * @param aR any point to test
      * @return orientation of the third points @a myR with respect to the circle
      * of squared radius @a myNum2 / @a myDen2 , passing by @a myP and @a myQ
@@ -190,7 +210,7 @@ namespace DGtal
      * - strictly positive if @a myR does not lie in the interior or on the boundary 
      * of the circle 
      * - striclty negative if @a myR lies in the interior of the circle
-     * @see RadiusFunctor2By2x2DetComputer::init()
+     * @see RadiusFunctorBy2x2DetComputer::init()
      */
     Value operator()( const Point& aR ) const; 
 
@@ -305,30 +325,30 @@ namespace DGtal
      */
     mutable AreaFunctor myAreaFunctor; 
 
-  }; // end of class RadiusFunctor2
+  }; // end of class RadiusFunctor
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'RadiusFunctor2'.
+   * Overloads 'operator<<' for displaying objects of class 'RadiusFunctor'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'RadiusFunctor2' to write.
+   * @param object the object of class 'RadiusFunctor' to write.
    * @return the output stream after the writing.
    */
   template <typename TPoint, typename TDetComputer>
   std::ostream&
-  operator<< ( std::ostream & out, const RadiusFunctor2<TPoint, TDetComputer> & object );
+  operator<< ( std::ostream & out, const RadiusFunctor<TPoint, TDetComputer> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/tools/determinant/RadiusFunctor2.ih"
+#include "DGtal/geometry/tools/determinant/RadiusFunctor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined RadiusFunctor2_h
+#endif // !defined RadiusFunctor_h
 
-#undef RadiusFunctor2_RECURSES
-#endif // else defined(RadiusFunctor2_RECURSES)
+#undef RadiusFunctor_RECURSES
+#endif // else defined(RadiusFunctor_RECURSES)
