@@ -52,7 +52,7 @@ namespace DGtal
 // class HDF5Reader
 /**
  * Description of class 'HDF5Reader' <p>
- * \brief Aim: Import a HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
+ * \brief Aim: Import a HDF5 file.
  *
  * @tparam TImageContainer the image container to use. 
  * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>). 
@@ -65,22 +65,28 @@ namespace DGtal
   public:
 
     typedef TImageContainer ImageContainer;
+    typedef TImageContainer OutputImage;
+    typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Domain::Vector Vector;
     typedef typename TImageContainer::Value Value;    
     typedef TFunctor Functor;
     
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;       
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) );
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
+    
+    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
+                         (ImageContainer::Domain::dimension == 3));
 
     /** 
-     * Main method to import a HDF5 image file into an instance of the 
-     * template parameter ImageContainer.
+     * Main method to import a HDF5 image file with 2D image dataset(s)
+     * (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL)
+     * into an instance of the template parameter ImageContainer.
      * 
-     * @param aFilename the dataset name to import.
+     * @param aFilename the file name to import.
+     * @param aDataset the dataset name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to CastFunctor < TImageContainer::Value > .
+     * default set to CastFunctor < TImageContainer::Value >.
      * @param topbotomOrder
      * if true, the point of coordinate (0,0) will be the bottom left
      * corner image point (default) else the center of image
@@ -88,8 +94,24 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      *
      */
-    static  ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
+    static ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
 				      const Functor & aFunctor =  Functor(), bool topbotomOrder = true) throw(DGtal::IOException);
+                                      
+                                      
+    /** 
+     * Main method to import a HDF5 image file with 3D UInt8 image dataset(s)
+     * into an instance of the template parameter ImageContainer.
+     * 
+     * @param aFilename the file name to import.
+     * @param aDataset the dataset name to import.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to CastFunctor < TImageContainer::Value >.
+     * @return an instance of the ImageContainer.
+     *
+     */
+    static ImageContainer importHDF5_3D(const std::string & aFilename, const std::string & aDataset,
+                                      const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
     
  }; // end of class  HDF5Reader
 

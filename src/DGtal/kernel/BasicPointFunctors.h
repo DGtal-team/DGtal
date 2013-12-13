@@ -47,6 +47,10 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/base/CQuantity.h"
+#include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/base/ConstAlias.h"
 #ifdef CPP11_ARRAY
 #include <array>
 #else
@@ -112,7 +116,7 @@ namespace DGtal
     
     typedef S Space; 
     typedef typename Space::Dimension Dimension;
-    static const Dimension dimension;
+    BOOST_STATIC_CONSTANT( Dimension, dimension = Space::dimension );
     typedef typename Space::Integer Integer; 
     typedef typename Space::Point Point; 
 
@@ -161,9 +165,9 @@ namespace DGtal
      * the input point to its projection (order matters)
      */
 #ifdef CPP11_ARRAY
-    std::array<Dimension, Space::dimension> myDims; 
+    std::array<Dimension, dimension> myDims; 
 #else
-    boost::array<Dimension, Space::dimension> myDims; 
+    boost::array<Dimension, dimension> myDims; 
 #endif
     /**
      * Default integer set to coordinates of the projected point
@@ -386,7 +390,7 @@ namespace DGtal
      * @param aDomain3DImg  the 3D domain used to keep the resulting point in the domain. 
      * @param anOriginPoint the center point given in the 3D domain. 
      * @param anNormalVector the normal vector to the 2d domain embedded in 3D. 
-     * @param anWidth the width to determine the 2d domain bounds.
+     * @param anWidth the width to determine the 2d domain bounds (the resulting 2d domain will be a square of length anWidth).
      * @param aDefautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
      *
      */
@@ -403,16 +407,24 @@ namespace DGtal
         pRefOrigin [0]= -d/anNormalVector[0];
         pRefOrigin [1]= 0.0;
         pRefOrigin [2]= 0.0;
+        if(pRefOrigin==anOriginPoint){
+          pRefOrigin[1]=-1.0;
+        }
       }else if (anNormalVector[1]!=0){
         pRefOrigin [0]= 0.0;
         pRefOrigin [1]= -d/anNormalVector[1];
         pRefOrigin [2]= 0.0;
+        if(pRefOrigin==anOriginPoint){
+          pRefOrigin[0]=-1.0;
+        }
       }else if (anNormalVector[2]!=0){
         pRefOrigin [0]= 0.0;
         pRefOrigin [1]= 0.0;
         pRefOrigin [2]= -d/anNormalVector[2];
+        if(pRefOrigin==anOriginPoint){
+          pRefOrigin[0]=-1.0;
+        }
       }
-
       typename Space::RealPoint uDir1;
       uDir1=(pRefOrigin-anOriginPoint)/((pRefOrigin-anOriginPoint).norm());
       typename Space::RealPoint uDir2;
@@ -422,7 +434,7 @@ namespace DGtal
       
       uDir2/=uDir2.norm();
 
-      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth + uDir2*anWidth;
+      myOriginPointEmbeddedIn3D = anOriginPoint + uDir1*anWidth/2 + uDir2*anWidth/2;
       myFirstAxisEmbeddedDirection = -uDir1;
       mySecondAxisEmbeddedDirection = -uDir2;
       
@@ -439,7 +451,7 @@ namespace DGtal
      */
     template <typename TPoint2D>
     inline
-    Point  operator()(const TPoint2D& aPoint) const
+    Point  operator()(const TPoint2D& aPoint, bool chechInsideDomain=true) const
     {
       Point pt = myOriginPointEmbeddedIn3D;
       for( Dimension i=0; i<pt.size(); i++){
@@ -447,10 +459,17 @@ namespace DGtal
         pt[i] = pt[i]+aPoint[1]*mySecondAxisEmbeddedDirection[i];
       }
 
-      if(myDomain.isInside(pt))
-        return pt;
+      if(myDomain.isInside(pt)|| !chechInsideDomain)
+        {          
+          return pt;
+        }
       else
-        return  myDefaultPoint;
+        {
+#ifdef DEBUG_VERBOSE
+          trace.warning() << "Warning pt outside the 3D domain " << pt << std::endl;
+#endif
+          return  myDefaultPoint;
+        }
     }
 
   private:
@@ -470,6 +489,55 @@ namespace DGtal
   };
 
 
+  /**
+   * \brief Create a point functor from a point predicate and a domain.
+   */
+  template< typename TPointPredicate, typename TDomain, typename TValue=DGtal::int32_t >
+  struct PointFunctorFromPointPredicateAndDomain
+  {
+      typedef TPointPredicate PointPredicate;
+      typedef TDomain Domain;
+      typedef TValue Value;
+      typedef typename Domain::Point Point;
+
+      BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+      BOOST_CONCEPT_ASSERT(( CDomain< Domain > ));
+      BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
+
+      /**
+       * @brief Constructor.
+       * @param[in] aPtrPredicate a predicate on digital point
+       * @param[in] aDomain a domain on digital point
+       * @param[in] aTrueValue the returned value when a given point is inside the domain and when the predicate return true
+       * @param[in] aFalseValue the returned value when a given point is outside the domain or when the predicate return false
+       */
+      PointFunctorFromPointPredicateAndDomain( ConstAlias< PointPredicate > aPtrPredicate, ConstAlias< Domain > aDomain,
+                                               const Value aTrueValue, const Value aFalseValue );
+
+      PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other  );
+
+      /**
+       * @brief operator ()
+       * @param[in] aPoint evaluated digital point.
+       * @return aTrueValue when aPoint is inside the domain and when the predicate return true, aFalseValue else.
+       */
+      Value operator()( const Point& aPoint ) const;
+
+      /**
+         * Assignment.
+         * @param other the object to copy.
+         * @return a reference on 'this'.
+         * Forbidden by default.
+         */
+      PointFunctorFromPointPredicateAndDomain & operator= ( const PointFunctorFromPointPredicateAndDomain & other );
+
+  private:
+      const PointPredicate * myPtrPredicate;
+      const Domain * myDomain;
+      Value myTrueValue;
+      Value myFalseValue;
+
+  };
 
 } // namespace dgtal
 

@@ -771,14 +771,14 @@ public:
    *  
    * @return 'true' if yes, 'false' otherwise.
    */
-  bool isExtendableForward();
+  bool isExtendableFront();
   
   /**
    * Tests whether the FrechetShortcut can be extended at the front.
    * Extend the FrechetShortcut if yes.
    * @return 'true' if yes, 'false' otherwise.
    */
-  bool extendForward();
+  bool extendFront();
     
   
   // ---------------------------- Accessors ----------------------------------

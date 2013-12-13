@@ -139,9 +139,9 @@ bool testProjector()
   //Point2DEmbedderIn3D (constructor from normal point)
   PointVector<3,int> pt2Origin3D(5,5,3);
   Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder2(domain,
-									pt2Origin3D,
-									PointVector<3,int>(0,0,3),
-									 2); 
+                                                                         pt2Origin3D,
+                                                                         PointVector<3,int>(0,0,3),
+									 4); 
   PointVector<2, int> pt2b(0, 0);  
   PointVector<2, int> pt2_2b(2, 2);  
     trace.info() << "pt " << pt2b << " => " << embedder2(pt2b) << " == " << PointVector<3,int>(3,5,3) << std::endl;

@@ -62,7 +62,7 @@ using namespace DGtal;
    @param map (modified) the mapping configuration -> bool.
 */
 template <typename Object, typename Map>
-void 
+void
 generateSimplicityTable( const typename Object::DigitalTopology & dt,
 			 Map & map )
 {
@@ -111,12 +111,12 @@ generateSimplicityTable( const typename Object::DigitalTopology & dt,
    @tparam Map the type used to store the mapping configuration -> bool.
 
    @param board (updated) the board where the tables are displayed.
-   @param dt an instance of the digital topology.
+   UNUSED_PARAM dt an instance of the digital topology.
    @param map the mapping configuration -> bool.
 */
 template <typename Object, typename Map>
-void 
-displaySimplicityTable( Board2D & board, 
+void
+displaySimplicityTable( Board2D & board,
 			const typename Object::DigitalTopology & /*dt*/,
 			const Map & map )
 {
@@ -141,31 +141,31 @@ displaySimplicityTable( Board2D & board,
 	bool simple = map[ cfg ];
 	Point base( x*4, y*4 );
 	unsigned int mask = 1;
-	for ( DomainConstIterator it = domain.begin(); 
+	for ( DomainConstIterator it = domain.begin();
 	      it != domain.end(); ++it )
 	  {
 	    Point q = base + (*it);
 	    if ( *it == c )
-	      board << CustomStyle( q.className(), 
-				    new CustomColors( Color( 0, 0, 0 ), 
+	      board << CustomStyle( q.className(),
+				    new CustomColors( Color( 0, 0, 0 ),
 						      Color( 30, 30, 30 ) ) );
-	    else 
+	    else
 	      {
-		if ( cfg & mask ) 
-		  board << 
-		    CustomStyle( q.className(), 
-				 simple 
-				 ? new CustomColors( Color( 0, 0, 0 ), 
+		if ( cfg & mask )
+		  board <<
+		    CustomStyle( q.className(),
+				 simple
+				 ? new CustomColors( Color( 0, 0, 0 ),
 						     Color( 10, 255, 10 ) )
-				 : new CustomColors( Color( 0, 0, 0 ), 
+				 : new CustomColors( Color( 0, 0, 0 ),
 						     Color( 255, 10, 10 ) ) );
 		else
-		  board << 
-		    CustomStyle( q.className(), 
-				 simple 
-				 ? new CustomColors( Color( 0, 0, 0 ), 
+		  board <<
+		    CustomStyle( q.className(),
+				 simple
+				 ? new CustomColors( Color( 0, 0, 0 ),
 						     Color( 245, 255, 245 ) )
-				 : new CustomColors( Color( 0, 0, 0 ), 
+				 : new CustomColors( Color( 0, 0, 0 ),
 						     Color( 255, 245, 245 ) ) );
 		mask <<= 1;
 	      }
@@ -178,7 +178,7 @@ displaySimplicityTable( Board2D & board,
    Output simplicity configuration table as a C(++) array.
 */
 template <typename Map>
-void 
+void
 outputTableAsArray( ostream & out,
 		    const Map & map,
 		    const string & tableName )

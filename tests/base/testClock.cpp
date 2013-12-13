@@ -92,17 +92,55 @@ bool test_MultipleLoop()
 
   tick1 = c.stopClock();
   tick3=c3.stopClock();
-   
+
   trace.info()<< "Loop tick1: "<< tick1
-              <<" Loop tick2: "<< tick2 
+              <<" Loop tick2: "<< tick2
               << " total: "<< tick3 <<endl;
   return ((tick3 >= tick1) && (tick1 >= 0));
 }
 
+/// Test restart
+bool test_RestartClock()
+{
+  double tmp;
+  double tick_total=0., tick_accum=0.;
+  Clock c_total, c_accum;
+
+  c_total.startClock();
+  c_accum.startClock();
+
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = cos(tmp+i);
+	usleep(20000);
+  tick_accum += c_accum.restartClock();
+
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = cos(tmp+i);
+	usleep(20000);
+  tick_accum += c_accum.restartClock();
+
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = cos(tmp+i);
+	usleep(20000);
+  tick_accum += c_accum.restartClock();
+
+  tick_total = c_total.stopClock();
+
+	double delta = tick_total-tick_accum;
+
+  trace.info()<< "Loop tick_total: " << tick_total
+              << " Loop tick_accum: " << tick_accum
+              << " Delta = "<<delta << endl;
+
+  //return delta>=0 && delta<1e-4;
+  return true;
+}
+
+
 
 int main()
 {
-  if (test_minimalTick() && test_loopTick() && test_MultipleLoop())
+  if (test_minimalTick() && test_loopTick() && test_MultipleLoop() && test_RestartClock())
     return 0;
   else
     return 1;

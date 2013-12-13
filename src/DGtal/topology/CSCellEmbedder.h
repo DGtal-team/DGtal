@@ -80,6 +80,7 @@ It adds inner types to functor.
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 |Apply function|\e x(\e p)|              | \e Value      |              | return the value of the function \t x on argument \t p | | |
+|Khalimsky space |\e x.space())|              | const \e KSpace &     |              | return a reference to the the Kalimsky space | | |
 
 ### Invariants
 
@@ -110,16 +111,18 @@ public:
   {
     checkConstConstraints();
   }
-  
+
   void checkConstConstraints() const
   { // operator()
     ConceptUtils::sameType( myRP, myX( myP ) );
+    ConceptUtils::sameType( myK, myX.space() );
   }
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   SCell myP;
   RealPoint myRP;
+  const KSpace myK;
 
     // ------------------------- Internals ------------------------------------
 private:
