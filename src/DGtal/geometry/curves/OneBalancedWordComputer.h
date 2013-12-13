@@ -52,6 +52,7 @@
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/geometry/curves/ArithmeticalDSL.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -113,6 +114,8 @@ namespace DGtal
       //The basic steps associate to the codes are given by a function `f: Code -> Vector` 
       typedef Vector (*DisplacementFct) (Code);
 
+      //DSL
+      typedef ArithmeticalDSL<TInteger, TInteger, 4> DSL; 
 
     private :
       /**
@@ -263,9 +266,9 @@ namespace DGtal
 
           /**
            * Initialization constructor.
-           * @param Index of the first letter.
-           * @param OneBalancedWordComputer on which the iterator is defined.
-           * @param Starting point of the iterator.
+           * @param dss OneBalancedWordComputer on which the iterator is defined.
+           * @param ind Index of the first letter.
+           * @param pt starting point of the iterator.
            */
           ConstPointIterator( const OneBalancedWordComputer * dss, Index ind, Point pt ) :
             myDSS(dss), i(ind), p(pt) 
@@ -395,9 +398,9 @@ namespace DGtal
        * By default, displacements are defined as : 
        * '0' -> (1,0), '1' -> (0,1), '2' -> (-1,0), '3' -> (0,-1)
        *
-       * @param itFirst the first code to include in the DSS.
-       * @oaram start the position where the DSS starts.
-       * @param displacement, the function that defines displacement vectors
+       * @param it the first code to include in the DSS.
+       * @param start the position where the DSS starts.
+       * @param displacements the function that defines displacement vectors
        * from codes.
        */
       void init( const ConstIterator & it, 
@@ -408,7 +411,7 @@ namespace DGtal
 
       /**
        * Initialize from a ConstPointIterator on a OneBalancedWordComputer.
-       * @param ConstPointIterator
+       * @param i any iterator
        */
       void init(const ConstPointIterator & i);
 
@@ -418,7 +421,7 @@ namespace DGtal
        * Note : to be used, this initialization method requires that the class
        * is templated by string::const_iterator.
        *
-       * @param FreemanChain on which is defined the DSS.
+       * @param fc FreemanChain on which is defined the DSS.
        */
       void init(const FreemanChainCode & fc);
 
@@ -428,20 +431,9 @@ namespace DGtal
        * Note : to be used, this initialization method requires that the class
        * is templated by string::const_iterator.
        *
-       * @param ConstIterator giving the letter to initialize the DSS with.
+       * @param it ConstIterator giving the letter to initialize the DSS with.
        */
       void init(const typename FreemanChainCode::ConstIterator & it);
-
-      ///**
-      // * Initialize from an array of codes.
-      // * @param a pointer to an array of codes.
-      // * @param the length of the code array.
-      // * @param the start position in 'theCode'.
-      // * @param the position of the starting point of the first code.
-      // * @param a function that returns the displacement vector of the codes.
-      // */
-      //void init(const Code * theCode, Size codeLength, Index firstLetter, const
-      //          Point & startPoint, Vector (*displacement) (Code) );
 
       /**
        * Copy constructor.
@@ -489,28 +481,28 @@ namespace DGtal
        *  
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool isExtendableForward();
+      bool isExtendableFront();
 
       /**
        * Tests whether the current DSS can be extended at the front.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendForward();
+      bool extendFront();
 
       /**
        * Tests whether the current DSS can be extended at the back.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendBackward();
+      bool extendBack();
 
       /**
        * Tests whether the current DSS can be extended at the back.
        *  
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool isExtendableBackward();
+      bool isExtendableBack();
 
       /**
        * Removes the first point of the DSS (at back). 
@@ -519,7 +511,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the first point is removed, 'false' otherwise.
        */
-      bool retractForward();
+      bool retractBack();
 
       /**
        * Removes the last point of the DSS (at front).
@@ -528,7 +520,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the last point is removed, 'false' otherwise.
        */
-      bool retractBackward();
+      bool retractFront();
 
       /**
        * Set the position of the first point of the DSS.
@@ -544,17 +536,16 @@ namespace DGtal
       void translate( const Vector & v );
 
       /**
-       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
-       * @param (returns) 'a' from the equation mu <= ax-by < mu + omega
-       * @param (returns) 'b' from the equation mu <= ax-by < mu + omega
-       * @param (returns) 'mu' from the equation mu <= ax-by < mu + omega
-       * @param (returns) 'omega' from the equation mu <= ax-by < mu + omega
+       * Computes the DSL of minimal parameters 
+       * bounding the corresponding DSS,  
+       * ie. \f$ 0 \leq ax - by + \mu < \omega \f$
+       * 
+       * @return the bounding DSL
        */
-      void getArithmeticalDescription( Integer &a, Integer &b, Integer
-          &mu, Integer &omega) const;
+      DSL getArithmeticalDescription() const;
 
       /**
-       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Computes the a-parameter of the bounding DSL.
        * Uses 'getArithmeticalDescription' so prefer this latter one if more
        * then one parameter is computed.
        *
@@ -563,7 +554,7 @@ namespace DGtal
       Integer getA() const;
 
       /**
-       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Computes the b-parameter of the bounding DSL.
        * Uses 'getArithmeticalDescription' so prefer this latter one if more
        * then one parameter is computed.
        * 
@@ -572,7 +563,7 @@ namespace DGtal
       Integer getB() const;
 
       /**
-       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Computes the intercept of the bounding DSL.
        * Uses 'getArithmeticalDescription' so prefer this latter one if more
        * then one parameter is computed.
        *
@@ -581,7 +572,7 @@ namespace DGtal
       Integer getMu() const;
 
       /**
-       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Computes the thickness of the bounding DSL.
        * Uses 'getArithmeticalDescription' so prefer this latter one if more
        * then one parameter is computed.
        *
@@ -594,16 +585,16 @@ namespace DGtal
        * Computes the remained of a point relatively to the arithmetical
        * description of the current DSS.
        * @param aPoint a point whose remainder is returned
-       * @returns the remaindre of aPoint
+       * @returns the remainder of @a aPoint
        */
-      Integer getRemainder(const Point & aPoint) const;
+      Integer remainder(const Point & aPoint) const;
 
       /**
        * Computes the leaning points of the DSS
-       * @param (returns) the first upper leaning point.
-       * @param (returns) the last upper leaning point.
-       * @param (returns) the first lower leaning point.
-       * @param (returns) the last lower leaning point.
+       * @param uf the (returned) first upper leaning point.
+       * @param ul the (returned) last upper leaning point.
+       * @param lf the (returned) first lower leaning point.
+       * @param ll the (returned) last lower leaning point.
        */
       void computeLeaningPoints( Point & uf, Point & ul, 
                                  Point & lf, Point & ll ) const;
@@ -615,7 +606,7 @@ namespace DGtal
        * leaning point is computed.
        * @return first upper leaning point.
        */
-      Point getUf() const;
+      Point Uf() const;
 
       /**
        * Accessor to the last upper leaning point
@@ -623,7 +614,7 @@ namespace DGtal
        * leaning point is computed.
        * @return last upper leaning point.
        */
-      Point getUl() const;
+      Point Ul() const;
 
       /**
        * Accessor to the first lower leaning point
@@ -631,7 +622,7 @@ namespace DGtal
        * leaning point is computed.
        * @return first lower leaning point.
        */
-      Point getLf() const;
+      Point Lf() const;
 
       /**
        * Accessor to the last lower leaning point
@@ -639,7 +630,7 @@ namespace DGtal
        * leaning point is computed.
        * @return last lower leaning point.
        */
-      Point getLl() const;
+      Point Ll() const;
 
       /**
        * Performs some basic tests to check the validity of the DSS. 
@@ -663,16 +654,9 @@ namespace DGtal
        * Computation time is O(k) where k is the number of
        * points included in the DSS.
        *
-       * @param aFC a FreemanChain.
+       * @param it a const iterator.
        *
        * @param aOA the ordered alphabet.
-       *
-       * @param len (returns) the number of points inserted in
-       * the DSS which is exacly the length of the Christoffel
-       * word read (with repetitions).
-       *
-       * @param s the position from where the FreemanCode is
-       * read (default value = 0).
        *
        * @return 'true' if the FreemanChain is coding a path
        * that is possibly digitally convex, 'false' if the
@@ -691,13 +675,13 @@ namespace DGtal
        * Accessor to the first added point to the DSS
        * @return point.
        */
-      Point getFirstPoint() const;
+      Point back() const;
 
       /**
        * Accessor to the last added point to the DSS
        * @return point.
        */
-      Point getLastPoint() const;
+      Point front() const;
 
       /**
        * Accessor to the first added point to the DSS
@@ -739,12 +723,6 @@ namespace DGtal
     protected:
       // ------------------------- Protected Datas ------------------------------
       
-      /**
-       * @no longer used
-       * Freeman chain on which is defined the CombinatarialDSS
-       */
-      //const FreemanChainCode * myFC;
-
       /**
        * The array of char on which is defined the OneBalancedWordComputer
        */
@@ -815,54 +793,54 @@ namespace DGtal
 
       /**
        * Returns the first letter of the main pattern.
-       * @returns the small letter over which the DSS is written.
+       * @return the small letter over which the DSS is written.
        */
       Code getSmallLetter() const;
 
       /**
        * Returns the last letter of the main pattern.
-       * @returns the big letter over which the DSS is written.
+       * @return the big letter over which the DSS is written.
        */
       Code getBigLetter() const;
 
       /** 
        * Get the code at a given index, if code at index 'pos' has not been read
        * yet, the input iterator will be used to access it.
-       * @param a position in the FreemanChain
-       * @returns the letter at the given position
+       * @param pos a position in the FreemanChain
+       * @return the letter at the given position
        */
       Code getCode(Index pos);
 
       /** 
        * Get the code at a given index.
-       * @param a position in the FreemanChain
-       * @returns the letter at the given position
+       * @param pos a position in the FreemanChain
+       * @return the letter at the given position
        */
       Code getCode(Index pos) const;
 
       /**
        * Computes the length of the main pattern.
-       * @returns the length of the main pattern
+       * @return the length of the main pattern
        */
       Size mainPatternLength() const;
 
       /**
        * Computes the vector defined by the main pattern.
-       * @returns the vector defined by the main pattern.
+       * @return the vector defined by the main pattern.
        */
       Vector mainPatternVector() const;
 
       /**
        * Computes the length of the suffix of the main pattern read before
        * it. 
-       * @returns the length of the suffix read.
+       * @return the length of the suffix read.
        */
       Size suffixLength() const;
 
       /**
        * Computes the length of the prefix of the main pattern read after
        * it. 
-       * @returns the length of the prefix read.
+       * @return the length of the prefix read.
        */
       Size prefixLength() const;
 
@@ -872,8 +850,8 @@ namespace DGtal
        * is such that the main pattern begins and ends on
        * upper leaning points.
        * NB: 'pos' must be between 'myPatternBegin' and 'myPatternEnd'
-       * @param the position of a letter in the main pattern of the DSS
-       * @returns 'true' if this letter is an "upper leaning point"
+       * @param pos the position of a letter in the main pattern of the DSS
+       * @return 'true' if this letter is an "upper leaning point"
        *   'false' otherwise.
        */
       bool isUL ( Index pos ) const;
@@ -884,8 +862,8 @@ namespace DGtal
        * such that the main pattern begins and ends on upper leaning
        * points.
        * NB: 'pos' must be between 'myPatternBegin' and 'myPatternEnd'
-       * @param the position of a letter in the main pattern of the DSS
-       * @returns 'true' if this letter leads to a "lower leaning point"
+       * @param pos the position of a letter in the main pattern of the DSS
+       * @return 'true' if this letter leads to a "lower leaning point"
        * 'false' otherwise.
        */
       bool nextIsLL ( Index pos ) const;
@@ -896,8 +874,8 @@ namespace DGtal
        * orientation is such that the main pattern begins and ends on
        * upper leaning points.
        * NB: 'pos' must be between 'myPatternBegin' and 'myPatternEnd'
-       * @param the position of a letter in the main pattern of the DSS
-       * @returns 'true' if this letter comes from a "lower leaning
+       * @param pos the position of a letter in the main pattern of the DSS
+       * @return 'true' if this letter comes from a "lower leaning
        * point" 'false' otherwise.
        */
       bool previousIsLL ( Index pos ) const;
@@ -905,14 +883,14 @@ namespace DGtal
       /**
        * Test if the DSS is a trivial one, that is a DSS with slope 0 or
        * infinite
-       * @returns 'true' is the DSS is trivial, 'false' otherwise.
+       * @return 'true' is the DSS is trivial, 'false' otherwise.
        */
       bool isTrivial() const;
 
       /**
        * Convert a code into vector.
-       * @param a code.
-       * @returns the vector defined by that code.
+       * @param c a code.
+       * @return the vector defined by that code.
        */
       Vector displacement( Code c ) const;
 
@@ -925,6 +903,7 @@ namespace DGtal
 
       /**
        * Default displacement vectors associated to codes.
+       * @param c either 0, 1, 2, or 3
        * 
        *        (1)
        *         ^
@@ -948,17 +927,16 @@ namespace DGtal
 
   }; // end of class OneBalancedWordComputer
 
-
   /**
-   * Overloads 'operator<<' for displaying objects of class 'OneBalancedWordComputer'.
+   * Overloads 'operator<<' for displaying objects of class 'OneBalancedWord'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'OneBalancedWordComputer' to write.
+   * @param object the object of class 'OneBalancedWord' to write.
    * @return the output stream after the writing.
    */
-  template <typename T1, typename T2>
+  template < typename TConstIterator, typename TInteger >
   std::ostream&
-  operator<< ( std::ostream & out, const OneBalancedWordComputer<T1,T2> & object );
-
+  operator<< ( std::ostream & out, 
+	       const OneBalancedWordComputer<TConstIterator, TInteger> & object ); 
 
 
 } // namespace DGtal

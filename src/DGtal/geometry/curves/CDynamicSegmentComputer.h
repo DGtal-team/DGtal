@@ -72,7 +72,7 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Retraction    |x.retractForward() |              |bool         |                  | returns 'tru' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise ||| 
+| Retraction    |x.retractBack() |              |bool         |                  | returns 'tru' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise ||| 
 
 
  ### Invariants###
@@ -91,7 +91,7 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
     // Methods
     BOOST_CONCEPT_USAGE( CDynamicSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.retractForward() );
+      ConceptUtils::sameType( myB, myX.retractBack() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

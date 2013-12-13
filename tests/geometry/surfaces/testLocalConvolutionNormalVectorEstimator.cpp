@@ -113,11 +113,11 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
 
     //Convolution kernel
-    ConstantConvolutionWeights< MyDigitalSurface::Size > kernel;
+    deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > kernel;
 
     //Estimator definition
-    typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-            ConstantConvolutionWeights< MyDigitalSurface::Size > > MyEstimator;
+    typedef deprecated::LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
+                                                  deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > > MyEstimator;
     MyEstimator myNormalEstimator ( digSurf, kernel );
 
     myNormalEstimator.init ( 1.0, 5 );
@@ -140,17 +140,17 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
         viewer.addLine ( center,
                          DGtal::Z3i::RealPoint(center[0]-3*normal[0],
 					       center[1]-3*normal[1],
-					       center[2]-3*normal[2]), 1.0 );
+					       center[2]-3*normal[2]) );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;
 
     //Convolution kernel
-    GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
+    deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
 
     //Estimator definition
-    typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-            GaussianConvolutionWeights< MyDigitalSurface::Size > > MyEstimatorGaussian;
+    typedef deprecated::LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
+                                                              deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > > MyEstimatorGaussian;
     MyEstimatorGaussian myNormalEstimatorG ( digSurf, Gkernel );
 
     myNormalEstimatorG.init ( 1.0, 15 );
@@ -171,7 +171,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
         viewer.addLine ( center,
                          DGtal::Z3i::RealPoint(center[0]-3*normal[0],
 					       center[1]-3*normal[1],
-					       center[2]-3*normal[2]), 1.0 );
+					       center[2]-3*normal[2]) );
     }
     viewer.setLineColor( lineColorSave);
     viewer<< Viewer3D<>::updateDisplay;

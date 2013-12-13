@@ -47,41 +47,25 @@ using namespace DGtal;
 bool testArithDSSIterator()
 {
   typedef PointVector<2,int> Point;
-  typedef ArithDSSIterator<int,8> myIterator;
-  //typedef std::vector<Point>::iterator Iterator;
+  typedef ArithDSSIterator<int,8> MyIterator;
   
   Point p(3,2);
-  myIterator it(2,5,-4,p);
+  MyIterator it(2,5,-4,p);
   
-  // while((*it)[0] != 25)
-  //   {
-  //     trace.info() << *it << endl;
-  //     ++it;
-  //   }
-  
-  typedef ArithmeticalDSSComputer<myIterator,int,8> ArithDSS;
+  typedef NaiveDSS8<int> ArithDSS;
 
-  ArithDSS myDSS(it);
+  ArithDSS myDSS(p, p);
 
   int absMax=8;
   
-  while ( (*(myDSS.end()))[0] <=absMax && myDSS.extendForward())
+  while ( (*it)[0] <=absMax && myDSS.extendFront(*++it))
     {}
   
-  std::cout << myDSS.getA() << " " << myDSS.getB() << " " << myDSS.getMu() << " " <<   std::endl; 
+  std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu() << " " <<   std::endl; 
   
-  
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return nbok == nb;
+  return ( (myDSS.a() == 2) &&
+	   (myDSS.b() == 5) &&
+	   (myDSS.mu() == -4) ); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////

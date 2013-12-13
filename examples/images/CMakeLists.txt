@@ -20,11 +20,16 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 
 SET(DGTAL_EXAMPLES_SRC
   exampleConstImageAdapter
-  exampleTiledImageFromImage
+  exampleTiledImage
   extract2DImagesFrom3D
   extract2DSlicesImagesFrom3D
 )
 
+if( WITH_HDF5 )
+  SET(DGTAL_EXAMPLES_SRC ${DGTAL_EXAMPLES_SRC} 
+  raw2HDF5
+  exampleImageFactoryFromHDF5)
+endif( WITH_HDF5 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})

@@ -6,7 +6,7 @@ namespace DGtal {
 
 /*!
 @page moduleIO Image and digital object import/export
-@authors David Coeurjolly and Bertrand Kerautret
+@authors David Coeurjolly, Bertrand Kerautret, Martial Tola, Pierre Gueth
 
 This part of the manual describes how to import and export images and main DGtal objects from/to various formats. 
 
@@ -88,6 +88,7 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |            | PPM3D   | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     |                                                          |
 |            | Vol     | Volumetric file format          | the functor should return an unsigned char  | VolWriter     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
 |            | Longvol | Volumetric file format  (long)  | the functor should return a DGtal::uint64_t | LongvolWriter | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
+|            | HDF5    | HDF5 file with 3D UInt8 image dataset(s)  | the functor should return a DGtal::uint8_t | HDF5Writer    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/ |
 |            | any 3D ITK format | Any 3D ITK image   | the functor should return a ITKIOTrait<Image::Value>::ValueOut | ITKWriter | with @a WITH_ITK build flag, http://www.itk.org/ |
 |         nD | Raw8    | raw binary file format on 8bits | the functor should return an unsigned char  | RawWriter     |                                                          |
 
@@ -155,6 +156,7 @@ given type).
 |            | DICOM             | Medical format (from scanners, with the use of ITK library) | DicomREader   | http://medical.nema.org/                                       |
 |            | Vol               | Volumetric file format                                      | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |            | Longvol           | Volumetric file format (long)                               | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
+|            | HDF5              | HDF5 file with 3D UInt8 image dataset(s)                    | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
 |            | any 3D ITK format | Any file format in the ITK library (mhd, mha, ...)          | ITKReader     | with @a WITH_ITK build flag, http://www.itk.org/               |
 |         nD | Raw8              | raw binary file format on 8bits                             | RawReader     |                                                                |
 

@@ -71,8 +71,8 @@ Description of \b concept '\b CBidirectionalSegmentComputer' <p>
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Extension test | x.isExtendableBackward() |      |bool         |                  | check whether x can be extended to - -x.begin() or not | | |
-| Extension      | x.extendBackward()       |      |bool         |                  | check whether x can be extended to - -x.begin() or not, extend if true | | |
+| Extension test | x.isExtendableBack() |      |bool         |                  | check whether x can be extended to - -x.begin() or not | | |
+| Extension      | x.extendBack()       |      |bool         |                  | check whether x can be extended to - -x.begin() or not, extend if true | | |
      
     
  ### Invariants###
@@ -93,8 +93,8 @@ Description of \b concept '\b CBidirectionalSegmentComputer' <p>
     // Methods
     BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.isExtendableBackward() );
-      ConceptUtils::sameType( myB, myX.extendBackward() );
+      ConceptUtils::sameType( myB, myX.isExtendableBack() );
+      ConceptUtils::sameType( myB, myX.extendBack() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

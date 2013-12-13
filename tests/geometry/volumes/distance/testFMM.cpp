@@ -506,8 +506,9 @@ bool testDisplayDTFromCircle(int size)
     FMM::initFromPointsRange(r.begin(), r.end(), map, set, 0.5); 
 
     //computation
-    PointPredicate bp( BallPredicate<Point>(0,0,radius) );
-    Predicate pred( bp, dp, andBF2 ); 
+    BallPredicate<Point> bp(0,0,radius); 
+    PointPredicate nbp( bp );
+    Predicate pred( nbp, dp, andBF2 ); 
     FMM fmm(map, set, pred); 
     fmm.compute(); 
     trace.info() << fmm << std::endl; 

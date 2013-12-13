@@ -71,7 +71,7 @@ int main( int argc, char** argv )
  Viewer3D<> viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
- 
+ trace.beginBlock ( "Testing Polygon 3D display in Viewer3D" );
  std::vector<Z3i::RealPoint> polyg1;
  
  polyg1.push_back(Z3i::RealPoint(0,0,0));

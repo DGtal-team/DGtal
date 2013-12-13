@@ -44,11 +44,14 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/topology/CSCellEmbedder.h"
+#include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/CMetric.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/geometry/surfaces/estimation/CLocalEstimatorFromSurfelFunctor.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/CLocalEstimatorFromSurfelFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,25 +64,45 @@ namespace DGtal
    * \brief Aim: this class adapts any local functor on digital surface element to define
    * a local estimator.
    *
-   * When we evaluate the adapted estimator at a surfel @a s, we first identify the set of 
-   * neighboring around @a s using a DistanceBreadthFirstVisitor parametrized by a given metric. Then,
-   * the estimated quantity is computed applying a functor on the surfel set.
+   * When we evaluate the adapted estimator at a surfel @a s, we first
+   * identify the set of neighboring around @a s using a
+   * DistanceBreadthFirstVisitor parametrized by a given metric. Then,
+   * the estimated quantity is computed applying a functor on the
+   * surfel set.
    *
-   * More precisely, this adapter needs a model of CMetric to define the neighborhood and a model of CLocalEstimatorFromSurfelFunctor to
-   * perform the local estimator computation.
    *
-   * During the @e init() method, we thus specify the gridstep @e h and the radius of the ball to consider to
-   * define the neighborhood. 
+   * More precisely, this adapter needs a model of CMetric to define
+   * the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
+   * to perform the local estimator computation. When sent to the
+   * functor, the surfels are weighted using the distance from the
+   * kernel boundary: weights are defined in [0,1] interval, 1 for the
+   * center and decreasing to 0 with the distance to the specified
+   * kernel radius specified during the init(). The shape of the
+   * distance-to-weight function is defined by a functor of type @e
+   * TConvolutionFunctor.
+   *
+   * Models of TConvolutionFunctor could be for instance
+   * DefaultFunctor (returns the distance itself),
+   * ConstValueFunctor (returns a constant value) or
+   * GaussianKernelFunctor (parametrized by a sigma).
+   *
+   * During the @e init() method, we thus specify the gridstep @e h
+   * and the radius of the ball to consider to define the
+   * neighborhood. An instance of the convolution functor should be
+   * passed to the constructor.
    *
    * Note that the visitor used in this class considers the distance
    * function in the ambient space (not a geodesic one for instance) on
    * canonical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
-   *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurface)
+   *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurfaceContainer)
    *  @tparam TMetric any model of CMetric to be used in the neighborhood construction.
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
+   *  @tparam TConvolutionFunctor type of  functor on double
+   *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
    */
-  template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel>
+  template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel,
+            typename TConvolutionFunctor>
   class LocalEstimatorFromSurfelFunctorAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -88,43 +111,48 @@ namespace DGtal
     ///Concept Checks
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
     BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
-    
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurface> ));
+
     ///Digital surface type
     typedef TDigitalSurface DigitalSurface;
-    
+
     ///Metric type
     typedef TMetric Metric;
-   
+
     ///Metric value type
     typedef typename TMetric::Value Value;
-    
+
     ///Functor on surfels type
     typedef TFunctorOnSurfel FunctorOnSurfel;
-        
+
+    ///Functor on double to compute convolution weights
+    typedef TConvolutionFunctor  ConvolutionFunctor;
+
     ///Quantity type
     typedef typename TFunctorOnSurfel::Quantity Quantity;
-    
-     
+
   private:
-    
-    ///Embedded and type defintions
-    typedef CanonicSCellEmbedder<typename DigitalSurface::KSpace> Embedder;
+
+    ///Embedded and type definitions
+    typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
     typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
     typedef DistanceBreadthFirstVisitor<DigitalSurface, VertexFunctor> Visitor;
-    
-    
+
+
   public:
-    
+
     /**
      * Constructor.
      * @param aSurface a digital surface
      * @param aFunctor a functor on digital surface elements.
      */
     LocalEstimatorFromSurfelFunctorAdapter(ConstAlias<DigitalSurface>  aSurface,
-                                     ConstAlias<TMetric> aMetric,
-                                     Alias<FunctorOnSurfel>  aFunctor);
-    
+                                           ConstAlias<TMetric> aMetric,
+                                           Alias<FunctorOnSurfel>  aFunctor,
+                                           ConstAlias<ConvolutionFunctor> aConvolutionFunctor);
+
     /**
      * Destructor.
      */
@@ -133,24 +161,24 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    
+
     /**
      * Initialisation of estimator parameters.
      * @param [in] h grid size (must be >0).
      * @param [in] radius radius of the ball kernel.
-     * 
+     *
      */
     void init(const double h,
               const Value radius);
-    
-  
+
+
     /**
      * @return the estimated quantity at *it
      * @param [in] it the surfel iterator at which we evaluate the quantity.
      */
     template< typename SurfelConstIterator>
     Quantity eval(const SurfelConstIterator& it) const;
-    
+
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
@@ -163,8 +191,8 @@ namespace DGtal
     OutputIterator eval(const SurfelConstIterator& itb,
                         const SurfelConstIterator& ite,
                         OutputIterator result) const;
-    
-        
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -211,22 +239,25 @@ namespace DGtal
 
     ///Functor member
     FunctorOnSurfel * myFunctor;
-    
+
     ///Distance functor
     const Metric * myMetric;
-    
+
     ///Grid step
     double myH;
-    
+
     ///Has init been done before eval
     bool myInit;
-    
+
     ///Embedder object
     const Embedder myEmbedder;
-    
+
+    ///Convolution functor
+    const ConvolutionFunctor *myConvFunctor;
+
     ///Ball radius
     Value myRadius;
-    
+
   }; // end of class LocalEstimatorFromSurfelFunctorAdapter
 
   /**
@@ -235,9 +266,9 @@ namespace DGtal
    * @param object the object of class 'LocalEstimatorFromSurfelFunctorAdapter' to write.
    * @return the output stream after the writing.
    */
-  template <typename TD, typename TV, typename TF>
+  template <typename TD, typename TV, typename TF, typename TC>
   std::ostream&
-  operator<< ( std::ostream & out, const LocalEstimatorFromSurfelFunctorAdapter<TD,TV,TF> & object );
+  operator<< ( std::ostream & out, const LocalEstimatorFromSurfelFunctorAdapter<TD,TV,TF,TC> & object );
 
 } // namespace DGtal
 

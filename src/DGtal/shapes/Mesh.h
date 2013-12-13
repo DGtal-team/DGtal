@@ -235,6 +235,12 @@ namespace DGtal
     
 
 
+    /**
+     * @return true if the Mesh is storing a color for each faces. 
+     * 
+     **/
+    bool isStoringFaceColors() const;
+
 
     /**
      * @return an iterator pointing to the first vertex of the mesh.  

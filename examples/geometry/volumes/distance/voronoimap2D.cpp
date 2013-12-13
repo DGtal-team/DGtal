@@ -50,7 +50,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   trace.beginBlock ( "Example voronoimap2D" );
 
@@ -58,7 +58,7 @@ int main( int argc, char** argv )
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> L2Metric;
   L2Metric l2;
   //! [Voro2D-Metric]
-  
+
   //! [Voro2D-SmallImage]
   Z2i::Point lower(0,0);
   Z2i::Point upper(16,16);
@@ -69,21 +69,21 @@ int main( int argc, char** argv )
   set.insertNew(Z2i::Point(7,15));
   set.insertNew(Z2i::Point(12,5));
   Board2D board;
-  
+
   board<< domain << set;
   board.saveSVG("voronoimap-inputset.svg");
   //! [Voro2D-SmallImage]
-  
+
   //! [Voro2D-Predicate]
   typedef NotPointPredicate<Z2i::DigitalSet> NotPredicate;
   NotPredicate notSetPred(set);
   //! [Voro2D-Predicate]
-  
+
   //! [Voro2D-Voro]
   typedef VoronoiMap<Z2i::Space, NotPredicate, L2Metric > Voronoi2D;
   Voronoi2D voronoimap(domain,notSetPred,l2);
   //! [Voro2D-Voro]
-  
+
   //! [Voro2D-trace]
   board.clear();
   board << domain;
@@ -96,7 +96,7 @@ int main( int argc, char** argv )
   }
   board.saveSVG("voronoimap-voro.svg");
   //! [Voro2D-trace]
-  
+
   //! [Voro2D-traceCell]
   board.clear();
   for(Voronoi2D::Domain::ConstIterator it = voronoimap.domain().begin(),
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
   board.saveSVG("voronoimap-cells.svg");
   //! [Voro2D-traceCell]
 
-  
+
   //! [Voro2D-l8Metric]
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 8> L8Metric;
   L8Metric l8;
@@ -128,22 +128,22 @@ int main( int argc, char** argv )
   }
   board.saveSVG("voronoimap-vorol8.svg");
   //! [Voro2D-l8Metric]
-  
+
   //! [Voro2D-DT]
   typedef DistanceTransformation<Z2i::Space, NotPredicate, L2Metric > DT;
   DT dt(domain,notSetPred,l2);
   board.clear();
   board << domain;
-  
+
   //Fast max computation on the range value
   DT::Value maxDT=0.0;
   for(DT::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();
       it != itend ; ++it)
     if ((*it)>maxDT) maxDT = (*it);
-  
+
   //Colormap
   HueShadeColorMap<DT::Value,1> hueMap(0.0,maxDT);
-  
+
   //Drawing
   for(DT::Domain::ConstIterator it = dt.domain().begin(),
       itend = dt.domain().end(); it != itend; ++it)
@@ -154,8 +154,8 @@ int main( int argc, char** argv )
   }
   board.saveSVG("voronoimap-dt.svg");
   //! [Voro2D-DT]
-  
-  
+
+
   trace.endBlock();
   return 0;
 }

@@ -74,8 +74,10 @@ Description of \b concept '\b CImageCacheReadPolicy' <p>
 | Name                | Expression              | Type requirements    | Return type       | Precondition                         | Semantics                                            | Post condition | Complexity |
 |---------------------|-------------------------|----------------------|-------------------|--------------------------------------|------------------------------------------------------|----------------|------------|
 | Get page            | x.getPage(p)            | p of type Point      | ImageContainer    | p should be in a domain of the cache | get the alias on the image that contains the point p |                |            |
+| Get page            | x.getPage(d)            | d of type Domain     | ImageContainer    | d should be in a domain of the cache | get the alias on the image that matchs the domain d  |                |            |
 | Get page to detach  | x.getPageToDetach()     |                      | ImageContainer    |                                      | get the alias on the image that we have to detach    |                |            |
 | Update cache        | x.updateCache(d)        | d of type Domain     |                   |                                      | update the cache with a new Domain d                 |                |            |
+| Clear cache         | x.clearCache()          |                      |                   |                                      | clear the cache                                      |                |            |
 
 ### Invariants
 
@@ -96,9 +98,11 @@ public:
 
     BOOST_CONCEPT_USAGE( CImageCacheReadPolicy )
     {
+        ConceptUtils::sameType( myIC, myT.getPage(myDomain) );
         ConceptUtils::sameType( myIC, myT.getPage(myPoint) );
         ConceptUtils::sameType( myIC, myT.getPageToDetach() );
-        myT.updateCache(myDomain);
+        myT.updateCache(myDomain); 
+        myT.clearCache();
 
         // check const methods.
         checkConstConstraints();

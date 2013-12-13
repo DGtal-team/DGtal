@@ -89,7 +89,8 @@ namespace DGtal
     /** 
      * Main method to import a vector containing a list of points
      * defined in a file where each line defines a point. 
-     * 
+     * Blank line or line beginning with
+     * "#" are skipped.
      * 
      * @param in the input stream.
      * @param aVectPosition used to specify the position of indices of
@@ -103,9 +104,9 @@ namespace DGtal
 
     /** 
      * Main method to import a vector containing a list of points
-     * defined in a file where each line defines a point. 
-     * 
-     * 
+     * defined in a file where each line defines a point.  Blank line
+     * or line beginning with "#" are skipped.
+     *
      * @param filename a filename 
      * @param aVectPosition used to specify the position of indices of
      * value points  (optional: default set to 0,..,dimension) 
