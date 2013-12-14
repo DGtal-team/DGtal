@@ -52,7 +52,7 @@ DGtal::PointListReader<TPoint>::getPointsFromFile (const std::string &filename, 
 {
   std::ifstream infile;
   infile.open (filename.c_str(), std::ifstream::in);
-  return PointListReader<TPoint>::getPointsFromInputStream(infile, aVectPosition);
+  return DGtal::PointListReader<TPoint>::getPointsFromInputStream(infile, aVectPosition);
 }
 
 
@@ -78,7 +78,7 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
       unsigned int nbFound=0;
       TPoint p;
       while ( !in_str.fail()&& (nbFound<TPoint::dimension)){
-        in_str >> val;
+        std::operator>>(in_str,val);
         if(!in_str.fail()){
           std::istringstream valFromStr( val );
           typename TPoint::Component valConverted;
@@ -112,7 +112,7 @@ std::vector< std::vector<TPoint> >
 DGtal::PointListReader<TPoint>::getPolygonsFromFile(const std::string &filename){
   std::ifstream infile;
   infile.open (filename.c_str(), std::ifstream::in);
-  return PointListReader<TPoint>::getPolygonsFromInputStream(infile);
+  return DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(infile);
 }
 
 
@@ -132,7 +132,7 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
       TPoint p;
       unsigned int index =0;
       while ( in_str.good() ){
-        in_str >> valStr;
+        std::operator>>(in_str, valStr);
         std::istringstream word_str( valStr );
         word_str >> p[index];
         isOK = isOK &&  !word_str.fail();
