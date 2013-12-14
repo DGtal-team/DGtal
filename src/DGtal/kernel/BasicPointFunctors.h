@@ -549,6 +549,5 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined BasicPointFunctors_h
-
 #undef BasicPointFunctors_RECURSES
 #endif // else defined(BasicPointFunctors_RECURSES)
