@@ -409,7 +409,7 @@ namespace DGtal
 
 
       /**
-       * Update the embedding of the image by updating the image 3D vertex (with also 3D vector).
+       * Update the embedding of the image by updating the image 3D vertex.
        * @param aPoint1 the first image point (lower bound point)
        * @param aPoint2 the second image point (upper bound point in first dimension and lower in the second dimentsion)
        * @param aPoint3 the third image point (upper bound point in first second dimentsion)
