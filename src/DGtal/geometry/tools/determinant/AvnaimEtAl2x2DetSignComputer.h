@@ -72,8 +72,8 @@ namespace DGtal
     {
       /**
        * Computes the Euclidean division @a a / @a b
-       * @param a 
-       * @param b
+       * @param a numerator
+       * @param b denominator
        * @return Euclidean division @a a / @a b
        */
       static TNumber compute(const TNumber& a, const TNumber& b)
@@ -210,10 +210,10 @@ namespace DGtal
     /**
      * Incremental operator.
      * @pre init must be called before
-     * @param aX 0-component of the second column vector
-     * @param aY 1-component of the second column vector
+     * @param aU 0-component of the second column vector
+     * @param aV 1-component of the second column vector
      * @return the sign of the determinant of the 2x2 matrix, ie. 
-     * 1 if @a myA . @a aY - @a myB . @a aX is strictly positive, 
+     * 1 if @a myA . @a aV - @a myB . @a aU is strictly positive, 
      * -1 if it is strictly negative, 0 otherwise
      */
     ResultInteger operator()(const ArgumentInteger& aU, const ArgumentInteger& aV) const;
@@ -247,8 +247,9 @@ namespace DGtal
   private:
 
     /**
-     * @param aX 
-     * @param aY
+     * Returns the quadrant where a given vector lies
+     * @param aX x-component of the vector
+     * @param aY y-component of the vector
      * @pre aX and aY must not be null
      * @return the quadrant where the vector of 
      * components @a aX , @a aY lies, ie. 
