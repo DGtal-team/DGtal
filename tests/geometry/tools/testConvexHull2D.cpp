@@ -35,8 +35,8 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Hull2DHelpers.h"
 #include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
-#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -136,9 +136,9 @@ bool testConvexHull2D()
   g.push_back( Point(4,-3) );
 
   //geometric predicate
-  typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::int64_t> Functor;  
+  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int64_t> Functor;  
   Functor functor; 
-  typedef PredicateFromOrientationFunctor2D<Functor> Predicate; 
+  typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
   Predicate predicate( functor ); 
 
   //namespace
