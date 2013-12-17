@@ -116,14 +116,20 @@ namespace DGtal
     void init( const Point& aPoint1, const Point& aPoint2 );
 
     /**
-     * unary function operator
+     * Unary parenthesis operator
      * @param aPoint any point
+     * @return return value of the thresholder 
+     * applied on the underlying unary functor
      */
     bool operator()( const Point& aPoint ) const;
 
     /**
-     * ternary function operator
-     * @param aPoint any point
+     * Ternary parenthesis operator on three points
+     * @param aPoint1 first point
+     * @param aPoint2 second point
+     * @param aPoint2 third point
+     * @return return value of the thresholder 
+     * applied on the underlying orientation functor
      */
     bool operator()(const Point& aPoint1, const Point& aPoint2, const Point& aPoint3 ) const;
 

@@ -45,8 +45,8 @@ DGtal::RadiusFunctor<TPoint, TDetComputer>::
 RadiusFunctor(bool isPositive, 
 	       const Integer& aNum2, 
 	       const Integer& aDen2)
-  : myIsCCW( isPositive ), 
-    myNum2(aNum2), myDen2(aDen2),
+  : myNum2(aNum2), myDen2(aDen2),
+    myIsCCW( isPositive ), 
     myDetComputer(), 
     myP( Point() ), 
     myQ( Point() ), 

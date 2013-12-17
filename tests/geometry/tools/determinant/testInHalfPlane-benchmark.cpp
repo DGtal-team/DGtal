@@ -500,8 +500,6 @@ bool incTest(OrientationFunctor f, const DGtal::int32_t n = 1000000)
  * Function that traces to the standard output the running
  * time of all available functors for random points whose 
  * coordinates are within [-2^30 ; 2^30[.
- * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2
  */
 bool incTestComparison()
 {
@@ -562,8 +560,6 @@ bool incTestComparison()
  * Function that traces to the standard output the running
  * time of all available functors for random points whose 
  * coordinates are within [-2^30 ; 2^30[.
- * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2
  */
 bool randomTest30All()
 {
@@ -697,8 +693,6 @@ bool randomTest30All()
  * Function that traces to the standard output the running
  * time of all available functors for random points whose 
  * coordinates are within [-2^52 ; 2^52[.
- * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2
  */
 bool randomTest52All()
 {
@@ -837,8 +831,6 @@ bool randomTest52All()
  * Function that traces to the standard output the running
  * time of all available functors for random points whose 
  * coordinates are within [-2^62 ; 2^62[.
- * @param f a functor to run
- * @tparam OrientationFunctor a model of COrientationFunctor2
  */
 bool randomTest62All()
 {
