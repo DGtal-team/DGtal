@@ -117,8 +117,8 @@ int main()
   
   //! [shapeGridCurveEstimator-lengthEstimation]
   //length estimation
-  DSSLengthEstimator< Range::ConstIterator > DSSlength;
-  DSSlength.init( h, r.begin(), r.end(), c.isClosed() );
+  DSSLengthEstimator< Range::ConstCirculator > DSSlength;
+  DSSlength.init( h, r.c(), r.c() );
   double length1 = DSSlength.eval();
   trace.info() << "Length (h=" << h << "): " << length1 << std::endl; 
   //! [shapeGridCurveEstimator-lengthEstimation]
@@ -151,7 +151,7 @@ int main()
   c.initFromVector( boundaryPoints );
   Range r2 = c.getPointsRange(); 
   //estimate length
-  DSSlength.init( h, r2.begin(), r2.end(), c.isClosed() );
+  DSSlength.init( h, r2.c(), r2.c() );
   double length2 = DSSlength.eval();
   trace.info() << "Length (h=" << h << "): " << length2 << std::endl;  
   //! [shapeGridCurveEstimator-higher]

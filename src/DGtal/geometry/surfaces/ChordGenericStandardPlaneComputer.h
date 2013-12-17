@@ -66,7 +66,7 @@ namespace DGtal
      initialization of the object.  This class uses four instances of
      ChordStandardPlaneComputer of axis z, by transforming points
      \f$(x,y,z)\f$ to \f$(x \pm z, y \pm z, z)\f$.
-     
+
      As a (3D) geometric primitive computer, it obeys the concept
      CAdditivePrimitiveComputer. It is copy constructible, assignable.
      It has methods \ref extend(), extend( InputIterator,
@@ -75,48 +75,48 @@ namespace DGtal
      all the distinct points \c p such that 'extend(\c p )' was
      successful. It is thus a model of boost::ForwardContainer (non
      mutable). It is iterable (inner type ConstIterator, begin(),
-     end()). You may clear() it. 
-    
+     end()). You may clear() it.
+
      It is also a model of CPointPredicate (returns 'true' iff a point
      is within the current bounds).
 
-     
+
      Note on complexity: See \ref ChordNaivePlaneComputer and \ref
      modulePlaneRecognition_sec5. Although it uses four instances of
      ChordStandardNaiveComputer, the recognition is \b not four times
      slower. Indeed, recognition stops quickly on bad diagonal axes.
-     
+
      @tparam TSpace specifies the digital space (provides dimension and
      types for the primitive)
-     
+
      @tparam TInputPoint specifies the type of the input points
      (digital or not). Usually, you may choose TInputPoint =
      TSpace::Point, but this is not compulsory. You may for instance
      wish to manipulate floating-point value points. This is possible,
      but you have to choose the type TInternalScalar accordingly.
-     
+
      @tparam TInternalScalar specifies the type of scalar used in
      internal computations, generally a more precise type than
      TInputPoint::Component. For instance, for digital points, the type
      should be able to hold integers of order \f$(2*D)^2\f$ if D is the
      diameter of the set of digital points.
-     
+
      @code
      typedef SpaceND<3,int> Z3;
      typedef ChordGenericStandardPlaneComputer< Z3, Z3::Point, int64_t > StandardPlaneComputer;
      StandardPlaneComputer plane;
-     plane.init( 1, 1 ); // width is 1/1 => standard 
+     plane.init( 1, 1 ); // width is 1/1 => standard
      plane.extend( Point( 10, 0, 0 ) ); // return 'true'
      plane.extend( Point( 0, 8, 0 ) );  // return 'true'
      plane.extend( Point( 0, 0, 6 ) );  // return 'true'
      plane.extend( Point( 5, 5, 5 ) );  // return 'false'
      // There is no standard plane going through the 3 first points and the last one.
      @endcode
-     
+
      Model of boost::DefaultConstructible, boost::CopyConstructible,
      boost::Assignable, boost::ForwardContainer, CAdditivePrimitiveComputer, CPointPredicate.
    */
-  template < typename TSpace, 
+  template < typename TSpace,
              typename TInputPoint,
              typename TInternalScalar >
   class ChordGenericStandardPlaneComputer
@@ -171,14 +171,14 @@ namespace DGtal
       inline Transform() {}
       inline Transform( bool posX, bool posY ) : _posX( posX ), _posY( posY ) {}
       inline InputPoint operator()( const InputPoint & p ) const
-      { return InputPoint( p[ 0 ] + ( _posX ? p[ 2 ] : -p[ 2 ] ), 
-                           p[ 1 ] + ( _posY ? p[ 2 ] : -p[ 2 ] ), 
+      { return InputPoint( p[ 0 ] + ( _posX ? p[ 2 ] : -p[ 2 ] ),
+                           p[ 1 ] + ( _posY ? p[ 2 ] : -p[ 2 ] ),
                            p[ 2 ] ); }
       inline bool isPlusZOnX() const { return _posX; }
       inline bool isPlusZOnY() const { return _posY; }
       inline InputPoint inverse( const InputPoint & p ) const
-      { return InputPoint( p[ 0 ] + ( _posX ? -p[ 2 ] : p[ 2 ] ), 
-                           p[ 1 ] + ( _posY ? -p[ 2 ] : p[ 2 ] ), 
+      { return InputPoint( p[ 0 ] + ( _posX ? -p[ 2 ] : p[ 2 ] ),
+                           p[ 1 ] + ( _posY ? -p[ 2 ] : p[ 2 ] ),
                            p[ 2 ] ); }
       template <typename Vector3D>
       void transformBack( Vector3D & v )
@@ -200,7 +200,7 @@ namespace DGtal
        space to the standard space.
     */
     typedef boost::transform_iterator<Transform,InputPointSetConstIterator,
-                                      InputPoint,InputPoint> 
+                                      InputPoint,InputPoint>
     ConstIterator;
 
     // ----------------------- std public types ------------------------------
@@ -266,7 +266,7 @@ namespace DGtal
      * widthDenominator x sqrt(3). (default is 1/1 x sqrt(3),
      * i.e. standard plane).
      */
-    void init( InternalScalar widthNumerator = NumberTraits< InternalScalar >::ONE, 
+    void init( InternalScalar widthNumerator = NumberTraits< InternalScalar >::ONE,
                InternalScalar widthDenominator = NumberTraits< InternalScalar >::ONE );
 
     //-------------------- model of ForwardContainer -----------------------------
@@ -416,7 +416,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param (updates) the current normal vector 
+     * @param normal (updates) the current normal vector
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
@@ -425,7 +425,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param (updates) the current unit normal vector 
+     * @param normal (updates) the current unit normal vector
      */
     template <typename Vector3D>
     void getUnitNormal( Vector3D & normal ) const;
@@ -465,9 +465,9 @@ namespace DGtal
        @param[out] imax the maximum dot product of an inserted point with \a n.
        @param[out] p_min an inserted point satisfying the minimum dot product \a imin.
        @param[out] p_max an inserted point satisfying the maximum dot product \a imax.
-    */ 
-    void getCharacteristics( InternalVector & n, 
-                             InternalScalar & imin, InternalScalar & imax, 
+    */
+    void getCharacteristics( InternalVector & n,
+                             InternalScalar & imin, InternalScalar & imax,
                              InputPoint & p_min, InputPoint & p_max ) const;
 
     // ----------------------- Interface --------------------------------------
@@ -498,13 +498,13 @@ namespace DGtal
        @return the space transformation "standard to naive" associated
        with orthant \a orthant.
     */
-    static Transform t( Dimension orthant ); 
+    static Transform t( Dimension orthant );
     /**
        @param orthant any orthant specified as an integer between 0 and 3.
        @return the space transformation "naive to standard" associated
        with orthant \a orthant.
     */
-    static Transform invT( Dimension orthant ); 
+    static Transform invT( Dimension orthant );
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -519,7 +519,7 @@ namespace DGtal
    */
   template <typename TSpace, typename TInputPoint, typename TInternalScalar>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ChordGenericStandardPlaneComputer<TSpace, TInputPoint, TInternalScalar> & object );
 
 } // namespace DGtal

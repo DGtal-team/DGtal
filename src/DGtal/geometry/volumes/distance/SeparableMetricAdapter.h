@@ -49,7 +49,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class SeparableMetricAdapter
   /**
@@ -59,7 +59,7 @@ namespace DGtal
    *
    * The adapted metric can thus be used in separable algorithms such as
    * VoronoiMap or PowerMap. The adapted metric makes sense only if the input
-   * metric as the @e monotinicity propertery (see  @cite Hirata1996  or @cite Maurer2003PAMI): In 
+   * metric as the @e monotinicity propertery (see  @cite Hirata1996  or @cite Maurer2003PAMI): In
    * dimension 2, consider two points @f$ p(x,y)@f$,
    * @f$q(x',y')@f$ with @f$x<x'@f$. Let @f$r( x'',0)@f$ be a point on the
    * x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$ be another
@@ -80,12 +80,12 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
-    
+
+
     ///Copy the space type
     typedef TMetric Metric;
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric> ));
-    
+
     ///Type for points
     typedef typename Metric::Point Point;
     ///Type for point abscissa
@@ -96,7 +96,7 @@ namespace DGtal
     typedef typename Metric::Vector Vector;
     ///Type for Space
     typedef typename Metric::Space Space;
-    
+
     /**
      * Constructor from a CMetric model instance.
      * The metric is aliased in this class.
@@ -105,31 +105,31 @@ namespace DGtal
      */
     SeparableMetricAdapter(ConstAlias<Metric> aMetric): myMetric(aMetric)
     {}
-    
+
     /**
      * Destructor.
      */
     ~SeparableMetricAdapter() {};
-    
+
     /**
      * Copy constructor. (CopyConstruticle concept)
      * @param other the object to clone.
      */
-    SeparableMetricAdapter ( const SeparableMetricAdapter & other ) : myMetric(other.myMetric) {}
-    
+    SeparableMetricAdapter ( const SeparableMetricAdapter &other ) : myMetric(other.myMetric) {}
+
     /**
      * Assignment. (Assignable concept)
-     * @param other the object to copy.
+     * UNUSED_PARAM other the object to copy.
      * @return a reference on 'this'.
      */
-    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & /*other*/ ) 
+    SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & /*other*/ )
     {
       return *this;
     }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     // ----------------------- CLocalMetric --------------------------------------
     /**
      * Compute the local distance between @a aP and its displacement
@@ -144,8 +144,8 @@ namespace DGtal
     {
       return myMetric.local(aP,aDir);
     };
-    
-    
+
+
     // ----------------------- CMetric --------------------------------------
     /**
      * Compute the distance between @a aP and @a aQ.
@@ -159,7 +159,7 @@ namespace DGtal
     {
       return myMetric.operator()(aP,aQ);
     }
-    
+
     /**
      * Given an origin and two points, this method decides which one
      * is closest to the origin. This method should be faster than
@@ -177,7 +177,7 @@ namespace DGtal
     {
       return myMetric.closest(origin,first,second);
     }
-    
+
     // ----------------------- CSeparableMetric --------------------------------------
     /**
      * Given three sites (u,v,w) and a straight segment
@@ -205,14 +205,14 @@ namespace DGtal
                   const Point &startingPoint,
                   const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const;
-    
-    
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -221,8 +221,8 @@ namespace DGtal
     {
       return myMetric.isValid();
     }
-    
-    
+
+
     /**
      * Perform a binary search on the interval [lower,upper] to
      * detect the mid-point between u and v .
@@ -242,18 +242,18 @@ namespace DGtal
                                 const typename Point::UnsignedComponent dim,
                                 const Point &lower,
                                 const Point &upper) const;
-    
+
     // ------------------------- Private methods ------------------------------
   private:
-    
+
     // ------------------------- Private members ------------------------------
   private:
     const Metric &myMetric;
-    
+
   }; // end of class SeparableMetricAdapter
-  
-  
-  
+
+
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'SeparableMetricAdapter'.
    * @param out the output stream where the object is written.
@@ -263,7 +263,7 @@ namespace DGtal
   template <typename TM>
   std::ostream&
   operator<< ( std::ostream & out, const SeparableMetricAdapter<TM> & object );
-  
+
 } // namespace DGtal
 
 

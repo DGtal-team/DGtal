@@ -70,7 +70,7 @@ namespace DGtal
    * Be carefull, this functor uses a polynomial surface fitting from
    * point set. Curvature information is given from Monge basis which
    * could be up to the orientation of the normal vector. Hence, if
-   * the estimated normal @f$ n @f$ is such that @f$ n\cdotn_0>0@f$ with
+   * the estimated normal @f$ n @f$ is such that @f$ n\cdot n_0>0@f$ with
    * @f$ n_0@f$ being the true normal at the point set center,
    * everything is ok.
    * Otherwise, we have to inverse the princiapl curvature sign:
@@ -82,7 +82,7 @@ namespace DGtal
    *
    *
    * @tparam TSurfel type of surfels
-   * @tparam TEmbedder type of functors which embed surfel to R^3
+   * @tparam TEmbedder type of functors which embed surfel to @f$ \mathbb{R}^3@f$
    */
   template <typename TSurfel, typename TEmbedder>
   class MongeJetFittingMeanCurvatureEstimator
@@ -106,8 +106,9 @@ namespace DGtal
      * @param h gridstep.
      * @param d degree of the polynomial surface to fit.
      */
-    MongeJetFittingMeanCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder, const double h, unsigned int d = 4):
-      myEmbedder(anEmbedder), myH(h), myD(d)
+    MongeJetFittingMeanCurvatureEstimator(ConstAlias<SCellEmbedder> anEmbedder,
+                                          const double h, unsigned int d = 4):
+      myEmbedder(&anEmbedder), myH(h), myD(d)
     {
       FATAL_ERROR_MSG(d>=2,"Polynomial surface degree must be greater than 2");
     }
@@ -116,9 +117,13 @@ namespace DGtal
      * Add the geometrical embedding of a surfel to the point list
      *
      * @param aSurf a surfel to add
+     * @param distance of aSurf to the neighborhood boundary
      */
-    void pushSurfel(const Surfel & aSurf)
+    void pushSurfel(const Surfel & aSurf,
+                    const double aDistance)
     {
+      BOOST_VERIFY(aDistance==aDistance);
+
       RealPoint p = myEmbedder->operator()(aSurf);
       CGALPoint pp(p[0]*myH,p[1]*myH,p[2]*myH);
       myPoints.push_back(pp);
@@ -134,7 +139,7 @@ namespace DGtal
       CGALMongeForm monge_form;
       CGALMongeViaJet monge_fit;
 
-      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (4<myD)? myD : 4);
+      monge_form = monge_fit(myPoints.begin() , myPoints.end(), myD, (2<myD)? myD : 2);
 
       double k1 = monge_form.principal_curvatures ( 0 );
       double k2 = monge_form.principal_curvatures ( 1 );

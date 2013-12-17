@@ -79,8 +79,8 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
      
     typename Iterator::SegmentComputer segment(*i); 
 
-    aBoard << SetMode(segment.className(), "BoundingBox" )
-           << segment; // draw bounding box
+    aBoard << SetMode(segment.primitive().className(), "BoundingBox" )
+           << segment.primitive(); // draw bounding box
   
   } 
 
@@ -94,9 +94,6 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
 {
 
   typedef typename Iterator::SegmentComputer::ConstIterator PointIterator; 
-
-  aBoard << SetMode( "ArithmeticalDSSComputer", "BoundingBox" );
-  string aStyleName = "ArithmeticalDSSComputer/BoundingBox";
 
   for (Iterator i(itb); i != ite; ++i) {
      
@@ -115,21 +112,21 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
       PointIterator end = i->end();
 
       //parameters
-      int mu = i->getMu();
-      int omega = i->getOmega();
+      int mu = i->mu();
+      int omega = i->omega();
 
       //configurations
-      if ( (i->getRemainder(begin)<=mu-1)&&
-           (i->getRemainder(end)<=mu-1) ) {                //concave
+      if ( (i->remainder(begin)<=mu-1)&&
+           (i->remainder(end)<=mu-1) ) {                //concave
         aPenColor = new CustomPenColor( Color::Green);
-      } else if ( (i->getRemainder(begin)>=mu+omega)&&
-            (i->getRemainder(end)>=mu+omega) ) {           //convex
+      } else if ( (i->remainder(begin)>=mu+omega)&&
+            (i->remainder(end)>=mu+omega) ) {           //convex
         aPenColor = new CustomPenColor( Color::Blue );
-      } else if ( (i->getRemainder(begin)>=mu+omega)&&
-            (i->getRemainder(end)<=mu-1) ) {               //convex to concave
+      } else if ( (i->remainder(begin)>=mu+omega)&&
+            (i->remainder(end)<=mu-1) ) {               //convex to concave
         aPenColor = new CustomPenColor( Color::Yellow );
-      } else if ( (i->getRemainder(begin)<=mu-1)&&
-            (i->getRemainder(end)>=mu+omega) ) {           //concave to convex
+      } else if ( (i->remainder(begin)<=mu-1)&&
+            (i->remainder(end)>=mu+omega) ) {           //concave to convex
         aPenColor = new CustomPenColor( Color::Yellow );
       } else {                                                    //pb
         aPenColor = new CustomPenColor( Color::Red );
@@ -138,8 +135,9 @@ void drawCCP(const Iterator& itb, const Iterator& ite, Board& aBoard)
     }
 
     // draw each segment
-    aBoard << CustomStyle( aStyleName, aPenColor )
-           << *i; 
+    aBoard << SetMode(i->primitive().className(), "BoundingBox" )
+	   << CustomStyle( i->primitive().className(), aPenColor )
+           << i->primitive(); 
   
   } 
 

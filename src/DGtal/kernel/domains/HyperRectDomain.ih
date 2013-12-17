@@ -35,9 +35,6 @@
 #include <cstdlib>
 #include "DGtal/io/Color.h"
 
-template<typename TSpace>
-const typename TSpace::Dimension DGtal::HyperRectDomain<TSpace>::dimension = TSpace::dimension;
-
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
@@ -55,10 +52,10 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain()
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline
-DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
-              const Point &aPointB ) :
-    myLowerBound(std::min(aPointA, aPointB)),
-    myUpperBound(std::max(aPointA, aPointB)),
+DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &lowerPoint,
+              const Point &upperPoint ) :
+    myLowerBound(lowerPoint),
+    myUpperBound(upperPoint),
     myPredicate( myLowerBound, myUpperBound ),
     myIteratorBegin(myLowerBound,
         myLowerBound,
@@ -67,7 +64,11 @@ DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
       myLowerBound,
       myUpperBound)
     
-{ ++myIteratorEnd; }
+{
+  ASSERT(myLowerBound<=myUpperBound);
+  
+  ++myIteratorEnd;
+}
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline

@@ -51,6 +51,9 @@
 
 namespace DGtal
 {
+  namespace deprecated
+  {
+
   /////////////////////////////////////////////////////////////////////////////
   // template class LocalConvolutionNormalVectorEstimator
   /**
@@ -68,6 +71,9 @@ namespace DGtal
    * The neighboring is parametrized by a given topological radius @e R.
    * The weight kernel function maps displacment vectors  to a
    * continuous weights.
+   *
+   * @warning moved to deprecated since 0.7. Please consider using
+   * LocalEstimatorFromFunctorAdapter.
    *
    * @tparam TDigitalSurface type of digital surface on which we would
    * like to compute vector field..
@@ -205,7 +211,7 @@ namespace DGtal
 
 
   }; // end of class LocalConvolutionNormalVectorEstimator
-
+  }
 } // namespace DGtal
 
 

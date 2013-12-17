@@ -31,10 +31,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-
-template <typename S> 
-const typename S::Dimension DGtal::Projector<S>::dimension = S::dimension;
-
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,12 +96,13 @@ void
 DGtal::Projector<S>::initAddOneDim( const Dimension &newDim)
 { 
   std::vector<Dimension> vectDims;
+  Dimension maxIndex = dimension; 
   Dimension aCurrentPos = 0;
   Dimension k=0;
   for ( ; k < dimension; ++k)
   {
     if(k==newDim){
-      vectDims.push_back(dimension);
+      vectDims.push_back(maxIndex);
     }else{
       vectDims.push_back(aCurrentPos);
       aCurrentPos++;
@@ -149,6 +146,56 @@ DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
 }
 //------------------------------------------------------------------------------
 
+template< typename TP, typename TD, typename TV >
+inline
+DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain
+( ConstAlias< PointPredicate > aPtrPredicate,
+  ConstAlias< Domain > aDomain,
+  const Value aTrueValue,
+  const Value aFalseValue )
+    : myPtrPredicate( &aPtrPredicate ), myDomain( &aDomain), myTrueValue( aTrueValue ), myFalseValue( aFalseValue )
+{
+
+}
+
+template< typename TP, typename TD, typename TV >
+inline
+DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other )
+    : myPtrPredicate( other.myPtrPredicate ), myDomain( other.myDomain), myTrueValue( other.myTrueValue ), myFalseValue( other.myFalseValue )
+{
+}
+
+template< typename TP, typename TD, typename TV >
+inline
+typename DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::Value
+DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::operator()( const Point& aPoint ) const
+{
+    if( myDomain->isInside( aPoint ))
+    {
+        if( myPtrPredicate->operator()( aPoint ) )
+            return myTrueValue;
+        else
+            return myFalseValue;
+    }
+    return myFalseValue;
+}
+
+template <typename TP, typename TD, typename TV>
+inline
+DGtal::PointFunctorFromPointPredicateAndDomain<TP,TD, TV> &
+DGtal::PointFunctorFromPointPredicateAndDomain<TP,TD, TV>::operator=( const PointFunctorFromPointPredicateAndDomain<TP,TD,TV> &other)
+{
+  ASSERT( ( myDomain->lowerBound() <= other.myDomain->lowerBound() )
+    && ( myDomain->upperBound() >= other.myDomain->upperBound() )
+    && "This domain should include the domain of the other set in case of assignment." );
+
+  myPtrPredicate = other.myPtrPredicate;
+  myDomain = other.myDomain;
+  myTrueValue = other.myTrueValue;
+  myFalseValue = other.myFalseValue;
+
+  return *this;
+}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

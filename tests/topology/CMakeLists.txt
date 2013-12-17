@@ -8,7 +8,7 @@ SET(DGTAL_TESTS_SRC
    testSimpleExpander
    testSCellsFunctor
    testUmbrellaComputer
-   )
+ )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})

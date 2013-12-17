@@ -308,22 +308,22 @@ namespace DGtal
     /**
      * @return first upper leaning point.
      */
-    Point getUf() const;
+    Point Uf() const;
 
     /**
      * @return last upper leaning point.
      */
-    Point getUl() const;
+    Point Ul() const;
 
     /**
      * @return first lower leaning point.
      */
-    Point getLf() const;
+    Point Lf() const;
 
     /**
      * @return last lower leaning point.
      */
-    Point getLl() const;
+    Point Ll() const;
     
     /**
      * Get the parameters of one separating straight line
