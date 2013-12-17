@@ -63,7 +63,7 @@ bool testDSLSubsegment(Integer modb)
 
 
   typedef ArithDSSIterator<Integer,8> DSSIterator;
-  typedef ArithmeticalDSSComputer<DSSIterator,Integer,8> ArithDSS;
+  typedef NaiveDSS8<Integer> ArithDSS;
 
   typedef typename DSLSubseg::Point Point;
 
@@ -118,15 +118,14 @@ bool testDSLSubsegment(Integer modb)
 	
 	// ArithmeticalDSS recognition algorithm (O(n))
 	DSSIterator  it(a,b,-mu,A);
-	ArithDSS myDSS(it);
-	
-	while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
-	  {}
+	ArithDSS myDSS(*it, *it);
+	++it; 
+	while ( (*it)[0] <=x2 && myDSS.extendFront(*it))
+	  { ++it; }
 	
 	// If results are different, count an error
-	if(DSLsub.getA() != myDSS.getA() || DSLsub.getB() != myDSS.getB() || DSLsub.getMu() != - myDSS.getMu())	
+	if(DSLsub.getA() != myDSS.a() || DSLsub.getB() != myDSS.b() || DSLsub.getMu() != - myDSS.mu())
 	  error1 ++;
-	
       }
   trace.info() << error1 << " errors." << std::endl;
   trace.endBlock();

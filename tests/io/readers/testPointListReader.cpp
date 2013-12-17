@@ -54,8 +54,7 @@ bool testPointListReader()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing reading point list ..." );
-  
+  trace.beginBlock ( "Testing reading point list ..." );  
   std::string filename = testPath + "samples/pointList1.pl";
   std::vector<unsigned int> vectPos;
   vectPos.push_back(1);
@@ -69,7 +68,8 @@ bool testPointListReader()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   trace.endBlock();
-  trace.beginBlock ( "Testing reading point list ..." );
+  
+  trace.beginBlock ( "Testing reading freemanchain ..." );
   std::string filenameFC = testPath + "samples/freemanChainSample.fc";
   std::vector< FreemanChain< int > > vectFC = PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (filenameFC); 
   for(unsigned int i=0; i< vectFC.size(); i++){
@@ -79,6 +79,43 @@ bool testPointListReader()
   nbok += (vectFC.size()==5) ? 1 : 0; 
   nb++;
   trace.endBlock();
+
+  trace.beginBlock ( "Testing reading 3D polygons (one each line)..." );
+  std::string filenamePoly = testPath + "samples/polygons.dat";
+  std::vector< std::vector< Z3i::Point > > vectPolygons = PointListReader< Z3i::Point >::getPolygonsFromFile(filenamePoly); 
+  for(unsigned int i=0; i< vectPolygons.size(); i++){
+    std::vector< Z3i::Point > aPolygon  = vectPolygons.at(i);
+    trace.info() << "Polygon " << i << ": " ;
+    for(unsigned int j =0; j <aPolygon.size(); j++){
+      trace.info()<< "Point :" << aPolygon.at(j); 
+    }
+    trace.info()<< std::endl;
+  }
+  nbok += (vectPolygons.at(0).size()==2 && vectPolygons.at(1).size()==2 && vectPolygons.at(0).at(0)==Z3i::Point(1,2,3)
+           && vectPolygons.at(0).at(1)==Z3i::Point(4,5,6) && vectPolygons.at(1).at(0)==Z3i::Point(0,0,10)
+           && vectPolygons.at(1).at(1)==Z3i::Point(0,5,5)) ? 1 : 0; 
+  nb++;
+  trace.endBlock();
+
+ trace.beginBlock ( "Testing reading 2D polygons (one each line)..." );
+  
+  std::vector< std::vector< Z2i::Point > > vectPolygons2D = PointListReader< Z2i::Point >::getPolygonsFromFile(filenamePoly); 
+  for(unsigned int i=0; i< vectPolygons2D.size(); i++){
+    std::vector< Z2i::Point > aPolygon2D  = vectPolygons2D.at(i);
+    trace.info() << "Polygon " << i << ": " ;
+    for(unsigned int j =0; j <aPolygon2D.size(); j++){
+      trace.info()<< "Point :" << aPolygon2D.at(j); 
+    }
+    trace.info()<< std::endl;
+  }
+  nbok += (vectPolygons2D.at(0).size()==3 && vectPolygons2D.at(1).size()==3 && vectPolygons2D.at(0).at(0)==Z2i::Point(1,2)
+           && vectPolygons2D.at(0).at(1)==Z2i::Point(3,4) && vectPolygons2D.at(0).at(2)==Z2i::Point(5,6)
+           && vectPolygons2D.at(1).at(0)==Z2i::Point(0,0) && vectPolygons2D.at(1).at(1)==Z2i::Point(10, 0)
+           && vectPolygons2D.at(1).at(2)==Z2i::Point(5,5)) ? 1 : 0; 
+  
+  nb++;
+  trace.endBlock();
+
   return nbok == nb;
 }
 

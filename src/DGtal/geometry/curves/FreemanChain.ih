@@ -377,10 +377,10 @@ DGtal::FreemanChain<TInteger>::findQuadrantChange( OrderedAlphabet & A ) const
     it.previous();
   }
   while ( it.getCode() == code2 );
-  char a_char = chain[ it.getPosition() ];
+  char a_char = chain[ it.position() ];
   // the next is the first b.
   it.next();
-  char b_char = chain[ it.getPosition() ];
+  char b_char = chain[ it.position() ];
   // Reorder the alphabet to match the quadrant change.
   while ( A.order( b_char ) != 1 )
     A.shiftLeft();
@@ -435,10 +435,10 @@ DGtal::FreemanChain<TInteger>::findQuadrantChange4( OrderedAlphabet & A ) const
     it.previous();
   }
   while ( it.getCode() == code3 );
-  char a_char = chain[ it.getPosition() ];
+  char a_char = chain[ it.position() ];
   // the next is the first c.
   it.next();
-  char b_char = chain[ it.getPosition() ];
+  char b_char = chain[ it.position() ];
   // Reorder the alphabet to match the quadrant change.
   while ( A.order( b_char ) != 1 )
     A.shiftLeft();
@@ -1017,7 +1017,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
     if ( size_spike > 0 )
       break;
   }
-  unsigned int start_idx = it.getPosition();
+  unsigned int start_idx = it.position();
   i = start_idx;
   // JOL : 2009/07/07, added starting coordinates
   // XP  : 2011/09/06, added ending coordinates
@@ -1084,14 +1084,14 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
     {
       // There is a spike. Is it an outer one ?
       unsigned int previous_code = itn.getCode();
-      unsigned int previous_idx = itn.getPosition();
+      unsigned int previous_idx = itn.position();
       // JOL : do not
       // consider any more "cleaned contour" since we cannot go
       // further than the last spike.
       // unsigned int previous_code =
       //   clean_code.empty() ? itn.getCode() : clean_code.back();
       // unsigned int previous_idx =
-      //   clean_code.empty() ? itn.getPosition() : clean_idx.back();
+      //   clean_code.empty() ? itn.position() : clean_idx.back();
       itn = it;
       itn.previousInLoop();
       unsigned int move1 = movement( previous_code, addToCode ( itn.getCode() , 2 ), ccw );
@@ -1110,7 +1110,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
       // 		 << " ccw=" << ccw
       // 		 << " start_idx=" << start_idx
       // 		 << " size_spike=" << size_spike
-      // 		 << " it=" << it.getPosition()
+      // 		 << " it=" << it.position()
       // 		 << " itp=" << previous_idx
       // 		 << endl
       // 		 << c.chain << endl;

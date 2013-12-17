@@ -58,6 +58,20 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const P
 template <typename TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
+DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const Domain & aDomain)
+{
+  if (myCacheImagesPtr==NULL)
+    return NULL;
+
+  if ( (myCacheImagesPtr->domain().lowerBound() == aDomain.lowerBound()) && (myCacheImagesPtr->domain().upperBound() == aDomain.upperBound()) )
+    return myCacheImagesPtr;
+  
+  return NULL;
+}
+
+template <typename TImageContainer, typename TImageFactory>
+inline
+TImageContainer *
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPageToDetach()
 {
   return myCacheImagesPtr;
@@ -65,10 +79,18 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPageToDetach
 
 template <typename TImageContainer, typename TImageFactory>
 inline
-void
+void 
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::updateCache(const Domain &aDomain)
 {
   myCacheImagesPtr = myImageFactory->requestImage(aDomain);
+}
+
+template <typename TImageContainer, typename TImageFactory>
+inline
+void
+DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::clearCache()
+{
+  myCacheImagesPtr = NULL;
 }
 
 // ----------------------- Specialization DGtal::CACHE_READ_POLICY_FIFO ------------------------------
@@ -81,8 +103,23 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const P
   if (myFIFOCacheImages.empty())
     return NULL;
 
-  for (int i=0; i<myFIFOCacheImages.size(); i++)
+  for (unsigned int i=0; i<myFIFOCacheImages.size(); i++)
     if (myFIFOCacheImages[i]->domain().isInside(aPoint))
+      return myFIFOCacheImages[i];
+  
+  return NULL;
+}
+
+template <typename TImageContainer, typename TImageFactory>
+inline
+TImageContainer *
+DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const Domain & aDomain)
+{
+  if (myFIFOCacheImages.empty())
+    return NULL;
+
+  for (unsigned int i=0; i<myFIFOCacheImages.size(); i++)
+    if ( (myFIFOCacheImages[i]->domain().lowerBound() == aDomain.lowerBound()) && (myFIFOCacheImages[i]->domain().upperBound() == aDomain.upperBound()) )
       return myFIFOCacheImages[i];
   
   return NULL;
@@ -110,6 +147,14 @@ void
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::updateCache(const Domain &aDomain)
 {
   myFIFOCacheImages.push_back(myImageFactory->requestImage(aDomain));
+}
+
+template <typename TImageContainer, typename TImageFactory>
+inline
+void
+DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::clearCache()
+{
+  myFIFOCacheImages.clear();
 }
 
 // ----------------------- Specialization DGtal::CACHE_WRITE_POLICY_WT ------------------------------

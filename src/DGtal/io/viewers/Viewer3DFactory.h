@@ -84,7 +84,7 @@ namespace DGtal
     typedef TKSpace KSpace;
 
     /**
-     * set the camera position on the board
+     * Set the camera position on the board.
      * @param board the board where to draw
      * @param aThing the camera position to set
      */
@@ -92,7 +92,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & board, const DGtal::CameraPosition & aThing );
 
     /**
-     * set the camera direction on the board
+     * Set the camera direction on the board.
      * @param board the board where to draw
      * @param aThing the camera direction to set
      */
@@ -100,7 +100,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & board, const DGtal::CameraDirection & aThing );
 
     /**
-     * set the camera up vector on the board
+     * Set the camera up vector on the board.
      * @param board the board where to draw
      * @param aThing the camera up vector to set
      */
@@ -108,7 +108,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & board, const DGtal::CameraUpVector & aThing );
 
     /**
-     * set the near and far distance on the board
+     * Set the near and far distance on the board.
      * @param board the board where to draw
      * @param aThing the near and far distance
      */
@@ -138,7 +138,7 @@ namespace DGtal
 
     // Mesh
     /**
-     * @brief drawAsFaces
+     * Method to draw Mesh as faces.
      * @param viewer the viewer where to draw
      * @param aMesh the mesh to draw
      */
@@ -146,7 +146,7 @@ namespace DGtal
     static void drawAsFaces( Viewer3D<Space,KSpace> & viewer, const DGtal::Mesh<TPoint> & aMesh );
 
     /**
-     * @brief draw
+     * Method to draw Mesh.
      * @param viewer the viewer where to draw
      * @param aMesh the mesh to draw
      */
@@ -167,7 +167,7 @@ namespace DGtal
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
     /**
-     * @brief drawAsBalls
+     * Method to draw StandardDSS6Computer as Balls.
      * @param viewer the viewer where to draw
      * @param arithm the arithm to draw
      */
@@ -175,7 +175,7 @@ namespace DGtal
     static void drawAsBalls( Viewer3D<Space,KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
     /**
-     * @brief drawAsBoundingBox
+     * Method to draw StandardDSS6Computer as BoundingBox.
      * @param viewer the viewer where to draw
      * @param arithm the arithm to draw
      */
@@ -183,7 +183,7 @@ namespace DGtal
     static void drawAsBoundingBox( Viewer3D<Space,KSpace> & viewer, const DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity> & arithm );
 
     /**
-     * @brief draw
+     * Method to draw StandardDSS6Computer.
      * @param viewer the viewer where to draw
      * @param arithm the arithm to draw
      */
@@ -194,7 +194,7 @@ namespace DGtal
 
     // DigitalSetBySTLSet
     /**
-     * @brief Default drawing style object.
+     * Return the default drawing style object.
      * @param str the name of the class
      * @param aSet the set to draw
      * @return the dyn. alloc. default style for this object.
@@ -203,7 +203,7 @@ namespace DGtal
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
-     * @brief drawAsPavingTransparent
+     * Method to draw DigitalSetBySTLSet as Paving Transparent.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -211,7 +211,7 @@ namespace DGtal
     static void drawAsPavingTransparent( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
-     * @brief drawAsPaving
+     * Method to draw DigitalSetBySTLSet as Paving.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -219,7 +219,7 @@ namespace DGtal
     static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
-     * @brief drawAsGrid
+     * Method to draw DigitalSetBySTLSet as Grid.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -227,7 +227,7 @@ namespace DGtal
     static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLSet<Domain, Compare> & aSet );
 
     /**
-     * @brief draw
+     * Method to draw DigitalSetBySTLSet.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -247,7 +247,7 @@ namespace DGtal
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
     /**
-     * @brief drawAsPavingTransparent
+     * Method to draw DigitalSetBySTLVector as Paving Transparent.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -255,7 +255,7 @@ namespace DGtal
     static void drawAsPavingTransparent( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
     /**
-     * @brief drawAsPaving
+     * Method to draw DigitalSetBySTLVector as Paving.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -263,7 +263,7 @@ namespace DGtal
     static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
     /**
-     * @brief drawAsGrid
+     * Method to draw DigitalSetBySTLVector as Grid.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -271,7 +271,7 @@ namespace DGtal
     static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::DigitalSetBySTLVector<Domain> & aSet );
 
     /**
-     * @brief draw
+     * Method to draw DigitalSetBySTLVector.
      * @param viewer the viewer where to draw
      * @param aSet the set to draw
      */
@@ -291,7 +291,7 @@ namespace DGtal
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
     /**
-     * @brief drawAsBoundingBox
+     * Method to draw HyperRectDomain as BoundingBox.
      * @param viewer the viewer where to draw
      * @param aDomain the domain to draw
      */
@@ -299,7 +299,7 @@ namespace DGtal
     static void drawAsBoundingBox( Viewer3D<Space,KSpace> & viewer, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
     /**
-     * @brief drawAsGrid
+     * Method to draw HyperRectDomain as grid.
      * @param viewer the viewer where to draw
      * @param aDomain the domain to draw
      */
@@ -307,7 +307,7 @@ namespace DGtal
     static void drawAsGrid( Viewer3D<Space,KSpace> & viewer, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
     /**
-     * @brief drawAsPavingBalls
+     * Method to draw HyperRectDomain with Paving Balls.
      * @param viewer the viewer where to draw
      * @param aDomain the domain to draw
      */
@@ -315,7 +315,7 @@ namespace DGtal
     static void drawAsPavingBalls( Viewer3D<Space,KSpace> & viewer, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
     /**
-     * @brief drawAsPaving
+     * Method to draw HyperRectDomain with Paving mode.
      * @param viewer the viewer where to draw
      * @param aDomain the domain to draw
      */
@@ -323,7 +323,7 @@ namespace DGtal
     static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::HyperRectDomain<SpaceDom> & aDomain );
 
     /**
-     * @brief draw
+     * Method to draw HyperRectDomain.
      * @param viewer the viewer where to draw
      * @param aDomain the domain to draw
      */
@@ -342,7 +342,7 @@ namespace DGtal
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const typename KSpace::Cell & aCell );
 
     /**
-     * @brief draw
+     * Method to draw KhalimskyCell.
      * @param viewer the viewer where to draw
      * @param aCell the cell to draw
      */
@@ -352,16 +352,16 @@ namespace DGtal
 
     // Object
     /**
-     * @brief defaultStyle
+     * Method to return the defaultStyle of an object.    
      * @param str the name of the class
      * @param anObject the object to draw
-     * @return a pointer to the default object  object
+     * @return a pointer to the default object style
      */
     template <typename TDigitalTopology, typename TDigitalSet>
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
 
     /**
-     * @brief drawWithAdjacencies
+     * Method to draw Object with adjacency mode.
      * @param viewer the viewer where to draw
      * @param anObject the object to draw
      */
@@ -369,7 +369,7 @@ namespace DGtal
     static void drawWithAdjacencies( Viewer3D<Space,KSpace> & viewer, const DGtal::Object<TDigitalTopology, TDigitalSet> & anObject );
 
     /**
-     * @brief draw
+     * Method to draw Object.
      * @param viewer the viewer where to draw
      * @param anObject the object to draw
      */
@@ -389,7 +389,7 @@ namespace DGtal
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const DGtal::PointVector<dim,TComponent> & aPoint );
 
     /**
-     * @brief drawAsGrid
+     * Method to draw PointVector as Grid.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
@@ -398,14 +398,14 @@ namespace DGtal
 
     template<Dimension dim, typename TComponent>
     /**
-     * @brief drawAsPaving
+     * Method to draw PointVector as Paving.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
     static void drawAsPaving( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
 
     /**
-     * @brief drawAsPavingWired
+     * Method to draw PointVector as Paving Wired.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
@@ -413,7 +413,7 @@ namespace DGtal
     static void drawAsPavingWired( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
 
     /**
-     * @brief draw
+     * Method to draw PointVector.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      */
@@ -421,7 +421,7 @@ namespace DGtal
     static void draw( Viewer3D<Space,KSpace> & viewer, const DGtal::PointVector<dim,TComponent> & aPoint );
 
     /**
-     * @brief draw
+     * Method to draw PointVector.
      * @param viewer the viewer where to draw
      * @param aPoint the point to draw
      * @param aPoint2 the point to draw
@@ -441,7 +441,7 @@ namespace DGtal
     static DGtal::DrawableWithViewer3D * defaultStyle( std::string str, const typename KSpace::SCell & aSCell );
 
     /**
-     * @brief draw
+     * Method to draw SignedKhalimskyCell.
      * @param viewer the viewer where to draw
      * @param aSCell the signed cell to draw
      */
@@ -450,7 +450,7 @@ namespace DGtal
 
     // GridCurve
     /**
-     * @brief draw
+     * Method to draw GridCurve.
      * @param viewer the viewer where to draw
      * @param aGrid the grid to draw
      */
@@ -459,7 +459,7 @@ namespace DGtal
 
     // SCellsRange
     /**
-     * @brief draw
+     * Method to draw SCellsRange.
      * @param viewer the viewer where to draw
      * @param aRangeAdapter the range adapter to draw
      */
@@ -470,7 +470,7 @@ namespace DGtal
 
     // PointsRange
     /**
-     * @brief draw
+     * Method to draw PointsRange.
      * @param viewer the viewer where to draw
      * @param aRangeAdapter the range adapter to draw
      */
@@ -481,7 +481,7 @@ namespace DGtal
 
     // MidPointsRange
     /**
-     * @brief draw
+     * Method to draw MidPointsRange.
      * @param viewer the viewer where to draw
      * @param aRangeAdapter the range adapter to draw
      */
@@ -492,7 +492,7 @@ namespace DGtal
 
     // ArrowsRange
     /**
-     * @brief draw
+     * Method to draw ArrowsRange.
      * @param viewer the viewer where to draw
      * @param aRangeAdapter the range adapter to draw
      */
@@ -503,7 +503,7 @@ namespace DGtal
 
     // InnerPointsRange
     /**
-     * @brief draw
+     * Method to draw InnerPointsRange.
      * @param viewer the viewer where to draw
      * @param aRangeAdapter the range adapter to draw
      */
@@ -514,7 +514,7 @@ namespace DGtal
 
     // OuterPointsRange
     /**
-     * @brief draw
+     * Method to draw OuterPointsRange.
      * @param viewer the viewer where to draw
      * @param aRangeAdapter the range adapter to draw
      */
@@ -525,7 +525,7 @@ namespace DGtal
 
     // IncidentPointsRange
     /**
-     * @brief draw
+     * Method to draw IncidentPointsRange.
      * @param viewer the viewer where to draw
      * @param aRangeAdapter the range adapter to draw
      */
@@ -537,7 +537,7 @@ namespace DGtal
 
     // ImageContainerBySTLVector (2D)
     /**
-     * @brief draw
+     * Method to draw an 2D Image (ImageContainerBySTLVector).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -547,7 +547,7 @@ namespace DGtal
 
     // ImageContainerBySTLMap (2D)
     /**
-     * @brief draw
+     * Method to draw an 2D Image (ImageContainerBySTLMap).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -557,7 +557,7 @@ namespace DGtal
 
     // ConstImageAdapter (2D)
     /**
-     * @brief draw
+     * Method to draw an 2D Image (ConstImageAdapter).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -567,7 +567,7 @@ namespace DGtal
 
     // ImageAdapter (2D)
     /**
-     * @brief draw
+     * Method to draw an 2D Image (ImageAdapter).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -579,7 +579,7 @@ namespace DGtal
 
     // ImageContainerBySTLVector (3D)
     /**
-     * @brief draw
+     * Method to draw an 3D Image (ImageContainerBySTLVector).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -590,7 +590,7 @@ namespace DGtal
 
     // ImageContainerBySTLMap (3D)
     /**
-     * @brief draw
+     * Method to draw an 3D Image (ImageContainerBySTLMap).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -600,7 +600,7 @@ namespace DGtal
 
     // ConstImageAdapter (3D)
     /**
-     * @brief draw
+     * Method to draw an 3D Image (ConstImageAdapter).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -611,7 +611,7 @@ namespace DGtal
 
     // ImageAdapter (3D)
     /**
-     * @brief draw
+     * Method to draw an 3D Image (ImageAdapter).
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      */
@@ -622,7 +622,7 @@ namespace DGtal
 
 
     /**
-     * @brief drawImage2D
+     * Method to draw an 3D Image.
      * @param viewer the viewer where to draw
      * @param anImage the image to draw
      * @param aFunctor the functor to draw
@@ -634,7 +634,7 @@ namespace DGtal
                  typename Viewer3D<Space,KSpace>::TextureMode aTextureMode );
 
     /**
-     * @brief drawImage3D
+     * Method to draw an 2D Image.
      * @param viewer the viewer where to draw
      * @param anImage3D the image to draw
      * @param aFunctor the functor to draw
@@ -646,7 +646,7 @@ namespace DGtal
                  typename Viewer3D<Space,KSpace>::TextureMode aTextureMode );
 
     /**
-     * @brief draw
+     * Method to set a custom mode for 3d object
      * @param viewer the viewer where to draw
      * @param aMode the mode to set
      */
@@ -654,7 +654,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::SetMode3D & aMode);
 
     /**
-     * @brief draw
+     * Method to set a custom style for 3d object
      * @param viewer the viewer where to draw
      * @param aStyle the style to set
      */
@@ -662,7 +662,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::CustomStyle3D & aStyle);
 
     /**
-     * @brief draw
+     * Method to set a custom color for 3d object
      * @param viewer the viewer where to draw
      * @param aColor the color to set
      */
@@ -670,7 +670,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::CustomColors3D & aColor);
 
     /**
-     * @brief draw
+     * Method to add an clipping plane
      * @param viewer the viewer where to draw
      * @param aClipping the clipping plane to draw
      */
@@ -680,7 +680,7 @@ namespace DGtal
 
     // AddTextureImage3DWithFunctor
     /**
-     * @brief draw
+     * Method to draw an TextureImage3D.
      * @param viewer the viewer where to draw
      * @param aFunctor the functor to draw
      */
@@ -691,7 +691,7 @@ namespace DGtal
 
     // AddTextureImage2DWithFunctor
     /**
-     * @brief draw
+     * Method to draw an TextureImage2D.
      * @param viewer the viewer where to draw
      * @param aFunctor the functor to draw
      */
@@ -701,7 +701,7 @@ namespace DGtal
     // AddTextureImage2DWithFunctor
 
     /**
-     * @brief draw
+     * Method to update the position of an image.
      * @param viewer the viewer where to draw
      * @param anUpdate the update to set
      */
@@ -709,15 +709,24 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateImagePosition<Space, KSpace> & anUpdate);
 
     /**
-     * @brief draw
+     * Method to update the position of the last added image.
      * @param viewer the viewer where to draw
      * @param anUpdate the update to set
      */
     static void
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateLastImagePosition<Space, KSpace> & anUpdate );
 
+
     /**
-     * @brief draw
+     * Method to modify 3D Image embedding.
+     * @param viewer the viewer where to draw
+     * @param anUpdate the update to set
+     */
+    static void
+    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateImage3DEmbedding<Space, KSpace> & anUpdate);
+
+    /**
+     * Method to apply domain position change
      * @param viewer the viewer where to draw
      * @param anUpdate the update to set
      */
@@ -725,7 +734,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> &viewer, const DGtal::Update2DDomainPosition<Space, KSpace> & anUpdate);
 
     /**
-     * @brief draw
+     * Method to apply image translate.
      * @param viewer the viewer where to draw
      * @param anTranslation the translation to apply
      */
@@ -733,7 +742,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> &viewer, const DGtal::Translate2DDomain & anTranslation);
 
     /**
-     * @brief draw
+     * Method to apply image data change.
      * @param viewer the viewer where to draw
      * @param anUpdate the update to set
      */
@@ -742,7 +751,7 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate);
 
     /**
-     * @brief draw
+     * Method to draw TransformedSurfelPrism
      * @param viewer the viewer where to draw
      * @param aTransformedSurfelPrism the transformed surfelprism to draw
      */

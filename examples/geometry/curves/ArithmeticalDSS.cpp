@@ -77,7 +77,7 @@ int main()
     DSS4 theDSS4;    
     theDSS4.init( contour.begin() );
     while ( ( theDSS4.end() != contour.end() )
-          &&( theDSS4.extendForward() ) ) {}
+          &&( theDSS4.extendFront() ) ) {}
 
     // Output parameters
     cout << theDSS4 << endl;
@@ -126,7 +126,7 @@ int main()
     DSS8 theDSS8;    
     theDSS8.init( boundary.begin() );
     while ( ( theDSS8.end() != boundary.end() )
-          &&( theDSS8.extendForward() ) ) {}
+          &&( theDSS8.extendFront() ) ) {}
 
 
     // Output parameters

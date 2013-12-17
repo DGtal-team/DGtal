@@ -216,8 +216,25 @@ DGtal::Viewer3D< Space ,KSpace >::updateOrientationTextureImage(unsigned int ima
     {
       *this << DGtal::Update2DDomainPosition<Space ,KSpace >(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
     }
-
 }
+
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Viewer3D<Space, KSpace>::updateEmbeddingTextureImage(unsigned int anImageIndex,
+                            typename Space::Point aPoint1, typename Space::Point aPoint2,
+                            typename Space::Point aPoint3, typename Space::Point aPoint4)
+{
+  assert ( anImageIndex< myGSImageList.size());
+  typename Viewer3D< Space ,KSpace >::TextureImage &anImage = myGSImageList.at(anImageIndex);
+  Display3D< Space, KSpace>::updateBoundingBox(aPoint1);
+  Display3D< Space, KSpace>::updateBoundingBox(aPoint2);
+  Display3D< Space, KSpace>::updateBoundingBox(aPoint3);
+  Display3D< Space, KSpace>::updateBoundingBox(aPoint4);
+  anImage.updateImage3DEmbedding(aPoint1, aPoint2, aPoint3, aPoint4);
+}
+
+
 
 
 template < typename Space ,typename KSpace >
@@ -1203,7 +1220,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     {
       for (typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator it_s = it->begin(); it_s != it->end(); it_s++)
         {
-          glColor4ub ( it_s->color.blue(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
+          glColor4ub ( it_s->color.red(), it_s->color.green(), it_s->color.blue(), it_s->color.alpha() );
           glNormal3f ( it_s->nx, it_s->ny ,it_s->nz );
           glVertex3f ( it_s->point1[0], it_s->point1[1], it_s->point1[2] );
           glVertex3f ( it_s->point2[0], it_s->point2[1], it_s->point2[2] );

@@ -264,7 +264,7 @@ namespace DGtal
         /**
          * @return the current position (as an index in the Freeman chain).
          */
-        Index getPosition() const
+        Index position() const
         {
           return myPos;
         }

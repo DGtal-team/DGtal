@@ -64,7 +64,7 @@ namespace DGtal
      It is used in methods or functions to encapsulate the parameter
      types.
 
-     @deprecated since 0.7. Use ::DGtal::Alias instead.
+     @remark since 0.7. Use ::DGtal::Alias instead.
 
      @note The usage of \c deprecated::Alias<T> instead of \c T \c & or \c T \c *
      in parameters is \b recommended when the lifetime of the
@@ -85,7 +85,7 @@ namespace DGtal
      It can be used as follows. Consider this simple example where
      class \e A is a big object. Then we define three classes \e B1,
      \e B2 and \e B3, that uses some instance of \e A.
-     
+
      @code
      const int N = 10000;
      struct A { ...
@@ -116,7 +116,7 @@ namespace DGtal
      struct B3 {
        B3( const A & a ) // ambiguous, cost is O(N) here
        { myA = new A( a ); }
-       ~B3() 
+       ~B3()
        { if ( myA != 0 ) delete myA; }
      ...
        A* myA;
@@ -129,14 +129,14 @@ namespace DGtal
      longer than \a b itself (case for an instance of \a B1
      above). Classes Clone, OldAlias, ConstOldAlias exist for these
      reasons. The classes above may be rewritten as follows.
-     
+
      @code
      // Aliasing for a long lifetime is visible.
      struct B1 {
        B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       const A & myA; 
+       const A & myA;
        // or Const A* myA;
      };
      // Cloning as data member is visible.
@@ -189,7 +189,7 @@ namespace DGtal
 
      @code
      struct B4 {
-       B4( A a ) // not ambiguous, but cost is O(2N) here. 
+       B4( A a ) // not ambiguous, but cost is O(2N) here.
        : myA( a ) {}
      ...
        A myA;
@@ -225,9 +225,9 @@ namespace DGtal
     /**
       Copy constructor.
       @param other the object to clone.
-          
+
       @note Keep in mind that Alias<T> type should not be used in class
-      members (efficiency issue). 
+      members (efficiency issue).
     */
     Alias ( const DGtal::deprecated::Alias<T> & other );
 
@@ -276,7 +276,7 @@ namespace DGtal
     /*
        Hidden copy constructor.
        @param other the object to clone.
-       
+
        It is not defined private since it must be accessible (see
        warning below otherwise).
 

@@ -116,6 +116,15 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 template< typename Space, typename KSpace>
 inline
 void
+DGtal::Viewer3DFactory<Space, KSpace>::draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateImage3DEmbedding<Space, KSpace> & anUpdate)
+{
+  viewer.updateEmbeddingTextureImage(anUpdate.myIndex, anUpdate.myNewPoint1, anUpdate.myNewPoint2, anUpdate.myNewPoint3, anUpdate.myNewPoint4);
+}
+
+
+template< typename Space, typename KSpace>
+inline
+void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> &viewer, const DGtal::Update2DDomainPosition<Space, KSpace> & anUpdate)
 {
   viewer.updateAn2DDomainOrientation(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft,
