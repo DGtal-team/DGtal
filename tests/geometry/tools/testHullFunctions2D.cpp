@@ -33,8 +33,8 @@
 
 #include "DGtal/geometry/tools/Hull2DHelpers.h"
 
-#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2D.h"
-#include "DGtal/geometry/tools/determinant/OrientationFunctor2DBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -56,9 +56,9 @@ bool testHullFunctions2D()
   typedef std::vector<Point> Container; 
 
   //orientation functor and predicate
-  typedef OrientationFunctor2DBySimpleMatrix<Point, DGtal::int32_t> OrientationFunctor; 
+  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int32_t> OrientationFunctor; 
   OrientationFunctor orientationFunctor;
-  PredicateFromOrientationFunctor2D<OrientationFunctor> 
+  PredicateFromOrientationFunctor2<OrientationFunctor> 
     predicate( orientationFunctor ); 
 
   //functions namespace
