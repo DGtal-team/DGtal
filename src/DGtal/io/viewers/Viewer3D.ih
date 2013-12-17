@@ -811,7 +811,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
 {
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
-  myViewWire=true;
+  myViewWire=false;
   myGLScaleFactorX=1.0;
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
