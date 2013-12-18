@@ -120,14 +120,14 @@ namespace DGtal
      * Create a string with an indentation prefix for a normal trace.
      * @return the cerr output stream with the prefix
      */
-    std::ostream & info() const;
+    std::ostream & info();
 
     /**
      * Create a string with an indentation prefix for a warning trace.
      *  the string is postfixed by the keyword "[WRNG]"
      * @return the cerr output stream with the prefix
      */
-     std::ostream & warning() const;
+     std::ostream & warning();
 
 
     /**
@@ -135,7 +135,7 @@ namespace DGtal
      *  the string is postfixed by the keyword "[ERR]"
      * @return the cerr output stream with the prefix
      */
-    std::ostream &  error() const;
+    std::ostream &  error();
 
 
     /**
@@ -143,7 +143,7 @@ namespace DGtal
      *
      * @return the cerr output stream with the prefix
      */
-    std::ostream &  emphase() const;
+    std::ostream &  emphase();
 
     /**
      * Display a progress bar in the terminal.
@@ -193,6 +193,9 @@ namespace DGtal
 
     ///Progress bar rotation position
     unsigned int myProgressBarRotation;
+
+    ///True if the style has changed
+    bool myStyle;
 
     // ------------------------- Hidden services ------------------------------
   protected:
