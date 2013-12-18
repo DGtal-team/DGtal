@@ -172,6 +172,20 @@ bool testConvexHull2D()
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
+  //graham algorithm
+  res.clear(); 
+  trace.info() << " generalized graham algorithm " << std::endl;
+  generalizedGrahamAlgorithm( data.begin(), data.end(), back_inserter( res ), predicate, comparator );
+
+  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 
+  cout << endl; 
+
+  if ( (res.size() == g.size()) && 
+	(circularlyEqual(res.begin(), res.end(), g.begin(), g.end())) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
   trace.endBlock();
 
   trace.beginBlock ( "Random Tests..." );
