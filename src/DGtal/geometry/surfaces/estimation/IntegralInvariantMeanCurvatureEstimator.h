@@ -95,7 +95,7 @@ public:
 
   MeanCurvatureFunctor2(){}
 
-  void init( const double & h, const double & r )
+  MeanCurvatureFunctor2( const double & h, const double & r )
   {
     d1_r2 = 1.0 / ( r * r );
     dPI_2 = M_PI / 2.0;
@@ -103,7 +103,7 @@ public:
     dh2 = h * h;
   }
 
-  Quantity operator()(const Quantity & aInput)
+  Quantity operator()(const Quantity & aInput) const
   {
     Quantity cp_quantity = aInput;
     cp_quantity *= dh2;
@@ -369,7 +369,7 @@ public:
   * @return quantity (mean curvature) at surfel *it
   */
   template< typename SurfelIterator >
-  Quantity eval ( const SurfelIterator & it );
+  Quantity eval ( const SurfelIterator & it ) const;
 
 
   /**
@@ -387,7 +387,7 @@ public:
   template< typename SurfelIterator, typename OutputIterator >
   void eval ( const SurfelIterator & itb,
               const SurfelIterator & ite,
-              OutputIterator & result );
+              OutputIterator & result ) const;
 
   /**
   * Writes/Displays the object on an output stream.

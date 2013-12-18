@@ -83,7 +83,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init 
     h = _h;
     radius = re;
 
-    meanFunctor.init( h, radius );
+    meanFunctor = ValuesFunctor( h, radius );
 
     RealPoint rOrigin = RealPoint ( 0.0, 0.0 );
     Domain::Point pOrigin = Domain::Point( 0, 0 );
@@ -212,7 +212,7 @@ template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator>
 inline
 typename DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::Quantity
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & it )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & it ) const
 {
 
     Quantity measure = ( Quantity )myConvolver.eval( it );
@@ -250,7 +250,7 @@ inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & itb,
                                                                                   const SurfelIterator & ite,
-                                                                                  OutputIterator & result )
+                                                                                  OutputIterator & result ) const
 {
     myConvolver.eval( itb, ite, result, meanFunctor );
 }
