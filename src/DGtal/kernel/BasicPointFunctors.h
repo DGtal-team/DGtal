@@ -545,11 +545,9 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #include "DGtal/kernel/BasicPointFunctors.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined BasicPointFunctors_h
-
 #undef BasicPointFunctors_RECURSES
 #endif // else defined(BasicPointFunctors_RECURSES)
