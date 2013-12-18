@@ -50,7 +50,7 @@
  */
 inline
 DGtal::Trace::Trace(DGtal::TraceWriter &writer):
-  myCurrentLevel(0), myCurrentPrefix (""),  myWriter(writer), myProgressBarCurrent(-1), myProgressBarRotation(0)
+  myCurrentLevel(0), myCurrentPrefix (""),  myWriter(writer), myProgressBarCurrent(-1), myProgressBarRotation(0), myStyle(false)
 {
 }
 
@@ -63,7 +63,8 @@ DGtal::Trace::Trace(DGtal::TraceWriter &writer):
 inline
 DGtal::Trace::~Trace()
 {
-  myWriter.outputStream() << myWriter.postfixReset();
+  if (myStyle)
+    myWriter.outputStream() << myWriter.postfixReset();
 }
 
 
@@ -176,9 +177,10 @@ DGtal::Trace::endBlock()
  * @return the output stream with the prefix
  */
 inline std::ostream &
-DGtal::Trace::warning() const
+DGtal::Trace::warning()
 {
   myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixWarning();
+  myStyle = true;
   return  myWriter.outputStream();
 }
 
@@ -189,9 +191,10 @@ DGtal::Trace::warning() const
  * @return the output stream with the prefix
  */
 inline std::ostream &
-DGtal::Trace::error() const
+DGtal::Trace::error()
 {
   myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixError();
+  myStyle = true;
   return  myWriter.outputStream();
 }
 
@@ -202,9 +205,10 @@ DGtal::Trace::error() const
  * @return the output stream with the prefix
  */
 inline std::ostream &
-DGtal::Trace::emphase() const
+DGtal::Trace::emphase()
 {
   myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixEmphase();
+  myStyle = true;
   return  myWriter.outputStream();
 }
 
@@ -213,9 +217,14 @@ DGtal::Trace::emphase() const
  * @return the cerr output stream with the prefix
  */
 inline std::ostream &
-DGtal::Trace::info() const
+DGtal::Trace::info()
 {
-  myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixInfo();
+  myWriter.outputStream() <<  myCurrentPrefix;
+
+  if (myStyle)
+    myWriter.outputStream() << myWriter.prefixInfo();
+
+  myStyle = false;
   return  myWriter.outputStream();
 }
 
@@ -279,5 +288,3 @@ DGtal::operator<<( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
