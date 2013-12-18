@@ -47,9 +47,12 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/IteratorCirculatorTraits.h"
+#include "DGtal/base/FrontInsertionSequenceToStackAdapter.h"
 #include "DGtal/base/BackInsertionSequenceToStackAdapter.h"
 #include "DGtal/base/CStack.h"
 #include "DGtal/geometry/tools/CPolarPointComparator2D.h"
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -209,6 +212,31 @@ namespace DGtal
 				    const Predicate& aPredicate); 
 
     /**
+     * @brief Procedure that retrieves the vertices of the convex hull 
+     * of a weakly externally visible polygon (WEK) in linear-time. 
+     * @see Hull2D::buildHullWithStack Hull2D::closedGrahamScanFromVertex
+     *
+     * NB: We do not assume that the starting point of the polygon 
+     * is an extremal point like in Hull2D::closedGrahamScanFromVertex
+     * 
+     * @param itb begin iterator
+     * @param ite end iterator 
+     * @param res output iterator used to export the retrieved points
+     * @param aPredicate  any ternary predicate
+     *
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam OutputIterator a model of incremental and writable iterator   
+     * @tparam Predicate a model of ternary predicate
+     */
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate>
+    void closedGrahamScanFromAnyPoint(const ForwardIterator& itb, 
+				      const ForwardIterator& ite,  
+				      OutputIterator res, 
+				      const Predicate& aPredicate); 
+
+    /**
      * @brief Procedure that retrieves the vertices
      * of the convex hull of a set of 2D points given by 
      * the range [ @a itb , @a ite ). 
@@ -219,7 +247,15 @@ namespace DGtal
      * - scan the sorted list of points and remove some points so that the given 
      * predicate returns 'true' for all sets of three consecutive points. 
      * @see Hull2D::closedGrahamScanFromVertex
-     * 
+     *
+     * @post The first point of the resulting list of extremal points is 
+     * guaranteed to be the one with maximal x-coordinate and y-coordinate. 
+     *
+     * @warning The orientation of the predicate and of the polar comparator 
+     * should be the same. Otherwise, the function returns an unexpected result.  
+     * For instance, you may use a predicate that returns 'true' for three points 
+     * counter-clockwise oriented together with PolarPointComparatorBy2x2DetComputer.    
+     *
      * @param itb begin iterator
      * @param ite end iterator 
      * @param res output iterator used to export the retrieved points
@@ -241,6 +277,41 @@ namespace DGtal
 				   const Predicate& aPredicate, 
 				   PolarComparator& aPolarComparator); 
 
+    /**
+     * @brief Generalization of the well-known Graham's algorithm
+     * [Graham, 1972 : \cite Graham1972]
+     * It can be used to compute either the convex hull or the 
+     * alpha-shape of a given set of points. 
+     * 
+     * NB: In this function, we call Hull2D::closedGrahamScanFromAnyPoint, 
+     * so that the starting point of the linear-time scan is not required 
+     * to be an extremal point. Indeed, contrary to the convex hull
+     * case, finding an extremal point is difficult in other cases, like 
+     * positive alpha-shapes. 
+     *
+     * @warning The orientation of the predicate and of the polar comparator 
+     * should be the same. Otherwise, the function returns an unexpected result.  
+     *
+     * @param itb begin iterator
+     * @param ite end iterator 
+     * @param res output iterator used to export the retrieved points
+     * @param aFunctor any orientation functor
+     * @param aPolarComparator any polar comparator 
+     * 
+     * @tparam ForwardIterator a model of forward and readable iterator
+     * @tparam OutputIterator a model of incremental and writable iterator   
+     * @tparam Predicate a model of COrientationFunctor2
+     * @tparam PolarComparator a model of CPolarPointComparator2D. 
+     */
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate, 
+	      typename PolarComparator >
+    void generalizedGrahamAlgorithm(const ForwardIterator& itb, 
+				    const ForwardIterator& ite,  
+				    OutputIterator res, 
+				    const Predicate& aPredicate, 
+				    PolarComparator& aPolarComparator); 
 
     /**
      * @brief Procedure that retrieves the vertices
@@ -253,6 +324,10 @@ namespace DGtal
      * Graham scan. 
      * @see Hull2D::openGrahamScan
      * 
+     * @post The first point of the resulting list of extremal points 
+     * follows the one with minimal x-coordinate and y-coordinate. 
+     * Orientation depends on the predicate. 
+     *
      * @param itb begin iterator
      * @param ite end iterator 
      * @param res output iterator used to export the retrieved points

@@ -43,10 +43,10 @@ template <typename TPoint, typename TDetComputer>
 inline
 DGtal::RadiusFunctor<TPoint, TDetComputer>::
 RadiusFunctor(bool isPositive, 
-	       const Integer& aNum2, 
-	       const Integer& aDen2)
+	      const Integer& aNum2, 
+	      const Integer& aDen2)
   : myNum2(aNum2), myDen2(aDen2),
-    myIsCCW( isPositive ), 
+    myIsPositive( isPositive ), 
     myDetComputer(), 
     myP( Point() ), 
     myQ( Point() ), 
@@ -87,6 +87,8 @@ init ( const Point& aP, const Point& aQ )
   myPQ0 = static_cast<Integer>(myQ[0]-myP[0]); 
   myPQ1 = static_cast<Integer>(myQ[1]-myP[1]);
   myPQnorm = myPQ0*myPQ0 + myPQ1*myPQ1; 
+  //myPQnorm must not be greater than the squared diameter, ie. 4 * myNum2 / myDen2
+  ASSERT( lengthIsValid( myPQnorm ) ); 
 }
 
 // ----------------------------------------------------------------------------
@@ -112,30 +114,47 @@ operator() ( const Point& aR ) const
   myQR0 = static_cast<Integer>(myR[0]-myQ[0]); 
   myQR1 = static_cast<Integer>(myR[1]-myQ[1]);
   myQRnorm = myQR0*myQR0 + myQR1*myQR1; 
+  //myQRnorm must not be greater than the squared diameter, ie. 4 * myNum2 / myDen2
+  ASSERT( lengthIsValid( myQRnorm ) ); 
 
   myRP0 = static_cast<Integer>(myP[0]-myR[0]); 
   myRP1 = static_cast<Integer>(myP[1]-myR[1]);
-  myRPnorm = myRP0*myRP0 + myRP1*myRP1; 
+  myRPnorm = myRP0*myRP0 + myRP1*myRP1;
 
   myComputedNum2 = myPQnorm*myQRnorm*myRPnorm; 
 
-  //squared den
+  //den
   myArea = myAreaFunctor(myPQ0, myPQ1, myQR0, myQR1);
 
   if (myDen2 == NumberTraits<Integer>::ZERO)
     { //comparison to an infinite radius
-      if (myIsCCW)
+      if (myIsPositive)
   	return myArea;
       else 
   	return -myArea; 
     }
   else
     { //comparison to a finite radius
-      myComputedDen2 = 4*myArea*myArea; 
-      if (myIsCCW)
-	return myDetComputer( myComputedDen2, myComputedNum2  );
-      else 
-	return -myDetComputer( myComputedDen2, myComputedNum2  );
+      if (myIsPositive)
+	{
+	  if (myArea > NumberTraits<Integer>::ZERO)
+	    {
+	      myComputedDen2 = 4*myArea*myArea;
+	      return -myDetComputer( myComputedDen2, myComputedNum2 );
+	    }
+	  else
+	    return -NumberTraits<Value>::ONE; 
+	}
+      else
+	{
+	  if (myArea < NumberTraits<Integer>::ZERO)
+	    {
+	      myComputedDen2 = 4*myArea*myArea;
+	      return myDetComputer( myComputedDen2, myComputedNum2 );
+	    }
+	  else
+	    return NumberTraits<Value>::ONE;
+	}
     }
 }
 
@@ -148,11 +167,24 @@ selfDisplay ( std::ostream & out ) const
 {
   out << "[RadiusFunctor]" << std::endl;
   out << " radius: sqrt(" << myNum2 << "/" << myDen2 << ")"; 
-  if (myIsCCW) 
+  if (myIsPositive) 
     out << "+"; 
   else 
     out << "-"; 
   out << std::endl; 
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TDetComputer>
+inline
+bool
+DGtal::RadiusFunctor<TPoint, TDetComputer>::
+lengthIsValid(const Integer& aL2) const
+{
+  if (myDen2 == NumberTraits<Integer>::ZERO)
+    return true; 
+  else
+    return ( myDetComputer( 4, aL2 ) <= 0 );
 }
 
 // ----------------------------------------------------------------------------

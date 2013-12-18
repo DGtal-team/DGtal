@@ -55,17 +55,18 @@ namespace DGtal
   /**
    * \brief Aim: This class implements an orientation functor that  
    * provides a way to determine the position of a given point with 
-   * respect to the unique circle passing by two given points and whose 
+   * respect to the unique line passing by two given points and the 
+   * unique circle passing by the same two given points and whose 
    * radius and orientation is given. 
    *
    * This class is useful for some geometric algorithm involving disks of 
-   * given radius, such as alpha-hull and alpha-shape. 
+   * given radius, such as alpha-hull and alpha-shape computation. 
    *
    * The radius is given at construction. It is described by a pair
    * of integers @a myNum2 and @a myDen2 that stands for the numerator 
    * and denominator of the squared radius. 
    * The orientation is also given at construction. 
-   * It is described by a bool equal to 'true' (resp. 'false') if the 
+   * It is described by a boolean equal to 'true' (resp. 'false') if the 
    * center C of the circle of squared radius @a myNum2 / @a myDen2 
    * and passing by @a myP and @a myQ is located on the left side 
    * (resp. right side) of the oriented line @a myP @a myQ, ie. if 
@@ -73,21 +74,25 @@ namespace DGtal
    * clockwise oriented). 
    * 
    * The test is done in two steps. After an initialization step that 
-   * memorizes the two points that uniquely defines the circle whose
+   * memorizes the two points that uniquely defines the line and circle whose
    * radius and orientation is given, we can test the position of a third 
-   * point with respect to this circle. The return value is: 
-   * - zero if the third point belongs to the circle
-   * - strictly positive if it does not lie in the interior or on the boundary 
-   * of the circle 
-   * - striclty negative if it lies in the interior of the circle
+   * point with respect to these geometric figures. More precisely, 
+   * - if the third point lies on the same side of the oriented line 
+   * passing by @a myP @a myQ than the circle center, the return value is: 
+   *   - zero if the third point belongs to the circle  
+   *   - strictly positive if it does not lie in the interior or on the boundary 
+   *   of the circle 
+   *   - strictly negative if it lies in the interior of the circle
+   * - otherwise, the return value is strictly negative.  
    *
-   * The test is reduced to the computation of the determinant of
-   * a 2x2 matrix, the implementation of which is delegated to a determinant 
+   * The test is reduced to the computation of the determinant of a 2x2 matrix
+   * of integral entries, the implementation of which is delegated to a determinant 
    * computer. The reduction involves many multiplications and additions 
    * so that temporary integers must be coded with at least \f$ 6b + 9 \f$ bits 
    * for point coordinates coded with \f$ b \f$ bits. That's why it is a best 
    * practice to use BigInteger to avoid any overflows. You can use however 
-   * 64 bits integers for small domains, where point coordinates range 
+   * 64 bits integers together with a smart determinant computer, like 
+   * AvnaimEtAl2x2DetSignComputer, for small domains where point coordinates range 
    * within ]-2^9; 2^9[. 
    *
    * Basic usage: 
@@ -103,6 +108,11 @@ namespace DGtal
    //a strictly positive value is returned because (4,1) lies in the interior
    //of the circle of center (0,0) and radius 5. 
    @endcode
+   * 
+   * Note that since a substantial part of the execution time comes from 
+   * the allocation/desallocation of integers, we follow the same strategy 
+   * used in IntegerComputer: the user instantiates once this object and 
+   * computes the determinant several times with it. 
    *
    * @tparam TPoint a model of point
    * @tparam TDetComputer a model of C2x2DetComputer
@@ -170,8 +180,8 @@ namespace DGtal
      * radius is assumed to tend to infinite. 
      */
     RadiusFunctor(bool isPositive = true, 
-		   const Integer& aNum2 = NumberTraits<Integer>::ONE, 
-		   const Integer& aDen2 = NumberTraits<Integer>::ZERO);
+		  const Integer& aNum2 = NumberTraits<Integer>::ONE, 
+		  const Integer& aDen2 = NumberTraits<Integer>::ZERO);
 
     /**
      * Copy constructor.
@@ -190,12 +200,14 @@ namespace DGtal
      * Initialization from two points.
      * @param aP a first point
      * @param aQ a second point
+     * @pre aP and aQ must not be distant of more than the circle diameter
      */
     void init( const Point& aP, const Point& aQ ); 
 
     /**
      * Initialisation from two points. 
      * @param aA array of two points
+     * @see RadiusFunctorBy2x2DetComputer::init()
      */
     void init(const PointArray& aA);
 
@@ -203,13 +215,19 @@ namespace DGtal
      * Main operator.
      * @warning RadiusFunctorBy2x2DetComputer::init() should be called before
      * @param aR any point to test
-     * @return orientation of the third points @a myR with respect to the circle
-     * of squared radius @a myNum2 / @a myDen2 , passing by @a myP and @a myQ
-     * and oriented by @a myPositive. The return value is: 
-     * - zero if @a myR belongs to the circle
-     * - strictly positive if @a myR does not lie in the interior or on the boundary 
-     * of the circle 
-     * - striclty negative if @a myR lies in the interior of the circle
+     * @return orientation of the third points @a myR with respect to the line
+     * and circle of squared radius @a myNum2 / @a myDen2 and oriented by @a myPositive
+     * passing by @a myP and @a myQ. 
+     * - if the third point lies on the same side of the oriented line 
+     * passing by @a myP @a myQ than the circle center, the return value is: 
+     *   - zero if the third point belongs to the circle  
+     *   - strictly positive if it does not lie in the interior or on the boundary 
+     *   of the circle 
+     *   - strictly negative if it lies in the interior of the circle
+     * - otherwise, the return value is strictly negative.  
+     *
+     * @pre myQ and aR must not be distant of more than the circle diameter
+     *
      * @see RadiusFunctorBy2x2DetComputer::init()
      */
     Value operator()( const Point& aR ) const; 
@@ -222,6 +240,16 @@ namespace DGtal
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * Compares the length of two consecutive input points
+     * to the diameter of the circle.
+     * @param aL2 any squared length between two points 
+     * @return 'true' if either @a myDen2 equals zero or
+     * the given (squred) length is shorter than the (squared) 
+     * diameter of the circle
+     */
+    bool lengthIsValid(const Integer& aL2) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -250,10 +278,10 @@ namespace DGtal
      * @a myP , @a myQ , C are counter-clockwise oriented (resp. 
      * clockwise oriented). 
      */
-    bool myIsCCW; 
+    bool myIsPositive; 
     /**
-     * Determinant computer used to compare the given radius 
-     * @a myNum2 / @a myDen2 to the radius of the circle 
+     * Determinant computer used to compare the given (squared) radius 
+     * @a myNum2 / @a myDen2 to the (squared) radius of the circle 
      * passing by @a myP , @a myQ , @a myR , ie. 
      * @a myComputedNum2 / @a myComputedDen2
      */
@@ -337,6 +365,7 @@ namespace DGtal
   template <typename TPoint, typename TDetComputer>
   std::ostream&
   operator<< ( std::ostream & out, const RadiusFunctor<TPoint, TDetComputer> & object );
+
 
 } // namespace DGtal
 

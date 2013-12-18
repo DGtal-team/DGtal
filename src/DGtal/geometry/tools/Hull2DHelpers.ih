@@ -117,9 +117,9 @@ namespace DGtal
     void openGrahamScan(const ForwardIterator& itb, const ForwardIterator& ite,  
 			OutputIterator res, const Predicate& aPredicate)
     {
-      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
       BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
 
@@ -139,9 +139,9 @@ namespace DGtal
     void closedGrahamScanFromVertex(const ForwardIterator& itb, const ForwardIterator& ite,  
 				    OutputIterator res, const Predicate& aPredicate)
     {
-      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
       BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
 
@@ -159,6 +159,47 @@ namespace DGtal
     }
 
     //----------------------------------------------------------------------------
+    template <typename ForwardIterator, typename OutputIterator, typename Predicate>
+    inline
+    void closedGrahamScanFromAnyPoint(const ForwardIterator& itb, const ForwardIterator& ite,  
+				      OutputIterator res, const Predicate& aPredicate)
+    {
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+
+      //container
+      std::deque<Point> container; 
+
+      //hull computation
+      buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate); 
+
+      //we update the hull to take into account the starting point
+      if ( container.size() > 3 )
+	{
+	  updateHullWithAdaptedStack( backStack(container), container.front(), aPredicate ); 
+	  //we move forward the starting point
+	  container.push_back( container.front() ); 
+	  container.pop_front(); 
+	}
+
+      //while the last two points and the first one are not correctly oriented, we update the hull
+      while ( (container.size() > 3)&&
+	      !aPredicate( *boost::next(container.rbegin()), container.back(), container.front() ) )
+	{
+	  updateHullWithAdaptedStack( backStack(container), container.front(), aPredicate ); 
+	  //we move forward the starting point
+	  container.push_back( container.front() ); 
+	  container.pop_front(); 
+	}
+
+      std::copy(container.begin(), container.end(), res); 
+    }
+
+
+    //----------------------------------------------------------------------------
     template <typename ForwardIterator, 
 	      typename OutputIterator, 
 	      typename Predicate, 
@@ -168,10 +209,10 @@ namespace DGtal
 				   OutputIterator res, 
 				   const Predicate& aPredicate, 
 				   PolarComparator& aPolarComparator)
-    {
-      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+    { 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
       BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
       BOOST_CONCEPT_ASSERT(( CPolarPointComparator2D<PolarComparator> )); 
@@ -193,9 +234,50 @@ namespace DGtal
 	  aPolarComparator.setPole( *itMax );
 	  std::sort( container.begin(), container.end(), aPolarComparator ); 
 
-	  //scan
+	  //scan from an extremal point
 	  closedGrahamScanFromVertex( container.begin(), container.end(), res, aPredicate ); 
 	}
+    }
+
+    //----------------------------------------------------------------------------
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Predicate, 
+	      typename PolarComparator >
+    inline
+    void generalizedGrahamAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
+				   OutputIterator res, 
+				   const Predicate& aPredicate, 
+				   PolarComparator& aPolarComparator)
+    {
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
+      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
+      BOOST_CONCEPT_ASSERT(( CPolarPointComparator2D<PolarComparator> )); 
+
+      if ( itb != ite )
+	{
+	  //container
+	  std::vector<Point> container;
+	  std::copy( itb, ite, std::back_inserter( container ) ); 
+
+	  //find an extremal point
+	  //NB: we choose the point of greatest x-coordinate
+	  //so that the sort step (by a polar comparator) 
+	  //returns a weakly externally visible polygon
+	  typename std::vector<Point>::iterator itMax 
+	    = std::max_element( container.begin(), container.end() ); 
+
+	  //sort around this point
+	  aPolarComparator.setPole( *itMax );
+	  std::sort( container.begin(), container.end(), aPolarComparator ); 
+
+	  //scan from an extremal point
+	  closedGrahamScanFromAnyPoint( container.begin(), container.end(), res, aPredicate ); 
+	}
+
     }
 
     //----------------------------------------------------------------------------
@@ -207,9 +289,9 @@ namespace DGtal
 				   OutputIterator res, 
 				   const Predicate& aPredicate )
     {
-      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
+      typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
       BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
 
