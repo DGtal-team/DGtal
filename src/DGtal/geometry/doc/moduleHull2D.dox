@@ -1,0 +1,242 @@
+/**
+ * @file moduleHull2D.dox
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/12/19
+ *
+ * Documentation file for feature moduleHull2D
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleHull2D Convex hull and alpha-shape in the plane
+@writers Tristan Roussillon
+[TOC]
+
+In this part of the manual, we describe how to compute 
+well-known geometric structures such as the convex hull 
+or the alpha-shape of a 2D point set.  The proposed 
+implementations provide exact results as long as the underlying
+geometric predicates are robust (see @ref moduleGeometricPredicates 
+for more details about geometric predicates).
+
+Related example is exampleAlphaShape.cpp. 
+
+\section sectmoduleHull2D1 Convex hull
+
+Two convex hull algorithms are available: 
+- Hull2D::andrewConvexHullAlgorithm [Andrew, 1979 : \cite Andrew1979]
+- Hull2D::grahamConvexHullAlgorithm [Graham, 1972 : \cite Graham1972]
+
+They both use the basic procedures Hull2D::buildHullWithStack
+(the object having a stack interface is passed by reference) 
+or Hull2D::buildHullWithAdaptedStack (the object having a stack 
+interface is passed by copy). These procedures retrieves the 
+extremal vertices of a weakly externally visible polygon (WEVP) 
+in linear-time. This is an implementation of a well-known method, 
+called Sklansky's scan, Graham's scan or 3-coins algorithm, 
+which has been proven to correctly retrieve the convex hull
+of any WEVP [Toussaint and Avis, 1982 : \cite ToussaintAvis1982].  
+Let us recall that a polygon is a WEVP if for every point on it, 
+there exists an infinite half-line beginning at this point, which 
+does not intersect the polygon at anywhere else. 
+
+ 
+Before calling these procedures, you must use the Hull2D namespace
+defined in the file Hull2DHelpers.h. 
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Include
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Namespace
+
+Moreover, you need to create an orientation predicate  
+(see @ref moduleGeometricPredicates for more details about geometric predicates). 
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-Functor
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-StrictPredicateCCW
+
+@note The above functor returns: 
+- 0 for aligned points
+- a strictly positive value for counter-clockwise oriented points
+- a strictly negative value for clockwise oriented points
+
+@note The above predicate adapts the above functor in order to return 'true' for 
+striclty positive values. The last two template arguments means that neither the 
+strictly negative values, nor the null values are accepted. 
+
+\subsection subsectmoduleHull2D11 Andrew's algorithm
+
+The more versatile algorithm is Andrew's one [Andrew, 1979 : \cite Andrew1979],
+ also known to be the monotone-chain algorithm. First, points are sorted along 
+the horizontal axis. Then, the lower and upper convex hulls are computed by a 
+simple Graham scan from left to right and from right to left. The resulting 
+algorithm is correct because sorting points by increasing x-coordinates (and
+increasing y-coordinates for a same x-coordinate) produces a WEVP. 
+The overall time complexity is \f$ O(n\log{(n)}) \f$ for a 2D point set of size \f$ n \f$. 
+ 
+@image html AndrewWEVP.png "Sorting step of Andrew's algorithm produces a WEVP"
+@image latex AndrewWEVP.png "Sorting step of Andrew's algorithm produces a WEVP" width=5cm
+Note that the starting point is depicted in red and that the arrows show the point order. 
+
+In order to retrieve the extremal points of a range of points, 
+you may call the procedure Hull2D::andrewConvexHullAlgorithm as follows:  
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-AndrewAlgo
+Note that in this example the extremal points are pushed to a back insertion sequence called 'res'.
+
+@image html ConvexHullCCW.png "Convex hull of the digitization of a disk"
+@image latex ConvexHullCCW.png "Convex hull of the digitization of a disk" width=5cm
+
+You can however change the predicate to accept aligned points and therefore all
+points lying on the boundary of the convex hull.  
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-LargePredicateCCW
+
+@image html ConvexHullCCWWithPointsOnEdges.png "All points lying on the boundary of the convex hull of the digitization of a disk"
+@image latex ConvexHullCCWWithPointsOnEdges.png "All points lying on the boundary of the convex hull of the digitization of a disk" width=5cm
+
+You can also change the predicate so that the resulting list of vertices
+is clockwise-oriented. 
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-StrictPredicateCW
+
+@image html ConvexHullCW.png "Clockwise-oriented list of extremal points of the digitization of a disk"
+@image latex ConvexHullCW.png "Clockwise-oriented list of extremal points of the digitization of a disk" width=5cm
+
+
+\subsection subsectmoduleHull2D12 Graham's algorithm
+
+Graham's algorithm is another well-known algorithm to compute the convex hull of 
+a 2D point set of size \f$ n \f$ in \f$ O(n\log{(n)}) \f$ [Graham, 1972 : \cite Graham1972]. 
+The method can be coarsely describe as follows: 
+- choose a pole and sort the points in order of increasing angle about the pole
+- apply a simple Graham's scan on the sorted list of points. 
+
+We have chosen the point of maximal x-coordinate (and maximal y-coordinate) to be the pole. 
+Hence, the algorithm is correct because sorting the points in order of increasing angle about 
+such a pole produces again a WEVP. 
+ 
+@image html GrahamWEVP.png "Sorting step of Graham's algorithm produces a WEVP"
+@image latex GrahamWEVP.png "Sorting step of Graham's algorithm produces a WEVP" width=5cm
+
+The main advantage of Graham's algorithm over Andrew's one is that only one scan is required 
+instead of two to retrieve the whole convex hull. 
+
+You may call the procedure Hull2D::grahamConvexHullAlgorithm as follows:  
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-GrahamAlgo
+
+@warning You must choose a predicate returning 'true' for counter-clockwise oriented 3-point sets, 
+because the sorting step is done with a counter-clockwise orientation.  
+
+
+\section sectmoduleHull2D2 Alpha-shape
+
+The alpha-shape of a finite set of points has been introduced in 
+[Edelsbrunner et. al., 1983 : \cite Edelsbrunner1983]. This geometric
+structure is based on the following concept of generalized disk.  
+For an arbitrary real \f$ \alpha \f$, a @e generalized @e disk of radius \f$ 1/\alpha \f$
+is defined as 
+- a disk of radius \f$ 1/\alpha \f$ if \f$ \alpha > 0 \f$
+- a complement of the disk of radius \f$ -1/\alpha \f$ if \f$ \alpha < 0 \f$
+- a half-plane if \f$ \alpha = 0 \f$
+
+We also define the @e direct (resp. @e indirect) generalized disk of radius \f$ 1/\alpha \f$ passing by
+two points \f$ P \f$ and \f$ Q \f$ as the unique generalized disk of radius \f$ 1/\alpha \f$ 
+with \f$ P, Q \f$ on its boundary and such that \f$ P, Q \f$ and its center are counter-clockwise 
+oriented (resp. clockwise oriented).
+
+The @e \f$\alpha\f$-hull of a point set is the intersection of all closed generalized disks
+of \f$ 1/\alpha \f$ that contains the point set. 
+A point \f$ P \f$ of this point set is @a \f$\alpha\f$-extreme is there exists a closed 
+generalized disk of radius \f$ 1/\alpha \f$ such that \f$ P \f$ lies on its boundary 
+and which contains all the other points.  
+The @e \f$\alpha\f$-shape is the straight-line graph whose vertices are the 
+\f$\alpha\f$-extreme points and whose edges connect any two \f$\alpha\f$-extreme points 
+such that there exists a closed generalized disk of radius \f$ 1/\alpha \f$ with both
+points on its boundary and which contains all the other points.  
+
+Any \f$\alpha\f$-shape of a set of points is a subgraph of either the closest point or the farthest point
+Delaunay triangulation. Moreover, the set of \f$\alpha_1\f$-extreme points is a subset of the set of 
+\f$\alpha_2\f$-extreme points if \f$\alpha_1 \geq \alpha_2 \f$.   
+
+Various \f$\alpha\f$-shapes of the digitization of a disk
+ are depicted below for \f$ \alpha \in \{ -1, -1/\sqrt{5}, -1/5, 0, 1/9, 1/8  \} \f$. 
+
+@image html AlphaShapeM1.png " alpha = -1 (8-connected boundary)"
+@image latex AlphaShapeM1.png " alpha = -1 (8-connected boundary) " width=5cm
+
+@image html AlphaShapeMSqrt5.png " alpha = -0.4472 "
+@image latex AlphaShapeMSqrt5.png " alpha = -0.4472 " width=5cm
+
+@image html AlphaShapeM5.png " alpha = -0.2 (points lying on the boundary of the convex hull)"
+@image latex AlphaShapeM5.png " alpha = -0.2 (points lying on the boundary of the convex hull)" width=5cm
+
+@image html AlphaShape0.png " alpha = 0 (convex hull)"
+@image latex AlphaShape0.png " alpha = 0 (convex hull)" width=5cm
+
+@image html AlphaShapeP9.png " alpha = 0.1111 "
+@image latex AlphaShapeP9.png " alpha = 0.1111 " width=5cm
+
+@image html AlphaShapeP8.png " alpha = 0.125 (points lying on the smallest enclosing circle)"
+@image latex AlphaShapeP8.png " alpha = 0.125 (points lying on the smallest enclosing circle)" width=5cm
+
+You may observe that: 
+- if \f$ \alpha = -1 \f$, we retrieve the 8-connected boundary
+- if \f$ \alpha = -\epsilon \f$ for an arbitrary small \f$ \epsilon \f$, we retrieve
+all the points lying on the boundary of the convex hull
+- if \f$ \alpha = 0 \f$, we retrieve the convex hull vertices. 
+- if the radius of the smallest enclosing circle is denoted by \f$ R_{min} \f$, 
+we retrieve all the points lying on the smallest enclosing circle
+if \f$ \alpha = 1/R_{min}-\epsilon \f$ for an arbitrary small \f$ \epsilon \f$. 
+
+Even if the convex hull of a set of points is its \f$0\f$-shape, 
+the following properties are not true for general \f$\alpha\f$-shapes, 
+\f$ \alpha \neq 0 \f$: 
+- The \f$\alpha\f$-shape of 3 points always exists and is always connected, 
+- For any 3-point set \f$ P, Q, R \f$ in the plane,   
+if \f$ R \f$ belongs to the direct generalized disk of radius \f$ 1/\alpha \f$ passing by \f$ P \f$ and \f$ Q \f$
+then \f$ P \f$ belongs to the direct generalized disk of radius \f$ 1/\alpha \f$ passing by \f$ Q \f$ and \f$ R \f$
+and \f$ Q \f$ belongs to the direct generalized disk of radius \f$ 1/\alpha \f$ passing by \f$ R \f$ and \f$ P \f$. 
+
+As a consequence, we did not implement any algorithm to compute the alpha-shape of an arbitrary set of points.
+Such an algorithm would have required to compute the closest point and farthest point Delaunay triangulation. 
+Though, we provide procedures, based on the 3-coins algorithm, which compute in linear-time the alpha-shape 
+of specific polygons, for which the two above properties remain true: 
+Hull2D::closedGrahamScanFromVertex (the starting point is expected to be extremal) 
+and Hull2D::closedGrahamScanFromAnyPoint (no assumption about the starting point is required). 
+
+This class of polygons is the set of simple polygons such that: 
+- The distance between any two consecutive vertices is smaller than \f$ 2/\alpha \f$ if 
+\f$ \alpha > 0 \f$ or greater than \f$ -2/\alpha \f$ if \f$ \alpha < 0 \f$. 
+This guarantees that the \f$\alpha\f$-shape of three consecutive vertices always exists 
+(if \f$ \alpha > 0 \f$) and is always connected (if \f$ \alpha < 0 \f$). 
+- For every set of three consecutive vertices \f$ P, Q, R \f$ of the polygon, 
+\f$ PR \f$ is the longest side of the triangle \f$ P, Q, R \f$. 
+
+Let us consider a connected and convex digital object such that its 4-connected (resp. 8-connected) 
+boundary is simply 4-connected (resp. 8-connected). It is clear that its 4-connected (resp. 8-connected) 
+boundary belongs to the above class of polygons provided that \f$ -1 \leq \alpha < 1/R_{min} \f$
+(resp. \f$ -\sqrt{2}/2 \leq \alpha < 1/R_{min} \f$). We can therefore compute any alpha-shape
+of the digitization of a compact and convex set by a linear-time scan of the points of its boundary. 
+
+In such cases, you can perform the computation in two steps. 
+First, you must define a predicate from an instance of RadiusFunctor as follows: 
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-RadiusPredicateInf
+
+Then, you can call the procedure Hull2D::closedGrahamScanFromAnyPoint as follows: 
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-ClosedGrahamScan
+
+In order to create an instance of RadiusFunctor, you must provide the value of \f$ 1/\alpha \f$ by three arguments: 
+- a boolean giving the sign of \f$ \alpha \f$ ('true' if \f$ \alpha \geq 0 \f$, 'false' \f$ \alpha < 0 \f$),
+- the squared numerator of \f$ 1/\alpha \f$ 
+- the squared denominator of \f$ 1/\alpha \f$. As shown above, \f$ \alpha = 0 \f$ if this third argument is zero.  
+
+For example, the following line set \f$ \alpha \f$ to \f$ 1/9 \f$.
+@snippet geometry/tools/exampleAlphaShape.cpp Hull2D-RadiusPredicateP9
+  
+The above illustrations are generated by the program written in exampleAlphaShape.cpp. 
+*/
+
+}

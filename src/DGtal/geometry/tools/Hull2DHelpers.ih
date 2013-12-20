@@ -242,42 +242,24 @@ namespace DGtal
     //----------------------------------------------------------------------------
     template <typename ForwardIterator, 
 	      typename OutputIterator, 
-	      typename Predicate, 
-	      typename PolarComparator >
+	      typename Predicate>
     inline
-    void generalizedGrahamAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
+    void grahamConvexHullAlgorithm(const ForwardIterator& itb, const ForwardIterator& ite,  
 				   OutputIterator res, 
-				   const Predicate& aPredicate, 
-				   PolarComparator& aPolarComparator)
-    {
+				   const Predicate& aPredicate)
+    { 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> )); 
       BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> )); 
       typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point; 
-      BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> )); 
-      BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> )); 
-      BOOST_CONCEPT_ASSERT(( CPolarPointComparator2D<PolarComparator> )); 
 
-      if ( itb != ite )
-	{
-	  //container
-	  std::vector<Point> container;
-	  std::copy( itb, ite, std::back_inserter( container ) ); 
+      //define a default comparator
+      typedef typename Point::Coordinate Integer; 
+      typedef AvnaimEtAl2x2DetSignComputer<Integer> DetComputer; 
+      typedef PolarPointComparatorBy2x2DetComputer<Point, DetComputer> Comparator; 
+      Comparator comparator; 
 
-	  //find an extremal point
-	  //NB: we choose the point of greatest x-coordinate
-	  //so that the sort step (by a polar comparator) 
-	  //returns a weakly externally visible polygon
-	  typename std::vector<Point>::iterator itMax 
-	    = std::max_element( container.begin(), container.end() ); 
-
-	  //sort around this point
-	  aPolarComparator.setPole( *itMax );
-	  std::sort( container.begin(), container.end(), aPolarComparator ); 
-
-	  //scan from an extremal point
-	  closedGrahamScanFromAnyPoint( container.begin(), container.end(), res, aPredicate ); 
-	}
-
+      //call overloaded version
+      grahamConvexHullAlgorithm( itb, ite, res, aPredicate, comparator ); 
     }
 
     //----------------------------------------------------------------------------

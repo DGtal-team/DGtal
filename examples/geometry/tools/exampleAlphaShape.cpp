@@ -33,7 +33,9 @@
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/helpers/StdDefs.h"
 
+//! [Hull2D-Include]
 #include "DGtal/geometry/tools/Hull2DHelpers.h"
+//! [Hull2D-Include]
 #include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/AvnaimEtAl2x2DetSignComputer.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
@@ -108,28 +110,34 @@ void drawPolygon(const ForwardIterator& itb, const ForwardIterator& ite,
  */
 void convexHull()
 {
-  //Digitization of a disk of radius 12
-  Ball2D<Z2i::Space> ball(Z2i::Point(0,0), 12);
+  //Digitization of a disk of radius 6
+  Ball2D<Z2i::Space> ball(Z2i::Point(0,0), 6);
   Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
   Z2i::DigitalSet pointSet(domain);   
   Shapes<Z2i::Domain>::euclideanShaper(pointSet, ball);
 
-  //namespace for hull functions
+  //! [Hull2D-Namespace]
   using namespace Hull2D; 
+  //! [Hull2D-Namespace]
 
-  //orientation functor
+  //! [Hull2D-Functor]
   typedef InHalfPlaneBySimpleMatrix<Z2i::Point, DGtal::int64_t> Functor;  
   Functor functor; 
+  //! [Hull2D-Functor]
 
   { //convex hull in counter-clockwise order
     vector<Z2i::Point> res; 
 
-    //geometric predicate
+    //! [Hull2D-StrictPredicateCCW]
     typedef PredicateFromOrientationFunctor2<Functor, false, false> StrictPredicate; 
     StrictPredicate predicate( functor ); 
+    //! [Hull2D-StrictPredicateCCW]
+    //according to the last two template arguments, neither strictly negative values, nor zeros are accepted: 
+    //the predicate returns 'true' only for strictly positive values returned by the underlying functor. 
 
-    //andrew algorithm
+    //! [Hull2D-AndrewAlgo]
     andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
+    //! [Hull2D-AndrewAlgo]
 
     //display
     Board2D board;
@@ -143,8 +151,12 @@ void convexHull()
   { //convex hull in counter-clockwise order with all the points lying on the edges
     vector<Z2i::Point> res; 
 
+    //! [Hull2D-LargePredicateCCW]
     typedef PredicateFromOrientationFunctor2<Functor, false, true> LargePredicate; 
     LargePredicate predicate( functor ); 
+    //! [Hull2D-LargePredicateCCW]
+    //according to the last template argument, zeros are accepted so that  
+    //the predicate returns 'true' for all the positive values returned by the underlying functor. 
 
     //andrew algorithm
     andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
@@ -162,9 +174,12 @@ void convexHull()
   { //convex hull in clockwise order
     vector<Z2i::Point> res; 
 
-    //geometric predicate
+    //! [Hull2D-StrictPredicateCW]
     typedef PredicateFromOrientationFunctor2<Functor, true, false> StrictPredicate; 
-    StrictPredicate predicate( functor ); 
+    StrictPredicate predicate( functor );
+    //! [Hull2D-StrictPredicateCW]
+    //according to the last two argument template, 
+    //the predicate returns 'true' only for strictly negative values returned by the underlying functor. 
 
     //andrew algorithm
     andrewConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
@@ -185,9 +200,9 @@ void convexHull()
     typedef PredicateFromOrientationFunctor2<Functor, false, false> StrictPredicate; 
     StrictPredicate predicate( functor ); 
 
-    //graham algorithm
-    PolarPointComparatorBy2x2DetComputer<Z2i::Point> comparator;  
-    grahamConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate, comparator ); 
+    //! [Hull2D-GrahamAlgo]
+    grahamConvexHullAlgorithm( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate ); 
+    //! [Hull2D-GrahamAlgo]
 
     //display
     Board2D board;
@@ -207,9 +222,9 @@ void convexHull()
     //display
     Board2D board;
     drawPolygon( res.begin(), res.end(), board, false ); 
-    board.saveSVG( "pointorder.svg" );  
+    board.saveSVG( "AndrewWEVP.svg" );  
 #ifdef WITH_CAIRO
-    board.saveCairo("pointorder.png", Board2D::CairoPNG);
+    board.saveCairo("AndrewWEVP.png", Board2D::CairoPNG);
 #endif
   }
 
@@ -232,9 +247,9 @@ void convexHull()
     //display
     Board2D board;
     drawPolygon( res.begin(), res.end(), board, false ); 
-    board.saveSVG( "pointorderbis.svg" );  
+    board.saveSVG( "GrahamWEVP.svg" );  
 #ifdef WITH_CAIRO
-    board.saveCairo("pointorderbis.png", Board2D::CairoPNG);
+    board.saveCairo("GrahamWEVP.png", Board2D::CairoPNG);
 #endif
   }
 
@@ -248,8 +263,8 @@ void convexHull()
 void alphaShape()
 {
 
-  //Digitization of a disk of radius 12
-  Ball2D<Z2i::Space> ball(Z2i::Point(0,0), 12);
+  //Digitization of a disk of radius 8
+  Ball2D<Z2i::Space> ball(Z2i::Point(0,0), 8);
   Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
   Z2i::DigitalSet digitalSet(domain);   
   Shapes<Z2i::Domain>::euclideanShaper(digitalSet, ball);
@@ -275,8 +290,8 @@ void alphaShape()
   //Point set defined as the set of (not duplicated) inner points  
   typedef Z2i::Curve::InnerPointsRange PointRange; 
   PointRange pointsRange = gridCurve.getInnerPointsRange();
-  vector<Z2i::Point> pointSet; 
-  unique_copy( pointsRange.begin(), pointsRange.end(), back_inserter( pointSet ) ); 
+  vector<Z2i::Point> border; 
+  unique_copy( pointsRange.begin(), pointsRange.end(), back_inserter( border ) ); 
 
   //namespace for hull functions
   using namespace Hull2D; 
@@ -285,15 +300,17 @@ void alphaShape()
     trace.info() << " alpha == 0 " << endl; 
     vector<Z2i::Point> res; 
     
-    //geometric predicate
+    //! [Hull2D-RadiusPredicateInf]
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
     typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
-    RadiusFunctor rFunctor(true, 1, 0);  
+    RadiusFunctor rFunctor(true, 1, 0); //alpha = 0; 1/alpha -> +inf 
     typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
     Predicate predicate( rFunctor ); 
+    //! [Hull2D-RadiusPredicateInf]
 
-    //generalized graham algorithm with a radius functor (1/alpha -> +inf)
-    closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
+    //! [Hull2D-ClosedGrahamScan]
+    closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
+    //! [Hull2D-ClosedGrahamScan]
 
     //display
     Board2D board;
@@ -319,7 +336,7 @@ void alphaShape()
     typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
     Predicate predicate( functor ); 
 
-    closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
+    closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
     //display
     Board2D board;
@@ -336,13 +353,15 @@ void alphaShape()
     trace.info() << " alpha == -1 " << endl; 
     vector<Z2i::Point> res; 
 
-    typedef Simple2x2DetComputer<DGtal::int64_t> DetComputer; 
+    typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
     typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
+    //! [Hull2D-RadiusPredicateM1]
     RadiusFunctor rFunctor(false, 1, 1); //1/alpha = -sqrt(1/1) = -1 
+    //! [Hull2D-RadiusPredicateM1]
     typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
     Predicate predicate( rFunctor ); 
 
-    closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
+    closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
     //display
     Board2D board;
@@ -358,13 +377,15 @@ void alphaShape()
     trace.info() << " alpha == -sqrt(5) " << endl; 
     vector<Z2i::Point> res; 
 
-    typedef Simple2x2DetComputer<DGtal::int64_t> DetComputer; 
+    typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
     typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
+    //! [Hull2D-RadiusPredicateMsqrt5]
     RadiusFunctor rFunctor(false, 5, 1); //1/alpha = -sqrt(5) 
+    //! [Hull2D-RadiusPredicateMsqrt5]
     typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
     Predicate predicate( rFunctor ); 
 
-    closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
+    closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
     //display
     Board2D board;
@@ -380,13 +401,15 @@ void alphaShape()
     trace.info() << " alpha == -5 " << endl; 
     vector<Z2i::Point> res; 
 
-    typedef Simple2x2DetComputer<DGtal::int64_t> DetComputer; 
+    typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
     typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
+    //! [Hull2D-RadiusPredicateM5]
     RadiusFunctor rFunctor(false, 25, 1); //1/alpha = -sqrt(25/1) = -5 
+    //! [Hull2D-RadiusPredicateM5]
     typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
     Predicate predicate( rFunctor ); 
 
-    closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
+    closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
     //display
     Board2D board;
@@ -398,75 +421,52 @@ void alphaShape()
 
   }
 
-
-  { //alpha = -20
-    trace.info() << " alpha == -20 " << endl; 
-    vector<Z2i::Point> res; 
-
-    typedef Simple2x2DetComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
-    RadiusFunctor rFunctor(false, 400, 1); //1/alpha = -sqrt(400/1) = -20 
-    typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
-    Predicate predicate( rFunctor ); 
-
-    closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
-    
-    //display
-    Board2D board;
-    drawPolygon( res.begin(), res.end(), board ); 
-    board.saveSVG( "AlphaShapeM20.svg" );  
-#ifdef WITH_CAIRO
-    board.saveCairo("AlphaShapeM20.png", Board2D::CairoPNG);
-#endif
-
-  }
-
   //positive alpha shape
-  { //alpha = 12
-    trace.info() << " alpha == 12 " << endl; 
+  { 
+    trace.info() << " alpha == 8 " << endl; 
     vector<Z2i::Point> res; 
 
-    typedef Simple2x2DetComputer<DGtal::int64_t> DetComputer; 
+    //! [Hull2D-RadiusPredicateP8]
+    typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
     typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
-    RadiusFunctor rFunctor(true, 144, 1); //1/alpha = sqrt(144/1) = 12 
+    RadiusFunctor rFunctor(true, 64, 1); //1/alpha = sqrt(64/1) = 8 
     typedef PredicateFromOrientationFunctor2<RadiusFunctor, false, true> Predicate; 
     Predicate predicate( rFunctor ); 
+    //! [Hull2D-RadiusPredicateP8]
 
-    //    closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
-    PolarPointComparatorBy2x2DetComputer<Z2i::Point> comparator;  
-    generalizedGrahamAlgorithm( digitalSet.begin(), digitalSet.end(), back_inserter( res ), predicate, comparator );
+    closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
 
     //display
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
-    board.saveSVG( "AlphaShapeP12.svg" );  
+    board.saveSVG( "AlphaShapeP8.svg" );  
 #ifdef WITH_CAIRO
-    board.saveCairo("AlphaShapeP12.png", Board2D::CairoPNG);
+    board.saveCairo("AlphaShapeP8.png", Board2D::CairoPNG);
 #endif
 
   }
 
   //positive alpha shape
-  { //alpha = 14
-    trace.info() << " alpha == 14 " << endl; 
+  { 
+    trace.info() << " alpha == 9 " << endl; 
     vector<Z2i::Point> res; 
 
-    typedef Simple2x2DetComputer<DGtal::int64_t> DetComputer; 
+    typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
     typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
-    RadiusFunctor rFunctor(true, 196, 1); //1/alpha = sqrt(196/1) = 14 
+    //! [Hull2D-RadiusPredicateP9]
+    RadiusFunctor rFunctor(true, 81, 1); //1/alpha = sqrt(81/1) = 9 
+    //! [Hull2D-RadiusPredicateP9]
     typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
     Predicate predicate( rFunctor ); 
 
-    //closedGrahamScanFromAnyPoint( pointSet.begin(), pointSet.end(), back_inserter( res ), predicate );   
-    PolarPointComparatorBy2x2DetComputer<Z2i::Point> comparator;  
-    generalizedGrahamAlgorithm( digitalSet.begin(), digitalSet.end(), back_inserter( res ), predicate, comparator );
+    closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
     //display
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
-    board.saveSVG( "AlphaShapeP14.svg" );  
+    board.saveSVG( "AlphaShapeP9.svg" );  
 #ifdef WITH_CAIRO
-    board.saveCairo("AlphaShapeP14.png", Board2D::CairoPNG);
+    board.saveCairo("AlphaShapeP9.png", Board2D::CairoPNG);
 #endif
 
   }
