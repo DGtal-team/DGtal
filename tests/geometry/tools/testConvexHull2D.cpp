@@ -172,20 +172,6 @@ bool testConvexHull2D()
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  //graham algorithm
-  res.clear(); 
-  trace.info() << " generalized graham algorithm " << std::endl;
-  generalizedGrahamAlgorithm( data.begin(), data.end(), back_inserter( res ), predicate, comparator );
-
-  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 
-  cout << endl; 
-
-  if ( (res.size() == g.size()) && 
-	(circularlyEqual(res.begin(), res.end(), g.begin(), g.end())) )
-    nbok++; 
-  nb++; 
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-
   trace.endBlock();
 
   trace.beginBlock ( "Random Tests..." );
@@ -203,13 +189,7 @@ bool testConvexHull2D()
 	  randomData.push_back( Point(rand()%256, rand()%256) ); 
       //computation
       andrewConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res1 ), predicate );   
-      // copy(res1.begin(), res1.end(), ostream_iterator<Point>( cout, " " ) ); 
-      // cout << endl;
-      // cout << "#" << res1.size() << endl; 
       grahamConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res2 ), predicate, comparator );
-      // copy(res2.begin(), res2.end(), ostream_iterator<Point>( cout, " " ) ); 
-      // cout << endl; 
-      // cout <<  "#" << res2.size() << endl; 
       //comparison
       if ( (res1.size() == res2.size()) && 
 	   (circularlyEqual(res1.begin(), res1.end(), res2.begin(), res2.end())) )
