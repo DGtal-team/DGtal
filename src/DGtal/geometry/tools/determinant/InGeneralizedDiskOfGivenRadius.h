@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file RadiusFunctor.h
+ * @file InGeneralizedDiskOfGivenRadius.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/10
  *
- * Header file for module RadiusFunctor.cpp
+ * Header file for module InGeneralizedDiskOfGivenRadius.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(RadiusFunctor_RECURSES)
-#error Recursive header files inclusion detected in RadiusFunctor.h
-#else // defined(RadiusFunctor_RECURSES)
+#if defined(InGeneralizedDiskOfGivenRadius_RECURSES)
+#error Recursive header files inclusion detected in InGeneralizedDiskOfGivenRadius.h
+#else // defined(InGeneralizedDiskOfGivenRadius_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define RadiusFunctor_RECURSES
+#define InGeneralizedDiskOfGivenRadius_RECURSES
 
-#if !defined RadiusFunctor_h
+#if !defined InGeneralizedDiskOfGivenRadius_h
 /** Prevents repeated inclusion of headers. */
-#define RadiusFunctor_h
+#define InGeneralizedDiskOfGivenRadius_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,16 +51,15 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class RadiusFunctor
+  // template class InGeneralizedDiskOfGivenRadius 
   /**
    * \brief Aim: This class implements an orientation functor that  
    * provides a way to determine the position of a given point with 
-   * respect to the unique line passing by two given points and the 
-   * unique circle passing by the same two given points and whose 
-   * radius and orientation is given. 
+   * respect to the unique circle passing by the same two given points 
+   * and whose radius and orientation is given. 
    *
    * This class is useful for some geometric algorithm involving disks of 
-   * given radius, such as alpha-hull and alpha-shape computation. 
+   * given radius, such as alpha-hull and alpha-shape computations. 
    *
    * The radius is given at construction. It is described by a pair
    * of integers @a myNum2 and @a myDen2 that stands for the numerator 
@@ -74,16 +73,20 @@ namespace DGtal
    * clockwise oriented). 
    * 
    * The test is done in two steps. After an initialization step that 
-   * memorizes the two points that uniquely defines the line and circle whose
+   * memorizes the two points that uniquely defines the circle whose
    * radius and orientation is given, we can test the position of a third 
-   * point with respect to these geometric figures. More precisely, 
-   * - if the third point lies on the same side of the oriented line 
+   * point @a myR with respect to this circle. Note that the distance between 
+   * @a myP and @a myR is assumed to be greater than the distance between 
+   * @a myP and @a myQ and between @a myQ and @a myR.  
+   * - If the third point lies on the same side of the oriented line 
    * passing by @a myP @a myQ than the circle center, the return value is: 
    *   - zero if the third point belongs to the circle  
    *   - strictly positive if it does not lie in the interior or on the boundary 
    *   of the circle 
    *   - strictly negative if it lies in the interior of the circle
-   * - otherwise, the return value is strictly negative.  
+   * - otherwise, the return value is strictly negative. This case is discarded
+   * because segment @a myP @a myR is assumed to be the longest side of the triangle
+   * @a myP ,  @a myQ , @a myR. 
    *
    * The test is reduced to the computation of the determinant of a 2x2 matrix
    * of integral entries, the implementation of which is delegated to a determinant 
@@ -100,25 +103,25 @@ namespace DGtal
    ...
    typedef Z2i::Point Point; 
    typedef Simple2x2DetComputer<Z2i::BigInteger> DeterminantComputer; 
-   typedef RadiusFunctor<Point, DeterminantComputer> Functor; 
+   typedef InGeneralizedDiskOfGivenRadius<Point, DeterminantComputer> Functor; 
 
    Functor functor(true, 25, 1); //circles of radius 5, directly oriented 
    functor.init( Point(5,0), Point(0,5) ); 
-   return functor( Point(4,1) ); 
-   //a strictly positive value is returned because (4,1) lies in the interior
+   return functor( Point(-4,1) ); 
+   //a strictly positive value is returned because (-4,1) lies in the interior
    //of the circle of center (0,0) and radius 5. 
    @endcode
    * 
    * Note that since a substantial part of the execution time comes from 
    * the allocation/desallocation of integers, we follow the same strategy 
    * used in IntegerComputer: the user instantiates once this object and 
-   * computes the determinant several times with it. 
+   * performs several tests with it. 
    *
    * @tparam TPoint a model of point
    * @tparam TDetComputer a model of C2x2DetComputer
    */
   template <typename TPoint, typename TDetComputer>
-  class RadiusFunctor
+  class InGeneralizedDiskOfGivenRadius
   {
     // ----------------------- Inner types ------------------------------------
   public:
@@ -179,7 +182,7 @@ namespace DGtal
      * negative, we take their opposite. It @a aDen2 is zero, the 
      * radius is assumed to tend to infinite. 
      */
-    RadiusFunctor(bool isPositive = true, 
+    InGeneralizedDiskOfGivenRadius(bool isPositive = true, 
 		  const Integer& aNum2 = NumberTraits<Integer>::ONE, 
 		  const Integer& aDen2 = NumberTraits<Integer>::ZERO);
 
@@ -187,36 +190,41 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    RadiusFunctor ( const RadiusFunctor & other );
+    InGeneralizedDiskOfGivenRadius ( const InGeneralizedDiskOfGivenRadius & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    RadiusFunctor & operator= ( const RadiusFunctor & other );
+    InGeneralizedDiskOfGivenRadius & operator= ( const InGeneralizedDiskOfGivenRadius & other );
 
+    // ----------------------- Interface --------------------------------------
+  public:
     /**
      * Initialization from two points.
      * @param aP a first point
      * @param aQ a second point
-     * @pre aP and aQ must not be distant of more than the circle diameter
+     *
+     * @pre the distance between @a aP and @a aQ must be greater than the circle diameter
      */
     void init( const Point& aP, const Point& aQ ); 
 
     /**
      * Initialisation from two points. 
      * @param aA array of two points
-     * @see RadiusFunctorBy2x2DetComputer::init()
+     * @see InGeneralizedDiskOfGivenRadiusBy2x2DetComputer::init()
      */
     void init(const PointArray& aA);
 
     /**
      * Main operator.
-     * @warning RadiusFunctorBy2x2DetComputer::init() should be called before
+     *
+     * @warning InGeneralizedDiskOfGivenRadiusBy2x2DetComputer::init() should be called before
+     *
      * @param aR any point to test
-     * @return orientation of the third points @a myR with respect to the line
-     * and circle of squared radius @a myNum2 / @a myDen2 and oriented by @a myPositive
+     * @return orientation of the third point @a myR with respect to the 
+     * circle of squared radius @a myNum2 / @a myDen2 and oriented by @a myPositive
      * passing by @a myP and @a myQ. 
      * - if the third point lies on the same side of the oriented line 
      * passing by @a myP @a myQ than the circle center, the return value is: 
@@ -226,14 +234,11 @@ namespace DGtal
      *   - strictly negative if it lies in the interior of the circle
      * - otherwise, the return value is strictly negative.  
      *
-     * @pre myQ and aR must not be distant of more than the circle diameter
-     *
-     * @see RadiusFunctorBy2x2DetComputer::init()
+     * @pre the distance between @a myQ and @a aR must be greater than the circle diameter
+     * and segment @a myP @a aR is assumed to be the longest side of the triangle
+     * @a myP ,  @a myQ , @a aR. 
      */
     Value operator()( const Point& aR ) const; 
-
-    // ----------------------- Interface --------------------------------------
-  public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -246,7 +251,7 @@ namespace DGtal
      * to the diameter of the circle.
      * @param aL2 any squared length between two points 
      * @return 'true' if either @a myDen2 equals zero or
-     * the given (squred) length is shorter than the (squared) 
+     * the given (squared) length is shorter than the (squared) 
      * diameter of the circle
      */
     bool lengthIsValid(const Integer& aL2) const;
@@ -259,6 +264,13 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+    // ----------------------- Internals --------------------------------------
+  public:
+    /**
+     * Update @a myComputedNum2 and @a myComputedDen2 from other private datas. 
+     */
+    void finalizeComputation() const; 
 
     // ------------------------- Private Datas --------------------------------
   private:
@@ -353,18 +365,18 @@ namespace DGtal
      */
     mutable AreaFunctor myAreaFunctor; 
 
-  }; // end of class RadiusFunctor
+  }; // end of class InGeneralizedDiskOfGivenRadius
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'RadiusFunctor'.
+   * Overloads 'operator<<' for displaying objects of class 'InGeneralizedDiskOfGivenRadius'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'RadiusFunctor' to write.
+   * @param object the object of class 'InGeneralizedDiskOfGivenRadius' to write.
    * @return the output stream after the writing.
    */
   template <typename TPoint, typename TDetComputer>
   std::ostream&
-  operator<< ( std::ostream & out, const RadiusFunctor<TPoint, TDetComputer> & object );
+  operator<< ( std::ostream & out, const InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer> & object );
 
 
 } // namespace DGtal
@@ -372,12 +384,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/tools/determinant/RadiusFunctor.ih"
+#include "DGtal/geometry/tools/determinant/InGeneralizedDiskOfGivenRadius.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined RadiusFunctor_h
+#endif // !defined InGeneralizedDiskOfGivenRadius_h
 
-#undef RadiusFunctor_RECURSES
-#endif // else defined(RadiusFunctor_RECURSES)
+#undef InGeneralizedDiskOfGivenRadius_RECURSES
+#endif // else defined(InGeneralizedDiskOfGivenRadius_RECURSES)

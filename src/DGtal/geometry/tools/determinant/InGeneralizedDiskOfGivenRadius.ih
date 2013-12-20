@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file RadiusFunctor.ih
+ * @file InGeneralizedDiskOfGivenRadius.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/12/10
  *
- * Implementation of inline methods defined in RadiusFunctor.h
+ * Implementation of inline methods defined in InGeneralizedDiskOfGivenRadius.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,8 +41,8 @@
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TDetComputer>
 inline
-DGtal::RadiusFunctor<TPoint, TDetComputer>::
-RadiusFunctor(bool isPositive, 
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
+InGeneralizedDiskOfGivenRadius(bool isPositive, 
 	      const Integer& aNum2, 
 	      const Integer& aDen2)
   : myNum2(aNum2), myDen2(aDen2),
@@ -78,7 +78,7 @@ RadiusFunctor(bool isPositive,
 template <typename TPoint, typename TDetComputer>
 inline
 void 
-DGtal::RadiusFunctor<TPoint, TDetComputer>::
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
 init ( const Point& aP, const Point& aQ )
 {
   myP = aP;
@@ -95,7 +95,7 @@ init ( const Point& aP, const Point& aQ )
 template <typename TPoint, typename TDetComputer>
 inline
 void 
-DGtal::RadiusFunctor<TPoint, TDetComputer>::
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
 init ( const PointArray& aA )
 {
   init( aA[0], aA[1] ); 
@@ -104,26 +104,18 @@ init ( const PointArray& aA )
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TDetComputer>
 inline
-typename DGtal::RadiusFunctor<TPoint, TDetComputer>::Value
-DGtal::RadiusFunctor<TPoint, TDetComputer>::
+typename DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::Value
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
 operator() ( const Point& aR ) const
 {
   myR = aR; 
 
-  //squared num
   myQR0 = static_cast<Integer>(myR[0]-myQ[0]); 
   myQR1 = static_cast<Integer>(myR[1]-myQ[1]);
-  myQRnorm = myQR0*myQR0 + myQR1*myQR1; 
-  //myQRnorm must not be greater than the squared diameter, ie. 4 * myNum2 / myDen2
-  ASSERT( lengthIsValid( myQRnorm ) ); 
 
   myRP0 = static_cast<Integer>(myP[0]-myR[0]); 
   myRP1 = static_cast<Integer>(myP[1]-myR[1]);
-  myRPnorm = myRP0*myRP0 + myRP1*myRP1;
 
-  myComputedNum2 = myPQnorm*myQRnorm*myRPnorm; 
-
-  //den
   myArea = myAreaFunctor(myPQ0, myPQ1, myQR0, myQR1);
 
   if (myDen2 == NumberTraits<Integer>::ZERO)
@@ -135,11 +127,12 @@ operator() ( const Point& aR ) const
     }
   else
     { //comparison to a finite radius
+      
       if (myIsPositive)
 	{
 	  if (myArea > NumberTraits<Integer>::ZERO)
 	    {
-	      myComputedDen2 = 4*myArea*myArea;
+	      finalizeComputation(); 
 	      return -myDetComputer( myComputedDen2, myComputedNum2 );
 	    }
 	  else
@@ -149,7 +142,7 @@ operator() ( const Point& aR ) const
 	{
 	  if (myArea < NumberTraits<Integer>::ZERO)
 	    {
-	      myComputedDen2 = 4*myArea*myArea;
+	      finalizeComputation(); 
 	      return myDetComputer( myComputedDen2, myComputedNum2 );
 	    }
 	  else
@@ -158,14 +151,37 @@ operator() ( const Point& aR ) const
     }
 }
 
+
 // ----------------------------------------------------------------------------
 template <typename TPoint, typename TDetComputer>
 inline
 void
-DGtal::RadiusFunctor<TPoint, TDetComputer>::
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
+finalizeComputation () const
+{
+  //squared denominator
+  myComputedDen2 = 4*myArea*myArea;
+
+  //squared numerator
+  myQRnorm = myQR0*myQR0 + myQR1*myQR1; 
+  //myQRnorm must not be greater than the squared diameter, ie. 4 * myNum2 / myDen2
+  ASSERT( lengthIsValid( myQRnorm ) ); 
+
+  myRPnorm = myRP0*myRP0 + myRP1*myRP1;
+  //myRPnorm should be the greatest norm
+  ASSERT( (myRPnorm >= myPQnorm)&&(myRPnorm >= myQRnorm) ); 
+
+  myComputedNum2 = myPQnorm*myQRnorm*myRPnorm; 
+}
+
+// ----------------------------------------------------------------------------
+template <typename TPoint, typename TDetComputer>
+inline
+void
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
 selfDisplay ( std::ostream & out ) const
 {
-  out << "[RadiusFunctor]" << std::endl;
+  out << "[InGeneralizedDiskOfGivenRadius]" << std::endl;
   out << " radius: sqrt(" << myNum2 << "/" << myDen2 << ")"; 
   if (myIsPositive) 
     out << "+"; 
@@ -178,7 +194,7 @@ selfDisplay ( std::ostream & out ) const
 template <typename TPoint, typename TDetComputer>
 inline
 bool
-DGtal::RadiusFunctor<TPoint, TDetComputer>::
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
 lengthIsValid(const Integer& aL2) const
 {
   if (myDen2 == NumberTraits<Integer>::ZERO)
@@ -191,7 +207,7 @@ lengthIsValid(const Integer& aL2) const
 template <typename TPoint, typename TDetComputer>
 inline
 bool
-DGtal::RadiusFunctor<TPoint, TDetComputer>::
+DGtal::InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer>::
 isValid() const
 {
   return ( (myNum2 > NumberTraits<Integer>::ZERO) &&
@@ -206,7 +222,7 @@ template <typename TPoint, typename TDetComputer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const RadiusFunctor<TPoint, TDetComputer> & object )
+		    const InGeneralizedDiskOfGivenRadius<TPoint, TDetComputer> & object )
 {
   object.selfDisplay( out );
   return out;

@@ -39,7 +39,7 @@
 #include "DGtal/geometry/tools/PolarPointComparatorBy2x2DetComputer.h"
 #include "DGtal/geometry/tools/determinant/AvnaimEtAl2x2DetSignComputer.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
-#include "DGtal/geometry/tools/determinant/RadiusFunctor.h"
+#include "DGtal/geometry/tools/determinant/InGeneralizedDiskOfGivenRadius.h"
 
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
@@ -302,10 +302,10 @@ void alphaShape()
     
     //! [Hull2D-RadiusPredicateInf]
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
-    RadiusFunctor rFunctor(true, 1, 0); //alpha = 0; 1/alpha -> +inf 
-    typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
-    Predicate predicate( rFunctor ); 
+    typedef InGeneralizedDiskOfGivenRadius<Z2i::Point, DetComputer> Functor; 
+    Functor functor(true, 1, 0); //alpha = 0; 1/alpha -> +inf 
+    typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
+    Predicate predicate( functor ); 
     //! [Hull2D-RadiusPredicateInf]
 
     //! [Hull2D-ClosedGrahamScan]
@@ -327,10 +327,6 @@ void alphaShape()
     vector<Z2i::Point> res; 
     
     //comparator and functor
-    typedef Simple2x2DetComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
-    RadiusFunctor rFunctor(true, 1, 0);  
-
     typedef InHalfPlaneBySimpleMatrix<Z2i::Point, DGtal::int64_t> Functor;  
     Functor functor; 
     typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
@@ -354,12 +350,12 @@ void alphaShape()
     vector<Z2i::Point> res; 
 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
+    typedef InGeneralizedDiskOfGivenRadius<Z2i::Point, DetComputer> Functor; 
     //! [Hull2D-RadiusPredicateM1]
-    RadiusFunctor rFunctor(false, 1, 1); //1/alpha = -sqrt(1/1) = -1 
+    Functor functor(false, 1, 1); //1/alpha = -sqrt(1/1) = -1 
     //! [Hull2D-RadiusPredicateM1]
-    typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
-    Predicate predicate( rFunctor ); 
+    typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
+    Predicate predicate( functor ); 
 
     closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
@@ -378,12 +374,12 @@ void alphaShape()
     vector<Z2i::Point> res; 
 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
+    typedef InGeneralizedDiskOfGivenRadius<Z2i::Point, DetComputer> Functor; 
     //! [Hull2D-RadiusPredicateMsqrt5]
-    RadiusFunctor rFunctor(false, 5, 1); //1/alpha = -sqrt(5) 
+    Functor functor(false, 5, 1); //1/alpha = -sqrt(5) 
     //! [Hull2D-RadiusPredicateMsqrt5]
-    typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
-    Predicate predicate( rFunctor ); 
+    typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
+    Predicate predicate( functor ); 
 
     closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
@@ -402,12 +398,12 @@ void alphaShape()
     vector<Z2i::Point> res; 
 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
+    typedef InGeneralizedDiskOfGivenRadius<Z2i::Point, DetComputer> Functor; 
     //! [Hull2D-RadiusPredicateM5]
-    RadiusFunctor rFunctor(false, 25, 1); //1/alpha = -sqrt(25/1) = -5 
+    Functor functor(false, 25, 1); //1/alpha = -sqrt(25/1) = -5 
     //! [Hull2D-RadiusPredicateM5]
-    typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
-    Predicate predicate( rFunctor ); 
+    typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
+    Predicate predicate( functor ); 
 
     closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
@@ -428,10 +424,10 @@ void alphaShape()
 
     //! [Hull2D-RadiusPredicateP8]
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
-    RadiusFunctor rFunctor(true, 64, 1); //1/alpha = sqrt(64/1) = 8 
-    typedef PredicateFromOrientationFunctor2<RadiusFunctor, false, true> Predicate; 
-    Predicate predicate( rFunctor ); 
+    typedef InGeneralizedDiskOfGivenRadius<Z2i::Point, DetComputer> Functor; 
+    Functor functor(true, 64, 1); //1/alpha = sqrt(64/1) = 8 
+    typedef PredicateFromOrientationFunctor2<Functor, false, true> Predicate; 
+    Predicate predicate( functor ); 
     //! [Hull2D-RadiusPredicateP8]
 
     closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
@@ -452,12 +448,12 @@ void alphaShape()
     vector<Z2i::Point> res; 
 
     typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-    typedef RadiusFunctor<Z2i::Point, DetComputer> RadiusFunctor; 
+    typedef InGeneralizedDiskOfGivenRadius<Z2i::Point, DetComputer> Functor; 
     //! [Hull2D-RadiusPredicateP9]
-    RadiusFunctor rFunctor(true, 81, 1); //1/alpha = sqrt(81/1) = 9 
+    Functor functor(true, 81, 1); //1/alpha = sqrt(81/1) = 9 
     //! [Hull2D-RadiusPredicateP9]
-    typedef PredicateFromOrientationFunctor2<RadiusFunctor> Predicate; 
-    Predicate predicate( rFunctor ); 
+    typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
+    Predicate predicate( functor ); 
 
     closedGrahamScanFromAnyPoint( border.begin(), border.end(), back_inserter( res ), predicate );   
     
