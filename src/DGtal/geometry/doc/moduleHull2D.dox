@@ -222,14 +222,14 @@ boundary belongs to the above class of polygons provided that \f$ -1 \leq \alpha
 of the digitization of a compact and convex set by a linear-time scan of the points of its boundary. 
 
 In such cases, you can perform the computation in two steps. 
-First, you must define a predicate from an instance of RadiusFunctor as follows: 
+First, you must define a predicate from an instance of InGeneralizedDiskOfGivenRadius as follows: 
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-RadiusPredicateInf
 
 Then, you can call the procedure Hull2D::closedGrahamScanFromAnyPoint as follows: 
 @snippet geometry/tools/exampleAlphaShape.cpp Hull2D-ClosedGrahamScan
 
-In order to create an instance of RadiusFunctor, you must provide the value of \f$ 1/\alpha \f$ by three arguments: 
-- a boolean giving the sign of \f$ \alpha \f$ ('true' if \f$ \alpha \geq 0 \f$, 'false' \f$ \alpha < 0 \f$),
+In order to create an instance of InGeneralizedDiskOfGivenRadius, you must provide the value of \f$ 1/\alpha \f$ by three arguments: 
+- a boolean giving the sign of \f$ \alpha \f$ ('true' if \f$ \alpha \geq 0 \f$, 'false' if \f$ \alpha < 0 \f$),
 - the squared numerator of \f$ 1/\alpha \f$ 
 - the squared denominator of \f$ 1/\alpha \f$. As shown above, \f$ \alpha = 0 \f$ if this third argument is zero.  
 

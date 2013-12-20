@@ -104,7 +104,7 @@ namespace DGtal
 
 
      ### Models
-     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix RadiusFunctor
+     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix InGeneralizedDiskOfGivenRadius
 
      @tparam T the type that should be a model of COrientationFunctor.
   */
