@@ -752,12 +752,14 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     {
       GLTextureImage &textureImg = myVectTextureImage.at(j);
       glPushName ( textureImg.myTextureName );
+      glEnable(GL_LIGHTING);
       glEnable(GL_TEXTURE_2D);
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
       glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
       glBegin(GL_QUADS);
       glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
       glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
+      
       glTexCoord2f(0, 0);
       glVertex3f(textureImg.point1[0], textureImg.point1[1], textureImg.point1[2]);
       glTexCoord2f(textureImg.myTextureFitX, 0.0);
@@ -809,7 +811,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
 {
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
-  myViewWire=true;
+  myViewWire=false;
   myGLScaleFactorX=1.0;
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
@@ -1349,6 +1351,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
         }
     }
   glEnd();
+  glEnable ( GL_LIGHTING );
   glEndList();
 
 

@@ -966,6 +966,16 @@ namespace DGtal
         vectNormal[0]= (myDirection == Viewer3D<Space, KSpace>::xDirection)? 1.0: 0.0;
         vectNormal[1]= (myDirection == Viewer3D<Space, KSpace>::yDirection)? -1.0: 0.0;
         vectNormal[2]= (myDirection == Viewer3D<Space, KSpace>::zDirection)? 1.0: 0.0;
+        if(myDirection==undefDirection){
+          DGtal::Z3i::RealPoint v1 = point2-point1;
+          DGtal::Z3i::RealPoint v2 = point4-point1;
+          vectNormal[0] = v1[1]*v2[2] - v1[2]*v2[1];
+          vectNormal[1] = v1[2]*v2[0] - v1[0]*v2[2];
+          vectNormal[2] = v1[0]*v2[1] - v1[1]*v2[0];
+          double norm = sqrt(vectNormal[0]*vectNormal[0]+vectNormal[1]*vectNormal[1]+vectNormal[2]*vectNormal[2]);
+          vectNormal[0] /=norm; vectNormal[1] /=norm; vectNormal[2] /=norm;
+        }
+        
         myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
         myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight);
 
