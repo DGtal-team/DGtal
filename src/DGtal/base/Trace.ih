@@ -144,7 +144,7 @@ DGtal::Trace::beginBlock(const std::string &keyword)
  * @return  the ellapsed time in the block in milliseconds (Class Clock).
  *
  */
-inline long
+inline double
 DGtal::Trace::endBlock()
 {
   double tick;
