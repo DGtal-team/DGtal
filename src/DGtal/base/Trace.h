@@ -114,7 +114,7 @@ namespace DGtal
      *
      * @return  the ellapsed time in the block in milliseconds (Class Clock).
      */
-    long endBlock();
+    double endBlock();
 
     /**
      * Create a string with an indentation prefix for a normal trace.
