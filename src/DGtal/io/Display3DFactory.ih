@@ -852,9 +852,6 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
     }else if(mode=="Transparent")
     {
       display.setFillColor(DGtal::Color(180, 180, 250, 25));
-    }else if(mode=="Basic")
-    {
-      //Code
     }
 
   DGtal::Z3i::RealPoint rp = display.embedK( k );
@@ -866,7 +863,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
   switch (spaceDim) {
   case 0:
 
-    if(mode!=""&& mode!="IllustrationCustomColor")
+    if(mode!="" && mode!="Basic" && mode!="IllustrationCustomColor")
       {
         display.setFillColor(DGtal::Color(200, 200, 20, 255));
       }
@@ -874,7 +871,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
     display.addBall(rp, 0.05);
     break;
   case 1:
-    if(mode!=""&& mode!="IllustrationCustomColor")
+    if(mode!=""&& mode!="Basic" && mode!="IllustrationCustomColor")
       {
         display.setFillColor(DGtal::Color(255, 255, 50, 255));
       }
@@ -884,15 +881,21 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
 			DGtal::Z3i::RealPoint(rp[0]+ (xodd? 0.5:0 ), rp[1]+ (yodd? 0.5:0 ), rp[2]+ (zodd? 0.5:0 )));
     break;
   case 2:
-    if(mode!="" && mode!="IllustrationCustomColor")
+    if(mode!="" && mode!="Basic" && mode!="IllustrationCustomColor")
       {
         display.setFillColor(DGtal::Color(20, 200, 200, 255));
       }
-    display.addSurfelPrism(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
-			   ! xodd, !yodd, !zodd, factorVolSurfel,1.0, false, false);
+    if(mode=="Basic")
+      {
+        display.addBasicSurfel(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
+                               ! xodd, !yodd, !zodd);
+      }
+    else
+      display.addSurfelPrism(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
+                             ! xodd, !yodd, !zodd, factorVolSurfel,1.0, false, false);
     break;
   case 3:
-    if(mode!="" && mode!="IllustrationCustomColor")
+    if(mode!="" && mode!="Basic" && mode!="IllustrationCustomColor")
       {
         display.setFillColor(DGtal::Color(255, 180, 250, 255));
       }
@@ -932,9 +935,6 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
     }else if(mode=="Transparent")
     {
       display.setFillColor(DGtal::Color(180, 180, 250, 25));
-    }else if(mode=="Basic")
-    {
-      //basicMode=true;
     }
 
   DGtal::Z3i::RealPoint rps = display.embedKS( sk );
@@ -947,7 +947,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
   switch (spaceDim)
     {
     case 0:
-      if(mode!="" && mode!="IllustrationCustomColor")
+      if(mode!="" && mode!="Basic" && mode!="IllustrationCustomColor")
         {
           if( sk.myPositive)
             display.setFillColor(DGtal::Color(20, 20, 250, 255));
@@ -957,7 +957,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       display.addBall(rps, 0.05);
       break;
     case 1:
-      if(mode!="" && mode!="IllustrationCustomColor")
+      if(mode!="" && mode!="Basic" && mode!="IllustrationCustomColor")
         {
           display.setFillColor(  DGtal::Color(255, 50, 50, 255));
         }
@@ -973,8 +973,13 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
         }
       break;
     case 2:
-      display.addSurfelPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
-			     ! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
+      if(mode=="Basic")
+        {
+          display.addBasicSurfel(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
+                                 ! xodd, !yodd, !zodd );          
+        }else
+        display.addSurfelPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
+                               ! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
       break;
     case 3:
       if(mode!="" && mode!="IllustrationCustomColor")

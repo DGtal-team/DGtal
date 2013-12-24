@@ -486,6 +486,20 @@ namespace DGtal
                         bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                         double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
+
+
+    /**
+     * Specific to display a surfel from Kahlimsky space from a basic way.
+     * 
+     * @param baseQuadCenter  base quad center point
+     * @param xSurfel true if the surfel has its main face in the direction of the x-axis
+     * @param ySurfel true if the surfel has its main face in the direction of the y-axis
+     * @param zSurfel true if the surfel has its main face in the direction of the z-axis
+     */
+    void addBasicSurfel(const RealPoint &baseQuadCenter,
+                        bool xSurfel, bool ySurfel, bool zSurfel);
+    
+    
     /**
      * Specific to display a surfel from Kahlimsky space in basic mode.
      *
@@ -671,6 +685,10 @@ namespace DGtal
     ///
     std::vector< QuadD3D > mySurfelPrismList;
 
+    /// For saving all surfels of Khalimsky space (for the basic mode) (used to display Khalimsky Space Cell)
+    ///
+    std::vector< QuadD3D > myBasicSurfelist;
+    
     /// Represents all the planes drawn in the Display3D
     std::vector<std::vector< QuadD3D > > myQuadSetList;
 
