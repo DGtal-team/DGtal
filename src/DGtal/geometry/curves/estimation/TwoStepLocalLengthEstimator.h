@@ -56,10 +56,10 @@ namespace DGtal
    * \brief Aim: a simple model of CGlobalCurveEstimator that compute
    * the length of a curve using the l_1 metric (just add 1/h for
    * every step).
-   * 
-   * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnArrows. 
+   * Model of CGlobalCurveGeometricEstimator
+   *
+   * @tparam TConstIterator a model of CConstIteratorOnArrows.
    */
   template <typename TConstIterator>
   class TwoStepLocalLengthEstimator
@@ -72,7 +72,7 @@ namespace DGtal
     typedef TConstIterator ConstIterator;
 
     typedef double Quantity;
-  
+
 
     /**
      * Default Constructor.
@@ -80,40 +80,40 @@ namespace DGtal
     TwoStepLocalLengthEstimator(const double wdirect, const double wdiag):
       myWeightDirect(wdirect), myWeightDiagonal(wdiag)
     {}
-    
-    
+
+
     /**
      * Destructor.
      */
     ~TwoStepLocalLengthEstimator();
 
-  
+
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /** 
+
+    /**
      * Initialize the measure computation.
-     * 
+     *
      * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
      * @param isClosed true if the input range is closed.
      */
-    void init( const double h, const ConstIterator& itb, 
-	       const ConstIterator& ite, 
+    void init( const double h, const ConstIterator& itb,
+	       const ConstIterator& ite,
 	       const bool& isClosed);
-    
 
-    /** 
+
+    /**
      * Computation of the l1 length of the curve.
      * Complexity: O(|Range|)
      * @pre init() method must be called before.
-     * 
+     *
      * @return the curve length.
      */
     Quantity eval( ) const;
 
- 
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -128,7 +128,7 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    
+
     ///Grid size.
     double myH;
 
@@ -142,8 +142,8 @@ namespace DGtal
     ///Weights
     double myWeightDirect;
     double myWeightDiagonal;
-    
-    
+
+
   private:
 
     /**
