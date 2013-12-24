@@ -41,9 +41,9 @@ matrix:
     - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON"
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON"
     - compiler: clang
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON"
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON"
 
 
 script:
