@@ -647,7 +647,7 @@ bool testChordNaivePlaneComputer()
   {
     trace.beginBlock ( "Testing block: ChordNaivePlaneComputer vertical instantiation 2." );
     NaivePlaneComputer pplane;
-    plane.init( 1, 1, 1 );
+    pplane.init( 1, 1, 1 );
     Point ppt0( -6, -3, 5 );
     bool ppt0_inside = pplane.extend( ppt0 );
     ++nb, nbok += ppt0_inside == true ? 1 : 0;
