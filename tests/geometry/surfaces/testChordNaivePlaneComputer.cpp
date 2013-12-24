@@ -542,7 +542,8 @@ bool testChordNaivePlaneComputer()
   NaivePlaneComputer plane;
   Point pt0( 0, 0, 0 );
   plane.init( 2, 1, 1 );
-  bool pt0_inside = plane.extend( pt0 );
+  bool pt0_inside; = plane.extend( pt0 );
+  ++nb, nbok += pt0_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
                << std::endl;
   Point pt1( Point( 2, 0, 0 ) );

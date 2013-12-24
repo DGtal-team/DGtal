@@ -418,7 +418,6 @@ void retractionTest(const DSS& dss,
 
 /**
  * Test of the update services
- * @tparam dss an instance of DSS
  * @tparam DSS a model of arithmetical DSS,
  * either naive or standard
  */
