@@ -40,7 +40,7 @@ INCLUDE(CheckDGtalDependencies)
 INCLUDE(CheckDGtalOptionalDependencies)
 
 # -----------------------------------------------------------------------------
-# Cpack and Ctest settings
+# Debug, Cpack and Ctest settings
 # -----------------------------------------------------------------------------
 INCLUDE(CpackCtest)
 
