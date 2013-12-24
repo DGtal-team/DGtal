@@ -613,32 +613,32 @@ bool testChordNaivePlaneComputer()
 
   {
     trace.beginBlock ( "Testing block: ChordNaivePlaneComputer vertical instantiation." );
-    NaivePlaneComputer plane;
-    Point pt0( 0, 0, 0 );
-    plane.init( 2, 5, 2 );
-    bool pt0_inside = plane.extend( pt0 );
-    ++nb, nbok += pt0_inside == true ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
+    NaivePlaneComputer ppplane;
+    Point pppt0( 0, 0, 0 );
+    ppplane.init( 2, 5, 2 );
+    bool pppt0_inside = ppplane.extend( pppt0 );
+    ++nb, nbok += pppt0_inside == true ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
-    Point pt1( 3, 2, 2 );
-    bool pt1_inside = plane.extend( pt1 );
-    ++nb, nbok += pt1_inside == true ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
+    Point pppt1( 3, 2, 2 );
+    bool pppt1_inside = ppplane.extend( pppt1 );
+    ++nb, nbok += pppt1_inside == true ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
-    Point pt2( 0, 0, 1 );
-    bool pt2_inside = plane.extend( pt2 );
-    ++nb, nbok += pt2_inside == true ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
+    Point pppt2( 0, 0, 1 );
+    bool pppt2_inside = ppplane.extend( pppt2 );
+    ++nb, nbok += pppt2_inside == true ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
-    Point pt3 = pt1 + Point( 0, 0, 1 );
-    bool pt3_inside = plane.extend( pt3 );
-    ++nb, nbok += pt3_inside == true ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
+    Point pppt3 = pppt1 + Point( 0, 0, 1 );
+    bool pppt3_inside = ppplane.extend( pt3 );
+    ++nb, nbok += pppt3_inside == true ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
-    Point pt4 = pt3 + Point( 0, 0, 1 );
-    bool pt4_inside = plane.extend( pt4 );
-    ++nb, nbok += pt4_inside == true ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
+    Point pppt4 = pppt3 + Point( 0, 0, 1 );
+    bool pppt4_inside = ppplane.extend( pt4 );
+    ++nb, nbok += pppt4_inside == true ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") Plane=" << ppplane
                  << std::endl;
     trace.endBlock();
   }
