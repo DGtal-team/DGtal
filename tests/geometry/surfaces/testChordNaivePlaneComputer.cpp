@@ -542,7 +542,7 @@ bool testChordNaivePlaneComputer()
   NaivePlaneComputer plane;
   Point pt0( 0, 0, 0 );
   plane.init( 2, 1, 1 );
-  bool pt0_inside; = plane.extend( pt0 );
+  bool pt0_inside = plane.extend( pt0 );
   ++nb, nbok += pt0_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
                << std::endl;
@@ -769,7 +769,7 @@ checkExtendWithManyPoints( unsigned int diameter,
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char**/* argv */)
 {
   using namespace Z3i;
 

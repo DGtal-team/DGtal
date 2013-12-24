@@ -188,10 +188,10 @@ inline
 bool
 DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::
 extendAsIs( const InputPoint & p )
-{ 
+{
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end(); 
+  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end();
         it != itE; ++it )
     {
       nbok += myComputers[ *it ].operator()( p ) ? 1 : 0;
@@ -203,7 +203,7 @@ extendAsIs( const InputPoint & p )
         // modifiying a vector.
         {
           bool ok = myComputers[ *it ].extendAsIs( p );
-          if ( ! ok ) 
+          if ( ! ok )
             it = myAxes.erase( it );
           else
             ++it;
@@ -223,7 +223,7 @@ extend( const InputPoint & p )
   ASSERT( isValid() );
   unsigned int nbok = 0;
   _axesToErase.clear();
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     {
       bool ok = myComputers[ *axIt ].extend( p );
@@ -251,7 +251,7 @@ isExtendable( const InputPoint & p ) const
 {
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end(); 
+  for ( AxisConstIterator it = myAxes.begin(), itE = myAxes.end();
         it != itE; ++it )
     {
       nbok += myComputers[ *it ].isExtendable( p ) ? 1 : 0;
@@ -270,7 +270,7 @@ extend( TInputIterator it, TInputIterator itE )
   ASSERT( isValid() );
   unsigned int nbok = 0;
   _axesToErase.clear();
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     {
       bool ok = myComputers[ *axIt ].extend( it, itE );
@@ -301,7 +301,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
 
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     {
       nbok += myComputers[ *axIt ].isExtendable( it, itE ) ? 1 : 0;
@@ -382,13 +382,11 @@ inline
 void
 DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::selfDisplay ( std::ostream & out ) const
 {
-  double min, max;
-  double N[ 3 ];
   out << "[ChordGenericNaivePlaneComputer";
-  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end(); 
+  for ( AxisConstIterator axIt = myAxes.begin(), axItE = myAxes.end();
         axIt != axItE; ++axIt )
     out << " " << myComputers[ *axIt ];
-  out << " ]"; 
+  out << " ]";
 }
 
 /**
@@ -414,7 +412,7 @@ DGtal::ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar>::isV
 template <typename TSpace, typename TInputPoint, typename TInternalScalar>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const ChordGenericNaivePlaneComputer<TSpace, TInputPoint, TInternalScalar> & object )
 {
   object.selfDisplay( out );
@@ -423,4 +421,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
