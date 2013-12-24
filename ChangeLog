@@ -1,6 +1,8 @@
 === DGtal 0.8 ===
 
 
+*IO Package*
+    - Basic mode to display surfel (Cell oriented or not) improved with a simple face display.
 
 
 === DGtal 0.7 ===
