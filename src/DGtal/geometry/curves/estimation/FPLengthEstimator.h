@@ -60,10 +60,10 @@ namespace DGtal
    * Description of template class 'FPLengthEstimator' <p>
    * \brief Aim: a model of CGlobalCurveEstimator that computes
    * the length of a digital curve using its FP (faithful polygon)
-   * 
-   * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnPoints. 
+   * Model of CGlobalCurveGeometricEstimator
+
+   * @tparam TConstIterator a model of CConstIteratorOnPoints.
    */
   template <typename TConstIterator>
   class FPLengthEstimator
@@ -78,45 +78,45 @@ namespace DGtal
     typedef double Quantity;
 
     typedef FP<ConstIterator,int,4> FaithfulPolygon;
-    typedef typename FaithfulPolygon::Point Point;  
-    typedef typename FaithfulPolygon::Vector Vector;  
+    typedef typename FaithfulPolygon::Point Point;
+    typedef typename FaithfulPolygon::Vector Vector;
 
     /**
      * Default Constructor.
      */
     FPLengthEstimator();
-    
-    
+
+
     /**
      * Destructor.
      */
     ~FPLengthEstimator();
 
-  
+
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /** 
+
+    /**
      * Initialize the measure computation.
-     * 
+     *
      * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
      * @param isClosed true if the input range is closed.
      */
     void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
-    
 
-    /** 
+
+    /**
      * Computation of the l1 length of the curve.
      * Complexity: O(|Range|)
      * @pre init() method must be called before.
-     * 
+     *
      * @return the curve length.
      */
     Quantity eval( ) const;
 
- 
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -131,7 +131,7 @@ namespace DGtal
 
       // ------------------------- Private Datas --------------------------------
   private:
-    
+
     ///Grid size.
     double myH;
 
