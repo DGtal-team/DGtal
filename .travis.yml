@@ -8,20 +8,16 @@ cache: apt
 
 env:
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON"
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_ITK=true -DBUILD_TESTING=ON"
-  
-  #DWITH_CGAL=true -DWITH_EIGEN=true
-
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_GMP=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=ON"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DBUILD_TESTING=ON"
   - BTYPE="-DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON"
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON"
 
 before_script:
   - sudo apt-get -qq update
   - sudo apt-get -qq install libboost-program-options-dev libcairo2-dev libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev libinsighttoolkit3-dev libgdcm2-dev
 
 ##libboost-thread-dev  libeigen3-dev liblapack-dev libblas-dev libmpfr-dev
-
 ##CGAL specific (WIP)
 #  - mkdir cgal && cd cgal
 #  - wget https://gforge.inria.fr/frs/download.php/32994/CGAL-4.3.tar.gz
@@ -32,18 +28,16 @@ before_script:
 #  - cd ../..
 
 
-
-
 matrix:
   exclude:
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DWITH_GMP=true -DWITH_ITK=true -DBUILD_TESTING=ON"
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_MAGICK=true -DBUILD_TESTING=ON"
     - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON"
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON"
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON"
     - compiler: clang
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON"
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON"
 
 
 script:
