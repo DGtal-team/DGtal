@@ -96,3 +96,13 @@ IF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   MESSAGE(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 ENDIF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
+
+
+# -----------------------------------------------------------------------------
+# Debug specific options
+# -----------------------------------------------------------------------------
+OPTION(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
+IF (WARNING_AS_ERROR)
+  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
+  MESSAGE(STATUS "Warnings as Errors ENABLED.")
+ENDIF(WARNING_AS_ERROR)
