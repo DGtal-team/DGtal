@@ -417,11 +417,6 @@ DGtal::Display3D< Space ,KSpace >::addBasicSurfel(const RealPoint &baseQuadCente
       x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
     }
 
-  double xcenter= (x1+x2+x3+x4)/4.0;
-  double ycenter= (y1+y2+y3+y4)/4.0;
-  double zcenter= (z1+z2+z3+z4)/4.0;
-
-
   //main face
   QuadD3D aSingleFace;
   aSingleFace.nx = xSurfel ? 1.0:0.0;
