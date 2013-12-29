@@ -63,7 +63,6 @@ int main( )
 
   board << v << v2 << v3;
   board.saveOBJ("board3D-2-ks.obj");
-  return 0;
 
   Board3D<Space, KSpace> board2(K);
 
