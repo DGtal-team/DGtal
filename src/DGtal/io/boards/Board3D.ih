@@ -129,7 +129,6 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 {
 
   size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
-  double Re, Gr, Bl, Tr; // colors of the elements
   double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
   std::ofstream outOBJ; //OBJ file where to write
   std::ofstream outMTL; //MTL file where to write
