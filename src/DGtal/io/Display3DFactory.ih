@@ -1347,7 +1347,16 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
 						  const DGtal::SetMode3D & sm3d )
 {
-  display.myModes[ sm3d.myClassname ] = sm3d.myMode;
+  if (   display.myModes[ sm3d.myClassname ] != sm3d.myMode )
+    {
+      display.createNewLineList("SetMode3D");
+      display.createNewBallList("SetMode3D");
+      display.createNewCubeList("SetMode3D");
+      display.createNewQuadList("SetMode3D");
+      display.createNewTriangleList("SetMode3D");
+      display.createNewPolygonList("SetMode3D");
+      display.myModes[ sm3d.myClassname ] = sm3d.myMode;
+    }
 }
 
 template< typename Space, typename KSpace>
@@ -1355,23 +1364,42 @@ inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
 						  const DGtal::CustomStyle3D & cs3d )
 {
-  display.myStyles[ cs3d.myClassname ] = cs3d.myStyle;
+  if (display.myStyles[ cs3d.myClassname ] != cs3d.myStyle )
+    {
+      display.myStyles[ cs3d.myClassname ] = cs3d.myStyle;
+      display.createNewLineList("CustomStyle3D");
+      display.createNewBallList("CustomStyle3D");
+      display.createNewCubeList("CustomStyle3D");
+      display.createNewQuadList("CustomStyle3D");
+      display.createNewTriangleList("CustomStyle3D");
+      display.createNewPolygonList("CustomStyle3D");
+    }
 }
 
 template< typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::CustomColors3D & cc3d )
 {
-  display.setFillColor(cc3d.myFillColor);
-  display.setLineColor(cc3d.myPenColor);
+  if ((display.getFillColor() != cc3d.myFillColor ) ||
+      ((display.getLineColor() != cc3d.myPenColor )))
+    {
+      display.setFillColor(cc3d.myFillColor);
+      display.setLineColor(cc3d.myPenColor);
+      display.createNewLineList("CustomColors3D");
+      display.createNewBallList("CustomColors3D");
+      display.createNewCubeList("CustomColors3D");
+      display.createNewQuadList("CustomColors3D");
+      display.createNewTriangleList("CustomColors3D");
+      display.createNewPolygonList("CustomColors3D");
+    }
 }
+
 
 template< typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display,
 						  const DGtal::ClippingPlane & cl )
 {
-  display.setFillColor(DGtal::Color(205,0,0, 30));
   display.addClippingPlane(cl.myA, cl.myB, cl.myC, cl.myD, cl.myDrawPlane);
 }
 
