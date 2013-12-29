@@ -1,6 +1,8 @@
 === DGtal 0.8 ===
 
+*IO Package*
 
+    - Better handling of materials in Board3D and OBJ exports.
 
 
 === DGtal 0.7 ===
