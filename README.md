@@ -1,3 +1,6 @@
+Description
+===========
+
 DGtal is a generic open source library for Digital Geometry
 programming for which the main objective is to structure different
 developments from the digital geometry and topology community. The
@@ -8,10 +11,13 @@ and to construct a federative project. Another objective of DGtal is
 to simplify the construction of demonstration tools to share new
 results and potential efficiency of the proposed work.
 
-For more details, have a look to the project homepage http://libdgtal.org
-
 DGtal is an opensource free software written by researchers and students from the 
 DGtal research community. We wish to keep an estimate of the number of persons 
 using the library. This is really important for us to justify the ressources spent 
 in developing this software. Please, take a few seconds to fill in the registration 
 form: http://libdgtal.org/registration/
+
+More Information
+================
+  
+* project homepage http://libdgtal.org
