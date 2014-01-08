@@ -2,7 +2,7 @@
 
 
 *IO Package*
-    - Basic mode to display surfel (Cell oriented or not) improved with a simple face display.
+    - New 'basic' display mode for surfels (oriented or not), useful for large digital surface displays (quads instead of 3D prism)
 
 
 === DGtal 0.7 ===
