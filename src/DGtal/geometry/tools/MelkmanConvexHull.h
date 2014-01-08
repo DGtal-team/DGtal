@@ -1,0 +1,202 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#pragma once
+
+/**
+ * @file MelkmanConvexHull.h
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/12/20
+ *
+ * Header file for module MelkmanConvexHull.cpp
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(MelkmanConvexHull_RECURSES)
+#error Recursive header files inclusion detected in MelkmanConvexHull.h
+#else // defined(MelkmanConvexHull_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define MelkmanConvexHull_RECURSES
+
+#if !defined MelkmanConvexHull_h
+/** Prevents repeated inclusion of headers. */
+#define MelkmanConvexHull_h
+
+//////////////////////////////////////////////////////////////////////////////
+// Inclusions
+#include <iostream>
+#include "DGtal/base/Common.h"
+#include "DGtal/base/Alias.h"
+#include "DGtal/base/IteratorCirculatorTraits.h"
+#include "DGtal/base/FrontInsertionSequenceToStackAdapter.h"
+#include "DGtal/base/BackInsertionSequenceToStackAdapter.h"
+
+#include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
+#include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
+
+#include "DGtal/geometry/tools/Hull2DHelpers.h"
+//////////////////////////////////////////////////////////////////////////////
+
+namespace DGtal
+{
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class MelkmanConvexHull
+  /**
+   * Description of template class 'MelkmanConvexHull' <p>
+   * \brief Aim:
+   *
+   * @tparam TPoint a model of point
+   * @tparam TOrientationFunctor a model of COrientationFunctor2
+   */
+  template <typename TPoint, 
+	    typename TOrientationFunctor >
+  class MelkmanConvexHull
+  {
+    // ----------------------- Types ------------------------------------------
+  public:
+    /**
+     * Type of point
+     */
+    typedef TPoint Point; 
+    /**
+     * Type of orientation functor
+     */
+    typedef TOrientationFunctor Functor;
+    BOOST_CONCEPT_ASSERT(( COrientationFunctor2<Functor> )); 
+    //the two types of points must be the same
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, typename Functor::Point >::value )); 
+
+    /**
+     * Type of predicate devoted to the backward scan
+     */
+    typedef PredicateFromOrientationFunctor2<Functor,false,false> BackwardPredicate; 
+    /**
+     * Type of predicate devoted to the forward scan
+     */
+    typedef PredicateFromOrientationFunctor2<Functor,true,false> ForwardPredicate; 
+
+    /**
+     * Type of iterator on the convex hull vertices
+     */
+    typedef typename std::deque<Point>::const_iterator ConstIterator; 
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    MelkmanConvexHull( Alias<Functor> aFunctor ); 
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Consider a new point and possibly update the convex hull. 
+     * @param aPoint an extra point
+     * @post if @a aPoint lies outside the current convex hull, 
+     * this hull is then updated with @a aPoint as a vertex. 
+     */
+    void add ( const Point& aPoint );
+
+    /**
+     * Begin iterator
+     * @return either a const iterator pointing past-the-end
+     * if the container is empty or a const iterator pointing
+     * after the first point otherwise. 
+     * Rationale: we do not want to iterate over the same point, 
+     * duplicated at the begin and at the end of the container.  
+     */
+    ConstIterator begin();
+
+    /**
+     * End iterator 
+     * @return a const iterator to the end of the container
+     */
+    ConstIterator end();
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+
+    // ------------------------- Private Datas --------------------------------
+  private:
+    /**
+     * Deque container, which stores the vertices of the convex hull
+     * NB: the first and last point is the same. 
+     */
+    std::deque<Point> myContainer; 
+    /**
+     * Predicate devoted to the backward scan
+     */
+    BackwardPredicate myBackwardPredicate; 
+    /**
+     * Predicate devoted to the forward scan
+     */
+    ForwardPredicate myForwardPredicate; 
+
+    // ------------------------- Internals ------------------------------------
+  private:
+
+  }; // end of class MelkmanConvexHull
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'MelkmanConvexHull'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'MelkmanConvexHull' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TPoint, typename TOrientationFunctor>
+  std::ostream&
+  operator<< ( std::ostream & out, const MelkmanConvexHull<TPoint, TOrientationFunctor> & object );
+
+  namespace Hull2D
+  {
+    /**
+     *
+     */
+    template <typename ForwardIterator, 
+	      typename OutputIterator, 
+	      typename Functor >
+    void melkmanConvexHullAlgorithm(const ForwardIterator& itb, 
+				    const ForwardIterator& ite,  
+				    OutputIterator res, 
+				    Functor& aFunctor ); 
+  }
+
+} // namespace DGtal
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
+#include "DGtal/geometry/tools/MelkmanConvexHull.ih"
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+#endif // !defined MelkmanConvexHull_h
+
+#undef MelkmanConvexHull_RECURSES
+#endif // else defined(MelkmanConvexHull_RECURSES)

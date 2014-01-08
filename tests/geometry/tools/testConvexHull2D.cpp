@@ -172,12 +172,26 @@ bool testConvexHull2D()
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
+  //melkman algorithm
+  res.clear(); 
+  trace.info() << " melkman algorithm " << std::endl;
+  melkmanConvexHullAlgorithm( data.begin(), data.end(), back_inserter( res ), functor );
+
+  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 
+  cout << endl; 
+
+  if ( (res.size() == g.size()) && 
+	(circularlyEqual(res.begin(), res.end(), g.begin(), g.end())) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+
   trace.endBlock();
 
   trace.beginBlock ( "Random Tests..." );
   vector<Point> randomData, res1, res2; 
   const int numberOfPoints = 1000; 
-  const int numberOfTries = 100; 
+  const int numberOfTries = 50; 
   
   for (int i = 0; ( (i < numberOfTries)&&(nbok == nb) ); i++)
     {
@@ -190,6 +204,15 @@ bool testConvexHull2D()
       //computation
       andrewConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res1 ), predicate );   
       grahamConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res2 ), predicate, comparator );
+      //comparison
+      if ( (res1.size() == res2.size()) && 
+	   (circularlyEqual(res1.begin(), res1.end(), res2.begin(), res2.end())) )
+	nbok++; 
+      nb++; 
+      trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+      //another computation
+      res2.clear(); 
+      melkmanConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res2 ), functor );   
       //comparison
       if ( (res1.size() == res2.size()) && 
 	   (circularlyEqual(res1.begin(), res1.end(), res2.begin(), res2.end())) )

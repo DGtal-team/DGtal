@@ -348,11 +348,16 @@ namespace DGtal
 				   const ForwardIterator& ite,  
 				   OutputIterator res, 
 				   const Predicate& aPredicate ); 
+
+
   } // namespace convexHull2D
 
 
 } // namespace DGtal
 
+///////////////////////////////////////////////////////////////////////////////
+// Includes friend functions.
+#include "DGtal/geometry/tools/MelkmanConvexHull.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
