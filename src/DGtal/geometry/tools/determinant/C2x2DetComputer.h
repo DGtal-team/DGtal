@@ -82,7 +82,7 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name               | Expression        | Type requirements | Return type   | Precondition | Semantics         | Post condition | Complexity      |
-     |--------------------+-------------------+-------------------+---------------+--------------+-------------------+----------------+-----------------|
+     |--------------------|-------------------|-------------------|---------------|--------------|-------------------|----------------|-----------------|
      | full operator()    | r = x(a, b, c, d) |                   | ResultInteger |              | (sign of) ad - bc |                | model dependant |
      | initialization     | x.init(a,b)       |                   | void          |              | memorizes a and b |                | constant        |
      | partial operator() | r = x(c, d)       |                   | ResultInteger |              | (sign of) ad - bc |                | model dependant |
@@ -98,7 +98,7 @@ namespace DGtal
 
      ### Models
 
-     Simple2x2DetComputer, SimpleIncremental2x2DetComputer, AvnaimEtAl2x2DetComputer, Filtred2x2DetComputer
+     Simple2x2DetComputer, SimpleIncremental2x2DetComputer, AvnaimEtAl2x2DetSignComputer, Filtered2x2DetComputer
 
 
      @tparam T the type that should be a model of C2x2DetComputer.

@@ -98,7 +98,7 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name            | Expression | Type requirements       | Return type | Precondition | Semantics                           | Post condition | Complexity      |
-     |-----------------+------------+-------------------------+-------------+--------------+-------------------------------------+----------------+-----------------|
+     |-----------------|------------|-------------------------|-------------|--------------|-------------------------------------|----------------|-----------------|
      | array dimension | X::size    |                         | SizeArray   |              | size of the array, equal to k       |                |                 |
      | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitely set the algebraic curve |                | model-dependant |
 
