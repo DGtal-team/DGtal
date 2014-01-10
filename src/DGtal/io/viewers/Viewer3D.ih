@@ -880,8 +880,6 @@ DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
   CompFarthestSurfelFromCamera compSurf;
   DGtal::trace.info() << "sort surfel prism size" << Viewer3D<Space, KSpace>::mySurfelPrismList.size() << std::endl;
   sort ( Viewer3D<Space, KSpace>::mySurfelPrismList.begin(), Viewer3D<Space, KSpace>::mySurfelPrismList.end(), compSurf );
-  DGtal::trace.info() << "sort basic surfel size" << Viewer3D<Space, KSpace>::myBallSetList.size() << std::endl;
-  sort ( Viewer3D<Space, KSpace>::myBasicSurfelist.begin(), Viewer3D<Space, KSpace>::myBasicSurfelist.end(), compSurf );
 
 }
 
