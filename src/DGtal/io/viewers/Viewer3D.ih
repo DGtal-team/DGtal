@@ -561,7 +561,7 @@ DGtal::Viewer3D<Space, KSpace>::operator<<(const typename Viewer3D<Space, KSpace
       break;
 
     case Viewer3D<Space, KSpace>::shiftSurfelVisu:
-      Viewer3D<Space, KSpace>::myCurrentfShiftVisuSurfelPrisms+=0.3;
+      Viewer3D<Space, KSpace>::myCurrentfShiftVisuPrisms+=0.3;
       break;
     }
   return *this;
@@ -837,7 +837,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   typename std::vector< typename Viewer3D<Space, KSpace>::CubeD3D> aKSCubeList;
 
-  Viewer3D<Space, KSpace>::myCurrentfShiftVisuSurfelPrisms=0.0;
+  Viewer3D<Space, KSpace>::myCurrentfShiftVisuPrisms=0.0;
   Viewer3D<Space, KSpace>::myDefaultColor= Color ( 255, 255, 255 );
   camera()->showEntireScene();
   setKeyDescription ( Qt::Key_E, "Export the current display into OFF file (just Cube, surfel and SurfelPrism for now)." );
@@ -876,8 +876,8 @@ DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
       sort ( Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).begin(), Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).end(), comp );
     }
   CompFarthestSurfelFromCamera compSurf;
-  DGtal::trace.info() << "sort surfel size" << Viewer3D<Space, KSpace>::mySurfelPrismList.size() << std::endl;
-  sort ( Viewer3D<Space, KSpace>::mySurfelPrismList.begin(), Viewer3D<Space, KSpace>::mySurfelPrismList.end(), compSurf );
+  DGtal::trace.info() << "sort surfel size" << Viewer3D<Space, KSpace>::myPrismList.size() << std::endl;
+  sort ( Viewer3D<Space, KSpace>::myPrismList.begin(), Viewer3D<Space, KSpace>::myPrismList.end(), compSurf );
 
 }
 
@@ -1141,8 +1141,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
   glBegin ( GL_QUADS );
   glEnable ( GL_DEPTH_TEST );
-  for ( typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator s_it = Viewer3D<Space, KSpace>::mySurfelPrismList.begin();
-        s_it != Viewer3D<Space, KSpace>::mySurfelPrismList.end();
+  for ( typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator s_it = Viewer3D<Space, KSpace>::myPrismList.begin();
+        s_it != Viewer3D<Space, KSpace>::myPrismList.end();
         ++s_it )
     {
       glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );

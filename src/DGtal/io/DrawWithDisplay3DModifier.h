@@ -175,16 +175,16 @@ struct ClippingPlane : public DrawWithDisplay3DModifier
    * @brief class to modify the position and scale to construct better illustration mode.
    * @todo add a constructor to automatically define the shift and the scale according a given associated SCell.
    */
-struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
+struct TransformedPrism : public DrawWithDisplay3DModifier
 {
   /**
      * Constructor.
      *
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aShift the shift distance (positive or negative).
-     * @param aSizeFactor use to change the SurfelPrism size (1.0 initial size).
+     * @param aSizeFactor use to change the Prism size (1.0 initial size).
      */
-  TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
                           double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
   {
   }
@@ -196,9 +196,9 @@ struct TransformedSurfelPrism : public DrawWithDisplay3DModifier
      * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
      * @param aVoxel a  DGtal::Z3i::SCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
      * @param aShift the shift distance (positive or negative (default 0.05)).
-     * @param aSizeFactor use to change the SurfelPrism size (default 0.75).
+     * @param aSizeFactor use to change the Prism size (default 0.75).
      */
-  TransformedSurfelPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
+  TransformedPrism( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel,
                           const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel,
                           double aShift=0.05, double aSizeFactor=0.75  )
   {
