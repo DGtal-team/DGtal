@@ -705,30 +705,28 @@ DGtal::Viewer3D<Space, KSpace>::draw()
   glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
   glDisable(GL_CULL_FACE);
   glCallList ( GLuint ( myListToAff+nbListOfPrimitives+1 ) );
-  glEnable(GL_CULL_FACE);
-  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+2 ) );
   if(myViewWire)
     {
       glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
-      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+3 ) );
+      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+2 ) );
     }
 
   glDisable(GL_CULL_FACE);
-  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+4 ) );
+  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+3 ) );
 
   if(myViewWire)
     {
       glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
-      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+5 ) );
+      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+4 ) );
     }
 
 
   glDisable(GL_CULL_FACE);
-  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+6 ) );
+  glCallList ( GLuint ( myListToAff+nbListOfPrimitives+5 ) );
   if(myViewWire)
     {
       glLineWidth ( Viewer3D<Space, KSpace>::myMeshDefaultLineWidth /distCam );
-      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+7 ) );
+      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+6 ) );
     }
 
   // Drawing all Khalimsky Space Cells
@@ -878,7 +876,7 @@ DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
       sort ( Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).begin(), Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).end(), comp );
     }
   CompFarthestSurfelFromCamera compSurf;
-  DGtal::trace.info() << "sort surfel prism size" << Viewer3D<Space, KSpace>::mySurfelPrismList.size() << std::endl;
+  DGtal::trace.info() << "sort surfel size" << Viewer3D<Space, KSpace>::mySurfelPrismList.size() << std::endl;
   sort ( Viewer3D<Space, KSpace>::mySurfelPrismList.begin(), Viewer3D<Space, KSpace>::mySurfelPrismList.end(), compSurf );
 
 }
@@ -1156,36 +1154,11 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
     }
   glEnd();
   glEndList();
-  
-  glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size())+1, GL_COMPILE );
-  myNbListe++;
-  glPushName ( myNbListe );
-  glEnable ( GL_DEPTH_TEST );
-  glEnable ( GL_BLEND );
-  glEnable ( GL_MULTISAMPLE_ARB );
-  glEnable ( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
-  glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-
-  glBegin ( GL_QUADS );
-  glEnable ( GL_DEPTH_TEST );
-  for ( typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator s_it = Viewer3D<Space, KSpace>::myBasicSurfelist.begin();
-        s_it != Viewer3D<Space, KSpace>::myBasicSurfelist.end();
-        ++s_it )
-    {
-      glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
-      glNormal3f ( ( *s_it ).nx, ( *s_it ).ny, ( *s_it ).nz );
-      glVertex3f ( ( *s_it ).point1[0], ( *s_it ).point1[1] , ( *s_it ).point1[2] );
-      glVertex3f ( ( *s_it ).point2[0], ( *s_it ).point2[1] , ( *s_it ).point2[2] );
-      glVertex3f ( ( *s_it ).point3[0], ( *s_it ).point3[1] , ( *s_it ).point3[2] );
-      glVertex3f ( ( *s_it ).point4[0], ( *s_it ).point4[1] , ( *s_it ).point4[2] );
-    }
-  glEnd();
-  glEndList();
 
   for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myLineSetList.size(); j++ )
     {
       listeID++;
-      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+j+2 ), GL_COMPILE );
+      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myCubeSetList.size()+j+1 ), GL_COMPILE );
       myNbListe++;
       glDisable ( GL_LIGHTING );
       glPushName ( myNbListe );
@@ -1205,7 +1178,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
   for ( unsigned int j=0; j<Viewer3D<Space, KSpace>::myBallSetList.size(); j++ )
     {
-      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+j+2 ), GL_COMPILE );
+      glNewList ( GLuint ( myListToAff+Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+j+1 ), GL_COMPILE );
       myNbListe++;
       glDepthMask ( GL_TRUE );
       glDisable ( GL_TEXTURE_2D );
@@ -1238,7 +1211,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   unsigned int nbListOfPrimitives = Viewer3D<Space, KSpace>::myLineSetList.size() +Viewer3D<Space, KSpace>::myCubeSetList.size()+ Viewer3D<Space, KSpace>::myBallSetList.size();
 
   // First List (quad faces)
-  glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 2 ), GL_COMPILE );
+  glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 1 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
 
@@ -1261,7 +1234,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEndList();
 
   // Second list: Wired version of quad face.
-  glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 3 ), GL_COMPILE );
+  glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 2 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );
@@ -1290,7 +1263,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEndList();
 
   // Third list: Triangle faces.
-  glNewList ( GLuint (myListToAff +nbListOfPrimitives + 4 ), GL_COMPILE );
+  glNewList ( GLuint (myListToAff +nbListOfPrimitives + 3 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_LIGHTING );
@@ -1311,7 +1284,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 
   // Fourth list: Wired version of triangle face.
-  glNewList ( GLuint ( myListToAff + nbListOfPrimitives +5), GL_COMPILE );
+  glNewList ( GLuint ( myListToAff + nbListOfPrimitives +4), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
 
@@ -1335,7 +1308,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
   glEndList();
 
   // Fifth list: Polygonal faces.
-  glNewList ( GLuint (myListToAff + nbListOfPrimitives +6 ), GL_COMPILE );
+  glNewList ( GLuint (myListToAff + nbListOfPrimitives +5 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_LIGHTING );
@@ -1358,7 +1331,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 
   // Sixth list: Wired version of polygonal face.
-  glNewList ( GLuint (myListToAff + nbListOfPrimitives +7 ), GL_COMPILE );
+  glNewList ( GLuint (myListToAff + nbListOfPrimitives +6 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );

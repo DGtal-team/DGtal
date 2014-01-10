@@ -887,8 +887,8 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
       }
     if(mode=="Basic")
       {
-        display.addBasicSurfel(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
-                               ! xodd, !yodd, !zodd);
+        display.addQuadFromSurfelCenter(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
+                                        ! xodd, !yodd, !zodd);
       }
     else
       display.addSurfelPrism(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
@@ -975,8 +975,8 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
     case 2:
       if(mode=="Basic")
         {
-          display.addBasicSurfel(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
-                                 ! xodd, !yodd, !zodd );          
+          display.addQuadFromSurfelCenter(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
+                                          ! xodd, !yodd, !zodd );          
         }else
         display.addSurfelPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
                                ! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
