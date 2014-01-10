@@ -539,10 +539,10 @@ namespace DGtal
     /**
      * Draw a surfel
      * @param display the display where to draw
-     * @param aTransformedSurfelPrism a transformed surfel prism
+     * @param aTransformedPrism a transformed surfel prism
      */
     static void
-    draw( Display3D<Space, KSpace> & display, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
+    draw( Display3D<Space, KSpace> & display, const DGtal::TransformedPrism & aTransformedPrism);
 
   }; // end of struct Display3DFactory
 

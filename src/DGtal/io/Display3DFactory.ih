@@ -891,7 +891,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
                                         ! xodd, !yodd, !zodd);
       }
     else
-      display.addSurfelPrism(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
+      display.addPrism(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
                              ! xodd, !yodd, !zodd, factorVolSurfel,1.0, false, false);
     break;
   case 3:
@@ -978,7 +978,7 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
           display.addQuadFromSurfelCenter(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
                                           ! xodd, !yodd, !zodd );          
         }else
-        display.addSurfelPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
+        display.addPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),
                                ! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, sk.myPositive );
       break;
     case 3:
@@ -1382,13 +1382,13 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
 
 template< typename Space, typename KSpace>
 inline
-void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism)
+void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::TransformedPrism & aTransformedPrism)
 {
 
   DGtal::Color fillColorSave = display.getFillColor();
-  std::string mode = display.getMode( aTransformedSurfelPrism.mySurfel.className() );
+  std::string mode = display.getMode( aTransformedPrism.mySurfel.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
-         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::ShiftedKSSurfel & aTransformedSurfelPrism ): Unknown mode "+mode)=="");
+         ("DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & display, const DGtal::ShiftedKSSurfel & aTransformedPrism ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
   if(mode=="Highlighted")
@@ -1402,17 +1402,17 @@ void DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & dis
     {
       // basicMode=true;
     }
-  DGtal::Z3i::RealPoint rps = display.embedKS(aTransformedSurfelPrism );
+  DGtal::Z3i::RealPoint rps = display.embedKS(aTransformedPrism );
 
-  bool xodd = ( aTransformedSurfelPrism.mySurfel.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( aTransformedSurfelPrism.mySurfel.myCoordinates[ 1 ] & 1 );
-  bool zodd = ( aTransformedSurfelPrism.mySurfel.myCoordinates[ 2 ] & 1 );
+  bool xodd = ( aTransformedPrism.mySurfel.myCoordinates[ 0 ] & 1 );
+  bool yodd = ( aTransformedPrism.mySurfel.myCoordinates[ 1 ] & 1 );
+  bool zodd = ( aTransformedPrism.mySurfel.myCoordinates[ 2 ] & 1 );
 
   unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   ASSERT(spaceDim==2);
 
   //display.addSurfelPrism(rps[0], rps[1], rps[2],! xodd, !yodd, !zodd, factorVolSurfel, aTransformedSurfelPrism.mySizeFactor, true, aTransformedSurfelPrism.mySurfel.myPositive );
-  display.addSurfelPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, aTransformedSurfelPrism.mySurfel.myPositive );
+  display.addPrism(DGtal::Z3i::RealPoint(rps[0]+(xodd? 0:0.5 ), rps[1]+(yodd? 0:0.5 ), rps[2]+(zodd? 0:0.5 )),! xodd, !yodd, !zodd, factorVolSurfel,1.0, true, aTransformedPrism.mySurfel.myPositive );
   display.setFillColor(fillColorSave);
 
 }

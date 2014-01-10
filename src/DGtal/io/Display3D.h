@@ -141,7 +141,7 @@ namespace DGtal
 
     /**
      * This structure is used to display clipping planes and the
-     * components of the mySurfelPrismList (allowing to set normal and
+     * components of the myPrismList (allowing to set normal and
      * color).
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
@@ -499,7 +499,7 @@ namespace DGtal
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
      * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addSurfelPrism(const RealPoint &baseQuadCenter,
+    void addPrism(const RealPoint &baseQuadCenter,
                         bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                         double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
@@ -624,7 +624,7 @@ namespace DGtal
      * @param aTrans a transformed surfel prism
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const DGtal::TransformedSurfelPrism& aTrans ) const;
+    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const DGtal::TransformedPrism& aTrans ) const;
 
 
     /**
@@ -680,7 +680,7 @@ namespace DGtal
 
     /// Used to specialized visualisation with KSpace surfels/cubes.
     ///
-    double myCurrentfShiftVisuSurfelPrisms;
+    double myCurrentfShiftVisuPrisms;
 
     /// Used to represent all the list used in the display.
     ///
@@ -698,9 +698,9 @@ namespace DGtal
     ///
     std::vector< ClippingPlaneD3D > myClippingPlaneList;
 
-    /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+    /// Represent truncated prism object to represent surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
-    std::vector< QuadD3D > mySurfelPrismList;
+    std::vector< QuadD3D > myPrismList;
  
     /// Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
     std::vector<std::vector< QuadD3D > > myQuadSetList;
@@ -726,9 +726,9 @@ namespace DGtal
     ///
     std::vector<std::string> myClippingPlaneNameList;
 
-    /// names of the lists in mySurfelPrismList
+    /// names of the lists in myPrismList
     ///
-    std::vector<std::string> mySurfelPrismNameList;
+    std::vector<std::string> myPrismNameList;
 
     /// names of the lists in myQuadList
     ///
