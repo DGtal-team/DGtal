@@ -152,7 +152,6 @@ namespace DGtal
       RealPoint point4;
       double nx, ny, nz;
       DGtal::Color color;
-      bool isDoubleSided;
     };
 
 
@@ -422,11 +421,22 @@ namespace DGtal
      * @param p2 the 2nd point
      * @param p3 the 3rd point
      * @param p4  the 4th point
-     * @param doubleSided to specify if the quad should be displayed with back and front faces.
      * 
      */
-    void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4,
-                 bool doubleSided = false);
+    void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4);
+    
+    /**
+     * Method to add a quad representing a surfel given from its center and its orientation.
+     *
+     * @param surfelCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction 
+     * @param ySurfel indicates that the sufel is in the y axis direction 
+     * @param zSurfel indicates that the sufel is in the z axis direction 
+     *
+     **/
+    
+    void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel);
+      
     
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
