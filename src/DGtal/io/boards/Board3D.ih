@@ -581,14 +581,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
   // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
 
-  // SurfelPrism (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Prism (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     j=0;
     k=0;
     std::ostringstream tmpStream;
 
-    for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::iterator s_it = Board3D<Space, KSpace>::mySurfelPrismList.begin();
-         s_it != Board3D<Space, KSpace>::mySurfelPrismList.end();
+    for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::iterator s_it = Board3D<Space, KSpace>::myPrismList.begin();
+         s_it != Board3D<Space, KSpace>::myPrismList.end();
          ++s_it)
       {
         //test if a clipping plane do not cut it
@@ -628,15 +628,15 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         if (tmpStream.str() != "")
           {
             std::stringstream name;
-            name << "mySurfelPrismList" << j;
+            name << "myPrismList" << j;
             std::stringstream matName;
-            matName << "mySurfelPrismList" << j << "MAT";
+            matName << "myPrismList" << j << "MAT";
 
             outOBJ << "o  " << name.str() << std::endl;
             outOBJ << "usemtl " << matName.str() << std::endl;
             outOBJ << tmpStream.str();
 
-            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
+            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::myPrismList.begin();
             Re = itBegin->color.red() /255.0 ;
             Gr = itBegin->color.green() /255.0;
             Bl = itBegin->color.blue() /255.0;
@@ -655,7 +655,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   }
 
   //OPT tail
-  // end SurfelPrism (from updateList)+++++++++++++++++++++++++++++++
+  // end Prism (from updateList)+++++++++++++++++++++++++++++++
 
   outMTL << bufMTL.str();
 
