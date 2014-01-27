@@ -428,7 +428,7 @@ namespace DGtal
     /**
      * Method to add a quad representing a surfel given from its center and its orientation.
      *
-     * @param surfelCenter the surfel center.
+     * @param baseQuadCenter the surfel center.
      * @param xSurfel indicates that the sufel is in the x axis direction 
      * @param ySurfel indicates that the sufel is in the y axis direction 
      * @param zSurfel indicates that the sufel is in the z axis direction 
