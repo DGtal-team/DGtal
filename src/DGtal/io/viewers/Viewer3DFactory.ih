@@ -888,9 +888,9 @@ DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, co
 template <typename Space, typename KSpace>
 inline
 void
-DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism)
+DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const DGtal::TransformedPrism & aTransformedPrism)
 {
-  DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aTransformedSurfelPrism);
+  DGtal::Display3DFactory<Space,KSpace>::draw( viewer, aTransformedPrism);
 }
 
 

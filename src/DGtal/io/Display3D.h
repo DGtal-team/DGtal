@@ -141,7 +141,7 @@ namespace DGtal
 
     /**
      * This structure is used to display clipping planes and the
-     * components of the mySurfelPrismList (allowing to set normal and
+     * components of the myPrismList (allowing to set normal and
      * color).
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
@@ -413,14 +413,31 @@ namespace DGtal
 
 
     /**
-     * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
+     * Method to add a specific quad (used by @a addClippingPlane or
+     * to represent basic surfels from Khalimsky space). The normal is
+     * computed from the vertex order.
+     * 
      * @param p1 the 1st point
      * @param p2 the 2nd point
      * @param p3 the 3rd point
      * @param p4  the 4th point
+     * 
      */
     void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4);
-
+    
+    /**
+     * Method to add a quad representing a surfel given from its center and its orientation.
+     *
+     * @param baseQuadCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction 
+     * @param ySurfel indicates that the sufel is in the y axis direction 
+     * @param zSurfel indicates that the sufel is in the z axis direction 
+     *
+     **/
+    
+    void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel);
+      
+    
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
      * @param p1 the 1st point
@@ -482,26 +499,40 @@ namespace DGtal
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
      * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addSurfelPrism(const RealPoint &baseQuadCenter,
+    void addPrism(const RealPoint &baseQuadCenter,
                         bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                         double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
+
+
     /**
-     * Specific to display a surfel from Kahlimsky space in basic mode.
-     *
+     * Specific to display a surfel from Kahlimsky space from a basic way.
+     * 
      * @param baseQuadCenter  base quad center point
      * @param xSurfel true if the surfel has its main face in the direction of the x-axis
      * @param ySurfel true if the surfel has its main face in the direction of the y-axis
      * @param zSurfel true if the surfel has its main face in the direction of the z-axis
-     * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
-     * @param sizeFactor set the difference between the upper face of the prism and the down face
-     * @param isSigned to specify if we want to display an signed or unsigned Cell.
-     * @param aSign if @ref isSigned is true it will be used to apply a different displays
-     * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addQuad(const RealPoint &baseQuadCenter,
-                 bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-                 double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
+    void addBasicSurfel(const RealPoint &baseQuadCenter,
+                        bool xSurfel, bool ySurfel, bool zSurfel);
+    
+    
+    // /**
+    //  * Specific to display a surfel from Kahlimsky space in basic mode.
+    //  *
+    //  * @param baseQuadCenter  base quad center point
+    //  * @param xSurfel true if the surfel has its main face in the direction of the x-axis
+    //  * @param ySurfel true if the surfel has its main face in the direction of the y-axis
+    //  * @param zSurfel true if the surfel has its main face in the direction of the z-axis
+    //  * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
+    //  * @param sizeFactor set the difference between the upper face of the prism and the down face
+    //  * @param isSigned to specify if we want to display an signed or unsigned Cell.
+    //  * @param aSign if @ref isSigned is true it will be used to apply a different displays
+    //  * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
+    //  */
+    // void addQuad(const RealPoint &baseQuadCenter,
+    //              bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
+    //              double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
 
 
@@ -593,7 +624,7 @@ namespace DGtal
      * @param aTrans a transformed surfel prism
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const DGtal::TransformedSurfelPrism& aTrans ) const;
+    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const DGtal::TransformedPrism& aTrans ) const;
 
 
     /**
@@ -649,7 +680,7 @@ namespace DGtal
 
     /// Used to specialized visualisation with KSpace surfels/cubes.
     ///
-    double myCurrentfShiftVisuSurfelPrisms;
+    double myCurrentfShiftVisuPrisms;
 
     /// Used to represent all the list used in the display.
     ///
@@ -667,11 +698,11 @@ namespace DGtal
     ///
     std::vector< ClippingPlaneD3D > myClippingPlaneList;
 
-    /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+    /// Represent truncated prism object to represent surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
-    std::vector< QuadD3D > mySurfelPrismList;
-
-    /// Represents all the planes drawn in the Display3D
+    std::vector< QuadD3D > myPrismList;
+ 
+    /// Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
     std::vector<std::vector< QuadD3D > > myQuadSetList;
 
     /// Represents all the triangles drawn in the Display3D
@@ -695,9 +726,9 @@ namespace DGtal
     ///
     std::vector<std::string> myClippingPlaneNameList;
 
-    /// names of the lists in mySurfelPrismList
+    /// names of the lists in myPrismList
     ///
-    std::vector<std::string> mySurfelPrismNameList;
+    std::vector<std::string> myPrismNameList;
 
     /// names of the lists in myQuadList
     ///

@@ -751,12 +751,12 @@ namespace DGtal
     draw( Viewer3D<Space,KSpace> & viewer, const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate);
 
     /**
-     * Method to draw TransformedSurfelPrism
+     * Method to draw TransformedPrism
      * @param viewer the viewer where to draw
-     * @param aTransformedSurfelPrism the transformed surfelprism to draw
+     * @param aTransformedPrism the transformed surfelprism to draw
      */
     static void
-    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
+    draw( Viewer3D<Space,KSpace> & viewer, const DGtal::TransformedPrism & aTransformedPrism);
 
     // end heritage
     //----------------------------------------------------------------------------------------------
