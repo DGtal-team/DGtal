@@ -491,9 +491,9 @@ DGtal::Board3DTo2D<Space, KSpace>::saveCairo(const char *filename, CairoType typ
 
     // Drawing all Khalimsky Space Cells
 
-    // SurfelPrism (from updateList)
-    for (typename std::vector<typename Board3DTo2D<Space, KSpace>::QuadD3D>::iterator s_it =Board3DTo2D<Space, KSpace>:: mySurfelPrismList.begin();
-         s_it != Board3DTo2D<Space, KSpace>::mySurfelPrismList.end();
+    // Prism (from updateList)
+    for (typename std::vector<typename Board3DTo2D<Space, KSpace>::QuadD3D>::iterator s_it =Board3DTo2D<Space, KSpace>:: myPrismList.begin();
+         s_it != Board3DTo2D<Space, KSpace>::myPrismList.end();
          ++s_it)
     {
         {
