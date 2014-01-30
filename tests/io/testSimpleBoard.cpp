@@ -33,6 +33,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "ConfigTest.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -126,6 +127,25 @@ bool testDomain()
     return true;
 }
 
+
+bool testImage()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 1;
+  trace.beginBlock ( "Testing Display Image with Board " );
+  Board2D board;
+  std::string filenameImage1 = testPath + "samples/contourS.gif";    
+  board.drawImage(filenameImage1, 0, 85, 185, 85); 
+  board.saveFIG("boardTestDisplayImge.fig");
+  board.saveEPS("boardTestDisplayImge.eps");
+  board.saveSVG("boardTestDisplayImge.svg");
+  board.saveTikZ("boardTestDisplayImge.tikz" );
+  nbok++;
+  trace.endBlock();
+  return nbok == nb;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -136,8 +156,8 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-
-  bool res = testSimpleBoard() && testDomain(); // && ... other tests
+  
+  bool res = testSimpleBoard() && testDomain() && testImage(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
