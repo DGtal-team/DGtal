@@ -135,7 +135,6 @@ bool testImage()
   std::string filenameImage1 = testPath + "samples/contourS.gif";    
   board.drawImage(filenameImage1, 0, 85, 185, 85); 
   board.saveFIG("boardTestDisplayImge.fig");
-  board.saveEPS("boardTestDisplayImge.eps");
   board.saveSVG("boardTestDisplayImge.svg");
   board.saveTikZ("boardTestDisplayImge.tikz" );
 #ifdef WITH_CAIRO
