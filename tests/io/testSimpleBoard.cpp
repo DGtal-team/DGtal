@@ -116,8 +116,6 @@ bool testDomain()
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );
     b2.saveTikZ( "domain-paving.tikz" );
-
-
     trace.endBlock();
 
     PointVector<3,int> pl;
@@ -140,6 +138,11 @@ bool testImage()
   board.saveEPS("boardTestDisplayImge.eps");
   board.saveSVG("boardTestDisplayImge.svg");
   board.saveTikZ("boardTestDisplayImge.tikz" );
+#ifdef WITH_CAIRO
+  board.saveCairo("boardTestDisplayImgeCAIRO.eps", Board2D::CairoEPS );
+  board.saveCairo("boardTestDisplayImgeCAIRO.pdf", Board2D::CairoPDF );
+  board.saveCairo("boardTestDisplayImgeCAIRO.png", Board2D::CairoPNG );
+#endif
   nbok++;
   trace.endBlock();
   return nbok == nb;
