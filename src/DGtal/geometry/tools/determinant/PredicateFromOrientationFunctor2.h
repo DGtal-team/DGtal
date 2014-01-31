@@ -127,7 +127,7 @@ namespace DGtal
      * Ternary parenthesis operator on three points
      * @param aPoint1 first point
      * @param aPoint2 second point
-     * @param aPoint2 third point
+     * @param aPoint3 third point
      * @return return value of the thresholder 
      * applied on the underlying orientation functor
      */
