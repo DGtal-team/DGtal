@@ -135,13 +135,13 @@ bool testImage()
 
   std::string filenameImage1 = testPath + "samples/contourS.png";    
   board.drawImage(filenameImage1, 0, 85, 185, 85); 
-  board.saveFIG("boardTestDisplayImge.fig");
-  board.saveSVG("boardTestDisplayImge.svg");
-  board.saveTikZ("boardTestDisplayImge.tikz" );
+  board.saveFIG("boardTestDisplayImage.fig");
+  board.saveSVG("boardTestDisplayImage.svg");
+  board.saveTikZ("boardTestDisplayImage.tikz" );
 #ifdef WITH_CAIRO
-  board.saveCairo("boardTestDisplayImgeCAIRO.eps", Board2D::CairoEPS );
-  board.saveCairo("boardTestDisplayImgeCAIRO.pdf", Board2D::CairoPDF );
-  board.saveCairo("boardTestDisplayImgeCAIRO.png", Board2D::CairoPNG );
+  board.saveCairo("boardTestDisplayImageCAIRO.eps", Board2D::CairoEPS );
+  board.saveCairo("boardTestDisplayImageCAIRO.pdf", Board2D::CairoPDF );
+  board.saveCairo("boardTestDisplayImageCAIRO.png", Board2D::CairoPNG );
 #endif
   nbok++;
   trace.endBlock();
