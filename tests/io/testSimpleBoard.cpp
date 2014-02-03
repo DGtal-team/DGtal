@@ -132,7 +132,8 @@ bool testImage()
   unsigned int nb = 1;
   trace.beginBlock ( "Testing Display Image with Board " );
   Board2D board;
-  std::string filenameImage1 = testPath + "samples/contourS.gif";    
+
+  std::string filenameImage1 = testPath + "samples/contourS.png";    
   board.drawImage(filenameImage1, 0, 85, 185, 85); 
   board.saveFIG("boardTestDisplayImge.fig");
   board.saveSVG("boardTestDisplayImge.svg");
