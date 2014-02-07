@@ -519,14 +519,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
   // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
 
-  // SurfelPrism (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Prism (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     j=0;
     k=0;
     std::ostringstream tmpStream;
 
-    for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::iterator s_it = Board3D<Space, KSpace>::mySurfelPrismList.begin();
-         s_it != Board3D<Space, KSpace>::mySurfelPrismList.end();
+    for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::iterator s_it = Board3D<Space, KSpace>::myPrismList.begin();
+         s_it != Board3D<Space, KSpace>::myPrismList.end();
          ++s_it)
       {
         //test if a clipping plane do not cut it
@@ -566,10 +566,13 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         if (tmpStream.str() != "")
           {
             std::stringstream name;
-            name << "mySurfelPrismList" << j;
+            name << "myPrismList" << j;
+            std::stringstream matName;
+            matName << "myPrismList" << j << "MAT";
 
             typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
             unsigned int matid = getMaterialIndex(itBegin->color);
+
             std::stringstream matName;
             matName <<  "Mat_" << matid;
             outOBJ << "o  " << name.str() << std::endl;
