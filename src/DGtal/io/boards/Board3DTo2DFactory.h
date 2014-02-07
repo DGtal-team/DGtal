@@ -611,10 +611,10 @@ namespace DGtal
   /**
    * @brief draw
    * @param board the board where to draw
-   * @param aTransformedSurfelPrism the transformed surfelprism to draw
+   * @param aTransformedPrism the transformed surfelprism to draw
    */
   static void
-  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism);
+  draw( Board3DTo2D<Space, KSpace> & board, const DGtal::TransformedPrism & aTransformedPrism);
 
   // end heritage
   //----------------------------------------------------------------------------------------------

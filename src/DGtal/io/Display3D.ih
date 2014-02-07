@@ -286,7 +286,6 @@ DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint 
   aQuad.ny= n[1];
   aQuad.nz= n[2];
   aQuad.color= getFillColor();
-
   if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
@@ -383,24 +382,25 @@ DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vert
 }
 
 
+
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCenter,
-                                                  bool xSurfel, bool ySurfel, bool zSurfel,
-                                                  double sizeShiftFactor,
-                                                  double sizeFactor, bool isSigned, bool aSign)
+DGtal::Display3D< Space ,KSpace >::addPrism(const RealPoint &baseQuadCenter,
+                                            bool xSurfel, bool ySurfel, bool zSurfel,
+                                            double sizeShiftFactor,
+                                            double sizeFactor, bool isSigned, bool aSign)
 {
   updateBoundingBox(baseQuadCenter);
-  double retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuSurfelPrisms);
-  double width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuSurfelPrisms);
+  double retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuPrisms);
+  double width= 0.03*(sizeShiftFactor+myCurrentfShiftVisuPrisms);
 
 
   double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
   double x5, y5, z5, x6, y6, z6, x7, y7, z7, x8, y8, z8;
   double dx, dy, dz;
 
-
+  
   ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
@@ -477,7 +477,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFaceUp.point4[0]=x4; qFaceUp.point4[1]=y4; qFaceUp.point4[2]= z4;
 
   qFaceUp.color=myCurrentFillColor;
-  mySurfelPrismList.push_back(qFaceUp);
+  myPrismList.push_back(qFaceUp);
   //main down face
   QuadD3D qFaceDown;
   qFaceDown.nx= -normaleUp[0];
@@ -488,7 +488,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFaceDown.point3[0]=x7; qFaceDown.point3[1]=y7; qFaceDown.point3[2]= z7;
   qFaceDown.point4[0]=x6; qFaceDown.point4[1]=y6; qFaceDown.point4[2]= z6;
   qFaceDown.color=myCurrentFillColor;
-  mySurfelPrismList.push_back(qFaceDown);
+  myPrismList.push_back(qFaceDown);
 
   //small face 1
   QuadD3D qFace1;
@@ -504,7 +504,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFace1.point3[0]= x6; qFace1.point3[1] =y6; qFace1.point3[2]=z6;
   qFace1.point4[0]= x2; qFace1.point4[1] =y2; qFace1.point4[2]=z2;
   qFace1.color=myCurrentFillColor;
-  mySurfelPrismList.push_back(qFace1);
+  myPrismList.push_back(qFace1);
 
   //small face 2
   QuadD3D qFace2;
@@ -520,7 +520,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFace2.point3[0]= x7; qFace2.point3[1] =y7; qFace2.point3[2]=z7;
   qFace2.point4[0]= x3; qFace2.point4[1] =y3; qFace2.point4[2]=z3;
   qFace2.color=myCurrentFillColor;
-  mySurfelPrismList.push_back(qFace2);
+  myPrismList.push_back(qFace2);
 
   //small face 3
   QuadD3D qFace3;
@@ -535,7 +535,7 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFace3.point3[0]= x8; qFace3.point3[1] =y8; qFace3.point3[2]=z8;
   qFace3.point4[0]= x4; qFace3.point4[1] =y4; qFace3.point4[2]=z4;
   qFace3.color=myCurrentFillColor;
-  mySurfelPrismList.push_back(qFace3);
+  myPrismList.push_back(qFace3);
 
   //small face 4
   QuadD3D qFace4;
@@ -550,57 +550,49 @@ DGtal::Display3D< Space ,KSpace >::addSurfelPrism(const RealPoint &baseQuadCente
   qFace4.point3[0]= x5; qFace4.point3[1] =y5; qFace4.point3[2]=z5;
   qFace4.point4[0]= x1; qFace4.point4[1] =y1; qFace4.point4[2]=z1;
   qFace4.color= myCurrentFillColor;
-  mySurfelPrismList.push_back(qFace4);
+  myPrismList.push_back(qFace4);
 
 }
 
 template < typename Space ,typename KSpace >
 inline
-void
-DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &baseQuadCenter,
-                                           bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-                                           double sizeFactor, bool isSigned, bool aSign)
+void 
+DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenter(const RealPoint &baseQuadCenter,
+                                                           bool xSurfel, bool ySurfel, bool zSurfel)
 {
-  double retract= 0.05*(sizeShiftFactor+myCurrentfShiftVisuSurfelPrisms);
+  updateBoundingBox(baseQuadCenter);
+  ASSERT( xSurfel || ySurfel || zSurfel );
   double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
-
+  
   ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
     {
-      x1= baseQuadCenter[0]-(0.5*sizeFactor); y1= baseQuadCenter[1]-(0.5*sizeFactor); z1= baseQuadCenter[2]-0.5;
-      x2= baseQuadCenter[0]+(0.5*sizeFactor); y2= baseQuadCenter[1]-(0.5*sizeFactor); z2= baseQuadCenter[2]-0.5;
-      x3= baseQuadCenter[0]+(0.5*sizeFactor); y3= baseQuadCenter[1]+(0.5*sizeFactor); z3= baseQuadCenter[2]-0.5;
-      x4= baseQuadCenter[0]-(0.5*sizeFactor); y4= baseQuadCenter[1]+(0.5*sizeFactor); z4= baseQuadCenter[2]-0.5;
-      y1+=retract; y2+=retract; y3-=retract; y4-=retract;
-      x1+=retract; x2-=retract; x3-=retract; x4+=retract;
+      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+      x2= baseQuadCenter[0]+0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]-0.5;
+      x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]-0.5;
+      x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]+0.5; z4= baseQuadCenter[2]-0.5;
     }
   else if(ySurfel)
     {
-      x1= baseQuadCenter[0]-(0.5*sizeFactor); y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-(0.5*sizeFactor);
-      x2= baseQuadCenter[0]-(0.5*sizeFactor); y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+(0.5*sizeFactor);
-      x3= baseQuadCenter[0]+(0.5*sizeFactor); y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+(0.5*sizeFactor);
-      x4= baseQuadCenter[0]+(0.5*sizeFactor); y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-(0.5*sizeFactor);
-      x1+=retract; x2+=retract; x3-=retract; x4-=retract;
-      z1+=retract; z2-=retract; z3-=retract; z4+=retract;
+      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+      x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+0.5;
+      x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+0.5;
+      x4= baseQuadCenter[0]+0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-0.5;
     }
   else
     {
-      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-(0.5*sizeFactor); z1= baseQuadCenter[2]-(0.5*sizeFactor);
-      x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+(0.5*sizeFactor); z2= baseQuadCenter[2]-(0.5*sizeFactor);
-      x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+(0.5*sizeFactor); z3= baseQuadCenter[2]+(0.5*sizeFactor);
-      x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-(0.5*sizeFactor); z4= baseQuadCenter[2]+(0.5*sizeFactor);
-      y1+=retract; y2-=retract; y3-=retract; y4+=retract;
-      z1+=retract; z2+=retract; z3-=retract; z4-=retract;
+      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+      x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+0.5; z2= baseQuadCenter[2]-0.5;
+      x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]+0.5;
+      x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
     }
-
-  if(isSigned && ! aSign)
-    this->addQuad(RealPoint(x1,y1,z1), RealPoint(x2,y2,z2),
-		  RealPoint(x3,y3,z3), RealPoint(x4,y4,z4) );
-  else
-    this->addQuad(RealPoint(x4,y4,z4), RealPoint(x3,y3,z3),
-		  RealPoint(x2,y2,z2), RealPoint(x1,y1,z1) );
+  
+  addQuad(RealPoint(x1, y1, z1), RealPoint(x2 ,y2, z2), 
+          RealPoint(x3, y3, z3), RealPoint(x4, y4, z4));    
 }
+
+
 
 
 // add multiple triangular faces which form a hexagonal-based pyramid
@@ -1021,7 +1013,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell
 template < typename Space ,typename KSpace >
 inline
 typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
-DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedSurfelPrism & aTrans ) const
+DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedPrism & aTrans ) const
 {
   ASSERT( mySCellEmbedder->isValid());
   return mySCellEmbedder->embed(aTrans.mySurfel);
@@ -1044,10 +1036,10 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
 {
   unsigned int vertexIndex=0;
 
-  // Export of SurfelPrism lists (generated from KhalimskyCell or SignedKhalimskyCell (through addSurfelPrism))
-  for (unsigned int i=0; i< mySurfelPrismList.size(); i++)
+  // Export of SurfelPrism lists (generated from KhalimskyCell or SignedKhalimskyCell (through addPrism))
+  for (unsigned int i=0; i< myPrismList.size(); i++)
     {
-      QuadD3D quad = mySurfelPrismList.at(i);
+      QuadD3D quad = myPrismList.at(i);
       BallD3D p1, p2, p3, p4;
       p1.center=quad.point1;
       p2.center=quad.point2;
@@ -1061,6 +1053,7 @@ DGtal::Display3D< Space ,KSpace >::exportToMesh(DGtal::Mesh<BallD3D> &aMesh) con
 			quad.color);
       vertexIndex+=4;
     }
+
 
   // Export QuadList
   for (typename std::vector<std::vector<QuadD3D> >::const_iterator it = myQuadSetList.begin(); it != myQuadSetList.end(); it++)
