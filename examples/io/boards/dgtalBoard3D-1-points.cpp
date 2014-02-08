@@ -65,12 +65,15 @@ int main()
   board.saveOBJ("dgtalBoard3D-1-points.obj");
   //! [ExampleBoard3DExport]
 
+  trace.info()<<" Second"<<std::endl;
   Board3D<> board2;
   board2 << SetMode3D(domain.className(), "Paving");
   board2 << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   board2 << p1 ;
   board2 << CustomColors3D(Color(0, 255,0),Color(0, 0,255));
   board2 << p2 << p3;
+  board2 <<  CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  board2 << p6;
   board2.saveOBJ("dgtalBoard3D-1bis-points.obj");
 
 

@@ -62,7 +62,9 @@ int main( )
   //! [SetKSIllustrationMode3D]
 
   board << v << v2 << v3;
+  board.saveOBJ("board3D-2-ks.obj");
 
+  Board3D<Space, KSpace> board2(K);
 
   // Surfel of Voxel (0,0)
   //! [KSIllustrationModeTransformed]
@@ -84,7 +86,7 @@ int main( )
   DGtal::TransformedPrism tsyn (syn, v);
   DGtal::TransformedPrism tszn (szn, v);
 
-  board << tsx << tsy << tsz << tsxn << tsyn << tszn;
+  board2 << tsx << tsy << tsz << tsxn << tsyn << tszn;
 
 
   // Surfel of Voxel (1,0)
@@ -103,7 +105,7 @@ int main( )
   DGtal::TransformedPrism tsyn2 (syn2, v2);
   DGtal::TransformedPrism tszn2 (szn2, v2);
 
-  board << tsx2 << tsy2 << tsz2 << tsxn2 << tsyn2 << tszn2;
+  board2 << tsx2 << tsy2 << tsz2 << tsxn2 << tsyn2 << tszn2;
 
 
   // Surfel of Voxel (0,1)
@@ -123,10 +125,10 @@ int main( )
   DGtal::TransformedPrism tszn3 (szn3, v3);
 
 
-  board << tsx3 << tsy3 << tsz3 << tsxn3 << tsyn3 << tszn3;
+  board2 << tsx3 << tsy3 << tsz3 << tsxn3 << tsyn3 << tszn3;
 
   std::cout << "save obj" << std::endl;
-  board.saveOBJ("board3D-2-ks.obj");
+  board2.saveOBJ("board3D-2bis-ks.obj");
 
 
 }

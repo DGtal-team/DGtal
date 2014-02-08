@@ -504,7 +504,8 @@ namespace DGtal
     // IncidentPointsRange
 
     /**
-     * @brief draw
+     *  draw.This function will create new
+     * sublists for Display3D models.
      * @param display the display where to draw
      * @param anObject the object to draw
      */
@@ -512,7 +513,8 @@ namespace DGtal
     draw( Display3D<Space, KSpace> & display, const DGtal::SetMode3D & anObject );
 
     /**
-     * @brief draw
+     * Draw for CustomStyle class. This function will create new
+     * sublists for Display3D models.
      * @param display the display where to draw
      * @param anObject the object to draw
      */
@@ -520,7 +522,8 @@ namespace DGtal
     draw( Display3D<Space, KSpace> & display, const DGtal::CustomStyle3D & anObject );
 
     /**
-     * @brief draw
+     * brief draw.This function will create new
+     * sublists for Display3D models.
      * @param display the display where to draw
      * @param anObject the object to draw
      */

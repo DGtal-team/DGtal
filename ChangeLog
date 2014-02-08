@@ -1,7 +1,8 @@
 === DGtal 0.8 ===
 
-
 *IO Package*
+
+    - Better handling of materials in Board3D and OBJ exports.
     - New 'basic' display mode for surfels (oriented or not), useful for large digital surface displays (quads instead of 3D prism)
 
 
