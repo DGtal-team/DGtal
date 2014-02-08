@@ -569,11 +569,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
             name << "myPrismList" << j;
             std::stringstream matName;
             matName << "myPrismList" << j << "MAT";
-
             typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
             unsigned int matid = getMaterialIndex(itBegin->color);
-
-            std::stringstream matName;
             matName <<  "Mat_" << matid;
             outOBJ << "o  " << name.str() << std::endl;
             outOBJ << "usemtl " << matName.str() << std::endl;
