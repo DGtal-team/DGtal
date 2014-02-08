@@ -167,9 +167,27 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * Check if the material associated woth the color exists. If it
+     * does, the method returns the material index. Otherwise, the new
+     * material is created.
+     *
+     * @param aColor a color
+     *
+     * @return the material index associated  with the color
+     */
+    unsigned int getMaterialIndex(const DGtal::Color &aColor);
+
     // ------------------------- Private Datas --------------------------------
   private:
 
+
+    ///Material Map
+    std::map<DGtal::Color,unsigned int> myMaterialMap;
+    ///Last Material index
+    unsigned int myMaterialIndex;
+    ///Material buffer
+    std::stringstream myMTLBuffer;
 
 
   protected :

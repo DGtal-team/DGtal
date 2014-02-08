@@ -53,7 +53,7 @@ DGtal::Color::Color( const unsigned int rgb, unsigned char aAlphaValue )
 DGtal::Color &
 DGtal::Color::setRGBA( const DGtal::uint32_t aRGBA )
 {
-  myRed = ( aRGBA & 0xFF000000u ) >> 24; 
+  myRed = ( aRGBA & 0xFF000000u ) >> 24;
   myGreen = ( aRGBA & 0xFF0000u ) >> 16;
   myBlue = ( aRGBA & 0xFF00u ) >> 8;
   myAlpha = aRGBA & 0xFF;
@@ -86,7 +86,7 @@ DGtal::Color::setRGBf( float aRedValue,
 bool
 DGtal::Color::operator==( const Color & aColor ) const
 {
-  return myRed == aColor.myRed 
+  return myRed == aColor.myRed
     && myGreen == aColor.myGreen
     && myBlue == aColor.myBlue
     && myAlpha == aColor.myAlpha;
@@ -95,7 +95,7 @@ DGtal::Color::operator==( const Color & aColor ) const
 bool
 DGtal::Color::operator!=( const Color & aColor ) const
 {
-  return myRed != aColor.myRed  
+  return myRed != aColor.myRed
     || myGreen != aColor.myGreen
     || myBlue != aColor.myBlue
     || myAlpha != aColor.myAlpha;
@@ -109,7 +109,7 @@ DGtal::Color::operator<( const Color & aColor ) const
   if ( myRed == aColor.myRed ) {
     if ( myGreen < aColor.myGreen )
       return true;
-    if ( myGreen == aColor.myGreen ) { 
+    if ( myGreen == aColor.myGreen ) {
       if ( myBlue < aColor.myBlue )
   return true;
       if ( myBlue == aColor.myBlue )
@@ -216,7 +216,7 @@ const DGtal::Color DGtal::Color::Aqua((unsigned char)0,(unsigned char)255,(unsig
 void
 DGtal::Color::selfDisplay ( std::ostream & out ) const
 {
-    out << "[Color]";
+  out << "[Color] ("<<myRed<<","<<myGreen<<","<<myBlue<<")";
 }
 
 /**
