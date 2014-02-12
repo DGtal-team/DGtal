@@ -89,7 +89,6 @@ namespace DGtal
                                          const double h):
       myEmbedder(&anEmbedder), myH(h)
     {
-      myWeightedVector = RealPoint().diagonal(0.0);
     }
 
     /**
@@ -124,6 +123,7 @@ namespace DGtal
      */
     void reset()
     {
+      myWeightedVector = RealPoint().diagonal(0.0);
     }
 
 
