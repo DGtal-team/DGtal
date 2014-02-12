@@ -33,47 +33,62 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,  typename Functor, typename ConvFunctor>
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 inline
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric, Functor, ConvFunctor>::
-LocalEstimatorFromSurfelFunctorAdapter(ConstAlias<DigitalSurf> aSurf,
-                                       ConstAlias<TMetric> aMetric,
-                                       Alias<Functor> afunctor,
-                                       ConstAlias<ConvFunctor> aConvFunctor):
-  mySurface(&aSurf),  myFunctor(&afunctor), myMetric(&aMetric),
-  myEmbedder(Embedder( mySurface->space())), myConvFunctor(&aConvFunctor)
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+LocalEstimatorFromSurfelFunctorAdapter
+( ConstAlias< DigitalSurface< DigitalSurfaceContainer > > aSurf,
+  ConstAlias< Metric> aMetric,
+  Alias< FunctorOnSurfel > afunctor,
+  ConstAlias< ConvolutionFunctor > aConvFunctor)
+  : mySurface(&aSurf), myFunctor(&afunctor), myMetric(&aMetric),
+    myEmbedder(Embedder( mySurface->container().space())), myConvFunctor(&aConvFunctor)
 {
   myInit = false;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,  typename Functor, typename ConvFunctor>
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 inline
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::~LocalEstimatorFromSurfelFunctorAdapter()
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+~LocalEstimatorFromSurfelFunctorAdapter()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,  typename Functor, typename ConvFunctor>
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 inline
 void
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::selfDisplay ( std::ostream & out ) const
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+selfDisplay ( std::ostream & out ) const
 {
   out << "[LocalEstimatorFromSurfelFunctorAdapter]";
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,  typename Functor, typename ConvFunctor>
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 inline
 bool
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::isValid() const
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+isValid() const
 {
   return myInit;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,  typename Functor, typename ConvFunctor>
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 inline
 void
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::init(const double h,
-                                                                           const Value radius)
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+init(const double h,
+     const Value radius)
 {
   ASSERT(h>0);
   ASSERT(radius>0);
@@ -82,11 +97,15 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFu
   myInit = true;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,   typename Functor, typename ConvFunctor>
-template< typename SurfelConstIterator >
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+template <typename SurfelConstIterator>
 inline
-typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::Quantity
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::eval ( const SurfelConstIterator& it ) const
+typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                                       TFunctorOnSurfel, TConvolutionFunctor>::Quantity
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+eval( const SurfelConstIterator& it ) const
 {
   ASSERT_MSG( isValid(), "Missing init() before evaluation" );
 
@@ -94,7 +113,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFu
   VertexFunctor vfunctor( myEmbedder, metricToPoint);
   Visitor visitor( *mySurface, vfunctor, *it);
   Value currentDistance = 0;
-
+  
   while ( (currentDistance < myRadius) && (! visitor.finished() ))
   {
     typename Visitor::Node node = visitor.current();
@@ -108,28 +127,32 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFu
   return val;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,   typename Functor, typename ConvFunctor>
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 template <typename SurfelConstIterator, typename OutputIterator>
 inline
 OutputIterator
-DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor>::eval (const SurfelConstIterator& itb,
-                                                                                              const SurfelConstIterator& ite,
-                                                                                              OutputIterator result ) const
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+eval ( const SurfelConstIterator& itb,
+       const SurfelConstIterator& ite,
+       OutputIterator result ) const
 {
   for ( SurfelConstIterator it = itb; it != ite; ++it )
-  {
-    Quantity q = eval( it );
-    *result++ = q;
-  }
-
+    {
+      Quantity q = eval( it );
+      *result++ = q;
+    }
   return result;
 }
 ///////////////////////////////////////////////////////////////////////////////
-template <typename DigitalSurf, typename TMetric,  typename Functor, typename ConvFunctor>
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                   const LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor,ConvFunctor> & object )
+                    const LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                    TFunctorOnSurfel, TConvolutionFunctor> & object )
 {
   object.selfDisplay( out );
   return out;
