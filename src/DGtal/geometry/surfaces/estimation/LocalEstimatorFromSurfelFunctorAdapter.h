@@ -48,6 +48,7 @@
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
+#include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/CMetric.h"
 #include "DGtal/base/BasicFunctors.h"
@@ -95,14 +96,14 @@ namespace DGtal
    * function in the ambient space (not a geodesic one for instance) on
    * canonical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
-   *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurfaceContainer)
+   *  @tparam TDigitalSurfaceContainer any model of digital surface container concept (CDigitalSurfaceContainer)
    *  @tparam TMetric any model of CMetric to be used in the neighborhood construction.
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
    */
-  template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel,
-            typename TConvolutionFunctor>
+  template <typename TDigitalSurfaceContainer, typename TMetric, 
+            typename TFunctorOnSurfel, typename TConvolutionFunctor>
   class LocalEstimatorFromSurfelFunctorAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -112,10 +113,10 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
     BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurface> ));
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
 
     ///Digital surface type
-    typedef TDigitalSurface DigitalSurface;
+    typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
 
     ///Metric type
     typedef TMetric Metric;
@@ -127,7 +128,7 @@ namespace DGtal
     typedef TFunctorOnSurfel FunctorOnSurfel;
 
     ///Functor on double to compute convolution weights
-    typedef TConvolutionFunctor  ConvolutionFunctor;
+    typedef TConvolutionFunctor ConvolutionFunctor;
 
     ///Quantity type
     typedef typename TFunctorOnSurfel::Quantity Quantity;
@@ -138,20 +139,29 @@ namespace DGtal
     typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
     typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
-    typedef DistanceBreadthFirstVisitor<DigitalSurface, VertexFunctor> Visitor;
+    typedef DistanceBreadthFirstVisitor< DigitalSurface< DigitalSurfaceContainer >, 
+                                         VertexFunctor> Visitor;
 
 
   public:
 
     /**
      * Constructor.
+     *
      * @param aSurface a digital surface
-     * @param aFunctor a functor on digital surface elements.
+     * @param aMetric the metric
+     *
+     * @param aFunctor a functor on digital surface elements (e.g. the
+     * normal or the curvature estimation)
+     *
+     * @param aConvolutionFunctor a functor giving the weight as a
+     * function of the distance to the surfel.
      */
-    LocalEstimatorFromSurfelFunctorAdapter(ConstAlias<DigitalSurface>  aSurface,
-                                           ConstAlias<TMetric> aMetric,
-                                           Alias<FunctorOnSurfel>  aFunctor,
-                                           ConstAlias<ConvolutionFunctor> aConvolutionFunctor);
+    LocalEstimatorFromSurfelFunctorAdapter
+    ( ConstAlias< DigitalSurface< DigitalSurfaceContainer > >  aSurface,
+      ConstAlias<TMetric> aMetric,
+      Alias<FunctorOnSurfel>  aFunctor,
+      ConstAlias<ConvolutionFunctor> aConvolutionFunctor );
 
     /**
      * Destructor.
@@ -180,8 +190,7 @@ namespace DGtal
     Quantity eval(const SurfelConstIterator& it) const;
 
     /**
-     * @return the estimated quantity
-     * from itb till ite (exculded)
+     * @return the estimated quantity in the range [itb,ite)
      * @param [in] itb starting surfel iterator.
      * @param [in] ite end surfel iterator.
      * @param [in,out] result resulting output iterator
@@ -235,7 +244,7 @@ namespace DGtal
   private:
 
     ///Digital surface member
-    const DigitalSurface * mySurface;
+    const DigitalSurface< DigitalSurfaceContainer > * mySurface;
 
     ///Functor member
     FunctorOnSurfel * myFunctor;
