@@ -99,7 +99,7 @@ namespace DGtal
     typedef typename VCM::MatrixNN                 MatrixNN;  //< nxn R-matrix
 
     /// Possible embeddings for surfel as point(s)
-    enum Surfel2PointEmbedding { Pointels, InnerSpel, OuterSpel };
+    enum Surfel2PointEmbedding { Pointels = 0, InnerSpel = 1, OuterSpel = 2 };
 
     /// Structure to hold a diagonalized matrix.
     struct EigenVCM {

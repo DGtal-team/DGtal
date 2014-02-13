@@ -76,7 +76,6 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface,
 
   // Compute Voronoi Covariance Matrix for all points.
   myVCM.init( vectPoints.begin(), vectPoints.end() );
-  //myVCM.clean(); // free some memory.
 
   // Compute VCM( chi_r ) for each point.
   if ( verbose ) trace.beginBlock ( "Integrating VCM( chi_r(p) ) for each point." );
@@ -92,6 +91,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface,
       EigenVCM & evcm = myPt2EigenVCM[ p ];
       LinearAlgebraTool::getEigenDecomposition( measure, evcm.vectors, evcm.values );
     }
+  myVCM.clean(); // free some memory.
   if ( verbose ) trace.endBlock();
 
   if ( verbose ) trace.beginBlock ( "Computing average orientation for each surfel." );
