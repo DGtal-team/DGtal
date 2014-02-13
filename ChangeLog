@@ -5,6 +5,9 @@
     - Better handling of materials in Board3D and OBJ exports.
     - New 'basic' display mode for surfels (oriented or not), useful for large digital surface displays (quads instead of 3D prism)
 
+*Topology Package*
+
+    - small fix in ImplicitDigitalSurface.
 
 === DGtal 0.7 ===
 
