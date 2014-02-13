@@ -102,16 +102,28 @@ bool testVoronoiCovarianceMeasureOnSurface()
                                                           5.0, 4.0, 4.0, Metric(), true ) );
   trace.endBlock();
 
+  trace.beginBlock("Wrapping normal estimator." );
+  typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric> VCMNormalEstimator;
+  // Is CNormalVectorEstimator deprecated ?
+  // BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< VCMNormalEstimator > ));
+  VCMNormalEstimator estimator( vcm_surface );
+  trace.endBlock();
+
   trace.beginBlock("Evaluating normals." );
   Statistic<double> error;
+  Statistic<double> error_bis;
   for ( ConstIterator it = ptrSurface->begin(), itE = ptrSurface->end(); it != itE; ++it )
     {
       const VCMOnSurface::Normals & normals = vcm_surface->surfelNormals().find( *it )->second;
       error.addValue( normals.vcmNormal.dot( normals.trivialNormal ) );
+      error_bis.addValue( estimator.eval( it ).dot( normals.trivialNormal ) );
     }
   error.terminate();
+  error_bis.terminate();
   trace.info() << "cos angle avg = " << error.mean() << std::endl;
   trace.info() << "cos angle dev = " << sqrt( error.unbiasedVariance() ) << std::endl;
+  trace.info() << "cos angle avg = " << error_bis.mean() << std::endl;
+  trace.info() << "cos angle dev = " << sqrt( error_bis.unbiasedVariance() ) << std::endl;
   nbok += error.mean() > 0.95 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -120,11 +132,16 @@ bool testVoronoiCovarianceMeasureOnSurface()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "cos angle dev < 0.05" << std::endl;
+  nbok += error_bis.mean() > 0.95 ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "cos angle avg > 0.95" << std::endl;
+  nbok += sqrt( error_bis.unbiasedVariance() ) < 0.05 ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "cos angle dev < 0.05" << std::endl;
   trace.endBlock();
 
-  typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric> VCMNormalEstimator;
-  BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< VCMNormalEstimator > ));
-  VCMNormalEstimator estimator( vcm_surface );
   return nbok == nb;
 }
 
