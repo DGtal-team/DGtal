@@ -55,11 +55,35 @@
 namespace DGtal
 {
   /**
-     The hat function of value v0 at 0 with a linear decrease to 0 at distance r.
-     A model of CPointPredicate.
+     The hat function of value v0 at 0 with a linear decrease to 0 at value r.
+     A function Scalar -> Scalar.
+  */
+  template <typename TScalar>
+  struct HatFunction {
+    typedef TScalar Scalar;
+    typedef Scalar argument_type;
+    typedef Scalar value_type;
+
+    Scalar myV0;
+    Scalar myV0OverR;
+    Scalar myR;
+
+  public:
+    HatFunction( Scalar v0, Scalar r ) 
+      : myV0( v0 ), myV0OverR( v0 / r ), myR( r ) {}
+    Scalar operator()( Scalar d ) const
+    {
+      if ( d >= myR ) return 0.0;
+      return myV0 - myV0OverR * d;
+    }
+  };
+
+  /**
+     The hat function of value v0 at point 0 with a linear decrease to 0 at distance r.
+     A function Point -> Scalar.
   */
   template <typename TPoint, typename TScalar>
-  struct HatFunction {
+  struct HatPointFunction {
     typedef TPoint Point;
     typedef TScalar Scalar;
     typedef Point argument_type;
@@ -71,7 +95,7 @@ namespace DGtal
     Scalar myR2;
 
   public:
-    HatFunction( Scalar v0, Scalar r ) 
+    HatPointFunction( Scalar v0, Scalar r ) 
       : myV0( v0 ), myV0OverR( v0 / r ), myR( r ), myR2( r*r ) {}
     Scalar operator()( const Point& p ) const
     {
