@@ -1,0 +1,167 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file VCMDigitalSurfaceNormalEstimator.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2014/02/13
+ *
+ * Implementation of inline methods defined in VCMDigitalSurfaceNormalEstimator.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+~VCMDigitalSurfaceNormalEstimator()
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+VCMDigitalSurfaceNormalEstimator( ConstAlias< VCMOnSurface > vcmSurface )
+  : mySurface( vcmSurface->surface() ), 
+    mySurfelEmbedding( vcmSurface->surfelEmbedding() ),
+    myVCMOnSurface( vcmSurface )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+VCMDigitalSurfaceNormalEstimator( ConstAlias< Surface > surface, 
+                                  Surfel2PointEmbedding surfelEmbedding )
+  : mySurface( surface ), mySurfelEmbedding( surfelEmbedding ),
+    myVCMOnSurface( 0 )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+void
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+init( const Scalar /* h */, const Scalar R, const Scalar r, 
+      const Scalar t, Metric aMetric, bool verbose )
+{
+  myVCMOnSurface = new VCMOnSurface( mySurface, mySurfelEmbedding,
+                                     R, r, t, aMetric, verbose );
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+template <typename SurfelConstIterator>
+inline
+typename DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::Quantity
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+eval( SurfelConstIterator it ) const
+{
+  typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
+  ASSERT( myVCMOnSurface != 0 );
+  SCell s = *it;
+  typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->surfelNormals().find( s );
+  ASSERT( itSN != myVCMOnSurface->surfelNormals().end() );
+  return itSN->second.vcmNormal;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+template <typename OutputIterator, typename SurfelConstIterator>
+inline
+OutputIterator
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+eval( SurfelConstIterator itb,
+      SurfelConstIterator ite,
+      OutputIterator result ) const
+{
+  typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
+  BOOST_CONCEPT_ASSERT(( boost::OutputIterator<SurfelConstIterator,Quantity> ));
+  ASSERT( myVCMOnSurface != 0 );
+  for ( ; itb != ite; ++itb )
+    {
+      SCell s = *itb;
+      typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->surfelNormals().find( s );
+      ASSERT( itSN != myVCMOnSurface->surfelNormals().end() );
+      *result++ = itSN->second.vcmNormal;
+    }
+  return result;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+void
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+selfDisplay ( std::ostream & out ) const
+{
+  out << "[VCMDigitalSurfaceNormalEstimator]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+bool
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric>::
+isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+std::ostream&
+DGtal::operator<<( std::ostream & out, 
+                   const VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

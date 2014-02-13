@@ -35,6 +35,8 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
+#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceNormalEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -96,14 +98,15 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing VCM on surface." );
-  VCMOnSurface vcm_surface( ptrSurface, VCMOnSurface::Pointels, 5.0, 4.0, 4.0, Metric(), true );
+  CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels, 
+                                                          5.0, 4.0, 4.0, Metric(), true ) );
   trace.endBlock();
 
   trace.beginBlock("Evaluating normals." );
   Statistic<double> error;
   for ( ConstIterator it = ptrSurface->begin(), itE = ptrSurface->end(); it != itE; ++it )
     {
-      const VCMOnSurface::Normals & normals = vcm_surface.surfelNormals().find( *it )->second;
+      const VCMOnSurface::Normals & normals = vcm_surface->surfelNormals().find( *it )->second;
       error.addValue( normals.vcmNormal.dot( normals.trivialNormal ) );
     }
   error.terminate();
@@ -118,7 +121,10 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "cos angle dev < 0.05" << std::endl;
   trace.endBlock();
-  
+
+  typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric> VCMNormalEstimator;
+  BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< VCMNormalEstimator > ));
+  VCMNormalEstimator estimator( vcm_surface );
   return nbok == nb;
 }
 

@@ -57,6 +57,9 @@
 namespace DGtal
 {
 
+  /// Possible embeddings for surfel as point(s)
+  enum Surfel2PointEmbedding { Pointels = 0, InnerSpel = 1, OuterSpel = 2 };
+
   /////////////////////////////////////////////////////////////////////////////
   // template class VoronoiCovarianceMeasureOnDigitalSurface
   /**
@@ -97,9 +100,6 @@ namespace DGtal
     typedef EigenValues3D<Scalar>         LinearAlgebraTool;  //< diagonalizer (3D).
     typedef typename VCM::VectorN                   VectorN;  //< n-dimensional R-vector
     typedef typename VCM::MatrixNN                 MatrixNN;  //< nxn R-matrix
-
-    /// Possible embeddings for surfel as point(s)
-    enum Surfel2PointEmbedding { Pointels = 0, InnerSpel = 1, OuterSpel = 2 };
 
     /// Structure to hold a diagonalized matrix.
     struct EigenVCM {
@@ -150,10 +150,14 @@ namespace DGtal
      */
     VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface, 
                                               Surfel2PointEmbedding surfelEmbedding,
-                                              double R, double r, 
-                                              double t = 2.5, Metric aMetric = Metric(), 
+                                              Scalar R, Scalar r, 
+                                              Scalar t = 2.5, Metric aMetric = Metric(), 
                                               bool verbose = false );
 
+    /// the const-aliased digital surface.
+    CountedConstPtrOrConstPtr< Surface > surface() const;
+    /// the chosen embedding Surfel -> Point(s)
+    Surfel2PointEmbedding surfelEmbedding() const;
     /// @return the parameter R in the VCM, i.e. the offset radius for
     /// the compact set K.
     Scalar R() const;

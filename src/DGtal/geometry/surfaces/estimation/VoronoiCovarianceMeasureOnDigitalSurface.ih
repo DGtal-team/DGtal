@@ -55,8 +55,8 @@ inline
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
 VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface, 
                                           Surfel2PointEmbedding surfelEmbedding,
-                                          double R, double r, 
-                                          double t, Metric aMetric, bool verbose )
+                                          Scalar R, Scalar r, 
+                                          Scalar t, Metric aMetric, bool verbose )
   : mySurface( surface ), mySurfelEmbedding( surfelEmbedding ),
     myVCM( R, r, aMetric, verbose ), myRadiusTrivial( t )
 {
@@ -80,7 +80,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface,
   // Compute VCM( chi_r ) for each point.
   if ( verbose ) trace.beginBlock ( "Integrating VCM( chi_r(p) ) for each point." );
   int i = 0;
-  HatPointFunction< Point, double > chi_r( 1.0, r );
+  HatPointFunction< Point, Scalar > chi_r( 1.0, r );
   for ( typename std::vector<Point>::const_iterator it = vectPoints.begin(), itE = vectPoints.end();
         it != itE; ++it )
     {
@@ -95,7 +95,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface,
   if ( verbose ) trace.endBlock();
 
   if ( verbose ) trace.beginBlock ( "Computing average orientation for each surfel." );
-  typedef HatFunction<double> Functor;
+  typedef HatFunction<Scalar> Functor;
   Functor fct( 1.0, myRadiusTrivial );
   typedef ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> > 
     SurfelFunctor;
@@ -134,6 +134,24 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface,
   if ( verbose ) trace.endBlock();
 }
 
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+DGtal::CountedConstPtrOrConstPtr< typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::Surface >
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+surface() const
+{ 
+  return mySurface;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+DGtal::Surfel2PointEmbedding
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+surfelEmbedding() const
+{
+  return mySurfelEmbedding;
+}
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
 inline
