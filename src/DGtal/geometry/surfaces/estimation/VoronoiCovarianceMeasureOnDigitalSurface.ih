@@ -1,0 +1,255 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file VoronoiCovarianceMeasureOnDigitalSurface.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2014/02/13
+ *
+ * Implementation of inline methods defined in VoronoiCovarianceMeasureOnDigitalSurface.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+~VoronoiCovarianceMeasureOnDigitalSurface()
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface, 
+                                          Surfel2PointEmbedding surfelEmbedding,
+                                          double R, double r, 
+                                          double t, Metric aMetric, bool verbose )
+  : mySurface( surface ), mySurfelEmbedding( surfelEmbedding ),
+    myVCM( R, r, aMetric, verbose ), myRadiusTrivial( t )
+{
+  if ( verbose ) trace.beginBlock( "Computing VCM on digital surface." );
+  const KSpace & ks = mySurface->container().space();
+  std::vector<Point> vectPoints;
+
+  // Get points.
+  if ( verbose ) trace.beginBlock( "Getting points." );
+  std::set<Point> pointSet;
+  for ( ConstIterator it = mySurface->begin(), itE = mySurface->end(); it != itE; ++it )
+    getPoints( std::inserter( pointSet, pointSet.begin() ), *it );
+  vectPoints.resize( pointSet.size() );
+  std::copy( pointSet.begin(), pointSet.end(), vectPoints.begin() );
+  pointSet.clear();
+  if ( verbose ) trace.endBlock();
+
+  // Compute Voronoi Covariance Matrix for all points.
+  myVCM.init( vectPoints.begin(), vectPoints.end() );
+  //myVCM.clean(); // free some memory.
+
+  // Compute VCM( chi_r ) for each point.
+  if ( verbose ) trace.beginBlock ( "Integrating VCM( chi_r(p) ) for each point." );
+  int i = 0;
+  HatPointFunction< Point, double > chi_r( 1.0, r );
+  for ( typename std::vector<Point>::const_iterator it = vectPoints.begin(), itE = vectPoints.end();
+        it != itE; ++it )
+    {
+      if ( verbose ) trace.progressBar( ++i, vectPoints.size() );
+      Point p = *it;
+      MatrixNN measure = myVCM.measure( chi_r, p );
+      // On diagonalise le résultat.
+      EigenVCM & evcm = myPt2EigenVCM[ p ];
+      LinearAlgebraTool::getEigenDecomposition( measure, evcm.vectors, evcm.values );
+    }
+  if ( verbose ) trace.endBlock();
+
+  if ( verbose ) trace.beginBlock ( "Computing average orientation for each surfel." );
+  typedef HatFunction<double> Functor;
+  Functor fct( 1.0, myRadiusTrivial );
+  typedef ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> > 
+    SurfelFunctor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter< DigitalSurfaceContainer, Metric, SurfelFunctor, Functor>
+    NormalEstimator;
+
+  SurfelFunctor surfelFct( CanonicSCellEmbedder<KSpace>( ks ), 1.0 );
+  NormalEstimator estimator( *mySurface, aMetric, surfelFct, fct );
+  estimator.init( 1.0, myRadiusTrivial );
+  i = 0; 
+  std::vector<Point> pts; 
+  int surf_size = mySurface->size();
+  for ( ConstIterator it = mySurface->begin(), itE = mySurface->end(); it != itE; ++it )
+    {
+      if ( verbose ) trace.progressBar(++i, surf_size );
+      Surfel s = *it;
+      Normals & normals = mySurfel2Normals[ s ];
+      // get rough estimation of normal
+      normals.trivialNormal = estimator.eval( it );
+      // get points associated with surfel s
+      getPoints( std::back_inserter( pts ), s );
+      for ( typename std::vector<Point>::const_iterator itPts = pts.begin(), itPtsE = pts.end();
+            itPts != itPtsE; ++itPts )
+        {
+          Point p = *itPts;
+          const EigenVCM& evcm = myPt2EigenVCM[ p ];
+          VectorN n = evcm.vectors.column( 2 );
+          if ( n.dot( normals.trivialNormal ) < 0 ) normals.vcmNormal -= n;
+          else                                      normals.vcmNormal += n;
+        }
+      if ( pts.size() > 1 ) normals.vcmNormal /= pts.size();
+      pts.clear();
+    }
+  if ( verbose ) trace.endBlock();
+
+  if ( verbose ) trace.endBlock();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::Scalar
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+R() const
+{
+  return myVCM.R();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::Scalar
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+r() const
+{
+  return myVCM.r();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::Scalar
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+radiusTrivial() const
+{
+  return myRadiusTrivial;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+const typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::Surfel2Normals&
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+surfelNormals() const
+{
+  return mySurfel2Normals;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+template <typename PointOutputIterator>
+inline
+PointOutputIterator
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+getPoints( PointOutputIterator outIt, Surfel s ) const
+{
+  BOOST_CONCEPT_ASSERT(( boost::OutputIterator< PointOutputIterator, Point > ));
+  const KSpace & ks = mySurface->container().space();
+  Dimension k = ks.sOrthDir( s );
+  switch ( mySurfelEmbedding ) {
+  case Pointels: 
+    {
+      Dimension i = (k+1)%3;
+      Dimension j = (i+1)%3;
+      SCell l1 = ks.sIncident( s, i, true );
+      SCell l2 = ks.sIncident( s, i, false );
+      *outIt++ = ks.sCoords( ks.sIncident( l1, j, true ) );
+      *outIt++ = ks.sCoords( ks.sIncident( l1, j, false ) );
+      *outIt++ = ks.sCoords( ks.sIncident( l2, j, true ) );
+      *outIt++ = ks.sCoords( ks.sIncident( l2, j, false ) );
+    }
+    break;
+  case InnerSpel: 
+    *outIt++ = ks.sCoords( ks.sDirectIncident( s, k ) );
+    break;
+  case OuterSpel:
+    *outIt++ = ks.sCoords( ks.sIndirectIncident( s, k ) );
+    break;
+  }
+  return outIt;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+void
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+selfDisplay ( std::ostream & out ) const
+{
+  out << "[VoronoiCovarianceMeasureOnDigitalSurface]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+bool
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric>::
+isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

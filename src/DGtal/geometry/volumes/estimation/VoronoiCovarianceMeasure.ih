@@ -101,6 +101,24 @@ operator=( const VoronoiCovarianceMeasure& other )
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSeparableMetric>
 inline
+typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Scalar
+DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
+R() const
+{ 
+  return myBigR; 
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSeparableMetric>
+inline
+typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Scalar
+DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
+r() const
+{ 
+  return mySmallR; 
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSeparableMetric>
+inline
 void
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
 clean()
