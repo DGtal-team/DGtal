@@ -113,11 +113,17 @@ namespace DGtal
   /**
    * Description of template class 'VoronoiCovarianceMeasure' <p>
    * \brief Aim: This class precomputes the Voronoi Covariance Measure
-   * of a set of points. It then computes the covariance measure of an
+   * of a set of points. It can compute the covariance measure of an
    * arbitrary function with given support.
    *
+   * You may obtain the whole sequence (Point,VCM) by accessing the
+   * map \ref vcmMap.
+   *
    * @tparam TSpace type of Digital Space (model of CSpace).
-   * @tparam TSeparableMetric a model of CSeparableMetric (e.g. Euclidean metric is DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
+   *
+   * @tparam TSeparableMetric a model of CSeparableMetric used for
+   * computing the Voronoi map (e.g. Euclidean metric is
+   * DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
    */
   template <typename TSpace, typename TSeparableMetric>
   class VoronoiCovarianceMeasure
@@ -137,7 +143,8 @@ namespace DGtal
 
     /**
        A predicate that returns 'true' whenever the given binary image contains 'true'.
-       Model of CPointPredicate
+       Model of CPointPredicate.
+       @note Internal use.
     */
     struct CharacteristicSetPredicate {
       typedef CharacteristicSetPredicate Self;
@@ -157,12 +164,12 @@ namespace DGtal
     typedef DGtal::NotPointPredicate<CharacteristicSetPredicate> NotPredicate; //< the type of the point predicate used by the voronoi map.
     typedef DGtal::VoronoiMap<Space, NotPredicate, Metric > Voronoi; //< the type of the Voronoi map.
 
-    typedef double Scalar;                                  //< the type for "real" numbers.
+    typedef double Scalar;                                    //< the type for "real" numbers.
     typedef DGtal::SimpleMatrix< Scalar,
                                  Space::dimension, 
                                  Space::dimension > MatrixNN; //< the type for nxn matrix of real numbers.
-    typedef typename MatrixNN::RowVector VectorN;           //< the type for N-vector of real numbers
-    typedef std::vector<Point> PointContainer;              //< the list of points
+    typedef typename MatrixNN::RowVector VectorN;             //< the type for N-vector of real numbers
+    typedef std::vector<Point> PointContainer;                //< the list of points
     typedef std::map<Point,MatrixNN> Point2MatrixNN;          //< Associates a matrix to points.
 
     // ----------------------- Standard services ------------------------------
@@ -211,11 +218,13 @@ namespace DGtal
     /// @return the domain of computation
     const Domain& domain() const;
 
-    /// @return the current Voronoi map (init must have been called before).
+    /// @return the current Voronoi map 
+    /// @pre init must have been called before.
     const Voronoi& voronoiMap() const;
 
     /// @return the Voronoi Covariance Matrix of each Voronoi cell as
-    /// a map Point -> Matrix (init must have been called before).
+    /// a map Point -> Matrix
+    /// @node empty if \ref init has not been called.
     const Point2MatrixNN& vcmMap() const;
 
     /**
@@ -254,11 +263,12 @@ namespace DGtal
 
     /// The parameter R in the VCM, i.e. the offset radius for the compact set K.
     double myBigR;  
-    /// The parameter r in VCM(chi_r), i.e. an upper bound for the diameter of the support of kernel functions.
+    /// The parameter r in VCM(chi_r), i.e. an upper bound for the
+    /// diameter of the support of kernel functions.
     double mySmallR;  
     /// The metric chosen for the Voronoi map.
     Metric myMetric;
-    /// Tells if it verbose mode.
+    /// Tells if it is verbose mode.
     bool myVerbose;
     /// The domain in which all computations are done.
     Domain myDomain;
@@ -266,8 +276,6 @@ namespace DGtal
     CharacteristicSet* myCharSet;
     /// Stores the voronoi map.
     Voronoi* myVoronoi;
-    /// The vector of points
-    PointContainer myPoints;
     /// The map point -> VCM
     Point2MatrixNN myVCM;
     /// The structure used for proximity queries.
