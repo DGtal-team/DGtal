@@ -44,6 +44,17 @@ if (  WITH_VISU3D_QGLVIEWER )
   ENDFOREACH(FILE)
 endif ( WITH_VISU3D_QGLVIEWER   )
 
+if (  WITH_EIGEN )
+  SET(EIGEN_TESTS_SRC
+    testVoronoiCovarianceMeasureOnSurface )
+  FOREACH(FILE ${EIGEN_TESTS_SRC})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    add_test(${FILE} ${FILE})
+  ENDFOREACH(FILE)
+endif ( WITH_EIGEN )
+
+
 #-----------------------
 #GMP based tests
 #----------------------

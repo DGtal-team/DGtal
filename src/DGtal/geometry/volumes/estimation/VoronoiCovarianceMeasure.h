@@ -197,6 +197,13 @@ namespace DGtal
      */
     ~VoronoiCovarianceMeasure();
 
+    /// @return the parameter R in the VCM, i.e. the offset radius for
+    /// the compact set K.
+    Scalar R() const;
+    /// @return the parameter r in VCM(chi_r), i.e. an upper bound for
+    /// the diameter of the support of kernel functions.
+    Scalar r() const;
+ 
     /**
        Cleans intermediate data structure likes the characteristic set and the voronoi map.
        @note Further calls to voronoiMap are no more valid.
