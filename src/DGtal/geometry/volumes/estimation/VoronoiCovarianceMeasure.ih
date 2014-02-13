@@ -146,7 +146,6 @@ init( PointInputIterator itb, PointInputIterator ite )
 
   // Cleaning stuff.
   clean();
-  myPoints.clear();
   myVCM.clear();
 
   // Start computations
@@ -154,17 +153,16 @@ init( PointInputIterator itb, PointInputIterator ite )
 
   // First pass to get domain.
   if ( myVerbose ) trace.beginBlock( "Determining computation domain." );
-  myPoints.push_back( *itb );
   Point lower = *itb;
   Point upper = *itb;
   Size nbPts = 0;
   MatrixNN matrixZero;
-  for ( ; itb != ite; ++itb, ++nbPts )
+  for ( PointInputIterator it = itb; it != ite; ++it, ++nbPts )
     {
-      lower = lower.inf( *itb );
-      upper = upper.sup( *itb );
-      myPoints.push_back( *itb );
-      myVCM[ *itb ] = matrixZero;
+      Point p = *it;
+      lower = lower.inf( p );
+      upper = upper.sup( p );
+      myVCM[ p ] = matrixZero;
     }
   Integer intR = (Integer) ceil( myBigR );
   lower -= Point::diagonal( intR );
@@ -176,11 +174,11 @@ init( PointInputIterator itb, PointInputIterator ite )
   if ( myVerbose ) trace.beginBlock( "Computing characteristic set and building proximity structure." );
   myCharSet = new CharacteristicSet( myDomain );
   myProximityStructure = new ProximityStructure( lower, upper, (Integer) ceil( mySmallR ) );
-  for ( typename PointContainer::const_iterator itPts = myPoints.begin(), itPtsEnd = myPoints.end();
-        itPts != itPtsEnd; ++itPts )
+  for ( ; itb != ite; ++itb )
     {
-      myCharSet->setValue( *itPts, true );
-      myProximityStructure->push( *itPts );
+      Point p = *itb;
+      myCharSet->setValue( p, true );
+      myProximityStructure->push( p );
     }
   if ( myVerbose ) trace.endBlock();
 
@@ -253,6 +251,16 @@ measure( Point2ScalarFunction chi_r, Point p ) const
         }
     }
   return vcm;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSeparableMetric>
+inline
+const typename DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::Point2MatrixNN&
+DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
+vcmMap() const
+{
+  return myVCM;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
