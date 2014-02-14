@@ -91,7 +91,7 @@ eval( SurfelConstIterator it ) const
   SCell s = *it;
   typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->surfelNormals().find( s );
   ASSERT( itSN != myVCMOnSurface->surfelNormals().end() );
-  return itSN->second.vcmNormal;
+  return - itSN->second.vcmNormal;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
@@ -112,7 +112,7 @@ eval( SurfelConstIterator itb,
       SCell s = *itb;
       typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->surfelNormals().find( s );
       ASSERT( itSN != myVCMOnSurface->surfelNormals().end() );
-      *result++ = itSN->second.vcmNormal;
+      *result++ = - itSN->second.vcmNormal;
     }
   return result;
 }

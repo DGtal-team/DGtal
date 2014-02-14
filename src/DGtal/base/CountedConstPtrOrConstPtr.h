@@ -121,7 +121,7 @@ namespace DGtal
     {
       if ( this != & r ) {
 	if ( myIsCountedPtr ) release();
-	if ( r.myIsCountedPtr ) acquire( r.myCounter );
+	if ( r.myIsCountedPtr ) acquire( static_cast<Counter*>( r.myAny ) );
 	else myAny = r.myAny;
 	myIsCountedPtr = r.myIsCountedPtr;
       }
@@ -132,7 +132,7 @@ namespace DGtal
     {
       if ( this != & r ) {
 	if ( myIsCountedPtr ) release();
-	if ( r.myIsCountedPtr ) acquire( r.myCounter );
+	if ( r.myIsCountedPtr ) acquire( static_cast<Counter*>( r.myAny ) );
 	else myAny = r.myAny;
 	myIsCountedPtr = r.myIsCountedPtr;
       }

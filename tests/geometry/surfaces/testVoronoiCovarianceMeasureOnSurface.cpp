@@ -33,10 +33,16 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/math/Statistic.h"
+#include "DGtal/math/MPolynomial.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceNormalEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
+#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/shapes/ShapeGeometricFunctors.h"
+#include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
+#include "DGtal/io/readers/MPolynomialReader.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -74,15 +80,31 @@ bool testVoronoiCovarianceMeasureOnSurface()
   using namespace DGtal;
   using namespace DGtal::Z3i; // gets Space, Point, Domain
 
-  typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
-  typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> SurfaceContainer;
+  typedef MPolynomial< 3, double > Polynomial3;
+  typedef MPolynomialReader<3, double> Polynomial3Reader;
+  typedef ImplicitPolynomial3Shape<Z3i::Space> ImplicitShape;
+  typedef GaussDigitizer< Z3i::Space, ImplicitShape > ImplicitDigitalShape;
+  // typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
+  typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalShape> SurfaceContainer;
   typedef DigitalSurface< SurfaceContainer > Surface;
   typedef Surface::ConstIterator ConstIterator;
   typedef SurfaceContainer::Surfel Surfel;
   typedef ExactPredicateLpSeparableMetric<Space,2> Metric;
   typedef VoronoiCovarianceMeasureOnDigitalSurface<SurfaceContainer,Metric> VCMOnSurface;
-
   trace.beginBlock("Creating Surface");
+  std::string poly_str = "1.0-0.16*x^2+0.22*y^2+0.3*z^2";
+  Polynomial3 poly;
+  Polynomial3Reader reader;
+  std::string::const_iterator iter = reader.read( poly, poly_str.begin(), poly_str.end() );
+  if ( iter != poly_str.end() )
+    {
+      std::cerr << "ERROR: I read only <"
+                << poly_str.substr( 0, iter - poly_str.begin() )
+                << ">, and I built P=" << poly << std::endl;
+      return 1;
+    }
+  CountedPtr<ImplicitShape> shape( new ImplicitShape( poly ) );
+
   Point p1( -10, -10, -10 );
   Point p2( 10, 10, 10 );
   KSpace K;
@@ -90,16 +112,22 @@ bool testVoronoiCovarianceMeasureOnSurface()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "K.init() is ok" << std::endl;
-  ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
-  Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
+
+  // Digitizer
+  CountedPtr<ImplicitDigitalShape> dshape( new ImplicitDigitalShape() );
+  dshape->attach( *shape );
+  dshape->init( p1, p2, 1.0 );
+
+  // ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
+  Surfel bel = Surfaces<KSpace>::findABel( K, *dshape, 10000 );
   SurfaceContainer* surfaceContainer = new SurfaceContainer
-    ( K, ellipse, SurfelAdjacency<KSpace::dimension>( true ), bel );
+    ( K, *dshape, SurfelAdjacency<KSpace::dimension>( true ), bel );
   CountedConstPtrOrConstPtr<Surface> ptrSurface( new Surface( surfaceContainer ) ); // acquired
   trace.endBlock();
 
   trace.beginBlock("Computing VCM on surface." );
   CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels, 
-                                                          5.0, 4.0, 4.0, Metric(), true ) );
+                                                          5.0, 7.0, 7.0, Metric(), true ) );
   trace.endBlock();
 
   trace.beginBlock("Wrapping normal estimator." );
@@ -109,37 +137,40 @@ bool testVoronoiCovarianceMeasureOnSurface()
   VCMNormalEstimator estimator( vcm_surface );
   trace.endBlock();
 
-  trace.beginBlock("Evaluating normals." );
-  Statistic<double> error;
-  Statistic<double> error_bis;
+  trace.beginBlock("Evaluating normals wrt true normal." );
+  typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
+  typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueEstimator;
+  TrueEstimator true_estimator( K, NormalFunctor() );
+  true_estimator.attach( shape );
+  true_estimator.init( 1.0 );
+  Statistic<double> error_true;
+  Statistic<double> error_triv_true;
   for ( ConstIterator it = ptrSurface->begin(), itE = ptrSurface->end(); it != itE; ++it )
     {
-      const VCMOnSurface::Normals & normals = vcm_surface->surfelNormals().find( *it )->second;
-      error.addValue( normals.vcmNormal.dot( normals.trivialNormal ) );
-      error_bis.addValue( estimator.eval( it ).dot( normals.trivialNormal ) );
+      RealVector n_est  = estimator.eval( it );
+      RealVector n_true = true_estimator.eval( it );
+      RealVector n_triv = - vcm_surface->surfelNormals().find( *it )->second.trivialNormal;
+      error_true.addValue( n_est.dot( n_true ) );
+      error_triv_true.addValue( n_triv.dot( n_true ) );
     }
-  error.terminate();
-  error_bis.terminate();
-  trace.info() << "cos angle avg = " << error.mean() << std::endl;
-  trace.info() << "cos angle dev = " << sqrt( error.unbiasedVariance() ) << std::endl;
-  trace.info() << "cos angle avg = " << error_bis.mean() << std::endl;
-  trace.info() << "cos angle dev = " << sqrt( error_bis.unbiasedVariance() ) << std::endl;
-  nbok += error.mean() > 0.95 ? 1 : 0;
+  error_true.terminate();
+  error_triv_true.terminate();
+  trace.info() << "VCM/true  cos angle avg = " << error_true.mean() << std::endl;
+  trace.info() << "VCM/true  cos angle dev = " << sqrt( error_true.unbiasedVariance() ) << std::endl;
+  trace.info() << "triv/true cos angle avg = " << error_triv_true.mean() << std::endl;
+  trace.info() << "triv/true cos angle dev = " << sqrt( error_triv_true.unbiasedVariance() ) << std::endl;
+  nbok += error_true.mean() > 0.95 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "cos angle avg > 0.95" << std::endl;
-  nbok += sqrt( error.unbiasedVariance() ) < 0.05 ? 1 : 0;
+  nbok += sqrt( error_true.unbiasedVariance() ) < 0.05 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "cos angle dev < 0.05" << std::endl;
-  nbok += error_bis.mean() > 0.95 ? 1 : 0;
+  nbok += error_true.mean() > error_triv_true.mean() ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "cos angle avg > 0.95" << std::endl;
-  nbok += sqrt( error_bis.unbiasedVariance() ) < 0.05 ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-               << "cos angle dev < 0.05" << std::endl;
+               << "VCM/true is closer to 1.0 than triv/true." << std::endl;
   trace.endBlock();
 
   return nbok == nb;
