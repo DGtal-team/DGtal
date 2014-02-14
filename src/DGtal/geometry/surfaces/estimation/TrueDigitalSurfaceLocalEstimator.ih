@@ -121,11 +121,7 @@ typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunc
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 eval( SurfelConstIterator it ) const
 {
-  RealPoint p = myEmbedder( *it );
-  p *= myH;
-  if ( myMaxIter > 0 ) 
-    p = myShape->nearestPoint( p, myAccuracy, myMaxIter, myGamma );
-  return myFct( p );
+  return myFct( embed( *it ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
@@ -139,6 +135,19 @@ eval( SurfelConstIterator itb,
 {
   for ( ; itb != ite; ++itb )
     *result++ = this->eval( itb );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+inline
+typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::RealPoint
+DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
+embed( Surfel surfel ) const
+{
+  RealPoint p = myEmbedder( surfel );
+  p *= myH;
+  return ( myMaxIter > 0 ) 
+    ? myShape->nearestPoint( p, myAccuracy, myMaxIter, myGamma )
+    : p;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
