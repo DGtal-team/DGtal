@@ -129,6 +129,9 @@ namespace DGtal
      */
     Self& operator=( const Self & other );
 
+    /// @return the grid step.
+    Scalar h() const;
+
     /**
      * Attach a shape.
      *

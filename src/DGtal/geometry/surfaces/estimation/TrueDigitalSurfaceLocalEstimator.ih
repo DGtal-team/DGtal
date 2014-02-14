@@ -90,6 +90,15 @@ operator=( const Self& other )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
 inline
+typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::Scalar
+DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
+h() const
+{
+  return myH;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShape, typename TGeometricFunctor>
+inline
 void 
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 attach( ConstAlias<Shape> aShape )
