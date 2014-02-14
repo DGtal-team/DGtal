@@ -55,7 +55,7 @@ namespace DGtal
    * <p> \brief Aim: This class adapts a
    * VoronoiCovarianceMeasureOnDigitalSurface to be a model of
    * CNormalVectorEstimator. It returns the estimated VCM surface
-   * normal for given surfels.
+   * \b outward normal for given surfels.
    *
    * @tparam TDigitalSurfaceContainer the type of digital surface
    * container (model of CDigitalSurfaceContainer).
