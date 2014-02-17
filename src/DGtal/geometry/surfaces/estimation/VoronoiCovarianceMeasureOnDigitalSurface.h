@@ -78,8 +78,12 @@ namespace DGtal
    * @tparam TSeparableMetric a model of CSeparableMetric used for
    * computing the Voronoi map (e.g. Euclidean metric is
    * DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
+   *
+   * @tparam TKernelFunction the type of the kernel function chi_r used
+   * for integrating the VCM, a map: Point -> Scalar.
    */
-  template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+  template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
+            typename TKernelFunction>
   class VoronoiCovarianceMeasureOnDigitalSurface
   {
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
@@ -88,6 +92,7 @@ namespace DGtal
   public:
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer; //< the chosen container
     typedef TSeparableMetric                         Metric;  //< the chosen metric
+    typedef TKernelFunction                  KernelFunction;  //< the kernel function
     typedef DigitalSurface<DigitalSurfaceContainer> Surface;  //< the chosen digital surface
     typedef typename DigitalSurfaceContainer::KSpace KSpace;  //< the cellular space
     typedef typename DigitalSurfaceContainer::Surfel Surfel;  //< the n-1 cells
@@ -100,6 +105,8 @@ namespace DGtal
     typedef EigenValues3D<Scalar>         LinearAlgebraTool;  //< diagonalizer (3D).
     typedef typename VCM::VectorN                   VectorN;  //< n-dimensional R-vector
     typedef typename VCM::MatrixNN                 MatrixNN;  //< nxn R-matrix
+
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<KernelFunction, Point, Scalar> ));
 
     /// Structure to hold a diagonalized matrix.
     struct EigenVCM {
@@ -134,11 +141,14 @@ namespace DGtal
      * @param R the offset radius for the set of points. Voronoi cells
      * are intersected with this offset. The unit corresponds to a step in the digital space.
      *
-     * @param r (an upper bound of) the radius of the support of
-     * forthcoming kernel functions (\f$ \chi_r \f$). The unit
-     * corresponds to a step in the digital space. This parameter is
-     * used for preparing the data structure that answers to proximity
-     * queries.
+     * @param r (an upper bound of) the radius of the support of the
+     * kernel function \a chi_r (note \f$\chi_r\f$ in the VCM
+     * paper). The unit corresponds to a step in the digital
+     * space. This parameter is used for preparing the data structure
+     * that answers to proximity queries.
+     *
+     * @param chi_r the kernel function whose support has radius less
+     * or equal to \a r.
      *
      * @param t the radius for the trivial normal estimator, which is
      * used for finding the correct orientation inside/outside for the
@@ -151,6 +161,7 @@ namespace DGtal
     VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface, 
                                               Surfel2PointEmbedding surfelEmbedding,
                                               Scalar R, Scalar r, 
+                                              KernelFunction chi_r,
                                               Scalar t = 2.5, Metric aMetric = Metric(), 
                                               bool verbose = false );
 
@@ -203,6 +214,8 @@ namespace DGtal
     CountedConstPtrOrConstPtr< Surface > mySurface;
     /// The chosen embedding for the surfels.
     Surfel2PointEmbedding mySurfelEmbedding;
+    /// The kernel function chi_r
+    KernelFunction myChi;
     /// Stores the voronoi covariance measure of the point embedding of the surface.
     VCM myVCM;
     /// Stores the radius for the trivial normal estimator, which is
@@ -255,10 +268,10 @@ namespace DGtal
    * @param object the object of class 'VoronoiCovarianceMeasureOnDigitalSurface' to write.
    * @return the output stream after the writing.
    */
-  template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+  template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric> & object );
+               const VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction> & object );
 
 } // namespace DGtal
 

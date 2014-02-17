@@ -63,8 +63,11 @@ namespace DGtal
    * @tparam TSeparableMetric a model of CSeparableMetric used for
    * computing the Voronoi map (e.g. Euclidean metric is
    * DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
+   *
+   * @tparam TKernelFunction the type of the kernel function chi_r used
+   * for integrating the VCM, a map: Point -> Scalar.
    */
-  template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+  template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
   class VCMDigitalSurfaceNormalEstimator
   {
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
@@ -73,8 +76,10 @@ namespace DGtal
   public:
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer; //< the chosen container
     typedef TSeparableMetric                          Metric; //< the chosen metric
+    typedef TKernelFunction                  KernelFunction;  //< the kernel function
     /// the type of computing the Voronoi covariance measure on a digital surface.
-    typedef VoronoiCovarianceMeasureOnDigitalSurface<DigitalSurfaceContainer, Metric> VCMOnSurface;
+    typedef VoronoiCovarianceMeasureOnDigitalSurface<DigitalSurfaceContainer, Metric, KernelFunction>
+    VCMOnSurface;
 
     // ----------------------- model of CNormalVectorEstimator ----------------
     typedef typename VCMOnSurface::Surface           Surface; //< the digital surface
@@ -120,11 +125,14 @@ namespace DGtal
      * @param[in] R the offset radius for the set of points. Voronoi cells
      * are intersected with this offset. The unit corresponds to a step in the digital space.
      *
-     * @param[in] r (an upper bound of) the radius of the support of
-     * forthcoming kernel functions (\f$ \chi_r \f$). The unit
-     * corresponds to a step in the digital space. This parameter is
-     * used for preparing the data structure that answers to proximity
-     * queries.
+     * @param[in] r (an upper bound of) the radius of the support of the
+     * kernel function \a chi_r (note \f$\chi_r\f$ in the VCM
+     * paper). The unit corresponds to a step in the digital
+     * space. This parameter is used for preparing the data structure
+     * that answers to proximity queries.
+     *
+     * @param[in] chi_r the kernel function whose support has radius less
+     * or equal to \a r.
      *
      * @param[in] t the radius for the trivial normal estimator, which is
      * used for finding the correct orientation inside/outside for the
@@ -134,7 +142,7 @@ namespace DGtal
      *
      * @param[in] verbose if 'true' displays information on ongoing computation.
      */
-    void init( const Scalar h, const Scalar R, const Scalar r, 
+    void init( const Scalar h, const Scalar R, const Scalar r, KernelFunction chi_r,
                const Scalar t = 2.5, Metric aMetric = Metric(), bool verbose = true );
 
 
@@ -222,10 +230,10 @@ namespace DGtal
    * @param object the object of class 'VCMDigitalSurfaceNormalEstimator' to write.
    * @return the output stream after the writing.
    */
-  template <typename TDigitalSurfaceContainer, typename TSeparableMetric>
+  template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric> & object );
+               const VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction> & object );
 
 } // namespace DGtal
 

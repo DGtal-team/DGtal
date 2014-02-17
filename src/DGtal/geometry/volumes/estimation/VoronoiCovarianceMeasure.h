@@ -72,9 +72,33 @@ namespace DGtal
     HatFunction( Scalar v0, Scalar r ) 
       : myV0( v0 ), myV0OverR( v0 / r ), myR( r ) {}
     Scalar operator()( Scalar d ) const
-    {
+    { // d >= 0
+      ASSERT( d >= 0.0 );
       if ( d >= myR ) return 0.0;
       return myV0 - myV0OverR * d;
+    }
+  };
+
+  /**
+     The ball constant function of value v0 between 0 and r, 0 elsewhere.
+     A function Scalar -> Scalar.
+  */
+  template <typename TScalar>
+  struct BallConstantFunction {
+    typedef TScalar Scalar;
+    typedef Scalar argument_type;
+    typedef Scalar value_type;
+
+    Scalar myV0;
+    Scalar myR;
+
+  public:
+    BallConstantFunction( Scalar v0, Scalar r ) 
+      : myV0( v0 ), myR( r ) {}
+    Scalar operator()( Scalar d ) const
+    {// d >= 0
+      ASSERT( d >= 0.0 );
+      return ( d > myR ) ? 0.0 : myV0;
     }
   };
 
@@ -105,6 +129,32 @@ namespace DGtal
       if ( d >= myR2 ) return 0.0;
       d = sqrt( d );
       return myV0 - myV0OverR * d;
+    }
+  };
+
+  /**
+     The ball constant function of value v0 between norm 0 and r, 0 elsewhere.
+     A function Point -> Scalar.
+  */
+  template <typename TPoint, typename TScalar>
+  struct BallConstantPointFunction {
+    typedef TPoint Point;
+    typedef TScalar Scalar;
+    typedef Point argument_type;
+    typedef Scalar value_type;
+
+    Scalar myV0;
+    Scalar myR2;
+
+  public:
+    BallConstantPointFunction( Scalar v0, Scalar r ) 
+      : myV0( v0 ), myR2( r*r ) {}
+    Scalar operator()( const Point& p ) const
+    {
+     Scalar d = 0;
+      for ( typename Point::ConstIterator it = p.begin(), itE = p.end(); it != itE; ++it )
+        d += BasicMathFunctions::square( (Scalar) *it );
+      return ( d > myR2 ) ? 0.0 : myV0;
     }
   };
 
