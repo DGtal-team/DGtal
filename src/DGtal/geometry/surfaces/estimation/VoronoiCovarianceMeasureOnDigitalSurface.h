@@ -192,6 +192,16 @@ namespace DGtal
     /// @return a const-reference to the map Surfel -> Normals (vcm and trivial normal).
     const Surfel2Normals& surfelNormals() const;
 
+    /**
+       Gets the eigenvalues of surfel \a s
+       @param[out] l1 the greatest eigenvalue of the VCM at \a s.
+       @param[out] l2 the second greatest eigenvalue of the VCM at \a s.
+       @param[out] l3 the smallest eigenvalue of the VCM at \a s.
+       @param[in] s the surfel
+       @return 'true' is the surfel \a s was valid.
+    */
+    bool getEigenvalues( Scalar& l1, Scalar& l2, Scalar& l3, Surfel s ) const;
+
     // ----------------------- Interface --------------------------------------
   public:
 
