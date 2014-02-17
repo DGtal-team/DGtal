@@ -189,6 +189,39 @@ surfelNormals() const
 {
   return mySurfel2Normals;
 }
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+inline
+bool
+DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
+getEigenvalues( Scalar& l1, Scalar& l2, Scalar& l3, Surfel s ) const
+{
+  std::vector<Point> pts; 
+  getPoints( std::back_inserter( pts ), s );
+  bool ok = true;
+  int i = 0;
+  for ( typename std::vector<Point>::const_iterator itPts = pts.begin(), itPtsE = pts.end();
+        itPts != itPtsE; ++itPts, ++i )
+    {
+      Point p = *itPts;
+      typename Point2EigenVCM::const_iterator itEigen = myPt2EigenVCM.find( p );
+      if ( itEigen == myPt2EigenVCM.end() ) 
+        {
+          ok = false;
+          break;
+        }
+      const EigenVCM& evcm = itEigen->second;
+      l1 += evcm.values[ 2 ];
+      l2 += evcm.values[ 1 ];
+      l3 += evcm.values[ 0 ];
+    }
+  if ( i > 1 ) {
+    l1 /= i;
+    l2 /= i;
+    l3 /= i;
+  }
+  return ok;
+}
 
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
