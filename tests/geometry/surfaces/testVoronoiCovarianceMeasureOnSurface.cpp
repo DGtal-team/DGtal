@@ -90,7 +90,9 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef Surface::ConstIterator ConstIterator;
   typedef SurfaceContainer::Surfel Surfel;
   typedef ExactPredicateLpSeparableMetric<Space,2> Metric;
-  typedef VoronoiCovarianceMeasureOnDigitalSurface<SurfaceContainer,Metric> VCMOnSurface;
+  typedef HatPointFunction<Point,double> KernelFunction;
+  // typedef BallConstantPointFunction<Point,double> KernelFunction; // worse than above
+  typedef VoronoiCovarianceMeasureOnDigitalSurface<SurfaceContainer,Metric,KernelFunction> VCMOnSurface;
   trace.beginBlock("Creating Surface");
   std::string poly_str = "1.0-0.16*x^2+0.22*y^2+0.3*z^2";
   Polynomial3 poly;
@@ -126,12 +128,13 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing VCM on surface." );
+  KernelFunction chi( 1.0, 7.0 );
   CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels, 
-                                                          5.0, 7.0, 7.0, Metric(), true ) );
+                                                          5.0, 7.0, chi, 7.0, Metric(), true ) );
   trace.endBlock();
 
   trace.beginBlock("Wrapping normal estimator." );
-  typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric> VCMNormalEstimator;
+  typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric,KernelFunction> VCMNormalEstimator;
   // Is CNormalVectorEstimator deprecated ?
   // BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< VCMNormalEstimator > ));
   VCMNormalEstimator estimator( vcm_surface );
