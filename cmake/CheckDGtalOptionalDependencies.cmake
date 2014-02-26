@@ -22,6 +22,7 @@ OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
+OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 
 
 
@@ -109,13 +110,20 @@ ELSE(WITH_MAGICK)
 message(STATUS "      WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)")
 ENDIF(WITH_MAGICK)
 
-IF(WITH_QGLVIEWER)
+If(WITH_QGLVIEWER)
 SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
 message(STATUS "      WITH_QGLVIEWER    true    (Qt/QGLViewer based 3D Viewer)")
 ELSE(WITH_QGLVIEWER)
 message(STATUS "      WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)")
 ENDIF(WITH_QGLVIEWER)
-
+message(STATUS "")
+message(STATUS "For Developpers:")
+IF(WITH_BENCHMARK)
+SET (LIST_OPTION ${LIST_OPTION} [GoogleBenchmark]\ )
+message(STATUS "      WITH_BENCHMARK    true    (Google Benchmark)")
+ELSE(WITH_HDF5)
+message(STATUS "      WITH_BENCHMARK    false   (Google Benchmark)")
+ENDIF(WITH_BENCHMARK)
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
