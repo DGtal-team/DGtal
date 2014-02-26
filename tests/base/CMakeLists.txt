@@ -32,3 +32,13 @@ FOREACH(FILE ${DGTAL_TESTS_SRC})
 ENDFOREACH(FILE)
 
 
+#--- Benchmark specific
+if (WITH_BENCHMARK)
+    set(DGTAL_TESTS_SRC_BENCHMARK ${DGTAL_TESTS_SRC_BENCHMARK} testBenchmark)
+    FOREACH(FILE ${DGTAL_TESTS_SRC_BENCHMARK})
+      add_executable(${FILE} ${FILE})
+      target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+      add_test(${FILE} ${FILE})
+    ENDFOREACH(FILE)
+
+endif (WITH_BENCHMARK)
