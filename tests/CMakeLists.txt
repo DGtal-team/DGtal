@@ -20,8 +20,14 @@ include_directories (${PROJECT_BINARY_DIR}/tests/)
 link_directories (${PROJECT_BINARY_DIR})
 
 # ConfigTest.h instanciation.
-configure_file(${PROJECT_SOURCE_DIR}/tests/ConfigTest.h.in 
+configure_file(${PROJECT_SOURCE_DIR}/tests/ConfigTest.h.in
   ${PROJECT_BINARY_DIR}/tests/ConfigTest.h)
+
+
+#----- Benchmark ---
+IF(WITH_BENCHMARK)
+add_subdirectory(benchmark)
+ENDIF(WITH_BENCHMARK)
 
 
 #------TESTS subdirectories ------
@@ -37,5 +43,3 @@ add_subdirectory(io)
 add_subdirectory(images)
 add_subdirectory(helpers)
 add_subdirectory(shapes)
-
-
