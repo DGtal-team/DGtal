@@ -438,4 +438,23 @@ IF(WITH_CGAL)
   ENDIF(CGAL_FOUND)
 ENDIF(WITH_CGAL)
 
+
+# -----------------------------------------------------------------------------
+# Look for Google Benchmark
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(BENCHMARK_FOUND_DGTAL 0)
+IF(WITH_BENCHMARK)
+  FIND_PACKAGE(Benchmark REQUIRED)
+  IF(BENCHMARK_FOUND)
+    SET(BENCHMARK_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_BENCHMARK ")
+    include_directories( ${BENCHMARK_INCLUDE_DIR})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
+    message(STATUS "Google Benchmark found.   ${BENCHMARK_LIBRARIES}")
+  ENDIF(BENCHMARK_FOUND)
+ENDIF(WITH_BENCHMARK)
+
+
+
 message(STATUS "-------------------------------------------------------------------------------")
