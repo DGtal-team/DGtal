@@ -200,6 +200,7 @@ getEigenvalues( Scalar& l1, Scalar& l2, Scalar& l3, Surfel s ) const
   getPoints( std::back_inserter( pts ), s );
   bool ok = true;
   int i = 0;
+  l1 = l2 = l3 = 0.0;
   for ( typename std::vector<Point>::const_iterator itPts = pts.begin(), itPtsE = pts.end();
         itPts != itPtsE; ++itPts, ++i )
     {
