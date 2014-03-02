@@ -38,28 +38,27 @@ if( WIN32 )
   ENDIF( SUITESPARSE_LIBRARY_DIRS )
 
 else( WIN32 )
-  IF( APPLE)
-    FIND_PATH( CHOLMOD_INCLUDE_DIR cholmod.h
-      PATHS  /opt/local/include/ufsparse
-      /usr/local/include/ufsparse)
+  # IF( APPLE)
+  #   FIND_PATH( CHOLMOD_INCLUDE_DIR cholmod.h
+  #     PATHS  /opt/local/include/ufsparse
+  #     /usr/local/include/ufsparse)
 
-    FIND_PATH( SUITESPARSE_LIBRARY_DIR
-      NAMES libSuiteSparse.dylib
-      PATHS /opt/local/lib
-      /usr/local/lib
-      /usr/lib/)
+  #   FIND_PATH( SUITESPARSE_LIBRARY_DIR
+  #     NAMES libSuiteSparse.dylib
+  #     PATHS /opt/local/lib
+  #     /usr/local/lib
+  #     /usr/lib/)
 
-    FIND_PATH( SUITESPARSE_LIBRARY_DIR
-      NAMES libcholmod.a libcholmod.so
-      PATHS /usr/
-      /usr/lib64/
-      /usr/local/lib/ )
+  #   FIND_PATH( SUITESPARSE_LIBRARY_DIR
+  #     NAMES libcholmod.a libcholmod.so
+  #     PATHS /usr/
+  #     /usr/lib64/
+  #     /usr/local/lib/ )
 
-    list ( APPEND SUITESPARSE_LIBRARY_DIRS ${SUITESPARSE_LIBRARY_DIR} )
+  #   list ( APPEND SUITESPARSE_LIBRARY_DIRS ${SUITESPARSE_LIBRARY_DIR} )
 
-    list ( APPEND SUITESPARSE_LIBRARIES SuiteSparse)
-
-  ELSE(APPLE)
+  #   list ( APPEND SUITESPARSE_LIBRARIES SuiteSparse)
+  # ELSE(APPLE)
     FIND_PATH( CHOLMOD_INCLUDE_DIR cholmod.h
       PATHS /usr/local/include
       /usr/include
@@ -75,7 +74,7 @@ else( WIN32 )
       /usr/lib64/
       /usr/local/lib/ )
 
-  ENDIF(APPLE)
+ # ENDIF(APPLE)
 
   # Add cholmod include directory to collection include directories
   IF ( CHOLMOD_INCLUDE_DIR )
@@ -87,7 +86,7 @@ else( WIN32 )
   IF ( SUITESPARSE_LIBRARY_DIR )
 
     # Skipped, as this is set for apple in the block above
-    if (NOT APPLE)
+  #  if (NOT APPLE)
       list ( APPEND SUITESPARSE_LIBRARIES lapack)
       list ( APPEND SUITESPARSE_LIBRARIES blas)
       list ( APPEND SUITESPARSE_LIBRARIES umfpack)
@@ -102,7 +101,7 @@ else( WIN32 )
       list ( APPEND SUITESPARSE_LIBRARIES cxsparse)
       list ( APPEND SUITESPARSE_LIBRARIES klu)
       #       list ( APPEND SUITESPARSE_LIBRARIES spqr)
-    endif()
+   # endif()
 
     # Metis and spqr are optional
     FIND_LIBRARY( SUITESPARSE_METIS_LIBRARY
