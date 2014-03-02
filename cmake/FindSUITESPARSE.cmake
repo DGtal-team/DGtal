@@ -7,7 +7,6 @@
 #  SUITESPARSE_SPQR_LIBRARY     - name of spqr library (necessary due to error in debian package)
 #  SUITESPARSE_SPQR_LIBRARY_DIR - name of spqr library (necessary due to error in debian package)
 #  SUITESPARSE_LIBRARY_DIR      - Library main directory containing suitesparse libs
-#  SUITESPARSE_LIBRARY_DIRS     - all Library directories containing suitesparse libs
 #  SUITESPARSE_SPQR_VALID       - automatic identification whether or not spqr package is installed correctly
 
 IF (SUITESPARSE_INCLUDE_DIRS)
@@ -53,8 +52,7 @@ else( WIN32 )
   #     NAMES libcholmod.a libcholmod.so
   #     PATHS /usr/
   #     /usr/lib64/
-  #     /usr/local/lib/ )
-
+  #     /usr/local/lib/
   #   list ( APPEND SUITESPARSE_LIBRARY_DIRS ${SUITESPARSE_LIBRARY_DIR} )
 
   #   list ( APPEND SUITESPARSE_LIBRARIES SuiteSparse)
@@ -125,7 +123,6 @@ else( WIN32 )
 	list ( APPEND SUITESPARSE_LIBRARIES spqr)
       ENDIF (SUITESPARSE_SPQR_LIBRARY)
     endif()
-
   ENDIF( SUITESPARSE_LIBRARY_DIR )
 
 endif( WIN32 )
