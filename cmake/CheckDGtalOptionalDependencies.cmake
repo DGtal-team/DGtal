@@ -16,6 +16,7 @@ OPTION(WITH_C11 "With C++ compiler C11 features." OFF)
 OPTION(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_EIGEN "With Eigen3 Linear Algebra Library." OFF)
+OPTION(WITH_SUITESPARE "With SuiteSparse Linear Algebra Library." OFF)
 OPTION(WITH_CGAL "With CGAL." OFF)
 OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
 OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
@@ -72,6 +73,13 @@ message(STATUS "      WITH_EIGEN        true    (Eigen3)")
 ELSE(WITH_EIGEN)
 message(STATUS "      WITH_EIGEN        false   (Eigen3)")
 ENDIF(WITH_EIGEN)
+
+IF(WITH_SUITESPARSE)
+SET (LIST_OPTION ${LIST_OPTION} [SUITESPARSE]\ )
+message(STATUS "      WITH_SUITESPARSE  true    (SuiteSparse)")
+ELSE(WITH_SUITESPARSE)
+message(STATUS "      WITH_SUITESPARSE  false   (SuiteSparse)")
+ENDIF(WITH_SUITESPARSE)
 
 
 IF(WITH_CGAL)
@@ -412,6 +420,24 @@ IF(WITH_EIGEN)
     message(STATUS "Eigen3 found.")
   ENDIF(EIGEN3_FOUND)
 ENDIF(WITH_EIGEN)
+
+# -----------------------------------------------------------------------------
+# Look for SuiteSparse
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(SUITESPARSE_FOUND_DGTAL 0)
+IF(WITH_SUITESPARSE)
+  FIND_PACKAGE(SUITESPARSE REQUIRED)
+  IF(SUITESPARSE_FOUND)
+    SET(SUITESPARSE_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_SUITESPARSE ")
+    include_directories(${SUITESPARSE_INCLUDE_DIRS})
+    link_directories(${SUITESPARSE_LIBRARY_DIRS})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${SUITESPARSE_LIBRARIES} )
+    SET(DGtalLibInc ${DGtalLibInc} ${SUITESPARSE_INCLUDE_DIRS})
+    message(STATUS "Suitesparse found.")
+  ENDIF(SUITESPARSE_FOUND)
+ENDIF(WITH_SUITESPARSE)
 
 # -----------------------------------------------------------------------------
 # Look for CGAL
