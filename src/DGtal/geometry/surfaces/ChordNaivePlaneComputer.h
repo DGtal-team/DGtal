@@ -499,7 +499,7 @@ namespace DGtal
        Inner product with potentially better precision.
        @param u any vector
        @param v any vector
-     */
+    */
     template <typename TVector1, typename TVector2>
     static InternalScalar internalDot( const TVector1 & u, const TVector2 & v );
 
@@ -508,7 +508,7 @@ namespace DGtal
        @param[out] n the vector that stores the cross product of u and v.
        @param u any vector
        @param v any vector
-     */
+    */
     template <typename TVector1, typename TVector2>
     static void internalCross( InternalVector & n, const TVector1 & u, const TVector2 & v );
 
@@ -712,7 +712,7 @@ namespace DGtal
        @param p1 any point.
        @param p2 any point.
        @return 'true' iff the two points form a vector aligned with the main axis.
-     */
+    */
     bool alignedAlongAxis( const InputPoint & p1, const InputPoint & p2 ) const;
 
     /**
@@ -728,7 +728,7 @@ namespace DGtal
        contains the new normal.
 
        @pre state.nbValid >= 2
-     */
+    */
     void computeNormal( State & state ) const;
 
     /**
@@ -771,7 +771,7 @@ namespace DGtal
        state.max - state.min <= state.height.
 
        @see init
-     */
+    */
     bool checkWidth( const State & state ) const;
 
     /**
