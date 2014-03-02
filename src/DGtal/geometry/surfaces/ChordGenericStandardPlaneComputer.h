@@ -58,63 +58,63 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ChordGenericStandardPlaneComputer
   /**
-     Description of template class 'ChordGenericStandardPlaneComputer'
-     <p> \brief Aim: A class that recognizes pieces of digital planes
-     of given diagonal width. When the width is \f$1 \times
-     \sqrt{3}\f$, it corresponds to standard planes. Contrary to
-     ChordStandardPlaneComputer, the axis is \b not specified at
-     initialization of the object.  This class uses four instances of
-     ChordStandardPlaneComputer of axis z, by transforming points
-     \f$(x,y,z)\f$ to \f$(x \pm z, y \pm z, z)\f$.
+   * Description of template class 'ChordGenericStandardPlaneComputer'
+   * <p> \brief Aim: A class that recognizes pieces of digital planes
+   * of given diagonal width. When the width is \f$1 \times
+   * \sqrt{3}\f$, it corresponds to standard planes. Contrary to
+   * ChordStandardPlaneComputer, the axis is \b not specified at
+   * initialization of the object.  This class uses four instances of
+   * ChordStandardPlaneComputer of axis z, by transforming points
+   * \f$(x,y,z)\f$ to \f$(x \pm z, y \pm z, z)\f$.
 
-     As a (3D) geometric primitive computer, it obeys the concept
-     CAdditivePrimitiveComputer. It is copy constructible, assignable.
-     It has methods \ref extend(), extend( InputIterator,
-     InputIterator) and \ref isExtendable(),
-     isExtendable(InputIterator, InputIterator).  The object stores
-     all the distinct points \c p such that 'extend(\c p )' was
-     successful. It is thus a model of boost::ForwardContainer (non
-     mutable). It is iterable (inner type ConstIterator, begin(),
-     end()). You may clear() it.
+   * As a (3D) geometric primitive computer, it obeys the concept
+   * CAdditivePrimitiveComputer. It is copy constructible, assignable.
+   * It has methods \ref extend(), extend( InputIterator,
+   * InputIterator) and \ref isExtendable(),
+   * isExtendable(InputIterator, InputIterator).  The object stores
+   * all the distinct points \c p such that 'extend(\c p )' was
+   * successful. It is thus a model of boost::ForwardContainer (non
+   * mutable). It is iterable (inner type ConstIterator, begin(),
+   * end()). You may clear() it.
 
-     It is also a model of CPointPredicate (returns 'true' iff a point
-     is within the current bounds).
+   * It is also a model of CPointPredicate (returns 'true' iff a point
+   * is within the current bounds).
 
 
-     Note on complexity: See \ref ChordNaivePlaneComputer and \ref
-     modulePlaneRecognition_sec5. Although it uses four instances of
-     ChordStandardNaiveComputer, the recognition is \b not four times
-     slower. Indeed, recognition stops quickly on bad diagonal axes.
+   * Note on complexity: See \ref ChordNaivePlaneComputer and \ref
+   * modulePlaneRecognition_sec5. Although it uses four instances of
+   * ChordStandardNaiveComputer, the recognition is \b not four times
+   * slower. Indeed, recognition stops quickly on bad diagonal axes.
 
-     @tparam TSpace specifies the digital space (provides dimension and
-     types for the primitive)
+   * @tparam TSpace specifies the digital space (provides dimension and
+   * types for the primitive)
 
-     @tparam TInputPoint specifies the type of the input points
-     (digital or not). Usually, you may choose TInputPoint =
-     TSpace::Point, but this is not compulsory. You may for instance
-     wish to manipulate floating-point value points. This is possible,
-     but you have to choose the type TInternalScalar accordingly.
+   * @tparam TInputPoint specifies the type of the input points
+   * (digital or not). Usually, you may choose TInputPoint =
+   * TSpace::Point, but this is not compulsory. You may for instance
+   * wish to manipulate floating-point value points. This is possible,
+   * but you have to choose the type TInternalScalar accordingly.
 
-     @tparam TInternalScalar specifies the type of scalar used in
-     internal computations, generally a more precise type than
-     TInputPoint::Component. For instance, for digital points, the type
-     should be able to hold integers of order \f$(2*D)^2\f$ if D is the
-     diameter of the set of digital points.
+   * @tparam TInternalScalar specifies the type of scalar used in
+   * internal computations, generally a more precise type than
+   * TInputPoint::Component. For instance, for digital points, the type
+   * should be able to hold integers of order \f$(2*D)^2\f$ if D is the
+   * diameter of the set of digital points.
 
-     @code
-     typedef SpaceND<3,int> Z3;
-     typedef ChordGenericStandardPlaneComputer< Z3, Z3::Point, int64_t > StandardPlaneComputer;
-     StandardPlaneComputer plane;
-     plane.init( 1, 1 ); // width is 1/1 => standard
-     plane.extend( Point( 10, 0, 0 ) ); // return 'true'
-     plane.extend( Point( 0, 8, 0 ) );  // return 'true'
-     plane.extend( Point( 0, 0, 6 ) );  // return 'true'
-     plane.extend( Point( 5, 5, 5 ) );  // return 'false'
-     // There is no standard plane going through the 3 first points and the last one.
-     @endcode
+   * @code
+   * typedef SpaceND<3,int> Z3;
+   * typedef ChordGenericStandardPlaneComputer< Z3, Z3::Point, int64_t > StandardPlaneComputer;
+   * StandardPlaneComputer plane;
+   * plane.init( 1, 1 ); // width is 1/1 => standard
+   * plane.extend( Point( 10, 0, 0 ) ); // return 'true'
+   * plane.extend( Point( 0, 8, 0 ) );  // return 'true'
+   * plane.extend( Point( 0, 0, 6 ) );  // return 'true'
+   * plane.extend( Point( 5, 5, 5 ) );  // return 'false'
+   * // There is no standard plane going through the 3 first points and the last one.
+   * @endcode
 
-     Model of boost::DefaultConstructible, boost::CopyConstructible,
-     boost::Assignable, boost::ForwardContainer, CAdditivePrimitiveComputer, CPointPredicate.
+   * Model of boost::DefaultConstructible, boost::CopyConstructible,
+   * boost::Assignable, boost::ForwardContainer, CAdditivePrimitiveComputer, CPointPredicate.
    */
   template < typename TSpace,
              typename TInputPoint,
