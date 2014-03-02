@@ -38,7 +38,7 @@
 /** Prevents repeated inclusion of headers. */
 #define VoronoiCovarianceMeasureOnDigitalSurface_h
 
-#ifndef WITH_CGAL
+#ifndef WITH_EIGEN
 #error You need to have activated Eigen (WITH_EIGEN) to include this file.
 #endif
 
