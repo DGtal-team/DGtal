@@ -109,7 +109,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<KernelFunction, Point, Scalar> ));
 
     /// Structure to hold a diagonalized matrix.
-    struct EigenVCM {
+    struct EigenDecomposition {
       VectorN values;   //< eigenvalues from the smallest to the biggest
       MatrixNN vectors; //< corresponding eigenvectors
     };
@@ -118,7 +118,7 @@ namespace DGtal
       VectorN vcmNormal;
       VectorN trivialNormal;
     };
-    typedef std::map<Point,EigenVCM>         Point2EigenVCM;  //< the map Point -> EigenVCM
+    typedef std::map<Point,EigenDecomposition>         Point2EigenDecomposition;  //< the map Point -> EigenDecomposition
     typedef std::map<Surfel,Normals>         Surfel2Normals;   //< the map Surfel -> Normals
 
     // ----------------------- Standard services ------------------------------
@@ -190,17 +190,29 @@ namespace DGtal
     PointOutputIterator getPoints( PointOutputIterator outIt, Surfel s ) const; 
 
     /// @return a const-reference to the map Surfel -> Normals (vcm and trivial normal).
-    const Surfel2Normals& surfelNormals() const;
+    const Surfel2Normals& mapSurfel2Normals() const;
+
+    /// @return a const-reference to the map Point ->
+    /// EigenDecomposition of the chi_r VCM (eigenvalues and
+    /// eigenvectors).
+    const Point2EigenDecomposition& mapPoint2ChiVCM() const;
 
     /**
-       Gets the eigenvalues of surfel \a s
-       @param[out] l1 the greatest eigenvalue of the VCM at \a s.
-       @param[out] l2 the second greatest eigenvalue of the VCM at \a s.
-       @param[out] l3 the smallest eigenvalue of the VCM at \a s.
+       Gets the eigenvalues of the chi_r VCM at surfel \a s sorted from lowest to highest.
+       @param[out] values the eigenvalues of the chi_r VCM at \a s.
        @param[in] s the surfel
        @return 'true' is the surfel \a s was valid.
     */
-    bool getEigenvalues( Scalar& l1, Scalar& l2, Scalar& l3, Surfel s ) const;
+    bool getChiVCMEigenvalues( VectorN& values, Surfel s ) const;
+
+    /**
+       Gets the eigen decomposition of the chi_r VCM at surfel \a s.
+       @param[out] values the eigenvalues of the chi_r VCM at \a s sorted from lowest to highest..
+       @param[out] vectors the eigenvectors of the chi_r VCM at \a s associated to \a values.
+       @param[in] s the surfel
+       @return 'true' is the surfel \a s was valid.
+    */
+    bool getChiVCMEigenDecomposition( VectorN& values, MatrixNN& vectors, Surfel s ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -233,7 +245,7 @@ namespace DGtal
     /// the VCM.
     Scalar myRadiusTrivial;
     /// Stores for each point p its convolved VCM, i.e. VCM( chi_r( p ) )
-    Point2EigenVCM myPt2EigenVCM;
+    Point2EigenDecomposition myPt2EigenDecomposition;
     /// Stores for each surfel its vcm normal and its trivial normal.
     Surfel2Normals mySurfel2Normals;
 

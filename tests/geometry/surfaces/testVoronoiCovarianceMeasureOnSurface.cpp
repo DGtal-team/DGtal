@@ -152,7 +152,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
     {
       RealVector n_est  = estimator.eval( it );
       RealVector n_true = true_estimator.eval( it );
-      RealVector n_triv = - vcm_surface->surfelNormals().find( *it )->second.trivialNormal;
+      RealVector n_triv = - vcm_surface->mapSurfel2Normals().find( *it )->second.trivialNormal;
       error_true.addValue( n_est.dot( n_true ) );
       error_triv_true.addValue( n_triv.dot( n_true ) );
     }
