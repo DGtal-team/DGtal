@@ -89,8 +89,8 @@ eval( SurfelConstIterator it ) const
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
   ASSERT( myVCMOnSurface != 0 );
   SCell s = *it;
-  typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->surfelNormals().find( s );
-  ASSERT( itSN != myVCMOnSurface->surfelNormals().end() );
+  typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->mapSurfel2Normals().find( s );
+  ASSERT( itSN != myVCMOnSurface->mapSurfel2Normals().end() );
   return - itSN->second.vcmNormal;
 }
 //-----------------------------------------------------------------------------
@@ -110,8 +110,8 @@ eval( SurfelConstIterator itb,
   for ( ; itb != ite; ++itb )
     {
       SCell s = *itb;
-      typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->surfelNormals().find( s );
-      ASSERT( itSN != myVCMOnSurface->surfelNormals().end() );
+      typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->mapSurfel2Normals().find( s );
+      ASSERT( itSN != myVCMOnSurface->mapSurfel2Normals().end() );
       *result++ = - itSN->second.vcmNormal;
     }
   return result;
