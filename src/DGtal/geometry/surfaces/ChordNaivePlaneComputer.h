@@ -104,7 +104,7 @@ namespace DGtal
    *    recompute a valid direction).
    * -# Big integers: (1) requires (significantly) smaller integers
    *    than (2). For instance, int64_t are required for diameter
-   *    greater than 25 for (1) instead of 14000 for (2).
+   *    greater than 25 for (2) instead of 14000 for (1).
    * -# Practice: both algorithms are very comparable. (1) seems
    *    slightly faster than (2) on average (but this was not tested on
    *    many architecture).
