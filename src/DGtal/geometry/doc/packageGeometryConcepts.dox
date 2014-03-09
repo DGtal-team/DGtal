@@ -69,7 +69,6 @@ subgraph cluster_concepts_2 {
     CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
     CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
 
-    CPowerMetric -> CMetric;
     CSeparableMetric -> CMetric;
     CPowerSeparableMetric -> CPowerMetric;
 
@@ -90,8 +89,10 @@ subgraph cluster_concepts_2 {
   }
 
 
-  CLocalPremetric -> boost_CopyConstructible;
-  CLocalPremetric -> boost_Assignable;
+  CMetric -> boost_CopyConstructible;
+  CMetric -> boost_Assignable;
+  CPowerMetric -> boost_CopyConstructible;
+  CPowerMetric -> boost_Assignable;
 
   CSegment -> boost_CopyConstructible ;
   CSegment -> boost_DefaultConstructible;
