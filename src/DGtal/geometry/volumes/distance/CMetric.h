@@ -42,7 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/volumes/distance/CLocalPremetric.h"
+#include "DGtal/kernel/CSpace.h"
+#include "DGtal/base/CQuantity.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,20 +56,34 @@ Description of \b concept '\b CMetric' <p>
 @ingroup Concepts
 @brief Aim: defines the concept of metrics.
 
-In addition to CLocalPremetric requirements (non-negativity and coincidence axiom), CMetric models should
+Models of such concept should implement a distance method which
+returns positive values for the distance between @a aPoint and @a
+aPoint + @a aDirection. Models should be such that the distance  at a point
+in a given direction is equal to zero if and only if the direction is
+a null vector.
+In addition, CMetric models should
 implement a distance function on points satisfying the metric
 conditions:
+
  - d(x,y) == d(y,x) (symmetry)
  - d(x,y) <= d(x,z) + d(z,y) (triangle inequality)
 
-For performance purposes, we ask the model to implement a closest() method to decide given two points which one is closer to a third one. This method can simply be implemented as a test "d(aOrigin,aP)<d(aOrigin,aQ)" (see below) but fast implementation can be expected without computing the distances.  
+For performance purposes, we ask the model to implement a closest()
+method to decide given two points which one is closer to a third
+one. This method can simply be implemented as a test
+"d(aOrigin,aP)<d(aOrigin,aQ)" (see below) but fast implementation can
+be expected without computing the distances.
 
 
-### Refinement of CLocalPremetric
+### Refinement of
+  - boost::CopyConstructible
+  - boost::Assignable
+
+
 
 ### Associated types :
 
-Inherited from CLocalPremetric:
+ - @e Space: type of space on which the premetric is defined (model of CSpace)
  - @e Point: type of points associated with the underlying metric space.
  - @e Vector: type of vectors associated with the underlying metric space.
  - @e Value: the value type of the metric (model of CQuantity)
@@ -86,7 +101,7 @@ Inherited from CLocalPremetric:
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | distance computation | x(aPoint,anotherPoint) | @a aPoint and @a anotherPoint of type @a Point  |  a value of type @a Value   |              |  compute the distance between two points  |                |    -        |
 | closest point test | closest(aOrigin, aP, aQ) | @a aOrigin, @a aP,@a aQ of type @a aPoint |   a value of type Closest | | decide between @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
-  
+
 
 ### Invariants
 
@@ -99,19 +114,23 @@ ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
 @tparam T the type that should be a model of CMetric.
  */
 template <typename T>
-struct CMetric: CLocalPremetric<T>
+struct CMetric:  boost::CopyConstructible<T>, boost::Assignable<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
   typedef typename T::Point Point;
+  typedef typename T::Space Space;
   typedef typename T::Vector Vector;
   typedef typename T::Value Value;
-  
+
+  BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
+  BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
+
   BOOST_CONCEPT_USAGE( CMetric )
   {
     checkConstConstraints();
   }
-  
+
   void checkConstConstraints() const
   {
     // const method dummyConst should take parameter myA of type A and return
