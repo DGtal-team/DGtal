@@ -1,0 +1,60 @@
+
+template <typename Calculus, Duality duality>
+VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
+    : calculus(_calculus)
+{
+    for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+        coordinates[dim] = Coordinate(calculus.kFormLength(0, duality));
+}
+
+template <typename Calculus, Duality duality>
+std::ostream&
+operator<<(std::ostream& os, const VectorField<Calculus, duality>& field)
+{
+    return os << duality << " vector field (" << field.coordinates.size() << "x" << field.coordinates[0].length() << ")";
+}
+
+template <typename Calculus, Duality duality>
+template <typename Board>
+void
+VectorField<Calculus, duality>::display2D(Board& board, const double& scale) const
+{
+    BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
+
+    typedef boost::array<double, Calculus::dimension> PointF;
+
+    ASSERT( calculus.index_cells[calculus.actualOrder(0, duality)].size() == calculus.kFormLength(0, duality) );
+    for (int kk=0; kk<calculus.kFormLength(0, duality); kk++)
+    {
+        const typename Calculus::SCell& cell = calculus.index_cells[calculus.actualOrder(0, duality)][kk];
+        PointF origin;
+        PointF arrow;
+        for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+        {
+            origin[dim] = cell.myCoordinates[dim]/2.;
+            arrow[dim] = coordinates[dim](kk);
+        }
+
+        if (!arrow[0] && !arrow[1])
+            continue;
+
+        board.drawArrow(-.5+origin[0],-.5+origin[1],-.5+origin[0]+scale*arrow[0],-.5+origin[1]+scale*arrow[1]);
+    }
+
+}
+
+template <typename Calculus, Duality duality>
+KForm<Calculus, 0, duality>
+VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
+{
+    ASSERT( dim < Calculus::dimension );
+
+    typedef KForm<Calculus, 0, duality> ZeroForm;
+    ZeroForm zero_form(calculus);
+    ASSERT( zero_form.container.length() == coordinates[dim].length() );
+
+    zero_form.container = coordinates[dim];
+
+    return zero_form;
+}
+

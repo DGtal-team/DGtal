@@ -1,0 +1,60 @@
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(const Calculus& _calculus)
+    : calculus(_calculus), container(_calculus.kFormLength(order_out, duality_out), _calculus.kFormLength(order_in, duality_in))
+{
+}
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(const Calculus& _calculus, const Container& _container)
+    : calculus(_calculus), container(_container)
+{
+    ASSERT( calculus.kFormLength(order_out, duality_out) == container.nRows() );
+    ASSERT( calculus.kFormLength(order_in, duality_in) == container.nColumns() );
+}
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+KForm<Calculus, order_out, duality_out>
+operator*(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator, const KForm<Calculus, order_in, duality_in>& input_form)
+{
+    //ASSERT( linear_operator.calculus == input_form.calculus );
+    return KForm<Calculus, order_out, duality_out>(linear_operator.calculus, linear_operator.container * input_form.container);
+}
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_fold, Duality duality_fold, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+operator*(const LinearOperator<Calculus, order_fold, duality_fold, order_out, duality_out>& operator_left, const LinearOperator<Calculus, order_in, duality_in, order_fold, duality_fold>& operator_right)
+{
+    //ASSERT( operator_right.calculus == operator_right.calculus );
+    typedef LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
+    return OutputOperator(operator_left.calculus, operator_left.container * operator_right.container);
+}
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+operator+(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b)
+{
+    //ASSERT( operator_right.calculus == operator_right.calculus );
+    typedef LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
+    return OutputOperator(linear_operator_a.calculus, linear_operator_a.container + linear_operator_b.container);
+}
+
+// linear operator scalar multiplication
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+operator*(const typename Calculus::LinearAlgebraBackend::Scalar& scalar, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator)
+{
+    typedef LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
+    return OutputOperator(linear_operator.calculus, scalar * linear_operator.container);
+}
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+std::ostream&
+operator<<(std::ostream& os, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator)
+{
+    os << duality_in << " " << order_in << "-form => " << duality_out << " " << order_out << "-form";
+    os << " ";
+    os << "(" << linear_operator.container.nColumns() << " => " << linear_operator.container.nRows() << ")";
+    return os;
+}
+
