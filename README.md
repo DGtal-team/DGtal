@@ -22,6 +22,3 @@ More Information
   
 * project homepage http://libdgtal.org
 
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/DGtal-team/dgtal/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
