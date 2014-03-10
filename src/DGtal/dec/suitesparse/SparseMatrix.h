@@ -37,10 +37,13 @@
 #include <cholmod.h>
 #include <vector>
 #include <map>
-#include "Types.h"
+#include <iostream>
 
 namespace DDG
 {
+	 template <class T>
+	 struct DenseMatrix;
+
    template<class T>
    class SparseMatrix
    {

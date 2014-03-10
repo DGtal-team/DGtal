@@ -73,33 +73,6 @@ namespace DDG
    }
 
    template <>
-   cholmod_sparse* SparseMatrix<Quaternion> :: to_cholmod( void )
-   {
-      SparseMatrix<Real> A( m*4, n*4 );
-
-      for( const_iterator e  = begin();
-                          e != end();
-                          e ++ )
-      {
-         int i = e->first.second;
-         int j = e->first.first;
-         const Quaternion& q( e->second );
-
-         A(i*4+0,j*4+0) =  q[0]; A(i*4+0,j*4+1) = -q[1]; A(i*4+0,j*4+2) = -q[2]; A(i*4+0,j*4+3) = -q[3];
-         A(i*4+1,j*4+0) =  q[1]; A(i*4+1,j*4+1) =  q[0]; A(i*4+1,j*4+2) = -q[3]; A(i*4+1,j*4+3) =  q[2];
-         A(i*4+2,j*4+0) =  q[2]; A(i*4+2,j*4+1) =  q[3]; A(i*4+2,j*4+2) =  q[0]; A(i*4+2,j*4+3) = -q[1];
-         A(i*4+3,j*4+0) =  q[3]; A(i*4+3,j*4+1) = -q[2]; A(i*4+3,j*4+2) =  q[1]; A(i*4+3,j*4+3) =  q[0];
-      }
-
-      if( cData != NULL )
-      {
-         cholmod_l_free_sparse( &cData, context );
-      }
-      cData = cholmod_l_copy_sparse( A.to_cholmod(), context );
-      return cData;
-   }
-
-   template <>
    void SparseMatrix<Real> :: allocateSparse( void )
    {
       int nzmax = data.size();
@@ -117,16 +90,6 @@ namespace DDG
       int packed = true;
       int stype = 0;
       cData = cholmod_l_allocate_sparse( m, n, nzmax, sorted, packed, stype, CHOLMOD_COMPLEX, context );
-   }
-
-   template <>
-   void SparseMatrix<Quaternion> :: allocateSparse( void )
-   {
-      int nzmax = data.size();
-      int sorted = true;
-      int packed = true;
-      int stype = 0;
-      cData = cholmod_l_allocate_sparse( m*4, n*4, nzmax, sorted, packed, stype, CHOLMOD_REAL, context );
    }
 
    template <>
@@ -172,22 +135,6 @@ namespace DDG
       cout << "[qr] max residual: " << residual( A, x, b ) << "\n";
       cout << "[qr] size: " << A.nRows() << " x " << A.nColumns() << " (complex)" << "\n";
       cout << "[qr] rank: " << (*context).SPQR_istat[4] << "\n";
-   }
-
-   template <>
-   void solve( SparseMatrix<Quaternion>& A,
-                DenseMatrix<Quaternion>& x,
-                DenseMatrix<Quaternion>& b )
-   // solves the sparse linear system Ax = b using sparse QR factorization
-   {
-      int t0 = clock();
-      x = SuiteSparseQR<double>( A.to_cholmod(), b.to_cholmod(), context );
-      int t1 = clock();
-
-      cout << "[qr] time: " << seconds( t0, t1 ) << "s" << "\n";
-      cout << "[qr] max residual: " << residual( A, x, b ) << "\n";
-      cout << "[qr] size: " << A.nRows() << " x " << A.nColumns() << " (quaternion)" << "\n";
-      cout << "[qr] rank: " << (*context).SPQR_istat[4]/4 << "\n";
    }
 
    template <>

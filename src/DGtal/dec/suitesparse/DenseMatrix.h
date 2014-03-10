@@ -31,9 +31,8 @@
 #define DDG_DENSEMATRIX_H
 
 #include <cholmod.h>
-#include "Types.h"
-
 #include <vector>
+#include <iostream>
 
 namespace DDG
 {
@@ -43,6 +42,9 @@ namespace DDG
       lOne,
       lTwo
    };
+
+	 template <class T>
+	 struct SparseMatrix;
 
    template <class T>
    class DenseMatrix

@@ -8,9 +8,11 @@
 
 if( WITH_SUITESPARSE )
     SET(DGTAL_SRC ${DGTAL_SRC}
+        DGtal/dec/suitesparse/LinearContext
         DGtal/dec/suitesparse/DenseMatrix
         DGtal/dec/suitesparse/SparseMatrix
         DGtal/dec/suitesparse/Real
+        DGtal/dec/suitesparse/Complex
         )
 endif( WITH_SUITESPARSE )
 
