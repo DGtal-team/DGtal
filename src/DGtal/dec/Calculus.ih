@@ -1,0 +1,376 @@
+
+#include <DGtal/base/Common.h>
+
+// digital set point get attached to primal n-cell <-> dual 0-cell
+template <typename D>
+template <typename DigitalSet>
+DiscreteExteriorCalculus<D>::DiscreteExteriorCalculus(const DigitalSet& _set)
+    : domain(_set.domain()), kspace(), cell_size_ratio(*this), cell_indexes(*this)
+{
+    BOOST_STATIC_ASSERT(( boost::is_same<typename DigitalSet::Domain, Domain>::value ));
+
+    // init khalimsky space
+    // FIXME borders are removed from set => better not initialize kspace
+    // FIXME should be open or closed?
+    //bool kspace_init_ok = const_cast<KSpace&>(kspace).init(domain.lowerBound(), domain.upperBound(), false);
+    //ASSERT(kspace_init_ok);
+
+    // compute raw cell size
+    for (typename DigitalSet::ConstIterator ri=_set.begin(), rie=_set.end(); ri!=rie; ri++)
+    {
+        const Point& point = *ri;
+        const SCell cell_point = kspace.sSpel(point, KSpace::POS);
+
+        Points neighborhood;
+        neighborhoodRecurseSizeMask(dimension-1, cell_point.myCoordinates, neighborhood);
+        for (typename Points::const_iterator pi=neighborhood.begin(), pie=neighborhood.end(); pi!=pie; pi++)
+        {
+            const SCell cell = kspace.sCell(*pi, KSpace::POS);
+            cell_size_ratio[cell] += 1;
+        }
+    }
+
+    // normalize cell size
+    for (typename AllSCellSizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
+    {
+        const SCell& cell = csi->first;
+        const Dimension dual_dim = dimension-kspace.sDim(cell);
+        const double factor = 1/pow(2, dual_dim);
+
+        typename AllSCellSizeRatio::Value size = csi->second;
+        ASSERT(size);
+        size *= factor;
+
+        cell_size_ratio[cell] = size;
+    }
+
+    // compute cell index
+    for (typename AllSCellSizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
+    {
+        const SCell& cell = csi->first;
+        const Dimension dim = kspace.sDim(cell);
+        ASSERT( kspace.sSign(cell) == KSpace::POS );
+        ASSERT( cell.myPositive == true );
+
+        cell_indexes[cell] = index_cells[dim].size();
+        index_cells[dim].push_back(cell);
+    }
+}
+
+template <typename D>
+void
+DiscreteExteriorCalculus<D>::neighborhoodRecurseSizeMask(const Dimension& dimension, const Point& current_point, Points& neighborhood)
+{
+    typedef typename Point::Coordinate Coordinate;
+
+    for (Coordinate delta=-1; delta<2; delta++)
+    {
+        Point point = current_point;
+        point[dimension] += delta;
+
+        if (dimension==0)
+        {
+            neighborhood.push_back(point);
+            continue;
+        }
+
+        neighborhoodRecurseSizeMask(dimension-1, point, neighborhood);
+    }
+}
+
+template <typename D>
+std::ostream&
+operator<<(std::ostream& os, const DiscreteExteriorCalculus<D>& calculus)
+{
+    typedef DiscreteExteriorCalculus<D> Calculus;
+
+    os << calculus.domain << std::endl;
+    for (Order order=0; order<=Calculus::dimension; order++)
+        os << "primal " << order << "-cells <-> dual " << Calculus::dimension-order << "-cells (" << calculus.kFormLength(order, PRIMAL) << ")" << std::endl;
+
+    return os;
+}
+
+template <typename D>
+template <Order order, Duality duality>
+LinearOperator<DiscreteExteriorCalculus<D>, order, duality, order+1, duality>
+DiscreteExteriorCalculus<D>::derivative() const
+{
+    BOOST_STATIC_ASSERT(( order >= 0 ));
+    BOOST_STATIC_ASSERT(( order < dimension ));
+
+    typedef LinearOperator<DiscreteExteriorCalculus<D>, order, duality, order+1, duality> Derivative;
+    Derivative derivative(*this);
+    ASSERT( derivative.container.nRows() == kFormLength(order+1, duality) );
+    ASSERT( derivative.container.nColumns() == kFormLength(order, duality) );
+
+    // iterate over output form values
+    for (Index index_output=0; index_output<derivative.container.nRows(); index_output++)
+    {
+        const SCell& cell = index_cells[actualOrder(order+1, duality)][index_output];
+        ASSERT( kspace.sSign(cell) == KSpace::POS );
+        ASSERT( cell.myPositive == true );
+
+        // find hodge sign
+        const double sign = derivativeSign(cell, duality);
+
+        // find cell border
+        typedef typename KSpace::SCells Border;
+        Border border;
+        if (duality == PRIMAL) border = kspace.sLowerIncident(cell);
+        else border = kspace.sUpperIncident(cell);
+
+        // iterate over cell border
+        for (typename Border::const_iterator bi=border.begin(), bie=border.end(); bi!=bie; bi++)
+        {
+            const SCell& cell_border = *bi;
+            ASSERT( kspace.sDim(cell_border) == actualOrder(order, duality) );
+
+            const typename AllSCellIndexes::ConstIterator cell_index_iter = cell_indexes.find(absoluteCell(cell_border));
+            if ( cell_index_iter == cell_indexes.end() )
+                continue;
+
+            const Index index_input = cell_index_iter->second;
+            ASSERT( index_input < derivative.container.nColumns() );
+
+            // fill container with cell sign
+            derivative.container(index_output, index_input) = sign * derivativeSign(cell_border, duality);
+        }
+    }
+
+    return derivative;
+}
+
+template <typename D>
+template <Order order>
+LinearOperator<DiscreteExteriorCalculus<D>, order, PRIMAL, DiscreteExteriorCalculus<D>::dimension-order, DUAL>
+DiscreteExteriorCalculus<D>::primalHodge() const
+{
+    BOOST_STATIC_ASSERT(( order >= 0 ));
+    BOOST_STATIC_ASSERT(( order <= dimension ));
+
+    typedef LinearOperator<DiscreteExteriorCalculus<D>, order, PRIMAL, dimension-order, DUAL> PrimalHodge;
+    PrimalHodge primal_hodge(*this);
+    ASSERT( primal_hodge.container.nRows() == primal_hodge.container.nColumns() );
+    ASSERT( primal_hodge.container.nRows() == kFormLength(order, PRIMAL) );
+
+    // iterate over output form values
+    for (Index index=0; index<primal_hodge.container.nRows(); index++)
+    {
+        const SCell& cell = index_cells[order][index];
+        const typename AllSCellSizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
+        ASSERT(iter_size != cell_size_ratio.end());
+
+        primal_hodge.container(index, index) = hodgeSign(cell, PRIMAL)/iter_size->second;
+    }
+
+    return primal_hodge;
+}
+
+template <typename D>
+template <Order order>
+LinearOperator<DiscreteExteriorCalculus<D>, order, DUAL, DiscreteExteriorCalculus<D>::dimension-order, PRIMAL>
+DiscreteExteriorCalculus<D>::dualHodge() const
+{
+    BOOST_STATIC_ASSERT(( order >= 0 ));
+    BOOST_STATIC_ASSERT(( order <= dimension ));
+
+    typedef LinearOperator<DiscreteExteriorCalculus<D>, order, DUAL, DiscreteExteriorCalculus<D>::dimension-order, PRIMAL> DualHodge;
+    DualHodge dual_hodge(*this);
+    ASSERT( dual_hodge.container.nRows() == dual_hodge.container.nColumns() );
+    ASSERT( dual_hodge.container.nRows() == kFormLength(order, DUAL) );
+
+    // iterate over output form values
+    for (Index index=0; index<dual_hodge.container.nRows(); index++)
+    {
+        const SCell& cell = index_cells[dimension-order][index];
+        const typename AllSCellSizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
+        ASSERT(iter_size != cell_size_ratio.end());
+
+        dual_hodge.container(index, index) = hodgeSign(cell, DUAL)*iter_size->second;
+    }
+
+    return dual_hodge;
+}
+
+template <typename D>
+template <Duality duality>
+VectorField<DiscreteExteriorCalculus<D>, duality>
+DiscreteExteriorCalculus<D>::sharp(const KForm<DiscreteExteriorCalculus, 1, duality>& one_form) const
+{
+    typedef VectorField<DiscreteExteriorCalculus, duality> Field;
+    Field field(*this);
+
+    ASSERT( field.coordinates.size() == dimension);
+    for (Dimension dim=0; dim<dimension; dim++)
+        ASSERT( field.coordinates[dim].length() == kFormLength(0, duality) );
+
+    // iterate over points
+    for (int kk=0; kk<kFormLength(0, duality); kk++)
+    {
+        const SCell& cell = index_cells[actualOrder(0, duality)][kk];
+        ASSERT( kspace.sSign(cell) == KSpace::POS );
+        ASSERT( cell.myPositive == true );
+
+        typedef typename KSpace::SCells Edges;
+        Edges edges;
+        if (duality == PRIMAL) edges = kspace.sUpperIncident(cell);
+        else edges = kspace.sLowerIncident(cell);
+
+        // collect 1-form values over neighboring edges
+        typedef boost::array<double, dimension> Normalize;
+        Normalize normalize;
+        normalize.assign(0);
+        for (typename Edges::const_iterator ei=edges.begin(), eie=edges.end(); ei!=eie; ei++)
+        {
+            const SCell& cell_border = absoluteCell(*ei);
+            ASSERT( kspace.sDim(cell_border) == actualOrder(1, duality) );
+            ASSERT( kspace.sSign(cell_border) == KSpace::POS );
+
+            const typename AllSCellIndexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
+            if (cell_border_index_iter == cell_indexes.end())
+                continue;
+
+            const Index& cell_border_index = cell_border_index_iter->second;
+            ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
+            ASSERT( cell_border_index < one_form.container.length() );
+
+            const Dimension direction = edgeDirection(cell_border, duality);
+
+            normalize[direction]++;
+            field.coordinates[direction](kk) += one_form.container(cell_border_index);
+        }
+
+        // normalize vector field
+        for (Dimension dim=0; dim<dimension; dim++)
+            if (normalize[dim])
+                field.coordinates[dim](kk) /= normalize[dim];
+    }
+
+    return field;
+}
+
+template <typename D>
+template <Duality duality>
+KForm<DiscreteExteriorCalculus<D>, 1, duality>
+DiscreteExteriorCalculus<D>::flat(const VectorField<DiscreteExteriorCalculus, duality>& vector_field) const
+{
+    typedef KForm<DiscreteExteriorCalculus, 1, duality> OneForm;
+    OneForm one_form(*this);
+
+    // iterate over edges
+    for (int kk=0; kk<kFormLength(1, duality); kk++)
+    {
+        const SCell& cell = index_cells[actualOrder(1, duality)][kk];
+        ASSERT( kspace.sSign(cell) == KSpace::POS );
+        ASSERT( cell.myPositive == true );
+
+        const Dimension& direction = edgeDirection(cell, duality);
+
+        typedef typename KSpace::SCells Points;
+        Points points;
+        if (duality == PRIMAL) points = kspace.sLowerIncident(cell);
+        else points = kspace.sUpperIncident(cell);
+
+        // project vector field along edge from neighboring points
+        ASSERT( points.size() == 2 );
+        double normalize = 0;
+        for (typename Points::const_iterator pi=points.begin(), pie=points.end(); pi!=pie; pi++)
+        {
+            const SCell cell_border = absoluteCell(*pi);
+            ASSERT( kspace.sDim(cell_border) == actualOrder(0, duality) );
+            ASSERT( kspace.sSign(cell_border) == KSpace::POS );
+
+            const typename AllSCellIndexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
+            if (cell_border_index_iter == cell_indexes.end())
+                continue;
+
+            const Index& cell_border_index = cell_border_index_iter->second;
+            ASSERT( cell_border_index < index_cells[actualOrder(0, duality)].size());
+            ASSERT( cell_border_index < kFormLength(0, duality) );
+
+            normalize++;
+            one_form.container(kk) += vector_field.coordinates[direction](cell_border_index);
+        }
+
+        // normalize one-form
+        if (normalize)
+            one_form.container(kk) /= normalize;
+    }
+
+    return one_form;
+}
+
+template <typename D>
+typename DiscreteExteriorCalculus<D>::Index
+DiscreteExteriorCalculus<D>::kFormLength(const Order& order, const Duality& duality) const
+{
+    return index_cells[actualOrder(order, duality)].size();
+}
+
+template <typename D>
+Order
+DiscreteExteriorCalculus<D>::actualOrder(const Order& order, const Duality& duality) const
+{
+    return (duality == PRIMAL) ? order : dimension-order;
+}
+
+template <typename D>
+double
+DiscreteExteriorCalculus<D>::hodgeSign(const SCell& cell, const Duality& duality) const
+{
+    const Dimension& primal_dim = kspace.sDim(cell);
+    const bool apply_sign = ((dimension-primal_dim)*primal_dim % 2 == 1);
+    if (!apply_sign) return cell.myPositive ? 1 : -1;
+
+    typename KSpace::DirIterator di = kspace.sDirs(cell);
+
+    Dimension span_count = 0;
+    Dimension iter_count = 0;
+    while (di!=0)
+    {
+        span_count += *di;
+        iter_count ++;
+        ++di;
+    }
+    ASSERT( iter_count == primal_dim );
+    if (duality == DUAL) span_count++;
+
+    const double sign = pow(-1, span_count);
+    return cell.myPositive ? sign : -sign;
+}
+
+template <typename D>
+double
+DiscreteExteriorCalculus<D>::derivativeSign(const SCell& cell, const Duality& duality) const
+{
+    if (duality == PRIMAL) return cell.myPositive ? 1 : -1;
+    return hodgeSign(cell, PRIMAL);
+}
+
+template <typename D>
+typename DiscreteExteriorCalculus<D>::SCell
+DiscreteExteriorCalculus<D>::absoluteCell(const SCell& cell) const
+{
+    if (cell.myPositive) return cell;
+    return kspace.sOpp(cell);
+}
+
+template <typename D>
+typename DiscreteExteriorCalculus<D>::Dimension
+DiscreteExteriorCalculus<D>::edgeDirection(const SCell& cell, const Duality& duality) const
+{
+    ASSERT( kspace.sDim(cell) == actualOrder(1, duality) );
+
+    typename KSpace::DirIterator di = kspace.sDirs(cell);
+    if (duality == DUAL) di = kspace.sOrthDirs(cell);
+
+    ASSERT( di != 0 );
+    const Dimension direction = *di;
+    ++di;
+    ASSERT( !(di != 0) );
+    ASSERT( direction < dimension );
+
+    return direction;
+}
+

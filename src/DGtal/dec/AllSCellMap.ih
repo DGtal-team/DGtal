@@ -1,0 +1,84 @@
+
+#include <DGtal/io/writers/ITKWriter.h>
+#include <DGtal/images/ImageSelector.h>
+#include <DGtal/io/Color.h>
+#include <DGtal/io/boards/Board2D.h>
+#include <DGtal/io/viewers/Viewer3D.h>
+
+template <typename Calculus, typename V>
+AllSCellMap<Calculus, V>::AllSCellMap(const Calculus& _calculus)
+    : calculus(_calculus)
+{
+}
+
+template <typename Calculus, typename V>
+void
+AllSCellMap<Calculus, V>::writeImage(const std::string& filename, const Value& value_outside, const Value& value_inside_default) const
+{
+    typedef typename Calculus::Point Point;
+    typedef typename Calculus::Domain Domain;
+
+    const Point lower_bound = calculus.domain.lowerBound();
+    const Point upper_bound = calculus.domain.upperBound();
+    const Domain domain_image(lower_bound, lower_bound+(upper_bound-lower_bound+Point::diagonal())*2);
+
+    typedef typename DGtal::ImageSelector<Domain, Value, 0>::Type Image;
+    Image image(domain_image);
+
+    typedef typename Domain::ConstIterator DomainConstIterator;
+    for (DomainConstIterator di=domain_image.begin(), die=domain_image.end(); di!=die; di++)
+        if (calculus.cell_size_ratio.find(calculus.kspace.sCell(*di)) == calculus.cell_size_ratio.end()) image.setValue(*di, value_outside);
+        else image.setValue(*di, value_inside_default);
+
+    for (ConstIterator mi=this->begin(), mie=this->end(); mi!=mie; mi++)
+    {
+        const Key& cell = mi->first;
+        const Value& value = mi->second;
+
+        ASSERT(domain_image.isInside(cell.myCoordinates));
+        ASSERT(image(cell.myCoordinates) == value_inside_default);
+
+        image.setValue(cell.myCoordinates, value);
+    }
+
+    DGtal::ITKWriter<Image>::exportITK(filename, image);
+}
+
+template <typename Calculus, typename V>
+template <typename Viewer, typename ColorMap>
+void
+AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color_map) const
+{
+    BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
+
+    typedef typename Calculus::AllSCellSizeRatio::ConstIterator CalculusConstIterator;
+    for (CalculusConstIterator ci=calculus.cell_size_ratio.begin(), cie=calculus.cell_size_ratio.end(); ci!=cie; ci++)
+    {
+        const SCell& cell = ci->first;
+        ConstIterator tci = this->find(cell);
+        if (tci==this->end()) continue;
+        viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
+        viewer << cell;
+    }
+}
+
+template <typename Calculus, typename V>
+template <typename Board, typename ColorMap>
+void
+AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) const
+{
+    BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
+
+    static const DGtal::Color transparent = DGtal::Color::None;
+
+    typedef typename Calculus::AllSCellSizeRatio::ConstIterator CalculusConstIterator;
+    for (CalculusConstIterator ci=calculus.cell_size_ratio.begin(), cie=calculus.cell_size_ratio.end(); ci!=cie; ci++)
+    {
+        const SCell& cell = ci->first;
+        ConstIterator tci = this->find(cell);
+        if (tci==this->end()) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, transparent));
+        else board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
+        board << cell;
+    }
+}
+
