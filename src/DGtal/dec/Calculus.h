@@ -7,7 +7,7 @@
 #include "LinearOperator.h"
 #include "VectorField.h"
 
-#include "SuiteSparseLinearAlgebraBackend.h"
+#include "suitesparse/SuiteSparseLinearAlgebraBackend.h"
 
 #include <boost/array.hpp>
 #include <DGtal/kernel/domains/CDomain.h>
