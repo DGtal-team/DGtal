@@ -48,32 +48,6 @@ namespace DDG
    }
 
    template <>
-   cholmod_dense* DenseMatrix<Quaternion> :: to_cholmod( void )
-   // returns pointer to underlying cholmod_dense data structure
-   {
-      assert( nColumns() == 1 );
-
-      if( cData )
-      {
-         cholmod_l_free_dense( &cData, context );
-         cData = NULL;
-      }
-
-      cData = cholmod_l_allocate_dense( m*4, 1, m*4, CHOLMOD_REAL, context );
-      double* x = (double*) cData->x;
-
-      for( int i = 0; i < m*n; i++ )
-      {
-         for( int k = 0; k < 4; k++ )
-         {
-            x[i*4+k] = data[i][k];
-         }
-      }
-
-      return cData;
-   }
-
-   template <>
    const DenseMatrix<Real>& DenseMatrix<Real> :: operator=( cholmod_dense* B )
    // copies a cholmod_dense* into a DenseMatrix;
    // takes responsibility for deallocating B
@@ -123,38 +97,6 @@ namespace DDG
       {
          data[i] = Complex( x[i*2+0],
                             x[i*2+1] );
-      }
-
-      return *this;
-   }
-
-   template <>
-   const DenseMatrix<Quaternion>& DenseMatrix<Quaternion> :: operator=( cholmod_dense* B )
-   // copies a cholmod_dense* into a DenseMatrix;
-   // takes responsibility for deallocating B
-   {
-      assert( B );
-      assert( B->xtype == CHOLMOD_REAL );
-      assert( B->ncol == 1 );
-      assert( B->nrow%4 == 0 );
-
-      if( cData )
-      {
-         cholmod_l_free_dense( &cData, context );
-      }
-      cData = B;
-
-      m = cData->nrow/4;
-      n = 1;
-      data.resize( m*n );
-
-      double* x = (double*) cData->x;
-      for( int i = 0; i < m; i++ )
-      {
-         data[i] = Quaternion( x[i*4+0],
-                               x[i*4+1],
-                               x[i*4+2],
-                               x[i*4+3] );
       }
 
       return *this;
@@ -260,28 +202,6 @@ namespace DDG
    }
 
    template <>
-   std::ostream& operator<< (std::ostream& os, const DenseMatrix<Quaternion>& o)
-   {
-      const int p = 2;
-      os.precision( p );
-      os << scientific;
-
-      for( int i = 0; i < o.nRows(); i++ )
-      {
-         os << "[";
-         for( int j = 0; j < o.nColumns(); j++ )
-         {
-            Quaternion q = o(i,j);
-
-            os << " " << q;
-         }
-         os << " ]" << endl;
-      }
-
-      return os;
-   }
-
-   template <>
    void DenseMatrix<Real> :: randomize( void )
    // replaces entries with uniformly distributed real random numbers in the interval [-1,1]
    {
@@ -302,17 +222,5 @@ namespace DDG
       }
    }
 
-   template <>
-   void DenseMatrix<Quaternion> :: randomize( void )
-   // replaces entries with uniformly distributed real random numbers in the interval [-1,1]
-   {
-      for( int i = 0; i < m*n; i++ )
-      {
-         for( int k = 0; k < 4; k++ )
-         {
-            data[i][k] = 2.*unitRand() - 1.;
-         }
-      }
-   }
 }
 

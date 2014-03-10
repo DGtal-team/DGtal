@@ -7,7 +7,6 @@ using namespace std;
 
 #include "DenseMatrix.h"
 #include "LinearContext.h"
-#include "Quaternion.h"
 #include "SparseMatrix.h"
 #include "Utility.h"
 

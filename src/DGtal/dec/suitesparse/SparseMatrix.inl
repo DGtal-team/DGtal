@@ -8,12 +8,12 @@ using namespace std;
 #include <SuiteSparseQR.hpp>
 #include <umfpack.h>
 
+#include "Utility.h"
 #include "Real.h"
 #include "Complex.h"
 #include "SparseMatrix.h"
 #include "DenseMatrix.h"
 #include "LinearContext.h"
-#include "Utility.h"
 
 namespace DDG
 {
@@ -421,9 +421,6 @@ namespace DDG
 
       return cData;
    }
-
-   template <>
-   cholmod_sparse* SparseMatrix<Quaternion> :: to_cholmod( void );
 
    template <class T>
    T& SparseMatrix<T> :: operator()( int row, int col )
