@@ -1,0 +1,17 @@
+## Sources associated to the module dec
+##
+
+
+##########################################
+#### suitesparse backend
+##########################################
+
+if( WITH_SUITESPARSE )
+    SET(DGTAL_SRC ${DGTAL_SRC}
+        DGtal/dec/suitesparse/DenseMatrix
+        DGtal/dec/suitesparse/SparseMatrix
+        DGtal/dec/suitesparse/Real
+        )
+endif( WITH_SUITESPARSE )
+
+

@@ -1,12 +1,12 @@
 
-#include "dec/Calculus.h"
-#include "dec/LinearOperator.h"
-#include "dec/KForm.h"
-#include "dec/Duality.h"
-#include "dec/CDualityLinearAlgebra.h"
+#include "DGtal/dec/Calculus.h"
+#include "DGtal/dec/LinearOperator.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/Duality.h"
+#include "DGtal/dec/CDualityLinearAlgebra.h"
 
-#include <DGtal/base/Common.h>
-#include <DGtal/helpers/StdDefs.h>
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
 using namespace DGtal;
 
 template <typename Container>
