@@ -7,10 +7,10 @@ using namespace std;
 #include "DGtal/dec/VectorField.h"
 #include "DGtal/dec/Duality.h"
 
-#include <QApplication>
+//#include <QApplication>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+//#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/readers/GenericReader.h"
@@ -216,6 +216,7 @@ void demo2d()
     trace.endBlock();
 }
 
+/*
 void test2d(const Options& options)
 {
     trace.beginBlock("2d discrete exterior calculus test");
@@ -384,9 +385,11 @@ void test3d(const Options& options, Viewer& viewer)
 
     trace.endBlock();
 }
+*/
 
 int main(int argc, char* argv[])
 {
+    /*
     Options options;
     options.input3d = "../foamutils/debug.vol";
     options.input2d = "../foamutils/debug.png";
@@ -400,9 +403,11 @@ int main(int argc, char* argv[])
     test3d(options, viewer);
 
     test2d(options);
+    */
 
     demo2d();
 
-    return app.exec();
+    return 0;
+    //return app.exec();
 }
 
