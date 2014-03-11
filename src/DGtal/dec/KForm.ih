@@ -9,15 +9,14 @@ template <typename Calculus, Order order, Duality duality>
 KForm<Calculus, order, duality>::KForm(const Calculus& _calculus, const Container& _container)
     : calculus(_calculus), container(_container)
 {
-    ASSERT( calculus.kFormLength(order, duality) == container.size() );
+    ASSERT( calculus.kFormLength(order, duality) == size() );
 }
 
 template <typename Calculus, Order order, Duality duality>
 typename KForm<Calculus, order, duality>::Index
 KForm<Calculus, order, duality>::size() const
 {
-    ASSERT( calculus.kFormLength(order, duality) == container.size() );
-    return container.size();
+    return container.rows();
 }
 
 template <typename Calculus, Order order, Duality duality>
@@ -29,7 +28,7 @@ KForm<Calculus, order, duality>::applyToSCellMap(SCellMap& scell_map) const
     if (duality == DUAL)
         primal_order = Calculus::dimension-order;
 
-    for (int index=0; index<container.size(); index++)
+    for (int index=0; index<size(); index++)
         scell_map[calculus.index_cells[primal_order][index]] = container(index);
 }
 
@@ -47,7 +46,7 @@ template <typename Calculus, Order order, Duality duality>
 std::ostream&
 operator<<(std::ostream& os, const KForm<Calculus, order, duality>& form)
 {
-    return os << duality << " " << order << "-form (" << form.container.size() << ")";
+    return os << duality << " " << order << "-form (" << form.size() << ")";
 }
 
 template <typename Calculus, Order order, Duality duality>
