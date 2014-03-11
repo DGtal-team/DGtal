@@ -23,8 +23,8 @@ struct KForm
     KForm(const Calculus& _calculus);
     KForm(const Calculus& _calculus, const Container& _container);
 
-    int
-    length() const;
+		Index
+    size() const;
 
     template <typename SCellMap>
     void applyToSCellMap(SCellMap& scell_map) const;

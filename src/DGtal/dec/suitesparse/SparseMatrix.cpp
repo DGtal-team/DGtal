@@ -117,7 +117,7 @@ namespace DDG
 
       cout << "[qr] time: " << seconds( t0, t1 ) << "s" << "\n";
       cout << "[qr] max residual: " << residual( A, x, b ) << "\n";
-      cout << "[qr] size: " << A.nRows() << " x " << A.nColumns() << "\n";
+      cout << "[qr] size: " << A.rows() << " x " << A.cols() << "\n";
       cout << "[qr] rank: " << (*context).SPQR_istat[4] << "\n";
    }
 
@@ -133,7 +133,7 @@ namespace DDG
 
       cout << "[qr] time: " << seconds( t0, t1 ) << "s" << "\n";
       cout << "[qr] max residual: " << residual( A, x, b ) << "\n";
-      cout << "[qr] size: " << A.nRows() << " x " << A.nColumns() << " (complex)" << "\n";
+      cout << "[qr] size: " << A.rows() << " x " << A.cols() << " (complex)" << "\n";
       cout << "[qr] rank: " << (*context).SPQR_istat[4] << "\n";
    }
 

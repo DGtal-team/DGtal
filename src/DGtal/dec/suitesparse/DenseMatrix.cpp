@@ -109,10 +109,10 @@ namespace DDG
       os.precision( p );
       os << scientific;
 
-      for( int i = 0; i < o.nRows(); i++ )
+      for( int i = 0; i < o.rows(); i++ )
       {
          os << "[ ";
-         for( int j = 0; j < o.nColumns(); j++ )
+         for( int j = 0; j < o.cols(); j++ )
          {
             double x = o(i,j);
 
@@ -146,10 +146,10 @@ namespace DDG
       os.precision( p );
       os << scientific;
 
-      for( int i = 0; i < o.nRows(); i++ )
+      for( int i = 0; i < o.rows(); i++ )
       {
          os << "[ ";
-         for( int j = 0; j < o.nColumns(); j++ )
+         for( int j = 0; j < o.cols(); j++ )
          {
             Complex z = o(i,j);
 

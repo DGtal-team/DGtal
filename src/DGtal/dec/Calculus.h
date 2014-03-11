@@ -8,6 +8,7 @@
 #include "VectorField.h"
 
 #include "suitesparse/SuiteSparseLinearAlgebraBackend.h"
+#include "eigen/EigenLinearAlgebraBackend.h"
 
 #include <boost/array.hpp>
 #include <DGtal/kernel/domains/CDomain.h>
@@ -27,7 +28,8 @@ struct DiscreteExteriorCalculus
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
-    typedef SuiteSparseLinearAlgebraBackend LinearAlgebraBackend;
+    //typedef SuiteSparseLinearAlgebraBackend LinearAlgebraBackend;
+    typedef EigenLinearAlgebraBackend LinearAlgebraBackend;
     typedef LinearAlgebraBackend::Index Index;
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
 
