@@ -43,8 +43,8 @@ namespace DDG
       lTwo
    };
 
-	 template <class T>
-	 struct SparseMatrix;
+   template <class T>
+   struct SparseMatrix;
 
    template <class T>
    class DenseMatrix
@@ -55,6 +55,8 @@ namespace DDG
 
          DenseMatrix( int m = 0, int n = 1 );
          // initialize an mxn matrix (specifying just m yields a column vector)
+
+         static DenseMatrix Zero( int m = 0, int n = 1);
 
          DenseMatrix( const DenseMatrix<T>& A );
          // copy constructor

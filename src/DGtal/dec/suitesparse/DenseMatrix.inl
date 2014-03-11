@@ -26,6 +26,12 @@ namespace DDG
    }
 
    template <class T>
+   DenseMatrix<T> DenseMatrix<T>::Zero( int m, int n)
+   {
+       return DenseMatrix(m, n);
+   }
+
+   template <class T>
    DenseMatrix<T> :: DenseMatrix( const DenseMatrix<T>& A )
    // copy constructor
    : cData( NULL )

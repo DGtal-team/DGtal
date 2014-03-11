@@ -41,21 +41,23 @@
 
 namespace DDG
 {
-	 template <class T>
-	 struct DenseMatrix;
+   template <class T>
+   struct DenseMatrix;
 
    template<class T>
    class SparseMatrix
    {
       public:
          typedef T Scalar;
-				 typedef int Index;
+         typedef int Index;
 
          SparseMatrix( int m = 0, int n = 1 );
          // initialize an mxn matrix
 
          SparseMatrix( const SparseMatrix<T>& B );
          // copy constructor
+
+         static SparseMatrix Zero( int m = 0, int n = 1 );
 
          ~SparseMatrix( void );
          // destructor
