@@ -50,7 +50,8 @@ namespace DDG
    class DenseMatrix
    {
       public:
-         typedef T Value;
+         typedef T Scalar;
+         typedef int Index;
 
          DenseMatrix( int m = 0, int n = 1 );
          // initialize an mxn matrix (specifying just m yields a column vector)

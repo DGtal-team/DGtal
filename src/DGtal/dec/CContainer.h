@@ -12,6 +12,7 @@ struct CContainer : boost::Assignable<T>
 {
 		public:
 				typedef typename T::Scalar Scalar;
+				typedef typename T::Index Index;
 
 				BOOST_CONCEPT_USAGE(CContainer)
 				{
