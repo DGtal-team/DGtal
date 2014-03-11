@@ -4,12 +4,21 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 
-struct EigenLinearAlgebraBackend
+struct EigenDenseLinearAlgebraBackend
 {
-    typedef size_t Index;
-    typedef double Scalar;
+    typedef Eigen::VectorXd::Index Index;
+    typedef Eigen::VectorXd::Scalar Scalar;
     typedef Eigen::VectorXd KFormContainer;
     typedef Eigen::MatrixXd LinearOperatorContainer;
+    typedef Eigen::VectorXd VectorFieldCoordinate;
+};
+
+struct EigenSparseLinearAlgebraBackend
+{
+    typedef Eigen::VectorXd::Index Index;
+    typedef Eigen::VectorXd::Scalar Scalar;
+    typedef Eigen::VectorXd KFormContainer;
+    typedef Eigen::SparseMatrix<Scalar> LinearOperatorContainer;
     typedef Eigen::VectorXd VectorFieldCoordinate;
 };
 
