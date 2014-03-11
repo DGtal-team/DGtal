@@ -11,7 +11,7 @@ template <typename T>
 struct CContainer : boost::Assignable<T>
 {
 		public:
-				typedef typename T::Value Value;
+				typedef typename T::Scalar Scalar;
 
 				BOOST_CONCEPT_USAGE(CContainer)
 				{
@@ -21,7 +21,7 @@ struct CContainer : boost::Assignable<T>
 		private:
 				const T x,y;
 				T z;
-				Value a;
+				Scalar a;
 };
 
 

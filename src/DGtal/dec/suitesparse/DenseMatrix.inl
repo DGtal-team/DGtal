@@ -76,13 +76,13 @@ namespace DDG
       const DenseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nColumns() == B.nRows() );
+      assert( A.cols() == B.rows() );
 
-      DenseMatrix<T> AB( A.nRows(), B.nColumns() );
+      DenseMatrix<T> AB( A.rows(), B.cols() );
 
-      for( int i = 0; i < A.nRows(); i++ )
-      for( int j = 0; j < B.nColumns(); j++ )
-      for( int k = 0; k < A.nColumns(); k++ )
+      for( int i = 0; i < A.rows(); i++ )
+      for( int j = 0; j < B.cols(); j++ )
+      for( int k = 0; k < A.cols(); k++ )
       {
          AB( i, j ) += A( i, k ) * B( k, j );
       }
@@ -121,13 +121,13 @@ namespace DDG
       const DenseMatrix& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nRows() == B.nRows() );
-      assert( A.nColumns() == B.nColumns() );
+      assert( A.rows() == B.rows() );
+      assert( A.cols() == B.cols() );
 
-      DenseMatrix<T> C( nRows(), nColumns() );
+      DenseMatrix<T> C( rows(), cols() );
 
-      for( int i = 0; i < nRows(); i++ )
-      for( int j = 0; j < nColumns(); j++ )
+      for( int i = 0; i < rows(); i++ )
+      for( int j = 0; j < cols(); j++ )
       {
          C(i,j) = A(i,j) + B(i,j);
       }
@@ -141,11 +141,11 @@ namespace DDG
       DenseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nRows() == B.nRows() );
-      assert( A.nColumns() == B.nColumns() );
+      assert( A.rows() == B.rows() );
+      assert( A.cols() == B.cols() );
 
-      for( int i = 0; i < nRows(); i++ )
-      for( int j = 0; j < nColumns(); j++ )
+      for( int i = 0; i < rows(); i++ )
+      for( int j = 0; j < cols(); j++ )
       {
          A(i,j) += B(i,j);
       }
@@ -158,13 +158,13 @@ namespace DDG
       const DenseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nRows() == B.nRows() );
-      assert( A.nColumns() == B.nColumns() );
+      assert( A.rows() == B.rows() );
+      assert( A.cols() == B.cols() );
 
-      DenseMatrix C( nRows(), nColumns() );
+      DenseMatrix C( rows(), cols() );
 
-      for( int i = 0; i < nRows(); i++ )
-      for( int j = 0; j < nColumns(); j++ )
+      for( int i = 0; i < rows(); i++ )
+      for( int j = 0; j < cols(); j++ )
       {
          C(i,j) = A(i,j) - B(i,j);
       }
@@ -178,11 +178,11 @@ namespace DDG
       DenseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nRows() == B.nRows() );
-      assert( A.nColumns() == B.nColumns() );
+      assert( A.rows() == B.rows() );
+      assert( A.cols() == B.cols() );
 
-      for( int i = 0; i < nRows(); i++ )
-      for( int j = 0; j < nColumns(); j++ )
+      for( int i = 0; i < rows(); i++ )
+      for( int j = 0; j < cols(); j++ )
       {
          A(i,j) -= B(i,j);
       }
@@ -232,14 +232,14 @@ namespace DDG
    }
 
    template <class T>
-   int DenseMatrix<T> :: nRows( void ) const
+   int DenseMatrix<T> :: rows( void ) const
    // returns the number of rows
    {
       return m;
    }
 
    template <class T>
-   int DenseMatrix<T> :: nColumns( void ) const
+   int DenseMatrix<T> :: cols( void ) const
    // returns the number of columns
    {
       return n;
@@ -387,10 +387,10 @@ namespace DDG
    {
       T sum = 0.;
 
-      assert( x.nRows()    == y.nRows() &&
-              x.nColumns() == y.nColumns() );
+      assert( x.rows()    == y.rows() &&
+              x.cols() == y.cols() );
 
-      for( int i = 0; i < x.nRows()*x.nColumns(); i++ )
+      for( int i = 0; i < x.rows()*x.cols(); i++ )
       {
          sum += x(i).conj() * y(i);
       }
@@ -407,13 +407,13 @@ namespace DDG
    {
       T sum = 0.;
 
-      assert( x.nRows() == y.nRows() &&
-              x.nRows() == B.nRows() &&
-              x.nColumns() == 1 &&
-              B.nColumns() == 1 &&
-              y.nColumns() == 1 );
+      assert( x.rows() == y.rows() &&
+              x.rows() == B.rows() &&
+              x.cols() == 1 &&
+              B.cols() == 1 &&
+              y.cols() == 1 );
 
-      for( int i = 0; i < x.nRows()*x.nColumns(); i++ )
+      for( int i = 0; i < x.rows()*x.cols(); i++ )
       {
          sum += x(i).conj() * B(i) * y(i);
       }

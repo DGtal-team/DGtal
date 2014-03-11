@@ -101,11 +101,11 @@ DiscreteExteriorCalculus<D>::derivative() const
 
     typedef LinearOperator<DiscreteExteriorCalculus<D>, order, duality, order+1, duality> Derivative;
     Derivative derivative(*this);
-    ASSERT( derivative.container.nRows() == kFormLength(order+1, duality) );
-    ASSERT( derivative.container.nColumns() == kFormLength(order, duality) );
+    ASSERT( derivative.container.rows() == kFormLength(order+1, duality) );
+    ASSERT( derivative.container.cols() == kFormLength(order, duality) );
 
     // iterate over output form values
-    for (Index index_output=0; index_output<derivative.container.nRows(); index_output++)
+    for (Index index_output=0; index_output<derivative.container.rows(); index_output++)
     {
         const SCell& cell = index_cells[actualOrder(order+1, duality)][index_output];
         ASSERT( kspace.sSign(cell) == KSpace::POS );
@@ -131,7 +131,7 @@ DiscreteExteriorCalculus<D>::derivative() const
                 continue;
 
             const Index index_input = cell_index_iter->second;
-            ASSERT( index_input < derivative.container.nColumns() );
+            ASSERT( index_input < derivative.container.cols() );
 
             // fill container with cell sign
             derivative.container(index_output, index_input) = sign * derivativeSign(cell_border, duality);
@@ -151,11 +151,11 @@ DiscreteExteriorCalculus<D>::primalHodge() const
 
     typedef LinearOperator<DiscreteExteriorCalculus<D>, order, PRIMAL, dimension-order, DUAL> PrimalHodge;
     PrimalHodge primal_hodge(*this);
-    ASSERT( primal_hodge.container.nRows() == primal_hodge.container.nColumns() );
-    ASSERT( primal_hodge.container.nRows() == kFormLength(order, PRIMAL) );
+    ASSERT( primal_hodge.container.rows() == primal_hodge.container.cols() );
+    ASSERT( primal_hodge.container.rows() == kFormLength(order, PRIMAL) );
 
     // iterate over output form values
-    for (Index index=0; index<primal_hodge.container.nRows(); index++)
+    for (Index index=0; index<primal_hodge.container.rows(); index++)
     {
         const SCell& cell = index_cells[order][index];
         const typename AllSCellSizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
@@ -177,11 +177,11 @@ DiscreteExteriorCalculus<D>::dualHodge() const
 
     typedef LinearOperator<DiscreteExteriorCalculus<D>, order, DUAL, DiscreteExteriorCalculus<D>::dimension-order, PRIMAL> DualHodge;
     DualHodge dual_hodge(*this);
-    ASSERT( dual_hodge.container.nRows() == dual_hodge.container.nColumns() );
-    ASSERT( dual_hodge.container.nRows() == kFormLength(order, DUAL) );
+    ASSERT( dual_hodge.container.rows() == dual_hodge.container.cols() );
+    ASSERT( dual_hodge.container.rows() == kFormLength(order, DUAL) );
 
     // iterate over output form values
-    for (Index index=0; index<dual_hodge.container.nRows(); index++)
+    for (Index index=0; index<dual_hodge.container.rows(); index++)
     {
         const SCell& cell = index_cells[dimension-order][index];
         const typename AllSCellSizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);

@@ -13,10 +13,10 @@ template <typename Container>
 bool
 all_zero(const Container& container)
 {
-    typedef typename Container::const_iterator ConstIterator;
-    for (ConstIterator i=container.begin(), ie = container.end(); i!=ie; i++)
-        if (i->second!=0)
-            return false;
+    for (typename Container::Index ii=0; ii<container.rows(); ii++)
+        for (typename Container::Index jj=0; jj<container.cols(); jj++)
+            if (container(ii,jj) != 0)
+                return false;
     return true;
 }
 
@@ -37,7 +37,8 @@ struct HodgeTester
         { // test primal to primal composition
             typedef LinearOperator<Calculus, order, PRIMAL, order, PRIMAL> PrimalPrimal;
             PrimalPrimal primal_primal = dual_hodge * primal_hodge;
-            primal_primal.container.shift(-pow(-1, order*(Calculus::dimension-order)));
+            trace.info() << primal_primal.container << endl;
+            primal_primal.container -= pow(-1, order*(Calculus::dimension-order)) * PrimalPrimal::Container::Identity(primal_primal.container.rows(), primal_primal.container.cols());
             if (!all_zero(primal_primal.container)) return false;
         }
 
@@ -46,7 +47,7 @@ struct HodgeTester
         { // test dual to dual composition
             typedef LinearOperator<Calculus, Calculus::dimension-order, DUAL, Calculus::dimension-order, DUAL> DualDual;
             DualDual dual_dual = primal_hodge * dual_hodge;
-            dual_dual.container.shift(-pow(-1, order*(Calculus::dimension-order)));
+            dual_dual.container -= pow(-1, order*(Calculus::dimension-order)) * DualDual::Container::Identity(dual_dual.container.rows(), dual_dual.container.cols());
             if (!all_zero(dual_dual.container)) return false;
         }
 

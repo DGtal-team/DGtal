@@ -67,10 +67,10 @@ namespace DDG
          SparseMatrix<T> sparse( void );
          // converts to a sparse matrix
 
-         int nRows( void ) const;
+         int rows( void ) const;
          // returns the number of rows
 
-         int nColumns( void ) const;
+         int cols( void ) const;
          // returns the number of columns
 
          int length( void ) const;

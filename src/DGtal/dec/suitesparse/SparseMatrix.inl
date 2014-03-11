@@ -91,11 +91,11 @@ namespace DDG
       const SparseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nColumns() == B.nRows() );
+      assert( A.cols() == B.rows() );
 
       // collect nonzeros in each row
-      vector< vector< int > > Bcol( B.nRows() );
-      vector< vector<  T  > > Bval( B.nRows() );
+      vector< vector< int > > Bcol( B.rows() );
+      vector< vector<  T  > > Bval( B.rows() );
       for( const_iterator e  = B.begin();
                           e != B.end();
                           e ++ )
@@ -109,7 +109,7 @@ namespace DDG
       }
 
       // multiply C = A*B
-      SparseMatrix<T> C( A.nRows(), B.nColumns() );
+      SparseMatrix<T> C( A.rows(), B.cols() );
       for( const_iterator e  = begin();
                           e != end();
                           e ++ )
@@ -135,10 +135,10 @@ namespace DDG
       const SparseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nColumns() == B.nRows() );
+      assert( A.cols() == B.rows() );
 
       // multiply C = A*B
-      DenseMatrix<T> C( A.nRows(), B.nColumns() );
+      DenseMatrix<T> C( A.rows(), B.cols() );
       for( const_iterator e  = begin();
                           e != end();
                           e ++ )
@@ -146,7 +146,7 @@ namespace DDG
          int i = e->first.second;
          int j = e->first.first;
 
-         for( int k = 0; k < B.nColumns(); k++ )
+         for( int k = 0; k < B.cols(); k++ )
          {
             C( i, k ) += e->second * B( j, k );
          }
@@ -184,8 +184,8 @@ namespace DDG
       SparseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nRows() == B.nRows() );
-      assert( A.nColumns() == B.nColumns() );
+      assert( A.rows() == B.rows() );
+      assert( A.cols() == B.cols() );
 
       for( const_iterator e  = B.begin();
                           e != B.end();
@@ -206,8 +206,8 @@ namespace DDG
       SparseMatrix<T>& A( *this );
 
       // make sure matrix dimensions agree
-      assert( A.nRows() == B.nRows() );
-      assert( A.nColumns() == B.nColumns() );
+      assert( A.rows() == B.rows() );
+      assert( A.cols() == B.cols() );
 
       for( const_iterator e  = B.begin();
                           e != B.end();
@@ -225,7 +225,7 @@ namespace DDG
    SparseMatrix<T> SparseMatrix<T> :: operator+( const SparseMatrix<T>& B ) const
    // returns sum of this matrix with B
    {
-      SparseMatrix<T> C( nRows(), nColumns() );
+      SparseMatrix<T> C( rows(), cols() );
 
       C += *this;
       C += B;
@@ -237,7 +237,7 @@ namespace DDG
    SparseMatrix<T> SparseMatrix<T> :: operator-( const SparseMatrix<T>& B ) const
    // returns sum of this matrix with B
    {
-      SparseMatrix<T> C( nRows(), nColumns() );
+      SparseMatrix<T> C( rows(), cols() );
 
       C += *this;
       C -= B;
@@ -290,14 +290,14 @@ namespace DDG
    }
 
    template <class T>
-   int SparseMatrix<T> :: nRows( void ) const
+   int SparseMatrix<T> :: rows( void ) const
    // returns the number of rows
    {
       return m;
    }
 
    template <class T>
-   int SparseMatrix<T> :: nColumns( void ) const
+   int SparseMatrix<T> :: cols( void ) const
    // returns the number of columns
    {
       return n;

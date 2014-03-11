@@ -99,10 +99,10 @@ namespace DDG
          SparseMatrix<T> operator-( const SparseMatrix<T>& B ) const;
          // returns difference of this matrix with B
 
-         int nRows( void ) const;
+         int rows( void ) const;
          // returns the number of rows
 
-         int nColumns( void ) const;
+         int cols( void ) const;
          // returns the number of columns
 
          int length( void ) const;

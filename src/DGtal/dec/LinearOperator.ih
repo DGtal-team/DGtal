@@ -10,7 +10,7 @@ LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOp
     : calculus(_calculus), container(_container)
 {
     ASSERT( calculus.kFormLength(order_out, duality_out) == container.nRows() );
-    ASSERT( calculus.kFormLength(order_in, duality_in) == container.nColumns() );
+    ASSERT( calculus.kFormLength(order_in, duality_in) == container.cols() );
 }
 
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
@@ -54,7 +54,7 @@ operator<<(std::ostream& os, const LinearOperator<Calculus, order_in, duality_in
 {
     os << duality_in << " " << order_in << "-form => " << duality_out << " " << order_out << "-form";
     os << " ";
-    os << "(" << linear_operator.container.nColumns() << " => " << linear_operator.container.nRows() << ")";
+    os << "(" << linear_operator.container.cols() << " => " << linear_operator.container.nRows() << ")";
     return os;
 }
 
