@@ -16,6 +16,7 @@ struct CContainer : boost::Assignable<T>
 
 				BOOST_CONCEPT_USAGE(CContainer)
 				{
+						z = T::Zero(index, index);
 						z = x + y;
 						z = a * x;
 				}
@@ -23,6 +24,7 @@ struct CContainer : boost::Assignable<T>
 				const T x,y;
 				T z;
 				Scalar a;
+				Index index;
 };
 
 

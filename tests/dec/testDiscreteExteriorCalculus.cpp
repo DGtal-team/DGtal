@@ -48,7 +48,6 @@ struct HodgeTester
         { // test primal to primal composition
             typedef LinearOperator<Calculus, order, PRIMAL, order, PRIMAL> PrimalPrimal;
             PrimalPrimal primal_primal = dual_hodge * primal_hodge;
-            trace.info() << dual_hodge.container << endl << primal_hodge.container << endl;
             if (!is_identity(primal_primal.container, pow(-1, order*(Calculus::dimension-order)))) return false;
         }
 

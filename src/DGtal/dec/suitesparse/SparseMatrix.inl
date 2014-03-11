@@ -31,6 +31,12 @@ namespace DDG
    {}
 
    template <class T>
+   SparseMatrix<T> SparseMatrix<T>::Zero( int m , int n )
+   {
+       return SparseMatrix(m, n);
+   }
+
+   template <class T>
    SparseMatrix<T> :: SparseMatrix( const SparseMatrix<T>& B )
    // copy constructor
    : cData( NULL )
