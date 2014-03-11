@@ -55,7 +55,7 @@ void demo2d()
     }
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<Z2i::Domain> Calculus;
+    typedef DiscreteExteriorCalculus<Z2i::Domain, SuiteSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(set);
     trace.info() << calculus;
 
@@ -240,7 +240,7 @@ void test2d(const Options& options)
     }
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, SuiteSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(set);
 
     calculus.cell_size_ratio.writeImage("size2d.mha");
@@ -331,7 +331,7 @@ void test3d(const Options& options, Viewer& viewer)
     }
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, SuiteSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(set);
 
     calculus.cell_size_ratio.writeImage("size3d.mha");
