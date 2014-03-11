@@ -74,7 +74,7 @@ struct HodgeTester<Calculus, -1>
     }
 };
 
-template <typename DigitalSet>
+template <typename DigitalSet, typename LinearAlgebra>
 void
 test_hodge(int domain_size=5)
 {
@@ -97,7 +97,7 @@ test_hodge(int domain_size=5)
     trace.info() << "domain.size()=" << domain.size() << endl;
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, LinearAlgebra> Calculus;
     Calculus calculus(set);
 
     bool test_result = HodgeTester<Calculus, Calculus::dimension>::test(calculus);
@@ -174,7 +174,7 @@ struct DerivativeTester<Calculus, -1>
     }
 };
 
-template <typename DigitalSet>
+template <typename DigitalSet, typename LinearAlgebra>
 void
 test_derivative(int domain_size=10)
 {
@@ -197,7 +197,7 @@ test_derivative(int domain_size=10)
     trace.info() << "domain.size()=" << domain.size() << endl;
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, LinearAlgebra> Calculus;
     Calculus calculus(set);
 
     bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
@@ -206,76 +206,78 @@ test_derivative(int domain_size=10)
     FATAL_ERROR(test_result);
 }
 
+template <typename LinearAlgebra>
 void
 test_concepts()
 {
     trace.beginBlock("concepts");
 
     { // 2d
-        typedef DiscreteExteriorCalculus<Z2i::Domain> Calculus;
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalForm2> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualForm2> ));
+        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebra> Calculus;
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalForm0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalForm1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalForm2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualForm0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualForm1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualForm2> ));
 
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualDerivative1> ));
 
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalHodge2> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualHodge2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalHodge0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalHodge1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalHodge2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualHodge0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualHodge1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualHodge2> ));
     }
 
     { // 3d
-        typedef DiscreteExteriorCalculus<Z3i::Domain> Calculus;
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalForm2> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalForm3> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualForm2> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualForm3> ));
+        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebra> Calculus;
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalForm0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalForm1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalForm2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalForm3> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualForm0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualForm1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualForm2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualForm3> ));
 
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalDerivative2> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualDerivative2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalDerivative2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualDerivative2> ));
 
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalHodge2> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::PrimalHodge3> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualHodge2> ));
-        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<Calculus::DualHodge3> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalHodge0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalHodge1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalHodge2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::PrimalHodge3> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualHodge0> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualHodge1> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualHodge2> ));
+        BOOST_CONCEPT_ASSERT(( CDualityLinearAlgebra<typename Calculus::DualHodge3> ));
     }
 
     trace.endBlock();
 }
 
+template <typename LinearAlgebra>
 void
 test_hodge_sign()
 {
     trace.beginBlock("testing hodge sign");
 
     {
-        typedef DiscreteExteriorCalculus<Z2i::Domain> Calculus;
+        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebra> Calculus;
         const Z2i::Domain domain;
         const Z2i::DigitalSet set(domain);
         const Calculus calculus(set);
         typedef Z2i::Point Point;
-        typedef Calculus::KSpace KSpace;
+        typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
         FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0), KSpace::POS), PRIMAL ) == 1 );
         FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0), KSpace::NEG), PRIMAL ) == -1 );
@@ -299,12 +301,12 @@ test_hodge_sign()
     }
 
     {
-        typedef DiscreteExteriorCalculus<Z3i::Domain> Calculus;
+        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebra> Calculus;
         const Z3i::Domain domain;
         const Z3i::DigitalSet set(domain);
         const Calculus calculus(set);
         typedef Z3i::Point Point;
-        typedef Calculus::KSpace KSpace;
+        typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
         FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,0), KSpace::POS), PRIMAL ) == 1 );
         FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,0), KSpace::NEG), PRIMAL ) == -1 );
@@ -346,12 +348,12 @@ test_hodge_sign()
     trace.endBlock();
 }
 
-int
-main(int argc, char* argv[])
+template <typename LinearAlgebra>
+void
+test_backend()
 {
-    test_hodge_sign();
+    test_hodge_sign<LinearAlgebra>();
 
-    srandom(0);
     for (int kk=0; kk<2; kk++)
     {
         typedef SpaceND<4, int> Space4;
@@ -362,18 +364,32 @@ main(int argc, char* argv[])
         typedef HyperRectDomain<Space5> Domain5;
         typedef DigitalSetBySTLSet<Domain5> DigitalSet5;
 
-        test_hodge<Z2i::DigitalSet>();
-        test_hodge<Z3i::DigitalSet>();
-        test_hodge<DigitalSet4>(5);
-        test_hodge<DigitalSet5>(3);
+        test_hodge<Z2i::DigitalSet, LinearAlgebra>();
+        test_hodge<Z3i::DigitalSet, LinearAlgebra>();
+        test_hodge<DigitalSet4, LinearAlgebra>(5);
+        test_hodge<DigitalSet5, LinearAlgebra>(3);
 
-        test_derivative<Z2i::DigitalSet>();
-        test_derivative<Z3i::DigitalSet>();
-        test_derivative<DigitalSet4>(5);
-        test_derivative<DigitalSet5>(3);
+        test_derivative<Z2i::DigitalSet, LinearAlgebra>();
+        test_derivative<Z3i::DigitalSet, LinearAlgebra>();
+        test_derivative<DigitalSet4, LinearAlgebra>(5);
+        test_derivative<DigitalSet5, LinearAlgebra>(3);
     }
 
-    test_concepts();
+    test_concepts<LinearAlgebra>();
+}
+
+int
+main(int argc, char* argv[])
+{
+    srandom(0);
+
+    trace.beginBlock("testing suitesparse backend");
+    test_backend<SuiteSparseLinearAlgebraBackend>();
+    trace.endBlock();
+
+    trace.beginBlock("testing eigen backend");
+    test_backend<EigenLinearAlgebraBackend>();
+    trace.endBlock();
 
     return 0;
 }

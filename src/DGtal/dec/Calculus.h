@@ -14,11 +14,12 @@
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/topology/KhalimskySpaceND.h>
 
-template <typename D>
+template <typename D, typename LAB>
 struct DiscreteExteriorCalculus
 {
     // template typedef
     typedef D Domain;
+    typedef LAB LinearAlgebraBackend;
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
     typedef typename Domain::Space::Dimension Dimension;
     static const Dimension dimension = Domain::Space::dimension;
@@ -28,9 +29,7 @@ struct DiscreteExteriorCalculus
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
-    //typedef SuiteSparseLinearAlgebraBackend LinearAlgebraBackend;
-    typedef EigenLinearAlgebraBackend LinearAlgebraBackend;
-    typedef LinearAlgebraBackend::Index Index;
+    typedef typename LinearAlgebraBackend::Index Index;
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
 
     // general members
@@ -148,9 +147,9 @@ struct DiscreteExteriorCalculus
 // equality operator
 
 // print discrete exterior calculus to ouput stream
-template <typename D>
+template <typename D, typename LAB>
 std::ostream&
-operator<<(std::ostream& os, const DiscreteExteriorCalculus<D>& calculus);
+operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus);
 
 #include "Calculus.ih"
 

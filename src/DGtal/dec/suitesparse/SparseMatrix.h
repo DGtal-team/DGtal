@@ -48,7 +48,8 @@ namespace DDG
    class SparseMatrix
    {
       public:
-         typedef T Value;
+         typedef T Scalar;
+				 typedef int Index;
 
          SparseMatrix( int m = 0, int n = 1 );
          // initialize an mxn matrix
