@@ -11,11 +11,22 @@ using namespace DGtal;
 
 template <typename Container>
 bool
-all_zero(const Container& container)
+is_all_zero(const Container& container)
 {
     for (typename Container::Index ii=0; ii<container.rows(); ii++)
         for (typename Container::Index jj=0; jj<container.cols(); jj++)
             if (container(ii,jj) != 0)
+                return false;
+    return true;
+}
+
+template <typename Container, typename Value>
+bool
+is_identity(const Container& container, const Value& value)
+{
+    for (typename Container::Index ii=0; ii<container.rows(); ii++)
+        for (typename Container::Index jj=0; jj<container.cols(); jj++)
+            if ((ii != jj && container(ii,jj) != 0) || (ii == jj && container(ii,jj) != value))
                 return false;
     return true;
 }
@@ -37,9 +48,8 @@ struct HodgeTester
         { // test primal to primal composition
             typedef LinearOperator<Calculus, order, PRIMAL, order, PRIMAL> PrimalPrimal;
             PrimalPrimal primal_primal = dual_hodge * primal_hodge;
-            trace.info() << primal_primal.container << endl;
-            primal_primal.container -= pow(-1, order*(Calculus::dimension-order)) * PrimalPrimal::Container::Identity(primal_primal.container.rows(), primal_primal.container.cols());
-            if (!all_zero(primal_primal.container)) return false;
+            trace.info() << dual_hodge.container << endl << primal_hodge.container << endl;
+            if (!is_identity(primal_primal.container, pow(-1, order*(Calculus::dimension-order)))) return false;
         }
 
         trace.info() << "testing dual to dual hodge composition order " << order << endl;
@@ -47,8 +57,7 @@ struct HodgeTester
         { // test dual to dual composition
             typedef LinearOperator<Calculus, Calculus::dimension-order, DUAL, Calculus::dimension-order, DUAL> DualDual;
             DualDual dual_dual = primal_hodge * dual_hodge;
-            dual_dual.container -= pow(-1, order*(Calculus::dimension-order)) * DualDual::Container::Identity(dual_dual.container.rows(), dual_dual.container.cols());
-            if (!all_zero(dual_dual.container)) return false;
+            if (!is_identity(dual_dual.container, pow(-1, order*(Calculus::dimension-order)))) return false;
         }
 
         return HodgeTester<Calculus, order-1>::test(calculus);
@@ -67,7 +76,7 @@ struct HodgeTester<Calculus, -1>
 
 template <typename DigitalSet>
 void
-test_hodge(int domain_size=10)
+test_hodge(int domain_size=5)
 {
     BOOST_CONCEPT_ASSERT(( CDigitalSet<DigitalSet> ));
     trace.beginBlock("testing hodge");
@@ -113,7 +122,7 @@ struct DerivativeTester
             SecondDerivative second_derivative = calculus.template derivative<order+1, PRIMAL>();
             typedef LinearOperator<Calculus, order, PRIMAL, order+2, PRIMAL> DoubleDerivative;
             DoubleDerivative double_derivative = second_derivative * first_derivative;
-            if (!all_zero(double_derivative.container)) return false;
+            if (!is_all_zero(double_derivative.container)) return false;
         }
 
         trace.info() << "testing dual derivative composition order " << order << endl;
@@ -125,7 +134,7 @@ struct DerivativeTester
             SecondDerivative second_derivative = calculus.template derivative<order+1, DUAL>();
             typedef LinearOperator<Calculus, order, DUAL, order+2, DUAL> DoubleDerivative;
             DoubleDerivative double_derivative = second_derivative * first_derivative;
-            if (!all_zero(double_derivative.container)) return false;
+            if (!is_all_zero(double_derivative.container)) return false;
         }
 
         /*
