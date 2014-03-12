@@ -15,7 +15,7 @@ struct CDualityLinearAlgebra //: boost::CopyConstructible<T>
         typedef typename T::Calculus Calculus;
         typedef typename Calculus::Scalar Scalar;
 
-        BOOST_CONCEPT_ASSERT(( CContainer<Container> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::CContainer<Container> ));
 
         BOOST_CONCEPT_USAGE(CDualityLinearAlgebra)
         {
