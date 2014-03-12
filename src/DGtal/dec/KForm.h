@@ -9,7 +9,7 @@ template <typename C, Order order, Duality duality>
 struct KForm
 {
     typedef C Calculus;
-    typedef typename Calculus::LinearAlgebraBackend::KFormContainer Container;
+    typedef typename Calculus::LinearAlgebra::Vector Container;
 
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
@@ -45,7 +45,7 @@ operator+(const KForm<Calculus, order, duality>& form_a, const KForm<Calculus, o
 // k-forms scalar multiplication
 template <typename Calculus, Order order, Duality duality>
 KForm<Calculus, order, duality>
-operator*(const typename Calculus::LinearAlgebraBackend::Scalar& scalar, const KForm<Calculus, order, duality>& form);
+operator*(const typename Calculus::Scalar& scalar, const KForm<Calculus, order, duality>& form);
 
 #include "KForm.ih"
 

@@ -10,7 +10,7 @@ template <typename Calculus, Duality duality>
 struct VectorField
 {
     typedef typename Calculus::Dimension Dimension;
-    typedef typename Calculus::LinearAlgebraBackend::VectorFieldCoordinate Coordinate;
+    typedef typename Calculus::LinearAlgebra::Vector Coordinate;
 
     typedef boost::array<Coordinate, Calculus::dimension> Coordinates;
     Coordinates coordinates;

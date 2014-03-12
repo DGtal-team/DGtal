@@ -7,21 +7,26 @@
 #include "LinearOperator.h"
 #include "VectorField.h"
 
-#include "suitesparse/SuiteSparseLinearAlgebraBackend.h"
-#include "eigen/EigenLinearAlgebraBackend.h"
+#include "CLinearAlgebra.h"
+#include "suitesparse/SuiteSparseLinearAlgebra.h"
+#include "eigen/EigenLinearAlgebra.h"
 
 #include <boost/array.hpp>
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/topology/KhalimskySpaceND.h>
 
-template <typename D, typename LAB>
+template <typename D, typename LA>
 struct DiscreteExteriorCalculus
 {
     // template typedef
     typedef D Domain;
-    typedef LAB LinearAlgebraBackend;
+    typedef LA LinearAlgebra;
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebra<LinearAlgebra> ));
+
     typedef typename Domain::Space::Dimension Dimension;
+    BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
+
     static const Dimension dimension = Domain::Space::dimension;
 
     // general typedef
@@ -29,8 +34,8 @@ struct DiscreteExteriorCalculus
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
-    typedef typename LinearAlgebraBackend::Index Index;
-    BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
+    typedef typename LinearAlgebra::Index Index;
+    typedef typename LinearAlgebra::Scalar Scalar;
 
     // general members
     const Domain domain;
