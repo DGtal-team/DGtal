@@ -1,7 +1,7 @@
 SET(DGTAL_TESTS_SRC_MATH
        testMeasure
-       testSignal 
-       testStatistics 
+       testSignal
+       testStatistics
        testHistogram
        testMPolynomial
        testAngleLinearMinimizer
@@ -13,3 +13,5 @@ FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
   target_link_libraries (${FILE} DGtal DGtalIO)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
+
+add_subdirectory(linalg)
