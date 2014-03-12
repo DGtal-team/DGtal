@@ -43,7 +43,7 @@ operator+(const LinearOperator<Calculus, order_in, duality_in, order_out, dualit
 // linear operator scalar multiplication
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
-operator*(const typename Calculus::LinearAlgebraBackend::Scalar& scalar, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator)
+operator*(const typename Calculus::Scalar& scalar, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator)
 {
     typedef LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
     return OutputOperator(linear_operator.calculus, scalar * linear_operator.container);

@@ -7,7 +7,7 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
 struct LinearOperator
 {
     typedef C Calculus;
-    typedef typename Calculus::LinearAlgebraBackend::LinearOperatorContainer Container;
+    typedef typename Calculus::LinearAlgebra::Matrix Container;
 
     const Calculus& calculus;
 
@@ -28,7 +28,7 @@ operator*(const LinearOperator<Calculus, order_fold, duality_fold, order_out, du
 // linear operator scalar multiplication
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
-operator*(const typename Calculus::LinearAlgebraBackend::Scalar& scalar, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator);
+operator*(const typename Calculus::Scalar& scalar, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator);
 
 // application operator on k-form
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>

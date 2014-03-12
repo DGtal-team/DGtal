@@ -383,15 +383,15 @@ int
 main(int argc, char* argv[])
 {
     trace.beginBlock("testing suitesparse backend");
-    test_backend<SuiteSparseLinearAlgebraBackend>();
+    test_backend<SuiteSparseLinearAlgebra>();
     const double suitesparse_time = trace.endBlock();
 
     trace.beginBlock("testing dense eigen backend");
-    test_backend<EigenDenseLinearAlgebraBackend>();
+    test_backend<EigenDenseLinearAlgebra>();
     const double dense_eigen_time = trace.endBlock();
 
     trace.beginBlock("testing sparse eigen backend");
-    test_backend<EigenSparseLinearAlgebraBackend>();
+    test_backend<EigenSparseLinearAlgebra>();
     const double sparse_eigen_time = trace.endBlock();
 
     trace.info() << "suitesparse_time=" << suitesparse_time << endl;
