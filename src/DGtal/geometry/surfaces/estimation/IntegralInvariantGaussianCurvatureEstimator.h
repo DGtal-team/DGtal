@@ -59,7 +59,7 @@
 
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 
-#include "DGtal/math/EigenValues3D.h"
+#include "DGtal/math/linalg/EigenValues3D.h"
 #include "DGtal/kernel/CCellFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
