@@ -351,6 +351,8 @@ template <typename LinearAlgebra>
 void
 test_backend()
 {
+    srandom(0);
+
     test_hodge_sign<LinearAlgebra>();
 
     for (int kk=0; kk<2; kk++)
@@ -380,20 +382,23 @@ test_backend()
 int
 main(int argc, char* argv[])
 {
-    srandom(0);
-
     trace.beginBlock("testing suitesparse backend");
     test_backend<SuiteSparseLinearAlgebraBackend>();
-    trace.endBlock();
+    const double suitesparse_time = trace.endBlock();
 
     trace.beginBlock("testing dense eigen backend");
     test_backend<EigenDenseLinearAlgebraBackend>();
-    trace.endBlock();
+    const double dense_eigen_time = trace.endBlock();
 
     trace.beginBlock("testing sparse eigen backend");
     test_backend<EigenSparseLinearAlgebraBackend>();
-    trace.endBlock();
+    const double sparse_eigen_time = trace.endBlock();
+
+    trace.info() << "suitesparse_time=" << suitesparse_time << endl;
+    trace.info() << "dense_eigen_time=" << dense_eigen_time << endl;
+    trace.info() << "sparse_eigen_time=" << sparse_eigen_time << endl;
 
     return 0;
 }
+
 
