@@ -16,8 +16,8 @@ struct CLinearAlgebra
         typedef typename T::Vector Vector;
         typedef typename T::Matrix Matrix;
 
-        BOOST_CONCEPT_ASSERT(( CContainer<Vector> ));
-        BOOST_CONCEPT_ASSERT(( CContainer<Matrix> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::CVector<Vector> ));
+        BOOST_CONCEPT_ASSERT(( DGtal::CMatrix<Matrix> ));
 
         BOOST_CONCEPT_USAGE(CLinearAlgebra)
         {
