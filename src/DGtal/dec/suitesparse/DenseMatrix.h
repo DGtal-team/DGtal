@@ -56,7 +56,7 @@ namespace DDG
          DenseMatrix( int m = 0, int n = 1 );
          // initialize an mxn matrix (specifying just m yields a column vector)
 
-         static DenseMatrix Zero( int m = 0, int n = 1);
+         void clear();
 
          DenseMatrix( const DenseMatrix<T>& A );
          // copy constructor

@@ -1,8 +1,9 @@
 
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(const Calculus& _calculus)
-    : calculus(_calculus), container(LinearOperator::Container::Zero(_calculus.kFormLength(order_out, duality_out), _calculus.kFormLength(order_in, duality_in)))
+    : calculus(_calculus), container(_calculus.kFormLength(order_out, duality_out), _calculus.kFormLength(order_in, duality_in))
 {
+		container.clear();
 }
 
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>

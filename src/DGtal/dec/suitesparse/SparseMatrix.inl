@@ -31,9 +31,9 @@ namespace DDG
    {}
 
    template <class T>
-   SparseMatrix<T> SparseMatrix<T>::Zero( int m , int n )
+   void SparseMatrix<T>::clear()
    {
-       return SparseMatrix(m, n);
+       data.clear();
    }
 
    template <class T>

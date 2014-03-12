@@ -1,8 +1,9 @@
 
 template <typename Calculus, Order order, Duality duality>
 KForm<Calculus, order, duality>::KForm(const Calculus& _calculus)
-    : calculus(_calculus), container(KForm::Container::Zero(_calculus.kFormLength(order, duality)))
+    : calculus(_calculus), container(_calculus.kFormLength(order, duality))
 {
+		container.clear();
 }
 
 template <typename Calculus, Order order, Duality duality>
