@@ -26,9 +26,9 @@ namespace DDG
    }
 
    template <class T>
-   DenseMatrix<T> DenseMatrix<T>::Zero( int m, int n)
+   void DenseMatrix<T>::clear()
    {
-       return DenseMatrix(m, n);
+       zero();
    }
 
    template <class T>

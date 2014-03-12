@@ -16,10 +16,11 @@ struct CContainer : boost::Assignable<T>
 
 				BOOST_CONCEPT_USAGE(CContainer)
 				{
-						z = T::Zero(index, index);
+						z.clear();
 						z = x + y;
 						z = a * x;
 				}
+
 		private:
 				const T x,y;
 				T z;

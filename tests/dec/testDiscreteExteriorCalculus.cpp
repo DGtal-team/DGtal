@@ -390,9 +390,9 @@ main(int argc, char* argv[])
     test_backend<EigenDenseLinearAlgebraBackend>();
     trace.endBlock();
 
-    //trace.beginBlock("testing sparse eigen backend");
-    //test_backend<EigenSparseLinearAlgebraBackend>();
-    //trace.endBlock();
+    trace.beginBlock("testing sparse eigen backend");
+    test_backend<EigenSparseLinearAlgebraBackend>();
+    trace.endBlock();
 
     return 0;
 }

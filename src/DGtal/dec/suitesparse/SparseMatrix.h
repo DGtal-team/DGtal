@@ -57,7 +57,7 @@ namespace DDG
          SparseMatrix( const SparseMatrix<T>& B );
          // copy constructor
 
-         static SparseMatrix Zero( int m = 0, int n = 1 );
+         void clear();
 
          ~SparseMatrix( void );
          // destructor
