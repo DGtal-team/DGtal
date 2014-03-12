@@ -7,24 +7,33 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/base/ConceptUtils.h>
 
-template <typename T>
-struct CLinearAlgebra
+namespace DGtal
 {
-    public:
-        typedef typename T::Index Index;
-        typedef typename T::Scalar Scalar;
-        typedef typename T::Vector Vector;
-        typedef typename T::Matrix Matrix;
+    template <typename T>
+    struct CLinearAlgebra
+    {
+        public:
+            typedef typename T::Index Index;
+            typedef typename T::Scalar Scalar;
+            typedef typename T::Vector Vector;
+            typedef typename T::Matrix Matrix;
+            typedef typename T::Solver Solver;
 
-        BOOST_CONCEPT_ASSERT(( DGtal::CVector<Vector> ));
-        BOOST_CONCEPT_ASSERT(( DGtal::CMatrix<Matrix> ));
+            BOOST_CONCEPT_ASSERT(( CVector<Vector> ));
+            BOOST_CONCEPT_ASSERT(( CMatrix<Matrix> ));
+            BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible<Solver> ));
 
-        BOOST_CONCEPT_USAGE(CLinearAlgebra)
-        {
-        }
-    private:
+            BOOST_CONCEPT_USAGE(CLinearAlgebra)
+            {
+                Vector foo = solver.compute(m).solve(v);
+            }
+        private:
+            Solver solver;
+            Vector v;
+            Matrix m;
+    };
 
-};
+}
 
 #endif
 

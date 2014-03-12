@@ -6,6 +6,9 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <Eigen/OrderingMethods>
+#include <Eigen/SparseQR>
+#include <Eigen/IterativeLinearSolvers>
 
 struct EigenDenseLinearAlgebra
 {
@@ -13,6 +16,7 @@ struct EigenDenseLinearAlgebra
     typedef Eigen::VectorXd::Scalar Scalar;
     typedef Eigen::VectorXd Vector;
     typedef Eigen::MatrixXd Matrix;
+    typedef Eigen::ConjugateGradient<Matrix> Solver;
 };
 
 struct EigenSparseLinearAlgebra
@@ -20,7 +24,9 @@ struct EigenSparseLinearAlgebra
     typedef Eigen::VectorXd::Index Index;
     typedef Eigen::VectorXd::Scalar Scalar;
     typedef Eigen::VectorXd Vector;
-    typedef Eigen::SparseMatrix<Scalar> Matrix;
+    typedef Eigen::SparseMatrix<Scalar, Eigen::ColMajor> Matrix;
+    //typedef Eigen::SparseQR<Matrix, Eigen::COLAMDOrdering<Index> > Solver;
+    typedef Eigen::ConjugateGradient<Matrix> Solver;
 };
 
 #endif

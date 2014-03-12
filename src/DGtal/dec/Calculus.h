@@ -22,7 +22,7 @@ struct DiscreteExteriorCalculus
     typedef D Domain;
     typedef LA LinearAlgebra;
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebra<LinearAlgebra> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<LinearAlgebra> ));
 
     typedef typename Domain::Space::Dimension Dimension;
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
