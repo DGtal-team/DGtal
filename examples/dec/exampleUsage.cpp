@@ -1,7 +1,7 @@
 #include <string>
 using namespace std;
 
-#include "DGtal/dec/Calculus.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/VectorField.h"
