@@ -7,7 +7,7 @@
 #include "LinearOperator.h"
 #include "VectorField.h"
 
-#include "CLinearAlgebra.h"
+#include <DGtal/math/linalg/CLinearAlgebra.h>
 #include "suitesparse/SuiteSparseLinearAlgebra.h"
 #include "eigen/EigenLinearAlgebra.h"
 

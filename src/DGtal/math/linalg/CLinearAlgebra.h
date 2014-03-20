@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/math/linalg/CVector.h"
+#include "DGtal/math/linalg/CMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -74,18 +76,12 @@ namespace DGtal
 
      ### Models
 
-     A dummy model (for concept checking) is CCLinearAlgebraArchetype.
-
      ### Notes
 
      @tparam T the type that should be a model of CLinearAlgebra.
   */
   template <typename T>
   struct CLinearAlgebra
-  // Use derivation for coarser concepts, like
-  // : CoarserConcept<T>
-  // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
-  // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -103,20 +99,11 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( CLinearAlgebra )
     {
-      // Static members of type A can be tested with
-      //ConceptUtils::sameType( myA, T::staticMember );
-      // non-const method dummy should take parameter myA of type A and return
-      // something of type B
-      ConceptUtils::sameType( myVector, mySolver.compute(myMatrix).solve(myVector ) );
-      // look at CInteger.h for testing tags.
-      // check const methods.
+      ConceptUtils::sameType( myVector, Vector( mySolver.compute(myMatrix).solve(myVector) ) );
       checkConstConstraints();
     }
     void checkConstConstraints() const
     {
-      // const method dummyConst should take parameter myA of type A and return
-      // something of type B
-      //ConceptUtils::sameType( myB, myX.dummyConst( myA ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

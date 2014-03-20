@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CDualityLinearAlgebra.h
+ * @file CVector.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/03/20
  *
- * Header file for concept CDualityLinearAlgebra.cpp
+ * Header file for concept CVector.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDualityLinearAlgebra_RECURSES)
-#error Recursive header files inclusion detected in CDualityLinearAlgebra.h
-#else // defined(CDualityLinearAlgebra_RECURSES)
+#if defined(CVector_RECURSES)
+#error Recursive header files inclusion detected in CVector.h
+#else // defined(CVector_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDualityLinearAlgebra_RECURSES
+#define CVector_RECURSES
 
-#if !defined CDualityLinearAlgebra_h
+#if !defined CVector_h
 /** Prevents repeated inclusion of headers. */
-#define CDualityLinearAlgebra_h
+#define CVector_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,20 +49,19 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CDualityLinearAlgebra
+// class CVector
 /**
-Description of \b concept '\b CDualityLinearAlgebra' <p>
+Description of \b concept '\b CVector' <p>
 @ingroup Concepts
 @brief Aim:
-Lift linear algebra container concept into the dec package.
 
 ### Refinement of
 
-### Associated types
-  - \c Container: Associated container, a model of concept CLinearAlgebraContainer.
-  - \c Calculus: Associated discrete exterior calculus.
+### Associated types :
 
 ### Notation
+ - \e X : A type that is a model of CVector
+ - \e x, \e y : object of type X
 
 ### Definitions
 
@@ -78,26 +77,20 @@ Lift linear algebra container concept into the dec package.
 
 ### Notes
 
-@tparam T the type that should be a model of CDualityLinearAlgebra.
-*/
+@tparam T the type that should be a model of CVector.
+ */
 template <typename T>
-struct CDualityLinearAlgebra
+struct CVector : CLinearAlgebraContainer<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    typedef typename T::Container Container;
-    typedef typename T::Calculus Calculus;
-    typedef typename Calculus::Scalar Scalar;
+    typedef typename T::Scalar Scalar;
+    typedef typename T::Index Index;
 
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraContainer<Container> ));
-
-    BOOST_CONCEPT_USAGE( CDualityLinearAlgebra )
+    BOOST_CONCEPT_USAGE( CVector )
     {
-        T t0(calculus_const_ref);
-        T t1(calculus_const_ref, container_const_ref);
-        ConceptUtils::sameType(z, T(x + y));
-        //ConceptUtils::sameType(z, T(x - y));
-        ConceptUtils::sameType(z, T(a * x));
+        ConceptUtils::sameType(a, x(ii));
+        ConceptUtils::sameType(a_ref, z(ii));
         checkConstConstraints();
     }
     void checkConstConstraints() const
@@ -105,24 +98,23 @@ public:
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    const T x,y;
+    const T x;
     T z;
     Scalar a;
-    const Container& container_const_ref;
-    const Calculus& calculus_const_ref;
-    Scalar scalar;
+    Scalar& a_ref;
+    Index ii;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CDualityLinearAlgebra
+}; // end of concept CVector
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDualityLinearAlgebra_h
+#endif // !defined CVector_h
 
-#undef CDualityLinearAlgebra_RECURSES
-#endif // else defined(CDualityLinearAlgebra_RECURSES)
+#undef CVector_RECURSES
+#endif // else defined(CVector_RECURSES)
