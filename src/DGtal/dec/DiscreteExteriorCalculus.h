@@ -156,6 +156,6 @@ template <typename D, typename LAB>
 std::ostream&
 operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus);
 
-#include "Calculus.ih"
+#include "DiscreteExteriorCalculus.ih"
 
 #endif
