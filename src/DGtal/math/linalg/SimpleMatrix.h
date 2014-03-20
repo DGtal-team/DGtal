@@ -87,6 +87,10 @@ namespace DGtal
 
     typedef SimpleMatrix<Component,TM,TN> Self;
 
+		///Types needed by CLinearAlgebraContainer
+		typedef Dimension Index;
+		typedef Component Scalar;
+
     BOOST_CONCEPT_ASSERT(( CEuclideanRing<TComponent> ));
     BOOST_STATIC_ASSERT(TM > 0 );
     BOOST_STATIC_ASSERT(TM > 0 );
@@ -138,12 +142,24 @@ namespace DGtal
     RowVector row(const DGtal::Dimension i) const;
 
     /**
+     * Get number of rows.
+     *
+     */
+		inline Index rows() const { return M; }
+
+    /**
      * Get column vector.
      *
      * @param j the column index.
      * @return the j-th column
      */
     ColumnVector column(const DGtal::Dimension j) const;
+
+    /**
+     * Get number of columns.
+     *
+     */
+		inline Index cols() const { return N; }
 
     /**
      * Set a value at position (i,j).
@@ -402,6 +418,14 @@ namespace DGtal
   template <typename T, DGtal::Dimension M, DGtal::Dimension N>
   std::ostream&
   operator<< ( std::ostream & out, const SimpleMatrix<T,M,N> & object );
+
+
+  /**
+   * External scalar multiplication
+   */
+  template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
+  SimpleMatrix<TComponent, TM, TN>
+  operator* ( const TComponent& scalar, const SimpleMatrix<TComponent, TM, TN>& matrix);
 
 } // namespace DGtal
 

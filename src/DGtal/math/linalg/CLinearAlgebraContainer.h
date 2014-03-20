@@ -96,18 +96,16 @@ struct CLinearAlgebraContainer : boost::Assignable<T>, boost::DefaultConstructib
 {
     // ----------------------- Concept checks ------------------------------
 public:
-		typedef typename T::Scalar Scalar;
-		typedef typename T::Index Index;
+    typedef typename T::Scalar Scalar;
+    typedef typename T::Index Index;
 
     BOOST_CONCEPT_USAGE( CLinearAlgebraContainer )
     {
-				z.clear();
-				ConceptUtils::sameType(z, T(x + y));
-				ConceptUtils::sameType(z, T(x - y));
-				ConceptUtils::sameType(z, T(a * x));
-				ConceptUtils::sameType(ii, x.rows());
-				ConceptUtils::sameType(ii, x.cols());
-				checkConstConstraints();
+        z.clear();
+        ConceptUtils::sameType(z, T(x + y));
+        ConceptUtils::sameType(z, T(x - y));
+        ConceptUtils::sameType(z, T(a * x));
+        checkConstConstraints();
     }
     void checkConstConstraints() const
     {
@@ -115,10 +113,10 @@ public:
     }
     // ------------------------- Private Datas --------------------------------
 private:
-		const T x,y;
-		T z;
-		Scalar a;
-		Index ii;
+    const T x,y;
+    T z;
+    Scalar a;
+    Index ii;
 
     // ------------------------- Internals ------------------------------------
 private:
