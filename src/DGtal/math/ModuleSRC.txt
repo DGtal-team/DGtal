@@ -1,6 +1,16 @@
 ## Sources associated to the module math
 ##
 
-SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/math/AngleLinearMinimizer)
+SET(DGTAL_SRC ${DGTAL_SRC}
+    DGtal/math/AngleLinearMinimizer)
+
+if( WITH_SUITESPARSE )
+    SET(DGTAL_SRC ${DGTAL_SRC}
+        DGtal/math/linalg/suitesparse/LinearContext
+        DGtal/math/linalg/suitesparse/DenseMatrix
+        DGtal/math/linalg/suitesparse/SparseMatrix
+        DGtal/math/linalg/suitesparse/Real
+        DGtal/math/linalg/suitesparse/Complex
+        )
+endif( WITH_SUITESPARSE )
 

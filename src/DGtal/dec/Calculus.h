@@ -8,8 +8,8 @@
 #include "VectorField.h"
 
 #include <DGtal/math/linalg/CLinearAlgebra.h>
-#include "suitesparse/SuiteSparseLinearAlgebra.h"
-#include "eigen/EigenLinearAlgebra.h"
+#include <DGtal/math/linalg/suitesparse/SuiteSparseLinearAlgebra.h>
+#include <DGtal/math/linalg/eigen/EigenLinearAlgebra.h>
 
 #include <boost/array.hpp>
 #include <DGtal/kernel/domains/CDomain.h>
