@@ -298,6 +298,6 @@ namespace DDG
    // returns <Ax,x>/<(B-EE^T)x,x>
 }
 
-#include "SparseMatrix.inl"
+#include "SparseMatrix.ih"
 
 #endif

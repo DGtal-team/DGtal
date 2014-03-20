@@ -178,7 +178,7 @@ namespace DDG
    // product B represented as a dense vector
 }
 
-#include "DenseMatrix.inl"
+#include "DenseMatrix.ih"
 
 #endif
 
