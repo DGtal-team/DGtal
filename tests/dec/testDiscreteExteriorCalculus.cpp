@@ -382,6 +382,11 @@ test_backend()
 int
 main(int argc, char* argv[])
 {
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebra<SimpleMatrixLinearAlgebra> ));
+    //trace.beginBlock("testing simple matrix backend");
+    //test_backend<SimpleMatrixLinearAlgebra>();
+    //const double simple_matrix_time = trace.endBlock();
+
     trace.beginBlock("testing suitesparse backend");
     test_backend<SuiteSparseLinearAlgebra>();
     const double suitesparse_time = trace.endBlock();
@@ -394,6 +399,7 @@ main(int argc, char* argv[])
     test_backend<EigenSparseLinearAlgebra>();
     const double sparse_eigen_time = trace.endBlock();
 
+    //trace.info() << "simple_matrix_time=" << simple_matrix_time << endl;
     trace.info() << "suitesparse_time=" << suitesparse_time << endl;
     trace.info() << "dense_eigen_time=" << dense_eigen_time << endl;
     trace.info() << "sparse_eigen_time=" << sparse_eigen_time << endl;

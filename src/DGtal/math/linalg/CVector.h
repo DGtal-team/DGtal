@@ -91,6 +91,7 @@ public:
     {
         ConceptUtils::sameType(a, x(ii));
         ConceptUtils::sameType(a_ref, z(ii));
+        ConceptUtils::sameType(ii, x.rows());
         checkConstConstraints();
     }
     void checkConstConstraints() const

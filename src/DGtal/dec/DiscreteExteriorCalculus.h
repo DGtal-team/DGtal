@@ -10,6 +10,7 @@
 #include <DGtal/math/linalg/CLinearAlgebra.h>
 #include <DGtal/math/linalg/suitesparse/SuiteSparseLinearAlgebra.h>
 #include <DGtal/math/linalg/eigen/EigenLinearAlgebra.h>
+#include <DGtal/math/linalg/SimpleMatrixLinearAlgebra.h>
 
 #include <boost/array.hpp>
 #include <DGtal/kernel/domains/CDomain.h>
