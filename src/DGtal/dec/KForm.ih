@@ -14,13 +14,6 @@ KForm<Calculus, order, duality>::KForm(const Calculus& _calculus, const Containe
 }
 
 template <typename Calculus, Order order, Duality duality>
-typename KForm<Calculus, order, duality>::Index
-KForm<Calculus, order, duality>::size() const
-{
-    return container.rows();
-}
-
-template <typename Calculus, Order order, Duality duality>
 template <typename SCellMap>
 void
 KForm<Calculus, order, duality>::applyToSCellMap(SCellMap& scell_map) const
