@@ -17,55 +17,54 @@
 #pragma once
 
 /**
- * @file CVector.h
+ * @file CDynamicVector.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/20
+ * @date 2014/03/21
  *
- * Header file for concept CVector.cpp
+ * Header file for concept CDynamicVector.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CVector_RECURSES)
-#error Recursive header files inclusion detected in CVector.h
-#else // defined(CVector_RECURSES)
+#if defined(CDynamicVector_RECURSES)
+#error Recursive header files inclusion detected in CDynamicVector.h
+#else // defined(CDynamicVector_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CVector_RECURSES
+#define CDynamicVector_RECURSES
 
-#if !defined CVector_h
+#if !defined CDynamicVector_h
 /** Prevents repeated inclusion of headers. */
-#define CVector_h
+#define CDynamicVector_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CVectorSpace.h"
+#include "DGtal/math/linalg/CVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CVector
+// class CDynamicVector
 /**
-Description of \b concept '\b CVector' <p>
+Description of \b concept '\b CDynamicVector' <p>
 @ingroup Concepts
 @brief Aim:
-Represent any static or dynamic sized column vector having sparse or dense representation.
+Represent any dynamic sized column vector having sparse or dense representation.
 
 ### Refinement of
- - CVectorSpace
+ - CVector
 
-### Associated types
+### Associated types :
 
 ### Notation
- - \c Vector : A type that is a model of CVector
- - \e x : const object of type \c Vector
- - \e z : object of type \c Vector
- - \e i : object of type \c Vector::Index
+ - \c DynamicVector : A type that is a model of CDynamicVector
+ - \e x : object of type \c DynamicMatrix
+ - \e i : object of type \c DynamicVector::Index
 
 ### Definitions
 
@@ -73,51 +72,43 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Constant ref random accessor      | \a x(i)           |                   | \c const Scalar&              |              |           |                |            |
-| Ref random accessor      | \a z(i)           |                   | \c Scalar&              |              |           |                |            |
-| Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
+| Constructor |  \a x(i)          |                   | \c DynamicVector              |              |           |                |            |
 
 ### Invariants
 
 ### Models
+ - Eigen::VectorXd, Eigen::SparseVector, Eigen::DenseVector
 
 ### Notes
 
-@tparam T the type that should be a model of CVector.
+@tparam T the type that should be a model of CDynamicVector.
  */
 template <typename T>
-struct CVector : CVectorSpace<T>
+struct CDynamicVector : CVector<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    typedef typename T::Scalar Scalar;
     typedef typename T::Index Index;
 
-    BOOST_CONCEPT_USAGE( CVector )
+    BOOST_CONCEPT_USAGE( CDynamicVector )
     {
-        ConceptUtils::sameType(a, x(i));
-        ConceptUtils::sameType(a_ref, z(i));
-        ConceptUtils::sameType(i, x.rows());
+				T z(i);
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    const T x;
-    T z;
-    Scalar a;
-    Scalar& a_ref;
     Index i;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CVector
+}; // end of concept CDynamicVector
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CVector_h
+#endif // !defined CDynamicVector_h
 
-#undef CVector_RECURSES
-#endif // else defined(CVector_RECURSES)
+#undef CDynamicVector_RECURSES
+#endif // else defined(CDynamicVector_RECURSES)

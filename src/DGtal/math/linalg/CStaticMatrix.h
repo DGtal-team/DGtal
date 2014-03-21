@@ -72,8 +72,8 @@ Represent any static sized matrix having sparse or dense representation.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Static rows number      |  \c StaticVector::M          |                   | \c StaticVector::Index              |              |           |                |            |
-| Static cols number      |  \c StaticVector::N          |                   | \c StaticVector::Index              |              |           |                |            |
+| Static rows number      |  \a StaticVector::M          |                   | \c StaticVector::Index              |              |           |                |            |
+| Static cols number      |  \a StaticVector::N          |                   | \c StaticVector::Index              |              |           |                |            |
 
 ### Invariants
 
