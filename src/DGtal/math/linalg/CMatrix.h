@@ -62,10 +62,10 @@ Represent any static or dynamic sized matrix having sparse or dense representati
 ### Associated types
 
 ### Notation
- - \e Matrix : A type that is a model of CMatrix
- - \e x : const object of type Matrix
- - \e z : object of type Matrix
- - \e i, \e j : object of type Matrix::Index
+ - \c Matrix : A type that is a model of CMatrix
+ - \e x : const object of type \c Matrix
+ - \e z : object of type \c Matrix
+ - \e i, \e j : object of type \c Matrix::Index
 
 ### Definitions
 
@@ -81,7 +81,6 @@ Represent any static or dynamic sized matrix having sparse or dense representati
 ### Invariants
 
 ### Models
- - SimpleMatrix
  - Eigen::MatrixXd, Eigen::SparseMatrix, Eigen::DenseMatrix
 
 ### Notes

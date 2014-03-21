@@ -58,7 +58,6 @@ Base concept for vector space structure.
 
 ### Refinement of
  - boost::Assignable
- - boost::DefaultConstructible
 
 ### Associated types
  - \c Scalar: Scalar type used for external multiplication and internal type representation.
@@ -90,7 +89,7 @@ Base concept for vector space structure.
 @tparam T the type that should be a model of CVectorSpace.
  */
 template <typename T>
-struct CVectorSpace : boost::Assignable<T>, boost::DefaultConstructible<T>
+struct CVectorSpace : boost::Assignable<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
