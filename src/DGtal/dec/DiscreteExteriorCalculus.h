@@ -7,6 +7,8 @@
 #include "LinearOperator.h"
 #include "VectorField.h"
 
+#include <DGtal/math/linalg/CDynamicMatrix.h>
+#include <DGtal/math/linalg/CDynamicVector.h>
 #include <DGtal/math/linalg/CLinearAlgebra.h>
 
 #include <boost/array.hpp>
@@ -20,6 +22,8 @@ struct DiscreteExteriorCalculus
     typedef D Domain;
     typedef LA LinearAlgebra;
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<typename LinearAlgebra::Matrix> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<typename LinearAlgebra::Vector> ));
     BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<typename LinearAlgebra::Matrix, typename LinearAlgebra::Vector> ));
 
     typedef typename Domain::Space::Dimension Dimension;

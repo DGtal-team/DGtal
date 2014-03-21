@@ -81,7 +81,6 @@ Represent any static or dynamic sized matrix having sparse or dense representati
 ### Invariants
 
 ### Models
- - Eigen::MatrixXd, Eigen::SparseMatrix, Eigen::DenseMatrix
 
 ### Notes
 

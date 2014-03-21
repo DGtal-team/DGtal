@@ -72,7 +72,7 @@ Represent any static sized column vector having sparse or dense representation.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Static size member      |  \c StaticVector::dimension          |                   | \c StaticVector::Index              |              |           |                |            |
+| Static size member      |  \a StaticVector::dimension          |                   | \c StaticVector::Index              |              |           |                |            |
 
 ### Invariants
 
