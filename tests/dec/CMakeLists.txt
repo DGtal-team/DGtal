@@ -1,5 +1,5 @@
 
-if(WITH_SUITESPARSE)
+if(WITH_EIGEN)
 
     set(DGTAL_TESTS_SRC_DEC
         testDiscreteExteriorCalculus
@@ -11,5 +11,5 @@ if(WITH_SUITESPARSE)
         add_test(${FILE} ${FILE})
     endforeach(FILE)
 
-endif(WITH_SUITESPARSE)
+endif(WITH_EIGEN)
 
