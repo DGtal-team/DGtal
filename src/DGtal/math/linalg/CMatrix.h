@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CLinearAlgebraContainer.h"
+#include "DGtal/math/linalg/CVectorSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,14 +54,18 @@ namespace DGtal
 Description of \b concept '\b CMatrix' <p>
 @ingroup Concepts
 @brief Aim:
+Represent any static or dynamic sized matrix having sparse or dense representation.
 
 ### Refinement of
+ - CVectorSpace
 
-### Associated types :
+### Associated types
 
 ### Notation
- - \e X : A type that is a model of CMatrix
- - \e x, \e y : object of type X
+ - \e Matrix : A type that is a model of CMatrix
+ - \e x : const object of type Matrix
+ - \e z : object of type Matrix
+ - \e i, \e j : object of type Matrix::Index
 
 ### Definitions
 
@@ -69,18 +73,23 @@ Description of \b concept '\b CMatrix' <p>
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|       |            |                   |               |              |           |                |            |
+| Constant ref random accessor      | \a x(i, j)           |                   | \c const Scalar&              |              |           |                |            |
+| Ref random accessor      | \a z(i, j)           |                   | \c Scalar&              |              |           |                |            |
+| Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
+| Number of columns      |  \a x.cols()           |                   | \c Index              |              |           |                |            |
 
 ### Invariants
 
 ### Models
+ - SimpleMatrix
+ - Eigen::MatrixXd, Eigen::SparseMatrix, Eigen::DenseMatrix
 
 ### Notes
 
 @tparam T the type that should be a model of CMatrix.
  */
 template <typename T>
-struct CMatrix : CLinearAlgebraContainer<T>
+struct CMatrix : CVectorSpace<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
@@ -89,14 +98,10 @@ public:
 
     BOOST_CONCEPT_USAGE( CMatrix )
     {
-        ConceptUtils::sameType(a, x(ii, jj));
-        ConceptUtils::sameType(a_ref, z(ii, jj));
-        ConceptUtils::sameType(ii, x.rows());
-        ConceptUtils::sameType(ii, x.cols());
-        checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
+        ConceptUtils::sameType(a, x(i, j));
+        ConceptUtils::sameType(a_ref, z(i, j));
+        ConceptUtils::sameType(i, x.rows());
+        ConceptUtils::sameType(j, x.cols());
     }
     // ------------------------- Private Datas --------------------------------
 private:
@@ -104,7 +109,7 @@ private:
     T z;
     Scalar a;
     Scalar& a_ref;
-    Index ii, jj;
+    Index i, j;
 
     // ------------------------- Internals ------------------------------------
 private:

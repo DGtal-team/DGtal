@@ -17,58 +17,58 @@
 #pragma once
 
 /**
- * @file CLinearAlgebraContainer.h
+ * @file CVectorSpace.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/20
+ * @date 2014/03/21
  *
- * Header file for concept CLinearAlgebraContainer.cpp
+ * Header file for concept CVectorSpace.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CLinearAlgebraContainer_RECURSES)
-#error Recursive header files inclusion detected in CLinearAlgebraContainer.h
-#else // defined(CLinearAlgebraContainer_RECURSES)
+#if defined(CVectorSpace_RECURSES)
+#error Recursive header files inclusion detected in CVectorSpace.h
+#else // defined(CVectorSpace_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CLinearAlgebraContainer_RECURSES
+#define CVectorSpace_RECURSES
 
-#if !defined CLinearAlgebraContainer_h
+#if !defined CVectorSpace_h
 /** Prevents repeated inclusion of headers. */
-#define CLinearAlgebraContainer_h
+#define CVectorSpace_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CEuclideanRing.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CLinearAlgebraContainer
+// class CVectorSpace
 /**
-Description of \b concept '\b CLinearAlgebraContainer' <p>
+Description of \b concept '\b CVectorSpace' <p>
 @ingroup Concepts
 @brief Aim:
-Base Concept for linear algebra container
+Base concept for vector space structure.
 
 ### Refinement of
  - boost::Assignable
  - boost::DefaultConstructible
 
-### Associated types :
+### Associated types
  - \c Scalar: Scalar type used for external multiplication and internal type representation.
  - \c Index: Random access index type.
 
 ### Notation
- - \e LinearAlgebraContainer : A type that is a model of CLinearAlgebraContainer
- - \e x, \e y : const object of type LinearAlgebraContainer
- - \e z : object of type LinearAlgebraContainer
- - \e a : object of type LinearAlgebraContainer::Scalar
- - \e i : object of type LinearAlgebraContainer::Index
+ - \c VectorSpace : A type that is a model of CVectorSpace
+ - \e x, \e y : const object of type \c VectorSpace
+ - \e z : object of type \c VectorSpace
+ - \e a : object of type \c VectorSpace::Scalar
 
 ### Definitions
 
@@ -77,11 +77,9 @@ Base Concept for linear algebra container
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Reset container content      |  \a z.clear()         |                   |               |              |           |                |            |
-| Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
-| Number of columns      |  \a x.cols()           |                   | \c Index              |              |           |                |            |
-| Addition      | z = x + y           |                  | \c LinearAlgebraContainer              |              |           |                |            |
-| Substraction      | z = x - y           |                   | \c LinearAlgebraContainer              |              |           |                |            |
-| External multiplication      | z = a * x           |                   |  \c LinearAlgebraContainer               |              |           |                |            |
+| Addition      | \a z = \a x + \a y           |                  | \c VectorSpace              |              |           |                |            |
+| Substraction      | \a z = \a x - \a y           |                   | \c VectorSpace              |              |           |                |            |
+| External multiplication      | \a z = \a a * \a x           |                   |  \c VectorSpace               |              |           |                |            |
 
 ### Invariants
 
@@ -89,47 +87,42 @@ Base Concept for linear algebra container
 
 ### Notes
 
-@tparam T the type that should be a model of CLinearAlgebraContainer.
+@tparam T the type that should be a model of CVectorSpace.
  */
 template <typename T>
-struct CLinearAlgebraContainer : boost::Assignable<T>, boost::DefaultConstructible<T>
+struct CVectorSpace : boost::Assignable<T>, boost::DefaultConstructible<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
     typedef typename T::Scalar Scalar;
     typedef typename T::Index Index;
 
-    BOOST_CONCEPT_USAGE( CLinearAlgebraContainer )
+    BOOST_CONCEPT_ASSERT(( CEuclideanRing<Scalar> ));
+
+    BOOST_CONCEPT_USAGE( CVectorSpace )
     {
         z.clear();
         ConceptUtils::sameType(z, T(x + y));
         ConceptUtils::sameType(z, T(x - y));
         ConceptUtils::sameType(z, T(a * x));
-        checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
-
     }
     // ------------------------- Private Datas --------------------------------
 private:
     const T x,y;
     T z;
     Scalar a;
-    Index ii;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-
-}; // end of concept CLinearAlgebraContainer
+}; // end of concept CVectorSpace
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CLinearAlgebraContainer_h
+#endif // !defined CVectorSpace_h
 
-#undef CLinearAlgebraContainer_RECURSES
-#endif // else defined(CLinearAlgebraContainer_RECURSES)
+#undef CVectorSpace_RECURSES
+#endif // else defined(CVectorSpace_RECURSES)

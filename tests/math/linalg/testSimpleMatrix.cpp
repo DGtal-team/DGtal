@@ -31,6 +31,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/math/linalg/CMatrix.h"
+#include "DGtal/math/linalg/CVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -345,6 +347,15 @@ bool testInverse()
   return nbok == nb;
 }
 
+bool testConcepts()
+{
+		typedef DGtal::SimpleMatrix<double,3,3> Matrix;
+		typedef Matrix::ColumnVector Vector;
+		BOOST_CONCEPT_ASSERT(( CMatrix<Matrix> ));
+		BOOST_CONCEPT_ASSERT(( CVector<Vector> ));
+		return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -358,7 +369,7 @@ int main( int argc, char** argv )
 
   bool res = testSimpleMatrix() && testArithm() && testColRow()
     && testDetCofactor() && testM1Matrix()
-    && testInverse(); // && ... other tests
+    && testInverse() && testConcepts();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
