@@ -31,8 +31,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
-#include "DGtal/math/linalg/CMatrix.h"
-#include "DGtal/math/linalg/CVector.h"
+#include "DGtal/math/linalg/CStaticMatrix.h"
+#include "DGtal/math/linalg/CStaticVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -351,8 +351,8 @@ bool testConcepts()
 {
 		typedef DGtal::SimpleMatrix<double,3,3> Matrix;
 		typedef Matrix::ColumnVector Vector;
-		BOOST_CONCEPT_ASSERT(( CMatrix<Matrix> ));
-		BOOST_CONCEPT_ASSERT(( CVector<Vector> ));
+		BOOST_CONCEPT_ASSERT(( CStaticMatrix<Matrix> ));
+		BOOST_CONCEPT_ASSERT(( CStaticVector<Vector> ));
 		return true;
 }
 

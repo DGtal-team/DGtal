@@ -17,55 +17,54 @@
 #pragma once
 
 /**
- * @file CVector.h
+ * @file CStaticVector.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/20
+ * @date 2014/03/21
  *
- * Header file for concept CVector.cpp
+ * Header file for concept CStaticVector.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CVector_RECURSES)
-#error Recursive header files inclusion detected in CVector.h
-#else // defined(CVector_RECURSES)
+#if defined(CStaticVector_RECURSES)
+#error Recursive header files inclusion detected in CStaticVector.h
+#else // defined(CStaticVector_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CVector_RECURSES
+#define CStaticVector_RECURSES
 
-#if !defined CVector_h
+#if !defined CStaticVector_h
 /** Prevents repeated inclusion of headers. */
-#define CVector_h
+#define CStaticVector_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CVectorSpace.h"
+#include "DGtal/math/linalg/CVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CVector
+// class CStaticVector
 /**
-Description of \b concept '\b CVector' <p>
+Description of \b concept '\b CStaticVector' <p>
 @ingroup Concepts
 @brief Aim:
-Represent any static or dynamic sized column vector having sparse or dense representation.
+Represent any static sized column vector having sparse or dense representation.
 
 ### Refinement of
- - CVectorSpace
+ - CVector
+ - boost::DefaultConstructible
 
-### Associated types
+### Associated types :
 
 ### Notation
- - \c Vector : A type that is a model of CVector
- - \e x : const object of type \c Vector
- - \e z : object of type \c Vector
- - \e i : object of type \c Vector::Index
+ - \c StaticVector : A type that is a model of CStaticVector
+ - \e i : object of type \c StaticVector::Index
 
 ### Definitions
 
@@ -73,52 +72,43 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Constant ref random accessor      | \a x(i)           |                   | \c const Scalar&              |              |           |                |            |
-| Ref random accessor      | \a z(i)           |                   | \c Scalar&              |              |           |                |            |
-| Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
+| Static size member      |  \c StaticVector::dimension          |                   | \c StaticVector::Index              |              |           |                |            |
 
 ### Invariants
 
 ### Models
- - Eigen::VectorXd, Eigen::SparseVector, Eigen::DenseVector
+ - PointVector
 
 ### Notes
 
-@tparam T the type that should be a model of CVector.
+@tparam T the type that should be a model of CStaticVector.
  */
 template <typename T>
-struct CVector : CVectorSpace<T>
+struct CStaticVector : CVector<T>, boost::DefaultConstructible<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    typedef typename T::Scalar Scalar;
     typedef typename T::Index Index;
 
-    BOOST_CONCEPT_USAGE( CVector )
+    BOOST_CONCEPT_USAGE( CStaticVector )
     {
-        ConceptUtils::sameType(a, x(i));
-        ConceptUtils::sameType(a_ref, z(i));
-        ConceptUtils::sameType(i, x.rows());
+        ConceptUtils::sameType( i, T::dimension );
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    const T x;
-    T z;
-    Scalar a;
-    Scalar& a_ref;
     Index i;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CVector
+}; // end of concept CStaticVector
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CVector_h
+#endif // !defined CStaticVector_h
 
-#undef CVector_RECURSES
-#endif // else defined(CVector_RECURSES)
+#undef CStaticVector_RECURSES
+#endif // else defined(CStaticVector_RECURSES)
