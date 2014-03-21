@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CLinearAlgebraContainer.h"
+#include "DGtal/math/linalg/CVectorSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -89,7 +89,7 @@ public:
     typedef typename T::Calculus Calculus;
     typedef typename Calculus::Scalar Scalar;
 
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraContainer<Container> ));
+    BOOST_CONCEPT_ASSERT(( CVectorSpace<Container> ));
 
     BOOST_CONCEPT_USAGE( CDualityLinearAlgebra )
     {

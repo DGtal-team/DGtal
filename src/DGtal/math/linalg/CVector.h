@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CLinearAlgebraContainer.h"
+#include "DGtal/math/linalg/CVectorSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,14 +54,18 @@ namespace DGtal
 Description of \b concept '\b CVector' <p>
 @ingroup Concepts
 @brief Aim:
+Represent any static or dynamic sized column vector having sparse or dense representation.
 
 ### Refinement of
+ - CVectorSpace
 
-### Associated types :
+### Associated types
 
 ### Notation
- - \e X : A type that is a model of CVector
- - \e x, \e y : object of type X
+ - \e Vector : A type that is a model of CVector
+ - \e x : const object of type Vector
+ - \e z : object of type Vector
+ - \e i : object of type Vector::Index
 
 ### Definitions
 
@@ -69,18 +73,22 @@ Description of \b concept '\b CVector' <p>
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|       |            |                   |               |              |           |                |            |
+| Constant ref random accessor      | \a x(i)           |                   | \c const Scalar&              |              |           |                |            |
+| Ref random accessor      | \a z(i)           |                   | \c Scalar&              |              |           |                |            |
+| Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
 
 ### Invariants
 
 ### Models
+ - PointVector
+ - Eigen::VectorXd, Eigen::SparseVector, Eigen::DenseVector
 
 ### Notes
 
 @tparam T the type that should be a model of CVector.
  */
 template <typename T>
-struct CVector : CLinearAlgebraContainer<T>
+struct CVector : CVectorSpace<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
@@ -89,13 +97,9 @@ public:
 
     BOOST_CONCEPT_USAGE( CVector )
     {
-        ConceptUtils::sameType(a, x(ii));
-        ConceptUtils::sameType(a_ref, z(ii));
-        ConceptUtils::sameType(ii, x.rows());
-        checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
+        ConceptUtils::sameType(a, x(i));
+        ConceptUtils::sameType(a_ref, z(i));
+        ConceptUtils::sameType(i, x.rows());
     }
     // ------------------------- Private Datas --------------------------------
 private:
@@ -103,7 +107,7 @@ private:
     T z;
     Scalar a;
     Scalar& a_ref;
-    Index ii;
+    Index i;
 
     // ------------------------- Internals ------------------------------------
 private:
