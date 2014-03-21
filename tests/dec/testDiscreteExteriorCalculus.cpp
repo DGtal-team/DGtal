@@ -1,7 +1,6 @@
 
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/math/linalg/EigenLinearAlgebra.h"
-#include "DGtal/math/linalg/SimpleMatrixLinearAlgebra.h"
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/Duality.h"
@@ -384,11 +383,6 @@ test_backend()
 int
 main(int argc, char* argv[])
 {
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebra<SimpleMatrixLinearAlgebra> ));
-    //trace.beginBlock("testing simple matrix backend");
-    //test_backend<SimpleMatrixLinearAlgebra>();
-    //const double simple_matrix_time = trace.endBlock();
-
     trace.beginBlock("testing dense eigen backend");
     test_backend<EigenDenseLinearAlgebra>();
     const double dense_eigen_time = trace.endBlock();
@@ -397,7 +391,6 @@ main(int argc, char* argv[])
     test_backend<EigenSparseLinearAlgebra>();
     const double sparse_eigen_time = trace.endBlock();
 
-    //trace.info() << "simple_matrix_time=" << simple_matrix_time << endl;
     trace.info() << "dense_eigen_time=" << dense_eigen_time << endl;
     trace.info() << "sparse_eigen_time=" << sparse_eigen_time << endl;
 
