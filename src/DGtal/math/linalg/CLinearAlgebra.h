@@ -18,10 +18,10 @@
 
 /**
  * @file CLinearAlgebra.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/12
+ * @date 2014/03/21
  *
  * Header file for concept CLinearAlgebra.cpp
  *
@@ -42,80 +42,73 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CVector.h"
 #include "DGtal/math/linalg/CMatrix.h"
+#include "DGtal/math/linalg/CVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CLinearAlgebra
-  /**
-     Description of \b concept '\b CLinearAlgebra' <p>
-     @ingroup Concepts
-     @brief Aim:
+/////////////////////////////////////////////////////////////////////////////
+// class CLinearAlgebra
+/**
+Description of \b concept '\b CLinearAlgebra' <p>
+@ingroup Concepts
+@brief Aim:
+Check multiplication between static matrix and static vector
 
-     ### Refinement of
+### Refinement of
 
-     ### Associated types :
+### Associated types
 
-     ### Notation
-     - \e X : A type that is a model of CLinearAlgebra
-     - \e x, \e y : object of type X
+### Notation
+ - \c Vector : A type that is a model of CVector
+ - \c Matrix : A type that is a model of CMatrix
+ - \e x, \e y : object of type \c Vector
+ - \e a, \e b, \e c : object of type \c Matrix
 
-     ### Definitions
+### Definitions
 
-     ### Valid expressions and semantics
+### Valid expressions and semantics
 
-     | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
-     |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-     |       |            |                   |               |              |           |                |            |
+| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+| Matrix vector multiplication      | x = a * y           |                   | \c Vector              |              |           |                |            |
+| Matrix matrix multiplication      | c = a * b           |                   | \c Matrix              |              |           |                |            |
 
-     ### Invariants
+### Invariants
 
-     ### Models
+### Models
 
-     ### Notes
+### Notes
 
-     @tparam T the type that should be a model of CLinearAlgebra.
-  */
-  template <typename T>
-  struct CLinearAlgebra
-  {
+@tparam M the type that should be a model of CMatrix
+@tparam V the type that should be a model of CVector
+ */
+template <typename M, typename V>
+struct CLinearAlgebra
+{
     // ----------------------- Concept checks ------------------------------
-  public:
-
-    typedef typename T::Index Index;
-    typedef typename T::Scalar Scalar;
-    typedef typename T::Vector Vector;
-    typedef typename T::Matrix Matrix;
-    typedef typename T::Solver Solver;
-
-    BOOST_CONCEPT_ASSERT(( CVector<Vector> ));
-    BOOST_CONCEPT_ASSERT(( CMatrix<Matrix> ));
-    BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible<Solver> ));
-
+public:
+    BOOST_CONCEPT_ASSERT(( CVector<V> ));
+    BOOST_CONCEPT_ASSERT(( CMatrix<M> ));
 
     BOOST_CONCEPT_USAGE( CLinearAlgebra )
     {
-      ConceptUtils::sameType( myVector, Vector( mySolver.compute(myMatrix).solve(myVector) ) );
-      checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
+        x = a * y;
+        c = a * b;
     }
     // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // do not require T to be default constructible.
-    Vector myVector;
-    Matrix myMatrix;
-    Solver mySolver;
+private:
+    M c;
+    const M a, b;
+    V x;
+    const V y;
 
     // ------------------------- Internals ------------------------------------
-  private:
+private:
 
-  }; // end of concept CLinearAlgebra
+}; // end of concept CLinearAlgebra
 
 } // namespace DGtal
 

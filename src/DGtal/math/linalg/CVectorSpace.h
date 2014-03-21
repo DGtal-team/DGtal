@@ -101,9 +101,9 @@ public:
     BOOST_CONCEPT_USAGE( CVectorSpace )
     {
         z.clear();
-        ConceptUtils::sameType(z, T(x + y));
-        ConceptUtils::sameType(z, T(x - y));
-        ConceptUtils::sameType(z, T(a * x));
+        z = x + y;
+        z = x - y;
+        z = a * x;
     }
     // ------------------------- Private Datas --------------------------------
 private:

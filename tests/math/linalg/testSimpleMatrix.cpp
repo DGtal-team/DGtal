@@ -33,6 +33,7 @@
 #include "DGtal/math/linalg/SimpleMatrix.h"
 #include "DGtal/math/linalg/CStaticMatrix.h"
 #include "DGtal/math/linalg/CStaticVector.h"
+#include "DGtal/math/linalg/CLinearAlgebra.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -353,6 +354,7 @@ bool testConcepts()
 		typedef Matrix::ColumnVector Vector;
 		BOOST_CONCEPT_ASSERT(( CStaticMatrix<Matrix> ));
 		BOOST_CONCEPT_ASSERT(( CStaticVector<Vector> ));
+		BOOST_CONCEPT_ASSERT(( CLinearAlgebra<Matrix, Vector> ));
 		return true;
 }
 
