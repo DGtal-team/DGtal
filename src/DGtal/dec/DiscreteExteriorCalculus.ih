@@ -203,7 +203,7 @@ DiscreteExteriorCalculus<D, LAB>::sharp(const KForm<DiscreteExteriorCalculus, 1,
 
     ASSERT( field.coordinates.size() == dimension);
     for (Dimension dim=0; dim<dimension; dim++)
-        ASSERT( field.coordinates[dim].length() == kFormLength(0, duality) );
+        ASSERT( field.coordinates[dim].rows() == kFormLength(0, duality) );
 
     // iterate over points
     for (int kk=0; kk<kFormLength(0, duality); kk++)
@@ -233,7 +233,7 @@ DiscreteExteriorCalculus<D, LAB>::sharp(const KForm<DiscreteExteriorCalculus, 1,
 
             const Index& cell_border_index = cell_border_index_iter->second;
             ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
-            ASSERT( cell_border_index < one_form.container.length() );
+            ASSERT( cell_border_index < one_form.container.rows() );
 
             const Dimension direction = edgeDirection(cell_border, duality);
 

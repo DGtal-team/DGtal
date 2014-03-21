@@ -11,7 +11,7 @@ template <typename Calculus, Duality duality>
 std::ostream&
 operator<<(std::ostream& os, const VectorField<Calculus, duality>& field)
 {
-    return os << duality << " vector field (" << field.coordinates.size() << "x" << field.coordinates[0].length() << ")";
+    return os << duality << " vector field (" << field.coordinates.size() << "x" << field.coordinates[0].rows() << ")";
 }
 
 template <typename Calculus, Duality duality>
@@ -51,7 +51,7 @@ VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
 
     typedef KForm<Calculus, 0, duality> ZeroForm;
     ZeroForm zero_form(calculus);
-    ASSERT( zero_form.container.length() == coordinates[dim].length() );
+    ASSERT( zero_form.container.rows() == coordinates[dim].rows() );
 
     zero_form.container = coordinates[dim];
 

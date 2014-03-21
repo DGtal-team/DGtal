@@ -1,5 +1,7 @@
 
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/math/linalg/EigenLinearAlgebra.h"
+#include "DGtal/math/linalg/SimpleMatrixLinearAlgebra.h"
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/Duality.h"

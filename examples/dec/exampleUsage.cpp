@@ -2,6 +2,7 @@
 using namespace std;
 
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/math/linalg/EigenLinearAlgebra.h"
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/VectorField.h"
@@ -79,7 +80,7 @@ void demo2d()
 
         // create primal 0-form and fill it with eucledian metric
         Calculus::PrimalForm0 primal_zero_form(calculus);
-        for (Calculus::PrimalForm0::Index index=0; index<primal_zero_form.size(); index++)
+        for (Calculus::PrimalForm0::Index index=0; index<primal_zero_form.container.rows(); index++)
         {
             const Calculus::PrimalForm0::SCell& cell = primal_zero_form.getSCell(index);
             const double value = Z2i::l2Metric(cell.myCoordinates, center)/2;
@@ -158,7 +159,7 @@ void demo2d()
 
         // create dual 0-form and fill it with eucledian metric
         Calculus::DualForm0 dual_zero_form(calculus);
-        for (Calculus::DualForm0::Index index=0; index<dual_zero_form.size(); index++)
+        for (Calculus::DualForm0::Index index=0; index<dual_zero_form.container.rows(); index++)
         {
             const Calculus::DualForm0::SCell& cell = dual_zero_form.getSCell(index);
             const double value = Z2i::l2Metric(cell.myCoordinates, center)/2;
