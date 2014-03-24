@@ -17,6 +17,7 @@ struct VectorField
     const Calculus& calculus;
 
     VectorField(const Calculus& _calculus);
+    VectorField& operator=(const VectorField& _vector_field);
 
     template <typename Board>
     void

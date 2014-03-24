@@ -8,6 +8,15 @@ VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
 }
 
 template <typename Calculus, Duality duality>
+VectorField<Calculus, duality>&
+VectorField<Calculus, duality>::operator=(const VectorField& _vector_field)
+{
+    coordinates = _vector_field.coordinates;
+    const_cast<Calculus&>(calculus) = _vector_field.calculus;
+    return *this;
+}
+
+template <typename Calculus, Duality duality>
 std::ostream&
 operator<<(std::ostream& os, const VectorField<Calculus, duality>& field)
 {

@@ -16,6 +16,7 @@ struct AllSCellMap : public std::map<typename Calculus::SCell, V>
 		typedef typename Container::iterator Iterator;
 
 		AllSCellMap(const Calculus& _calculus);
+		AllSCellMap& operator=(const AllSCellMap& _scell_map);
 
 		void writeImage(const std::string& filename, const Value& value_outside = -1, const Value& value_inside_default = 0) const;
 

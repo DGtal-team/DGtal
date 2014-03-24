@@ -12,6 +12,15 @@ AllSCellMap<Calculus, V>::AllSCellMap(const Calculus& _calculus)
 }
 
 template <typename Calculus, typename V>
+AllSCellMap<Calculus, V>&
+AllSCellMap<Calculus, V>::operator=(const AllSCellMap& _scell_map)
+{
+		Container::operator=(_scell_map);
+		const_cast<Calculus&>(calculus) = _scell_map.calculus;
+		return *this;
+}
+
+template <typename Calculus, typename V>
 void
 AllSCellMap<Calculus, V>::writeImage(const std::string& filename, const Value& value_outside, const Value& value_inside_default) const
 {

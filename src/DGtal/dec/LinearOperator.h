@@ -9,8 +9,16 @@ struct LinearOperator
     typedef C Calculus;
     typedef typename Calculus::LinearAlgebra::Matrix Container;
 
-    const Calculus& calculus;
+    typedef typename Calculus::SCell SCell;
+    typedef typename Calculus::Index Index;
+    typedef typename Calculus::Scalar Scalar;
 
+    BOOST_STATIC_ASSERT(( order_in >= 0 ));
+    BOOST_STATIC_ASSERT(( order_in <= Calculus::dimension ));
+    BOOST_STATIC_ASSERT(( order_out >= 0 ));
+    BOOST_STATIC_ASSERT(( order_out <= Calculus::dimension ));
+
+    const Calculus& calculus;
     Container container;
 
     typedef KForm<Calculus, order_in, duality_in> InputKForm;
@@ -18,6 +26,9 @@ struct LinearOperator
 
     LinearOperator(const Calculus& _calculus);
     LinearOperator(const Calculus& _calculus, const Container& _container);
+    LinearOperator& operator=(const LinearOperator& _operator);
+
+    void clear();
 };
 
 // composition operator between linear operator
@@ -39,6 +50,11 @@ operator*(const LinearOperator<Calculus, order_in, duality_in, order_out, dualit
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
 operator+(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b);
+
+// linear operator subtraction
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+operator-(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b);
 
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 std::ostream&
