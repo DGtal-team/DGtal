@@ -93,6 +93,18 @@ operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus)
 
 template <typename D, typename LAB>
 template <Order order, Duality duality>
+LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order, duality>
+DiscreteExteriorCalculus<D, LAB>::identity() const
+{
+
+    typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order, duality> Operator;
+    Operator id;
+    id.setIdentity();
+    return id;
+}
+
+template <typename D, typename LAB>
+template <Order order, Duality duality>
 LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order+1, duality>
 DiscreteExteriorCalculus<D, LAB>::derivative() const
 {
