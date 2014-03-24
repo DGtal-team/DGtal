@@ -28,7 +28,8 @@ struct LinearOperator
     LinearOperator(const Calculus& _calculus, const Container& _container);
     LinearOperator& operator=(const LinearOperator& _operator);
 
-    void clear();
+    void
+    clear();
 };
 
 // composition operator between linear operator
