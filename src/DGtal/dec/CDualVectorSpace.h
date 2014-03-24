@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CDualityLinearAlgebra.h
+ * @file CDualVectorSpace.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/03/20
  *
- * Header file for concept CDualityLinearAlgebra.cpp
+ * Header file for concept CDualVectorSpace.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDualityLinearAlgebra_RECURSES)
-#error Recursive header files inclusion detected in CDualityLinearAlgebra.h
-#else // defined(CDualityLinearAlgebra_RECURSES)
+#if defined(CDualVectorSpace_RECURSES)
+#error Recursive header files inclusion detected in CDualVectorSpace.h
+#else // defined(CDualVectorSpace_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDualityLinearAlgebra_RECURSES
+#define CDualVectorSpace_RECURSES
 
-#if !defined CDualityLinearAlgebra_h
+#if !defined CDualVectorSpace_h
 /** Prevents repeated inclusion of headers. */
-#define CDualityLinearAlgebra_h
+#define CDualVectorSpace_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,9 +49,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CDualityLinearAlgebra
+// class CDualVectorSpace
 /**
-Description of \b concept '\b CDualityLinearAlgebra' <p>
+Description of \b concept '\b CDualVectorSpace' <p>
 @ingroup Concepts
 @brief Aim:
 Lift linear algebra container concept into the dec package.
@@ -78,10 +78,10 @@ Lift linear algebra container concept into the dec package.
 
 ### Notes
 
-@tparam T the type that should be a model of CDualityLinearAlgebra.
+@tparam T the type that should be a model of CDualVectorSpace.
 */
 template <typename T>
-struct CDualityLinearAlgebra
+struct CDualVectorSpace
 {
     // ----------------------- Concept checks ------------------------------
 public:
@@ -91,17 +91,10 @@ public:
 
     BOOST_CONCEPT_ASSERT(( CVectorSpace<Container> ));
 
-    BOOST_CONCEPT_USAGE( CDualityLinearAlgebra )
+    BOOST_CONCEPT_USAGE( CDualVectorSpace )
     {
         T t0(calculus_const_ref);
         T t1(calculus_const_ref, container_const_ref);
-        ConceptUtils::sameType(z, T(x + y));
-        //ConceptUtils::sameType(z, T(x - y));
-        ConceptUtils::sameType(z, T(a * x));
-        checkConstConstraints();
-    }
-    void checkConstConstraints() const
-    {
     }
     // ------------------------- Private Datas --------------------------------
 private:
@@ -110,19 +103,18 @@ private:
     Scalar a;
     const Container& container_const_ref;
     const Calculus& calculus_const_ref;
-    Scalar scalar;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CDualityLinearAlgebra
+}; // end of concept CDualVectorSpace
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDualityLinearAlgebra_h
+#endif // !defined CDualVectorSpace_h
 
-#undef CDualityLinearAlgebra_RECURSES
-#endif // else defined(CDualityLinearAlgebra_RECURSES)
+#undef CDualVectorSpace_RECURSES
+#endif // else defined(CDualVectorSpace_RECURSES)
