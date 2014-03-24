@@ -75,9 +75,9 @@ VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
 
     typedef KForm<Calculus, 0, duality> ZeroForm;
     ZeroForm zero_form(calculus);
-    ASSERT( zero_form.coordinates.rows() == coordinates[dim].rows() );
+    ASSERT( zero_form.container.rows() == coordinates[dim].rows() );
 
-    zero_form.coordinates = coordinates[dim];
+    zero_form.container = coordinates[dim];
 
     return zero_form;
 }
