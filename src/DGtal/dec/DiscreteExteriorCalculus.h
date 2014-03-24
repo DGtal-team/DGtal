@@ -38,6 +38,7 @@ struct DiscreteExteriorCalculus
 
     typedef typename LinearAlgebra::Index Index;
     typedef typename LinearAlgebra::Scalar Scalar;
+    typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
 
     // general members
     Domain domain;
