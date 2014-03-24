@@ -40,8 +40,8 @@ struct DiscreteExteriorCalculus
     typedef typename LinearAlgebra::Scalar Scalar;
 
     // general members
-    const Domain domain;
-    const KSpace kspace;
+    Domain domain;
+    KSpace kspace;
 
     // common vector fields typedef
     typedef VectorField<DiscreteExteriorCalculus, PRIMAL> PrimalVectorField;

@@ -81,7 +81,7 @@ Lift linear algebra container concept into the dec package.
 @tparam T the type that should be a model of CDualVectorSpace.
 */
 template <typename T>
-struct CDualVectorSpace
+struct CDualVectorSpace : CVectorSpace<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:

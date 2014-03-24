@@ -13,6 +13,7 @@ struct KForm
 
     typedef typename Calculus::SCell SCell;
     typedef typename Calculus::Index Index;
+    typedef typename Calculus::Scalar Scalar;
 
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= Calculus::dimension ));
@@ -22,12 +23,15 @@ struct KForm
 
     KForm(const Calculus& _calculus);
     KForm(const Calculus& _calculus, const Container& _container);
+    KForm& operator=(const KForm& _form);
 
     template <typename SCellMap>
     void applyToSCellMap(SCellMap& scell_map) const;
 
     SCell
     getSCell(const Index& index) const;
+
+    void clear();
 };
 
 template <typename Calculus, Order order, Duality duality>
@@ -38,6 +42,11 @@ operator<<(std::ostream& os, const KForm<Calculus, order, duality>& form);
 template <typename Calculus, Order order, Duality duality>
 KForm<Calculus, order, duality>
 operator+(const KForm<Calculus, order, duality>& form_a, const KForm<Calculus, order, duality>& form_b);
+
+// k-forms subtraction
+template <typename Calculus, Order order, Duality duality>
+KForm<Calculus, order, duality>
+operator-(const KForm<Calculus, order, duality>& form_a, const KForm<Calculus, order, duality>& form_b);
 
 // k-forms scalar multiplication
 template <typename Calculus, Order order, Duality duality>

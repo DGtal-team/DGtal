@@ -3,7 +3,7 @@ template <typename Calculus, Order order_in, Duality duality_in, Order order_out
 LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(const Calculus& _calculus)
     : calculus(_calculus), container(_calculus.kFormLength(order_out, duality_out), _calculus.kFormLength(order_in, duality_in))
 {
-		container.clear();
+    clear();
 }
 
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
@@ -12,6 +12,22 @@ LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOp
 {
     ASSERT( calculus.kFormLength(order_out, duality_out) == container.rows() );
     ASSERT( calculus.kFormLength(order_in, duality_in) == container.cols() );
+}
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>&
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::operator=(const LinearOperator& _operator)
+{
+    container = _operator.container;
+    const_cast<Calculus&>(calculus) = _operator.calculus;
+    return *this;
+}
+
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+void
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::clear()
+{
+    container.clear();
 }
 
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
@@ -40,7 +56,15 @@ operator+(const LinearOperator<Calculus, order_in, duality_in, order_out, dualit
     return OutputOperator(linear_operator_a.calculus, linear_operator_a.container + linear_operator_b.container);
 }
 
-// linear operator scalar multiplication
+template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
+operator-(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b)
+{
+    //ASSERT( operator_right.calculus == operator_right.calculus );
+    typedef LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> OutputOperator;
+    return OutputOperator(linear_operator_a.calculus, linear_operator_a.container - linear_operator_b.container);
+}
+
 template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
 operator*(const typename Calculus::Scalar& scalar, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator)
