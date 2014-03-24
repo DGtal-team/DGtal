@@ -96,6 +96,7 @@ public:
 
     BOOST_CONCEPT_USAGE( CMatrix )
     {
+        z.setIdentity();
         ConceptUtils::sameType(a, x(i, j));
         ConceptUtils::sameType(a_ref, z(i, j));
         ConceptUtils::sameType(i, x.rows());
