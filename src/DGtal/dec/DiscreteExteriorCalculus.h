@@ -94,6 +94,11 @@ struct DiscreteExteriorCalculus
     template <typename DigitalSet>
     DiscreteExteriorCalculus(const DigitalSet& _set);
 
+    // return identity operator from order-kforms to order-kforms
+    template <Order order, Duality duality>
+    LinearOperator<DiscreteExteriorCalculus, order, duality, order, duality>
+    identity() const;
+
     // return exterior derivative operator from order-forms to (order+1)-forms
     template <Order order, Duality duality>
     LinearOperator<DiscreteExteriorCalculus, order, duality, order+1, duality>
