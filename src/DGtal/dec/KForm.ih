@@ -36,11 +36,11 @@ KForm<Calculus, order, duality>::applyToSCellMap(SCellMap& scell_map) const
 }
 
 template <typename Calculus, Order order, Duality duality>
-typename KForm<Calculus, order, duality>::SCell
-KForm<Calculus, order, duality>::getSCell(const KForm<Calculus, order, duality>::Index& index) const
+typename Calculus::SCell
+KForm<Calculus, order, duality>::getSCell(const typename Calculus::Index& index) const
 {
     const Order& actual_order = calculus.actualOrder(order, duality);
-    const SCell& cell = calculus.index_cells[actual_order][index];
+    const typename Calculus::SCell& cell = calculus.index_cells[actual_order][index];
     ASSERT( calculus.kspace.sDim(cell) == actual_order );
     return cell;
 }

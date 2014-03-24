@@ -12,7 +12,6 @@ struct VectorField
     typedef C Calculus;
 
     typedef typename Calculus::Dimension Dimension;
-    typedef typename Calculus::Index Index;
     typedef typename Calculus::Scalar Scalar;
 
     typedef boost::array<typename Calculus::LinearAlgebra::Vector, Calculus::dimension> Coordinates;
