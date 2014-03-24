@@ -94,7 +94,6 @@ struct CVectorSpace : boost::Assignable<T>
     // ----------------------- Concept checks ------------------------------
 public:
     typedef typename T::Scalar Scalar;
-    typedef typename T::Index Index;
 
     BOOST_CONCEPT_ASSERT(( CEuclideanRing<Scalar> ));
 

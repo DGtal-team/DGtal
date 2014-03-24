@@ -9,8 +9,6 @@ struct LinearOperator
     typedef C Calculus;
     typedef typename Calculus::LinearAlgebra::Matrix Container;
 
-    typedef typename Calculus::SCell SCell;
-    typedef typename Calculus::Index Index;
     typedef typename Calculus::Scalar Scalar;
 
     BOOST_STATIC_ASSERT(( order_in >= 0 ));

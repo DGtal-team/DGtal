@@ -11,8 +11,6 @@ struct KForm
     typedef C Calculus;
     typedef typename Calculus::LinearAlgebra::Vector Container;
 
-    typedef typename Calculus::SCell SCell;
-    typedef typename Calculus::Index Index;
     typedef typename Calculus::Scalar Scalar;
 
     BOOST_STATIC_ASSERT(( order >= 0 ));
@@ -28,8 +26,8 @@ struct KForm
     template <typename SCellMap>
     void applyToSCellMap(SCellMap& scell_map) const;
 
-    SCell
-    getSCell(const Index& index) const;
+    typename Calculus::SCell
+    getSCell(const typename Calculus::Index& index) const;
 
     void
     clear();
