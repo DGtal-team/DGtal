@@ -98,8 +98,8 @@ DiscreteExteriorCalculus<D, LAB>::identity() const
 {
 
     typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order, duality> Operator;
-    Operator id;
-    id.setIdentity();
+    Operator id(*this);
+    id.container.setIdentity();
     return id;
 }
 

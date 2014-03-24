@@ -39,6 +39,17 @@ struct HodgeTester
 
     static bool test(const Calculus& calculus)
     {
+        trace.info() << "testing identity operators " << order << endl;
+
+        { // test identity operator
+            typedef LinearOperator<Calculus, order, PRIMAL, order, PRIMAL> PrimalIdentity;
+            PrimalIdentity primal_identity = calculus.template identity<order, PRIMAL>();
+            if (!is_identity(primal_identity.container, 1)) return false;
+            typedef LinearOperator<Calculus, order, DUAL, order, DUAL> DualIdentity;
+						DualIdentity dual_identity = calculus.template identity<order, DUAL>();
+            if (!is_identity(dual_identity.container, 1)) return false;
+        }
+
         typedef LinearOperator<Calculus, order, PRIMAL, Calculus::dimension-order, DUAL> PrimalHodge;
         typedef LinearOperator<Calculus, Calculus::dimension-order, DUAL, order, PRIMAL> DualHodge;
         const PrimalHodge primal_hodge = calculus.template primalHodge<order>();
