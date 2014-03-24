@@ -86,7 +86,7 @@ AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) con
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
         if (tci==this->end()) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, transparent));
-        else board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
+        else if (finite(tci->second)) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
         board << cell;
     }
 }
