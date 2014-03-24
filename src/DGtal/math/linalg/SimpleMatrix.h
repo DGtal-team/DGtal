@@ -132,6 +132,7 @@ namespace DGtal
      * @pre the matrix is a square one.
      */
     void identity();
+    inline void setIdentity() { identity(); }
 
     /**
      * Get row vector.
