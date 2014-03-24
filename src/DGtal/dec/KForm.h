@@ -31,7 +31,8 @@ struct KForm
     SCell
     getSCell(const Index& index) const;
 
-    void clear();
+    void
+    clear();
 };
 
 template <typename Calculus, Order order, Duality duality>

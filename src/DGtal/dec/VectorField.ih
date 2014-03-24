@@ -4,7 +4,14 @@ VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
     : calculus(_calculus)
 {
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
-        coordinates[dim] = Coordinate(calculus.kFormLength(0, duality));
+        coordinates[dim] = typename Calculus::LinearAlgebra::Vector(calculus.kFormLength(0, duality));
+    clear();
+}
+
+template <typename Calculus, Duality duality>
+VectorField<Calculus, duality>::VectorField(const Calculus& _calculus, const Coordinates& _coordinates)
+    : calculus(_calculus), coordinates(_coordinates)
+{
 }
 
 template <typename Calculus, Duality duality>
@@ -14,6 +21,14 @@ VectorField<Calculus, duality>::operator=(const VectorField& _vector_field)
     coordinates = _vector_field.coordinates;
     const_cast<Calculus&>(calculus) = _vector_field.calculus;
     return *this;
+}
+
+template <typename Calculus, Duality duality>
+void
+VectorField<Calculus, duality>::clear()
+{
+    for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+        coordinates[dim].clear();
 }
 
 template <typename Calculus, Duality duality>
@@ -60,10 +75,43 @@ VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
 
     typedef KForm<Calculus, 0, duality> ZeroForm;
     ZeroForm zero_form(calculus);
-    ASSERT( zero_form.container.rows() == coordinates[dim].rows() );
+    ASSERT( zero_form.coordinates.rows() == coordinates[dim].rows() );
 
-    zero_form.container = coordinates[dim];
+    zero_form.coordinates = coordinates[dim];
 
     return zero_form;
+}
+
+template <typename Calculus, Duality duality>
+VectorField<Calculus, duality>
+operator+(const VectorField<Calculus, duality>& _vector_field_a, const VectorField<Calculus, duality>& _vector_field_b)
+{
+    typedef typename VectorField<Calculus, duality>::Coordinates Coordinates;
+    Coordinates coordinates;
+    for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+        coordinates[dim] = _vector_field_a.coordinates[dim] + _vector_field_b.coordinates[dim];
+    return VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
+}
+
+template <typename Calculus, Duality duality>
+VectorField<Calculus, duality>
+operator-(const VectorField<Calculus, duality>& _vector_field_a, const VectorField<Calculus, duality>& _vector_field_b)
+{
+    typedef typename VectorField<Calculus, duality>::Coordinates Coordinates;
+    Coordinates coordinates;
+    for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+        coordinates[dim] = _vector_field_a.coordinates[dim] - _vector_field_b.coordinates[dim];
+    return VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
+}
+
+template <typename Calculus, Duality duality>
+VectorField<Calculus, duality>
+operator*(const typename Calculus::Scalar& _scalar, const VectorField<Calculus, duality>& _vector_field)
+{
+    typedef typename VectorField<Calculus, duality>::Coordinates Coordinates;
+    Coordinates coordinates;
+    for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+        coordinates[dim] = _scalar * _vector_field.coordinates[dim];
+    return VectorField<Calculus, duality>(_vector_field.calculus, coordinates);
 }
 

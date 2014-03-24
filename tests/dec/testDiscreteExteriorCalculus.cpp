@@ -221,6 +221,9 @@ test_concepts()
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualForm1> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualForm2> ));
 
+        BOOST_CONCEPT_ASSERT(( CVectorSpace<typename Calculus::PrimalVectorField> ));
+        BOOST_CONCEPT_ASSERT(( CVectorSpace<typename Calculus::DualVectorField> ));
+
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::PrimalDerivative0> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::PrimalDerivative1> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualDerivative0> ));
@@ -232,6 +235,7 @@ test_concepts()
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualHodge0> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualHodge1> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualHodge2> ));
+
     }
 
     { // 3d
@@ -244,6 +248,9 @@ test_concepts()
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualForm1> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualForm2> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::DualForm3> ));
+
+        BOOST_CONCEPT_ASSERT(( CVectorSpace<typename Calculus::PrimalVectorField> ));
+        BOOST_CONCEPT_ASSERT(( CVectorSpace<typename Calculus::DualVectorField> ));
 
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::PrimalDerivative0> ));
         BOOST_CONCEPT_ASSERT(( CDualVectorSpace<typename Calculus::PrimalDerivative1> ));
