@@ -25,7 +25,7 @@ KForm<Calculus, order, duality>::operator=(const KForm& _form)
 template <typename Calculus, Order order, Duality duality>
 template <typename SCellMap>
 void
-KForm<Calculus, order, duality>::applyToSCellMap(SCellMap& scell_map) const
+KForm<Calculus, order, duality>::applyToAccum(SCellMap& scell_map) const
 {
     Order primal_order = order;
     if (duality == DUAL)

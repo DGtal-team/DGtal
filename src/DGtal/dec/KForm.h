@@ -24,7 +24,7 @@ struct KForm
     KForm& operator=(const KForm& _form);
 
     template <typename SCellMap>
-    void applyToSCellMap(SCellMap& scell_map) const;
+    void applyToAccum(SCellMap& scell_map) const;
 
     typename Calculus::SCell
     getSCell(const typename Calculus::Index& index) const;

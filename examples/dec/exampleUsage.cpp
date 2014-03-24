@@ -96,7 +96,7 @@ void demo2d()
             Board2D board;
             board << domain;
             Accum accum(calculus);
-            primal_zero_form.applyToSCellMap(accum);
+            primal_zero_form.applyToAccum(accum);
             accum.display2D(board, colormap);
             board.saveSVG("demo_primal_zero_form.svg");
         }
@@ -112,7 +112,7 @@ void demo2d()
             Board2D board;
             board << domain;
             Accum accum(calculus);
-            primal_one_form.applyToSCellMap(accum);
+            primal_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
             primal_vector_field.display2D(board);
             board.saveSVG("demo_primal_one_form.svg");
@@ -128,7 +128,7 @@ void demo2d()
             Board2D board;
             board << domain;
             Accum accum(calculus);
-            flat_sharp_primal_one_form.applyToSCellMap(accum);
+            flat_sharp_primal_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
             sharp_flat_primal_vector_field.display2D(board);
             board.saveSVG("demo_primal_one_form_sharp_flat.svg");
@@ -145,7 +145,7 @@ void demo2d()
             Board2D board;
             board << domain;
             Accum accum(calculus);
-            dual_one_form.applyToSCellMap(accum);
+            dual_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
             dual_vector_field.display2D(board);
             primal_vector_field.display2D(board);
@@ -173,7 +173,7 @@ void demo2d()
             Board2D board;
             board << domain;
             Accum accum(calculus);
-            dual_zero_form.applyToSCellMap(accum);
+            dual_zero_form.applyToAccum(accum);
             accum.display2D(board, colormap);
             board.saveSVG("demo_dual_zero_form.svg");
         }
@@ -189,7 +189,7 @@ void demo2d()
             Board2D board;
             board << domain;
             Accum accum(calculus);
-            dual_one_form.applyToSCellMap(accum);
+            dual_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
             dual_vector_field.display2D(board);
             board.saveSVG("demo_dual_one_form.svg");
@@ -206,7 +206,7 @@ void demo2d()
             Board2D board;
             board << domain;
             Accum accum(calculus);
-            primal_one_form.applyToSCellMap(accum);
+            primal_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
             primal_vector_field.display2D(board);
             dual_vector_field.display2D(board);
@@ -254,13 +254,13 @@ void test2d(const Options& options)
     Calculus::PrimalForm0 scalar_field(calculus);
     scalar_field.container(0) = -1;
     scalar_field.container(1) = 1;
-    scalar_field.applyToSCellMap(accum);
+    scalar_field.applyToAccum(accum);
     trace.info() << scalar_field << endl;
 
     Calculus::DualForm0 dual_zero_form(calculus);
     dual_zero_form.container(0) = -2;
     dual_zero_form.container(1) = 2;
-    dual_zero_form.applyToSCellMap(accum);
+    dual_zero_form.applyToAccum(accum);
     trace.info() << dual_zero_form << endl;
 
     accum.writeImage("accum2d.mha");
@@ -294,14 +294,14 @@ void test2d(const Options& options)
     trace.info() << (d0 * scalar_field) << endl;
 
     Board2D board_one_hodge;
-    (calculus.primalHodge<1>() * primal_one_form).applyToSCellMap(accum);
+    (calculus.primalHodge<1>() * primal_one_form).applyToAccum(accum);
     accum.display2D(board_one_hodge, GradientColorMap<double, CMAP_JET>(-2,2));
     primal_vector_field.display2D(board_one_hodge);
     dual_vector_field.display2D(board_one_hodge);
     board_one_hodge.saveSVG("board_one_hodge.svg");
 
     Board2D board_two_hodge;
-    (calculus.dualHodge<1>() * calculus.primalHodge<1>() * primal_one_form).applyToSCellMap(accum);
+    (calculus.dualHodge<1>() * calculus.primalHodge<1>() * primal_one_form).applyToAccum(accum);
     accum.display2D(board_two_hodge, GradientColorMap<double, CMAP_JET>(-2,2));
     calculus.sharp(calculus.primalHodge<1>() * primal_one_form).display2D(board_two_hodge);
     board_two_hodge.saveSVG("board_two_hodge.svg");
@@ -345,13 +345,13 @@ void test3d(const Options& options, Viewer& viewer)
     Calculus::PrimalForm0 scalar_field(calculus);
     scalar_field.container(0) = 1;
     scalar_field.container(1) = 2;
-    scalar_field.applyToSCellMap(accum);
+    scalar_field.applyToAccum(accum);
     trace.info() << scalar_field << endl;
 
     Calculus::DualForm0 dual_zero_form(calculus);
     dual_zero_form.container(0) = 3;
     dual_zero_form.container(1) = 4;
-    dual_zero_form.applyToSCellMap(accum);
+    dual_zero_form.applyToAccum(accum);
     trace.info() << dual_zero_form << endl;
 
     accum.writeImage("accum3d.mha");
@@ -368,7 +368,7 @@ void test3d(const Options& options, Viewer& viewer)
     trace.info() << dual_one_form << endl;
     trace.info() << dual_vector_field << endl;
 
-    (calculus.primalHodge<1>() * primal_one_form).applyToSCellMap(accum);
+    (calculus.primalHodge<1>() * primal_one_form).applyToAccum(accum);
 
     Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
     Calculus::DualDerivative2 d2p = calculus.derivative<2, DUAL>();
