@@ -2,6 +2,7 @@ if (WITH_CAIRO AND WITH_EIGEN)
 
     set(DGTAL_EXAMPLES_SRC_DEC
         exampleDiscreteExteriorCalculusUsage
+        exampleDiscreteExteriorCalculusSolve
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
