@@ -45,7 +45,10 @@ void solve2d()
     { // simplicial llt
         trace.beginBlock("simplicial llt");
 
-        Eigen::SimplicialLLT<Calculus::Matrix> solver;
+        typedef Eigen::SimplicialLLT<Calculus::Matrix> Solver;
+        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix, Eigen::ComputationInfo> ));
+
+        Solver solver;
         solver.compute(laplacian.container);
         Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
 
@@ -59,13 +62,16 @@ void solve2d()
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_simplicialllt.svg");
+        board.saveSVG("solve_simplicial_llt.svg");
     }
 
     { // simplicial ldlt
         trace.beginBlock("simplicial ldlt");
 
-        Eigen::SimplicialLLT<Calculus::Matrix> solver;
+        typedef Eigen::SimplicialLDLT<Calculus::Matrix> Solver;
+        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix, Eigen::ComputationInfo> ));
+
+        Solver solver;
         solver.compute(laplacian.container);
         Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
 
@@ -79,13 +85,16 @@ void solve2d()
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_simplicialldlt.svg");
+        board.saveSVG("solve_simplicial_ldlt.svg");
     }
 
     { // conjugate gradient
         trace.beginBlock("conjugate gradient");
 
-        Eigen::ConjugateGradient<Calculus::Matrix> solver;
+        typedef Eigen::ConjugateGradient<Calculus::Matrix> Solver;
+        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix, Eigen::ComputationInfo> ));
+
+        Solver solver;
         solver.compute(laplacian.container);
         Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
 
@@ -99,13 +108,16 @@ void solve2d()
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_conjugategradient.svg");
+        board.saveSVG("solve_conjugate_gradient.svg");
     }
 
     { // biconjugate gradient stabilized
-        trace.beginBlock("biconjugate gradient stabilized");
+        trace.beginBlock("biconjugate gradient stabilized (bicgstab)");
 
-        Eigen::BiCGSTAB<Calculus::Matrix> solver;
+        typedef Eigen::BiCGSTAB<Calculus::Matrix> Solver;
+        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix, Eigen::ComputationInfo> ));
+
+        Solver solver;
         solver.compute(laplacian.container);
         Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
 
@@ -125,7 +137,11 @@ void solve2d()
     { // sparselu
         trace.beginBlock("sparse lu");
 
-        Eigen::SparseLU<Calculus::Matrix> solver;
+        typedef Eigen::SparseLU<Calculus::Matrix> Solver;
+        //FIXME sparselu solver doesn't return self from compute
+        //BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix, Eigen::ComputationInfo> ));
+
+        Solver solver;
         solver.compute(laplacian.container);
         Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
 
@@ -139,13 +155,17 @@ void solve2d()
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_sparselu.svg");
+        board.saveSVG("solve_sparse_lu.svg");
     }
 
     { // sparseqr
         trace.beginBlock("sparse qr");
 
-        Eigen::SparseQR<Calculus::Matrix, Eigen::COLAMDOrdering<Calculus::Matrix::Index> > solver;
+        typedef Eigen::SparseQR<Calculus::Matrix, Eigen::COLAMDOrdering<Calculus::Matrix::Index> > Solver;
+        //FIXME sparseqr solver doesn't return self from compute
+        //BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix, Eigen::ComputationInfo> ));
+
+        Solver solver;
         solver.compute(laplacian.container);
         Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
 
@@ -159,7 +179,7 @@ void solve2d()
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_sparseqr.svg");
+        board.saveSVG("solve_sparse_qr.svg");
     }
 
     trace.endBlock();
