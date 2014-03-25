@@ -12,21 +12,14 @@
 
 struct EigenDenseLinearAlgebra
 {
-    typedef Eigen::VectorXd::Index Index;
-    typedef Eigen::VectorXd::Scalar Scalar;
     typedef Eigen::VectorXd Vector;
     typedef Eigen::MatrixXd Matrix;
-    typedef Eigen::ConjugateGradient<Matrix> Solver;
 };
 
 struct EigenSparseLinearAlgebra
 {
-    typedef Eigen::VectorXd::Index Index;
-    typedef Eigen::VectorXd::Scalar Scalar;
     typedef Eigen::VectorXd Vector;
-    typedef Eigen::SparseMatrix<Scalar, Eigen::ColMajor> Matrix;
-    //typedef Eigen::SparseQR<Matrix, Eigen::COLAMDOrdering<Index> > Solver;
-    typedef Eigen::ConjugateGradient<Matrix> Solver;
+    typedef Eigen::SparseMatrix<Vector::Scalar, Eigen::ColMajor> Matrix;
 };
 
 #endif
