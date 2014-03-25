@@ -8,7 +8,7 @@
 #include "DGtal/helpers/StdDefs.h"
 using namespace DGtal;
 
-inline DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> generate2dRing(const Z2i::Domain& domain)
+inline DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> generateRing(const Z2i::Domain& domain)
 {
     Z2i::DigitalSet set(domain);
 
@@ -37,6 +37,34 @@ inline DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> ge
     //set.insert(Z2i::Point(5,5));
 
     return DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend>(set);
+}
+
+#include <Eigen/SparseCholesky>
+#include <Eigen/IterativeLinearSolvers>
+#include <Eigen/SparseLU>
+#include <Eigen/SparseQR>
+
+std::ostream& operator<<(std::ostream& os, const Eigen::ComputationInfo& info)
+{
+    os << "solve_info = ";
+
+    switch (info)
+    {
+        case Eigen::Success:
+            os << "success";
+            break;
+        case Eigen::NumericalIssue:
+            os << "numerical_issue";
+            break;
+        case Eigen::NoConvergence:
+            os << "no_convergence";
+            break;
+        case Eigen::InvalidInput:
+            os << "invalid_input";
+            break;
+    }
+
+    return os;
 }
 
 #endif

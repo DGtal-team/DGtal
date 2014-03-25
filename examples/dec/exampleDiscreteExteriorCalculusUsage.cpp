@@ -16,7 +16,7 @@ void usage2d()
 
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
-    Calculus calculus = generate2dRing(domain);
+    Calculus calculus = generateRing(domain);
     trace.info() << calculus;
 
     {
