@@ -22,9 +22,9 @@ struct DiscreteExteriorCalculus
     typedef D Domain;
     typedef LA LinearAlgebra;
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<typename LinearAlgebra::Matrix> ));
     BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<typename LinearAlgebra::Vector> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<typename LinearAlgebra::Matrix, typename LinearAlgebra::Vector> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<typename LinearAlgebra::Matrix> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<typename LinearAlgebra::Vector, typename LinearAlgebra::Matrix> ));
 
     typedef typename Domain::Space::Dimension Dimension;
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
@@ -36,8 +36,8 @@ struct DiscreteExteriorCalculus
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
-    typedef typename LinearAlgebra::Index Index;
-    typedef typename LinearAlgebra::Scalar Scalar;
+    typedef typename LinearAlgebra::Vector::Index Index;
+    typedef typename LinearAlgebra::Vector::Scalar Scalar;
     typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
 
     // general members
