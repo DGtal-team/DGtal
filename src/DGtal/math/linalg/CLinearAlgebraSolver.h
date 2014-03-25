@@ -17,56 +17,62 @@
 #pragma once
 
 /**
- * @file CLinearAlgebra.h
+ * @file CLinearAlgebraSolver.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/03/21
+ * @date 2014/03/25
  *
- * Header file for concept CLinearAlgebra.cpp
+ * Header file for concept CLinearAlgebraSolver.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CLinearAlgebra_RECURSES)
-#error Recursive header files inclusion detected in CLinearAlgebra.h
-#else // defined(CLinearAlgebra_RECURSES)
+#if defined(CLinearAlgebraSolver_RECURSES)
+#error Recursive header files inclusion detected in CLinearAlgebraSolver.h
+#else // defined(CLinearAlgebraSolver_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CLinearAlgebra_RECURSES
+#define CLinearAlgebraSolver_RECURSES
 
-#if !defined CLinearAlgebra_h
+#if !defined CLinearAlgebraSolver_h
 /** Prevents repeated inclusion of headers. */
-#define CLinearAlgebra_h
+#define CLinearAlgebraSolver_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/linalg/CMatrix.h"
-#include "DGtal/math/linalg/CVector.h"
+#include "DGtal/math/linalg/CLinearAlgebra.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CLinearAlgebra
+// class CLinearAlgebraSolver
 /**
-Description of \b concept '\b CLinearAlgebra' <p>
+Description of \b concept '\b CLinearAlgebraSolver' <p>
 @ingroup Concepts
 @brief Aim:
-Check right multiplication between matrix and vector and internal matrix multiplication.
-Matrix and vector scalar types should be the same.
+Describe a linear solver defined over a linear algebra.
+Problems are of the form:
+
+\e a * \e x = \e y
+
+where \e a type is a model of CMatrix and \e x, \e y type is a model of CVector.
+Matrix and vector types should be a model of CLinearAlgebra.
 
 ### Refinement of
+ - boost::Assignable<T>
 
 ### Associated types
 
 ### Notation
+ - \c Solver : A type that is a model of CLinearAlgebraSolver
  - \c Vector : A type that is a model of CVector
  - \c Matrix : A type that is a model of CMatrix
  - \e x, \e y : object of type \c Vector
- - \e a, \e b, \e c : object of type \c Matrix
+ - \e a : object of type \c Matrix
 
 ### Definitions
 
@@ -74,8 +80,9 @@ Matrix and vector scalar types should be the same.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Matrix vector right multiplication      | x = a * y           |                   | \c Vector              |              |           |                |            |
-| Matrix matrix multiplication      | c = a * b           |                   | \c Matrix              |              |           |                |            |
+| Problem factorization / matrix setter      | solver.compute(\e a)           |                   | \c Solver&              |              |           | return *this.               |            |
+| Problem resolution / vector setter      | x = solver.solve(\e y)           |                   | \c Vector              |              |           |                |            |
+|       |            |                   |               |              |           |                |            |
 
 ### Invariants
 
@@ -83,42 +90,39 @@ Matrix and vector scalar types should be the same.
 
 ### Notes
 
+@tparam T the type that should be a model of CLinearAlgebraSolver.
 @tparam V the type that should be a model of CVector
 @tparam M the type that should be a model of CMatrix
  */
-template <typename V, typename M>
-struct CLinearAlgebra
+template <typename T, typename V, typename M>
+struct CLinearAlgebraSolver : boost::Assignable<T>, CLinearAlgebra<V, M>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    BOOST_CONCEPT_ASSERT(( CVector<V> ));
-    BOOST_CONCEPT_ASSERT(( CMatrix<M> ));
-
-    BOOST_STATIC_ASSERT(( boost::is_same<typename V::Scalar, typename M::Scalar>::value ));
-
-    BOOST_CONCEPT_USAGE( CLinearAlgebra )
+    BOOST_CONCEPT_USAGE( CLinearAlgebraSolver )
     {
-        x = a * y;
-        c = a * b;
+        const_solver = solver.compute(a);
+        x = const_solver.solve(y);
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    M c;
-    const M a, b;
-    V x;
+    const T const_solver;
+    T solver;
+    const M a;
     const V y;
+    V x;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CLinearAlgebra
+}; // end of concept CLinearAlgebraSolver
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CLinearAlgebra_h
+#endif // !defined CLinearAlgebraSolver_h
 
-#undef CLinearAlgebra_RECURSES
-#endif // else defined(CLinearAlgebra_RECURSES)
+#undef CLinearAlgebraSolver_RECURSES
+#endif // else defined(CLinearAlgebraSolver_RECURSES)
