@@ -3,6 +3,8 @@
 
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/math/linalg/CLinearAlgebraSolver.h"
+#include "DGtal/dec/DECSolver.h"
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -12,7 +14,7 @@ inline DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> ge
 {
     Z2i::DigitalSet set(domain);
 
-    // create initial set
+    // create ring
     for (int ii=0; ii<3; ii++)
         for (int jj=2; jj<8; jj++)
         {
@@ -22,49 +24,12 @@ inline DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> ge
             set.insert(Z2i::Point(ii+6,jj));
         }
 
+    //// fill domain
     //for (int ii=0; ii<10; ii++)
     //    for (int jj=0; jj<10; jj++)
     //        set.insert(Z2i::Point(ii,jj));
 
-    //set.insert(Z2i::Point(6,2));
-    //set.insert(Z2i::Point(5,3));
-    //set.insert(Z2i::Point(7,3));
-    //set.insert(Z2i::Point(6,4));
-
-    //set.insert(Z2i::Point(4,4));
-    //set.insert(Z2i::Point(4,5));
-    //set.insert(Z2i::Point(5,4));
-    //set.insert(Z2i::Point(5,5));
-
     return DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend>(set);
-}
-
-#include <Eigen/SparseCholesky>
-#include <Eigen/IterativeLinearSolvers>
-#include <Eigen/SparseLU>
-#include <Eigen/SparseQR>
-
-std::ostream& operator<<(std::ostream& os, const Eigen::ComputationInfo& info)
-{
-    os << "solve_info = ";
-
-    switch (info)
-    {
-        case Eigen::Success:
-            os << "success";
-            break;
-        case Eigen::NumericalIssue:
-            os << "numerical_issue";
-            break;
-        case Eigen::NoConvergence:
-            os << "no_convergence";
-            break;
-        case Eigen::InvalidInput:
-            os << "invalid_input";
-            break;
-    }
-
-    return os;
 }
 
 #endif
