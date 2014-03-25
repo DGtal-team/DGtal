@@ -63,6 +63,7 @@ where \e a type is a model of CMatrix and \e x, \e y type is a model of CVector.
 Matrix and vector types should be a model of CLinearAlgebra.
 
 ### Refinement of
+ - boost::EqualitityComparable<I>
  - boost::Assignable<S>
  - CLinearAlgebra<V, M>
 
@@ -75,6 +76,7 @@ Matrix and vector types should be a model of CLinearAlgebra.
  - \e y : object of type \c Vector, input of the linear problem
  - \e x : object of type \c Vector, solution of the linear problem
  - \e a : object of type \c Matrix
+ - \e info :  object of type \c Info
 
 ### Definitions
 
@@ -84,6 +86,7 @@ Matrix and vector types should be a model of CLinearAlgebra.
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Problem factorization / matrix input      | solver.compute(\e a)           |                   | \c Solver&              |              |           | return *this.               |            |
 | Problem resolution / vector input      | x = solver.solve(\e y)           |                   | \c Vector              |              |           |                |            |
+| Status       | solver.status()           |                   | \c Info              |              |           |                |            |
 
 ### Invariants
 
@@ -94,22 +97,25 @@ Matrix and vector types should be a model of CLinearAlgebra.
 @tparam S the type that should be a model of CLinearAlgebraSolver.
 @tparam V the type that should be a model of CVector
 @tparam M the type that should be a model of CMatrix
+@tparam I the type that should the Info type for the solver
  */
-template <typename S, typename V, typename M>
-struct CLinearAlgebraSolver : boost::Assignable<S>
+template <typename S, typename V, typename M, typename I>
+struct CLinearAlgebraSolver : boost::DefaultConstructible<S>
 {
     // ----------------------- Concept checks ------------------------------
 public:
     typedef S Solver;
     typedef V Vector;
     typedef M Matrix;
+    typedef I Info;
 
     BOOST_CONCEPT_ASSERT(( CLinearAlgebra<Vector, Matrix> ));
 
     BOOST_CONCEPT_USAGE( CLinearAlgebraSolver )
     {
-        const_solver = solver.compute(a);
+        ConceptUtils::sameType(solver, solver.compute(a));
         x = const_solver.solve(y);
+        info = const_solver.info();
     }
     // ------------------------- Private Datas --------------------------------
 private:
@@ -118,6 +124,7 @@ private:
     const Matrix a;
     const Vector y;
     V x;
+    Info info;
 
     // ------------------------- Internals ------------------------------------
 private:
