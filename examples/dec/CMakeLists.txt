@@ -1,7 +1,7 @@
-if (WITH_VISU3D_QGLVIEWER AND WITH_EIGEN AND WITH_ITK)
+if (WITH_CAIRO AND WITH_EIGEN)
 
     set(DGTAL_EXAMPLES_SRC_DEC
-        exampleUsage
+        exampleDiscreteExteriorCalculusUsage
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
@@ -9,4 +9,4 @@ if (WITH_VISU3D_QGLVIEWER AND WITH_EIGEN AND WITH_ITK)
         target_link_libraries (${FILE} DGtal DGtalIO)
     endforeach(FILE)
 
-endif(WITH_VISU3D_QGLVIEWER AND WITH_EIGEN AND WITH_ITK)
+endif(WITH_CAIRO AND WITH_EIGEN)
