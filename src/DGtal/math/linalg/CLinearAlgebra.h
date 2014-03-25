@@ -55,7 +55,8 @@ namespace DGtal
 Description of \b concept '\b CLinearAlgebra' <p>
 @ingroup Concepts
 @brief Aim:
-Check multiplication between static matrix and static vector
+Check multiplication between matrix and vector and internal matrix multiplication.
+Matrix and vector scalar types should be the same.
 
 ### Refinement of
 
@@ -82,16 +83,18 @@ Check multiplication between static matrix and static vector
 
 ### Notes
 
-@tparam M the type that should be a model of CMatrix
 @tparam V the type that should be a model of CVector
+@tparam M the type that should be a model of CMatrix
  */
-template <typename M, typename V>
+template <typename V, typename M>
 struct CLinearAlgebra
 {
     // ----------------------- Concept checks ------------------------------
 public:
     BOOST_CONCEPT_ASSERT(( CVector<V> ));
     BOOST_CONCEPT_ASSERT(( CMatrix<M> ));
+
+    BOOST_STATIC_ASSERT(( boost::is_same<typename V::Scalar, typename M::Scalar>::value ));
 
     BOOST_CONCEPT_USAGE( CLinearAlgebra )
     {
