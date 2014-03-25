@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CDualVectorSpace.h
+ * @file CDECVectorSpace.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/03/20
  *
- * Header file for concept CDualVectorSpace.cpp
+ * Header file for concept CDECVectorSpace.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDualVectorSpace_RECURSES)
-#error Recursive header files inclusion detected in CDualVectorSpace.h
-#else // defined(CDualVectorSpace_RECURSES)
+#if defined(CDECVectorSpace_RECURSES)
+#error Recursive header files inclusion detected in CDECVectorSpace.h
+#else // defined(CDECVectorSpace_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDualVectorSpace_RECURSES
+#define CDECVectorSpace_RECURSES
 
-#if !defined CDualVectorSpace_h
+#if !defined CDECVectorSpace_h
 /** Prevents repeated inclusion of headers. */
-#define CDualVectorSpace_h
+#define CDECVectorSpace_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,9 +49,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CDualVectorSpace
+// class CDECVectorSpace
 /**
-Description of \b concept '\b CDualVectorSpace' <p>
+Description of \b concept '\b CDECVectorSpace' <p>
 @ingroup Concepts
 @brief Aim:
 Lift linear algebra container concept into the dec package.
@@ -78,43 +78,37 @@ Lift linear algebra container concept into the dec package.
 
 ### Notes
 
-@tparam T the type that should be a model of CDualVectorSpace.
+@tparam T the type that should be a model of CDECVectorSpace.
 */
 template <typename T>
-struct CDualVectorSpace : CVectorSpace<T>
+struct CDECVectorSpace : CVectorSpace<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
     typedef typename T::Container Container;
     typedef typename T::Calculus Calculus;
-    typedef typename Calculus::Scalar Scalar;
 
-    BOOST_CONCEPT_ASSERT(( CVectorSpace<Container> ));
-
-    BOOST_CONCEPT_USAGE( CDualVectorSpace )
+    BOOST_CONCEPT_USAGE( CDECVectorSpace )
     {
         T t0(calculus_const_ref);
         T t1(calculus_const_ref, container_const_ref);
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    const T x,y;
-    T z;
-    Scalar a;
     const Container& container_const_ref;
     const Calculus& calculus_const_ref;
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CDualVectorSpace
+}; // end of concept CDECVectorSpace
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDualVectorSpace_h
+#endif // !defined CDECVectorSpace_h
 
-#undef CDualVectorSpace_RECURSES
-#endif // else defined(CDualVectorSpace_RECURSES)
+#undef CDECVectorSpace_RECURSES
+#endif // else defined(CDECVectorSpace_RECURSES)
