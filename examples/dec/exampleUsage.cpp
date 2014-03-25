@@ -1,12 +1,8 @@
 #include <string>
 using namespace std;
 
+#include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
-#include "DGtal/math/linalg/EigenLinearAlgebra.h"
-#include "DGtal/dec/LinearOperator.h"
-#include "DGtal/dec/KForm.h"
-#include "DGtal/dec/VectorField.h"
-#include "DGtal/dec/Duality.h"
 
 //#include <QApplication>
 #include "DGtal/base/Common.h"
@@ -56,7 +52,7 @@ void demo2d()
     }
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebra> Calculus;
+    typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(set);
     trace.info() << calculus;
 
@@ -241,7 +237,7 @@ void test2d(const Options& options)
     }
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebra> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(set);
 
     calculus.cell_size_ratio.writeImage("size2d.mha");
@@ -332,7 +328,7 @@ void test3d(const Options& options, Viewer& viewer)
     }
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebra> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(set);
 
     calculus.cell_size_ratio.writeImage("size3d.mha");

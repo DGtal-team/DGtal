@@ -4,7 +4,7 @@ VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
     : calculus(_calculus)
 {
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
-        coordinates[dim] = typename Calculus::LinearAlgebra::Vector(calculus.kFormLength(0, duality));
+        coordinates[dim] = typename Calculus::Vector(calculus.kFormLength(0, duality));
     clear();
 }
 
