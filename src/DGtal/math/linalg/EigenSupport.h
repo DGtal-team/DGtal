@@ -6,9 +6,10 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-#include <Eigen/OrderingMethods>
-#include <Eigen/SparseQR>
+#include <Eigen/SparseCholesky>
 #include <Eigen/IterativeLinearSolvers>
+#include <Eigen/SparseLU>
+#include <Eigen/SparseQR>
 
 struct EigenDenseLinearAlgebraBackend
 {
@@ -21,6 +22,29 @@ struct EigenSparseLinearAlgebraBackend
     typedef Eigen::VectorXd Vector;
     typedef Eigen::SparseMatrix<Vector::Scalar, Eigen::ColMajor> Matrix;
 };
+
+std::ostream& operator<<(std::ostream& os, const Eigen::ComputationInfo& info)
+{
+    os << "solve_info = ";
+
+    switch (info)
+    {
+        case Eigen::Success:
+            os << "success";
+            break;
+        case Eigen::NumericalIssue:
+            os << "numerical_issue";
+            break;
+        case Eigen::NoConvergence:
+            os << "no_convergence";
+            break;
+        case Eigen::InvalidInput:
+            os << "invalid_input";
+            break;
+    }
+
+    return os;
+}
 
 #endif
 
