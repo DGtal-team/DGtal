@@ -14,7 +14,7 @@ struct VectorField
     typedef typename Calculus::Dimension Dimension;
     typedef typename Calculus::Scalar Scalar;
 
-    typedef boost::array<typename Calculus::LinearAlgebra::Vector, Calculus::dimension> Coordinates;
+    typedef boost::array<typename Calculus::Vector, Calculus::dimension> Coordinates;
     typedef Coordinates Container;
 
     Coordinates coordinates;

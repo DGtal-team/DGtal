@@ -1,5 +1,5 @@
 
-#include "DGtal/math/linalg/EigenLinearAlgebra.h"
+#include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/CDECVectorSpace.h"
 
@@ -43,7 +43,7 @@ struct HodgeTester
             PrimalIdentity primal_identity = calculus.template identity<order, PRIMAL>();
             if (!is_identity(primal_identity.container, 1)) return false;
             typedef LinearOperator<Calculus, order, DUAL, order, DUAL> DualIdentity;
-						DualIdentity dual_identity = calculus.template identity<order, DUAL>();
+            DualIdentity dual_identity = calculus.template identity<order, DUAL>();
             if (!is_identity(dual_identity.container, 1)) return false;
         }
 
@@ -82,7 +82,7 @@ struct HodgeTester<Calculus, -1>
     }
 };
 
-template <typename DigitalSet, typename LinearAlgebra>
+template <typename DigitalSet, typename LinearAlgebraBackend>
 void
 test_hodge(int domain_size=5)
 {
@@ -105,7 +105,7 @@ test_hodge(int domain_size=5)
     trace.info() << "domain.size()=" << domain.size() << endl;
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain, LinearAlgebra> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
 
     bool test_result = HodgeTester<Calculus, Calculus::dimension>::test(calculus);
@@ -182,7 +182,7 @@ struct DerivativeTester<Calculus, -1>
     }
 };
 
-template <typename DigitalSet, typename LinearAlgebra>
+template <typename DigitalSet, typename LinearAlgebraBackend>
 void
 test_derivative(int domain_size=10)
 {
@@ -205,7 +205,7 @@ test_derivative(int domain_size=10)
     trace.info() << "domain.size()=" << domain.size() << endl;
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain, LinearAlgebra> Calculus;
+    typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
 
     bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
@@ -214,14 +214,14 @@ test_derivative(int domain_size=10)
     FATAL_ERROR(test_result);
 }
 
-template <typename LinearAlgebra>
+template <typename LinearAlgebraBackend>
 void
 test_concepts()
 {
     trace.beginBlock("concepts");
 
     { // 2d
-        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebra> Calculus;
+        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebraBackend> Calculus;
         BOOST_CONCEPT_ASSERT(( CDECVectorSpace<typename Calculus::PrimalForm0> ));
         BOOST_CONCEPT_ASSERT(( CDECVectorSpace<typename Calculus::PrimalForm1> ));
         BOOST_CONCEPT_ASSERT(( CDECVectorSpace<typename Calculus::PrimalForm2> ));
@@ -247,7 +247,7 @@ test_concepts()
     }
 
     { // 3d
-        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebra> Calculus;
+        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebraBackend> Calculus;
         BOOST_CONCEPT_ASSERT(( CDECVectorSpace<typename Calculus::PrimalForm0> ));
         BOOST_CONCEPT_ASSERT(( CDECVectorSpace<typename Calculus::PrimalForm1> ));
         BOOST_CONCEPT_ASSERT(( CDECVectorSpace<typename Calculus::PrimalForm2> ));
@@ -280,14 +280,14 @@ test_concepts()
     trace.endBlock();
 }
 
-template <typename LinearAlgebra>
+template <typename LinearAlgebraBackend>
 void
 test_hodge_sign()
 {
     trace.beginBlock("testing hodge sign");
 
     {
-        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebra> Calculus;
+        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebraBackend> Calculus;
         const Z2i::Domain domain;
         const Z2i::DigitalSet set(domain);
         const Calculus calculus(set);
@@ -316,7 +316,7 @@ test_hodge_sign()
     }
 
     {
-        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebra> Calculus;
+        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebraBackend> Calculus;
         const Z3i::Domain domain;
         const Z3i::DigitalSet set(domain);
         const Calculus calculus(set);
@@ -363,13 +363,13 @@ test_hodge_sign()
     trace.endBlock();
 }
 
-template <typename LinearAlgebra>
+template <typename LinearAlgebraBackend>
 void
 test_backend()
 {
     srandom(0);
 
-    test_hodge_sign<LinearAlgebra>();
+    test_hodge_sign<LinearAlgebraBackend>();
 
     for (int kk=0; kk<2; kk++)
     {
@@ -381,29 +381,29 @@ test_backend()
         typedef HyperRectDomain<Space5> Domain5;
         typedef DigitalSetBySTLSet<Domain5> DigitalSet5;
 
-        test_hodge<Z2i::DigitalSet, LinearAlgebra>();
-        test_hodge<Z3i::DigitalSet, LinearAlgebra>();
-        test_hodge<DigitalSet4, LinearAlgebra>(5);
-        test_hodge<DigitalSet5, LinearAlgebra>(3);
+        test_hodge<Z2i::DigitalSet, LinearAlgebraBackend>();
+        test_hodge<Z3i::DigitalSet, LinearAlgebraBackend>();
+        test_hodge<DigitalSet4, LinearAlgebraBackend>(5);
+        test_hodge<DigitalSet5, LinearAlgebraBackend>(3);
 
-        test_derivative<Z2i::DigitalSet, LinearAlgebra>();
-        test_derivative<Z3i::DigitalSet, LinearAlgebra>();
-        test_derivative<DigitalSet4, LinearAlgebra>(5);
-        test_derivative<DigitalSet5, LinearAlgebra>(3);
+        test_derivative<Z2i::DigitalSet, LinearAlgebraBackend>();
+        test_derivative<Z3i::DigitalSet, LinearAlgebraBackend>();
+        test_derivative<DigitalSet4, LinearAlgebraBackend>(5);
+        test_derivative<DigitalSet5, LinearAlgebraBackend>(3);
     }
 
-    test_concepts<LinearAlgebra>();
+    test_concepts<LinearAlgebraBackend>();
 }
 
 int
 main(int argc, char* argv[])
 {
     trace.beginBlock("testing dense eigen backend");
-    test_backend<EigenDenseLinearAlgebra>();
+    test_backend<EigenDenseLinearAlgebraBackend>();
     const double dense_eigen_time = trace.endBlock();
 
     trace.beginBlock("testing sparse eigen backend");
-    test_backend<EigenSparseLinearAlgebra>();
+    test_backend<EigenSparseLinearAlgebraBackend>();
     const double sparse_eigen_time = trace.endBlock();
 
     trace.info() << "dense_eigen_time=" << dense_eigen_time << endl;

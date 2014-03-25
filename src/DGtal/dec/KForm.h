@@ -9,7 +9,7 @@ template <typename C, Order order, Duality duality>
 struct KForm
 {
     typedef C Calculus;
-    typedef typename Calculus::LinearAlgebra::Vector Container;
+    typedef typename Calculus::Vector Container;
 
     typedef typename Calculus::Scalar Scalar;
 

@@ -15,16 +15,13 @@
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/topology/KhalimskySpaceND.h>
 
-template <typename D, typename LA>
+template <typename D, typename LAB>
 struct DiscreteExteriorCalculus
 {
     // template typedef
     typedef D Domain;
-    typedef LA LinearAlgebra;
+    typedef LAB LineaAlgebraBackend;
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<typename LinearAlgebra::Vector> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<typename LinearAlgebra::Matrix> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<typename LinearAlgebra::Vector, typename LinearAlgebra::Matrix> ));
 
     typedef typename Domain::Space::Dimension Dimension;
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
@@ -36,8 +33,14 @@ struct DiscreteExteriorCalculus
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
-    typedef typename LinearAlgebra::Vector::Index Index;
-    typedef typename LinearAlgebra::Vector::Scalar Scalar;
+    typedef typename LineaAlgebraBackend::Vector::Index Index;
+    typedef typename LineaAlgebraBackend::Vector::Scalar Scalar;
+    typedef typename LineaAlgebraBackend::Vector Vector;
+    typedef typename LineaAlgebraBackend::Matrix Matrix;
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<Vector> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<Matrix> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<Vector, Matrix> ));
+
     typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
 
     // general members

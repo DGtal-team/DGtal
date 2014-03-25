@@ -7,7 +7,7 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
 struct LinearOperator
 {
     typedef C Calculus;
-    typedef typename Calculus::LinearAlgebra::Matrix Container;
+    typedef typename Calculus::Matrix Container;
 
     typedef typename Calculus::Scalar Scalar;
 
