@@ -75,6 +75,9 @@ Lift linear algebra container concept into the dec package.
 ### Invariants
 
 ### Models
+ - KForm
+ - LinearOperator
+ - VectorField
 
 ### Notes
 
