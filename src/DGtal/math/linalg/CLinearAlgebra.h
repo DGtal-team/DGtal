@@ -82,6 +82,8 @@ Matrix and vector scalar types should be the same.
 ### Models
 
 ### Notes
+@todo There should be two types of vector: input vector type and output vector type.
+@todo This works fine for dynamic vector spaces, but not so much for static sized vectors and matrices.
 
 @tparam V the type that should be a model of CVector
 @tparam M the type that should be a model of CMatrix
@@ -91,10 +93,13 @@ struct CLinearAlgebra
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    BOOST_CONCEPT_ASSERT(( CVector<V> ));
-    BOOST_CONCEPT_ASSERT(( CMatrix<M> ));
+    typedef V Vector;
+    typedef M Matrix;
 
-    BOOST_STATIC_ASSERT(( boost::is_same<typename V::Scalar, typename M::Scalar>::value ));
+    BOOST_CONCEPT_ASSERT(( CVector<Vector> ));
+    BOOST_CONCEPT_ASSERT(( CMatrix<Matrix> ));
+
+    BOOST_STATIC_ASSERT(( boost::is_same<typename Vector::Scalar, typename Matrix::Scalar>::value ));
 
     BOOST_CONCEPT_USAGE( CLinearAlgebra )
     {
@@ -103,10 +108,10 @@ public:
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    M c;
-    const M a, b;
-    V x;
-    const V y;
+    Matrix c;
+    const Matrix a, b;
+    Vector x;
+    const Vector y;
 
     // ------------------------- Internals ------------------------------------
 private:

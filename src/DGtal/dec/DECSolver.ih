@@ -1,0 +1,16 @@
+
+template <typename C, typename S, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>&
+DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::compute(const Operator& linear_operator)
+{
+		solver.compute(linear_operator.container);
+		return *this;
+}
+
+template <typename C, typename S, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+KForm<Calculus, order_in, duality_in>
+DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::solve(const InputKForm& input_kform) const;
+{
+		return solver.solve(kform.container);
+}
+

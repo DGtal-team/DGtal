@@ -63,7 +63,8 @@ where \e a type is a model of CMatrix and \e x, \e y type is a model of CVector.
 Matrix and vector types should be a model of CLinearAlgebra.
 
 ### Refinement of
- - boost::Assignable<T>
+ - boost::Assignable<S>
+ - CLinearAlgebra<V, M>
 
 ### Associated types
 
@@ -71,7 +72,8 @@ Matrix and vector types should be a model of CLinearAlgebra.
  - \c Solver : A type that is a model of CLinearAlgebraSolver
  - \c Vector : A type that is a model of CVector
  - \c Matrix : A type that is a model of CMatrix
- - \e x, \e y : object of type \c Vector
+ - \e y : object of type \c Vector, input of the linear problem
+ - \e x : object of type \c Vector, solution of the linear problem
  - \e a : object of type \c Matrix
 
 ### Definitions
@@ -80,9 +82,8 @@ Matrix and vector types should be a model of CLinearAlgebra.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Problem factorization / matrix setter      | solver.compute(\e a)           |                   | \c Solver&              |              |           | return *this.               |            |
-| Problem resolution / vector setter      | x = solver.solve(\e y)           |                   | \c Vector              |              |           |                |            |
-|       |            |                   |               |              |           |                |            |
+| Problem factorization / matrix input      | solver.compute(\e a)           |                   | \c Solver&              |              |           | return *this.               |            |
+| Problem resolution / vector input      | x = solver.solve(\e y)           |                   | \c Vector              |              |           |                |            |
 
 ### Invariants
 
@@ -90,15 +91,21 @@ Matrix and vector types should be a model of CLinearAlgebra.
 
 ### Notes
 
-@tparam T the type that should be a model of CLinearAlgebraSolver.
+@tparam S the type that should be a model of CLinearAlgebraSolver.
 @tparam V the type that should be a model of CVector
 @tparam M the type that should be a model of CMatrix
  */
-template <typename T, typename V, typename M>
-struct CLinearAlgebraSolver : boost::Assignable<T>, CLinearAlgebra<V, M>
+template <typename S, typename V, typename M>
+struct CLinearAlgebraSolver : boost::Assignable<S>
 {
     // ----------------------- Concept checks ------------------------------
 public:
+    typedef S Solver;
+    typedef V Vector;
+    typedef M Matrix;
+
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebra<Vector, Matrix> ));
+
     BOOST_CONCEPT_USAGE( CLinearAlgebraSolver )
     {
         const_solver = solver.compute(a);
@@ -106,10 +113,10 @@ public:
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    const T const_solver;
-    T solver;
-    const M a;
-    const V y;
+    const Solver const_solver;
+    Solver solver;
+    const Matrix a;
+    const Vector y;
     V x;
 
     // ------------------------- Internals ------------------------------------
