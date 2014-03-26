@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/dec/Duality.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
