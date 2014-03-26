@@ -1,7 +1,6 @@
 #if !defined(__DEC_SOLVER_H__)
 #define __DEC_SOLVER_H__
 
-/*
 #include "KForm.h"
 #include "LinearOperator.h"
 #include "DGtal/math/linalg/CLinearAlgebraSolver.h"
@@ -13,7 +12,6 @@ struct DiscreteExteriorCalculusSolver
 		typedef S LinearAlgebraSolver;
 		typedef typename Calculus::Vector Vector;
 		typedef typename Calculus::Matrix Matrix;
-		BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LinearAlgebraSolver, Vector, Matrix> ));
 
 		typedef LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> Operator;
 		typedef KForm<Calculus, order_in, duality_in> SolutionKForm;
@@ -26,7 +24,6 @@ struct DiscreteExteriorCalculusSolver
 };
 
 #include "DECSolver.ih"
-*/
 
 #endif
 

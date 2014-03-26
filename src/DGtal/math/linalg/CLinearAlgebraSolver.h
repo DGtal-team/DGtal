@@ -73,6 +73,7 @@ Matrix and vector types should be a model of CLinearAlgebra.
  - \c Solver : A type that is a model of CLinearAlgebraSolver
  - \c Vector : A type that is a model of CVector
  - \c Matrix : A type that is a model of CMatrix
+ - \c Info : The type returned by solver.status(), problem solved successfully if true when compared to 0
  - \e y : object of type \c Vector, input of the linear problem
  - \e x : object of type \c Vector, solution of the linear problem
  - \e a : object of type \c Matrix
@@ -84,9 +85,9 @@ Matrix and vector types should be a model of CLinearAlgebra.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Problem factorization / matrix input      | solver.compute(\e a)           |                   | \c Solver&              |              |           | return *this.               |            |
+| Problem factorization / matrix input      | solver.compute(\e a)           |                   |              |              |           | return *this.               |            |
 | Problem resolution / vector input      | x = solver.solve(\e y)           |                   | \c Vector              |              |           |                |            |
-| Status       | solver.status()           |                   | \c Info              |              |           |                |            |
+| Status       | solver.status()           |                   |              |              |           |                |            |
 
 ### Invariants
 
@@ -97,9 +98,8 @@ Matrix and vector types should be a model of CLinearAlgebra.
 @tparam S the type that should be a model of CLinearAlgebraSolver.
 @tparam V the type that should be a model of CVector
 @tparam M the type that should be a model of CMatrix
-@tparam I the type that should the Info type for the solver
  */
-template <typename S, typename V, typename M, typename I>
+template <typename S, typename V, typename M>
 struct CLinearAlgebraSolver : boost::DefaultConstructible<S>
 {
     // ----------------------- Concept checks ------------------------------
@@ -107,15 +107,14 @@ public:
     typedef S Solver;
     typedef V Vector;
     typedef M Matrix;
-    typedef I Info;
 
     BOOST_CONCEPT_ASSERT(( CLinearAlgebra<Vector, Matrix> ));
 
     BOOST_CONCEPT_USAGE( CLinearAlgebraSolver )
     {
-        ConceptUtils::sameType(solver, solver.compute(a));
+        solver.compute(a);
+        const_solver.info() == 0;
         x = const_solver.solve(y);
-        info = const_solver.info();
     }
     // ------------------------- Private Datas --------------------------------
 private:
@@ -124,7 +123,6 @@ private:
     const Matrix a;
     const Vector y;
     V x;
-    Info info;
 
     // ------------------------- Internals ------------------------------------
 private:
