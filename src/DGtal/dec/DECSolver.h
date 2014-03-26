@@ -19,6 +19,7 @@ struct DiscreteExteriorCalculusSolver
 
 		DiscreteExteriorCalculusSolver& compute(const Operator& linear_operator);
 		SolutionKForm solve(const InputKForm& input_kform) const;
+		bool info() const;
 
 		LinearAlgebraSolver solver;
 };

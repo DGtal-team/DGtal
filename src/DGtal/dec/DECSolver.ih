@@ -11,6 +11,13 @@ template <typename C, typename S, Order order_in, Duality duality_in, Order orde
 KForm<C, order_in, duality_in>
 DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::solve(const InputKForm& input_kform) const
 {
-		return solver.solve(input_kform.container);
+		return SolutionKForm(input_kform.calculus, solver.solve(input_kform.container));
+}
+
+template <typename C, typename S, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+bool
+DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::info() const
+{
+		return solver.info() == 0;
 }
 
