@@ -67,6 +67,8 @@ namespace DGtal
    * This class can compute the linear regression coefficients and
    * also performs some tests to check if the data corresponds to a
    * linear model.
+   *
+   * @note  backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    */
   class SimpleLinearRegression
   {
