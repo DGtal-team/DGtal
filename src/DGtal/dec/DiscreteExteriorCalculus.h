@@ -15,6 +15,9 @@
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/topology/KhalimskySpaceND.h>
 
+namespace DGtal
+{
+
 template <typename D, typename LAB>
 struct DiscreteExteriorCalculus
 {
@@ -168,5 +171,6 @@ std::ostream&
 operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus);
 
 #include "DiscreteExteriorCalculus.ih"
+}
 
 #endif
