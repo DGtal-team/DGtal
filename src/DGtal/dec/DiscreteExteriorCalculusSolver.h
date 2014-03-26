@@ -3,7 +3,6 @@
 
 #include "KForm.h"
 #include "LinearOperator.h"
-#include "DGtal/math/linalg/CLinearAlgebraSolver.h"
 
 template <typename C, typename S, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 struct DiscreteExteriorCalculusSolver
@@ -24,7 +23,7 @@ struct DiscreteExteriorCalculusSolver
 		LinearAlgebraSolver solver;
 };
 
-#include "DECSolver.ih"
+#include "DiscreteExteriorCalculusSolver.ih"
 
 #endif
 
