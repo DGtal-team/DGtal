@@ -30,24 +30,15 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'Duality'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'Duality' to write.
- * @return the output stream after the writing.
- */
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream& os, const Duality& duality )
+DGtal::operator<<(std::ostream& os, const DGtal::Duality& duality)
 {
    switch (duality)
     {
