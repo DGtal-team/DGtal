@@ -30,6 +30,7 @@ void solve2d()
 
     Calculus::DualForm0 dirac(calculus);
     dirac.container(0) = 1;
+    dirac.container(5) = 1;
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -45,11 +46,12 @@ void solve2d()
     { // simplicial llt
         trace.beginBlock("simplicial llt");
 
-        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLLT Solver;
+        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLLT LinearAlgebraSolver;
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian.container);
-        Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
+        solver.compute(laplacian);
+        Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.info() << endl;
         trace.endBlock();
@@ -67,11 +69,12 @@ void solve2d()
     { // simplicial ldlt
         trace.beginBlock("simplicial ldlt");
 
-        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT Solver;
+        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT LinearAlgebraSolver;
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian.container);
-        Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
+        solver.compute(laplacian);
+        Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.info() << endl;
         trace.endBlock();
@@ -89,11 +92,12 @@ void solve2d()
     { // conjugate gradient
         trace.beginBlock("conjugate gradient");
 
-        typedef EigenSparseLinearAlgebraBackend::SolverConjugateGradient Solver;
+        typedef EigenSparseLinearAlgebraBackend::SolverConjugateGradient LinearAlgebraSolver;
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian.container);
-        Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
+        solver.compute(laplacian);
+        Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.info() << endl;
         trace.endBlock();
@@ -111,11 +115,12 @@ void solve2d()
     { // biconjugate gradient stabilized
         trace.beginBlock("biconjugate gradient stabilized (bicgstab)");
 
-        typedef EigenSparseLinearAlgebraBackend::SolverBiCGSTAB Solver;
+        typedef EigenSparseLinearAlgebraBackend::SolverBiCGSTAB LinearAlgebraSolver;
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian.container);
-        Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
+        solver.compute(laplacian);
+        Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.info() << endl;
         trace.endBlock();
@@ -133,11 +138,12 @@ void solve2d()
     { // sparselu
         trace.beginBlock("sparse lu");
 
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseLU Solver;
+        typedef EigenSparseLinearAlgebraBackend::SolverSparseLU LinearAlgebraSolver;
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian.container);
-        Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
+        solver.compute(laplacian);
+        Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.info() << endl;
         trace.endBlock();
@@ -155,11 +161,12 @@ void solve2d()
     { // sparseqr
         trace.beginBlock("sparse qr");
 
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseQR Solver;
+        typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian.container);
-        Calculus::DualForm0 solution = Calculus::DualForm0(calculus, solver.solve(dirac.container));
+        solver.compute(laplacian);
+        Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.info() << endl;
         trace.endBlock();
