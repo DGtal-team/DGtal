@@ -4,6 +4,9 @@
 #include "KForm.h"
 #include "LinearOperator.h"
 
+namespace DGtal
+{
+
 template <typename C, typename S, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
 struct DiscreteExteriorCalculusSolver
 {
@@ -24,6 +27,7 @@ struct DiscreteExteriorCalculusSolver
 };
 
 #include "DiscreteExteriorCalculusSolver.ih"
+}
 
 #endif
 
