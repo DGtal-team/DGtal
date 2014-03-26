@@ -45,8 +45,7 @@ void solve2d()
     { // simplicial llt
         trace.beginBlock("simplicial llt");
 
-        typedef Eigen::SimplicialLLT<Calculus::Matrix> Solver;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix> ));
+        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLLT Solver;
 
         Solver solver;
         solver.compute(laplacian.container);
@@ -68,8 +67,7 @@ void solve2d()
     { // simplicial ldlt
         trace.beginBlock("simplicial ldlt");
 
-        typedef Eigen::SimplicialLDLT<Calculus::Matrix> Solver;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix> ));
+        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT Solver;
 
         Solver solver;
         solver.compute(laplacian.container);
@@ -91,8 +89,7 @@ void solve2d()
     { // conjugate gradient
         trace.beginBlock("conjugate gradient");
 
-        typedef Eigen::ConjugateGradient<Calculus::Matrix> Solver;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix> ));
+        typedef EigenSparseLinearAlgebraBackend::SolverConjugateGradient Solver;
 
         Solver solver;
         solver.compute(laplacian.container);
@@ -114,8 +111,7 @@ void solve2d()
     { // biconjugate gradient stabilized
         trace.beginBlock("biconjugate gradient stabilized (bicgstab)");
 
-        typedef Eigen::BiCGSTAB<Calculus::Matrix> Solver;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix> ));
+        typedef EigenSparseLinearAlgebraBackend::SolverBiCGSTAB Solver;
 
         Solver solver;
         solver.compute(laplacian.container);
@@ -137,8 +133,7 @@ void solve2d()
     { // sparselu
         trace.beginBlock("sparse lu");
 
-        typedef Eigen::SparseLU<Calculus::Matrix> Solver;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix> ));
+        typedef EigenSparseLinearAlgebraBackend::SolverSparseLU Solver;
 
         Solver solver;
         solver.compute(laplacian.container);
@@ -160,8 +155,7 @@ void solve2d()
     { // sparseqr
         trace.beginBlock("sparse qr");
 
-        typedef Eigen::SparseQR<Calculus::Matrix, Eigen::COLAMDOrdering<Calculus::Matrix::Index> > Solver;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<Solver, Calculus::Vector, Calculus::Matrix> ));
+        typedef EigenSparseLinearAlgebraBackend::SolverSparseQR Solver;
 
         Solver solver;
         solver.compute(laplacian.container);
