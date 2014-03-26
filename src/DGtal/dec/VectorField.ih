@@ -1,6 +1,40 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
-template <typename Calculus, Duality duality>
-VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
+/**
+ * @file VectorField.ih
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/03/26
+ *
+ * Implementation of inline methods defined in VectorField.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
     : calculus(_calculus)
 {
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
@@ -8,40 +42,50 @@ VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
     clear();
 }
 
-template <typename Calculus, Duality duality>
-VectorField<Calculus, duality>::VectorField(const Calculus& _calculus, const Coordinates& _coordinates)
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus, const Coordinates& _coordinates)
     : calculus(_calculus), coordinates(_coordinates)
 {
 }
 
-template <typename Calculus, Duality duality>
-VectorField<Calculus, duality>&
-VectorField<Calculus, duality>::operator=(const VectorField& _vector_field)
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>&
+DGtal::VectorField<Calculus, duality>::operator=(const VectorField& _vector_field)
 {
     coordinates = _vector_field.coordinates;
     const_cast<Calculus&>(calculus) = _vector_field.calculus;
     return *this;
 }
 
-template <typename Calculus, Duality duality>
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename Calculus, DGtal::Duality duality>
 void
-VectorField<Calculus, duality>::clear()
+DGtal::VectorField<Calculus, duality>::selfDisplay(std::ostream& out) const
+{
+    out << duality << " vector field (" << coordinates.size() << "x" << coordinates[0].rows() << ")";
+}
+
+template <typename Calculus, DGtal::Duality duality>
+void
+DGtal::VectorField<Calculus, duality>::clear()
 {
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         coordinates[dim].clear();
 }
 
-template <typename Calculus, Duality duality>
-std::ostream&
-operator<<(std::ostream& os, const VectorField<Calculus, duality>& field)
+template <typename Calculus, DGtal::Duality duality>
+bool
+DGtal::VectorField<Calculus, duality>::isValid() const
 {
-    return os << duality << " vector field (" << field.coordinates.size() << "x" << field.coordinates[0].rows() << ")";
+    return true;
 }
 
-template <typename Calculus, Duality duality>
+template <typename Calculus, DGtal::Duality duality>
 template <typename Board>
 void
-VectorField<Calculus, duality>::display2D(Board& board, const double& scale) const
+DGtal::VectorField<Calculus, duality>::display2D(Board& board, const double& scale) const
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
 
@@ -67,9 +111,9 @@ VectorField<Calculus, duality>::display2D(Board& board, const double& scale) con
 
 }
 
-template <typename Calculus, Duality duality>
-KForm<Calculus, 0, duality>
-VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
+template <typename Calculus, DGtal::Duality duality>
+DGtal::KForm<Calculus, 0, duality>
+DGtal::VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
 {
     ASSERT( dim < Calculus::dimension );
 
@@ -82,36 +126,51 @@ VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
     return zero_form;
 }
 
-template <typename Calculus, Duality duality>
-VectorField<Calculus, duality>
-operator+(const VectorField<Calculus, duality>& _vector_field_a, const VectorField<Calculus, duality>& _vector_field_b)
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename Calculus, DGtal::Duality duality>
+std::ostream&
+DGtal::operator<<(std::ostream & out, const DGtal::VectorField<Calculus, duality>& object)
 {
-    typedef typename VectorField<Calculus, duality>::Coordinates Coordinates;
+    object.selfDisplay(out);
+    return out;
+}
+
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator+(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
+{
+    typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     Coordinates coordinates;
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         coordinates[dim] = _vector_field_a.coordinates[dim] + _vector_field_b.coordinates[dim];
-    return VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
+    return DGtal::VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
 }
 
-template <typename Calculus, Duality duality>
-VectorField<Calculus, duality>
-operator-(const VectorField<Calculus, duality>& _vector_field_a, const VectorField<Calculus, duality>& _vector_field_b)
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator-(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
 {
-    typedef typename VectorField<Calculus, duality>::Coordinates Coordinates;
+    typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     Coordinates coordinates;
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         coordinates[dim] = _vector_field_a.coordinates[dim] - _vector_field_b.coordinates[dim];
-    return VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
+    return DGtal::VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
 }
 
-template <typename Calculus, Duality duality>
-VectorField<Calculus, duality>
-operator*(const typename Calculus::Scalar& _scalar, const VectorField<Calculus, duality>& _vector_field)
+template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::operator*(const typename Calculus::Scalar& _scalar, const DGtal::VectorField<Calculus, duality>& _vector_field)
 {
-    typedef typename VectorField<Calculus, duality>::Coordinates Coordinates;
+    typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     Coordinates coordinates;
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         coordinates[dim] = _scalar * _vector_field.coordinates[dim];
-    return VectorField<Calculus, duality>(_vector_field.calculus, coordinates);
+    return DGtal::VectorField<Calculus, duality>(_vector_field.calculus, coordinates);
 }
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
 
