@@ -4,6 +4,15 @@
 #include <map>
 #include <string>
 
+//#include <DGtal/images/ImageSelector.h>
+//#include <DGtal/io/writers/ITKWriter.h>
+//#include <DGtal/io/Color.h>
+//#include <DGtal/io/boards/Board2D.h>
+//#include <DGtal/io/viewers/Viewer3D.h>
+
+namespace DGtal
+{
+
 template <typename Calculus, typename V>
 struct AllSCellMap : public std::map<typename Calculus::SCell, V>
 {
@@ -28,6 +37,8 @@ struct AllSCellMap : public std::map<typename Calculus::SCell, V>
 
 		const Calculus& calculus;
 };
+
+}
 
 #include "AllSCellMap.ih"
 

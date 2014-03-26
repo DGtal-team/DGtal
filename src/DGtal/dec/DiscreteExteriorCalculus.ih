@@ -1,10 +1,8 @@
 
-#include <DGtal/base/Common.h>
-
 // digital set point get attached to primal n-cell <-> dual 0-cell
 template <typename D, typename LAB>
 template <typename DigitalSet>
-DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set)
+DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set)
     : domain(_set.domain()), kspace(), cell_size_ratio(*this), cell_indexes(*this)
 {
     BOOST_STATIC_ASSERT(( boost::is_same<typename DigitalSet::Domain, Domain>::value ));
@@ -59,7 +57,7 @@ DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _se
 
 template <typename D, typename LAB>
 void
-DiscreteExteriorCalculus<D, LAB>::neighborhoodRecurseSizeMask(const Dimension& dimension, const Point& current_point, Points& neighborhood)
+DGtal::DiscreteExteriorCalculus<D, LAB>::neighborhoodRecurseSizeMask(const Dimension& dimension, const Point& current_point, Points& neighborhood)
 {
     typedef typename Point::Coordinate Coordinate;
 
@@ -80,7 +78,7 @@ DiscreteExteriorCalculus<D, LAB>::neighborhoodRecurseSizeMask(const Dimension& d
 
 template <typename D, typename LAB>
 std::ostream&
-operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus)
+DGtal::operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus)
 {
     typedef DiscreteExteriorCalculus<D, LAB> Calculus;
 
@@ -92,9 +90,9 @@ operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus)
 }
 
 template <typename D, typename LAB>
-template <Order order, Duality duality>
-LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order, duality>
-DiscreteExteriorCalculus<D, LAB>::identity() const
+template <DGtal::Order order, DGtal::Duality duality>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<D, LAB>, order, duality, order, duality>
+DGtal::DiscreteExteriorCalculus<D, LAB>::identity() const
 {
 
     typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order, duality> Operator;
@@ -104,9 +102,9 @@ DiscreteExteriorCalculus<D, LAB>::identity() const
 }
 
 template <typename D, typename LAB>
-template <Order order, Duality duality>
-LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order+1, duality>
-DiscreteExteriorCalculus<D, LAB>::derivative() const
+template <DGtal::Order order, DGtal::Duality duality>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<D, LAB>, order, duality, order+1, duality>
+DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
 {
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order < dimension ));
@@ -154,9 +152,9 @@ DiscreteExteriorCalculus<D, LAB>::derivative() const
 }
 
 template <typename D, typename LAB>
-template <Order order>
-LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, PRIMAL, DiscreteExteriorCalculus<D, LAB>::dimension-order, DUAL>
-DiscreteExteriorCalculus<D, LAB>::primalHodge() const
+template <DGtal::Order order>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<D, LAB>, order, DGtal::PRIMAL, DGtal::DiscreteExteriorCalculus<D, LAB>::dimension-order, DGtal::DUAL>
+DGtal::DiscreteExteriorCalculus<D, LAB>::primalHodge() const
 {
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= dimension ));
@@ -180,9 +178,9 @@ DiscreteExteriorCalculus<D, LAB>::primalHodge() const
 }
 
 template <typename D, typename LAB>
-template <Order order>
-LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, DUAL, DiscreteExteriorCalculus<D, LAB>::dimension-order, PRIMAL>
-DiscreteExteriorCalculus<D, LAB>::dualHodge() const
+template <DGtal::Order order>
+DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<D, LAB>, order, DGtal::DUAL, DGtal::DiscreteExteriorCalculus<D, LAB>::dimension-order, DGtal::PRIMAL>
+DGtal::DiscreteExteriorCalculus<D, LAB>::dualHodge() const
 {
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= dimension ));
@@ -206,9 +204,9 @@ DiscreteExteriorCalculus<D, LAB>::dualHodge() const
 }
 
 template <typename D, typename LAB>
-template <Duality duality>
-VectorField<DiscreteExteriorCalculus<D, LAB>, duality>
-DiscreteExteriorCalculus<D, LAB>::sharp(const KForm<DiscreteExteriorCalculus, 1, duality>& one_form) const
+template <DGtal::Duality duality>
+DGtal::VectorField<DGtal::DiscreteExteriorCalculus<D, LAB>, duality>
+DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::DiscreteExteriorCalculus<D, LAB>, 1, duality>& one_form) const
 {
     typedef VectorField<DiscreteExteriorCalculus, duality> Field;
     Field field(*this);
@@ -263,9 +261,9 @@ DiscreteExteriorCalculus<D, LAB>::sharp(const KForm<DiscreteExteriorCalculus, 1,
 }
 
 template <typename D, typename LAB>
-template <Duality duality>
-KForm<DiscreteExteriorCalculus<D, LAB>, 1, duality>
-DiscreteExteriorCalculus<D, LAB>::flat(const VectorField<DiscreteExteriorCalculus, duality>& vector_field) const
+template <DGtal::Duality duality>
+DGtal::KForm<DGtal::DiscreteExteriorCalculus<D, LAB>, 1, duality>
+DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::DiscreteExteriorCalculus<D, LAB>, duality>& vector_field) const
 {
     typedef KForm<DiscreteExteriorCalculus, 1, duality> OneForm;
     OneForm one_form(*this);
@@ -314,22 +312,22 @@ DiscreteExteriorCalculus<D, LAB>::flat(const VectorField<DiscreteExteriorCalculu
 }
 
 template <typename D, typename LAB>
-typename DiscreteExteriorCalculus<D, LAB>::Index
-DiscreteExteriorCalculus<D, LAB>::kFormLength(const Order& order, const Duality& duality) const
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::Index
+DGtal::DiscreteExteriorCalculus<D, LAB>::kFormLength(const Order& order, const Duality& duality) const
 {
     return index_cells[actualOrder(order, duality)].size();
 }
 
 template <typename D, typename LAB>
-Order
-DiscreteExteriorCalculus<D, LAB>::actualOrder(const Order& order, const Duality& duality) const
+DGtal::Order
+DGtal::DiscreteExteriorCalculus<D, LAB>::actualOrder(const Order& order, const Duality& duality) const
 {
     return (duality == PRIMAL) ? order : dimension-order;
 }
 
 template <typename D, typename LAB>
 double
-DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const Duality& duality) const
+DGtal::DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const Duality& duality) const
 {
     const Dimension& primal_dim = kspace.sDim(cell);
     const bool apply_sign = ((dimension-primal_dim)*primal_dim % 2 == 1);
@@ -354,23 +352,23 @@ DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const Duality& du
 
 template <typename D, typename LAB>
 double
-DiscreteExteriorCalculus<D, LAB>::derivativeSign(const SCell& cell, const Duality& duality) const
+DGtal::DiscreteExteriorCalculus<D, LAB>::derivativeSign(const SCell& cell, const Duality& duality) const
 {
     if (duality == PRIMAL) return cell.myPositive ? 1 : -1;
     return hodgeSign(cell, PRIMAL);
 }
 
 template <typename D, typename LAB>
-typename DiscreteExteriorCalculus<D, LAB>::SCell
-DiscreteExteriorCalculus<D, LAB>::absoluteCell(const SCell& cell) const
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::SCell
+DGtal::DiscreteExteriorCalculus<D, LAB>::absoluteCell(const SCell& cell) const
 {
     if (cell.myPositive) return cell;
     return kspace.sOpp(cell);
 }
 
 template <typename D, typename LAB>
-typename DiscreteExteriorCalculus<D, LAB>::Dimension
-DiscreteExteriorCalculus<D, LAB>::edgeDirection(const SCell& cell, const Duality& duality) const
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::Dimension
+DGtal::DiscreteExteriorCalculus<D, LAB>::edgeDirection(const SCell& cell, const Duality& duality) const
 {
     ASSERT( kspace.sDim(cell) == actualOrder(1, duality) );
 

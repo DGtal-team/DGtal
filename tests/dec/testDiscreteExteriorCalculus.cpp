@@ -7,6 +7,8 @@
 #include "DGtal/helpers/StdDefs.h"
 using namespace DGtal;
 
+using std::endl;
+
 template <typename Container>
 bool
 is_all_zero(const Container& container)

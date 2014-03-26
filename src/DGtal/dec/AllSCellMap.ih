@@ -1,19 +1,13 @@
 
-#include <DGtal/io/writers/ITKWriter.h>
-#include <DGtal/images/ImageSelector.h>
-#include <DGtal/io/Color.h>
-#include <DGtal/io/boards/Board2D.h>
-#include <DGtal/io/viewers/Viewer3D.h>
-
 template <typename Calculus, typename V>
-AllSCellMap<Calculus, V>::AllSCellMap(const Calculus& _calculus)
+DGtal::AllSCellMap<Calculus, V>::AllSCellMap(const Calculus& _calculus)
     : calculus(_calculus)
 {
 }
 
 template <typename Calculus, typename V>
-AllSCellMap<Calculus, V>&
-AllSCellMap<Calculus, V>::operator=(const AllSCellMap& _scell_map)
+DGtal::AllSCellMap<Calculus, V>&
+DGtal::AllSCellMap<Calculus, V>::operator=(const DGtal::AllSCellMap<Calculus, V>& _scell_map)
 {
 		Container::operator=(_scell_map);
 		const_cast<Calculus&>(calculus) = _scell_map.calculus;
@@ -22,8 +16,9 @@ AllSCellMap<Calculus, V>::operator=(const AllSCellMap& _scell_map)
 
 template <typename Calculus, typename V>
 void
-AllSCellMap<Calculus, V>::writeImage(const std::string& filename, const Value& value_outside, const Value& value_inside_default) const
+DGtal::AllSCellMap<Calculus, V>::writeImage(const std::string& filename, const Value& value_outside, const Value& value_inside_default) const
 {
+		/*
     typedef typename Calculus::Point Point;
     typedef typename Calculus::Domain Domain;
 
@@ -51,13 +46,15 @@ AllSCellMap<Calculus, V>::writeImage(const std::string& filename, const Value& v
     }
 
     DGtal::ITKWriter<Image>::exportITK(filename, image);
+		*/
 }
 
 template <typename Calculus, typename V>
 template <typename Viewer, typename ColorMap>
 void
-AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color_map) const
+DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color_map) const
 {
+		/*
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
     typedef typename Calculus::AllSCellSizeRatio::ConstIterator CalculusConstIterator;
@@ -69,13 +66,15 @@ AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color_map) c
         viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
         viewer << cell;
     }
+		*/
 }
 
 template <typename Calculus, typename V>
 template <typename Board, typename ColorMap>
 void
-AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) const
+DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) const
 {
+		/*
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
 
     static const DGtal::Color transparent = DGtal::Color::None;
@@ -89,5 +88,6 @@ AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) con
         else if (finite(tci->second)) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
         board << cell;
     }
+		*/
 }
 

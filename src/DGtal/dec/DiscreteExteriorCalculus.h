@@ -11,6 +11,7 @@
 #include <DGtal/math/linalg/CDynamicVector.h>
 #include <DGtal/math/linalg/CLinearAlgebra.h>
 
+#include <list>
 #include <boost/array.hpp>
 #include <DGtal/kernel/domains/CDomain.h>
 #include <DGtal/topology/KhalimskySpaceND.h>
@@ -170,7 +171,8 @@ template <typename D, typename LAB>
 std::ostream&
 operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus);
 
-#include "DiscreteExteriorCalculus.ih"
 }
+
+#include "DiscreteExteriorCalculus.ih"
 
 #endif
