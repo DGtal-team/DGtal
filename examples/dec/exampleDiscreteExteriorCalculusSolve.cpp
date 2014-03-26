@@ -53,7 +53,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << endl;
+        trace.info() << solver.info() << " " << solver.solver.info()<< endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -76,7 +76,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << endl;
+        trace.info() << solver.info() << " " << solver.solver.info()<< endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -99,7 +99,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << endl;
+        trace.info() << solver.info() << " " << solver.solver.info()<< endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -122,7 +122,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << endl;
+        trace.info() << solver.info() << " " << solver.solver.info()<< endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -145,7 +145,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << endl;
+        trace.info() << solver.info() << " " << solver.solver.info()<< endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -168,7 +168,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << endl;
+        trace.info() << solver.info() << " " << solver.solver.info()<< endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;

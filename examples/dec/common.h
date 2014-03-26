@@ -3,8 +3,7 @@
 
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
-#include "DGtal/math/linalg/CLinearAlgebraSolver.h"
-#include "DGtal/dec/DECSolver.h"
+#include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
