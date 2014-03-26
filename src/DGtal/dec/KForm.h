@@ -55,8 +55,8 @@ namespace DGtal
    * KForm represents kforms in the dec package.
    *
    * @tparam Calculus should be DiscreteExteriorCalculus.
-   * @tparam Order is the order of the kform.
-   * @tparam Duality is the duality of the kform.
+   * @tparam order is the order of the kform.
+   * @tparam duality is the duality of the kform.
    */
   template <typename C, Order order, Duality duality>
   class KForm
