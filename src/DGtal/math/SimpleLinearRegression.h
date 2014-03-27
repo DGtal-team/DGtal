@@ -122,12 +122,12 @@ namespace DGtal
      * regression. See 'computeRegression' for computing the
      * regression with the current samples.
      *
-     * @param the x data.
-     * @param the y data.
+     * @param x the x data.
+     * @param y the y data.
      *
      * @see computeRegression
      */
-    void addSample( double x, double y );
+    void addSample( const double x, const double y );
 
     /**
      * Computes the regression of the current parameters.
