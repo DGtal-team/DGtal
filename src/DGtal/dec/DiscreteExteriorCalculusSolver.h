@@ -24,6 +24,8 @@ struct DiscreteExteriorCalculusSolver
 		bool info() const;
 
 		LinearAlgebraSolver solver;
+
+		const Calculus* calculus;
 };
 
 #include "DiscreteExteriorCalculusSolver.ih"
