@@ -49,7 +49,7 @@
 #include "DGtal/io/CDrawableWithDisplay3D.h"
 #include "DGtal/io/viewers/CDrawableWithViewer3D.h"
 #include "DGtal/io/viewers/Viewer3DFactory.h"
-
+#include "QGLViewer/manipulatedFrame.h"
 //////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
