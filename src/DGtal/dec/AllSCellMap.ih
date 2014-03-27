@@ -43,9 +43,9 @@ template <typename Calculus, typename V>
 DGtal::AllSCellMap<Calculus, V>&
 DGtal::AllSCellMap<Calculus, V>::operator=(const DGtal::AllSCellMap<Calculus, V>& _scell_map)
 {
-		Container::operator=(_scell_map);
-		const_cast<Calculus&>(calculus) = _scell_map.calculus;
-		return *this;
+    Container::operator=(_scell_map);
+    const_cast<Calculus&>(calculus) = _scell_map.calculus;
+    return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -67,8 +67,10 @@ DGtal::AllSCellMap<Calculus, V>::writeITKImage(const std::string& filename, cons
     Image image(domain_image);
 
     typedef typename Domain::ConstIterator DomainConstIterator;
+    typedef typename Calculus::SizeRatio SizeRatio;
+    const SizeRatio size_ratio = calculus.getSizeRatio();
     for (DomainConstIterator di=domain_image.begin(), die=domain_image.end(); di!=die; di++)
-        if (calculus.cell_size_ratio.find(calculus.kspace.sCell(*di)) == calculus.cell_size_ratio.end()) image.setValue(*di, value_outside);
+        if (size_ratio.find(calculus.kspace.sCell(*di)) == size_ratio.end()) image.setValue(*di, value_outside);
         else image.setValue(*di, value_inside_default);
 
     for (ConstIterator mi=this->begin(), mie=this->end(); mi!=mie; mi++)
