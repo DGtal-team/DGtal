@@ -348,6 +348,20 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
 }
 
 template <typename D, typename LAB>
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::SizeRatio
+DGtal::DiscreteExteriorCalculus<D, LAB>::getSizeRatio() const
+{
+    return cell_size_ratio;
+}
+
+template <typename D, typename LAB>
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::Indexes
+DGtal::DiscreteExteriorCalculus<D, LAB>::getIndexes() const
+{
+    return cell_indexes;
+}
+
+template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::SCell
 DGtal::DiscreteExteriorCalculus<D, LAB>::getSCell(const Order& order, const Duality& duality, const Index& index) const
 {

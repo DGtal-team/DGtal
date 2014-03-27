@@ -202,6 +202,18 @@ namespace DGtal
     void selfDisplay(std::ostream& out) const;
 
     /**
+     * Get cell size ratio
+     */
+    SizeRatio
+    getSizeRatio() const;
+
+    /**
+     * Get cell size indexes
+     */
+    Indexes
+    getIndexes() const;
+
+    /**
      * Identity operator from order-forms to order-forms.
      * @tparam order
      * @tparam duality
