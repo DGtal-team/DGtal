@@ -108,7 +108,7 @@ DGtal::KForm<Calculus, order, duality>::isValid() const
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
 std::ostream&
-DGtal::operator<<(std::ostream& out, const DGtal::KForm<Calculus, duality, order>& object)
+operator<<(std::ostream& out, const DGtal::KForm<Calculus, duality, order>& object)
 {
     object.selfDisplay(out);
     return out;
