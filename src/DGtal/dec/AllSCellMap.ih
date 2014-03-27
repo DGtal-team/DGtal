@@ -1,3 +1,37 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file AllSCellMap.ih
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/03/27
+ *
+ * Implementation of inline methods defined in AllSCellMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
 
 template <typename Calculus, typename V>
 DGtal::AllSCellMap<Calculus, V>::AllSCellMap(const Calculus& _calculus)
@@ -13,6 +47,9 @@ DGtal::AllSCellMap<Calculus, V>::operator=(const DGtal::AllSCellMap<Calculus, V>
 		const_cast<Calculus&>(calculus) = _scell_map.calculus;
 		return *this;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
 
 #if defined(WITH_ITK)
 template <typename Calculus, typename V>
@@ -48,6 +85,13 @@ DGtal::AllSCellMap<Calculus, V>::writeITKImage(const std::string& filename, cons
     DGtal::ITKWriter<Image>::exportITK(filename, image);
 }
 #endif
+
+template <typename Calculus, typename Value>
+void
+DGtal::AllSCellMap<Calculus, Value>::selfDisplay(std::ostream& out) const
+{
+  out << "[AllSCellMap]";
+}
 
 template <typename Calculus, typename V>
 template <typename Viewer, typename ColorMap>
@@ -86,4 +130,26 @@ DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_m
         board << cell;
     }
 }
+
+template <typename Calculus, typename Value>
+bool
+DGtal::AllSCellMap<Calculus, Value>::isValid() const
+{
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename Calculus, typename Value>
+std::ostream&
+DGtal::operator<<(std::ostream& out, const DGtal::AllSCellMap<Calculus, Value>& object)
+{
+  object.selfDisplay(out);
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
 
