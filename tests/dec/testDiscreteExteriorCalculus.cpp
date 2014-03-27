@@ -109,6 +109,10 @@ test_hodge(int domain_size=5)
 
     typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
+    typename Calculus::SizeRatio size_ratio = calculus.getSizeRatio();
+    typename Calculus::Indexes indexes = calculus.getIndexes();
+    trace.info() << "size_ratio.size()=" << size_ratio.size() << endl;
+    trace.info() << "indexes.size()=" << indexes.size() << endl;
 
     bool test_result = HodgeTester<Calculus, Calculus::dimension>::test(calculus);
     trace.endBlock();
@@ -209,6 +213,10 @@ test_derivative(int domain_size=10)
 
     typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
+    typename Calculus::SizeRatio size_ratio = calculus.getSizeRatio();
+    typename Calculus::Indexes indexes = calculus.getIndexes();
+    trace.info() << "size_ratio.size()=" << size_ratio.size() << endl;
+    trace.info() << "indexes.size()=" << indexes.size() << endl;
 
     bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
     trace.endBlock();
