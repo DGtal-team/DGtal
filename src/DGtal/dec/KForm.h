@@ -153,16 +153,6 @@ namespace DGtal
   }; // end of class KForm
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'KForm'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'KForm' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename Calculus, Order order, Duality duality>
-  std::ostream&
-  operator<<(std::ostream& out, const KForm<Calculus, order, duality>& object);
-
-  /**
    * Overloads 'operator+' for adding objects of class 'KForm'.
    * @return form_a + form_b.
    */
@@ -187,6 +177,16 @@ namespace DGtal
   operator*(const typename Calculus::Scalar& scalar, const KForm<Calculus, order, duality>& form);
 
 } // namespace DGtal
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'KForm'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'KForm' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+  std::ostream&
+  operator<<(std::ostream& out, const DGtal::KForm<Calculus, order, duality>& object);
 
 
 ///////////////////////////////////////////////////////////////////////////////
