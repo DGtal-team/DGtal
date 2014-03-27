@@ -71,22 +71,15 @@ template <typename Accum>
 void
 DGtal::KForm<Calculus, order, duality>::applyToAccum(Accum& scell_map) const
 {
-    Order primal_order = order;
-    if (duality == DUAL)
-        primal_order = Calculus::dimension-order;
-
     for (int index=0; index<container.rows(); index++)
-        scell_map[calculus.index_cells[primal_order][index]] = container(index);
+        scell_map[getSCell(index)] = container(index);
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
 typename Calculus::SCell
 DGtal::KForm<Calculus, order, duality>::getSCell(const typename Calculus::Index& index) const
 {
-    const Order& actual_order = calculus.actualOrder(order, duality);
-    const typename Calculus::SCell& cell = calculus.index_cells[actual_order][index];
-    ASSERT( calculus.kspace.sDim(cell) == actual_order );
-    return cell;
+    return calculus.getSCell(order, duality, index);
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>

@@ -92,15 +92,15 @@ DGtal::VectorField<Calculus, duality>::display2D(Board& board, const double& sca
     typedef boost::array<double, Calculus::dimension> PointF;
 
     ASSERT( calculus.index_cells[calculus.actualOrder(0, duality)].size() == calculus.kFormLength(0, duality) );
-    for (int kk=0; kk<calculus.kFormLength(0, duality); kk++)
+    for (typename Calculus::Index index=0; index<calculus.kFormLength(0, duality); index++)
     {
-        const typename Calculus::SCell& cell = calculus.index_cells[calculus.actualOrder(0, duality)][kk];
+        const typename Calculus::SCell& cell = calculus.getSCell(0, duality, index);
         PointF origin;
         PointF arrow;
         for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         {
             origin[dim] = cell.myCoordinates[dim]/2.;
-            arrow[dim] = coordinates[dim](kk);
+            arrow[dim] = coordinates[dim](index);
         }
 
         if (!arrow[0] && !arrow[1])

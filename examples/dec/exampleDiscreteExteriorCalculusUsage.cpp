@@ -16,8 +16,8 @@ void usage2d()
 
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
-    Calculus calculus = generateRing(domain);
-    trace.info() << calculus;
+    Calculus calculus(generateRingSet(domain));
+    trace.info() << calculus << endl;
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;

@@ -14,8 +14,10 @@ void solve2d()
 
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(9,9));
 
+    // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
-    Calculus calculus = generateRing(domain);
+    Calculus calculus(generateRingSet(domain));
+    trace.info() << calculus << endl;
 
     Calculus::DualDerivative0 d0 = calculus.derivative<0, DUAL>();
     Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();

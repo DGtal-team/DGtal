@@ -1,5 +1,38 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
-// digital set point get attached to primal n-cell <-> dual 0-cell
+/**
+ * @file DiscreteExteriorCalculus.ih
+ * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/03/27
+ *
+ * Implementation of inline methods defined in DiscreteExteriorCalculus.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
 template <typename D, typename LAB>
 template <typename DigitalSet>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set)
@@ -29,13 +62,13 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     }
 
     // normalize cell size
-    for (typename AllSCellSizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
+    for (typename SizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
     {
         const SCell& cell = csi->first;
         const Dimension dual_dim = dimension-kspace.sDim(cell);
         const double factor = 1/pow(2, dual_dim);
 
-        typename AllSCellSizeRatio::Value size = csi->second;
+        typename SizeRatio::Value size = csi->second;
         ASSERT(size);
         size *= factor;
 
@@ -43,7 +76,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     }
 
     // compute cell index
-    for (typename AllSCellSizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
+    for (typename SizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
     {
         const SCell& cell = csi->first;
         const Dimension dim = kspace.sDim(cell);
@@ -53,6 +86,22 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
         cell_indexes[cell] = index_cells[dim].size();
         index_cells[dim].push_back(cell);
     }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename D, typename LAB>
+void
+DGtal::DiscreteExteriorCalculus<D, LAB>::selfDisplay(std::ostream & os) const
+{
+    typedef DiscreteExteriorCalculus<D, LAB> Calculus;
+
+    os << "[DiscreteExteriorCalculus ";
+    os << domain;
+    for (DGtal::Order order=0; order<=Calculus::dimension; order++)
+        os << " | primal " << order << "-cells <-> dual " << Calculus::dimension-order << "-cells (" << kFormLength(order, PRIMAL) << ")";
+    os << "]";
 }
 
 template <typename D, typename LAB>
@@ -74,19 +123,6 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::neighborhoodRecurseSizeMask(const Dimen
 
         neighborhoodRecurseSizeMask(dimension-1, point, neighborhood);
     }
-}
-
-template <typename D, typename LAB>
-std::ostream&
-DGtal::operator<<(std::ostream& os, const DiscreteExteriorCalculus<D, LAB>& calculus)
-{
-    typedef DiscreteExteriorCalculus<D, LAB> Calculus;
-
-    os << calculus.domain << std::endl;
-    for (Order order=0; order<=Calculus::dimension; order++)
-        os << "primal " << order << "-cells <-> dual " << Calculus::dimension-order << "-cells (" << calculus.kFormLength(order, PRIMAL) << ")" << std::endl;
-
-    return os;
 }
 
 template <typename D, typename LAB>
@@ -136,7 +172,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
             const SCell& cell_border = *bi;
             ASSERT( kspace.sDim(cell_border) == actualOrder(order, duality) );
 
-            const typename AllSCellIndexes::ConstIterator cell_index_iter = cell_indexes.find(absoluteCell(cell_border));
+            const typename Indexes::ConstIterator cell_index_iter = cell_indexes.find(absoluteCell(cell_border));
             if ( cell_index_iter == cell_indexes.end() )
                 continue;
 
@@ -168,7 +204,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::primalHodge() const
     for (Index index=0; index<primal_hodge.container.rows(); index++)
     {
         const SCell& cell = index_cells[order][index];
-        const typename AllSCellSizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
+        const typename SizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
         ASSERT(iter_size != cell_size_ratio.end());
 
         primal_hodge.container(index, index) = hodgeSign(cell, PRIMAL)/iter_size->second;
@@ -194,7 +230,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::dualHodge() const
     for (Index index=0; index<dual_hodge.container.rows(); index++)
     {
         const SCell& cell = index_cells[dimension-order][index];
-        const typename AllSCellSizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
+        const typename SizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
         ASSERT(iter_size != cell_size_ratio.end());
 
         dual_hodge.container(index, index) = hodgeSign(cell, DUAL)*iter_size->second;
@@ -237,7 +273,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::Discret
             ASSERT( kspace.sDim(cell_border) == actualOrder(1, duality) );
             ASSERT( kspace.sSign(cell_border) == KSpace::POS );
 
-            const typename AllSCellIndexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
+            const typename Indexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
             if (cell_border_index_iter == cell_indexes.end())
                 continue;
 
@@ -291,7 +327,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
             ASSERT( kspace.sDim(cell_border) == actualOrder(0, duality) );
             ASSERT( kspace.sSign(cell_border) == KSpace::POS );
 
-            const typename AllSCellIndexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
+            const typename Indexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
             if (cell_border_index_iter == cell_indexes.end())
                 continue;
 
@@ -312,22 +348,46 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
 }
 
 template <typename D, typename LAB>
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::SCell
+DGtal::DiscreteExteriorCalculus<D, LAB>::getSCell(const Order& order, const Duality& duality, const Index& index) const
+{
+    const Order& actual_order = actualOrder(order, duality);
+    const SCell& cell = index_cells[actual_order][index];
+    ASSERT( kspace.sDim(cell) == actual_order );
+    return cell;
+}
+
+template <typename D, typename LAB>
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::ConstIterator
+DGtal::DiscreteExteriorCalculus<D, LAB>::begin() const
+{
+    return cell_size_ratio.begin();
+}
+
+template <typename D, typename LAB>
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::ConstIterator
+DGtal::DiscreteExteriorCalculus<D, LAB>::end() const
+{
+    return cell_size_ratio.end();
+}
+
+template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::Index
-DGtal::DiscreteExteriorCalculus<D, LAB>::kFormLength(const Order& order, const Duality& duality) const
+DGtal::DiscreteExteriorCalculus<D, LAB>::kFormLength(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
     return index_cells[actualOrder(order, duality)].size();
 }
 
 template <typename D, typename LAB>
 DGtal::Order
-DGtal::DiscreteExteriorCalculus<D, LAB>::actualOrder(const Order& order, const Duality& duality) const
+DGtal::DiscreteExteriorCalculus<D, LAB>::actualOrder(const DGtal::Order& order, const DGtal::Duality& duality) const
 {
     return (duality == PRIMAL) ? order : dimension-order;
 }
 
 template <typename D, typename LAB>
-double
-DGtal::DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const Duality& duality) const
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::Scalar
+DGtal::DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const DGtal::Duality& duality) const
 {
     const Dimension& primal_dim = kspace.sDim(cell);
     const bool apply_sign = ((dimension-primal_dim)*primal_dim % 2 == 1);
@@ -351,8 +411,8 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const Dual
 }
 
 template <typename D, typename LAB>
-double
-DGtal::DiscreteExteriorCalculus<D, LAB>::derivativeSign(const SCell& cell, const Duality& duality) const
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::Scalar
+DGtal::DiscreteExteriorCalculus<D, LAB>::derivativeSign(const SCell& cell, const DGtal::Duality& duality) const
 {
     if (duality == PRIMAL) return cell.myPositive ? 1 : -1;
     return hodgeSign(cell, PRIMAL);
@@ -368,7 +428,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::absoluteCell(const SCell& cell) const
 
 template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::Dimension
-DGtal::DiscreteExteriorCalculus<D, LAB>::edgeDirection(const SCell& cell, const Duality& duality) const
+DGtal::DiscreteExteriorCalculus<D, LAB>::edgeDirection(const SCell& cell, const DGtal::Duality& duality) const
 {
     ASSERT( kspace.sDim(cell) == actualOrder(1, duality) );
 
@@ -384,3 +444,23 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::edgeDirection(const SCell& cell, const 
     return direction;
 }
 
+template <typename D, typename LAB>
+bool
+DGtal::DiscreteExteriorCalculus<D, LAB>::isValid() const
+{
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename D, typename LAB>
+std::ostream&
+DGtal::operator<<(std::ostream & out, const DiscreteExteriorCalculus<D, LAB>& object)
+{
+  object.selfDisplay(out);
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

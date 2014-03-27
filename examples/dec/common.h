@@ -9,7 +9,7 @@
 #include "DGtal/helpers/StdDefs.h"
 using namespace DGtal;
 
-inline DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> generateRing(const Z2i::Domain& domain)
+inline Z2i::DigitalSet generateRingSet(const Z2i::Domain& domain)
 {
     Z2i::DigitalSet set(domain);
 
@@ -28,7 +28,7 @@ inline DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> ge
     //    for (int jj=0; jj<10; jj++)
     //        set.insert(Z2i::Point(ii,jj));
 
-    return DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend>(set);
+    return set;
 }
 
 #endif
