@@ -64,19 +64,10 @@ DGtal::SimpleLinearRegression::addSamples
     }
 }
 
-/**
- * Adds the sample (y,x). Does not compute immediately the
- * regression. See 'computeRegression' for computing the
- * regression with the current samples.
- *
- * @param the x data.
- * @param the y data.
- *
- * @see computeRegression
- */
+
 inline
 void
-DGtal::SimpleLinearRegression::addSample( double x, double y )
+DGtal::SimpleLinearRegression::addSample(const double x, const double y )
 {
   myX.push_back( x );
   myY.push_back( y );
