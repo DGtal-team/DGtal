@@ -36,7 +36,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-inline
 std::ostream&
 DGtal::operator<<(std::ostream& os, const DGtal::Duality& duality)
 {
