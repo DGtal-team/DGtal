@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CDECVectorSpace.h
+ * @file CDiscreteExteriorCalculusVectorSpace.h
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/03/20
  *
- * Header file for concept CDECVectorSpace.cpp
+ * Header file for concept CDiscreteExteriorCalculusVectorSpace.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDECVectorSpace_RECURSES)
-#error Recursive header files inclusion detected in CDECVectorSpace.h
-#else // defined(CDECVectorSpace_RECURSES)
+#if defined(CDiscreteExteriorCalculusVectorSpace_RECURSES)
+#error Recursive header files inclusion detected in CDiscreteExteriorCalculusVectorSpace.h
+#else // defined(CDiscreteExteriorCalculusVectorSpace_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDECVectorSpace_RECURSES
+#define CDiscreteExteriorCalculusVectorSpace_RECURSES
 
-#if !defined CDECVectorSpace_h
+#if !defined CDiscreteExteriorCalculusVectorSpace_h
 /** Prevents repeated inclusion of headers. */
-#define CDECVectorSpace_h
+#define CDiscreteExteriorCalculusVectorSpace_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,9 +49,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CDECVectorSpace
+// class CDiscreteExteriorCalculusVectorSpace
 /**
-Description of \b concept '\b CDECVectorSpace' <p>
+Description of \b concept '\b CDiscreteExteriorCalculusVectorSpace' <p>
 @ingroup Concepts
 @brief Aim:
 Lift linear algebra container concept into the dec package.
@@ -81,17 +81,17 @@ Lift linear algebra container concept into the dec package.
 
 ### Notes
 
-@tparam T the type that should be a model of CDECVectorSpace.
+@tparam T the type that should be a model of CDiscreteExteriorCalculusVectorSpace.
 */
 template <typename T>
-struct CDECVectorSpace : CVectorSpace<T>
+struct CDiscreteExteriorCalculusVectorSpace : CVectorSpace<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
     typedef typename T::Container Container;
     typedef typename T::Calculus Calculus;
 
-    BOOST_CONCEPT_USAGE( CDECVectorSpace )
+    BOOST_CONCEPT_USAGE( CDiscreteExteriorCalculusVectorSpace )
     {
         T t0(calculus_const_ref);
         T t1(calculus_const_ref, container_const_ref);
@@ -104,14 +104,14 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CDECVectorSpace
+}; // end of concept CDiscreteExteriorCalculusVectorSpace
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDECVectorSpace_h
+#endif // !defined CDiscreteExteriorCalculusVectorSpace_h
 
-#undef CDECVectorSpace_RECURSES
-#endif // else defined(CDECVectorSpace_RECURSES)
+#undef CDiscreteExteriorCalculusVectorSpace_RECURSES
+#endif // else defined(CDiscreteExteriorCalculusVectorSpace_RECURSES)
