@@ -106,7 +106,7 @@ bool testSimpleRegression2()
   y.push_back(33);
   y.push_back(2.7);
 
-  SLR.addSamples( x.begin(), y.begin(), x.end());
+  SLR.addSamples( x.begin(), x.end(), y.begin());
 
   nbok += SLR.computeRegression() ? 1 : 0;
   nb++;
