@@ -54,7 +54,6 @@ template <typename Viewer, typename ColorMap>
 void
 DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color_map) const
 {
-		/*
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
     typedef typename Calculus::AllSCellSizeRatio::ConstIterator CalculusConstIterator;
@@ -66,7 +65,6 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
         viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
         viewer << cell;
     }
-		*/
 }
 
 template <typename Calculus, typename V>
