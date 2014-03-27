@@ -4,6 +4,7 @@ DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_ou
 DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::compute(const Operator& linear_operator)
 {
 		solver.compute(linear_operator.container);
+		calculus = linear_operator.calculus;
 		return *this;
 }
 
@@ -11,7 +12,8 @@ template <typename C, typename S, Order order_in, Duality duality_in, Order orde
 KForm<C, order_in, duality_in>
 DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::solve(const InputKForm& input_kform) const
 {
-		SolutionKForm solution(input_kform.calculus, solver.solve(input_kform.container));
+		ASSERT( calculus == input_kform.calculus );
+		SolutionKForm solution(*input_kform.calculus, solver.solve(input_kform.container));
 		//trace.info() << solver.info() << std::endl;
 		return solution;
 }

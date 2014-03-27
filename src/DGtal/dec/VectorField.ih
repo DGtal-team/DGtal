@@ -35,16 +35,16 @@
 
 template <typename Calculus, DGtal::Duality duality>
 DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
-    : calculus(_calculus)
+    : calculus(&_calculus)
 {
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
-        coordinates[dim] = typename Calculus::Vector(calculus.kFormLength(0, duality));
+        coordinates[dim] = typename Calculus::Vector(calculus->kFormLength(0, duality));
     clear();
 }
 
 template <typename Calculus, DGtal::Duality duality>
 DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus, const Coordinates& _coordinates)
-    : calculus(_calculus), coordinates(_coordinates)
+    : calculus(&_calculus), coordinates(_coordinates)
 {
 }
 
@@ -53,7 +53,7 @@ DGtal::VectorField<Calculus, duality>&
 DGtal::VectorField<Calculus, duality>::operator=(const VectorField& _vector_field)
 {
     coordinates = _vector_field.coordinates;
-    const_cast<Calculus&>(calculus) = _vector_field.calculus;
+    calculus = _vector_field.calculus;
     return *this;
 }
 
@@ -64,7 +64,7 @@ template <typename Calculus, DGtal::Duality duality>
 void
 DGtal::VectorField<Calculus, duality>::selfDisplay(std::ostream& out) const
 {
-    out << duality << " vector field (" << coordinates.size() << "x" << coordinates[0].rows() << ")";
+    out << "[" << duality << " vector field (" << coordinates.size() << "x" << coordinates[0].rows() << ")]";
 }
 
 template <typename Calculus, DGtal::Duality duality>
@@ -79,7 +79,7 @@ template <typename Calculus, DGtal::Duality duality>
 bool
 DGtal::VectorField<Calculus, duality>::isValid() const
 {
-    return true;
+    return calculus != NULL;
 }
 
 template <typename Calculus, DGtal::Duality duality>
@@ -91,10 +91,9 @@ DGtal::VectorField<Calculus, duality>::display2D(Board& board, const double& sca
 
     typedef boost::array<double, Calculus::dimension> PointF;
 
-    ASSERT( calculus.index_cells[calculus.actualOrder(0, duality)].size() == calculus.kFormLength(0, duality) );
-    for (typename Calculus::Index index=0; index<calculus.kFormLength(0, duality); index++)
+    for (typename Calculus::Index index=0; index<calculus->kFormLength(0, duality); index++)
     {
-        const typename Calculus::SCell& cell = calculus.getSCell(0, duality, index);
+        const typename Calculus::SCell& cell = calculus->getSCell(0, duality, index);
         PointF origin;
         PointF arrow;
         for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
@@ -118,7 +117,7 @@ DGtal::VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) con
     ASSERT( dim < Calculus::dimension );
 
     typedef KForm<Calculus, 0, duality> ZeroForm;
-    ZeroForm zero_form(calculus);
+    ZeroForm zero_form(*calculus);
     ASSERT( zero_form.container.rows() == coordinates[dim].rows() );
 
     zero_form.container = coordinates[dim];
@@ -141,22 +140,24 @@ template <typename Calculus, DGtal::Duality duality>
 DGtal::VectorField<Calculus, duality>
 DGtal::operator+(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
 {
+    ASSERT( _vector_field_a.calculus == _vector_field_b.calculus );
     typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     Coordinates coordinates;
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         coordinates[dim] = _vector_field_a.coordinates[dim] + _vector_field_b.coordinates[dim];
-    return DGtal::VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
+    return DGtal::VectorField<Calculus, duality>(*_vector_field_a.calculus, coordinates);
 }
 
 template <typename Calculus, DGtal::Duality duality>
 DGtal::VectorField<Calculus, duality>
 DGtal::operator-(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
 {
+    ASSERT( _vector_field_a.calculus == _vector_field_b.calculus );
     typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     Coordinates coordinates;
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         coordinates[dim] = _vector_field_a.coordinates[dim] - _vector_field_b.coordinates[dim];
-    return DGtal::VectorField<Calculus, duality>(_vector_field_a.calculus, coordinates);
+    return DGtal::VectorField<Calculus, duality>(*_vector_field_a.calculus, coordinates);
 }
 
 template <typename Calculus, DGtal::Duality duality>
@@ -167,7 +168,7 @@ DGtal::operator*(const typename Calculus::Scalar& _scalar, const DGtal::VectorFi
     Coordinates coordinates;
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
         coordinates[dim] = _scalar * _vector_field.coordinates[dim];
-    return DGtal::VectorField<Calculus, duality>(_vector_field.calculus, coordinates);
+    return DGtal::VectorField<Calculus, duality>(*_vector_field.calculus, coordinates);
 }
 
 //                                                                           //

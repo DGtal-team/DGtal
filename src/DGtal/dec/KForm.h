@@ -101,9 +101,9 @@ namespace DGtal
     Container container;
 
     /**
-     * Const reference to calculus
+     * Pointer to const calculus
      */
-    const Calculus& calculus;
+    const Calculus* calculus;
 
     /**
      * Writes/Displays the object on an output stream.
