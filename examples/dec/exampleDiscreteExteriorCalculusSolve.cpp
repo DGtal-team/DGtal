@@ -55,7 +55,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -79,7 +79,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -103,7 +103,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -127,7 +127,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -151,7 +151,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -175,7 +175,7 @@ void solve2d()
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.info() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
