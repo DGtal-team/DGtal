@@ -4,11 +4,14 @@
 #include <map>
 #include <string>
 
-//#include <DGtal/images/ImageSelector.h>
-//#include <DGtal/io/writers/ITKWriter.h>
-//#include <DGtal/io/Color.h>
-//#include <DGtal/io/boards/Board2D.h>
-//#include <DGtal/io/viewers/Viewer3D.h>
+#if defined(WITH_ITK)
+#include <DGtal/images/ImageSelector.h>
+#include <DGtal/io/writers/ITKWriter.h>
+#endif
+
+#include <DGtal/io/Color.h>
+#include <DGtal/io/boards/Board2D.h>
+#include <DGtal/io/viewers/Viewer3D.h>
 
 namespace DGtal
 {
@@ -27,7 +30,9 @@ struct AllSCellMap : public std::map<typename Calculus::SCell, V>
 		AllSCellMap(const Calculus& _calculus);
 		AllSCellMap& operator=(const AllSCellMap& _scell_map);
 
-		void writeImage(const std::string& filename, const Value& value_outside = -1, const Value& value_inside_default = 0) const;
+#if defined(WITH_ITK)
+		void writeITKImage(const std::string& filename, const Value& value_outside = -1, const Value& value_inside_default = 0) const;
+#endif
 
 		template <typename Viewer, typename ColorMap>
 		void display3D(Viewer& viewer, const ColorMap& color_map) const;

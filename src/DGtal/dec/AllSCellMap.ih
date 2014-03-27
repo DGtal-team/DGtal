@@ -14,11 +14,11 @@ DGtal::AllSCellMap<Calculus, V>::operator=(const DGtal::AllSCellMap<Calculus, V>
 		return *this;
 }
 
+#if defined(WITH_ITK)
 template <typename Calculus, typename V>
 void
-DGtal::AllSCellMap<Calculus, V>::writeImage(const std::string& filename, const Value& value_outside, const Value& value_inside_default) const
+DGtal::AllSCellMap<Calculus, V>::writeITKImage(const std::string& filename, const Value& value_outside, const Value& value_inside_default) const
 {
-		/*
     typedef typename Calculus::Point Point;
     typedef typename Calculus::Domain Domain;
 
@@ -46,8 +46,8 @@ DGtal::AllSCellMap<Calculus, V>::writeImage(const std::string& filename, const V
     }
 
     DGtal::ITKWriter<Image>::exportITK(filename, image);
-		*/
 }
+#endif
 
 template <typename Calculus, typename V>
 template <typename Viewer, typename ColorMap>
@@ -74,7 +74,6 @@ template <typename Board, typename ColorMap>
 void
 DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) const
 {
-		/*
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
 
     static const DGtal::Color transparent = DGtal::Color::None;
@@ -88,6 +87,5 @@ DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_m
         else if (finite(tci->second)) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
         board << cell;
     }
-		*/
 }
 
