@@ -100,8 +100,8 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
-    typedef typename Calculus::AllSCellSizeRatio::ConstIterator CalculusConstIterator;
-    for (CalculusConstIterator ci=calculus.cell_size_ratio.begin(), cie=calculus.cell_size_ratio.end(); ci!=cie; ci++)
+    typedef typename Calculus::ConstIterator CalculusConstIterator;
+    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
@@ -120,8 +120,8 @@ DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_m
 
     static const DGtal::Color transparent = DGtal::Color::None;
 
-    typedef typename Calculus::AllSCellSizeRatio::ConstIterator CalculusConstIterator;
-    for (CalculusConstIterator ci=calculus.cell_size_ratio.begin(), cie=calculus.cell_size_ratio.end(); ci!=cie; ci++)
+    typedef typename Calculus::ConstIterator CalculusConstIterator;
+    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
