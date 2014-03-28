@@ -372,6 +372,16 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::getSCell(const Order& order, const Dual
 }
 
 template <typename D, typename LAB>
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::Index
+DGtal::DiscreteExteriorCalculus<D, LAB>::getIndex(const SCell& cell) const
+{
+    typedef typename Indexes::ConstIterator IndexesConstIterator;
+    IndexesConstIterator iter = cell_indexes.find(absoluteCell(cell));
+    ASSERT( iter != indexes.end() );
+    return iter->second;
+}
+
+template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::ConstIterator
 DGtal::DiscreteExteriorCalculus<D, LAB>::begin() const
 {

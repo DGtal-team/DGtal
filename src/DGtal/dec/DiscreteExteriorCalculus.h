@@ -200,12 +200,12 @@ namespace DGtal
     /**
      * Definition domain.
      */
-    Domain domain;
+    const Domain domain;
 
     /**
      * Associated Khalimski space.
      */
-    KSpace kspace;
+    const KSpace kspace;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -287,6 +287,13 @@ namespace DGtal
     getSCell(const Order& order, const Duality& duality, const Index& index) const;
 
     /**
+     * Get index from cell
+     * @param cell
+     */
+    Index
+    getIndex(const SCell& cell) const;
+
+    /**
      * Return discrete kforms size.
      */
     Index
@@ -353,7 +360,7 @@ namespace DGtal
     Indexes cell_indexes;
 
     /**
-     * Cells indexes by they order.
+     * Cells indexed by their order.
      * Usefull for finding cell form index and order.
      */
     IndexedSCells index_cells;
