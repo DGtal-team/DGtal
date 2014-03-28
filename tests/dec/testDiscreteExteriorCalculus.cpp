@@ -254,6 +254,12 @@ test_concepts()
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
 
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
     }
 
     { // 3d
@@ -285,6 +291,15 @@ test_concepts()
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge3> ));
+
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity3> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity3> ));
     }
 
     trace.endBlock();
