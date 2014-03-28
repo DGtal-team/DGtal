@@ -98,7 +98,7 @@ DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scala
             arrow[dim] = coordinates[dim](index);
 
         const typename Calculus::Scalar& norm = arrow.norm();
-        if (norm < epsilon) continue;
+        if (norm <= epsilon) continue;
         arrow /= norm;
 
         for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
@@ -111,7 +111,7 @@ DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scala
 template <typename Calculus, DGtal::Duality duality>
 template <typename Board>
 void
-DGtal::VectorField<Calculus, duality>::display2D(Board& board, const typename Calculus::Scalar& scale) const
+DGtal::VectorField<Calculus, duality>::display2D(Board& board, const typename Calculus::Scalar& scale, const typename Calculus::Scalar& epsilon) const
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
 
@@ -129,7 +129,9 @@ DGtal::VectorField<Calculus, duality>::display2D(Board& board, const typename Ca
             arrow[dim] = coordinates[dim](index);
 
         arrow *= scale;
-        if (arrow.norm() < 1e-7) continue;
+        if (!finite(arrow[0]) || !finite(arrow[1])) continue;
+        const typename Calculus::Scalar& norm = arrow.norm();
+        if (norm <= epsilon) continue;
 
         board.drawArrow(origin[0],origin[1],origin[0]+arrow[0],origin[1]+arrow[1]);
     }
