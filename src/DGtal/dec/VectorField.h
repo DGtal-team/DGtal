@@ -123,7 +123,7 @@ template <typename C, Duality duality>
      * @param board
      */
     template <typename Board>
-    void display2D(Board& board, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-32) const;
+    void display2D(Board& board, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-8) const;
 
     /**
      * Clear current vector field.
