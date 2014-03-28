@@ -120,8 +120,6 @@ inline
 std::ostream&
 operator<<(std::ostream & os, const Eigen::ComputationInfo& info)
 {
-    os << "solve_info = ";
-
     switch (info)
     {
         case Eigen::Success:
