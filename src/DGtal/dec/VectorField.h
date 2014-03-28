@@ -131,6 +131,11 @@ template <typename C, Duality duality>
     void clear();
 
     /**
+     * Return the normalized vector field.
+     */
+    VectorField<C, duality> normalized(const typename Calculus::Scalar& epsilon = 1e-16) const;
+
+    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */

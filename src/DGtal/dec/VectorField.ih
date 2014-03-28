@@ -83,13 +83,39 @@ DGtal::VectorField<Calculus, duality>::isValid() const
 }
 
 template <typename Calculus, DGtal::Duality duality>
+DGtal::VectorField<Calculus, duality>
+DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scalar& epsilon) const
+{
+    VectorField normalized_vector_field(*calculus);
+    Coordinates& normalized_coordinates = normalized_vector_field.coordinates;
+
+    typedef typename DGtal::PointVector<Calculus::dimension, typename Calculus::Scalar> Point;
+
+    for (typename Calculus::Index index=0; index<calculus->kFormLength(0, duality); index++)
+    {
+        Point arrow;
+        for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+            arrow[dim] = coordinates[dim](index);
+
+        const typename Calculus::Scalar& norm = arrow.norm();
+        if (norm < epsilon) continue;
+        arrow /= norm;
+
+        for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+            normalized_coordinates[dim](index) = arrow[dim];
+    }
+
+    return normalized_vector_field;
+}
+
+template <typename Calculus, DGtal::Duality duality>
 template <typename Board>
 void
 DGtal::VectorField<Calculus, duality>::display2D(Board& board, const typename Calculus::Scalar& scale) const
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
 
-    typedef typename DGtal::PointVector<Calculus::dimension, double> Point;
+    typedef typename DGtal::PointVector<Calculus::dimension, typename Calculus::Scalar> Point;
 
     for (typename Calculus::Index index=0; index<calculus->kFormLength(0, duality); index++)
     {
