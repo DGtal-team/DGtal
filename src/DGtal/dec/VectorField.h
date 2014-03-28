@@ -123,7 +123,7 @@ template <typename C, Duality duality>
      * @param board
      */
     template <typename Board>
-    void display2D(Board& board, const typename Calculus::Scalar& scale = .25) const;
+    void display2D(Board& board, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-32) const;
 
     /**
      * Clear current vector field.
@@ -133,7 +133,7 @@ template <typename C, Duality duality>
     /**
      * Return the normalized vector field.
      */
-    VectorField<C, duality> normalized(const typename Calculus::Scalar& epsilon = 1e-16) const;
+    VectorField<C, duality> normalized(const typename Calculus::Scalar& epsilon = 1e-32) const;
 
     /**
      * Checks the validity/consistency of the object.
