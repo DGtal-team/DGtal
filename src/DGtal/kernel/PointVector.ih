@@ -518,8 +518,8 @@ DGtal::PointVector<dim,TComponent, TContainer>::operator/= ( const Component coe
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim,typename TComponent, typename TContainer>
 inline
-DGtal::PointVector<dim,TComponent, TContainer> 
-DGtal::PointVector<dim,TComponent, TContainer>::operator/ ( const Component coeff )
+DGtal::PointVector<dim,TComponent, TContainer>
+DGtal::PointVector<dim,TComponent, TContainer>::operator/ ( const Component coeff ) const
 {
   Self p;
   for ( DGtal::Dimension i = 0; i < dimension; ++i )
