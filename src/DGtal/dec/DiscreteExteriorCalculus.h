@@ -160,6 +160,18 @@ namespace DGtal
     typedef LinearOperator<DiscreteExteriorCalculus, 3, DUAL, dimension-3, PRIMAL> DualHodge3;
 
     /**
+     * Identity linear operator typedefs.
+     */
+    typedef LinearOperator<DiscreteExteriorCalculus, 0, PRIMAL, 0, PRIMAL> PrimalIdentity0;
+    typedef LinearOperator<DiscreteExteriorCalculus, 1, PRIMAL, 1, PRIMAL> PrimalIdentity1;
+    typedef LinearOperator<DiscreteExteriorCalculus, 2, PRIMAL, 2, PRIMAL> PrimalIdentity2;
+    typedef LinearOperator<DiscreteExteriorCalculus, 3, PRIMAL, 3, PRIMAL> PrimalIdentity3;
+    typedef LinearOperator<DiscreteExteriorCalculus, 0, DUAL, 0, DUAL> DualIdentity0;
+    typedef LinearOperator<DiscreteExteriorCalculus, 1, DUAL, 1, DUAL> DualIdentity1;
+    typedef LinearOperator<DiscreteExteriorCalculus, 2, DUAL, 2, DUAL> DualIdentity2;
+    typedef LinearOperator<DiscreteExteriorCalculus, 3, DUAL, 3, DUAL> DualIdentity3;
+
+    /**
      * Constructor.
      * @param set the initial set copied.
      * Set point get attached to primal n-cell <-> dual 0-cell.

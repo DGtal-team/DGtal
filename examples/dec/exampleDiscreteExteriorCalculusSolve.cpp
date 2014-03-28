@@ -23,7 +23,7 @@ void solve2d()
     Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
     Calculus::DualHodge1 hodge1 = calculus.dualHodge<1>();
     Calculus::PrimalHodge2 hodge2p = calculus.primalHodge<2>();
-    LinearOperator<Calculus, 0, DUAL, 0, DUAL> laplacian = hodge2p *d1p * hodge1 * d0 + 0.1 * calculus.identity<0, DUAL>();
+    Calculus::DualIdentity0 laplacian = hodge2p *d1p * hodge1 * d0 + 0.1 * calculus.identity<0, DUAL>();
     trace.info() << "d0 = " << d0 << endl;
     trace.info() << "hodge1 = " << hodge1 << endl;
     trace.info() << "d1p = " << d1p << endl;
