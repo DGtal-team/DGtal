@@ -89,7 +89,6 @@ void
 test_hodge(int domain_size=5)
 {
     BOOST_CONCEPT_ASSERT(( CDigitalSet<DigitalSet> ));
-    trace.beginBlock("testing hodge");
 
     typedef typename DigitalSet::Domain Domain;
     typedef typename DigitalSet::Point Point;
@@ -109,11 +108,32 @@ test_hodge(int domain_size=5)
 
     typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
-    typename Calculus::SizeRatio size_ratio = calculus.getSizeRatio();
-    typename Calculus::Indexes indexes = calculus.getIndexes();
-    trace.info() << "size_ratio.size()=" << size_ratio.size() << endl;
-    trace.info() << "indexes.size()=" << indexes.size() << endl;
+    {
+        trace.beginBlock("testing indexes");
+        typename Calculus::SizeRatio size_ratio = calculus.getSizeRatio();
+        typename Calculus::Indexes indexes = calculus.getIndexes();
+        trace.info() << "size_ratio.size()=" << size_ratio.size() << endl;
+        trace.info() << "indexes.size()=" << indexes.size() << endl;
 
+        typedef typename Calculus::ConstIterator ConstIterator;
+        typedef typename Calculus::SCell SCell;
+        typedef typename Calculus::Index Index;
+        bool test_result = true;
+        for (ConstIterator iter = calculus.begin(), iter_end = calculus.end(); test_result && iter!=iter_end; iter++)
+        {
+            const SCell& cell = iter->first;
+            const Index& index = calculus.getIndex(cell);
+            const SCell& primal_cell = calculus.getSCell(calculus.kspace.sDim(cell), PRIMAL, index);
+            test_result &= (cell == primal_cell);
+            const SCell& dual_cell = calculus.getSCell(calculus.dimension-calculus.kspace.sDim(cell), DUAL, index);
+            test_result &= (cell == dual_cell);
+        }
+        trace.endBlock();
+
+        FATAL_ERROR(test_result);
+    }
+
+    trace.beginBlock("testing hodge");
     bool test_result = HodgeTester<Calculus, Calculus::dimension>::test(calculus);
     trace.endBlock();
 
@@ -193,7 +213,6 @@ void
 test_derivative(int domain_size=10)
 {
     BOOST_CONCEPT_ASSERT(( CDigitalSet<DigitalSet> ));
-    trace.beginBlock("testing derivative");
 
     typedef typename DigitalSet::Domain Domain;
     typedef typename DigitalSet::Point Point;
@@ -218,6 +237,7 @@ test_derivative(int domain_size=10)
     trace.info() << "size_ratio.size()=" << size_ratio.size() << endl;
     trace.info() << "indexes.size()=" << indexes.size() << endl;
 
+    trace.beginBlock("testing derivative");
     bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
     trace.endBlock();
 
