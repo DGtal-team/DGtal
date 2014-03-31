@@ -46,8 +46,6 @@
 using namespace std;
 using namespace DGtal;
 /////// Micro Bench
-#ifdef WITH_BENCHMARK
-
 
 typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, DGtal::int32_t> ImageVector2;
 typedef DGtal::ImageContainerBySTLMap< Z2i::Domain, DGtal::int32_t> ImageMap2;
@@ -159,7 +157,6 @@ static void BM_DomainScan(benchmark::State& state)
 }
 BENCHMARK_TEMPLATE(BM_DomainScan, ImageVector2)->Range(1<<3 , 1 << 10);
 BENCHMARK_TEMPLATE(BM_DomainScan, ImageMap2)->Range(1<<3 , 1 << 10);
-#endif
 
 
 
