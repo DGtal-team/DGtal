@@ -29,9 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#ifdef WITH_BENCHMARK
 #include <benchmark/benchmark.h>
-#endif
 #include "DGtal/base/Common.h"
 
 #include "DGtal/base/Common.h"
