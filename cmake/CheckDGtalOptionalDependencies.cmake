@@ -452,7 +452,9 @@ IF(WITH_BENCHMARK)
     include_directories( ${BENCHMARK_INCLUDE_DIR})
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
     message(STATUS "Google Benchmark found.   ${BENCHMARK_LIBRARIES}")
-  ENDIF(BENCHMARK_FOUND)
+  ELSE(BENCHMARK_FOUND)
+   message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
+ ENDIF(BENCHMARK_FOUND)
 ENDIF(WITH_BENCHMARK)
 
 
