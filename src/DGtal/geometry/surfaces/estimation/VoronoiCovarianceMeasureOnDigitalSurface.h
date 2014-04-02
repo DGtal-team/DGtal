@@ -38,16 +38,12 @@
 /** Prevents repeated inclusion of headers. */
 #define VoronoiCovarianceMeasureOnDigitalSurface_h
 
-#ifndef WITH_EIGEN
-#error You need to have activated Eigen (WITH_EIGEN) to include this file.
-#endif
-
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedConstPtrOrConstPtr.h"
-#include "DGtal/math/EigenValues3D.h"
+#include "DGtal/math/EigenDecomposition.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
@@ -102,14 +98,14 @@ namespace DGtal
     typedef VoronoiCovarianceMeasure<Space,Metric>      VCM;  //< the Voronoi Covariance Measure
     typedef typename VCM::Scalar                     Scalar;  //< the "real number" type
     typedef typename Surface::ConstIterator   ConstIterator;  //< the iterator for traversing the surface
-    typedef EigenValues3D<Scalar>         LinearAlgebraTool;  //< diagonalizer (3D).
+    typedef EigenDecomposition<KSpace::dimension,Scalar> LinearAlgebraTool;  //< diagonalizer (nD).
     typedef typename VCM::VectorN                   VectorN;  //< n-dimensional R-vector
     typedef typename VCM::MatrixNN                 MatrixNN;  //< nxn R-matrix
 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<KernelFunction, Point, Scalar> ));
 
     /// Structure to hold a diagonalized matrix.
-    struct EigenDecomposition {
+    struct EigenStructure {
       VectorN values;   //< eigenvalues from the smallest to the biggest
       MatrixNN vectors; //< corresponding eigenvectors
     };
@@ -118,8 +114,8 @@ namespace DGtal
       VectorN vcmNormal;
       VectorN trivialNormal;
     };
-    typedef std::map<Point,EigenDecomposition>         Point2EigenDecomposition;  //< the map Point -> EigenDecomposition
-    typedef std::map<Surfel,Normals>         Surfel2Normals;   //< the map Surfel -> Normals
+    typedef std::map<Point,EigenStructure> Point2EigenStructure;  //< the map Point -> EigenStructure
+    typedef std::map<Surfel,Normals>           Surfel2Normals;   //< the map Surfel -> Normals
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -193,9 +189,9 @@ namespace DGtal
     const Surfel2Normals& mapSurfel2Normals() const;
 
     /// @return a const-reference to the map Point ->
-    /// EigenDecomposition of the chi_r VCM (eigenvalues and
+    /// EigenStructure of the chi_r VCM (eigenvalues and
     /// eigenvectors).
-    const Point2EigenDecomposition& mapPoint2ChiVCM() const;
+    const Point2EigenStructure& mapPoint2ChiVCM() const;
 
     /**
        Gets the eigenvalues of the chi_r VCM at surfel \a s sorted from lowest to highest.
@@ -212,7 +208,7 @@ namespace DGtal
        @param[in] s the surfel
        @return 'true' is the surfel \a s was valid.
     */
-    bool getChiVCMEigenDecomposition( VectorN& values, MatrixNN& vectors, Surfel s ) const;
+    bool getChiVCMEigenStructure( VectorN& values, MatrixNN& vectors, Surfel s ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -245,7 +241,7 @@ namespace DGtal
     /// the VCM.
     Scalar myRadiusTrivial;
     /// Stores for each point p its convolved VCM, i.e. VCM( chi_r( p ) )
-    Point2EigenDecomposition myPt2EigenDecomposition;
+    Point2EigenStructure myPt2EigenStructure;
     /// Stores for each surfel its vcm normal and its trivial normal.
     Surfel2Normals mySurfel2Normals;
 
