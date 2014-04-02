@@ -6,6 +6,11 @@
     - New 'basic' display mode for surfels (oriented or not), useful for large digital surface displays (quads instead of 3D prism)
 
 
+*For Developpers*
+
+     - Google Benchmark can be enabled to allow micro-benchmarking in
+	some DGtal unit tests (https://github.com/google/benchmark)
+
 === DGtal 0.7 ===
 
 *General*
