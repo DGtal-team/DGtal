@@ -87,7 +87,7 @@ bool testVoronoiCovarianceMeasure()
   nbok += ( 9 <= avg_dist && avg_dist <= 11 ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "10 <= " << avg_dist << " <= 11 " << std::endl;
+               << "9 <= " << avg_dist << " <= 11 " << std::endl;
   for ( std::map<Point,int>::const_iterator it = sizeCells.begin(), itE = sizeCells.end();
         it != itE; ++it )
     trace.info() << "Nb(" << it->first << ")=" << it->second << std::endl;
