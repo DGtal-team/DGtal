@@ -76,7 +76,9 @@ namespace DGtal
    *
    *
    * @tparam TN the size TN of the matrix TN x TN.
-   * @tparam TComponent the type of each component of the matrix.
+   *
+   * @tparam TComponent the type of each component of the matrix. For
+   * now, should be some double or float type.
    */
   template  <DGtal::Dimension TN, typename TComponent>
   class EigenDecomposition
@@ -155,7 +157,7 @@ namespace DGtal
      *
      * @param[in]  matrix        3D matrix whose eigen values/vectors are computed (size = dimension * dimension).
      * @param[out] eigenVectors  matrix of eigenvectors (size = dimension * dimension). Eigenvectors are put in column.
-     * @param[out] eigenValues   vector of eigenvalues (size = dimension).
+     * @param[out] eigenValues   vector of eigenvalues (size = dimension), sorted in ascending order (smallest to highest).
      */
     static void getEigenDecomposition( const Matrix& matrix, Matrix& eigenVectors, Vector& eigenValues );
     
