@@ -89,7 +89,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface,
       Point p = *it;
       MatrixNN measure = myVCM.measure( myChi, p );
       // On diagonalise le résultat.
-      EigenDecomposition & evcm = myPt2EigenDecomposition[ p ];
+      EigenStructure & evcm = myPt2EigenStructure[ p ];
       LinearAlgebraTool::getEigenDecomposition( measure, evcm.vectors, evcm.values );
     }
   myVCM.clean(); // free some memory.
@@ -122,7 +122,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface,
             itPts != itPtsE; ++itPts )
         {
           Point p = *itPts;
-          const EigenDecomposition& evcm = myPt2EigenDecomposition[ p ];
+          const EigenStructure& evcm = myPt2EigenStructure[ p ];
           VectorN n = evcm.vectors.column( 2 );
           if ( n.dot( normals.trivialNormal ) < 0 ) normals.vcmNormal -= n;
           else                                      normals.vcmNormal += n;
@@ -192,11 +192,11 @@ mapSurfel2Normals() const
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
 inline
-const typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Point2EigenDecomposition&
+const typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Point2EigenStructure&
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 mapPoint2ChiVCM() const
 {
-  return myPt2EigenDecomposition;
+  return myPt2EigenStructure;
 }
 
 //-----------------------------------------------------------------------------
@@ -215,13 +215,13 @@ getChiVCMEigenvalues( VectorN& values, Surfel s ) const
         itPts != itPtsE; ++itPts, ++i )
     {
       Point p = *itPts;
-      typename Point2EigenDecomposition::const_iterator itEigen = myPt2EigenDecomposition.find( p );
-      if ( itEigen == myPt2EigenDecomposition.end() ) 
+      typename Point2EigenStructure::const_iterator itEigen = myPt2EigenStructure.find( p );
+      if ( itEigen == myPt2EigenStructure.end() ) 
         {
           ok = false;
           break;
         }
-      const EigenDecomposition& evcm = itEigen->second;
+      const EigenStructure& evcm = itEigen->second;
       values += evcm.values;
     }
   if ( i > 1 ) values /= i;
@@ -233,7 +233,7 @@ template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename
 inline
 bool
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
-getChiVCMEigenDecomposition( VectorN& values, MatrixNN& vectors, Surfel s ) const
+getChiVCMEigenStructure( VectorN& values, MatrixNN& vectors, Surfel s ) const
 {
   std::vector<Point> pts; 
   getPoints( std::back_inserter( pts ), s );
@@ -245,13 +245,13 @@ getChiVCMEigenDecomposition( VectorN& values, MatrixNN& vectors, Surfel s ) cons
         itPts != itPtsE; ++itPts, ++i )
     {
       Point p = *itPts;
-      typename Point2EigenDecomposition::const_iterator itEigen = myPt2EigenDecomposition.find( p );
-      if ( itEigen == myPt2EigenDecomposition.end() ) 
+      typename Point2EigenStructure::const_iterator itEigen = myPt2EigenStructure.find( p );
+      if ( itEigen == myPt2EigenStructure.end() ) 
         {
           ok = false;
           break;
         }
-      const EigenDecomposition& evcm = itEigen->second;
+      const EigenStructure& evcm = itEigen->second;
       values += evcm.values;
       vectors += evcm.vectors;
     }
@@ -317,7 +317,7 @@ DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSepar
 selfDisplay ( std::ostream & out ) const
 {
   out << "[VoronoiCovarianceMeasureOnDigitalSurface"
-      << " #pts=" << myPt2EigenDecomposition.size()
+      << " #pts=" << myPt2EigenStructure.size()
       << " #surf=" << mySurfel2Normals.size()
       << "]";
 }
