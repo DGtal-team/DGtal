@@ -35,7 +35,7 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/CSurfaceLocalGeometricEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceNormalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
@@ -138,14 +138,18 @@ bool testVoronoiCovarianceMeasureOnSurface()
   // Is CNormalVectorEstimator deprecated ?
   // BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< VCMNormalEstimator > ));
   VCMNormalEstimator estimator( vcm_surface );
+  estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
 
   trace.beginBlock("Evaluating normals wrt true normal." );
   typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
-  typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueEstimator;
-  TrueEstimator true_estimator( K, NormalFunctor() );
+  typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
+  
+  BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< VCMNormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< TrueNormalEstimator > ));
+  TrueNormalEstimator true_estimator( K, NormalFunctor() );
   true_estimator.attach( shape );
-  true_estimator.init( 1.0 );
+  true_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   Statistic<double> error_true;
   Statistic<double> error_triv_true;
   for ( ConstIterator it = ptrSurface->begin(), itE = ptrSurface->end(); it != itE; ++it )

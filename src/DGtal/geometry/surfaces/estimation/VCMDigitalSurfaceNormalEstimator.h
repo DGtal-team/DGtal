@@ -80,12 +80,14 @@ namespace DGtal
     /// the type of computing the Voronoi covariance measure on a digital surface.
     typedef VoronoiCovarianceMeasureOnDigitalSurface<DigitalSurfaceContainer, Metric, KernelFunction>
     VCMOnSurface;
-
-    // ----------------------- model of CNormalVectorEstimator ----------------
     typedef typename VCMOnSurface::Surface           Surface; //< the digital surface
+
+    // ----------------------- model of CSurfaceLocalGeometricEstimator ----------------
+    typedef typename Surface::Surfel                  Surfel; //< the signed surface element
+    typedef typename VCMOnSurface::VectorN          Quantity; //< the estimation is a vector
+    // -----------------------               other types         -----------------------
     typedef typename Surface::SCell                    SCell; //< the signed cell
     typedef typename Surface::ConstIterator    ConstIterator; //< the iterator on surfels
-    typedef typename VCMOnSurface::VectorN          Quantity; //< the estimation is a vector
     typedef typename VCMOnSurface::Scalar             Scalar; //< the "real number" type
 
     // ----------------------- Standard services ------------------------------
@@ -97,16 +99,18 @@ namespace DGtal
     ~VCMDigitalSurfaceNormalEstimator();
 
     /**
-     * Constructor. The estimator is invalid and \ref init must be called.
+     * Default constructor.
+     */
+    VCMDigitalSurfaceNormalEstimator ();
+
+    /**
+     * Constructor. The estimator is invalid and \ref setParams \b must be called.
      *
      * @param surface the digital surface that is aliased in this. The
      * user can \b secure the aliasing by passing a
      * CountedConstPtrOrConstPtr.
-     *
-     * @param surfelEmbedding the chosen embedding for surfels.
      */
-    VCMDigitalSurfaceNormalEstimator( ConstAlias< Surface > surface,
-                                      Surfel2PointEmbedding surfelEmbedding );
+    VCMDigitalSurfaceNormalEstimator( ConstAlias< Surface > surface );
 
     /**
      * Constructor from VoronoiCovarianceMeasureOnDigitalSurface. The
@@ -118,9 +122,18 @@ namespace DGtal
     VCMDigitalSurfaceNormalEstimator( ConstAlias< VCMOnSurface > aVCMOnSurface );
 
     /**
-     * Initialisation of estimator parameters.
+     * Attach a digital surface.
      *
-     * @param[in] h grid size (must be >0).
+     * @param surface the digital surface that is aliased in this. The
+     * user can \b secure the aliasing by passing a
+     * CountedConstPtrOrConstPtr.
+     */
+    void attach( ConstAlias<Surface> surface );
+
+    /**
+     * Initialisation of estimator specific parameters.
+     *
+     * @param[in] surfelEmbedding the chosen embedding for surfels.
      *
      * @param[in] R the offset radius for the set of points. Voronoi cells
      * are intersected with this offset. The unit corresponds to a step in the digital space.
@@ -142,25 +155,41 @@ namespace DGtal
      *
      * @param[in] verbose if 'true' displays information on ongoing computation.
      */
-    void init( const Scalar h, const Scalar R, const Scalar r, KernelFunction chi_r,
-               const Scalar t = 2.5, Metric aMetric = Metric(), bool verbose = true );
-
+    void setParams( Surfel2PointEmbedding surfelEmbedding,
+                    const Scalar R, const Scalar r, KernelFunction chi_r,
+                    const Scalar t = 2.5, Metric aMetric = Metric(), bool verbose = true );
 
     /**
+     * Model of CSurfaceLocalGeometricEstimator. Initialisation.
+     * Unused. The VCM is necessarily initialized on the whole surface
+     * and \a h is not used for normal estimation.
+     *
+     * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
+     * @param[in] h grid size (must be >0).
+     * @param[in] ite iterator on the first surfel of the surface.
+     * @param[in] itb iterator after the last surfel of the surface.
+     */
+    template <typename SurfelConstIterator>
+    void init( const Scalar h, 
+               SurfelConstIterator itb,
+               SurfelConstIterator ite );
+
+    /**
+     * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
+     * @param [in] it the surfel iterator at which we evaluate the quantity (within the range given at \ref init).
      * @return the estimated quantity at *it
-     * @param [in] it the surfel iterator at which we evaluate the quantity.
      */
     template <typename SurfelConstIterator>
     Quantity eval( SurfelConstIterator it ) const;
 
     /**
      * @return the estimated quantity in the range [itb,ite)
-     * @param [in] itb starting surfel iterator.
-     * @param [in] ite end surfel iterator.
+     * @param [in] itb starting surfel iterator (within the range given at \ref init).
+     * @param [in] ite end surfel iterator (within the range given at \ref init).
      * @param [in,out] result resulting output iterator
      *
      */
-    template <typename OutputIterator, typename SurfelConstIterator>
+    template <typename SurfelConstIterator,typename OutputIterator>
     OutputIterator eval( SurfelConstIterator itb,
                          SurfelConstIterator ite,
                          OutputIterator result ) const;
@@ -196,12 +225,6 @@ namespace DGtal
   protected:
 
   private:
-
-    /**
-     * Default constructor.
-     * Forbidden by default.
-     */
-    VCMDigitalSurfaceNormalEstimator ();
 
     /**
      * Copy constructor.
