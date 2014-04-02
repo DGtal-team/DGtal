@@ -58,9 +58,12 @@ namespace DGtal
      domains into cubical domains of size \f$ r^n \f$ in order to
      store points into different bins (each cubical domain is a bin,
      characterized by one coordinate). This data structure may be used
-     for proximity queries, for instance to get the points at distance
+     for proximity queries, generally to get the points at distance
      \a r from a given point.
 
+     Bins are characterized by one Point and are organized as a
+     rectangular domain with lowest bin at coordinates (0,...,0).
+     
      @tparam TSpace the digital space, a model of CSpace.
 
      Model of CopyConstructible
@@ -105,7 +108,7 @@ namespace DGtal
     /// @return the rectangular domain of interest
     const Domain& domain() const;
 
-    /// @return the rectangular domain of bins (smaller than domain()).
+    /// @return the rectangular domain of bins, which is a coarser grid than domain().
     const Domain& binDomain() const;
 
     /**
@@ -127,7 +130,7 @@ namespace DGtal
     Point uppermost( Point b ) const;
 
     /**
-       Pushs the point \a p into its bin (beware, if you push the same
+       Pushes the point \a p into its bin (beware, if you push the same
        point several times, there are as many copies of this point
        into the bin).
 
@@ -136,9 +139,9 @@ namespace DGtal
     void push( const Point& p );
 
     /**
-       Pushs the range of points [it, itE) into the corresponding bins (beware, if you push the same
-       point several times, there are as many copies of this point
-       into its bin).
+       Pushes the range of points [it, itE) into the corresponding bins
+       (beware, if you push the same point several times, there are as
+       many copies of this point into its bin).
 
        @param it an iterator pointing at the beginning of the range.
        @param itE an iterator pointing after the end of the range.
@@ -147,7 +150,7 @@ namespace DGtal
     void push( PointConstIterator it, PointConstIterator itE );
 
     /**
-       Pushs back in \a pts all the points in the bin domain [\a
+       Pushes back in \a pts all the points in the bin domain [\a
        bin_lo, \a bin_up] which satisfy the predicate \a pred.
        
        @tparam the type of a point predicate.
