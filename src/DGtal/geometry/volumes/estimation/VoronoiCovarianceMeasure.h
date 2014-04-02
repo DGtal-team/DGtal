@@ -287,7 +287,9 @@ namespace DGtal
     /**
        Computes the Voronoi Covariance Measure of the function \a chi_r.
        
-       @tparam Point2ScalarFunction the type of a functor Point->Scalar
+       @tparam Point2ScalarFunction the type of a functor
+       Point->Scalar. For instance HatPointFunction and
+       BallConstantPointFunction are models of this type.
 
        @param chi_r the kernel function whose support is included in
        the cube centered on the origin with edge size 2r (see \ref
