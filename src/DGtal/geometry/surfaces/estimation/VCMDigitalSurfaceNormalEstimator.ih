@@ -50,6 +50,16 @@ DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetr
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
 inline
 DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
+VCMDigitalSurfaceNormalEstimator()
+  : mySurface( 0 ), 
+    myVCMOnSurface( 0 )
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+inline
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 VCMDigitalSurfaceNormalEstimator( ConstAlias< VCMOnSurface > vcmSurface )
   : mySurface( vcmSurface->surface() ), 
     mySurfelEmbedding( vcmSurface->surfelEmbedding() ),
@@ -60,22 +70,38 @@ VCMDigitalSurfaceNormalEstimator( ConstAlias< VCMOnSurface > vcmSurface )
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
 inline
 DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
-VCMDigitalSurfaceNormalEstimator( ConstAlias< Surface > surface, 
-                                  Surfel2PointEmbedding surfelEmbedding )
-  : mySurface( surface ), mySurfelEmbedding( surfelEmbedding ),
+VCMDigitalSurfaceNormalEstimator( ConstAlias< Surface > surface )
+  : mySurface( surface ), 
     myVCMOnSurface( 0 )
 {
 }
+
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
 inline
 void
 DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
-init( const Scalar /* h */, const Scalar R, const Scalar r, KernelFunction chi_r,
-      const Scalar t, Metric aMetric, bool verbose )
+setParams( Surfel2PointEmbedding surfelEmbedding,
+           const Scalar R, const Scalar r, KernelFunction chi_r,
+           const Scalar t, Metric aMetric, bool verbose )
 {
+  mySurfelEmbedding = surfelEmbedding;
   myVCMOnSurface = new VCMOnSurface( mySurface, mySurfelEmbedding,
                                      R, r, chi_r, t, aMetric, verbose );
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+template <typename SurfelConstIterator>
+inline
+void
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
+init( const Scalar /* h */, 
+      SurfelConstIterator /* itb */,
+      SurfelConstIterator /* ite */ )
+{
+  ASSERT( mySurface != 0 );
+  ASSERT( myVCMOnSurface != 0 );
+  // Unused. The VCM is necessarily initialized on the whole surface.
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
@@ -87,6 +113,7 @@ eval( SurfelConstIterator it ) const
 {
   typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
+  ASSERT( mySurface != 0 );
   ASSERT( myVCMOnSurface != 0 );
   SCell s = *it;
   typename Surfel2Normals::const_iterator itSN = myVCMOnSurface->mapSurfel2Normals().find( s );
@@ -95,7 +122,7 @@ eval( SurfelConstIterator it ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
-template <typename OutputIterator, typename SurfelConstIterator>
+template <typename SurfelConstIterator, typename OutputIterator>
 inline
 OutputIterator
 DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
@@ -105,7 +132,7 @@ eval( SurfelConstIterator itb,
 {
   typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
-  BOOST_CONCEPT_ASSERT(( boost::OutputIterator<SurfelConstIterator,Quantity> ));
+  BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Quantity> ));
   ASSERT( myVCMOnSurface != 0 );
   for ( ; itb != ite; ++itb )
     {

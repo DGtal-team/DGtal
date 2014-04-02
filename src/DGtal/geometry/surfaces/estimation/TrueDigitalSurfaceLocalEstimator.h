@@ -141,18 +141,29 @@ namespace DGtal
     void attach( ConstAlias<Shape> aShape );
 
     /**
-     * Initialisation. The three last parameters specify how the
+     * Set specific parameters. They specify how the
      * nearest point on the surface is approached.
      *
-     * @param h the grid step size (must be >0).
      * @param maxIter fixes the maximum number of steps (0: takes the point as is).
      * @param accuracy distance criterion to stop the descent (proximity of implicit function).
      * @param gamma coefficient associated with the gradient (size of each step).
      */
-    void init( const Scalar h,
-               const int maxIter = 0, 
-               const Scalar accuracy = 0.1, 
-               const Scalar gamma = 0.01 );
+    void setParams( const int maxIter = 0, 
+                    const Scalar accuracy = 0.1, 
+                    const Scalar gamma = 0.01 );
+
+    /**
+     * Model of CSurfaceLocalGeometricEstimator. Initialisation.
+     *
+     * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
+     * @param[in] h grid size (must be >0).
+     * @param[in] ite iterator on the first surfel of the surface.
+     * @param[in] itb iterator after the last surfel of the surface.
+     */
+    template <typename SurfelConstIterator>
+    void init( const Scalar h, 
+               SurfelConstIterator itb,
+               SurfelConstIterator ite );
     
     /**
      * @return the estimated quantity at *it
