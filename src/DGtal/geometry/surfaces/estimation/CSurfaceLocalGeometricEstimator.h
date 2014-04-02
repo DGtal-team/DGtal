@@ -18,10 +18,10 @@
 
 /**
  * @file CSurfaceLocalGeometricEstimator.h
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2012/06/21
+ * @date 2014/04/01
  *
  * Header file for concept CSurfaceLocalGeometricEstimator.cpp
  *
@@ -88,6 +88,10 @@ namespace DGtal
      - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceNormalEstimator.
 
      ### Notes
+     
+     - For now, a CSurfaceLocalGeometricEstimator is not a refinement
+       of boost::DefaultConstructible, in opposition to
+       CCurveLocalGeometricEstimator.
 
      @tparam T the type that should be a model of CSurfaceLocalGeometricEstimator.
   */
