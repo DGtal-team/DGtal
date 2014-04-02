@@ -206,42 +206,6 @@ getPoints( std::vector<Point> & pts,
           pts.push_back( *its );
     }
 }
-//-----------------------------------------------------------------------------
-// template <typename TSpace>
-// template <typename PointPredicate>
-// inline
-// void
-// DGtal::CubicalSubdivision<TSpace>::
-// getConvexPoints( std::vector<Point> & pts, 
-//                  Point bin_lo, Point bin_up, const PointPredicate & pred ) const
-// {
-//   Domain local( bin_lo.sup( binDomain().lowerBound() ),
-//                 bin_up.inf( binDomain().upperBound() ) );
-//   for ( typename Domain::ConstIterator it = local.begin(), itE = local.end(); it != itE; ++it )
-//     {// First check that at least one vertex satisfies the predicate
-//       Point lo = lowest( *it );
-//       Point hi = uppermost( *it );
-//       Point cur = lo;
-//       bool found_one = false;
-//       Dimension max = 1 << Space::dimension;
-//       ASSERT( max != 0 );
-//       for ( Dimension i = 0; i < max; ++i )
-//         {
-//           Dimension j = 0;
-//           while ( i & (1 << j) ) { i = i ^ (1 << j); cur[ j ] = lo[ j ]; ++j; }
-//           i = i | (1 << j); cur[ j ] = hi[ j ];
-//           if ( pred( cur ) ) { found_one = true; break; }
-//         }
-//       if ( found_one )
-//         {
-//           const Storage* storage = myArray( *it );
-//           if ( storage )
-//             for ( typename Storage::const_iterator its = storage->begin(), itsE = storage->end(); 
-//                   its != itsE; ++its )
-//               if ( pred( *its ) ) pts.push_back( *its );
-//         }
-//     }
-// }
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -256,7 +220,10 @@ inline
 void
 DGtal::CubicalSubdivision<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[CubicalSubdivision]";
+  out << "[CubicalSubdivision domain=" << domain() 
+      << " binDomain=" << binDomain()
+      << " binSize=" << mySize
+      << "]";
 }
 
 /**
