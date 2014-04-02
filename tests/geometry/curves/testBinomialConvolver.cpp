@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/curves/BinomialConvolver.h"
+#include "DGtal/geometry/curves/estimation/CCurveLocalGeometricEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -98,8 +99,13 @@ bool testBinomialConvolver()
     TangentBCFct;
   typedef CurvatureFromBinomialConvolverFunctor< MyBinomialConvolver, double >
     CurvatureBCFct;
-  BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> tgtEstimator;
-  BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> curvEstimator;
+  typedef BinomialConvolverEstimator< MyBinomialConvolver, TangentBCFct> BCTangentEstimator;
+  typedef BinomialConvolverEstimator< MyBinomialConvolver, CurvatureBCFct> BCCurvatureEstimator;
+  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< BCTangentEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< BCCurvatureEstimator > ));
+  BCTangentEstimator tgtEstimator;
+  BCCurvatureEstimator curvEstimator;
+
   tgtEstimator.init( 1.0, points.begin(), points.end(), true );
   curvEstimator.init( 1.0, points.begin(), points.end(), true );
   for ( ConstIteratorOnPoints it = points.begin(), it_end = points.end();
