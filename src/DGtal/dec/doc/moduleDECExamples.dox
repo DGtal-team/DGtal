@@ -1,0 +1,37 @@
+/**
+ * @file moduleDECExamples.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/04/04
+ *
+ * Documentation file for feature DECExamples
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page DECExamples Documentation for DECExamples
+@writers David Coeurjolly
+
+[TOC]
+
+\section sectDECExamples1 First Section
+
+\subsection subsectDECExamples11 Subsection 1.1
+
+\section sectDECExamples2 Section Two
+
+\subsection subsectDECExamples21  Subsection 2.1
+
+\subsection subsectDECExamples22  Subsection 2.2
+
+*/
+
+}

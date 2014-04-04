@@ -50,7 +50,9 @@
 #endif
 #include <DGtal/io/Color.h>
 #include <DGtal/io/boards/Board2D.h>
+#if defined(WITH_QGLVIEWER)
 #include <DGtal/io/viewers/Viewer3D.h>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
