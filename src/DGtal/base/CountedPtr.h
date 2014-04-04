@@ -97,6 +97,29 @@ namespace DGtal
     bool unique()   const throw()
     {return (myCounter ? myCounter->count == 1 : true);}
 
+
+    /**
+       Equality operator ==
+       
+       @param p any other pointer.
+       @return 'true' if pointed address is equal to \a p.
+    */
+    bool operator==( const T* other ) const
+    {
+      return get() == other;
+    }
+
+    /**
+       Inequality operator !=
+       
+       @param p any other pointer.
+       @return 'true' if pointed address is different from \a p.
+    */
+    bool operator!=( const T* other ) const
+    {
+      return get() != other;
+    }
+
     /**
      * For debug.
      */

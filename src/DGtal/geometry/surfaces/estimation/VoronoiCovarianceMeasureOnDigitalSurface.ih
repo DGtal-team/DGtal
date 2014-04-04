@@ -53,13 +53,13 @@ DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSepar
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
 inline
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
-VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface, 
-                                            Surfel2PointEmbedding surfelEmbedding,
-                                            Scalar R, Scalar r, 
-                                            KernelFunction chi_r,
-                                            Scalar t, Metric aMetric, bool verbose )
-  : mySurface( surface ), mySurfelEmbedding( surfelEmbedding ), myChi( chi_r ),
-    myVCM( R, r, aMetric, verbose ), myRadiusTrivial( t )
+VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface, 
+                                          Surfel2PointEmbedding _surfelEmbedding,
+                                          Scalar _R, Scalar _r, 
+                                          KernelFunction chi_r,
+                                          Scalar t, Metric aMetric, bool verbose )
+  : mySurface( _surface ), mySurfelEmbedding( _surfelEmbedding ), myChi( chi_r ),
+    myVCM( _R, _r, aMetric, verbose ), myRadiusTrivial( t )
 {
   if ( verbose ) trace.beginBlock( "Computing VCM on digital surface." );
   const KSpace & ks = mySurface->container().space();

@@ -128,16 +128,16 @@ namespace DGtal
     /**
      * Constructor. Computes the VCM of the given \a surface.
      *
-     * @param surface the digital surface that is aliased in this. The
+     * @param _surface the digital surface that is aliased in this. The
      * user can \b secure the aliasing by passing a
      * CountedConstPtrOrConstPtr.
      *
-     * @param surfelEmbedding the chosen embedding for surfels.
+     * @param _surfelEmbedding the chosen embedding for surfels.
      *
-     * @param R the offset radius for the set of points. Voronoi cells
+     * @param _R the offset radius for the set of points. Voronoi cells
      * are intersected with this offset. The unit corresponds to a step in the digital space.
      *
-     * @param r (an upper bound of) the radius of the support of the
+     * @param _r (an upper bound of) the radius of the support of the
      * kernel function \a chi_r (note \f$\chi_r\f$ in the VCM
      * paper). The unit corresponds to a step in the digital
      * space. This parameter is used for preparing the data structure
@@ -154,9 +154,9 @@ namespace DGtal
      *
      * @param verbose if 'true' displays information on ongoing computation.
      */
-    VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > surface, 
-                                              Surfel2PointEmbedding surfelEmbedding,
-                                              Scalar R, Scalar r, 
+    VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface, 
+                                              Surfel2PointEmbedding _surfelEmbedding,
+                                              Scalar _R, Scalar _r, 
                                               KernelFunction chi_r,
                                               Scalar t = 2.5, Metric aMetric = Metric(), 
                                               bool verbose = false );

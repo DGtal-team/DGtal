@@ -58,6 +58,11 @@ namespace DGtal
    * reference local geometric quantity. This is used for comparing
    * estimators.
    *
+   * Note that you must call methods \ref setParams, \ref attach, then
+   * \ref init before calling \ref eval method(s).
+   *
+   * It is a model of CSurfaceLocalGeometricEstimator.
+   *
    * @tparam TKSpace the type of cellular grid space, a model of
    * CCellularGridSpaceND.
    *
@@ -74,6 +79,16 @@ namespace DGtal
    * ShapeGeometricFunctors::ShapeFirstPrincipalCurvatureFunctor,
    * ShapeGeometricFunctors::ShapeSecondPrincipalCurvatureFunctor,
    * ShapeGeometricFunctors::ShapeCurvatureTensorFunctor.
+   *
+   * \code
+   * typedef ImplicitPolynomial3Shape<Z3i::Space> ImplicitShape;
+   * typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
+   * typedef TrueDigitalSurfaceLocalEstimator<Z3i::KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
+   * TrueNormalEstimator true_estimator;
+   * true_estimator.setParams( K, NormalFunctor() ); // K is some KSpace
+   * true_estimator.attach( shape );                 // shape is some ImplicitShape
+   * true_estimator.init( 1.0, surface.begin(), surface.end() ); // surface is a digital surface.
+   * \endcode
    *
    * @todo add precise concept CShape
    * @todo for now we use a CanonicSCellEmbedder times the gridstep to embed surfels.
@@ -106,15 +121,9 @@ namespace DGtal
     ~TrueDigitalSurfaceLocalEstimator();
 
     /**
-     * Constructor.
-     *
-     * @param ks the cellular grid space.  The alias can be secured if
-     * a some counted pointer is handed.
-     *
-     * @param fct the functor RealPoint -> Quantity returning some geometric quantity.
+     * Default constructor. The estimator is not valid.
      */
-    TrueDigitalSurfaceLocalEstimator( ConstAlias<KSpace> ks, 
-                                      Clone<GeometricFunctor> fct );
+    TrueDigitalSurfaceLocalEstimator();
 
     /**
      * Copy constructor.
@@ -141,14 +150,23 @@ namespace DGtal
     void attach( ConstAlias<Shape> aShape );
 
     /**
-     * Set specific parameters. They specify how the
-     * nearest point on the surface is approached.
+     * Set specific parameters. They specify the space, the estimated
+     * quantity and how the nearest point on the surface is
+     * approached.
+     *
+     * @param ks the cellular grid space.  The alias can be secured if
+     * a some counted pointer is handed.
+     *
+     * @param fct the functor RealPoint -> Quantity returning some
+     * geometric quantity.
      *
      * @param maxIter fixes the maximum number of steps (0: takes the point as is).
      * @param accuracy distance criterion to stop the descent (proximity of implicit function).
      * @param gamma coefficient associated with the gradient (size of each step).
      */
-    void setParams( const int maxIter = 0, 
+    void setParams( ConstAlias<KSpace> ks, 
+                    Clone<GeometricFunctor> fct,
+                    const int maxIter = 0, 
                     const Scalar accuracy = 0.1, 
                     const Scalar gamma = 0.01 );
 
@@ -156,12 +174,12 @@ namespace DGtal
      * Model of CSurfaceLocalGeometricEstimator. Initialisation.
      *
      * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
-     * @param[in] h grid size (must be >0).
+     * @param[in] _h grid size (must be >0).
      * @param[in] ite iterator on the first surfel of the surface.
      * @param[in] itb iterator after the last surfel of the surface.
      */
     template <typename SurfelConstIterator>
-    void init( const Scalar h, 
+    void init( const Scalar _h, 
                SurfelConstIterator itb,
                SurfelConstIterator ite );
     
@@ -210,7 +228,7 @@ namespace DGtal
     /// The cellular space
     CountedConstPtrOrConstPtr<KSpace> myKSpace;
     /// The functor RealPoint -> Quantity returning some geometric quantity.
-    GeometricFunctor myFct;
+    CowPtr<GeometricFunctor> myFct;
     /// The surfel embedder. /!\ For now, it is multiplied by myH.
     SCellEmbedder myEmbedder;
     /// The shape of interest.
@@ -232,12 +250,6 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    TrueDigitalSurfaceLocalEstimator();
 
   private:
 

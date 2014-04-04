@@ -50,14 +50,14 @@ DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
 template <typename TSpace, typename TSeparableMetric>
 inline
 DGtal::VoronoiCovarianceMeasure<TSpace,TSeparableMetric>::
-VoronoiCovarianceMeasure( double R, double r, Metric aMetric, bool verbose )
-  : myBigR( R ), myMetric( aMetric ), myVerbose( verbose ),
+VoronoiCovarianceMeasure( double _R, double _r, Metric aMetric, bool verbose )
+  : myBigR( _R ), myMetric( aMetric ), myVerbose( verbose ),
     myDomain( Point(0,0,0), Point(0,0,0) ), // dummy domain
     myCharSet( 0 ), 
     myVoronoi( 0 ),
     myProximityStructure( 0 )
 {
-  mySmallR = (r >= 2.0) ? r : 2.0;
+  mySmallR = (_r >= 2.0) ? _r : 2.0;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSeparableMetric>
@@ -211,12 +211,12 @@ init( PointInputIterator itb, PointInputIterator ite )
   // On parcourt le domaine pour calculer le VCM.
   if ( myVerbose ) trace.beginBlock( "Computing VCM with R-offset." );
   Size domain_size = myDomain.size();
-  Size i = 0;
+  Size di = 0;
   MatrixNN m;
   for ( typename Domain::ConstIterator itDomain = myDomain.begin(), itDomainEnd = myDomain.end();
         itDomain != itDomainEnd; ++itDomain )
     {
-      if ( myVerbose ) trace.progressBar(++i,domain_size);
+      if ( myVerbose ) trace.progressBar(++di,domain_size);
       Point p = *itDomain;
       Point q = (*myVoronoi)( p );   // closest site to p
       if ( q != p )

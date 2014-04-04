@@ -109,7 +109,7 @@ bool testVoronoiCovarianceMeasure()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /* argc */, char** /* argv */ )
 {
   using namespace std;
   using namespace DGtal;
