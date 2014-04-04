@@ -99,7 +99,7 @@ namespace DGtal
     };
 
     /**
-     * Description of template class 'ShapePositionFunctor' <p> \brief
+     * Description of template class 'ShapeNormalVectorFunctor' <p> \brief
      * Aim: A functor RealPoint -> Quantity that returns the normal
      * vector at given point.
      *
