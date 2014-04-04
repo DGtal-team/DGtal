@@ -444,6 +444,13 @@ ENDIF(WITH_CGAL)
 # -----------------------------------------------------------------------------
 SET(BENCHMARK_FOUND_DGTAL 0)
 IF(WITH_BENCHMARK)
+
+  IF (WITH_C11)
+    message(STATUS "C11 enabled for Google benchmark, all fine.")
+  ELSE(WITH_C11)
+   message(FATAL_ERROR "Google benchmark requires C++11. Please enable it setting 'WITH_C11' to true.")
+ ENDIF(WITH_C11)
+
   FIND_PACKAGE(Benchmark REQUIRED)
   IF(BENCHMARK_FOUND)
     SET(BENCHMARK_FOUND_DGTAL 1)
@@ -451,7 +458,9 @@ IF(WITH_BENCHMARK)
     include_directories( ${BENCHMARK_INCLUDE_DIR})
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
     message(STATUS "Google Benchmark found.   ${BENCHMARK_LIBRARIES}")
-  ENDIF(BENCHMARK_FOUND)
+  ELSE(BENCHMARK_FOUND)
+   message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
+ ENDIF(BENCHMARK_FOUND)
 ENDIF(WITH_BENCHMARK)
 
 
