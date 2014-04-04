@@ -49,9 +49,8 @@ DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
 inline
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
-TrueDigitalSurfaceLocalEstimator( ConstAlias<KSpace> ks, 
-                                  Clone<GeometricFunctor> fct )
-  : myKSpace( ks ), myFct( fct ), myEmbedder( *myKSpace ),
+TrueDigitalSurfaceLocalEstimator()
+  : myKSpace( 0 ), myFct( 0 ), myEmbedder(),
     myShape( 0 ), myH( 1.0 ),
     myMaxIter( 0 ), myAccuracy( 0.1 ), myGamma( 0.01 )
 {
@@ -104,17 +103,23 @@ DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 attach( ConstAlias<Shape> aShape )
 {
   myShape = aShape;
-  myFct.attach( myShape );
+  myFct->attach( myShape );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
 inline
 void 
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
-setParams( const int maxIter, 
-           const Scalar accuracy, 
-           const Scalar gamma )
+setParams(  ConstAlias<KSpace> ks, 
+            Clone<GeometricFunctor> fct,
+            const int maxIter, 
+            const Scalar accuracy, 
+            const Scalar gamma )
 {
+  myKSpace = ks;
+  myFct = fct;
+  if ( ( myShape != 0 ) && ( myFct != 0 ) ) myFct->attach( myShape );
+  myEmbedder = SCellEmbedder( *myKSpace );
   myMaxIter = maxIter;
   myAccuracy = accuracy;
   myGamma = gamma;
@@ -125,11 +130,11 @@ template <typename SurfelConstIterator>
 inline
 void 
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
-init( const Scalar h,
+init( const Scalar _h,
       SurfelConstIterator /* itb */,
       SurfelConstIterator /* ite */ )
 {
-  myH = h;
+  myH = _h;
 }
 
 //-----------------------------------------------------------------------------
@@ -140,8 +145,9 @@ typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunc
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 eval( SurfelConstIterator it ) const
 {
+  ASSERT( isValid() );
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
-  return myFct( embed( *it ) );
+  return myFct->operator()( embed( *it ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
@@ -157,6 +163,7 @@ eval( SurfelConstIterator itb,
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Quantity> ));
   for ( ; itb != ite; ++itb )
     *result++ = this->eval( itb );
+  return result;
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
@@ -165,6 +172,7 @@ typename DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunc
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 embed( Surfel surfel ) const
 {
+  ASSERT( isValid() );
   RealPoint p = myEmbedder( surfel );
   p *= myH;
   return ( myMaxIter > 0 ) 
@@ -198,7 +206,10 @@ bool
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 isValid() const
 {
-    return true;
+  return ( myKSpace != 0 )
+    && ( myFct != 0 )
+    && ( myShape != 0 )
+    && ( myEmbedder.isValid() );
 }
 
 

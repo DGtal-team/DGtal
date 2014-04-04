@@ -228,10 +228,10 @@ namespace DGtal
     /**
      * Constructor.
      *
-     * @param R the offset radius for the set of points. Voronoi cells
+     * @param _R the offset radius for the set of points. Voronoi cells
      * are intersected with this offset. The unit corresponds to a step in the digital space.
      *
-     * @param r (an upper bound of) the radius of the support of
+     * @param _r (an upper bound of) the radius of the support of
      * forthcoming kernel functions (\f$ \chi_r \f$). The unit
      * corresponds to a step in the digital space. This parameter is
      * used for preparing the data structure that answers to proximity
@@ -240,7 +240,7 @@ namespace DGtal
      * @param aMetric an instance of the metric.
      * @param verbose if 'true' displays information on ongoing computation.
      */
-    VoronoiCovarianceMeasure( double R, double r, Metric aMetric = Metric(), bool verbose = false );
+    VoronoiCovarianceMeasure( double _R, double _r, Metric aMetric = Metric(), bool verbose = false );
 
     /**
      * Destructor.

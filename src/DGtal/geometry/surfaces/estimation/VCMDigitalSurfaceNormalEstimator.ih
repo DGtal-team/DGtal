@@ -52,8 +52,36 @@ inline
 DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 VCMDigitalSurfaceNormalEstimator()
   : mySurface( 0 ), 
+    mySurfelEmbedding( InnerSpel ),
     myVCMOnSurface( 0 )
 {
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+inline
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
+VCMDigitalSurfaceNormalEstimator( const Self& other )
+  : mySurface( other.mySurface ), 
+    mySurfelEmbedding( other.mySurfelEmbedding ),
+    myVCMOnSurface( other.myVCMOnSurface )
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
+inline
+typename DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Self&
+DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
+operator=( const Self& other )
+{
+  if ( this != &other ) 
+    {
+      mySurface = other.mySurface;
+      mySurfelEmbedding = other.mySurfelEmbedding;
+      myVCMOnSurface = other.myVCMOnSurface;
+    }
+  return *this;
 }
 
 //-----------------------------------------------------------------------------
@@ -72,6 +100,7 @@ inline
 DGtal::VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 VCMDigitalSurfaceNormalEstimator( ConstAlias< Surface > surface )
   : mySurface( surface ), 
+    mySurfelEmbedding( InnerSpel ),
     myVCMOnSurface( 0 )
 {
 }

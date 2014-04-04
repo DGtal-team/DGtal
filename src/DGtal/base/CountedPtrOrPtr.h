@@ -166,7 +166,7 @@ namespace DGtal
     */
     bool operator==( const T* other ) const
     {
-      return myIsCountedPtr ? counterPtr()->ptr == other : ptr() == other;
+      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) == other : ptr() == other;
     }
 
     /**
@@ -177,7 +177,7 @@ namespace DGtal
     */
     bool operator!=( const T* other ) const
     {
-      return myIsCountedPtr ? counterPtr()->ptr != other : ptr() != other;
+      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) != other : ptr() != other;
     }
 
     T& operator*()  const throw()   { return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); }

@@ -54,8 +54,8 @@ namespace DGtal
    * Description of template class 'VCMDigitalSurfaceNormalEstimator'
    * <p> \brief Aim: This class adapts a
    * VoronoiCovarianceMeasureOnDigitalSurface to be a model of
-   * CNormalVectorEstimator. It returns the estimated VCM surface
-   * \b outward normal for given surfels.
+   * CSurfaceLocalGeometricEstimator. It returns the estimated VCM
+   * surface \b outward normal for given surfels.
    *
    * @tparam TDigitalSurfaceContainer the type of digital surface
    * container (model of CDigitalSurfaceContainer).
@@ -74,6 +74,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
     // ----------------------- public types ------------------------------
   public:
+    typedef VCMDigitalSurfaceNormalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction> Self; //< my own type
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer; //< the chosen container
     typedef TSeparableMetric                          Metric; //< the chosen metric
     typedef TKernelFunction                  KernelFunction;  //< the kernel function
@@ -102,6 +103,19 @@ namespace DGtal
      * Default constructor.
      */
     VCMDigitalSurfaceNormalEstimator ();
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    VCMDigitalSurfaceNormalEstimator( const Self& other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Self& operator= ( const Self& other );
 
     /**
      * Constructor. The estimator is invalid and \ref setParams \b must be called.
@@ -225,21 +239,6 @@ namespace DGtal
   protected:
 
   private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    VCMDigitalSurfaceNormalEstimator ( const VCMDigitalSurfaceNormalEstimator & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    VCMDigitalSurfaceNormalEstimator & operator= ( const VCMDigitalSurfaceNormalEstimator & other );
 
     // ------------------------- Internals ------------------------------------
   private:

@@ -147,7 +147,8 @@ bool testVoronoiCovarianceMeasureOnSurface()
   
   BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< VCMNormalEstimator > ));
   BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< TrueNormalEstimator > ));
-  TrueNormalEstimator true_estimator( K, NormalFunctor() );
+  TrueNormalEstimator true_estimator;
+  true_estimator.setParams( K, NormalFunctor() );
   true_estimator.attach( shape );
   true_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   Statistic<double> error_true;
@@ -186,7 +187,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /* argc */, char** /* argv */ )
 {
   using namespace std;
   using namespace DGtal;

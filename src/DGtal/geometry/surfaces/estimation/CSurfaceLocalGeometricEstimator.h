@@ -59,6 +59,7 @@ namespace DGtal
      of the range (or a given subrange). 
 
      ### Refinement of 
+     - boost::DefaultConstructible
 
      ### Associated types :
      - Surfel : the type of elements of the surface
@@ -78,8 +79,8 @@ namespace DGtal
      | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
      |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
      | Initialization | x.init( h, itb, ite )         |   | void                         | h > 0        | Grid step and range initialization        |   | constant        |
-     | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependant |
-     | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependant |
+     | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependent |
+     | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependent |
 
      ### Invariants
 
@@ -97,6 +98,8 @@ namespace DGtal
   */
   template <typename T>
   struct CSurfaceLocalGeometricEstimator
+    : boost::DefaultConstructible<T>,  boost::CopyConstructible<T>, boost::Assignable<T>
+
   {
 
     // ----------------------- Concept checks ------------------------------
