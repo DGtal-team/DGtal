@@ -133,7 +133,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::identity() const
 
     typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order, duality> Operator;
     Operator id(*this);
-    id.container.setIdentity();
+    id.myContainer.setIdentity();
     return id;
 }
 
@@ -147,11 +147,11 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
 
     typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order+1, duality> Derivative;
     Derivative derivative(*this);
-    ASSERT( derivative.container.rows() == kFormLength(order+1, duality) );
-    ASSERT( derivative.container.cols() == kFormLength(order, duality) );
+    ASSERT( derivative.myContainer.rows() == kFormLength(order+1, duality) );
+    ASSERT( derivative.myContainer.cols() == kFormLength(order, duality) );
 
     // iterate over output form values
-    for (Index index_output=0; index_output<derivative.container.rows(); index_output++)
+    for (Index index_output=0; index_output<derivative.myContainer.rows(); index_output++)
     {
         const SCell& cell = index_cells[actualOrder(order+1, duality)][index_output];
         ASSERT( kspace.sSign(cell) == KSpace::POS );
@@ -177,10 +177,10 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
                 continue;
 
             const Index index_input = cell_index_iter->second;
-            ASSERT( index_input < derivative.container.cols() );
+            ASSERT( index_input < derivative.myContainer.cols() );
 
             // fill container with cell sign
-            derivative.container(index_output, index_input) = sign * derivativeSign(cell_border, duality);
+            derivative.myContainer(index_output, index_input) = sign * derivativeSign(cell_border, duality);
         }
     }
 
@@ -197,17 +197,17 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::primalHodge() const
 
     typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, PRIMAL, dimension-order, DUAL> PrimalHodge;
     PrimalHodge primal_hodge(*this);
-    ASSERT( primal_hodge.container.rows() == primal_hodge.container.cols() );
-    ASSERT( primal_hodge.container.rows() == kFormLength(order, PRIMAL) );
+    ASSERT( primal_hodge.myContainer.rows() == primal_hodge.myContainer.cols() );
+    ASSERT( primal_hodge.myContainer.rows() == kFormLength(order, PRIMAL) );
 
     // iterate over output form values
-    for (Index index=0; index<primal_hodge.container.rows(); index++)
+    for (Index index=0; index<primal_hodge.myContainer.rows(); index++)
     {
         const SCell& cell = index_cells[order][index];
         const typename SizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
         ASSERT(iter_size != cell_size_ratio.end());
 
-        primal_hodge.container(index, index) = hodgeSign(cell, PRIMAL)/iter_size->second;
+        primal_hodge.myContainer(index, index) = hodgeSign(cell, PRIMAL)/iter_size->second;
     }
 
     return primal_hodge;
@@ -223,17 +223,17 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::dualHodge() const
 
     typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, DUAL, DiscreteExteriorCalculus<D, LAB>::dimension-order, PRIMAL> DualHodge;
     DualHodge dual_hodge(*this);
-    ASSERT( dual_hodge.container.rows() == dual_hodge.container.cols() );
-    ASSERT( dual_hodge.container.rows() == kFormLength(order, DUAL) );
+    ASSERT( dual_hodge.myContainer.rows() == dual_hodge.myContainer.cols() );
+    ASSERT( dual_hodge.myContainer.rows() == kFormLength(order, DUAL) );
 
     // iterate over output form values
-    for (Index index=0; index<dual_hodge.container.rows(); index++)
+    for (Index index=0; index<dual_hodge.myContainer.rows(); index++)
     {
         const SCell& cell = index_cells[dimension-order][index];
         const typename SizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
         ASSERT(iter_size != cell_size_ratio.end());
 
-        dual_hodge.container(index, index) = hodgeSign(cell, DUAL)*iter_size->second;
+        dual_hodge.myContainer(index, index) = hodgeSign(cell, DUAL)*iter_size->second;
     }
 
     return dual_hodge;
@@ -279,12 +279,12 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::Discret
 
             const Index& cell_border_index = cell_border_index_iter->second;
             ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
-            ASSERT( cell_border_index < one_form.container.rows() );
+            ASSERT( cell_border_index < one_form.myContainer.rows() );
 
             const Dimension direction = edgeDirection(cell_border, duality);
 
             normalize[direction]++;
-            field.coordinates[direction](kk) += one_form.container(cell_border_index);
+            field.coordinates[direction](kk) += one_form.myContainer(cell_border_index);
         }
 
         // normalize vector field
@@ -336,12 +336,12 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
             normalize++;
-            one_form.container(kk) += vector_field.coordinates[direction](cell_border_index);
+            one_form.myContainer(kk) += vector_field.coordinates[direction](cell_border_index);
         }
 
         // normalize one-form
         if (normalize)
-            one_form.container(kk) /= normalize;
+            one_form.myContainer(kk) /= normalize;
     }
 
     return one_form;

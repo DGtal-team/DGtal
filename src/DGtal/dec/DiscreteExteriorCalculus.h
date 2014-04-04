@@ -70,20 +70,20 @@ namespace DGtal
    * This is used to describe the space on wich the dec is build and to compute various operators.
    * Once operators or kforms are created, this structure should not be modified.
    *
-   * @tparam Domain should be a model of CDomain.
-   * @tparam LinearAlgebraBackend is linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
+   * @tparam TDomain should be a model of CDomain.
+   * @tparam TLinearAlgebraBackend is linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
    */
-  template <typename D, typename LAB>
+  template <typename TDomain, typename TLinearAlgebraBackend>
   class DiscreteExteriorCalculus
   {
     // ----------------------- Standard services ------------------------------
   public:
 
-    typedef D Domain;
+    typedef TDomain Domain;
 
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
 
-    typedef LAB LineaAlgebraBackend;
+    typedef TLinearAlgebraBackend LineaAlgebraBackend;
     typedef typename LineaAlgebraBackend::Vector::Index Index;
     typedef typename LineaAlgebraBackend::Vector::Scalar Scalar;
     typedef typename LineaAlgebraBackend::Vector Vector;
