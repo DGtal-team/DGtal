@@ -35,14 +35,14 @@
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
 DGtal::KForm<Calculus, order, duality>::KForm(const Calculus& _calculus)
-    : calculus(&_calculus), container(_calculus.kFormLength(order, duality))
+    : container(_calculus.kFormLength(order, duality)), calculus(&_calculus)
 {
     clear();
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
 DGtal::KForm<Calculus, order, duality>::KForm(const Calculus& _calculus, const Container& _container)
-    : calculus(&_calculus), container(_container)
+    : container(_container),  calculus(&_calculus)
 {
     ASSERT( calculus->kFormLength(order, duality) == container.rows() );
 }

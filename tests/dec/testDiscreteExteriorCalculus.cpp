@@ -57,7 +57,8 @@ is_identity(const Container& container, const Value& value)
     return true;
 }
 
-template <typename Calculus, Order order>
+//DC: changing order to int (to match with -1 specialization)
+template <typename Calculus, int order>
 struct HodgeTester
 {
     BOOST_STATIC_ASSERT(( order <= Calculus::dimension ));
@@ -69,10 +70,10 @@ struct HodgeTester
         { // test identity operator
             typedef LinearOperator<Calculus, order, PRIMAL, order, PRIMAL> PrimalIdentity;
             PrimalIdentity primal_identity = calculus.template identity<order, PRIMAL>();
-            if (!is_identity(primal_identity.container, 1)) return false;
+            if (!is_identity(primal_identity.myContainer, 1)) return false;
             typedef LinearOperator<Calculus, order, DUAL, order, DUAL> DualIdentity;
             DualIdentity dual_identity = calculus.template identity<order, DUAL>();
-            if (!is_identity(dual_identity.container, 1)) return false;
+            if (!is_identity(dual_identity.myContainer, 1)) return false;
         }
 
         typedef LinearOperator<Calculus, order, PRIMAL, Calculus::dimension-order, DUAL> PrimalHodge;
@@ -85,7 +86,7 @@ struct HodgeTester
         { // test primal to primal composition
             typedef LinearOperator<Calculus, order, PRIMAL, order, PRIMAL> PrimalPrimal;
             PrimalPrimal primal_primal = dual_hodge * primal_hodge;
-            if (!is_identity(primal_primal.container, pow(-1, order*(Calculus::dimension-order)))) return false;
+            if (!is_identity(primal_primal.myContainer, pow(-1, order*(Calculus::dimension-order)))) return false;
         }
 
         trace.info() << "testing dual to dual hodge composition order " << order << endl;
@@ -93,14 +94,13 @@ struct HodgeTester
         { // test dual to dual composition
             typedef LinearOperator<Calculus, Calculus::dimension-order, DUAL, Calculus::dimension-order, DUAL> DualDual;
             DualDual dual_dual = primal_hodge * dual_hodge;
-            if (!is_identity(dual_dual.container, pow(-1, order*(Calculus::dimension-order)))) return false;
+            if (!is_identity(dual_dual.myContainer, pow(-1, order*(Calculus::dimension-order)))) return false;
         }
 
         return HodgeTester<Calculus, order-1>::test(calculus);
     }
 };
 
-template <>
 template <typename Calculus>
 struct HodgeTester<Calculus, -1>
 {
@@ -166,10 +166,11 @@ test_hodge(int domain_size=5)
     FATAL_ERROR(test_result);
 }
 
-template <typename Calculus, Order order>
+//DC Order->int (see above)
+template <typename Calculus, int order>
 struct DerivativeTester
 {
-    BOOST_STATIC_ASSERT(( order < Calculus::dimension-1 ));
+    BOOST_STATIC_ASSERT(( order < (int)Calculus::dimension - 1 ));
 
     static bool test(const Calculus& calculus)
     {
@@ -182,7 +183,7 @@ struct DerivativeTester
             SecondDerivative second_derivative = calculus.template derivative<order+1, PRIMAL>();
             typedef LinearOperator<Calculus, order, PRIMAL, order+2, PRIMAL> DoubleDerivative;
             DoubleDerivative double_derivative = second_derivative * first_derivative;
-            if (!is_all_zero(double_derivative.container)) return false;
+            if (!is_all_zero(double_derivative.myContainer)) return false;
         }
 
         trace.info() << "testing dual derivative composition order " << order << endl;
@@ -194,7 +195,7 @@ struct DerivativeTester
             SecondDerivative second_derivative = calculus.template derivative<order+1, DUAL>();
             typedef LinearOperator<Calculus, order, DUAL, order+2, DUAL> DoubleDerivative;
             DoubleDerivative double_derivative = second_derivative * first_derivative;
-            if (!is_all_zero(double_derivative.container)) return false;
+            if (!is_all_zero(double_derivative.myContainer)) return false;
         }
 
         /*
@@ -212,9 +213,9 @@ struct DerivativeTester
             {
                 const double ak = static_cast<double>(random())/RAND_MAX;
                 const double bk = static_cast<double>(random())/RAND_MAX;
-                alpha.container(kk) = ak;
-                beta.container(kk) = bk;
-                gamma.container(kk) = ak*bk;
+                alpha.myContainer(kk) = ak;
+                beta.myContainer(kk) = bk;
+                gamma.myContainer(kk) = ak*bk;
             }
 
         }
@@ -224,7 +225,6 @@ struct DerivativeTester
     }
 };
 
-template <>
 template <typename Calculus>
 struct DerivativeTester<Calculus, -1>
 {

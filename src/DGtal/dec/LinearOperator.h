@@ -105,12 +105,12 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
     /**
      * Container used to actually hold the kform data.
      */
-    Container container;
+    Container myContainer;
 
     /**
      * Pointer to const calculus
      */
-    const Calculus* calculus;
+    const Calculus* myCalculus;
 
     /**
      * Writes/Displays the object on an output stream.

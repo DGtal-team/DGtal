@@ -44,7 +44,7 @@ DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
 
 template <typename Calculus, DGtal::Duality duality>
 DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus, const Coordinates& _coordinates)
-    : calculus(&_calculus), coordinates(_coordinates)
+    : coordinates(_coordinates), calculus(&_calculus)
 {
 }
 

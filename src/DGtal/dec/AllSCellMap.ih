@@ -102,6 +102,7 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
+#if defined(WITH_QGLViewer)
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
@@ -111,6 +112,7 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
         viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
         viewer << cell;
     }
+    #endif
 }
 
 template <typename Calculus, typename V>
