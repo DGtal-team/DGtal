@@ -1,0 +1,37 @@
+/**
+ * @file moduleDECOperators.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/04/04
+ *
+ * Documentation file for feature DECOperators
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page DECOperators Documentation for DECOperators
+@writers David Coeurjolly
+
+[TOC]
+
+\section sectDECOperators1 First Section
+
+\subsection subsectDECOperators11 Subsection 1.1
+
+\section sectDECOperators2 Section Two
+
+\subsection subsectDECOperators21  Subsection 2.1
+
+\subsection subsectDECOperators22  Subsection 2.2
+
+*/
+
+}
