@@ -775,6 +775,26 @@ namespace DGtal
     
 
 
+    /**
+     * Given a boundary surface [bdry] in [ks], compute its interior as a
+     * set of unoriented spels.  The technique is to fill line by line and
+     * tests the intersection with the surface.
+     *
+     * @param ks the digital space.
+     * @param bdry the digital Jordan surface
+     *
+     * @param empty_is_inside when 'true', an empty line is considered
+     * interior, otherwise exterior.
+     *
+     * @return its set of interior spels
+     */
+    template <typename CellSet> 
+    void
+    ImaGene::KnShapes::ucomputeInterior( const KSpace & aKSpace, 
+                                         const KnRCellSet & bdry,
+                                         CellSet & interiorCellSet,
+                                         bool empty_is_inside );
+
     
 
     // ----------------------- Standard services ------------------------------
