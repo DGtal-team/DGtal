@@ -989,6 +989,71 @@ sWriteBoundary( OutputIterator & out_it,
   //   }
 }
           
+template <typename TKSpace>
+template <typename CellSet>
+void 
+DGtal::Surfaces<TKSpace>::ucomputeInterior( const KSpace & aKSpace, 
+                                            const KnRCellSet & bdry,
+                                            CellSet & interiorCellSet,
+                                            bool empty_is_inside );
+
+{
+  
+  // Scan image to fill pixels.
+  std::deque<Kn_uid> pixels;
+      
+      KnSpaceScanner scan2( ks, 
+                            ks.ufirstCell( ks.dim() ),
+                            ks.ulastCell( ks.dim() ) );
+      
+      bool in_mode = empty_is_inside; 
+      Kn_uid p = scan2.begin();
+      do 
+        {
+          if ( p != ks.ugetMax( p, 0 ) )
+            { 
+              pixels.push_front( p );
+              Kn_sid b = ks.sincident( ks.signsPos( p ), 0, true );
+              if ( bdry[ b ] )
+                {
+	      while ( ! pixels.empty() )
+		{
+		  image += pixels.front();
+		  pixels.pop_front();
+		}
+	      in_mode = false;
+                }
+              else if ( bdry[ ks.sopp( b ) ] )
+                {
+                  pixels.clear();
+	      in_mode = true;
+                }
+            }
+          else
+	{
+	  pixels.push_front( p );
+	  if ( in_mode )
+	    {
+	      while ( ! pixels.empty() )
+		{
+		  image += pixels.front();
+		  pixels.pop_front();
+		}
+	    }
+	  else
+	    pixels.clear();
+	  in_mode = empty_is_inside;
+	}
+        }
+      while ( scan2.increment( p ) ); 
+      return image;
+    }
+  }
+
+
+
+
+
 
 
 
