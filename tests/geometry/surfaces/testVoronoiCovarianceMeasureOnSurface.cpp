@@ -37,7 +37,6 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/CSurfaceLocalGeometricEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceNormalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
 #include "DGtal/shapes/GaussDigitizer.h"
@@ -135,11 +134,10 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Wrapping normal estimator." );
-  typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric,KernelFunction> VCMNormalEstimator;
   typedef VCMGeometricFunctors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
   typedef VCMDigitalSurfaceEstimator<SurfaceContainer,Metric,
-                                     KernelFunction, NormalVectorFunctor> VCMNormalEstimator2;
-  VCMNormalEstimator2 estimator( vcm_surface );
+                                     KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
+  VCMNormalEstimator estimator( vcm_surface );
   estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
 
@@ -149,7 +147,6 @@ bool testVoronoiCovarianceMeasureOnSurface()
   
   BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< VCMNormalEstimator > ));
   BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< TrueNormalEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< VCMNormalEstimator2 > ));
 
   TrueNormalEstimator true_estimator;
   true_estimator.setParams( K, NormalFunctor() );
