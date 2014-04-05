@@ -1609,26 +1609,6 @@ uFaces( const Cell & c ) const
 {
   Cells N;
   uAddFaces( N, c, 0 );
-  // DGtal::Dimension dim_of_c = uDim( c );
-  // Cells N;
-  // Cells P;
-  // std::deque<Dimension> Q;
-  // P.push_back( c );
-  // Q.push_back( dim_of_c );
-  // while ( ! P.empty() )
-  //   {
-  //     Cell d = P.front();      P.pop_front();
-  //     DGtal::Dimension k = Q.front(); Q.pop_front();
-  //     if ( k != dim_of_c )     N.push_back( d );
-  //     // the use of k induces that incident faces are not duplicated.
-  //     for ( DirIterator q = uDirs( d ); ( q != 0 ) && ( k > 0 ); ++q, --k )
-  //       {
-  //         P.push_back( uIncident( d, *q, false ) );
-  //         Q.push_back( k - 1 );
-  //         P.push_back( uIncident( d, *q, true ) );
-  //         Q.push_back( k - 1 );
-  //       }
-  //   }
   return N;
 }
 //-----------------------------------------------------------------------------
@@ -1641,27 +1621,6 @@ uCoFaces( const Cell & c ) const
   Cells N;
   uAddCoFaces( N, c, 0 );
   return N;
-  // DGtal::Dimension dim_of_c = uDim( c );
-  // Cells N;
-  // Cells P;
-  // std::deque<Dimension> Q;
-  // P.push_back( c );
-  // Q.push_back( dimension - dim_of_c );
-  // while ( ! P.empty() )
-  //   {
-  //     Cell d = P.front();      P.pop_front();
-  //     DGtal::Dimension k = Q.front(); Q.pop_front();
-  //     if ( k != dim_of_c )     N.push_back( d );
-  //     // the use of k induces that incident faces are not duplicated.
-  //     for ( DirIterator q = uOrthDirs( d ); ( q != 0 ) && ( k > 0 ); ++q, --k )
-  // {
-  //   P.push_back( uIncident( d, *q, false ) );
-  //   Q.push_back( k - 1 );
-  //   P.push_back( uIncident( d, *q, true ) );
-  //   Q.push_back( k - 1 );
-  // }
-  //   }
-  // return N;
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
