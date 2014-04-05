@@ -28,7 +28,9 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <cmath>
 #include <iostream>
+#include <boost/math/special_functions/binomial.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -417,6 +419,78 @@ bool testFindABel()
            (s001 == SCell( Point(1,1,2), false ) ) );
 }
   
+template <typename KSpace>
+bool testCellularGridSpaceNDFaces()
+{
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::Cells Cells;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Dimension N = KSpace::dimension;
+  Point low = Point::diagonal(-5);
+  Point high = Point::diagonal(5);
+  KSpace K;
+  K.init( low, high, true );
+  Cell vox = K.uSpel( Point::zero );
+  Cells faces = K.uFaces( vox );
+  // Check that there is no duplicates.
+  trace.beginBlock( "Check CellularGridSpaceND::uFaces" );
+  for ( Dimension k = 0; k < N; ++k )
+    {
+      trace.info() << "[" << k << "]";
+      int64_t nf = 0;
+      for ( typename Cells::const_iterator it = faces.begin(), itE = faces.end(); it != itE; ++it )
+        if ( K.uDim( *it ) == k ) { std::cout << " " << *it; ++nf; }
+      trace.info() << " -> " << nf << std::endl;
+      // Number of k-faces of N-cube is binom(n,k)*2^(n-k)
+      int64_t exp_nf = (int64_t) round( boost::math::binomial_coefficient<double>(N, k) );
+      exp_nf <<= N-k;
+      ++nb, nbok += ( nf == exp_nf );
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << nf << " == " << exp_nf << " (Number of " << k << "-cells faces of a " << N << "-cell)"
+                   << std::endl;
+    }
+  trace.endBlock();
+  return nb == nbok;
+}
+
+template <typename KSpace>
+bool testCellularGridSpaceNDCoFaces()
+{
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::Cells Cells;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Dimension N = KSpace::dimension;
+  Point low = Point::diagonal(-5);
+  Point high = Point::diagonal(5);
+  KSpace K;
+  K.init( low, high, true );
+  Cell pointel = K.uPointel( Point::zero );
+  Cells cofaces = K.uCoFaces( pointel );
+  // Check that there is no duplicates.
+  trace.beginBlock( "Check CellularGridSpaceND::uCoFaces" );
+  for ( Dimension k = 1; k <= N; ++k )
+    {
+      trace.info() << "[" << k << "]";
+      int64_t nf = 0;
+      for ( typename Cells::const_iterator it = cofaces.begin(), itE = cofaces.end(); it != itE; ++it )
+        if ( K.uDim( *it ) == k ) { std::cout << " " << *it; ++nf; }
+      trace.info() << " -> " << nf << std::endl;
+      // Number of k-faces of N-cube is binom(n,k)*2^(n-k)
+      int64_t exp_nf = (int64_t) round( boost::math::binomial_coefficient<double>(N, N-k) );
+      exp_nf <<= k;
+      ++nb, nbok += ( nf == exp_nf );
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << nf << " == " << exp_nf << " (Number of " << k << "-cells cofaces of a " << 0 << "-cell)"
+                   << std::endl;
+    }
+  trace.endBlock();
+  return nb == nbok;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -442,7 +516,14 @@ int main( int argc, char** argv )
     && testSurfelAdjacency<K3>()
     && testSurfelAdjacency<K4>()
     && testCellDrawOnBoard<K2>()
-    && testFindABel<K3>();
+    && testFindABel<K3>()
+    && testCellularGridSpaceNDFaces<K2>()
+    && testCellularGridSpaceNDFaces<K3>()
+    && testCellularGridSpaceNDFaces<K4>()
+    && testCellularGridSpaceNDCoFaces<K2>()
+    && testCellularGridSpaceNDCoFaces<K3>()
+    && testCellularGridSpaceNDCoFaces<K4>();
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
