@@ -519,7 +519,11 @@ int main( int argc, char** argv )
     && testFindABel<K3>()
     && testCellularGridSpaceNDFaces<K2>()
     && testCellularGridSpaceNDFaces<K3>()
-    && testCellularGridSpaceNDFaces<K4>();
+    && testCellularGridSpaceNDFaces<K4>()
+    && testCellularGridSpaceNDCoFaces<K2>()
+    && testCellularGridSpaceNDCoFaces<K3>()
+    && testCellularGridSpaceNDCoFaces<K4>();
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
