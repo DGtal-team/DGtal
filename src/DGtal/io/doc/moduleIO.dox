@@ -143,6 +143,18 @@ image type, you can use a less generic writer with the stream operator and the s
 given type).
 
 
+To write color images, you need to use a functor which transform a scalar value into a Color. 
+You can use the previous \ref colormaps:
+@code 
+typedef DGtal::ImageContainerBySTLVector<Z2i::Domain, double > Image2D;
+DGtal::HueShadeColorMap<double>  hueColorMap (-50.0, 50.0);
+//...
+DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::exportFile("aFilename.ppm", anImage, hueColorMap );   
+@endcode
+
+
+
+
 \subsection imagereaders Image Readers
 
 | Dimension  | Name              | Description                                                 | Class name    | Comment                                                        |
