@@ -49,6 +49,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -186,6 +187,25 @@ namespace DGtal
     static bool exportFile(const std::string &filename, const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
+  }; 
+
+  /**
+   * GenericWriter
+   * Template partial specialisation for images of dimension 2 and Functor returning a Color object 
+   **/
+  template <typename TContainer, typename TValue >
+  struct GenericWriter<TContainer, 2, TValue, HueShadeColorMap<TValue>  >
+  {
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    
+    /**
+     * Write a volume image file.  
+     *
+     **/
+
+    static bool exportFile(const std::string &filename, const TContainer &anImage,
+                           const HueShadeColorMap<TValue> & aFunctor )  throw(DGtal::IOException);
+    
   }; 
   
   /**
