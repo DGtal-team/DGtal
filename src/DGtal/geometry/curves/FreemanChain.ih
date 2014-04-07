@@ -726,6 +726,41 @@ void DGtal::FreemanChain<TInteger>::getContourPoints(
   }
 }
 
+template <typename TInteger>
+inline
+void DGtal::FreemanChain<TInteger>::getContourSCell(const KhalimskySpaceND<2, int> &aKSpace, 
+                                                    const FreemanChain & fc, 
+                                                    std::set< KhalimskySpaceND<2, int>::SCell> & aSCellContour ){
+ aSCellContour.clear();
+ unsigned int pos=0;
+  for ( ConstIterator it = fc.begin();
+        it != fc.end();
+        ++it )
+    {
+      Point pt ((*it)[0]*2, ((*it)[1]+1)*2);
+      KhalimskySpaceND<2, int>::SCell linel;
+       switch ( fc.code(pos%fc.size()) )
+          {
+          case '0': 
+            linel = aKSpace.sCell(pt+Point(1,0), false);
+            break;
+          case '1': 
+            linel  = aKSpace.sCell(pt+Point(0,1), false);
+            break;
+          case '2': 
+            linel  = aKSpace.sCell(pt+Point(-1,0), true);
+            break;
+          case '3': 
+            linel  = aKSpace.sCell(pt+Point(0,-1), true);
+            break;
+          }
+       
+       aSCellContour.insert(linel);
+      pos++;
+    }
+
+}
+
 
 
 template <typename TInteger>

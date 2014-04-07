@@ -59,6 +59,7 @@
 #include "DGtal/arithmetic/ModuloComputer.h"
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/CConstSinglePassRange.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -671,7 +672,7 @@ public:
      * @param max_y (returns) the maximal y-coordinate.
      */
     void computeBoundingBox( TInteger & min_x, TInteger& min_y,
-           TInteger& max_x, TInteger& max_y ) const;
+                             TInteger& max_x, TInteger& max_y ) const;
 
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
@@ -876,15 +877,29 @@ public:
     static void readFromPointsRange( const TRange& aRange, FreemanChain & c );
     
     /**
-     * Return a vector containing all the interger points of the freemanchain.
+     * Return a vector containing all the integer points of the freemanchain.
      *
      * @param fc the FreemanChain
      * @param aVContour (returns) the vector containing all the integer contour points.
      */
     static void getContourPoints(const FreemanChain & fc, 
-        std::vector<Point> & aVContour );
+                                 std::vector<Point> & aVContour );
+    
+    /**
+     * Return a set containing all the oriented SCell of the freemanchain.
+     *
+     * @param aKSpace the KSpace
+     * @param fc the FreemanChain
+     * @param aSCellContour (returns) the vector containing all the integer contour points.
+     */
 
+    static void getContourSCell(const KhalimskySpaceND<2, int> & aKSpace, 
+                                const FreemanChain & fc, 
+                                std::set<KhalimskySpaceND<2, int>::SCell> & aSCellContour );
+    
 
+    
+    
     /**
      * Translate a point by the displacement given a code from a FreemanChain
      *
