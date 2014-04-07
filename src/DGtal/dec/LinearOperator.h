@@ -54,29 +54,33 @@ namespace DGtal
   /**
    * Description of template class 'LinearOperator' <p>
    * \brief Aim:
-   * LinearOperator represents linear operator between kforms in the dec package.
+   * LinearOperator represents linear operator between kforms in the DEC package.
    *
-   * @tparam Calculus should be DiscreteExteriorCalculus.
+   * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam order_in is the input order of the linear operator.
    * @tparam duality_in is the input duality of the linear operator.
    * @tparam order_out is the output order of the linear operator.
    * @tparam duality_out is the output duality of the linear operator.
    */
-template <typename C, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+template <typename TCalculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   class LinearOperator
   {
     // ----------------------- Standard services ------------------------------
   public:
-    typedef C Calculus;
+    typedef TCalculus Calculus;
 
     BOOST_STATIC_ASSERT(( order_in >= 0 ));
     BOOST_STATIC_ASSERT(( order_in <= Calculus::dimension ));
     BOOST_STATIC_ASSERT(( order_out >= 0 ));
     BOOST_STATIC_ASSERT(( order_out <= Calculus::dimension ));
 
+    ///Container typr
     typedef typename Calculus::Matrix Container;
+    ///Calculus scalar type
     typedef typename Calculus::Scalar Scalar;
+    ///Input KForm type
     typedef KForm<Calculus, order_in, duality_in> InputKForm;
+    ///Output KForm type
     typedef KForm<Calculus, order_out, duality_out> OutputKForm;
 
     /**
@@ -155,7 +159,8 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   std::ostream&
-  operator<<(std::ostream& out, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& object);
+  operator<<(std::ostream& out,
+             const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& object);
 
   /**
    * Overloads 'operator+' for adding objects of class 'LinearOperator'.
@@ -163,7 +168,8 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
-  operator+(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b);
+  operator+(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a,
+            const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b);
 
   /**
    * Overloads 'operator-' for substracting objects of class 'LinearOperator'.
@@ -171,7 +177,8 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
-  operator-(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b);
+  operator-(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_a,
+            const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b);
 
   /**
    * Overloads 'operator*' for scalar multiplication of objects of class 'LinearOperator'.
@@ -179,7 +186,8 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
-  operator*(const typename Calculus::Scalar& scalar, const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator);
+  operator*(const typename Calculus::Scalar& scalar,
+            const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator);
 
   /**
    * Overloads 'operator*' for internal multiplication of objects of class 'LinearOperator'.
@@ -187,7 +195,8 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_fold, Duality duality_fold, Order order_out, Duality duality_out>
   LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
-  operator*(const LinearOperator<Calculus, order_fold, duality_fold, order_out, duality_out>& operator_left, const LinearOperator<Calculus, order_in, duality_in, order_fold, duality_fold>& operator_right);
+  operator*(const LinearOperator<Calculus, order_fold, duality_fold, order_out, duality_out>& operator_left,
+            const LinearOperator<Calculus, order_in, duality_in, order_fold, duality_fold>& operator_right);
 
   /**
    * Overloads 'operator*' for application of objects of class 'LinearOperator' on objects of class 'KForm'.
@@ -195,7 +204,8 @@ template <typename C, Order order_in, Duality duality_in, Order order_out, Duali
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   KForm<Calculus, order_out, duality_out>
-  operator*(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator, const KForm<Calculus, order_in, duality_in>& input_form);
+  operator*(const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator,
+            const KForm<Calculus, order_in, duality_in>& input_form);
 
 } // namespace DGtal
 
