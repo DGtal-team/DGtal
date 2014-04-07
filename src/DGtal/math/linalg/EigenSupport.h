@@ -112,8 +112,8 @@ struct EigenSparseLinearAlgebraBackend
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'Eigen::ComputationInfo'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'EigenSupport' to write.
+ * @param os the output stream where the object is written.
+ * @param info the object of class 'EigenSupport' to write.
  * @return the output stream after the writing.
  */
 inline

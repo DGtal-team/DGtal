@@ -55,16 +55,16 @@ namespace DGtal
    * \brief Aim:
    * KForm represents kforms in the dec package.
    *
-   * @tparam Calculus should be DiscreteExteriorCalculus.
+   * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam order is the order of the kform.
    * @tparam duality is the duality of the kform.
    */
-  template <typename C, Order order, Duality duality>
+  template <typename TCalculus, Order order, Duality duality>
   class KForm
   {
     // ----------------------- Standard services ------------------------------
   public:
-    typedef C Calculus;
+    typedef TCalculus Calculus;
 
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= Calculus::dimension ));
@@ -125,7 +125,7 @@ namespace DGtal
 
     /**
      * Get kcell from index.
-     * @param index
+     * @param index the index
      */
     typename Calculus::SCell getSCell(const typename Calculus::Index& index) const;
 

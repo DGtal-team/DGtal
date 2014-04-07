@@ -57,15 +57,15 @@ namespace DGtal
    * \brief Aim:
    * VectorField represents vector field in the dec package.
    *
-   * @tparam Calculus should be DiscreteExteriorCalculus.
+   * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam duality is the duality of the vector field.
    */
-template <typename C, Duality duality>
+template <typename TCalculus, Duality duality>
   class VectorField
   {
     // ----------------------- Standard services ------------------------------
   public:
-    typedef C Calculus;
+    typedef TCalculus Calculus;
 
     typedef typename Calculus::Dimension Dimension;
     typedef typename Calculus::Scalar Scalar;
@@ -120,7 +120,9 @@ template <typename C, Duality duality>
 
     /**
      * Display vector on 2D board.
-     * @param board
+     * @param board the board to use.
+     * @param scale  doc @fixme
+     * @param epsilon doc @fixme
      */
     template <typename Board>
     void display2D(Board& board, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-8) const;
@@ -133,7 +135,7 @@ template <typename C, Duality duality>
     /**
      * Return the normalized vector field.
      */
-    VectorField<C, duality> normalized(const typename Calculus::Scalar& epsilon = 1e-32) const;
+    VectorField<TCalculus, duality> normalized(const typename Calculus::Scalar& epsilon = 1e-32) const;
 
     /**
      * Checks the validity/consistency of the object.

@@ -65,17 +65,17 @@ namespace DGtal
    * \brief Aim:
    * This containter holds data associated with DiscreteExteriorCalculus cells.
    *
-   * @tparam Calculus should be DiscreteExteriorCalculus.
-   * @tparam Value is type of value stored per cells.
+   * @tparam TCalculus should be DiscreteExteriorCalculus.
+   * @tparam TValue is type of value stored per cells.
    */
-  template <typename C, typename V>
-  class AllSCellMap : public std::map<typename C::SCell, V>
+  template <typename TCalculus, typename TValue>
+  class AllSCellMap : public std::map<typename TCalculus::SCell, TValue>
   {
     // ----------------------- Standard services ------------------------------
   public:
 
-    typedef C Calculus;
-    typedef V Value;
+    typedef TCalculus Calculus;
+    typedef TValue Value;
 
     typedef typename Calculus::SCell SCell;
     typedef SCell Key;
@@ -92,7 +92,7 @@ namespace DGtal
 
     /**
      * Assignment.
-     * @param other the object to copy.
+     * @param _scell_map the object to copy.
      * @return a reference on 'this'.
      */
     AllSCellMap& operator=(const AllSCellMap& _scell_map);
@@ -123,16 +123,17 @@ namespace DGtal
 
     /**
      * Displays the object on an 3D viewer.
-     * @param viewer
-     * @param color_map
+     * @param viewer a reference to the viewer.
+     * @param color_map a reference to the colormap to use.
      */
     template <typename Viewer, typename ColorMap>
     void display3D(Viewer& viewer, const ColorMap& color_map) const;
 
     /**
      * Displays the object on an 2D board.
-     * @param board
-     * @param color_map
+     * @param board a reference to the board.
+     * @param color_map a reference to the colormap to use.
+
      */
     template <typename Board, typename ColorMap>
     void display2D(Board& board, const ColorMap& color_map) const;
