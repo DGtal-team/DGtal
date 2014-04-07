@@ -23,7 +23,7 @@
  *
  * @date 2011/03/19
  *
- * Header file for module Surfaces.cpp
+ * Header file for module Surfaces
  *
  * This file is part of the DGtal library.
  */
@@ -780,21 +780,21 @@ namespace DGtal
      * set of unoriented spels.  The technique is to fill line by line and
      * tests the intersection with the surface.
      *
-     * @param ks the digital space.
-     * @param bdry the digital Jordan surface
-     *
+     * @param aKSpace the digital space.
+     * @param bdry the digital Jordan surface.
+     * @param interiorCellSet the resutling CellSet containing the interior cells.
      * @param empty_is_inside when 'true', an empty line is considered
      * interior, otherwise exterior.
      *
-     * @return its set of interior spels
      */
-    template <typename CellSet> 
+    template < typename SCellSet, typename CellSet> 
     void
-    ImaGene::KnShapes::ucomputeInterior( const KSpace & aKSpace, 
-                                         const KnRCellSet & bdry,
-                                         CellSet & interiorCellSet,
-                                         bool empty_is_inside );
-
+    static
+    uComputeInterior( const KSpace & aKSpace, 
+                      const SCellSet & bdry,
+                      CellSet & interiorCellSet,
+                      bool empty_is_inside );
+    
     
 
     // ----------------------- Standard services ------------------------------
