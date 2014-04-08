@@ -99,12 +99,12 @@ template <typename TCalculus, Duality duality>
     /**
      * Container used to actually hold the kform data.
      */
-    Coordinates coordinates;
+    Coordinates myCoordinates;
 
     /**
      * Pointer to const calculus
      */
-    const Calculus* calculus;
+    const Calculus* myCalculus;
 
     /**
      * Writes/Displays the object on an output stream.
