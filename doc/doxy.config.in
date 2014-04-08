@@ -758,6 +758,7 @@ IMAGE_PATH             = @top_srcdir@/src/DGtal/doc/images \
                          @top_srcdir@/src/DGtal/base/doc/images \
                          @top_srcdir@/src/DGtal/kernel/doc/images \
                          @top_srcdir@/src/DGtal/graph/doc/images \
+                         @top_srcdir@/src/DGtal/dec/doc/images \
                          @top_srcdir@/src/DGtal/io/doc/images \
                          @top_srcdir@/src/DGtal/arithmetic/doc/images \
                          @top_srcdir@/src/DGtal/images/doc/images \
