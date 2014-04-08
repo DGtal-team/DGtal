@@ -1,0 +1,34 @@
+/**
+ * @file moduleDECSolve.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/04/04
+ *
+ * Documentation file for feature DECSolve
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleDECSolve Documentation for usage of linear solver in the DEC package.
+@writers Pierre Gueth
+
+
+[TOC]
+
+\section sectDECSolve1 DEC Linear solver
+
+\section sectDECSolve2 Eigen backend
+
+\subsection subsectDECSolve21 Vector space
+
+*/
+
+}

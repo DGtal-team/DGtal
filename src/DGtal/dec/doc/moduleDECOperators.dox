@@ -17,20 +17,38 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page DECOperators Documentation for DECOperators
-@writers David Coeurjolly
+@page moduleDECOperators Documentation for DEC operators
+@writers Pierre Gueth
+
 
 [TOC]
 
-\section sectDECOperators1 First Section
+\section sectDECOperators1 Base operators
 
-\subsection subsectDECOperators11 Subsection 1.1
+\image html operators_3d.png "DEC operators with definition cells for a rectangular grid."
 
-\section sectDECOperators2 Section Two
 
-\subsection subsectDECOperators21  Subsection 2.1
+\subsection subsectDECOperators11 Hodge duality operator
 
-\subsection subsectDECOperators22  Subsection 2.2
+Hodge operators take primal (resp. dual) k-forms as input and create dual (resp. primal) k-forms.
+The order is preserved and the duality is negated.
+
+\subsection subsectDECOperators12 Exterior derivative
+
+Exterior derivatives take k-forms as inputs and create (k+1)-forms.
+Input and output forms have the same duality.
+Operators therefore come in two flavors, primal and dual.
+
+\section sectDECOperators2 Combining operator
+
+\subsection subsectDECOperators21 Vector space
+
+Linear operators form vector spaces and can be added together and scaled by a scalar.
+
+\subsection subsectDECOperators22  Laplacian
+
+\image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
+
 
 */
 
