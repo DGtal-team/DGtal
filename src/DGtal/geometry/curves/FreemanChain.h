@@ -890,12 +890,14 @@ public:
      *
      * @param aKSpace the KSpace
      * @param fc the FreemanChain
-     * @param aSCellContour (returns) the vector containing all the integer contour points.
+     * @param aSCellContour (returns) the set containing all the integer contour points.
+     * @param aFlagForAppend if set to true the resulting set is appended to initial set.  
      */
 
     static void getContourSCell(const KhalimskySpaceND<2, int> & aKSpace, 
                                 const FreemanChain & fc, 
-                                std::set<KhalimskySpaceND<2, int>::SCell> & aSCellContour );
+                                std::set<KhalimskySpaceND<2, int>::SCell> & aSCellContour,
+                                bool aFlagForAppend=false);
     
 
     
