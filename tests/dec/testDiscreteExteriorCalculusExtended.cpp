@@ -30,10 +30,15 @@
 int
 main(int argc, char* argv[])
 {
+    trace.beginBlock("testing dense eigen backend");
+    test_backend<EigenDenseLinearAlgebraBackend>(5, 5);
+    const double dense_eigen_time = trace.endBlock();
+
     trace.beginBlock("testing sparse eigen backend");
-    test_backend<EigenSparseLinearAlgebraBackend>(1, 3);
+    test_backend<EigenSparseLinearAlgebraBackend>(5, 5);
     const double sparse_eigen_time = trace.endBlock();
 
+    trace.info() << "dense_eigen_time=" << dense_eigen_time << endl;
     trace.info() << "sparse_eigen_time=" << sparse_eigen_time << endl;
 
     return 0;
