@@ -730,9 +730,12 @@ template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::getContourSCell(const KhalimskySpaceND<2, int> &aKSpace, 
                                                     const FreemanChain & fc, 
-                                                    std::set< KhalimskySpaceND<2, int>::SCell> & aSCellContour ){
- aSCellContour.clear();
- unsigned int pos=0;
+                                                    std::set< KhalimskySpaceND<2, int>::SCell> & aSCellContour,
+                                                    bool aFlagForAppend){
+  if(!aFlagForAppend){
+    aSCellContour.clear();
+  }
+  unsigned int pos=0;
   for ( ConstIterator it = fc.begin();
         it != fc.end();
         ++it )
