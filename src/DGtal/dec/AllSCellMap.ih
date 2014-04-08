@@ -44,7 +44,7 @@ DGtal::AllSCellMap<Calculus, V>&
 DGtal::AllSCellMap<Calculus, V>::operator=(const DGtal::AllSCellMap<Calculus, V>& _scell_map)
 {
     Container::operator=(_scell_map);
-    const_cast<Calculus&>(calculus) = _scell_map.calculus;
+    const_cast<Calculus&>(calculus) = _scell_map.myCalculus;
     return *this;
 }
 

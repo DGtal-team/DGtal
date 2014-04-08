@@ -31,8 +31,8 @@ void solve2d()
     trace.info() << "laplacian = " << laplacian << endl;
 
     Calculus::DualForm0 dirac(calculus);
-    dirac.container(0) = 1;
-    dirac.container(5) = 1;
+    dirac.myContainer(0) = 1;
+    dirac.myContainer(5) = 1;
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;

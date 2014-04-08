@@ -37,12 +37,12 @@ void usage2d()
 
         // create primal 0-form and fill it with eucledian metric
         Calculus::PrimalForm0 primal_zero_form(calculus);
-        for (Calculus::Index index=0; index<primal_zero_form.container.rows(); index++)
+        for (Calculus::Index index=0; index<primal_zero_form.myContainer.rows(); index++)
         {
             const Calculus::SCell& cell = primal_zero_form.getSCell(index);
             const double value = Z2i::l2Metric(cell.myCoordinates, center)/2;
             //trace.info() << cell << " " << value << endl;
-            primal_zero_form.container(index) = value;
+            primal_zero_form.myContainer(index) = value;
         }
         // one can do linear algebra operation between equaly typed kforms
         const Calculus::PrimalForm0 prout = 2 * primal_zero_form + primal_zero_form;
@@ -116,12 +116,12 @@ void usage2d()
 
         // create dual 0-form and fill it with eucledian metric
         Calculus::DualForm0 dual_zero_form(calculus);
-        for (Calculus::Index index=0; index<dual_zero_form.container.rows(); index++)
+        for (Calculus::Index index=0; index<dual_zero_form.myContainer.rows(); index++)
         {
             const Calculus::SCell& cell = dual_zero_form.getSCell(index);
             const double value = Z2i::l2Metric(cell.myCoordinates, center)/2;
             //trace.info() << cell << " " << value << endl;
-            dual_zero_form.container(index) = value;
+            dual_zero_form.myContainer(index) = value;
         }
 
         {
