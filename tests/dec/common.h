@@ -3,6 +3,7 @@
 
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/CDiscreteExteriorCalculusVectorSpace.h"
 
 #include "DGtal/base/Common.h"
@@ -47,6 +48,17 @@ struct HodgeTester
             typedef LinearOperator<Calculus, order, PRIMAL, order, PRIMAL> PrimalIdentity;
             PrimalIdentity primal_identity = calculus.template identity<order, PRIMAL>();
             if (!is_identity(primal_identity.myContainer, 1)) return false;
+
+            typedef KForm<Calculus, order, PRIMAL> SolveForm;
+            SolveForm input(calculus);
+            SolveForm output = primal_identity * input;
+            typedef typename Calculus::LinearAlgebraBackend LinearAlgebraBackend;
+            typedef typename LinearAlgebraBackend::SolverConjugateGradient LinearSolver;
+            typedef DiscreteExteriorCalculusSolver<Calculus, LinearSolver, order, PRIMAL, order, PRIMAL> Solver;
+            Solver solver;
+            SolveForm input_solved = solver.compute(primal_identity).solve(output);
+            //if (input_solved != input) return false;
+
             typedef LinearOperator<Calculus, order, DUAL, order, DUAL> DualIdentity;
             DualIdentity dual_identity = calculus.template identity<order, DUAL>();
             if (!is_identity(dual_identity.myContainer, 1)) return false;
