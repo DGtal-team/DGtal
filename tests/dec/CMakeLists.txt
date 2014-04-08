@@ -1,16 +1,13 @@
 
 if(WITH_EIGEN)
 
-    set(DGTAL_TESTS_SRC_DEC
-        testDiscreteExteriorCalculus
-        )
+    add_executable(testDiscreteExteriorCalculus testDiscreteExteriorCalculus)
+    target_link_libraries(testDiscreteExteriorCalculus DGtal)
+    add_test(testDiscreteExteriorCalculus testDiscreteExteriorCalculus)
 
-    # FIXME add short test and extented test
-    foreach(FILE ${DGTAL_TESTS_SRC_DEC})
-        add_executable(${FILE} ${FILE})
-        target_link_libraries (${FILE} DGtal)
-        #add_test(${FILE} ${FILE})
-    endforeach(FILE)
+    add_executable(testDiscreteExteriorCalculusExtended testDiscreteExteriorCalculusExtended)
+    target_link_libraries(testDiscreteExteriorCalculusExtended DGtal)
+    #add_test(testDiscreteExteriorCalculusExtended testDiscreteExteriorCalculusExtended)
 
 endif(WITH_EIGEN)
 
