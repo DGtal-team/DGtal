@@ -83,11 +83,11 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
 
-    typedef TLinearAlgebraBackend LineaAlgebraBackend;
-    typedef typename LineaAlgebraBackend::Vector::Index Index;
-    typedef typename LineaAlgebraBackend::Vector::Scalar Scalar;
-    typedef typename LineaAlgebraBackend::Vector Vector;
-    typedef typename LineaAlgebraBackend::Matrix Matrix;
+    typedef TLinearAlgebraBackend LinearAlgebraBackend;
+    typedef typename LinearAlgebraBackend::Vector::Index Index;
+    typedef typename LinearAlgebraBackend::Vector::Scalar Scalar;
+    typedef typename LinearAlgebraBackend::Vector Vector;
+    typedef typename LinearAlgebraBackend::Matrix Matrix;
 
     BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<Vector> ));
     BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<Matrix> ));
