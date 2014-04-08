@@ -34,15 +34,15 @@
 // ----------------------- Standard services ------------------------------
 
 template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
-DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(const Calculus& _calculus)
-    :  myContainer(_calculus.kFormLength(order_out, duality_out) , _calculus.kFormLength(order_in, duality_in)), myCalculus(&_calculus)
+DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(ConstAlias<Calculus> _calculus)
+    :  myContainer((&_calculus)->kFormLength(order_out, duality_out), (&_calculus)->kFormLength(order_in, duality_in)), myCalculus(&_calculus)
 {
     clear();
 }
 
 template <typename Calculus, DGtal::Order order_in, DGtal::Duality duality_in, DGtal::Order order_out, DGtal::Duality duality_out>
-DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(const Calculus& _calculus, const Container& _container)
-    :  myContainer(_container),myCalculus(&_calculus)
+DGtal::LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>::LinearOperator(ConstAlias<Calculus> _calculus, const Container& _container)
+    :  myContainer(_container), myCalculus(&_calculus)
 {
     ASSERT( myCalculus->kFormLength(order_out, duality_out) == myContainer.rows() );
     ASSERT( myCalculus->kFormLength(order_in, duality_in) == myContainer.cols() );

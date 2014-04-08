@@ -34,8 +34,8 @@
 // ----------------------- Standard services ------------------------------
 
 template <typename Calculus, typename V>
-DGtal::AllSCellMap<Calculus, V>::AllSCellMap(const Calculus& _calculus)
-    : calculus(_calculus)
+DGtal::AllSCellMap<Calculus, V>::AllSCellMap(ConstAlias<Calculus> _calculus)
+    : myCalculus(&_calculus)
 {
 }
 
@@ -44,7 +44,7 @@ DGtal::AllSCellMap<Calculus, V>&
 DGtal::AllSCellMap<Calculus, V>::operator=(const DGtal::AllSCellMap<Calculus, V>& _scell_map)
 {
     Container::operator=(_scell_map);
-    const_cast<Calculus&>(calculus) = _scell_map.myCalculus;
+    myCalculus = _scell_map.myCalculus;
     return *this;
 }
 
@@ -59,8 +59,8 @@ DGtal::AllSCellMap<Calculus, V>::writeITKImage(const std::string& filename, cons
     typedef typename Calculus::Point Point;
     typedef typename Calculus::Domain Domain;
 
-    const Point lower_bound = calculus.domain.lowerBound();
-    const Point upper_bound = calculus.domain.upperBound();
+    const Point lower_bound = myCalculus->domain.lowerBound();
+    const Point upper_bound = myCalculus->domain.upperBound();
     const Domain domain_image(lower_bound, lower_bound+(upper_bound-lower_bound+Point::diagonal())*2);
 
     typedef typename DGtal::ImageSelector<Domain, Value, 0>::Type Image;
@@ -68,9 +68,9 @@ DGtal::AllSCellMap<Calculus, V>::writeITKImage(const std::string& filename, cons
 
     typedef typename Domain::ConstIterator DomainConstIterator;
     typedef typename Calculus::SizeRatio SizeRatio;
-    const SizeRatio size_ratio = calculus.getSizeRatio();
+    const SizeRatio size_ratio = myCalculus->getSizeRatio();
     for (DomainConstIterator di=domain_image.begin(), die=domain_image.end(); di!=die; di++)
-        if (size_ratio.find(calculus.kspace.sCell(*di)) == size_ratio.end()) image.setValue(*di, value_outside);
+        if (size_ratio.find(myCalculus->kspace.sCell(*di)) == size_ratio.end()) image.setValue(*di, value_outside);
         else image.setValue(*di, value_inside_default);
 
     for (ConstIterator mi=this->begin(), mie=this->end(); mi!=mie; mi++)
@@ -104,7 +104,7 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
 
 #if defined(WITH_QGLViewer)
     typedef typename Calculus::ConstIterator CalculusConstIterator;
-    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
+    for (CalculusConstIterator ci=myCalculus->begin(), cie=myCalculus->end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
@@ -125,7 +125,7 @@ DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_m
     static const DGtal::Color transparent = DGtal::Color::None;
 
     typedef typename Calculus::ConstIterator CalculusConstIterator;
-    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
+    for (CalculusConstIterator ci=myCalculus->begin(), cie=myCalculus->end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);

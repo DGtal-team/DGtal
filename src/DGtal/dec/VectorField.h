@@ -45,6 +45,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Clone.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -77,14 +79,14 @@ template <typename TCalculus, Duality duality>
      * Constructor.
      * @param calculus the discrete exterior calculus to use.
      */
-    VectorField(const Calculus& calculus);
+    VectorField(ConstAlias<Calculus> calculus);
 
     /**
      * Constructor.
      * @param calculus the discrete exterior calculus to use.
      * @param container the container to copy.
      */
-    VectorField(const Calculus& calculus, const Container& container);
+    VectorField(ConstAlias<Calculus> calculus, const Container& container);
 
     /**
      * Assignment.

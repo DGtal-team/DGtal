@@ -34,7 +34,7 @@
 // ----------------------- Standard services ------------------------------
 
 template <typename Calculus, DGtal::Duality duality>
-DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
+DGtal::VectorField<Calculus, duality>::VectorField(ConstAlias<Calculus> _calculus)
     : myCalculus(&_calculus)
 {
     for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
@@ -43,7 +43,7 @@ DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus)
 }
 
 template <typename Calculus, DGtal::Duality duality>
-DGtal::VectorField<Calculus, duality>::VectorField(const Calculus& _calculus, const Coordinates& _coordinates)
+DGtal::VectorField<Calculus, duality>::VectorField(ConstAlias<Calculus> _calculus, const Coordinates& _coordinates)
     : myCoordinates(_coordinates), myCalculus(&_calculus)
 {
 }
