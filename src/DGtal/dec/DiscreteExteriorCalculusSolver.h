@@ -44,6 +44,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/LinearOperator.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Clone.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -123,7 +125,7 @@ namespace DGtal
     /**
      * Pointer to const calculus
      */
-    const Calculus* calculus;
+    const Calculus* myCalculus;
 
     // ------------------------- Hidden services ------------------------------
   protected:

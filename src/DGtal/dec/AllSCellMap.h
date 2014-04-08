@@ -44,6 +44,8 @@
 #include <map>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Clone.h"
 #if defined(WITH_ITK)
 #include <DGtal/images/ImageSelector.h>
 #include <DGtal/io/writers/ITKWriter.h>
@@ -88,7 +90,7 @@ namespace DGtal
      * Constructor.
      * @param calculus the discrete exterior calculus to use.
      */
-    AllSCellMap(const Calculus& calculus);
+    AllSCellMap(ConstAlias<Calculus> calculus);
 
     /**
      * Assignment.
@@ -99,11 +101,6 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-
-    /**
-     * Const reference to calculus
-     */
-    const Calculus& calculus;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -146,6 +143,11 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
+
+    /**
+     * Const reference to calculus
+     */
+    const Calculus* myCalculus;
 
     // ------------------------- Hidden services ------------------------------
   protected:

@@ -43,6 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/dec/Duality.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Clone.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -76,14 +78,14 @@ namespace DGtal
      * Constructor.
      * @param calculus the discrete exterior calculus to use.
      */
-    KForm(const Calculus& calculus);
+    KForm(ConstAlias<Calculus> calculus);
 
     /**
      * Constructor.
      * @param calculus the discrete exterior calculus to use.
      * @param container the container to copy.
      */
-    KForm(const Calculus& calculus, const Container& container);
+    KForm(ConstAlias<Calculus> calculus, const Container& container);
 
     /**
      * Assignment.

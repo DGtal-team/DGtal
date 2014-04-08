@@ -34,14 +34,14 @@
 // ----------------------- Standard services ------------------------------
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
-DGtal::KForm<Calculus, order, duality>::KForm(const Calculus& _calculus)
-    : myContainer(_calculus.kFormLength(order, duality)), myCalculus(&_calculus)
+DGtal::KForm<Calculus, order, duality>::KForm(ConstAlias<Calculus> _calculus)
+    : myContainer((&_calculus)->kFormLength(order, duality)), myCalculus(&_calculus)
 {
     clear();
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
-DGtal::KForm<Calculus, order, duality>::KForm(const Calculus& _calculus, const Container& _container)
+DGtal::KForm<Calculus, order, duality>::KForm(ConstAlias<Calculus> _calculus, const Container& _container)
     : myContainer(_container),  myCalculus(&_calculus)
 {
     ASSERT( myCalculus->kFormLength(order, duality) == myContainer.rows() );
@@ -112,7 +112,7 @@ DGtal::KForm<Calculus, order, duality>
 DGtal::operator+(const DGtal::KForm<Calculus, order, duality>& form_a, const DGtal::KForm<Calculus, order, duality>& form_b)
 {
     ASSERT( form_a.myCalculus == form_b.myCalculus );
-    return KForm<Calculus, order, duality>(*form_a.myCalculus, form_a.myContainer + form_b.myContainer);
+    return DGtal::KForm<Calculus, order, duality>(*form_a.myCalculus, form_a.myContainer + form_b.myContainer);
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>

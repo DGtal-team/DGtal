@@ -44,6 +44,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Clone.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -87,14 +89,14 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
      * Constructor.
      * @param calculus the discrete exterior calculus to use.
      */
-    LinearOperator(const Calculus& calculus);
+    LinearOperator(ConstAlias<Calculus> calculus);
 
     /**
      * Constructor.
      * @param calculus the discrete exterior calculus to use.
      * @param container the container to copy.
      */
-    LinearOperator(const Calculus& calculus, const Container& container);
+    LinearOperator(ConstAlias<Calculus> calculus, const Container& container);
 
     /**
      * Assignment.
