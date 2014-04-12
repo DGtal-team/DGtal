@@ -307,9 +307,8 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
   updateBoundingBox(p2);
   updateBoundingBox(p3);
   updateBoundingBox(p4);
-  double u[3]; double v [3];
+  double u[3];
   u[0]=p2[0]-p1[0]; u[1]=p2[1]-p1[1]; u[2]=p2[2]-p1[2];
-  v[0]=p3[0]-p1[0]; v[1]=p3[1]-p1[1]; v[2]=p3[2]-p1[2];
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
     {
