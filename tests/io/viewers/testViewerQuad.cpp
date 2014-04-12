@@ -69,19 +69,16 @@ int main( int argc, char** argv )
   RealVector n(1,1,1);
   RealVector n2(0,1,1);
 
-  Viewer3D<> viewer;
   viewer.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized());
   viewer.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
 
   viewer  << Display3D<Space, KSpace>::updateDisplay;
 
 
- bool res = application.exec();
- trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
- trace.endBlock();
- return res ? 0 : 1;
-
-
+  bool res = application.exec();
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
