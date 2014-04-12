@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/Boards/Board3D.h"
+#include "DGtal/io/boards/Board3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
