@@ -53,7 +53,10 @@ int main( int argc, char** argv )
 {
 
  QApplication application(argc,argv);
- Viewer3D<> viewer;
+ KSpace k;
+
+ k.init(Point(2,2,2), Point(4,4,4), true);
+ Viewer3D<Space,KSpace> viewer(k);
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
 
@@ -72,10 +75,7 @@ int main( int argc, char** argv )
   viewer.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized());
   viewer.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
 
-  KSpace k;
-
-  k.init(Point(2,2,2), Point(4,4,4), true);
-  Cell surfel = k.uCell( Point( 2,3,3) );
+   Cell surfel = k.uCell( Point( 2,3,3) );
 
   viewer << SetMode3D( surfel.className(), "Basic" );
 
