@@ -4,6 +4,7 @@
 SET(QGLVIEWER_TESTS_SRC
   testViewer3D
   testViewerQuad
+  testBallQuadViewer
   testPolygon3D
   test3DImageView
   test3DImageViewEmbedder
