@@ -72,6 +72,12 @@ int main( int argc, char** argv )
   viewer.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized());
   viewer.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
 
+
+  k.init(Point(2,2,2), Point(4,4,4), true);
+  Cell surfel = k.uCell( Point( 2,3,3) );
+
+  Display3DFactory<Space,KSpace>::drawSurfelWithNormal( viewer, surfel, n2.getNormalized());
+
   viewer  << Display3D<Space, KSpace>::updateDisplay;
 
 

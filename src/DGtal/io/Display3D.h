@@ -95,8 +95,11 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT((CSpace<Space>));
   public:
-    //RealPoint
+    ///RealPoint type
     typedef typename DGtal::Z3i::RealPoint RealPoint;
+
+    ///RealVector type
+    typedef typename DGtal::Z3i::RealVector RealVector;
 
 
   protected:
@@ -450,6 +453,24 @@ namespace DGtal
      **/
 
     void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel);
+
+
+
+    /**
+     * Method to add a quad representing a surfel given from its
+     * center and its orientation, and attach a unitary normal vector
+     * to it.
+     *
+     * @param baseQuadCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction
+     * @param ySurfel indicates that the sufel is in the y axis direction
+     * @param zSurfel indicates that the sufel is in the z axis
+     * direction
+     * @param aNormal a unitary normal vector to attach to the quad.
+     *
+     **/
+    void addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel,
+                                           const RealVector &aNormal);
 
 
     /**
