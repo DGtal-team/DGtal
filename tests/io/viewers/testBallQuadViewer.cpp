@@ -33,7 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
-#include "DGtal/io/boards/Viewer3D.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
