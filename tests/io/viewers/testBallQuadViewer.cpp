@@ -78,16 +78,15 @@ bool testBallQuad(int argc, char **argv)
   typedef ImplicitDigitalBall3<Point> ImplicitDigitalBall;
   typedef ImplicitDigitalSurface<KSpace,ImplicitDigitalBall> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
-  typedef Boundary::Tracker Tracker;
   typedef Boundary::Surfel Surfel;
-  Point p1( -100, -100, -100 );
-  Point p2( 100, 100, 100 );
+  Point p1( -50, -50, -50 );
+  Point p2( 50, 50, 50 );
   KSpace K;
   nbok += K.init( p1, p2, true ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "K.init() is ok" << std::endl;
-  ImplicitDigitalBall ball( 60.0 );
+  ImplicitDigitalBall ball( 12.0 );
   Surfel bel = Surfaces<KSpace>::findABel( K, ball, 10000 );
   Boundary boundary( K, ball,
                      SurfelAdjacency<KSpace::dimension>( true ), bel );
@@ -105,7 +104,7 @@ bool testBallQuad(int argc, char **argv)
 
       Display3DFactory<>::drawSurfelWithNormal(viewer,
                                                K.unsigns(*it),
-                                               RealVector(K.sCoords(*it)).getNormalized());
+                                               viewer.embedKS(*it).getNormalized());
     }
 
   trace.info() << nbsurfels << " surfels found." << std::endl;
