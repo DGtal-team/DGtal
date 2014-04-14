@@ -33,7 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
-#include "DGtal/io/boards/Board3D.h"
+#include "DGtal/io/boards/Viewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -65,10 +65,12 @@ struct ImplicitDigitalBall3 {
 };
 
 
-bool testBallQuad()
+bool testBallQuad(int argc, char **argv)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
+
+  QApplication application(argc,argv);
 
   trace.beginBlock ( "Testing... Ball with quadnormal");
   using namespace Z3i;
@@ -124,7 +126,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testBallQuad(); // && ... other tests
+  bool res = testBallQuad(argc,argv); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
