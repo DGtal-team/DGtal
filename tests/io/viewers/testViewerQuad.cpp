@@ -72,6 +72,7 @@ int main( int argc, char** argv )
   viewer.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized());
   viewer.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
 
+  KSpace k;
 
   k.init(Point(2,2,2), Point(4,4,4), true);
   Cell surfel = k.uCell( Point( 2,3,3) );
