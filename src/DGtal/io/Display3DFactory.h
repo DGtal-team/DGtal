@@ -316,6 +316,22 @@ namespace DGtal
     static void draw( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject );
     // KhalimskyCell
 
+    // SignedKhalimskyCell
+    /**
+     * Default drawing style object.
+     * @param str the name of the class
+     * @param anObject the object to draw
+     * @return the dyn. alloc. default style for this object.
+     */
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const typename KSpace::SCell & anObject );
+
+    /**
+     * @brief draw
+     * @param display the display where to draw
+     * @param anObject the object to draw
+     */
+    static void draw( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject );
+    // SignedKhalimskyCell
 
     // Object
     /**
@@ -395,24 +411,6 @@ namespace DGtal
     template<Dimension dim, typename TComponent>
     static void draw( Display3D<Space, KSpace> & display, const DGtal::PointVector<dim,TComponent> & , const DGtal::PointVector<dim,TComponent> & anObject );
     // PointVector
-
-
-    // SignedKhalimskyCell
-    /**
-     * Default drawing style object.
-     * @param str the name of the class
-     * @param anObject the object to draw
-     * @return the dyn. alloc. default style for this object.
-     */
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string str, const typename KSpace::SCell & anObject );
-
-    /**
-     * @brief draw
-     * @param display the display where to draw
-     * @param anObject the object to draw
-     */
-    static void draw( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject );
-    // SignedKhalimskyCell
 
     // GridCurve
     /**
