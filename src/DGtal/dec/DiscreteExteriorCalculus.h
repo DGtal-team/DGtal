@@ -110,7 +110,7 @@ namespace DGtal
      * Cells map typedefs.
      */
     typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
-    typedef AllSCellMap<DiscreteExteriorCalculus, double> SizeRatio;
+    typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> SizeRatio;
     typedef AllSCellMap<DiscreteExteriorCalculus, Index> Indexes;
 
     /**
@@ -180,6 +180,13 @@ namespace DGtal
     DiscreteExteriorCalculus(const DigitalSet& set);
 
     /**
+     * Constructor.
+     * @param domain calculus definition domain
+     * Initialize empty discrete exterior calculus.
+     */
+    DiscreteExteriorCalculus(const Domain& domain);
+
+    /**
      * Const iterator typedef.
      */
     typedef typename SizeRatio::ConstIterator ConstIterator;
@@ -212,6 +219,16 @@ namespace DGtal
      * @param out the output stream where the object is written.
      */
     void selfDisplay(std::ostream& out) const;
+
+    /**
+     * Manually insert cell into calculus.
+     * Be sure to insert all adjacent lower order primal cells.
+     * @param cell the cell in be inserted.
+     * @primal_size ratio between primal cell size and dual cell size.
+     * @return true if cell was not already inserted, false if only cell was already inserted (cell is always updated).
+     */
+    bool
+    insertSCell(const SCell& cell, const Scalar& primal_size = 1);
 
     /**
      * Get cell size ratio
