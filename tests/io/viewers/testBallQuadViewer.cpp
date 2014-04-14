@@ -86,7 +86,7 @@ bool testBallQuad(int argc, char **argv)
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "K.init() is ok" << std::endl;
-  ImplicitDigitalBall ball( 12.0 );
+  ImplicitDigitalBall ball( 60.0 );
   Surfel bel = Surfaces<KSpace>::findABel( K, ball, 10000 );
   Boundary boundary( K, ball,
                      SurfelAdjacency<KSpace::dimension>( true ), bel );
