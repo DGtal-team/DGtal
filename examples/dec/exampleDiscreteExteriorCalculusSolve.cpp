@@ -32,7 +32,7 @@ void solve2d()
 
     Calculus::DualForm0 dirac(calculus);
     dirac.myContainer(0) = 1;
-    dirac.myContainer(5) = 1;
+    //dirac.myContainer(5) = 1;
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
