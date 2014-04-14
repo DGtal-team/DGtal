@@ -80,14 +80,14 @@ bool testBallQuad(int argc, char **argv)
   typedef Boundary::SurfelConstIterator ConstIterator;
   typedef Boundary::Tracker Tracker;
   typedef Boundary::Surfel Surfel;
-  Point p1( -10, -10, -10 );
-  Point p2( 10, 10, 10 );
+  Point p1( -100, -100, -100 );
+  Point p2( 100, 100, 100 );
   KSpace K;
   nbok += K.init( p1, p2, true ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "K.init() is ok" << std::endl;
-  ImplicitDigitalBall ball( 6.0 );
+  ImplicitDigitalBall ball( 60.0 );
   Surfel bel = Surfaces<KSpace>::findABel( K, ball, 10000 );
   Boundary boundary( K, ball,
                      SurfelAdjacency<KSpace::dimension>( true ), bel );
