@@ -135,6 +135,10 @@ namespace DGtal
      */
     typedef typename DSL::Steps Steps; 
     /**
+     * Type used for the position of a point in the DSL.
+     */
+    typedef Coordinate Position;
+    /**
      * Type of iterator. 
      */
     typedef typename DSL::ConstIterator ConstIterator; 
@@ -405,7 +409,7 @@ namespace DGtal
      * @param aPoint the point whose position is returned 
      * @return the position
      */
-    Integer position(const Point& aPoint) const; 
+    Position position(const Point& aPoint) const; 
 
     /**
      * Returns a boolean equal to 'true' if @a aP1 is 
