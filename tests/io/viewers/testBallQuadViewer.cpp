@@ -79,8 +79,8 @@ bool testBallQuad(int argc, char **argv)
   typedef ImplicitDigitalSurface<KSpace,ImplicitDigitalBall> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
   typedef Boundary::Surfel Surfel;
-  Point p1( -50, -50, -50 );
-  Point p2( 50, 50, 50 );
+  Point p1( -100, -100, -100 );
+  Point p2( 100, 100, 100 );
   KSpace K;
   nbok += K.init( p1, p2, true ) ? 1 : 0;
   nb++;
