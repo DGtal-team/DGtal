@@ -6,7 +6,7 @@ if(WITH_EIGEN)
     add_test(testDiscreteExteriorCalculus testDiscreteExteriorCalculus)
 
     add_executable(testLinearStructure testLinearStructure)
-    target_link_libraries(testLinearStructure DGtal)
+    target_link_libraries(testLinearStructure DGtal DGtalIO)
     add_test(testLinearStructure testLinearStructure)
 
     add_executable(testDiscreteExteriorCalculusExtended testDiscreteExteriorCalculusExtended)
