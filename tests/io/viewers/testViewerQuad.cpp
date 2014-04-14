@@ -77,6 +77,8 @@ int main( int argc, char** argv )
   k.init(Point(2,2,2), Point(4,4,4), true);
   Cell surfel = k.uCell( Point( 2,3,3) );
 
+  viewer << SetMode3D( surfel.className(), "Basic" );
+
   Display3DFactory<Space,KSpace>::drawSurfelWithNormal( viewer, surfel, n2.getNormalized());
 
   viewer  << Display3D<Space, KSpace>::updateDisplay;
