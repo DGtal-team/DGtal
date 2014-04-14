@@ -323,6 +323,7 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::getPoint(const Positio
 		/ shiftRemainder ); 
   Point res = origin + ( aPosition * mySteps.first + static_cast<Position>(q) * myShift ); 
   ASSERT( isInDSL(res) );
+  ASSERT( position(res) == aPosition ); 
   return res; 
 }
 

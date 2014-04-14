@@ -193,7 +193,6 @@ bool mainTest()
 template <typename DSL>
 bool rangeTest(const DSL& dsl)
 {
-  //ASSERT( dsl.mu() == 0 ); 
   typedef typename DSL::Point Point; 
 
   unsigned int nbok = 0;
@@ -204,8 +203,6 @@ bool rangeTest(const DSL& dsl)
 
   Point first = dsl.getPoint(0); 
   Point last = Point(first[0]+dsl.b(), first[1]+dsl.a()); 
-  // Point first(0,0); 
-  // Point last(dsl.b(), dsl.a()); 
   trace.info() << "from " << first << " to " << last << std::endl; 
 
   if (dsl.isValid())
