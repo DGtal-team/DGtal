@@ -66,7 +66,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     {
         const SCell& cell = csi->first;
         const Dimension dual_dim = dimension-kspace.sDim(cell);
-        const double factor = 1/pow(2, dual_dim);
+        const Scalar factor = 1/pow(2, dual_dim);
 
         typename SizeRatio::Value size = csi->second;
         ASSERT(size);
@@ -88,8 +88,41 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     }
 }
 
+template <typename D, typename LAB>
+DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const D& _domain)
+    : domain(_domain), kspace(), cell_size_ratio(*this), cell_indexes(*this)
+{
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
+
+template <typename D, typename LAB>
+bool
+DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const Scalar& _primal_size)
+{
+    SCell abs_cell = _cell;
+    Scalar abs_primal_size = _primal_size;
+
+    if (!abs_cell.myPositive)
+    {
+        abs_cell = kspace.sOpp(abs_cell);
+        abs_primal_size = -abs_primal_size;
+    }
+
+    const bool need_insert = (cell_indexes.find(abs_cell) == cell_indexes.end());
+    const Dimension dim = kspace.sDim(abs_cell);
+
+    if (need_insert)
+    {
+        cell_indexes[abs_cell] = index_cells[dim].size();
+        index_cells[dim].push_back(abs_cell);
+    }
+
+    cell_size_ratio[abs_cell] = abs_primal_size;
+
+    return need_insert;
+}
 
 template <typename D, typename LAB>
 void
@@ -158,7 +191,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
         ASSERT( cell.myPositive == true );
 
         // find hodge sign
-        const double sign = derivativeSign(cell, duality);
+        const Scalar sign = derivativeSign(cell, duality);
 
         // find cell border
         typedef typename KSpace::SCells Border;
@@ -264,7 +297,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::Discret
         else edges = kspace.sLowerIncident(cell);
 
         // collect 1-form values over neighboring edges
-        typedef boost::array<double, dimension> Normalize;
+        typedef boost::array<Scalar, dimension> Normalize;
         Normalize normalize;
         normalize.assign(0);
         for (typename Edges::const_iterator ei=edges.begin(), eie=edges.end(); ei!=eie; ei++)
@@ -320,7 +353,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
 
         // project vector field along edge from neighboring points
         ASSERT( points.size() == 2 );
-        double normalize = 0;
+        Scalar normalize = 0;
         for (typename Points::const_iterator pi=points.begin(), pie=points.end(); pi!=pie; pi++)
         {
             const SCell cell_border = absoluteCell(*pi);
@@ -430,7 +463,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const DGta
     ASSERT( iter_count == primal_dim );
     if (duality == DUAL) span_count++;
 
-    const double sign = pow(-1, span_count);
+    const Scalar sign = pow(-1, span_count);
     return cell.myPositive ? sign : -sign;
 }
 
