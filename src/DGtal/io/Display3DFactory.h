@@ -314,6 +314,15 @@ namespace DGtal
      * @param anObject the object to draw
      */
     static void draw( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject );
+
+    /**
+     * @brief draw K-cell with normal vector
+     * @param display the display where to draw
+     * @param anObject the object to draw
+     * @param aNormal a unitary normal vector
+     */
+    static void drawSurfelWithNormal( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject,
+                                      const typename KSpace::Space::RealVector & aNormal);
     // KhalimskyCell
 
     // SignedKhalimskyCell
@@ -331,6 +340,15 @@ namespace DGtal
      * @param anObject the object to draw
      */
     static void draw( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject );
+
+    /**
+     * @brief draw K-signed cell with normal vector
+     * @param display the display where to draw
+     * @param anObject the object to draw
+     * @param aNormal a unitary normal vector
+     */
+    static void drawSurfelWithNormal( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject,
+                                      const typename KSpace::Space::RealVector & aNormal);
     // SignedKhalimskyCell
 
     // Object
