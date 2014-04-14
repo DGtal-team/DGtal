@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -70,7 +71,7 @@ bool testBallQuad(int argc, char **argv)
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  QApplication application(argc,argv);
+  QApplication application(argc, argv);
 
   trace.beginBlock ( "Testing... Ball with quadnormal");
   using namespace Z3i;
