@@ -72,8 +72,8 @@ template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::string &filename,
-						      const TContainer &anImage, const std::string & datasetName,
-						      const TFunctor & aFunctor )  throw(DGtal::IOException){
+                                                                  const TContainer &anImage, const std::string & datasetName,
+                                                                  const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
@@ -151,12 +151,11 @@ template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exportFile(const std::string &filename,
-						      const TContainer &anImage,
-						      const TFunctor & aFunctor )  throw(DGtal::IOException){
+                                                                  const TContainer &anImage,
+                                                                  const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
-
-  if(extension=="pgm"|| extension=="ppm" ||extension=="pbm"){
+  if(extension=="pgm" ||extension=="pbm"){
     trace.error() << "Value type of " << extension<< "  file extension should be unsigned char." << std::endl;
     throw dgtalio;
   }else{
@@ -166,7 +165,25 @@ DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exportFile(const std::str
   return false;
 }
 
+template <typename TContainer, typename TValue>
+inline
+bool
+DGtal::GenericWriter<TContainer, 2, TValue, 
+                     DGtal::HueShadeColorMap<TValue>  >::exportFile(const std::string &filename, 
+                                                                    const TContainer &anImage,
+                                                                    const DGtal::HueShadeColorMap<TValue> & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+  if(extension=="ppm"){
+    return PPMWriter<TContainer, DGtal::HueShadeColorMap<TValue> >::exportPPM(filename, anImage, aFunctor);
+  }else{
+    trace.error() << "Extension " << extension<< " not yet implemented in DGtal with specific HueShadeColorMap functor." << std::endl;
+    throw dgtalio;
+  }
+  return false;
+}
 
+  
 template <typename TContainer, typename TFunctor >
 inline
 bool
