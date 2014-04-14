@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC_IO_BOARDS
-       testBoard3D)
+       testBoard3D
+       testBallQuad)
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO_BOARDS})
