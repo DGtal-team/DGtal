@@ -23,27 +23,55 @@ namespace DGtal {
 
 [TOC]
 
-\section sectDECLinearStructure1 Problem description
+\section sectDECLinearStructure1 Poisson / Heat equation on a linear structure
 
 Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
 It is possible to insert cell manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
 Therefore the DEC structure shouldn't be modified when doing linear algebra calculus.
 
-In this problem, we create an 1D linear structure embedded in a 2D space.
-We show how to change boundary conditions between Neumann and Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
+In this problem, we create an 1D linear structure embedded in a 2D space and we want to solve a Poisson equation on this structure.
+The Poisson equation can be written as:
+
+\f$ \Delta \phi = f \f$
+
+where \f$\Delta\f$ is the laplacian operator, \f$\phi\f$ the solution of the problem and \f$f\f$ the input of the problem.
+The Poisson equation can be viewed as the heat equation when permanent regime is reached.
+\f$f\f$ is the heating applied to the structure and \f$\phi\f$ is the temperature reached in permanent regime.
+Here we choose \f$f\f$ to be a Dirac delta function \f$\delta\f$ to simulation a punctual heating on the structure.
+
+Boundary conditions will change to result on the problem.
+The two classical boundary conditions are:
+- Neumann boundary condition force the derivative to be null along the border of the structure. Here, this means that heat can't flow out the start and the end of the linear structure.
+- Dirichlet boundary condition connect borders of the structure to null potential. With own heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
+
+Using the DEC package in 2D, one can define the laplacian using Hodge duality operators \f$\star\f$ and exterior derivative operators \f$d\f$.
+
+\f$ \Delta = \star_2' d_1' \star_1 d_0 \f$
+
+We show how to solve this problem and  how to change boundary conditions between Neumann and Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
 
 \section sectDECLinearStructure2 Neumann boundary condition
 
+First, an empty calculus structure is created and, using simple for loops, it is filled with some 0-cells and 1-cells to from a linear structure.
+When filled manually with DiscreteExteriorCalculus.insertSCell, one can pass the primal over dual size ratio of each cell which defaults to 1.
+Temperature nodes are associated primal 0-cells.
+Note that to enforce Neumann boundary conditions, the linear structure has to end with 0-cells.
+
 \snippet ../tests/dec/testLinearStructure.cpp neumann-creation
+
+The input heat vector \f$f\f$, which is primal 0-form in the DEC formulation, is then created and is given values of a \f$\delta\f$.
 
 \snippet ../tests/dec/testLinearStructure.cpp input-dirac
 
 \image html linear_structure_neumann_dirac.png "Linear structure with Neumann boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
 
+The laplacian operator \f$\Delta\f$ is pretty straight forward from its above definition.
+One can use DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge to generate \f$\star\f$ operators and DiscreteExteriorCalculus.derivative to generate \f$d\f$ operators.
+
 \snippet ../tests/dec/testLinearStructure.cpp neumann-laplacian-definition
 
-Now the problem is fully definined and there one thing left to do: solving it.
+Now the problem is fully defined and there one thing left to do: solving it.
 The resolution is done by DiscreteExteriorCalculusSolver.
 This class takes the actual linear solver used as the second template parameter.
 One can use any class that validates the CLinearAlgebraSolver concept.
@@ -54,19 +82,19 @@ The input dirac 0-form is passed to DiscreteExteriorCalculusSolver.solve, which 
 
 \snippet ../tests/dec/testLinearStructure.cpp neumann-solve
 
-Since the dirac input is null everywhere except at a single point, this means that the second dirivative of the solution is null everywhere except at the dirac position.
-An analytic form can be expressed as a continuous piecewise quadratic function.
-Numerical values of the solution fit analytical values with at least a relative precision of 1e-5.
+Since the dirac input is null everywhere except at a single point, this means that the second derivative of the solution is null everywhere except at the dirac position.
+An analytic form can be expressed as a continuous piece-wise quadratic function.
+Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
 
 \image html linear_structure_neumann_solution.png "Linear structure with Neumann boundary conditions. Solution 0-form is displayed."
-\image html linear_structure_neumann_fit.png "Numerical values computed using the solver and analytical solution for the Neumann problem."
+\image html linear_structure_neumann_fit.png "Numerical values computed using the solver and analytic solution for the Neumann problem."
 
 \section sectDECLinearStructure3 Dirichlet boundary condition
 
 Dirichlet boundary condition fix value of 0-forms to be constant outside of definition domain.
-In this package this constant value is choosen to be null.
+In this package this constant value is chosen to be null.
 Two dangling 1-cells are added at each end of the structure to describe Dirichlet boundary condition.
-Since those 1-cells are not connected to a 0-cell on one of their border, this will simulate the presence of zero-valued 0-cell in those placen thru enforcing Dirichlet boundary conditions.
+Since those 1-cells are not connected to a 0-cell on one of their border, this will simulate the presence of zero-valued 0-cell in those places through enforcing Dirichlet boundary conditions.
 
 \snippet ../tests/dec/testLinearStructure.cpp dirichlet-creation
 
@@ -84,7 +112,9 @@ Solving the problem is achieved by using the same code as for the Neumann case.
 \snippet ../tests/dec/testLinearStructure.cpp dirichlet-solve
 
 \image html linear_structure_dirichlet_solution.png "Linear structure with Dirichlet boundary conditions. Solution 0-form is displayed."
-\image html linear_structure_dirichlet_fit.png "Numerical values computed using the solver and analytical solution for the Dirichlet problem."
+\image html linear_structure_dirichlet_fit.png "Numerical values computed using the solver and analytic solution for the Dirichlet problem."
+
+Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
 
 */
 
