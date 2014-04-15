@@ -19,22 +19,18 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2014/01/31
+ * @date 2014/04/15
  *
- * Computes the 2d voronoi map of a list of digital points.
+ * Computes the Voronoi Covariance Measure of a list of 2D digital
+ * points. Displays the resulting normal vector and feature detection.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
-
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/math/EigenDecomposition.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
@@ -52,19 +48,15 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  typedef DGtal::Z2i::Space Space;
-  typedef DGtal::Z2i::KSpace KSpace;
-  typedef DGtal::Z2i::Vector Vector;
-  typedef DGtal::Z2i::Point Point;
-  typedef DGtal::Z2i::RealPoint RealPoint;
-  typedef DGtal::Z2i::RealVector RealVector;
-  typedef DGtal::HyperRectDomain<Space> Domain;
-  typedef DGtal::ImageContainerBySTLVector<Domain,bool> CharacteristicSet;
-  typedef DGtal::ExactPredicateLpSeparableMetric<Space, 2> Metric; // L2-metric
-  typedef DGtal::EigenDecomposition<2,double> LinearAlgebraTool;
+  typedef Z2i::Space Space;
+  typedef Z2i::Vector Vector;
+  typedef Z2i::Point Point;
+  typedef Z2i::RealPoint RealPoint;
+  typedef Z2i::RealVector RealVector;
+  typedef HyperRectDomain<Space> Domain;
+  typedef ExactPredicateLpSeparableMetric<Space, 2> Metric; // L2-metric
+  typedef EigenDecomposition<2,double> LinearAlgebraTool;
   typedef LinearAlgebraTool::Matrix Matrix;
-  typedef KSpace::Surfel Surfel;
-  typedef KSpace::SCell SCell;
 
   typedef VoronoiCovarianceMeasure<Space,Metric> VCM;
   typedef HatPointFunction<Point,double> KernelFunction;
@@ -83,44 +75,35 @@ int main( int argc, char** argv )
   trace.info() << "Big radius   R = " << R << std::endl;
   const double r = 5;
   trace.info() << "Small radius r = " << r << std::endl;
-  const double size = 3.0;
+  const double T = 0.1;
+  trace.info() << "Feature thres. T = " << T << std::endl; // threshold for displaying features as red.
+  const double size = 3.0; // size of displayed normals
+
   Metric l2;
   VCM vcm( R, ceil( r ), l2, true );
   vcm.init( pts.begin(), pts.end() );
   Domain domain = vcm.domain();
   KernelFunction chi( 1.0, r );
 
-  // First pass to detect maxima.
-  Matrix evec;
-  RealVector eval;
-  double feature_max = 0.0;
-  for ( std::vector<Point>::const_iterator it = pts.begin(), itE = pts.end();
-        it != itE; ++it )
-    {
-      // Compute VCM and diagonalize it.
-      Matrix vcm_r = vcm.measure( chi, *it );
-      LinearAlgebraTool::getEigenDecomposition( vcm_r, evec, eval );
-      double feature = eval[ 0 ] / ( eval[ 0 ] +  eval[ 1 ] );
-      feature_max = std::max( feature_max, feature );
-    }
-  // Flat zones are metallic blue
-  // slightly curved zones are white
+  // Flat zones are metallic blue, slightly curved zones are white,
   // more curved zones are yellow till red.
-  GradientColorMap<double> colormap( 0.0, feature_max );
+  GradientColorMap<double> colormap( 0.0, T );
   colormap.addColor( Color( 128, 128, 255 ) );
   colormap.addColor( Color( 255, 255, 255 ) );
   colormap.addColor( Color( 255, 255, 0 ) );
   colormap.addColor( Color( 255, 0, 0 ) );
   Board2D board;
-  // Second pass to display everything.
+  Matrix vcm_r, evec;
+  RealVector eval;
   for ( std::vector<Point>::const_iterator it = pts.begin(), itE = pts.end();
         it != itE; ++it )
     {
       // Compute VCM and diagonalize it.
-      Matrix vcm_r = vcm.measure( chi, *it );
+      vcm_r = vcm.measure( chi, *it );
       LinearAlgebraTool::getEigenDecomposition( vcm_r, evec, eval );
       double feature = eval[ 0 ] / ( eval[ 0 ] +  eval[ 1 ] );
-      board << CustomStyle( it->className(), new CustomColors( Color::Black,  colormap( feature ) ) )
+      board << CustomStyle( it->className(), 
+                            new CustomColors( Color::Black,  colormap( feature > T ? T : feature ) ) )
             << *it;
       // Display normal
       RealVector normal = evec.column( 1 );
