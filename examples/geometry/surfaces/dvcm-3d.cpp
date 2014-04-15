@@ -68,7 +68,6 @@ int main( int argc, char** argv )
   typedef EigenDecomposition<2,double> LinearAlgebraTool;
   typedef LinearAlgebraTool::Matrix Matrix;
   typedef KSpace::Surfel Surfel;
-  typedef KSpace::SCell SCell;
   typedef KSpace::Cell Cell;
 
   typedef ImageSelector<Domain, unsigned char>::Type Image;

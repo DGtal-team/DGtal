@@ -148,6 +148,8 @@ surfels allows us to orient the normal direction given by the VCM. The
 main classes are \ref VoronoiCovarianceMeasureOnDigitalSurface and
 \ref VCMDigitalSurfaceEstimator.
 
+\subsection moduleVCM_sec3_1 The class VoronoiCovarianceMeasureOnDigitalSurface
+
 The class VoronoiCovarianceMeasureOnDigitalSurface is templated by the
 following types:
 
@@ -158,7 +160,7 @@ following types:
    computing the Voronoi map (e.g. Euclidean metric is
    DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
 
-- \b TKernelFunction the type of the kernel function \f$ chi \f$ used
+- \b TKernelFunction the type of the kernel function \f$ \chi \f$ used
    for integrating the VCM, a map: Point -> Scalar, e.g. \ref HatPointFunction
    or \ref BallConstantPointFunction, but you may define your own.
 
@@ -190,17 +192,66 @@ At instanciation, you have to precise several parameters:
  
 - \b aMetric an instance of the chosen metric.
  
-The whole VCM computation is done in this constructor.
+The whole VCM computation is done in this constructor. Once this is
+done, you may access to the whole VCM tensor information with the
+methods:
+
+- VoronoiCovarianceMeasureOnDigitalSurface::mapSurfel2Normals returns
+  the map associating to each surfel a structure containing both the
+  normal estimated by VCM and the normal estimated from the trivial
+  surfel normals.
+
+- VoronoiCovarianceMeasureOnDigitalSurface::mapPoint2ChiVCM returns
+  the map associating with each admissible digital point (so depending
+  on the \a surfelEmbedding) the eigenstructure of the VCM tensor
+  (principal directions, eigenvalues).
+
+- VoronoiCovarianceMeasureOnDigitalSurface::getChiVCMEigenvalues
+  outputs the eigenvalues at the specified \a surfel.
+
+- VoronoiCovarianceMeasureOnDigitalSurface::getChiVCMEigenStructure
+  outputs the whole eigenstructure at the specified \a surfel.
+
+Example geometry/surfaces/dvcm-3d.cpp gives the full code for
+computing the \f$ \chi \f$-VCM of an arbitrary digital surface, and
+then estimating the normal vector as well as detecting corners.
+
+@image html dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
+@image latex dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
+
+
+\subsection moduleVCM_sec3_2 The class VCMDigitalSurfaceEstimator
+
+The class VCMDigitalSurfaceEstimator adapts a
+VoronoiCovarianceMeasureOnDigitalSurface to be a model of
+CSurfaceLocalGeometricEstimator. It uses the \b Voronoi \b Covariance
+\b Measure to estimate geometric quantities. The type
+TVCMGeometricFunctor specifies which is the estimated quantity.  For
+instance, VCMNormalVectorFunctor returns the estimated VCM surface \b
+outward normal for given surfels.
+
+\code
+typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric,KernelFunction> VCMNormalEstimator;
+typedef VCMGeometricFunctors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
+typedef VCMDigitalSurfaceEstimator<SurfaceContainer,Metric,
+                                   KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
+KernelFunction chi( 1.0, 7.0 );
+CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels, 
+                                      15.0, 7.0, chi, 7.0, l2, true ) ); // avoid duplications
+VCMNormalEstimator estimator( vcm_surface );
+estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
+
+\endcode
 
 */
 
 
 /**
-   This example shows the computation of the VCM of a set of 2D
-   digital points. The normal is estimated from the diagonalization of
-   the VCM tensor. Feature detection is achieved with the eigenvalues
-   of the VCM. A red color indicates a feature. Normals are displayed
-   as arrows.
+This example shows the computation of the VCM of a set of 2D
+digital points. The normal is estimated from the diagonalization of
+the VCM tensor. Feature detection is achieved with the eigenvalues
+of the VCM. A red color indicates a feature. Normals are displayed
+as arrows.
 
 @see \ref moduleVCM_sec2
 
@@ -212,6 +263,26 @@ $ ./examples/geometry/volumes/dvcm-2d
 @image latex dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
 
 \example geometry/volumes/dvcm-2d.cpp
+*/
+
+/** 
+This example shows the computation of the VCM of a digital surface
+read from a .vol file. The normal is estimated from the
+diagonalization of the VCM tensor, while the orientation is deduced
+from the orientation of the trivial surfel normals. Feature
+detection is achieved with the eigenvalues of the VCM. A red color
+indicates a feature. Normals are displayed as black lines.
+
+@see \ref moduleVCM_sec3
+
+@verbatim
+$ ./examples/geometry/surfaces/dvcm-3d
+@endverbatim
+
+@image html dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
+@image latex dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
+
+\example geometry/surfaces/dvcm-3d.cpp
 */
 
 
