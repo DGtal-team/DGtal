@@ -65,9 +65,9 @@ int main( int argc, char** argv )
   vector<unsigned int> vPos;
   vPos.push_back(0);
   vPos.push_back(1);
-  // string inputSDP = examplesPath + "samples/flower-30-8-3.sdp";
+  string inputSDP = examplesPath + "samples/flower-30-8-3.sdp";
   // string inputSDP = examplesPath + "samples/ellipse-20-7-0.4.sdp";
-  string inputSDP = examplesPath + "samples/accflower-20-5-5-0.1.sdp";
+  // string inputSDP = examplesPath + "samples/accflower-20-5-5-0.1.sdp";
   trace.info() << "Reading input 2d discrete points file: " << inputSDP; 
   std::vector<Point> pts = PointListReader<Point>::getPointsFromFile(inputSDP, vPos); 
   trace.info() << " [done] " << std::endl ; 
