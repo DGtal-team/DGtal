@@ -430,7 +430,8 @@ namespace DGtal
 
     /**
      * Method to add a specific quad. The normal vector is specified
-     * by the user.
+     * by the user. Quad points can be reordered to make its
+     * orientation constistant with the normal direction.
      *
      * @param p1 the 1st point
      * @param p2 the 2nd point
@@ -459,7 +460,8 @@ namespace DGtal
     /**
      * Method to add a quad representing a surfel given from its
      * center and its orientation, and attach a unitary normal vector
-     * to it.
+     * to it.  Quad points can be reordered to make its orientation
+     * constistant with the normal direction.
      *
      * @param baseQuadCenter the surfel center.
      * @param xSurfel indicates that the sufel is in the x axis direction
