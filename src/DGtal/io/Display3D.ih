@@ -309,20 +309,40 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
   updateBoundingBox(p4);
   double u[3];
   u[0]=p2[0]-p1[0]; u[1]=p2[1]-p1[1]; u[2]=p2[2]-p1[2];
+  double v[3];
+  v[0]=p3[0]-p2[0]; v[1]=p3[1]-p2[1]; v[2]=p3[2]-p2[2];
+  double crossprod[3];
+  cross(crossprod, u,v);
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
     {
       trace.warning()<< "Warning quad not added due to identical vertex... "<<std::endl;
       return;
     }
-  aQuad.point1=p1;
-  aQuad.point2=p2;
-  aQuad.point3=p3;
-  aQuad.point4=p4;
-  aQuad.nx= n[0];
-  aQuad.ny= n[1];
-  aQuad.nz= n[2];
-  aQuad.color= getFillColor();
+
+  if ( (crossprod[0]*n[0] + crossprod[1]*n[1] +crossprod[2]*n[2])  <0.0)
+    {
+      aQuad.point1=p1;
+      aQuad.point2=p4;
+      aQuad.point3=p3;
+      aQuad.point4=p2;
+      aQuad.nx= n[0];
+      aQuad.ny= n[1];
+      aQuad.nz= n[2];
+      aQuad.color= getFillColor();
+    }
+  else
+    {
+      aQuad.point1=p1;
+      aQuad.point2=p2;
+      aQuad.point3=p3;
+      aQuad.point4=p4;
+      aQuad.nx= n[0];
+      aQuad.ny= n[1];
+      aQuad.nz= n[2];
+      aQuad.color= getFillColor();
+    }
+
   if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
