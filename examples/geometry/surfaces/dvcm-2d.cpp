@@ -74,7 +74,8 @@ int main( int argc, char** argv )
   vPos.push_back(0);
   vPos.push_back(1);
   // string inputSDP = examplesPath + "samples/flower-30-8-3.sdp";
-  string inputSDP = examplesPath + "samples/ellipse-20-7-0.4.sdp";
+  // string inputSDP = examplesPath + "samples/ellipse-20-7-0.4.sdp";
+  string inputSDP = examplesPath + "samples/accflower-20-5-5-0.1.sdp";
   trace.info() << "Reading input 2d discrete points file: " << inputSDP; 
   std::vector<Point> pts = PointListReader<Point>::getPointsFromFile(inputSDP, vPos); 
   trace.info() << " [done] " << std::endl ; 
@@ -100,7 +101,6 @@ int main( int argc, char** argv )
       Matrix vcm_r = vcm.measure( chi, *it );
       LinearAlgebraTool::getEigenDecomposition( vcm_r, evec, eval );
       double feature = eval[ 0 ] / ( eval[ 0 ] +  eval[ 1 ] );
-      std::cerr << feature << " : " << eval[ 0 ] << " " << eval[ 1 ] << std::endl;
       feature_max = std::max( feature_max, feature );
     }
   // Flat zones are metallic blue
