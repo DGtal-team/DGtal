@@ -60,42 +60,71 @@ bool testComputeInterior()
 
   trace.beginBlock ( "Testing computation of interior from a freeman chain ..." );
   std::string freemanChainFilename = testPath + "samples/contourS.fc";
+  std::string freemanChainFilename2 = testPath + "samples/SmallBall.fc";
   fstream fst;
   fst.open (freemanChainFilename.c_str(), ios::in);
   FreemanChain<Z2i::Space::Integer> fc(fst);
   fst.close();
+  fst.open (freemanChainFilename2.c_str(), ios::in);
+  FreemanChain<Z2i::Space::Integer> fc2(fst);
+  fst.close();
   std::set<SCell> boundaryCell;
+  std::set<SCell> boundaryCell2;
   DGtal::KhalimskySpaceND< 2, int > K; 
   int minx, miny, maxx, maxy; 
   fc.computeBoundingBox(minx, miny, maxx, maxy); 
   K.init(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5), false);
-  FreemanChain<Z2i::Space::Integer>::getContourSCell(K, fc, boundaryCell ); 
+  FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K, fc, boundaryCell ); 
   std::set<Cell> interiorCell;
   Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, boundaryCell, interiorCell, false);
   trace.info() << "Interior size: " << interiorCell.size() << " (awaited:  3014)" <<  std::endl;
   
-  // Displaying interiorCell
-  Board2D aBoard;  
 
+  DGtal::KhalimskySpaceND< 2, int > K2; 
+  int minx2, miny2, maxx2, maxy2; 
+  fc2.computeBoundingBox(minx2, miny2, maxx2, maxy2); 
+  K2.init(Z2i::Point(minx2-5,miny2-5), Z2i::Point(maxx2+5, maxy2+5), false);
+  FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K2, fc2, boundaryCell2 ); 
+  std::set<Cell> interiorCell2;
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K2, boundaryCell2, interiorCell2, false);
+  trace.info() << "Interior size2: " << interiorCell2.size() << " (awaited:  60196)" <<  std::endl;
+  
+  // Displaying interiorCell
+  Board2D aBoard, aBoard2;  
   for( std::set<Cell>::const_iterator it=interiorCell.begin();  it!= interiorCell.end(); it++){
     aBoard << K.uCoords (*it); 
+  }
+  for( std::set<Cell>::const_iterator it=interiorCell2.begin();  it!= interiorCell2.end(); it++){
+    aBoard2 << K.uCoords (*it); 
   }
 
   aBoard<< CustomStyle( (*(boundaryCell.begin())).className(), 
                         new CustomColors(  Color::Red,  Color::None ) );          
+  aBoard2<< CustomStyle( (*(boundaryCell.begin())).className(), 
+                        new CustomColors(  Color::Red,  Color::None ) );          
   for( std::set<SCell>::const_iterator it= boundaryCell.begin();  it!= boundaryCell.end(); it++){
     aBoard << *it;
   }
-  aBoard<< CustomStyle( fc.className(), 
+  for( std::set<SCell>::const_iterator it= boundaryCell2.begin();  it!= boundaryCell2.end(); it++){
+    aBoard2 << *it;
+  }
+  aBoard << CustomStyle( fc.className(), 
+                        new CustomColors(  Color::Red,  Color::None ) );        
+  aBoard2 << CustomStyle( fc.className(), 
                         new CustomColors(  Color::Red,  Color::None ) );        
   aBoard << SetMode( fc.className(), "InterGrid" );
-  aBoard << fc;    
+  aBoard2 << SetMode( fc.className(), "InterGrid" );
+  aBoard << fc;
+  aBoard2 << fc2;    
   
   aBoard.saveEPS("testSurfaceHelperComputeInterior.eps");
-  nbok += interiorCell.size()== 3014 ? 1 : 0; 
+  aBoard2.saveEPS("testSurfaceHelperComputeInterior2.eps");
+  nbok += (interiorCell.size()== 3014 && interiorCell2.size()== 60196)? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+	       << interiorCell.size() << " (interiorCell.size()) == 3014 and "
+               << interiorCell2.size() << " (interiorCell2.size()) == 60196 "
+               << std::endl;
   trace.endBlock();
   
   return nbok == nb;
