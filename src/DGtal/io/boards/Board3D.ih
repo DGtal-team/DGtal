@@ -429,8 +429,9 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
             tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
             tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
             tmpStream << "v " << s_it->point4[0]     << " " << s_it->point4[1]      << " " << s_it->point4[2] << std::endl;
+            tmpStream << "vn " << s_it->nx     << " " << s_it->ny      << " " << s_it->nz << std::endl;
 
-            tmpStream << "f " << "-4" << " " << "-3" << " " << "-2"<< " " << "-1"<< std::endl;
+            tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
           }
         if (tmpStream.str() != "")
           {
