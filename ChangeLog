@@ -1,5 +1,14 @@
 === DGtal 0.8 ===
 
+*Base Package*
+
+    - add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
+
+*Geometry Package*
+
+    - Add digital Voronoi Covariance Measure support, as well as digital geometric estimators based on it.
+    - Add concept of SurfaceLocalEstimator and related ground truth estimators for implicit polynomial shapes.
+
 *IO Package*
 
     - Better handling of materials in Board3D and OBJ exports.
