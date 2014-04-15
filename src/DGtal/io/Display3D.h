@@ -95,8 +95,11 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT((CSpace<Space>));
   public:
-    //RealPoint
+    ///RealPoint type
     typedef typename DGtal::Z3i::RealPoint RealPoint;
+
+    ///RealVector type
+    typedef typename DGtal::Z3i::RealVector RealVector;
 
 
   protected:
@@ -416,28 +419,62 @@ namespace DGtal
      * Method to add a specific quad (used by @a addClippingPlane or
      * to represent basic surfels from Khalimsky space). The normal is
      * computed from the vertex order.
-     * 
+     *
      * @param p1 the 1st point
      * @param p2 the 2nd point
      * @param p3 the 3rd point
      * @param p4  the 4th point
-     * 
+     *
      */
     void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4);
-    
+
+    /**
+     * Method to add a specific quad. The normal vector is specified
+     * by the user. Quad points can be reordered to make its
+     * orientation constistant with the normal direction.
+     *
+     * @param p1 the 1st point
+     * @param p2 the 2nd point
+     * @param p3 the 3rd point
+     * @param p4  the 4th point
+     * @param n the normal vector
+     *
+     */
+    void addQuadWithNormal(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4,
+                           const RealPoint &n );
+
     /**
      * Method to add a quad representing a surfel given from its center and its orientation.
      *
      * @param baseQuadCenter the surfel center.
-     * @param xSurfel indicates that the sufel is in the x axis direction 
-     * @param ySurfel indicates that the sufel is in the y axis direction 
-     * @param zSurfel indicates that the sufel is in the z axis direction 
+     * @param xSurfel indicates that the sufel is in the x axis direction
+     * @param ySurfel indicates that the sufel is in the y axis direction
+     * @param zSurfel indicates that the sufel is in the z axis direction
      *
      **/
-    
+
     void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel);
-      
-    
+
+
+
+    /**
+     * Method to add a quad representing a surfel given from its
+     * center and its orientation, and attach a unitary normal vector
+     * to it.  Quad points can be reordered to make its orientation
+     * constistant with the normal direction.
+     *
+     * @param baseQuadCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction
+     * @param ySurfel indicates that the sufel is in the y axis direction
+     * @param zSurfel indicates that the sufel is in the z axis
+     * direction
+     * @param aNormal a unitary normal vector to attach to the quad.
+     *
+     **/
+    void addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel,
+                                           const RealVector &aNormal);
+
+
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
      * @param p1 the 1st point
@@ -507,7 +544,7 @@ namespace DGtal
 
     /**
      * Specific to display a surfel from Kahlimsky space from a basic way.
-     * 
+     *
      * @param baseQuadCenter  base quad center point
      * @param xSurfel true if the surfel has its main face in the direction of the x-axis
      * @param ySurfel true if the surfel has its main face in the direction of the y-axis
@@ -515,8 +552,8 @@ namespace DGtal
      */
     void addBasicSurfel(const RealPoint &baseQuadCenter,
                         bool xSurfel, bool ySurfel, bool zSurfel);
-    
-    
+
+
     // /**
     //  * Specific to display a surfel from Kahlimsky space in basic mode.
     //  *
@@ -701,7 +738,7 @@ namespace DGtal
     /// Represent truncated prism object to represent surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
     std::vector< QuadD3D > myPrismList;
- 
+
     /// Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
     std::vector<std::vector< QuadD3D > > myQuadSetList;
 
