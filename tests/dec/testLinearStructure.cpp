@@ -42,7 +42,7 @@ main(int argc, char* argv[])
     trace.beginBlock("creating dec problem with neumann border condition");
 
 		//! [neumann-creation]
-    const Domain domain(Point(0,0), Point(9,9));
+    const Domain domain(Point(-1,-1), Point(10,10));
 
     typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(domain);
