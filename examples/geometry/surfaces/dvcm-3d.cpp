@@ -28,24 +28,18 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
 #include <QtGui/qapplication.h>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/math/EigenDecomposition.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
-#include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
-#include "DGtal/geometry/volumes/estimation/VoronoiCovarianceMeasure.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/viewers/Viewer3D.h"
@@ -135,12 +129,9 @@ int main( int argc, char** argv )
 
   GradientColorMap<double> grad( 0, T );
   grad.addColor( Color( 128, 128, 255 ) );
-  grad.addColor( Color( 128, 128, 255 ) );
-  grad.addColor( Color( 128, 128, 255 ) );
-  grad.addColor( Color( 128, 255, 255 ) );
+  grad.addColor( Color( 255, 255, 255 ) );
   grad.addColor( Color( 255, 255, 0 ) );
   grad.addColor( Color( 255, 0, 0 ) );
-
   RealVector lambda; // eigenvalues of chi-vcm
   for ( S2NConstIterator it = vcm_surface.mapSurfel2Normals().begin(), 
           itE = vcm_surface.mapSurfel2Normals().end(); it != itE; ++it )

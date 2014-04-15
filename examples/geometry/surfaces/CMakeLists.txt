@@ -2,7 +2,6 @@
 SET(DGTAL_EXAMPLES_SRC
 	exampleIntegralInvariantCurvature2D
 	exampleEstimatorFromSurfelFunctors
-        dvcm-2d
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
