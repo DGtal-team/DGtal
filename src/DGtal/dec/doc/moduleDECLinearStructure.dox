@@ -1,0 +1,91 @@
+/**
+ * @file moduleDECLinearStructure.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/04/04
+ *
+ * Documentation file for feature DECLinearStructure
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleDECLinearStructure Example of manual cell insertion and problem resolution
+@writers Pierre Gueth
+
+
+[TOC]
+
+\section sectDECLinearStructure1 Problem description
+
+Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
+It is possible to insert cell manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
+Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
+Therefore the DEC structure shouldn't be modified when doing linear algebra calculus.
+
+In this problem, we create an 1D linear structure embedded in a 2D space.
+We show how to change boundary conditions between Neumann and Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
+
+\section sectDECLinearStructure2 Neumann boundary condition
+
+\snippet ../tests/dec/testLinearStructure.cpp neumann-creation
+
+\snippet ../tests/dec/testLinearStructure.cpp input-dirac
+
+\image html linear_structure_neumann_dirac.png "Linear structure with Neumann boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
+
+\snippet ../tests/dec/testLinearStructure.cpp neumann-laplacian-definition
+
+Now the problem is fully definined and there one thing left to do: solving it.
+The resolution is done by DiscreteExteriorCalculusSolver.
+This class takes the actual linear solver used as the second template parameter.
+One can use any class that validates the CLinearAlgebraSolver concept.
+Some solvers are provided inside the linear algebra backend we are using EigenSparseLinearAlgebraBackend.
+Here we will use the SolverSparseQR solver.
+Once created the solver is given the operator using DiscreteExteriorCalculusSolver.compute.
+The input dirac 0-form is passed to DiscreteExteriorCalculusSolver.solve, which return the solution of the problem.
+
+\snippet ../tests/dec/testLinearStructure.cpp neumann-solve
+
+Since the dirac input is null everywhere except at a single point, this means that the second dirivative of the solution is null everywhere except at the dirac position.
+An analytic form can be expressed as a continuous piecewise quadratic function.
+Numerical values of the solution fit analytical values with at least a relative precision of 1e-5.
+
+\image html linear_structure_neumann_solution.png "Linear structure with Neumann boundary conditions. Solution 0-form is displayed."
+\image html linear_structure_neumann_fit.png "Numerical values computed using the solver and analytical solution for the Neumann problem."
+
+\section sectDECLinearStructure3 Dirichlet boundary condition
+
+Dirichlet boundary condition fix value of 0-forms to be constant outside of definition domain.
+In this package this constant value is choosen to be null.
+Two dangling 1-cells are added at each end of the structure to describe Dirichlet boundary condition.
+Since those 1-cells are not connected to a 0-cell on one of their border, this will simulate the presence of zero-valued 0-cell in those placen thru enforcing Dirichlet boundary conditions.
+
+\snippet ../tests/dec/testLinearStructure.cpp dirichlet-creation
+
+Input dirac can be used as it is since no 0-cells has been added to the structure.
+
+\image html linear_structure_dirichlet_dirac.png "Linear structure with Dirichlet boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
+
+However laplacian operator need to be rebuild.
+Note that the code is the same as for the Neumann case.
+
+\snippet ../tests/dec/testLinearStructure.cpp dirichlet-laplacian-definition
+
+Solving the problem is achieved by using the same code as for the Neumann case.
+
+\snippet ../tests/dec/testLinearStructure.cpp dirichlet-solve
+
+\image html linear_structure_dirichlet_solution.png "Linear structure with Dirichlet boundary conditions. Solution 0-form is displayed."
+\image html linear_structure_dirichlet_fit.png "Numerical values computed using the solver and analytical solution for the Dirichlet problem."
+
+*/
+
+}
