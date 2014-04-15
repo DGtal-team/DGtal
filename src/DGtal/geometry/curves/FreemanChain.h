@@ -885,19 +885,24 @@ public:
     static void getContourPoints(const FreemanChain & fc, 
                                  std::vector<Point> & aVContour );
     
+
     /**
-     * Return a set containing all the oriented SCell of the freemanchain.
+     * Return a set containing all the linels (given as Signed SCell)
+     * of a FreemanChain seen as inter pixel contour. The resuling
+     * SCell set will correspond to the FreemanChain represented in
+     * InterGrid mode (in InterGrid mode a FremanChain is shifted by
+     * (-0.5, 0.5)).
      *
      * @param aKSpace the KSpace
      * @param fc the FreemanChain
-     * @param aSCellContour (returns) the set containing all the integer contour points.
+     * @param aSCellContour (returns) the set containing all the linels of the inter-pixels contour.
      * @param aFlagForAppend if set to true the resulting set is appended to initial set.  
      */
 
-    static void getContourSCell(const KhalimskySpaceND<2, int> & aKSpace, 
-                                const FreemanChain & fc, 
-                                std::set<KhalimskySpaceND<2, int>::SCell> & aSCellContour,
-                                bool aFlagForAppend=false);
+    static void getInterPixelLinels(const KhalimskySpaceND<2,  TInteger> & aKSpace, 
+                                    const FreemanChain & fc, 
+                                    std::set<typename KhalimskySpaceND<2, TInteger>::SCell> & aSCellContour,
+                                    bool aFlagForAppend=false);
     
 
     
