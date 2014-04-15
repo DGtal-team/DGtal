@@ -1,0 +1,218 @@
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/*!
+
+@page moduleVCM Digital Voronoi Covariance Measure and geometry estimation
+
+@writers Jacques-Olivier Lachaud
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes classes and functions related to the
+Voronoi Covariance Measure (VCM) of a set of points in arbitrary
+dimension. The VCM is a covariance tensor related to a distance
+function to the input data points. It was introduced by Mérigot,
+Ovsjanikov and Guibas \cite Merigot_2011-tvcg. The digital version of
+the VCM was studied by Cuel, Lachaud, and Thibert \cite Cuel_2014-dgci. 
+Stability and multigrid convergence results have been
+established. This documentation presents the implementation of the
+digital VCM. The VCM is useful for the following tasks:
+
+- \b normal \b cone \b estimation: Given a set of digital points
+  approximating a surface, the VCM estimates robustly the normal
+  vector to this underlying surface. 
+
+- \b geometry \b estimation: Given a digital surface approximating
+  some surface, the VCM can estimate robustly the oriented normal
+  vector and the principal directions of the underlying
+  surface. 
+
+- \b feature \b detection: Given a set of digital points approximating
+  a surface, the eigenvalues of the VCM can be combined to define a
+  robust feature detector.
+
+
+[TOC]
+
+Related examples are geometry/volumes/dvcm-2d.cpp, dvcm-3d.cpp.
+
+\section moduleVCM_sec1 Voronoi Covariance Measure
+
+The \a Voronoi \a covariance \a measure (VCM) has been introduced in
+\cite Merigot_2011-tvcg for normals and curvature estimations. Let \a K be a compact
+subset of \f$\mathbb{R}^3\f$ and \f$d_K\f$ the \a distance \a function to \a K,
+i.e. the map \f$ d_K(x) := \min_{p\in K} \|p-x\| \f$. A point
+\a p where the previous minimum is reached is called a
+\a projection of \a x on \a K. Almost every point admits a single
+projection on \a K, thus definining a map \f$ p_K: \mathbb{R}^3 \to K \f$ almost
+everywhere. The \a R-\a offset of \a K is the \a R-sublevel set of
+\f$ d_K\f$, i.e. the set \f$K^R:=d_K^{-1}(]-\infty, R[)\f$. The VCM maps any
+integrable function \f$\chi:\mathbb{R}^3 \to \mathbb{R}^+\f$ to the matrix
+\f[
+\mathcal{V}_{K,R}(\chi) := \int_{K^R}(x-p_K(x))(x-p_K(x))^{\mathbf{t}} \chi(p_K(x)) d x.
+\f]
+
+@image html vcm.png "Voronoi Covariance Measure of a point set in the plane."
+@image latex vcm.png "Voronoi Covariance Measure of a point set in the plane." width=8cm
+
+\note The stability result of \cite{Merigot_2011-tvcg} implies that
+information extracted from the covariance matrix such as normals or
+principal directions are \b stable with respect to \b Hausdorff
+\b perturbation.
+
+\advanced Remark that this definition matches the definition introduced in
+\cite{Merigot_2011-tvcg}: when \f$\chi\f$ is the indicatrix of a ball, one recovers a
+notion similar to the convolved VCM.
+
+
+
+\section moduleVCM_sec2 Computing the Voronoi Covariance Measure of a point set
+
+Let \a K be some point set. In this case, the computation of the VCM
+can be split into isolated calculations in each Voronoi cell of \a
+K. In the digital setting, the Voronoi cells can be efficiently
+computed by repeated scanning of the domain (see \ref
+moduleVolumetric). That's exactly how is computed the VCM. The
+computational complexity of the VCM is thus the computational
+complexity of the Voronoi map in nD. The templated class
+VoronoiCovarianceMeasure is the one taking of the computation. It
+requires two type parameters: 
+
+- \b TSpace: the digital space (any model of CSpace), like \ref SpaceND.
+
+- \b TSeparableMetric: the metric used for computing the Voronoi map (any model of CSeparableMetric), like \ref ExactPredicateLpSeparableMetric<TSpace, 2> for the Euclidean metric.
+
+The instantiation of the class VoronoiCovarianceMeasure requires the
+following parameters:
+
+- \b R the offset radius for the set of points. Voronoi cells are
+  intersected with this offset. The unit corresponds to a step in the
+  digital space.
+     
+- \b r (an upper bound of) the radius of the support of
+  forthcoming kernel functions (\f$ \chi \f$). The unit
+  corresponds to a step in the digital space. This parameter is
+  used for preparing the data structure that answers to proximity
+  queries.
+ 
+- \b aMetric an instance of the chosen metric.
+
+Then, the set of input points is specified by a range of input
+iterators given to the method VoronoiCovarianceMeasure::init. This
+method computes the VCM of each Voronoi cell determined by the given
+points.
+
+\code
+typedef Z2i::Space Space;
+typedef Z2i::Point Point;
+typedef ExactPredicateLpSeparableMetric<Space, 2> Metric; // L2-metric
+typedef VoronoiCovarianceMeasure<Space,Metric> VCM;
+Point tbl[] = { { 0, 1 }, { 3, 2 }, { 5, 3 } };
+Metric l2;
+VCM vcm( R, ceil( r ), l2, true ); // last parameter is verbose mode
+vcm.init( tbl, tbl + 3 );
+\endcode
+
+You may then access to the following elements:
+
+- the voronoi map giving for any point the closest point in \a K is
+  accessed through method VoronoiCovarianceMeasure::voronoiMap.
+
+- the Voronoi Covariance Matrix of each Voronoi cell as a map Point ->
+  Matrix is returned by method VoronoiCovarianceMeasure::vcmMap.
+
+- the \f$ \chi \f$ VCM is returned by method
+  VoronoiCovarianceMeasure::measure, where a kernel function must be
+  specified. The type of the kernel function can be \ref HatPointFunction
+  or \ref BallConstantPointFunction, but you may define your own.
+
+Example geometry/volumes/dvcm-2d.cpp gives the full code for computing the \f$ \chi
+\f$-VCM of an arbitrary set of digital points, and then estimating the
+normal vector as well as detecting corners.
+
+@image html dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
+@image latex dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
+
+
+
+\section moduleVCM_sec3 Voronoi Covariance Measure of a digital surface
+
+In the case where the input data is a digital surface, we provide
+several classes that helps the computation and the usage of the
+VCM. Furthermore, having as input data a volume or a set of oriented
+surfels allows us to orient the normal direction given by the VCM. The
+main classes are \ref VoronoiCovarianceMeasureOnDigitalSurface and
+\ref VCMDigitalSurfaceEstimator.
+
+The class VoronoiCovarianceMeasureOnDigitalSurface is templated by the
+following types:
+
+- \b TDigitalSurfaceContainer the type of digital surface container
+  (model of CDigitalSurfaceContainer), e.g. an ImplicitDigitalSurface.
+
+- \b TSeparableMetric a model of CSeparableMetric used for
+   computing the Voronoi map (e.g. Euclidean metric is
+   DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
+
+- \b TKernelFunction the type of the kernel function \f$ chi \f$ used
+   for integrating the VCM, a map: Point -> Scalar, e.g. \ref HatPointFunction
+   or \ref BallConstantPointFunction, but you may define your own.
+
+At instanciation, you have to precise several parameters:
+
+- \b surface the digital surface that is aliased in this. The
+  user can \b secure the aliasing by passing a CountedConstPtrOrConstPtr.
+
+- \b surfelEmbedding the chosen embedding for surfels (Pointels,
+  InnerSpel, OuterSpel). This embedding defines the digital points
+  that are used in the computation of the VCM (see
+  VoronoiCovarianceMeasure).
+
+- \b R the offset radius for the set of points. Voronoi cells are
+  intersected with this offset. The unit corresponds to a step in the
+  digital space.
+     
+- \b r (an upper bound of) the radius of the support of
+  forthcoming kernel functions (\f$ \chi \f$). The unit
+  corresponds to a step in the digital space. This parameter is
+  used for preparing the data structure that answers to proximity
+  queries.
+
+- \b chi_r the kernel function whose support has radius less or equal
+  to \a r.
+
+- \b t the radius for the trivial normal estimator, which is used for
+  finding the correct orientation inside/outside for the VCM.
+ 
+- \b aMetric an instance of the chosen metric.
+ 
+The whole VCM computation is done in this constructor.
+
+*/
+
+
+/**
+   This example shows the computation of the VCM of a set of 2D
+   digital points. The normal is estimated from the diagonalization of
+   the VCM tensor. Feature detection is achieved with the eigenvalues
+   of the VCM. A red color indicates a feature. Normals are displayed
+   as arrows.
+
+@see \ref moduleVCM_sec2
+
+@verbatim
+$ ./examples/geometry/volumes/dvcm-2d
+@endverbatim
+
+@image html dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
+@image latex dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
+
+\example geometry/volumes/dvcm-2d.cpp
+*/
+
+
+}
