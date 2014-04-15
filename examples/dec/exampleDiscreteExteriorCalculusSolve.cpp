@@ -15,23 +15,29 @@ void solve2d()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(9,9));
 
     // create discrete exterior calculus from set
+    //! [calculus_creation]
     typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(generateRingSet(domain));
+    //! [calculus_creation]
     trace.info() << calculus << endl;
 
+    //! [laplacian_definition]
     Calculus::DualDerivative0 d0 = calculus.derivative<0, DUAL>();
     Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
     Calculus::DualHodge1 hodge1 = calculus.dualHodge<1>();
     Calculus::PrimalHodge2 hodge2p = calculus.primalHodge<2>();
     Calculus::DualIdentity0 laplacian = hodge2p *d1p * hodge1 * d0 + 0.1 * calculus.identity<0, DUAL>();
+    //! [laplacian_definition]
     trace.info() << "d0 = " << d0 << endl;
     trace.info() << "hodge1 = " << hodge1 << endl;
     trace.info() << "d1p = " << d1p << endl;
     trace.info() << "hodge2p = " << hodge2p << endl;
     trace.info() << "laplacian = " << laplacian << endl;
 
+    //! [dirac_definition]
     Calculus::DualForm0 dirac(calculus);
-    dirac.myContainer(0) = 1;
+    dirac.myContainer(calculus.getIndex(calculus.kspace.sSpel(Z2i::Point(2,5)))) = 1;
+    //! [dirac_definition]
     //dirac.myContainer(5) = 1;
 
     {
@@ -48,19 +54,21 @@ void solve2d()
     { // simplicial llt
         trace.beginBlock("simplicial llt");
 
+        //! [solve_llt]
         typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLLT LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
+        //! [solve_llt]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
+        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
@@ -72,19 +80,21 @@ void solve2d()
     { // simplicial ldlt
         trace.beginBlock("simplicial ldlt");
 
+        //! [solve_ldlt]
         typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
+        //! [solve_ldlt]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
+        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
@@ -96,19 +106,21 @@ void solve2d()
     { // conjugate gradient
         trace.beginBlock("conjugate gradient");
 
+        //! [solve_conjugate_gradient]
         typedef EigenSparseLinearAlgebraBackend::SolverConjugateGradient LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
+        //! [solve_conjugate_gradient]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
+        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
@@ -120,19 +132,21 @@ void solve2d()
     { // biconjugate gradient stabilized
         trace.beginBlock("biconjugate gradient stabilized (bicgstab)");
 
+        //! [solve_biconjugate_gradient]
         typedef EigenSparseLinearAlgebraBackend::SolverBiCGSTAB LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
+        //! [solve_biconjugate_gradient]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
+        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
@@ -144,19 +158,21 @@ void solve2d()
     { // sparselu
         trace.beginBlock("sparse lu");
 
+        //! [solve_sparse_lu]
         typedef EigenSparseLinearAlgebraBackend::SolverSparseLU LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
+        //! [solve_sparse_lu]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
+        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
@@ -168,19 +184,21 @@ void solve2d()
     { // sparseqr
         trace.beginBlock("sparse qr");
 
+        //! [solve_sparse_qr]
         typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
+        //! [solve_sparse_qr]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
+        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);

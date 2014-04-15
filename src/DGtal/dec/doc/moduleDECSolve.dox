@@ -29,6 +29,29 @@ namespace DGtal {
 
 \subsection subsectDECSolve21 Vector space
 
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp laplacian_definition
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp dirac_definition
+\image html solve_calculus.png "DEC structure with input Dirac."
+
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_llt
+\image html solve_simplicial_llt.png "Poisson problem solution computed with simplicial LLT solver."
+
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_ldlt
+\image html solve_simplicial_ldlt.png "Poisson problem solution computed with simplicial LDLT solver."
+
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_conjugate_gradient
+\image html solve_conjugate_gradient.png "Poisson problem solution computed with conjugate gradient solver."
+
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_biconjugate_gradient
+\image html solve_bicgstab.png "Poisson problem solution computed with biconjugate gradient solver."
+
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_sparse_lu
+\image html solve_sparse_lu.png "Poisson problem solution computed with sparse LU solver."
+
+\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_sparse_qr
+\image html solve_sparse_qr.png "Poisson problem solution computed with sparse QR solver."
+
 */
 
 }
