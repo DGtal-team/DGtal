@@ -2,12 +2,17 @@
 
 *Base Package*
 
-    - add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
+    - Add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
 
 *Geometry Package*
 
-    - Add digital Voronoi Covariance Measure support, as well as digital geometric estimators based on it.
-    - Add concept of SurfaceLocalEstimator and related ground truth estimators for implicit polynomial shapes.
+    - Add digital nD Voronoi Covariance Measure support, as well as
+      digital geometric estimators based on it. Add tests and examples of feature
+      detection with VCM.
+
+    - Fix and add concept of SurfaceLocalEstimator and related ground truth
+      estimators for implicit polynomial shapes
+      (TrueDigitalSurfaceLocalEstimator).
 
 *IO Package*
 
@@ -17,6 +22,11 @@
 *Topology Package*
 
     - small fix in ImplicitDigitalSurface.
+
+*Math Package*
+
+    - add classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition). Add tests.
+
 
 === DGtal 0.7 ===
 
