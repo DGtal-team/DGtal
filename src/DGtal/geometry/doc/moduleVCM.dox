@@ -38,7 +38,7 @@ digital VCM. The VCM is useful for the following tasks:
 
 [TOC]
 
-Related examples are geometry/volumes/dvcm-2d.cpp, dvcm-3d.cpp.
+Related examples are geometry/volumes/dvcm-2d.cpp, geometry/surfaces/dvcm-3d.cpp, geometry/surfaces/dvcm-2d-curvature.cpp.
 
 \section moduleVCM_sec1 Voronoi Covariance Measure
 
@@ -240,11 +240,13 @@ is a small piece of code that extracts the VCM normal for each surfel.
 
 The class VCMDigitalSurfaceLocalEstimator adapts a
 VoronoiCovarianceMeasureOnDigitalSurface to be a model of
-CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b Covariance
-\b Measure to estimate geometric quantities. The template type
-\b TVCMGeometricFunctor specifies which is the estimated quantity.  For
-instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the estimated VCM surface \b
-outward normal for given surfels.
+CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b Covariance \b
+Measure to estimate geometric quantities. The template type \b
+TVCMGeometricFunctor specifies which is the estimated quantity.  For
+instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the
+estimated VCM surface \b outward normal for given surfels,
+VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor returns the absolute
+curvature (see namespace VCMGeometricFunctors).
 
 In order to fulfill concept requirements, a VCMDigitalSurfaceLocalEstimator
 can be instantiated in several ways:
@@ -303,6 +305,12 @@ for ( typename Surface::ConstIterator it = ptrSurface->begin(),
   }
 \endcode
 
+Example geometry/surfaces/dvcm-2d-curvature.cpp shows how to extract the curvature field (in absolute value) of a digital contour with VCMDigitalSurfaceLocalEstimator templated by functor VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor.
+
+@image html dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure."
+@image latex dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure." width=8cm
+
+
 */
 
 
@@ -343,6 +351,23 @@ $ ./examples/geometry/surfaces/dvcm-3d
 @image latex dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
 
 \example geometry/surfaces/dvcm-3d.cpp
+*/
+
+/**
+This example shows the computation of the VCM of a sequence of 2D
+digital points forming a 4-connected curve. The absolute curvature is estimated from the diagonalization of
+the VCM tensor. A red color indicates a strong curvature, flat zones are blue, in-between is yellow.
+
+@see \ref moduleVCM_sec3_2
+
+@verbatim
+$ ./examples/geometry/surfaces/dvcm-2d-curvature
+@endverbatim
+
+@image html dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure."
+@image latex dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure." width=8cm
+
+\example geometry/surfaces/dvcm-2d-curvature.cpp
 */
 
 
