@@ -49,7 +49,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int /* argc */, /* char** argv */ )
+int main( int /* argc */, char** /* argv */ )
 {
   typedef Z2i::Space Space;
   typedef Z2i::KSpace KSpace;
@@ -60,7 +60,7 @@ int main( int /* argc */, /* char** argv */ )
   typedef Curve::SCellsRange LinelRange;
   typedef SetOfSurfels<KSpace> DigitalSurfaceContainer;
   typedef DigitalSurface<DigitalSurfaceContainer> Surface;
-  typedef HatPointFunction<Point,double> KernelFunction;
+  typedef BallConstantPointFunction<Point,double> KernelFunction;
   typedef VoronoiCovarianceMeasureOnDigitalSurface<DigitalSurfaceContainer,Metric,KernelFunction> VCMOnSurface;
   typedef VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor<VCMOnSurface> CurvatureFunctor;
   typedef VCMDigitalSurfaceLocalEstimator<DigitalSurfaceContainer,Metric,
@@ -111,7 +111,7 @@ int main( int /* argc */, /* char** argv */ )
       board << CustomStyle( it->className(), 
                             new CustomColors( colormap( curv ),  colormap( curv ) ) )
             << *it;
-      std::cerr << curv << std::endl;
+      std::cout << curv << std::endl;
     }      
   board.saveSVG("dvcm-curvature.svg");
 
