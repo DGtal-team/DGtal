@@ -49,7 +49,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int argc, char** argv )
+int main( int /* argc */, /* char** argv */ )
 {
   typedef Z2i::Space Space;
   typedef Z2i::KSpace KSpace;
