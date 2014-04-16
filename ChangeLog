@@ -28,6 +28,11 @@
     - add classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition). Add tests.
 
 
+*For Developpers*
+
+     - Google Benchmark can be enabled to allow micro-benchmarking in
+	some DGtal unit tests (https://github.com/google/benchmark)
+
 === DGtal 0.7 ===
 
 *General*

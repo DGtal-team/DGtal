@@ -22,6 +22,7 @@ OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
+OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 
 
 
@@ -109,13 +110,20 @@ ELSE(WITH_MAGICK)
 message(STATUS "      WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)")
 ENDIF(WITH_MAGICK)
 
-IF(WITH_QGLVIEWER)
+If(WITH_QGLVIEWER)
 SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
 message(STATUS "      WITH_QGLVIEWER    true    (Qt/QGLViewer based 3D Viewer)")
 ELSE(WITH_QGLVIEWER)
 message(STATUS "      WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)")
 ENDIF(WITH_QGLVIEWER)
-
+message(STATUS "")
+message(STATUS "For Developpers:")
+IF(WITH_BENCHMARK)
+SET (LIST_OPTION ${LIST_OPTION} [GoogleBenchmark]\ )
+message(STATUS "      WITH_BENCHMARK    true    (Google Benchmark)")
+ELSE(WITH_HDF5)
+message(STATUS "      WITH_BENCHMARK    false   (Google Benchmark)")
+ENDIF(WITH_BENCHMARK)
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
@@ -429,5 +437,33 @@ IF(WITH_CGAL)
     message(STATUS "CGAL found.")
   ENDIF(CGAL_FOUND)
 ENDIF(WITH_CGAL)
+
+
+# -----------------------------------------------------------------------------
+# Look for Google Benchmark
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(BENCHMARK_FOUND_DGTAL 0)
+IF(WITH_BENCHMARK)
+
+  IF (WITH_C11)
+    message(STATUS "C11 enabled for Google benchmark, all fine.")
+  ELSE(WITH_C11)
+   message(FATAL_ERROR "Google benchmark requires C++11. Please enable it setting 'WITH_C11' to true.")
+ ENDIF(WITH_C11)
+
+  FIND_PACKAGE(Benchmark REQUIRED)
+  IF(BENCHMARK_FOUND)
+    SET(BENCHMARK_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_BENCHMARK ")
+    include_directories( ${BENCHMARK_INCLUDE_DIR})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
+    message(STATUS "Google Benchmark found.   ${BENCHMARK_LIBRARIES}")
+  ELSE(BENCHMARK_FOUND)
+   message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
+ ENDIF(BENCHMARK_FOUND)
+ENDIF(WITH_BENCHMARK)
+
+
 
 message(STATUS "-------------------------------------------------------------------------------")
