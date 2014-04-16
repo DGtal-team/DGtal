@@ -52,8 +52,8 @@ namespace DGtal
 
 
     /**
-     * Description of template class 'VCMNormalVectorFunctor' <p> \brief
-     * Aim: A functor Surfel -> Quantity that returns the outer normal
+     * Description of template class 'VCMNormalVectorFunctor' <p> 
+     * \brief Aim: A functor Surfel -> Quantity that returns the outer normal
      * vector at given surfel.
      *
      * @tparam TVCMOnDigitalSurface any concrete type of VoronoiCovarianceMeasureOnDigitalSurface
@@ -113,14 +113,14 @@ namespace DGtal
     
 
    /**
-     * Description of template class 'VCMCurvatureFunctor' <p> \brief
-     * Aim: A functor Surfel -> Quantity that returns the curvature at
+     * Description of template class 'VCMAbsoluteCurvatureFunctor' <p> 
+     * \brief Aim: A functor Surfel -> Quantity that returns the absolute curvature at
      * given surfel. This class has meaning only in 2D.
      *
      * @tparam TVCMOnDigitalSurface any concrete type of VoronoiCovarianceMeasureOnDigitalSurface
      */
     template <typename TVCMOnDigitalSurface>
-    struct VCMCurvatureFunctor {
+    struct VCMAbsoluteCurvatureFunctor {
       typedef TVCMOnDigitalSurface VCMOnDigitalSurface;
       typedef typename VCMOnDigitalSurface::KSpace KSpace;
       typedef typename VCMOnDigitalSurface::Surfel Surfel;
@@ -136,10 +136,10 @@ namespace DGtal
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
+      VCMAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
         : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
       {
-        BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+        BOOST_STATIC_ASSERT(( KSpace::dimension == 2 ));
       }
       
       /**
@@ -155,7 +155,7 @@ namespace DGtal
       }
 
       /**
-         Map operator Surfel -> Scalar giving the curvature estimated by the VCM object.
+         Map operator Surfel -> Scalar giving the absolute curvature estimated by the VCM object.
          Complexity is \f$ O(log n) \f$, if \a n is the number of surfels of the surface.
 
          @param s any surfel of the shape.
@@ -167,10 +167,10 @@ namespace DGtal
         RealVector lambda;
         bool ok = myVCMOnDigitalSurface->getChiVCMEigenvalues( lambda, s );
         ASSERT( ok );
-        // The first eigenvalue l0 is approximately the mixed "area" 8pi R^3 r / 3
-        // The curvature is related to the second eigenvalue l1.
-        // k1^2 = 4*l1 / (l0*r^2)
-        return 2.0 * sqrt( lambda[1] / lambda[0] ) / myVCMOnDigitalSurface->r();
+        // The last eigenvalue l1 is approximately the mixed "area" 8pi R^3 r / 3
+        // The curvature is related to the first eigenvalue l0.
+        // k1^2 = 4*l0 / (l1*r^2)
+        return 2.0 * sqrt( lambda[0] / lambda[1] ) / myVCMOnDigitalSurface->r();
       }
 
     private:
@@ -180,15 +180,15 @@ namespace DGtal
 
    /**
      * Description of template class
-     * 'VCMFirstPrincipalCurvatureFunctor' <p> \brief Aim: A functor
-     * Surfel -> Quantity that returns the first principal curvature
+     * 'VCMFirstPrincipalAbsoluteCurvatureFunctor' <p> 
+     * \brief Aim: A functor Surfel -> Quantity that returns the first principal absolute curvature
      * (greatest curvature) at given surfel. This class has meaning
      * only in 3D.
      *
      * @tparam TVCMOnDigitalSurface any concrete type of VoronoiCovarianceMeasureOnDigitalSurface
      */
     template <typename TVCMOnDigitalSurface>
-    struct VCMFirstPrincipalCurvatureFunctor {
+    struct VCMFirstPrincipalAbsoluteCurvatureFunctor {
       typedef TVCMOnDigitalSurface VCMOnDigitalSurface;
       typedef typename VCMOnDigitalSurface::KSpace KSpace;
       typedef typename VCMOnDigitalSurface::Surfel Surfel;
@@ -204,7 +204,7 @@ namespace DGtal
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMFirstPrincipalCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
+      VCMFirstPrincipalAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
         : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
@@ -223,7 +223,7 @@ namespace DGtal
       }
 
       /**
-         Map operator Surfel -> Scalar giving the first principal curvature estimated by the VCM object.
+         Map operator Surfel -> Scalar giving the first principal absolute curvature estimated by the VCM object.
          Complexity is \f$ O(log n) \f$, if \a n is the number of surfels of the surface.
 
          @param s any surfel of the shape.
@@ -235,10 +235,10 @@ namespace DGtal
         RealVector lambda;
         bool ok = myVCMOnDigitalSurface->getChiVCMEigenvalues( lambda, s );
         ASSERT( ok );
-        // The first eigenvalue l0 is approximately the mixed "area" 2pi R^3 r^2 / 3
+        // The last eigenvalue l2 is approximately the mixed "area" 2pi R^3 r^2 / 3
         // The greatest principal curvature is related to the second eigenvalue l1.
-        // k1^2 = 4*l1 / (l0*r^2)
-        return 2.0 * sqrt( lambda[1] / lambda[0] ) / myVCMOnDigitalSurface->r();
+        // k1^2 = 4*l1 / (l2*r^2)
+        return 2.0 * sqrt( lambda[1] / lambda[2] ) / myVCMOnDigitalSurface->r();
       }
 
     private:
@@ -248,15 +248,15 @@ namespace DGtal
 
    /**
      * Description of template class
-     * 'VCMSecondPrincipalCurvatureFunctor' <p> \brief Aim: A functor
-     * Surfel -> Quantity that returns the second principal curvature
+     * 'VCMSecondPrincipalAbsoluteCurvatureFunctor' <p> 
+     * \brief Aim: A functor Surfel -> Quantity that returns the second principal absolute curvature
      * (smallest curvature) at given surfel. This class has meaning
      * only in 3D.
      *
      * @tparam TVCMOnDigitalSurface any concrete type of VoronoiCovarianceMeasureOnDigitalSurface
      */
     template <typename TVCMOnDigitalSurface>
-    struct VCMSecondPrincipalCurvatureFunctor {
+    struct VCMSecondPrincipalAbsoluteCurvatureFunctor {
       typedef TVCMOnDigitalSurface VCMOnDigitalSurface;
       typedef typename VCMOnDigitalSurface::KSpace KSpace;
       typedef typename VCMOnDigitalSurface::Surfel Surfel;
@@ -272,7 +272,7 @@ namespace DGtal
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMSecondPrincipalCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
+      VCMSecondPrincipalAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
         : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
@@ -291,7 +291,7 @@ namespace DGtal
       }
 
       /**
-         Map operator Surfel -> Scalar giving the second principal curvature estimated by the VCM object.
+         Map operator Surfel -> Scalar giving the second principal absolute curvature estimated by the VCM object.
          Complexity is \f$ O(log n) \f$, if \a n is the number of surfels of the surface.
 
          @param s any surfel of the shape.
@@ -303,10 +303,10 @@ namespace DGtal
         RealVector lambda;
         bool ok = myVCMOnDigitalSurface->getChiVCMEigenvalues( lambda, s );
         ASSERT( ok );
-        // The first eigenvalue l0 is approximately the mixed "area" 2pi R^3 r^2 / 3
-        // The smallest principal curvature is related to the third eigenvalue l2.
-        // k2^2 = 4*l2 / (l0*r^2)
-        return 2.0 * sqrt( lambda[2] / lambda[0] ) / myVCMOnDigitalSurface->r();
+        // The last eigenvalue l2 is approximately the mixed "area" 2pi R^3 r^2 / 3
+        // The smallest principal curvature is related to the first eigenvalue l0.
+        // k2^2 = 4*l0 / (l2*r^2)
+        return 2.0 * sqrt( lambda[0] / lambda[2] ) / myVCMOnDigitalSurface->r();
       }
 
     private:

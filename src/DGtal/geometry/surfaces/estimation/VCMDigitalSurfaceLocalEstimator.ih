@@ -139,8 +139,9 @@ setParams( Surfel2PointEmbedding surfelEmbedding,
            const Scalar t, Metric aMetric, bool verbose )
 {
   mySurfelEmbedding = surfelEmbedding;
-  myVCMOnSurface = new VCMOnSurface( mySurface, mySurfelEmbedding,
-                                     R, r, chi_r, t, aMetric, verbose );
+  myVCMOnSurface = CountedConstPtrOrConstPtr<VCMOnSurface>
+    ( new VCMOnSurface( mySurface, mySurfelEmbedding,
+                        R, r, chi_r, t, aMetric, verbose ), true );
   myGeomFct.attach( myVCMOnSurface );
 }
 //-----------------------------------------------------------------------------
