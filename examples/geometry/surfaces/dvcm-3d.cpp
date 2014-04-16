@@ -64,7 +64,6 @@ int main( int argc, char** argv )
   typedef Z3i::RealPoint RealPoint;
   typedef Z3i::RealVector RealVector;
   typedef HyperRectDomain<Space> Domain;
-  typedef ExactPredicateLpSeparableMetric<Space, 2> Metric; // L2-metric
   typedef EigenDecomposition<2,double> LinearAlgebraTool;
   typedef LinearAlgebraTool::Matrix Matrix;
   typedef KSpace::Surfel Surfel;
@@ -74,10 +73,13 @@ int main( int argc, char** argv )
   typedef IntervalForegroundPredicate<Image> ThresholdedImage;
   typedef ImplicitDigitalSurface< KSpace, ThresholdedImage > DigitalSurfaceContainer;
 
-  typedef HatPointFunction<Point,double> KernelFunction;
+  //! [DVCM3D-typedefs]
+  typedef ExactPredicateLpSeparableMetric<Space, 2> Metric; // L2-metric type
+  typedef HatPointFunction<Point,double> KernelFunction;    // chi function type 
   typedef VoronoiCovarianceMeasureOnDigitalSurface< DigitalSurfaceContainer, Metric,
                                                     KernelFunction > VCMOnSurface;
   typedef VCMOnSurface::Surfel2Normals::const_iterator S2NConstIterator;
+  //! [DVCM3D-typedefs]
 
   string inputFilename = examplesPath + "samples/Al.100.vol";
   trace.info() << "File             = " << inputFilename << std::endl;
@@ -95,14 +97,11 @@ int main( int argc, char** argv )
   trace.info() << "Feature thres. T = " << T << std::endl; // threshold for displaying features as red.
 
   const double size = 1.0; // size of displayed normals.
-  Metric l2;
-  KernelFunction chi( 1.0, r );
 
   KSpace ks;
   // Reads the volume
   trace.beginBlock( "Loading image into memory and build digital surface." );
   Image image = GenericReader<Image>::import(inputFilename );
-  Domain domain = image.domain();
   ThresholdedImage thresholdedImage( image, thresholdMin, thresholdMax );
   trace.endBlock();
   trace.beginBlock( "Extracting boundary by scanning the space. " );
@@ -116,8 +115,13 @@ int main( int argc, char** argv )
   trace.info() << "Digital surface has " << surface.size() << " surfels." << std::endl;
   trace.endBlock();
 
+  //! [DVCM3D-instantiation]
   Surfel2PointEmbedding embType = Pointels; // Could be Pointels|InnerSpel|OuterSpel; 
-  VCMOnSurface vcm_surface( surface, embType, R, r, chi, trivial_r, l2, true /* verbose */ );
+  Metric l2;                                // Euclidean L2 metric 
+  KernelFunction chi( 1.0, r );             // hat function with support of radius r
+  VCMOnSurface vcm_surface( surface, embType, R, r, 
+                            chi, trivial_r, l2, true /* verbose */ );
+  //! [DVCM3D-instantiation]
 
   trace.beginBlock( "Displaying VCM" );
   Viewer3D<> viewer( ks );
