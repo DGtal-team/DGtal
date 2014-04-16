@@ -438,10 +438,13 @@ namespace DGtal
      * @param p3 the 3rd point
      * @param p4  the 4th point
      * @param n the normal vector
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
      *
      */
     void addQuadWithNormal(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4,
-                           const RealPoint &n );
+                           const RealPoint &n,
+                           const bool enableDoubleFace = false);
 
     /**
      * Method to add a quad representing a surfel given from its center and its orientation.
@@ -452,7 +455,6 @@ namespace DGtal
      * @param zSurfel indicates that the sufel is in the z axis direction
      *
      **/
-
     void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel);
 
 
@@ -469,10 +471,13 @@ namespace DGtal
      * @param zSurfel indicates that the sufel is in the z axis
      * direction
      * @param aNormal a unitary normal vector to attach to the quad.
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
      *
      **/
     void addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel,
-                                           const RealVector &aNormal);
+                                           const RealVector &aNormal,
+                                           const bool enableDoubleFace = false);
 
 
     /**
