@@ -115,7 +115,7 @@ bool testQuadNorm()
   k.init(Point(2,2,2), Point(4,4,4), true);
 
   Board3D<Space,KSpace> board(k);
-  board.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized());
+  board.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized(), true);
   board.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
 
   Cell surfel = k.uCell( Point( 2,3,3) );

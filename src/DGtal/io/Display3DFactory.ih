@@ -918,7 +918,8 @@ template <typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawSurfelWithNormal( Display3D<Space, KSpace> & display,
                                                                   const typename KSpace::Cell & k ,
-                                                                  const typename KSpace::Space::RealVector &norm)
+                                                                  const typename KSpace::Space::RealVector &norm,
+                                                                  const bool enableDoubleFace)
 {
   ASSERT(Space::dimension == 3);
   DGtal::Color fillColorSave = display.getFillColor();
@@ -937,7 +938,8 @@ void DGtal::Display3DFactory<Space,KSpace>::drawSurfelWithNormal( Display3D<Spac
   //unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
 
   display.addQuadFromSurfelCenterWithNormal(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
-                                            ! xodd, !yodd, !zodd, norm);
+                                            ! xodd, !yodd, !zodd, norm,
+                                            enableDoubleFace);
 }
 // KhalimskyCell
 
@@ -946,7 +948,8 @@ template <typename Space, typename KSpace>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::drawSurfelWithNormal( Display3D<Space, KSpace> & display,
                                                                   const typename KSpace::SCell & k ,
-                                                                  const typename KSpace::Space::RealVector &norm)
+                                                                  const typename KSpace::Space::RealVector &norm,
+                                                                  const bool enableDoubleFace)
 {
   ASSERT(Space::dimension == 3);
   DGtal::Color fillColorSave = display.getFillColor();
@@ -965,7 +968,8 @@ void DGtal::Display3DFactory<Space,KSpace>::drawSurfelWithNormal( Display3D<Spac
   //unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
 
   display.addQuadFromSurfelCenterWithNormal(DGtal::Z3i::RealPoint(rp[0]+(xodd? 0:0.5 ), rp[1]+(yodd? 0:0.5 ), rp[2]+(zodd? 0:0.5 )),
-                                            ! xodd, !yodd, !zodd, norm);
+                                            ! xodd, !yodd, !zodd, norm,
+                                            enableDoubleFace);
 }
 // KhalimskyCell
 

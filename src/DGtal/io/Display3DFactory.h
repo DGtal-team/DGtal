@@ -320,9 +320,12 @@ namespace DGtal
      * @param display the display where to draw
      * @param anObject the object to draw
      * @param aNormal a unitary normal vector
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
      */
     static void drawSurfelWithNormal( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject,
-                                      const typename KSpace::Space::RealVector & aNormal);
+                                      const typename KSpace::Space::RealVector & aNormal,
+                                      const bool enableDoubleFace = false);
     // KhalimskyCell
 
     // SignedKhalimskyCell
@@ -346,9 +349,12 @@ namespace DGtal
      * @param display the display where to draw
      * @param anObject the object to draw
      * @param aNormal a unitary normal vector
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
      */
     static void drawSurfelWithNormal( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject,
-                                      const typename KSpace::Space::RealVector & aNormal);
+                                      const typename KSpace::Space::RealVector & aNormal,
+                                      const bool enableDoubleFace = false);
     // SignedKhalimskyCell
 
     // Object

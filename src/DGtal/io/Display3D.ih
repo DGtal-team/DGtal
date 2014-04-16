@@ -258,7 +258,7 @@ void
 DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint &p2,
 					   const RealPoint &p3, const RealPoint &p4)
 {
-  
+
   double u[3]; double v [3]; double n [3];
   u[0]=p2[0]-p1[0]; u[1]=p2[1]-p1[1]; u[2]=p2[2]-p1[2];
   v[0]=p3[0]-p1[0]; v[1]=p3[1]-p1[1]; v[2]=p3[2]-p1[2];
@@ -271,13 +271,14 @@ inline
 void
 DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
                                                      const RealPoint &p3, const RealPoint &p4,
-                                                     const RealPoint &n)
+                                                     const RealPoint &n,
+                                                     const bool enableDoubleFace)
 {
   if(myQuadSetList.size() == 0 )
     {
       createNewQuadList("quad");
     }
-  QuadD3D aQuad;
+  QuadD3D aQuad,aQuad2;
   updateBoundingBox(p1);
   updateBoundingBox(p2);
   updateBoundingBox(p3);
@@ -288,6 +289,7 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
   v[0]=p3[0]-p2[0]; v[1]=p3[1]-p2[1]; v[2]=p3[2]-p2[2];
   double crossprod[3];
   cross(crossprod, u,v);
+  double epsilon = 0.0001;
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
     {
@@ -305,6 +307,18 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
       aQuad.ny= n[1];
       aQuad.nz= n[2];
       aQuad.color= getFillColor();
+
+      if (enableDoubleFace)
+        {
+          aQuad2.point1= (p1 - epsilon*n);
+          aQuad2.point2= (p2 - epsilon*n);
+          aQuad2.point3= (p3 - epsilon*n);
+          aQuad2.point4= (p4 - epsilon*n);
+          aQuad2.nx= -n[0];
+          aQuad2.ny= -n[1];
+          aQuad2.nz= -n[2];
+          aQuad2.color= getFillColor();
+        }
     }
   else
     {
@@ -316,12 +330,26 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
       aQuad.ny= n[1];
       aQuad.nz= n[2];
       aQuad.color= getFillColor();
+
+      if (enableDoubleFace)
+        {
+          aQuad2.point1=(p1 - epsilon*n);
+          aQuad2.point2=(p4 - epsilon*n);
+          aQuad2.point3=(p3 - epsilon*n);
+          aQuad2.point4=(p2 - epsilon*n);
+          aQuad2.nx= -n[0];
+          aQuad2.ny= -n[1];
+          aQuad2.nz= -n[2];
+          aQuad2.color= getFillColor();
+        }
     }
 
   if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
   (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
+  if (enableDoubleFace)
+    (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad2);
 }
 
 
@@ -630,7 +658,8 @@ inline
 void
 DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter,
                                                                      bool xSurfel, bool ySurfel, bool zSurfel,
-                                                                     const RealVector &aNormal)
+                                                                     const RealVector &aNormal,
+                                                                     const bool enableDoubleFace)
 {
   updateBoundingBox(baseQuadCenter);
   ASSERT( xSurfel || ySurfel || zSurfel );
@@ -661,7 +690,8 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealP
     }
 
   addQuadWithNormal(RealPoint(x1, y1, z1), RealPoint(x2 ,y2, z2),
-          RealPoint(x3, y3, z3), RealPoint(x4, y4, z4), aNormal);
+                    RealPoint(x3, y3, z3), RealPoint(x4, y4, z4), aNormal,
+                    enableDoubleFace);
 }
 
 
