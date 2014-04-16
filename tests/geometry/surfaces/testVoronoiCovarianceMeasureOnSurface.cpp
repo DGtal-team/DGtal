@@ -35,9 +35,9 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/CSurfaceLocalGeometricEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/CDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
@@ -135,8 +135,8 @@ bool testVoronoiCovarianceMeasureOnSurface()
 
   trace.beginBlock("Wrapping normal estimator." );
   typedef VCMGeometricFunctors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
-  typedef VCMDigitalSurfaceEstimator<SurfaceContainer,Metric,
-                                     KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
+  typedef VCMDigitalSurfaceLocalEstimator<SurfaceContainer,Metric,
+                                          KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
   VCMNormalEstimator estimator( vcm_surface );
   estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
@@ -145,8 +145,8 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
   
-  BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< VCMNormalEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CSurfaceLocalGeometricEstimator< TrueNormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< VCMNormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< TrueNormalEstimator > ));
 
   TrueNormalEstimator true_estimator;
   true_estimator.setParams( K, NormalFunctor() );

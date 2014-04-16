@@ -146,7 +146,7 @@ several classes that helps the computation and the usage of the
 VCM. Furthermore, having as input data a volume or a set of oriented
 surfels allows us to orient the normal direction given by the VCM. The
 main classes are \ref VoronoiCovarianceMeasureOnDigitalSurface and
-\ref VCMDigitalSurfaceEstimator.
+\ref VCMDigitalSurfaceLocalEstimator.
 
 \subsection moduleVCM_sec3_1 The class VoronoiCovarianceMeasureOnDigitalSurface
 
@@ -236,45 +236,45 @@ is a small piece of code that extracts the VCM normal for each surfel.
 @image latex dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
 
 
-\subsection moduleVCM_sec3_2 The class VCMDigitalSurfaceEstimator
+\subsection moduleVCM_sec3_2 The class VCMDigitalSurfaceLocalEstimator
 
-The class VCMDigitalSurfaceEstimator adapts a
+The class VCMDigitalSurfaceLocalEstimator adapts a
 VoronoiCovarianceMeasureOnDigitalSurface to be a model of
-CSurfaceLocalGeometricEstimator. It uses the \b Voronoi \b Covariance
-\b Measure to estimate geometric quantities. The type
-TVCMGeometricFunctor specifies which is the estimated quantity.  For
-instance, VCMNormalVectorFunctor returns the estimated VCM surface \b
+CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b Covariance
+\b Measure to estimate geometric quantities. The template type
+\b TVCMGeometricFunctor specifies which is the estimated quantity.  For
+instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the estimated VCM surface \b
 outward normal for given surfels.
 
-In order to fulfill concept requirements, a VCMDigitalSurfaceEstimator
+In order to fulfill concept requirements, a VCMDigitalSurfaceLocalEstimator
 can be instantiated in several ways:
 
 - it can be \b default \b constructed. In this case, the object is not
   valid and further methods must be called
-  (first VCMDigitalSurfaceEstimator::attach to attach a digital surface to
-  the estimator, then VCMDigitalSurfaceEstimator::setParams to specify all
+  (first VCMDigitalSurfaceLocalEstimator::attach to attach a digital surface to
+  the estimator, then VCMDigitalSurfaceLocalEstimator::setParams to specify all
   required parameters in the VCM) before calling
-  VCMDigitalSurfaceEstimator::init.
+  VCMDigitalSurfaceLocalEstimator::init.
 
 - it can be \b copy \b constructed. In this case, the object is valid
   or invalid depending on the cloned object. Further methods may be
-  called afterwards like VCMDigitalSurfaceEstimator::attach or
-  VCMDigitalSurfaceEstimator::setParams.
+  called afterwards like VCMDigitalSurfaceLocalEstimator::attach or
+  VCMDigitalSurfaceLocalEstimator::setParams.
 
 - it can be \b constructed \b from \b a \b surface. In this case, the
   object is still invalid. You have to call
-  VCMDigitalSurfaceEstimator::setParams to specify all required
+  VCMDigitalSurfaceLocalEstimator::setParams to specify all required
   parameters in the VCM before calling
-  VCMDigitalSurfaceEstimator::init.
+  VCMDigitalSurfaceLocalEstimator::init.
 
 - it can be \b constructed \b from \b a \b
   VoronoiCovarianceMeasureOnDigitalSurface \b object. In this case,
   the object is directly valid. You may called
-  VCMDigitalSurfaceEstimator::init directly.
+  VCMDigitalSurfaceLocalEstimator::init directly.
 
-Once a VCMDigitalSurfaceEstimator is instantiated, you have to called
+Once a VCMDigitalSurfaceLocalEstimator is instantiated, you have to called
 its \a init method like all estimators
-(VCMDigitalSurfaceEstimator::init). Note that for the VCM this method
+(VCMDigitalSurfaceLocalEstimator::init). Note that for the VCM this method
 does nothing (except checking the object is valid). Indeed, the VCM is
 necessarily computed for the whole surface, since it depends on a 
 global distance transform. 
@@ -282,14 +282,14 @@ global distance transform.
 @note The digital surface and the VCM on this surface are referenced 
 in the estimator by \b smart \b pointers. While this avoids duplication, 
 it also allows you to have duplication on demand if you handle a CountedPtr 
-either at instantiation or when calling VCMDigitalSurfaceEstimator::attach or
-VCMDigitalSurfaceEstimator::setParams.
+either at instantiation or when calling VCMDigitalSurfaceLocalEstimator::attach or
+VCMDigitalSurfaceLocalEstimator::setParams.
 
 \code
 typedef VCMDigitalSurfaceNormalEstimator<SurfaceContainer,Metric,KernelFunction> VCMNormalEstimator;
 typedef VCMGeometricFunctors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
-typedef VCMDigitalSurfaceEstimator<SurfaceContainer,Metric,
-                                   KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
+typedef VCMDigitalSurfaceLocalEstimator<SurfaceContainer,Metric,
+                                        KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
 CountedConstPtrOrConstPtr<Surface> ptrSurface( new Surface( surfaceContainer ) ); // acquired
 KernelFunction chi( 1.0, 7.0 );
 CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels, 

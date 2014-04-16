@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CSurfaceLocalGeometricEstimator.h
+ * @file CDigitalSurfaceLocalEstimator.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2014/04/01
  *
- * Header file for concept CSurfaceLocalGeometricEstimator.cpp
+ * Header file for concept CDigitalSurfaceLocalEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CSurfaceLocalGeometricEstimator_RECURSES)
-#error Recursive header files inclusion detected in CSurfaceLocalGeometricEstimator.h
-#else // defined(CSurfaceLocalGeometricEstimator_RECURSES)
+#if defined(CDigitalSurfaceLocalEstimator_RECURSES)
+#error Recursive header files inclusion detected in CDigitalSurfaceLocalEstimator.h
+#else // defined(CDigitalSurfaceLocalEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CSurfaceLocalGeometricEstimator_RECURSES
+#define CDigitalSurfaceLocalEstimator_RECURSES
 
-#if !defined CSurfaceLocalGeometricEstimator_h
+#if !defined CDigitalSurfaceLocalEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define CSurfaceLocalGeometricEstimator_h
+#define CDigitalSurfaceLocalEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,9 +50,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CSurfaceLocalGeometricEstimator
+  // class CDigitalSurfaceLocalEstimator
   /**
-     Description of \b concept '\b CSurfaceLocalGeometricEstimator' <p>
+     Description of \b concept '\b CDigitalSurfaceLocalEstimator' <p>
      @ingroup Concepts
      @brief Aim: This concept describes an object that can process 
      a range over some (abstract) surface so as to return one estimated quantity for each element 
@@ -66,7 +66,7 @@ namespace DGtal
      - Quantity : the type of the (geometric) quantity that is estimated.
 
      ### Notation
-     - \e X : A type that is a model of CSurfaceLocalGeometricEstimator
+     - \e X : A type that is a model of CDigitalSurfaceLocalEstimator
      - \e x : object of type \e X
      - \e h : double
      - \e itb, \e ite, \e it,\e itb2, \e ite2 : instances of a model of forward iterators having Surfel as value type.
@@ -86,18 +86,18 @@ namespace DGtal
 
      ### Models
 
-     - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceEstimator.
+     - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceLocalEstimator.
 
      ### Notes
      
-     - For now, a CSurfaceLocalGeometricEstimator is not a refinement
+     - For now, a CDigitalSurfaceLocalEstimator is not a refinement
        of boost::DefaultConstructible, in opposition to
        CCurveLocalGeometricEstimator.
 
-     @tparam T the type that should be a model of CSurfaceLocalGeometricEstimator.
+     @tparam T the type that should be a model of CDigitalSurfaceLocalEstimator.
   */
   template <typename T>
-  struct CSurfaceLocalGeometricEstimator
+  struct CDigitalSurfaceLocalEstimator
     : boost::DefaultConstructible<T>,  boost::CopyConstructible<T>, boost::Assignable<T>
 
   {
@@ -109,7 +109,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CQuantity< Quantity > ));
     typedef typename T::Surfel Surfel;
 
-    BOOST_CONCEPT_USAGE( CSurfaceLocalGeometricEstimator )
+    BOOST_CONCEPT_USAGE( CDigitalSurfaceLocalEstimator )
     {
       //init method
       myX.init( myH, myItb, myIte ); 
@@ -134,14 +134,14 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CSurfaceLocalGeometricEstimator
+  }; // end of concept CDigitalSurfaceLocalEstimator
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CSurfaceLocalGeometricEstimator_h
+#endif // !defined CDigitalSurfaceLocalEstimator_h
 
-#undef CSurfaceLocalGeometricEstimator_RECURSES
-#endif // else defined(CSurfaceLocalGeometricEstimator_RECURSES)
+#undef CDigitalSurfaceLocalEstimator_RECURSES
+#endif // else defined(CDigitalSurfaceLocalEstimator_RECURSES)
