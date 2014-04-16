@@ -169,8 +169,8 @@ namespace DGtal
         ASSERT( ok );
         // The last eigenvalue l1 is approximately the mixed "area" 8pi R^3 r / 3
         // The curvature is related to the first eigenvalue l0.
-        // k1^2 = 4*l0 / (l1*r^2)
-        return 2.0 * sqrt( lambda[0] / lambda[1] ) / myVCMOnDigitalSurface->r();
+        // k1^2 = 3*l0 / (l1*r^2)
+        return sqrt( 3.0 * lambda[0] / lambda[1] ) / myVCMOnDigitalSurface->r();
       }
 
     private:

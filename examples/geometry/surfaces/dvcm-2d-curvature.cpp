@@ -68,8 +68,9 @@ int main( int /* argc */, char** /* argv */ )
 
   // Transform a 4-connected sequence of discrete points into a digital surface.
   //string inputSDP = examplesPath + "samples/flower-30-8-3.sdp";
-  string inputSDP = examplesPath + "samples/ellipse-20-7-0.4.sdp";
+  //string inputSDP = examplesPath + "samples/ellipse-20-7-0.4.sdp";
   //string inputSDP = examplesPath + "samples/accflower-20-5-5-0.1.sdp";
+  string inputSDP = examplesPath + "samples/circle-43.sdp";
   trace.info() << "Reading input 2d discrete points file: " << inputSDP; 
   KSpace ks; ks.init( Point( -1000, -1000 ), Point( 1000, 1000 ), true );
   Curve curve( ks ); 
@@ -83,9 +84,9 @@ int main( int /* argc */, char** /* argv */ )
     container->surfelSet().insert( *it );
   CountedConstPtrOrConstPtr<Surface> ptrSurface( new Surface( container ) ); // acquired
   trace.info() << " [done] " << std::endl ; 
-  const double R = 20;
+  const double R = 40;
   trace.info() << "Big radius   R = " << R << std::endl;
-  const double r = 5;
+  const double r = 20;
   trace.info() << "Small radius r = " << r << std::endl;
   const double T = 0.2;
   trace.info() << "Curvature thres. T = " << T << std::endl; // threshold for displaying features as red.
