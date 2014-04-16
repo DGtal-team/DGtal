@@ -58,8 +58,10 @@ namespace DGtal
    * CSurfaceLocalGeometricEstimator. It uses the \b Voronoi \b
    * Covariance \b Measure to estimate geometric quantities. The type
    * TVCMGeometricFunctor specifies which is the estimated quantity.
-   * For instance, VCMNormalVectorFunctor returns the estimated VCM
+   * For instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the estimated VCM
    * surface \b outward normal for given surfels.
+   *
+   * @note Documentation in \ref moduleVCM_sec3_2.
    *
    * @tparam TDigitalSurfaceContainer the type of digital surface
    * container (model of CDigitalSurfaceContainer).

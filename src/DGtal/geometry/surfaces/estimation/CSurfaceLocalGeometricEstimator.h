@@ -59,7 +59,7 @@ namespace DGtal
      of the range (or a given subrange). 
 
      ### Refinement of 
-     - boost::DefaultConstructible
+     - boost::DefaultConstructible,  boost::CopyConstructible, boost::Assignable
 
      ### Associated types :
      - Surfel : the type of elements of the surface
@@ -67,9 +67,9 @@ namespace DGtal
 
      ### Notation
      - \e X : A type that is a model of CSurfaceLocalGeometricEstimator
-     - \e x : object of type X
+     - \e x : object of type \e X
      - \e h : double
-     - \e itb, ite, it : instances of a model of forward iterators having Surfel as value type.
+     - \e itb, \e ite, \e it,\e itb2, \e ite2 : instances of a model of forward iterators having Surfel as value type.
      - \e ito : an instance of a model of output iterator having Quantity as value type
  
      ### Definitions
@@ -78,15 +78,15 @@ namespace DGtal
 
      | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
      |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
-     | Initialization | x.init( h, itb, ite )         |   | void                         | h > 0        | Grid step and range initialization        |   | constant        |
-     | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependent |
-     | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependent |
+     | Initialization | x.init( \e h, \e itb, \e ite )         |   | void                         | \e h > 0        | Grid step and range initialization in [\e itb,\e ite)        |   | model dependent |
+     | Evaluation     | x.eval( \e it )                  |   | Quantity                     |              | Estimation of the quantity at \e \e it, which must belong to [\e itb,\e ite) |   | model dependent |
+     | Evaluation     | \e ito = x.eval( \e itb2, \e ite2, \e ito ) |   | a model of output iterator   |              | Estimation for each element of [\e itb2, \e ite2), which must be a subrange of or the whole range [\e itb,\e ite) |   | model dependent |
 
      ### Invariants
 
      ### Models
 
-     - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceNormalEstimator.
+     - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceEstimator.
 
      ### Notes
      
