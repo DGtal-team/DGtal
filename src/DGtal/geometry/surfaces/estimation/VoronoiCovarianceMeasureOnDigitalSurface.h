@@ -66,6 +66,8 @@ namespace DGtal
    * diagonalisation of the VCM, and the orientation of the first VCM
    * eigenvector toward the interior of the surface.
    *
+   * @note Documentation in \ref moduleVCM_sec3_1.
+   *
    * @see VoronoiCovarianceMeasure
    *
    * @tparam TDigitalSurfaceContainer the type of digital surface

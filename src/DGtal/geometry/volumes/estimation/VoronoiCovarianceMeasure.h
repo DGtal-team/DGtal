@@ -169,6 +169,8 @@ namespace DGtal
    * You may obtain the whole sequence (Point,VCM) by accessing the
    * map \ref vcmMap.
    *
+   * @note Documentation in \ref moduleVCM_sec2.
+   *
    * @tparam TSpace type of Digital Space (model of CSpace).
    *
    * @tparam TSeparableMetric a model of CSeparableMetric used for
