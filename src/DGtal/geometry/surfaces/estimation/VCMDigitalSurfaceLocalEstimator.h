@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file VCMDigitalSurfaceEstimator.h
+ * @file VCMDigitalSurfaceLocalEstimator.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2014/02/13
  *
- * Header file for module VCMDigitalSurfaceEstimator.cpp
+ * Header file for module VCMDigitalSurfaceLocalEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(VCMDigitalSurfaceEstimator_RECURSES)
-#error Recursive header files inclusion detected in VCMDigitalSurfaceEstimator.h
-#else // defined(VCMDigitalSurfaceEstimator_RECURSES)
+#if defined(VCMDigitalSurfaceLocalEstimator_RECURSES)
+#error Recursive header files inclusion detected in VCMDigitalSurfaceLocalEstimator.h
+#else // defined(VCMDigitalSurfaceLocalEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define VCMDigitalSurfaceEstimator_RECURSES
+#define VCMDigitalSurfaceLocalEstimator_RECURSES
 
-#if !defined VCMDigitalSurfaceEstimator_h
+#if !defined VCMDigitalSurfaceLocalEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define VCMDigitalSurfaceEstimator_h
+#define VCMDigitalSurfaceLocalEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,12 +50,12 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class VCMDigitalSurfaceEstimator
+  // template class VCMDigitalSurfaceLocalEstimator
   /**
-   * Description of template class 'VCMDigitalSurfaceEstimator' <p>
+   * Description of template class 'VCMDigitalSurfaceLocalEstimator' <p>
    * \brief Aim: This class adapts a
    * VoronoiCovarianceMeasureOnDigitalSurface to be a model of
-   * CSurfaceLocalGeometricEstimator. It uses the \b Voronoi \b
+   * CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b
    * Covariance \b Measure to estimate geometric quantities. The type
    * TVCMGeometricFunctor specifies which is the estimated quantity.
    * For instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the estimated VCM
@@ -79,14 +79,14 @@ namespace DGtal
    */
   template <typename TDigitalSurfaceContainer, typename TSeparableMetric, 
             typename TKernelFunction, typename TVCMGeometricFunctor>
-  class VCMDigitalSurfaceEstimator
+  class VCMDigitalSurfaceLocalEstimator
   {
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
     BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
 
     // ----------------------- public types ------------------------------
   public:
-    typedef VCMDigitalSurfaceEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor> Self; //< my own type
+    typedef VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor> Self; //< my own type
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer; //< the chosen container
     typedef TSeparableMetric                          Metric; //< the chosen metric
     typedef TKernelFunction                   KernelFunction; //< the kernel function
@@ -96,7 +96,7 @@ namespace DGtal
     VCMOnSurface;
     typedef typename VCMOnSurface::Surface           Surface; //< the digital surface
 
-    // ----------------------- model of CSurfaceLocalGeometricEstimator ----------------
+    // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
     typedef typename Surface::Surfel                  Surfel; //< the signed surface element
     typedef typename VCMGeometricFunctor::Quantity  Quantity; //< the estimation type is given by the geometric functor
     // -----------------------               other types         -----------------------
@@ -110,18 +110,18 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~VCMDigitalSurfaceEstimator();
+    ~VCMDigitalSurfaceLocalEstimator();
 
     /**
      * Default constructor.
      */
-    VCMDigitalSurfaceEstimator ();
+    VCMDigitalSurfaceLocalEstimator ();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    VCMDigitalSurfaceEstimator( const Self& other );
+    VCMDigitalSurfaceLocalEstimator( const Self& other );
 
     /**
      * Assignment.
@@ -137,7 +137,7 @@ namespace DGtal
      * user can \b secure the aliasing by passing a
      * CountedConstPtrOrConstPtr.
      */
-    VCMDigitalSurfaceEstimator( ConstAlias< Surface > surface );
+    VCMDigitalSurfaceLocalEstimator( ConstAlias< Surface > surface );
 
     /**
      * Constructor from VoronoiCovarianceMeasureOnDigitalSurface. The
@@ -146,7 +146,7 @@ namespace DGtal
      * @param aVCMOnSurface any valid Voronoi covariance measure,
      * which is aliased (possibly securely).
      */
-    VCMDigitalSurfaceEstimator( ConstAlias< VCMOnSurface > aVCMOnSurface );
+    VCMDigitalSurfaceLocalEstimator( ConstAlias< VCMOnSurface > aVCMOnSurface );
 
     /**
      * Attach a digital surface. After this call, the object is then
@@ -188,7 +188,7 @@ namespace DGtal
                     const Scalar t = 2.5, Metric aMetric = Metric(), bool verbose = true );
 
     /**
-     * Model of CSurfaceLocalGeometricEstimator. Initialisation.
+     * Model of CDigitalSurfaceLocalEstimator. Initialisation.
      * Unused. The VCM is necessarily initialized on the whole surface
      * and \a h is not used for normal estimation.
      *
@@ -259,20 +259,20 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class VCMDigitalSurfaceEstimator
+  }; // end of class VCMDigitalSurfaceLocalEstimator
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'VCMDigitalSurfaceEstimator'.
+   * Overloads 'operator<<' for displaying objects of class 'VCMDigitalSurfaceLocalEstimator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'VCMDigitalSurfaceEstimator' to write.
+   * @param object the object of class 'VCMDigitalSurfaceLocalEstimator' to write.
    * @return the output stream after the writing.
    */
   template <typename TDigitalSurfaceContainer, typename TSeparableMetric, 
             typename TKernelFunction, typename TVCMGeometricFunctor>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const VCMDigitalSurfaceEstimator< TDigitalSurfaceContainer, TSeparableMetric, 
+               const VCMDigitalSurfaceLocalEstimator< TDigitalSurfaceContainer, TSeparableMetric, 
                                                  TKernelFunction, TVCMGeometricFunctor > & object );
 
 } // namespace DGtal
@@ -280,12 +280,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceEstimator.ih"
+#include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined VCMDigitalSurfaceEstimator_h
+#endif // !defined VCMDigitalSurfaceLocalEstimator_h
 
-#undef VCMDigitalSurfaceEstimator_RECURSES
-#endif // else defined(VCMDigitalSurfaceEstimator_RECURSES)
+#undef VCMDigitalSurfaceLocalEstimator_RECURSES
+#endif // else defined(VCMDigitalSurfaceLocalEstimator_RECURSES)

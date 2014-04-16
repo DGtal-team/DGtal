@@ -61,7 +61,7 @@ namespace DGtal
    * Note that you must call methods \ref setParams, \ref attach, then
    * \ref init before calling \ref eval method(s).
    *
-   * It is a model of CSurfaceLocalGeometricEstimator.
+   * It is a model of CDigitalSurfaceLocalEstimator.
    *
    * @tparam TKSpace the type of cellular grid space, a model of
    * CCellularGridSpaceND.
@@ -171,7 +171,7 @@ namespace DGtal
                     const Scalar gamma = 0.01 );
 
     /**
-     * Model of CSurfaceLocalGeometricEstimator. Initialisation.
+     * Model of CDigitalSurfaceLocalEstimator. Initialisation.
      *
      * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
      * @param[in] _h grid size (must be >0).
