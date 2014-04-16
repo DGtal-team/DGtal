@@ -92,6 +92,8 @@ namespace DGtal
 
       /**
          Map operator Surfel -> RealVector giving the normal vector estimated by the VCM object.
+         Complexity is \f$ O(log n) \f$, if \a n is the number of surfels of the surface.
+
          @param s any surfel of the shape.
          @return the normal at point p (as the normalized gradient).
       */
