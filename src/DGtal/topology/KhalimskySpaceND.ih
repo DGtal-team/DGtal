@@ -1563,30 +1563,52 @@ sUpperIncident( const SCell & c ) const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger>
 inline
+void
+DGtal::KhalimskySpaceND< dim, TInteger >::
+uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const
+{
+  // std::cerr << c << std::endl;
+  DGtal::Dimension dim_of_c = uDim( c );
+  if ( axis >= dim_of_c ) return;
+  DirIterator q = uDirs( c );
+  for ( Dimension i = 0; i < axis; ++i ) ++q;
+  Cell f1 = uIncident( c, *q, false );
+  Cell f2 = uIncident( c, *q, true );
+  faces.push_back( f1 );
+  faces.push_back( f2 );
+  uAddFaces( faces, f1, axis );
+  uAddFaces( faces, f2, axis );
+  uAddFaces( faces, c, axis+1 );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
+void
+DGtal::KhalimskySpaceND< dim, TInteger >::
+uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const
+{
+  // std::cerr << c << std::endl;
+  DGtal::Dimension dim_of_c = uDim( c );
+  if ( axis >= dimension - dim_of_c ) return;
+  DirIterator q = uOrthDirs( c );
+  for ( Dimension i = 0; i < axis; ++i ) ++q;
+  Cell f1 = uIncident( c, *q, false );
+  Cell f2 = uIncident( c, *q, true );
+  cofaces.push_back( f1 );
+  cofaces.push_back( f2 );
+  uAddCoFaces( cofaces, f1, axis );
+  uAddCoFaces( cofaces, f2, axis );
+  uAddCoFaces( cofaces, c, axis+1 );
+}
+//-----------------------------------------------------------------------------
+template < DGtal::Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::Cells
 DGtal::KhalimskySpaceND< dim, TInteger >::
 uFaces( const Cell & c ) const
 {
-  DGtal::Dimension dim_of_c = uDim( c );
   Cells N;
-  Cells P;
-  std::deque<Dimension> Q;
-  P.push_back( c );
-  Q.push_back( dim_of_c );
-  while ( ! P.empty() )
-    {
-      Cell d = P.front();      P.pop_front();
-      DGtal::Dimension k = Q.front(); Q.pop_front();
-      if ( k != dim_of_c )     N.push_back( d );
-      // the use of k induces that incident faces are not duplicated.
-      for ( DirIterator q = uDirs( d ); ( q != 0 ) && ( k > 0 ); ++q, --k )
-  {
-    P.push_back( uIncident( d, *q, false ) );
-    Q.push_back( k - 1 );
-    P.push_back( uIncident( d, *q, true ) );
-    Q.push_back( k - 1 );
-  }
-    }
+  uAddFaces( N, c, 0 );
   return N;
 }
 //-----------------------------------------------------------------------------
@@ -1596,26 +1618,8 @@ typename DGtal::KhalimskySpaceND< dim, TInteger >::Cells
 DGtal::KhalimskySpaceND< dim, TInteger >::
 uCoFaces( const Cell & c ) const
 {
-  DGtal::Dimension dim_of_c = uDim( c );
   Cells N;
-  Cells P;
-  std::deque<Dimension> Q;
-  P.push_back( c );
-  Q.push_back( dimension - dim_of_c );
-  while ( ! P.empty() )
-    {
-      Cell d = P.front();      P.pop_front();
-      DGtal::Dimension k = Q.front(); Q.pop_front();
-      if ( k != dim_of_c )     N.push_back( d );
-      // the use of k induces that incident faces are not duplicated.
-      for ( DirIterator q = uOrthDirs( d ); ( q != 0 ) && ( k > 0 ); ++q, --k )
-  {
-    P.push_back( uIncident( d, *q, false ) );
-    Q.push_back( k - 1 );
-    P.push_back( uIncident( d, *q, true ) );
-    Q.push_back( k - 1 );
-  }
-    }
+  uAddCoFaces( N, c, 0 );
   return N;
 }
 //-----------------------------------------------------------------------------
