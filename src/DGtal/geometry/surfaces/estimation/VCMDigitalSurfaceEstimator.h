@@ -147,7 +147,8 @@ namespace DGtal
     VCMDigitalSurfaceEstimator( ConstAlias< VCMOnSurface > aVCMOnSurface );
 
     /**
-     * Attach a digital surface.
+     * Attach a digital surface. After this call, the object is then
+     * invalid and the user must called \ref setParams.
      *
      * @param surface the digital surface that is aliased in this. The
      * user can \b secure the aliasing by passing a

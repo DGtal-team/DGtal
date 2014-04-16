@@ -122,6 +122,18 @@ template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
 inline
 void
 DGtal::VCMDigitalSurfaceEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
+attach( ConstAlias<Surface> surface )
+{
+  mySurface = surface;
+  myVCMOnSurface = 0;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
+          typename TKernelFunction, typename TVCMGeometricFunctor>
+inline
+void
+DGtal::VCMDigitalSurfaceEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
 setParams( Surfel2PointEmbedding surfelEmbedding,
            const Scalar R, const Scalar r, KernelFunction chi_r,
            const Scalar t, Metric aMetric, bool verbose )
