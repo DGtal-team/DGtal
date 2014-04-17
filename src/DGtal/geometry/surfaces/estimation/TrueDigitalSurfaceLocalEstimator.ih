@@ -103,7 +103,7 @@ DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 attach( ConstAlias<Shape> aShape )
 {
   myShape = aShape;
-  myFct->attach( myShape );
+  if ( ( myShape != 0 ) && ( myFct != 0 ) ) myFct->attach( myShape );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
