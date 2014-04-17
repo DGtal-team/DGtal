@@ -90,7 +90,6 @@ int main( int /* argc */, char** /* argv */ )
   trace.info() << "Small radius r = " << r << std::endl;
   const double T = 0.2;
   trace.info() << "Curvature thres. T = " << T << std::endl; // threshold for displaying features as red.
-  const double size = 3.0; // size of displayed normals
 
   Metric l2;
   KernelFunction chi( 1.0, r );
