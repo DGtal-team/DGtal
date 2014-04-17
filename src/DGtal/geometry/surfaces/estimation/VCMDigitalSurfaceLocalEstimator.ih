@@ -125,7 +125,7 @@ DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetri
 attach( ConstAlias<Surface> surface )
 {
   mySurface = surface;
-  myVCMOnSurface = 0;
+  myVCMOnSurface = CountedConstPtrOrConstPtr<VCMOnSurface>( 0,false );
 }
 
 //-----------------------------------------------------------------------------
