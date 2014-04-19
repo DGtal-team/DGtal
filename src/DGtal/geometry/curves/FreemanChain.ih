@@ -730,7 +730,7 @@ template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::getInterPixelLinels(const KhalimskySpaceND<2, TInteger> &aKSpace, 
                                                         const FreemanChain & fc, 
-                                                        std::set< typename  KhalimskySpaceND<2, TInteger>::SCell> & aSCellContour,
+                                                        typename KhalimskySpaceND<2, TInteger>::SCellSet &aSCellContour,
                                                         bool aFlagForAppend){
   if(!aFlagForAppend){
     aSCellContour.clear();
