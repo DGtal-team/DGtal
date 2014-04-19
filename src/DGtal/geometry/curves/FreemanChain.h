@@ -887,11 +887,12 @@ public:
     
 
     /**
-     * Return a set containing all the linels (given as Signed SCell)
-     * of a FreemanChain seen as inter pixel contour. The resuling
-     * SCell set will correspond to the FreemanChain represented in
-     * InterGrid mode (in InterGrid mode a FremanChain is shifted by
-     * (-0.5, 0.5)).
+     * Return a set containing all the linels (given as Signed SCell
+     * in a KhalimskySpaceND) of a FreemanChain (given Z2). Since by
+     * definition the interpixel elements cannot be represented in Z2,
+     * we use a proper KhalimskySpaceND with a shift defined by
+     * convention to (-0.5, 0.5).  The following image illustrates
+     * such a convention:
      *
      * @image html illustrationFC2InterPixels.png
      *
@@ -903,7 +904,7 @@ public:
 
     static void getInterPixelLinels(const KhalimskySpaceND<2,  TInteger> & aKSpace, 
                                     const FreemanChain & fc, 
-                                    std::set<typename KhalimskySpaceND<2, TInteger>::SCell> & aSCellContour,
+                                    typename KhalimskySpaceND<2, TInteger>::SCellSet & aSCellContour,
                                     bool aFlagForAppend=false);
     
 
