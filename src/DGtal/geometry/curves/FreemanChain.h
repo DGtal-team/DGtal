@@ -893,6 +893,8 @@ public:
      * InterGrid mode (in InterGrid mode a FremanChain is shifted by
      * (-0.5, 0.5)).
      *
+     * @image html illustrationFC2InterPixels.png
+     *
      * @param aKSpace the KSpace
      * @param fc the FreemanChain
      * @param aSCellContour (returns) the set containing all the linels of the inter-pixels contour.
