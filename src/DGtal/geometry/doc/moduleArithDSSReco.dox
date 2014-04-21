@@ -149,15 +149,18 @@ For instance, for each x-coordinate \f$ x \f$, there is one and only one point \
 that belongs to the \b naive DSL \f$ D(2,5,0) \f$. Similarly, for each value \f$ x+y \f$, 
 there is one and only one point \f$ (x,y) \in \mathbb{Z}^2  \f$ that belongs to the \b standard DSL \f$ D(2,5,0) \f$. 
 Method ArithmeticalDSL.position() returns 
-the position of any input point, whereas methods ArithmeticalDSL.before() and 
+the position of any input point, whereas method 
+ArithmeticalDSL.getPoint() returns the point located at the 
+specified position. Methods ArithmeticalDSL.before() and 
 ArithmeticalDSL.beforeOrEqual() provide a way of comparing the position of two given points, 
-with respect to the orientation given by \f$ a \f$ and \f$ b \f$.  
+with respect to the orientation given by \f$ a \f$ and \f$ b \f$. 
+ 
 
 ArithmeticalDSL also provides services to iterate over the DSL points 
 from any point belonging to the DSL.
 ArithmeticalDSL is a model of CConstBidirectionalRange that has inner types called 
 ArithmeticalDSL::ConstIterator and ArithmeticalDSL::ConstReverseIterator, 
-both models of readable iterator and bidirectional iterator.
+both models of readable iterator and random access iterator.
 The reader may have a look at the increment and decrement operator of
 ArithmeticalDSL::ConstIterator (ie. ArithmeticalDSL::ConstIterator.increment and 
 ArithmeticalDSL::ConstIterator.decrement) to see that the code is generic.     

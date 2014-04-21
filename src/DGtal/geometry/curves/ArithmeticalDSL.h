@@ -129,7 +129,6 @@ namespace DGtal
      */
     typedef TInteger Integer;
     BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
-
     /**
      * Type of digital plane.
      */
@@ -146,6 +145,10 @@ namespace DGtal
      * Type of step vectors, defined as STL pair of vectors.
      */
     typedef std::pair<Vector,Vector> Steps;
+    /**
+     * Type used for the position of a point in the DSL.
+     */
+    typedef Coordinate Position;
 
     /**
      * \brief Aim: This class aims at representing an iterator
@@ -165,12 +168,14 @@ namespace DGtal
     class ConstIterator
       : public boost::iterator_facade<ConstIterator, //derived type, the ConstIterator class itself
 				      Point const,   //value type
-				      boost::bidirectional_traversal_tag, //traversal tag
-				      Point const    //reference type
+				      boost::random_access_traversal_tag, //traversal tag
+				      Point const,    //reference type
 				      //NB: since there is no underlying container,
 				      //we cannot return a reference.
+				      Position  //difference type
 				      >
     {
+
       // ------------------------- Private data -----------------------
     private:
 
@@ -220,6 +225,14 @@ namespace DGtal
        * Destructor. Does nothing.
        */
       ~ConstIterator();
+ 
+      // ------------------------- useful services -------------------------
+   public: 
+      /**
+       * @return the remainder of the current point
+       * (without any computation)
+       */
+      Integer remainder() const;
 
       // ------------------------- iteration services -------------------------
     private:
@@ -250,6 +263,23 @@ namespace DGtal
        * @return 'true' if their current points coincide.
        */
       bool equal(const ConstIterator& aOther) const;
+
+      /**
+       * Moves @a myCurrentPoint lying at position i to the 
+       * point of the DSL lying at position i + @a aShift
+       * @param aShift position difference
+       * NB: in O(1)
+       */
+      void advance(const Position& aShift);
+
+      /**
+       * Computes the distance between *this and @a aOther, ie.
+       * the difference between their positions
+       * @param aOther any other iterator 
+       * @return distance between the two iterators
+       */
+      Position distance_to(const ConstIterator& aOther) const; 
+
     };
 
     /**
@@ -436,7 +466,15 @@ namespace DGtal
      * @param aPoint the point whose position is returned
      * @return the position
      */
-    Integer position(const Point& aPoint) const;
+    Position position(const Point& aPoint) const;
+
+    /**
+     * Returns the unique point of the DSL located at position @a aPosition
+     * in O(1). 
+     * @param aPosition position of the returned point
+     * @return the point of the DSL located at position @a aPosition
+     */
+    Point getPoint(const Position& aPosition) const;
 
     /**
      * Returns a boolean equal to 'true' if @a aP1 is
