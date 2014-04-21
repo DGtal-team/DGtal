@@ -361,7 +361,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::orthogonalPosition(con
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
-typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Integer
+typename DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::Position
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::position(const Point& aPoint) const
 {
   return myDSL.position(aPoint); 
