@@ -8,25 +8,59 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 using namespace DGtal;
+using namespace Z2i;
 
-inline Z2i::DigitalSet generateRingSet(const Z2i::Domain& domain)
+inline DigitalSet generateRingSet(const Domain& domain)
 {
-    Z2i::DigitalSet set(domain);
+    DigitalSet set(domain);
+    RealPoint center = domain.lowerBound() + domain.upperBound();
+		center /= 2.;
+    RealPoint delta = domain.upperBound() - domain.lowerBound();
+    double radius = delta[0]>delta[1] ? delta[1] : delta[0];
+    radius += 1.;
+    radius /= 2.;
 
-    // create ring
-    for (int ii=0; ii<3; ii++)
-        for (int jj=2; jj<8; jj++)
-        {
-            set.insert(Z2i::Point(jj,ii+1));
-            set.insert(Z2i::Point(jj,ii+6));
-            set.insert(Z2i::Point(ii+1,jj));
-            set.insert(Z2i::Point(ii+6,jj));
-        }
+    for (Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
+    {
+        const Point point = *di;
+        const RealPoint point_real = RealPoint(point) - center;
+        if (point_real.norm() < 1.*radius/6.) continue;
+        if (point_real.norm() > 5.*radius/6.) continue;
+        set.insert(point);
+    }
 
-    //// fill domain
-    //for (int ii=0; ii<10; ii++)
-    //    for (int jj=0; jj<10; jj++)
-    //        set.insert(Z2i::Point(ii,jj));
+    return set;
+}
+
+inline DigitalSet generateDoubleRingSet(const Domain& domain)
+{
+    DigitalSet set(domain);
+    RealPoint center = domain.lowerBound() + domain.upperBound();
+		center /= 2.;
+    RealPoint delta = domain.upperBound() - domain.lowerBound();
+    double radius = delta[0]>delta[1] ? delta[1] : delta[0];
+    radius += 1.;
+    radius /= 2.;
+
+		center -= RealPoint(radius/2.,0);
+    for (Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
+    {
+        const Point point = *di;
+        const RealPoint point_real = RealPoint(point) - center;
+        if (point_real.norm() < 1.*radius/6.) continue;
+        if (point_real.norm() > 5.*radius/6.) continue;
+        set.insert(point);
+    }
+
+		center += RealPoint(radius,0);
+    for (Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
+    {
+        const Point point = *di;
+        const RealPoint point_real = RealPoint(point) - center;
+        if (point_real.norm() < 1.*radius/6.) continue;
+        if (point_real.norm() > 5.*radius/6.) continue;
+        set.insert(point);
+    }
 
     return set;
 }
