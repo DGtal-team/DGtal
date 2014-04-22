@@ -102,17 +102,17 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
-#if defined(WITH_QGLViewer)
+#if defined(WITH_VISU3D_QGLVIEWER)
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     for (CalculusConstIterator ci=myCalculus->begin(), cie=myCalculus->end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
-        if (tci==this->end()) continue;
-        viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
+        viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::None);
+        if (tci!=this->end() && finite(tci->second)) viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
         viewer << cell;
     }
-    #endif
+#endif
 }
 
 template <typename Calculus, typename V>
@@ -122,15 +122,13 @@ DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_m
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
 
-    static const DGtal::Color transparent = DGtal::Color::None;
-
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     for (CalculusConstIterator ci=myCalculus->begin(), cie=myCalculus->end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
-        if (tci==this->end()) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, transparent));
-        else if (finite(tci->second)) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
+        board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
+        if (tci!=this->end() && finite(tci->second)) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
         board << cell;
     }
 }
