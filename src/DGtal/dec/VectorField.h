@@ -121,13 +121,20 @@ template <typename TCalculus, Duality duality>
     KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dim) const;
 
     /**
-     * Display vector on 2D board.
+     * Display vector field on 2D board.
      * @param board the board to use.
      * @param scale  doc @fixme
      * @param epsilon doc @fixme
      */
     template <typename Board>
     void display2D(Board& board, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-8) const;
+
+    /**
+     * Display vector field on 3D viewer.
+     * @param viewer the viewer to use.
+     */
+    template <typename Viewer>
+    void display3D(Viewer& viewer, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-8) const;
 
     /**
      * Clear current vector field.
