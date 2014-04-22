@@ -450,8 +450,82 @@ void solve3d_decomposition()
         (*viewer) << Viewer::updateDisplay;
     }
 
-    trace.endBlock();
+    Calculus::PrimalForm0 solution_curl_free(calculus);
+    { // solve curl free problem
+        trace.beginBlock("solving curl free component");
 
+        //! [3d_decomposition_curl_free_solve]
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> Solver;
+        Solver solver;
+        solver.compute(ad1 * d0);
+        solution_curl_free = solver.solve(input_one_form_anti_derivated);
+        //! [3d_decomposition_curl_free_solve]
+
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
+        trace.endBlock();
+    }
+
+    {
+        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        Viewer* viewer = new Viewer();
+        viewer->show();
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(solution_curl_free.myContainer.minCoeff(), solution_curl_free.myContainer.maxCoeff());
+        Calculus::Accum accum(calculus);
+        solution_curl_free.applyToAccum(accum);
+        accum.display3D(*viewer, colormap);
+        calculus.sharp(d0*solution_curl_free).display3D(*viewer);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    Calculus::PrimalForm2 solution_div_free(calculus);
+    { // solve divergence free problem
+        trace.beginBlock("solving divergence free component");
+
+        //! [3d_decomposition_div_free_solve]
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 2, PRIMAL, 2, PRIMAL> Solver;
+        Solver solver;
+        solver.compute(d1 * ad2);
+        solution_div_free = solver.solve(input_one_form_derivated);
+        //! [3d_decomposition_div_free_solve]
+
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
+        trace.endBlock();
+    }
+
+    {
+        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        Viewer* viewer = new Viewer();
+        viewer->show();
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(solution_div_free.myContainer.minCoeff(), solution_div_free.myContainer.maxCoeff());
+        Calculus::Accum accum(calculus);
+        solution_div_free.applyToAccum(accum);
+        accum.display3D(*viewer, colormap);
+        calculus.sharp(ad2*solution_div_free).display3D(*viewer);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    //! [3d_decomposition_solution]
+    const Calculus::PrimalForm1 solution_harmonic = input_one_form - d0*solution_curl_free - ad2*solution_div_free;
+    //! [3d_decomposition_solution]
+
+    {
+        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        Viewer* viewer = new Viewer();
+        viewer->show();
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(solution_harmonic.myContainer.minCoeff(), solution_harmonic.myContainer.maxCoeff());
+        Calculus::Accum accum(calculus);
+        solution_harmonic.applyToAccum(accum);
+        accum.display3D(*viewer, colormap);
+        calculus.sharp(solution_harmonic).display3D(*viewer);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    trace.endBlock();
 }
 
 int main(int argc, char* argv[])
