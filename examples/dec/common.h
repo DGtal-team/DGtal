@@ -8,22 +8,21 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 using namespace DGtal;
-using namespace Z2i;
 
-inline DigitalSet generateRingSet(const Domain& domain)
+inline Z2i::DigitalSet generateRingSet(const Z2i::Domain& domain)
 {
-    DigitalSet set(domain);
-    RealPoint center = domain.lowerBound() + domain.upperBound();
-		center /= 2.;
-    RealPoint delta = domain.upperBound() - domain.lowerBound();
+    Z2i::DigitalSet set(domain);
+    Z2i::RealPoint center = domain.lowerBound() + domain.upperBound();
+    center /= 2.;
+    Z2i::RealPoint delta = domain.upperBound() - domain.lowerBound();
     double radius = delta[0]>delta[1] ? delta[1] : delta[0];
     radius += 1.;
     radius /= 2.;
 
-    for (Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
+    for (Z2i::Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
-        const Point point = *di;
-        const RealPoint point_real = RealPoint(point) - center;
+        const Z2i::Point point = *di;
+        const Z2i::RealPoint point_real = Z2i::RealPoint(point) - center;
         if (point_real.norm() < 1.*radius/6.) continue;
         if (point_real.norm() > 5.*radius/6.) continue;
         set.insert(point);
@@ -32,31 +31,31 @@ inline DigitalSet generateRingSet(const Domain& domain)
     return set;
 }
 
-inline DigitalSet generateDoubleRingSet(const Domain& domain)
+inline Z2i::DigitalSet generateDoubleRingSet(const Z2i::Domain& domain)
 {
-    DigitalSet set(domain);
-    RealPoint center = domain.lowerBound() + domain.upperBound();
-		center /= 2.;
-    RealPoint delta = domain.upperBound() - domain.lowerBound();
+    Z2i::DigitalSet set(domain);
+    Z2i::RealPoint center = domain.lowerBound() + domain.upperBound();
+    center /= 2.;
+    Z2i::RealPoint delta = domain.upperBound() - domain.lowerBound();
     double radius = delta[0]>delta[1] ? delta[1] : delta[0];
     radius += 1.;
     radius /= 2.;
 
-		center -= RealPoint(radius/2.,0);
-    for (Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
+    center -= Z2i::RealPoint(radius/2.,0);
+    for (Z2i::Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
-        const Point point = *di;
-        const RealPoint point_real = RealPoint(point) - center;
+        const Z2i::Point point = *di;
+        const Z2i::RealPoint point_real = Z2i::RealPoint(point) - center;
         if (point_real.norm() < 1.*radius/6.) continue;
         if (point_real.norm() > 5.*radius/6.) continue;
         set.insert(point);
     }
 
-		center += RealPoint(radius,0);
-    for (Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
+    center += Z2i::RealPoint(radius,0);
+    for (Z2i::Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
-        const Point point = *di;
-        const RealPoint point_real = RealPoint(point) - center;
+        const Z2i::Point point = *di;
+        const Z2i::RealPoint point_real = Z2i::RealPoint(point) - center;
         if (point_real.norm() < 1.*radius/6.) continue;
         if (point_real.norm() > 5.*radius/6.) continue;
         set.insert(point);

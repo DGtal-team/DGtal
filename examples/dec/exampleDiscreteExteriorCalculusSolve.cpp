@@ -290,7 +290,7 @@ void solve2d_decomposition()
         Calculus::Accum accum(calculus);
         solution_curl_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(d0 * solution_curl_free).display2D(board);
+        calculus.sharp(d0*solution_curl_free).display2D(board);
         board.saveSVG("solve_decomposition_curl_free.svg");
     }
 
@@ -318,7 +318,7 @@ void solve2d_decomposition()
         Calculus::Accum accum(calculus);
         solution_div_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(ad2 * solution_div_free).display2D(board);
+        calculus.sharp(ad2*solution_div_free).display2D(board);
         board.saveSVG("solve_decomposition_div_free.svg");
     }
 
