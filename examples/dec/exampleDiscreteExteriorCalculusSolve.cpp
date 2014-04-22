@@ -3,6 +3,8 @@ using namespace std;
 
 #include "common.h"
 
+#include <QApplication>
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/readers/GenericReader.h"
@@ -340,11 +342,126 @@ void solve2d_decomposition()
 
     trace.endBlock();
 }
+
+void solve3d_decomposition()
+{
+    trace.beginBlock("3d discrete exterior calculus solve helmoltz decomposition");
+
+    const Z3i::Domain domain(Z3i::Point(0,0,0), Z3i::Point(9,9,4));
+
+    // choose linear solver
+    typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+
+    // create discrete exterior calculus from set
+    typedef DiscreteExteriorCalculus<Z3i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
+    Calculus calculus(domain);
+    for (int kk=2; kk<=8; kk++)
+        for (int ll=4; ll<=16; ll++)
+        {
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,4,kk)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,16,kk)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(4,ll,kk)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(16,ll,kk)) );
+        }
+
+    for (int kk=2; kk<=8; kk++)
+        for (int ll=8; ll<=12; ll++)
+        {
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,8,kk)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,12,kk)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(8,ll,kk)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(12,ll,kk)) );
+        }
+
+    for (int kk=4; kk<=16; kk++)
+        for (int ll=0; ll<=4; ll++)
+        {
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(4+ll,kk,2)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(4+ll,kk,8)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(12+ll,kk,2)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(12+ll,kk,8)) );
+        }
+
+    for (int kk=0; kk<=4; kk++)
+        for (int ll=8; ll<=12; ll++)
+        {
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,4+kk,2)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,4+kk,8)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,12+kk,2)) );
+            calculus.insertSCell( calculus.kspace.sCell(Z3i::Point(ll,12+kk,8)) );
+        }
+
+
+    trace.info() << calculus << endl;
+
+    {
+        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        Viewer* viewer = new Viewer();
+        viewer->show();
+        (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
+        (*viewer) << domain;
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(0, 1);
+        Calculus::Accum accum(calculus);
+        accum.display3D(*viewer, colormap);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    //! [3d_decomposition_operator_definition]
+    const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+    const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
+    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+    const Calculus::DualDerivative2 d2p = calculus.derivative<2, DUAL>();
+    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
+    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
+    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
+    const Calculus::DualHodge3 h3p = calculus.dualHodge<3>();
+    const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h3p * d2p * h1;
+    const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h2p * d1p * h2;
+    //! [3d_decomposition_operator_definition]
+
+    //! [3d_decomposition_input_field_definition]
+    Calculus::PrimalVectorField input_vector_field(calculus);
+    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
+    {
+        const Z3i::RealPoint cell_center = Z3i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
+        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0] + .3*cell_center[1] + .7*cell_center[2]);
+        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0] + .8*cell_center[1] - .2*cell_center[2]);
+        input_vector_field.myCoordinates[2](ii) = cos(.3*cell_center[0] - .7*cell_center[1] + .6*cell_center[2]);
+    }
+
+    const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
+    const Calculus::PrimalForm0 input_one_form_anti_derivated = ad1 * input_one_form;
+    const Calculus::PrimalForm2 input_one_form_derivated = d1 * input_one_form;
+    //! [3d_decomposition_input_field_definition]
+
+    {
+        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        Viewer* viewer = new Viewer();
+        viewer->show();
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(-1,1);
+        Calculus::Accum accum(calculus);
+        input_one_form.applyToAccum(accum);
+        input_one_form_anti_derivated.applyToAccum(accum);
+        input_one_form_derivated.applyToAccum(accum);
+        accum.display3D(*viewer, colormap);
+        input_vector_field.display3D(*viewer);
+        (*viewer) << Viewer::updateDisplay;
+    }
+
+    trace.endBlock();
+
+}
+
 int main(int argc, char* argv[])
 {
+    QApplication app(argc,argv);
+
     solve2d_laplacian();
     solve2d_decomposition();
+    solve3d_decomposition();
 
-    return 0;
+    return app.exec();
 }
 
