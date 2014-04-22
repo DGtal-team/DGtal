@@ -214,26 +214,42 @@ void solve2d_decomposition()
 {
     trace.beginBlock("2d discrete exterior calculus solve helmoltz decomposition");
 
-    const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(9,9));
+    const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
-    Calculus calculus(generateRingSet(domain));
+    Calculus calculus(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
+    // choose linear solver
+    typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+
     //! [decomposition_operator_definition]
-    const Calculus::DualDerivative0 derivative = calculus.derivative<0, DUAL>();
+    const Calculus::DualDerivative0 d0 = calculus.derivative<0, DUAL>();
+    const Calculus::DualDerivative1 d1 = calculus.derivative<1, DUAL>();
+    const Calculus::PrimalDerivative0 d0p = calculus.derivative<0, PRIMAL>();
     const Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
-    const Calculus::DualHodge1 hodge1 = calculus.dualHodge<1>();
-    const Calculus::PrimalHodge2 hodge2p = calculus.primalHodge<2>();
-    const LinearOperator<Calculus, 1, DUAL, 0, DUAL> anti_derivative = hodge2p *d1p * hodge1;
+    const Calculus::DualHodge1 h1 = calculus.dualHodge<1>();
+    const Calculus::DualHodge2 h2 = calculus.dualHodge<2>();
+    const Calculus::PrimalHodge1 h1p = calculus.primalHodge<1>();
+    const Calculus::PrimalHodge2 h2p = calculus.primalHodge<2>();
+    const LinearOperator<Calculus, 1, DUAL, 0, DUAL> ad1 = h2p * d1p * h1;
+    const LinearOperator<Calculus, 2, DUAL, 1, DUAL> ad2 = h1p * d0p * h2;
     //! [decomposition_operator_definition]
 
-    //! [sink_definition]
-    Calculus::DualForm1 input_one_form(calculus);
-    input_one_form.myContainer(calculus.getIndex(calculus.kspace.sSpel(Z2i::Point(2,5)))) = 1;
-    input_one_form.myContainer(calculus.getIndex(calculus.kspace.sSpel(Z2i::Point(6,7)))) = -1;
-    //! [sink_definition]
+    //! [decomposition_input_field_definition]
+    Calculus::DualVectorField input_vector_field(calculus);
+    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, DUAL); ii++)
+    {
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, DUAL, ii).myCoordinates)/2.;
+        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
+        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0]+ .8*cell_center[1]);
+    }
+
+    const Calculus::DualForm1 input_one_form = calculus.flat(input_vector_field);
+    const Calculus::DualForm0 input_one_form_anti_derivated = ad1 * input_one_form;
+    const Calculus::DualForm2 input_one_form_derivated = d1 * input_one_form;
+    //! [decomposition_input_field_definition]
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -241,167 +257,86 @@ void solve2d_decomposition()
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
-        dirac.applyToAccum(accum);
+        input_one_form.applyToAccum(accum);
+        input_one_form_anti_derivated.applyToAccum(accum);
+        input_one_form_derivated.applyToAccum(accum);
         accum.display2D(board, colormap);
+        input_vector_field.display2D(board);
         board.saveSVG("solve_decomposition_calculus.svg");
     }
 
-    /*
-    { // simplicial llt
-        trace.beginBlock("simplicial llt");
 
-        //! [solve_llt]
-        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLLT LinearAlgebraSolver;
-        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 1, DUAL, 0, DUAL> Solver;
+    Calculus::DualForm0 solution_curl_free(calculus);
+    { // solve curl free problem
+        trace.beginBlock("solving curl free component");
 
-        Solver solver;
-        solver.compute(divergence);
-        Calculus::DualForm1 solution = solver.solve(dirac);
-        //! [solve_llt]
-
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
-        trace.info() << solution << endl;
-        trace.endBlock();
-
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board.saveSVG("solve_decomposition_simplicial_llt.svg");
-    }
-
-    { // simplicial ldlt
-        trace.beginBlock("simplicial ldlt");
-
-        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT LinearAlgebraSolver;
-        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 1, DUAL, 0, DUAL> Solver;
-
-        Solver solver;
-        solver.compute(divergence);
-        Calculus::DualForm1 solution = solver.solve(dirac);
-
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
-        trace.info() << solution << endl;
-        trace.endBlock();
-
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board.saveSVG("solve_decomposition_simplicial_ldlt.svg");
-    }
-
-    { // conjugate gradient
-        trace.beginBlock("conjugate gradient");
-
-        //! [solve_conjugate_gradient]
-        typedef EigenSparseLinearAlgebraBackend::SolverConjugateGradient LinearAlgebraSolver;
+        //! [decomposition_curl_free_solve]
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
-
         Solver solver;
-        solver.compute(laplacian);
-        Calculus::DualForm0 solution = solver.solve(dirac);
-        //! [solve_conjugate_gradient]
+        solver.compute(ad1 * d0);
+        solution_curl_free = solver.solve(input_one_form_anti_derivated);
+        //! [decomposition_curl_free_solve]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
-        trace.info() << solution << endl;
+        trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
+    }
 
+    {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
+        Colormap colormap(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
+        solution_curl_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_decomposition_conjugate_gradient.svg");
+        calculus.sharp(d0 * solution_curl_free).display2D(board);
+        board.saveSVG("solve_decomposition_curl_free.svg");
     }
 
-    { // biconjugate gradient stabilized
-        trace.beginBlock("biconjugate gradient stabilized (bicgstab)");
+    Calculus::DualForm2 solution_div_free(calculus);
+    { // solve divergence free problem
+        trace.beginBlock("solving divergence free component");
 
-        //! [solve_biconjugate_gradient]
-        typedef EigenSparseLinearAlgebraBackend::SolverBiCGSTAB LinearAlgebraSolver;
-        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
-
+        //! [decomposition_div_free_solve]
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 2, DUAL, 2, DUAL> Solver;
         Solver solver;
-        solver.compute(laplacian);
-        Calculus::DualForm0 solution = solver.solve(dirac);
-        //! [solve_biconjugate_gradient]
+        solver.compute(d1 * ad2);
+        solution_div_free = solver.solve(input_one_form_derivated);
+        //! [decomposition_div_free_solve]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
-        trace.info() << solution << endl;
+        trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
+    }
 
+    {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
+        Colormap colormap(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
+        solution_div_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_decomposition_bicgstab.svg");
+        calculus.sharp(ad2 * solution_div_free).display2D(board);
+        board.saveSVG("solve_decomposition_div_free.svg");
     }
 
-    { // sparselu
-        trace.beginBlock("sparse lu");
+    //! [decomposition_solution]
+    const Calculus::DualForm1 solution_harmonic = input_one_form - d0*solution_curl_free - ad2*solution_div_free;
+    //! [decomposition_solution]
 
-        //! [solve_sparse_lu]
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseLU LinearAlgebraSolver;
-        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
-
-        Solver solver;
-        solver.compute(laplacian);
-        Calculus::DualForm0 solution = solver.solve(dirac);
-        //! [solve_sparse_lu]
-
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
-        trace.info() << solution << endl;
-        trace.endBlock();
-
+    {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
+        Colormap colormap(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff());
         Board2D board;
         board << domain;
         Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
+        solution_harmonic.applyToAccum(accum);
         accum.display2D(board, colormap);
-        board.saveSVG("solve_decomposition_sparse_lu.svg");
+        calculus.sharp(solution_harmonic).display2D(board);
+        board.saveSVG("solve_decomposition_harmonic.svg");
     }
-    */
-
-    /*
-    { // sparseqr
-        trace.beginBlock("sparse qr");
-
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
-        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 1, DUAL, 0, DUAL> Solver;
-
-        Solver solver;
-        solver.compute(divergence);
-        Calculus::DualForm1 solution = solver.solve(dirac);
-        Calculus::DualVectorField solution_field = calculus.sharp(solution);
-
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
-        trace.info() << solution << endl;
-        trace.endBlock();
-
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board.saveSVG("solve_decomposition_sparse_qr.svg");
-    }
-    */
 
     trace.endBlock();
 }
