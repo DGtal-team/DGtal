@@ -52,7 +52,7 @@
 #endif
 #include <DGtal/io/Color.h>
 #include <DGtal/io/boards/Board2D.h>
-#if defined(WITH_QGLVIEWER)
+#if defined(WITH_VISU3D_QGLVIEWER)
 #include <DGtal/io/viewers/Viewer3D.h>
 #endif
 //////////////////////////////////////////////////////////////////////////////
