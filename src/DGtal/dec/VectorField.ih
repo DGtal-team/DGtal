@@ -115,16 +115,14 @@ DGtal::VectorField<Calculus, duality>::display2D(Board& board, const typename Ca
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
 
-    typedef typename DGtal::PointVector<Calculus::dimension, typename Calculus::Scalar> Point;
-
     for (typename Calculus::Index index=0; index<myCalculus->kFormLength(0, duality); index++)
     {
         const typename Calculus::SCell& cell = myCalculus->getSCell(0, duality, index);
-        Point origin = cell.myCoordinates/2.;
+        Z2i::RealPoint origin = cell.myCoordinates/2.;
         if (duality == PRIMAL)
-            origin -= Point(.5,.5);
+            origin -= Z2i::RealPoint(.5,.5);
 
-        Point arrow;
+        Z2i::RealPoint arrow;
         for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
             arrow[dim] = myCoordinates[dim](index);
 
@@ -135,6 +133,36 @@ DGtal::VectorField<Calculus, duality>::display2D(Board& board, const typename Ca
 
         board.drawArrow(origin[0],origin[1],origin[0]+arrow[0],origin[1]+arrow[1]);
     }
+
+}
+
+template <typename Calculus, DGtal::Duality duality>
+template <typename Viewer>
+void
+DGtal::VectorField<Calculus, duality>::display3D(Viewer& viewer, const typename Calculus::Scalar& scale, const typename Calculus::Scalar& epsilon) const
+{
+    BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
+
+#if defined(WITH_VISU3D_QGLVIEWER)
+    for (typename Calculus::Index index=0; index<myCalculus->kFormLength(0, duality); index++)
+    {
+        const typename Calculus::SCell& cell = myCalculus->getSCell(0, duality, index);
+        Z3i::RealPoint origin = cell.myCoordinates/2.;
+        if (duality == PRIMAL)
+            origin -= Z3i::RealPoint(.5,.5,.5);
+
+        Z3i::RealPoint arrow;
+        for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
+            arrow[dim] = myCoordinates[dim](index);
+
+        arrow *= scale;
+        if (!finite(arrow[0]) || !finite(arrow[1]) || !finite(arrow[2])) continue;
+        const typename Calculus::Scalar& norm = arrow.norm();
+        if (norm <= epsilon) continue;
+
+        //viewer.drawArrow(origin[0],origin[1],origin[2],origin[0]+arrow[0],origin[1]+arrow[1],origin[2]+arrow[2]);
+    }
+#endif
 
 }
 

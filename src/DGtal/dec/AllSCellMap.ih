@@ -108,8 +108,8 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
-        viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::None);
         if (tci!=this->end() && finite(tci->second)) viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
+        else viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
         viewer << cell;
     }
 #endif
@@ -127,8 +127,8 @@ DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_m
     {
         const SCell& cell = ci->first;
         ConstIterator tci = this->find(cell);
-        board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
         if (tci!=this->end() && finite(tci->second)) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
+        else board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
         board << cell;
     }
 }
