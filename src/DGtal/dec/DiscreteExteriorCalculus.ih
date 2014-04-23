@@ -61,7 +61,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
         }
     }
 
-    // normalize cell size
+    // normalize cell size and set flipped flag
     for (typename SizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
     {
         const SCell& cell = csi->first;
@@ -72,6 +72,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
         ASSERT(size);
         size *= factor;
 
+        cell_flipped[cell] = false;
         cell_size_ratio[cell] = size;
     }
 
