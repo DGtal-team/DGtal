@@ -327,6 +327,7 @@ void solve2d_decomposition()
     //! [decomposition_solution]
     const Calculus::DualForm1 solution_harmonic = input_one_form - d0*solution_curl_free - ad2*solution_div_free;
     //! [decomposition_solution]
+    trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -364,17 +365,17 @@ void solve3d_decomposition()
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4,kk));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,16,kk));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(4,ll,kk));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(16,ll,kk));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
         }
 
     // inner ring
@@ -384,18 +385,18 @@ void solve3d_decomposition()
             Calculus::SCell cell;
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,8,kk));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,12,kk));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(8,ll,kk));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(12,ll,kk));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
         }
 
     // top and bottom
@@ -406,17 +407,17 @@ void solve3d_decomposition()
 
             cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,2));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,8));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(12+ll,kk,2));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(12+ll,kk,8));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
         }
 
     // top and bottom
@@ -474,9 +475,9 @@ void solve3d_decomposition()
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
     {
         const Z3i::RealPoint cell_center = Z3i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
-        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0] + .3*cell_center[1] + .7*cell_center[2]);
-        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0] + .8*cell_center[1] - .2*cell_center[2]);
-        input_vector_field.myCoordinates[2](ii) = cos(.3*cell_center[0] - .7*cell_center[1] + .6*cell_center[2]);
+        input_vector_field.myCoordinates[0](ii) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
+        input_vector_field.myCoordinates[1](ii) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
+        input_vector_field.myCoordinates[2](ii) = -cos(cell_center[2]);
     }
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
@@ -560,6 +561,7 @@ void solve3d_decomposition()
     //! [3d_decomposition_solution]
     const Calculus::PrimalForm1 solution_harmonic = input_one_form - d0*solution_curl_free - ad2*solution_div_free;
     //! [3d_decomposition_solution]
+    trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
@@ -570,7 +572,7 @@ void solve3d_decomposition()
         Calculus::Accum accum(calculus);
         solution_harmonic.applyToAccum(accum);
         accum.display3D(*viewer, colormap);
-        calculus.sharp(solution_harmonic).display3D(*viewer);
+        calculus.sharp(solution_harmonic).display3D(*viewer, 10);
         (*viewer) << Viewer::updateDisplay;
     }
 
