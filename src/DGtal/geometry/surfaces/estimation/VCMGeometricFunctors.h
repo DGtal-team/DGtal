@@ -71,7 +71,7 @@ namespace DGtal
       /**
        * Constructor. A VCM may also be attached at construction.
        *
-       * @param aVCMOnSurface the VCM on surface that stores all the
+       * @param aVCMOnDigitalSurface the VCM on surface that stores all the
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
@@ -132,7 +132,7 @@ namespace DGtal
       /**
        * Constructor. A VCM may also be attached at construction.
        *
-       * @param aVCMOnSurface the VCM on surface that stores all the
+       * @param aVCMOnDigitalSurface the VCM on surface that stores all the
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
@@ -200,7 +200,7 @@ namespace DGtal
       /**
        * Constructor. A VCM may also be attached at construction.
        *
-       * @param aVCMOnSurface the VCM on surface that stores all the
+       * @param aVCMOnDigitalSurface the VCM on surface that stores all the
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
@@ -268,7 +268,7 @@ namespace DGtal
       /**
        * Constructor. A VCM may also be attached at construction.
        *
-       * @param aVCMOnSurface the VCM on surface that stores all the
+       * @param aVCMOnDigitalSurface the VCM on surface that stores all the
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
