@@ -36,7 +36,7 @@
 template <typename D, typename LAB>
 template <typename DigitalSet>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set)
-    : domain(_set.domain()), kspace(), cell_size_ratio(*this), cell_indexes(*this)
+    : domain(_set.domain()), kspace(), cell_size_ratio(*this), cell_indexes(*this), cell_flipped(*this)
 {
     BOOST_STATIC_ASSERT(( boost::is_same<typename DigitalSet::Domain, Domain>::value ));
 
@@ -90,7 +90,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
 
 template <typename D, typename LAB>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const D& _domain)
-    : domain(_domain), kspace(), cell_size_ratio(*this), cell_indexes(*this)
+    : domain(_domain), kspace(), cell_size_ratio(*this), cell_indexes(*this), cell_flipped(*this)
 {
 }
 
@@ -103,11 +103,13 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const S
 {
     SCell abs_cell = _cell;
     Scalar abs_primal_size = _primal_size;
+    bool flipped = false;
 
     if (!abs_cell.myPositive)
     {
         abs_cell = kspace.sOpp(abs_cell);
         abs_primal_size = -abs_primal_size;
+        flipped = true;
     }
 
     const bool need_insert = (cell_indexes.find(abs_cell) == cell_indexes.end());
@@ -119,6 +121,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const S
         index_cells[dim].push_back(abs_cell);
     }
 
+    cell_flipped[abs_cell] = flipped;
     cell_size_ratio[abs_cell] = abs_primal_size;
 
     return need_insert;
@@ -402,6 +405,16 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::getSCell(const Order& order, const Dual
     const SCell& cell = index_cells[actual_order][index];
     ASSERT( kspace.sDim(cell) == actual_order );
     return cell;
+}
+
+template <typename D, typename LAB>
+bool
+DGtal::DiscreteExteriorCalculus<D, LAB>::isSCellFlipped(const SCell& cell) const
+{
+    typedef typename DisplayFlipped::ConstIterator DisplayFlippedConstIterator;
+    DisplayFlippedConstIterator iter = cell_flipped.find(absoluteCell(cell));
+    ASSERT( iter != cell_flipped.end() );
+    return iter->second;
 }
 
 template <typename D, typename LAB>

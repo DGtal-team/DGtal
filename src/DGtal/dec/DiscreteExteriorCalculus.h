@@ -112,6 +112,7 @@ namespace DGtal
     typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
     typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> SizeRatio;
     typedef AllSCellMap<DiscreteExteriorCalculus, Index> Indexes;
+    typedef AllSCellMap<DiscreteExteriorCalculus, bool> DisplayFlipped;
 
     /**
      * Indexes to cells map typedefs.
@@ -304,6 +305,13 @@ namespace DGtal
     getSCell(const Order& order, const Duality& duality, const Index& index) const;
 
     /**
+     * Check if cell is flipped in display.
+     * @param cell the tested cell
+     */
+    bool
+    isSCellFlipped(const SCell& cell) const;
+
+    /**
      * Get index from cell
      * @param cell
      */
@@ -381,6 +389,12 @@ namespace DGtal
      * Usefull for finding cell form index and order.
      */
     IndexedSCells index_cells;
+
+    /**
+     * Cells set that are displayed flipped.
+     * Negative cells are added to this set by insertSCell.
+     */
+    DisplayFlipped cell_flipped;
 
     // ------------------------- Hidden services ------------------------------
   protected:
