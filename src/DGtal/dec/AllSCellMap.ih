@@ -56,6 +56,8 @@ template <typename Calculus, typename V>
 void
 DGtal::AllSCellMap<Calculus, V>::writeITKImage(const std::string& filename, const Value& value_outside, const Value& value_inside_default) const
 {
+    ASSERT( myCalculus );
+
     typedef typename Calculus::Point Point;
     typedef typename Calculus::Domain Domain;
 
@@ -101,16 +103,29 @@ void
 DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color_map) const
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
+    ASSERT( myCalculus );
 
 #if defined(WITH_VISU3D_QGLVIEWER)
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     for (CalculusConstIterator ci=myCalculus->begin(), cie=myCalculus->end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
+        ASSERT(cell.myPositive == true);
+
+        const bool& flipped = myCalculus->isSCellFlipped(cell);
+        SCell displayed_cell = cell;
+        if (flipped) displayed_cell = myCalculus->kspace.sOpp(cell);
+
         ConstIterator tci = this->find(cell);
-        if (tci!=this->end() && finite(tci->second)) viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(tci->second));
+        if (tci!=this->end() && finite(tci->second))
+        {
+            Value displayed_value = tci->second;
+            if (flipped) displayed_value = -displayed_value;
+            viewer << DGtal::CustomColors3D(DGtal::Color::Black, color_map(displayed_value));
+        }
         else viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
-        viewer << cell;
+
+        viewer << displayed_cell;
     }
 #endif
 }
@@ -121,15 +136,28 @@ void
 DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) const
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
+    ASSERT( myCalculus );
 
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     for (CalculusConstIterator ci=myCalculus->begin(), cie=myCalculus->end(); ci!=cie; ci++)
     {
         const SCell& cell = ci->first;
+        ASSERT(cell.myPositive == true);
+
+        const bool& flipped = myCalculus->isSCellFlipped(cell);
+        SCell displayed_cell = cell;
+        if (flipped) displayed_cell = myCalculus->kspace.sOpp(cell);
+
         ConstIterator tci = this->find(cell);
-        if (tci!=this->end() && finite(tci->second)) board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(tci->second)));
+        if (tci!=this->end() && finite(tci->second))
+        {
+            Value displayed_value = tci->second;
+            if (flipped) displayed_value = -displayed_value;
+            board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(displayed_value)));
+        }
         else board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
-        board << cell;
+
+        board << displayed_cell;
     }
 }
 
