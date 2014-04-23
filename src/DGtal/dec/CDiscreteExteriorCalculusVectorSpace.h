@@ -69,7 +69,8 @@ Lift linear algebra container concept into the dec package.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|       |            |                   |               |              |           |                |            |
+| Constructor from calculus      | t(calculus)           |                   |               |              |           |                |            |
+| Constructor from calculus and container      | t(calculus, container)           |                   |               |              |           |                |            |
 
 ### Invariants
 
@@ -92,13 +93,13 @@ public:
 
     BOOST_CONCEPT_USAGE( CDiscreteExteriorCalculusVectorSpace )
     {
-        T t0(calculus_const_ref);
-        T t1(calculus_const_ref, container_const_ref);
+        T t0(calculus);
+        T t1(calculus, container);
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    const Container& container_const_ref;
-    const Calculus& calculus_const_ref;
+    Container container;
+    Calculus calculus;
 
     // ------------------------- Internals ------------------------------------
 private:

@@ -104,7 +104,7 @@ template <typename TCalculus, Duality duality>
     Coordinates myCoordinates;
 
     /**
-     * Pointer to const calculus
+     * Pointer to const calculus.
      */
     const Calculus* myCalculus;
 
@@ -123,8 +123,8 @@ template <typename TCalculus, Duality duality>
     /**
      * Display vector field on 2D board.
      * @param board the board to use.
-     * @param scale  doc @fixme
-     * @param epsilon doc @fixme
+     * @param scale display scale factor.
+     * @param epsilon vectors with norm lower than epsilon are not displayed.
      */
     template <typename Board>
     void display2D(Board& board, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-8) const;
@@ -143,6 +143,7 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Return the normalized vector field.
+     * @param epsilon vectors with norm lower than epsilon are set to zero.
      */
     VectorField<TCalculus, duality> normalized(const typename Calculus::Scalar& epsilon = 1e-32) const;
 

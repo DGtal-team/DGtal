@@ -103,7 +103,7 @@ namespace DGtal
     Container myContainer;
 
     /**
-     * Pointer to const calculus
+     * Pointer to const calculus.
      */
     const Calculus* myCalculus;
 
@@ -121,13 +121,14 @@ namespace DGtal
     void applyToAccum(Accum& scell_map) const;
 
     /**
-     * Clear current kform.
+     * Clear current k-form.
      */
     void clear();
 
     /**
-     * Get kcell from index.
-     * @param index the index
+     * Get k-cell from index.
+     * @param index the index.
+		 * @return associated Khalimsky signed cell.
      */
     typename Calculus::SCell getSCell(const typename Calculus::Index& index) const;
 
