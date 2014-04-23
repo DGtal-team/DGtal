@@ -57,6 +57,7 @@ First, an empty calculus structure is created and, using simple for loops, it is
 When filled manually with DiscreteExteriorCalculus.insertSCell, one can pass the primal over dual size ratio of each cell which defaults to 1.
 Temperature nodes are associated primal 0-cells.
 Note that to enforce Neumann boundary conditions, the linear structure has to end with 0-cells.
+Moreover some 1-cells are inserted as negative cells to match their orientation with the orientation of the linear structure.
 
 \snippet ../tests/dec/testLinearStructure.cpp neumann-creation
 
@@ -87,6 +88,7 @@ An analytic form can be expressed as a continuous piece-wise quadratic function.
 Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
 
 \image html linear_structure_neumann_solution.png "Linear structure with Neumann boundary conditions. Solution 0-form is displayed."
+\image html linear_structure_neumann_solution_gradient.png "Linear structure with Neumann boundary conditions. Gradient 1-form and vector field are displayed."
 \image html linear_structure_neumann_fit.png "Numerical values computed using the solver and analytic solution for the Neumann problem."
 
 \section sectDECLinearStructure3 Dirichlet boundary condition
@@ -112,6 +114,7 @@ Solving the problem is achieved by using the same code as for the Neumann case.
 \snippet ../tests/dec/testLinearStructure.cpp dirichlet-solve
 
 \image html linear_structure_dirichlet_solution.png "Linear structure with Dirichlet boundary conditions. Solution 0-form is displayed."
+\image html linear_structure_dirichlet_solution_gradient.png "Linear structure with Dirichlet boundary conditions. Gradient 1-form and vector field are displayed."
 \image html linear_structure_dirichlet_fit.png "Numerical values computed using the solver and analytic solution for the Dirichlet problem."
 
 Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
