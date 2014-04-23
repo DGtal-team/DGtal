@@ -212,9 +212,9 @@ void solve2d_laplacian()
     trace.endBlock();
 }
 
-void solve2d_decomposition()
+void solve2d_dual_decomposition()
 {
-    trace.beginBlock("2d discrete exterior calculus solve helmoltz decomposition");
+    trace.beginBlock("2d discrete exterior calculus solve dual helmoltz decomposition");
 
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
@@ -226,7 +226,7 @@ void solve2d_decomposition()
     // choose linear solver
     typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
 
-    //! [decomposition_operator_definition]
+    //! [2d_dual_decomposition_operator_definition]
     const Calculus::DualDerivative0 d0 = calculus.derivative<0, DUAL>();
     const Calculus::DualDerivative1 d1 = calculus.derivative<1, DUAL>();
     const Calculus::PrimalDerivative0 d0p = calculus.derivative<0, PRIMAL>();
@@ -237,9 +237,9 @@ void solve2d_decomposition()
     const Calculus::PrimalHodge2 h2p = calculus.primalHodge<2>();
     const LinearOperator<Calculus, 1, DUAL, 0, DUAL> ad1 = h2p * d1p * h1;
     const LinearOperator<Calculus, 2, DUAL, 1, DUAL> ad2 = h1p * d0p * h2;
-    //! [decomposition_operator_definition]
+    //! [2d_dual_decomposition_operator_definition]
 
-    //! [decomposition_input_field_definition]
+    //! [2d_dual_decomposition_input_field_definition]
     Calculus::DualVectorField input_vector_field(calculus);
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, DUAL); ii++)
     {
@@ -251,7 +251,7 @@ void solve2d_decomposition()
     const Calculus::DualForm1 input_one_form = calculus.flat(input_vector_field);
     const Calculus::DualForm0 input_one_form_anti_derivated = ad1 * input_one_form;
     const Calculus::DualForm2 input_one_form_derivated = d1 * input_one_form;
-    //! [decomposition_input_field_definition]
+    //! [2d_dual_decomposition_input_field_definition]
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -260,11 +260,9 @@ void solve2d_decomposition()
         board << domain;
         Calculus::Accum accum(calculus);
         input_one_form.applyToAccum(accum);
-        input_one_form_anti_derivated.applyToAccum(accum);
-        input_one_form_derivated.applyToAccum(accum);
         accum.display2D(board, colormap);
         input_vector_field.display2D(board);
-        board.saveSVG("solve_decomposition_calculus.svg");
+        board.saveSVG("solve_2d_dual_decomposition_calculus.svg");
     }
 
 
@@ -272,12 +270,12 @@ void solve2d_decomposition()
     { // solve curl free problem
         trace.beginBlock("solving curl free component");
 
-        //! [decomposition_curl_free_solve]
+        //! [2d_dual_decomposition_curl_free_solve]
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
         Solver solver;
         solver.compute(ad1 * d0);
         solution_curl_free = solver.solve(input_one_form_anti_derivated);
-        //! [decomposition_curl_free_solve]
+        //! [2d_dual_decomposition_curl_free_solve]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
@@ -293,19 +291,19 @@ void solve2d_decomposition()
         solution_curl_free.applyToAccum(accum);
         accum.display2D(board, colormap);
         calculus.sharp(d0*solution_curl_free).display2D(board);
-        board.saveSVG("solve_decomposition_curl_free.svg");
+        board.saveSVG("solve_2d_dual_decomposition_curl_free.svg");
     }
 
     Calculus::DualForm2 solution_div_free(calculus);
     { // solve divergence free problem
         trace.beginBlock("solving divergence free component");
 
-        //! [decomposition_div_free_solve]
+        //! [2d_dual_decomposition_div_free_solve]
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 2, DUAL, 2, DUAL> Solver;
         Solver solver;
         solver.compute(d1 * ad2);
         solution_div_free = solver.solve(input_one_form_derivated);
-        //! [decomposition_div_free_solve]
+        //! [2d_dual_decomposition_div_free_solve]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
         trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
@@ -321,12 +319,12 @@ void solve2d_decomposition()
         solution_div_free.applyToAccum(accum);
         accum.display2D(board, colormap);
         calculus.sharp(ad2*solution_div_free).display2D(board);
-        board.saveSVG("solve_decomposition_div_free.svg");
+        board.saveSVG("solve_2d_dual_decomposition_div_free.svg");
     }
 
-    //! [decomposition_solution]
+    //! [2d_dual_decomposition_solution]
     const Calculus::DualForm1 solution_harmonic = input_one_form - d0*solution_curl_free - ad2*solution_div_free;
-    //! [decomposition_solution]
+    //! [2d_dual_decomposition_solution]
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
@@ -337,8 +335,8 @@ void solve2d_decomposition()
         Calculus::Accum accum(calculus);
         solution_harmonic.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(solution_harmonic).display2D(board);
-        board.saveSVG("solve_decomposition_harmonic.svg");
+        calculus.sharp(solution_harmonic).display2D(board, 10.);
+        board.saveSVG("solve_2d_dual_decomposition_harmonic.svg");
     }
 
     trace.endBlock();
@@ -584,7 +582,7 @@ int main(int argc, char* argv[])
     QApplication app(argc,argv);
 
     solve2d_laplacian();
-    solve2d_decomposition();
+    solve2d_dual_decomposition();
     solve3d_decomposition();
 
     return app.exec();
