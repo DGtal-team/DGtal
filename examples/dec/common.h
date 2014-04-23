@@ -41,23 +41,23 @@ inline Z2i::DigitalSet generateDoubleRingSet(const Z2i::Domain& domain)
     radius += 1.;
     radius /= 2.;
 
-    center -= Z2i::RealPoint(radius/2.,0);
+    center -= Z2i::RealPoint(radius/2.+radius/5.,0);
     for (Z2i::Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
         const Z2i::Point point = *di;
         const Z2i::RealPoint point_real = Z2i::RealPoint(point) - center;
         if (point_real.norm() < 1.*radius/6.) continue;
-        if (point_real.norm() > 5.*radius/6.) continue;
+        if (point_real.norm() > 4.5*radius/6.) continue;
         set.insert(point);
     }
 
-    center += Z2i::RealPoint(radius,0);
+    center += Z2i::RealPoint(2*(radius/2.+radius/5.),0);
     for (Z2i::Domain::ConstIterator di=domain.begin(), die=domain.end(); di!=die; di++)
     {
         const Z2i::Point point = *di;
         const Z2i::RealPoint point_real = Z2i::RealPoint(point) - center;
         if (point_real.norm() < 1.*radius/6.) continue;
-        if (point_real.norm() > 5.*radius/6.) continue;
+        if (point_real.norm() > 4.5*radius/6.) continue;
         set.insert(point);
     }
 
