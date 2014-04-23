@@ -170,7 +170,8 @@ bool mainTest()
   	       << std::endl;
 
   trace.info() << "shift" << std::endl; 
-  if (dsl.remainder(dsl.shift()) == dsl.omega())
+  if ( (dsl.remainder(dsl.shift()) == dsl.omega()) 
+       && (DSL::toCoordinate(dsl.omega()) == dsl.patternLength()) )
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") "
