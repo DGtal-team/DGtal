@@ -134,7 +134,7 @@ template <typename TCalculus, Duality duality>
      * @param viewer the viewer to use.
      */
     template <typename Viewer>
-    void display3D(Viewer& viewer, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-8) const;
+    void display3D(Viewer& viewer, const typename Calculus::Scalar& scale = .5, const typename Calculus::Scalar& epsilon = 1e-8) const;
 
     /**
      * Clear current vector field.
