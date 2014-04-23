@@ -108,7 +108,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const S
     if (!abs_cell.myPositive)
     {
         abs_cell = kspace.sOpp(abs_cell);
-        abs_primal_size = -abs_primal_size;
+        //abs_primal_size = -abs_primal_size;
         flipped = true;
     }
 
