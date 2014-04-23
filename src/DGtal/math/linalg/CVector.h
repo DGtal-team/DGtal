@@ -95,16 +95,19 @@ public:
 
     BOOST_CONCEPT_USAGE( CVector )
     {
-        ConceptUtils::sameType(a, x(i));
-        ConceptUtils::sameType(a_ref, z(i));
-        ConceptUtils::sameType(i, x.rows());
+        Scalar& a_ref = z(i);
+        checkConstConstraints();
     }
+
+    void checkConstConstraints() const
+    {
+        Scalar a = z(i);
+        ConceptUtils::sameType(i, z.rows());
+    }
+
     // ------------------------- Private Datas --------------------------------
 private:
-    const T x;
     T z;
-    Scalar a;
-    Scalar& a_ref;
     Index i;
 
     // ------------------------- Internals ------------------------------------
