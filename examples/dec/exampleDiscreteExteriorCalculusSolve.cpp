@@ -342,6 +342,136 @@ void solve2d_dual_decomposition()
     trace.endBlock();
 }
 
+void solve2d_primal_decomposition()
+{
+    trace.beginBlock("2d discrete exterior calculus solve primal helmoltz decomposition");
+
+    const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
+
+    // create discrete exterior calculus from set
+    typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
+    Calculus calculus(generateDoubleRingSet(domain));
+    trace.info() << calculus << endl;
+
+    // choose linear solver
+    typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+
+    //! [2d_primal_decomposition_operator_definition]
+    const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+    const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
+    const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
+    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
+    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
+    const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
+    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
+    const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
+    const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
+    //! [2d_primal_decomposition_operator_definition]
+
+    //! [2d_primal_decomposition_input_field_definition]
+    Calculus::PrimalVectorField input_vector_field(calculus);
+    for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
+    {
+        const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
+        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
+        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0]+ .8*cell_center[1]);
+    }
+
+    const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
+    const Calculus::PrimalForm0 input_one_form_anti_derivated = ad1 * input_one_form;
+    const Calculus::PrimalForm2 input_one_form_derivated = d1 * input_one_form;
+    //! [2d_primal_decomposition_input_field_definition]
+
+    {
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(-1,1);
+        Board2D board;
+        board << domain;
+        Calculus::Accum accum(calculus);
+        input_one_form.applyToAccum(accum);
+        accum.display2D(board, colormap);
+        input_vector_field.display2D(board);
+        board.saveSVG("solve_2d_primal_decomposition_calculus.svg");
+    }
+
+
+    Calculus::PrimalForm0 solution_curl_free(calculus);
+    { // solve curl free problem
+        trace.beginBlock("solving curl free component");
+
+        //! [2d_primal_decomposition_curl_free_solve]
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> Solver;
+        Solver solver;
+        solver.compute(ad1 * d0);
+        solution_curl_free = solver.solve(input_one_form_anti_derivated);
+        //! [2d_primal_decomposition_curl_free_solve]
+
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
+        trace.endBlock();
+    }
+
+    {
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff());
+        Board2D board;
+        board << domain;
+        Calculus::Accum accum(calculus);
+        solution_curl_free.applyToAccum(accum);
+        accum.display2D(board, colormap);
+        calculus.sharp(d0*solution_curl_free).display2D(board);
+        board.saveSVG("solve_2d_primal_decomposition_curl_free.svg");
+    }
+
+    Calculus::PrimalForm2 solution_div_free(calculus);
+    { // solve divergence free problem
+        trace.beginBlock("solving divergence free component");
+
+        //! [2d_primal_decomposition_div_free_solve]
+        typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 2, PRIMAL, 2, PRIMAL> Solver;
+        Solver solver;
+        solver.compute(d1 * ad2);
+        solution_div_free = solver.solve(input_one_form_derivated);
+        //! [2d_primal_decomposition_div_free_solve]
+
+        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
+        trace.endBlock();
+    }
+
+    {
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff());
+        Board2D board;
+        board << domain;
+        Calculus::Accum accum(calculus);
+        solution_div_free.applyToAccum(accum);
+        accum.display2D(board, colormap);
+        calculus.sharp(ad2*solution_div_free).display2D(board);
+        board.saveSVG("solve_2d_primal_decomposition_div_free.svg");
+    }
+
+    //! [2d_primal_decomposition_solution]
+    const Calculus::PrimalForm1 solution_harmonic = input_one_form - d0*solution_curl_free - ad2*solution_div_free;
+    //! [2d_primal_decomposition_solution]
+    trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
+
+    {
+        typedef GradientColorMap<double, CMAP_JET> Colormap;
+        Colormap colormap(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff());
+        Board2D board;
+        board << domain;
+        Calculus::Accum accum(calculus);
+        solution_harmonic.applyToAccum(accum);
+        accum.display2D(board, colormap);
+        calculus.sharp(solution_harmonic).display2D(board, 10.);
+        board.saveSVG("solve_2d_primal_decomposition_harmonic.svg");
+    }
+
+    trace.endBlock();
+}
+
 void solve3d_decomposition()
 {
     trace.beginBlock("3d discrete exterior calculus solve helmoltz decomposition");
@@ -583,6 +713,7 @@ int main(int argc, char* argv[])
 
     solve2d_laplacian();
     solve2d_dual_decomposition();
+    solve2d_primal_decomposition();
     solve3d_decomposition();
 
     return app.exec();
