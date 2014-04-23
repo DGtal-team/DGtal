@@ -114,7 +114,7 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     Container myContainer;
 
     /**
-     * Pointer to const calculus
+     * Pointer to const calculus.
      */
     const Calculus* myCalculus;
 

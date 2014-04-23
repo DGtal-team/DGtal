@@ -94,10 +94,10 @@ namespace DGtal
 
     /**
      * Assignment.
-     * @param _scell_map the object to copy.
+     * @param scell_map the object to copy.
      * @return a reference on 'this'.
      */
-    AllSCellMap& operator=(const AllSCellMap& _scell_map);
+    AllSCellMap& operator=(const AllSCellMap& scell_map);
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -109,9 +109,9 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) const;
 
     /**
-     * Writes the object on an ITK image
+     * Writes the object on an ITK image.
      * @param filename the name of the file written.
-     * @param value_outside image value for non set order of cells
+     * @param value_outside image value for non set order of cells.
      * @params value_inside_default image value for cells of correct order without values.
      */
 #if defined(WITH_ITK)
@@ -145,7 +145,7 @@ namespace DGtal
   private:
 
     /**
-     * Const reference to calculus
+     * Const reference to calculus.
      */
     const Calculus* myCalculus;
 
