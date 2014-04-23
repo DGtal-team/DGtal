@@ -243,8 +243,8 @@ inline
 typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Position
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::patternLength() const
 {
-  return ( -static_cast<Position>(myShift[1]) * static_cast<Position>(myA)
-	   +static_cast<Position>(myShift[0]) * static_cast<Position>(myB) );
+  return ( -static_cast<Position>(myShift[1]) * static_cast<Position>(myB)
+	   +static_cast<Position>(myShift[0]) * static_cast<Position>(myA) );
 }
 
 //-----------------------------------------------------------------------------
