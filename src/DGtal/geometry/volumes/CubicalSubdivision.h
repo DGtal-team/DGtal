@@ -143,6 +143,7 @@ namespace DGtal
        (beware, if you push the same point several times, there are as
        many copies of this point into its bin).
 
+       @tparam PointConstIterator the type of const iterator on point.
        @param it an iterator pointing at the beginning of the range.
        @param itE an iterator pointing after the end of the range.
     */
@@ -153,7 +154,7 @@ namespace DGtal
        Pushes back in \a pts all the points in the bin domain [\a
        bin_lo, \a bin_up] which satisfy the predicate \a pred.
        
-       @tparam the type of a point predicate.
+       @tparam PointPredicate the type of a point predicate.
        @param[out] pts the vector where points are pushed back for output.
        @param bin_lo the lowest bin of the bin domain.
        @param bin_up the uppermost bin of the bin domain.
@@ -167,7 +168,6 @@ namespace DGtal
        Pushs back in \a pts all the points in the bin domain [\a
        bin_lo, \a bin_up].
        
-       @tparam the type of a point predicate.
        @param[out] pts the vector where points are pushed back for output.
        @param bin_lo the lowest bin of the bin domain.
        @param bin_up the uppermost bin of the bin domain.

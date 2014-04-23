@@ -184,14 +184,14 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
 
   public:
-    typedef TSpace Space;                         //< the type of digital space
-    typedef TSeparableMetric Metric;              //< the type of metric
-    typedef typename Space::Point Point;          //< the type of digital point
-    typedef typename Space::Size Size;            //< the type for counting elements
-    typedef typename Space::Integer Integer;      //< the type of each digital point coordinate, some integral type
-    typedef DGtal::HyperRectDomain<Space> Domain; //< the type of rectangular domain of the VCM.
-    typedef DGtal::ImageContainerBySTLVector<Domain,bool> CharacteristicSet; //< the type of a binary image that is the characteristic function of K.
-    typedef DGtal::CubicalSubdivision<Space> ProximityStructure; //< the structure used for proximity queries.
+    typedef TSpace Space;                         ///< the type of digital space
+    typedef TSeparableMetric Metric;              ///< the type of metric
+    typedef typename Space::Point Point;          ///< the type of digital point
+    typedef typename Space::Size Size;            ///< the type for counting elements
+    typedef typename Space::Integer Integer;      ///< the type of each digital point coordinate, some integral type
+    typedef DGtal::HyperRectDomain<Space> Domain; ///< the type of rectangular domain of the VCM.
+    typedef DGtal::ImageContainerBySTLVector<Domain,bool> CharacteristicSet; ///< the type of a binary image that is the characteristic function of K.
+    typedef DGtal::CubicalSubdivision<Space> ProximityStructure; ///< the structure used for proximity queries.
 
     /**
        A predicate that returns 'true' whenever the given binary image contains 'true'.
@@ -200,7 +200,7 @@ namespace DGtal
     */
     struct CharacteristicSetPredicate {
       typedef CharacteristicSetPredicate Self;
-      typedef typename Space::Point Point;          //< the type of digital point
+      typedef typename Space::Point Point;          ///< the type of digital point
       CharacteristicSetPredicate() : ptrSet( 0 ) {}
       CharacteristicSetPredicate( ConstAlias<CharacteristicSet> aSet) : ptrSet( &aSet ) {}
       CharacteristicSetPredicate( const Self& other ) : ptrSet( other.ptrSet ) {}
@@ -213,16 +213,16 @@ namespace DGtal
     private:
       const CharacteristicSet* ptrSet;
     };
-    typedef DGtal::NotPointPredicate<CharacteristicSetPredicate> NotPredicate; //< the type of the point predicate used by the voronoi map.
-    typedef DGtal::VoronoiMap<Space, NotPredicate, Metric > Voronoi; //< the type of the Voronoi map.
+    typedef DGtal::NotPointPredicate<CharacteristicSetPredicate> NotPredicate; ///< the type of the point predicate used by the voronoi map.
+    typedef DGtal::VoronoiMap<Space, NotPredicate, Metric > Voronoi; ///< the type of the Voronoi map.
 
-    typedef double Scalar;                                    //< the type for "real" numbers.
+    typedef double Scalar;                                    ///< the type for "real" numbers.
     typedef DGtal::SimpleMatrix< Scalar,
                                  Space::dimension, 
-                                 Space::dimension > MatrixNN; //< the type for nxn matrix of real numbers.
-    typedef typename MatrixNN::RowVector VectorN;             //< the type for N-vector of real numbers
-    typedef std::vector<Point> PointContainer;                //< the list of points
-    typedef std::map<Point,MatrixNN> Point2MatrixNN;          //< Associates a matrix to points.
+                                 Space::dimension > MatrixNN; ///< the type for nxn matrix of real numbers.
+    typedef typename MatrixNN::RowVector VectorN;             ///< the type for N-vector of real numbers
+    typedef std::vector<Point> PointContainer;                ///< the list of points
+    typedef std::map<Point,MatrixNN> Point2MatrixNN;          ///< Associates a matrix to points.
 
     // ----------------------- Standard services ------------------------------
   public:

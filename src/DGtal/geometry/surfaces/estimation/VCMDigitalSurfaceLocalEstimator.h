@@ -86,23 +86,23 @@ namespace DGtal
 
     // ----------------------- public types ------------------------------
   public:
-    typedef VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor> Self; //< my own type
-    typedef TDigitalSurfaceContainer DigitalSurfaceContainer; //< the chosen container
-    typedef TSeparableMetric                          Metric; //< the chosen metric
-    typedef TKernelFunction                   KernelFunction; //< the kernel function
-    typedef TVCMGeometricFunctor         VCMGeometricFunctor; //< the geometric functor (normal, principal directions)
+    typedef VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor> Self; ///< my own type
+    typedef TDigitalSurfaceContainer DigitalSurfaceContainer; ///< the chosen container
+    typedef TSeparableMetric                          Metric; ///< the chosen metric
+    typedef TKernelFunction                   KernelFunction; ///< the kernel function
+    typedef TVCMGeometricFunctor         VCMGeometricFunctor; ///< the geometric functor (normal, principal directions)
     /// the type of computing the Voronoi covariance measure on a digital surface.
     typedef VoronoiCovarianceMeasureOnDigitalSurface<DigitalSurfaceContainer, Metric, KernelFunction>
     VCMOnSurface;
-    typedef typename VCMOnSurface::Surface           Surface; //< the digital surface
+    typedef typename VCMOnSurface::Surface           Surface; ///< the digital surface
 
     // ----------------------- model of CDigitalSurfaceLocalEstimator ----------------
-    typedef typename Surface::Surfel                  Surfel; //< the signed surface element
-    typedef typename VCMGeometricFunctor::Quantity  Quantity; //< the estimation type is given by the geometric functor
+    typedef typename Surface::Surfel                  Surfel; ///< the signed surface element
+    typedef typename VCMGeometricFunctor::Quantity  Quantity; ///< the estimation type is given by the geometric functor
     // -----------------------               other types         -----------------------
-    typedef typename Surface::SCell                    SCell; //< the signed cell
-    typedef typename Surface::ConstIterator    ConstIterator; //< the iterator on surfels
-    typedef typename VCMOnSurface::Scalar             Scalar; //< the "real number" type
+    typedef typename Surface::SCell                    SCell; ///< the signed cell
+    typedef typename Surface::ConstIterator    ConstIterator; ///< the iterator on surfels
+    typedef typename VCMOnSurface::Scalar             Scalar; ///< the "real number" type
 
     // ----------------------- Standard services ------------------------------
   public:
