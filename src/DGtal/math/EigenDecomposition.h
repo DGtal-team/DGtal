@@ -88,14 +88,14 @@ namespace DGtal
 
     // ----------------------- Public types -----------------------------------
   public:
-    typedef TComponent Component;                    //< the type of each coefficient, i.e. scalar
+    typedef TComponent Component;                    ///< the type of each coefficient, i.e. scalar
     static const DGtal::Dimension M = TN;
     static const DGtal::Dimension N = TN;
-    typedef Component                   Quantity;    //< the type of scalar (i.e. Component)
-    typedef PointVector<N,Component>    RowVector;   //< the type for row vectors (1xN)
-    typedef PointVector<M,Component>    ColumnVector;//< the type for column vectors (Nx1)
-    typedef ColumnVector                Vector;      //< an alias for column vectors (Nx1)
-    typedef SimpleMatrix<Component,N,N> Matrix;      //< the type for matrices (NxN)
+    typedef Component                   Quantity;    ///< the type of scalar (i.e. Component)
+    typedef PointVector<N,Component>    RowVector;   ///< the type for row vectors (1xN)
+    typedef PointVector<M,Component>    ColumnVector;///< the type for column vectors (Nx1)
+    typedef ColumnVector                Vector;      ///< an alias for column vectors (Nx1)
+    typedef SimpleMatrix<Component,N,N> Matrix;      ///< the type for matrices (NxN)
 
  
     // ----------------------- Static constants ------------------------------

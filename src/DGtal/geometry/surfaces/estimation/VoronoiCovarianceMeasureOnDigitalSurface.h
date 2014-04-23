@@ -88,36 +88,36 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
     // ----------------------- public types ------------------------------
   public:
-    typedef TDigitalSurfaceContainer DigitalSurfaceContainer; //< the chosen container
-    typedef TSeparableMetric                         Metric;  //< the chosen metric
-    typedef TKernelFunction                  KernelFunction;  //< the kernel function
-    typedef DigitalSurface<DigitalSurfaceContainer> Surface;  //< the chosen digital surface
-    typedef typename DigitalSurfaceContainer::KSpace KSpace;  //< the cellular space
-    typedef typename DigitalSurfaceContainer::Surfel Surfel;  //< the n-1 cells
-    typedef typename KSpace::SCell                    SCell;  //< the signed cells
-    typedef typename KSpace::Space                    Space;  //< the digital space
-    typedef typename KSpace::Point                    Point;  //< the digital points
-    typedef VoronoiCovarianceMeasure<Space,Metric>      VCM;  //< the Voronoi Covariance Measure
-    typedef typename VCM::Scalar                     Scalar;  //< the "real number" type
-    typedef typename Surface::ConstIterator   ConstIterator;  //< the iterator for traversing the surface
-    typedef EigenDecomposition<KSpace::dimension,Scalar> LinearAlgebraTool;  //< diagonalizer (nD).
-    typedef typename VCM::VectorN                   VectorN;  //< n-dimensional R-vector
-    typedef typename VCM::MatrixNN                 MatrixNN;  //< nxn R-matrix
+    typedef TDigitalSurfaceContainer DigitalSurfaceContainer; ///< the chosen container
+    typedef TSeparableMetric                         Metric;  ///< the chosen metric
+    typedef TKernelFunction                  KernelFunction;  ///< the kernel function
+    typedef DigitalSurface<DigitalSurfaceContainer> Surface;  ///< the chosen digital surface
+    typedef typename DigitalSurfaceContainer::KSpace KSpace;  ///< the cellular space
+    typedef typename DigitalSurfaceContainer::Surfel Surfel;  ///< the n-1 cells
+    typedef typename KSpace::SCell                    SCell;  ///< the signed cells
+    typedef typename KSpace::Space                    Space;  ///< the digital space
+    typedef typename KSpace::Point                    Point;  ///< the digital points
+    typedef VoronoiCovarianceMeasure<Space,Metric>      VCM;  ///< the Voronoi Covariance Measure
+    typedef typename VCM::Scalar                     Scalar;  ///< the "real number" type
+    typedef typename Surface::ConstIterator   ConstIterator;  ///< the iterator for traversing the surface
+    typedef EigenDecomposition<KSpace::dimension,Scalar> LinearAlgebraTool;  ///< diagonalizer (nD).
+    typedef typename VCM::VectorN                   VectorN;  ///< n-dimensional R-vector
+    typedef typename VCM::MatrixNN                 MatrixNN;  ///< nxn R-matrix
 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<KernelFunction, Point, Scalar> ));
 
     /// Structure to hold a diagonalized matrix.
     struct EigenStructure {
-      VectorN values;   //< eigenvalues from the smallest to the biggest
-      MatrixNN vectors; //< corresponding eigenvectors
+      VectorN values;   ///< eigenvalues from the smallest to the biggest
+      MatrixNN vectors; ///< corresponding eigenvectors
     };
     /// Structure to hold the normals for each surfel (the VCM one and the trivial one).
     struct Normals {
       VectorN vcmNormal;
       VectorN trivialNormal;
     };
-    typedef std::map<Point,EigenStructure> Point2EigenStructure;  //< the map Point -> EigenStructure
-    typedef std::map<Surfel,Normals>           Surfel2Normals;   //< the map Surfel -> Normals
+    typedef std::map<Point,EigenStructure> Point2EigenStructure;  ///< the map Point -> EigenStructure
+    typedef std::map<Surfel,Normals>           Surfel2Normals;    ///< the map Surfel -> Normals
 
     // ----------------------- Standard services ------------------------------
   public:
