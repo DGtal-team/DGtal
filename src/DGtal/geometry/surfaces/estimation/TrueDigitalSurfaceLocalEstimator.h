@@ -203,7 +203,7 @@ namespace DGtal
                          OutputIterator result ) const;
 
     /**
-       @param any surfel.
+       @param surfel any surfel.
        @return the associated point on the shape (the one that is closest to its centroid).
     */
     RealPoint embed( Surfel surfel ) const;

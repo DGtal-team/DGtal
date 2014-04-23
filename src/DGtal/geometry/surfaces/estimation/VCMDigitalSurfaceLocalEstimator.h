@@ -73,7 +73,7 @@ namespace DGtal
    * @tparam TKernelFunction the type of the kernel function chi_r used
    * for integrating the VCM, a map: Point -> Scalar.
    *
-   * @tparam TGeometricFunctor the type of the functor Surfel ->
+   * @tparam TVCMGeometricFunctor the type of the functor Surfel ->
    * Quantity which chooses what is the returned estimation. Any
    * VCMGeometricFunctors::VCMNormalVectorFunctor, ... is ok.
    */
