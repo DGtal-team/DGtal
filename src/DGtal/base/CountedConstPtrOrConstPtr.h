@@ -181,8 +181,8 @@ namespace DGtal
     /**
        Equality operator ==
        
-       @param p any other pointer.
-       @return 'true' if pointed address is equal to \a p.
+       @param other any other pointer.
+       @return 'true' if pointed address is equal to \a other.
     */
     bool operator==( const T* other ) const
     {
@@ -192,8 +192,8 @@ namespace DGtal
     /**
        Inequality operator !=
        
-       @param p any other pointer.
-       @return 'true' if pointed address is different from \a p.
+       @param other any other pointer.
+       @return 'true' if pointed address is different from \a other.
     */
     bool operator!=( const T* other ) const
     {
