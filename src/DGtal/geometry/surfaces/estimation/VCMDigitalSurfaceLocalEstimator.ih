@@ -156,14 +156,14 @@ template <typename SurfelConstIterator>
 inline
 void
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
-init( const Scalar h, 
+init( const Scalar _h, 
       SurfelConstIterator /* itb */,
       SurfelConstIterator /* ite */ )
 {
   ASSERT( mySurface != 0 );
   ASSERT( myVCMOnSurface != 0 );
   // Unused. The VCM is necessarily initialized on the whole surface.
-  myH = h;
+  myH = _h;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
