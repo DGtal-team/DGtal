@@ -188,17 +188,18 @@ namespace DGtal
                     const Scalar t = 2.5, Metric aMetric = Metric(), bool verbose = true );
 
     /**
-     * Model of CDigitalSurfaceLocalEstimator. Initialisation.
-     * Unused. The VCM is necessarily initialized on the whole surface
-     * and \a h is not used for normal estimation.
+     * Model of CDigitalSurfaceLocalEstimator. Initialisation.  Only
+     * used for storing gridstep and checking object validity. The VCM
+     * is necessarily initialized on the whole surface and \a _h is
+     * not used for normal estimation.
      *
      * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
-     * @param[in] h grid size (must be >0).
+     * @param[in] _h grid size (must be >0).
      * @param[in] ite iterator on the first surfel of the surface.
      * @param[in] itb iterator after the last surfel of the surface.
      */
     template <typename SurfelConstIterator>
-    void init( const Scalar h, 
+    void init( const Scalar _h, 
                SurfelConstIterator itb,
                SurfelConstIterator ite );
 
