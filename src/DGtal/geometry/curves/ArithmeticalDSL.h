@@ -46,7 +46,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/CSignedNumber.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
