@@ -475,7 +475,7 @@ void solve3d_decomposition()
 {
     trace.beginBlock("3d discrete exterior calculus solve helmoltz decomposition");
 
-    const Z3i::Domain domain(Z3i::Point(0,0,0), Z3i::Point(9,9,4));
+    const Z3i::Domain domain(Z3i::Point(0,0,0), Z3i::Point(19,19,9));
 
     // choose linear solver
     typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
@@ -485,89 +485,80 @@ void solve3d_decomposition()
     Calculus calculus(domain);
 
     // outer ring
-    for (int kk=2; kk<=8; kk++)
-        for (int ll=4; ll<=16; ll++)
+    for (int kk=2; kk<=18; kk++)
+        for (int ll=4; ll<=36; ll++)
         {
             Calculus::SCell cell;
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4,kk));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,16,kk));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(ll,36,kk));
+            calculus.insertSCell( cell, 1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(4,ll,kk));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(16,ll,kk));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(36,ll,kk));
+            calculus.insertSCell( cell, 1 );
         }
 
     // inner ring
-    for (int kk=2; kk<=8; kk++)
-        for (int ll=8; ll<=12; ll++)
+    for (int kk=2; kk<=18; kk++)
+        for (int ll=16; ll<=24; ll++)
         {
             Calculus::SCell cell;
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,8,kk));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(ll,16,kk));
+            calculus.insertSCell( cell, 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,12,kk));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(ll,24,kk));
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(8,ll,kk));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(16,ll,kk));
+            calculus.insertSCell( cell, 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(12,ll,kk));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(24,ll,kk));
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
         }
 
     // top and bottom
-    for (int kk=4; kk<=16; kk++)
-        for (int ll=0; ll<=4; ll++)
+    for (int kk=4; kk<=36; kk++)
+        for (int ll=0; ll<=12; ll++)
         {
             Calculus::SCell cell;
 
             cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,2));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,8));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,18));
+            calculus.insertSCell( cell, 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(12+ll,kk,2));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(24+ll,kk,2));
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(12+ll,kk,8));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(24+ll,kk,18));
+            calculus.insertSCell( cell, 1 );
         }
 
     // top and bottom
-    for (int kk=0; kk<=4; kk++)
-        for (int ll=8; ll<=12; ll++)
+    for (int kk=0; kk<=12; kk++)
+        for (int ll=16; ll<=24; ll++)
         {
             Calculus::SCell cell;
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,2));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,8));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,18));
+            calculus.insertSCell( cell, 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,12+kk,2));
-            if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(ll,24+kk,2));
+            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,12+kk,8));
-            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
+            cell = calculus.kspace.sCell(Z3i::Point(ll,24+kk,18));
+            calculus.insertSCell( cell, 1 );
         }
-
 
     trace.info() << calculus << endl;
 
