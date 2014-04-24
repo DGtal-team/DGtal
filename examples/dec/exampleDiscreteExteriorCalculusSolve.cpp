@@ -555,17 +555,17 @@ void solve3d_decomposition()
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,2));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,8));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,12+kk,2));
             if ( calculus.kspace.sDim(cell) == 2 ) cell = calculus.kspace.sOpp(cell);
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,12+kk,8));
-            calculus.insertSCell( cell );
+            calculus.insertSCell( cell, cell.myPositive ? 1 : -1 );
         }
 
 
@@ -575,6 +575,7 @@ void solve3d_decomposition()
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
+        viewer->setWindowTitle("structure");
         (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
         (*viewer) << domain;
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -616,6 +617,7 @@ void solve3d_decomposition()
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
+        viewer->setWindowTitle("input vector field");
         typedef GradientColorMap<double, CMAP_JET> Colormap;
         Colormap colormap(-1,1);
         Calculus::Accum accum(calculus);
@@ -647,6 +649,7 @@ void solve3d_decomposition()
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
+        viewer->setWindowTitle("curl free solution");
         typedef GradientColorMap<double, CMAP_JET> Colormap;
         Colormap colormap(solution_curl_free.myContainer.minCoeff(), solution_curl_free.myContainer.maxCoeff());
         Calculus::Accum accum(calculus);
@@ -676,6 +679,7 @@ void solve3d_decomposition()
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
+        viewer->setWindowTitle("div free solution");
         typedef GradientColorMap<double, CMAP_JET> Colormap;
         Colormap colormap(solution_div_free.myContainer.minCoeff(), solution_div_free.myContainer.maxCoeff());
         Calculus::Accum accum(calculus);
@@ -694,6 +698,7 @@ void solve3d_decomposition()
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
+        viewer->setWindowTitle("harmonic");
         typedef GradientColorMap<double, CMAP_JET> Colormap;
         Colormap colormap(solution_harmonic.myContainer.minCoeff(), solution_harmonic.myContainer.maxCoeff());
         Calculus::Accum accum(calculus);
