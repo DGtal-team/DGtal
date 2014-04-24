@@ -222,6 +222,12 @@ namespace DGtal
                          SurfelConstIterator ite,
                          OutputIterator result ) const;
 
+    /**
+       @return the gridstep. 
+       @pre must be called after init
+    */
+    Scalar h() const;
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -247,6 +253,8 @@ namespace DGtal
     CountedConstPtrOrConstPtr<VCMOnSurface> myVCMOnSurface;
     /// The geometric functor
     VCMGeometricFunctor myGeomFct;
+    /// The gridstep
+    Scalar myH;
 
     // ------------------------- Private Datas --------------------------------
   private:

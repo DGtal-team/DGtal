@@ -56,7 +56,8 @@ VCMDigitalSurfaceLocalEstimator()
   : mySurface( 0 ), 
     mySurfelEmbedding( InnerSpel ),
     myVCMOnSurface( 0 ),
-    myGeomFct()
+    myGeomFct(),
+    myH( 1.0 )
 {
 }
 
@@ -69,7 +70,8 @@ VCMDigitalSurfaceLocalEstimator( const Self& other )
   : mySurface( other.mySurface ), 
     mySurfelEmbedding( other.mySurfelEmbedding ),
     myVCMOnSurface( other.myVCMOnSurface ),
-    myGeomFct( other.myGeomFct )
+    myGeomFct( other.myGeomFct ),
+    myH( other.myH )
 {
 }
 
@@ -87,6 +89,7 @@ operator=( const Self& other )
       mySurfelEmbedding = other.mySurfelEmbedding;
       myVCMOnSurface = other.myVCMOnSurface;    
       myGeomFct = other.myGeomFct;
+      myH = other.myH;
     }
   return *this;
 }
@@ -100,7 +103,8 @@ VCMDigitalSurfaceLocalEstimator( ConstAlias< VCMOnSurface > vcmSurface )
   : mySurface( vcmSurface->surface() ), 
     mySurfelEmbedding( vcmSurface->surfelEmbedding() ),
     myVCMOnSurface( vcmSurface ),
-    myGeomFct( vcmSurface )
+    myGeomFct( vcmSurface ),
+    myH( 1.0 )
 {
 }
 //-----------------------------------------------------------------------------
@@ -112,7 +116,8 @@ VCMDigitalSurfaceLocalEstimator( ConstAlias< Surface > surface )
   : mySurface( surface ), 
     mySurfelEmbedding( InnerSpel ),
     myVCMOnSurface( 0 ),
-    myGeomFct()
+    myGeomFct(),
+    myH( 1.0 )
 {
 }
 
@@ -151,13 +156,14 @@ template <typename SurfelConstIterator>
 inline
 void
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
-init( const Scalar /* h */, 
+init( const Scalar h, 
       SurfelConstIterator /* itb */,
       SurfelConstIterator /* ite */ )
 {
   ASSERT( mySurface != 0 );
   ASSERT( myVCMOnSurface != 0 );
   // Unused. The VCM is necessarily initialized on the whole surface.
+  myH = h;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
@@ -194,6 +200,17 @@ eval( SurfelConstIterator itb,
       *result++ = myGeomFct( *itb );
     }
   return result;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
+          typename TKernelFunction, typename TVCMGeometricFunctor>
+inline
+typename DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::Scalar
+DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
+h() const
+{
+  return myH;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
