@@ -27,20 +27,20 @@ namespace DGtal {
 
 Using the DEC package, one can solve any equation of the type:
 
-\f$ f(x) = y \f$
+\f[ f(x) = y \f]
 
 where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
 k-forms are represented using KForm classes and linear operators are represented by LinearOperator classes.
 One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative, DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge.
 Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and laplacian \f$\Delta\f$ can be easily expressed with those operators:
 
-\f$\nabla x = ( d x )^\sharp \f$
+\f[\nabla x = ( d x )^\sharp \f]
 
-\f$\nabla\cdot x = \star d \star x^\flat \f$
+\f[\nabla\cdot x = \star d \star x^\flat \f]
 
-\f$\nabla\wedge x = ( \star d x^\flat )^\sharp \f$
+\f[\nabla\wedge x = ( \star d x^\flat )^\sharp \f]
 
-\f$\Delta x = \star d \star d x \f$
+\f[\Delta x = \star d \star d x \f]
 
 Recall that \f$\flat\f$ and \f$\sharp\f$ are operators that turn a vector field into a 1-form and the other way around.
 Those operator are linear but don't transform k-forms into k-forms and therefore can't be represented by LinearOperator.
@@ -66,28 +66,36 @@ If there was a problem, it can be further investigated by direct access to the l
 
 \section sectDECSolve3 Poisson equation example
 
+First the structure is created from a digital set. Here we used the EigenSparseLinearAlgebraBackend.
+
 \snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
+
+Then the linear operator is defined. It is a regularized Laplace operator on dual 0-cells.
+
+\f[ f = \Delta + \lambda I \f]
+
+where \f$I\f$ is the identity operator and is generated using DiscreteExteriorCalculusSolver.identity.
+
 \snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp laplacian_definition
+
+Input k-form \f$y\f$ is a Dirac delta positioned on the dual 0-cell at coordinates \f$(2,5)\f$.
+Dual 0-cells are created by KhalimskySpaceND.sSpel.
+DiscreteExteriorCalculus.getIndex return the index of the dual 0-form container associated with the dirac position cell.
+
 \snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp dirac_definition
-\image html solve_calculus.png "DEC structure with input Dirac."
+\image html solve_calculus.png "DEC structure with input dual 0-form."
+
+We tried to solve the problem using EigenSparseLinearAlgebraBackend::SolverSimplicialLLT, but it DiscreteExteriorCalculusSolver.isValid() reports an error.
+Underlying linear algebra solver DiscreteExteriorCalculusSolver.solver reports a 'numerical_error'.
 
 \snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_llt
-\image html solve_simplicial_llt.png "Poisson problem solution computed with simplicial LLT solver."
+\image html solve_simplicial_llt.png "Poisson problem solution computed with simplicial LLT solver. Solver reports a numerical error."
+
+Since the first solver we used failed, let's use another one: EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT for example.
+This time DiscreteExteriorCalculusSolver.isValid is true after computing problem solution and the solution dual 0-form contains the solution of the problem.
 
 \snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_ldlt
-\image html solve_simplicial_ldlt.png "Poisson problem solution computed with simplicial LDLT solver."
-
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_conjugate_gradient
-\image html solve_conjugate_gradient.png "Poisson problem solution computed with conjugate gradient solver."
-
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_biconjugate_gradient
-\image html solve_bicgstab.png "Poisson problem solution computed with biconjugate gradient solver."
-
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_sparse_lu
-\image html solve_sparse_lu.png "Poisson problem solution computed with sparse LU solver."
-
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_sparse_qr
-\image html solve_sparse_qr.png "Poisson problem solution computed with sparse QR solver."
+\image html solve_simplicial_ldlt.png "Poisson problem solution computed with simplicial LDLT solver. Solver solution is valid."
 
 */
 

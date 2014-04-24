@@ -28,7 +28,7 @@ void solve2d_laplacian()
     Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
     Calculus::DualHodge1 hodge1 = calculus.dualHodge<1>();
     Calculus::PrimalHodge2 hodge2p = calculus.primalHodge<2>();
-    Calculus::DualIdentity0 laplacian = hodge2p *d1p * hodge1 * d0 + 0.1 * calculus.identity<0, DUAL>();
+    Calculus::DualIdentity0 laplacian = hodge2p * d1p * hodge1 * d0 + 0.01 * calculus.identity<0, DUAL>();
     //! [laplacian_definition]
     trace.info() << "d0 = " << d0 << endl;
     trace.info() << "hodge1 = " << hodge1 << endl;
@@ -40,7 +40,6 @@ void solve2d_laplacian()
     Calculus::DualForm0 dirac(calculus);
     dirac.myContainer(calculus.getIndex(calculus.kspace.sSpel(Z2i::Point(2,5)))) = 1;
     //! [dirac_definition]
-    //dirac.myContainer(5) = 1;
 
     {
         typedef GradientColorMap<double, CMAP_JET> Colormap;
@@ -63,9 +62,9 @@ void solve2d_laplacian()
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
-        //! [solve_llt]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        //! [solve_llt]
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -89,9 +88,9 @@ void solve2d_laplacian()
         Solver solver;
         solver.compute(laplacian);
         Calculus::DualForm0 solution = solver.solve(dirac);
-        //! [solve_ldlt]
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        //! [solve_ldlt]
         trace.info() << solution << endl;
         trace.endBlock();
 

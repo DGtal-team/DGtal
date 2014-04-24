@@ -33,7 +33,7 @@ Therefore the DEC structure shouldn't be modified when doing linear algebra calc
 In this problem, we create an 1D linear structure embedded in a 2D space and we want to solve a Poisson equation on this structure.
 The Poisson equation can be written as:
 
-\f$ \Delta \phi = f \f$
+\f[ \Delta \phi = f \f]
 
 where \f$\Delta\f$ is the laplacian operator, \f$\phi\f$ the solution of the problem and \f$f\f$ the input of the problem.
 The Poisson equation can be viewed as the heat equation when permanent regime is reached.
@@ -42,12 +42,12 @@ Here we choose \f$f\f$ to be a Dirac delta function \f$\delta\f$ to simulation a
 
 Boundary conditions will change to result on the problem.
 The two classical boundary conditions are:
-- Neumann boundary condition force the derivative to be null along the border of the structure. Here, this means that heat can't flow out the start and the end of the linear structure.
-- Dirichlet boundary condition connect borders of the structure to null potential. With own heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
+- Neumann boundary condition forces the derivative to be null along the border of the structure. Here, this means that heat can't flow out the start and the end of the linear structure.
+- Dirichlet boundary condition connects borders of the structure to null potential. With own heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
 
 Using the DEC package in 2D, one can define the laplacian using Hodge duality operators \f$\star\f$ and exterior derivative operators \f$d\f$.
 
-\f$ \Delta = \star_2' d_1' \star_1 d_0 \f$
+\f[ \Delta = \star_2' d_1' \star_1 d_0 \f]
 
 We show how to solve this problem and  how to change boundary conditions between Neumann and Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
 
@@ -110,14 +110,16 @@ Note that the code is the same as for the Neumann case.
 \snippet ../tests/dec/testLinearStructure.cpp dirichlet-laplacian-definition
 
 Solving the problem is achieved by using the same code as for the Neumann case.
+This time to analytical solution is piece-wise linear and take a constant null value at the border of the structure, as expect from the Dirichlet boundary condition.
 
 \snippet ../tests/dec/testLinearStructure.cpp dirichlet-solve
 
+Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
+
 \image html linear_structure_dirichlet_solution.png "Linear structure with Dirichlet boundary conditions. Solution 0-form is displayed."
 \image html linear_structure_dirichlet_solution_gradient.png "Linear structure with Dirichlet boundary conditions. Gradient 1-form and vector field are displayed."
-\image html linear_structure_dirichlet_fit.png "Numerical values computed using the solver and analytic solution for the Dirichlet problem."
+\image html linear_structure_dirichlet_fit.png "Numerical and analytic solution for the Dirichlet problem."
 
-Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
 
 */
 
