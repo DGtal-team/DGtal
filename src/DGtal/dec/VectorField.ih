@@ -144,7 +144,7 @@ DGtal::VectorField<Calculus, duality>::display3D(Viewer& viewer, const typename 
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
 #if defined(WITH_VISU3D_QGLVIEWER)
-    viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
+    viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
 
     for (typename Calculus::Index index=0; index<myCalculus->kFormLength(0, duality); index++)
     {
