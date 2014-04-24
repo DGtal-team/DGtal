@@ -81,6 +81,7 @@ namespace DGtal
      | Initialization | x.init( \e h, \e itb, \e ite )         |   | void                         | \e h > 0        | Grid step and range initialization in [\e itb,\e ite)        |   | model dependent |
      | Evaluation     | x.eval( \e it )                  |   | Quantity                     |              | Estimation of the quantity at \e \e it, which must belong to [\e itb,\e ite) |   | model dependent |
      | Evaluation     | \e ito = x.eval( \e itb2, \e ite2, \e ito ) |   | a model of output iterator   |              | Estimation for each element of [\e itb2, \e ite2), which must be a subrange of or the whole range [\e itb,\e ite) |   | model dependent |
+     | gridstep  accessor | x.h()                     |   | double                       |              | Accessor to the gridstep  value |   | O(1) |
 
      ### Invariants
 
@@ -116,6 +117,11 @@ namespace DGtal
 
       ConceptUtils::sameType( myQ, myX.eval( myItb ) );
       ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
+      check_const_constraints();
+    }
+    void check_const_constraints() const
+    {
+      ConceptUtils::sameType( myH, myX.h() );
     }
 
     // ------------------------- Private Datas --------------------------------
