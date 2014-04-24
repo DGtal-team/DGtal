@@ -778,8 +778,10 @@ namespace DGtal
     template <typename TInput, typename TOutput >
     struct toCoordinateImpl
     {
-      BOOST_CONCEPT_ASSERT(( CSignedInteger<TInput> ));
-      BOOST_CONCEPT_ASSERT(( CSignedInteger<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TInput> ));
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TInput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
       /**
        * cast operator
        * @return the conversion of @a aInput into an object of type TOutput.
@@ -794,7 +796,8 @@ namespace DGtal
     template <typename TOutput>
     struct toCoordinateImpl<DGtal::BigInteger, TOutput>
     {
-      BOOST_CONCEPT_ASSERT(( CSignedInteger<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
 
       inline
       static TOutput cast(const DGtal::BigInteger& aInput)
