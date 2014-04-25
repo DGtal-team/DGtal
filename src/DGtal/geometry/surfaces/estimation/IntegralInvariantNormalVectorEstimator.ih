@@ -1,0 +1,425 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file IntegralInvariantNormalVectorEstimator.ih
+ * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
+ * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
+ *
+ * @date 2012/04/19
+ *
+ * Implementation of inline methods defined in IntegralInvariantNormalVectorEstimator.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+~IntegralInvariantNormalVectorEstimator()
+{
+  for( unsigned int i = 0; i < myKernelsSet.size(); ++i )
+    delete myKernelsSet[ i ];
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+IntegralInvariantNormalVectorEstimator()
+  : myKernelFunctor(NumberTraits<Quantity>::ONE),
+    myKernels(), myKernelsSet(),
+    myKernel( 0 ), myDigKernel( 0 ), myConvolver( 0 ),
+    myH( 1.0 ), myRadius( 0.0 )
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+IntegralInvariantNormalVectorEstimator
+( ConstAlias< KSpace > K, ConstAlias< ShapeSpelFunctor > aShapeSpelFunctor )
+  : myKernelFunctor(NumberTraits<Quantity>::ONE),
+    myKernels(), myKernelsSet(),
+    myKernel( 0 ), myDigKernel( 0 ),
+    myConvolver( new Convolver( aShapeSpelFunctor, myKernelFunctor, K ) ), // acquired
+    myH( 1.0 ), myRadius( 0.0 )
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+IntegralInvariantNormalVectorEstimator
+( const Self& other )
+  : myKernelFunctor( other.myKernelFunctor ),
+    myKernels( other.myKernels ), myKernelsSet( other.myKernelsSet ),
+    myKernel( other.myKernel ), myDigKernel( other.myDigKernel ), myConvolver( other.myConvolver ),
+    myH( other.myH ), myRadius( other.myRadius )
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::Self&
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+IntegralInvariantNormalVectorEstimator
+operator= ( const Self& other )
+{
+  if ( this != &other )
+    {
+      myKernelFunctor = other.myKernelFunctor;
+      myKernels = other.myKernels;
+      myKernelsSet = other.myKernelsSet;
+      myKernel = other.myKernel;
+      myDigKernel = other.myDigKernel;
+      myConvolver = other.myConvolver;
+      myH = other.myH;
+      myRadius = other.myRadius;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::Scalar
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+h() const
+{ 
+  return myH;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+attach
+( ConstAlias< KSpace > K, 
+  ConstAlias<ShapeSpelFunctor> aShapeSpelFunctor )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::
+setParams
+( const double re )
+{
+}
+
+
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::init ( const double _h, const double re )
+{
+    trace.error() << "Not available yet.";
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double re )
+{
+    h = _h;
+    radius = re;
+
+    meanFunctor.init( h, radius );
+
+    RealPoint rOrigin = RealPoint ( 0.0, 0.0 );
+    Domain::Point pOrigin = Domain::Point( 0, 0 );
+    kernel = new KernelSupport( rOrigin, radius );
+    digKernel = new DigitalShapeKernel();
+    digKernel->attach( *kernel );
+    digKernel->init( kernel->getLowerBound(), kernel->getUpperBound(), h );
+
+    kernels = std::vector< PairIterators > ( 9 );
+    kernelsSet = std::vector< DigitalSet* >( 9 );
+
+    /// Computation of shifting masks
+    for( int y = -1; y <= 1; ++y )
+    {
+        for( int x = -1; x <= 1; ++x )
+        {
+            unsigned int offset = ( x + 1 ) + (( y + 1 ) * 3 );
+
+            if( offset == 4 ) // Full kernel, already done
+            {
+                continue;
+            }
+            else
+            {
+                RealPoint shiftPoint = rOrigin + RealPoint( x * h , y * h );
+                KernelSupport * kernelShifted = new KernelSupport( shiftPoint, radius );
+
+                EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted );
+                DigitalShape digCurrent;
+                digCurrent.attach( *current );
+                digCurrent.init( kernel->getLowerBound(), kernel->getUpperBound(), h );
+
+                kernelsSet[ offset ] = new DigitalSet( digCurrent.getDomain() );
+                Shapes< Domain>::digitalShaper ( *(kernelsSet[ offset ]), digCurrent );
+
+                kernels[ offset ].first = kernelsSet[ offset ]->begin();
+                kernels[ offset ].second = kernelsSet[ offset ]->end();
+
+                delete current;
+                delete kernelShifted;
+            }
+        }
+    }
+    /// End of computation of masks
+
+    myConvolver.init( pOrigin, digKernel, kernels );
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double re )
+{
+    h = _h;
+    radius =  re;
+
+    meanFunctor.init( h, radius );
+
+    RealPoint rOrigin = RealPoint ( 0.0, 0.0, 0.0 );
+    Domain::Point pOrigin = Domain::Point( 0, 0, 0 );
+    kernel = new KernelSupport( rOrigin, radius );
+    digKernel = new DigitalShapeKernel();
+    digKernel->attach( *kernel );
+    digKernel->init( kernel->getLowerBound(), kernel->getUpperBound(), h );
+
+    kernels = std::vector< PairIterators >( 27 );
+    kernelsSet = std::vector< DigitalSet* >( 27 );
+
+    /// Computation of masks
+    for( int z = -1; z <= 1; ++z )
+    {
+        for( int y = -1; y <= 1; ++y )
+        {
+            for( int x = -1; x <= 1; ++x )
+            {
+                unsigned int offset = ( x + 1 ) + (( y + 1 ) * 3 ) + (( z + 1 ) * 9 );
+
+                if( offset == 13 ) // Full kernel
+                {
+                    continue;
+                }
+                else
+                {
+                    RealPoint shiftPoint = rOrigin + RealPoint( x * h, y * h, z * h );
+                    KernelSupport * kernelShifted = new KernelSupport( shiftPoint, radius );
+
+                    EuclideanMinus * current = new EuclideanMinus( *kernel, *kernelShifted );
+                    DigitalShape digCurrent;
+                    digCurrent.attach( *current );
+                    digCurrent.init( kernel->getLowerBound(), kernel->getUpperBound(), h );
+
+                    kernelsSet[ offset ] = new DigitalSet( digCurrent.getDomain() );
+                    Shapes< Domain>::digitalShaper ( *(kernelsSet[ offset ]), digCurrent );
+
+                    kernels[ offset ].first = kernelsSet[ offset ]->begin();
+                    kernels[ offset ].second = kernelsSet[ offset ]->end();
+
+                    delete current;
+                    delete kernelShifted;
+                }
+            }
+        }
+    }
+    /// End of computation of masks
+
+    myConvolver.init( pOrigin, digKernel, kernels );
+}
+
+
+
+
+
+
+template <typename TKSpace, typename TShapeSpelFunctor>
+template <typename SurfelIterator>
+inline
+typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::Quantity
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::eval ( const SurfelIterator & it ) const
+{
+    Quantity measure;
+    trace.error() << "Not available yet.";
+    return measure;
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+template <typename SurfelIterator>
+inline
+typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 2>::Quantity
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & it ) const
+{
+
+    Quantity measure = ( Quantity )myConvolver.eval( it );
+    return meanFunctor( measure );
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+template <typename SurfelIterator>
+inline
+typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 3>::Quantity
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & it ) const
+{
+    Quantity measure = ( Quantity )myConvolver.eval( it );
+    return meanFunctor( measure );
+}
+
+
+
+
+
+template <typename TKSpace, typename TShapeSpelFunctor>
+template <typename SurfelIterator, typename OutputIterator>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::eval ( const SurfelIterator & itb,
+                                                                                          const SurfelIterator & ite,
+                                                                                          OutputIterator & result ) const
+{
+    trace.error() << "IntegralInvariantNormalVectorEstimator@eval() : Not available yet.";
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+template <typename SurfelIterator, typename OutputIterator>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & itb,
+                                                                                  const SurfelIterator & ite,
+                                                                                  OutputIterator & result ) const
+{
+    myConvolver.eval( itb, ite, result, meanFunctor );
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+template <typename SurfelIterator, typename OutputIterator>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & itb,
+                                                                                  const SurfelIterator & ite,
+                                                                                  OutputIterator & result ) const
+{
+    myConvolver.eval( itb, ite, result, meanFunctor );
+}
+
+
+
+
+
+
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::selfDisplay ( std::ostream & out ) const
+{
+    out << "[IntegralInvariantNormalVectorEstimator]";
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 2>::selfDisplay ( std::ostream & out ) const
+{
+    out << "[IntegralInvariantNormalVectorEstimator]";
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+void
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 3>::selfDisplay ( std::ostream & out ) const
+{
+    out << "[IntegralInvariantNormalVectorEstimator]";
+}
+
+
+
+
+
+
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+bool
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor>::isValid() const
+{
+    return true;
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+bool
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 2>::isValid() const
+{
+    return true;
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+bool
+DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 3>::isValid() const
+{
+    return true;
+}
+
+
+
+
+
+
+template <typename TKSpace, typename TShapeSpelFunctor>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, const IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor> & object )
+{
+    object.selfDisplay( out );
+    return out;
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, const IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 2> & object )
+{
+    object.selfDisplay( out );
+    return out;
+}
+
+template <typename TKSpace, typename TShapeFunctor>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, const IntegralInvariantNormalVectorEstimator<TKSpace, TShapeFunctor, 3> & object )
+{
+    object.selfDisplay( out );
+    return out;
+}

@@ -194,7 +194,7 @@ namespace DGtal
      * @return the estimated quantity in the range [itb,ite)
      * @param [in] itb starting surfel iterator.
      * @param [in] ite end surfel iterator.
-     * @param [in,out] result resulting output iterator
+     * @param [in] result resulting output iterator
      *
      */
     template <typename OutputIterator, typename SurfelConstIterator>

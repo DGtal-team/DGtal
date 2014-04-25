@@ -73,11 +73,12 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
+    typedef FunctorOnCells<TFunctorOnPoints, TKSpace> Self;
     typedef TFunctorOnPoints FunctorOnPoints;
+    typedef TKSpace KSpace;
     typedef int Quantity;
     typedef typename FunctorOnPoints::Point Point;
     typedef typename FunctorOnPoints::Value Value;
-    typedef TKSpace KSpace;
     typedef typename KSpace::SCell Cell;
 
     BOOST_CONCEPT_ASSERT(( CPointFunctor< FunctorOnPoints > ));
@@ -139,6 +140,14 @@ namespace DGtal
           myKSpace = other.myKSpace;
         }
       return *this;
+    }
+
+    /**
+    * @return the cellular grid space in which cells are defined.
+    */
+    const KSpace& space() const
+    {
+      return *myKSpace;
     }
 
     // ------------------------- Protected Datas ------------------------------
