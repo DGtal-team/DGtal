@@ -792,6 +792,7 @@ namespace DGtal
 	return static_cast<TOutput>(aInput);
       }
     };
+#ifdef WITH_BIGINTEGER
     //specialized versions for DGtal::BigInteger
     template <typename TOutput>
     struct toCoordinateImpl<DGtal::BigInteger, TOutput>
@@ -817,6 +818,7 @@ namespace DGtal
 	return aInput; 
       }
     };
+#endif
 
   } //namespace detail
 
