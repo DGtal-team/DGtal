@@ -46,7 +46,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/CSignedNumber.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
@@ -778,8 +778,10 @@ namespace DGtal
     template <typename TInput, typename TOutput >
     struct toCoordinateImpl
     {
-      BOOST_CONCEPT_ASSERT(( CSignedInteger<TInput> ));
-      BOOST_CONCEPT_ASSERT(( CSignedInteger<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TInput> ));
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TInput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
       /**
        * cast operator
        * @return the conversion of @a aInput into an object of type TOutput.
@@ -790,11 +792,13 @@ namespace DGtal
 	return static_cast<TOutput>(aInput);
       }
     };
+#ifdef WITH_BIGINTEGER
     //specialized versions for DGtal::BigInteger
     template <typename TOutput>
     struct toCoordinateImpl<DGtal::BigInteger, TOutput>
     {
-      BOOST_CONCEPT_ASSERT(( CSignedInteger<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
 
       inline
       static TOutput cast(const DGtal::BigInteger& aInput)
@@ -814,6 +818,7 @@ namespace DGtal
 	return aInput; 
       }
     };
+#endif
 
   } //namespace detail
 
