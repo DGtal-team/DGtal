@@ -1,11 +1,11 @@
 /**
- * @file moduleDECLinearStructure.dox
+ * @file moduleDECManualInsertion.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/04/04
  *
- * Documentation file for feature DECLinearStructure
+ * Documentation file for feature DECManualInsertion
  *
  * This file is part of the DGtal library.
  */
@@ -17,18 +17,18 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECLinearStructure Example of manual cell insertion and problem resolution
+@page moduleDECManualInsertion Example of manual cell insertion and problem resolution
 @writers Pierre Gueth
 
 
 [TOC]
 
-\section sectDECLinearStructure1 Poisson / Heat equation on a linear structure
-
 Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
 It is possible to insert cell manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
-Therefore the DEC structure shouldn't be modified when doing linear algebra calculus.
+Therefore the DEC structure shouldn't be modified once DEC operators are created.
+
+\section sectDECManualInsertion1 Poisson / Heat equation on 1D linear structure
 
 In this problem, we create an 1D linear structure embedded in a 2D space and we want to solve a Poisson equation on this structure.
 The Poisson equation can be written as:
@@ -51,7 +51,7 @@ Using the DEC package in 2D, one can define the laplacian using Hodge duality op
 
 We show how to solve this problem and  how to change boundary conditions between Neumann and Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
 
-\section sectDECLinearStructure2 Neumann boundary condition
+\subsection subsectDECManualInsertion1_1 Neumann boundary condition
 
 First, an empty calculus structure is created and, using simple for loops, it is filled with some 0-cells and 1-cells to from a linear structure.
 When filled manually with DiscreteExteriorCalculus.insertSCell, one can pass the primal over dual size ratio of each cell which defaults to 1.
@@ -91,7 +91,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 \image html linear_structure_neumann_solution_gradient.png "Linear structure with Neumann boundary conditions. Gradient 1-form and vector field are displayed."
 \image html linear_structure_neumann_fit.png "Numerical values computed using the solver and analytic solution for the Neumann problem."
 
-\section sectDECLinearStructure3 Dirichlet boundary condition
+\subsection sectDECManualInsertion1_2 Dirichlet boundary condition
 
 Dirichlet boundary condition fix value of 0-forms to be constant outside of definition domain.
 In this package this constant value is chosen to be null.
@@ -120,6 +120,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 \image html linear_structure_dirichlet_solution_gradient.png "Linear structure with Dirichlet boundary conditions. Gradient 1-form and vector field are displayed."
 \image html linear_structure_dirichlet_fit.png "Numerical and analytic solution for the Dirichlet problem."
 
+\section sectDECManualInsertion2 3D Helmotz decomposition
 
 */
 
