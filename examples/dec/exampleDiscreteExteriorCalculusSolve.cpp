@@ -489,18 +489,23 @@ void solve3d_decomposition()
         for (int ll=4; ll<=36; ll++)
         {
             Calculus::SCell cell;
+            Calculus::Scalar weight;
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4,kk));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,36,kk));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
 
             cell = calculus.kspace.sCell(Z3i::Point(4,ll,kk));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
 
             cell = calculus.kspace.sCell(Z3i::Point(36,ll,kk));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
         }
 
     // inner ring
@@ -508,18 +513,23 @@ void solve3d_decomposition()
         for (int ll=16; ll<=24; ll++)
         {
             Calculus::SCell cell;
+            Calculus::Scalar weight;
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,16,kk));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,24,kk));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
 
             cell = calculus.kspace.sCell(Z3i::Point(16,ll,kk));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
 
             cell = calculus.kspace.sCell(Z3i::Point(24,ll,kk));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
         }
 
     // top and bottom
@@ -527,18 +537,23 @@ void solve3d_decomposition()
         for (int ll=0; ll<=12; ll++)
         {
             Calculus::SCell cell;
+            Calculus::Scalar weight;
 
             cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,2));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
 
             cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,18));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
 
             cell = calculus.kspace.sCell(Z3i::Point(24+ll,kk,2));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
 
             cell = calculus.kspace.sCell(Z3i::Point(24+ll,kk,18));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
         }
 
     // top and bottom
@@ -546,18 +561,23 @@ void solve3d_decomposition()
         for (int ll=16; ll<=24; ll++)
         {
             Calculus::SCell cell;
+            Calculus::Scalar weight;
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,2));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,18));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,24+kk,2));
-            calculus.insertSCell( cell, calculus.kspace.sDim(cell) == 2 ? -1 : 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight ); // may be flipped
 
             cell = calculus.kspace.sCell(Z3i::Point(ll,24+kk,18));
-            calculus.insertSCell( cell, 1 );
+            weight = 1;
+            calculus.insertSCell( cell, weight );
         }
 
     trace.info() << calculus << endl;
@@ -596,7 +616,7 @@ void solve3d_decomposition()
         const Z3i::RealPoint cell_center = Z3i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
         input_vector_field.myCoordinates[0](ii) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
         input_vector_field.myCoordinates[1](ii) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
-        input_vector_field.myCoordinates[2](ii) = -cos(cell_center[2]);
+        input_vector_field.myCoordinates[2](ii) = -cos(cell_center[2]*.5);
     }
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
@@ -610,7 +630,7 @@ void solve3d_decomposition()
         viewer->show();
         viewer->setWindowTitle("input vector field");
         typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(-1,1);
+        Colormap colormap(-2,2);
         Calculus::Accum accum(calculus);
         input_one_form.applyToAccum(accum);
         input_one_form_anti_derivated.applyToAccum(accum);
