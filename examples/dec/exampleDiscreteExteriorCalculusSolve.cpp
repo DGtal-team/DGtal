@@ -480,6 +480,7 @@ void solve3d_decomposition()
     // choose linear solver
     typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
 
+    //! [3d_decomposition_structure]
     // create discrete exterior calculus from set
     typedef DiscreteExteriorCalculus<Z3i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(domain);
@@ -579,6 +580,7 @@ void solve3d_decomposition()
             weight = 1;
             calculus.insertSCell( cell, weight );
         }
+    //! [3d_decomposition_structure]
 
     trace.info() << calculus << endl;
 
@@ -618,11 +620,11 @@ void solve3d_decomposition()
         input_vector_field.myCoordinates[1](ii) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
         input_vector_field.myCoordinates[2](ii) = -cos(cell_center[2]*.5);
     }
+    //! [3d_decomposition_input_field_definition]
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
     const Calculus::PrimalForm0 input_one_form_anti_derivated = ad1 * input_one_form;
     const Calculus::PrimalForm2 input_one_form_derivated = d1 * input_one_form;
-    //! [3d_decomposition_input_field_definition]
 
     {
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
