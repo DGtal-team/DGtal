@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECManualInsertion Example of manual cell insertion and problem resolution
+@page moduleDECManualInsertion Examples of manual cell insertion and problem resolution
 @writers Pierre Gueth
 
 
@@ -59,18 +59,18 @@ Temperature nodes are associated primal 0-cells.
 Note that to enforce Neumann boundary conditions, the linear structure has to end with 0-cells.
 Moreover some 1-cells are inserted as negative cells to match their orientation with the orientation of the linear structure.
 
-\snippet ../tests/dec/testLinearStructure.cpp neumann-creation
+\snippet testLinearStructure.cpp neumann-creation
 
 The input heat vector \f$f\f$, which is primal 0-form in the DEC formulation, is then created and is given values of a \f$\delta\f$.
 
-\snippet ../tests/dec/testLinearStructure.cpp input-dirac
+\snippet testLinearStructure.cpp input-dirac
 
 \image html linear_structure_neumann_dirac.png "Linear structure with Neumann boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
 
 The laplacian operator \f$\Delta\f$ is pretty straight forward from its above definition.
 One can use DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge to generate \f$\star\f$ operators and DiscreteExteriorCalculus.derivative to generate \f$d\f$ operators.
 
-\snippet ../tests/dec/testLinearStructure.cpp neumann-laplacian-definition
+\snippet testLinearStructure.cpp neumann-laplacian-definition
 
 Now the problem is fully defined and there one thing left to do: solving it.
 The resolution is done by DiscreteExteriorCalculusSolver.
@@ -81,7 +81,7 @@ Here we will use the SolverSparseQR solver.
 Once created the solver is given the operator using DiscreteExteriorCalculusSolver.compute.
 The input dirac 0-form is passed to DiscreteExteriorCalculusSolver.solve, which return the solution of the problem.
 
-\snippet ../tests/dec/testLinearStructure.cpp neumann-solve
+\snippet testLinearStructure.cpp neumann-solve
 
 Since the dirac input is null everywhere except at a single point, this means that the second derivative of the solution is null everywhere except at the dirac position.
 An analytic form can be expressed as a continuous piece-wise quadratic function.
@@ -98,7 +98,7 @@ In this package this constant value is chosen to be null.
 Two dangling 1-cells are added at each end of the structure to describe Dirichlet boundary condition.
 Since those 1-cells are not connected to a 0-cell on one of their border, this will simulate the presence of zero-valued 0-cell in those places through enforcing Dirichlet boundary conditions.
 
-\snippet ../tests/dec/testLinearStructure.cpp dirichlet-creation
+\snippet testLinearStructure.cpp dirichlet-creation
 
 Input dirac can be used as it is since no 0-cells has been added to the structure.
 
@@ -107,12 +107,12 @@ Input dirac can be used as it is since no 0-cells has been added to the structur
 However laplacian operator need to be rebuild.
 Note that the code is the same as for the Neumann case.
 
-\snippet ../tests/dec/testLinearStructure.cpp dirichlet-laplacian-definition
+\snippet testLinearStructure.cpp dirichlet-laplacian-definition
 
 Solving the problem is achieved by using the same code as for the Neumann case.
 This time to analytical solution is piece-wise linear and take a constant null value at the border of the structure, as expect from the Dirichlet boundary condition.
 
-\snippet ../tests/dec/testLinearStructure.cpp dirichlet-solve
+\snippet testLinearStructure.cpp dirichlet-solve
 
 Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
 
@@ -120,7 +120,21 @@ Numerical values of the solution fit analytic values with at least a relative pr
 \image html linear_structure_dirichlet_solution_gradient.png "Linear structure with Dirichlet boundary conditions. Gradient 1-form and vector field are displayed."
 \image html linear_structure_dirichlet_fit.png "Numerical and analytic solution for the Dirichlet problem."
 
-\section sectDECManualInsertion2 3D Helmotz decomposition
+\section sectDECManualInsertion2 3D Helmoltz decomposition
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_structure
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_operator_definition
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_input_field_definition
+
+\image html helmoltz_3d_structure.png "Manually created tore structure and input vector field."
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_curl_free_solve
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_div_free_solve
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_solution
+
+\image html helmoltz_3d_harmonic.png "Harmonic component of the input vector field."
+\image html helmoltz_3d_harmonic_zoom0.png "Harmonic component of the input vector field. Zoom on inner hole."
+\image html helmoltz_3d_harmonic_zoom1.png "Harmonic component of the input vector field. Zoom on outter shell."
 
 */
 
