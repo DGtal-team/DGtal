@@ -118,7 +118,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const S
         property.display_flipped = true;
     }
 
-    typename Properties::ConstIterator iter = cell_properties.find(abs_cell);
+    typename Properties::Iterator iter = cell_properties.find(abs_cell);
     const bool need_insert = (iter == cell_properties.end());
 
     if (need_insert) // new cell new index computation
