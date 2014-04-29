@@ -36,7 +36,7 @@
 template <typename D, typename LAB>
 template <typename DigitalSet>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set)
-    : domain(_set.domain()), kspace(), cell_size_ratio(*this), cell_indexes(*this), cell_flipped(*this)
+    : domain(_set.domain()), kspace(), cell_properties(*this)
 {
     BOOST_STATIC_ASSERT(( boost::is_same<typename DigitalSet::Domain, Domain>::value ));
 
@@ -47,6 +47,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     //ASSERT(kspace_init_ok);
 
     // compute raw cell size
+    Accum cell_size_accum(*this);
     for (typename DigitalSet::ConstIterator ri=_set.begin(), rie=_set.end(); ri!=rie; ri++)
     {
         const Point& point = *ri;
@@ -57,41 +58,44 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
         for (typename Points::const_iterator pi=neighborhood.begin(), pie=neighborhood.end(); pi!=pie; pi++)
         {
             const SCell cell = kspace.sCell(*pi, KSpace::POS);
-            cell_size_ratio[cell] += 1;
+            if (cell_size_accum.find(cell) == cell_size_accum.end()) cell_size_accum[cell] = 0;
+            cell_size_accum[cell] += 1;
         }
     }
 
     // normalize cell size and set flipped flag
-    for (typename SizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
+    for (typename Accum::ConstIterator csi=cell_size_accum.begin(), csie=cell_size_accum.end(); csie!=csi; csi++)
     {
         const SCell& cell = csi->first;
         const Dimension dual_dim = dimension-kspace.sDim(cell);
         const Scalar factor = 1/pow(2, dual_dim);
 
-        typename SizeRatio::Value size = csi->second;
-        ASSERT(size);
-        size *= factor;
+        typename Accum::Value normalized_size = csi->second * factor;
+        ASSERT(normalized_size);
 
-        cell_flipped[cell] = false;
-        cell_size_ratio[cell] = size;
+        SCellProperty property;
+        property.display_flipped = false;
+        property.size_ratio = normalized_size;
+
+        cell_properties[cell] = property;
     }
 
     // compute cell index
-    for (typename SizeRatio::ConstIterator csi=cell_size_ratio.begin(), csie=cell_size_ratio.end(); csie!=csi; csi++)
+    for (typename Properties::Iterator csi=cell_properties.begin(), csie=cell_properties.end(); csie!=csi; csi++)
     {
         const SCell& cell = csi->first;
         const Dimension dim = kspace.sDim(cell);
         ASSERT( kspace.sSign(cell) == KSpace::POS );
         ASSERT( cell.myPositive == true );
 
-        cell_indexes[cell] = index_cells[dim].size();
+        csi->second.index = index_cells[dim].size();
         index_cells[dim].push_back(cell);
     }
 }
 
 template <typename D, typename LAB>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const D& _domain)
-    : domain(_domain), kspace(), cell_size_ratio(*this), cell_indexes(*this), cell_flipped(*this)
+    : domain(_domain), kspace(), cell_properties(*this)
 {
 }
 
@@ -103,27 +107,36 @@ bool
 DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const Scalar& _primal_size)
 {
     SCell abs_cell = _cell;
-    Scalar abs_primal_size = _primal_size;
-    bool flipped = false;
+    SCellProperty property;
+    property.size_ratio = _primal_size;
+    property.display_flipped = false;
 
     if (!abs_cell.myPositive)
     {
         abs_cell = kspace.sOpp(abs_cell);
-        //abs_primal_size = -abs_primal_size;
-        flipped = true;
+        //property.size_ratio = -property.size_ratio;
+        property.display_flipped = true;
     }
 
-    const bool need_insert = (cell_indexes.find(abs_cell) == cell_indexes.end());
-    const Dimension dim = kspace.sDim(abs_cell);
+    typename Properties::ConstIterator iter = cell_properties.find(abs_cell);
+    const bool need_insert = (iter == cell_properties.end());
 
-    if (need_insert)
+    if (need_insert) // new cell new index computation
     {
-        cell_indexes[abs_cell] = index_cells[dim].size();
+        const Dimension dim = kspace.sDim(abs_cell);
+        property.index = index_cells[dim].size();
         index_cells[dim].push_back(abs_cell);
+        cell_properties[abs_cell] = property;
+        iter = cell_properties.find(abs_cell);
+    }
+    else
+    {
+        property.index = iter->second.index;
     }
 
-    cell_flipped[abs_cell] = flipped;
-    cell_size_ratio[abs_cell] = abs_primal_size;
+    ASSERT( property.index == iter->second.index );
+
+    iter->second = property;
 
     return need_insert;
 }
@@ -209,11 +222,11 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
             const SCell& cell_border = *bi;
             ASSERT( kspace.sDim(cell_border) == actualOrder(order, duality) );
 
-            const typename Indexes::ConstIterator cell_index_iter = cell_indexes.find(absoluteCell(cell_border));
-            if ( cell_index_iter == cell_indexes.end() )
+            const typename Properties::ConstIterator iter_property = cell_properties.find(absoluteSCell(cell_border));
+            if ( iter_property == cell_properties.end() )
                 continue;
 
-            const Index index_input = cell_index_iter->second;
+            const Index index_input = iter_property->second.index;
             ASSERT( index_input < derivative.myContainer.cols() );
 
             // fill container with cell sign
@@ -241,10 +254,10 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::primalHodge() const
     for (Index index=0; index<primal_hodge.myContainer.rows(); index++)
     {
         const SCell& cell = index_cells[order][index];
-        const typename SizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
-        ASSERT(iter_size != cell_size_ratio.end());
+        const typename Properties::ConstIterator iter_property = cell_properties.find(cell);
+        ASSERT(iter_property != cell_properties.end());
 
-        primal_hodge.myContainer(index, index) = hodgeSign(cell, PRIMAL)/iter_size->second;
+        primal_hodge.myContainer(index, index) = hodgeSign(cell, PRIMAL)/iter_property->second.size_ratio;
     }
 
     return primal_hodge;
@@ -267,10 +280,10 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::dualHodge() const
     for (Index index=0; index<dual_hodge.myContainer.rows(); index++)
     {
         const SCell& cell = index_cells[dimension-order][index];
-        const typename SizeRatio::ConstIterator iter_size = cell_size_ratio.find(cell);
-        ASSERT(iter_size != cell_size_ratio.end());
+        const typename Properties::ConstIterator iter_property = cell_properties.find(cell);
+        ASSERT(iter_property != cell_properties.end());
 
-        dual_hodge.myContainer(index, index) = hodgeSign(cell, DUAL)*iter_size->second;
+        dual_hodge.myContainer(index, index) = hodgeSign(cell, DUAL)*iter_property->second.size_ratio;
     }
 
     return dual_hodge;
@@ -306,15 +319,15 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::Discret
         normalize.assign(0);
         for (typename Edges::const_iterator ei=edges.begin(), eie=edges.end(); ei!=eie; ei++)
         {
-            const SCell& cell_border = absoluteCell(*ei);
+            const SCell& cell_border = absoluteSCell(*ei);
             ASSERT( kspace.sDim(cell_border) == actualOrder(1, duality) );
             ASSERT( kspace.sSign(cell_border) == KSpace::POS );
 
-            const typename Indexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
-            if (cell_border_index_iter == cell_indexes.end())
+            const typename Properties::ConstIterator iter_property = cell_properties.find(cell_border);
+            if (iter_property == cell_properties.end())
                 continue;
 
-            const Index& cell_border_index = cell_border_index_iter->second;
+            const Index& cell_border_index = iter_property->second.index;
             ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
             ASSERT( cell_border_index < one_form.myContainer.rows() );
 
@@ -360,15 +373,15 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
         Scalar normalize = 0;
         for (typename Points::const_iterator pi=points.begin(), pie=points.end(); pi!=pie; pi++)
         {
-            const SCell cell_border = absoluteCell(*pi);
+            const SCell cell_border = absoluteSCell(*pi);
             ASSERT( kspace.sDim(cell_border) == actualOrder(0, duality) );
             ASSERT( kspace.sSign(cell_border) == KSpace::POS );
 
-            const typename Indexes::ConstIterator cell_border_index_iter = cell_indexes.find(cell_border);
-            if (cell_border_index_iter == cell_indexes.end())
+            const typename Properties::ConstIterator iter_property = cell_properties.find(cell_border);
+            if (iter_property == cell_properties.end())
                 continue;
 
-            const Index& cell_border_index = cell_border_index_iter->second;
+            const Index& cell_border_index = iter_property->second.index;
             ASSERT( cell_border_index < index_cells[actualOrder(0, duality)].size());
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
@@ -385,17 +398,10 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
 }
 
 template <typename D, typename LAB>
-typename DGtal::DiscreteExteriorCalculus<D, LAB>::SizeRatio
-DGtal::DiscreteExteriorCalculus<D, LAB>::getSizeRatio() const
+typename DGtal::DiscreteExteriorCalculus<D, LAB>::Properties
+DGtal::DiscreteExteriorCalculus<D, LAB>::getProperties() const
 {
-    return cell_size_ratio;
-}
-
-template <typename D, typename LAB>
-typename DGtal::DiscreteExteriorCalculus<D, LAB>::Indexes
-DGtal::DiscreteExteriorCalculus<D, LAB>::getIndexes() const
-{
-    return cell_indexes;
+    return cell_properties;
 }
 
 template <typename D, typename LAB>
@@ -412,34 +418,32 @@ template <typename D, typename LAB>
 bool
 DGtal::DiscreteExteriorCalculus<D, LAB>::isSCellFlipped(const SCell& cell) const
 {
-    typedef typename DisplayFlipped::ConstIterator DisplayFlippedConstIterator;
-    DisplayFlippedConstIterator iter = cell_flipped.find(absoluteCell(cell));
-    ASSERT( iter != cell_flipped.end() );
-    return iter->second;
+    const ConstIterator iter_property = cell_properties.find(absoluteSCell(cell));
+    ASSERT( iter_property != cell_properties.end() );
+    return iter_property->second.display_flipped;
 }
 
 template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::Index
-DGtal::DiscreteExteriorCalculus<D, LAB>::getIndex(const SCell& cell) const
+DGtal::DiscreteExteriorCalculus<D, LAB>::getSCellIndex(const SCell& cell) const
 {
-    typedef typename Indexes::ConstIterator IndexesConstIterator;
-    IndexesConstIterator iter = cell_indexes.find(absoluteCell(cell));
-    ASSERT( iter != cell_indexes.end() );
-    return iter->second;
+    const ConstIterator iter_property = cell_properties.find(absoluteSCell(cell));
+    ASSERT( iter_property != cell_properties.end() );
+    return iter_property->second.index;
 }
 
 template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::ConstIterator
 DGtal::DiscreteExteriorCalculus<D, LAB>::begin() const
 {
-    return cell_size_ratio.begin();
+    return cell_properties.begin();
 }
 
 template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::ConstIterator
 DGtal::DiscreteExteriorCalculus<D, LAB>::end() const
 {
-    return cell_size_ratio.end();
+    return cell_properties.end();
 }
 
 template <typename D, typename LAB>
@@ -491,7 +495,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivativeSign(const SCell& cell, const
 
 template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::SCell
-DGtal::DiscreteExteriorCalculus<D, LAB>::absoluteCell(const SCell& cell) const
+DGtal::DiscreteExteriorCalculus<D, LAB>::absoluteSCell(const SCell& cell) const
 {
     if (cell.myPositive) return cell;
     return kspace.sOpp(cell);
