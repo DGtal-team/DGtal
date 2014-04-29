@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECSolve Documentation for usage of linear solver in the DEC package.
+@page moduleDECSolve Solving linear problem with the DEC package
 @writers Pierre Gueth
 
 
