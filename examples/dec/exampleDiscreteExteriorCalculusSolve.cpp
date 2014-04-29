@@ -620,9 +620,9 @@ void solve3d_decomposition()
         input_vector_field.myCoordinates[1](ii) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
         input_vector_field.myCoordinates[2](ii) = -cos(cell_center[2]*.5);
     }
-    //! [3d_decomposition_input_field_definition]
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
+    //! [3d_decomposition_input_field_definition]
     const Calculus::PrimalForm0 input_one_form_anti_derivated = ad1 * input_one_form;
     const Calculus::PrimalForm2 input_one_form_derivated = d1 * input_one_form;
 

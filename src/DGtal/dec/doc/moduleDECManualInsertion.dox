@@ -28,14 +28,14 @@ It is possible to insert cell manually into the DEC structure using DiscreteExte
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
 Therefore the DEC structure shouldn't be modified once DEC operators are created.
 
-\section sectDECManualInsertion1 Poisson / Heat equation on 1D linear structure
+\section sectDECManualInsertion1 1D Poisson equation
 
 In this problem, we create an 1D linear structure embedded in a 2D space and we want to solve a Poisson equation on this structure.
 The Poisson equation can be written as:
 
 \f[ \Delta \phi = f \f]
 
-where \f$\Delta\f$ is the laplacian operator, \f$\phi\f$ the solution of the problem and \f$f\f$ the input of the problem.
+where \f$\Delta\f$ is the Laplace operator, \f$\phi\f$ the solution of the problem and \f$f\f$ the input of the problem.
 The Poisson equation can be viewed as the heat equation when permanent regime is reached.
 \f$f\f$ is the heating applied to the structure and \f$\phi\f$ is the temperature reached in permanent regime.
 Here we choose \f$f\f$ to be a Dirac delta function \f$\delta\f$ to simulation a punctual heating on the structure.
@@ -45,7 +45,7 @@ The two classical boundary conditions are:
 - Neumann boundary condition forces the derivative to be null along the border of the structure. Here, this means that heat can't flow out the start and the end of the linear structure.
 - Dirichlet boundary condition connects borders of the structure to null potential. With own heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
 
-Using the DEC package in 2D, one can define the laplacian using Hodge duality operators \f$\star\f$ and exterior derivative operators \f$d\f$.
+Using the DEC package in 2D, one can define the Laplace operator using Hodge duality operators \f$\star\f$ and exterior derivative operators \f$d\f$.
 
 \f[ \Delta = \star_2' d_1' \star_1 d_0 \f]
 
@@ -67,7 +67,7 @@ The input heat vector \f$f\f$, which is primal 0-form in the DEC formulation, is
 
 \image html linear_structure_neumann_dirac.png "Linear structure with Neumann boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
 
-The laplacian operator \f$\Delta\f$ is pretty straight forward from its above definition.
+The Laplace operator \f$\Delta\f$ is pretty straight forward from its above definition.
 One can use DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge to generate \f$\star\f$ operators and DiscreteExteriorCalculus.derivative to generate \f$d\f$ operators.
 
 \snippet testLinearStructure.cpp neumann-laplacian-definition
@@ -104,7 +104,7 @@ Input dirac can be used as it is since no 0-cells has been added to the structur
 
 \image html linear_structure_dirichlet_dirac.png "Linear structure with Dirichlet boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
 
-However laplacian operator need to be rebuild.
+However Laplace operator need to be rebuild.
 Note that the code is the same as for the Neumann case.
 
 \snippet testLinearStructure.cpp dirichlet-laplacian-definition
@@ -122,15 +122,53 @@ Numerical values of the solution fit analytic values with at least a relative pr
 
 \section sectDECManualInsertion2 3D Helmoltz decomposition
 
+In this exemple, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
+Helmoltz decomposition states that every vector field or 1-form \f$\omega\f$ can be uniquely expressed as the sum of three terms.
+
+\f[ \omega = d\alpha + \delta\beta + \gamma \f]
+
+where \f$\alpha\f$ is a 0-form scalar potential, \f$\beta\f$ is a 2-form vector potential and \f$\gamma\f$ is left over 1-form harmonic part.
+Recall that \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \star d \star \f$ is the exterior anti-derivative from 2-form to 1-form.
+\f$\gamma\f$ has null anti-derivative and null derivative since if they where not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
+
+\f[ \delta \gamma = d \gamma = 0 \f]
+
+By differentiating \f$\omega\f$ definition, one can isolate DEC solvable expressions for \f$\alpha\f$ and \f$\beta\f$.
+
+\f[ d \delta \beta = d \omega \f]
+\f[ \delta \omega = \delta d \alpha \f]
+
+The harmonic component \f$\gamma\f$ is computed by substracting \f$d\alpha\f$ and \f$\delta\beta\f$ from \f$\omega\f$.
+
+\subsection sectDECManualInsertion2_1 Problem resolution
+
+The calculus struture is filled mannually with 0-, 1- and 2-cells to create a torus structure.
+
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_structure
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_operator_definition
+
+The primal input vector field is then filled and the associated input 1-form \f$\omega\f$ is computed using DiscreteExteriorCalculus.flat.
+
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_input_field_definition
 
 \image html helmoltz_3d_structure.png "Manually created tore structure and input vector field."
 
+Linear operators are then defined. Note the expression of anti-derivative computed from Hodge operators and dual exterior derivative.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_operator_definition
+
+Values of \f$\alpha\f$ are computed from previous expression using DiscreteExteriorCalculusSolver.solve.
+
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_curl_free_solve
+
+Values of \f$\beta\f$ are computed from previous expression using DiscreteExteriorCalculusSolver.solve.
+
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_div_free_solve
+
+Values of \f$\gamma\f$ are computed by substraction.
+
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_solution
+
+\f$\gamma\f$ has a strong connection with the structure topology and can be used to create local maps  of the struture.
 
 \image html helmoltz_3d_harmonic.png "Harmonic component of the input vector field."
 \image html helmoltz_3d_harmonic_zoom0.png "Harmonic component of the input vector field. Zoom on inner hole."
