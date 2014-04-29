@@ -107,12 +107,21 @@ namespace DGtal
     typedef typename KSpace::Point Point;
 
     /**
+     * Cells data stuct.
+     * Holds size ratio, indexes and display_flipped for each cell of the structure.
+     */
+    struct SCellProperty
+    {
+        Scalar size_ratio;
+        Index index;
+        bool display_flipped;
+    };
+
+    /**
      * Cells map typedefs.
      */
     typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
-    typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> SizeRatio;
-    typedef AllSCellMap<DiscreteExteriorCalculus, Index> Indexes;
-    typedef AllSCellMap<DiscreteExteriorCalculus, bool> DisplayFlipped;
+    typedef AllSCellMap<DiscreteExteriorCalculus, SCellProperty> Properties;
 
     /**
      * Indexes to cells map typedefs.
@@ -190,7 +199,7 @@ namespace DGtal
     /**
      * Const iterator typedef.
      */
-    typedef typename SizeRatio::ConstIterator ConstIterator;
+    typedef typename Properties::ConstIterator ConstIterator;
 
     /**
      * Begin const iterator.
@@ -232,16 +241,10 @@ namespace DGtal
     insertSCell(const SCell& cell, const Scalar& primal_size = 1);
 
     /**
-     * Get cell size ratio.
+     * Get cell properties.
      */
-    SizeRatio
-    getSizeRatio() const;
-
-    /**
-     * Get cell size indexes.
-     */
-    Indexes
-    getIndexes() const;
+    Properties
+    getProperties() const;
 
     /**
      * Identity operator from order-forms to order-forms.
@@ -320,7 +323,7 @@ namespace DGtal
      * @return associated K-form index.
      */
     Index
-    getIndex(const SCell& cell) const;
+    getSCellIndex(const SCell& cell) const;
 
     /**
      * Return number of elements in discrete k-form.
@@ -365,7 +368,7 @@ namespace DGtal
      * @param cell Khalimsky signed cell.
      */
     SCell
-    absoluteCell(const SCell& cell) const;
+    absoluteSCell(const SCell& cell) const;
 
     /**
      * Return edge direction relative to primal.
@@ -385,26 +388,15 @@ namespace DGtal
   private:
 
     /**
-     * Cells size ratio (from primal to dual).
+     * Cells properties.
      */
-    SizeRatio cell_size_ratio;
-
-    /**
-     * Cells indexes to map operator index to geometrical cell.
-     */
-    Indexes cell_indexes;
+    Properties cell_properties;
 
     /**
      * Cells indexed by their order.
      * Usefull for finding cell form index and order.
      */
     IndexedSCells index_cells;
-
-    /**
-     * Cells set that are displayed flipped.
-     * Negative cells are added to this set by insertSCell.
-     */
-    DisplayFlipped cell_flipped;
 
     // ------------------------- Hidden services ------------------------------
   protected:

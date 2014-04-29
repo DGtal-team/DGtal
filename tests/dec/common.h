@@ -124,10 +124,11 @@ test_hodge(int domain_size=5)
     Calculus calculus(set);
     {
         trace.beginBlock("testing indexes");
-        typename Calculus::SizeRatio size_ratio = calculus.getSizeRatio();
-        typename Calculus::Indexes indexes = calculus.getIndexes();
-        trace.info() << "size_ratio.size()=" << size_ratio.size() << endl;
-        trace.info() << "indexes.size()=" << indexes.size() << endl;
+
+        {
+            typename Calculus::Properties properties = calculus.getProperties();
+            trace.info() << "properties.size()=" << properties.size() << endl;
+        }
 
         typedef typename Calculus::ConstIterator ConstIterator;
         typedef typename Calculus::SCell SCell;
@@ -136,7 +137,8 @@ test_hodge(int domain_size=5)
         for (ConstIterator iter = calculus.begin(), iter_end = calculus.end(); test_result && iter!=iter_end; iter++)
         {
             const SCell& cell = iter->first;
-            const Index& index = calculus.getIndex(cell);
+            const Index& index = calculus.getSCellIndex(cell);
+            test_result &= (iter->second.index == index);
             const SCell& primal_cell = calculus.getSCell(calculus.kspace.sDim(cell), PRIMAL, index);
             test_result &= (cell == primal_cell);
             const SCell& dual_cell = calculus.getSCell(calculus.dimension-calculus.kspace.sDim(cell), DUAL, index);
@@ -246,10 +248,10 @@ test_derivative(int domain_size=10)
 
     typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
-    typename Calculus::SizeRatio size_ratio = calculus.getSizeRatio();
-    typename Calculus::Indexes indexes = calculus.getIndexes();
-    trace.info() << "size_ratio.size()=" << size_ratio.size() << endl;
-    trace.info() << "indexes.size()=" << indexes.size() << endl;
+    {
+        typename Calculus::Properties properties = calculus.getProperties();
+        trace.info() << "properties.size()=" << properties.size() << endl;
+    }
 
     trace.beginBlock("testing derivative");
     bool test_result = DerivativeTester<Calculus, Calculus::dimension-2>::test(calculus);
