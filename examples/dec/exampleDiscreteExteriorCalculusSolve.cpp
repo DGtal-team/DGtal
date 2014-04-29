@@ -38,7 +38,7 @@ void solve2d_laplacian()
 
     //! [dirac_definition]
     Calculus::DualForm0 dirac(calculus);
-    dirac.myContainer(calculus.getIndex(calculus.kspace.sSpel(Z2i::Point(2,5)))) = 1;
+    dirac.myContainer(calculus.getSCellIndex(calculus.kspace.sSpel(Z2i::Point(2,5)))) = 1;
     //! [dirac_definition]
 
     {
