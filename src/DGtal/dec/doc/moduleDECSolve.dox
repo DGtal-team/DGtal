@@ -64,11 +64,11 @@ Input k-form \f$y\f$ is passed to the solver via DiscreteExteriorCalculusSolver.
 If the resolution was successful, then DiscreteExteriorCalculusSolver.isValid will return true.
 If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver. 
 
-\section sectDECSolve3 Poisson equation example
+\section sectDECSolve3 Poisson equation
 
 First the structure is created from a digital set. Here we used the EigenSparseLinearAlgebraBackend.
 
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
+\snippet exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
 
 Then the linear operator is defined. It is a regularized Laplace operator on dual 0-cells.
 
@@ -76,26 +76,55 @@ Then the linear operator is defined. It is a regularized Laplace operator on dua
 
 where \f$I\f$ is the identity operator and is generated using DiscreteExteriorCalculusSolver.identity.
 
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp laplacian_definition
+\snippet exampleDiscreteExteriorCalculusSolve.cpp laplacian_definition
 
 Input k-form \f$y\f$ is a Dirac delta positioned on the dual 0-cell at coordinates \f$(2,5)\f$.
 Dual 0-cells are created by KhalimskySpaceND.sSpel.
 DiscreteExteriorCalculus.getIndex return the index of the dual 0-form container associated with the dirac position cell.
 
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp dirac_definition
+\snippet exampleDiscreteExteriorCalculusSolve.cpp dirac_definition
 \image html solve_calculus.png "DEC structure with input dual 0-form."
 
 We tried to solve the problem using EigenSparseLinearAlgebraBackend::SolverSimplicialLLT, but it DiscreteExteriorCalculusSolver.isValid() reports an error.
 Underlying linear algebra solver DiscreteExteriorCalculusSolver.solver reports a 'numerical_error'.
 
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_llt
+\snippet exampleDiscreteExteriorCalculusSolve.cpp solve_llt
 \image html solve_simplicial_llt.png "Poisson problem solution computed with simplicial LLT solver. Solver reports a numerical error."
 
 Since the first solver we used failed, let's use another one: EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT for example.
 This time DiscreteExteriorCalculusSolver.isValid is true after computing problem solution and the solution dual 0-form contains the solution of the problem.
 
-\snippet ../examples/dec/exampleDiscreteExteriorCalculusSolve.cpp solve_ldlt
+\snippet exampleDiscreteExteriorCalculusSolve.cpp solve_ldlt
 \image html solve_simplicial_ldlt.png "Poisson problem solution computed with simplicial LDLT solver. Solver solution is valid."
+
+\section sectDECSolve4 Helmoltz decomposition
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_input_field_definition
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_input_field_definition
+
+\image html solve_2d_primal_decomposition_calculus.png "Primal Helmoltz decomposition. Primal input vector field and 1-form."
+\image html solve_2d_dual_decomposition_calculus.png "Dual Helmoltz decomposition. Dual input vector field and 1-form."
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_operator_definition
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_operator_definition
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_curl_free_solve
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_curl_free_solve
+
+\image html solve_2d_primal_decomposition_curl_free.png "Primal Helmoltz decomposition curl-free component."
+\image html solve_2d_dual_decomposition_curl_free.png "Dual Helmoltz decomposition curl-free component."
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_div_free_solve
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_div_free_solve
+
+\image html solve_2d_primal_decomposition_div_free.png "Primal Helmoltz decomposition divergence-free component."
+\image html solve_2d_dual_decomposition_div_free.png "Dual Helmoltz decomposition divergence-free component."
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_solution
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_solution
+
+\image html solve_2d_primal_decomposition_harmonic.png "Primal Helmoltz decomposition harmonic component."
+\image html solve_2d_dual_decomposition_harmonic.png "Dual Helmoltz decomposition harmonic component."
 
 */
 
