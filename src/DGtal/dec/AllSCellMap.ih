@@ -69,10 +69,10 @@ DGtal::AllSCellMap<Calculus, V>::writeITKImage(const std::string& filename, cons
     Image image(domain_image);
 
     typedef typename Domain::ConstIterator DomainConstIterator;
-    typedef typename Calculus::SizeRatio SizeRatio;
-    const SizeRatio size_ratio = myCalculus->getSizeRatio();
+    typedef typename Calculus::Properties Properties;
+    const Properties properties = myCalculus->getProperties();
     for (DomainConstIterator di=domain_image.begin(), die=domain_image.end(); di!=die; di++)
-        if (size_ratio.find(myCalculus->kspace.sCell(*di)) == size_ratio.end()) image.setValue(*di, value_outside);
+        if (properties.find(myCalculus->kspace.sCell(*di)) == properties.end()) image.setValue(*di, value_outside);
         else image.setValue(*di, value_inside_default);
 
     for (ConstIterator mi=this->begin(), mie=this->end(); mi!=mie; mi++)
