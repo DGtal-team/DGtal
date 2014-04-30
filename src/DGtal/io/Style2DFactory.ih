@@ -43,12 +43,12 @@ namespace DGtal
   /**
    * Default styles.
    */
-  struct AllSCellMapStyle : public DrawableWithBoard2D
+  struct AllSCellMapStyle2D : public DrawableWithBoard2D
   {
       double cmap_min;
       double cmap_max;
 
-      AllSCellMapStyle(const double& _cmap_min = 0, const double& _cmap_max = 1)
+      AllSCellMapStyle2D(const double& _cmap_min = 0, const double& _cmap_max = 1)
           : DrawableWithBoard2D(), cmap_min(_cmap_min), cmap_max(_cmap_max)
       {
       }
@@ -67,12 +67,12 @@ namespace DGtal
   /**
    * Default styles.
    */
-  struct VectorFieldStyle : public DrawableWithBoard2D
+  struct VectorFieldStyle2D : public DrawableWithBoard2D
   {
       double scale;
       double epsilon;
 
-      VectorFieldStyle(const double& _scale = .25, const double& _epsilon = 1e-8)
+      VectorFieldStyle2D(const double& _scale = .25, const double& _epsilon = 1e-8)
           : DrawableWithBoard2D(), scale(_scale), epsilon(_epsilon)
       {
       }
@@ -509,7 +509,7 @@ template <typename TCalculus, typename TValue>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AllSCellMap<TCalculus, TValue>& /*object*/, std::string /*mode*/ = "" )
 {
-  return new DGtal::AllSCellMapStyle;
+  return new DGtal::AllSCellMapStyle2D;
 }
 // AllSCellMap
 
@@ -518,7 +518,7 @@ template <typename TCalculus, DGtal::Duality duality>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::VectorField<TCalculus, duality>& /*object*/, std::string /*mode*/ = "" )
 {
-  return new DGtal::VectorFieldStyle;
+  return new DGtal::VectorFieldStyle2D;
 }
 // VectorField
 

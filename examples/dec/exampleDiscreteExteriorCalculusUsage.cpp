@@ -51,7 +51,7 @@ void usage2d()
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(0, 15));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(0, 15));
             board << accum;
             board.saveSVG("usage_primal_zero_form.svg");
         }
@@ -67,7 +67,7 @@ void usage2d()
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
             board << accum;
             board << primal_vector_field;
             board.saveSVG("usage_primal_one_form.svg");
@@ -83,7 +83,7 @@ void usage2d()
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
             board << accum;
             board << sharp_flat_primal_vector_field;
             board.saveSVG("usage_primal_one_form_sharp_flat.svg");
@@ -100,7 +100,7 @@ void usage2d()
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
             board << accum;
             board << dual_vector_field;
             board << primal_vector_field;
@@ -128,7 +128,7 @@ void usage2d()
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(0, 15));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(0, 15));
             board << accum;
             board.saveSVG("usage_dual_zero_form.svg");
         }
@@ -144,7 +144,7 @@ void usage2d()
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
             board << accum;
             board << dual_vector_field;
             board.saveSVG("usage_dual_one_form.svg");
@@ -161,7 +161,7 @@ void usage2d()
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
             board << accum;
             board << primal_vector_field;
             board << dual_vector_field;

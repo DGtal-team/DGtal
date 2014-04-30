@@ -46,9 +46,8 @@
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/base/ConstAlias.h"
-#include "DGtal/base/Clone.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

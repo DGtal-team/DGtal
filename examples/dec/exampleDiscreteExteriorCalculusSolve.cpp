@@ -71,7 +71,7 @@ void solve2d_laplacian()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
         board.saveSVG("solve_laplacian_simplicial_llt.svg");
     }
@@ -97,7 +97,7 @@ void solve2d_laplacian()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
         board.saveSVG("solve_laplacian_simplicial_ldlt.svg");
     }
@@ -123,7 +123,7 @@ void solve2d_laplacian()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
         board.saveSVG("solve_laplacian_conjugate_gradient.svg");
     }
@@ -149,7 +149,7 @@ void solve2d_laplacian()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
         board.saveSVG("solve_laplacian_bicgstab.svg");
     }
@@ -175,7 +175,7 @@ void solve2d_laplacian()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
         board.saveSVG("solve_laplacian_sparse_lu.svg");
     }
@@ -201,7 +201,7 @@ void solve2d_laplacian()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
         board.saveSVG("solve_laplacian_sparse_qr.svg");
     }
@@ -256,9 +256,9 @@ void solve2d_dual_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-1, 1));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-1, 1));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << input_vector_field;
         board.saveSVG("solve_2d_dual_decomposition_calculus.svg");
     }
@@ -286,9 +286,9 @@ void solve2d_dual_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_dual_decomposition_curl_free.svg");
     }
@@ -315,9 +315,9 @@ void solve2d_dual_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(1.5));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(1.5));
         board << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_dual_decomposition_div_free.svg");
     }
@@ -333,9 +333,9 @@ void solve2d_dual_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(20));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(20));
         board << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_dual_decomposition_harmonic.svg");
     }
@@ -390,9 +390,9 @@ void solve2d_primal_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-1, 1));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-1, 1));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << input_vector_field;
         board.saveSVG("solve_2d_primal_decomposition_calculus.svg");
     }
@@ -420,9 +420,9 @@ void solve2d_primal_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_primal_decomposition_curl_free.svg");
     }
@@ -449,9 +449,9 @@ void solve2d_primal_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(1.5));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(1.5));
         board << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_primal_decomposition_div_free.svg");
     }
@@ -467,9 +467,9 @@ void solve2d_primal_decomposition()
 
         Board2D board;
         board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
         board << accum;
-        board << CustomStyle("VectorField", new VectorFieldStyle(30));
+        board << CustomStyle("VectorField", new VectorFieldStyle2D(30));
         board << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_primal_decomposition_harmonic.svg");
     }
