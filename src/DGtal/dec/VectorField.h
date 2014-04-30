@@ -47,7 +47,6 @@
 #include "DGtal/dec/KForm.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/ConstAlias.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -125,13 +124,6 @@ template <typename TCalculus, Duality duality>
      * @param dim dimension along wich the vector field is projected.
      */
     KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dim) const;
-
-    /**
-     * Display vector field on 3D viewer.
-     * @param viewer the viewer to use.
-     */
-    template <typename Viewer>
-    void display3D(Viewer& viewer, const typename Calculus::Scalar& scale = .5, const typename Calculus::Scalar& epsilon = 1e-8) const;
 
     /**
      * Clear current vector field.

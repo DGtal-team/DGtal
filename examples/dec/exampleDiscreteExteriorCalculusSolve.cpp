@@ -591,16 +591,15 @@ void solve3d_decomposition()
     trace.info() << calculus << endl;
 
     {
+        Calculus::Accum accum(calculus);
+
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("structure");
         (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
         (*viewer) << domain;
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0, 1);
-        Calculus::Accum accum(calculus);
-        accum.display3D(*viewer, colormap);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum);
         (*viewer) << Viewer::updateDisplay;
     }
 
@@ -633,18 +632,17 @@ void solve3d_decomposition()
     const Calculus::PrimalForm2 input_one_form_derivated = d1 * input_one_form;
 
     {
-        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
-        Viewer* viewer = new Viewer();
-        viewer->show();
-        viewer->setWindowTitle("input vector field");
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(-2,2);
         Calculus::Accum accum(calculus);
         input_one_form.applyToAccum(accum);
         input_one_form_anti_derivated.applyToAccum(accum);
         input_one_form_derivated.applyToAccum(accum);
-        accum.display3D(*viewer, colormap);
-        input_vector_field.display3D(*viewer);
+
+        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        Viewer* viewer = new Viewer();
+        viewer->show();
+        viewer->setWindowTitle("input vector field");
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, -2., 2.);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_vector_field);
         (*viewer) << Viewer::updateDisplay;
     }
 
@@ -665,16 +663,15 @@ void solve3d_decomposition()
     }
 
     {
+        Calculus::Accum accum(calculus);
+        solution_curl_free.applyToAccum(accum);
+
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("curl free solution");
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_curl_free.myContainer.minCoeff(), solution_curl_free.myContainer.maxCoeff());
-        Calculus::Accum accum(calculus);
-        solution_curl_free.applyToAccum(accum);
-        accum.display3D(*viewer, colormap);
-        calculus.sharp(d0*solution_curl_free).display3D(*viewer);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, solution_curl_free.myContainer.minCoeff(), solution_curl_free.myContainer.maxCoeff());
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(d0*solution_curl_free));
         (*viewer) << Viewer::updateDisplay;
     }
 
@@ -695,16 +692,15 @@ void solve3d_decomposition()
     }
 
     {
+        Calculus::Accum accum(calculus);
+        solution_div_free.applyToAccum(accum);
+
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("div free solution");
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_div_free.myContainer.minCoeff(), solution_div_free.myContainer.maxCoeff());
-        Calculus::Accum accum(calculus);
-        solution_div_free.applyToAccum(accum);
-        accum.display3D(*viewer, colormap);
-        calculus.sharp(ad2*solution_div_free).display3D(*viewer);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, solution_div_free.myContainer.minCoeff(), solution_div_free.myContainer.maxCoeff());
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(ad2*solution_div_free));
         (*viewer) << Viewer::updateDisplay;
     }
 
@@ -714,16 +710,15 @@ void solve3d_decomposition()
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
+        Calculus::Accum accum(calculus);
+        solution_harmonic.applyToAccum(accum);
+
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("harmonic");
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_harmonic.myContainer.minCoeff(), solution_harmonic.myContainer.maxCoeff());
-        Calculus::Accum accum(calculus);
-        solution_harmonic.applyToAccum(accum);
-        accum.display3D(*viewer, colormap);
-        calculus.sharp(solution_harmonic).display3D(*viewer, 10);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, solution_harmonic.myContainer.minCoeff(), solution_harmonic.myContainer.maxCoeff());
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(solution_harmonic), 10.);
         (*viewer) << Viewer::updateDisplay;
     }
 
