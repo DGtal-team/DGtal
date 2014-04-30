@@ -45,12 +45,20 @@ namespace DGtal
    */
   struct AllSCellMapStyle : public DrawableWithBoard2D
   {
-      virtual void setStyle( Board2D & aBoard ) const
+      double cmap_min;
+      double cmap_max;
+
+      AllSCellMapStyle(const double& _cmap_min = 0, const double& _cmap_max = 1)
+          : DrawableWithBoard2D(), cmap_min(_cmap_min), cmap_max(_cmap_max)
       {
-          aBoard.setPenColorRGBi(0,255,255);
-          aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-          aBoard.setFillColorRGBi(255,0,0);
-          aBoard.setLineWidth(3);
+      }
+
+      virtual void setStyle(Board2D & aBoard) const
+      {
+          aBoard.setPenColorRGBi(0,0,0);
+          aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+          aBoard.setFillColorRGBi(0,0,0);
+          aBoard.setLineWidth(1);
       }
   };
   // AllSCellStyle
@@ -69,10 +77,10 @@ namespace DGtal
       {
       }
 
-      virtual void setStyle( Board2D & aBoard ) const
+      virtual void setStyle(Board2D& aBoard) const
       {
           aBoard.setPenColorRGBi(0,0,0);
-          aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+          aBoard.setLineStyle(Board2D::Shape::SolidStyle);
           aBoard.setFillColorRGBi(0,0,0);
           aBoard.setLineWidth(1);
       }

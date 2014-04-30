@@ -92,14 +92,14 @@ namespace DGtal
 template <typename TCalculus, typename TValue>
 static
 void
-draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TCalculus, TValue>& object);
+draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TCalculus, TValue>& scell_map);
 // AllSCellMap
     
 // VectorField
 template <typename TCalculus, DGtal::Duality duality>
 static
 void
-draw(DGtal::Board2D& board, const DGtal::VectorField<TCalculus, duality>& object);
+draw(DGtal::Board2D& board, const DGtal::VectorField<TCalculus, duality>& vector_field);
 // VectorField
 
 // AngleLinearMinimizer

@@ -27,6 +27,7 @@
  */
 
 #include <DGtal/io/Style2DFactory.h>
+#include <DGtal/io/colormaps/GradientColorMap.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -39,8 +40,48 @@
 template <typename TCalculus, typename TValue>
 inline
 void
-DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TCalculus, TValue>& object)
+DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TCalculus, TValue>& scell_map)
 {
+    BOOST_STATIC_ASSERT(( TCalculus::dimension == 2 ));
+    ASSERT( scell_map.myCalculus );
+
+    TValue cmap_min = 0;
+    TValue cmap_max = 1;
+
+    {
+        const DGtal::AllSCellMapStyle* style = dynamic_cast<const DGtal::AllSCellMapStyle*>(board.myStyles["AllSCellMap"].get());
+        if (style)
+        {
+            cmap_min = style->cmap_min;
+            cmap_max = style->cmap_max;
+        }
+    }
+
+    typedef typename DGtal::GradientColorMap<TValue, DGtal::CMAP_JET> ColorMap;
+    const ColorMap colormap(cmap_min, cmap_max);
+
+    typedef typename TCalculus::ConstIterator CalculusConstIterator;
+    typedef typename TCalculus::SCell CalculusSCell;
+    for (CalculusConstIterator ci=scell_map.myCalculus->begin(), cie=scell_map.myCalculus->end(); ci!=cie; ci++)
+    {
+        const CalculusSCell& cell = ci->first;
+        ASSERT(cell.myPositive == true);
+
+        const bool& flipped = scell_map.myCalculus->isSCellFlipped(cell);
+        CalculusSCell displayed_cell = cell;
+        if (flipped) displayed_cell = scell_map.myCalculus->kspace.sOpp(cell);
+
+        typename DGtal::AllSCellMap<TCalculus, TValue>::ConstIterator tci = scell_map.find(cell);
+        if (tci!=scell_map.end() && finite(tci->second))
+        {
+            TValue displayed_value = tci->second;
+            if (flipped) displayed_value = -displayed_value;
+            board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, colormap(displayed_value)));
+        }
+        else board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
+
+        board << displayed_cell;
+    }
 }
 // AllSCellMap
 
@@ -50,6 +91,7 @@ void
 DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TCalculus, duality>& vector_field)
 {
     BOOST_STATIC_ASSERT(( TCalculus::dimension == 2 ));
+    ASSERT( vector_field.myCalculus );
 
     typename TCalculus::Scalar scale = .25;
     typename TCalculus::Scalar epsilon = 1e-8;

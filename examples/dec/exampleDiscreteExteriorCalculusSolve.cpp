@@ -6,7 +6,6 @@ using namespace std;
 #include <QApplication>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/readers/GenericReader.h"
 using namespace DGtal;
 
@@ -42,13 +41,12 @@ void solve2d_laplacian()
     //! [dirac_definition]
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         dirac.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << accum;
         board.saveSVG("solve_laplacian_calculus.svg");
     }
 
@@ -68,13 +66,13 @@ void solve2d_laplacian()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << accum;
         board.saveSVG("solve_laplacian_simplicial_llt.svg");
     }
 
@@ -94,13 +92,13 @@ void solve2d_laplacian()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << accum;
         board.saveSVG("solve_laplacian_simplicial_ldlt.svg");
     }
 
@@ -120,13 +118,13 @@ void solve2d_laplacian()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << accum;
         board.saveSVG("solve_laplacian_conjugate_gradient.svg");
     }
 
@@ -146,13 +144,13 @@ void solve2d_laplacian()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << accum;
         board.saveSVG("solve_laplacian_bicgstab.svg");
     }
 
@@ -172,13 +170,13 @@ void solve2d_laplacian()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << accum;
         board.saveSVG("solve_laplacian_sparse_lu.svg");
     }
 
@@ -198,13 +196,13 @@ void solve2d_laplacian()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
+        board << accum;
         board.saveSVG("solve_laplacian_sparse_qr.svg");
     }
 
@@ -253,14 +251,15 @@ void solve2d_dual_decomposition()
     //! [2d_dual_decomposition_input_field_definition]
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(-1,1);
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         input_one_form.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << input_vector_field;
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-1, 1));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << input_vector_field;
         board.saveSVG("solve_2d_dual_decomposition_calculus.svg");
     }
 
@@ -282,14 +281,15 @@ void solve2d_dual_decomposition()
     }
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution_curl_free.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << calculus.sharp(d0*solution_curl_free);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_dual_decomposition_curl_free.svg");
     }
 
@@ -310,14 +310,15 @@ void solve2d_dual_decomposition()
     }
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution_div_free.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(1.5)) << calculus.sharp(ad2*solution_div_free);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(1.5));
+        board << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_dual_decomposition_div_free.svg");
     }
 
@@ -327,14 +328,15 @@ void solve2d_dual_decomposition()
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution_harmonic.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(20)) << calculus.sharp(solution_harmonic);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(20));
+        board << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_dual_decomposition_harmonic.svg");
     }
 
@@ -383,14 +385,15 @@ void solve2d_primal_decomposition()
     //! [2d_primal_decomposition_input_field_definition]
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(-1,1);
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         input_one_form.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << input_vector_field;
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-1, 1));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << input_vector_field;
         board.saveSVG("solve_2d_primal_decomposition_calculus.svg");
     }
 
@@ -412,14 +415,15 @@ void solve2d_primal_decomposition()
     }
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution_curl_free.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << calculus.sharp(d0*solution_curl_free);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75));
+        board << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_primal_decomposition_curl_free.svg");
     }
 
@@ -440,14 +444,15 @@ void solve2d_primal_decomposition()
     }
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution_div_free.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(1.5)) << calculus.sharp(ad2*solution_div_free);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(1.5));
+        board << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_primal_decomposition_div_free.svg");
     }
 
@@ -457,14 +462,15 @@ void solve2d_primal_decomposition()
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff());
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         solution_harmonic.applyToAccum(accum);
-        accum.display2D(board, colormap);
-        board << CustomStyle("VectorField", new VectorFieldStyle(30)) << calculus.sharp(solution_harmonic);
+
+        Board2D board;
+        board << domain;
+        board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
+        board << accum;
+        board << CustomStyle("VectorField", new VectorFieldStyle(30));
+        board << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_primal_decomposition_harmonic.svg");
     }
 

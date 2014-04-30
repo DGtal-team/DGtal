@@ -98,6 +98,11 @@ namespace DGtal
   public:
 
     /**
+     * Pointer to const calculus.
+     */
+    const Calculus* myCalculus;
+
+    /**
      * Get class name string "AllSCellMap".
      */
     std::string className() const;
@@ -127,15 +132,6 @@ namespace DGtal
     void display3D(Viewer& viewer, const ColorMap& color_map) const;
 
     /**
-     * Displays the object on an 2D board.
-     * @param board a reference to the board.
-     * @param color_map a reference to the colormap to use.
-
-     */
-    template <typename Board, typename ColorMap>
-    void display2D(Board& board, const ColorMap& color_map) const;
-
-    /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
@@ -143,11 +139,6 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-
-    /**
-     * Const reference to calculus.
-     */
-    const Calculus* myCalculus;
 
     // ------------------------- Hidden services ------------------------------
   protected:
