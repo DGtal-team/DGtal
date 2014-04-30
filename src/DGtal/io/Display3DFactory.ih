@@ -45,10 +45,10 @@ void
 DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::AllSCellMap<Calculus, Value>& scell_map, const Value& cmap_min, const Value cmap_max)
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
-    ASSERT( myCalculus );
+    ASSERT( scell_map.myCalculus );
 
-		typedef GradientColorMap<Value, CMAP_JET> Colormap;
-		const Colormap colormap(cmap_min, cmap_max);
+    typedef GradientColorMap<Value, CMAP_JET> Colormap;
+    const Colormap colormap(cmap_min, cmap_max);
 
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;
