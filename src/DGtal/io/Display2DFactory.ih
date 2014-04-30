@@ -49,7 +49,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TC
     TValue cmap_max = 1;
 
     {
-        const DGtal::AllSCellMapStyle* style = dynamic_cast<const DGtal::AllSCellMapStyle*>(board.myStyles["AllSCellMap"].get());
+        const DGtal::AllSCellMapStyle2D* style = dynamic_cast<const DGtal::AllSCellMapStyle2D*>(board.myStyles["AllSCellMap"].get());
         if (style)
         {
             cmap_min = style->cmap_min;
@@ -97,7 +97,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
     typename TCalculus::Scalar epsilon = 1e-8;
 
     {
-        const DGtal::VectorFieldStyle* style = dynamic_cast<const DGtal::VectorFieldStyle*>(board.myStyles["VectorField"].get());
+        const DGtal::VectorFieldStyle2D* style = dynamic_cast<const DGtal::VectorFieldStyle2D*>(board.myStyles["VectorField"].get());
         if (style)
         {
             scale = style->scale;

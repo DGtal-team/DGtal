@@ -142,7 +142,7 @@ main(int argc, char* argv[])
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
             board << accum;
             board.saveSVG("linear_structure_neumann_solution.svg");
         }
@@ -154,9 +154,9 @@ main(int argc, char* argv[])
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
             board << accum;
-            board << CustomStyle("VectorField", new VectorFieldStyle(1));
+            board << CustomStyle("VectorField", new VectorFieldStyle2D(1));
             board << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_neumann_solution_gradient.svg");
         }
@@ -235,7 +235,7 @@ main(int argc, char* argv[])
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
             board << accum;
             board.saveSVG("linear_structure_dirichlet_solution.svg");
         }
@@ -247,7 +247,7 @@ main(int argc, char* argv[])
 
             Board2D board;
             board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
             board << accum;
             board << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_dirichlet_solution_gradient.svg");

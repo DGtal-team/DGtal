@@ -122,7 +122,6 @@ DGtal::VectorField<Calculus, duality>::display3D(Viewer& viewer, const typename 
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
-    /*
 #if defined(WITH_VISU3D_QGLVIEWER)
     viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
 
@@ -145,8 +144,6 @@ DGtal::VectorField<Calculus, duality>::display3D(Viewer& viewer, const typename 
         viewer.addCone(origin, origin+arrow);
     }
 #endif
-*/
-
 }
 
 template <typename Calculus, DGtal::Duality duality>

@@ -50,6 +50,7 @@
 #include <DGtal/images/ImageSelector.h>
 #include <DGtal/io/writers/ITKWriter.h>
 #endif
+#include <DGtal/io/viewers/Viewer3D.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
