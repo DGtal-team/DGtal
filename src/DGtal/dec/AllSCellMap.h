@@ -50,7 +50,6 @@
 #include <DGtal/images/ImageSelector.h>
 #include <DGtal/io/writers/ITKWriter.h>
 #endif
-#include <DGtal/io/viewers/Viewer3D.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -114,23 +113,15 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const;
 
+#if defined(WITH_ITK)
     /**
      * Writes the object on an ITK image.
      * @param filename the name of the file written.
      * @param value_outside image value for non set order of cells.
      * @params value_inside_default image value for cells of correct order without values.
      */
-#if defined(WITH_ITK)
     void writeITKImage(const std::string& filename, const Value& value_outside = -1, const Value& value_inside_default = 0) const;
 #endif
-
-    /**
-     * Displays the object on an 3D viewer.
-     * @param viewer a reference to the viewer.
-     * @param color_map a reference to the colormap to use.
-     */
-    template <typename Viewer, typename ColorMap>
-    void display3D(Viewer& viewer, const ColorMap& color_map) const;
 
     /**
      * Checks the validity/consistency of the object.

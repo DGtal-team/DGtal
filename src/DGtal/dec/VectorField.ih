@@ -116,37 +116,6 @@ DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scala
 }
 
 template <typename Calculus, DGtal::Duality duality>
-template <typename Viewer>
-void
-DGtal::VectorField<Calculus, duality>::display3D(Viewer& viewer, const typename Calculus::Scalar& scale, const typename Calculus::Scalar& epsilon) const
-{
-    BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
-
-#if defined(WITH_VISU3D_QGLVIEWER)
-    viewer << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
-
-    for (typename Calculus::Index index=0; index<myCalculus->kFormLength(0, duality); index++)
-    {
-        const typename Calculus::SCell& cell = myCalculus->getSCell(0, duality, index);
-        DGtal::Z3i::RealPoint origin = cell.myCoordinates/2.;
-        if (duality == PRIMAL)
-            origin -= DGtal::Z3i::RealPoint(.5,.5,.5);
-
-        DGtal::Z3i::RealPoint arrow;
-        for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
-            arrow[dim] = myCoordinates[dim](index);
-
-        arrow *= scale;
-        if (!finite(arrow[0]) || !finite(arrow[1]) || !finite(arrow[2])) continue;
-        const typename Calculus::Scalar& norm = arrow.norm();
-        if (norm <= epsilon) continue;
-
-        viewer.addCone(origin, origin+arrow);
-    }
-#endif
-}
-
-template <typename Calculus, DGtal::Duality duality>
 DGtal::KForm<Calculus, 0, duality>
 DGtal::VectorField<Calculus, duality>::extractZeroForm(const Dimension& dim) const
 {
