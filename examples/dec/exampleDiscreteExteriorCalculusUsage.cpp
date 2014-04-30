@@ -71,7 +71,7 @@ void usage2d()
             Calculus::Accum accum(calculus);
             primal_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
-            primal_vector_field.display2D(board);
+            board << primal_vector_field;
             board.saveSVG("usage_primal_one_form.svg");
         }
 
@@ -87,7 +87,7 @@ void usage2d()
             Calculus::Accum accum(calculus);
             flat_sharp_primal_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
-            sharp_flat_primal_vector_field.display2D(board);
+            board << sharp_flat_primal_vector_field;
             board.saveSVG("usage_primal_one_form_sharp_flat.svg");
         }
 
@@ -104,8 +104,8 @@ void usage2d()
             Calculus::Accum accum(calculus);
             dual_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
-            dual_vector_field.display2D(board);
-            primal_vector_field.display2D(board);
+            board << dual_vector_field;
+            board << primal_vector_field;
             board.saveSVG("usage_primal_one_form_hodge.svg");
         }
     }
@@ -148,7 +148,7 @@ void usage2d()
             Calculus::Accum accum(calculus);
             dual_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
-            dual_vector_field.display2D(board);
+            board << dual_vector_field;
             board.saveSVG("usage_dual_one_form.svg");
         }
 
@@ -165,8 +165,8 @@ void usage2d()
             Calculus::Accum accum(calculus);
             primal_one_form.applyToAccum(accum);
             accum.display2D(board, colormap);
-            primal_vector_field.display2D(board);
-            dual_vector_field.display2D(board);
+            board << primal_vector_field;
+            board << dual_vector_field;
             board.saveSVG("usage_dual_one_form_hodge.svg");
         }
     }

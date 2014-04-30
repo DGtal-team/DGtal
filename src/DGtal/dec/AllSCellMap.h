@@ -50,11 +50,6 @@
 #include <DGtal/images/ImageSelector.h>
 #include <DGtal/io/writers/ITKWriter.h>
 #endif
-#include <DGtal/io/Color.h>
-#include <DGtal/io/boards/Board2D.h>
-#if defined(WITH_VISU3D_QGLVIEWER)
-#include <DGtal/io/viewers/Viewer3D.h>
-#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -101,6 +96,11 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
+
+    /**
+     * Get class name string "AllSCellMap".
+     */
+    std::string className() const;
 
     /**
      * Writes/Displays the object on an output stream.

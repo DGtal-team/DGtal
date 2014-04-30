@@ -47,6 +47,8 @@
 #include "DGtal/dec/KForm.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -115,19 +117,15 @@ template <typename TCalculus, Duality duality>
     void selfDisplay(std::ostream& out) const;
 
     /**
+     * Get class name string "VectorField".
+     */
+    std::string className() const;
+
+    /**
      * Create zero form by projecting the vector field along basis vector.
      * @param dim dimension along wich the vector field is projected.
      */
     KForm<Calculus, 0, duality> extractZeroForm(const Dimension& dim) const;
-
-    /**
-     * Display vector field on 2D board.
-     * @param board the board to use.
-     * @param scale display scale factor.
-     * @param epsilon vectors with norm lower than epsilon are not displayed.
-     */
-    template <typename Board>
-    void display2D(Board& board, const typename Calculus::Scalar& scale = .25, const typename Calculus::Scalar& epsilon = 1e-8) const;
 
     /**
      * Display vector field on 3D viewer.

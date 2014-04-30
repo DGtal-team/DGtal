@@ -260,7 +260,7 @@ void solve2d_dual_decomposition()
         Calculus::Accum accum(calculus);
         input_one_form.applyToAccum(accum);
         accum.display2D(board, colormap);
-        input_vector_field.display2D(board,.75);
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << input_vector_field;
         board.saveSVG("solve_2d_dual_decomposition_calculus.svg");
     }
 
@@ -289,7 +289,7 @@ void solve2d_dual_decomposition()
         Calculus::Accum accum(calculus);
         solution_curl_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(d0*solution_curl_free).display2D(board,.75);
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_dual_decomposition_curl_free.svg");
     }
 
@@ -317,7 +317,7 @@ void solve2d_dual_decomposition()
         Calculus::Accum accum(calculus);
         solution_div_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(ad2*solution_div_free).display2D(board,1.5);
+        board << CustomStyle("VectorField", new VectorFieldStyle(1.5)) << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_dual_decomposition_div_free.svg");
     }
 
@@ -334,7 +334,7 @@ void solve2d_dual_decomposition()
         Calculus::Accum accum(calculus);
         solution_harmonic.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(solution_harmonic).display2D(board, 20.);
+        board << CustomStyle("VectorField", new VectorFieldStyle(20)) << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_dual_decomposition_harmonic.svg");
     }
 
@@ -390,7 +390,7 @@ void solve2d_primal_decomposition()
         Calculus::Accum accum(calculus);
         input_one_form.applyToAccum(accum);
         accum.display2D(board, colormap);
-        input_vector_field.display2D(board,.75);
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << input_vector_field;
         board.saveSVG("solve_2d_primal_decomposition_calculus.svg");
     }
 
@@ -419,7 +419,7 @@ void solve2d_primal_decomposition()
         Calculus::Accum accum(calculus);
         solution_curl_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(d0*solution_curl_free).display2D(board,.75);
+        board << CustomStyle("VectorField", new VectorFieldStyle(.75)) << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_primal_decomposition_curl_free.svg");
     }
 
@@ -447,7 +447,7 @@ void solve2d_primal_decomposition()
         Calculus::Accum accum(calculus);
         solution_div_free.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(ad2*solution_div_free).display2D(board,1.5);
+        board << CustomStyle("VectorField", new VectorFieldStyle(1.5)) << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_primal_decomposition_div_free.svg");
     }
 
@@ -464,7 +464,7 @@ void solve2d_primal_decomposition()
         Calculus::Accum accum(calculus);
         solution_harmonic.applyToAccum(accum);
         accum.display2D(board, colormap);
-        calculus.sharp(solution_harmonic).display2D(board, 30.);
+        board << CustomStyle("VectorField", new VectorFieldStyle(30)) << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_primal_decomposition_harmonic.svg");
     }
 

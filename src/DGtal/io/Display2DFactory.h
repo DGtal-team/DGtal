@@ -67,8 +67,11 @@
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/dec/AllSCellMap.h"
+#include "DGtal/dec/VectorField.h"
 
 //#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/helpers/StdDefs.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +88,20 @@ namespace DGtal
   struct Display2DFactory
  {
 
+// AllSCellMap
+template <typename TCalculus, typename TValue>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TCalculus, TValue>& object);
+// AllSCellMap
     
+// VectorField
+template <typename TCalculus, DGtal::Duality duality>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::VectorField<TCalculus, duality>& object);
+// VectorField
+
 // AngleLinearMinimizer
 static void draw( DGtal::Board2D & board, const DGtal::AngleLinearMinimizer & );
 // AngleLinearMinimizer
