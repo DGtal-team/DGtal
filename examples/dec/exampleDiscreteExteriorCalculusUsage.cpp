@@ -4,7 +4,6 @@ using namespace std;
 #include "common.h"
 
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/readers/GenericReader.h"
 using namespace DGtal;
 
@@ -20,12 +19,11 @@ void usage2d()
     trace.info() << calculus << endl;
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(-1,1);
+        Calculus::Accum accum(calculus);
+
         Board2D board;
         board << domain;
-        Calculus::Accum accum(calculus);
-        accum.display2D(board, colormap);
+        board << accum;
         board.saveSVG("usage_calculus.svg");
     }
 
@@ -48,13 +46,13 @@ void usage2d()
         const Calculus::PrimalForm0 prout = 2 * primal_zero_form + primal_zero_form;
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap(0,15);
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             primal_zero_form.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(0, 15));
+            board << accum;
             board.saveSVG("usage_primal_zero_form.svg");
         }
 
@@ -64,13 +62,13 @@ void usage2d()
         const Calculus::PrimalVectorField primal_vector_field = calculus.sharp(primal_one_form);
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap(-2,2);
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             primal_one_form.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << accum;
             board << primal_vector_field;
             board.saveSVG("usage_primal_one_form.svg");
         }
@@ -80,13 +78,13 @@ void usage2d()
         const Calculus::PrimalVectorField sharp_flat_primal_vector_field = calculus.sharp(flat_sharp_primal_one_form);
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap(-2,2);
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             flat_sharp_primal_one_form.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << accum;
             board << sharp_flat_primal_vector_field;
             board.saveSVG("usage_primal_one_form_sharp_flat.svg");
         }
@@ -97,13 +95,13 @@ void usage2d()
         const Calculus::DualVectorField dual_vector_field = calculus.sharp(dual_one_form);
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap(-2,2);
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             dual_one_form.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << accum;
             board << dual_vector_field;
             board << primal_vector_field;
             board.saveSVG("usage_primal_one_form_hodge.svg");
@@ -125,13 +123,13 @@ void usage2d()
         }
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap(0,15);
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             dual_zero_form.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(0, 15));
+            board << accum;
             board.saveSVG("usage_dual_zero_form.svg");
         }
 
@@ -141,13 +139,13 @@ void usage2d()
         const Calculus::DualVectorField dual_vector_field = calculus.sharp(dual_one_form);
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap(-2,2);
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             dual_one_form.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << accum;
             board << dual_vector_field;
             board.saveSVG("usage_dual_one_form.svg");
         }
@@ -158,13 +156,13 @@ void usage2d()
         const Calculus::PrimalVectorField primal_vector_field = calculus.sharp(primal_one_form);
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap(-2,2);
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             primal_one_form.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(-2, 2));
+            board << accum;
             board << primal_vector_field;
             board << dual_vector_field;
             board.saveSVG("usage_dual_one_form_hodge.svg");

@@ -29,9 +29,9 @@
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+
 using namespace DGtal;
 using namespace Z2i;
 using std::endl;
@@ -77,13 +77,12 @@ main(int argc, char* argv[])
     trace.info() << "dirac_position = " << dirac_position << endl;
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         dirac.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << accum;
         board.saveSVG("linear_structure_neumann_dirac.svg");
     }
 
@@ -138,26 +137,27 @@ main(int argc, char* argv[])
         }
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap( solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff() );
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             solved_solution.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
+            board << accum;
             board.saveSVG("linear_structure_neumann_solution.svg");
         }
 
         {
             Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap( solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff() );
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             solved_solution_gradient.applyToAccum(accum);
-            accum.display2D(board, colormap);
-            board << CustomStyle("VectorField", new VectorFieldStyle(1)) << calculus.sharp(solved_solution_gradient);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
+            board << accum;
+            board << CustomStyle("VectorField", new VectorFieldStyle(1));
+            board << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_neumann_solution_gradient.svg");
         }
 
@@ -172,13 +172,12 @@ main(int argc, char* argv[])
     //! [dirichlet-creation]
 
     {
-        typedef GradientColorMap<double, CMAP_JET> Colormap;
-        Colormap colormap(0,1);
-        Board2D board;
-        board << domain;
         Calculus::Accum accum(calculus);
         dirac.applyToAccum(accum);
-        accum.display2D(board, colormap);
+
+        Board2D board;
+        board << domain;
+        board << accum;
         board.saveSVG("linear_structure_dirichlet_dirac.svg");
     }
 
@@ -231,25 +230,25 @@ main(int argc, char* argv[])
         }
 
         {
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap( solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff() );
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             solved_solution.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
+            board << accum;
             board.saveSVG("linear_structure_dirichlet_solution.svg");
         }
 
         {
             Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
-            typedef GradientColorMap<double, CMAP_JET> Colormap;
-            Colormap colormap( solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff() );
-            Board2D board;
-            board << domain;
             Calculus::Accum accum(calculus);
             solved_solution_gradient.applyToAccum(accum);
-            accum.display2D(board, colormap);
+
+            Board2D board;
+            board << domain;
+            board << CustomStyle("AllSCellMap", new AllSCellMapStyle(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
+            board << accum;
             board << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_dirichlet_solution_gradient.svg");
         }

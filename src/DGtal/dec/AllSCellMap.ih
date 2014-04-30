@@ -139,39 +139,6 @@ DGtal::AllSCellMap<Calculus, V>::display3D(Viewer& viewer, const ColorMap& color
 */
 }
 
-template <typename Calculus, typename V>
-template <typename Board, typename ColorMap>
-void
-DGtal::AllSCellMap<Calculus, V>::display2D(Board& board, const ColorMap& color_map) const
-{
-    BOOST_STATIC_ASSERT(( Calculus::dimension == 2 ));
-    ASSERT( myCalculus );
-
-		/*
-    typedef typename Calculus::ConstIterator CalculusConstIterator;
-    for (CalculusConstIterator ci=myCalculus->begin(), cie=myCalculus->end(); ci!=cie; ci++)
-    {
-        const SCell& cell = ci->first;
-        ASSERT(cell.myPositive == true);
-
-        const bool& flipped = myCalculus->isSCellFlipped(cell);
-        SCell displayed_cell = cell;
-        if (flipped) displayed_cell = myCalculus->kspace.sOpp(cell);
-
-        ConstIterator tci = this->find(cell);
-        if (tci!=this->end() && finite(tci->second))
-        {
-            Value displayed_value = tci->second;
-            if (flipped) displayed_value = -displayed_value;
-            board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, color_map(displayed_value)));
-        }
-        else board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
-
-        board << displayed_cell;
-    }
-		*/
-}
-
 template <typename Calculus, typename Value>
 bool
 DGtal::AllSCellMap<Calculus, Value>::isValid() const
