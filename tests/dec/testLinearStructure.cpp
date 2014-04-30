@@ -157,7 +157,7 @@ main(int argc, char* argv[])
             Calculus::Accum accum(calculus);
             solved_solution_gradient.applyToAccum(accum);
             accum.display2D(board, colormap);
-            calculus.sharp(solved_solution_gradient).display2D(board, 1.);
+            board << CustomStyle("VectorField", new VectorFieldStyle(1)) << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_neumann_solution_gradient.svg");
         }
 
@@ -250,7 +250,7 @@ main(int argc, char* argv[])
             Calculus::Accum accum(calculus);
             solved_solution_gradient.applyToAccum(accum);
             accum.display2D(board, colormap);
-            calculus.sharp(solved_solution_gradient).display2D(board);
+            board << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_dirichlet_solution_gradient.svg");
         }
 
