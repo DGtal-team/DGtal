@@ -33,10 +33,13 @@
 #include <limits>
 
 // Cairo includes
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 #include <cairo.h>
 #include <cairo-pdf.h>
 #include <cairo-ps.h>
 #include <cairo-svg.h>
+#pragma clang diagnostic pop
 // Cairo includes
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>

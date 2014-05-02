@@ -32,10 +32,13 @@
 
 #ifdef WITH_CAIRO
 // cairo
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 #include <cairo.h>
 #include <cairo-pdf.h>
 #include <cairo-ps.h>
 #include <cairo-svg.h>
+#pragma clang diagnostic pop
 // cairo
 #endif
 
