@@ -3,6 +3,7 @@ if (WITH_CAIRO AND WITH_EIGEN AND WITH_QGLVIEWER)
     set(DGTAL_EXAMPLES_SRC_DEC
         exampleDiscreteExteriorCalculusUsage
         exampleDiscreteExteriorCalculusSolve
+        exampleDiscreteExteriorCalculusChladni
         )
 
     foreach(FILE ${DGTAL_EXAMPLES_SRC_DEC})
