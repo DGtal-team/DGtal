@@ -12,6 +12,15 @@ using namespace DGtal;
 
 #include <Eigen/Eigenvalues>
 
+double standard_deviation(const Eigen::VectorXd& xx)
+{
+    const double mean = xx.mean();
+    double accum = 0;
+    for (int kk=0, kk_max=xx.rows(); kk<kk_max; kk++)
+        accum += (xx(kk)-mean)*(xx(kk)-mean);
+    return sqrt(accum)/(xx.size()-1);
+}
+
 int main(int argc, char* argv[])
 {
     trace.beginBlock("building calculus");
@@ -91,7 +100,7 @@ int main(int argc, char* argv[])
         ss << "chladni_eigen_" << kk << ".svg";
         const std::string filename = ss.str();
         ss << "chladni_eigen_vector_" << kk << ".svg";
-        trace.info() << kk << " " << eigen_value << " " << sqrt(eigen_value) << " " << eigen_vector.minCoeff() << "0" << eigen_vector.maxCoeff() << endl;
+        trace.info() << kk << " " << eigen_value << " " << sqrt(eigen_value) << " " << eigen_vector.minCoeff() << " " << eigen_vector.maxCoeff() << " " << standard_deviation(eigen_vector) << endl;
 
         Calculus::Accum accum(calculus);
         eigen_form.applyToAccum(accum);
