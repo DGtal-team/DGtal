@@ -1214,7 +1214,28 @@ DGtal::Display3D< Space ,KSpace >::normalize (double vec[3])
   vec[2] /= sqrt (squaredLen);
 }
 
-
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::clear()
+{
+  myCubeSetList.clear();
+  myLineSetList.clear();
+  myBallSetList.clear();
+  myClippingPlaneList.clear();
+  myPrismList.clear();
+  myQuadSetList.clear();
+  myTriangleSetList.clear();
+  myPolygonSetList.clear();
+  myCubeSetNameList.clear();
+  myLineSetNameList.clear();
+  myBallSetNameList.clear();
+  myClippingPlaneNameList.clear();
+  myPrismNameList.clear();
+  myQuadSetNameList.clear();
+  myTriangleSetNameList.clear();
+  myPolygonSetNameList.clear();
+}
 
 
 

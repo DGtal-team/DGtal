@@ -21,6 +21,7 @@ add_subdirectory(viewers)
 add_subdirectory(colormaps)
 add_subdirectory(readers)
 add_subdirectory(writers)
+add_subdirectory(boards)
 
 
 
