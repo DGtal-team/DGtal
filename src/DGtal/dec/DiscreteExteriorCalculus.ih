@@ -104,6 +104,36 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const D& _doma
 
 template <typename D, typename LAB>
 bool
+DGtal::DiscreteExteriorCalculus<D, LAB>::eraseSCell(const SCell& _cell)
+{
+    const SCell abs_cell = absoluteSCell(_cell);
+
+    typename Properties::Iterator iter_property = cell_properties.find(abs_cell);
+    if (iter_property == cell_properties.end())
+        return false;
+
+    const Dimension dim = kspace.sDim(abs_cell);
+    const Index index = iter_property->second.index;
+    cell_properties.erase(iter_property);
+
+    typename SCells::iterator iter_index = index_cells[dim].begin() + index;
+    ASSERT( *iter_index==abs_cell );
+    iter_index = index_cells[dim].erase(iter_index);
+
+    for (typename SCells::const_iterator iter_index_end = index_cells[dim].end(); iter_index!= iter_index_end; iter_index++)
+    {
+        const SCell cell_next = *iter_index;
+        typename Properties::Iterator iter_property_next = cell_properties.find(cell_next);
+        ASSERT( iter_property_next!=cell_properties.end() );
+        ASSERT( iter_property_next->second.index > index );
+        iter_property_next->second.index -= 1;
+    }
+
+    return true;
+}
+
+template <typename D, typename LAB>
+bool
 DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const Scalar& _primal_size)
 {
     SCell abs_cell = _cell;
