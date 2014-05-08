@@ -1,5 +1,5 @@
 SET(DGTAL_TESTS_SRC_IO_BOARDS
-       testBoard3d
+       testBoard3D
        testBallQuad)
 
 
