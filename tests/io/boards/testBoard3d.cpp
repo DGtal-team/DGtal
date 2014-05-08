@@ -15,11 +15,12 @@
  **/
 
 /**
- * @file testBoard3d.cpp
+ * @file testBoard3D.cpp
  * @ingroup Tests
- * @author Kacper Pluta (\c kacper.pluta@dbslabs.com.br )
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2014/05/03
+ * @date 2014/04/12
  *
  * Functions for testing class Board3D.
  *
@@ -27,15 +28,11 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-
-
 #include <iostream>
-#include "DGtal/io/boards/Board3D.h"
 #include "DGtal/base/Common.h"
+#include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-
+#include "DGtal/io/boards/Board3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -43,77 +40,115 @@ using namespace DGtal;
 using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-
-bool testClearBoard3d()
+// Functions for testing class Board3D.
+///////////////////////////////////////////////////////////////////////////////
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testBoard3D()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 4;
-  
-  KSpace K;
-  Point plow(0,0,0);
-  Point pup(20,20,20);
-  Domain domain( plow, pup );
-  K.init( plow, pup, true );
-  Board3D<Space, KSpace> board(K);
-  
-  trace.beginBlock("Testing Board3D: SCells"); 
-  SCell v = K.sSpel( Point( 0, 0, 0 ), KSpace::POS );
-  SCell v2 = K.sSpel( Point( 1, 0, 0 ), KSpace::POS );
-  SCell v3 = K.sSpel( Point( 0, 1, 0 ), KSpace::POS );
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing Board3D ..." );
 
-  board << v << v2 << v3;
-  board.saveOBJ("board3d-cells.obj");
-  board.clear();
-  trace.info() << "File written as \"board3d-cells.obj\". All sent SCels were removed." << std::endl; 
-  nbok++;
-  trace.endBlock();
-  
-  trace.beginBlock("Testing Board3D: 3D points"); 
+
+
   Point p1( -3, -2, 0 );
   Point p2( 7, 3 , 6);
   Point p3( -1, -1, -1);
-  
+  Point p4(-1, -1, 0 );
+  Point p5( 5, 2 , 4);
+  Point p6(-3, -6, 0 );
+  Point p7( 5, 2 , 3);
+
+  Domain domain(p4, p5);
+  DigitalSet shape_set( domain );
+  shape_set.insertNew(p6);
+  shape_set.insertNew(p7);
+
+  Board3D<> board;
+  board << SetMode3D(domain.className(), "Paving");
   board << p1 << p2 << p3;
-  board.saveOBJ("board3D-points.obj");
-  board.clear();  
-  trace.info() << "File written as \"board3D-points.obj\". All sent points were removed." << std::endl;  
-  nbok++;
-  trace.endBlock();
-  
-  trace.beginBlock("Testing Board3D: Ball and clipping palnes"); 
-  DigitalSet shape_set(domain);
-  Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
-  board << SetMode3D( shape_set.className(), "Both" );
   board << shape_set;
-  board << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
-  board << SetMode3D( p1.className(), "Paving" );
-  board << ClippingPlane(1,0,0,-4.9);
-  board << ClippingPlane(0,1,0.3,-10);
-  
-  board.saveOBJ("board3d-clipped-ball.obj");
-  board.clear();
-  trace.info() << "File written as \"board3d-clipped-ball.obj\". All sent clipping palnes and ball were removed." << std::endl;  
-  nbok++;
+  board.saveOBJ("dgtalBoard3D-1-points.obj");
+
+  trace.info()<<" Second"<<std::endl;
+  Board3D<> board2;
+  board2 << SetMode3D(domain.className(), "Paving");
+  board2 << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  board2 << p1 ;
+  board2 << CustomColors3D(Color(0, 255,0),Color(0, 0,255));
+  board2 << p2 << p3;
+  board2 <<  CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  board2 << p6;
+  board2.saveOBJ("dgtalBoard3D-1bis-points.obj");
+
+  nbok += true ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
   trace.endBlock();
-  
-  trace.beginBlock("Testing Board3D: Empty file."); 
-  board.saveOBJ("null.obj");
-  trace.info() << "File written as \"null.obj\"." << std::endl;
-  nbok++;
-  trace.endBlock(); 
-  
+
+  return nbok == nb;
+}
+
+bool testQuadNorm()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing Board3D ..." );
+
+
+
+  Point p1( 0, 0, 0 );
+  Point p2( 0, 1 , 0);
+  Point p3( 1, 1, 0);
+  Point p4(1, 0, 0 );
+  Point p5( 2, 0 , 0);
+  Point p6( 2, 1, 0);
+  RealVector n(1,1,1);
+  RealVector n2(0,1,1);
+
+  KSpace k;
+
+  k.init(Point(2,2,2), Point(4,4,4), true);
+
+  Board3D<Space,KSpace> board(k);
+  board.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized(), true);
+  board.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
+
+  Cell surfel = k.uCell( Point( 2,3,3) );
+
+  Display3DFactory<Space,KSpace>::drawSurfelWithNormal( board, surfel, n2.getNormalized());
+
+  board.saveOBJ("dgtalBoard3D-quad.obj");
+
+
+  nbok += true ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+
   return nbok == nb;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
 
-int main(int, char**)
+int main( int argc, char** argv )
 {
-
   trace.beginBlock ( "Testing class Board3D" );
-  trace.info() << "Testing Display3D::clear()" << std::endl;
-  bool res = testClearBoard3d();
+  trace.info() << "Args:";
+  for ( int i = 0; i < argc; ++i )
+    trace.info() << " " << argv[ i ];
+  trace.info() << endl;
+
+  bool res = testBoard3D() && testQuadNorm(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
 }
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
