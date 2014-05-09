@@ -83,16 +83,19 @@ DGtal::PowerMap<W, Sep,Im>::compute( )
   //Point outside the domain 
   myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
   
-  //Init 
+  //Init the map: the power map at point p is:
+  //  - p if p is an input weighted point (with weight > 0);
+  //  - myInfinity otherwise.
   for(typename Domain::ConstIterator it = myDomainPtr->begin(),
 	itend = myDomainPtr->end();
       it != itend;
       ++it)
-    if (myWeightImagePtr->domain().isInside( *it ) )
+    if (myWeightImagePtr->domain().isInside( *it ) &&
+        (myWeightImagePtr->operator()( *it ) >0 ))
       myImagePtr->setValue ( *it, *it );
     else
       myImagePtr->setValue ( *it, myInfinity );
-  
+
   //We process the dimensions one by one
   for ( Dimension dim = 0; dim < W::Domain::Space::dimension ; dim++ )
     computeOtherSteps ( dim );
@@ -167,7 +170,7 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
   //endpoint of the 1D row
   endpoint[dim] = myUpperBoundCopy[dim];
   
-  //Pruning the list of sites (dim=0 implies no hibben sites)
+  //Pruning the list of sites (dim=0 implies no hidden sites)
   if (dim==0)
     {
       for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
@@ -188,7 +191,7 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 	{
 	  psite = myImagePtr->operator()(point);
 	  if ( psite != myInfinity )
-	    {
+	    {        
 	      while ((nbSites >= 1) && 
 		     ( myMetricPtr->hiddenByPower(Sites[nbSites-1], myWeightImagePtr->operator()(Sites[nbSites-1]),
 						  Sites[nbSites] ,  myWeightImagePtr->operator()(Sites[nbSites]),
@@ -205,13 +208,6 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 	}
     }
 
-  
-  if (startingPoint[0] == 4)
-    {
-      for(typename std::vector<Point>::const_iterator it = Sites.begin(), itend=Sites.end(); it!=itend; ++it)
-        trace.info() << *it;
-      trace.info()<<std::endl;
-    }
   //No sites found
   if (nbSites == -1)
     return;
@@ -228,10 +224,9 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 					  Sites[k+1],myWeightImagePtr->operator()(Sites[k+1]))
 		!= DGtal::ClosestFIRST ))
         k++;
-      
       myImagePtr->setValue(point, Sites[k]);
       point[dim]++;
-    }
+    } 
 }
 
 
