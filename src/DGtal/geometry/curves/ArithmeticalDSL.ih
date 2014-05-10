@@ -240,6 +240,16 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::omega() const
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
+typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Position
+DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::patternLength() const
+{
+  return ( -static_cast<Position>(myShift[1]) * static_cast<Position>(myB)
+	   +static_cast<Position>(myShift[0]) * static_cast<Position>(myA) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
 typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Vector
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::shift() const
 {
@@ -259,12 +269,12 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::steps() const
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Integer
-DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::remainder(const Integer& aA, 
-					       const Integer& aB, 
-					       const Point& aPoint)
+DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::remainder(const Coordinate& aA, 
+								    const Coordinate& aB, 
+								    const Point& aPoint)
 {
-  return aA * static_cast<Integer>(aPoint[0])
-    - aB * static_cast<Integer>(aPoint[1]);
+  return static_cast<Integer>(aA) * static_cast<Integer>(aPoint[0])
+    - static_cast<Integer>(aB) * static_cast<Integer>(aPoint[1]);
 }
 
 //-----------------------------------------------------------------------------
@@ -282,8 +292,8 @@ inline
 typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Integer
 DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::orthogonalPosition(const Point& aPoint) const
 {
-  return myB * static_cast<Integer>(aPoint[0])
-    + myA * static_cast<Integer>(aPoint[1]);
+  return static_cast<Integer>(myB) * static_cast<Integer>(aPoint[0])
+    + static_cast<Integer>(myA) * static_cast<Integer>(aPoint[1]);
 }
 
 //-----------------------------------------------------------------------------
@@ -300,30 +310,37 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::position(const Point& 
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Point
-DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::getPoint(const Position& aPosition) const
+DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::getPoint() const
 {
   Integer shiftRemainder = omega(); 
+  Integer q0 = myLowerBound / shiftRemainder;
+  if (myLowerBound > (q0 * shiftRemainder))
+    q0++; 
+  Point origin = toCoordinate(q0) * myShift;
 
-  //point of position 0 lying below the straight line of remainder mu
-  Point origin(0,0);  
-  Integer originRemainder = 0; 
-  if (myLowerBound > 0)
-    {
-      Integer q0 = myLowerBound / shiftRemainder;
-      if (myLowerBound != (q0 * shiftRemainder))
-	q0++; 
-      origin = static_cast<Position>(q0) * myShift;
-      originRemainder = q0 * shiftRemainder; 
-    }
-  ASSERT( remainder(origin) == originRemainder );  
-  ASSERT( remainder(origin) >= myLowerBound );  
+  ASSERT( position(origin) == NumberTraits<Position>::ZERO );  
+  ASSERT( isInDSL(origin) );  
+
+  return origin; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Point
+DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::getPoint(const Position& aPosition) const
+{
+  //point of position 0 lying in the DSL
+  Point origin = getPoint(); 
 
   //point of position aPosition
-  Integer q = ( (myLowerBound - (originRemainder + static_cast<Integer>(aPosition) * remainder( mySteps.first ))) 
-		/ shiftRemainder ); 
-  Point res = origin + ( aPosition * mySteps.first + static_cast<Position>(q) * myShift ); 
-  ASSERT( isInDSL(res) );
+  Integer q = ( (myLowerBound - (remainder(origin) + static_cast<Integer>(aPosition) * remainder( mySteps.first ))) 
+		/ omega() ); 
+  Point res = origin + ( aPosition * mySteps.first + toCoordinate(q) * myShift ); 
+
   ASSERT( position(res) == aPosition ); 
+  ASSERT( isInDSL(res) );
+
   return res; 
 }
 
@@ -416,6 +433,15 @@ DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::selfDisplay ( std::ost
   out << "[ArithmeticalDSL] ";
   out << "(" << myA << "," << myB << "," << myLowerBound << "," << omega() << ")" << std::endl; 
   out << "by steps " << mySteps.first << " " << mySteps.second << std::endl; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+typename DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::Coordinate
+DGtal::ArithmeticalDSL<TCoordinate, TInteger, adjacency>::toCoordinate(const Integer& aI)
+{
+  return DGtal::detail::toCoordinateImpl<Integer, Coordinate>::cast(aI); 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
