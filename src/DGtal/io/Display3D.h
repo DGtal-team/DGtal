@@ -603,6 +603,12 @@ namespace DGtal
     bool isValid() const;
 
 
+    /**
+     * Removes all sent data.
+     */
+    void clear();
+
+
 
     /**
      * Use to embed a DGtal point into space
