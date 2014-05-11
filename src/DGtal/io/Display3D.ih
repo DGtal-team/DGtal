@@ -264,7 +264,7 @@ DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint 
   v[0]=p3[0]-p1[0]; v[1]=p3[1]-p1[1]; v[2]=p3[2]-p1[2];
   cross(n, u, v );
   normalize(n);
-  addQuadWithNormal(p1, p2, p3, p4, RealPoint(n[0], n[1], n[2]));
+  addQuadWithNormal(p1, p2, p3, p4, RealPoint(n[0], n[1], n[2]), false);
 }
 template < typename Space ,typename KSpace >
 inline
@@ -272,6 +272,7 @@ void
 DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
                                                      const RealPoint &p3, const RealPoint &p4,
                                                      const RealPoint &n,
+                                                     const bool enableReorientation,
                                                      const bool enableDoubleFace)
 {
   if(myQuadSetList.size() == 0 )
@@ -297,7 +298,8 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
       return;
     }
 
-  if ( (crossprod[0]*n[0] + crossprod[1]*n[1] +crossprod[2]*n[2])  <0.0)
+  if ((enableReorientation) 
+      && ((crossprod[0]*n[0] + crossprod[1]*n[1] +crossprod[2]*n[2])  <0.0))
     {
       aQuad.point1=p1;
       aQuad.point2=p4;
@@ -307,7 +309,7 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
       aQuad.ny= n[1];
       aQuad.nz= n[2];
       aQuad.color= getFillColor();
-
+      
       if (enableDoubleFace)
         {
           aQuad2.point1= (p1 - epsilon*n);
@@ -330,7 +332,7 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
       aQuad.ny= n[1];
       aQuad.nz= n[2];
       aQuad.color= getFillColor();
-
+      
       if (enableDoubleFace)
         {
           aQuad2.point1=(p1 - epsilon*n);
@@ -343,7 +345,8 @@ DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const 
           aQuad2.color= getFillColor();
         }
     }
-
+  
+  
   if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
@@ -659,7 +662,9 @@ void
 DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter,
                                                                      bool xSurfel, bool ySurfel, bool zSurfel,
                                                                      const RealVector &aNormal,
-                                                                     const bool enableDoubleFace)
+                                                                     const bool enableReorientation,
+                                                                     const bool sign,
+                                                                     const bool enableDoubleFace )
 {
   updateBoundingBox(baseQuadCenter);
   ASSERT( xSurfel || ySurfel || zSurfel );
@@ -674,24 +679,35 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealP
       x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]-0.5;
       x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]+0.5; z4= baseQuadCenter[2]-0.5;
     }
-  else if(ySurfel)
-    {
-      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
-      x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+0.5;
-      x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+0.5;
-      x4= baseQuadCenter[0]+0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-0.5;
-    }
   else
-    {
-      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
-      x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+0.5; z2= baseQuadCenter[2]-0.5;
-      x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]+0.5;
-      x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
-    }
-
-  addQuadWithNormal(RealPoint(x1, y1, z1), RealPoint(x2 ,y2, z2),
-                    RealPoint(x3, y3, z3), RealPoint(x4, y4, z4), aNormal,
-                    enableDoubleFace);
+    if(ySurfel)
+      {
+        x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+        x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+0.5;
+        x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+0.5;
+        x4= baseQuadCenter[0]+0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-0.5;
+      }
+    else
+      {
+        x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+        x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+0.5; z2= baseQuadCenter[2]-0.5;
+        x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]+0.5;
+        x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
+      }
+  
+  //If we need to use the surfel sign and if it is negative, we
+  //reorder the points (see drawOriented... vs drawUnoriented methods
+  //in Display3DFactory).
+  if ((!enableReorientation) && (!sign))
+    addQuadWithNormal(RealPoint(x1, y1, z1), RealPoint(x3, y3, z3),
+                      RealPoint(x2 ,y2, z2), RealPoint(x4, y4, z4), aNormal,
+                      enableReorientation,
+                      enableDoubleFace);
+  else
+    addQuadWithNormal(RealPoint(x1, y1, z1), RealPoint(x2 ,y2, z2),
+                      RealPoint(x3, y3, z3), RealPoint(x4, y4, z4), aNormal,
+                      enableReorientation,
+                      enableDoubleFace);
 }
 
 
