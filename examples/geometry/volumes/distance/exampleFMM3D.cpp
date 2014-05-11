@@ -181,6 +181,7 @@ int main( int argc, char** argv )
   trace.info() << "clipping plane (" 
 	       << a << ", " << b << ", " << c << ", " << mu << ")" 
 	       << std::endl;  
+  viewer << CustomColors3D(Color(200, 200, 200, 100),Color(200, 200,200, 20));
   viewer << ClippingPlane(a,b,c,mu); 
   
   viewer << Viewer3D<>::updateDisplay;
