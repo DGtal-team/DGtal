@@ -124,8 +124,8 @@ int main( int argc, char** argv )
   SCellToIncidentPoints<KSpace> functor( ks );
   std::pair<Point,Point> bpair = functor(bel);    
   SurfelPredicate surfelPredicate( ks, binaryImage, 
-				   binaryImage( bpair.second ), 
-				   binaryImage( bpair.first ) );  
+				   binaryImage( bpair.first ), 
+				   binaryImage( bpair.second ) );  
   Frontier frontier( ks, surfelPredicate, 
 		     SurfelAdjacency<KSpace::dimension>( true ), bel ); 
 
