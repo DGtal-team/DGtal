@@ -138,11 +138,12 @@ namespace DGtal
 	Integer i = a / b;
 
 	if (a == i*b)
-	  if (i >= NumberTraits<Integer>::ZERO) 
-	    --i; 
-	  else 
-	    ++i;
- 
+	  {
+	    if (i >= NumberTraits<Integer>::ZERO) 
+	      --i; 
+	    else 
+	      ++i;
+	  }
 	return i; 
       } 
     }; 
