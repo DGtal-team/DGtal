@@ -340,7 +340,7 @@ IF( WITH_QGLVIEWER)
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
     SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
   else ( QT4_FOUND )
-    message(FATAL_ERROR  "Qt4 not found.  Check the cmake variables associated to this package or disable it." )
+    message(FATAL_ERROR  "Qt4 not found (needed by QGLVIEWER).  Check the cmake variables associated to this package or disable it." )
   endif ( QT4_FOUND )
 ENDIF( WITH_QGLVIEWER)
 
