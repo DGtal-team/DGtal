@@ -292,12 +292,25 @@ You will obtain such type of illustration (obtained from the example <a href="io
  \image latex  view3D-4bis-illustrationMode.png "Illustration of the \"Illustration\" KhalimskyCell mode."
 
 
-@advanced There exists a specific method to display surflels (Khalimsky cells of dimension 2 in a space of dimension 3) as quadrilaterals where the user can prescribe a unitary normal vector. In Viewer3D, the  normal vector is used in the rendering process (useful to check the geometrical consistency of a normal vector field). Basic usage is:
+@advanced There exists a specific method to display surfels (Khalimsky
+cells of dimension 2 in a space of dimension 3) as quadrilaterals
+where the user can prescribe a unitary normal vector. In Viewer3D, the
+normal vector is used in the rendering process (useful to check the
+geometrical consistency of a normal vector field). Basic usage is:
 
 @code
- Display3DFactory<Space,KSpace>::drawSurfelWithNormal( aViewer, aSurfel, aNormalVector);
+ Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( aViewer, aSurfel, theSurfelSign, aNormalVector);
+@endcode
+or if the surfel is not oriented (unsigned khalimsky cell).
+@code
+ Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( aViewer, aSurfel, aNormalVector);
 @endcode
 
+In the later case, the quadrilateral vertices are oriented such that
+the dot product between the normal vector and the quad canonical
+normal vector is positive. Finally, these two methods accept a last
+boolean parameter such that if true, the quad is geometrically
+duplicated with opposite normal vector (double-quad rendering).
 
 
 

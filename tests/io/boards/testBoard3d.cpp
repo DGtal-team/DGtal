@@ -116,11 +116,11 @@ bool testQuadNorm()
 
   Board3D<Space,KSpace> board(k);
   board.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized(), true);
-  board.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
+  board.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized(), true);
 
   Cell surfel = k.uCell( Point( 2,3,3) );
 
-  Display3DFactory<Space,KSpace>::drawSurfelWithNormal( board, surfel, n2.getNormalized());
+  Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( board, surfel, n2.getNormalized());
 
   board.saveOBJ("dgtalBoard3D-quad.obj");
 
