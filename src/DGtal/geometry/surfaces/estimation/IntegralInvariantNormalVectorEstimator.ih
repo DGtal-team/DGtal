@@ -92,10 +92,11 @@ IntegralInvariantNormalVectorEstimator
     myConvolver( 0 ),
     myH( 1.0 ), myRadius( 0.0 )
 {
-  myShapeDomain = new Domain( K.lowerBound(), K.upperBound() );
-  myShapePointFunctor = new ShapePointFunctor( myPointPredicate, myShapeDomain, 1, 0 );
-  myShapeSpelFunctor = new ShapeSpelFunctor( *myShapeSpelFunctor, K );
-  myConvolver = new Convolver( myShapeSpelFunctor, myKernelFunctor, K );
+  CountedConstPtrOrConstPtr<KSpace> ptrK( K );
+  myShapeDomain = CountedPtr<Domain>( new Domain( ptrK->lowerBound(), ptrK->upperBound() ) );
+  myShapePointFunctor = CountedPtr<ShapePointFunctor>( new ShapePointFunctor( *myPointPredicate, *myShapeDomain, 1, 0 ) );
+  myShapeSpelFunctor = CountedPtr<ShapeSpelFunctor>( new ShapeSpelFunctor( *myShapePointFunctor, K ) );
+  myConvolver = CountedPtr<Convolver>( new Convolver( *myShapeSpelFunctor, myKernelFunctor, K ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -155,10 +156,11 @@ attach
   ConstAlias<PointPredicate> aPointPredicate )
 {
   myPointPredicate = aPointPredicate;
-  myShapeDomain = new Domain( K.lowerBound(), K.upperBound() );
-  myShapePointFunctor = new ShapePointFunctor( myPointPredicate, myShapeDomain, 1, 0 );
-  myShapeSpelFunctor = new ShapeSpelFunctor( *myShapeSpelFunctor, K );
-  myConvolver = new Convolver( myShapeSpelFunctor, myKernelFunctor, K );
+  CountedConstPtrOrConstPtr<KSpace> ptrK( K );
+  myShapeDomain = CountedPtr<Domain>( new Domain( ptrK->lowerBound(), ptrK->upperBound() ) );
+  myShapePointFunctor = CountedPtr<ShapePointFunctor>( new ShapePointFunctor( *myPointPredicate, *myShapeDomain, 1, 0 ) );
+  myShapeSpelFunctor = CountedPtr<ShapeSpelFunctor>( new ShapeSpelFunctor( *myShapePointFunctor, K ) );
+  myConvolver = CountedPtr<Convolver>( new Convolver( *myShapeSpelFunctor, myKernelFunctor, K ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
@@ -169,7 +171,7 @@ setParams
 ( const double dRadius )
 {
   ASSERT( ( dRadius > 0.0 )
-          "[DGtal::IntegralInvariantNormalVectorEstimator:setParams] Radius parameter dRadius must be positive." );
+          && "[DGtal::IntegralInvariantNormalVectorEstimator:setParams] Radius parameter dRadius must be positive." );
   myRadius = dRadius;
 }
 
@@ -185,7 +187,7 @@ init
   ASSERT( ( _h > 0.0 )
           && "[DGtal::IntegralInvariantNormalVectorEstimator:init] Gridstep parameter h must be positive." );
   ASSERT( ( myRadius > 0.0 )
-          "[DGtal::IntegralInvariantNormalVectorEstimator:init] Radius parameter dRadius must have been initialized with a call to 'setParams'." );
+          && "[DGtal::IntegralInvariantNormalVectorEstimator:init] Radius parameter dRadius must have been initialized with a call to 'setParams'." );
   ASSERT( ( myConvolver != 0 )
           && "[DGtal::IntegralInvariantNormalVectorEstimator:init] Shape of interest must have been initialized with a call to 'attach'." );
 
@@ -201,8 +203,8 @@ init
 
   RealPoint rOrigin = RealPoint::zero;
   Point pOrigin = Point::zero;
-  myKernel = CowPtr<KernelSupport>( new KernelSupport( rOrigin, eRadius ) ); // acquired
-  myDigKernel = CowPtr<DigitalShapeKernel>( new DigitalShapeKernel() );
+  myKernel = CountedPtr<KernelSupport>( new KernelSupport( rOrigin, eRadius ) ); // acquired
+  myDigKernel = CountedPtr<DigitalShapeKernel>( new DigitalShapeKernel() );
   myDigKernel->attach( *myKernel );
   myDigKernel->init( myKernel->getLowerBound(), myKernel->getUpperBound(), myH );
   Domain neighborhood( Point::diagonal(-1), Point::diagonal(1) );
@@ -238,7 +240,7 @@ init
       delete kernelShifted;
     }
     /// End of computation of masks
-    myConvolver->init( pOrigin, myDigKernel, myKernels );
+    myConvolver->init( pOrigin, *myDigKernel, myKernels );
 }
 
 //-----------------------------------------------------------------------------
@@ -250,7 +252,7 @@ DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 eval
 ( SurfelConstIterator it ) const
 {
-  CovarianceMatrix2NormalVectorFunctor normalFunctor;
+  CovarianceMatrix2NormalDirectionFunctor normalFunctor;
   return normalFunctor( myConvolver->evalCovarianceMatrix( it ) );
 }
 
@@ -264,7 +266,7 @@ DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::eval
   SurfelConstIterator ite,
   OutputIterator result ) const
 {
-  CovarianceMatrix2NormalVectorFunctor normalFunctor;
+  CovarianceMatrix2NormalDirectionFunctor normalFunctor;
   myConvolver->evalCovarianceMatrix( itb, ite, result, normalFunctor );
   return result;
 }

@@ -103,7 +103,8 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
   typedef LocalEstimatorFromSurfelFunctorAdapter< DigitalSurfaceContainer, Metric, SurfelFunctor, Functor>
     NormalEstimator;
 
-  SurfelFunctor surfelFct( CanonicSCellEmbedder<KSpace>( ks ), 1.0 );
+  CanonicSCellEmbedder<KSpace> canonic_embedder( ks );
+  SurfelFunctor surfelFct( canonic_embedder, 1.0 );
   NormalEstimator estimator( *mySurface, aMetric, surfelFct, fct );
   estimator.init( 1.0, myRadiusTrivial );
   i = 0; 

@@ -121,7 +121,9 @@ bool testVoronoiCovarianceMeasureOnSurface()
   dshape->attach( *shape );
   dshape->init( p1, p2, 1.0 );
 
+  trace.beginBlock("Computing II on surfels of volume." );
   typedef IntegralInvariantNormalVectorEstimator<KSpace, ImplicitDigitalShape> IINormalEstimator;
+  trace.endBlock();
 
   // ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
   Surfel bel = Surfaces<KSpace>::findABel( K, *dshape, 10000 );
@@ -144,6 +146,14 @@ bool testVoronoiCovarianceMeasureOnSurface()
   estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
 
+  trace.beginBlock("Computing II on surfels of volume." );
+  typedef IntegralInvariantNormalVectorEstimator<KSpace, ImplicitDigitalShape> IINormalEstimator;
+  IINormalEstimator ii_estimator( K, *dshape );
+  ii_estimator.setParams( 5.0 );
+  ii_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
+  trace.endBlock();
+
+
   trace.beginBlock("Evaluating normals wrt true normal." );
   typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
@@ -158,32 +168,52 @@ bool testVoronoiCovarianceMeasureOnSurface()
   true_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   Statistic<double> error_true;
   Statistic<double> error_triv_true;
+  Statistic<double> error_ii_true;
   for ( ConstIterator it = ptrSurface->begin(), itE = ptrSurface->end(); it != itE; ++it )
     {
       RealVector n_est  = estimator.eval( it );
       RealVector n_true = true_estimator.eval( it );
       RealVector n_triv = - vcm_surface->mapSurfel2Normals().find( *it )->second.trivialNormal;
+      RealVector n_ii = ii_estimator.eval( it );
       error_true.addValue( n_est.dot( n_true ) );
       error_triv_true.addValue( n_triv.dot( n_true ) );
+      if ( n_ii.dot( n_triv ) < 0 ) n_ii = -n_ii;
+      error_ii_true.addValue( n_ii.dot( n_true ) );
     }
   error_true.terminate();
   error_triv_true.terminate();
   trace.info() << "VCM/true  cos angle avg = " << error_true.mean() << std::endl;
   trace.info() << "VCM/true  cos angle dev = " << sqrt( error_true.unbiasedVariance() ) << std::endl;
+  trace.info() << "II/true cos angle avg = " << error_ii_true.mean() << std::endl;
+  trace.info() << "II/true cos angle dev = " << sqrt( error_ii_true.unbiasedVariance() ) << std::endl;
   trace.info() << "triv/true cos angle avg = " << error_triv_true.mean() << std::endl;
   trace.info() << "triv/true cos angle dev = " << sqrt( error_triv_true.unbiasedVariance() ) << std::endl;
   nbok += error_true.mean() > 0.95 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "cos angle avg > 0.95" << std::endl;
+               << "VCM/true cos angle avg > 0.95" << std::endl;
   nbok += sqrt( error_true.unbiasedVariance() ) < 0.05 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "cos angle dev < 0.05" << std::endl;
+               << "VCM/true cos angle dev < 0.05" << std::endl;
   nbok += error_true.mean() > error_triv_true.mean() ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "VCM/true is closer to 1.0 than triv/true." << std::endl;
+
+  nbok += error_ii_true.mean() > 0.95 ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "II/true cos angle avg > 0.95" << std::endl;
+  nbok += sqrt( error_ii_true.unbiasedVariance() ) < 0.05 ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "II/true cos angle dev < 0.05" << std::endl;
+  nbok += error_ii_true.mean() > error_triv_true.mean() ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "II/true VCM/true is closer to 1.0 than triv/true." << std::endl;
+
   trace.endBlock();
 
   return nbok == nb;
