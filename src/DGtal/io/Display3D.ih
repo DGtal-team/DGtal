@@ -699,8 +699,9 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealP
   //reorder the points (see drawOriented... vs drawUnoriented methods
   //in Display3DFactory).
   if ((!enableReorientation) && (!sign))
-    addQuadWithNormal(RealPoint(x1, y1, z1), RealPoint(x3, y3, z3),
-                      RealPoint(x2 ,y2, z2), RealPoint(x4, y4, z4), aNormal,
+    addQuadWithNormal(RealPoint(x1, y1, z1),RealPoint(x4, y4, z4),
+                      RealPoint(x3, y3, z3),
+                      RealPoint(x2 ,y2, z2),  aNormal,
                       enableReorientation,
                       enableDoubleFace);
   else
