@@ -39,6 +39,7 @@
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantNormalVectorEstimator.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
@@ -120,6 +121,8 @@ bool testVoronoiCovarianceMeasureOnSurface()
   dshape->attach( *shape );
   dshape->init( p1, p2, 1.0 );
 
+  typedef IntegralInvariantNormalVectorEstimator<KSpace, ImplicitDigitalShape> IINormalEstimator;
+
   // ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
   Surfel bel = Surfaces<KSpace>::findABel( K, *dshape, 10000 );
   SurfaceContainer* surfaceContainer = new SurfaceContainer
@@ -145,6 +148,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
   
+  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< IINormalEstimator > ));
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< VCMNormalEstimator > ));
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< TrueNormalEstimator > ));
 
