@@ -113,6 +113,12 @@ public:
   */
   DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
+  /**
+  * Copy constructor.
+  * @param other the object to clone.
+  */
+  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
+
 
   /**
   * Destructor.
@@ -412,13 +418,6 @@ protected:
 private:
 
   /**
-  * Copy constructor.
-  * @param other the object to clone.
-  * Forbidden by default.
-  */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
-
-  /**
   * Assignment.
   * @param other the object to copy.
   * @return a reference on 'this'.
@@ -475,6 +474,11 @@ public:
   */
   DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
+  /**
+  * Copy constructor.
+  * @param other the object to clone.
+  */
+  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Destructor.
@@ -776,13 +780,6 @@ protected:
 private:
 
   /**
-  * Copy constructor.
-  * @param other the object to clone.
-  * Forbidden by default.
-  */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
-
-  /**
   * Assignment.
   * @param other the object to copy.
   * @return a reference on 'this'.
@@ -842,6 +839,11 @@ public:
                             ConstAlias< KernelFunctor > g,
                             ConstAlias< KSpace > space );
 
+  /**
+  * Copy constructor.
+  * @param other the object to clone.
+  */
+  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Destructor.
@@ -1141,13 +1143,6 @@ protected:
   DigitalSurfaceConvolver ();
 
 private:
-
-  /**
-  * Copy constructor.
-  * @param other the object to clone.
-  * Forbidden by default.
-  */
-  DigitalSurfaceConvolver ( const DigitalSurfaceConvolver & other );
 
   /**
   * Assignment.
