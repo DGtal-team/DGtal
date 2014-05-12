@@ -46,6 +46,12 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
+#include "DGtal/kernel/CCellFunctor.h"
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
+#include "DGtal/geometry/surfaces/FunctorOnCells.h"
+
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/Shapes.h"
 
@@ -53,7 +59,6 @@
 #include "DGtal/shapes/EuclideanShapesDecorator.h"
 
 #include "DGtal/shapes/implicit/ImplicitBall.h"
-#include "DGtal/kernel/CCellFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -81,28 +86,50 @@ namespace DGtal
 *
 * Some optimization is available when we give a range of 0-adjacent surfels to the estimator.
 *
-* @tparam TKSpace space in which the shape is defined.
-* @tparam TShapeSpelFunctor TFunctor a model of a functor for the shape ( f(x) ).
+* @tparam TKSpace a model of CCellularGridSpaceND, the cellular space in which the shape is defined.
+* @tparam TPointPredicate a model of CPointPredicate, a predicate Point -> bool that defines a digital shape as a characteristic function.
 *
-* @see exampleIntegralInvariantCurvature2D.cpp testIntegralInvariantMeanCurvature3D.cpp testIntegralInvariantCurvature2D.cpp
+* @note In opposition to IntegralInvariantMeanCurvatureEstimator and
+* IntegralInvariantGaussianCurvatureEstimator, this class is
+* parameterized by a point predicate instead of a functor spel ->
+* {0,1}. The two latter classes should evolve as this one in a further release.
+*
+* @see testVoronoiCovarianceMeasureOnSurface.cpp
 */
-template <typename TKSpace, typename TShapeSpelFunctor>
+template <typename TKSpace, typename TPointPredicate>
 class IntegralInvariantNormalVectorEstimator
 {
 public:
-  typedef IntegralInvariantNormalVectorEstimator< TKSpace, TShapeSpelFunctor> Self;
+  typedef IntegralInvariantNormalVectorEstimator< TKSpace, TPointPredicate> Self;
   typedef TKSpace KSpace;
-  typedef TShapeSpelFunctor ShapeSpelFunctor;
+  typedef TPointPredicate PointPredicate;
+
+  BOOST_CONCEPT_ASSERT (( CCellularGridSpaceND< KSpace > ));
+  BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate > ));
+
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;
+  typedef typename Space::Point Point;
   typedef typename Space::RealPoint RealPoint;
+  typedef typename Space::RealVector RealVector;
   typedef typename DigitalSetSelector<Domain,  BIG_DS + HIGH_VAR_DS>::Type DigitalSet;
   typedef typename KSpace::SCell Spel;
+  typedef typename KSpace::Surfel Surfel;
   typedef typename KSpace::SurfelSet SurfelSet;
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
-  typedef double Quantity;
+  /// The returned type of the estimator : a real-value vector
+  typedef RealVector Quantity;
+  /// The type used for convolutions
   typedef int Value;
+
+  /// A wrapper around point predicate (functor Point -> bool) that
+  /// transforms it into a functor Point -> uint (0 or 1).
+  typedef PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
+  /// Adapts the a functor Point -> uint (0 or 1) to a functor Cell ->
+  /// uint (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
+  typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
+
 
   typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Space> KernelSupport;
@@ -113,25 +140,49 @@ public:
   typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, 
                                   KSpace, DigitalShapeKernel> Convolver;
   typedef typename Convolver::PairIterators PairIterators;
-
+  typedef typename Convolver::CovarianceMatrix Matrix;
+  typedef typename Matrix::Component Component;
+  typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
+
+  /**
+  * This functor extracts the eigenvector associated with the greatest eigenvalue from the given covariance matrix.
+  */
+  struct CovarianceMatrix2NormalVectorFunctor {
+    typedef Matrix Argument;
+    typedef Quantity Value;
+    typedef CovarianceMatrix2NormalVectorFunctor Self;
+    CovarianceMatrix2NormalVectorFunctor() {}
+    CovarianceMatrix2NormalVectorFunctor( const Self& /* other */ ) {}
+    Self& operator=( const Self& /* other */ ) { return *this; }
+    Value operator()( const Argument& arg ) const
+    {
+      EigenDecomposition<Space::dimension, Component>
+        ::getEigenDecomposition( arg, eigenVectors, eigenValues );
+      return eigenVectors.column( Space::dimension - 1 ); // normal vector is associated to highest eigenvalue.      
+    }
+    mutable Matrix eigenVectors;
+    mutable RealVector eigenValues;
+  };
 
   // ----------------------- Standard services ------------------------------
 public:
+
   /**
   * Default constructor. The object is invalid. The user needs to call
   * setParams and attach.
   */
   IntegralInvariantNormalVectorEstimator();
+
   /**
   * Constructor.
   *
   * @param[in] K the cellular grid space in which the shape is defined.
-  * @param[in] aShapeSpelFunctor the shape of interest. The alias can be secured
+  * @param[in] aPointPredicate the shape of interest. The alias can be secured
   * if a some counted pointer is handed.
   */
   IntegralInvariantNormalVectorEstimator ( ConstAlias< KSpace > K, 
-                                           ConstAlias< ShapeSpelFunctor > aShapeSpelFunctor );
+                                           ConstAlias< PointPredicate > aPointPredicate );
 
   /**
   * Destructor.
@@ -151,6 +202,11 @@ public:
   */
   Self& operator= ( const Self& other );
 
+  /**
+  * Clears the object. It is now invalid.
+  */
+  void clear();
+
   // ----------------------- Interface --------------------------------------
 public:
 
@@ -161,26 +217,29 @@ public:
   * Attach a shape, defined as a functor spel -> boolean
   *
   * @param[in] K the cellular grid space in which the shape is defined.
-  * @param aShapeSpelFunctor the shape of interest. The alias can be secured
+  * @param aPointPredicate the shape of interest. The alias can be secured
   * if a some counted pointer is handed.
   */
   void attach( ConstAlias< KSpace > K, 
-               ConstAlias<ShapeSpelFunctor> aShapeSpelFunctor );
+               ConstAlias<PointPredicate> aPointPredicate );
 
   /**
   * Set specific parameters: the radius of the ball.
   *
-  * @param[in] re Euclidean radius of the kernel support
+  * @param[in] dRadius the "digital" radius of the kernel (buy may be non integer).
   */
-  void setParams( const double re );
+  void setParams( const double dRadius );
   
   /**
-  * Initialise the estimator with a specific Euclidean kernel radius re, and grid step _h.
+  * Model of CDigitalSurfaceLocalEstimator. Initialisation.
   *
-  * @param[in] _h precision of the grid
-  * @param[in] re Euclidean radius of the kernel support
+  * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
+  * @param[in] _h grid size (must be >0).
+  * @param[in] ite iterator on the first surfel of the surface.
+  * @param[in] itb iterator after the last surfel of the surface.
   */
-  void init ( const double _h );
+  template <typename SurfelConstIterator>
+  void init( const double _h, SurfelConstIterator itb, SurfelConstIterator ite );
 
   /**
   * -- Normal vector -- 
@@ -190,14 +249,14 @@ public:
   * matrix, only directions of eigenvectors are pertinent. Another
   * computation is necessary to obtain the orientation.
   *
-  * @tparam SurfelIterator type of Iterator on a Surfel
+  * @tparam SurfelConstIterator type of Iterator on a Surfel
   *
-  * @param[in] it iterator of a surfel (from a shape) we want compute the integral invariant mean curvature.
+  * @param[in] it iterator pointing on the surfel of the shape where we wish to evaluate the normal vector.
   *
   * @return quantity (normal vector) at surfel *it
   */
-  template< typename SurfelIterator >
-  Quantity eval ( const SurfelIterator & it ) const;
+  template< typename SurfelConstIterator >
+  Quantity eval ( SurfelConstIterator it ) const;
 
 
   /**
@@ -237,14 +296,18 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
 
-  const KernelSpelFunctor myKernelFunctor;///< Kernel functor (on Spel)
+  const KernelSpelFunctor myKernelFunctor;  ///< Kernel functor (on Spel)
   std::vector< PairIterators > myKernels;   ///< array of begin/end iterator of shifting masks.
   std::vector< DigitalSet * > myKernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
-  CowPtr<KernelSupport> myKernel;           ///< Euclidean kernel
+  CowPtr<KernelSupport>      myKernel;      ///< Euclidean kernel
   CowPtr<DigitalShapeKernel> myDigKernel;   ///< Digital kernel
-  CowPtr<Convolver> myConvolver;          ///< Convolver
-  double myH;                             ///< precision of the grid
-  double myRadius;                        ///< "digital" radius of the kernel (buy may be non integer).
+  CountedConstPtrOrConstPtr<PointPredicate> myPointPredicate; ///< Smart pointer (if required) on a point predicate.
+  CowPtr<Domain>             myShapeDomain; ///< Smart pointer on domain         
+  CowPtr<ShapePointFunctor>  myShapePointFunctor; ///< Smart pointer on functor point -> {0,1}
+  CowPtr<ShapeSpelFunctor>   myShapeSpelFunctor;  ///< Smart pointer on functor spel ->  {0,1}
+  CowPtr<Convolver>          myConvolver;   ///< Convolver
+  Scalar myH;                               ///< precision of the grid
+  Scalar myRadius;                          ///< "digital" radius of the kernel (buy may be non integer).
 
 private:
 
@@ -257,10 +320,10 @@ private:
   * @param object the object of class 'IntegralInvariantNormalVectorEstimator' to write.
   * @return the output stream after the writing.
   */
-  template <typename TKSpace, typename TShapeSpelFunctor>
+  template <typename TKSpace, typename TPointPredicate>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const IntegralInvariantNormalVectorEstimator<TKSpace, TShapeSpelFunctor> & object );
+               const IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate> & object );
 
 } // namespace DGtal
 
