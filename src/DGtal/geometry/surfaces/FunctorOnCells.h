@@ -88,11 +88,19 @@ namespace DGtal
       * Constructor.
       *
       * @param[in] functor a functor on digital points.
-      * @param[in] space Khalimsky space in which the shape is defined.
+      * @param[in] kspace Khalimsky space in which the shape is defined.
       */
-    FunctorOnCells (  Alias< FunctorOnPoints > functor, ConstAlias< KSpace > space )
+    FunctorOnCells (  Alias< FunctorOnPoints > functor, ConstAlias< KSpace > kspace )
       : f(&functor),
-        myKSpace(&space)
+        myKSpace(&kspace)
+    {}
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    FunctorOnCells ( const FunctorOnCells & other )
+      : f( other.f ), myKSpace( other.myKSpace )
     {}
 
     /**
@@ -170,15 +178,6 @@ namespace DGtal
     FunctorOnCells();
 
   private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    FunctorOnCells ( const FunctorOnCells & other );
-
-
 
     // ------------------------- Internals ------------------------------------
   private:

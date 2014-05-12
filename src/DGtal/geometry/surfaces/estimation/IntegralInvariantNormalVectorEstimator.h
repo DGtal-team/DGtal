@@ -146,20 +146,21 @@ public:
   BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
 
   /**
-  * This functor extracts the eigenvector associated with the greatest eigenvalue from the given covariance matrix.
+  * This functor extracts the eigenvector associated with the smallest
+  * eigenvalue from the given covariance matrix.
   */
-  struct CovarianceMatrix2NormalVectorFunctor {
+  struct CovarianceMatrix2NormalDirectionFunctor {
     typedef Matrix Argument;
     typedef Quantity Value;
-    typedef CovarianceMatrix2NormalVectorFunctor Self;
-    CovarianceMatrix2NormalVectorFunctor() {}
-    CovarianceMatrix2NormalVectorFunctor( const Self& /* other */ ) {}
+    typedef CovarianceMatrix2NormalDirectionFunctor Self;
+    CovarianceMatrix2NormalDirectionFunctor() {}
+    CovarianceMatrix2NormalDirectionFunctor( const Self& /* other */ ) {}
     Self& operator=( const Self& /* other */ ) { return *this; }
     Value operator()( const Argument& arg ) const
     {
       EigenDecomposition<Space::dimension, Component>
         ::getEigenDecomposition( arg, eigenVectors, eigenValues );
-      return eigenVectors.column( Space::dimension - 1 ); // normal vector is associated to highest eigenvalue.      
+      return eigenVectors.column( 0 ); // normal vector is associated to smallest eigenvalue.      
     }
     mutable Matrix eigenVectors;
     mutable RealVector eigenValues;
@@ -299,13 +300,13 @@ private:
   const KernelSpelFunctor myKernelFunctor;  ///< Kernel functor (on Spel)
   std::vector< PairIterators > myKernels;   ///< array of begin/end iterator of shifting masks.
   std::vector< DigitalSet * > myKernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
-  CowPtr<KernelSupport>      myKernel;      ///< Euclidean kernel
-  CowPtr<DigitalShapeKernel> myDigKernel;   ///< Digital kernel
+  CountedPtr<KernelSupport>      myKernel;      ///< Euclidean kernel
+  CountedPtr<DigitalShapeKernel> myDigKernel;   ///< Digital kernel
   CountedConstPtrOrConstPtr<PointPredicate> myPointPredicate; ///< Smart pointer (if required) on a point predicate.
-  CowPtr<Domain>             myShapeDomain; ///< Smart pointer on domain         
-  CowPtr<ShapePointFunctor>  myShapePointFunctor; ///< Smart pointer on functor point -> {0,1}
-  CowPtr<ShapeSpelFunctor>   myShapeSpelFunctor;  ///< Smart pointer on functor spel ->  {0,1}
-  CowPtr<Convolver>          myConvolver;   ///< Convolver
+  CountedPtr<Domain>             myShapeDomain; ///< Smart pointer on domain         
+  CountedPtr<ShapePointFunctor>  myShapePointFunctor; ///< Smart pointer on functor point -> {0,1}
+  CountedPtr<ShapeSpelFunctor>   myShapeSpelFunctor;  ///< Smart pointer on functor spel ->  {0,1}
+  CountedPtr<Convolver>          myConvolver;   ///< Convolver
   Scalar myH;                               ///< precision of the grid
   Scalar myRadius;                          ///< "digital" radius of the kernel (buy may be non integer).
 
