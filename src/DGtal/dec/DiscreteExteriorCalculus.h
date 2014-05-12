@@ -361,16 +361,6 @@ namespace DGtal
     hodgeSign(const SCell& cell, const Duality& duality) const;
 
     /**
-     * Return sign of derivative operator.
-     * Computed from Hodge operator sign.
-     * Used internally mostly.
-     * @param cell Khalimsky signed cell.
-     * @param duality duality.
-     */
-    Scalar
-    derivativeSign(const SCell& cell, const Duality& duality) const;
-
-    /**
      * Return positive cell.
      * Useful for looking cells up since all stored cells are positive.
      * @param cell Khalimsky signed cell.

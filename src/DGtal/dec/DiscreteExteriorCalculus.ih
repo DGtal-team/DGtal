@@ -238,7 +238,8 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
         ASSERT( cell.myPositive == true );
 
         // find hodge sign
-        const Scalar sign = derivativeSign(cell, duality);
+        Scalar sign = 1;
+        if (duality == DUAL) sign = hodgeSign(absoluteSCell(cell), PRIMAL);
 
         // find cell border
         typedef typename KSpace::SCells Border;
@@ -259,11 +260,15 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
             const Index index_input = iter_property->second.index;
             ASSERT( index_input < derivative.myContainer.cols() );
 
+            Scalar proper_sign = sign * (cell_border.myPositive ? -1 : 1);
+            if (duality == DUAL) proper_sign *= hodgeSign(absoluteSCell(cell_border), PRIMAL);
+
             // fill container with cell sign
-            derivative.myContainer(index_output, index_input) = sign * derivativeSign(cell_border, duality);
+            derivative.myContainer(index_output, index_input) = proper_sign;
         }
     }
 
+    if (duality == DUAL && order == 1) derivative.myContainer *= -1; // FIXME fix dual derivative for dual 1-form to dual 2-form sign
     return derivative;
 }
 
@@ -287,7 +292,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::primalHodge() const
         const typename Properties::ConstIterator iter_property = cell_properties.find(cell);
         ASSERT(iter_property != cell_properties.end());
 
-        primal_hodge.myContainer(index, index) = hodgeSign(cell, PRIMAL)/iter_property->second.size_ratio;
+        primal_hodge.myContainer(index, index) = hodgeSign(cell, PRIMAL)*iter_property->second.size_ratio;
     }
 
     return primal_hodge;
@@ -313,7 +318,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::dualHodge() const
         const typename Properties::ConstIterator iter_property = cell_properties.find(cell);
         ASSERT(iter_property != cell_properties.end());
 
-        dual_hodge.myContainer(index, index) = hodgeSign(cell, DUAL)*iter_property->second.size_ratio;
+        dual_hodge.myContainer(index, index) = hodgeSign(cell, DUAL)/iter_property->second.size_ratio;
     }
 
     return dual_hodge;
@@ -513,14 +518,6 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::hodgeSign(const SCell& cell, const DGta
 
     const Scalar sign = pow(-1, span_count);
     return cell.myPositive ? sign : -sign;
-}
-
-template <typename D, typename LAB>
-typename DGtal::DiscreteExteriorCalculus<D, LAB>::Scalar
-DGtal::DiscreteExteriorCalculus<D, LAB>::derivativeSign(const SCell& cell, const DGtal::Duality& duality) const
-{
-    if (duality == PRIMAL) return cell.myPositive ? 1 : -1;
-    return hodgeSign(cell, PRIMAL);
 }
 
 template <typename D, typename LAB>

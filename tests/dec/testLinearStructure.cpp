@@ -36,8 +36,7 @@ using namespace DGtal;
 using namespace Z2i;
 using std::endl;
 
-int
-main(int argc, char* argv[])
+void test_linear_structure()
 {
     trace.beginBlock("creating dec problem with neumann border condition");
 
@@ -71,7 +70,7 @@ main(int argc, char* argv[])
     //! [input-dirac]
     const Calculus::Index dirac_position = 17;
     Calculus::PrimalForm0 dirac(calculus);
-    dirac.myContainer(dirac_position) = 1;
+    dirac.myContainer(dirac_position) = -1;
     //! [input-dirac]
 
     trace.info() << "dirac_position = " << dirac_position << endl;
@@ -256,5 +255,66 @@ main(int argc, char* argv[])
         trace.endBlock();
     }
 
+}
+
+void test_laplace_operator()
+{
+    trace.beginBlock("testing operators");
+
+    const Domain input_domain(Point(0,0), Point(3,4));
+    DigitalSet input_set(input_domain);
+    input_set.insertNew(Point(1,2));
+    input_set.insertNew(Point(1,1));
+
+    typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebraBackend> Calculus;
+    Calculus calculus(input_set);
+
+    {
+        Calculus::Accum accum(calculus);
+
+        Board2D board;
+        board << input_domain;
+        board << accum;
+        board.saveSVG("laplace_structure.svg");
+    }
+
+    const Calculus::Properties properties = calculus.getProperties();
+    for (Calculus::Properties::ConstIterator iter_property=properties.begin(), iter_property_end=properties.end(); iter_property!=iter_property_end; iter_property++)
+        trace.info() << iter_property->first << " " << iter_property->second.size_ratio << " " << iter_property->second.index << endl;
+    trace.info() << endl;
+
+    const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+    trace.info() << "d0" << endl << d0.myContainer << endl;
+    const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
+    trace.info() << "d1" << endl << d1.myContainer << endl;
+    const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
+    trace.info() << "d0p" << endl << d0p.myContainer << endl;
+    const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
+    trace.info() << "d1p" << endl << d1p.myContainer << endl;
+    const Calculus::PrimalHodge0 h0 = calculus.primalHodge<0>();
+    const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
+    trace.info() << "h0" << endl << h0.myContainer << endl;
+    trace.info() << "h2p" << endl << h2p.myContainer << endl;
+    const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
+    const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
+    trace.info() << "h1" << endl << h1.myContainer << endl;
+    trace.info() << "h1p" << endl << h1p.myContainer << endl;
+    const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
+    const Calculus::DualHodge0 h0p = calculus.dualHodge<0>();
+    trace.info() << "h2" << endl << h2.myContainer << endl;
+    trace.info() << "h0p" << endl << h0p.myContainer << endl;
+    //const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
+    //const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
+
+    trace.endBlock();
+}
+
+
+int
+main(int argc, char* argv[])
+{
+    test_linear_structure();
+    test_laplace_operator();
     return 0;
 }
+
