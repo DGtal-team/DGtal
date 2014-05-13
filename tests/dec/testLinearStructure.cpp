@@ -257,6 +257,12 @@ void test_linear_structure()
 
 }
 
+template <typename Operator>
+void display_operator_info(const std::string& name, const Operator& op)
+{
+    trace.info() << name << " " << op << endl << op.myContainer << endl;
+}
+
 void test_laplace_operator()
 {
     trace.beginBlock("testing operators");
@@ -283,28 +289,50 @@ void test_laplace_operator()
         trace.info() << iter_property->first << " " << iter_property->second.size_ratio << " " << iter_property->second.index << endl;
     trace.info() << endl;
 
+    trace.beginBlock("base operators");
     const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
-    trace.info() << "d0" << endl << d0.myContainer << endl;
+    display_operator_info("d0", d0);
     const Calculus::PrimalDerivative1 d1 = calculus.derivative<1, PRIMAL>();
-    trace.info() << "d1" << endl << d1.myContainer << endl;
+    display_operator_info("d1", d1);
     const Calculus::DualDerivative0 d0p = calculus.derivative<0, DUAL>();
-    trace.info() << "d0p" << endl << d0p.myContainer << endl;
+    display_operator_info("d0p", d0p);
     const Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-    trace.info() << "d1p" << endl << d1p.myContainer << endl;
+    display_operator_info("d1p", d1p);
     const Calculus::PrimalHodge0 h0 = calculus.primalHodge<0>();
     const Calculus::DualHodge2 h2p = calculus.dualHodge<2>();
-    trace.info() << "h0" << endl << h0.myContainer << endl;
-    trace.info() << "h2p" << endl << h2p.myContainer << endl;
+    display_operator_info("h0", h0);
+    display_operator_info("h2p", h2p);
     const Calculus::PrimalHodge1 h1 = calculus.primalHodge<1>();
     const Calculus::DualHodge1 h1p = calculus.dualHodge<1>();
-    trace.info() << "h1" << endl << h1.myContainer << endl;
-    trace.info() << "h1p" << endl << h1p.myContainer << endl;
+    display_operator_info("h1", h1);
+    display_operator_info("h1p", h1p);
     const Calculus::PrimalHodge2 h2 = calculus.primalHodge<2>();
     const Calculus::DualHodge0 h0p = calculus.dualHodge<0>();
-    trace.info() << "h2" << endl << h2.myContainer << endl;
-    trace.info() << "h0p" << endl << h0p.myContainer << endl;
-    //const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
-    //const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
+    display_operator_info("h2", h2);
+    display_operator_info("h0p", h0p);
+    trace.endBlock();
+
+    trace.beginBlock("anti derivative");
+    const LinearOperator<Calculus, 1, PRIMAL, 0, PRIMAL> ad1 = h2p * d1p * h1;
+    const LinearOperator<Calculus, 2, PRIMAL, 1, PRIMAL> ad2 = h1p * d0p * h2;
+    display_operator_info("ad1", ad1);
+    display_operator_info("ad2", ad2);
+    const LinearOperator<Calculus, 1, DUAL, 0, DUAL> ad1p = h2 * d1 * h1p;
+    const LinearOperator<Calculus, 2, DUAL, 1, DUAL> ad2p = h1 * d0 * h2p;
+    display_operator_info("ad1p", ad1p);
+    display_operator_info("ad2p", ad2p);
+    trace.endBlock();
+
+    trace.beginBlock("laplace operators");
+    const Calculus::PrimalIdentity0 lap_alpha = ad1 * d0;
+    const Calculus::DualIdentity0 lap_alphap = ad1p * d0p;
+    display_operator_info("lap_alpha", lap_alpha);
+    display_operator_info("lap_alphap", lap_alphap);
+    const Calculus::PrimalIdentity2 lap_beta = d1 * ad2;
+    const Calculus::DualIdentity2 lap_betap = d1p * ad2p;
+    display_operator_info("lap_beta", lap_beta);
+    display_operator_info("lap_betap", lap_betap);
+    trace.endBlock();
 
     trace.endBlock();
 }
