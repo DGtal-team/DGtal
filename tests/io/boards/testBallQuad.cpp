@@ -99,7 +99,6 @@ bool testBallQuad()
 
       Display3DFactory<>::drawOrientedSurfelWithNormal(board,
                                                        *it,
-                                                       K.sSign(*it),
                                                        board.embedKS(*it).getNormalized());
     }
 
