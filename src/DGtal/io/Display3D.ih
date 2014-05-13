@@ -1113,7 +1113,7 @@ DGtal::Display3D< Space ,KSpace >::updateBoundingBox(const RealPoint &p)
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicEmbedder<Space>::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embed( const typename Space::Point & dp ) const
 {
   ASSERT( myEmbedder->isValid());
@@ -1122,7 +1122,7 @@ DGtal::Display3D< Space ,KSpace >::embed( const typename Space::Point & dp ) con
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell ) const
 {
   ASSERT( mySCellEmbedder->isValid());
@@ -1131,7 +1131,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedPrism & aTrans ) const
 {
   ASSERT( mySCellEmbedder->isValid());
@@ -1141,7 +1141,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedPrism & aTrans ) co
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) const
 {
   ASSERT( myCellEmbedder->isValid());
