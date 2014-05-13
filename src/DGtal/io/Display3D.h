@@ -430,20 +430,26 @@ namespace DGtal
 
     /**
      * Method to add a specific quad. The normal vector is specified
-     * by the user. Quad points can be reordered to make its
-     * orientation constistant with the normal direction.
+     * by the user. Depending on @a enableReorientation, Quad points
+     * can be reordered to make its orientation constistant with the
+     * normal direction.
      *
      * @param p1 the 1st point
      * @param p2 the 2nd point
      * @param p3 the 3rd point
      * @param p4  the 4th point
      * @param n the normal vector
+     * @param enableReorientation if true,  the quad orientation will
+     * match with prescribed normal vector (dot product between the
+     * normal and the canonical one is >0).
      * @param enableDoubleFace if true, two quad (with opposite normal
      * vector) will be drawn.
      *
      */
-    void addQuadWithNormal(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4,
+    void addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
+                           const RealPoint &p3, const RealPoint &p4,
                            const RealPoint &n,
+                           const bool enableReorientation,
                            const bool enableDoubleFace = false);
 
     /**
@@ -455,15 +461,17 @@ namespace DGtal
      * @param zSurfel indicates that the sufel is in the z axis direction
      *
      **/
-    void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel);
+    void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, 
+                                 bool xSurfel, bool ySurfel, bool zSurfel);
 
 
 
     /**
      * Method to add a quad representing a surfel given from its
      * center and its orientation, and attach a unitary normal vector
-     * to it.  Quad points can be reordered to make its orientation
-     * constistant with the normal direction.
+     * to it.  Depending on @a enableReorientation, Quad points can be
+     * reordered to make its orientation constistant with the normal
+     * direction.
      *
      * @param baseQuadCenter the surfel center.
      * @param xSurfel indicates that the sufel is in the x axis direction
@@ -471,12 +479,19 @@ namespace DGtal
      * @param zSurfel indicates that the sufel is in the z axis
      * direction
      * @param aNormal a unitary normal vector to attach to the quad.
+     * @param enableReorientation if true,  the quad orientation will
+     * match with prescribed normal vector (dot product between the
+     * normal and the canonical one is >0).
+     * @param sign if enableReorientation is true, we use this bool to
+     * get the surfel sign
      * @param enableDoubleFace if true, two quad (with opposite normal
      * vector) will be drawn.
      *
      **/
     void addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel,
                                            const RealVector &aNormal,
+                                           const bool enableReorientation,
+                                           const bool sign,
                                            const bool enableDoubleFace = false);
 
 
@@ -643,6 +658,12 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+
+    /**
+     * Removes all sent data.
+     */
+    void clear();
 
 
 
