@@ -83,9 +83,9 @@ int main( int argc, char** argv )
 
   Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( viewer, surfel, n2.getNormalized());
 
-  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel2, k.sSign(surfel2), n2.getNormalized());
+  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel2, n2.getNormalized());
 
-  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel3, k.sSign(surfel3),n2.getNormalized());
+  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel3, n2.getNormalized());
 
   
 

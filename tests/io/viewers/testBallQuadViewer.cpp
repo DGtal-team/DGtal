@@ -104,7 +104,6 @@ bool testBallQuad(int argc, char **argv)
 
       Display3DFactory<>::drawOrientedSurfelWithNormal(viewer,
                                                        *it,
-                                                       K.sSign(*it),
                                                        viewer.embedKS(*it).getNormalized());
     }
 
