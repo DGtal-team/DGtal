@@ -3,8 +3,12 @@
 *IO Package*
 
     - Better handling of materials in Board3D and OBJ exports.
-    - New 'basic' display mode for surfels (oriented or not), useful for large digital surface displays (quads instead of 3D prism)
 
+    - New 'basic' display mode for surfels (oriented or not), useful
+      for large digital surface displays (quads instead of 3D prism)
+
+    - New draw() method for 3D display models (Viewer3D and Board3D)
+      to display surfels with prescribed normal vectors.
 
 *For Developpers*
 
