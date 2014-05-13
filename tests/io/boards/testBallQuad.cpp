@@ -97,9 +97,10 @@ bool testBallQuad()
     {
       ++nbsurfels;
 
-      Display3DFactory<>::drawSurfelWithNormal(board,
-                                               K.unsigns(*it),
-                                               board.embedKS(*it).getNormalized());
+      Display3DFactory<>::drawOrientedSurfelWithNormal(board,
+                                                       *it,
+                                                       K.sSign(*it),
+                                                       board.embedKS(*it).getNormalized());
     }
 
   trace.info() << nbsurfels << " surfels found." << std::endl;

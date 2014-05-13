@@ -316,16 +316,22 @@ namespace DGtal
     static void draw( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject );
 
     /**
-     * @brief draw K-cell with normal vector
+     * Draw K-cell with normal vector
+     * 
+     * We use the normal vector to orient the quad properly.  As a
+     * consequence, the angle between the normal vector and the
+     * canonical normal vector attached to the oriented quad is less
+     * than pi/2.
+     *
      * @param display the display where to draw
      * @param anObject the object to draw
      * @param aNormal a unitary normal vector
      * @param enableDoubleFace if true, two quad (with opposite normal
      * vector) will be drawn.
      */
-    static void drawSurfelWithNormal( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject,
-                                      const typename KSpace::Space::RealVector & aNormal,
-                                      const bool enableDoubleFace = false);
+    static void drawUnorientedSurfelWithNormal( Display3D<Space, KSpace> & display, const typename KSpace::Cell & anObject,
+                                                const typename KSpace::Space::RealVector & aNormal,
+                                                const bool enableDoubleFace = false);
     // KhalimskyCell
 
     // SignedKhalimskyCell
@@ -345,16 +351,22 @@ namespace DGtal
     static void draw( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject );
 
     /**
-     * @brief draw K-signed cell with normal vector
+     * Draw K-signed cell with normal vector
+     * We use the surfel orientation to create the properly oriented
+     * Quad.
+     *  
      * @param display the display where to draw
-     * @param anObject the object to draw
+     * @param aSignedCell the signed cell to draw
+     * @param aSign the sign of the cell
      * @param aNormal a unitary normal vector
      * @param enableDoubleFace if true, two quad (with opposite normal
      * vector) will be drawn.
      */
-    static void drawSurfelWithNormal( Display3D<Space, KSpace> & display, const typename KSpace::SCell & anObject,
-                                      const typename KSpace::Space::RealVector & aNormal,
-                                      const bool enableDoubleFace = false);
+    static void drawOrientedSurfelWithNormal( Display3D<Space, KSpace> & display, 
+                                              const typename KSpace::SCell & aSignedCell,
+                                              typename KSpace::Sign aSign,
+                                              const typename KSpace::Space::RealVector & aNormal,
+                                              const bool enableDoubleFace = false);
     // SignedKhalimskyCell
 
     // Object

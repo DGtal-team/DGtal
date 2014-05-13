@@ -72,19 +72,34 @@ int main( int argc, char** argv )
   RealVector n(1,1,1);
   RealVector n2(0,1,1);
 
-  viewer.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized());
-  viewer.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized());
+  viewer.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized(), true);
+  viewer.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized(), true);
 
-   Cell surfel = k.uCell( Point( 2,3,3) );
+  Cell surfel = k.uCell( Point( 2,3,3) );
+  SCell surfel2 = k.sCell( Point( 6,3,3), KSpace::POS);
+  SCell surfel3 = k.sCell( Point( 8,3,3), KSpace::NEG  );
 
   viewer << SetMode3D( surfel.className(), "Basic" );
 
-  Display3DFactory<Space,KSpace>::drawSurfelWithNormal( viewer, surfel, n2.getNormalized());
+  Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( viewer, surfel, n2.getNormalized());
+
+  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel2, k.sSign(surfel2), n2.getNormalized());
+
+  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel3, k.sSign(surfel3),n2.getNormalized());
+
+  
+
+
 
   viewer  << Display3D<Space, KSpace>::updateDisplay;
 
-
   bool res = application.exec();
+
+  
+  
+
+
+  
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
