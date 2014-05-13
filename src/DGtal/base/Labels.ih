@@ -60,7 +60,7 @@ template <unsigned int L, typename TWord>
 inline
 DGtal::Labels<L, TWord>::ConstEnumerator::
 ConstEnumerator( const Word* address, SizeType firstWord )
-  : myWordAddress( address + firstWord ), 
+  : myWordAddress( address + firstWord ),
     myWordLabel( firstWord * __DGTAL_WORD_NBDIGITS )
 {
   ASSERT( firstWord <= __DGTAL_LABELS_NBWORDS );
@@ -102,7 +102,7 @@ operator= ( const Self & other )
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
 inline
-typename DGtal::Labels<L, TWord>::ConstEnumerator::Reference 
+typename DGtal::Labels<L, TWord>::ConstEnumerator::Reference
 DGtal::Labels<L, TWord>::ConstEnumerator::
 operator*() const
 {
@@ -111,7 +111,7 @@ operator*() const
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
 inline
-typename DGtal::Labels<L, TWord>::ConstEnumerator::Pointer  
+typename DGtal::Labels<L, TWord>::ConstEnumerator::Pointer
 DGtal::Labels<L, TWord>::ConstEnumerator::
 operator->() const
 {
@@ -124,12 +124,12 @@ typename DGtal::Labels<L, TWord>::ConstEnumerator::Self&
 DGtal::Labels<L, TWord>::ConstEnumerator::
 operator++()
 {
-  ASSERT( ( myWordLabel < ( __DGTAL_LABELS_NBWORDS 
+  ASSERT( ( myWordLabel < ( __DGTAL_LABELS_NBWORDS
                             * __DGTAL_WORD_NBDIGITS ) ) );
   while ( myWord == 0 )
     {
       myWordLabel += __DGTAL_WORD_NBDIGITS;
-      if ( myWordLabel == ( __DGTAL_LABELS_NBWORDS 
+      if ( myWordLabel == ( __DGTAL_LABELS_NBWORDS
                             * __DGTAL_WORD_NBDIGITS ) )
         {
           myLabel = 0;
@@ -219,7 +219,7 @@ template <unsigned int L, typename TWord>
 inline
 DGtal::Labels<L, TWord>::Labels( const Self & other )
 {
-  std::copy( other.myLabels, other.myLabels + __DGTAL_LABELS_NBWORDS, 
+  std::copy( other.myLabels, other.myLabels + __DGTAL_LABELS_NBWORDS,
              myLabels );
 }
 //-----------------------------------------------------------------------------
@@ -229,7 +229,7 @@ typename DGtal::Labels<L, TWord>::Self &
 DGtal::Labels<L, TWord>::operator=( const Self & other )
 {
   if ( this != &other )
-    std::copy( other.myLabels, other.myLabels + __DGTAL_LABELS_NBWORDS, 
+    std::copy( other.myLabels, other.myLabels + __DGTAL_LABELS_NBWORDS,
                myLabels );
   return *this;
 }
@@ -241,7 +241,7 @@ DGtal::Labels<L, TWord>::reset()
 {
   Word* p1 = myLabels;
   Word* p2 = myLabels + __DGTAL_LABELS_NBWORDS;
-  while ( p1 != p2 ) 
+  while ( p1 != p2 )
     *p1++ = (Word) 0;
   return *this;
 }
@@ -259,7 +259,7 @@ inline
 typename DGtal::Labels<L, TWord>::Self &
 DGtal::Labels<L, TWord>::set( Label l, bool val )
 {
-  if ( val ) 
+  if ( val )
     myLabels[ _word( l ) ] |= _mask( l );
   else
     myLabels[ _word( l ) ] &= ~_mask( l );
@@ -293,7 +293,7 @@ count() const
   SizeType n = 0;
   const Word* p1 = myLabels;
   const Word* p2 = myLabels + __DGTAL_LABELS_NBWORDS;
-  while ( p1 != p2 ) 
+  while ( p1 != p2 )
     n += Bits::nbSetBits( *p1++ );
   return n;
 }
@@ -314,12 +314,12 @@ DGtal::Labels<L, TWord>::
 getLabels( std::vector<Label> & labels ) const
 {
   labels.clear();
-  register Word w;
-  register Word fsb;
+  Word w;
+  Word fsb;
   const Word* p1 = myLabels;
   const Word* p2 = myLabels + __DGTAL_LABELS_NBWORDS;
   Label l = 0;
-  while ( p1 != p2 ) 
+  while ( p1 != p2 )
     {
       w = *p1++;
       while ( w ) // extract labels within word
@@ -342,10 +342,10 @@ index( Label l ) const
   ASSERT( l < L );
   const Word* p1 = myLabels;
   const Word* p2 = myLabels + _word( l );
-  register SizeType i = 0;
-  while ( p1 != p2 ) 
+  SizeType i = 0;
+  while ( p1 != p2 )
     i += Bits::nbSetBits( *p1++ );
-  return ( _mask( l ) & *p1 ) 
+  return ( _mask( l ) & *p1 )
     ? i + Bits::indexInSetBits( *p1, _digit( l ) ) - 1
     : L;
 }
@@ -414,7 +414,7 @@ DGtal::Labels<L, TWord>::isValid() const
 template <unsigned int L, typename TWord>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const Labels<L, TWord> & object )
 {
   object.selfDisplay( out );
@@ -423,5 +423,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

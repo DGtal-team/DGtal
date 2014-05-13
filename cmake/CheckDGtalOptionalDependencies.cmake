@@ -324,11 +324,32 @@ ELSE(WITH_HDF5)
   unset(HDF5_LIBRARIES)
 ENDIF(WITH_HDF5)
 
+
+# -----------------------------------------------------------------------------
+# Look for Qt (needed by libqglviewer visualization).
+# -----------------------------------------------------------------------------
+set(QT4_FOUND_DGTAL 0)
+IF( WITH_QGLVIEWER)
+  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
+  if ( QT4_FOUND )
+    set(QT4_FOUND_DGTAL 1)
+    message(STATUS  "Qt4 found (needed by QGLVIEWER).")
+    set(QT_USE_QTXML 1)
+    ADD_DEFINITIONS("-DWITH_QT4 ")
+    include( ${QT_USE_FILE})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
+    SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
+  else ( QT4_FOUND )
+    message(FATAL_ERROR  "Qt4 not found (needed by QGLVIEWER).  Check the cmake variables associated to this package or disable it." )
+  endif ( QT4_FOUND )
+ENDIF( WITH_QGLVIEWER)
+
 # -----------------------------------------------------------------------------
 # Look for QGLViewer for 3D display.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 set(QGLVIEWER_FOUND_DGTAL 0)
+set( WITH_VISU3D 0)
 IF(WITH_QGLVIEWER)
   find_package(QGLVIEWER REQUIRED)
   if(QGLVIEWER_FOUND)
@@ -346,39 +367,11 @@ IF(WITH_QGLVIEWER)
     set(QGLVIEWER_FOUND_DGTAL 1)
     ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER ")
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES}  )
+    set( WITH_VISU3D 1 )
   else ( QGLVIEWER_FOUND )
-    message(FATAL_ERROR  "libQGLViewer not found (or Qt4 not found).  Check the cmake variables associated to this package or disable it." )
+    message(FATAL_ERROR  "libQGLViewer not found.  Check the cmake variables associated to this package or disable it." )
   endif (QGLVIEWER_FOUND)
 ENDIF(WITH_QGLVIEWER)
-
-if(NOT WITH_VISU3D_QGLVIEWER)
-  if(NOT WITH_VISU3D_IV)
-    set( WITH_VISU3D 0)
-  else (NOT WITH_VISU3D_IV)
-    set( WITH_VISU3D 1 )
-  endif(NOT WITH_VISU3D_IV)
-else(NOT WITH_VISU3D_QGLVIEWER)
-  set( WITH_VISU3D 1 )
-endif(NOT WITH_VISU3D_QGLVIEWER)
-
-# -----------------------------------------------------------------------------
-# Look for Qt (if LibqglViewer or coin3D are set).
-# -----------------------------------------------------------------------------
-set(QT4_FOUND_DGTAL 0)
-IF( WITH_QGLVIEWER)
-  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
-  if ( QT4_FOUND )
-    set(QT4_FOUND_DGTAL 1)
-    message(STATUS  "Qt4 found.")
-    set(QT_USE_QTXML 1)
-    ADD_DEFINITIONS("-DWITH_QT4 ")
-    include( ${QT_USE_FILE})
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
-    SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
-  else ( QT4_FOUND )
-    message(FATAL_ERROR  "Qt4 not found.  Check the cmake variables associated to this package or disable it." )
-  endif ( QT4_FOUND )
-ENDIF( WITH_QGLVIEWER)
 
 # -----------------------------------------------------------------------------
 # Look for OpenMP
