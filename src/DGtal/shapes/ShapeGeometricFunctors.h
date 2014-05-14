@@ -62,8 +62,10 @@ namespace DGtal
     struct ShapePositionFunctor {
       typedef TShape Shape;
       typedef typename Shape::RealPoint RealPoint;
+      typedef RealPoint Argument;
       typedef RealPoint Quantity;
-      
+      typedef Quantity Value;
+     
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -111,9 +113,11 @@ namespace DGtal
       typedef TShape Shape;
       typedef typename Shape::RealPoint RealPoint;
       typedef typename Shape::RealVector RealVector;
-      typedef RealVector Quantity;
+      typedef RealPoint Argument;
       typedef typename RealVector::Component Scalar;
-      
+      typedef RealVector Quantity;
+      typedef Quantity Value;
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -143,6 +147,59 @@ namespace DGtal
         RealVector v = myShape->gradient( p );
         Scalar norm = v.norm();
         return ( norm != 0 ) ? v / norm : v;
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<Shape> myShape;
+    };
+
+
+    /**
+     * Description of template class 'ShapeMeanCurvatureFunctor' <p>
+     * \brief Aim: A functor RealPoint -> Quantity that returns the
+     * mean curvature at given point.
+     *
+     * @tparam TShape the type of the shape where geometric estimation
+     * are made. It must have method \a meanCurvature.
+     */
+    template <typename TShape>
+    struct ShapeMeanCurvatureFunctor {
+      typedef TShape Shape;
+      typedef typename Shape::RealPoint RealPoint;
+      typedef typename Shape::RealVector RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef RealPoint Argument;
+      typedef Scalar Quantity;
+      typedef Quantity Value;
+      
+      /**
+       * Constructor. A shape may also be attached at construction.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      ShapeMeanCurvatureFunctor( ConstAlias<Shape> aShape = 0 ) : myShape( aShape ) {}
+      
+      /**
+       * Attach a shape.
+       *
+       * @param aShape the shape of interest. The alias can be secured
+       * if a some counted pointer is handed.
+       */
+      void attach( ConstAlias<Shape> aShape )
+      {
+        myShape = aShape;
+      }
+
+      /**
+         Map operator RealPoint -> RealVector giving the normal vector.
+         @param p any point on the shape.
+         @return the normal at point p (as the normalized gradient).
+      */
+      Quantity operator()( const RealPoint & p ) const
+      {
+        return myShape->meanCurvature( p );
       }
 
     private:
