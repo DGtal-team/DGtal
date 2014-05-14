@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file IntegralInvariantEstimator.ih
+ * @file IntegralInvariantCovarianceEstimator.ih
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
  * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
@@ -24,7 +24,7 @@
  *
  * @date 2014/05/12
  *
- * Implementation of inline methods defined in IntegralInvariantEstimator.h
+ * Implementation of inline methods defined in IntegralInvariantCovarianceEstimator.h
  *
  * This file is part of the DGtal library.
  */
@@ -45,8 +45,8 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
-~IntegralInvariantEstimator()
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+~IntegralInvariantCovarianceEstimator()
 {
   clear();
 }
@@ -55,7 +55,7 @@ DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFun
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
 void
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
 clear()
 {
   for( unsigned int i = 0; i < myKernelsSet.size(); ++i )
@@ -66,8 +66,8 @@ clear()
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
-IntegralInvariantEstimator( CovarianceMatrixFunctor fct )
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+IntegralInvariantCovarianceEstimator( CovarianceMatrixFunctor fct )
   : myFct( fct ),
     myKernelFunctor(NumberTraits<Value>::ONE),
     myKernels(), myKernelsSet(),
@@ -82,8 +82,8 @@ IntegralInvariantEstimator( CovarianceMatrixFunctor fct )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
-IntegralInvariantEstimator
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+IntegralInvariantCovarianceEstimator
 ( ConstAlias< KSpace > K, 
   ConstAlias< PointPredicate > aPointPredicate,
   CovarianceMatrixFunctor fct )
@@ -106,8 +106,8 @@ IntegralInvariantEstimator
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
-IntegralInvariantEstimator
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+IntegralInvariantCovarianceEstimator
 ( const Self& other )
   : myFct( other.myFct ),
     myKernelFunctor( other.myKernelFunctor ),
@@ -121,8 +121,8 @@ IntegralInvariantEstimator
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
-typename DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::Self&
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+typename DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::Self&
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
 operator= ( const Self& other )
 {
   if ( this != &other )
@@ -146,8 +146,8 @@ operator= ( const Self& other )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
-typename DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::Scalar
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+typename DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::Scalar
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
 h() const
 { 
   return myH;
@@ -156,7 +156,7 @@ h() const
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
 void
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
 attach
 ( ConstAlias< KSpace > K, 
   ConstAlias<PointPredicate> aPointPredicate )
@@ -172,12 +172,12 @@ attach
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
 void
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
 setParams
 ( const double dRadius )
 {
   ASSERT( ( dRadius > 0.0 )
-          && "[DGtal::IntegralInvariantEstimator:setParams] Radius parameter dRadius must be positive." );
+          && "[DGtal::IntegralInvariantCovarianceEstimator:setParams] Radius parameter dRadius must be positive." );
   myRadius = dRadius;
 }
 
@@ -186,16 +186,16 @@ template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrix
 template <typename SurfelConstIterator>
 inline
 void
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
 init
 ( const double _h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */ )
 {
   ASSERT( ( _h > 0.0 )
-          && "[DGtal::IntegralInvariantEstimator:init] Gridstep parameter h must be positive." );
+          && "[DGtal::IntegralInvariantCovarianceEstimator:init] Gridstep parameter h must be positive." );
   ASSERT( ( myRadius > 0.0 )
-          && "[DGtal::IntegralInvariantEstimator:init] Radius parameter dRadius must have been initialized with a call to 'setParams'." );
+          && "[DGtal::IntegralInvariantCovarianceEstimator:init] Radius parameter dRadius must have been initialized with a call to 'setParams'." );
   ASSERT( ( myConvolver != 0 )
-          && "[DGtal::IntegralInvariantEstimator:init] Shape of interest must have been initialized with a call to 'attach'." );
+          && "[DGtal::IntegralInvariantCovarianceEstimator:init] Shape of interest must have been initialized with a call to 'attach'." );
 
   typedef typename RealPoint::Component Scalar;
   // Clear stuff
@@ -205,7 +205,7 @@ init
   myH = _h;
   double eRadius = myRadius * myH; // Euclidean radius of the ball kernel.
   
-  // meanFunctor.init( h, radius );
+  myFct.init( myH, eRadius );
 
   RealPoint rOrigin = RealPoint::zero;
   Point pOrigin = Point::zero;
@@ -253,8 +253,8 @@ init
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 template <typename SurfelConstIterator>
 inline
-typename DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::Quantity
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
+typename DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::Quantity
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
 eval
 ( SurfelConstIterator it ) const
 {
@@ -266,7 +266,7 @@ template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrix
 template <typename OutputIterator, typename SurfelConstIterator>
 inline
 OutputIterator
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::eval
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::eval
 ( SurfelConstIterator itb,
   SurfelConstIterator ite,
   OutputIterator result ) const
@@ -279,10 +279,10 @@ DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFun
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
 void
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::selfDisplay
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::selfDisplay
 ( std::ostream & out ) const
 {
-  out << "[IntegralInvariantEstimator h=" << myH
+  out << "[IntegralInvariantCovarianceEstimator h=" << myH
       << " digR=" << myRadius << " eucR=" << (myH*myRadius) << " ]";
 }
 
@@ -290,7 +290,7 @@ DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFun
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 inline
 bool
-DGtal::IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::isValid() const
+DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::isValid() const
 {
   return ( myH > 0 ) && ( myRadius > 0 ) && ( myConvolver != 0 );
 }
@@ -301,7 +301,7 @@ inline
 std::ostream&
 DGtal::operator<<
 ( std::ostream & out, 
-  const IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor> & object )
+  const IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor> & object )
 {
   object.selfDisplay( out );
   return out;

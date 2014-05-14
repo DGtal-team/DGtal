@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file IntegralInvariantEstimator.h
+ * @file IntegralInvariantCovarianceEstimator.h
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
  * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
@@ -26,20 +26,20 @@
  *
  * @date 2014/04/24
  *
- * Header file for module IntegralInvariantEstimator.ih
+ * Header file for module IntegralInvariantCovarianceEstimator.ih
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(IntegralInvariantEstimator_RECURSES)
-#error Recursive header files inclusion detected in IntegralInvariantEstimator.h
-#else // defined(IntegralInvariantEstimator_RECURSES)
+#if defined(IntegralInvariantCovarianceEstimator_RECURSES)
+#error Recursive header files inclusion detected in IntegralInvariantCovarianceEstimator.h
+#else // defined(IntegralInvariantCovarianceEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define IntegralInvariantEstimator_RECURSES
+#define IntegralInvariantCovarianceEstimator_RECURSES
 
-#if !defined IntegralInvariantEstimator_h
+#if !defined IntegralInvariantCovarianceEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define IntegralInvariantEstimator_h
+#define IntegralInvariantCovarianceEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -66,9 +66,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// template class IntegralInvariantEstimator
+// template class IntegralInvariantCovarianceEstimator
 /**
-* Description of template class 'IntegralInvariantEstimator' <p>
+* Description of template class 'IntegralInvariantCovarianceEstimator' <p>
 * \brief Aim: This class implement an Integral Invariant estimator which computes for each surfel the covariance matrix of a ball of given radius centered on the surfel.
 *
 * @see related article:
@@ -76,15 +76,19 @@ namespace DGtal
 *       Estimators in Digital Geometry. DGCI 2013. Retrieved from
 *       https://liris.cnrs.fr/publis/?id=5866
 *
-* The algorithm we propose uses volume of a kernel (2D: Ball2D, 3D:
-* Ball3D) to approximate the normal vector.  To compute the volume, we
-* convolve a kernel around the surface and then count the number of
-* cells belonging the shape.  Theorical multigrid convergence is
-* proved, with a convergence speed of O(h^1/3) with hypothesis about
-* the shape geometry and the convolution kernel radius.  Experimental
-* results showed a multigrid convergence.
+* The algorithm we propose uses a kernel (2D: Ball2D, 3D: Ball3D) that
+* is moved along the surface. The covariance matrix of this kernel
+* intersected with the volume carries many geometric information. It
+* can be used to compute normal and curvature directions, and
+* curvature values also. Theorical multigrid convergence is proved,
+* with a convergence speed of O(h^1/3) with hypothesis about the shape
+* geometry and the convolution kernel radius.  Experimental results
+* confirm the multigrid convergence.
 *
-* Some optimization is available when we give a range of 0-adjacent surfels to the estimator.
+* Some optimization is available when we give a range of 0-adjacent
+* surfels to the estimator. Note that you should use
+* IntegralInvariantVolumeEstimator instead when trying to estimate the
+* 2D curvature or the mean curvature.
 *
 * @tparam TKSpace a model of CCellularGridSpaceND, the cellular space
 * in which the shape is defined.
@@ -93,10 +97,14 @@ namespace DGtal
 * Point -> bool that defines a digital shape as a characteristic
 * function.
 *
-* @tparam TCovarianceMatrixFunctor a model of functor Matrix -> Quantity, that defines
-* how the covariance matrix computed by the Integral Invariant
-* estimator is transformed into e.g. a normal direction, a curvature,
-* etc. Models include IIGeometricFunctors::IINormalDirectionFunctor.
+* @tparam TCovarianceMatrixFunctor a model of functor Matrix ->
+* Quantity, that defines how the covariance matrix computed by the
+* Integral Invariant estimator is transformed into e.g. a normal
+* direction, a curvature, etc. Models include
+* IIGeometricFunctors::IINormalDirectionFunctor,
+* IIGeometricFunctors::IITangentDirectionFunctor,
+* IIGeometricFunctors::IIFirstPrincipalDirectionFunctor,
+* IIGeometricFunctors::IISecondPrincipalDirectionFunctor.
 *
 * @note In opposition to IntegralInvariantMeanCurvatureEstimator and
 * IntegralInvariantGaussianCurvatureEstimator, this class is
@@ -106,10 +114,10 @@ namespace DGtal
 * @see testVoronoiCovarianceMeasureOnSurface.cpp
 */
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
-class IntegralInvariantEstimator
+class IntegralInvariantCovarianceEstimator
 {
 public:
-  typedef IntegralInvariantEstimator< TKSpace, TPointPredicate, TCovarianceMatrixFunctor> Self;
+  typedef IntegralInvariantCovarianceEstimator< TKSpace, TPointPredicate, TCovarianceMatrixFunctor> Self;
   typedef TKSpace KSpace;
   typedef TPointPredicate PointPredicate;
   typedef TCovarianceMatrixFunctor CovarianceMatrixFunctor;
@@ -167,7 +175,7 @@ public:
   * @param f the functor for transforming the covariance matrix into
   * some quantity. If not precised, a default object is instantiated.
   */
-  IntegralInvariantEstimator( CovarianceMatrixFunctor fct = CovarianceMatrixFunctor() );
+  IntegralInvariantCovarianceEstimator( CovarianceMatrixFunctor fct = CovarianceMatrixFunctor() );
 
   /**
   * Constructor.
@@ -178,20 +186,20 @@ public:
   * @param fct the functor for transforming the covariance matrix into
   * some quantity. If not precised, a default object is instantiated.
   */
-  IntegralInvariantEstimator ( ConstAlias< KSpace > K, 
+  IntegralInvariantCovarianceEstimator ( ConstAlias< KSpace > K, 
                                ConstAlias< PointPredicate > aPointPredicate,
                                CovarianceMatrixFunctor fct = CovarianceMatrixFunctor() );
 
   /**
   * Destructor.
   */
-  ~IntegralInvariantEstimator();
+  ~IntegralInvariantCovarianceEstimator();
 
   /**
   * Copy constructor.
   * @param other the object to clone.
   */
-  IntegralInvariantEstimator ( const Self& other );
+  IntegralInvariantCovarianceEstimator ( const Self& other );
 
   /**
   * Assignment.
@@ -240,12 +248,11 @@ public:
   void init( const double _h, SurfelConstIterator itb, SurfelConstIterator ite );
 
   /**
-  * -- Normal vector -- 
+  * -- Estimation -- 
   *
-  * Compute the integral invariant normal vector
-  * at surfel *it of a shape. Not so easy, since II is a symmetric
-  * matrix, only directions of eigenvectors are pertinent. Another
-  * computation is necessary to obtain the orientation.
+  * Compute the integral invariant covariance matrix at surfel *it of
+  * a shape, then apply the CovarianceMatrixFunctor to extract some
+  * geometric information.
   *
   * @tparam SurfelConstIterator type of Iterator on a Surfel
   *
@@ -258,12 +265,11 @@ public:
 
 
   /**
-  * -- Normal vector -- 
+  * -- Estimation -- 
   *
-  * Compute the integral invariant normal vector from a range of surfels [itb,ite)
-  * of a shape. Not so easy, since II is a symmetric
-  * matrix, only directions of eigenvectors are pertinent. Another
-  * computation is necessary to obtain the orientation.
+  * Compute the integral invariant covariance matrix of a range of
+  * surfels [itb,ite) on a shape, then apply the
+  * CovarianceMatrixFunctor to extract some geometric information.
   * Return the result on an OutputIterator (param).
   *
   * @tparam OutputIterator type of Iterator of an array of Quantity
@@ -311,30 +317,30 @@ private:
 private:
 
 
-}; // end of class IntegralInvariantEstimator
+}; // end of class IntegralInvariantCovarianceEstimator
 
   /**
-  * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantEstimator'.
+  * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantCovarianceEstimator'.
   * @param out the output stream where the object is written.
-  * @param object the object of class 'IntegralInvariantEstimator' to write.
+  * @param object the object of class 'IntegralInvariantCovarianceEstimator' to write.
   * @return the output stream after the writing.
   */
   template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const IntegralInvariantEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor> & object );
+               const IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantEstimator.ih"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined IntegralInvariantEstimator_h
+#endif // !defined IntegralInvariantCovarianceEstimator_h
 
-#undef IntegralInvariantEstimator_RECURSES
-#endif // else defined(IntegralInvariantEstimator_RECURSES)
+#undef IntegralInvariantCovarianceEstimator_RECURSES
+#endif // else defined(IntegralInvariantCovarianceEstimator_RECURSES)

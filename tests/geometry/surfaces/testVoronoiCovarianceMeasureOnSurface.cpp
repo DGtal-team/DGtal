@@ -41,7 +41,7 @@
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
 //#include "DGtal/geometry/surfaces/estimation/IntegralInvariantNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
@@ -125,10 +125,10 @@ bool testVoronoiCovarianceMeasureOnSurface()
 
   trace.beginBlock("Computing II on surfels of volume." );
   typedef IIGeometricFunctors::IINormalDirectionFunctor<Space> IINormalFunctor;
-  typedef IntegralInvariantEstimator<KSpace, ImplicitDigitalShape,
-                                     IINormalFunctor> IINormalEstimator;
+  typedef IntegralInvariantCovarianceEstimator<KSpace, ImplicitDigitalShape,
+                                               IINormalFunctor> IINormalEstimator;
   IINormalEstimator ii_estimator( K, *dshape );
-  ii_estimator.setParams( 7.0 );
+  ii_estimator.setParams( 5.0 );
   ii_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
 
