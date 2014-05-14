@@ -14,6 +14,11 @@
       estimators for implicit polynomial shapes
       (TrueDigitalSurfaceLocalEstimator).
 
+    - Add Integral Invariant estimators so that they meet the concept
+      of surface local estimator. Add geometric functors to define
+      easily all the geometric estimators that can be built from the
+      volume and coariance matrix.
+
 *IO Package*
 
     - Better handling of materials in Board3D and OBJ exports.
