@@ -313,6 +313,82 @@ namespace DGtal
       /// The shape of interest.
       CountedConstPtrOrConstPtr<VCMOnDigitalSurface> myVCMOnDigitalSurface;
     };
+
+
+   /**
+     * Description of template class 'VCMMeanCurvature3DFunctor' <p> 
+     * \brief Aim: A functor Surfel -> Quantity that returns the absolute mean curvature at
+     * given surfel: (abs(k1)+abs(k2))/2. This class has meaning only in 3D.
+     *
+     * @tparam TVCMOnDigitalSurface any concrete type of VoronoiCovarianceMeasureOnDigitalSurface
+     */
+    template <typename TVCMOnDigitalSurface>
+    struct VCMAbsoluteMeanCurvature3DFunctor {
+      typedef TVCMOnDigitalSurface VCMOnDigitalSurface;
+      typedef typename VCMOnDigitalSurface::KSpace KSpace;
+      typedef typename VCMOnDigitalSurface::Surfel Surfel;
+      typedef typename VCMOnDigitalSurface::VectorN RealVector;
+      typedef typename RealVector::Component Scalar;
+      typedef Surfel Argument;
+      typedef Scalar Quantity;
+      
+      /**
+       * Constructor. A VCM may also be attached at construction.
+       *
+       * @param aVCMOnDigitalSurface the VCM on surface that stores all the
+       * information. The alias can be secured if some counted
+       * pointer is handed.
+       */
+      VCMAbsoluteMeanCurvature3DFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
+        : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
+      {
+        BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
+      }
+      
+      /**
+       * Attach a VCM on a digital surface.
+       *
+       * @param aVCMOnDigitalSurface on surface that stores all the
+       * information. The alias can be secured if some counted
+       * pointer is handed.
+       */
+      void attach( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface )
+      {
+        myVCMOnDigitalSurface = aVCMOnDigitalSurface;
+      }
+
+      /**
+         Map operator Surfel -> Scalar giving the absolute curvature estimated by the VCM object.
+         Complexity is \f$ O(log n) \f$, if \a n is the number of surfels of the surface.
+
+         @param s any surfel of the shape.
+         @return the normal at point p (as the normalized gradient).
+      */
+      Quantity operator()( const Surfel & s ) const
+      {
+        ASSERT( myVCMOnDigitalSurface != 0 );
+        RealVector lambda;
+        bool ok = myVCMOnDigitalSurface->getChiVCMEigenvalues( lambda, s );
+        ASSERT( ok );
+
+        // The last eigenvalue l2 is approximately the mixed "area" 2pi R^3 r^2 / 3
+        // The greatest principal curvature is related to the second eigenvalue l1.
+        // k1^2 = 4*l1 / (l2*r^2)
+        Quantity k1 = 2.0 * sqrt( lambda[1] / lambda[2] ) / myVCMOnDigitalSurface->r();
+
+       // The last eigenvalue l2 is approximately the mixed "area" 2pi R^3 r^2 / 3
+        // The smallest principal curvature is related to the first eigenvalue l0.
+        // k2^2 = 4*l0 / (l2*r^2)
+        Quantity k2 = 2.0 * sqrt( lambda[0] / lambda[2] ) / myVCMOnDigitalSurface->r();
+        return (k1+k2) * 0.5;
+      }
+
+    private:
+      /// The shape of interest.
+      CountedConstPtrOrConstPtr<VCMOnDigitalSurface> myVCMOnDigitalSurface;
+    };
+
+
     
   } // namespace VCMGeometricFunctors 
 } // namespace DGtal

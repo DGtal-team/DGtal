@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file IntegralInvariantCovarianceEstimator.h
+ * @file IntegralInvariantVolumeEstimator.h
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
  * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
@@ -26,20 +26,20 @@
  *
  * @date 2014/04/24
  *
- * Header file for module IntegralInvariantCovarianceEstimator.ih
+ * Header file for module IntegralInvariantVolumeEstimator.ih
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(IntegralInvariantCovarianceEstimator_RECURSES)
-#error Recursive header files inclusion detected in IntegralInvariantCovarianceEstimator.h
-#else // defined(IntegralInvariantCovarianceEstimator_RECURSES)
+#if defined(IntegralInvariantVolumeEstimator_RECURSES)
+#error Recursive header files inclusion detected in IntegralInvariantVolumeEstimator.h
+#else // defined(IntegralInvariantVolumeEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define IntegralInvariantCovarianceEstimator_RECURSES
+#define IntegralInvariantVolumeEstimator_RECURSES
 
-#if !defined IntegralInvariantCovarianceEstimator_h
+#if !defined IntegralInvariantVolumeEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define IntegralInvariantCovarianceEstimator_h
+#define IntegralInvariantVolumeEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -67,10 +67,11 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// template class IntegralInvariantCovarianceEstimator
+// template class IntegralInvariantVolumeEstimator
 /**
-* Description of template class 'IntegralInvariantCovarianceEstimator' <p>
-* \brief Aim: This class implement an Integral Invariant estimator which computes for each surfel the covariance matrix of the intersection of the shape with a ball of given radius centered on the surfel.
+* Description of template class 'IntegralInvariantVolumeEstimator' <p>
+* \brief Aim: This class implement an Integral Invariant estimator which computes for each surfel the volume of the intersection of the shape with a ball of given radius centered on the surfel.
+*
 *
 * @see related article:
 *       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
@@ -78,18 +79,18 @@ namespace DGtal
 *       https://liris.cnrs.fr/publis/?id=5866
 *
 * The algorithm we propose uses a kernel (2D: Ball2D, 3D: Ball3D) that
-* is moved along the surface. The covariance matrix of this kernel
-* intersected with the shape carries local geometric information. It
-* can be used to compute normal and curvature directions, and
-* curvature values also. Theorical multigrid convergence is proved,
-* with a convergence speed of O(h^1/3) with hypothesis about the shape
-* geometry and the convolution kernel radius.  Experimental results
-* confirm the multigrid convergence.
+* is moved along the surface. The volume of this kernel intersected
+* with the shape carries local geometric information. It can be used to
+* compute the mean curvature in 2D and 3D. Theorical multigrid
+* convergence is proved, with a convergence speed of O(h^1/3) with
+* hypothesis about the shape geometry and the convolution kernel
+* radius.  Experimental results confirm the multigrid convergence.
 *
 * Some optimization is available when we give a range of 0-adjacent
 * surfels to the estimator. Note that you should use
-* IntegralInvariantVolumeEstimator instead when trying to estimate the
-* 2D curvature or the mean curvature.
+* IntegralInvariantCovarianceEstimator instead when trying to estimate
+* the normal or principal curvature directions, the Gaussian curvature
+* or individual principal curvature values.
 *
 * @tparam TKSpace a model of CCellularGridSpaceND, the cellular space
 * in which the shape is defined.
@@ -98,14 +99,11 @@ namespace DGtal
 * Point -> bool that defines a digital shape as a characteristic
 * function.
 *
-* @tparam TCovarianceMatrixFunctor a model of functor Matrix ->
-* Quantity, that defines how the covariance matrix computed by the
-* Integral Invariant estimator is transformed into e.g. a normal
-* direction, a curvature, etc. Models include
-* IIGeometricFunctors::IINormalDirectionFunctor,
-* IIGeometricFunctors::IITangentDirectionFunctor,
-* IIGeometricFunctors::IIFirstPrincipalDirectionFunctor,
-* IIGeometricFunctors::IISecondPrincipalDirectionFunctor.
+* @tparam TVolumeFunctor a model of functor Real -> Quantity, that
+* defines how the volume computed by the Integral Invariant estimator
+* is transformed into e.g. a curvature, etc. Models include
+* IIGeometricFunctors::IICurvatureFunctor,
+* IIGeometricFunctors::IIMeanCurvature3DFunctor.
 *
 * @note In opposition to IntegralInvariantMeanCurvatureEstimator and
 * IntegralInvariantGaussianCurvatureEstimator, this class is
@@ -114,14 +112,14 @@ namespace DGtal
 *
 * @see testVoronoiCovarianceMeasureOnSurface.cpp
 */
-template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
-class IntegralInvariantCovarianceEstimator
+template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
+class IntegralInvariantVolumeEstimator
 {
 public:
-  typedef IntegralInvariantCovarianceEstimator< TKSpace, TPointPredicate, TCovarianceMatrixFunctor> Self;
+  typedef IntegralInvariantVolumeEstimator< TKSpace, TPointPredicate, TVolumeFunctor> Self;
   typedef TKSpace KSpace;
   typedef TPointPredicate PointPredicate;
-  typedef TCovarianceMatrixFunctor CovarianceMatrixFunctor;
+  typedef TVolumeFunctor VolumeFunctor;
 
   BOOST_CONCEPT_ASSERT (( CCellularGridSpaceND< KSpace > ));
   BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate > ));
@@ -138,7 +136,7 @@ public:
   typedef typename SurfelSet::const_iterator ConstIteratorKernel;
 
   /// The returned type of the estimator, depends on the functor
-  typedef typename CovarianceMatrixFunctor::Quantity Quantity;
+  typedef typename VolumeFunctor::Quantity Quantity;
   /// The type used for convolutions
   typedef int Value;
 
@@ -163,9 +161,9 @@ public:
   typedef typename Matrix::Component Component;
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
-  BOOST_CONCEPT_ASSERT (( CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity > ));
-  BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 
-                                                 typename CovarianceMatrixFunctor::Argument >::value ));
+  BOOST_CONCEPT_ASSERT (( CUnaryFunctor< VolumeFunctor, Component, Quantity > ));
+  BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::Quantity, 
+                                                 typename VolumeFunctor::Argument >::value ));
 
 
   // ----------------------- Standard services ------------------------------
@@ -175,10 +173,10 @@ public:
   * Default constructor. The object is invalid. The user needs to call
   * setParams and attach.
   * 
-  * @param f the functor for transforming the covariance matrix into
+  * @param fct[in] the functor for transforming the volume into
   * some quantity. If not precised, a default object is instantiated.
   */
-  IntegralInvariantCovarianceEstimator( CovarianceMatrixFunctor fct = CovarianceMatrixFunctor() );
+  IntegralInvariantVolumeEstimator( VolumeFunctor fct = VolumeFunctor() );
 
   /**
   * Constructor.
@@ -186,23 +184,23 @@ public:
   * @param[in] K the cellular grid space in which the shape is defined.
   * @param[in] aPointPredicate the shape of interest. The alias can be secured
   * if a some counted pointer is handed.
-  * @param fct the functor for transforming the covariance matrix into
+  * @param[in] fct the functor for transforming the volume into
   * some quantity. If not precised, a default object is instantiated.
   */
-  IntegralInvariantCovarianceEstimator ( ConstAlias< KSpace > K, 
-                               ConstAlias< PointPredicate > aPointPredicate,
-                               CovarianceMatrixFunctor fct = CovarianceMatrixFunctor() );
+  IntegralInvariantVolumeEstimator ( ConstAlias< KSpace > K, 
+                                     ConstAlias< PointPredicate > aPointPredicate,
+                                     VolumeFunctor fct = VolumeFunctor() );
 
   /**
   * Destructor.
   */
-  ~IntegralInvariantCovarianceEstimator();
+  ~IntegralInvariantVolumeEstimator();
 
   /**
   * Copy constructor.
   * @param other the object to clone.
   */
-  IntegralInvariantCovarianceEstimator ( const Self& other );
+  IntegralInvariantVolumeEstimator ( const Self& other );
 
   /**
   * Assignment.
@@ -253,8 +251,8 @@ public:
   /**
   * -- Estimation -- 
   *
-  * Compute the integral invariant covariance matrix at surfel *it of
-  * a shape, then apply the CovarianceMatrixFunctor to extract some
+  * Compute the integral invariant volume at surfel *it of
+  * a shape, then apply the VolumeFunctor to extract some
   * geometric information.
   *
   * @tparam SurfelConstIterator type of Iterator on a Surfel
@@ -271,9 +269,9 @@ public:
   /**
   * -- Estimation -- 
   *
-  * Compute the integral invariant covariance matrix for a range of
+  * Compute the integral invariant volume for a range of
   * surfels [itb,ite) on a shape, then apply the
-  * CovarianceMatrixFunctor to extract some geometric information.
+  * VolumeFunctor to extract some geometric information.
   * Return the result on an OutputIterator (param).
   *
   * @tparam OutputIterator type of Iterator of an array of Quantity
@@ -308,7 +306,7 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
 
-  CovarianceMatrixFunctor myFct;            ///< The covariance matrix functor that transforms the II covariance matrix into a quantity.
+  VolumeFunctor myFct;            ///< The volume functor that transforms the volume into a quantity.
   const KernelSpelFunctor myKernelFunctor;  ///< Kernel functor (on Spel)
   std::vector< PairIterators > myKernels;   ///< array of begin/end iterator of shifting masks.
   std::vector< DigitalSet * > myKernelsSet; ///< Array of shifting masks. Size = 9 for each shifting (0-adjacent and full kernel included)
@@ -325,30 +323,30 @@ private:
 private:
 
 
-}; // end of class IntegralInvariantCovarianceEstimator
+}; // end of class IntegralInvariantVolumeEstimator
 
   /**
-  * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantCovarianceEstimator'.
+  * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantVolumeEstimator'.
   * @param out the output stream where the object is written.
-  * @param object the object of class 'IntegralInvariantCovarianceEstimator' to write.
+  * @param object the object of class 'IntegralInvariantVolumeEstimator' to write.
   * @return the output stream after the writing.
   */
-  template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
+  template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor> & object );
+               const IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.ih"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined IntegralInvariantCovarianceEstimator_h
+#endif // !defined IntegralInvariantVolumeEstimator_h
 
-#undef IntegralInvariantCovarianceEstimator_RECURSES
-#endif // else defined(IntegralInvariantCovarianceEstimator_RECURSES)
+#undef IntegralInvariantVolumeEstimator_RECURSES
+#endif // else defined(IntegralInvariantVolumeEstimator_RECURSES)
