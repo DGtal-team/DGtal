@@ -234,11 +234,11 @@ namespace DGtal
      * Manually insert cell into calculus.
      * Be sure to insert all adjacent lower order primal cells.
      * @param cell the cell to be inserted.
-     * @primal_size ratio between primal cell size and dual cell size.
+     * @size_ratio ratio between primal cell size and dual cell size.
      * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
     bool
-    insertSCell(const SCell& cell, const Scalar& primal_size = 1);
+    insertSCell(const SCell& cell, const Scalar& size_ratio = 1);
 
     /**
      * Manually erase cell from calculus.
