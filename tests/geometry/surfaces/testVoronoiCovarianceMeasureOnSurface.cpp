@@ -22,7 +22,7 @@
  *
  * @date 2014/02/09
  *
- * Functions for testing class VoronoiCovarianceMeasure.
+ * Functions for testing class VoronoiCovarianceMeasure, and also IntegralInvariantEstimator.
  *
  * This file is part of the DGtal library.
  */
@@ -39,7 +39,9 @@
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantNormalVectorEstimator.h"
+//#include "DGtal/geometry/surfaces/estimation/IntegralInvariantNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantEstimator.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
@@ -51,23 +53,6 @@
 // Functions for testing class VoronoiCovarianceMeasureOnSurface
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename TPoint3>
-struct ImplicitDigitalEllipse3 {
-  typedef TPoint3 Point;
-  inline
-  ImplicitDigitalEllipse3( double a, double b, double c )
-  : myA( a ), myB( b ), myC( c )
-  {}
-  inline
-  bool operator()( const TPoint3 & p ) const
-  {
-    double x = ( (double) p[ 0 ] / myA );
-    double y = ( (double) p[ 1 ] / myB );
-    double z = ( (double) p[ 2 ] / myC );
-    return ( x*x + y*y + z*z ) <= 1.0;
-  }
-  double myA, myB, myC;
-};
 
 /**
  * Example of a test. To be completed.
@@ -85,14 +70,12 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef MPolynomialReader<3, double> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Z3i::Space> ImplicitShape;
   typedef GaussDigitizer< Z3i::Space, ImplicitShape > ImplicitDigitalShape;
-  // typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
   typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalShape> SurfaceContainer;
   typedef DigitalSurface< SurfaceContainer > Surface;
   typedef Surface::ConstIterator ConstIterator;
   typedef SurfaceContainer::Surfel Surfel;
   typedef ExactPredicateLpSeparableMetric<Space,2> Metric;
   typedef HatPointFunction<Point,double> KernelFunction;
-  // typedef BallConstantPointFunction<Point,double> KernelFunction; // worse than above
   typedef VoronoiCovarianceMeasureOnDigitalSurface<SurfaceContainer,Metric,KernelFunction> VCMOnSurface;
   trace.beginBlock("Creating Surface");
   std::string poly_str = "1.0-0.16*x^2+0.22*y^2+0.3*z^2";
@@ -120,12 +103,6 @@ bool testVoronoiCovarianceMeasureOnSurface()
   CountedPtr<ImplicitDigitalShape> dshape( new ImplicitDigitalShape() );
   dshape->attach( *shape );
   dshape->init( p1, p2, 1.0 );
-
-  trace.beginBlock("Computing II on surfels of volume." );
-  typedef IntegralInvariantNormalVectorEstimator<KSpace, ImplicitDigitalShape> IINormalEstimator;
-  trace.endBlock();
-
-  // ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
   Surfel bel = Surfaces<KSpace>::findABel( K, *dshape, 10000 );
   SurfaceContainer* surfaceContainer = new SurfaceContainer
     ( K, *dshape, SurfelAdjacency<KSpace::dimension>( true ), bel );
@@ -147,9 +124,11 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing II on surfels of volume." );
-  typedef IntegralInvariantNormalVectorEstimator<KSpace, ImplicitDigitalShape> IINormalEstimator;
+  typedef IIGeometricFunctors::IINormalDirectionFunctor<Space> IINormalFunctor;
+  typedef IntegralInvariantEstimator<KSpace, ImplicitDigitalShape,
+                                     IINormalFunctor> IINormalEstimator;
   IINormalEstimator ii_estimator( K, *dshape );
-  ii_estimator.setParams( 5.0 );
+  ii_estimator.setParams( 7.0 );
   ii_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
 
