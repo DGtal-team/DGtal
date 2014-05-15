@@ -283,7 +283,7 @@ namespace DGtal
 
     /// @return the Voronoi Covariance Matrix of each Voronoi cell as
     /// a map Point -> Matrix
-    /// @node empty if \ref init has not been called.
+    /// @note empty if \ref init has not been called.
     const Point2MatrixNN& vcmMap() const;
 
     /**
