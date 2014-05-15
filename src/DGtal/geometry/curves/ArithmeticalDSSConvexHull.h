@@ -53,7 +53,7 @@ namespace DGtal
      * @brief Functor that returns the position of any point/vector 
      * with respect to a digital straight line of shift @a myShift. 
      * @tparam Vector a model of 2d vector
-     * @tparam Position a model of integer used to locate the 
+     * @tparam TPosition a model of integer used to locate the 
      * points of a DSL
      */
     template <typename Vector, typename TPosition>
@@ -100,24 +100,23 @@ namespace DGtal
        *
        * @param a numerator
        * @param b denominator
-       *
-       * @tparam Integer a model of integer
+       * @pre b is not null
        */
       inline
       Integer operator()(const Integer& a, const Integer& b) const
       {
+	ASSERT( b != NumberTraits<Integer>::ZERO );
 	return a / b; 
       }
     }; 
 
     /**
-     * @brief BinaryFunctor that returns the algebraic quotient i of a/b 
+     * @brief BinaryFunctor that computes the algebraic quotient i of a/b 
      * with any non zero fractional part discarded (truncation toward zero),
      * and that returns i+1 (resp. i-1) if a is negative (resp. positive)
      * if b divides a. 
      * Since we assume that a is not equal to 0, we have \f$ |i| < |a/b| \f$. 
      * @tparam Integer a model of integer used to store a and b
-     * @tparam Coordinate a model of integer used to return the result i
      */
     template <typename Integer>
     struct StrictFloorFunctor
@@ -127,16 +126,17 @@ namespace DGtal
        * @return quotient i defined above
        *
        * @param a numerator
+       * @pre a is not null
        * @param b denominator
-       *
-       * @tparam Integer a model of integer
+       * @pre b is not null
        */
       inline
       Integer operator()(const Integer& a, const Integer& b) const 
       {
 	ASSERT( a != NumberTraits<Integer>::ZERO ); 
+	ASSERT( b != NumberTraits<Integer>::ZERO );
+ 
 	Integer i = a / b;
-
 	if (a == i*b)
 	  {
 	    if (i >= NumberTraits<Integer>::ZERO) 
@@ -209,8 +209,8 @@ namespace DGtal
      * @param aPositionBound (strictly positive) length of the DSS
      * @param aStep first step of the DSL
      * @param aRStep remainder of the first step, ie. parameter a of the bounding DSL
-     * @param shift shift vector of the DSL
-     * @param rShift remainder of the shift vector, ie. parameter omega of the bounding DSL. 
+     * @param aShift shift vector of the DSL
+     * @param aRShift remainder of the shift vector, ie. parameter omega of the bounding DSL. 
      * @param aPositionFunctor position functor, which returns the position of any given point/vector 
      * @param uIto output iterator used to store the vertices of the upper convex hull
      * @param lIto output iterator used to store the vertices of the lower convex hull
