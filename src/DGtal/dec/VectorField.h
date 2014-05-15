@@ -134,7 +134,7 @@ template <typename TCalculus, Duality duality>
      * Return the normalized vector field.
      * @param epsilon vectors with norm lower than epsilon are set to zero.
      */
-    VectorField<TCalculus, duality> normalized(const typename Calculus::Scalar& epsilon = 1e-32) const;
+    VectorField<TCalculus, duality> normalized(const typename Calculus::Scalar& epsilon = 0) const;
 
     /**
      * Checks the validity/consistency of the object.
