@@ -112,7 +112,7 @@ struct EigenSparseLinearAlgebraBackend
     typedef Eigen::ConjugateGradient<Matrix> SolverConjugateGradient;
     typedef Eigen::BiCGSTAB<Matrix> SolverBiCGSTAB;
     typedef Eigen::SparseLU<Matrix> SolverSparseLU;
-    typedef Eigen::SparseQR<Matrix, Eigen::AMDOrdering<Matrix::Index> > SolverSparseQR;
+    typedef Eigen::SparseQR<Matrix, Eigen::COLAMDOrdering<Matrix::Index> > SolverSparseQR;
 };
 ///////////////////////////////////////////////////////////////////////////////
 
