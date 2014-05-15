@@ -222,9 +222,9 @@ DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<D, LAB>, 0, DGtal::PRIMAL,
 DGtal::DiscreteExteriorCalculus<D, LAB>::primalLaplace() const
 {
     const PrimalDerivative0 d0 = derivative<0, PRIMAL>();
-    const DualDerivative1 d1p = derivative<dimension-1, DUAL>();
+    const LinearOperator<DiscreteExteriorCalculus<D, LAB>, dimension-1, DUAL, dimension, DUAL> d1p = derivative<dimension-1, DUAL>();
     const PrimalHodge1 h1 = primalHodge<1>();
-    const DualHodge2 h2p = dualHodge<dimension>();
+    const LinearOperator<DiscreteExteriorCalculus<D, LAB>, dimension, DUAL, 0, PRIMAL> h2p = dualHodge<dimension>();
     return h2p * d1p * h1 * d0;
 }
 
@@ -233,9 +233,9 @@ DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<D, LAB>, 0, DGtal::DUAL, 0
 DGtal::DiscreteExteriorCalculus<D, LAB>::dualLaplace() const
 {
     const DualDerivative0 d0 = derivative<0, DUAL>();
-    const PrimalDerivative1 d1p = derivative<dimension-1, PRIMAL>();
+    const LinearOperator<DiscreteExteriorCalculus<D, LAB>, dimension-1, PRIMAL, dimension, PRIMAL> d1p = derivative<dimension-1, PRIMAL>();
     const DualHodge1 h1 = dualHodge<1>();
-    const PrimalHodge2 h2p = primalHodge<dimension>();
+    const LinearOperator<DiscreteExteriorCalculus<D, LAB>, dimension, PRIMAL, 0, DUAL> h2p = primalHodge<dimension>();
     return h2p * d1p * h1 * d0;
 }
 
