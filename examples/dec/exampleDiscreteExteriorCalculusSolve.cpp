@@ -9,9 +9,9 @@ using namespace std;
 #include "DGtal/io/readers/GenericReader.h"
 using namespace DGtal;
 
-void solve2d_laplacian()
+void solve2d_laplace()
 {
-    trace.beginBlock("2d discrete exterior calculus solve laplacian");
+    trace.beginBlock("2d discrete exterior calculus solve laplace");
 
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(9,9));
 
@@ -22,18 +22,10 @@ void solve2d_laplacian()
     //! [calculus_creation]
     trace.info() << calculus << endl;
 
-    //! [laplacian_definition]
-    Calculus::DualDerivative0 d0 = calculus.derivative<0, DUAL>();
-    Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
-    Calculus::DualHodge1 hodge1 = calculus.dualHodge<1>();
-    Calculus::PrimalHodge2 hodge2p = calculus.primalHodge<2>();
-    Calculus::DualIdentity0 laplacian = hodge2p * d1p * hodge1 * d0 + 0.01 * calculus.identity<0, DUAL>();
-    //! [laplacian_definition]
-    trace.info() << "d0 = " << d0 << endl;
-    trace.info() << "hodge1 = " << hodge1 << endl;
-    trace.info() << "d1p = " << d1p << endl;
-    trace.info() << "hodge2p = " << hodge2p << endl;
-    trace.info() << "laplacian = " << laplacian << endl;
+    //! [laplace_definition]
+    Calculus::DualIdentity0 laplace = calculus.dualLaplace() + 0.01 * calculus.identity<0, DUAL>();
+    trace.info() << "laplace = " << laplace << endl;
+    //! [laplace_definition]
 
     //! [dirac_definition]
     Calculus::DualForm0 dirac(calculus);
@@ -47,7 +39,7 @@ void solve2d_laplacian()
         Board2D board;
         board << domain;
         board << accum;
-        board.saveSVG("solve_laplacian_calculus.svg");
+        board.saveSVG("solve_laplace_calculus.svg");
     }
 
     { // simplicial llt
@@ -58,7 +50,7 @@ void solve2d_laplacian()
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
@@ -73,7 +65,7 @@ void solve2d_laplacian()
         board << domain;
         board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
-        board.saveSVG("solve_laplacian_simplicial_llt.svg");
+        board.saveSVG("solve_laplace_simplicial_llt.svg");
     }
 
     { // simplicial ldlt
@@ -84,7 +76,7 @@ void solve2d_laplacian()
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
         trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
@@ -99,7 +91,7 @@ void solve2d_laplacian()
         board << domain;
         board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
-        board.saveSVG("solve_laplacian_simplicial_ldlt.svg");
+        board.saveSVG("solve_laplace_simplicial_ldlt.svg");
     }
 
     { // conjugate gradient
@@ -110,7 +102,7 @@ void solve2d_laplacian()
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_conjugate_gradient]
 
@@ -125,7 +117,7 @@ void solve2d_laplacian()
         board << domain;
         board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
-        board.saveSVG("solve_laplacian_conjugate_gradient.svg");
+        board.saveSVG("solve_laplace_conjugate_gradient.svg");
     }
 
     { // biconjugate gradient stabilized
@@ -136,7 +128,7 @@ void solve2d_laplacian()
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_biconjugate_gradient]
 
@@ -151,7 +143,7 @@ void solve2d_laplacian()
         board << domain;
         board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
-        board.saveSVG("solve_laplacian_bicgstab.svg");
+        board.saveSVG("solve_laplace_bicgstab.svg");
     }
 
     { // sparselu
@@ -162,7 +154,7 @@ void solve2d_laplacian()
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_sparse_lu]
 
@@ -177,7 +169,7 @@ void solve2d_laplacian()
         board << domain;
         board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
-        board.saveSVG("solve_laplacian_sparse_lu.svg");
+        board.saveSVG("solve_laplace_sparse_lu.svg");
     }
 
     { // sparseqr
@@ -188,7 +180,7 @@ void solve2d_laplacian()
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_sparse_qr]
 
@@ -203,7 +195,7 @@ void solve2d_laplacian()
         board << domain;
         board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
         board << accum;
-        board.saveSVG("solve_laplacian_sparse_qr.svg");
+        board.saveSVG("solve_laplace_sparse_qr.svg");
     }
 
     trace.endBlock();
@@ -729,7 +721,7 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc,argv);
 
-    solve2d_laplacian();
+    solve2d_laplace();
     solve2d_dual_decomposition();
     solve2d_primal_decomposition();
     solve3d_decomposition();

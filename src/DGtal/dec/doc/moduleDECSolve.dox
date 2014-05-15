@@ -32,7 +32,7 @@ Using the DEC package, one can solve any equation of the type:
 where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
 k-forms are represented using KForm classes and linear operators are represented by LinearOperator classes.
 One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative, DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge.
-Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and laplacian \f$\Delta\f$ can be easily expressed with those operators:
+Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be easily expressed with those operators:
 
 \f[\nabla x = ( d x )^\sharp \f]
 
@@ -76,7 +76,7 @@ Then the linear operator is defined. It is a regularized Laplace operator on dua
 
 where \f$I\f$ is the identity operator and is generated using DiscreteExteriorCalculusSolver.identity.
 
-\snippet exampleDiscreteExteriorCalculusSolve.cpp laplacian_definition
+\snippet exampleDiscreteExteriorCalculusSolve.cpp laplace_definition
 
 Input k-form \f$y\f$ is a Dirac delta positioned on the dual 0-cell at coordinates \f$(2,5)\f$.
 Dual 0-cells are created by KhalimskySpaceND.sSpel.

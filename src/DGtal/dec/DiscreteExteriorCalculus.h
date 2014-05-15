@@ -273,6 +273,18 @@ namespace DGtal
     derivative() const;
 
     /**
+     * Dual Laplace operator form dual 0-forms to dual 0-forms.
+     */
+    PrimalIdentity0
+    primalLaplace() const;
+
+    /**
+     * Dual Laplace operator form dual 0-forms to dual 0-forms.
+     */
+    DualIdentity0
+    dualLaplace() const;
+
+    /**
      * Primal hodge duality operator from primal order-forms to dual (dim-order)-forms.
      * @tparam order order of input primal k-form.
      */
