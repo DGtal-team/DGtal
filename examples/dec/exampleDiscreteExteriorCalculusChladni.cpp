@@ -51,19 +51,10 @@ int main(int argc, char* argv[])
 
     trace.endBlock();
 
-    trace.beginBlock("building laplacian");
+    trace.beginBlock("building laplace");
 
-    Calculus::DualDerivative0 d0 = calculus.derivative<0, DUAL>();
-    Calculus::PrimalDerivative1 d1p = calculus.derivative<1, PRIMAL>();
-    Calculus::DualHodge1 hodge1 = calculus.dualHodge<1>();
-    Calculus::PrimalHodge2 hodge2p = calculus.primalHodge<2>();
-    Calculus::DualIdentity0 laplacian = -1 * hodge2p * d1p * hodge1 * d0;
-
-    trace.info() << "d0 = " << d0 << endl;
-    trace.info() << "hodge1 = " << hodge1 << endl;
-    trace.info() << "d1p = " << d1p << endl;
-    trace.info() << "hodge2p = " << hodge2p << endl;
-    trace.info() << "laplacian = " << laplacian << endl;
+    Calculus::DualIdentity0 laplace = -1 * calculus.dualLaplace();
+    trace.info() << "laplace=" << laplace << endl;
 
     {
         Calculus::DualForm0 aa(calculus);
@@ -83,14 +74,14 @@ int main(int argc, char* argv[])
 
     trace.endBlock();
 
-    trace.beginBlock("finding laplacian eigen vectors");
+    trace.beginBlock("finding laplace eigen vectors");
 
     typedef Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> EigenSolverMatrix;
-    const EigenSolverMatrix eigen_solver(laplacian.myContainer);
+    const EigenSolverMatrix eigen_solver(laplace.myContainer);
 
     const Eigen::VectorXd eigen_values = eigen_solver.eigenvalues();
     const Eigen::MatrixXd eigen_vectors = eigen_solver.eigenvectors();
-    for (int kk=0; kk<laplacian.myContainer.rows(); kk++)
+    for (int kk=0; kk<laplace.myContainer.rows(); kk++)
     {
         Calculus::Scalar eigen_value = eigen_values(kk, 0);
 

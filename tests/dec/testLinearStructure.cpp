@@ -90,26 +90,20 @@ void test_linear_structure()
     {
         trace.beginBlock("solving problem with neumann border condition using sparse qr solver");
 
-        //! [neumann-laplacian-definition]
-        Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
-        Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-        Calculus::PrimalHodge1 hodge1 = calculus.primalHodge<1>();
-        Calculus::DualHodge2 hodge2p = calculus.dualHodge<2>();
-        Calculus::PrimalIdentity0 laplacian = hodge2p *d1p * hodge1 * d0;
-        //! [neumann-laplacian-definition]
-        trace.info() << "d0 = " << d0 << endl;
-        trace.info() << "hodge1 = " << hodge1 << endl;
-        trace.info() << "d1p = " << d1p << endl;
-        trace.info() << "hodge2p = " << hodge2p << endl;
-        trace.info() << "laplacian = " << laplacian << endl;
-        trace.info() << laplacian.myContainer << endl;
+        //! [neumann-laplace-definition]
+        const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+        const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+        trace.info() << "d0=" << d0 << endl;
+        trace.info() << "laplace = " << laplace << endl;
+        trace.info() << laplace.myContainer << endl;
+        //! [neumann-laplace-definition]
 
         //! [neumann-solve]
         typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [neumann-solve]
         solved_solution.myContainer /= solved_solution.myContainer.maxCoeff();
@@ -185,26 +179,20 @@ void test_linear_structure()
     {
         trace.beginBlock("solving problem with dirichlet border condition using sparse qr solver");
 
-        //! [dirichlet-laplacian-definition]
-        Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
-        Calculus::DualDerivative1 d1p = calculus.derivative<1, DUAL>();
-        Calculus::PrimalHodge1 hodge1 = calculus.primalHodge<1>();
-        Calculus::DualHodge2 hodge2p = calculus.dualHodge<2>();
-        Calculus::PrimalIdentity0 laplacian = hodge2p *d1p * hodge1 * d0;
-        //! [dirichlet-laplacian-definition]
-        trace.info() << "d0 = " << d0 << endl;
-        trace.info() << "hodge1 = " << hodge1 << endl;
-        trace.info() << "d1p = " << d1p << endl;
-        trace.info() << "hodge2p = " << hodge2p << endl;
-        trace.info() << "laplacian = " << laplacian << endl;
-        trace.info() << laplacian.myContainer << endl;
+        //! [dirichlet-laplace-definition]
+        const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
+        const Calculus::PrimalIdentity0 laplace = calculus.primalLaplace();
+        trace.info() << "d0=" << d0 << endl;
+        trace.info() << "laplace = " << laplace << endl;
+        trace.info() << laplace.myContainer << endl;
+        //! [dirichlet-laplace-definition]
 
         //! [dirichlet-solve]
         typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> Solver;
 
         Solver solver;
-        solver.compute(laplacian);
+        solver.compute(laplace);
         Calculus::PrimalForm0 solved_solution = solver.solve(dirac);
         //! [dirichlet-solve]
         solved_solution.myContainer /= solved_solution.myContainer.maxCoeff();

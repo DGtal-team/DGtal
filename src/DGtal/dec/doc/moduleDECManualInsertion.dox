@@ -70,7 +70,7 @@ The input heat vector \f$f\f$, which is primal 0-form in the DEC formulation, is
 The Laplace operator \f$\Delta\f$ is pretty straight forward from its above definition.
 One can use DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge to generate \f$\star\f$ operators and DiscreteExteriorCalculus.derivative to generate \f$d\f$ operators.
 
-\snippet testLinearStructure.cpp neumann-laplacian-definition
+\snippet testLinearStructure.cpp neumann-laplace-definition
 
 Now the problem is fully defined and there one thing left to do: solving it.
 The resolution is done by DiscreteExteriorCalculusSolver.
@@ -107,7 +107,7 @@ Input dirac can be used as it is since no 0-cells has been added to the structur
 However Laplace operator need to be rebuild.
 Note that the code is the same as for the Neumann case.
 
-\snippet testLinearStructure.cpp dirichlet-laplacian-definition
+\snippet testLinearStructure.cpp dirichlet-laplace-definition
 
 Solving the problem is achieved by using the same code as for the Neumann case.
 This time to analytical solution is piece-wise linear and take a constant null value at the border of the structure, as expect from the Dirichlet boundary condition.
