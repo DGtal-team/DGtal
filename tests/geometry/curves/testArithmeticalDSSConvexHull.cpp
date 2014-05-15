@@ -108,7 +108,7 @@ bool basicTest(const DSL& aDSL)
  * @param a numerator of the slope
  * @param b denominator of the slope
  * @return 'true' if the tests passed, 'false' otherwise
- * @tparam an arithmeticalDSS type (either naive or standard)
+ * @tparam DSL an arithmeticalDSL type (either naive or standard)
  */
 template <typename DSL>
 bool basicTest(typename DSL::Coordinate a, 
@@ -187,7 +187,7 @@ bool testWithoutLengthConstraint()
  * @pre b is greater than a, which is greater than 0. 
  * @return 'true' if the two algorithms return the same results, 
  * 'false' otherwise
- * @tparam Coordinate any integer coordinate type
+ * @tparam DSL an arithmeticalDSL type (either naive or standard)
  */
 template <typename DSL>
 bool comparisonLeftHull(typename DSL::Coordinate a, typename DSL::Coordinate b)
