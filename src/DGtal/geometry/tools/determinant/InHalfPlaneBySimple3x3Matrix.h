@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file InHalfPlaneBySimpleMatrix.h
+ * @file InHalfPlaneBySimple3x3Matrix.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/22
  *
- * Header file for module InHalfPlaneBySimpleMatrix.cpp
+ * Header file for module InHalfPlaneBySimple3x3Matrix.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(InHalfPlaneBySimpleMatrix_RECURSES)
-#error Recursive header files inclusion detected in InHalfPlaneBySimpleMatrix.h
-#else // defined(InHalfPlaneBySimpleMatrix_RECURSES)
+#if defined(InHalfPlaneBySimple3x3Matrix_RECURSES)
+#error Recursive header files inclusion detected in InHalfPlaneBySimple3x3Matrix.h
+#else // defined(InHalfPlaneBySimple3x3Matrix_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define InHalfPlaneBySimpleMatrix_RECURSES
+#define InHalfPlaneBySimple3x3Matrix_RECURSES
 
-#if !defined InHalfPlaneBySimpleMatrix_h
+#if !defined InHalfPlaneBySimple3x3Matrix_h
 /** Prevents repeated inclusion of headers. */
-#define InHalfPlaneBySimpleMatrix_h
+#define InHalfPlaneBySimple3x3Matrix_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,7 +52,7 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class InHalfPlaneBySimpleMatrix
+  // template class InHalfPlaneBySimple3x3Matrix
   /**
    * \brief Aim: Class that implements an orientation functor, ie. 
    * it provides a way to compute the orientation of three given 2d points. 
@@ -67,7 +67,7 @@ namespace DGtal
    @code
    ...
    typedef Z2i::Point Point; 
-   typedef InHalfPlaneBySimpleMatrix<Point, Z2i::Integer> MyType; 
+   typedef InHalfPlaneBySimple3x3Matrix<Point, Z2i::Integer> MyType; 
 
    MyType orientationTest; 
    orientationTest.init( Point(0,0), Point(5,2) ); 
@@ -87,7 +87,7 @@ namespace DGtal
    * @see InHalfPlaneBy2x2DetComputer
    */
   template <typename TPoint, typename TInteger>
-  class InHalfPlaneBySimpleMatrix
+  class InHalfPlaneBySimple3x3Matrix
   {
     // ----------------------- Types  ------------------------------------
   public:
@@ -178,30 +178,30 @@ namespace DGtal
     mutable Matrix myMatrix; 
 
 
-  }; // end of class InHalfPlaneBySimpleMatrix
+  }; // end of class InHalfPlaneBySimple3x3Matrix
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'InHalfPlaneBySimpleMatrix'.
+   * Overloads 'operator<<' for displaying objects of class 'InHalfPlaneBySimple3x3Matrix'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'InHalfPlaneBySimpleMatrix' to write.
+   * @param object the object of class 'InHalfPlaneBySimple3x3Matrix' to write.
    * @return the output stream after the writing.
    */
   template <typename TPoint, typename TInteger>
   std::ostream&
-  operator<< ( std::ostream & out, const InHalfPlaneBySimpleMatrix<TPoint, TInteger> & object );
+  operator<< ( std::ostream & out, const InHalfPlaneBySimple3x3Matrix<TPoint, TInteger> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.ih"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined InHalfPlaneBySimpleMatrix_h
+#endif // !defined InHalfPlaneBySimple3x3Matrix_h
 
-#undef InHalfPlaneBySimpleMatrix_RECURSES
-#endif // else defined(InHalfPlaneBySimpleMatrix_RECURSES)
+#undef InHalfPlaneBySimple3x3Matrix_RECURSES
+#endif // else defined(InHalfPlaneBySimple3x3Matrix_RECURSES)

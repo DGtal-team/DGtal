@@ -41,7 +41,7 @@
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBy2x2DetComputer.h"
 //! [FunctorIncludes]
 #include "DGtal/geometry/tools/determinant/PredicateFromOrientationFunctor2.h"
-#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 //! [FunctorIncludes]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -71,7 +71,7 @@ basicUsage()
 
   //! [FunctorDefinition]
   //orientation functor
-  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int32_t> OrientationFunctor; 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> OrientationFunctor; 
   OrientationFunctor orientationFunctor;
   //! [FunctorDefinition]
 
@@ -107,7 +107,7 @@ advice()
   //! [FunctorDefinition30]
   //for coordinates of 30 (not zero) bits
   typedef PointVector<2, DGtal::int32_t> Point; 
-  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int64_t> Functor; 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor; 
   //! [FunctorDefinition30]
   }
 
@@ -115,12 +115,12 @@ advice()
   //! [FunctorDefinition52]
   //for coordinates of 52 (not zero) bits
   typedef PointVector<2, DGtal::int64_t> Point;  
-  //NB. using double as coordinate type is slightly faster:
-  //typedef PointVector<2, double> Point;  
   typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
   typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
   typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> Functor; 
   //! [FunctorDefinition52]
+  //NB. using double as coordinate type is slightly faster than using DGtal::int64_t
+  //typedef PointVector<2, double> Point;  
   }
 
   {

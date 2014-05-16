@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file InHalfPlaneBySimpleMatrix.ih
+ * @file InHalfPlaneBySimple3x3Matrix.ih
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/11/22
  *
- * Implementation of inline methods defined in InHalfPlaneBySimpleMatrix.h
+ * Implementation of inline methods defined in InHalfPlaneBySimple3x3Matrix.h
  *
  * This file is part of the DGtal library.
  */
@@ -40,7 +40,7 @@
 template <typename TP, typename TI>
 inline
 void
-DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::init( const Point& aP, const Point& aQ )
+DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::init( const Point& aP, const Point& aQ )
 {
   myMatrix.setComponent( 0, 0, static_cast<Integer>( aP[0] ) ); 
   myMatrix.setComponent( 0, 1, static_cast<Integer>( aP[1] ) ); 
@@ -54,7 +54,7 @@ DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::init( const Point& aP, const Point& aQ 
 template <typename TP, typename TI>
 inline
 void
-DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::init( const PointArray& aA )
+DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::init( const PointArray& aA )
 {
   init( aA[0], aA[1] ); 
 }
@@ -62,8 +62,8 @@ DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::init( const PointArray& aA )
 // ----------------------------------------------------------------------------
 template <typename TP, typename TI>
 inline
-typename DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::Value
-DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::operator()( const Point& aR ) const
+typename DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::Value
+DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::operator()( const Point& aR ) const
 {
   myMatrix.setComponent( 2, 0, static_cast<Integer>( aR[0] ) ); 
   myMatrix.setComponent( 2, 1, static_cast<Integer>( aR[1] ) ); 
@@ -75,16 +75,16 @@ DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::operator()( const Point& aR ) const
 template <typename TP, typename TI>
 inline
 void
-DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::selfDisplay ( std::ostream & out ) const
+DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[InHalfPlaneBySimpleMatrix]";
+  out << "[InHalfPlaneBySimple3x3Matrix]";
 }
 
 // ----------------------------------------------------------------------------
 template <typename TP, typename TI>
 inline
 bool
-DGtal::InHalfPlaneBySimpleMatrix<TP,TI>::isValid() const
+DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::isValid() const
 {
   return true;
 }
@@ -98,7 +98,7 @@ template <typename TP, typename TI>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const InHalfPlaneBySimpleMatrix<TP,TI> & object )
+		    const InHalfPlaneBySimple3x3Matrix<TP,TI> & object )
 {
   object.selfDisplay( out );
   return out;

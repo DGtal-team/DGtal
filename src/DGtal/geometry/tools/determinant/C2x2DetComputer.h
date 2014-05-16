@@ -83,9 +83,9 @@ namespace DGtal
 
      | Name               | Expression        | Type requirements | Return type   | Precondition | Semantics         | Post condition | Complexity      |
      |--------------------|-------------------|-------------------|---------------|--------------|-------------------|----------------|-----------------|
-     | full operator()    | r = x(a, b, c, d) |                   | ResultInteger |              | (sign of) ad - bc |                | model dependant |
+     | full operator()    | r = x(a, b, c, d) |                   | ResultInteger |              | (sign of) ad - bc |                | model dependent |
      | initialization     | x.init(a,b)       |                   | void          |              | memorizes a and b |                | constant        |
-     | partial operator() | r = x(c, d)       |                   | ResultInteger |              | (sign of) ad - bc |                | model dependant |
+     | partial operator() | r = x(c, d)       |                   | ResultInteger |              | (sign of) ad - bc |                | model dependent |
 
      ### Notes
 
