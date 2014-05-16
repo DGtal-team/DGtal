@@ -10,7 +10,7 @@
       digital geometric estimators based on it. Add tests and examples of feature
       detection with VCM.
 
-    - Fix and add concept of SurfaceLocalEstimator and related ground truth
+    - Fix and add concept of CSurfelLocalEstimator and related ground truth
       estimators for implicit polynomial shapes
       (TrueDigitalSurfaceLocalEstimator).
 
