@@ -175,7 +175,7 @@ public:
   * Default constructor. The object is invalid. The user needs to call
   * setParams and attach.
   * 
-  * @param f the functor for transforming the covariance matrix into
+  * @param fct the functor for transforming the covariance matrix into
   * some quantity. If not precised, a default object is instantiated.
   */
   IntegralInvariantCovarianceEstimator( CovarianceMatrixFunctor fct = CovarianceMatrixFunctor() );
@@ -285,7 +285,7 @@ public:
   * @param[in] ite iterator defining the end of the range of surfels
   * where we wish to compute some geometric information.
   *
-  * @param[in] output iterator of results of the computation.
+  * @param[in] result output iterator of results of the computation.
   * @return the updated output iterator after all outputs.
   */
   template <typename OutputIterator, typename SurfelConstIterator>
