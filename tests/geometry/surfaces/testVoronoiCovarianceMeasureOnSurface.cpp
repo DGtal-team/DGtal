@@ -35,6 +35,7 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/geometry/surfaces/estimation/CSurfelLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/CDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.h"
@@ -81,6 +82,8 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.beginBlock("Creating Surface");
   // std::string poly_str = "1.0-0.16*x^2+0.22*y^2+0.3*z^2";
   std::string poly_str = "-81.0+x^2+y^2+z^2";
+  // NB (JOL): II is sensitive to orientation !!
+  // std::string poly_str = "81.0-x^2-y^2-z^2"; 
   Polynomial3 poly;
   Polynomial3Reader reader;
   std::string::const_iterator iter = reader.read( poly, poly_str.begin(), poly_str.end() );
@@ -138,9 +141,9 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
   
-  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< IINormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< IINormalEstimator > ));
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< VCMNormalEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< TrueNormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< TrueNormalEstimator > ));
 
   TrueNormalEstimator true_estimator;
   true_estimator.setParams( K, NormalFunctor() );
@@ -223,6 +226,11 @@ bool testVoronoiCovarianceMeasureOnSurface()
   true_curv_estimator.attach( shape );
   true_curv_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
+
+  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< IICurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< VCMCurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< TrueCurvatureEstimator > ));
+
   
   trace.beginBlock("Evaluating curvatures." );
   Statistic<double> stat_vcm_curv;

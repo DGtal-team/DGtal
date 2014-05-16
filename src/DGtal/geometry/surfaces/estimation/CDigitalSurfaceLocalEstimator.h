@@ -42,8 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CQuantity.h"
-#include <boost/iterator/iterator_archetypes.hpp>
+#include "DGtal/topology/CDigitalSurfaceContainer.h"
+#include "DGtal/geometry/surfaces/estimation/CSurfelLocalEstimator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,90 +52,70 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSurfaceLocalEstimator
   /**
-     Description of \b concept '\b CDigitalSurfaceLocalEstimator' <p>
-     @ingroup Concepts
-     @brief Aim: This concept describes an object that can process 
-     a range over some (abstract) surface so as to return one estimated quantity for each element 
-     of the range (or a given subrange). 
-
-     ### Refinement of 
-     - boost::DefaultConstructible,  boost::CopyConstructible, boost::Assignable
-
-     ### Associated types :
-     - Surfel : the type of elements of the surface
-     - Quantity : the type of the (geometric) quantity that is estimated.
-
-     ### Notation
-     - \e X : A type that is a model of CDigitalSurfaceLocalEstimator
-     - \e x : object of type \e X
-     - \e h : double
-     - \e itb, \e ite, \e it,\e itb2, \e ite2 : instances of a model of forward iterators having Surfel as value type.
-     - \e ito : an instance of a model of output iterator having Quantity as value type
- 
-     ### Definitions
-
-     ### Valid expressions and semantics
-
-     | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
-     |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
-     | Initialization | x.init( \e h, \e itb, \e ite )         |   | void                         | \e h > 0        | Grid step and range initialization in [\e itb,\e ite)        |   | model dependent |
-     | Evaluation     | x.eval( \e it )                  |   | Quantity                     |              | Estimation of the quantity at \e \e it, which must belong to [\e itb,\e ite) |   | model dependent |
-     | Evaluation     | \e ito = x.eval( \e itb2, \e ite2, \e ito ) |   | a model of output iterator   |              | Estimation for each element of [\e itb2, \e ite2), which must be a subrange of or the whole range [\e itb,\e ite) |   | model dependent |
-     | gridstep  accessor | x.h()                     |   | double                       |              | Accessor to the gridstep  value |   | O(1) |
-
-     ### Invariants
-
-     ### Models
-
-     - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceLocalEstimator.
-
-     ### Notes
-     
-     - For now, a CDigitalSurfaceLocalEstimator is not a refinement
-       of boost::DefaultConstructible, in opposition to
-       CCurveLocalGeometricEstimator.
-
-     @tparam T the type that should be a model of CDigitalSurfaceLocalEstimator.
+  *  Description of \b concept '\b CDigitalSurfaceLocalEstimator' <p>
+  *  @ingroup Concepts
+  *
+  *  @brief Aim: This concept describes an object that can process a
+  *  range over some generic digital surface so as to return one
+  *  estimated quantity for each element of the range (or a given
+  *  subrange). 
+  *
+  *  It refines the concept CSurfelLocalEstimator by forcing the
+  *  abstract surface to be some digital surface.
+  *
+  *  ### Refinement of 
+  *  - CSurfelLocalEstimator
+  *
+  *  ### Associated types :
+  *  - Surface : the type of digital surface, some DigitalSurface<T> where T is a model of CDigitalSurfaceContainer.
+  *  - Surfel (from CSurfelLocalEstimator) and type Surface::Surfel must be the same
+  *
+  *  ### Notation
+  *  - \e X : A type that is a model of CDigitalSurfaceLocalEstimator
+  *  - \e x : object of type \e X
+  *  - \e s : an instance of Surface
+  *
+  *  ### Definitions
+  *
+  *  ### Valid expressions and semantics
+  *
+  *  | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
+  *  |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
+  *  | Attach surface | \e x.attach( \e s )           |   | \c void                      |              | Indicates to the estimator the surface on which estimations are done. | | Model dependent |
+  *
+  *  ### Invariants
+  *
+  *  ### Models
+  *
+  *  - VCMDigitalSurfaceLocalEstimator.
+  *
+  *  ### Notes
+  *  - A surface must be attached to \e x before the call to \c init and \c eval.
+  *
+  *  @tparam T the type that should be a model of CDigitalSurfaceLocalEstimator.
   */
   template <typename T>
   struct CDigitalSurfaceLocalEstimator
-    : boost::DefaultConstructible<T>,  boost::CopyConstructible<T>, boost::Assignable<T>
-
+    : CSurfelLocalEstimator<T>
   {
 
     // ----------------------- Concept checks ------------------------------
   public:
 
-    typedef typename T::Quantity Quantity;
-    BOOST_CONCEPT_ASSERT(( CQuantity< Quantity > ));
+    typedef typename T::Surface Surface;
+    typedef typename Surface::DigitalSurfaceContainer DigitalSurfaceContainer;
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
     typedef typename T::Surfel Surfel;
-
+    BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Surfel, typename Surface::Surfel >::value ));
     BOOST_CONCEPT_USAGE( CDigitalSurfaceLocalEstimator )
     {
-      //init method
-      myX.init( myH, myItb, myIte ); 
-
-      ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-      ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
-      check_const_constraints();
-    }
-    void check_const_constraints() const
-    {
-      ConceptUtils::sameType( myH, myX.h() );
+      myX.attach( myS );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
-    
-    double myH; 
-    Quantity myQ;
-    boost::iterator_archetype<Surfel,
-			      boost::iterator_archetypes::readable_iterator_t,
-			      boost::forward_traversal_tag > myItb, myIte; 
-    boost::iterator_archetype<Quantity,
-			      boost::iterator_archetypes::writable_iterator_t,
-			      boost::incrementable_traversal_tag > myIto; 
+    Surface myS;
 
     // ------------------------- Internals ------------------------------------
   private:
