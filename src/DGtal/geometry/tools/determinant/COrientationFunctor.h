@@ -100,11 +100,11 @@ namespace DGtal
      | Name            | Expression | Type requirements       | Return type | Precondition | Semantics                           | Post condition | Complexity      |
      |-----------------|------------|-------------------------|-------------|--------------|-------------------------------------|----------------|-----------------|
      | array dimension | X::size    |                         | SizeArray   |              | size of the array, equal to k       |                |                 |
-     | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitely set the algebraic curve |                | model-dependant |
+     | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitely set the algebraic curve |                | model-dependent |
 
 
      ### Models
-     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix RadiusFunctor
+     InHalfPlaneBy2x2DetComputer InHalfPlaneBySimple3x3Matrix RadiusFunctor
 
      @tparam T the type that should be a model of COrientationFunctor.
   */

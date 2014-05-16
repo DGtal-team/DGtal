@@ -36,7 +36,7 @@
 
 #include "DGtal/geometry/tools/determinant/COrientationFunctor2.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBy2x2DetComputer.h"
-#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimpleMatrix.h"
+#include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
 
 #include "DGtal/geometry/tools/determinant/RadiusFunctor.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -260,7 +260,7 @@ int main( int argc, char** argv )
   typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor1; 
   res = res && testInHalfPlane( Functor1() );
  
-  typedef InHalfPlaneBySimpleMatrix<Point, DGtal::int32_t> Functor2; 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor2; 
   res = res && testInHalfPlane( Functor2() );
 
   res = res && testRadiusFunctor(); 
