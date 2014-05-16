@@ -95,7 +95,7 @@ namespace DGtal
   *
   *  ### Models
   *
-  *  - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceLocalEstimator.
+  *  - TrueDigitalSurfaceLocalEstimator, VCMDigitalSurfaceLocalEstimator, IntegralInvariantCovarianceEstimator, IntegralInvariantVolumeEstimator
   *
   *  ### Notes
   *
