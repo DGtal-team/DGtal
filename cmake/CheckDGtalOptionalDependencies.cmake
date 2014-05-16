@@ -22,6 +22,7 @@ OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
+OPTION(WITH_BENCHMARK "With Google Benchmark." OFF)
 
 
 
@@ -109,13 +110,20 @@ ELSE(WITH_MAGICK)
 message(STATUS "      WITH_MAGICK       false   (GraphicsMagick based 2D image i/o)")
 ENDIF(WITH_MAGICK)
 
-IF(WITH_QGLVIEWER)
+If(WITH_QGLVIEWER)
 SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
 message(STATUS "      WITH_QGLVIEWER    true    (Qt/QGLViewer based 3D Viewer)")
 ELSE(WITH_QGLVIEWER)
 message(STATUS "      WITH_QGLVIEWER    false   (Qt/QGLViewer based 3D Viewer)")
 ENDIF(WITH_QGLVIEWER)
-
+message(STATUS "")
+message(STATUS "For Developpers:")
+IF(WITH_BENCHMARK)
+SET (LIST_OPTION ${LIST_OPTION} [GoogleBenchmark]\ )
+message(STATUS "      WITH_BENCHMARK    true    (Google Benchmark)")
+ELSE(WITH_HDF5)
+message(STATUS "      WITH_BENCHMARK    false   (Google Benchmark)")
+ENDIF(WITH_BENCHMARK)
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
@@ -316,11 +324,32 @@ ELSE(WITH_HDF5)
   unset(HDF5_LIBRARIES)
 ENDIF(WITH_HDF5)
 
+
+# -----------------------------------------------------------------------------
+# Look for Qt (needed by libqglviewer visualization).
+# -----------------------------------------------------------------------------
+set(QT4_FOUND_DGTAL 0)
+IF( WITH_QGLVIEWER)
+  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
+  if ( QT4_FOUND )
+    set(QT4_FOUND_DGTAL 1)
+    message(STATUS  "Qt4 found (needed by QGLVIEWER).")
+    set(QT_USE_QTXML 1)
+    ADD_DEFINITIONS("-DWITH_QT4 ")
+    include( ${QT_USE_FILE})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
+    SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
+  else ( QT4_FOUND )
+    message(FATAL_ERROR  "Qt4 not found (needed by QGLVIEWER).  Check the cmake variables associated to this package or disable it." )
+  endif ( QT4_FOUND )
+ENDIF( WITH_QGLVIEWER)
+
 # -----------------------------------------------------------------------------
 # Look for QGLViewer for 3D display.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 set(QGLVIEWER_FOUND_DGTAL 0)
+set( WITH_VISU3D 0)
 IF(WITH_QGLVIEWER)
   find_package(QGLVIEWER REQUIRED)
   if(QGLVIEWER_FOUND)
@@ -338,39 +367,11 @@ IF(WITH_QGLVIEWER)
     set(QGLVIEWER_FOUND_DGTAL 1)
     ADD_DEFINITIONS("-DWITH_VISU3D_QGLVIEWER ")
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES}  )
+    set( WITH_VISU3D 1 )
   else ( QGLVIEWER_FOUND )
-    message(FATAL_ERROR  "libQGLViewer not found (or Qt4 not found).  Check the cmake variables associated to this package or disable it." )
+    message(FATAL_ERROR  "libQGLViewer not found.  Check the cmake variables associated to this package or disable it." )
   endif (QGLVIEWER_FOUND)
 ENDIF(WITH_QGLVIEWER)
-
-if(NOT WITH_VISU3D_QGLVIEWER)
-  if(NOT WITH_VISU3D_IV)
-    set( WITH_VISU3D 0)
-  else (NOT WITH_VISU3D_IV)
-    set( WITH_VISU3D 1 )
-  endif(NOT WITH_VISU3D_IV)
-else(NOT WITH_VISU3D_QGLVIEWER)
-  set( WITH_VISU3D 1 )
-endif(NOT WITH_VISU3D_QGLVIEWER)
-
-# -----------------------------------------------------------------------------
-# Look for Qt (if LibqglViewer or coin3D are set).
-# -----------------------------------------------------------------------------
-set(QT4_FOUND_DGTAL 0)
-IF( WITH_QGLVIEWER)
-  find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
-  if ( QT4_FOUND )
-    set(QT4_FOUND_DGTAL 1)
-    message(STATUS  "Qt4 found.")
-    set(QT_USE_QTXML 1)
-    ADD_DEFINITIONS("-DWITH_QT4 ")
-    include( ${QT_USE_FILE})
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${QT_LIBRARIES} )
-    SET(DGtalLibInc ${DGtalLibInc} ${QT_INCLUDE_DIR})
-  else ( QT4_FOUND )
-    message(FATAL_ERROR  "Qt4 not found.  Check the cmake variables associated to this package or disable it." )
-  endif ( QT4_FOUND )
-ENDIF( WITH_QGLVIEWER)
 
 # -----------------------------------------------------------------------------
 # Look for OpenMP
@@ -429,5 +430,33 @@ IF(WITH_CGAL)
     message(STATUS "CGAL found.")
   ENDIF(CGAL_FOUND)
 ENDIF(WITH_CGAL)
+
+
+# -----------------------------------------------------------------------------
+# Look for Google Benchmark
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(BENCHMARK_FOUND_DGTAL 0)
+IF(WITH_BENCHMARK)
+
+  IF (WITH_C11)
+    message(STATUS "C11 enabled for Google benchmark, all fine.")
+  ELSE(WITH_C11)
+   message(FATAL_ERROR "Google benchmark requires C++11. Please enable it setting 'WITH_C11' to true.")
+ ENDIF(WITH_C11)
+
+  FIND_PACKAGE(Benchmark REQUIRED)
+  IF(BENCHMARK_FOUND)
+    SET(BENCHMARK_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_BENCHMARK ")
+    include_directories( ${BENCHMARK_INCLUDE_DIR})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${BENCHMARK_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} )
+    message(STATUS "Google Benchmark found.   ${BENCHMARK_LIBRARIES}")
+  ELSE(BENCHMARK_FOUND)
+   message(FATAL_ERROR "Google benchmark not installed. Please disable WITH_BENCHMARK or install it.")
+ ENDIF(BENCHMARK_FOUND)
+ENDIF(WITH_BENCHMARK)
+
+
 
 message(STATUS "-------------------------------------------------------------------------------")

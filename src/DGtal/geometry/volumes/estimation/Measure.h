@@ -61,8 +61,8 @@ namespace DGtal
    * Lesbegue sens) of a set.
    * In dimension 2, it corresponds to the area of the set, to the
    * volume in dimension 3,...
-   * 
-   * Model of @href CGlobalGeometricEstimator 
+   *
+   * Model of CGlobalGeometricEstimator
    *
    * @tparam TSet type of set on which the geometrical moments is
    * computed.
@@ -72,46 +72,46 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     typedef TSet Set;
     typedef typename TSet::Domain Domain;
 
     // Does not work
     //BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
- 
-    typedef double Quantity; 
-    
+
+    typedef double Quantity;
+
     /**
      * Constructor.
      */
     Measure();
-  
-    /**   
+
+    /**
      * Destructor.
      */
     ~Measure();
 
-    /** 
+    /**
      * Initialize the measure computation.
-     * 
+     *
      * @param h grid size (must be >0).
      * @param aSetPointer a pointer to an input set.
      */
     void init(const double h, const Set &aSetPointer);
-   
-    
-    /** 
+
+
+    /**
      * Compute the measure (area, volume) of the set. Since we rely on
      * the Set::size() method which is O(1). The current method is
      * O(1) too.
      *
      * @pre init method must have been called before.
-     * 
-     * @return the measure of the set. 
+     *
+     * @return the measure of the set.
      */
     Quantity eval() const;
 
-  
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -160,7 +160,7 @@ namespace DGtal
 
     ///Boolean to assert that the init() was called before the eval().
     double myIsInitBefore;
-    
+
 
   }; // end of class Measure
 

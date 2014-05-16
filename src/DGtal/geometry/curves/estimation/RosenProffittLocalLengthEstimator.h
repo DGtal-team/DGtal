@@ -60,10 +60,10 @@ namespace DGtal
    * @note   T. J. Ellis and D. Proffitt and D. Rosen and W. Rutkowski
    * Measurement of the lengths of digitized curved lines
    * Computer Graphics and Image Processing, Vol. 10, pp. 333-347, August 1979
-   * 
-   * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnArrows. 
+   * Model of  CGlobalCurveGeometricEstimator
+   *
+   * @tparam TConstIterator a model of CConstIteratorOnArrows.
    */
   template <typename TConstIterator>
   class RosenProffittLocalLengthEstimator: public DGtal::TwoStepLocalLengthEstimator<TConstIterator>
@@ -75,7 +75,7 @@ namespace DGtal
     ///@todo CONCEPT CHECK sur ConstIterator
     typedef TConstIterator ConstIterator;
     typedef double Quantity;
-  
+
 
     /**
      * Default Constructor.
@@ -84,12 +84,12 @@ namespace DGtal
       TwoStepLocalLengthEstimator<TConstIterator>(M_PI*(sqrt(2.0f)+1.0)/8.0,
               M_PI*(sqrt(2.0f)+2.0)/16.0)
     {}
-    
-    
-  
+
+
+
     // ----------------------- Interface --------------------------------------
   public:
- 
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -97,13 +97,13 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) const
     {
       out << "[RosenProffittLocalLengthEstimator]";
-      if (this->myIsInitBefore) 
+      if (this->myIsInitBefore)
   out <<" myH="<< this->myH;
       else
   out<< " not initialized";
   }
 
-    
+
   private:
 
     /**

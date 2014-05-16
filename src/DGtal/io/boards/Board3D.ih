@@ -129,13 +129,11 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 {
 
   size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
-  double Re, Gr, Bl, Tr; // colors of the elements
   double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
   std::ofstream outOBJ; //OBJ file where to write
   std::ofstream outMTL; //MTL file where to write
-  std::stringstream bufMTL; // Buffering what to write in the MTL file
 
-  //WARNING quand deux obj ont le meme nom ils fusionnent (danger deux sets differents fusionnes)
+  //WARNING when two objects have the same name they  merge  (dangerous two different sets merge)
 
   std::string noExt(filename.substr(0, filename.find_first_of("."))); //the filename withoutOBJ any extention
   std::stringstream nameOBJ;
@@ -153,8 +151,6 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
   outMTL << "#  MTL format"<< std::endl;
   outMTL << "# generated from Board3D from the DGTal library"<< std::endl;
 
-  //OPT head
-  // TODOLP tests unitaires pour chaque partie
 
   //myClippingPlaneList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //std::vector< clippingPlaneD3D >::const_iterator
@@ -203,27 +199,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
               {
                 name << "myBallSetList_" << k ;
               }
-            //NOTE up until now one object = one material
-            std::stringstream matName;
-            matName << "myBallSetList_" << k << "MAT";
 
+            typename std::vector< typename Board3D<Space, KSpace>::BallD3D>::const_iterator itBegin = it->begin();
+            unsigned int matid = getMaterialIndex(itBegin->color);
+            std::stringstream matName;
+            matName <<  "Mat_" << matid;
             outOBJ << "o  " << name.str() << std::endl;
             outOBJ << "usemtl " << matName.str() << std::endl;
             outOBJ << tmpStream.str();
-
-            typename std::vector< typename Board3D<Space, KSpace>::BallD3D>::const_iterator itBegin = it->begin();
-            Re = itBegin->color.red() /255.0 ;
-            Gr = itBegin->color.green() /255.0;
-            Bl = itBegin->color.blue() /255.0;
-            Tr = itBegin->color.alpha() /255.0;
-
-            bufMTL << "newmtl " << matName.str()  <<std::endl;
-            bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Ks 0 0 0" << std::endl;
-            bufMTL << "d " << Tr << std::endl;
-            bufMTL << "illum 2" << std::endl << std::endl;
-
           }
         k++;
       }
@@ -309,25 +292,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
               {
                 name << "myLineSetList_" << k ;
               }
-            std::stringstream matName;
-            matName << "myLineSetList_" << k  << "MAT";
-
-            outOBJ << "o " << name.str() << std::endl;
-            outOBJ << "usemtl " << matName.str() << std::endl;
-            outOBJ << tmpStream.str();
 
             typename std::vector< typename Board3D<Space, KSpace>::LineD3D>::const_iterator itBegin = it->begin();
-            Re = itBegin->color.red() /255.0 ;
-            Gr = itBegin->color.green() /255.0;
-            Bl = itBegin->color.blue() /255.0;
-            Tr = itBegin->color.alpha() /255.0;
-
-            bufMTL << "newmtl " << matName.str()  <<std::endl;
-            bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Ks 0 0 0" << std::endl;
-            bufMTL << "d " << Tr << std::endl;
-            bufMTL << "illum 2" << std::endl << std::endl;
+            unsigned int matid = getMaterialIndex(itBegin->color);
+            std::stringstream matName;
+            matName <<  "Mat_" << matid;
+            outOBJ << "o  " << name.str() << std::endl;
+            outOBJ << "usemtl " << matName.str() << std::endl;
+            outOBJ << tmpStream.str();
           }
 
         k++;
@@ -421,30 +393,19 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         if (tmpStream.str() != "")
           {
             std::stringstream name;
-            name << Board3D<Space, KSpace>::myCubeSetNameList.at(k);
+            name << Board3D<Space, KSpace>::myCubeSetNameList.at(k)<< k;
             if ( name.str() == "")
               {
                 name << "myCubeSetList_" << k ;
               }
-            std::stringstream matName;
-            matName << "myCubeSetList_" << k << "MAT";
 
+            typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator itBegin = it->begin();
+            unsigned int matid = getMaterialIndex(itBegin->color);
+            std::stringstream matName;
+            matName <<  "Mat_" << matid;
             outOBJ << "o  " << name.str() << std::endl;
             outOBJ << "usemtl " << matName.str() << std::endl;
             outOBJ << tmpStream.str();
-
-            typename std::vector< typename Board3D<Space, KSpace>::CubeD3D>::const_iterator itBegin = it->begin();
-            Re = itBegin->color.red() /255.0 ;
-            Gr = itBegin->color.green() /255.0;
-            Bl = itBegin->color.blue() /255.0;
-            Tr = itBegin->color.alpha()/255.0;
-
-            bufMTL << "newmtl " << matName.str()  <<std::endl;
-            bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Ks 0 0 0" << std::endl;
-            bufMTL << "d " << Tr << std::endl;
-            bufMTL << "illum 2" << std::endl << std::endl;
 
           }
         k++;
@@ -468,8 +429,9 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
             tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
             tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
             tmpStream << "v " << s_it->point4[0]     << " " << s_it->point4[1]      << " " << s_it->point4[2] << std::endl;
+            tmpStream << "vn " << s_it->nx     << " " << s_it->ny      << " " << s_it->nz << std::endl;
 
-            tmpStream << "f " << "-4" << " " << "-3" << " " << "-2"<< " " << "-1"<< std::endl;
+            tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
           }
         if (tmpStream.str() != "")
           {
@@ -479,25 +441,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
               {
                 name << "myQuadSetList_" << k ;
               }
-            std::stringstream matName;
-            matName << "myQuadSetList_" << k  << "MAT";
 
+            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->begin();
+            unsigned int matid = getMaterialIndex(itBegin->color);
+            std::stringstream matName;
+            matName <<  "Mat_" << matid;
             outOBJ << "o  " << name.str() << std::endl;
             outOBJ << "usemtl " << matName.str() << std::endl;
             outOBJ << tmpStream.str();
-
-            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = it->begin();
-            Re = itBegin->color.red() /255.0 ;
-            Gr = itBegin->color.green() /255.0;
-            Bl = itBegin->color.blue() /255.0;
-            Tr = itBegin->color.alpha() /255.0;
-
-            bufMTL << "newmtl " << matName.str()  <<std::endl;
-            bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Ks 0 0 0" << std::endl;
-            bufMTL << "d " << Tr << std::endl;
-            bufMTL << "illum 2" << std::endl << std::endl;
           }
       }
   }
@@ -554,25 +505,13 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
               {
                 name << "myTriangleSetList_" << k ;
               }
+            typename std::vector< typename Board3D<Space, KSpace>::TriangleD3D>::const_iterator itBegin = it->begin();
+            unsigned int matid = getMaterialIndex(itBegin->color);
             std::stringstream matName;
-            matName << "myTriangleSetList_" << k << "MAT";
-
+            matName <<  "Mat_" << matid;
             outOBJ << "o  " << name.str() << std::endl;
             outOBJ << "usemtl " << matName.str() << std::endl;
             outOBJ << tmpStream.str();
-
-            typename std::vector< typename Board3D<Space, KSpace>::TriangleD3D>::const_iterator itBegin = it->begin();
-            Re = itBegin->color.red() /255.0 ;
-            Gr = itBegin->color.green() /255.0;
-            Bl = itBegin->color.blue() /255.0;
-            Tr = itBegin->color.alpha() /255.0;
-
-            bufMTL << "newmtl " << matName.str()  <<std::endl;
-            bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Ks 0 0 0" << std::endl;
-            bufMTL << "d " << Tr << std::endl;
-            bufMTL << "illum 2" << std::endl << std::endl;
           }
       }
   }
@@ -581,14 +520,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
   // Drawing all Khalimsky Space Cells --------------------------------------------------------------------
 
-  // SurfelPrism (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Prism (from updateList)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     j=0;
     k=0;
     std::ostringstream tmpStream;
 
-    for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::iterator s_it = Board3D<Space, KSpace>::mySurfelPrismList.begin();
-         s_it != Board3D<Space, KSpace>::mySurfelPrismList.end();
+    for (typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::iterator s_it = Board3D<Space, KSpace>::myPrismList.begin();
+         s_it != Board3D<Space, KSpace>::myPrismList.end();
          ++s_it)
       {
         //test if a clipping plane do not cut it
@@ -628,38 +567,23 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
         if (tmpStream.str() != "")
           {
             std::stringstream name;
-            name << "mySurfelPrismList" << j;
+            name << "myPrismList" << j;
             std::stringstream matName;
-            matName << "mySurfelPrismList" << j << "MAT";
-
+            matName << "myPrismList" << j << "MAT";
+            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::myPrismList.begin();
+            unsigned int matid = getMaterialIndex(itBegin->color);
+            matName <<  "Mat_" << matid;
             outOBJ << "o  " << name.str() << std::endl;
             outOBJ << "usemtl " << matName.str() << std::endl;
             outOBJ << tmpStream.str();
-
-            typename std::vector< typename Board3D<Space, KSpace>::QuadD3D>::const_iterator itBegin = Board3D<Space, KSpace>::mySurfelPrismList.begin();
-            Re = itBegin->color.red() /255.0 ;
-            Gr = itBegin->color.green() /255.0;
-            Bl = itBegin->color.blue() /255.0;
-            Tr = itBegin->color.alpha() /255.0;
-
-            bufMTL << "newmtl " << matName.str()  <<std::endl;
-            bufMTL << "Ka " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Kd " << Re << " " << Gr << " " << Bl << std::endl;
-            bufMTL << "Ks 0 0 0" << std::endl;
-            bufMTL << "d " << Tr << std::endl;
-            bufMTL << "illum 2" << std::endl << std::endl;
           }
       }
 
 
   }
 
-  //OPT tail
-  // end SurfelPrism (from updateList)+++++++++++++++++++++++++++++++
-
-  outMTL << bufMTL.str();
-
-
+  //end Prism (from updateList)+++++++++++++++++++++++++++++++
+  outMTL  << myMTLBuffer.str();
 
   outOBJ.close();
   outMTL.close();
@@ -667,14 +591,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
 
 
-/*!
- * \brief init function (should be in Constructor).
- */
+
 template < typename Space, typename KSpace>
 inline
 void
 DGtal::Board3D<Space, KSpace>::init()
 {
+
+  myMaterialIndex = 0;
 
   Board3D<Space, KSpace>::createNewCubeList();
   Board3D<Space, KSpace>::createNewLineList();
@@ -700,6 +624,33 @@ DGtal::Board3D<Space, KSpace>::init()
 
   std::string namePolygon;
   Board3D<Space, KSpace>::myPolygonSetNameList.push_back(namePolygon);
+}
+///////////////////////////////////////////////////////////////////////////////
+template < typename Space, typename KSpace>
+inline
+unsigned int
+DGtal::Board3D<Space, KSpace>::getMaterialIndex(const DGtal::Color &aColor)
+{
+  std::map<DGtal::Color, unsigned int>::iterator it;
+
+  it = myMaterialMap.find(aColor);
+
+  //The material exists
+  if (it != myMaterialMap.end())
+      return it->second;
+
+  myMaterialMap.insert( std::pair<DGtal::Color,unsigned int>(aColor,myMaterialIndex) );
+  std::stringstream matName ;
+  matName << "Mat_" <<myMaterialIndex;
+  myMTLBuffer << "newmtl " << matName.str()  <<std::endl;
+  myMTLBuffer << "Ka " << aColor.red()/255.0 << " " << aColor.green()/255.0 << " " << aColor.blue()/255.0 << std::endl;
+  myMTLBuffer << "Kd " << aColor.red()/255.0 << " " << aColor.green()/255.0 << " " << aColor.blue()/255.0 << std::endl;
+  myMTLBuffer << "Ks 0 0 0" << std::endl;
+  myMTLBuffer << "d " << aColor.alpha()/255.0 << std::endl;
+  myMTLBuffer << "illum 2" << std::endl << std::endl;
+
+  myMaterialIndex++;
+  return (myMaterialIndex - 1);
 }
 
 

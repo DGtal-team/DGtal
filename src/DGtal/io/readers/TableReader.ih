@@ -72,7 +72,7 @@ DGtal::TableReader<TQuantity>::getColumnElementsFromInputStream (std::istream &i
       bool found = false;
       unsigned int idx = 0;
       while ( in_str.good()&& !found){
-        in_str >> wordVal;
+        std::operator>>(in_str, wordVal);
         std::istringstream word_str( wordVal );
         word_str >> val;
         bool isOK = !word_str.fail(); 

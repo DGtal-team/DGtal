@@ -105,7 +105,7 @@ template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::eval
-( const SurfelIterator & it )
+( const SurfelIterator & it ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -123,7 +123,7 @@ inline
 typename EvalFunctor::Value
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::eval
 ( const SurfelIterator & it,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -144,7 +144,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::eval
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
-  OutputIterator & result )
+  OutputIterator & result ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -198,7 +198,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
   OutputIterator & result,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -255,7 +255,7 @@ template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::CovarianceMatrix
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::evalCovarianceMatrix
-( const SurfelIterator & it )
+( const SurfelIterator & it ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -273,7 +273,7 @@ inline
 typename EvalFunctor::Value
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::evalCovarianceMatrix
 ( const SurfelIterator & it,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -294,7 +294,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::evalCovarianceMatrix
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
-  OutputIterator & result )
+  OutputIterator & result ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -348,7 +348,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
   OutputIterator & result,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -412,7 +412,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::fillMoments
 ( Quantity * aMomentMatrix,
   const Spel & aSpel,
-  double direction )
+  double direction ) const
 {
   RealPoint current = myEmbedder( aSpel );
   double x = current[ 0 ];
@@ -430,7 +430,7 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Di
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::computeCovarianceMatrix
 ( const Quantity * aMomentMatrix,
-  CovarianceMatrix & aCovarianceMatrix )
+  CovarianceMatrix & aCovarianceMatrix ) const
 {
   MatrixQuantity A;
   double B;
@@ -484,14 +484,14 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Di
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::core_eval
-( const SurfelIterator & it,
-  Quantity & innerSum,
-  Quantity & outerSum,
-  bool useLastResults,
-  Spel & lastInnerSpel,
-  Spel & lastOuterSpel,
-  Quantity & lastInnerSum,
-  Quantity & lastOuterSum )
+( const SurfelIterator & UNUSED(it),
+  Quantity & UNUSED(innerSum),
+  Quantity & UNUSED(outerSum),
+  bool UNUSED(useLastResults),
+  Spel & UNUSED(lastInnerSpel),
+  Spel & UNUSED(lastOuterSpel),
+  Quantity & UNUSED(lastInnerSum),
+  Quantity & UNUSED(lastOuterSum) ) const
 {
   trace.error() << "Unavailable yet." << std::endl;
   return false;
@@ -502,14 +502,14 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Di
 template< typename SurfelIterator >
 bool
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::core_evalCovarianceMatrix
-( const SurfelIterator & it,
-  CovarianceMatrix & innerMatrix,
-  CovarianceMatrix & outerMatrix,
-  bool useLastResults,
-  Spel & lastInnerSpel,
-  Spel & lastOuterSpel,
-  Quantity * lastInnerMoments,
-  Quantity * lastOuterMoments )
+( const SurfelIterator & UNUSED(it),
+  CovarianceMatrix & UNUSED(innerMatrix),
+  CovarianceMatrix & UNUSED(outerMatrix),
+  bool UNUSED(useLastResults),
+  Spel & UNUSED(lastInnerSpel),
+  Spel & UNUSED(lastOuterSpel),
+  Quantity * UNUSED(lastInnerMoments),
+  Quantity * UNUSED(lastOuterMoments) ) const
 {
   trace.error() << "Unavailable yet." << std::endl;
   return false;
@@ -578,7 +578,7 @@ template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::eval
-( const SurfelIterator & it )
+( const SurfelIterator & it ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -596,7 +596,7 @@ inline
 typename EvalFunctor::Value
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::eval
 ( const SurfelIterator & it,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -617,7 +617,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::eval
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
-  OutputIterator & result )
+  OutputIterator & result ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -671,7 +671,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
   OutputIterator & result,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -728,7 +728,7 @@ template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::CovarianceMatrix
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::evalCovarianceMatrix
-( const SurfelIterator & it )
+( const SurfelIterator & it ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -746,7 +746,7 @@ inline
 typename EvalFunctor::Value
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::evalCovarianceMatrix
 ( const SurfelIterator & it,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -767,7 +767,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::evalCovarianceMatrix
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
-  OutputIterator & result )
+  OutputIterator & result ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -821,7 +821,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
   OutputIterator & result,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -885,7 +885,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::fillMoments
 ( Quantity * aMomentMatrix,
   const Spel & aSpel,
-  double direction )
+  double direction ) const
 {
   RealPoint current = myEmbedder( aSpel );
   double x = current[ 0 ];
@@ -903,7 +903,7 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Di
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::computeCovarianceMatrix
 ( const Quantity * aMomentMatrix,
-  CovarianceMatrix & aCovarianceMatrix )
+  CovarianceMatrix & aCovarianceMatrix ) const
 {
   MatrixQuantity A;
   double B;
@@ -964,7 +964,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   Spel & lastInnerSpel,
   Spel & lastOuterSpel,
   Quantity & lastInnerSum,
-  Quantity & lastOuterSum )
+  Quantity & lastOuterSum ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1215,7 +1215,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   Spel & lastInnerSpel,
   Spel & lastOuterSpel,
   Quantity * lastInnerMoments,
-  Quantity * lastOuterMoments )
+  Quantity * lastOuterMoments ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1521,7 +1521,7 @@ template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::Quantity
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::eval
-( const SurfelIterator & it )
+( const SurfelIterator & it ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1539,7 +1539,7 @@ inline
 typename EvalFunctor::Value
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::eval
 ( const SurfelIterator & it,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1560,7 +1560,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::eval
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
-  OutputIterator & result )
+  OutputIterator & result ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1614,7 +1614,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
   OutputIterator & result,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1669,7 +1669,7 @@ template< typename SurfelIterator >
 inline
 typename DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::CovarianceMatrix
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::evalCovarianceMatrix
-( const SurfelIterator & it )
+( const SurfelIterator & it ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1687,7 +1687,7 @@ inline
 typename EvalFunctor::Value
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::evalCovarianceMatrix
 ( const SurfelIterator & it,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1708,7 +1708,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::evalCovarianceMatrix
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
-  OutputIterator & result )
+  OutputIterator & result ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1762,7 +1762,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 ( const SurfelIterator & itbegin,
   const SurfelIterator & itend,
   OutputIterator & result,
-  EvalFunctor functor )
+  EvalFunctor functor ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -1825,7 +1825,7 @@ void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::fillMoments
 ( Quantity * aMomentMatrix,
   const Spel & aSpel,
-  double direction )
+  double direction ) const
 {
   RealPoint current = myEmbedder( aSpel );
   double x = current[ 0 ];
@@ -1850,7 +1850,7 @@ template< typename Functor, typename KernelFunctor, typename KSpace, typename Di
 void
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::computeCovarianceMatrix
 ( const Quantity * aMomentMatrix,
-  CovarianceMatrix & aCovarianceMatrix )
+  CovarianceMatrix & aCovarianceMatrix ) const
 {
   MatrixQuantity A;
   double B;
@@ -1921,7 +1921,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   Spel & lastInnerSpel,
   Spel & lastOuterSpel,
   Quantity & lastInnerSum,
-  Quantity & lastOuterSum )
+  Quantity & lastOuterSum ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
@@ -2181,7 +2181,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   Spel & lastInnerSpel,
   Spel & lastOuterSpel,
   Quantity * lastInnerMoments,
-  Quantity * lastOuterMoments )
+  Quantity * lastOuterMoments ) const
 {
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 

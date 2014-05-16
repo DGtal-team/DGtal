@@ -57,6 +57,7 @@ OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
 OPTION(BUILD_TESTING "Build testing." OFF)
 OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
 OPTION(VERBOSE "Verbose messages." OFF)
+option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 
 SET(VERBOSE_DGTAL 0)
 SET(DEBUG_VERBOSE_DGTAL 0)
@@ -96,3 +97,13 @@ IF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   MESSAGE(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 ENDIF(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
+
+
+# -----------------------------------------------------------------------------
+# Debug specific options
+# -----------------------------------------------------------------------------
+OPTION(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
+IF (WARNING_AS_ERROR)
+  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
+  MESSAGE(STATUS "Warnings as Errors ENABLED.")
+ENDIF(WARNING_AS_ERROR)

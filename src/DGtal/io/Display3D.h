@@ -95,9 +95,15 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT((CSpace<Space>));
   public:
-    //RealPoint
-    typedef typename DGtal::Z3i::RealPoint RealPoint;
 
+    typedef Display3D<Space,KSpace> Self;
+    /// RealPoint type
+    typedef typename Space::RealPoint RealPoint;
+    /// RealVector type
+    typedef typename Space::RealVector RealVector;
+    typedef CanonicEmbedder<Space> Embedder;
+    typedef CanonicCellEmbedder<KSpace> CellEmbedder;
+    typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
 
   protected:
 
@@ -141,7 +147,7 @@ namespace DGtal
 
     /**
      * This structure is used to display clipping planes and the
-     * components of the mySurfelPrismList (allowing to set normal and
+     * components of the myPrismList (allowing to set normal and
      * color).
      * @see Display3D, Viewer3D, Board3DTo2D
      **/
@@ -213,11 +219,11 @@ namespace DGtal
 
   protected:
     /// an embeder from a dgtal space point to a real space point
-    CanonicEmbedder< Space > *myEmbedder;
+    Embedder *myEmbedder;
     /// an embeder from a unsigned khalimsky space point to a real space point
-    CanonicCellEmbedder< KSpace > *myCellEmbedder;
+    CellEmbedder *myCellEmbedder;
     /// an embeder from a signed khalimsky space point to a real space point
-    CanonicSCellEmbedder< KSpace > *mySCellEmbedder;
+    SCellEmbedder *mySCellEmbedder;
 
 
 
@@ -246,9 +252,9 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder= new CanonicEmbedder<Space>();
-      myCellEmbedder = new CanonicCellEmbedder<KSpace >();
-      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >();
+      myEmbedder= new Embedder();
+      myCellEmbedder = new CellEmbedder();
+      mySCellEmbedder = new SCellEmbedder();
 
     }
 
@@ -261,9 +267,9 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder= new CanonicEmbedder<Space>();
-      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
+      myEmbedder= new Embedder();
+      myCellEmbedder = new CellEmbedder(KSEmb);
+      mySCellEmbedder = new SCellEmbedder(KSEmb);
     };
 
     /**
@@ -276,14 +282,30 @@ namespace DGtal
       myCurrentFillColor = Color ( 220, 220, 220 );
       myCurrentLineColor = Color ( 22, 22, 222, 50 );
       myBoundingPtEmptyTag = true;
-      myEmbedder = new CanonicEmbedder<Space >(Semb);
-      myCellEmbedder = new CanonicCellEmbedder<KSpace >(KSEmb);
-      mySCellEmbedder = new CanonicSCellEmbedder<KSpace >(KSEmb);
+      myEmbedder = new Embedder(Semb);
+      myCellEmbedder = new CellEmbedder(KSEmb);
+      mySCellEmbedder = new SCellEmbedder(KSEmb);
     };
 
 
     // ----------------------- Interface --------------------------------------
   public:
+
+    /// @return the embedder Point -> RealPoint
+    const Embedder& embedder() const 
+    { return *myEmbedder; }
+
+    /// @return the embedder Cell -> RealPoint
+    const CellEmbedder& cellEmbedder() const 
+    { return *myCellEmbedder; }
+
+    /// @return the embedder SCell -> RealPoint
+    const SCellEmbedder& sCellEmbedder() const 
+    { return *mySCellEmbedder; }
+
+    /// @return the cellular grid space.
+    const KSpace& space() const 
+    { return mySCellEmbedder->space(); }
 
     /**
      * Used to set the current fill color
@@ -324,19 +346,19 @@ namespace DGtal
      * Used to change the default embedder for point of the Digital 3D Space
      * @param anEmbedder the new CanonicEmbedder
      **/
-    virtual void  setSpaceEmbedder(CanonicEmbedder<Space> *anEmbedder);
+    virtual void  setSpaceEmbedder(Embedder *anEmbedder);
 
     /**
      *  Used to change the default embedder for unsigned cell of Khalimsky 3D Space.
      * @param anEmbedder the new CanonicCellEmbedder
      **/
-    virtual void  setKSpaceEmbedder(CanonicCellEmbedder<KSpace> *anEmbedder);
+    virtual void  setKSpaceEmbedder(CellEmbedder *anEmbedder);
 
     /**
      * Used to change the default embedder for signed cell of Khalimsky 3D Space.
      * @param anEmbedder the new CanonicSCellEmbedder
      **/
-    virtual void  setSKSpaceEmbedder(CanonicSCellEmbedder<KSpace> *anEmbedder);
+    virtual void  setSKSpaceEmbedder(SCellEmbedder *anEmbedder);
 
 
 
@@ -413,13 +435,84 @@ namespace DGtal
 
 
     /**
-     * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
+     * Method to add a specific quad (used by @a addClippingPlane or
+     * to represent basic surfels from Khalimsky space). The normal is
+     * computed from the vertex order.
+     *
      * @param p1 the 1st point
      * @param p2 the 2nd point
      * @param p3 the 3rd point
      * @param p4  the 4th point
+     *
      */
     void addQuad(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3, const RealPoint &p4);
+
+    /**
+     * Method to add a specific quad. The normal vector is specified
+     * by the user. Depending on @a enableReorientation, Quad points
+     * can be reordered to make its orientation constistant with the
+     * normal direction.
+     *
+     * @param p1 the 1st point
+     * @param p2 the 2nd point
+     * @param p3 the 3rd point
+     * @param p4  the 4th point
+     * @param n the normal vector
+     * @param enableReorientation if true,  the quad orientation will
+     * match with prescribed normal vector (dot product between the
+     * normal and the canonical one is >0).
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
+     *
+     */
+    void addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
+                           const RealPoint &p3, const RealPoint &p4,
+                           const RealPoint &n,
+                           const bool enableReorientation,
+                           const bool enableDoubleFace = false);
+
+    /**
+     * Method to add a quad representing a surfel given from its center and its orientation.
+     *
+     * @param baseQuadCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction
+     * @param ySurfel indicates that the sufel is in the y axis direction
+     * @param zSurfel indicates that the sufel is in the z axis direction
+     *
+     **/
+    void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, 
+                                 bool xSurfel, bool ySurfel, bool zSurfel);
+
+
+
+    /**
+     * Method to add a quad representing a surfel given from its
+     * center and its orientation, and attach a unitary normal vector
+     * to it.  Depending on @a enableReorientation, Quad points can be
+     * reordered to make its orientation constistant with the normal
+     * direction.
+     *
+     * @param baseQuadCenter the surfel center.
+     * @param xSurfel indicates that the sufel is in the x axis direction
+     * @param ySurfel indicates that the sufel is in the y axis direction
+     * @param zSurfel indicates that the sufel is in the z axis
+     * direction
+     * @param aNormal a unitary normal vector to attach to the quad.
+     * @param enableReorientation if true,  the quad orientation will
+     * match with prescribed normal vector (dot product between the
+     * normal and the canonical one is >0).
+     * @param sign if enableReorientation is true, we use this bool to
+     * get the surfel sign
+     * @param enableDoubleFace if true, two quad (with opposite normal
+     * vector) will be drawn.
+     *
+     **/
+    void addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel,
+                                           const RealVector &aNormal,
+                                           const bool enableReorientation,
+                                           const bool sign,
+                                           const bool enableDoubleFace = false);
+
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
@@ -482,26 +575,40 @@ namespace DGtal
      * @param aSign if @ref isSigned is true it will be used to apply a different displays
      * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addSurfelPrism(const RealPoint &baseQuadCenter,
+    void addPrism(const RealPoint &baseQuadCenter,
                         bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
                         double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
+
+
     /**
-     * Specific to display a surfel from Kahlimsky space in basic mode.
+     * Specific to display a surfel from Kahlimsky space from a basic way.
      *
      * @param baseQuadCenter  base quad center point
      * @param xSurfel true if the surfel has its main face in the direction of the x-axis
      * @param ySurfel true if the surfel has its main face in the direction of the y-axis
      * @param zSurfel true if the surfel has its main face in the direction of the z-axis
-     * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
-     * @param sizeFactor set the difference between the upper face of the prism and the down face
-     * @param isSigned to specify if we want to display an signed or unsigned Cell.
-     * @param aSign if @ref isSigned is true it will be used to apply a different displays
-     * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
      */
-    void addQuad(const RealPoint &baseQuadCenter,
-                 bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-                 double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
+    void addBasicSurfel(const RealPoint &baseQuadCenter,
+                        bool xSurfel, bool ySurfel, bool zSurfel);
+
+
+    // /**
+    //  * Specific to display a surfel from Kahlimsky space in basic mode.
+    //  *
+    //  * @param baseQuadCenter  base quad center point
+    //  * @param xSurfel true if the surfel has its main face in the direction of the x-axis
+    //  * @param ySurfel true if the surfel has its main face in the direction of the y-axis
+    //  * @param zSurfel true if the surfel has its main face in the direction of the z-axis
+    //  * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
+    //  * @param sizeFactor set the difference between the upper face of the prism and the down face
+    //  * @param isSigned to specify if we want to display an signed or unsigned Cell.
+    //  * @param aSign if @ref isSigned is true it will be used to apply a different displays
+    //  * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
+    //  */
+    // void addQuad(const RealPoint &baseQuadCenter,
+    //              bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
+    //              double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
 
 
 
@@ -572,20 +679,26 @@ namespace DGtal
     bool isValid() const;
 
 
+    /**
+     * Removes all sent data.
+     */
+    void clear();
+
+
 
     /**
      * Use to embed a DGtal point into space
      * @param dp a DGtal Point
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicEmbedder<Space >::RealPoint embed(const typename Space::Point & dp) const ;
+    RealPoint embed(const typename Space::Point & dp) const ;
 
     /**
      * Use to embed a signed DGtal kahlimsky cell into space
      * @param cell a kahlimsky cell
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const typename KSpace::SCell & cell ) const;
+    RealPoint embedKS( const typename KSpace::SCell & cell ) const;
 
 
     /**
@@ -593,7 +706,7 @@ namespace DGtal
      * @param aTrans a transformed surfel prism
      * @return the cell embeded in real space
      */
-    typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint embedKS( const DGtal::TransformedSurfelPrism& aTrans ) const;
+    RealPoint embedKS( const DGtal::TransformedPrism& aTrans ) const;
 
 
     /**
@@ -601,7 +714,7 @@ namespace DGtal
      * @param cell kahlimsky cell
      * @return the point embeded in real space
      */
-    typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint embedK( const typename KSpace::Cell & cell ) const;
+    RealPoint embedK( const typename KSpace::Cell & cell ) const;
 
     //---end interface
 
@@ -649,7 +762,7 @@ namespace DGtal
 
     /// Used to specialized visualisation with KSpace surfels/cubes.
     ///
-    double myCurrentfShiftVisuSurfelPrisms;
+    double myCurrentfShiftVisuPrisms;
 
     /// Used to represent all the list used in the display.
     ///
@@ -667,11 +780,11 @@ namespace DGtal
     ///
     std::vector< ClippingPlaneD3D > myClippingPlaneList;
 
-    /// For saving all surfels of Khalimsky space (used to display Khalimsky Space Cell)
+    /// Represent truncated prism object to represent surfels of Khalimsky space (used to display Khalimsky Space Cell)
     ///
-    std::vector< QuadD3D > mySurfelPrismList;
+    std::vector< QuadD3D > myPrismList;
 
-    /// Represents all the planes drawn in the Display3D
+    /// Represents all the planes drawn in the Display3D or to display Khalimsky Space Cell.
     std::vector<std::vector< QuadD3D > > myQuadSetList;
 
     /// Represents all the triangles drawn in the Display3D
@@ -695,9 +808,9 @@ namespace DGtal
     ///
     std::vector<std::string> myClippingPlaneNameList;
 
-    /// names of the lists in mySurfelPrismList
+    /// names of the lists in myPrismList
     ///
-    std::vector<std::string> mySurfelPrismNameList;
+    std::vector<std::string> myPrismNameList;
 
     /// names of the lists in myQuadList
     ///

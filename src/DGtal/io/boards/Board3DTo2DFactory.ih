@@ -608,9 +608,9 @@ DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & boar
 template < typename Space, typename KSpace>
 inline
 void
-DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::TransformedSurfelPrism & aTransformedSurfelPrism)
+DGtal::Board3DTo2DFactory<Space,KSpace>::draw( Board3DTo2D<Space, KSpace> & board, const DGtal::TransformedPrism & aTransformedPrism)
 {
-  DGtal::Display3DFactory<Space,KSpace>::draw( board, aTransformedSurfelPrism);
+  DGtal::Display3DFactory<Space,KSpace>::draw( board, aTransformedPrism);
 }
 
 
