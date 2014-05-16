@@ -168,9 +168,9 @@ DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::diagonalWidth() cons
 template <typename TSpace, bool muIncluded, bool muPlusNuIncluded>
 inline
 void
-DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::getBounds( Scalar & mu, Scalar & mu_plus_nu ) const
+DGtal::ParallelStrip<TSpace, muIncluded, muPlusNuIncluded>::getBounds( Scalar & aMu, Scalar & mu_plus_nu ) const
 {
-  mu = myMu;
+  aMu = myMu;
   mu_plus_nu = myMu + myNu;
 }
 //-----------------------------------------------------------------------------

@@ -58,10 +58,10 @@ namespace DGtal
    * \brief Aim: a simple model of CGlobalCurveEstimator that compute
    * the length of a curve using the l_1 metric (just add 1/h for
    * every step).
-   * 
-   * Model of @href CGlobalCurveGeometricEstimator.
    *
-   * @tparam TConstIterator a model of CConstIteratorOnArrows. 
+   * Model of  CGlobalCurveGeometricEstimator
+   *
+   * @tparam TConstIterator a model of CConstIteratorOnArrows.
    */
   template <typename TConstIterator>
   class L1LengthEstimator
@@ -74,43 +74,43 @@ namespace DGtal
     typedef TConstIterator ConstIterator;
 
     typedef double Quantity;
-  
+
 
     /**
      * Default Constructor.
      */
     L1LengthEstimator();
-    
-    
+
+
     /**
      * Destructor.
      */
     ~L1LengthEstimator();
 
-  
+
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /** 
+
+    /**
      * Initialize the measure computation.
-     * 
+     *
      * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
      */
     void init( const double h, const ConstIterator& itb, const ConstIterator& ite);
-    
 
-    /** 
+
+    /**
      * Computation of the l1 length of the curve.
      * Complexity: O(|Range|)
      * @pre init() method must be called before.
-     * 
+     *
      * @return the curve length.
      */
     Quantity eval( ) const;
 
- 
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -125,7 +125,7 @@ namespace DGtal
 
       // ------------------------- Private Datas --------------------------------
   private:
-    
+
     ///Grid size.
     double myH;
 
@@ -136,7 +136,7 @@ namespace DGtal
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
 
-    
+
   private:
 
     /**

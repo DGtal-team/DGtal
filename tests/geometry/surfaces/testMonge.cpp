@@ -88,7 +88,8 @@ bool testLocalEstimatorFromFunctorAdapter()
 
   using namespace Z3i;
   typedef ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
-  typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> Surface;
+  typedef LightImplicitDigitalSurface<KSpace,ImplicitDigitalEllipse> SurfaceContainer;
+  typedef DigitalSurface<SurfaceContainer> Surface;
   //typedef Surface::SurfelConstIterator ConstIterator;
   //typedef Surface::Tracker Tracker;
   typedef Surface::Surfel Surfel;
@@ -104,8 +105,9 @@ bool testLocalEstimatorFromFunctorAdapter()
                << "K.init() is ok" << std::endl;
   ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
   Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
-  Surface surface( K, ellipse,
-                    SurfelAdjacency<KSpace::dimension>( true ), bel );
+  SurfaceContainer* surfaceContainer = new SurfaceContainer
+    ( K, ellipse, SurfelAdjacency<KSpace::dimension>( true ), bel );
+  Surface surface( surfaceContainer ); // acquired
   trace.endBlock();
 
   trace.beginBlock("Creating  adapters");
@@ -116,13 +118,13 @@ bool testLocalEstimatorFromFunctorAdapter()
   typedef LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
 
   typedef ConstValueFunctor< double > ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorGaussian, ConvFunctor> ReporterK;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorPrincipalCurvatures, ConvFunctor> Reporterk1k2;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorMean, ConvFunctor> ReporterH;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorGaussian, ConvFunctor> ReporterK;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorPrincipalCurvatures, ConvFunctor> Reporterk1k2;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorMean, ConvFunctor> ReporterH;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorNormal, ConvFunctor> ReporterNormal;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorNormalLeast, ConvFunctor> ReporterNormalLeast;
 
-  CanonicSCellEmbedder<KSpace> embedder(surface.space());
+  CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   FunctorGaussian estimatorK(embedder,1);
   FunctorPrincipalCurvatures estimatork1k2(embedder,1);
   FunctorMean estimatorH(embedder, 1);

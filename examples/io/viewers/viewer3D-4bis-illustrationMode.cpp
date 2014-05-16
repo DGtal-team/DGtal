@@ -81,7 +81,7 @@ int main( int argc, char** argv )
   // Surfel of Voxel (0,0)
   //! [KSIllustrationModeTransformed]
   SCell sx = K.sIncident( v, 0, true ); // surfel further along x
-  DGtal::TransformedSurfelPrism tsx (sx, v);
+  DGtal::TransformedPrism tsx (sx, v);
   //! [KSIllustrationModeTransformed]
 
   SCell sy = K.sIncident( v, 1, true ); // surfel further along y
@@ -92,11 +92,11 @@ int main( int argc, char** argv )
 
   // Resizing and shifting the surfel towords its associated voxel (v).
 
-  DGtal::TransformedSurfelPrism tsy (sy, v);
-  DGtal::TransformedSurfelPrism tsz (sz, v);
-  DGtal::TransformedSurfelPrism tsxn (sxn, v);
-  DGtal::TransformedSurfelPrism tsyn (syn, v);
-  DGtal::TransformedSurfelPrism tszn (szn, v);
+  DGtal::TransformedPrism tsy (sy, v);
+  DGtal::TransformedPrism tsz (sz, v);
+  DGtal::TransformedPrism tsxn (sxn, v);
+  DGtal::TransformedPrism tsyn (syn, v);
+  DGtal::TransformedPrism tszn (szn, v);
 
   viewer << tsx << tsy << tsz << tsxn << tsyn << tszn;
 
@@ -110,12 +110,12 @@ int main( int argc, char** argv )
   SCell szn2 = K.sIncident( v2, 2, false ); // surfel further along z
 
   // Resizing and shifting the surfel towords its associated voxel (v2).
-  DGtal::TransformedSurfelPrism tsx2 (sx2, v2);
-  DGtal::TransformedSurfelPrism tsy2 (sy2, v2);
-  DGtal::TransformedSurfelPrism tsz2 (sz2, v2);
-  DGtal::TransformedSurfelPrism tsxn2 (sxn2, v2);
-  DGtal::TransformedSurfelPrism tsyn2 (syn2, v2);
-  DGtal::TransformedSurfelPrism tszn2 (szn2, v2);
+  DGtal::TransformedPrism tsx2 (sx2, v2);
+  DGtal::TransformedPrism tsy2 (sy2, v2);
+  DGtal::TransformedPrism tsz2 (sz2, v2);
+  DGtal::TransformedPrism tsxn2 (sxn2, v2);
+  DGtal::TransformedPrism tsyn2 (syn2, v2);
+  DGtal::TransformedPrism tszn2 (szn2, v2);
 
   viewer << tsx2 << tsy2 << tsz2 << tsxn2 << tsyn2 << tszn2;
 
@@ -129,12 +129,12 @@ int main( int argc, char** argv )
   SCell szn3 = K.sIncident( v3, 2, false ); // surfel further along z
 
   // Shifting the surfel to its associated voxel (v3).
-  DGtal::TransformedSurfelPrism tsx3 (sx3, v3);
-  DGtal::TransformedSurfelPrism tsy3 (sy3, v3);
-  DGtal::TransformedSurfelPrism tsz3 (sz3, v3);
-  DGtal::TransformedSurfelPrism tsxn3 (sxn3, v3);
-  DGtal::TransformedSurfelPrism tsyn3 (syn3, v3);
-  DGtal::TransformedSurfelPrism tszn3 (szn3, v3);
+  DGtal::TransformedPrism tsx3 (sx3, v3);
+  DGtal::TransformedPrism tsy3 (sy3, v3);
+  DGtal::TransformedPrism tsz3 (sz3, v3);
+  DGtal::TransformedPrism tsxn3 (sxn3, v3);
+  DGtal::TransformedPrism tsyn3 (syn3, v3);
+  DGtal::TransformedPrism tszn3 (szn3, v3);
 
 
   viewer << tsx3 << tsy3 << tsz3 << tsxn3 << tsyn3 << tszn3;

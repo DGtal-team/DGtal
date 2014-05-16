@@ -201,7 +201,7 @@ template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename SurfelIterator>
 inline
 typename DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::Quantity
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::eval ( const SurfelIterator & it )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::eval ( const SurfelIterator & it ) const
 {
     Quantity measure;
     trace.error() << "Not available yet.";
@@ -212,7 +212,7 @@ template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator>
 inline
 typename DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::Quantity
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & it )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & it ) const
 {
 
     Quantity measure = ( Quantity )myConvolver.eval( it );
@@ -223,7 +223,7 @@ template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator>
 inline
 typename DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::Quantity
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & it )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & it ) const
 {
     Quantity measure = ( Quantity )myConvolver.eval( it );
     return meanFunctor( measure );
@@ -239,7 +239,7 @@ inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::eval ( const SurfelIterator & itb,
                                                                                           const SurfelIterator & ite,
-                                                                                          OutputIterator & result )
+                                                                                          OutputIterator & result ) const
 {
     trace.error() << "IntegralInvariantMeanCurvatureEstimator@eval() : Not available yet.";
 }
@@ -250,7 +250,7 @@ inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & itb,
                                                                                   const SurfelIterator & ite,
-                                                                                  OutputIterator & result )
+                                                                                  OutputIterator & result ) const
 {
     myConvolver.eval( itb, ite, result, meanFunctor );
 }
@@ -261,7 +261,7 @@ inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & itb,
                                                                                   const SurfelIterator & ite,
-                                                                                  OutputIterator & result )
+                                                                                  OutputIterator & result ) const
 {
     myConvolver.eval( itb, ite, result, meanFunctor );
 }

@@ -57,98 +57,98 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ChordNaivePlaneComputer
   /**
-    Description of template class 'ChordNaivePlaneComputer'. \brief Aim: A
-    class that contains the chord-based algorithm for recognizing
-    pieces of digital planes of given axis width [ Gerard,
-    Debled-Rennesson, Zimmermann, 2005 ]. When the width is 1, it
-    corresponds to naive planes. The axis is specified at
-    initialization of the object.
+   * Description of template class 'ChordNaivePlaneComputer'. \brief Aim: A
+   * class that contains the chord-based algorithm for recognizing
+   * pieces of digital planes of given axis width [ Gerard,
+   * Debled-Rennesson, Zimmermann, 2005 ]. When the width is 1, it
+   * corresponds to naive planes. The axis is specified at
+   * initialization of the object.
 
-    This class is an implementation of Gerard, Debled-Rennesson,
-    Zimmermann, 2005: An elementary digital plane recognition
-    algorithm, @cite Gerard_2005_dam.
+   * This class is an implementation of Gerard, Debled-Rennesson,
+   * Zimmermann, 2005: An elementary digital plane recognition
+   * algorithm, @cite Gerard_2005_dam.
 
-    As a (3D) geometric primitive computer, it obeys the concept
-    CAdditivePrimitiveComputer. It is copy constructible, assignable.
-    It has methods \ref extend(), extend( InputIterator,
-    InputIterator) and \ref isExtendable(),
-    isExtendable(InputIterator, InputIterator).  The object stores
-    all the distinct points \c p such that 'extend(\c p )' was
-    successful. It is thus a model of boost::ForwardContainer (non
-    mutable). It is iterable (inner type ConstIterator, begin(),
-    end()). You may clear() it.
+   * As a (3D) geometric primitive computer, it obeys the concept
+   * CAdditivePrimitiveComputer. It is copy constructible, assignable.
+   * It has methods \ref extend(), extend( InputIterator,
+   * InputIterator) and \ref isExtendable(),
+   * isExtendable(InputIterator, InputIterator).  The object stores
+   * all the distinct points \c p such that 'extend(\c p )' was
+   * successful. It is thus a model of boost::ForwardContainer (non
+   * mutable). It is iterable (inner type ConstIterator, begin(),
+   * end()). You may clear() it.
 
-    It is also a model of CPointPredicate (returns 'true' iff a point
-    is within the current bounds).
+   * It is also a model of CPointPredicate (returns 'true' iff a point
+   * is within the current bounds).
 
-    \par Note on complexity: According to the paper, the
-     worst-case complexity is \f$ O(n^7) \f$ (in its non-incremental
-     form). However, the observed complexity is quasi-linear.
+   * \par Note on complexity: According to the paper, the
+   *  worst-case complexity is \f$ O(n^7) \f$ (in its non-incremental
+   *  form). However, the observed complexity is quasi-linear.
 
-    \par Note on execution times: The user should favor int32_t or
-     int64_t instead of BigInteger whenever possible. When the point
-     components are smaller than 14000, int32_t are sufficient. For
-     point components smaller than 440000000, int64_t are
-     sufficient. For greater diameters, it is necessary to use
-     BigInteger.
+   * \par Note on execution times: The user should favor int32_t or
+   *  int64_t instead of BigInteger whenever possible. When the point
+   *  components are smaller than 14000, int32_t are sufficient. For
+   *  point components smaller than 440000000, int64_t are
+   *  sufficient. For greater diameters, it is necessary to use
+   *  BigInteger.
 
-    \par What is the best algorithm to check if a set of digital points is some (naive) plane ?
+   * \par What is the best algorithm to check if a set of digital points is some (naive) plane ?
 
-    We discuss only this question between ChordNaivePlaneComputer (1)
-     and COBANaivePlaneComputer (2) (see also \ref
-     modulePlaneRecognition_sec5):
+   * We discuss only this question between ChordNaivePlaneComputer (1)
+   *  and COBANaivePlaneComputer (2) (see also \ref
+   *  modulePlaneRecognition_sec5):
 
-    -# Complexity: (2) has a better worst time complexity than (1),
-       but neither (1) nor (2) has an easy bound on the number of
-       global recomputation (traversal of all input points to
-       recompute a valid direction).
-    -# Big integers: (1) requires (significantly) smaller integers
-       than (2). For instance, int64_t are required for diameter
-       greater than 25 for (1) instead of 14000 for (2).
-    -# Practice: both algorithms are very comparable. (1) seems
-       slightly faster than (2) on average (but this was not tested on
-       many architecture).
-    -# Exactness: Both algorithms do not return the smallest possible
-       arithmetic parameters for the plane, but only a rational
-       approximation.
-    -# Services: Algorithm (1) can be transformed to find the exact
-       axis width of a given set of points, (2) is not suited for that
-       task.
+   * -# Complexity: (2) has a better worst time complexity than (1),
+   *    but neither (1) nor (2) has an easy bound on the number of
+   *    global recomputation (traversal of all input points to
+   *    recompute a valid direction).
+   * -# Big integers: (1) requires (significantly) smaller integers
+   *    than (2). For instance, int64_t are required for diameter
+   *    greater than 25 for (2) instead of 14000 for (1).
+   * -# Practice: both algorithms are very comparable. (1) seems
+   *    slightly faster than (2) on average (but this was not tested on
+   *    many architecture).
+   * -# Exactness: Both algorithms do not return the smallest possible
+   *    arithmetic parameters for the plane, but only a rational
+   *    approximation.
+   * -# Services: Algorithm (1) can be transformed to find the exact
+   *    axis width of a given set of points, (2) is not suited for that
+   *    task.
 
-    A small example to show how to check if some points form a
-    subset of a naive plane.
+   * A small example to show how to check if some points form a
+   * subset of a naive plane.
 
-    @code
-    // Example. Checks that the following four points does not belong to a naive plane.
-    typedef SpaceND<3,int> Z3;
-    typedef ChordNaivePlaneComputer< Z3, Z3::Point, int64_t > NaivePlaneComputer;
-    NaivePlaneComputer plane;
-    plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive
-    plane.extend( Point( 10, 0, 0 ) ); // return 'true'
-    plane.extend( Point( 0, 8, 0 ) );  // return 'true'
-    plane.extend( Point( 0, 0, 6 ) );  // return 'true'
-    plane.extend( Point( 5, 5, 5 ) );  // return 'false'
-    // There is no naive plane going through the 3 first points and the last one.
-    @endcode
+   * @code
+   * //Example. Checks that the following four points does not belong to a naive plane.
+   * typedef SpaceND<3,int> Z3;
+   * typedef ChordNaivePlaneComputer< Z3, Z3::Point, int64_t > NaivePlaneComputer;
+   * NaivePlaneComputer plane;
+   * plane.init( 2, 1, 1 ); // axis is z, width is 1/1 => naive
+   * plane.extend( Point( 10, 0, 0 ) ); // return 'true'
+   * plane.extend( Point( 0, 8, 0 ) );  // return 'true'
+   * plane.extend( Point( 0, 0, 6 ) );  // return 'true'
+   * plane.extend( Point( 5, 5, 5 ) );  // return 'false'
+   * // There is no naive plane going through the 3 first points and the last one.
+   * @endcode
 
-    Model of boost::DefaultConstructible, boost::CopyConstructible,
-    boost::Assignable, boost::ForwardContainer,
-    CAdditivePrimitiveComputer, CPointPredicate.
+   * Model of boost::DefaultConstructible, boost::CopyConstructible,
+   * boost::Assignable, boost::ForwardContainer,
+   * CAdditivePrimitiveComputer, CPointPredicate.
 
-    @tparam TSpace specifies the digital space (provides dimension and
-    types for the primitive)
+   * @tparam TSpace specifies the digital space (provides dimension and
+   * types for the primitive)
 
-    @tparam TInputPoint specifies the type of the input points
-    (digital or not). Usually, you may choose TInputPoint =
-    TSpace::Point, but this is not compulsory. You may for instance
-    wish to manipulate floating-point value points. This is possible,
-    but you have to choose the type TInternalScalar accordingly.
+   * @tparam TInputPoint specifies the type of the input points
+   * (digital or not). Usually, you may choose TInputPoint =
+   * TSpace::Point, but this is not compulsory. You may for instance
+   * wish to manipulate floating-point value points. This is possible,
+   * but you have to choose the type TInternalScalar accordingly.
 
-    @tparam TInternalScalar specifies the type of scalar used in
-    internal computations, generally a more precise type than
-    TInputPoint::Component. For instance, for digital points, the type
-    should be able to hold integers of order \f$(2*D)^2\f$ if D is the
-    diameter of the set of digital points.
+   * @tparam TInternalScalar specifies the type of scalar used in
+   * internal computations, generally a more precise type than
+   * TInputPoint::Component. For instance, for digital points, the type
+   * should be able to hold integers of order \f$(2*D)^2\f$ if D is the
+   * diameter of the set of digital points.
 
    */
   template < typename TSpace,
@@ -499,7 +499,7 @@ namespace DGtal
        Inner product with potentially better precision.
        @param u any vector
        @param v any vector
-     */
+    */
     template <typename TVector1, typename TVector2>
     static InternalScalar internalDot( const TVector1 & u, const TVector2 & v );
 
@@ -508,7 +508,7 @@ namespace DGtal
        @param[out] n the vector that stores the cross product of u and v.
        @param u any vector
        @param v any vector
-     */
+    */
     template <typename TVector1, typename TVector2>
     static void internalCross( InternalVector & n, const TVector1 & u, const TVector2 & v );
 
@@ -712,7 +712,7 @@ namespace DGtal
        @param p1 any point.
        @param p2 any point.
        @return 'true' iff the two points form a vector aligned with the main axis.
-     */
+    */
     bool alignedAlongAxis( const InputPoint & p1, const InputPoint & p2 ) const;
 
     /**
@@ -728,7 +728,7 @@ namespace DGtal
        contains the new normal.
 
        @pre state.nbValid >= 2
-     */
+    */
     void computeNormal( State & state ) const;
 
     /**
@@ -771,7 +771,7 @@ namespace DGtal
        state.max - state.min <= state.height.
 
        @see init
-     */
+    */
     bool checkWidth( const State & state ) const;
 
     /**

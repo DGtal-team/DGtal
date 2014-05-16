@@ -49,7 +49,7 @@
 #include "DGtal/io/CDrawableWithDisplay3D.h"
 #include "DGtal/io/viewers/CDrawableWithViewer3D.h"
 #include "DGtal/io/viewers/Viewer3DFactory.h"
-
+#include "QGLViewer/manipulatedFrame.h"
 //////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -561,7 +561,7 @@ DGtal::Viewer3D<Space, KSpace>::operator<<(const typename Viewer3D<Space, KSpace
       break;
 
     case Viewer3D<Space, KSpace>::shiftSurfelVisu:
-      Viewer3D<Space, KSpace>::myCurrentfShiftVisuSurfelPrisms+=0.3;
+      Viewer3D<Space, KSpace>::myCurrentfShiftVisuPrisms+=0.3;
       break;
     }
   return *this;
@@ -752,12 +752,14 @@ DGtal::Viewer3D<Space, KSpace>::draw()
     {
       GLTextureImage &textureImg = myVectTextureImage.at(j);
       glPushName ( textureImg.myTextureName );
+      glEnable(GL_LIGHTING);
       glEnable(GL_TEXTURE_2D);
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
       glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
       glBegin(GL_QUADS);
       glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
       glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
+      
       glTexCoord2f(0, 0);
       glVertex3f(textureImg.point1[0], textureImg.point1[1], textureImg.point1[2]);
       glTexCoord2f(textureImg.myTextureFitX, 0.0);
@@ -809,7 +811,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
 {
   Viewer3D<Space, KSpace>::myMeshDefaultLineWidth=10.0;
   myNbListe=0;
-  myViewWire=true;
+  myViewWire=false;
   myGLScaleFactorX=1.0;
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
@@ -835,7 +837,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   Viewer3D<Space, KSpace>::createNewCubeList ( );
   typename std::vector< typename Viewer3D<Space, KSpace>::CubeD3D> aKSCubeList;
 
-  Viewer3D<Space, KSpace>::myCurrentfShiftVisuSurfelPrisms=0.0;
+  Viewer3D<Space, KSpace>::myCurrentfShiftVisuPrisms=0.0;
   Viewer3D<Space, KSpace>::myDefaultColor= Color ( 255, 255, 255 );
   camera()->showEntireScene();
   setKeyDescription ( Qt::Key_E, "Export the current display into OFF file (just Cube, surfel and SurfelPrism for now)." );
@@ -874,8 +876,8 @@ DGtal::Viewer3D<Space, KSpace>::sortSurfelFromCamera()
       sort ( Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).begin(), Viewer3D<Space, KSpace>::myCubeSetList.at ( i ).end(), comp );
     }
   CompFarthestSurfelFromCamera compSurf;
-  DGtal::trace.info() << "sort surfel size" << Viewer3D<Space, KSpace>::mySurfelPrismList.size() << std::endl;
-  sort ( Viewer3D<Space, KSpace>::mySurfelPrismList.begin(), Viewer3D<Space, KSpace>::mySurfelPrismList.end(), compSurf );
+  DGtal::trace.info() << "sort surfel size" << Viewer3D<Space, KSpace>::myPrismList.size() << std::endl;
+  sort ( Viewer3D<Space, KSpace>::myPrismList.begin(), Viewer3D<Space, KSpace>::myPrismList.end(), compSurf );
 
 }
 
@@ -1139,8 +1141,8 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
   glBegin ( GL_QUADS );
   glEnable ( GL_DEPTH_TEST );
-  for ( typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator s_it = Viewer3D<Space, KSpace>::mySurfelPrismList.begin();
-        s_it != Viewer3D<Space, KSpace>::mySurfelPrismList.end();
+  for ( typename std::vector<typename Viewer3D<Space, KSpace>::QuadD3D>::iterator s_it = Viewer3D<Space, KSpace>::myPrismList.begin();
+        s_it != Viewer3D<Space, KSpace>::myPrismList.end();
         ++s_it )
     {
       glColor4ub ( ( *s_it ).color.red(), ( *s_it ).color.green(), ( *s_it ).color.blue(), ( *s_it ).color.alpha() );
@@ -1349,6 +1351,7 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
         }
     }
   glEnd();
+  glEnable ( GL_LIGHTING );
   glEndList();
 
 

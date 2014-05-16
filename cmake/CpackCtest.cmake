@@ -9,7 +9,7 @@ INCLUDE(InstallRequiredSystemLibraries)
 
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DGtal Project")
 SET(CPACK_PACKAGE_VENDOR ".")
-SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 SET(CPACK_PACKAGE_CONTACT "dgtal@liris.cnrs.fr" )
 SET(CPACK_NSIS_CONTACT "dgtal@liris.cnrs.fr")
@@ -35,7 +35,7 @@ endif(WIN32)
 INCLUDE(CPack)
 
 # -----------------------------------------------------------------------------
-# CTest options
+# CTest/Debug options
 # -----------------------------------------------------------------------------
 if (BUILD_TESTING)
   ENABLE_TESTING()
