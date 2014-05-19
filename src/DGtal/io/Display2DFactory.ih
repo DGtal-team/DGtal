@@ -36,20 +36,52 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-// AllSCellMap
-template <typename TCalculus, typename TValue>
+// DiscreteExteriorCalculus
+template <typename TDomain, typename TLinearAlgebraBackend>
 inline
 void
-DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TCalculus, TValue>& scell_map)
+DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& calculus)
+{
+    BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
+
+    typedef DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend> Calculus;
+    typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::ConstIterator CalculusConstIterator;
+    typedef typename Calculus::SCell CalculusSCell;
+
+    board << calculus.domain;
+
+    for (CalculusConstIterator ci=calculus->begin(), cie=calculus->end(); ci!=cie; ci++)
+    {
+        const CalculusSCell& cell = ci->first;
+        ASSERT(cell.myPositive == true);
+
+        const bool& flipped = calculus->isSCellFlipped(cell);
+        CalculusSCell displayed_cell = cell;
+        if (flipped) displayed_cell = calculus->kspace.sOpp(cell);
+
+        board << displayed_cell;
+    }
+}
+// DiscreteExteriorCalculus
+
+// KForm
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
+inline
+void
+DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform)
 {
     BOOST_STATIC_ASSERT(( TCalculus::dimension == 2 ));
-    ASSERT( scell_map.myCalculus );
+    ASSERT( kform.myCalculus );
 
-    TValue cmap_min = 0;
-    TValue cmap_max = 1;
+    typedef typename TCalculus::Scalar Scalar;
+    typedef typename TCalculus::SCell SCell;
+
+    Scalar cmap_min = 0;
+    Scalar cmap_max = 0;
 
     {
-        const DGtal::AllSCellMapStyle2D* style = dynamic_cast<const DGtal::AllSCellMapStyle2D*>(board.myStyles["AllSCellMap"].get());
+        const DGtal::KFormStyle2D* style = dynamic_cast<const DGtal::KFormStyle2D*>(board.myStyles["KForm"].get());
         if (style)
         {
             cmap_min = style->cmap_min;
@@ -57,33 +89,36 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TC
         }
     }
 
-    typedef typename DGtal::GradientColorMap<TValue, DGtal::CMAP_JET> ColorMap;
+		if (cmap_min == 0 && cmap_max == 0)
+		{
+				cmap_max = kform.myContainer.maxCoeff();
+				cmap_min = kform.myContainer.minCoeff();
+		}
+
+    typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
     const ColorMap colormap(cmap_min, cmap_max);
 
-    typedef typename TCalculus::ConstIterator CalculusConstIterator;
-    typedef typename TCalculus::SCell CalculusSCell;
-    for (CalculusConstIterator ci=scell_map.myCalculus->begin(), cie=scell_map.myCalculus->end(); ci!=cie; ci++)
+    for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
     {
-        const CalculusSCell& cell = ci->first;
+        const SCell& cell = kform.myCalculus->getSCell(order, duality, index);
         ASSERT(cell.myPositive == true);
 
-        const bool& flipped = scell_map.myCalculus->isSCellFlipped(cell);
-        CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = scell_map.myCalculus->kspace.sOpp(cell);
+        const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
+        SCell displayed_cell = cell;
+        if (flipped) displayed_cell = kform.myCalculus->kspace.sOpp(cell);
 
-        typename DGtal::AllSCellMap<TCalculus, TValue>::ConstIterator tci = scell_map.find(cell);
-        if (tci!=scell_map.end() && finite(tci->second))
-        {
-            TValue displayed_value = tci->second;
-            if (flipped) displayed_value = -displayed_value;
+        Scalar displayed_value = kform.myContainer(index);
+        if (flipped) displayed_value = -displayed_value;
+
+        if (finite(displayed_value))
             board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, colormap(displayed_value)));
-        }
-        else board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
+        else
+            board << DGtal::CustomStyle(cell.className(), new DGtal::CustomColors(DGtal::Color::Black, DGtal::Color::None));
 
         board << displayed_cell;
     }
 }
-// AllSCellMap
+// KForm
 
 // VectorField
 template <typename TCalculus, DGtal::Duality duality>

@@ -38,42 +38,77 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators //
 
-// AllSCellMap
+// DiscreteExteriorCalculus
 template <typename Space, typename KSpace>
-template <typename Calculus, typename Value>
+template <typename TDomain, typename TLinearAlgebraBackend>
+inline
 void
-DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::AllSCellMap<Calculus, Value>& scell_map, const Value& cmap_min, const Value cmap_max)
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& calculus)
 {
-    BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
-    ASSERT( scell_map.myCalculus );
+    BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
 
-    typedef GradientColorMap<Value, CMAP_JET> Colormap;
-    const Colormap colormap(cmap_min, cmap_max);
-
+    typedef DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend> Calculus;
+    typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;
-    for (CalculusConstIterator ci=scell_map.myCalculus->begin(), cie=scell_map.myCalculus->end(); ci!=cie; ci++)
+
+    for (CalculusConstIterator ci=calculus->begin(), cie=calculus->end(); ci!=cie; ci++)
     {
         const CalculusSCell& cell = ci->first;
         ASSERT(cell.myPositive == true);
 
-        const bool& flipped = scell_map.myCalculus->isSCellFlipped(cell);
+        const bool& flipped = calculus->isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = scell_map.myCalculus->kspace.sOpp(cell);
-
-        typename DGtal::AllSCellMap<Calculus, Value>::ConstIterator tci = scell_map.find(cell);
-        if (tci!=scell_map.end() && finite(tci->second))
-        {
-            Value displayed_value = tci->second;
-            if (flipped) displayed_value = -displayed_value;
-            display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value));
-        }
-        else display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
+        if (flipped) displayed_cell = calculus->kspace.sOpp(cell);
 
         display << displayed_cell;
     }
 }
-// AllSCellMap
+// DiscreteExteriorCalculus
+
+// KForm
+template <typename Space, typename KSpace>
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
+inline
+void
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::KForm<TCalculus, order, duality>& kform, typename TCalculus::Scalar cmap_min, typename TCalculus::Scalar cmap_max)
+{
+    BOOST_STATIC_ASSERT(( TCalculus::dimension == 2 ));
+    ASSERT( kform.myCalculus );
+
+    typedef typename TCalculus::Scalar Scalar;
+    typedef typename TCalculus::SCell SCell;
+
+    if (cmap_min == 0 && cmap_max == 0)
+    {
+        cmap_max = kform.myContainer.maxCoeff();
+        cmap_min = kform.myContainer.minCoeff();
+    }
+
+    typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
+    const ColorMap colormap(cmap_min, cmap_max);
+
+    for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
+    {
+        const SCell& cell = kform.myCalculus->getSCell(order, duality, index);
+        ASSERT(cell.myPositive == true);
+
+        const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
+        SCell displayed_cell = cell;
+        if (flipped) displayed_cell = kform.myCalculus->kspace.sOpp(cell);
+
+        Scalar displayed_value = kform.myContainer(index);
+        if (flipped) displayed_value = -displayed_value;
+
+        if (finite(displayed_value))
+            display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value));
+        else
+            display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
+
+        display << displayed_cell;
+    }
+}
+// KForm
 
 // VectorField
 template <typename Space, typename KSpace>

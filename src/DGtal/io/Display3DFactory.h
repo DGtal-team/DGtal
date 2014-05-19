@@ -64,8 +64,9 @@
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
-#include "DGtal/dec/AllSCellMap.h"
 #include "DGtal/dec/VectorField.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -85,13 +86,19 @@ namespace DGtal
     typedef TSpace Space;
     typedef TKSpace KSpace;
 
-
-    // AllSCellMap
-    template <typename Calculus, typename Value>
+    // DiscreteExteriorCalculus
+    template <typename TDomain, typename TLinearAlgebraBackend>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::AllSCellMap<Calculus, Value>& scell_map, const Value& cmap_min = 0, const Value cmap_max = 1);
-    // AllSCellMap
+    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& calculus);
+    // DiscreteExteriorCalculus
+
+    // KForm
+    template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+    static
+    void
+    draw(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, typename Calculus::Scalar cmap_min = 0, typename Calculus::Scalar cmap_max = 0);
+    // KForm
 
     // VectorField
     template <typename Calculus, DGtal::Duality duality>
