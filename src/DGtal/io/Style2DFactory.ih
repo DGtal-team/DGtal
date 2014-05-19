@@ -38,17 +38,33 @@
 
 namespace DGtal
 {
-
-  // AllSCellStyle
+  // DiscreteExteriorCalculus
   /**
    * Default styles.
    */
-  struct AllSCellMapStyle2D : public DrawableWithBoard2D
+  struct CalculusStyle2D : public DrawableWithBoard2D
+  {
+
+      virtual void setStyle(Board2D & aBoard) const
+      {
+          aBoard.setPenColorRGBi(1,0,0);
+          aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+          aBoard.setFillColor(Color::None);
+          aBoard.setLineWidth(1);
+      }
+  };
+  // DiscreteExteriorCalculus
+
+  // KForm
+  /**
+   * Default styles.
+   */
+  struct KFormStyle2D : public DrawableWithBoard2D
   {
       double cmap_min;
       double cmap_max;
 
-      AllSCellMapStyle2D(const double& _cmap_min = 0, const double& _cmap_max = 1)
+      KFormStyle2D(const double& _cmap_min = 0, const double& _cmap_max = 0)
           : DrawableWithBoard2D(), cmap_min(_cmap_min), cmap_max(_cmap_max)
       {
       }
@@ -61,7 +77,7 @@ namespace DGtal
           aBoard.setLineWidth(1);
       }
   };
-  // AllSCellStyle
+  // KForm
 
   // VectorField
   /**
@@ -504,21 +520,30 @@ namespace DGtal
 
 //
 
-// AllSCellMap
-template <typename TCalculus, typename TValue>
+// DiscreteExteriorCalculus
+template <typename TDomain, typename TLinearAlgebraBackend>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AllSCellMap<TCalculus, TValue>& /*object*/, std::string /*mode*/ = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& /*object*/, std::string /*mode*/ = "" )
 {
-  return new DGtal::AllSCellMapStyle2D;
+  return new DGtal::CalculusStyle2D();
 }
-// AllSCellMap
+// DiscreteExteriorCalculus
+
+// KForm
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KForm<TCalculus, order, duality>& object, std::string /*mode*/ = "" )
+{
+  return new DGtal::KFormStyle2D();
+}
+// KForm
 
 // VectorField
 template <typename TCalculus, DGtal::Duality duality>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::VectorField<TCalculus, duality>& /*object*/, std::string /*mode*/ = "" )
 {
-  return new DGtal::VectorFieldStyle2D;
+  return new DGtal::VectorFieldStyle2D();
 }
 // VectorField
 

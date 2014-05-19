@@ -42,10 +42,11 @@
 // Inclusions
 #include <iostream>
 #include <list>
+#include <vector>
+#include <map>
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/dec/AllSCellMap.h"
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/LinearOperator.h"
@@ -110,7 +111,7 @@ namespace DGtal
      * Cells data stuct.
      * Holds size ratio, indexes and display_flipped for each cell of the structure.
      */
-    struct SCellProperty
+    struct Property
     {
         Scalar size_ratio;
         Index index;
@@ -118,10 +119,9 @@ namespace DGtal
     };
 
     /**
-     * Cells map typedefs.
+     * Cells properties map typedef.
      */
-    typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
-    typedef AllSCellMap<DiscreteExteriorCalculus, SCellProperty> Properties;
+    typedef std::map<SCell, Property> Properties;
 
     /**
      * Indexes to cells map typedefs.
@@ -229,6 +229,11 @@ namespace DGtal
      * @param out the output stream where the object is written.
      */
     void selfDisplay(std::ostream& out) const;
+
+    /**
+     * Get class name string "Calculus".
+     */
+    std::string className() const;
 
     /**
      * Manually insert cell into calculus.

@@ -114,11 +114,9 @@ namespace DGtal
     void selfDisplay(std::ostream& out) const;
 
     /**
-     * Writes kform values to scell accumulator.
-     * @param scell_map scell accumulator where the object is written.
+     * Get class name string "KForm".
      */
-    template <typename Accum>
-    void applyToAccum(Accum& scell_map) const;
+    std::string className() const;
 
     /**
      * Clear current k-form.

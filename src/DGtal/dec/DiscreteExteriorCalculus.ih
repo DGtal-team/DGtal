@@ -47,7 +47,8 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     //ASSERT(kspace_init_ok);
 
     // compute raw cell size
-    Accum cell_size_accum(*this);
+    typedef std::map<SCell, Scalar> Accum;
+    Accum cell_size_accum;
     for (typename DigitalSet::ConstIterator ri=_set.begin(), rie=_set.end(); ri!=rie; ri++)
     {
         const Point& point = *ri;
@@ -64,16 +65,16 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     }
 
     // normalize cell size and set flipped flag
-    for (typename Accum::ConstIterator csi=cell_size_accum.begin(), csie=cell_size_accum.end(); csie!=csi; csi++)
+    for (typename Accum::const_iterator csi=cell_size_accum.begin(), csie=cell_size_accum.end(); csie!=csi; csi++)
     {
         const SCell& cell = csi->first;
         const Dimension dual_dim = dimension-kspace.sDim(cell);
         const Scalar factor = 1/pow(2, dual_dim);
 
-        typename Accum::Value normalized_size = csi->second * factor;
+        const Scalar normalized_size = csi->second * factor;
         ASSERT(normalized_size);
 
-        SCellProperty property;
+        Property property;
         property.display_flipped = false;
         property.size_ratio = normalized_size;
 
@@ -137,7 +138,7 @@ bool
 DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const Scalar& _primal_size)
 {
     SCell abs_cell = _cell;
-    SCellProperty property;
+    Property property;
     property.size_ratio = _primal_size;
     property.display_flipped = false;
 
@@ -169,6 +170,13 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const S
     iter->second = property;
 
     return need_insert;
+}
+
+template <typename D, typename LAB>
+std::string
+DGtal::DiscreteExteriorCalculus<D, LAB>::className() const
+{
+    return "Calculus";
 }
 
 template <typename D, typename LAB>

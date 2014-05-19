@@ -67,8 +67,9 @@
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
-#include "DGtal/dec/AllSCellMap.h"
 #include "DGtal/dec/VectorField.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -88,12 +89,19 @@ namespace DGtal
   struct Display2DFactory
  {
 
-// AllSCellMap
-template <typename TCalculus, typename TValue>
+// DiscreteExteriorCalculus
+template <typename TDomain, typename TLinearAlgebraBackend>
 static
 void
-draw(DGtal::Board2D& board, const DGtal::AllSCellMap<TCalculus, TValue>& scell_map);
-// AllSCellMap
+draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& calculus);
+// DiscreteExteriorCalculus
+
+// KForm
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
+static
+void
+draw(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform);
+// KForm
     
 // VectorField
 template <typename TCalculus, DGtal::Duality duality>
