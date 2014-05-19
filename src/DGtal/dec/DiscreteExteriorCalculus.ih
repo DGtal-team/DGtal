@@ -256,12 +256,12 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
     BOOST_STATIC_ASSERT(( order < dimension ));
 
     typedef LinearOperator<DiscreteExteriorCalculus<D, LAB>, order, duality, order+1, duality> Derivative;
-    Derivative derivative(*this);
-    ASSERT( derivative.myContainer.rows() == kFormLength(order+1, duality) );
-    ASSERT( derivative.myContainer.cols() == kFormLength(order, duality) );
+    Derivative _derivative(*this);
+    ASSERT( _derivative.myContainer.rows() == kFormLength(order+1, duality) );
+    ASSERT( _derivative.myContainer.cols() == kFormLength(order, duality) );
 
     // iterate over output form values
-    for (Index index_output=0; index_output<derivative.myContainer.rows(); index_output++)
+    for (Index index_output=0; index_output<_derivative.myContainer.rows(); index_output++)
     {
         const SCell& cell = index_cells[actualOrder(order+1, duality)][index_output];
         ASSERT( kspace.sSign(cell) == KSpace::POS );
@@ -288,18 +288,18 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
                 continue;
 
             const Index index_input = iter_property->second.index;
-            ASSERT( index_input < derivative.myContainer.cols() );
+            ASSERT( index_input < _derivative.myContainer.cols() );
 
             Scalar proper_sign = sign * (cell_border.myPositive ? -1 : 1);
             if (duality == DUAL) proper_sign *= hodgeSign(absoluteSCell(cell_border), PRIMAL);
 
             // fill container with cell sign
-            derivative.myContainer(index_output, index_input) = proper_sign;
+            _derivative.myContainer(index_output, index_input) = proper_sign;
         }
     }
 
-    if (duality == DUAL && order == 1) derivative.myContainer *= -1; // FIXME fix dual derivative for dual 1-form to dual 2-form sign
-    return derivative;
+    if (duality == DUAL && order == 1) _derivative.myContainer *= -1; // FIXME fix dual derivative for dual 1-form to dual 2-form sign
+    return _derivative;
 }
 
 template <typename D, typename LAB>
