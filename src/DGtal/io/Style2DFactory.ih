@@ -47,7 +47,7 @@ namespace DGtal
 
       virtual void setStyle(Board2D & aBoard) const
       {
-          aBoard.setPenColorRGBi(1,0,0);
+          aBoard.setPenColorRGBi(0,0,0);
           aBoard.setLineStyle(Board2D::Shape::SolidStyle);
           aBoard.setFillColor(Color::None);
           aBoard.setLineWidth(1);

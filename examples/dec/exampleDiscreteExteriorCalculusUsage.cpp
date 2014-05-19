@@ -23,11 +23,8 @@ void usage2d()
     trace.info() << calculus << endl;
 
     {
-        Calculus::Accum accum(calculus);
-
         Board2D board;
-        board << domain;
-        board << accum;
+        board << calculus;
         board.saveSVG("usage_calculus.svg");
     }
 
@@ -50,13 +47,10 @@ void usage2d()
         const Calculus::PrimalForm0 prout = 2 * primal_zero_form + primal_zero_form;
 
         {
-            Calculus::Accum accum(calculus);
-            primal_zero_form.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(0, 15));
-            board << accum;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(0, 15));
+            board << primal_zero_form;
             board.saveSVG("usage_primal_zero_form.svg");
         }
 
@@ -66,13 +60,10 @@ void usage2d()
         const Calculus::PrimalVectorField primal_vector_field = calculus.sharp(primal_one_form);
 
         {
-            Calculus::Accum accum(calculus);
-            primal_one_form.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
-            board << accum;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
+            board << primal_one_form;
             board << primal_vector_field;
             board.saveSVG("usage_primal_one_form.svg");
         }
@@ -82,13 +73,10 @@ void usage2d()
         const Calculus::PrimalVectorField sharp_flat_primal_vector_field = calculus.sharp(flat_sharp_primal_one_form);
 
         {
-            Calculus::Accum accum(calculus);
-            flat_sharp_primal_one_form.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
-            board << accum;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
+            board << flat_sharp_primal_one_form;
             board << sharp_flat_primal_vector_field;
             board.saveSVG("usage_primal_one_form_sharp_flat.svg");
         }
@@ -99,13 +87,10 @@ void usage2d()
         const Calculus::DualVectorField dual_vector_field = calculus.sharp(dual_one_form);
 
         {
-            Calculus::Accum accum(calculus);
-            dual_one_form.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
-            board << accum;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
+            board << dual_one_form;
             board << dual_vector_field;
             board << primal_vector_field;
             board.saveSVG("usage_primal_one_form_hodge.svg");
@@ -127,13 +112,10 @@ void usage2d()
         }
 
         {
-            Calculus::Accum accum(calculus);
-            dual_zero_form.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(0, 15));
-            board << accum;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(0, 15));
+            board << dual_zero_form;
             board.saveSVG("usage_dual_zero_form.svg");
         }
 
@@ -143,13 +125,10 @@ void usage2d()
         const Calculus::DualVectorField dual_vector_field = calculus.sharp(dual_one_form);
 
         {
-            Calculus::Accum accum(calculus);
-            dual_one_form.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
-            board << accum;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
+            board << dual_one_form;
             board << dual_vector_field;
             board.saveSVG("usage_dual_one_form.svg");
         }
@@ -160,13 +139,10 @@ void usage2d()
         const Calculus::PrimalVectorField primal_vector_field = calculus.sharp(primal_one_form);
 
         {
-            Calculus::Accum accum(calculus);
-            primal_one_form.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-2, 2));
-            board << accum;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
+            board << primal_one_form;
             board << primal_vector_field;
             board << dual_vector_field;
             board.saveSVG("usage_dual_one_form_hodge.svg");

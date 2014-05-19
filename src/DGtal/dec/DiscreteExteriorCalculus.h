@@ -199,7 +199,7 @@ namespace DGtal
     /**
      * Const iterator typedef.
      */
-    typedef typename Properties::ConstIterator ConstIterator;
+    typedef typename Properties::const_iterator ConstIterator;
 
     /**
      * Begin const iterator.

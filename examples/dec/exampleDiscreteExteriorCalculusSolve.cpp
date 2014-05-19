@@ -33,12 +33,9 @@ void solve2d_laplace()
     //! [dirac_definition]
 
     {
-        Calculus::Accum accum(calculus);
-        dirac.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << accum;
+        board << calculus;
+        board << dirac;
         board.saveSVG("solve_laplace_calculus.svg");
     }
 
@@ -58,13 +55,9 @@ void solve2d_laplace()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution;
         board.saveSVG("solve_laplace_simplicial_llt.svg");
     }
 
@@ -84,13 +77,9 @@ void solve2d_laplace()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution;
         board.saveSVG("solve_laplace_simplicial_ldlt.svg");
     }
 
@@ -110,13 +99,9 @@ void solve2d_laplace()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution;
         board.saveSVG("solve_laplace_conjugate_gradient.svg");
     }
 
@@ -136,13 +121,9 @@ void solve2d_laplace()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution;
         board.saveSVG("solve_laplace_bicgstab.svg");
     }
 
@@ -162,13 +143,9 @@ void solve2d_laplace()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution;
         board.saveSVG("solve_laplace_sparse_lu.svg");
     }
 
@@ -188,13 +165,9 @@ void solve2d_laplace()
         trace.info() << solution << endl;
         trace.endBlock();
 
-        Calculus::Accum accum(calculus);
-        solution.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution.myContainer.minCoeff(),solution.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution;
         board.saveSVG("solve_laplace_sparse_qr.svg");
     }
 
@@ -243,13 +216,10 @@ void solve2d_dual_decomposition()
     //! [2d_dual_decomposition_input_field_definition]
 
     {
-        Calculus::Accum accum(calculus);
-        input_one_form.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-1, 1));
-        board << accum;
+        board << calculus;
+        board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
+        board << input_one_form;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << input_vector_field;
         board.saveSVG("solve_2d_dual_decomposition_calculus.svg");
@@ -273,13 +243,9 @@ void solve2d_dual_decomposition()
     }
 
     {
-        Calculus::Accum accum(calculus);
-        solution_curl_free.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution_curl_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_dual_decomposition_curl_free.svg");
@@ -302,13 +268,9 @@ void solve2d_dual_decomposition()
     }
 
     {
-        Calculus::Accum accum(calculus);
-        solution_div_free.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution_div_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(1.5));
         board << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_dual_decomposition_div_free.svg");
@@ -320,13 +282,9 @@ void solve2d_dual_decomposition()
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
-        Calculus::Accum accum(calculus);
-        solution_harmonic.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution_harmonic;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(20));
         board << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_dual_decomposition_harmonic.svg");
@@ -377,13 +335,9 @@ void solve2d_primal_decomposition()
     //! [2d_primal_decomposition_input_field_definition]
 
     {
-        Calculus::Accum accum(calculus);
-        input_one_form.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(-1, 1));
-        board << accum;
+        board << calculus;
+        board << input_one_form;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << input_vector_field;
         board.saveSVG("solve_2d_primal_decomposition_calculus.svg");
@@ -407,13 +361,9 @@ void solve2d_primal_decomposition()
     }
 
     {
-        Calculus::Accum accum(calculus);
-        solution_curl_free.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_curl_free.myContainer.minCoeff(),solution_curl_free.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution_curl_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
         board << calculus.sharp(d0*solution_curl_free);
         board.saveSVG("solve_2d_primal_decomposition_curl_free.svg");
@@ -436,13 +386,9 @@ void solve2d_primal_decomposition()
     }
 
     {
-        Calculus::Accum accum(calculus);
-        solution_div_free.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_div_free.myContainer.minCoeff(),solution_div_free.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution_div_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(1.5));
         board << calculus.sharp(ad2*solution_div_free);
         board.saveSVG("solve_2d_primal_decomposition_div_free.svg");
@@ -454,13 +400,9 @@ void solve2d_primal_decomposition()
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
-        Calculus::Accum accum(calculus);
-        solution_harmonic.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solution_harmonic.myContainer.minCoeff(),solution_harmonic.myContainer.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << solution_harmonic;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(30));
         board << calculus.sharp(solution_harmonic);
         board.saveSVG("solve_2d_primal_decomposition_harmonic.svg");
@@ -583,15 +525,13 @@ void solve3d_decomposition()
     trace.info() << calculus << endl;
 
     {
-        Calculus::Accum accum(calculus);
-
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("structure");
         (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
         (*viewer) << domain;
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum);
+				Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus);
         (*viewer) << Viewer::updateDisplay;
     }
 
@@ -624,16 +564,13 @@ void solve3d_decomposition()
     const Calculus::PrimalForm2 input_one_form_derivated = d1 * input_one_form;
 
     {
-        Calculus::Accum accum(calculus);
-        input_one_form.applyToAccum(accum);
-        input_one_form_anti_derivated.applyToAccum(accum);
-        input_one_form_derivated.applyToAccum(accum);
-
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("input vector field");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, -2., 2.);
+				Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form_derivated);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form_anti_derivated);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_vector_field);
         (*viewer) << Viewer::updateDisplay;
     }
@@ -655,14 +592,11 @@ void solve3d_decomposition()
     }
 
     {
-        Calculus::Accum accum(calculus);
-        solution_curl_free.applyToAccum(accum);
-
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("curl free solution");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, solution_curl_free.myContainer.minCoeff(), solution_curl_free.myContainer.maxCoeff());
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_curl_free);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(d0*solution_curl_free));
         (*viewer) << Viewer::updateDisplay;
     }
@@ -684,14 +618,11 @@ void solve3d_decomposition()
     }
 
     {
-        Calculus::Accum accum(calculus);
-        solution_div_free.applyToAccum(accum);
-
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("div free solution");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, solution_div_free.myContainer.minCoeff(), solution_div_free.myContainer.maxCoeff());
+				Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_div_free);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(ad2*solution_div_free));
         (*viewer) << Viewer::updateDisplay;
     }
@@ -702,14 +633,11 @@ void solve3d_decomposition()
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
-        Calculus::Accum accum(calculus);
-        solution_harmonic.applyToAccum(accum);
-
         typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("harmonic");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, accum, solution_harmonic.myContainer.minCoeff(), solution_harmonic.myContainer.maxCoeff());
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_harmonic);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(solution_harmonic), 10.);
         (*viewer) << Viewer::updateDisplay;
     }

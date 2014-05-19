@@ -36,7 +36,7 @@
 template <typename D, typename LAB>
 template <typename DigitalSet>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set)
-    : domain(_set.domain()), kspace(), cell_properties(*this)
+    : domain(_set.domain()), kspace(), cell_properties()
 {
     BOOST_STATIC_ASSERT(( boost::is_same<typename DigitalSet::Domain, Domain>::value ));
 
@@ -82,7 +82,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
     }
 
     // compute cell index
-    for (typename Properties::Iterator csi=cell_properties.begin(), csie=cell_properties.end(); csie!=csi; csi++)
+    for (typename Properties::iterator csi=cell_properties.begin(), csie=cell_properties.end(); csie!=csi; csi++)
     {
         const SCell& cell = csi->first;
         const Dimension dim = kspace.sDim(cell);
@@ -96,7 +96,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
 
 template <typename D, typename LAB>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const D& _domain)
-    : domain(_domain), kspace(), cell_properties(*this)
+    : domain(_domain), kspace(), cell_properties()
 {
 }
 
@@ -109,7 +109,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::eraseSCell(const SCell& _cell)
 {
     const SCell abs_cell = absoluteSCell(_cell);
 
-    typename Properties::Iterator iter_property = cell_properties.find(abs_cell);
+    typename Properties::iterator iter_property = cell_properties.find(abs_cell);
     if (iter_property == cell_properties.end())
         return false;
 
@@ -124,7 +124,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::eraseSCell(const SCell& _cell)
     for (typename SCells::const_iterator iter_index_end = index_cells[dim].end(); iter_index!= iter_index_end; iter_index++)
     {
         const SCell cell_next = *iter_index;
-        typename Properties::Iterator iter_property_next = cell_properties.find(cell_next);
+        typename Properties::iterator iter_property_next = cell_properties.find(cell_next);
         ASSERT( iter_property_next!=cell_properties.end() );
         ASSERT( iter_property_next->second.index > index );
         iter_property_next->second.index -= 1;
@@ -149,7 +149,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::insertSCell(const SCell& _cell, const S
         property.display_flipped = true;
     }
 
-    typename Properties::Iterator iter = cell_properties.find(abs_cell);
+    typename Properties::iterator iter = cell_properties.find(abs_cell);
     const bool need_insert = (iter == cell_properties.end());
 
     if (need_insert) // new cell new index computation
@@ -283,7 +283,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::derivative() const
             const SCell& cell_border = *bi;
             ASSERT( kspace.sDim(cell_border) == actualOrder(order, duality) );
 
-            const typename Properties::ConstIterator iter_property = cell_properties.find(absoluteSCell(cell_border));
+            const typename Properties::const_iterator iter_property = cell_properties.find(absoluteSCell(cell_border));
             if ( iter_property == cell_properties.end() )
                 continue;
 
@@ -319,7 +319,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::primalHodge() const
     for (Index index=0; index<primal_hodge.myContainer.rows(); index++)
     {
         const SCell& cell = index_cells[order][index];
-        const typename Properties::ConstIterator iter_property = cell_properties.find(cell);
+        const typename Properties::const_iterator iter_property = cell_properties.find(cell);
         ASSERT(iter_property != cell_properties.end());
 
         primal_hodge.myContainer(index, index) = hodgeSign(cell, PRIMAL)*iter_property->second.size_ratio;
@@ -345,7 +345,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::dualHodge() const
     for (Index index=0; index<dual_hodge.myContainer.rows(); index++)
     {
         const SCell& cell = index_cells[dimension-order][index];
-        const typename Properties::ConstIterator iter_property = cell_properties.find(cell);
+        const typename Properties::const_iterator iter_property = cell_properties.find(cell);
         ASSERT(iter_property != cell_properties.end());
 
         dual_hodge.myContainer(index, index) = hodgeSign(cell, DUAL)/iter_property->second.size_ratio;
@@ -388,7 +388,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::Discret
             ASSERT( kspace.sDim(cell_border) == actualOrder(1, duality) );
             ASSERT( kspace.sSign(cell_border) == KSpace::POS );
 
-            const typename Properties::ConstIterator iter_property = cell_properties.find(cell_border);
+            const typename Properties::const_iterator iter_property = cell_properties.find(cell_border);
             if (iter_property == cell_properties.end())
                 continue;
 
@@ -442,7 +442,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
             ASSERT( kspace.sDim(cell_border) == actualOrder(0, duality) );
             ASSERT( kspace.sSign(cell_border) == KSpace::POS );
 
-            const typename Properties::ConstIterator iter_property = cell_properties.find(cell_border);
+            const typename Properties::const_iterator iter_property = cell_properties.find(cell_border);
             if (iter_property == cell_properties.end())
                 continue;
 
@@ -483,7 +483,7 @@ template <typename D, typename LAB>
 bool
 DGtal::DiscreteExteriorCalculus<D, LAB>::isSCellFlipped(const SCell& cell) const
 {
-    const ConstIterator iter_property = cell_properties.find(absoluteSCell(cell));
+    const typename Properties::const_iterator iter_property = cell_properties.find(absoluteSCell(cell));
     ASSERT( iter_property != cell_properties.end() );
     return iter_property->second.display_flipped;
 }
@@ -492,7 +492,7 @@ template <typename D, typename LAB>
 typename DGtal::DiscreteExteriorCalculus<D, LAB>::Index
 DGtal::DiscreteExteriorCalculus<D, LAB>::getSCellIndex(const SCell& cell) const
 {
-    const ConstIterator iter_property = cell_properties.find(absoluteSCell(cell));
+    const typename Properties::const_iterator iter_property = cell_properties.find(absoluteSCell(cell));
     ASSERT( iter_property != cell_properties.end() );
     return iter_property->second.index;
 }

@@ -51,14 +51,14 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
 
     board << calculus.domain;
 
-    for (CalculusConstIterator ci=calculus->begin(), cie=calculus->end(); ci!=cie; ci++)
+    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const CalculusSCell& cell = ci->first;
         ASSERT(cell.myPositive == true);
 
-        const bool& flipped = calculus->isSCellFlipped(cell);
+        const bool& flipped = calculus.isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = calculus->kspace.sOpp(cell);
+        if (flipped) displayed_cell = calculus.kspace.sOpp(cell);
 
         board << displayed_cell;
     }
