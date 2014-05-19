@@ -101,6 +101,13 @@ template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
 static
 void
 draw(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform);
+
+		 private:
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality, typename TColorMap>
+static
+void
+drawWithColorMap(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform, const TColorMap& colormap);
+		 public:
 // KForm
     
 // VectorField
