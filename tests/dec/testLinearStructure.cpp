@@ -118,7 +118,7 @@ void test_linear_structure()
             analytic_solution.myContainer(kk) = alpha;
         }
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
         for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
         {
@@ -194,7 +194,7 @@ void test_linear_structure()
             analytic_solution.myContainer(kk) = alpha;
         }
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
 
         for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
         {
