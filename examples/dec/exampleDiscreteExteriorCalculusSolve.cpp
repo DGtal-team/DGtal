@@ -29,7 +29,7 @@ void solve2d_laplace()
 
     //! [dirac_definition]
     Calculus::DualForm0 dirac(calculus);
-    dirac.myContainer(calculus.getSCellIndex(calculus.kspace.sSpel(Z2i::Point(2,5)))) = 1;
+    dirac.myContainer(calculus.getSCellIndex(calculus.myKSpace.sSpel(Z2i::Point(2,5)))) = 1;
     //! [dirac_definition]
 
     {
@@ -50,7 +50,7 @@ void solve2d_laplace()
         solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         //! [solve_llt]
         trace.info() << solution << endl;
         trace.endBlock();
@@ -72,7 +72,7 @@ void solve2d_laplace()
         solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         //! [solve_ldlt]
         trace.info() << solution << endl;
         trace.endBlock();
@@ -95,7 +95,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_conjugate_gradient]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -117,7 +117,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_biconjugate_gradient]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -139,7 +139,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_sparse_lu]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -161,7 +161,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_sparse_qr]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -237,7 +237,7 @@ void solve2d_dual_decomposition()
         solution_curl_free = solver.solve(input_one_form_anti_derivated);
         //! [2d_dual_decomposition_curl_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -262,7 +262,7 @@ void solve2d_dual_decomposition()
         solution_div_free = solver.solve(input_one_form_derivated);
         //! [2d_dual_decomposition_div_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -355,7 +355,7 @@ void solve2d_primal_decomposition()
         solution_curl_free = solver.solve(input_one_form_anti_derivated);
         //! [2d_primal_decomposition_curl_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -380,7 +380,7 @@ void solve2d_primal_decomposition()
         solution_div_free = solver.solve(input_one_form_derivated);
         //! [2d_primal_decomposition_div_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -432,19 +432,19 @@ void solve3d_decomposition()
             Calculus::SCell cell;
             Calculus::Scalar weight;
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,4,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,4,kk));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,36,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,36,kk));
             weight = 1;
             calculus.insertSCell( cell, weight );
 
-            cell = calculus.kspace.sCell(Z3i::Point(4,ll,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(4,ll,kk));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
 
-            cell = calculus.kspace.sCell(Z3i::Point(36,ll,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(36,ll,kk));
             weight = 1;
             calculus.insertSCell( cell, weight );
         }
@@ -456,19 +456,19 @@ void solve3d_decomposition()
             Calculus::SCell cell;
             Calculus::Scalar weight;
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,16,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,16,kk));
             weight = 1;
             calculus.insertSCell( cell, weight );
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,24,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,24,kk));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
 
-            cell = calculus.kspace.sCell(Z3i::Point(16,ll,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(16,ll,kk));
             weight = 1;
             calculus.insertSCell( cell, weight );
 
-            cell = calculus.kspace.sCell(Z3i::Point(24,ll,kk));
+            cell = calculus.myKSpace.sCell(Z3i::Point(24,ll,kk));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
         }
@@ -480,19 +480,19 @@ void solve3d_decomposition()
             Calculus::SCell cell;
             Calculus::Scalar weight;
 
-            cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,2));
+            cell = calculus.myKSpace.sCell(Z3i::Point(4+ll,kk,2));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
 
-            cell = calculus.kspace.sCell(Z3i::Point(4+ll,kk,18));
+            cell = calculus.myKSpace.sCell(Z3i::Point(4+ll,kk,18));
             weight = 1;
             calculus.insertSCell( cell, weight );
 
-            cell = calculus.kspace.sCell(Z3i::Point(24+ll,kk,2));
+            cell = calculus.myKSpace.sCell(Z3i::Point(24+ll,kk,2));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
 
-            cell = calculus.kspace.sCell(Z3i::Point(24+ll,kk,18));
+            cell = calculus.myKSpace.sCell(Z3i::Point(24+ll,kk,18));
             weight = 1;
             calculus.insertSCell( cell, weight );
         }
@@ -504,19 +504,19 @@ void solve3d_decomposition()
             Calculus::SCell cell;
             Calculus::Scalar weight;
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,2));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,4+kk,2));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,4+kk,18));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,4+kk,18));
             weight = 1;
             calculus.insertSCell( cell, weight );
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,24+kk,2));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,24+kk,2));
             weight = 1;
             calculus.insertSCell( cell, weight ); // may be flipped
 
-            cell = calculus.kspace.sCell(Z3i::Point(ll,24+kk,18));
+            cell = calculus.myKSpace.sCell(Z3i::Point(ll,24+kk,18));
             weight = 1;
             calculus.insertSCell( cell, weight );
         }
@@ -586,7 +586,7 @@ void solve3d_decomposition()
         solution_curl_free = solver.solve(input_one_form_anti_derivated);
         //! [3d_decomposition_curl_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -612,7 +612,7 @@ void solve3d_decomposition()
         solution_div_free = solver.solve(input_one_form_derivated);
         //! [3d_decomposition_div_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
         trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }

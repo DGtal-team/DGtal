@@ -49,7 +49,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;
 
-    board << calculus.domain;
+    board << calculus.myDomain;
 
     for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
@@ -58,7 +58,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
 
         const bool& flipped = calculus.isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = calculus.kspace.sOpp(cell);
+        if (flipped) displayed_cell = calculus.myKSpace.sOpp(cell);
 
         board << displayed_cell;
     }

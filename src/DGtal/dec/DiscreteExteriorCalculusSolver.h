@@ -91,7 +91,7 @@ namespace DGtal
     /**
      * Linear algebra solver.
      */
-    LinearAlgebraSolver solver;
+    LinearAlgebraSolver myLinearAlgebraSolver;
 
     /**
      * Writes/Displays the object on an output stream.

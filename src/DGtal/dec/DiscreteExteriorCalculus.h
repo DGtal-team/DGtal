@@ -217,12 +217,12 @@ namespace DGtal
     /**
      * Definition domain.
      */
-    const Domain domain;
+    const Domain myDomain;
 
     /**
      * Associated Khalimski space.
      */
-    const KSpace kspace;
+    const KSpace myKSpace;
 
     /**
      * Writes/Displays the object on an output stream.
