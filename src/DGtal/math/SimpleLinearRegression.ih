@@ -114,6 +114,7 @@ DGtal::SimpleLinearRegression::estimateY( double x ) const
 
 /**
  * @return the current estimation of the variance of the Gaussian
+
  * perturbation (i.e. variance of U).
  */
 inline
@@ -234,7 +235,7 @@ inline
 void
 DGtal::SimpleLinearRegression::selfDisplay( std::ostream& that_stream ) const
 {
-  that_stream << "[SimpleLinearRegression]";
+  that_stream << "[SimpleLinearRegression]  Number of samples="<< myN;
 }
 
 /**

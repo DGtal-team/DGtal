@@ -73,22 +73,14 @@ namespace DGtal
   class SimpleLinearRegression
   {
 
-    // ----------------------- Static services ------------------------------
-  public:
-
-    /**
-     * Several tests for the class.
-     */
-    static bool test();
-
     // ----------------------- Standard services ------------------------------
   public:
-
+    
     /**
      * Destructor.
      */
     ~SimpleLinearRegression();
-
+    
     /**
      * Constructor.
      * The object is empty (and invalid for regression).
@@ -178,6 +170,28 @@ namespace DGtal
      */
     std::pair<double,double> trustIntervalForY( double x, double a ) const;
 
+
+    /** 
+     * Set the epsilon zero value, value below which the absolute
+     * value of the determinant is considered null.
+     *
+     * @param aEpsilonZero the epsilon zero value.
+     */    
+    void setEpsilonZero(const double aEpsilonZero)
+    {
+      myEpsilonZero = aEpsilonZero;
+    }
+
+    /** 
+     * 
+     * @return the epsilon zero value.
+     */
+    double epsilonZero() const
+    {
+      return myEpsilonZero;
+    }
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -194,15 +208,27 @@ namespace DGtal
 
 
     // ------------------------- Datas ----------------------------------------
-  public:
-    const double myEpsilonZero;
 
-  public:
+  private:
 
+    ///Epsilon zero value
+    double myEpsilonZero;
+
+    ///Number of samples
     unsigned int myN;
+
+
+    ///Ordinate values of sample points
     std::vector<double> myY;
-    double myB[ 2 ];
+    
+    ///Abscissa values of sample points
     std::vector<double> myX;
+    
+    ///Linear regression line parameters [0] is the intercept and [1]
+    ///the slope.
+    double myB[ 2 ];
+
+    //Internal quantities.
     std::vector<double> myU;
     double mySumX;
     double mySumX2;
