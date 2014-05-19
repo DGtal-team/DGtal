@@ -63,9 +63,11 @@ namespace DGtal
   {
       double cmap_min;
       double cmap_max;
+      ColorGradientPreset cmap_preset;
+      int cmap_repeat;
 
-      KFormStyle2D(const double& _cmap_min = 0, const double& _cmap_max = 0)
-          : DrawableWithBoard2D(), cmap_min(_cmap_min), cmap_max(_cmap_max)
+      KFormStyle2D(const double& _cmap_min = 0, const double& _cmap_max = 0, const ColorGradientPreset& _cmap_preset = CMAP_JET, const int& _cmap_repeat = 0)
+          : DrawableWithBoard2D(), cmap_min(_cmap_min), cmap_max(_cmap_max), cmap_preset(_cmap_preset), cmap_repeat(_cmap_repeat)
       {
       }
 

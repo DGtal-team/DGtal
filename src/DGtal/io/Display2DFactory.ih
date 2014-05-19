@@ -75,10 +75,11 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::KForm<TCalculu
     ASSERT( kform.myCalculus );
 
     typedef typename TCalculus::Scalar Scalar;
-    typedef typename TCalculus::SCell SCell;
 
     Scalar cmap_min = 0;
     Scalar cmap_max = 0;
+    DGtal::ColorGradientPreset cmap_preset = CMAP_JET;
+    int cmap_repeat;
 
     {
         const DGtal::KFormStyle2D* style = dynamic_cast<const DGtal::KFormStyle2D*>(board.myStyles["KForm"].get());
@@ -86,17 +87,47 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::KForm<TCalculu
         {
             cmap_min = style->cmap_min;
             cmap_max = style->cmap_max;
+            cmap_preset = style->cmap_preset;
+            cmap_repeat = style->cmap_repeat;
         }
     }
 
-		if (cmap_min == 0 && cmap_max == 0)
-		{
-				cmap_max = kform.myContainer.maxCoeff();
-				cmap_min = kform.myContainer.minCoeff();
-		}
+    if (cmap_min == 0 && cmap_max == 0)
+    {
+        cmap_max = kform.myContainer.maxCoeff();
+        cmap_min = kform.myContainer.minCoeff();
+    }
 
-    typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
-    const ColorMap colormap(cmap_min, cmap_max);
+    if (cmap_repeat < 1 && cmap_preset == DGtal::CMAP_JET)
+    {
+        typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
+        const ColorMap colormap(cmap_min, cmap_max);
+        drawWithColorMap(board, kform, colormap);
+        return;
+    }
+
+    // FIXME add other colomaps
+    if (cmap_repeat < 1)
+    {
+        typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_HOT> ColorMap;
+        const ColorMap colormap(cmap_min, cmap_max);
+        drawWithColorMap(board, kform, colormap);
+        return;
+    }
+
+    ASSERT(cmap_repeat >= 1);
+    typedef typename DGtal::HueShadeColorMap<Scalar, DGtal::CMAP_HOT> ColorMap;
+    const ColorMap colormap(cmap_min, cmap_max, cmap_repeat);
+    drawWithColorMap(board, kform, colormap);
+}
+
+template <typename TCalculus, DGtal::Order order, DGtal::Duality duality, typename TColorMap>
+inline
+void
+DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KForm<TCalculus, order, duality>& kform, const TColorMap& colormap)
+{
+    typedef typename TCalculus::Scalar Scalar;
+    typedef typename TCalculus::SCell SCell;
 
     for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
     {

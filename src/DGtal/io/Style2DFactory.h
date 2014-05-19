@@ -65,6 +65,8 @@
 #include "DGtal/dec/VectorField.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
