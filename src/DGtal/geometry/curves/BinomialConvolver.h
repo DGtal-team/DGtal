@@ -280,7 +280,7 @@ namespace DGtal
   /**
      Description of template class
      'CurvatureFromBinomialConvolverFunctor' <p> \brief Aim: This class
-     is a functor for getting the tangent vector of a binomial convolver.
+     is a functor for getting the curvature of a binomial convolver.
 
      @tparam TBinomialConvolver any BinomialConvolver.
 

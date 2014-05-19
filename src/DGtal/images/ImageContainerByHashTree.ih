@@ -80,23 +80,23 @@ namespace DGtal
 	trace.error() << "ImageContainerByHashTree::Constructor: error !" << std::endl;
 	trace.error() << "requested depth too high for the key type" << std::endl;
 	trace.error() << "accepted: " << acceptedDepth << " accepted (Domain): "<<acceptedDomainDepth<<" Requested: " << depth << std::endl;
-        
+
 	setDepth ( ( acceptedDepth < acceptedDomainDepth) ? acceptedDepth -1 : acceptedDomainDepth -1 );
       }
     else
       setDepth ( depth );
-    
+
     myDomain = Domain(Point::zero, Point::diagonal(static_cast<typename Point::Component>( pow(2.0, (int)myTreeDepth) )));
-    
+
     //init the array
     myArraySize = 1 << myKeySize;
     myData = new Node*[myArraySize];
     for ( unsigned i = 0; i < myArraySize; ++i )
       myData[i] = 0;
-    
+
     addNode ( defaultValue, ROOT_KEY );
   }
-  
+
 
   template < typename Domain, typename Value, typename HashKey>
   inline
@@ -109,22 +109,21 @@ namespace DGtal
     myOrigin = aDomain.lowerBound() ;
     //Consistency check of the hashKeysize
     ASSERT ( hashKeySize <= sizeof ( HashKey ) *8 );
-    
+
     Point p1 = myDomain.lowerBound();
     Point p2 = myDomain.upperBound();
 
     myPreComputedIntermediateMask = ~ ( static_cast<HashKey> ( ~0 ) << myKeySize );
-    
+
     typename Point::Component maxSize = (p2-p1).normInfinity();
     unsigned int depth = (unsigned int)(ceil ( log2 ( (double) maxSize ))) ;
 
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
-    trace.error()<<" MAXSIZE = "<< maxSize<<" DEPTH="<< depth <<" accepted="<< acceptedDepth<< std::endl;
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
                       << " requested depth too high for the key type" << std::endl;
-        trace.error() << "accepted: " << acceptedDepth 
+        trace.error() << "accepted: " << acceptedDepth
                       << " Requested: " << depth << std::endl;
         setDepth ( acceptedDepth );
       }
@@ -139,7 +138,7 @@ namespace DGtal
     //add the default value
     addNode ( defaultValue, ROOT_KEY );
   }
-  
+
 
 
   template < typename Domain, typename Value, typename HashKey>
@@ -153,21 +152,21 @@ namespace DGtal
   {
     //Consistency check of the hashKeysize
     ASSERT ( hashKeySize <= sizeof ( HashKey ) *8 );
-    
+
     myPreComputedIntermediateMask = ~ ( static_cast<HashKey> ( ~0 ) << myKeySize );
-    
+
     int maxSize = 0;
     for ( unsigned int i = 0; i < dim; ++i )
       if ( maxSize < p1[i] - p2[i] )
         maxSize = p1[i] - p2[i];
     unsigned int depth = (unsigned int)(ceil ( log ( (double) maxSize ) / log((double) 2.0) ));
-    
+
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
                       << " requested depth too high for the key type" << std::endl;
-        trace.error() << "accepted: " << acceptedDepth 
+        trace.error() << "accepted: " << acceptedDepth
                       << " Requested: " << depth << std::endl;
         setDepth ( acceptedDepth );
       }
@@ -491,7 +490,7 @@ namespace DGtal
       }
     return false;
   }
-  
+
   template < typename Domain, typename Value, typename HashKey  >
   inline
   void
@@ -906,5 +905,3 @@ namespace DGtal
 } // namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
