@@ -50,7 +50,7 @@ void solve2d_laplace()
         solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         //! [solve_llt]
         trace.info() << solution << endl;
         trace.endBlock();
@@ -72,7 +72,7 @@ void solve2d_laplace()
         solver.compute(laplace);
         Calculus::DualForm0 solution = solver.solve(dirac);
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         //! [solve_ldlt]
         trace.info() << solution << endl;
         trace.endBlock();
@@ -95,7 +95,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_conjugate_gradient]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -117,7 +117,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_biconjugate_gradient]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -139,7 +139,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_sparse_lu]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -161,7 +161,7 @@ void solve2d_laplace()
         Calculus::DualForm0 solution = solver.solve(dirac);
         //! [solve_sparse_qr]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << solution << endl;
         trace.endBlock();
 
@@ -237,7 +237,7 @@ void solve2d_dual_decomposition()
         solution_curl_free = solver.solve(input_one_form_anti_derivated);
         //! [2d_dual_decomposition_curl_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -262,7 +262,7 @@ void solve2d_dual_decomposition()
         solution_div_free = solver.solve(input_one_form_derivated);
         //! [2d_dual_decomposition_div_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -355,7 +355,7 @@ void solve2d_primal_decomposition()
         solution_curl_free = solver.solve(input_one_form_anti_derivated);
         //! [2d_primal_decomposition_curl_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -380,7 +380,7 @@ void solve2d_primal_decomposition()
         solution_div_free = solver.solve(input_one_form_derivated);
         //! [2d_primal_decomposition_div_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -586,7 +586,7 @@ void solve3d_decomposition()
         solution_curl_free = solver.solve(input_one_form_anti_derivated);
         //! [3d_decomposition_curl_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << "min=" << solution_curl_free.myContainer.minCoeff() << " max=" << solution_curl_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }
@@ -612,7 +612,7 @@ void solve3d_decomposition()
         solution_div_free = solver.solve(input_one_form_derivated);
         //! [3d_decomposition_div_free_solve]
 
-        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearAlgebraSolver.info() << endl;
         trace.info() << "min=" << solution_div_free.myContainer.minCoeff() << " max=" << solution_div_free.myContainer.maxCoeff() << endl;
         trace.endBlock();
     }

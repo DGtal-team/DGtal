@@ -136,7 +136,7 @@ DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KF
 
         const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
         SCell displayed_cell = cell;
-        if (flipped) displayed_cell = kform.myCalculus->kspace.sOpp(cell);
+        if (flipped) displayed_cell = kform.myCalculus->myKSpace.sOpp(cell);
 
         Scalar displayed_value = kform.myContainer(index);
         if (flipped) displayed_value = -displayed_value;
