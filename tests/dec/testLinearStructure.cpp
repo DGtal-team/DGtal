@@ -47,22 +47,22 @@ void test_linear_structure()
     Calculus calculus(domain);
 
     for (int kk=20; kk>0; kk--)
-        calculus.insertSCell(calculus.kspace.sCell(Point(0,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));
+        calculus.insertSCell(calculus.myKSpace.sCell(Point(0,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));
     for (int kk=0; kk<10; kk++)
-        calculus.insertSCell(calculus.kspace.sCell(Point(kk,0)));
+        calculus.insertSCell(calculus.myKSpace.sCell(Point(kk,0)));
     for (int kk=0; kk<10; kk++)
-        calculus.insertSCell(calculus.kspace.sCell(Point(10,kk)));
-    calculus.insertSCell(calculus.kspace.sCell(Point(10,10)));
-    calculus.insertSCell(calculus.kspace.sCell(Point(9,10), Calculus::KSpace::NEG));
+        calculus.insertSCell(calculus.myKSpace.sCell(Point(10,kk)));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(10,10)));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(9,10), Calculus::KSpace::NEG));
     for (int kk=10; kk<20; kk++)
-        calculus.insertSCell(calculus.kspace.sCell(Point(8,kk)));
-    calculus.insertSCell(calculus.kspace.sCell(Point(8,20)));
-    calculus.insertSCell(calculus.kspace.sCell(Point(9,20)));
-    calculus.insertSCell(calculus.kspace.sCell(Point(10,20)));
-    calculus.insertSCell(calculus.kspace.sCell(Point(11,20)));
+        calculus.insertSCell(calculus.myKSpace.sCell(Point(8,kk)));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(8,20)));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(9,20)));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(10,20)));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(11,20)));
     for (int kk=20; kk>0; kk--)
-        calculus.insertSCell(calculus.kspace.sCell(Point(12,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));
-    calculus.insertSCell(calculus.kspace.sCell(Point(12,0)));
+        calculus.insertSCell(calculus.myKSpace.sCell(Point(12,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(12,0)));
     //! [neumann-creation]
 
     trace.info() << calculus << endl;
@@ -118,7 +118,7 @@ void test_linear_structure()
             analytic_solution.myContainer(kk) = alpha;
         }
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
 
         for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
         {
@@ -149,8 +149,8 @@ void test_linear_structure()
     trace.beginBlock("creating dec problem with dirichlet border condition");
 
     //! [dirichlet-creation]
-    calculus.insertSCell(calculus.kspace.sCell(Point(13,0)));
-    calculus.insertSCell(calculus.kspace.sCell(Point(1,20), Calculus::KSpace::NEG));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(13,0)));
+    calculus.insertSCell(calculus.myKSpace.sCell(Point(1,20), Calculus::KSpace::NEG));
     //! [dirichlet-creation]
 
     {
@@ -194,7 +194,7 @@ void test_linear_structure()
             analytic_solution.myContainer(kk) = alpha;
         }
 
-        trace.info() << solver.isValid() << " " << solver.solver.info() << endl;
+        trace.info() << solver.isValid() << " " << solver.myLinearSolver.info() << endl;
 
         for (Calculus::Index kk=0; kk<calculus.kFormLength(0, PRIMAL); kk++)
         {

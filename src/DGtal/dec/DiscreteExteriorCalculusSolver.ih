@@ -53,7 +53,7 @@ template <typename C, typename S, DGtal::Order order_in, DGtal::Duality duality_
 DGtal::DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>&
 DGtal::DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::compute(const Operator& linear_operator)
 {
-    solver.compute(linear_operator.myContainer);
+    myLinearAlgebraSolver.compute(linear_operator.myContainer);
     myCalculus = linear_operator.myCalculus;
     return *this;
 }
@@ -63,8 +63,7 @@ DGtal::KForm<C, order_in, duality_in>
 DGtal::DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::solve(const InputKForm& input_kform) const
 {
     ASSERT( myCalculus == input_kform.myCalculus );
-    SolutionKForm solution(*input_kform.myCalculus, solver.solve(input_kform.myContainer));
-    //trace.info() << solver.info() << std::endl;
+    SolutionKForm solution(*input_kform.myCalculus, myLinearAlgebraSolver.solve(input_kform.myContainer));
     return solution;
 }
 
@@ -73,7 +72,7 @@ bool
 DGtal::DiscreteExteriorCalculusSolver<C, S, order_in, duality_in, order_out, duality_out>::isValid() const
 {
     if (myCalculus == NULL) return false;
-    return solver.info() == 0;
+    return myLinearAlgebraSolver.info() == 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

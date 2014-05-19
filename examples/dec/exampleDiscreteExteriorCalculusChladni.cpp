@@ -33,18 +33,18 @@ int main(int argc, char* argv[])
     // bottom linear structure
     // left and right Dirichlet boundary condition
     for (int kk=2; kk<=20; kk++)
-        calculus.insertSCell( calculus.kspace.sCell(Z2i::Point(kk, 1)) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z2i::Point(kk, 1)) );
 
     // top linear structure
     // left Neumann boundary condition, right Dirichlet boundary condition
     for (int kk=3; kk<=20; kk++)
-        calculus.insertSCell( calculus.kspace.sCell(Z2i::Point(kk, 21)) );
+        calculus.insertSCell( calculus.myKSpace.sCell(Z2i::Point(kk, 21)) );
 
     for (int kk=3; kk<20; kk++)
         for (int ll=3; ll<20; ll++)
         {
             if (kk==11 && ll==11) continue;
-            calculus.insertSCell( calculus.kspace.sCell(Z2i::Point(kk, ll)) );
+            calculus.insertSCell( calculus.myKSpace.sCell(Z2i::Point(kk, ll)) );
         }
 
     trace.info() << calculus << endl;

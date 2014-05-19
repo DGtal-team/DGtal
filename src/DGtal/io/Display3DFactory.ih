@@ -61,7 +61,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 
         const bool& flipped = calculus.isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = calculus.kspace.sOpp(cell);
+        if (flipped) displayed_cell = calculus.myKSpace.sOpp(cell);
 
         display << displayed_cell;
     }

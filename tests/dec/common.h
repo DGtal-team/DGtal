@@ -139,9 +139,9 @@ test_hodge(int domain_size=5)
             const SCell& cell = iter->first;
             const Index& index = calculus.getSCellIndex(cell);
             test_result &= (iter->second.index == index);
-            const SCell& primal_cell = calculus.getSCell(calculus.kspace.sDim(cell), PRIMAL, index);
+            const SCell& primal_cell = calculus.getSCell(calculus.myKSpace.sDim(cell), PRIMAL, index);
             test_result &= (cell == primal_cell);
-            const SCell& dual_cell = calculus.getSCell(calculus.dimension-calculus.kspace.sDim(cell), DUAL, index);
+            const SCell& dual_cell = calculus.getSCell(calculus.dimension-calculus.myKSpace.sDim(cell), DUAL, index);
             test_result &= (cell == dual_cell);
         }
         trace.endBlock();
@@ -355,25 +355,25 @@ test_hodge_sign()
         typedef Z2i::Point Point;
         typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0), KSpace::NEG), DUAL ) == -1 );
         // primal horizontal edge, dual vertical edge
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0), KSpace::POS), DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0), KSpace::NEG), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::POS), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0), KSpace::NEG), DUAL ) == 1 );
         // primal vectical edge, dual horizontal edge
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1), KSpace::POS), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1), KSpace::NEG), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::POS), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::NEG), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1), KSpace::NEG), DUAL ) == -1 );
         // primal cell, dual point
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1), KSpace::NEG), DUAL ) == -1 );
     }
 
     {
@@ -384,41 +384,41 @@ test_hodge_sign()
         typedef Z3i::Point Point;
         typedef typename Calculus::KSpace KSpace;
         // primal point, dual cell
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,0), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,0), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,0), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,0), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,0), KSpace::NEG), DUAL ) == -1 );
         // primal edge, dual surfel
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,0), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,0), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,0), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,0), KSpace::NEG), DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,0), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,0), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,0), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,0), KSpace::NEG), DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,1), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,1), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,1), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,0,1), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,0), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,0), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,0,1), KSpace::NEG), DUAL ) == -1 );
         // primal surfel, dual edge
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,0), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,0), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,0), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,0), KSpace::NEG), DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,1), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,1), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,1), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(0,1,1), KSpace::NEG), DUAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,1), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,1), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,1), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,0,1), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,0), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(0,1,1), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,0,1), KSpace::NEG), DUAL ) == -1 );
         // primal cell, dual point
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,1), KSpace::POS), PRIMAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,1), KSpace::NEG), PRIMAL ) == -1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,1), KSpace::POS), DUAL ) == 1 );
-        FATAL_ERROR( calculus.hodgeSign( calculus.kspace.sCell(Point(1,1,1), KSpace::NEG), DUAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::POS), PRIMAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::NEG), PRIMAL ) == -1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::POS), DUAL ) == 1 );
+        FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.sCell(Point(1,1,1), KSpace::NEG), DUAL ) == -1 );
     }
 
     trace.endBlock();
