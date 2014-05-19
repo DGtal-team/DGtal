@@ -97,14 +97,14 @@ namespace DGtal
     template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, typename Calculus::Scalar cmap_min = 0, typename Calculus::Scalar cmap_max = 0);
+    draw(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, double cmap_min = 0, double cmap_max = 0);
     // KForm
 
     // VectorField
     template <typename Calculus, DGtal::Duality duality>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const typename Calculus::Scalar& scale = 0.5, const typename Calculus::Scalar& epsilon = 1e-8);
+    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale = 0.5, const double& epsilon = 1e-8);
     // VectorField
 
     // SphericalAccumulator

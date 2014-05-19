@@ -45,21 +45,23 @@ inline
 void
 DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& calculus)
 {
-    BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TDomain::dimension == 3 ));
 
     typedef DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend> Calculus;
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;
 
-    for (CalculusConstIterator ci=calculus->begin(), cie=calculus->end(); ci!=cie; ci++)
+    display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
+
+    for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const CalculusSCell& cell = ci->first;
         ASSERT(cell.myPositive == true);
 
-        const bool& flipped = calculus->isSCellFlipped(cell);
+        const bool& flipped = calculus.isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
-        if (flipped) displayed_cell = calculus->kspace.sOpp(cell);
+        if (flipped) displayed_cell = calculus.kspace.sOpp(cell);
 
         display << displayed_cell;
     }
@@ -71,9 +73,9 @@ template <typename Space, typename KSpace>
 template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
 inline
 void
-DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::KForm<TCalculus, order, duality>& kform, typename TCalculus::Scalar cmap_min, typename TCalculus::Scalar cmap_max)
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::KForm<TCalculus, order, duality>& kform, double cmap_min, double cmap_max)
 {
-    BOOST_STATIC_ASSERT(( TCalculus::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( TCalculus::dimension == 3 ));
     ASSERT( kform.myCalculus );
 
     typedef typename TCalculus::Scalar Scalar;
@@ -114,7 +116,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 template <typename Space, typename KSpace>
 template <typename Calculus, DGtal::Duality duality>
 void
-DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const typename Calculus::Scalar& scale, const typename Calculus::Scalar& epsilon)
+DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale, const double& epsilon)
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 

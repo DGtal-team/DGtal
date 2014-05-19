@@ -76,12 +76,9 @@ void test_linear_structure()
     trace.info() << "dirac_position = " << dirac_position << endl;
 
     {
-        Calculus::Accum accum(calculus);
-        dirac.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << accum;
+        board << calculus;
+        board << dirac;
         board.saveSVG("linear_structure_neumann_dirac.svg");
     }
 
@@ -130,25 +127,17 @@ void test_linear_structure()
         }
 
         {
-            Calculus::Accum accum(calculus);
-            solved_solution.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
-            board << accum;
+            board << calculus;
+            board << solved_solution;
             board.saveSVG("linear_structure_neumann_solution.svg");
         }
 
         {
             Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
-            Calculus::Accum accum(calculus);
-            solved_solution_gradient.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
-            board << accum;
+            board << calculus;
+            board << solved_solution_gradient;
             board << CustomStyle("VectorField", new VectorFieldStyle2D(1));
             board << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_neumann_solution_gradient.svg");
@@ -165,12 +154,9 @@ void test_linear_structure()
     //! [dirichlet-creation]
 
     {
-        Calculus::Accum accum(calculus);
-        dirac.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << accum;
+        board << calculus;
+        board << dirac;
         board.saveSVG("linear_structure_dirichlet_dirac.svg");
     }
 
@@ -217,25 +203,18 @@ void test_linear_structure()
         }
 
         {
-            Calculus::Accum accum(calculus);
-            solved_solution.applyToAccum(accum);
-
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution.myContainer.minCoeff(), solved_solution.myContainer.maxCoeff()));
-            board << accum;
+            board << calculus;
+            board << solved_solution;
             board.saveSVG("linear_structure_dirichlet_solution.svg");
         }
 
         {
             Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
-            Calculus::Accum accum(calculus);
-            solved_solution_gradient.applyToAccum(accum);
 
             Board2D board;
-            board << domain;
-            board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(solved_solution_gradient.myContainer.minCoeff(), solved_solution_gradient.myContainer.maxCoeff()));
-            board << accum;
+            board << calculus;
+            board << solved_solution_gradient;
             board << calculus.sharp(solved_solution_gradient);
             board.saveSVG("linear_structure_dirichlet_solution_gradient.svg");
         }
@@ -264,16 +243,13 @@ void test_laplace_operator()
     Calculus calculus(input_set);
 
     {
-        Calculus::Accum accum(calculus);
-
         Board2D board;
-        board << input_domain;
-        board << accum;
+        board << calculus;
         board.saveSVG("laplace_structure.svg");
     }
 
     const Calculus::Properties properties = calculus.getProperties();
-    for (Calculus::Properties::ConstIterator iter_property=properties.begin(), iter_property_end=properties.end(); iter_property!=iter_property_end; iter_property++)
+    for (Calculus::ConstIterator iter_property=properties.begin(), iter_property_end=properties.end(); iter_property!=iter_property_end; iter_property++)
         trace.info() << iter_property->first << " " << iter_property->second.size_ratio << " " << iter_property->second.index << endl;
     trace.info() << endl;
 

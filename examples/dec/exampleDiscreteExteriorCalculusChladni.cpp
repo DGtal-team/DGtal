@@ -57,18 +57,8 @@ int main(int argc, char* argv[])
     trace.info() << "laplace=" << laplace << endl;
 
     {
-        Calculus::DualForm0 aa(calculus);
-        aa.myContainer.fill(0);
-        Calculus::DualForm2 bb(calculus);
-        bb.myContainer.fill(1);
-
-        Calculus::Accum accum(calculus);
-        aa.applyToAccum(accum);
-        bb.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << accum;
+        board << calculus;
         board.saveSVG("chladni_calculus.svg");
     }
 
@@ -93,13 +83,10 @@ int main(int argc, char* argv[])
         ss << "chladni_eigen_vector_" << kk << ".svg";
         trace.info() << kk << " " << eigen_value << " " << sqrt(eigen_value) << " " << eigen_vector.minCoeff() << " " << eigen_vector.maxCoeff() << " " << standard_deviation(eigen_vector) << endl;
 
-        Calculus::Accum accum(calculus);
-        eigen_form.applyToAccum(accum);
-
         Board2D board;
-        board << domain;
-        board << CustomStyle("AllSCellMap", new AllSCellMapStyle2D(eigen_vectors.minCoeff(),eigen_vectors.maxCoeff()));
-        board << accum;
+        board << calculus;
+        board << CustomStyle("KForm", new KFormStyle2D(eigen_vectors.minCoeff(),eigen_vectors.maxCoeff()));
+        board << eigen_form;
         board.saveSVG(filename.c_str());
     }
 
