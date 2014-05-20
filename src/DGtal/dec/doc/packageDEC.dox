@@ -37,7 +37,7 @@ namespace DGtal {
 
 @managers David Coeurjolly, Pierre Gueth
 
-@since 0.XX
+@since 0.8
 
 @b LICENSE: LGPL
 
@@ -46,7 +46,7 @@ namespace DGtal {
 
 In this package, we present a implementation of discrete exterior calculus.
 Discrete exterior calculus (DEC) provides an easy and efficient way to describe linear operator over various structure.
-Base operators, such as Hodge duality operator or exterior derivative, can be combined to create classical vector analysis operator such as gradient, curl and divergence.
+Basic operators, such as Hodge duality operator or exterior derivative, can be combined to create classical vector analysis operator such as gradient, curl and divergence.
 
 @b Modules
 
