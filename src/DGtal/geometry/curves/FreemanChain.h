@@ -891,11 +891,10 @@ public:
      * in a KhalimskySpaceND) of a FreemanChain (given Z2). Since by
      * definition the interpixel elements cannot be represented in Z2,
      * we use a proper KhalimskySpaceND with a shift defined by
-     * convention to (-0.5, 0.5).  The following image illustrates
-     * such a convention:
-     *
-     * @image html illustrationFC2InterPixels.png
-     *
+     * convention to (-0.5, 0.5).  Notes that this shift is the same
+     * that the one used to display FreemanChain object in interpixel
+     * mode.
+     *     
      * @param aKSpace the KSpace
      * @param fc the FreemanChain
      * @param aSCellContour (returns) the set containing all the linels of the inter-pixels contour.
