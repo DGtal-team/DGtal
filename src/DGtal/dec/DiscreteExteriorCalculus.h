@@ -184,10 +184,11 @@ namespace DGtal
     /**
      * Constructor.
      * @param set the initial set copied.
+     * @add_border add border to the computed structure.
      * Set point get attached to primal n-cell <-> dual 0-cell.
      */
     template <typename DigitalSet>
-    DiscreteExteriorCalculus(const DigitalSet& set);
+    DiscreteExteriorCalculus(const DigitalSet& set, const bool& add_border = true);
 
     /**
      * Constructor.
