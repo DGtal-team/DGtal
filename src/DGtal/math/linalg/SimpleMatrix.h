@@ -182,6 +182,15 @@ namespace DGtal
      */
     Component operator()(const DGtal::Dimension i, const DGtal::Dimension j) const;
 
+    /**
+     * Get a reference to the value at position (i,j).
+     *
+     * @param i row index
+     * @param j column index
+     *
+     */
+    Component& operator()(const DGtal::Dimension i, const DGtal::Dimension j);
+
     // ----------------------- SimpleMatrix computations ------------------------------
 
 

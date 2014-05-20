@@ -45,7 +45,7 @@ Operators therefore come in two flavors, primal and dual.
 
 Linear operators form vector spaces and can be added together and scaled by a scalar.
 
-\subsection subsectDECOperators22  Laplacian
+\subsection subsectDECOperators22  Laplace operator
 
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
 

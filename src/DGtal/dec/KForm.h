@@ -103,7 +103,7 @@ namespace DGtal
     Container myContainer;
 
     /**
-     * Pointer to const calculus
+     * Pointer to const calculus.
      */
     const Calculus* myCalculus;
 
@@ -114,20 +114,19 @@ namespace DGtal
     void selfDisplay(std::ostream& out) const;
 
     /**
-     * Writes kform values to scell accumulator.
-     * @param scell_map scell accumulator where the object is written.
+     * Get class name string "KForm".
      */
-    template <typename Accum>
-    void applyToAccum(Accum& scell_map) const;
+    std::string className() const;
 
     /**
-     * Clear current kform.
+     * Clear current k-form.
      */
     void clear();
 
     /**
-     * Get kcell from index.
-     * @param index the index
+     * Get k-cell from index.
+     * @param index the index.
+		 * @return associated Khalimsky signed cell.
      */
     typename Calculus::SCell getSCell(const typename Calculus::Index& index) const;
 

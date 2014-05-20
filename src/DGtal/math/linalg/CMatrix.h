@@ -97,17 +97,19 @@ public:
     BOOST_CONCEPT_USAGE( CMatrix )
     {
         z.setIdentity();
-        ConceptUtils::sameType(a, x(i, j));
-        ConceptUtils::sameType(a_ref, z(i, j));
-        ConceptUtils::sameType(i, x.rows());
-        ConceptUtils::sameType(j, x.cols());
+        Scalar& a_ref = z(i, j);
+        checkConstConstraints();
+    }
+
+    void checkConstConstraints() const
+    {
+        Scalar a = z(i, j);
+        ConceptUtils::sameType(i, z.rows());
+        ConceptUtils::sameType(j, z.cols());
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    const T x;
     T z;
-    Scalar a;
-    Scalar& a_ref;
     Index i, j;
 
     // ------------------------- Internals ------------------------------------
