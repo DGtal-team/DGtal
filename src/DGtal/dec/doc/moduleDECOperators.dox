@@ -17,13 +17,13 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECOperators Documentation for DEC operators
+@page moduleDECOperators Documentation of basic DEC operators
 @writers Pierre Gueth
 
 
 [TOC]
 
-\section sectDECOperators1 Base operators
+\section sectDECOperators1 Basic Operators
 
 \image html operators_3d.png "DEC operators with definition cells for a rectangular grid."
 
