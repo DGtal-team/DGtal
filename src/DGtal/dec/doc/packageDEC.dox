@@ -52,6 +52,7 @@ Base operators, such as Hodge duality operator or exterior derivative, can be co
 
 - \ref moduleDECOperators
 - \ref moduleDECSolve
+- \ref moduleDECManualInsertion
 
 @b Package @b Concepts @b Overview
  - \ref packageDECConcepts

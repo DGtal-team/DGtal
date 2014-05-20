@@ -113,11 +113,12 @@ public:
     BOOST_CONCEPT_USAGE( CLinearAlgebraSolver )
     {
         solver.compute(a);
-        const_solver.info() == 0;
+        status_return = static_cast<int>(const_solver.info());
         x = const_solver.solve(y);
     }
     // ------------------------- Private Datas --------------------------------
 private:
+    int status_return;
     const Solver const_solver;
     Solver solver;
     const Matrix a;

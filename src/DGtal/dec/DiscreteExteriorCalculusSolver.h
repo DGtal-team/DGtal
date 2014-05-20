@@ -58,20 +58,20 @@ namespace DGtal
    * \brief Aim:
    * This wraps a linear algebra solver into the dec package.
    *
-   * @tparam Calculus should be DiscreteExteriorCalculus.
-   * @tparam LinearAlgebraSolver should be a model of CLinearAlgebraSolver.
+   * @tparam TCalculus should be DiscreteExteriorCalculus.
+   * @tparam TLinearAlgebraSolver should be a model of CLinearAlgebraSolver.
    * @tparam order_in is the input order of the linear problem.
    * @tparam duality_in is the input duality of the linear problem.
    * @tparam order_out is the output order of the linear problem.
    * @tparam duality_out is the output duality of the linear problem.
    */
-  template <typename C, typename S, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
+  template <typename TCalculus, typename TLinearAlgebraSolver, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   class DiscreteExteriorCalculusSolver
   {
     // ----------------------- Standard services ------------------------------
   public:
-    typedef C Calculus;
-    typedef S LinearAlgebraSolver;
+    typedef TCalculus Calculus;
+    typedef TLinearAlgebraSolver LinearAlgebraSolver;
 
     typedef typename Calculus::Vector Vector;
     typedef typename Calculus::Matrix Matrix;
@@ -91,7 +91,7 @@ namespace DGtal
     /**
      * Linear algebra solver.
      */
-    LinearAlgebraSolver solver;
+    LinearAlgebraSolver myLinearAlgebraSolver;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -101,15 +101,15 @@ namespace DGtal
 
     /**
      * Prefactorize problem / set problem operator.
-     * @param linear_operator
-     * @return *this
+     * @param linear_operator linear operator.
+     * @return *this.
      */
     DiscreteExteriorCalculusSolver& compute(const Operator& linear_operator);
 
     /**
      * Solve prefactorized / set problem input.
-     * @param input_kform
-     * @return problem solution
+     * @param input_kform input k-form.
+     * @return problem solution.
      */
     SolutionKForm solve(const InputKForm& input_kform) const;
 

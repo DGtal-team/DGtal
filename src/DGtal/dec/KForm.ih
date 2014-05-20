@@ -67,12 +67,10 @@ DGtal::KForm<Calculus, order, duality>::selfDisplay(std::ostream& out) const
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
-template <typename Accum>
-void
-DGtal::KForm<Calculus, order, duality>::applyToAccum(Accum& scell_map) const
+std::string
+DGtal::KForm<Calculus, order, duality>::className() const
 {
-    for (int index=0; index<myContainer.rows(); index++)
-        scell_map[getSCell(index)] = myContainer(index);
+    return "KForm";
 }
 
 template <typename Calculus, DGtal::Order order, DGtal::Duality duality>

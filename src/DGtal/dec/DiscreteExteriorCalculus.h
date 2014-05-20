@@ -42,10 +42,11 @@
 // Inclusions
 #include <iostream>
 #include <list>
+#include <vector>
+#include <map>
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/dec/AllSCellMap.h"
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
 #include "DGtal/dec/LinearOperator.h"
@@ -107,11 +108,20 @@ namespace DGtal
     typedef typename KSpace::Point Point;
 
     /**
-     * Cells map typedefs.
+     * Cells data stuct.
+     * Holds size ratio, indexes and display_flipped for each cell of the structure.
      */
-    typedef AllSCellMap<DiscreteExteriorCalculus, Scalar> Accum;
-    typedef AllSCellMap<DiscreteExteriorCalculus, double> SizeRatio;
-    typedef AllSCellMap<DiscreteExteriorCalculus, Index> Indexes;
+    struct Property
+    {
+        Scalar size_ratio;
+        Index index;
+        bool display_flipped;
+    };
+
+    /**
+     * Cells properties map typedef.
+     */
+    typedef std::map<SCell, Property> Properties;
 
     /**
      * Indexes to cells map typedefs.
@@ -180,9 +190,16 @@ namespace DGtal
     DiscreteExteriorCalculus(const DigitalSet& set);
 
     /**
+     * Constructor.
+     * @param domain calculus definition domain
+     * Initialize empty discrete exterior calculus.
+     */
+    DiscreteExteriorCalculus(const Domain& domain);
+
+    /**
      * Const iterator typedef.
      */
-    typedef typename SizeRatio::ConstIterator ConstIterator;
+    typedef typename Properties::const_iterator ConstIterator;
 
     /**
      * Begin const iterator.
@@ -200,12 +217,12 @@ namespace DGtal
     /**
      * Definition domain.
      */
-    const Domain domain;
+    const Domain myDomain;
 
     /**
      * Associated Khalimski space.
      */
-    const KSpace kspace;
+    const KSpace myKSpace;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -214,128 +231,164 @@ namespace DGtal
     void selfDisplay(std::ostream& out) const;
 
     /**
-     * Get cell size ratio
+     * Get class name string "Calculus".
      */
-    SizeRatio
-    getSizeRatio() const;
+    std::string className() const;
 
     /**
-     * Get cell size indexes
+     * Manually insert cell into calculus.
+     * Be sure to insert all adjacent lower order primal cells.
+     * @param cell the cell to be inserted.
+     * @size_ratio ratio between primal cell size and dual cell size.
+     * @return true if cell was not already inserted, false if only cell was already inserted (cell properties are always updated).
      */
-    Indexes
-    getIndexes() const;
+    bool
+    insertSCell(const SCell& cell, const Scalar& size_ratio = 1);
+
+    /**
+     * Manually erase cell from calculus.
+     * @param cell the cell to be removed.
+     * @return true if cell was removed, false if cell was not in calculus.
+     */
+    bool
+    eraseSCell(const SCell& cell);
+
+    /**
+     * Get cell properties.
+     */
+    Properties
+    getProperties() const;
 
     /**
      * Identity operator from order-forms to order-forms.
-     * @tparam order
-     * @tparam duality
+     * @tparam order input and output order of identity operator.
+     * @tparam duality input and output duality of identity operator.
      */
     template <Order order, Duality duality>
     LinearOperator<DiscreteExteriorCalculus, order, duality, order, duality>
     identity() const;
 
     /**
-     * Exterior derivative operator from order-forms to (order+1)-forms
-     * @tparam order
-     * @tparam duality
+     * Exterior derivative operator from order-forms to (order+1)-forms.
+     * @tparam order order of input k-form.
+     * @tparam duality duality of input k-form.
      */
     template <Order order, Duality duality>
     LinearOperator<DiscreteExteriorCalculus, order, duality, order+1, duality>
     derivative() const;
 
     /**
-     * Primal hodge duality operator from primal order-forms to dual (dim-order)-forms
-     * @tparam order
+     * Dual Laplace operator form dual 0-forms to dual 0-forms.
+     */
+    PrimalIdentity0
+    primalLaplace() const;
+
+    /**
+     * Dual Laplace operator form dual 0-forms to dual 0-forms.
+     */
+    DualIdentity0
+    dualLaplace() const;
+
+    /**
+     * Primal hodge duality operator from primal order-forms to dual (dim-order)-forms.
+     * @tparam order order of input primal k-form.
      */
     template <Order order>
     LinearOperator<DiscreteExteriorCalculus, order, PRIMAL, dimension-order, DUAL>
     primalHodge() const;
 
     /**
-     * Dual hodge duality operator from primal order-forms to dual (dim-order)-forms
-     * @tparam order
+     * Dual hodge duality operator from primal order-forms to dual (dim-order)-forms.
+     * @tparam order order of input dual k-form.
      */
     template <Order order>
     LinearOperator<DiscreteExteriorCalculus, order, DUAL, dimension-order, PRIMAL>
     dualHodge() const;
 
     /**
-     * Construct 1-form from vector field
-     * @tparam duality
-     * @param vector_field
+     * Construct 1-form from vector field.
+     * @tparam duality input vector field and output 1-form duality.
+     * @param vector_field vector field.
+     * @return 1-form.
      */
     template <Duality duality>
     KForm<DiscreteExteriorCalculus, 1, duality>
     flat(const VectorField<DiscreteExteriorCalculus, duality>& vector_field) const;
 
     /**
-     * Construct vector field from 1-form
-     * @tparam duality
-     * @param one_form
+     * Construct vector field from 1-form.
+     * @tparam duality input 1-form and output vector field duality.
+     * @param one_form 1-form.
+     * @return vector field.
      */
     template <Duality duality>
     VectorField<DiscreteExteriorCalculus, duality>
     sharp(const KForm<DiscreteExteriorCalculus, 1, duality>& one_form) const;
 
     /**
-     * Get cell from index.
-     * @param order
-     * @param duality
-     * @param index
+     * Get cell from k-form index.
+     * @param order k-form order.
+     * @param duality k-form duality.
+     * @param index index valid on a k-form container.
+     * @return associated Khalimsky signed cell.
      */
     SCell
     getSCell(const Order& order, const Duality& duality, const Index& index) const;
 
     /**
-     * Get index from cell
-     * @param cell
+     * Check if cell is flipped in display.
+     * @param cell the tested cell
      */
-    Index
-    getIndex(const SCell& cell) const;
+    bool
+    isSCellFlipped(const SCell& cell) const;
 
     /**
-     * Return discrete kforms size.
+     * Get k-form index from cell.
+     * @param cell Khalimsky signed cell.
+     * @return associated K-form index.
+     */
+    Index
+    getSCellIndex(const SCell& cell) const;
+
+    /**
+     * Return number of elements in discrete k-form.
+     * @param order k-form order.
+     * @param duality k-form duality.
      */
     Index
     kFormLength(const Order& order, const Duality& duality) const;
 
     /**
-     * Return actual order of kform in the dec package representation.
-     * @param order
-     * @param duality
-     * @return order if primal, dimension-order if dual
+     * Return actual order of k-forms in the dec package representation.
+     * Used internally mostly.
+     * @param order order.
+     * @param duality duality.
+     * @return order if primal, dimension-order if dual.
      */
     Order
     actualOrder(const Order& order, const Duality& duality) const;
 
     /**
      * Return sign of hodge operator.
-     * @param cell
-     * @param duality
+     * Used internally mostly.
+     * @param cell Khalimsky signed cell.
+     * @param duality duality.
      */
     Scalar
     hodgeSign(const SCell& cell, const Duality& duality) const;
 
     /**
-     * Return sign of derivative operator.
-     * @param cell
-     * @param duality
-     */
-    Scalar
-    derivativeSign(const SCell& cell, const Duality& duality) const;
-
-    /**
      * Return positive cell.
      * Useful for looking cells up since all stored cells are positive.
-     * @param cell
+     * @param cell Khalimsky signed cell.
      */
     SCell
-    absoluteCell(const SCell& cell) const;
+    absoluteSCell(const SCell& cell) const;
 
     /**
      * Return edge direction relative to primal.
-     * @param cell
-     * @param duality
+     * @param cell Khalimsky signed cell.
+     * @param duality duality.
      */
     Dimension
     edgeDirection(const SCell& cell, const Duality& duality) const;
@@ -350,14 +403,9 @@ namespace DGtal
   private:
 
     /**
-     * Cells size ratio (from primal to dual).
+     * Cells properties.
      */
-    SizeRatio cell_size_ratio;
-
-    /**
-     * Cells indexes to map operator index to geometrical cell.
-     */
-    Indexes cell_indexes;
+    Properties cell_properties;
 
     /**
      * Cells indexed by their order.

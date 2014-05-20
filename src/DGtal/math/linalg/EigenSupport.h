@@ -50,12 +50,19 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#endif
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <Eigen/SparseCholesky>
 #include <Eigen/IterativeLinearSolvers>
 #include <Eigen/SparseLU>
 #include <Eigen/SparseQR>
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -105,7 +112,7 @@ struct EigenSparseLinearAlgebraBackend
     typedef Eigen::ConjugateGradient<Matrix> SolverConjugateGradient;
     typedef Eigen::BiCGSTAB<Matrix> SolverBiCGSTAB;
     typedef Eigen::SparseLU<Matrix> SolverSparseLU;
-    typedef Eigen::SparseQR<Matrix, Eigen::AMDOrdering<Matrix::Index> > SolverSparseQR;
+    typedef Eigen::SparseQR<Matrix, Eigen::COLAMDOrdering<Matrix::Index> > SolverSparseQR;
 };
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -370,6 +370,17 @@ DGtal::SimpleMatrix<T, TM, TN>::operator()(const DGtal::Dimension i,
   ASSERT(j<N);  
   return myValues[i*N + j];
 }
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+T&
+DGtal::SimpleMatrix<T, TM, TN>::operator()(const DGtal::Dimension i, 
+					   const DGtal::Dimension j)
+{
+  ASSERT(i<M);
+  ASSERT(j<N);  
+  return myValues[i*N + j];
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :

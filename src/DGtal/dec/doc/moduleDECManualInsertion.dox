@@ -1,0 +1,179 @@
+/**
+ * @file moduleDECManualInsertion.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2014/04/04
+ *
+ * Documentation file for feature DECManualInsertion
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleDECManualInsertion Examples of manual cell insertion and problem resolution
+@writers Pierre Gueth
+
+
+[TOC]
+
+Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
+It is possible to insert cell manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
+Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
+Therefore the DEC structure shouldn't be modified once DEC operators are created.
+
+\section sectDECManualInsertion1 1D Poisson equation
+
+In this problem, we create an 1D linear structure embedded in a 2D space and we want to solve a Poisson equation on this structure.
+The Poisson equation can be written as:
+
+\f[ \Delta \phi = f \f]
+
+where \f$\Delta\f$ is the Laplace operator, \f$\phi\f$ the solution of the problem and \f$f\f$ the input of the problem.
+The Poisson equation can be viewed as the heat equation when permanent regime is reached.
+\f$f\f$ is the heating applied to the structure and \f$\phi\f$ is the temperature reached in permanent regime.
+Here we choose \f$f\f$ to be a Dirac delta function \f$\delta\f$ to simulation a punctual heating on the structure.
+
+Boundary conditions will change to result on the problem.
+The two classical boundary conditions are:
+- Neumann boundary condition forces the derivative to be null along the border of the structure. Here, this means that heat can't flow out the start and the end of the linear structure.
+- Dirichlet boundary condition connects borders of the structure to null potential. With own heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
+
+Using the DEC package in 2D, one can define the Laplace operator using Hodge duality operators \f$\star\f$ and exterior derivative operators \f$d\f$.
+
+\f[ \Delta = \star_2' d_1' \star_1 d_0 \f]
+
+We show how to solve this problem and  how to change boundary conditions between Neumann and Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
+
+\subsection subsectDECManualInsertion1_1 Neumann boundary condition
+
+First, an empty calculus structure is created and, using simple for loops, it is filled with some 0-cells and 1-cells to from a linear structure.
+When filled manually with DiscreteExteriorCalculus.insertSCell, one can pass the primal over dual size ratio of each cell which defaults to 1.
+Temperature nodes are associated primal 0-cells.
+Note that to enforce Neumann boundary conditions, the linear structure has to end with 0-cells.
+Moreover some 1-cells are inserted as negative cells to match their orientation with the orientation of the linear structure.
+
+\snippet testLinearStructure.cpp neumann-creation
+
+The input heat vector \f$f\f$, which is primal 0-form in the DEC formulation, is then created and is given values of a \f$\delta\f$.
+
+\snippet testLinearStructure.cpp input-dirac
+
+\image html linear_structure_neumann_dirac.png "Linear structure with Neumann boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
+
+The Laplace operator \f$\Delta\f$ is pretty straight forward from its above definition.
+One can use DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge to generate \f$\star\f$ operators and DiscreteExteriorCalculus.derivative to generate \f$d\f$ operators.
+
+\snippet testLinearStructure.cpp neumann-laplace-definition
+
+Now the problem is fully defined and there one thing left to do: solving it.
+The resolution is done by DiscreteExteriorCalculusSolver.
+This class takes the actual linear solver used as the second template parameter.
+One can use any class that validates the CLinearAlgebraSolver concept.
+Some solvers are provided inside the linear algebra backend we are using EigenSparseLinearAlgebraBackend.
+Here we will use the SolverSparseQR solver.
+Once created the solver is given the operator using DiscreteExteriorCalculusSolver.compute.
+The input dirac 0-form is passed to DiscreteExteriorCalculusSolver.solve, which return the solution of the problem.
+
+\snippet testLinearStructure.cpp neumann-solve
+
+Since the dirac input is null everywhere except at a single point, this means that the second derivative of the solution is null everywhere except at the dirac position.
+An analytic form can be expressed as a continuous piece-wise quadratic function.
+Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
+
+\image html linear_structure_neumann_solution.png "Linear structure with Neumann boundary conditions. Solution 0-form is displayed."
+\image html linear_structure_neumann_solution_gradient.png "Linear structure with Neumann boundary conditions. Gradient 1-form and vector field are displayed."
+\image html linear_structure_neumann_fit.png "Numerical values computed using the solver and analytic solution for the Neumann problem."
+
+\subsection sectDECManualInsertion1_2 Dirichlet boundary condition
+
+Dirichlet boundary condition fix value of 0-forms to be constant outside of definition domain.
+In this package this constant value is chosen to be null.
+Two dangling 1-cells are added at each end of the structure to describe Dirichlet boundary condition.
+Since those 1-cells are not connected to a 0-cell on one of their border, this will simulate the presence of zero-valued 0-cell in those places through enforcing Dirichlet boundary conditions.
+
+\snippet testLinearStructure.cpp dirichlet-creation
+
+Input dirac can be used as it is since no 0-cells has been added to the structure.
+
+\image html linear_structure_dirichlet_dirac.png "Linear structure with Dirichlet boundary conditions. The input dirac 0-form is displayed, the red 0-cell is where the non zero point is located."
+
+However Laplace operator need to be rebuild.
+Note that the code is the same as for the Neumann case.
+
+\snippet testLinearStructure.cpp dirichlet-laplace-definition
+
+Solving the problem is achieved by using the same code as for the Neumann case.
+This time to analytical solution is piece-wise linear and take a constant null value at the border of the structure, as expect from the Dirichlet boundary condition.
+
+\snippet testLinearStructure.cpp dirichlet-solve
+
+Numerical values of the solution fit analytic values with at least a relative precision of 1e-5.
+
+\image html linear_structure_dirichlet_solution.png "Linear structure with Dirichlet boundary conditions. Solution 0-form is displayed."
+\image html linear_structure_dirichlet_solution_gradient.png "Linear structure with Dirichlet boundary conditions. Gradient 1-form and vector field are displayed."
+\image html linear_structure_dirichlet_fit.png "Numerical and analytic solution for the Dirichlet problem."
+
+\section sectDECManualInsertion2 3D Helmoltz decomposition
+
+In this exemple, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
+Helmoltz decomposition states that every vector field or 1-form \f$\omega\f$ can be uniquely expressed as the sum of three terms.
+
+\f[ \omega = d\alpha + \delta\beta + \gamma \f]
+
+where \f$\alpha\f$ is a 0-form scalar potential, \f$\beta\f$ is a 2-form vector potential and \f$\gamma\f$ is left over 1-form harmonic part.
+Recall that \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \star d \star \f$ is the exterior anti-derivative from 2-form to 1-form.
+\f$\gamma\f$ has null anti-derivative and null derivative since if they where not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
+
+\f[ \delta \gamma = d \gamma = 0 \f]
+
+By differentiating \f$\omega\f$ definition, one can isolate DEC solvable expressions for \f$\alpha\f$ and \f$\beta\f$.
+
+\f[ d \delta \beta = d \omega \f]
+\f[ \delta \omega = \delta d \alpha \f]
+
+The harmonic component \f$\gamma\f$ is computed by substracting \f$d\alpha\f$ and \f$\delta\beta\f$ from \f$\omega\f$.
+
+\subsection sectDECManualInsertion2_1 Problem resolution
+
+The calculus struture is filled mannually with 0-, 1- and 2-cells to create a torus structure.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_structure
+
+The primal input vector field is then filled and the associated input 1-form \f$\omega\f$ is computed using DiscreteExteriorCalculus.flat.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_input_field_definition
+
+\image html helmoltz_3d_structure.png "Manually created tore structure and input vector field."
+
+Linear operators are then defined. Note the expression of anti-derivative computed from Hodge operators and dual exterior derivative.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_operator_definition
+
+Values of \f$\alpha\f$ are computed from previous expression using DiscreteExteriorCalculusSolver.solve.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_curl_free_solve
+
+Values of \f$\beta\f$ are computed from previous expression using DiscreteExteriorCalculusSolver.solve.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_div_free_solve
+
+Values of \f$\gamma\f$ are computed by substraction.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_solution
+
+\f$\gamma\f$ has a strong connection with the structure topology and can be used to create local maps  of the struture.
+
+\image html helmoltz_3d_harmonic.png "Harmonic component of the input vector field."
+\image html helmoltz_3d_harmonic_zoom0.png "Harmonic component of the input vector field. Zoom on inner hole."
+\image html helmoltz_3d_harmonic_zoom1.png "Harmonic component of the input vector field. Zoom on outter shell."
+
+*/
+
+}
