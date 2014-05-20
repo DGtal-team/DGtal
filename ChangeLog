@@ -29,6 +29,11 @@
 
    - Bug fix in PowerMap construction.
 	
+*Math package*
+
+    - Simple Linear Regression tool added (backport from imagene).
+
+
 === DGtal 0.7 ===
 
 *General*
