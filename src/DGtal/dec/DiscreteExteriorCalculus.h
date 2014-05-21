@@ -124,7 +124,7 @@ namespace DGtal
     typedef std::map<SCell, Property> Properties;
 
     /**
-     * Indexes to cells map typedefs.
+     * Indices to cells map typedefs.
      */
     typedef std::vector<SCell> SCells;
     typedef boost::array<SCells, dimension+1> IndexedSCells;
@@ -197,6 +197,8 @@ namespace DGtal
      */
     DiscreteExteriorCalculus(const Domain& domain);
 
+    
+    // ----------------------- Iterators on property map -----------------------
     /**
      * Const iterator typedef.
      */
