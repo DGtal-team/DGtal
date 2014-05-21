@@ -3,6 +3,10 @@ using namespace std;
 
 #include "common.h"
 
+#include "DGtal/math/linalg/EigenSupport.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
+#include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
+
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/GenericReader.h"
 using namespace DGtal;
