@@ -35,7 +35,7 @@
 
 template <typename D, typename LAB>
 template <typename DigitalSet>
-DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set)
+DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set, const bool& add_border)
     : myDomain(_set.domain()), myKSpace(), cell_properties()
 {
     BOOST_STATIC_ASSERT(( boost::is_same<typename DigitalSet::Domain, Domain>::value ));
@@ -72,7 +72,9 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
         const Scalar factor = 1/pow(2, dual_dim);
 
         const Scalar normalized_size = csi->second * factor;
-        ASSERT(normalized_size);
+        ASSERT(normalized_size > 0 && normalized_size <= 1);
+
+        if (!add_border && normalized_size < 1) continue;
 
         Property property;
         property.display_flipped = false;
