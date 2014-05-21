@@ -1,10 +1,6 @@
 #if !defined(__DEC_EXAMPLE_COMMON_H__)
 #define __DEC_EXAMPLE_COMMON_H__
 
-#include "DGtal/math/linalg/EigenSupport.h"
-#include "DGtal/dec/DiscreteExteriorCalculus.h"
-#include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
-
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 using namespace DGtal;
