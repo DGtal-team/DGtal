@@ -71,6 +71,8 @@ template <typename TCalculus, Duality duality>
 
     typedef typename Calculus::Dimension Dimension;
     typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::Index Index;
+    typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Point;
 
     typedef boost::array<typename Calculus::Vector, Calculus::dimension> Coordinates;
     typedef Coordinates Container;
@@ -94,6 +96,19 @@ template <typename TCalculus, Duality duality>
      * @return a reference on 'this'.
      */
     VectorField& operator=(const VectorField& other);
+
+    /**
+     * Get vector from index.
+     * @index index of the corresponding 0-cell.
+     */
+    Point getVector(const Index& index) const;
+
+    /**
+     * Set vector at index.
+     * @index index of the corresponding 0-cell.
+     * @point value of the vector field to set at this index.
+     */
+    void setVector(const Index& index, const Point& point);
 
     // ----------------------- Interface --------------------------------------
   public:
