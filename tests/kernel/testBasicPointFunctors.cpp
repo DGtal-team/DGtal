@@ -18,6 +18,9 @@
  * @file testBasicPointFunctors.cpp
  * @ingroup Tests
  *
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ 
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2012/02/02
@@ -152,7 +155,7 @@ bool testProjector()
   nbok += ( embedder2(pt2_2b) ==  PointVector<3,int>(5,4,3)  ) ? 1 : 0; 
   nb++;
 
-
+ 
   //comparison
   PointVector<3,int> res1(5,0,2); 
   trace.info() << "p " << p << " => " << proj1(p) << " == " << res1 << std::endl;
@@ -177,6 +180,44 @@ bool testProjector()
   }
   trace.endBlock();
 
+  
+  trace.beginBlock ( "Checking Basic Domain SubSampler" );
+  {
+    // BasicDomainSubSampler 2D
+    HyperRectDomain<SpaceND<2, int> > domainSource (PointVector<2,int>(0,0), PointVector<2,int>(10,10));
+    std::vector< SpaceND<2, int>::Size > aGridSize;
+    aGridSize.push_back(5);
+    aGridSize.push_back(5);  
+    PointVector<2,int> shiftVector(0 ,0);
+    BasicDomainSubSampler< HyperRectDomain<SpaceND<2, int> > > subSampler(domainSource, 
+                                                                          aGridSize,  shiftVector);
+    trace.info()<< "Subsampling functor on 2D domain " << domainSource <<" with grid size " 
+                << aGridSize[0] << " " << aGridSize[1] << " and shift vector "<< shiftVector <<std::endl ;
+    PointVector<2,int> pointTest(1,0);
+    PointVector<2,int> pointInSourceDomain = subSampler(pointTest);
+    trace.info() << "Sampling point of coordinate "<< pointTest << ", => coordinates in source domain:" 
+                 << pointInSourceDomain << " == " << PointVector<2,int>(5,0) << std::endl; 
+    nb++;
+    nbok += (pointInSourceDomain== PointVector<2,int>(5,0));
+    
+     // BasicDomainSubSampler 3D
+    HyperRectDomain<SpaceND<3, int> > domainSource3D (PointVector<3,int>(0,0, 0), PointVector<3,int>(10,10, 10));
+    std::vector< SpaceND<3, int>::Size > aGridSize3D;
+    aGridSize3D.push_back(5);
+    aGridSize3D.push_back(3);  
+    aGridSize3D.push_back(1);  
+    PointVector<3,int> shiftVector3D(0 ,1, -1);
+    BasicDomainSubSampler< HyperRectDomain<SpaceND<3, int> > > subSampler3D(domainSource3D, 
+                                                                          aGridSize3D,  shiftVector3D);
+    trace.info()<< "Subsampling functor on 3D domain " << domainSource3D <<" with grid size " 
+                << aGridSize3D[0] << " " << aGridSize3D[1]<< " " << aGridSize3D[2] << " and shift vector "<< shiftVector3D <<std::endl ;
+    PointVector<3,int> pointTest3D(0,1,2);
+    PointVector<3,int> pointInSourceDomain3D = subSampler3D(pointTest3D);
+    trace.info() << "Sampling point of coordinate "<< pointTest3D << ", => coordinates in source domain:" 
+                 << pointInSourceDomain3D << " == " << PointVector<3,int>(0, 4, 1) << std::endl; 
+    nb++;
+    nbok += (pointInSourceDomain3D== PointVector<3,int>(0, 4, 1));
+  }
   return nbok == nb;
 }
 
