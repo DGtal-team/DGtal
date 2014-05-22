@@ -80,11 +80,19 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 
     typedef typename TCalculus::Scalar Scalar;
     typedef typename TCalculus::SCell SCell;
+    typedef typename TCalculus::Index Index;
 
     if (cmap_min == 0 && cmap_max == 0)
     {
-        cmap_max = kform.myContainer.maxCoeff();
-        cmap_min = kform.myContainer.minCoeff();
+        bool first = true;
+        for (Index index=0; index<kform.myContainer.rows(); index++)
+        {
+            const Scalar value = kform.myContainer(index);
+            if (!std::isfinite(value)) continue;
+            if (first || cmap_min > value) cmap_min = value;
+            if (first || cmap_max < value) cmap_max = value;
+            first = false;
+        }
     }
 
     typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_JET> ColorMap;
@@ -102,7 +110,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         Scalar displayed_value = kform.myContainer(index);
         if (flipped) displayed_value = -displayed_value;
 
-        if (finite(displayed_value))
+        if (std::isfinite(displayed_value))
             display << DGtal::CustomColors3D(DGtal::Color::Black, colormap(displayed_value));
         else
             display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::White);
@@ -134,7 +142,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
             arrow[dim] = vector_field.myCoordinates[dim](index);
 
         arrow *= scale;
-        if (!finite(arrow[0]) || !finite(arrow[1]) || !finite(arrow[2])) continue;
+        if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1]) || !std::isfinite(arrow[2])) continue;
         const typename Calculus::Scalar& norm = arrow.norm();
         if (norm <= epsilon) continue;
 
