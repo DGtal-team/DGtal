@@ -31,7 +31,7 @@ digraph GMath {
 
     subgraph cluster_ext {
 	rank = same;
-        style=invis;
+        
 
         subgraph cluster_kernel {
                  style=filled;
@@ -73,7 +73,6 @@ digraph GMath {
     
    subgraph cluster_math_cc {
 	rank = same;
-        style=invis;
 
    subgraph cluster_math_linalg {
                  style=filled;
