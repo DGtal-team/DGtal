@@ -27,6 +27,8 @@
       of the points. Some implementations do not increase the size of the input
       integers during the computations.	
 
+   - Bug fix in PowerMap construction.
+	
 *Math package*
 
     - Simple Linear Regression tool added (backport from imagene).
