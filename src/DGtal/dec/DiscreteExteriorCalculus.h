@@ -94,8 +94,6 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<Matrix> ));
     BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<Vector, Matrix> ));
 
-    typedef typename Domain::Space::Dimension Dimension;
-
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
 
     /**

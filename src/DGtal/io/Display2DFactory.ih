@@ -167,6 +167,8 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
     BOOST_STATIC_ASSERT(( TCalculus::dimension == 2 ));
     ASSERT( vector_field.myCalculus );
 
+    typedef typename DGtal::VectorField<TCalculus, duality>::Arrow Arrow;
+
     typename TCalculus::Scalar scale = .25;
     typename TCalculus::Scalar epsilon = 1e-8;
 
@@ -186,9 +188,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::VectorField<TC
         if (duality == DGtal::PRIMAL)
             origin -= DGtal::Z2i::RealPoint(.5,.5);
 
-        DGtal::Z2i::RealPoint arrow;
-        for (typename TCalculus::Dimension dim=0; dim<TCalculus::dimension; dim++)
-            arrow[dim] = vector_field.myCoordinates[dim](index);
+        Arrow arrow = vector_field.getArrow(index);
 
         arrow *= scale;
         if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1])) continue;
