@@ -41,7 +41,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "boost/array.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
@@ -73,7 +72,7 @@ template <typename TCalculus, Duality duality>
     typedef typename Calculus::Index Index;
     typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Arrow;
 
-    typedef boost::array<typename Calculus::Vector, Calculus::dimension> Coordinates;
+    typedef typename Calculus::Matrix Coordinates;
     typedef Coordinates Container;
 
     /**

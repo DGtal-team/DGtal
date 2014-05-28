@@ -363,9 +363,8 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::Discret
     typedef VectorField<DiscreteExteriorCalculus, duality> Field;
     Field field(*this);
 
-    ASSERT( field.myCoordinates.size() == dimension);
-    for (DGtal::Dimension dim=0; dim<dimension; dim++)
-        ASSERT( field.myCoordinates[dim].rows() == kFormLength(0, duality) );
+    ASSERT( field.myCoordinates.cols() == dimension);
+    ASSERT( field.myCoordinates.rows() == kFormLength(0, duality));
 
     // iterate over points
     for (int kk=0; kk<kFormLength(0, duality); kk++)
@@ -400,13 +399,13 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::sharp(const DGtal::KForm<DGtal::Discret
             const DGtal::Dimension direction = edgeDirection(cell_border, duality);
 
             normalize[direction]++;
-            field.myCoordinates[direction](kk) += one_form.myContainer(cell_border_index);
+            field.myCoordinates(kk, direction) += one_form.myContainer(cell_border_index);
         }
 
         // normalize vector field
         for (DGtal::Dimension dim=0; dim<dimension; dim++)
             if (normalize[dim])
-                field.myCoordinates[dim](kk) /= normalize[dim];
+                field.myCoordinates(kk, dim) /= normalize[dim];
     }
 
     return field;
@@ -452,7 +451,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::flat(const DGtal::VectorField<DGtal::Di
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
             normalize++;
-            one_form.myContainer(kk) += vector_field.myCoordinates[direction](cell_border_index);
+            one_form.myContainer(kk) += vector_field.myCoordinates(cell_border_index, direction);
         }
 
         // normalize one-form

@@ -219,8 +219,8 @@ void solve2d_dual_decomposition()
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, DUAL); ii++)
     {
         const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, DUAL, ii).myCoordinates)/2.;
-        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
-        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0]+ .8*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
 
     const Calculus::DualForm1 input_one_form = calculus.flat(input_vector_field);
@@ -342,8 +342,8 @@ void solve2d_primal_decomposition()
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
     {
         const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
-        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
-        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0]+ .8*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
@@ -574,9 +574,9 @@ void solve3d_decomposition()
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
     {
         const Z3i::RealPoint cell_center = Z3i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
-        input_vector_field.myCoordinates[0](ii) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
-        input_vector_field.myCoordinates[1](ii) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
-        input_vector_field.myCoordinates[2](ii) = -cos(cell_center[2]*.5);
+        input_vector_field.myCoordinates(ii, 0) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
+        input_vector_field.myCoordinates(ii, 1) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
+        input_vector_field.myCoordinates(ii, 2) = -cos(cell_center[2]*.5);
     }
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
