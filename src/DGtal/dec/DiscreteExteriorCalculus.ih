@@ -54,9 +54,9 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
         const Point& point = *ri;
         const SCell cell_point = myKSpace.sSpel(point, KSpace::POS);
 
-        Points neighborhood;
-        neighborhoodRecurseSizeMask(dimension-1, cell_point.myCoordinates, neighborhood);
-        for (typename Points::const_iterator pi=neighborhood.begin(), pie=neighborhood.end(); pi!=pie; pi++)
+        typedef DGtal::HyperRectDomain<Space> Neighborbood;
+        const Neighborbood neighborhood(cell_point.myCoordinates-Point::diagonal(1), cell_point.myCoordinates+Point::diagonal(1));
+        for (typename Domain::ConstIterator pi=neighborhood.begin(), pie=neighborhood.end(); pi!=pie; pi++)
         {
             const SCell cell = myKSpace.sCell(*pi, KSpace::POS);
             if (cell_size_accum.find(cell) == cell_size_accum.end()) cell_size_accum[cell] = 0;
@@ -191,27 +191,6 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::selfDisplay(std::ostream & os) const
     for (DGtal::Order order=0; order<=Calculus::dimension; order++)
         os << " | primal " << order << "-cells <-> dual " << Calculus::dimension-order << "-cells (" << kFormLength(order, PRIMAL) << ")";
     os << "]";
-}
-
-template <typename D, typename LAB>
-void
-DGtal::DiscreteExteriorCalculus<D, LAB>::neighborhoodRecurseSizeMask(const DGtal::Dimension& dimension, const Point& current_point, Points& neighborhood)
-{
-    typedef typename Point::Coordinate Coordinate;
-
-    for (Coordinate delta=-1; delta<2; delta++)
-    {
-        Point point = current_point;
-        point[dimension] += delta;
-
-        if (dimension==0)
-        {
-            neighborhood.push_back(point);
-            continue;
-        }
-
-        neighborhoodRecurseSizeMask(dimension-1, point, neighborhood);
-    }
 }
 
 template <typename D, typename LAB>

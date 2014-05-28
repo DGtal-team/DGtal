@@ -41,10 +41,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <list>
 #include <vector>
 #include <map>
 #include <boost/array.hpp>
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/dec/Duality.h"
@@ -81,6 +81,7 @@ namespace DGtal
   public:
 
     typedef TDomain Domain;
+    typedef typename Domain::Space Space;
 
     BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
 
@@ -99,9 +100,9 @@ namespace DGtal
     /**
      * Static dimension.
      */
-    static const Dimension dimension = Domain::Space::dimension;
+    static const Dimension dimension = Space::dimension;
 
-    typedef typename DGtal::KhalimskySpaceND<dimension, typename Domain::Space::Integer> KSpace;
+    typedef typename DGtal::KhalimskySpaceND<dimension, typename Space::Integer> KSpace;
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
@@ -195,7 +196,7 @@ namespace DGtal
      */
     DiscreteExteriorCalculus(const Domain& domain);
 
-    
+
     // ----------------------- Iterators on property map -----------------------
     /**
      * Const iterator typedef.
@@ -435,12 +436,6 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-
-    typedef std::list<Point> Points;
-
-    static
-    void
-    neighborhoodRecurseSizeMask(const Dimension& dimension, const Point& current_point, Points& neighborhood);
 
   }; // end of class DiscreteExteriorCalculus
 
