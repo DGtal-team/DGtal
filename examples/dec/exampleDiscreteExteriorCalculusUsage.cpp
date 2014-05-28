@@ -28,6 +28,7 @@ void usage2d()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board.saveSVG("usage_calculus.svg");
     }
@@ -52,6 +53,7 @@ void usage2d()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << CustomStyle("KForm", new KFormStyle2D(0, 15));
             board << primal_zero_form;
@@ -65,6 +67,7 @@ void usage2d()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
             board << primal_one_form;
@@ -78,6 +81,7 @@ void usage2d()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
             board << flat_sharp_primal_one_form;
@@ -92,6 +96,7 @@ void usage2d()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
             board << dual_one_form;
@@ -117,6 +122,7 @@ void usage2d()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << CustomStyle("KForm", new KFormStyle2D(0, 15));
             board << dual_zero_form;
@@ -130,6 +136,7 @@ void usage2d()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
             board << dual_one_form;
@@ -144,6 +151,7 @@ void usage2d()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
             board << primal_one_form;

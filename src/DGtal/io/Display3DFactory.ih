@@ -128,6 +128,8 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
 {
     BOOST_STATIC_ASSERT(( Calculus::dimension == 3 ));
 
+    typedef typename DGtal::VectorField<Calculus, duality>::Arrow Arrow;
+
     display << DGtal::CustomColors3D(DGtal::Color::Black, DGtal::Color::Black);
 
     for (typename Calculus::Index index=0; index<vector_field.myCalculus->kFormLength(0, duality); index++)
@@ -137,9 +139,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
         if (duality == PRIMAL)
             origin -= DGtal::Z3i::RealPoint(.5,.5,.5);
 
-        DGtal::Z3i::RealPoint arrow;
-        for (typename Calculus::Dimension dim=0; dim<Calculus::dimension; dim++)
-            arrow[dim] = vector_field.myCoordinates[dim](index);
+        Arrow arrow = vector_field.getArrow(index);
 
         arrow *= scale;
         if (!std::isfinite(arrow[0]) || !std::isfinite(arrow[1]) || !std::isfinite(arrow[2])) continue;
