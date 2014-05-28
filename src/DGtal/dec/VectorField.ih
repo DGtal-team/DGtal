@@ -93,13 +93,13 @@ DGtal::VectorField<Calculus, duality>::normalized(const typename Calculus::Scala
 
     for (typename Calculus::Index index=0; index<myCalculus->kFormLength(0, duality); index++)
     {
-        Arrow arrow = getVector(index);
+        Arrow arrow = getArrow(index);
 
         const typename Calculus::Scalar& norm = arrow.norm();
         if (norm <= epsilon) continue;
         arrow /= norm;
 
-        normalized_vector_field.setVector(index, arrow);
+        normalized_vector_field.setArrow(index, arrow);
     }
 
     return normalized_vector_field;
