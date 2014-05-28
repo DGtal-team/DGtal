@@ -69,10 +69,9 @@ template <typename TCalculus, Duality duality>
   public:
     typedef TCalculus Calculus;
 
-    typedef typename Calculus::Dimension Dimension;
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::Index Index;
-    typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Point;
+    typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Arrow;
 
     typedef boost::array<typename Calculus::Vector, Calculus::dimension> Coordinates;
     typedef Coordinates Container;
@@ -101,14 +100,14 @@ template <typename TCalculus, Duality duality>
      * Get vector from index.
      * @index index of the corresponding 0-cell.
      */
-    Point getVector(const Index& index) const;
+    Arrow getArrow(const Index& index) const;
 
     /**
      * Set vector at index.
      * @index index of the corresponding 0-cell.
-     * @point value of the vector field to set at this index.
+     * @arrow value of the vector field to set at this index.
      */
-    void setVector(const Index& index, const Point& point);
+    void setArrow(const Index& index, const Arrow& arrow);
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -149,7 +148,7 @@ template <typename TCalculus, Duality duality>
      * Return the normalized vector field.
      * @param epsilon vectors with norm lower than epsilon are set to zero.
      */
-    VectorField<TCalculus, duality> normalized(const typename Calculus::Scalar& epsilon = 0) const;
+    VectorField<TCalculus, duality> normalized(const Scalar& epsilon = 0) const;
 
     /**
      * Checks the validity/consistency of the object.
