@@ -216,11 +216,6 @@ namespace DGtal
   public:
 
     /**
-     * Definition domain.
-     */
-    const Domain myDomain;
-
-    /**
      * Associated Khalimski space.
      */
     const KSpace myKSpace;

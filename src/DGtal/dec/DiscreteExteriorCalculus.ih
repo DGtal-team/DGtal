@@ -36,7 +36,7 @@
 template <typename D, typename LAB>
 template <typename DigitalSet>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalSet& _set, const bool& add_border)
-    : myDomain(_set.domain()), myKSpace(), cell_properties()
+    : myKSpace(), cell_properties()
 {
     BOOST_STATIC_ASSERT(( boost::is_same<typename DigitalSet::Domain, Domain>::value ));
 
@@ -98,7 +98,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const DigitalS
 
 template <typename D, typename LAB>
 DGtal::DiscreteExteriorCalculus<D, LAB>::DiscreteExteriorCalculus(const D& _domain)
-    : myDomain(_domain), myKSpace(), cell_properties()
+    : myKSpace(), cell_properties()
 {
 }
 
@@ -187,8 +187,7 @@ DGtal::DiscreteExteriorCalculus<D, LAB>::selfDisplay(std::ostream & os) const
 {
     typedef DiscreteExteriorCalculus<D, LAB> Calculus;
 
-    os << "[DiscreteExteriorCalculus ";
-    os << myDomain;
+    os << "[DiscreteExteriorCalculus";
     for (DGtal::Order order=0; order<=Calculus::dimension; order++)
         os << " | primal " << order << "-cells <-> dual " << Calculus::dimension-order << "-cells (" << kFormLength(order, PRIMAL) << ")";
     os << "]";
