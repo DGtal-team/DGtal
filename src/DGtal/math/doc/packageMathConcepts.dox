@@ -23,7 +23,7 @@ namespace DGtal {
 /*!
 @page packageMathConcepts  Math Main Concepts
 
-@writers Jacques-Olivier Lachaud
+@writers Jacques-Olivier Lachaud, Pierre Gueth, David Coeurjolly
 
 @dot
 digraph GMath {
