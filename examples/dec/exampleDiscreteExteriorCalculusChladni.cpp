@@ -62,6 +62,7 @@ int main(int argc, char* argv[])
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board.saveSVG("chladni_calculus.svg");
     }
@@ -88,6 +89,7 @@ int main(int argc, char* argv[])
         trace.info() << kk << " " << eigen_value << " " << sqrt(eigen_value) << " " << eigen_vector.minCoeff() << " " << eigen_vector.maxCoeff() << " " << standard_deviation(eigen_vector) << endl;
 
         Board2D board;
+        board << domain;
         board << calculus;
         board << CustomStyle("KForm", new KFormStyle2D(eigen_vectors.minCoeff(),eigen_vectors.maxCoeff()));
         board << eigen_form;

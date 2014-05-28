@@ -49,8 +49,6 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;
 
-    board << calculus.myDomain;
-
     for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const CalculusSCell& cell = ci->first;

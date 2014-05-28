@@ -77,6 +77,7 @@ void test_linear_structure()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << dirac;
         board.saveSVG("linear_structure_neumann_dirac.svg");
@@ -128,6 +129,7 @@ void test_linear_structure()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << solved_solution;
             board.saveSVG("linear_structure_neumann_solution.svg");
@@ -136,6 +138,7 @@ void test_linear_structure()
         {
             Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
             Board2D board;
+            board << domain;
             board << calculus;
             board << solved_solution_gradient;
             board << CustomStyle("VectorField", new VectorFieldStyle2D(1));
@@ -155,6 +158,7 @@ void test_linear_structure()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << dirac;
         board.saveSVG("linear_structure_dirichlet_dirac.svg");
@@ -204,6 +208,7 @@ void test_linear_structure()
 
         {
             Board2D board;
+            board << domain;
             board << calculus;
             board << solved_solution;
             board.saveSVG("linear_structure_dirichlet_solution.svg");
@@ -213,6 +218,7 @@ void test_linear_structure()
             Calculus::PrimalForm1 solved_solution_gradient = d0 * solved_solution;
 
             Board2D board;
+            board << domain;
             board << calculus;
             board << solved_solution_gradient;
             board << calculus.sharp(solved_solution_gradient);
@@ -244,6 +250,7 @@ void test_laplace_operator()
 
     {
         Board2D board;
+        board << input_domain;
         board << calculus;
         board.saveSVG("laplace_structure.svg");
     }
