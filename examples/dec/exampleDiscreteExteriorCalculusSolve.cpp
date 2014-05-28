@@ -40,6 +40,7 @@ void solve2d_laplace()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << dirac;
         board.saveSVG("solve_laplace_calculus.svg");
@@ -62,6 +63,7 @@ void solve2d_laplace()
         trace.endBlock();
 
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_simplicial_llt.svg");
@@ -84,6 +86,7 @@ void solve2d_laplace()
         trace.endBlock();
 
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_simplicial_ldlt.svg");
@@ -106,6 +109,7 @@ void solve2d_laplace()
         trace.endBlock();
 
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_conjugate_gradient.svg");
@@ -128,6 +132,7 @@ void solve2d_laplace()
         trace.endBlock();
 
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_bicgstab.svg");
@@ -150,6 +155,7 @@ void solve2d_laplace()
         trace.endBlock();
 
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_sparse_lu.svg");
@@ -172,6 +178,7 @@ void solve2d_laplace()
         trace.endBlock();
 
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution;
         board.saveSVG("solve_laplace_sparse_qr.svg");
@@ -212,8 +219,8 @@ void solve2d_dual_decomposition()
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, DUAL); ii++)
     {
         const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, DUAL, ii).myCoordinates)/2.;
-        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
-        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0]+ .8*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
 
     const Calculus::DualForm1 input_one_form = calculus.flat(input_vector_field);
@@ -223,6 +230,7 @@ void solve2d_dual_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << CustomStyle("KForm", new KFormStyle2D(-1, 1));
         board << input_one_form;
@@ -250,6 +258,7 @@ void solve2d_dual_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution_curl_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
@@ -275,6 +284,7 @@ void solve2d_dual_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution_div_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(1.5));
@@ -289,6 +299,7 @@ void solve2d_dual_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution_harmonic;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(20));
@@ -331,8 +342,8 @@ void solve2d_primal_decomposition()
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
     {
         const Z2i::RealPoint cell_center = Z2i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
-        input_vector_field.myCoordinates[0](ii) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
-        input_vector_field.myCoordinates[1](ii) = cos(.4*cell_center[0]+ .8*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 0) = cos(-.5*cell_center[0]+ .3*cell_center[1]);
+        input_vector_field.myCoordinates(ii, 1) = cos(.4*cell_center[0]+ .8*cell_center[1]);
     }
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
@@ -342,6 +353,7 @@ void solve2d_primal_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << input_one_form;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
@@ -368,6 +380,7 @@ void solve2d_primal_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution_curl_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(.75));
@@ -393,6 +406,7 @@ void solve2d_primal_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution_div_free;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(1.5));
@@ -407,6 +421,7 @@ void solve2d_primal_decomposition()
 
     {
         Board2D board;
+        board << domain;
         board << calculus;
         board << solution_harmonic;
         board << CustomStyle("VectorField", new VectorFieldStyle2D(30));
@@ -537,7 +552,7 @@ void solve3d_decomposition()
         viewer->setWindowTitle("structure");
         (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
         (*viewer) << domain;
-				Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus);
         (*viewer) << Viewer::updateDisplay;
     }
 
@@ -559,9 +574,9 @@ void solve3d_decomposition()
     for (Calculus::Index ii=0; ii<calculus.kFormLength(0, PRIMAL); ii++)
     {
         const Z3i::RealPoint cell_center = Z3i::RealPoint(calculus.getSCell(0, PRIMAL, ii).myCoordinates)/2.;
-        input_vector_field.myCoordinates[0](ii) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
-        input_vector_field.myCoordinates[1](ii) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
-        input_vector_field.myCoordinates[2](ii) = -cos(cell_center[2]*.5);
+        input_vector_field.myCoordinates(ii, 0) = -cos(-.3*cell_center[0] + .6*cell_center[1] + .8*cell_center[2]);
+        input_vector_field.myCoordinates(ii, 1) = sin(.8*cell_center[0] + .3*cell_center[1] - .4*cell_center[2]);
+        input_vector_field.myCoordinates(ii, 2) = -cos(cell_center[2]*.5);
     }
 
     const Calculus::PrimalForm1 input_one_form = calculus.flat(input_vector_field);
@@ -574,7 +589,7 @@ void solve3d_decomposition()
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("input vector field");
-				Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form_derivated);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form_anti_derivated);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_vector_field);
@@ -628,7 +643,7 @@ void solve3d_decomposition()
         Viewer* viewer = new Viewer();
         viewer->show();
         viewer->setWindowTitle("div free solution");
-				Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_div_free);
+        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_div_free);
         Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(ad2*solution_div_free));
         (*viewer) << Viewer::updateDisplay;
     }
