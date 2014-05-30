@@ -172,18 +172,24 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
         shift[i] = (this->myBoundingPtUp[i] + this->myBoundingPtLow[i])/2.0;
       
       //We compute the scale of the largest direction so that it fits
-      //in [-1,1] interval
+      //in [-1/2,1/2] interval
       double tmpwidth;
-      for(unsigned int i=0; i < 3; i++)
+      
+      int i =0;
+      while ((i<3) && (this->myBoundingPtUp[i]  - this->myBoundingPtLow[i] == 0))
+        i++;
+      ASSERT_MSG(i < 3, "Error when computing the scale from the bounding box. The Bbox seems to be empty.");
+   
+      scale = 1.0/(this->myBoundingPtUp[i]  - this->myBoundingPtLow[i]);
+      for( ; i < 3; i++)
         {
           tmpwidth =  (this->myBoundingPtUp[i]  - this->myBoundingPtLow[i]);
-          if ((tmpwidth != 0.0) && (scale  < 1.0/tmpwidth))
+          if ((tmpwidth != 0.0) && (scale  > 1.0/tmpwidth))
             scale = 1.0/tmpwidth;
-        }
-      
+        }  
       outOBJ << "# Normalization was used. Scale= "<< scale << " and Shift= "<<shift<< std::endl;
     }
-
+  
   // Draw the shapes -----------------------------------------------------------------------
 
   ///Temporary variables

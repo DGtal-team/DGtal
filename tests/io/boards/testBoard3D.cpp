@@ -143,7 +143,7 @@ bool testNormaliation()
   Point p1( 0, 0, 0 );
   Point p2( 0, 10 , 0);
   Point p3( 10, 10, 0);
-  Point p4(10, 0, 10 );
+  Point p4(10, 0, 100 );
   Point p5( 20, 0 , 0);
   Point p6( 20, 10, 0);
   
