@@ -69,50 +69,31 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// struct EigenDenseLinearAlgebraBackend
+// struct EigenLinearAlgebraBackend
 /**
- * Description of struct 'EigenDenseLinearAlgebraBackend' <p>
+ * Description of struct 'EigenLinearAlgebraBackend' <p>
  * \brief Aim:
- * Provide linear algebra using Eigen dense matrix and vector.
- * 2 linear solvers available:
- *  - EigenDenseLinearAlgebraBackend::SolverConjugateGradient
- *  - EigenDenseLinearAlgebraBackend::SolverBiCGSTAB
- */
-struct EigenDenseLinearAlgebraBackend
-{
-    typedef Eigen::VectorXd Vector;
-    typedef Eigen::MatrixXd Matrix;
-
-    typedef Eigen::ConjugateGradient<Matrix> SolverConjugateGradient;
-    typedef Eigen::BiCGSTAB<Matrix> SolverBiCGSTAB;
-};
-///////////////////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////////////////
-// struct EigenSparseLinearAlgebraBackend
-/**
- * Description of struct 'EigenSparseLinearAlgebraBackend' <p>
- * \brief Aim:
- * Provide linear algebra using Eigen sparse matrix and dense vector.
+ * Provide linear algebra backend using Eigen dense and sparse matrix as well as dense vector.
  * 6 linear solvers available:
- *  - EigenSparseLinearAlgebraBackend::SolverSimplicialLLT
- *  - EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT
- *  - EigenSparseLinearAlgebraBackend::SolverConjugateGradient
- *  - EigenSparseLinearAlgebraBackend::SolverBiCGSTAB
- *  - EigenSparseLinearAlgebraBackend::SolverSparseLU
- *  - EigenSparseLinearAlgebraBackend::SolverSparseQR
+ *  - EigenLinearAlgebraBackend::SolverSimplicialLLT
+ *  - EigenLinearAlgebraBackend::SolverSimplicialLDLT
+ *  - EigenLinearAlgebraBackend::SolverConjugateGradient
+ *  - EigenLinearAlgebraBackend::SolverBiCGSTAB
+ *  - EigenLinearAlgebraBackend::SolverSparseLU
+ *  - EigenLinearAlgebraBackend::SolverSparseQR
  */
-struct EigenSparseLinearAlgebraBackend
+struct EigenLinearAlgebraBackend
 {
-    typedef Eigen::VectorXd Vector;
-    typedef Eigen::SparseMatrix<Vector::Scalar, Eigen::ColMajor> Matrix;
+    typedef Eigen::VectorXd DenseVector;
+    typedef Eigen::MatrixXd DenseMatrix;
+    typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor> SparseMatrix;
 
-    typedef Eigen::SimplicialLLT<Matrix> SolverSimplicialLLT;
-    typedef Eigen::SimplicialLDLT<Matrix> SolverSimplicialLDLT;
-    typedef Eigen::ConjugateGradient<Matrix> SolverConjugateGradient;
-    typedef Eigen::BiCGSTAB<Matrix> SolverBiCGSTAB;
-    typedef Eigen::SparseLU<Matrix> SolverSparseLU;
-    typedef Eigen::SparseQR<Matrix, Eigen::COLAMDOrdering<Matrix::Index> > SolverSparseQR;
+    typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
+    typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;
+    typedef Eigen::ConjugateGradient<SparseMatrix> SolverConjugateGradient;
+    typedef Eigen::BiCGSTAB<SparseMatrix> SolverBiCGSTAB;
+    typedef Eigen::SparseLU<SparseMatrix> SolverSparseLU;
+    typedef Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<SparseMatrix::Index> > SolverSparseQR;
 };
 ///////////////////////////////////////////////////////////////////////////////
 

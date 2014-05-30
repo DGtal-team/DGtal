@@ -72,7 +72,7 @@ template <typename TCalculus, Duality duality>
     typedef typename Calculus::Index Index;
     typedef typename DGtal::PointVector<Calculus::dimension, Scalar> Arrow;
 
-    typedef typename Calculus::Matrix Coordinates;
+    typedef typename Calculus::DenseMatrix Coordinates;
     typedef Coordinates Container;
 
     /**

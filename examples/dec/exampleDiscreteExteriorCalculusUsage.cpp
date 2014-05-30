@@ -18,7 +18,7 @@ void usage2d()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(9,9));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(generateRingSet(domain));
 
     trace.info() << calculus.eraseSCell(calculus.myKSpace.sSpel(Z2i::Point(8, 5))) << endl;

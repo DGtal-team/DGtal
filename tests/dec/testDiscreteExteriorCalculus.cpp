@@ -31,7 +31,7 @@ int
 main(int argc, char* argv[])
 {
     trace.beginBlock("testing sparse eigen backend");
-    test_backend<EigenSparseLinearAlgebraBackend>(1, 3);
+    test_backend<EigenLinearAlgebraBackend>(1, 3);
     const double sparse_eigen_time = trace.endBlock();
 
     trace.info() << "sparse_eigen_time=" << sparse_eigen_time << endl;

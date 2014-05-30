@@ -73,9 +73,6 @@ namespace DGtal
     typedef TCalculus Calculus;
     typedef TLinearAlgebraSolver LinearAlgebraSolver;
 
-    typedef typename Calculus::Vector Vector;
-    typedef typename Calculus::Matrix Matrix;
-
     typedef LinearOperator<Calculus, order_in, duality_in, order_out, duality_out> Operator;
     typedef KForm<Calculus, order_in, duality_in> SolutionKForm;
     typedef KForm<Calculus, order_out, duality_out> InputKForm;

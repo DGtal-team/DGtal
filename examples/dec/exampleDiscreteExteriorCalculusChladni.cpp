@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(10,10));
 
-    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
 
     // bottom linear structure
