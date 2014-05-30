@@ -182,7 +182,7 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @tparam DigitalSet type of digital set passed as argument.
+     * @tparam TDigitalSet type of digital set passed as argument.
      * @param set the initial set copied.
      * @add_border add border to the computed structure.
      * Set point get attached to primal n-cell <-> dual 0-cell.
