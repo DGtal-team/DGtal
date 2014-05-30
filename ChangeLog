@@ -14,7 +14,7 @@
       to display surfels with prescribed normal vectors.
 
     - When exporting an 3D visualization to OBJ, a new option will
-      rescale the geometry to fit in [-1,1]^3.
+      rescale the geometry to fit in [-1/2,1/2]^3.
 
 *For Developpers*
 

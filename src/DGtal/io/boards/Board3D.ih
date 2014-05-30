@@ -176,7 +176,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
       double tmpwidth;
       for(unsigned int i=0; i < 3; i++)
         {
-          tmpwidth =  (this->myBoundingPtUp[i]  - this->myBoundingPtLow[i])/2.0;
+          tmpwidth =  (this->myBoundingPtUp[i]  - this->myBoundingPtLow[i]);
           if ((tmpwidth != 0.0) && (scale  < 1.0/tmpwidth))
             scale = 1.0/tmpwidth;
         }

@@ -126,7 +126,7 @@ namespace DGtal
      * Save a OBJ image.
      * @param filename filename of the image to save.
      * @param isNormalized if true, we use the bounding box to scale
-     * all objects such that they fit in [-1,1]^3 domain (default false),
+     * all objects such that they fit in [-1/2,1/2]^3 domain (default false),
      */
     void saveOBJ(const std::string & filename, 
                  const bool isNormalized = false);
