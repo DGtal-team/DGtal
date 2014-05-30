@@ -137,7 +137,6 @@ bool testQuadNorm()
 
 bool testNormaliation()
 {
-  unsigned int nb = 0;
   trace.beginBlock ( "Testing normalization ..." );
 
   Point p1( 0, 0, 0 );
