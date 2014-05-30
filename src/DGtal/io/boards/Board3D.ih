@@ -166,7 +166,6 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
   typename Space::RealPoint shift(0.0,0.0,0.0); 
   if (normalization)
     {
-      double largestscale= 0.0;
       //We center  the shape W.r.t. its bounding box
       for(unsigned int i=0; i < 3; i++)
         shift[i] = (this->myBoundingPtUp[i] + this->myBoundingPtLow[i])/2.0;
