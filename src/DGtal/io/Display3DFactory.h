@@ -87,10 +87,10 @@ namespace DGtal
     typedef TKSpace KSpace;
 
     // DiscreteExteriorCalculus
-    template <typename TDomain, typename TLinearAlgebraBackend>
+    template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
     static
     void
-    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& calculus);
+    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
     // DiscreteExteriorCalculus
 
     // KForm

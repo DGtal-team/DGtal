@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(10,10));
 
-    typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
-    Calculus calculus(domain);
+    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    Calculus calculus;
 
     // bottom linear structure
     // left and right Dirichlet boundary condition

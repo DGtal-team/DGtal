@@ -43,8 +43,8 @@ void test_linear_structure()
     //! [neumann-creation]
     const Domain domain(Point(-1,-1), Point(10,10));
 
-    typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebraBackend> Calculus;
-    Calculus calculus(domain);
+    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    Calculus calculus;
 
     for (int kk=20; kk>0; kk--)
         calculus.insertSCell(calculus.myKSpace.sCell(Point(0,kk), kk%2 == 1 ? Calculus::KSpace::NEG : Calculus::KSpace::POS));
@@ -245,7 +245,7 @@ void test_laplace_operator()
     input_set.insertNew(Point(1,2));
     input_set.insertNew(Point(1,1));
 
-    typedef DiscreteExteriorCalculus<Domain, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(input_set);
 
     {

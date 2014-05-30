@@ -120,7 +120,7 @@ test_hodge(int domain_size=5)
     trace.info() << "domain.size()=" << domain.size() << endl;
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<Domain::Space::dimension, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
     {
         trace.beginBlock("testing indexes");
@@ -246,7 +246,7 @@ test_derivative(int domain_size=10)
     trace.info() << "domain.size()=" << domain.size() << endl;
     trace.info() << "set.size()=" << set.size() << endl;
 
-    typedef DiscreteExteriorCalculus<Domain, LinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<Domain::Space::dimension, LinearAlgebraBackend> Calculus;
     Calculus calculus(set);
     {
         typename Calculus::Properties properties = calculus.getProperties();
@@ -267,7 +267,7 @@ test_concepts()
     trace.beginBlock("concepts");
 
     { // 2d
-        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebraBackend> Calculus;
+        typedef DiscreteExteriorCalculus<2, LinearAlgebraBackend> Calculus;
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
@@ -299,7 +299,7 @@ test_concepts()
     }
 
     { // 3d
-        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebraBackend> Calculus;
+        typedef DiscreteExteriorCalculus<3, LinearAlgebraBackend> Calculus;
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
         BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
@@ -348,7 +348,7 @@ test_hodge_sign()
     trace.beginBlock("testing hodge sign");
 
     {
-        typedef DiscreteExteriorCalculus<Z2i::Domain, LinearAlgebraBackend> Calculus;
+        typedef DiscreteExteriorCalculus<2, LinearAlgebraBackend> Calculus;
         const Z2i::Domain domain;
         const Z2i::DigitalSet set(domain);
         const Calculus calculus(set);
@@ -377,7 +377,7 @@ test_hodge_sign()
     }
 
     {
-        typedef DiscreteExteriorCalculus<Z3i::Domain, LinearAlgebraBackend> Calculus;
+        typedef DiscreteExteriorCalculus<3, LinearAlgebraBackend> Calculus;
         const Z3i::Domain domain;
         const Z3i::DigitalSet set(domain);
         const Calculus calculus(set);
