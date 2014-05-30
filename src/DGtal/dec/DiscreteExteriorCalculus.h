@@ -83,14 +83,17 @@ namespace DGtal
   public:
 
     typedef TLinearAlgebraBackend LinearAlgebraBackend;
-    typedef typename LinearAlgebraBackend::Vector::Index Index;
-    typedef typename LinearAlgebraBackend::Vector::Scalar Scalar;
-    typedef typename LinearAlgebraBackend::Vector Vector;
-    typedef typename LinearAlgebraBackend::Matrix Matrix;
+    typedef typename LinearAlgebraBackend::DenseVector::Index Index;
+    typedef typename LinearAlgebraBackend::DenseVector::Scalar Scalar;
+    typedef typename LinearAlgebraBackend::DenseVector DenseVector;
+    typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
+    typedef typename LinearAlgebraBackend::SparseMatrix SparseMatrix;
 
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<Vector> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<Matrix> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<DenseVector> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<DenseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<SparseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<DenseVector, SparseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<DenseVector, DenseMatrix> ));
 
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
 

@@ -71,7 +71,7 @@ namespace DGtal
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= Calculus::dimension ));
 
-    typedef typename Calculus::Vector Container;
+    typedef typename Calculus::DenseVector Container;
     typedef typename Calculus::Scalar Scalar;
 
     /**

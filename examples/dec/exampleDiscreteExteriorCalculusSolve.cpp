@@ -23,7 +23,7 @@ void solve2d_laplace()
 
     // create discrete exterior calculus from set
     //! [calculus_creation]
-    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(generateRingSet(domain));
     //! [calculus_creation]
     trace.info() << calculus << endl;
@@ -50,7 +50,7 @@ void solve2d_laplace()
         trace.beginBlock("simplicial llt");
 
         //! [solve_llt]
-        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLLT LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverSimplicialLLT LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
@@ -73,7 +73,7 @@ void solve2d_laplace()
         trace.beginBlock("simplicial ldlt");
 
         //! [solve_ldlt]
-        typedef EigenSparseLinearAlgebraBackend::SolverSimplicialLDLT LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverSimplicialLDLT LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
@@ -96,7 +96,7 @@ void solve2d_laplace()
         trace.beginBlock("conjugate gradient");
 
         //! [solve_conjugate_gradient]
-        typedef EigenSparseLinearAlgebraBackend::SolverConjugateGradient LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverConjugateGradient LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
@@ -119,7 +119,7 @@ void solve2d_laplace()
         trace.beginBlock("biconjugate gradient stabilized (bicgstab)");
 
         //! [solve_biconjugate_gradient]
-        typedef EigenSparseLinearAlgebraBackend::SolverBiCGSTAB LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverBiCGSTAB LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
@@ -142,7 +142,7 @@ void solve2d_laplace()
         trace.beginBlock("sparse lu");
 
         //! [solve_sparse_lu]
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseLU LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverSparseLU LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
@@ -165,7 +165,7 @@ void solve2d_laplace()
         trace.beginBlock("sparse qr");
 
         //! [solve_sparse_qr]
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, DUAL, 0, DUAL> Solver;
 
         Solver solver;
@@ -194,12 +194,12 @@ void solve2d_dual_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
     // choose linear solver
-    typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+    typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
 
     //! [2d_dual_decomposition_operator_definition]
     const Calculus::DualDerivative0 d0 = calculus.derivative<0, DUAL>();
@@ -317,12 +317,12 @@ void solve2d_primal_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
     // choose linear solver
-    typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+    typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
 
     //! [2d_primal_decomposition_operator_definition]
     const Calculus::PrimalDerivative0 d0 = calculus.derivative<0, PRIMAL>();
@@ -439,11 +439,11 @@ void solve3d_decomposition()
     const Z3i::Domain domain(Z3i::Point(0,0,0), Z3i::Point(19,19,9));
 
     // choose linear solver
-    typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+    typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
 
     //! [3d_decomposition_structure]
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<3, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<3, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
 
     // outer ring

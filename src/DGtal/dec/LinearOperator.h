@@ -77,7 +77,7 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
     BOOST_STATIC_ASSERT(( order_out <= Calculus::dimension ));
 
     ///Container typr
-    typedef typename Calculus::Matrix Container;
+    typedef typename Calculus::SparseMatrix Container;
     ///Calculus scalar type
     typedef typename Calculus::Scalar Scalar;
     ///Input KForm type

@@ -43,7 +43,7 @@ void test_linear_structure()
     //! [neumann-creation]
     const Domain domain(Point(-1,-1), Point(10,10));
 
-    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus;
 
     for (int kk=20; kk>0; kk--)
@@ -97,7 +97,7 @@ void test_linear_structure()
         //! [neumann-laplace-definition]
 
         //! [neumann-solve]
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> Solver;
 
         Solver solver;
@@ -178,7 +178,7 @@ void test_linear_structure()
         //! [dirichlet-laplace-definition]
 
         //! [dirichlet-solve]
-        typedef EigenSparseLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
+        typedef EigenLinearAlgebraBackend::SolverSparseQR LinearAlgebraSolver;
         typedef DiscreteExteriorCalculusSolver<Calculus, LinearAlgebraSolver, 0, PRIMAL, 0, PRIMAL> Solver;
 
         Solver solver;
@@ -245,7 +245,7 @@ void test_laplace_operator()
     input_set.insertNew(Point(1,2));
     input_set.insertNew(Point(1,1));
 
-    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenLinearAlgebraBackend> Calculus;
     Calculus calculus(input_set);
 
     {

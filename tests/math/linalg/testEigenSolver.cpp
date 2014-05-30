@@ -48,25 +48,15 @@ using namespace DGtal;
  */
 bool testEigenSolverConcepts()
 {
-    { // dense eigen backend
-        typedef EigenDenseLinearAlgebraBackend LAB;
-        typedef LAB::Vector Vector;
-        typedef LAB::Matrix Matrix;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverBiCGSTAB, Vector, Matrix> ));
-    }
-
-    { // sparse eigen backend
-        typedef EigenSparseLinearAlgebraBackend LAB;
-        typedef LAB::Vector Vector;
-        typedef LAB::Matrix Matrix;
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> ));
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> ));
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverBiCGSTAB, Vector, Matrix> ));
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSparseLU, Vector, Matrix> ));
-        BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSparseQR, Vector, Matrix> ));
-    }
+    typedef EigenLinearAlgebraBackend LAB;
+    typedef LAB::DenseVector Vector;
+    typedef LAB::SparseMatrix Matrix;
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverBiCGSTAB, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSparseLU, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSparseQR, Vector, Matrix> ));
 
     return true;
 }
