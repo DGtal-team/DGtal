@@ -49,7 +49,7 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  //! [imageBasicSubsamplingType]
+  //! [imageBasicSubsamplingType2D]
   typedef ImageContainerBySTLVector < Z3i::Domain, unsigned char> Image3D;
   typedef ImageContainerBySTLVector < Z2i::Domain, unsigned char> Image2D;
   typedef ConstImageAdapter<Image2D,  Image2D::Domain, 
