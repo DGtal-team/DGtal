@@ -37,14 +37,14 @@
 // Implementation of inline functions and external operators                 //
 
 // DiscreteExteriorCalculus
-template <typename TDomain, typename TLinearAlgebraBackend>
+template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 inline
 void
-DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend>& calculus)
+DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus)
 {
-    BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
+    BOOST_STATIC_ASSERT(( dim == 2 ));
 
-    typedef DiscreteExteriorCalculus<TDomain, TLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;

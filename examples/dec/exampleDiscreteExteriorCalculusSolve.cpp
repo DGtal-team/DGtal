@@ -23,7 +23,7 @@ void solve2d_laplace()
 
     // create discrete exterior calculus from set
     //! [calculus_creation]
-    typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(generateRingSet(domain));
     //! [calculus_creation]
     trace.info() << calculus << endl;
@@ -194,7 +194,7 @@ void solve2d_dual_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
@@ -317,7 +317,7 @@ void solve2d_primal_decomposition()
     const Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(44,29));
 
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<Z2i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
+    typedef DiscreteExteriorCalculus<2, EigenSparseLinearAlgebraBackend> Calculus;
     Calculus calculus(generateDoubleRingSet(domain));
     trace.info() << calculus << endl;
 
@@ -443,8 +443,8 @@ void solve3d_decomposition()
 
     //! [3d_decomposition_structure]
     // create discrete exterior calculus from set
-    typedef DiscreteExteriorCalculus<Z3i::Domain, EigenSparseLinearAlgebraBackend> Calculus;
-    Calculus calculus(domain);
+    typedef DiscreteExteriorCalculus<3, EigenSparseLinearAlgebraBackend> Calculus;
+    Calculus calculus;
 
     // outer ring
     for (int kk=2; kk<=18; kk++)

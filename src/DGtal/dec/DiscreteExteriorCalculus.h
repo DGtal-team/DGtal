@@ -44,6 +44,7 @@
 #include <vector>
 #include <map>
 #include <boost/array.hpp>
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -52,10 +53,10 @@
 #include "DGtal/dec/LinearOperator.h"
 #include "DGtal/dec/VectorField.h"
 
+#include <DGtal/kernel/sets/CDigitalSet.h>
 #include <DGtal/math/linalg/CDynamicMatrix.h>
 #include <DGtal/math/linalg/CDynamicVector.h>
 #include <DGtal/math/linalg/CLinearAlgebra.h>
-#include <DGtal/kernel/domains/CDomain.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -71,19 +72,15 @@ namespace DGtal
    * This is used to describe the space on wich the dec is build and to compute various operators.
    * Once operators or kforms are created, this structure should not be modified.
    *
-   * @tparam TDomain should be a model of CDomain.
-   * @tparam TLinearAlgebraBackend is linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
+   * @tparam dim dimension of underlying space.
+   * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
+   * @tparam TInteger integer type forwarded to khalimsky space.
    */
-  template <typename TDomain, typename TLinearAlgebraBackend>
+  template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger = int32_t>
   class DiscreteExteriorCalculus
   {
     // ----------------------- Standard services ------------------------------
   public:
-
-    typedef TDomain Domain;
-    typedef typename Domain::Space Space;
-
-    BOOST_CONCEPT_ASSERT(( DGtal::CDomain<Domain> ));
 
     typedef TLinearAlgebraBackend LinearAlgebraBackend;
     typedef typename LinearAlgebraBackend::Vector::Index Index;
@@ -100,9 +97,9 @@ namespace DGtal
     /**
      * Static dimension.
      */
-    static const Dimension dimension = Space::dimension;
+    static const Dimension dimension = dim;
 
-    typedef typename DGtal::KhalimskySpaceND<dimension, typename Space::Integer> KSpace;
+    typedef DGtal::KhalimskySpaceND<dim, TInteger> KSpace;
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Point Point;
 
@@ -126,7 +123,7 @@ namespace DGtal
      * Indices to cells map typedefs.
      */
     typedef std::vector<SCell> SCells;
-    typedef boost::array<SCells, dimension+1> IndexedSCells;
+    typedef boost::array<SCells, dim+1> IndexedSCells;
 
     /**
      * Vector field typedefs.
@@ -159,14 +156,14 @@ namespace DGtal
     /**
      * Hodge duality linear operator typedefs.
      */
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, PRIMAL, dimension-0, DUAL> PrimalHodge0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, PRIMAL, dimension-1, DUAL> PrimalHodge1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, PRIMAL, dimension-2, DUAL> PrimalHodge2;
-    typedef LinearOperator<DiscreteExteriorCalculus, 3, PRIMAL, dimension-3, DUAL> PrimalHodge3;
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, DUAL, dimension-0, PRIMAL> DualHodge0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, DUAL, dimension-1, PRIMAL> DualHodge1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, DUAL, dimension-2, PRIMAL> DualHodge2;
-    typedef LinearOperator<DiscreteExteriorCalculus, 3, DUAL, dimension-3, PRIMAL> DualHodge3;
+    typedef LinearOperator<DiscreteExteriorCalculus, 0, PRIMAL, dim-0, DUAL> PrimalHodge0;
+    typedef LinearOperator<DiscreteExteriorCalculus, 1, PRIMAL, dim-1, DUAL> PrimalHodge1;
+    typedef LinearOperator<DiscreteExteriorCalculus, 2, PRIMAL, dim-2, DUAL> PrimalHodge2;
+    typedef LinearOperator<DiscreteExteriorCalculus, 3, PRIMAL, dim-3, DUAL> PrimalHodge3;
+    typedef LinearOperator<DiscreteExteriorCalculus, 0, DUAL, dim-0, PRIMAL> DualHodge0;
+    typedef LinearOperator<DiscreteExteriorCalculus, 1, DUAL, dim-1, PRIMAL> DualHodge1;
+    typedef LinearOperator<DiscreteExteriorCalculus, 2, DUAL, dim-2, PRIMAL> DualHodge2;
+    typedef LinearOperator<DiscreteExteriorCalculus, 3, DUAL, dim-3, PRIMAL> DualHodge3;
 
     /**
      * Identity linear operator typedefs.
@@ -182,19 +179,19 @@ namespace DGtal
 
     /**
      * Constructor.
+     * @tparam DigitalSet type of digital set passed as argument.
      * @param set the initial set copied.
      * @add_border add border to the computed structure.
      * Set point get attached to primal n-cell <-> dual 0-cell.
      */
-    template <typename DigitalSet>
-    DiscreteExteriorCalculus(const DigitalSet& set, const bool& add_border = true);
+    template <typename TDigitalSet>
+    DiscreteExteriorCalculus(const TDigitalSet& set, const bool& add_border = true);
 
     /**
      * Constructor.
-     * @param domain calculus definition domain
      * Initialize empty discrete exterior calculus.
      */
-    DiscreteExteriorCalculus(const Domain& domain);
+    DiscreteExteriorCalculus();
 
 
     // ----------------------- Iterators on property map -----------------------
@@ -291,7 +288,7 @@ namespace DGtal
      * @tparam order order of input primal k-form.
      */
     template <Order order>
-    LinearOperator<DiscreteExteriorCalculus, order, PRIMAL, dimension-order, DUAL>
+    LinearOperator<DiscreteExteriorCalculus, order, PRIMAL, dim-order, DUAL>
     primalHodge() const;
 
     /**
@@ -299,7 +296,7 @@ namespace DGtal
      * @tparam order order of input dual k-form.
      */
     template <Order order>
-    LinearOperator<DiscreteExteriorCalculus, order, DUAL, dimension-order, PRIMAL>
+    LinearOperator<DiscreteExteriorCalculus, order, DUAL, dim-order, PRIMAL>
     dualHodge() const;
 
     /**
@@ -414,12 +411,6 @@ namespace DGtal
   protected:
 
     /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    DiscreteExteriorCalculus();
-
-    /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.
@@ -446,9 +437,9 @@ namespace DGtal
    * @param object the object of class 'DiscreteExteriorCalculus' to write.
    * @return the output stream after the writing.
    */
-  template <typename D, typename LAB>
+  template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
   std::ostream&
-  operator<<(std::ostream& out, const DiscreteExteriorCalculus<D, LAB>& object);
+  operator<<(std::ostream& out, const DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& object);
 
 } // namespace DGtal
 
