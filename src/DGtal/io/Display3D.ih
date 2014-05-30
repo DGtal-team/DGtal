@@ -1354,6 +1354,14 @@ DGtal::Display3D< Space ,KSpace >::clear()
   myQuadSetNameList.clear();
   myTriangleSetNameList.clear();
   myPolygonSetNameList.clear();
+
+  //Bounding box reset
+  myBoundingPtEmptyTag = true;
+  for (unsigned int i=0; i< 3; i++)
+    {
+      myBoundingPtUp[i] = 0.0;
+      myBoundingPtLow[i] = 0.0;
+    }
 }
 
 

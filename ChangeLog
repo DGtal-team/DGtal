@@ -7,8 +7,14 @@
     - New 'basic' display mode for surfels (oriented or not), useful
       for large digital surface displays (quads instead of 3D prism)
 
+    - New clear() method to subclasses of Display3D (Viewer3D and
+      Board3D) to clear the current drawning buffer.
+
     - New draw() method for 3D display models (Viewer3D and Board3D)
       to display surfels with prescribed normal vectors.
+
+    - When exporting an 3D visualization to OBJ, a new option will
+      rescale the geometry to fit in [-1,1]^3.
 
 *For Developpers*
 
