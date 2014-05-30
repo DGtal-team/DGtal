@@ -134,6 +134,35 @@ bool testQuadNorm()
   return nbok == nb;
 }
 
+
+bool testNormaliation()
+{
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing normalization ..." );
+
+  Point p1( 0, 0, 0 );
+  Point p2( 0, 10 , 0);
+  Point p3( 10, 10, 0);
+  Point p4(10, 0, 10 );
+  Point p5( 20, 0 , 0);
+  Point p6( 20, 10, 0);
+  
+  KSpace k;
+
+  k.init(Point(2,2,2), Point(4,4,4), true);
+
+  Board3D<Space,KSpace> board(k);
+  
+  board << p1<<p2<<p3<<p4; 
+
+  board.saveOBJ("dgtalBoard3D-norm.obj", true);
+  board.saveOBJ("dgtalBoard3D-wonorm.obj");
+
+  trace.endBlock();
+
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -145,7 +174,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testBoard3D() && testQuadNorm(); // && ... other tests
+  bool res = testBoard3D() && testQuadNorm()
+    && testNormaliation(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
