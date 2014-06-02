@@ -410,6 +410,21 @@ namespace DGtal
      */
     IndexedSCells index_cells;
 
+    /**
+     * Cached flat operator matrix
+     */
+    boost::array<boost::array<SparseMatrix, dim>, 2> flat_operator_matrixes;
+
+    /**
+     * Cached sharp operator matrix
+     */
+    boost::array<boost::array<SparseMatrix, dim>, 2> sharp_operator_matrixes;
+
+    /**
+     * Cached operators genration flag
+     */
+    bool cached_operators_modified;
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -430,6 +445,17 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+
+    void
+    updateCachedOperators();
+
+    template <Duality duality>
+    void
+    updateFlatOperator();
+
+    template <Duality duality>
+    void
+    updateSharpOperator();
 
   }; // end of class DiscreteExteriorCalculus
 
