@@ -154,7 +154,6 @@ DGtal::VectorField<Calculus, duality>
 DGtal::operator+(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
 {
     ASSERT( _vector_field_a.myCalculus == _vector_field_b.myCalculus );
-    typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     return DGtal::VectorField<Calculus, duality>(*_vector_field_a.myCalculus, _vector_field_a.myCoordinates + _vector_field_b.myCoordinates);
 }
 
@@ -163,7 +162,6 @@ DGtal::VectorField<Calculus, duality>
 DGtal::operator-(const DGtal::VectorField<Calculus, duality>& _vector_field_a, const DGtal::VectorField<Calculus, duality>& _vector_field_b)
 {
     ASSERT( _vector_field_a.myCalculus == _vector_field_b.myCalculus );
-    typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     return DGtal::VectorField<Calculus, duality>(*_vector_field_a.myCalculus, _vector_field_a.myCoordinates - _vector_field_b.myCoordinates);
 }
 
@@ -171,7 +169,6 @@ template <typename Calculus, DGtal::Duality duality>
 DGtal::VectorField<Calculus, duality>
 DGtal::operator*(const typename Calculus::Scalar& _scalar, const DGtal::VectorField<Calculus, duality>& _vector_field)
 {
-    typedef typename DGtal::VectorField<Calculus, duality>::Coordinates Coordinates;
     return DGtal::VectorField<Calculus, duality>(*_vector_field.myCalculus, _scalar * _vector_field.myCoordinates);
 }
 

@@ -45,7 +45,6 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     BOOST_STATIC_ASSERT(( dim == 2 ));
 
     typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Calculus;
-    typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;
 

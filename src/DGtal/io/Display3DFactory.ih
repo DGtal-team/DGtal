@@ -48,7 +48,6 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     BOOST_STATIC_ASSERT(( dim == 3 ));
 
     typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Calculus;
-    typedef typename Calculus::Scalar Scalar;
     typedef typename Calculus::ConstIterator CalculusConstIterator;
     typedef typename Calculus::SCell CalculusSCell;
 
