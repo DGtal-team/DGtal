@@ -32,163 +32,129 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
+ /// Shape
+#include "DGtal/shapes/implicit/ImplicitBall.h"
+
+ /// Digitization
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
-
+/// Estimator
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 
-#include "DGtal/kernel/BasicPointFunctors.h"
-#include "DGtal/shapes/implicit/ImplicitBall.h"
 
 ///////////////////////////////////////////////////////////////////////////////
+
 
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class IntegralInvariantGaussianCurvatureEstimator3D.
+// Functions for testing class IntegralInvariantCovarianceEstimator and IIGaussianCurvature3DFunctor.
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
+
 bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
 {
-  // typedef Z3i::Space::RealPoint RealPoint;
-  // typedef Z3i::KSpace::Surfel Surfel;
-  // typedef Z3i::Domain Domain;
-  // typedef ImplicitBall<Z3i::Space> ImplicitShape;
-  // typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
-  // typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
-  // typedef DigitalSurface< Boundary > MyDigitalSurface;
-  // typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-  // typedef GraphVisitorRange< Visitor > VisitorRange;
-  // typedef VisitorRange::ConstIterator VisitorConstIterator;
-  // typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z3i::Domain, unsigned int > MyPointFunctor;
-  // typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MySpelFunctor;
-  // typedef deprecated::IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MySpelFunctor > MyIIGaussianEstimator;
-  // typedef MyIIGaussianEstimator::Quantity Quantity;
+  typedef ImplicitBall<Z3i::Space> ImplicitShape;
+  typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
+  typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
+  typedef DigitalSurface< Boundary > MyDigitalSurface;
+  typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+  typedef GraphVisitorRange< Visitor > VisitorRange;
+  typedef VisitorRange::ConstIterator VisitorConstIterator;
 
-  // typedef IIGeometricFunctors::IICurvatureFunctor<Z3i::Space> MyIICurvatureFunctor;
-  // typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
-  // typedef MyIICurvatureFunctor::Value Value;
+  typedef IIGeometricFunctors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+  typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
+  typedef MyIICurvatureFunctor::Value Value;
 
-  // double re = 5;
-  // double radius = 5;
-  // double realValue = 1.0/(radius * radius);
+  double re = 5;
+  double radius = 5;
+  double realValue = 1.0/(radius * radius);
 
-  // trace.beginBlock ( "Initialisation of shape ..." );
+  trace.beginBlock( "Shape initialisation ..." );
 
-  // ImplicitShape ishape( RealPoint( 0, 0, 0 ), radius );
-  // DigitalShape dshape;
-  // dshape.attach( ishape );
-  // dshape.init( RealPoint( -10.0, -10.0, -10.0 ), RealPoint( 10.0, 10.0, 10.0 ), h );
+  ImplicitShape ishape( Z3i::RealPoint( 0, 0, 0 ), radius );
+  DigitalShape dshape;
+  dshape.attach( ishape );
+  dshape.init( Z3i::RealPoint( -10.0, -10.0, -10.0 ), Z3i::RealPoint( 10.0, 10.0, 10.0 ), h );
 
-  // Z3i::KSpace K;
-  // if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
-  // {
-  //   trace.error() << "Problem with Khalimsky space" << std::endl;
-  //   return false;
-  // }
+  Z3i::KSpace K;
+  if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
+  {
+    trace.error() << "Problem with Khalimsky space" << std::endl;
+    return false;
+  }
 
-  // Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, dshape, 10000 );
-  // Boundary boundary( K, dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
-  // MyDigitalSurface surf ( boundary );
+  Z3i::KSpace::Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, dshape, 10000 );
+  Boundary boundary( K, dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
+  MyDigitalSurface surf ( boundary );
 
-  // trace.endBlock();
+  trace.endBlock();
 
-  // trace.beginBlock( "Initialisation of estimator ..." );
-
-  // Domain domain = dshape.getDomain();
-  // MyPointFunctor pointFunctor( dshape, domain, 1, 0 );
-  // MySpelFunctor functor( pointFunctor, K );
-
-  // MyIIGaussianEstimator estimator( K, functor );
-  // estimator.init( h, re );
-
-  // trace.endBlock();
-
-  // trace.beginBlock( "Eval estimator" );
-
-  // std::vector< Quantity > results;
-  // std::back_insert_iterator< std::vector< Quantity > > resultsIt( results );
-
-  // VisitorRange range( new Visitor( surf, *surf.begin() ));
-  // VisitorConstIterator ibegin = range.begin();
-  // VisitorConstIterator iend = range.end();
-
-  // estimator.eval( ibegin, iend, resultsIt );
-
-  // trace.endBlock();
-
-  // trace.beginBlock( "Curvature estimator initialisation ...");
+  trace.beginBlock( "Curvature estimator initialisation ...");
   
-  // VisitorRange range2( new Visitor( surf, *surf.begin() ));
-  // ibegin = range2.begin();
-  // iend = range2.end();
+  VisitorRange range( new Visitor( surf, *surf.begin() ));
+  VisitorConstIterator ibegin = range.begin();
+  VisitorConstIterator iend = range.end();
 
-  // MyIICurvatureFunctor curvatureFunctor;
-  // curvatureFunctor.init( h, re );
+  MyIICurvatureFunctor curvatureFunctor;
+  curvatureFunctor.init( h, re );
 
-  // MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
-  // curvatureEstimator.attach( K, dshape );
-  // curvatureEstimator.setParams( re/h );
-  // curvatureEstimator.init( h, ibegin, iend );
+  MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
+  curvatureEstimator.attach( K, dshape );
+  curvatureEstimator.setParams( re/h );
+  curvatureEstimator.init( h, ibegin, iend );
 
-  // trace.endBlock();
+  trace.endBlock();
 
-  // trace.beginBlock( "Curvature estimator evaluation ...");
+  trace.beginBlock( "Curvature estimator evaluation ...");
 
-  // std::vector< Value > results2;
-  // std::back_insert_iterator< std::vector< Value > > resultsIt2( results2 );
-  // curvatureEstimator.eval( ibegin, iend, resultsIt2 );
+  std::vector< Value > results;
+  std::back_insert_iterator< std::vector< Value > > resultsIt( results );
+  curvatureEstimator.eval( ibegin, iend, resultsIt );
 
-  // trace.endBlock();
+  trace.endBlock();
 
-  // trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
+  trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
 
-  // double mean = 0.0;
-  // unsigned int rsize = results.size();
+  double mean = 0.0;
+  unsigned int rsize = results.size();
 
-  // if( rsize == 0 )
-  // {
-  //   trace.error() << "ERROR: surface is empty" << std::endl;
-  //   trace.endBlock();
-  //   return false;
-  // }
+  if( rsize == 0 )
+  {
+    trace.error() << "ERROR: surface is empty" << std::endl;
+    trace.endBlock();
+    return false;
+  }
 
-  // for ( unsigned int i = 0; i < rsize; ++i )
-  // {
-  //   mean += results[ i ];
-  // }
-  // mean /= rsize;
+  for ( unsigned int i = 0; i < rsize; ++i )
+  {
+    mean += results[ i ];
+  }
+  mean /= rsize;
 
-  // if( mean != mean ) //NaN
-  // {
-  //   trace.error() << "ERROR: result is NaN" << std::endl;
-  //   trace.endBlock();
-  //   return false;
-  // }
+  if( mean != mean ) //NaN
+  {
+    trace.error() << "ERROR: result is NaN" << std::endl;
+    trace.endBlock();
+    return false;
+  }
 
-  // double v = std::abs ( realValue - mean );
+  double v = std::abs ( realValue - mean );
 
-  // trace.warning() << "True value: " << realValue << std::endl;
-  // trace.warning() << "Mean value: " << mean << std::endl;
-  // trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
+  trace.warning() << "True value: " << realValue << std::endl;
+  trace.warning() << "Mean value: " << mean << std::endl;
+  trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
 
-  // if( v > delta )
-  // {
-  //   trace.endBlock();
-  //   return false;
-  // }
-  // trace.endBlock();
+  if( v > delta )
+  {
+    trace.endBlock();
+    return false;
+  }
+  trace.endBlock();
   return true;
 }
 
@@ -197,13 +163,13 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class IntegralInvariantGaussianCurvatureEstimator3D" );
+  trace.beginBlock ( "Testing class IntegralInvariantCovarianceEstimator and IIGaussianCurvature3DFunctor" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << std::endl;
 
-  bool res = true;//testIntegralInvariantGaussianCurvatureEstimator3D( 0.6, 0.007 ); // && ... other tests
+  bool res = testIntegralInvariantGaussianCurvatureEstimator3D( 0.6, 0.007 ); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;

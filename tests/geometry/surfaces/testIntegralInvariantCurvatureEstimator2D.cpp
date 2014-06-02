@@ -53,7 +53,7 @@
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class IntegralInvariantVolumeCurvatureEstimator and IICurvatureFunctor.
+// Functions for testing class IntegralInvariantVolumeEstimator and IICurvatureFunctor.
 ///////////////////////////////////////////////////////////////////////////////
 
 bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
@@ -74,7 +74,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   double radius = 15;
   double realValue = 1.0/radius;
 
-  trace.beginBlock ( "Shape initialisation ..." );
+  trace.beginBlock( "Shape initialisation ..." );
 
   ImplicitShape ishape( Z2i::RealPoint( 0, 0 ), radius );
   DigitalShape dshape;
@@ -163,7 +163,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class IntegralInvariantCurvatureEstimator2D" );
+  trace.beginBlock ( "Testing class IntegralInvariantVolumeEstimator and IICurvatureFunctor" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
