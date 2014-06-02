@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/estimation/CLocalCurveGeometricEstimator.h"
+#include "DGtal/geometry/curves/estimation/CCurveLocalGeometricEstimator.h"
 #include "DGtal/geometry/curves/CSegment.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -54,12 +54,12 @@ namespace DGtal
   /**
      Description of \b concept '\b CSegmentComputerEstimator' <p>
      @ingroup Concepts
-     @brief Aim: This concept is a refinement of CLocalGeometricEstimator
+     @brief Aim: This concept is a refinement of CCurveLocalGeometricEstimator
      devoted to the estimation of a geometric quantiy along a segment 
      detected by a segment computer. 
 
      ### Refinement of 
-     - CLocalGeometricEstimator
+     - CCurveLocalGeometricEstimator
      - boost::CopyConstructible
      - boost::Assignable
 
@@ -93,7 +93,7 @@ namespace DGtal
   */
   template <typename T>
   struct CSegmentComputerEstimator: 
-    CLocalGeometricEstimator<T>, boost::CopyConstructible<T>, boost::Assignable<T>
+    CCurveLocalGeometricEstimator<T>, boost::CopyConstructible<T>, boost::Assignable<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
