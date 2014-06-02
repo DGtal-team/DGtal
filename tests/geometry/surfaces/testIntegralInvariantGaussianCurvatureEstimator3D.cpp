@@ -23,7 +23,7 @@
  *
  * @date 2012/11/28
  *
- * Functions for testing class IntegralInvariantGaussianCurvatureEstimator3D.
+ * Functions for testing class IntegralInvariantCovarianceEstimator and IIGaussianCurvature3DFunctor.
  *
  * This file is part of the DGtal library.
  */
