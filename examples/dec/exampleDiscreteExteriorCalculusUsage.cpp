@@ -144,6 +144,20 @@ void usage2d()
             board.saveSVG("usage_dual_one_form.svg");
         }
 
+        // test primal flat and sharp
+        const Calculus::DualForm1 flat_sharp_dual_one_form = calculus.flat(dual_vector_field);
+        const Calculus::DualVectorField sharp_flat_dual_vector_field = calculus.sharp(flat_sharp_dual_one_form);
+
+        {
+            Board2D board;
+            board << domain;
+            board << calculus;
+            board << CustomStyle("KForm", new KFormStyle2D(-2, 2));
+            board << flat_sharp_dual_one_form;
+            board << sharp_flat_dual_vector_field;
+            board.saveSVG("usage_dual_one_form_sharp_flat.svg");
+        }
+
         // create primal gradient vector field and hodge*d primal one form
         const Calculus::DualHodge1 dual_one_hodge = calculus.dualHodge<1>();
         const Calculus::PrimalForm1 primal_one_form = dual_one_hodge * dual_zero_derivative * dual_zero_form;
