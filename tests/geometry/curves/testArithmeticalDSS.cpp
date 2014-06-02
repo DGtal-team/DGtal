@@ -54,7 +54,7 @@ bool mainTest()
   BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
-  typedef typename DSS::Vector Vector;
+  // typedef typename DSS::Vector Vector;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -203,7 +203,7 @@ bool mainTest()
 template <typename DSS>
 bool rangeTest(const DSS& dss)
 {
-  typedef typename DSS::Point Point;
+  // typedef typename DSS::Point Point;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -659,8 +659,8 @@ bool updateTest()
 template <typename DSS>
 bool compatibleStepsTest(const DSS& dss)
 {
-  typedef typename DSS::Point Point;
-  typedef typename DSS::Vector Vector;
+  // typedef typename DSS::Point Point;
+  // typedef typename DSS::Vector Vector;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -747,7 +747,7 @@ bool constructorsTest()
   BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
-  typedef typename DSS::Vector Vector;
+  // typedef typename DSS::Vector Vector;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
