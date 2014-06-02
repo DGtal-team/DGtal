@@ -25,6 +25,10 @@
  * @date 2012/04/19
  *
  * Header file for module IntegralInvariantMeanCurvatureEstimator.ih
+ * 
+ * @warning This class is deprecated. Please use instead IntegralInvariantVolumeEstimator
+ * 
+ * @cite Coeurjo-CVIU-2014
  *
  * This file is part of the DGtal library.
  */
@@ -56,6 +60,9 @@
 
 
 namespace DGtal
+{
+
+namespace deprecated
 {
 
 template< typename Quantity >
@@ -136,7 +143,7 @@ private:
 * and the convolution kernel radius.
 * Experimental results showed a multigrid convergence.
 *
-* Some optimization is available when we set a range of 0-adjacent surfels to the estimator.
+* Optimization is available when we set a range of 0-adjacent surfels to the estimator.
 *
 * @tparam TKSpace space in which the shape is defined.
 * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
@@ -590,11 +597,7 @@ private:
 }; // end of specialization for dimension = 3
 
 
-
-
-
-
-
+} // namespace deprecated
 
 
 /**
@@ -605,15 +608,15 @@ private:
 */
 template <typename TKS, typename TSF, Dimension dimension>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKS, TSF, dimension> & object );
+operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantMeanCurvatureEstimator<TKS, TSF, dimension> & object );
 
 template <typename TKS, typename TSF>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKS, TSF, 2> & object );
+operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantMeanCurvatureEstimator<TKS, TSF, 2> & object );
 
 template <typename TKS, typename TSF>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKS, TSF, 3> & object );
+operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantMeanCurvatureEstimator<TKS, TSF, 3> & object );
 
 } // namespace DGtal
 

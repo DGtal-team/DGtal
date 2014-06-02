@@ -45,7 +45,7 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 ~IntegralInvariantNormalVectorEstimator()
 {
   clear();
@@ -55,7 +55,7 @@ DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 template <typename TKSpace, typename TPointPredicate>
 inline
 void
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 clear()
 {
   for( unsigned int i = 0; i < myKernelsSet.size(); ++i )
@@ -66,7 +66,7 @@ clear()
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 IntegralInvariantNormalVectorEstimator()
   : myKernelFunctor(NumberTraits<Value>::ONE),
     myKernels(), myKernelsSet(),
@@ -81,7 +81,7 @@ IntegralInvariantNormalVectorEstimator()
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 IntegralInvariantNormalVectorEstimator
 ( ConstAlias< KSpace > K, ConstAlias< PointPredicate > aPointPredicate )
   : myKernelFunctor(NumberTraits<Value>::ONE),
@@ -102,7 +102,7 @@ IntegralInvariantNormalVectorEstimator
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 IntegralInvariantNormalVectorEstimator
 ( const Self& other )
   : myKernelFunctor( other.myKernelFunctor ),
@@ -116,8 +116,8 @@ IntegralInvariantNormalVectorEstimator
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Self&
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+typename DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Self&
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 operator= ( const Self& other )
 {
   if ( this != &other )
@@ -140,8 +140,8 @@ operator= ( const Self& other )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Scalar
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+typename DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Scalar
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 h() const
 { 
   return myH;
@@ -150,7 +150,7 @@ h() const
 template <typename TKSpace, typename TPointPredicate>
 inline
 void
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 attach
 ( ConstAlias< KSpace > K, 
   ConstAlias<PointPredicate> aPointPredicate )
@@ -166,12 +166,12 @@ attach
 template <typename TKSpace, typename TPointPredicate>
 inline
 void
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 setParams
 ( const double dRadius )
 {
   ASSERT( ( dRadius > 0.0 )
-          && "[DGtal::IntegralInvariantNormalVectorEstimator:setParams] Radius parameter dRadius must be positive." );
+          && "[DGtal::deprecated::IntegralInvariantNormalVectorEstimator:setParams] Radius parameter dRadius must be positive." );
   myRadius = dRadius;
 }
 
@@ -180,16 +180,16 @@ template <typename TKSpace, typename TPointPredicate>
 template <typename SurfelConstIterator>
 inline
 void
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 init
 ( const double _h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */ )
 {
   ASSERT( ( _h > 0.0 )
-          && "[DGtal::IntegralInvariantNormalVectorEstimator:init] Gridstep parameter h must be positive." );
+          && "[DGtal::deprecated::IntegralInvariantNormalVectorEstimator:init] Gridstep parameter h must be positive." );
   ASSERT( ( myRadius > 0.0 )
-          && "[DGtal::IntegralInvariantNormalVectorEstimator:init] Radius parameter dRadius must have been initialized with a call to 'setParams'." );
+          && "[DGtal::deprecated::IntegralInvariantNormalVectorEstimator:init] Radius parameter dRadius must have been initialized with a call to 'setParams'." );
   ASSERT( ( myConvolver != 0 )
-          && "[DGtal::IntegralInvariantNormalVectorEstimator:init] Shape of interest must have been initialized with a call to 'attach'." );
+          && "[DGtal::deprecated::IntegralInvariantNormalVectorEstimator:init] Shape of interest must have been initialized with a call to 'attach'." );
 
   typedef typename RealPoint::Component Scalar;
   // Clear stuff
@@ -206,7 +206,7 @@ init
   myKernel = CountedPtr<KernelSupport>( new KernelSupport( rOrigin, eRadius ) ); // acquired
   myDigKernel = CountedPtr<DigitalShapeKernel>( new DigitalShapeKernel() );
   myDigKernel->attach( *myKernel );
-  myDigKernel->init( myKernel->getLowerBound(), myKernel->getUpperBound(), myH );
+  myDigKernel->init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
   Domain neighborhood( Point::diagonal(-1), Point::diagonal(1) );
   unsigned int n = BasicMathFunctions::power( (unsigned int) 3, Space::dimension );
   myKernels = std::vector< PairIterators > ( n );
@@ -228,7 +228,7 @@ init
       EuclideanMinus* current = new EuclideanMinus( *myKernel, *kernelShifted );
       DigitalShape digCurrent;
       digCurrent.attach( *current );
-      digCurrent.init( myKernel->getLowerBound(), myKernel->getUpperBound(), myH );
+      digCurrent.init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
       
       myKernelsSet[ offset ] = new DigitalSet( digCurrent.getDomain() );
       Shapes< Domain>::digitalShaper ( *(myKernelsSet[ offset ]), digCurrent );
@@ -247,8 +247,8 @@ init
 template <typename TKSpace, typename TPointPredicate>
 template <typename SurfelConstIterator>
 inline
-typename DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Quantity
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
+typename DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::Quantity
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::
 eval
 ( SurfelConstIterator it ) const
 {
@@ -261,7 +261,7 @@ template <typename TKSpace, typename TPointPredicate>
 template <typename OutputIterator, typename SurfelConstIterator>
 inline
 OutputIterator
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::eval
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::eval
 ( SurfelConstIterator itb,
   SurfelConstIterator ite,
   OutputIterator result ) const
@@ -275,7 +275,7 @@ DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::eval
 template <typename TKSpace, typename TPointPredicate>
 inline
 void
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::selfDisplay
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::selfDisplay
 ( std::ostream & out ) const
 {
   out << "[IntegralInvariantNormalVectorEstimator h=" << myH
@@ -286,7 +286,7 @@ DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::selfDis
 template <typename TKSpace, typename TPointPredicate>
 inline
 bool
-DGtal::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::isValid() const
+DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate>::isValid() const
 {
   return ( myH > 0 ) && ( myRadius > 0 ) && ( myConvolver != 0 );
 }
@@ -297,7 +297,7 @@ inline
 std::ostream&
 DGtal::operator<<
 ( std::ostream & out, 
-  const IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate> & object )
+  const DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate> & object )
 {
   object.selfDisplay( out );
   return out;

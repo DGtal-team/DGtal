@@ -72,10 +72,7 @@ namespace DGtal
 * Description of template class 'IntegralInvariantCovarianceEstimator' <p>
 * \brief Aim: This class implement an Integral Invariant estimator which computes for each surfel the covariance matrix of the intersection of the shape with a ball of given radius centered on the surfel.
 *
-* @see related article:
-*       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
-*       Estimators in Digital Geometry. DGCI 2013. Retrieved from
-*       https://liris.cnrs.fr/publis/?id=5866
+* @cite Coeurjo-CVIU-2014
 *
 * The algorithm we propose uses a kernel (2D: Ball2D, 3D: Ball3D) that
 * is moved along the surface. The covariance matrix of this kernel
@@ -86,7 +83,7 @@ namespace DGtal
 * geometry and the convolution kernel radius.  Experimental results
 * confirm the multigrid convergence.
 *
-* Some optimization is available when we give a range of 0-adjacent
+* Optimization is available when we give a range of 0-adjacent
 * surfels to the estimator. Note that you should use
 * IntegralInvariantVolumeEstimator instead when trying to estimate the
 * 2D curvature or the mean curvature.
@@ -235,7 +232,7 @@ public:
   /**
   * Set specific parameters: the radius of the ball.
   *
-  * @param[in] dRadius the "digital" radius of the kernel (buy may be non integer).
+  * @param[in] dRadius the "digital" radius of the kernel (but may be non integer).
   */
   void setParams( const double dRadius );
   
@@ -320,7 +317,7 @@ private:
   CountedPtr<ShapeSpelFunctor>   myShapeSpelFunctor;  ///< Smart pointer on functor spel ->  {0,1}
   CountedPtr<Convolver>          myConvolver;   ///< Convolver
   Scalar myH;                               ///< precision of the grid
-  Scalar myRadius;                          ///< "digital" radius of the kernel (buy may be non integer).
+  Scalar myRadius;                          ///< "digital" radius of the kernel (but may be non integer).
 
 private:
 
