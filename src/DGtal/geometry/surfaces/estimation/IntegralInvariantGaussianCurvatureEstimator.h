@@ -78,7 +78,6 @@ struct CurvatureInformations
   Vector3 values;
   Matrix3x3 vectors;
 
-  friend std::ostream& operator <<(std::ostream&, const CurvatureInformations&);
   bool operator ==( const CurvatureInformations& other)
   {
     return ( k1 == other.k1 && k2 == other.k2 && values == other.values && vectors == other.vectors );
@@ -891,6 +890,10 @@ operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGauss
 template <typename TKS, typename TSF>
 std::ostream&
 operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, 3> & object );
+
+
+std::ostream&
+operator<< ( std::ostream & out, const DGtal::deprecated::CurvatureInformations & object );
 
 } // namespace DGtal
 
