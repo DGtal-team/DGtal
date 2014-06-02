@@ -27,6 +27,10 @@
  * @date 2014/04/24
  *
  * Header file for module IntegralInvariantNormalVectorEstimator.ih
+ * 
+ * @warning This class is deprecated. Please use instead IntegralInvariantCovarianceEstimator
+ * 
+ * @cite Coeurjo-CVIU-2014
  *
  * This file is part of the DGtal library.
  */
@@ -65,16 +69,16 @@
 namespace DGtal
 {
 
+namespace deprecated
+{
+
 /////////////////////////////////////////////////////////////////////////////
 // template class IntegralInvariantNormalVectorEstimator
 /**
 * Description of template class 'IntegralInvariantNormalVectorEstimator' <p>
 * \brief Aim: This class implement an Integral Invariant normal vector estimator.
 *
-* @see related article:
-*       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
-*       Estimators in Digital Geometry. DGCI 2013. Retrieved from
-*       https://liris.cnrs.fr/publis/?id=5866
+* @cite Coeurjo-CVIU-2014
 *
 * The algorithm we propose uses volume of a kernel (2D: Ball2D, 3D:
 * Ball3D) to approximate the normal vector.  To compute the volume, we
@@ -84,7 +88,7 @@ namespace DGtal
 * the shape geometry and the convolution kernel radius.  Experimental
 * results showed a multigrid convergence.
 *
-* Some optimization is available when we give a range of 0-adjacent surfels to the estimator.
+* Optimization is available when we give a range of 0-adjacent surfels to the estimator.
 *
 * @tparam TKSpace a model of CCellularGridSpaceND, the cellular space in which the shape is defined.
 * @tparam TPointPredicate a model of CPointPredicate, a predicate Point -> bool that defines a digital shape as a characteristic function.
@@ -315,6 +319,8 @@ private:
 
 }; // end of class IntegralInvariantNormalVectorEstimator
 
+} // namespace deprecated
+
   /**
   * Overloads 'operator<<' for displaying objects of class 'IntegralInvariantNormalVectorEstimator'.
   * @param out the output stream where the object is written.
@@ -324,7 +330,7 @@ private:
   template <typename TKSpace, typename TPointPredicate>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate> & object );
+               const DGtal::deprecated::IntegralInvariantNormalVectorEstimator<TKSpace, TPointPredicate> & object );
 
 } // namespace DGtal
 
