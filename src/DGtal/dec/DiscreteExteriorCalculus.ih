@@ -36,7 +36,7 @@
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 template <typename TDigitalSet>
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus(const TDigitalSet& _set, const bool& add_border)
-    : myKSpace(), cell_properties()
+    : myKSpace(), cached_operators_modified(true)
 {
     BOOST_CONCEPT_ASSERT(( DGtal::CDigitalSet<TDigitalSet> ));
 
@@ -99,7 +99,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::DiscreteE
 
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::DiscreteExteriorCalculus()
-    : myKSpace(), cell_properties()
+    : myKSpace(), cached_operators_modified(true)
 {
 }
 
@@ -132,6 +132,8 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::eraseSCel
         ASSERT( iter_property_next->second.index > index );
         iter_property_next->second.index -= 1;
     }
+
+    cached_operators_modified = true;
 
     return true;
 }
@@ -171,6 +173,8 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::insertSCe
     ASSERT( property.index == iter->second.index );
 
     iter->second = property;
+
+    if (need_insert) cached_operators_modified = true;
 
     return need_insert;
 }
@@ -340,14 +344,32 @@ template <DGtal::Duality duality>
 DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, duality>
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, 1, duality>& one_form) const
 {
+    const_cast<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>*>(this)->updateCachedOperators();
+
+    const boost::array<SparseMatrix, dim>& sharp_operator_matrix = sharp_operator_matrixes[static_cast<int>(duality)];
+
     typedef VectorField<DiscreteExteriorCalculus, duality> Field;
     Field field(*this);
-
     ASSERT( field.myCoordinates.cols() == dimension);
     ASSERT( field.myCoordinates.rows() == kFormLength(0, duality));
+    for (DGtal::Dimension direction=0; direction<dim; direction++)
+        field.myCoordinates.col(direction) = sharp_operator_matrix[direction]*one_form.myContainer;
+
+    return field;
+}
+
+template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Duality duality>
+void
+DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSharpOperator()
+{
+    boost::array<SparseMatrix, dim> sharp_operator_matrix;
+
+    for (DGtal::Dimension direction=0; direction<dim; direction++)
+        sharp_operator_matrix[direction] = SparseMatrix(kFormLength(0, duality), kFormLength(1, duality));
 
     // iterate over points
-    for (int kk=0; kk<kFormLength(0, duality); kk++)
+    for (Index kk=0; kk<kFormLength(0, duality); kk++)
     {
         const SCell& cell = index_cells[actualOrder(0, duality)][kk];
         ASSERT( myKSpace.sSign(cell) == KSpace::POS );
@@ -359,9 +381,8 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::sharp(con
         else edges = myKSpace.sLowerIncident(cell);
 
         // collect 1-form values over neighboring edges
-        typedef boost::array<Scalar, dimension> Normalize;
-        Normalize normalize;
-        normalize.assign(0);
+        typedef boost::array<std::list<Index>, dimension> BorderIndexes;
+        BorderIndexes border_indexes;
         for (typename Edges::const_iterator ei=edges.begin(), eie=edges.end(); ei!=eie; ei++)
         {
             const SCell& cell_border = absoluteSCell(*ei);
@@ -378,17 +399,21 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::sharp(con
 
             const DGtal::Dimension direction = edgeDirection(cell_border, duality);
 
-            normalize[direction]++;
-            field.myCoordinates(kk, direction) += one_form.myContainer(cell_border_index);
+            border_indexes[direction].push_back(cell_border_index);
         }
 
-        // normalize vector field
-        for (DGtal::Dimension field_dim=0; field_dim<dimension; field_dim++)
-            if (normalize[field_dim])
-                field.myCoordinates(kk, field_dim) /= normalize[field_dim];
+        for (DGtal::Dimension direction=0; direction<dimension; direction++)
+            for (typename std::list<Index>::const_iterator bi=border_indexes[direction].begin(), bie=border_indexes[direction].end(); bi!=bie; bi++)
+            {
+                const Index& cell_border_index = *bi;
+                ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
+                ASSERT( cell_border_index < kFormLength(1, duality) );
+
+                sharp_operator_matrix[direction](kk, cell_border_index) = 1./border_indexes[direction].size();
+            }
     }
 
-    return field;
+    sharp_operator_matrixes[static_cast<int>(duality)] = sharp_operator_matrix;
 }
 
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
@@ -396,11 +421,30 @@ template <DGtal::Duality duality>
 DGtal::KForm<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, 1, duality>
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, duality>& vector_field) const
 {
+    const_cast<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>*>(this)->updateCachedOperators();
+
+    const boost::array<SparseMatrix, dim>& flat_operator_matrix = flat_operator_matrixes[static_cast<int>(duality)];
+
     typedef KForm<DiscreteExteriorCalculus, 1, duality> OneForm;
     OneForm one_form(*this);
+    for (DGtal::Dimension direction=0; direction<dim; direction++)
+        one_form.myContainer += flat_operator_matrix[direction]*vector_field.myCoordinates.col(direction);
+
+    return one_form;
+}
+
+template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+template <DGtal::Duality duality>
+void
+DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFlatOperator()
+{
+    boost::array<SparseMatrix, dim> flat_operator_matrix;
+
+    for (DGtal::Dimension direction=0; direction<dim; direction++)
+        flat_operator_matrix[direction] = SparseMatrix(kFormLength(1, duality), kFormLength(0, duality));
 
     // iterate over edges
-    for (int kk=0; kk<kFormLength(1, duality); kk++)
+    for (Index kk=0; kk<kFormLength(1, duality); kk++)
     {
         const SCell& cell = index_cells[actualOrder(1, duality)][kk];
         ASSERT( myKSpace.sSign(cell) == KSpace::POS );
@@ -415,7 +459,8 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::flat(cons
 
         // project vector field along edge from neighboring points
         ASSERT( points.size() == 2 );
-        Scalar normalize = 0;
+        typedef std::list<Index> BorderIndexes;
+        BorderIndexes border_indexes;
         for (typename Points::const_iterator pi=points.begin(), pie=points.end(); pi!=pie; pi++)
         {
             const SCell cell_border = absoluteSCell(*pi);
@@ -430,16 +475,33 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::flat(cons
             ASSERT( cell_border_index < index_cells[actualOrder(0, duality)].size());
             ASSERT( cell_border_index < kFormLength(0, duality) );
 
-            normalize++;
-            one_form.myContainer(kk) += vector_field.myCoordinates(cell_border_index, direction);
+            border_indexes.push_back(cell_border_index);
         }
 
-        // normalize one-form
-        if (normalize)
-            one_form.myContainer(kk) /= normalize;
+        for (typename BorderIndexes::const_iterator bi=border_indexes.begin(), bie=border_indexes.end(); bi!=bie; bi++)
+        {
+            const Index& cell_border_index = *bi;
+            ASSERT( cell_border_index < index_cells[actualOrder(0, duality)].size());
+            ASSERT( cell_border_index < kFormLength(0, duality) );
+
+            flat_operator_matrix[direction](kk, cell_border_index) = 1./border_indexes.size();
+        }
+
     }
 
-    return one_form;
+    flat_operator_matrixes[static_cast<int>(duality)] = flat_operator_matrix;
+}
+
+template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+void
+DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateCachedOperators()
+{
+    if (!cached_operators_modified) return;
+    updateFlatOperator<PRIMAL>();
+    updateFlatOperator<DUAL>();
+    updateSharpOperator<PRIMAL>();
+    updateSharpOperator<DUAL>();
+    cached_operators_modified = false;
 }
 
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
