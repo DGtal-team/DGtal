@@ -132,8 +132,6 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
 
   for ( unsigned int i = 0; i < rsize; ++i )
   {
-    if(results[i] != results2[i])
-      std::cout << results[i] << " " << results2[i] << std::endl;
     mean += results[ i ];
   }
   mean /= rsize;
