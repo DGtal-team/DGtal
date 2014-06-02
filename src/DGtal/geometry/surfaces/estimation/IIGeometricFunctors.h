@@ -471,7 +471,7 @@ namespace DGtal
       Value operator()( const Argument& arg ) const
       {
         Argument cp_arg = arg;
-        cp_arg * dh5;
+        cp_arg *= dh5;
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
@@ -547,7 +547,7 @@ namespace DGtal
       Value operator()( const Argument& arg ) const
       {
         Argument cp_arg = arg;
-        cp_arg * dh5;
+        cp_arg *= dh5;
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
@@ -621,7 +621,7 @@ namespace DGtal
       Value operator()( const Argument& arg ) const
       {
         Argument cp_arg = arg;
-        cp_arg * dh5;
+        cp_arg *= dh5;
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
