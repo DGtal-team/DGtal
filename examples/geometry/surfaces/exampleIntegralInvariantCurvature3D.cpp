@@ -83,6 +83,7 @@ int main( int argc, char** argv )
     typedef ImageSelector< Z3i::Domain, unsigned int >::Type Image;
     typedef SimpleThresholdForegroundPredicate< Image > ImagePredicate;
     typedef Z3i::KSpace::Surfel Surfel;
+    typedef Z3i::KSpace::Cell Cell;
     typedef LightImplicitDigitalSurface< Z3i::KSpace, ImagePredicate > MyLightImplicitDigitalSurface;
     typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
 
@@ -163,10 +164,13 @@ int main( int argc, char** argv )
     VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
     abegin = range2.begin();
 
+    Cell dummy_cell;
+    viewer << SetMode3D( dummy_cell.className(), "Basic" );
+
     for ( unsigned int i = 0; i < results.size(); ++i )
     {
         viewer << CustomColors3D( Color::Black, cmap_grad( results[ i ] ))
-               << *abegin;
+               << KSpaceShape.unsigns( *abegin );
         ++abegin;
     }
 

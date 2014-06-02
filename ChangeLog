@@ -1,5 +1,24 @@
 === DGtal 0.8 ===
 
+*Base Package*
+
+    - Add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
+
+*Geometry Package*
+
+    - Add digital nD Voronoi Covariance Measure support, as well as
+      digital geometric estimators based on it. Add tests and examples of feature
+      detection with VCM.
+
+    - Fix and add concept of CSurfelLocalEstimator and related ground truth
+      estimators for implicit polynomial shapes
+      (TrueDigitalSurfaceLocalEstimator).
+
+    - Add Integral Invariant estimators so that they meet the concept
+      of surface local estimator. Add geometric functors to define
+      easily all the geometric estimators that can be built from the
+      volume and coariance matrix.
+
 *IO Package*
 
     - Better handling of materials in Board3D and OBJ exports.
@@ -9,6 +28,15 @@
 
     - New draw() method for 3D display models (Viewer3D and Board3D)
       to display surfels with prescribed normal vectors.
+
+*Topology Package*
+
+    - small fix in ImplicitDigitalSurface.
+
+*Math Package*
+
+    - add classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition). Add tests.
+
 
 *For Developpers*
 

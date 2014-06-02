@@ -94,11 +94,19 @@ Description of \b concept '\b CCellFunctor' <p>
 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Cell,Quantity> ));
 
+    BOOST_CONCEPT_USAGE( CCellFunctor )
+    {
+      check_const_constraints();
+    }
+    void check_const_constraints() const
+    {
+    }
+
     // ------------------------- Private Datas --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:
-    
+    T myT;
   }; // end of concept CCellFunctor
   
 } // namespace DGtal
