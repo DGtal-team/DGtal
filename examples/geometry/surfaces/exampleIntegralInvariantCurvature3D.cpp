@@ -123,7 +123,7 @@ int main( int argc, char** argv )
     double re_convolution_kernel = std::atof(argv[3]);
 
     typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
+    typedef deprecated::IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
 
     MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyCurvatureEstimator estimator ( KSpaceShape, functor );

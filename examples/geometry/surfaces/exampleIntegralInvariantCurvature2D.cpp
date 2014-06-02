@@ -113,7 +113,7 @@ int main( int argc, char** argv )
     double re_convolution_kernel = 4.5; // Euclidean radius of the convolution kernel. Set by user.
 
     typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
-    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MyCurvatureEstimator; // mean curvature estimator
+    typedef deprecated::IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MyCurvatureEstimator; // mean curvature estimator
 
     MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyCurvatureEstimator estimator ( KSpaceShape, functor );
