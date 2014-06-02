@@ -23,7 +23,7 @@
  *
  * @date 2012/11/28
  *
- * Functions for testing class IntegralInvariantCurvatureEstimator2D.
+ * Functions for testing class IntegralInvariantVolumeEstimator and IICurvatureFunctor.
  *
  * This file is part of the DGtal library.
  */
