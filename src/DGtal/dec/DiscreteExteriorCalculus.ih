@@ -395,7 +395,6 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSha
 
             const Index& cell_border_index = iter_property->second.index;
             ASSERT( cell_border_index < index_cells[actualOrder(1, duality)].size());
-            ASSERT( cell_border_index < one_form.myContainer.rows() );
 
             const DGtal::Dimension direction = edgeDirection(cell_border, duality);
 
