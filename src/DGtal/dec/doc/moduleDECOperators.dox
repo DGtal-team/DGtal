@@ -49,6 +49,31 @@ Linear operators form vector spaces and can be added together and scaled by a sc
 
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
 
+\section sectDECOperators3 Creating calculus
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_with_border
+\image html usage_calculus_with_border.png "Calculus with border."
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
+\image html usage_calculus_without_border.png "Calculus without border."
+
+\section sectDECOperators4 KForms and vector fields
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
+\image html usage_primal_zero_form.png "Primal 0-form."
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_form_algebra
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_gradient
+\image html usage_primal_one_form.png "Gradient primal 1-form and primal vector field."
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_flat_sharp
+\image html usage_primal_one_form_sharp_flat.png "Primal and dual vector fields."
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_hodge_gradient
+\image html usage_primal_one_form_hodge.png "Dual gradient field."
+
+
+
 
 */
 
