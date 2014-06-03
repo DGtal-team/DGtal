@@ -5,6 +5,8 @@
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/CDiscreteExteriorCalculusVectorSpace.h"
+#include <list>
+
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
