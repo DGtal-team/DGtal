@@ -357,7 +357,7 @@ bool testConcepts()
   BOOST_CONCEPT_ASSERT(( CStaticMatrix<Matrix> ));
   BOOST_CONCEPT_ASSERT(( CLinearAlgebra<Vector, Matrix> ));
 
-  BOOST_CONCEPT_ASSERT(( CStaticVector<DGtal::Z3i::Space::Vector> ));
+  BOOST_CONCEPT_ASSERT(( CVector<DGtal::Z3i::Space::Vector> ));
 
   
   return true;
