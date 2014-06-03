@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <list>
 #include <boost/array.hpp>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -76,7 +77,7 @@ namespace DGtal
    * @tparam TLinearAlgebraBackend linear algebra backend used (i.e. EigenSparseLinearAlgebraBackend).
    * @tparam TInteger integer type forwarded to khalimsky space.
    */
-  template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger = int32_t>
+  template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger = DGtal::int32_t>
   class DiscreteExteriorCalculus
   {
     // ----------------------- Standard services ------------------------------
