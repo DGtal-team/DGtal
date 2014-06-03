@@ -23,7 +23,10 @@ namespace DGtal {
 
 [TOC]
 
-\section sectDECOperators1 Basic Operators
+
+\section sectDECOperators0 Scalar fields, vector fields and k-forms 
+
+\section sectDECOperators1 Linear operators between k-forms
 
 \image html operators_3d.png "DEC operators with definition cells for a rectangular grid."
 
@@ -48,6 +51,51 @@ Linear operators form vector spaces and can be added together and scaled by a sc
 \subsection subsectDECOperators22  Laplace operator
 
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
+
+\subsection sectDECSolve1 DEC Linear Problem
+
+Using the DEC package, one can solve any equation of the type:
+
+\f[ f(x) = y \f]
+
+where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
+k-forms are represented using KForm class and linear operators are represented by LinearOperator class.
+One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative, DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge.
+Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be easily expressed with those operators:
+
+\f[\nabla x = ( d x )^\sharp \f]
+
+\f[\nabla\cdot x = \star d \star x^\flat \f]
+
+\f[\nabla\wedge x = ( \star d x^\flat )^\sharp \f]
+
+\f[\Delta x = \star d \star d x \f]
+
+Recall that \f$\flat\f$ and \f$\sharp\f$ are operators that turn a vector field into a 1-form and the other way around.
+Those operators are linear but do not transform k-forms into k-forms and therefore can't be represented by LinearOperator.
+However DiscreteExteriorCalculus allows us to apply those transformations on associated k-forms and vector fields, namely DiscreteExteriorCalculus.flat and DiscreteExteriorCalculus.sharp.
+These operators are cached in the DiscreteExteriorCalculus object and support intense load, as Hodge and derivative operators do.
+We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the quantity of information stored in the associated 1-form is always bigger than the quantity of information stored in the vector field.
+
+\subsection sectDECSolve2 DEC Linear Solver
+
+If your problem can be described in terms of exterior derivative,
+hodge operators and sharp/flat as discussed above, you can use DiscreteExteriorCalculusSolver to solve it.
+Or at least try to ;)
+
+The solving method used is provided as the second template parameter of DiscreteExteriorCalculusSolver.
+It depends on the linear algebra backend you pass as second template argument in the definition of DiscreteExteriorCalculus.
+Usually some linear solvers are provided in the linear algebra backend itself, but you can create your own as long as it models the CLinearAlgebraSolver concept.
+
+If you activated Eigen support during compilation (i.e. "-DWITH_EIGEN=true"), you can use any solver provided in the EigenSupport.h header.
+It is recommended to use the EigenLinearAlgebraBackend since it is fast and provide a lot of linear solvers.
+
+Once the DEC solver is created, the linear operator \f$f\f$ must be passed via DiscreteExteriorCalculusSolver.compute.
+Depending on the linear solver used, this will factorize the problem or do precomputation on the linear operator.
+This speed up the resolution of problems that share the same linear operator.
+Input k-form \f$y\f$ is passed to the solver via DiscreteExteriorCalculusSolver.solve which return the solution k-form \f$x\f$.
+If the resolution was successful, then DiscreteExteriorCalculusSolver.isValid will return true.
+If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver. 
 
 \section sectDECOperators3 Creating calculus
 

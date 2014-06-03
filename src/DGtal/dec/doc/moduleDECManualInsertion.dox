@@ -76,7 +76,7 @@ Now the problem is fully defined and there one thing left to do: solving it.
 The resolution is done by DiscreteExteriorCalculusSolver.
 This class takes the actual linear solver used as the second template parameter.
 One can use any class that validates the CLinearAlgebraSolver concept.
-Some solvers are provided inside the linear algebra backend we are using EigenSparseLinearAlgebraBackend.
+Some solvers are provided inside the linear algebra backend we are using EigenLinearAlgebraBackend.
 Here we will use the SolverSparseQR solver.
 Once created the solver is given the operator using DiscreteExteriorCalculusSolver.compute.
 The input dirac 0-form is passed to DiscreteExteriorCalculusSolver.solve, which return the solution of the problem.
@@ -122,7 +122,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 
 \section sectDECManualInsertion2 3D Helmoltz decomposition
 
-In this exemple, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
+In this example, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
 Helmoltz decomposition states that every vector field or 1-form \f$\omega\f$ can be uniquely expressed as the sum of three terms.
 
 \f[ \omega = d\alpha + \delta\beta + \gamma \f]
