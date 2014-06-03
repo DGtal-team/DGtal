@@ -61,7 +61,7 @@ void usage2d()
         trace.info() << "primal path" << endl;
 
         // create primal 0-form and fill it with eucledian metric
-        //! [usage_primal_fill_one_form]
+        //! [usage_primal_fill_zero_form]
         Calculus::PrimalForm0 primal_zero_form(calculus);
         for (Calculus::Index index=0; index<primal_zero_form.myContainer.rows(); index++)
         {
@@ -69,10 +69,10 @@ void usage2d()
             const Calculus::Scalar& value = Z2i::l2Metric(cell.myCoordinates, center)/2;
             primal_zero_form.myContainer(index) = value;
         }
-        //! [usage_primal_fill_one_form]
+        //! [usage_primal_fill_zero_form]
         // one can do linear algebra operation between equaly typed kforms
         //! [usage_primal_form_algebra]
-        const Calculus::PrimalForm0 prout = 2 * primal_zero_form + primal_zero_form;
+        const Calculus::PrimalForm0 foo = 2 * primal_zero_form + primal_zero_form;
         //! [usage_primal_form_algebra]
 
         {
