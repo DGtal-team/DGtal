@@ -77,7 +77,9 @@ Represent any static sized column vector having sparse or dense representation.
 ### Invariants
 
 ### Models
+
  - PointVector
+ - SimpleMatrix::Vector
 
 ### Notes
 
