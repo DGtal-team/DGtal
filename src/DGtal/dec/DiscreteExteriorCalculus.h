@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <list>
 #include <boost/array.hpp>
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
