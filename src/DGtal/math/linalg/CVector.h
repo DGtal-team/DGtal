@@ -73,13 +73,15 @@ Represent any static or dynamic sized column vector having sparse or dense repre
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Constant ref random accessor      | \a x(i)           |                   | \c const Scalar&              |              |           |                |            |
-| Ref random accessor      | \a z(i)           |                   | \c Scalar&              |              |           |                |            |
-| Number of rows      | \a x.rows()           |                   |  \c Index            |              |           |                |            |
+| Constant ref random accessor      | \a x(i)           |                   | \c const Scalar&              |              |  Retruns a const reference to the ith component         |                |            |
+| Ref random accessor      | \a z(i)           |                   | \c Scalar&              |              |  Retruns the ith component         |                |            |
+| Number of rows      | \a x.rows()           |                   |  \c Index            |              |  Returns the size of the vector       |                |            |
 
 ### Invariants
 
 ### Models
+
+ EigenLinearAlgebraBackend::DenseVector, SimpleMatrix::Vector
 
 ### Notes
 
