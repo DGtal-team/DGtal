@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECOperators Documentation of basic DEC operators
+@page moduleDECOperators Discrete Exterior Calculus
 @writers Pierre Gueth
 
 
@@ -25,6 +25,10 @@ namespace DGtal {
 
 
 \section sectDECOperators0 Scalar fields, vector fields and k-forms 
+
+\subsection subsectDECOperators21 Vector space
+
+Linear operators form vector spaces and can be added together and scaled by a scalar.
 
 \section sectDECOperators1 Linear operators between k-forms
 
@@ -42,17 +46,16 @@ Exterior derivatives take k-forms as inputs and create (k+1)-forms.
 Input and output forms have the same duality.
 Operators therefore come in two flavors, primal and dual.
 
-\section sectDECOperators2 Combining operator
-
-\subsection subsectDECOperators21 Vector space
-
-Linear operators form vector spaces and can be added together and scaled by a scalar.
-
 \subsection subsectDECOperators22  Laplace operator
 
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
 
-\subsection sectDECSolve1 DEC Linear Problem
+\sectDECOperators1 sectDECOperators5 More formal insight
+
+- Keenan Crane Siggraph lecture 2012-13
+- My presentation
+
+\section sectDECSolve1 DEC Linear Problem
 
 Using the DEC package, one can solve any equation of the type:
 
@@ -97,10 +100,39 @@ Input k-form \f$y\f$ is passed to the solver via DiscreteExteriorCalculusSolver.
 If the resolution was successful, then DiscreteExteriorCalculusSolver.isValid will return true.
 If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver. 
 
+Choosing the right solver for the right problem has a direct impact on overall performances.
+The EigenLinearAlgebraBackend provide wrapper for all linear algebra solvers included in the Eigen library.
+This <a href="http://eigen.tuxfamily.org/dox/group__TopicSparseSystems.html">documentation page</a> provides a nice summary of wrappable solvers along with their main traits.
+
 \section sectDECOperators3 Creating calculus
+
+In this package, the main DEC object is DiscreteExteriorCalculus.
+The first template parameter is the dimension of the embedding space, and
+therefore be at least equals to the dimension of object one would like to represent.
+The second template parameter is a linear algebra backend used internally.
+By now, there is only one available backend: EigenLinearAlgebraBackend.
+For example, here is a snippet that define a working two dimensionnal DEC object.
+
+\snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_typedef
+
+The DiscreteExteriorCalculus provides a default constructor that initializes an empty structure, ready to be filled with DiscreteExteriorCalculus::SCell through the DiscreteExteriorCalculus.insertSCell member.
+A DiscreteExteriorCalculus object can also be created from a set of points implementing the CDigitalSet concept. This constructor inserts each point as an primal n-cell in the structure and then fills in between k-cells to glue all n-cells together. Borders can be added or removed from the genarated structure using the add_border boolean.
+Dual k-cells are created automatically with the right size ratio.
+Note that the struture can be altered after creation to adjust small details (DiscreteExteriorCalculus.insertSCell and DiscreteExteriorCalculus.eraseSCell),
+but it should not be modified during the instanciation of any DEC objects or operators.
+
+This snippet creates shows how to create a DEC structure.
+The first call to DiscreteExteriorCalculus.eraseSCell remove the primal n-cell located of the right of the structure.
+The associated dual 0-cell is detroyed automatically.
+Note that n-cell are created using KhalimskySpaceND.sSpel, and that coordinates of such cells are given in the same system as points from the input set.
+The second call removes a primal 1-cell and opens the hole created by the first call.
+Here coordinates are given in the KhalimskySpaceND signed cell frame of reference.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_with_border
 \image html usage_calculus_with_border.png "Calculus with border."
+
+If you want to have border-less structure, simply reset the add_border boolean.
+The second call to DiscreteExteriorCalculus.eraseSCell isn't nedd anymore since the edge was not inserted in the first place.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
 \image html usage_calculus_without_border.png "Calculus without border."
