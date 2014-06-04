@@ -1,11 +1,11 @@
 /**
- * @file moduleDECManualInsertion.dox
+ * @file moduleDECPoisson.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/04/04
  *
- * Documentation file for feature DECManualInsertion
+ * Documentation file for feature DECPoisson
  *
  * This file is part of the DGtal library.
  */
@@ -17,18 +17,41 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECManualInsertion Examples of manual cell insertion and problem resolution
+@page moduleDECPoisson Poisson problem
 @writers Pierre Gueth
 
 
 [TOC]
 
-Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
-It is possible to insert cell manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
-Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
-Therefore the DEC structure shouldn't be modified once DEC operators are created.
+\section sectDECPoissonProblem Poisson equation
 
-\section sectDECManualInsertion1 1D Poisson equation
+First the structure is created from a digital set. Here we used the EigenLinearAlgebraBackend.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
+
+Then the linear operator is defined. It is a regularized Laplace operator on dual 0-cells.
+
+\f[ f = \Delta + \lambda I \f]
+
+where \f$I\f$ is the identity operator and is generated using
+DiscreteExteriorCalculusSolver.identity. 
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp laplace_definition
+
+@note The laplace operator could have been
+defined as illustrated above from Hodge and exterior derivative
+operators. However, DiscreteExteriorCalculus provides a method
+to get the operator directly.
+
+Input k-form \f$y\f$ is a Dirac delta positioned on the dual 0-cell at coordinates \f$(2,5)\f$.
+Dual 0-cells are created by KhalimskySpaceND.sSpel.
+DiscreteExteriorCalculus.getIndex return the index of the dual 0-form container associated with the dirac position cell.
+
+The following illustration represents the dual of the input. Hence,
+since we have specified a dirac on "dual 0-cell", its primal
+representation attaches information to (primal) 2-cells.
+
+\section sectDECPoisson1D 1D Poisson resolution
 
 In this problem, we create an 1D linear structure embedded in a 2D space and we want to solve a Poisson equation on this structure.
 The Poisson equation can be written as:
@@ -51,7 +74,7 @@ Using the DEC package in 2D, one can define the Laplace operator using Hodge dua
 
 We show how to solve this problem and  how to change boundary conditions between Neumann and Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
 
-\subsection subsectDECManualInsertion1_1 Neumann boundary condition
+\subsection sectDECPoisson1DNeumann Neumann boundary condition
 
 First, an empty calculus structure is created and, using simple for loops, it is filled with some 0-cells and 1-cells to from a linear structure.
 When filled manually with DiscreteExteriorCalculus.insertSCell, one can pass the primal over dual size ratio of each cell which defaults to 1.
@@ -91,7 +114,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 \image html linear_structure_neumann_solution_gradient.png "Linear structure with Neumann boundary conditions. Gradient 1-form and vector field are displayed."
 \image html linear_structure_neumann_fit.png "Numerical values computed using the solver and analytic solution for the Neumann problem."
 
-\subsection sectDECManualInsertion1_2 Dirichlet boundary condition
+\subsection sectDECPoisson1DDirichlet Dirichlet boundary condition
 
 Dirichlet boundary condition fix value of 0-forms to be constant outside of definition domain.
 In this package this constant value is chosen to be null.
@@ -120,59 +143,22 @@ Numerical values of the solution fit analytic values with at least a relative pr
 \image html linear_structure_dirichlet_solution_gradient.png "Linear structure with Dirichlet boundary conditions. Gradient 1-form and vector field are displayed."
 \image html linear_structure_dirichlet_fit.png "Numerical and analytic solution for the Dirichlet problem."
 
-\section sectDECManualInsertion2 3D Helmoltz decomposition
+\section sectDECPoisson2D 2D Poisson problem
 
-In this example, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
-Helmoltz decomposition states that every vector field or 1-form \f$\omega\f$ can be uniquely expressed as the sum of three terms.
+\snippet exampleDiscreteExteriorCalculusSolve.cpp dirac_definition
+\image html solve_laplace_calculus.png "DEC structure with input dual 0-form."
 
-\f[ \omega = d\alpha + \delta\beta + \gamma \f]
+We tried to solve the problem using EigenLinearAlgebraBackend::SolverSimplicialLLT, but it DiscreteExteriorCalculusSolver.isValid() reports an error.
+Underlying linear algebra solver DiscreteExteriorCalculusSolver.solver reports a 'numerical_error'.
 
-where \f$\alpha\f$ is a 0-form scalar potential, \f$\beta\f$ is a 2-form vector potential and \f$\gamma\f$ is left over 1-form harmonic part.
-Recall that \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \star d \star \f$ is the exterior anti-derivative from 2-form to 1-form.
-\f$\gamma\f$ has null anti-derivative and null derivative since if they where not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
+\snippet exampleDiscreteExteriorCalculusSolve.cpp solve_llt
+\image html solve_laplace_simplicial_llt.png "Poisson problem solution computed with simplicial LLT solver. Solver reports a numerical error."
 
-\f[ \delta \gamma = d \gamma = 0 \f]
+Since the first solver we used failed, let's use another one: EigenLinearAlgebraBackend::SolverSimplicialLDLT for example.
+This time DiscreteExteriorCalculusSolver.isValid is true after computing problem solution and the solution dual 0-form contains the solution of the problem.
 
-By differentiating \f$\omega\f$ definition, one can isolate DEC solvable expressions for \f$\alpha\f$ and \f$\beta\f$.
-
-\f[ d \delta \beta = d \omega \f]
-\f[ \delta \omega = \delta d \alpha \f]
-
-The harmonic component \f$\gamma\f$ is computed by substracting \f$d\alpha\f$ and \f$\delta\beta\f$ from \f$\omega\f$.
-
-\subsection sectDECManualInsertion2_1 Problem resolution
-
-The calculus struture is filled mannually with 0-, 1- and 2-cells to create a torus structure.
-
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_structure
-
-The primal input vector field is then filled and the associated input 1-form \f$\omega\f$ is computed using DiscreteExteriorCalculus.flat.
-
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_input_field_definition
-
-\image html helmoltz_3d_structure.png "Manually created tore structure and input vector field."
-
-Linear operators are then defined. Note the expression of anti-derivative computed from Hodge operators and dual exterior derivative.
-
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_operator_definition
-
-Values of \f$\alpha\f$ are computed from previous expression using DiscreteExteriorCalculusSolver.solve.
-
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_curl_free_solve
-
-Values of \f$\beta\f$ are computed from previous expression using DiscreteExteriorCalculusSolver.solve.
-
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_div_free_solve
-
-Values of \f$\gamma\f$ are computed by substraction.
-
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_solution
-
-\f$\gamma\f$ has a strong connection with the structure topology and can be used to create local maps  of the struture.
-
-\image html helmoltz_3d_harmonic.png "Harmonic component of the input vector field."
-\image html helmoltz_3d_harmonic_zoom0.png "Harmonic component of the input vector field. Zoom on inner hole."
-\image html helmoltz_3d_harmonic_zoom1.png "Harmonic component of the input vector field. Zoom on outter shell."
+\snippet exampleDiscreteExteriorCalculusSolve.cpp solve_ldlt
+\image html solve_laplace_simplicial_ldlt.png "Poisson problem solution computed with simplicial LDLT solver. Solver solution is valid."
 
 */
 
