@@ -18,13 +18,17 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleDECIntroduction Discrete Exterior Calculus
+@page moduleDECIntroduction Discrete exterior calculus
 @writers Pierre Gueth
-
 
 [TOC]
 
 \section sectDECIntroduction7 Introduction
+
+Discrete exterior calculus provides a nice framework to represent scalar and vector field, as well as linear vector analysis operators.
+Discretization of k-forms allows a efficent representation of linear operator between them.
+This allows easy and fast resolution of linear problem over complex geometric objects.
+A quick overview of exterior calculus is presented in this section.
 
 \subsection sectDECIntroduction0 Scalar fields, vector fields and k-forms 
 
