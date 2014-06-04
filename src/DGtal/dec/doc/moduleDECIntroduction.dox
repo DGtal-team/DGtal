@@ -1,12 +1,12 @@
 /**
- * @file moduleDECOperators.dox
+ * @file moduleDECIntroduction.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/04/04
  *
- * Documentation file for feature DECOperators
+ * Documentation file for feature DECIntroduction
  *
  * This file is part of the DGtal library.
  */
@@ -24,40 +24,35 @@ namespace DGtal {
 
 [TOC]
 
+\section sectDECIntroduction7 Introduction
 
-\section sectDECOperators0 Scalar fields, vector fields and k-forms 
+\subsection sectDECIntroduction0 Scalar fields, vector fields and k-forms 
 
-\subsection subsectDECOperators21 Vector space
+\subsubsection subsectDECIntroduction21 Vector space
 
 Linear operators form vector spaces and can be added together and scaled by a scalar.
 
-\section sectDECOperators1 Linear operators between k-forms
+\subsection sectDECIntroduction1 Linear operators between k-forms
 
 \image html operators_3d.png "DEC operators with definition cells for a rectangular grid."
 
 
-\subsection subsectDECOperators11 Hodge duality operator
+\subsubsection subsectDECIntroduction11 Hodge duality operator
 
 Hodge operators take primal (resp. dual) k-forms as input and create dual (resp. primal) k-forms.
 The order is preserved and the duality is negated.
 
-\subsection subsectDECOperators12 Exterior derivative
+\subsubsection subsectDECIntroduction12 Exterior derivative
 
 Exterior derivatives take k-forms as inputs and create (k+1)-forms.
 Input and output forms have the same duality.
 Operators therefore come in two flavors, primal and dual.
 
-\subsection subsectDECOperators22  Laplace operator
+\subsubsection subsectDECIntroduction22  Laplace operator
 
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
 
-\subsection sectDECOperators6 sectDECOperators5 Futher reading
-
-- Keenan Crane SIGGRAPH lecture 2013 "Geometry processing using DEC" <a href="https://github.com/dgpdec/course">github repository</a> \cite goes2013digital
-- Mathieu Desbrun article on discrete exterior calculus \cite desbrun2005discrete
-- Digital foam presentation with an introduction to DEC in the second section <a href="http://sd-33294.dedibox.fr/~pierre/presentation_dec.pdf">pdf</a>
-
-\section sectDECSolve1 DEC linear problem
+\subsection sectDECIntroduction1 DEC linear problem
 
 Using the DEC package, one can solve any equation of the type:
 
@@ -82,31 +77,15 @@ However DiscreteExteriorCalculus allows us to apply those transformations on ass
 These operators are cached in the DiscreteExteriorCalculus object and support intense load, as Hodge and derivative operators do.
 We chose to disable \f$\flat\f$ and \f$\sharp\f$ representation because the quantity of information stored in the associated 1-form is always bigger than the quantity of information stored in the vector field.
 
-\subsection sectDECSolve2 DEC linear solver
+\subsection sectDECIntroduction5 Futher reading
 
-If your problem can be described in terms of exterior derivative,
-hodge operators and sharp/flat as discussed above, you can use DiscreteExteriorCalculusSolver to solve it.
-Or at least try to ;)
+- Keenan Crane SIGGRAPH lecture 2013 "Geometry processing using DEC" <a href="https://github.com/dgpdec/course">github repository</a> \cite goes2013digital
+- Mathieu Desbrun article on discrete exterior calculus \cite desbrun2005discrete
+- Digital foam presentation with an introduction to DEC in the second section <a href="http://sd-33294.dedibox.fr/~pierre/presentation_dec.pdf">pdf</a>
 
-The solving method used is provided as the second template parameter of DiscreteExteriorCalculusSolver.
-It depends on the linear algebra backend you pass as second template argument in the definition of DiscreteExteriorCalculus.
-Usually some linear solvers are provided in the linear algebra backend itself, but you can create your own as long as it models the CLinearAlgebraSolver concept.
+\section sectDECIntroduction6 Technical package overview
 
-If you activated Eigen support during compilation (i.e. "-DWITH_EIGEN=true"), you can use any solver provided in the EigenSupport.h header.
-It is recommended to use the EigenLinearAlgebraBackend since it is fast and provide a lot of linear solvers.
-
-Once the DEC solver is created, the linear operator \f$f\f$ must be passed via DiscreteExteriorCalculusSolver.compute.
-Depending on the linear solver used, this will factorize the problem or do precomputation on the linear operator.
-This speed up the resolution of problems that share the same linear operator.
-Input k-form \f$y\f$ is passed to the solver via DiscreteExteriorCalculusSolver.solve which return the solution k-form \f$x\f$.
-If the resolution was successful, then DiscreteExteriorCalculusSolver.isValid will return true.
-If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver. 
-
-Choosing the right solver for the right problem has a direct impact on overall performances.
-The EigenLinearAlgebraBackend provide wrapper for all linear algebra solvers included in the Eigen library.
-This <a href="http://eigen.tuxfamily.org/dox/group__TopicSparseSystems.html">documentation page</a> provides a nice summary of wrappable solvers along with their main traits.
-
-\section sectDECOperators3 Main DEC object creation
+\subsection sectDECIntroduction3 Main DEC object creation
 
 In this package, the main DEC object is DiscreteExteriorCalculus.
 The first template parameter is the dimension of the embedding space, and
@@ -144,7 +123,7 @@ It is possible to insert cell manually into the DEC structure using DiscreteExte
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
 Therefore the DEC structure shouldn't be modified once DEC operators are created.
 
-\section sectDECOperators4 KForm and VectorField manipulation
+\subsection sectDECIntroduction4 KForm and VectorField manipulation
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
 \image html usage_primal_zero_form.png "Primal 0-form."
@@ -159,8 +138,29 @@ Therefore the DEC structure shouldn't be modified once DEC operators are created
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_hodge_gradient
 \image html usage_primal_one_form_hodge.png "Dual gradient field."
 
+\subsection sectDECIntroduction2 DEC linear solver
 
+If your problem can be described in terms of exterior derivative,
+hodge operators and sharp/flat as discussed above, you can use DiscreteExteriorCalculusSolver to solve it.
+Or at least try to ;)
 
+The solving method used is provided as the second template parameter of DiscreteExteriorCalculusSolver.
+It depends on the linear algebra backend you pass as second template argument in the definition of DiscreteExteriorCalculus.
+Usually some linear solvers are provided in the linear algebra backend itself, but you can create your own as long as it models the CLinearAlgebraSolver concept.
+
+If you activated Eigen support during compilation (i.e. "-DWITH_EIGEN=true"), you can use any solver provided in the EigenSupport.h header.
+It is recommended to use the EigenLinearAlgebraBackend since it is fast and provide a lot of linear solvers.
+
+Once the DEC solver is created, the linear operator \f$f\f$ must be passed via DiscreteExteriorCalculusSolver.compute.
+Depending on the linear solver used, this will factorize the problem or do precomputation on the linear operator.
+This speed up the resolution of problems that share the same linear operator.
+Input k-form \f$y\f$ is passed to the solver via DiscreteExteriorCalculusSolver.solve which return the solution k-form \f$x\f$.
+If the resolution was successful, then DiscreteExteriorCalculusSolver.isValid will return true.
+If there was a problem, it can be further investigated by direct access to the linear algebra solver DiscreteExteriorCalculusSolver.solver. 
+
+Choosing the right solver for the right problem has a direct impact on overall performances.
+The EigenLinearAlgebraBackend provide wrapper for all linear algebra solvers included in the Eigen library.
+This <a href="http://eigen.tuxfamily.org/dox/group__TopicSparseSystems.html">documentation page</a> provides a nice summary of wrappable solvers along with their main traits.
 
 */
 
