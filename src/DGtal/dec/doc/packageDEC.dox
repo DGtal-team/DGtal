@@ -50,9 +50,9 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 
 @b Modules
 
-- \ref moduleDECOperators
-- \ref moduleDECSolve
-- \ref moduleDECManualInsertion
+- \ref moduleDECIntroduction
+- \ref moduleDECPoisson
+- \ref moduleDECHelmoltz
 
 @b Package @b Concepts @b Overview
  - \ref packageDECConcepts
