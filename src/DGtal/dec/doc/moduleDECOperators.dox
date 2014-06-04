@@ -52,8 +52,8 @@ Operators therefore come in two flavors, primal and dual.
 
 \sectDECOperators1 sectDECOperators5 More formal insight
 
-- Keenan Crane Siggraph lecture 2012-13
-- My presentation
+- Keenan Crane SIGGRAPH lecture 2013 "Geometry processing using DEC" <a href="https://github.com/dgpdec/course">github repository</a>
+- Digital foam presentation with an introduction to DEC in the second section <a href="http://sd-33294.dedibox.fr/~pierre/presentation_dec.pdf">pdf</a>
 
 \section sectDECSolve1 DEC Linear Problem
 
@@ -104,7 +104,7 @@ Choosing the right solver for the right problem has a direct impact on overall p
 The EigenLinearAlgebraBackend provide wrapper for all linear algebra solvers included in the Eigen library.
 This <a href="http://eigen.tuxfamily.org/dox/group__TopicSparseSystems.html">documentation page</a> provides a nice summary of wrappable solvers along with their main traits.
 
-\section sectDECOperators3 Creating calculus
+\section sectDECOperators3 DiscreteExteriorCalculus creation
 
 In this package, the main DEC object is DiscreteExteriorCalculus.
 The first template parameter is the dimension of the embedding space, and
@@ -132,12 +132,12 @@ Here coordinates are given in the KhalimskySpaceND signed cell frame of referenc
 \image html usage_calculus_with_border.png "Calculus with border."
 
 If you want to have border-less structure, simply reset the add_border boolean.
-The second call to DiscreteExteriorCalculus.eraseSCell isn't nedd anymore since the edge was not inserted in the first place.
+The second call to DiscreteExteriorCalculus.eraseSCell isn't needed anymore since the edge was not inserted in the first place.
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_calculus_definition_without_border
 \image html usage_calculus_without_border.png "Calculus without border."
 
-\section sectDECOperators4 KForms and vector fields
+\section sectDECOperators4 KForm and VectorField manipulation
 
 \snippet exampleDiscreteExteriorCalculusUsage.cpp usage_primal_fill_zero_form
 \image html usage_primal_zero_form.png "Primal 0-form."
