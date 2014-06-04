@@ -35,7 +35,7 @@
 
 template <typename Calculus, DGtal::Duality duality>
 DGtal::VectorField<Calculus, duality>::VectorField(ConstAlias<Calculus> _calculus)
-    : myCoordinates((&_calculus)->kFormLength(0, duality), Calculus::dimension), myCalculus(&_calculus)
+    : myCoordinates((&_calculus)->kFormLength(0, duality), DGtal::Dimension(Calculus::dimension)), myCalculus(&_calculus)
 {
     clear();
 }
