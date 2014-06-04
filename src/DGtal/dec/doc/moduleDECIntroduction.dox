@@ -23,16 +23,29 @@ namespace DGtal {
 
 [TOC]
 
-\section sectDECIntroduction7 Introduction
+\section sectDECIntroduction Introduction
 
 Discrete exterior calculus provides a nice framework to represent scalar and vector field, as well as linear vector analysis operators.
 Discretization of k-forms allows a efficent representation of linear operator between them.
 This allows easy and fast resolution of linear problem over complex geometric objects.
 A quick overview of exterior calculus is presented in this section.
 
-\subsection sectDECIntroduction0 Scalar fields, vector fields and k-forms 
+\subsection sectDECIntroductionObjects Scalar field, k-form and vector field
 
-\subsubsection subsectDECIntroduction21 Vector space
+A DEC structure is composed of a primal and a dual k-cells sets wich define the geometrical shape represented.
+Each pair of primal and dual k-cells holds a size ratio used to define the Hodge duality operator.
+Associated primal k-cell and dual k'-cell don't have the same dimension.
+In general, \f$k' = n - k\f$ where \f$n\f$ is the dimension of the DEC structure.
+
+A DEC scalar field associates a scalar value to each primal or dual 0-cells of the struture.
+Chosing duality has a small geometrical influence since primal and dual cells are interleaved, but most importantly this choice changes boundary conditions when solving linear DEC problem. See \ref sectDECPoisson1D for an example.
+
+DEC k-forms associate a scalar value to each primal or dual k-cells of the structure.
+Following this definition, the first example of k-forms are scalar fields, which are analogous to 0-forms.
+They are the extension of differential forms defined in tensor calculus and Riemannian geometry to the discrete world.
+It important to remember that they can be used to transform k-vector into scalar fields and therefore form a base of k-vectors tangent bundles.
+
+\subsubsection sectDECIntroduction21 Vector space
 
 Linear operators form vector spaces and can be added together and scaled by a scalar.
 
