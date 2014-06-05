@@ -257,6 +257,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
 
             //test if a clipping plane do not cut it
             bool notCut =true;
+            double width = s_it->width;
             typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
             while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
               {
@@ -265,21 +266,21 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
                 double c = itClip->c;
                 double d = itClip->d;
                 double d2 ;
-                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] -sizePixel)) + ( c * s_it->point1[2] ) + d;
+                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] -width)) + ( c * s_it->point1[2] ) + d;
                 notCut = ( d2 >= 0);
-                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] +sizePixel)) + ( c * s_it->point1[2] ) + d;
+                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] +width)) + ( c * s_it->point1[2] ) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] +sizePixel)) + ( c * s_it->point2[2] ) + d;
+                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] +width)) + ( c * s_it->point2[2] ) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] -sizePixel)) + ( c * s_it->point2[2] ) + d;
+                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] -width)) + ( c * s_it->point2[2] ) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] -sizePixel )) + d;
+                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] -width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] +sizePixel )) + d;
+                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] +width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] +sizePixel )) + d;
+                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] +width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] -sizePixel )) + d;
+                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] -width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
 
                 itClip ++;
@@ -292,14 +293,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const 
                 
                 apoint1 = ((s_it->point1) - shift)*scale;
                 apoint2 = ((s_it->point2) - shift)*scale;
-                tmpStream << "v " << apoint1[0]     << " " << apoint1[1] -sizePixel << " " << apoint1[2] << std::endl;
-                tmpStream << "v " << apoint1[0]     << " " << apoint1[1] +sizePixel << " " << apoint1[2] << std::endl;               
-                tmpStream << "v " << apoint2[0]     << " " << apoint2[1]     << " " << apoint2[2] +sizePixel<< std::endl;
-                tmpStream << "v " << apoint2[0]     << " " << apoint2[1]     << " " << apoint2[2] -sizePixel<< std::endl;
-                tmpStream << "v " << apoint2[0]     << " " << apoint2[1] +sizePixel << " " << apoint2[2] << std::endl;
-                tmpStream << "v " << apoint2[0]     << " " << apoint2[1] -sizePixel << " " << apoint2[2] << std::endl;
-                tmpStream << "v " << apoint1[0]     << " " << apoint1[1]     << " " << apoint1[2] -sizePixel << std::endl;
-                tmpStream << "v " << apoint1[0]     << " " << apoint1[1]     << " " << apoint1[2] +sizePixel<< std::endl;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1] -width << " " << apoint1[2] << std::endl;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1] +width << " " << apoint1[2] << std::endl;               
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1]     << " " << apoint2[2] +width<< std::endl;
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1]     << " " << apoint2[2] -width<< std::endl;
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1] +width << " " << apoint2[2] << std::endl;
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1] -width << " " << apoint2[2] << std::endl;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1]     << " " << apoint1[2] -width << std::endl;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1]     << " " << apoint1[2] +width<< std::endl;
         
 
                 tmpStream  << "vn " <<  "-1"  << " " << "0" << " " << "0" << std::endl;//left
