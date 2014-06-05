@@ -25,47 +25,90 @@ namespace DGtal {
 
 \section sectDECIntroduction Introduction
 
-Discrete exterior calculus provides a nice framework to represent scalar and vector field, as well as linear vector analysis operators.
-Discretization of k-forms allows a efficent representation of linear operator between them.
+Discrete Exterior Calculus (DEC) provides a nice way to represent discrete scalar and vector fields, as well as linear vector analysis operators.
+It can be potenially applied to a large number of field theory problem, such as electrodynamics, thermodynamics or really any linear physics problem.
+
+DEC extends efficiently continuous Rimenanian geometry vector fields and differential forms to the discrete world.
+Discretization of differential forms induces a natural discretization of linear operators between them.
 This allows easy and fast resolution of linear problem over complex geometric objects.
-A quick overview of exterior calculus is presented in this section.
 
-\subsection sectDECIntroductionObjects Scalar field, k-form and vector field
+\subsection sectDECStruture DEC geometrical structure
 
-A DEC structure is composed of a primal and a dual k-cells sets wich define the geometrical shape represented.
+A DEC structure is composed of a primal and a dual k-cells sets wich define the geometrical shape of the represented object.
+These sets are intervealed and are the dual of each others in the classical sense.
 Each pair of primal and dual k-cells holds a size ratio used to define the Hodge duality operator.
 Associated primal k-cell and dual k'-cell don't have the same dimension.
 In general, \f$k' = n - k\f$ where \f$n\f$ is the dimension of the DEC structure.
 
-A DEC scalar field associates a scalar value to each primal or dual 0-cells of the struture.
-Chosing duality has a small geometrical influence since primal and dual cells are interleaved, but most importantly this choice changes boundary conditions when solving linear DEC problem. See \ref sectDECPoisson1D for an example.
+\image html grille_cubique.png "Primal (solid lines and filled dots) and dual (dashed lines and hollow dots) k-cells sets defining a 3D DEC structure."
 
-DEC k-forms associate a scalar value to each primal or dual k-cells of the structure.
-Following this definition, the first example of k-forms are scalar fields, which are analogous to 0-forms.
-They are the extension of differential forms defined in tensor calculus and Riemannian geometry to the discrete world.
+\subsection sectDECIntroductionObjects Scalar field, k-form and vector field
+
+DEC scalar field associate a scalar value to each 0-cells of the struture.
+DEC vector field associate an n dimensional quantity (a arrow for example) to each 0-cells of the structure.
+
+DEC k differential forms, or k-forms for short, associate a scalar value to each primal or dual k-cells of the structure.
+They are the discrete extension of continuous differential forms defined in tensor calculus and Riemannian geometry to the discrete world.
 It important to remember that they can be used to transform k-vector into scalar fields and therefore form a base of k-vectors tangent bundles.
+Following this definition, the first example of k-forms are scalar fields, which are analogous to 0-forms.
+Discrete 1-forms, as their continuous counter part, can be constructed from vector fields to created "project along this vector field" operator.
+1-forms are therefore linked to vector field and the DEC provides flat and sharp operators to transform one into the other.
+Higher order differential forms can be constructed from 0- and 1-forms throught using wedge product to form complex structure such as metric tensor (n-form) or any other tensorial quantity.
 
-\subsubsection sectDECIntroduction21 Vector space
+Vector fields and k-forms come in both primal and dual flavors.
+Chosing duality has a small geometrical influence since primal and dual cells are sligthly shifted, but most importantly this choice changes boundary conditions when solving linear DEC problem. See \ref sectDECPoisson1D for an example.
 
-Linear operators form vector spaces and can be added together and scaled by a scalar.
+Moreover k-forms and vector fields forms vector space as long as their duality and order is preserved.
+Two compatible fields or differential forms can therefore be added, substracted or scaled throught external multiplication.
 
-\subsection sectDECIntroduction1 Linear operators between k-forms
+Finally, it is important to note that non empty k-forms space exists only for \f$ 0 \leq k \leq n \f$.
+Knowing that base k-forms can be construcured for k 1-forms wedged together, it can be easily proven that if \f$ k > n \f$ the base vanishes due the antisymmetric nature of wedge product and the limited choice of linearly independant 1-forms.
 
-\image html operators_3d.png "DEC operators with definition cells for a rectangular grid."
+\subsection sectDECOperators Discrete linear operators
 
+Discretization of k-forms induces a discretization of linear operators form k-forms to k'-forms.
+A important statement of DEC is that any of those operators can be expressed easily using only two basic operations, Hodge duality operators \f$\star\f$ and exterior derivative \f$d\f$.
+Since k-forms vector spaces are in finite number, those operators are also in finite number.
+DEC defines two more operators : \f$\sharp\f$ (sharp) transforms 1-forms into vector fields and \f$\flat\f$ (flat) transforms vector fields into 1-forms.
+The following figure shows all available linear operators for a 3D structure, where TM (resp. TM') represents the primal (resp. dual) tangent bundle, the union of all tangent vector spaces generated by primal (resp. dual) vector fields. 
+K-cells associated with k-forms are highlighted in red next to the k-form spaces.
+As for DEC objects, operators come also in both primal and dual flavor.
+Dual stuff have a prime and primal stuff stay pristine.
 
-\subsubsection subsectDECIntroduction11 Hodge duality operator
+\image html operators_3d.png "DEC operators with definition cells for a 3D rectangular grid."
+
+\subsubsection sectDECOperatorHodge  Hodge duality operator
 
 Hodge operators take primal (resp. dual) k-forms as input and create dual (resp. primal) k-forms.
 The order is preserved and the duality is negated.
 
-\subsubsection subsectDECIntroduction12 Exterior derivative
+\subsubsection sectDECOperatorDerivative Exterior derivative
 
 Exterior derivatives take k-forms as inputs and create (k+1)-forms.
 Input and output forms have the same duality.
 Operators therefore come in two flavors, primal and dual.
 
-\subsubsection subsectDECIntroduction22  Laplace operator
+\subsubsection sectDECoperatorMusical Sharp and flat
+
+\subsubsection sectDECOperatorLaplace Classical vector analysis and Laplace operators
+
+Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be easily expressed with those operators:
+
+\f[\nabla x = ( d x )^\sharp \f]
+
+\f[\nabla\cdot x = \star d \star x^\flat \f]
+
+\f[\nabla\wedge x = ( \star d x^\flat )^\sharp \f]
+
+\f[\Delta x = \star d \star d x \f]
+
+Using the DEC package in 2D, one can define the primal 2D Laplace operator using Hodge duality operators \f$\star\f$ and exterior derivative operators \f$d\f$.
+
+\f[ \Delta = \star_2' d_1' \star_1 d_0 \f]
+
+3D dual Laplace
+
+\f[ \Delta = \star_3 d_2 \star_1' d_0' \f]
 
 \image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
 
@@ -78,15 +121,6 @@ Using the DEC package, one can solve any equation of the type:
 where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
 k-forms are represented using KForm class and linear operators are represented by LinearOperator class.
 One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative, DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge.
-Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be easily expressed with those operators:
-
-\f[\nabla x = ( d x )^\sharp \f]
-
-\f[\nabla\cdot x = \star d \star x^\flat \f]
-
-\f[\nabla\wedge x = ( \star d x^\flat )^\sharp \f]
-
-\f[\Delta x = \star d \star d x \f]
 
 Recall that \f$\flat\f$ and \f$\sharp\f$ are operators that turn a vector field into a 1-form and the other way around.
 Those operators are linear but do not transform k-forms into k-forms and therefore can't be represented by LinearOperator.
