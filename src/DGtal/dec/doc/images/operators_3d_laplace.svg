@@ -11,7 +11,7 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="operators_3d.svg"
+   sodipodi:docname="operators_3d_laplace.svg"
    inkscape:version="0.48.4 r9939"
    version="1.1"
    id="svg2"
@@ -27,11 +27,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.81441271"
-     inkscape:cx="591.62097"
-     inkscape:cy="53.275693"
+     inkscape:zoom="1.6288254"
+     inkscape:cx="470.50632"
+     inkscape:cy="164.73458"
      inkscape:document-units="px"
-     inkscape:current-layer="g36066-1-4"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1680"
      inkscape:window-height="984"
@@ -748,7 +748,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2414,7 +2414,8 @@
     </g>
     <g
        id="g16406-4"
-       transform="translate(34.888935,41.086742)">
+       transform="translate(34.888935,41.086742)"
+       style="stroke:#ff0000">
       <path
          d="m 222.73864,127.31499 c 0,16.59728 -13.45476,30.05204 -30.05204,30.05204 -16.59728,0 -30.05204,-13.45476 -30.05204,-30.05204 0,-16.59729 13.45476,-30.052041 30.05204,-30.052041 16.59728,0 30.05204,13.454751 30.05204,30.052041 z"
          sodipodi:ry="30.052038"
@@ -2422,14 +2423,15 @@
          sodipodi:cy="127.31499"
          sodipodi:cx="192.6866"
          id="path3063-7-8"
-         style="fill:#ffffff;stroke:#000000"
+         style="fill:#ffffff;stroke:#ff0000"
          sodipodi:type="arc"
          transform="translate(226.15967,173.72631)" />
       <g
          transform="matrix(1.5,0,0,1.5,60.660879,104.19067)"
          ns0:text="\\sf 0-form\'"
          ns0:preamble="/home/pierre/git/DGtalTests/doc/presentation/preamble.tex"
-         id="g13031-5">
+         id="g13031-5"
+         style="stroke:#ff0000;fill:#ff0000">
         <defs
            id="defs13033-3">
           <g
@@ -2517,9 +2519,10 @@
           </g>
         </defs>
         <g
-           id="textext-f1055d14-8-3">
+           id="textext-f1055d14-8-3"
+           style="stroke:#ff0000;fill:#ff0000">
           <g
-             style="fill:#000000;fill-opacity:1"
+             style="fill:#ff0000;fill-opacity:1;stroke:#ff0000"
              id="g13062-8">
             <use
                height="1052.3622"
@@ -2527,24 +2530,27 @@
                xlink:href="#textext-f1055d14-1-0"
                x="223.43201"
                y="134.765"
-               id="use13064-3" />
+               id="use13064-3"
+               style="stroke:#ff0000;fill:#ff0000" />
             <use
                height="1052.3622"
                width="744.09448"
                xlink:href="#textext-f1055d14-2-6"
                x="228.97121"
                y="134.765"
-               id="use13066-6" />
+               id="use13066-6"
+               style="stroke:#ff0000;fill:#ff0000" />
             <use
                height="1052.3622"
                width="744.09448"
                xlink:href="#textext-f1055d14-3-2"
                x="232.28876"
                y="134.765"
-               id="use13068-6" />
+               id="use13068-6"
+               style="stroke:#ff0000;fill:#ff0000" />
           </g>
           <g
-             style="fill:#000000;fill-opacity:1"
+             style="fill:#ff0000;fill-opacity:1;stroke:#ff0000"
              id="g13070-3">
             <use
                height="1052.3622"
@@ -2552,17 +2558,19 @@
                xlink:href="#textext-f1055d14-4-7"
                x="234.75948"
                y="134.765"
-               id="use13072-0" />
+               id="use13072-0"
+               style="stroke:#ff0000;fill:#ff0000" />
             <use
                height="1052.3622"
                width="744.09448"
                xlink:href="#textext-f1055d14-5-4"
                x="240.29868"
                y="134.765"
-               id="use13074-6" />
+               id="use13074-6"
+               style="stroke:#ff0000;fill:#ff0000" />
           </g>
           <g
-             style="fill:#000000;fill-opacity:1"
+             style="fill:#ff0000;fill-opacity:1;stroke:#ff0000"
              id="g13076-9">
             <use
                height="1052.3622"
@@ -2570,14 +2578,16 @@
                xlink:href="#textext-f1055d14-6-2"
                x="243.8653"
                y="134.765"
-               id="use13078-2" />
+               id="use13078-2"
+               style="stroke:#ff0000;fill:#ff0000" />
             <use
                height="1052.3622"
                width="744.09448"
                xlink:href="#textext-f1055d14-7-6"
                x="252.16414"
                y="134.765"
-               id="use13080-0" />
+               id="use13080-0"
+               style="stroke:#ff0000;fill:#ff0000" />
           </g>
         </g>
       </g>
