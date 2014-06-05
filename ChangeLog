@@ -1,5 +1,10 @@
 === DGtal 0.8 ===
 
+*Base Package*
+
+    - Fixing issue on Circulator/IteratorFunctions (related to #770 on MacOS). 
+	
+	
 *IO Package*
 
     - Better handling of materials in Board3D and OBJ exports.
