@@ -147,6 +147,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
   double angle_max=M_PI_4;
   bool ok = true;
   bool occ = false;
+  bool erase = false;
   
   IntegerComputer<TInteger> ic;
 
@@ -159,27 +160,29 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
   else
     {
       typename occulter_list::iterator iter;
-      
-      for(iter = myOcculters.begin();ok && iter!=myOcculters.end() ;++iter)	
-	{
+      iter = myOcculters.begin();
+      while(iter!=myOcculters.end())
+      	{
 	  pi = Point(*(iter->first));
 	  v = p-pi;
+	  erase = false;
 	  
 	  // pi is after p for all directions -> p is not an occulter
 	  if(ic.dotProduct(v,u1) < 0 && ic.dotProduct(v,u2) <0)
 	  {
-	      ok = false; 
-	      occ = false;
+	    ok = false; 
+	    occ = false;
 	    }
 	  else
 	    // p is after pi for all directions -> pi is not an occulter
 	    // anymore, p is a new occulter.
 	    if(ic.dotProduct(v,u1) > 0 && ic.dotProduct(v,u2) > 0)
 	      {
-		myOcculters.erase(iter);
+		iter = myOcculters.erase(iter);
 		occ = true;
 		angle_min = 0;
 		angle_max = M_PI_4;
+		erase = true;
 	      }
 	    else
 	      // p is after pi on [0,alpha], before pi on [alpha,pi/4]
@@ -201,10 +204,11 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		    if(alpha > iter->second.angle_max)
 		      {
 			//pi is not an occulter anymore 
-			myOcculters.erase(iter);
+			iter = myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
 			angle_max = M_PI_4;
+			erase = true;
 		      }
 		  // if alpha < iter->second.angle_min, pi does not
 		  // change, p may be an occulter -> do nothing
@@ -228,15 +232,18 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		    if(alpha < iter->second.angle_min)
 		      {
 			//pi is not an occulter anymore 
-			myOcculters.erase(iter);
+			iter = myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
 			angle_max = M_PI_4;
+			erase = true;
 		      }
 		  // if(alpha > iter->second.angle_max), pi does not
 		  // change, p may be an occulter -> do nothing
 		  
 		}
+	  if(!erase)
+	  iter++;
 	}
     }
   
