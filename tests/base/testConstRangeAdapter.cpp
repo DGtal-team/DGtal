@@ -42,7 +42,7 @@
 #include "DGtal/topology/SCellsFunctors.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
 
-
+#include "DGtal/base/IteratorFunctions.h"
 
 using namespace std;
 using namespace DGtal;
@@ -86,6 +86,11 @@ bool testRange(const Range &aRange)
     trace.info() << "Circulator" << endl;
     typename Range::ConstCirculator c = aRange.c();
     typename Range::ConstCirculator cend = aRange.c();
+
+    trace.info() << "c is valid: "<< (int)c.isValid() << " --  " << *c << std::endl;
+    trace.info() << "cend is valid: "<< (int)cend.isValid() << " --   " << *cend << std::endl;
+    
+
     if (isNotEmpty(c,cend)) 
       {
 	do 
@@ -104,12 +109,12 @@ bool testRange(const Range &aRange)
     typename Range::ConstReverseCirculator cend = aRange.rc();
     if (isNotEmpty(c,cend)) 
       {
-	do 
-	  {
-	    cout << *c << " ";
-	    l4.push_back(*c);
-	    c++;
-	  } while (c!=cend); 
+        do 
+          {
+            cout << *c << " ";
+            l4.push_back(*c);
+            c++;
+          } while (c!=cend); 
       }
     cout << endl; 
   }
