@@ -162,6 +162,28 @@ bool testNormaliation()
   return true;
 }
 
+
+bool testShapes()
+{
+ trace.beginBlock ( "Testing shapes ..." );
+
+  RealPoint p1( 0, 0, 0 );
+  RealPoint p2(10, 10, 0);
+
+  Board3D<Space,KSpace> board;
+
+  board.setLineColor(Color::Red);
+  board.addLine(p1,p2, 0.5);
+  
+  board.saveOBJ("dgtalBoard3D-line.obj");
+
+  trace.endBlock();
+
+  return true;
+}
+
+  
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -173,8 +195,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testBoard3D() && testQuadNorm()
-    && testNormaliation(); // && ... other tests
+bool res = testBoard3D() && testQuadNorm()
+                  && testNormaliation()
+                  && testShapes(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
