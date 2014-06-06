@@ -174,7 +174,7 @@ typename DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSepar
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
 eval( SurfelConstIterator it ) const
 {
-  typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
+  // typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
   ASSERT( mySurface != 0 );
   ASSERT( myVCMOnSurface != 0 );
@@ -191,7 +191,7 @@ eval( SurfelConstIterator itb,
       SurfelConstIterator ite,
       OutputIterator result ) const
 {
-  typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
+  // typedef typename VCMOnSurface::Surfel2Normals Surfel2Normals;
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<SurfelConstIterator> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Quantity> ));
   ASSERT( myVCMOnSurface != 0 );
