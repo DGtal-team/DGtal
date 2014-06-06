@@ -59,13 +59,13 @@ int main( int argc, char** argv )
 
   typedef Z3i::Space Space;
   typedef Z3i::KSpace KSpace;
-  typedef Z3i::Vector Vector;
+  // typedef Z3i::Vector Vector;
   typedef Z3i::Point Point;
   typedef Z3i::RealPoint RealPoint;
   typedef Z3i::RealVector RealVector;
   typedef HyperRectDomain<Space> Domain;
-  typedef EigenDecomposition<2,double> LinearAlgebraTool;
-  typedef LinearAlgebraTool::Matrix Matrix;
+  // typedef EigenDecomposition<2,double> LinearAlgebraTool;
+  // typedef LinearAlgebraTool::Matrix Matrix;
   typedef KSpace::Surfel Surfel;
   typedef KSpace::Cell Cell;
 
@@ -105,7 +105,7 @@ int main( int argc, char** argv )
   ThresholdedImage thresholdedImage( image, thresholdMin, thresholdMax );
   trace.endBlock();
   trace.beginBlock( "Extracting boundary by scanning the space. " );
-  bool space_ok = ks.init( image.domain().lowerBound(),
+  ks.init( image.domain().lowerBound(),
                            image.domain().upperBound(), true );
   SurfelAdjacency<KSpace::dimension> surfAdj( true ); // interior in all directions.
   Surfel bel = Surfaces<KSpace>::findABel( ks, thresholdedImage, 10000 );

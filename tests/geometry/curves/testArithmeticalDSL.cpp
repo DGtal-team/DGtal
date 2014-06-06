@@ -52,7 +52,7 @@ bool mainTest()
   BOOST_CONCEPT_ASSERT(( CPointPredicate<DSL> ));
   
   typedef typename DSL::Point Point; 
-  typedef typename DSL::Vector Vector; 
+  // typedef typename DSL::Vector Vector; 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
