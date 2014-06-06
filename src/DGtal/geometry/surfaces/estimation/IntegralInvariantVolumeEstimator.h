@@ -73,10 +73,7 @@ namespace DGtal
 * \brief Aim: This class implement an Integral Invariant estimator which computes for each surfel the volume of the intersection of the shape with a ball of given radius centered on the surfel.
 *
 *
-* @see related article:
-*       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
-*       Estimators in Digital Geometry. DGCI 2013. Retrieved from
-*       https://liris.cnrs.fr/publis/?id=5866
+* @cite Coeurjo-CVIU-2014
 *
 * The algorithm we propose uses a kernel (2D: Ball2D, 3D: Ball3D) that
 * is moved along the surface. The volume of this kernel intersected
@@ -86,7 +83,7 @@ namespace DGtal
 * hypothesis about the shape geometry and the convolution kernel
 * radius.  Experimental results confirm the multigrid convergence.
 *
-* Some optimization is available when we give a range of 0-adjacent
+* Optimization is available when we give a range of 0-adjacent
 * surfels to the estimator. Note that you should use
 * IntegralInvariantCovarianceEstimator instead when trying to estimate
 * the normal or principal curvature directions, the Gaussian curvature

@@ -212,7 +212,7 @@ init
   myKernel = CountedPtr<KernelSupport>( new KernelSupport( rOrigin, eRadius ) ); // acquired
   myDigKernel = CountedPtr<DigitalShapeKernel>( new DigitalShapeKernel() );
   myDigKernel->attach( *myKernel );
-  myDigKernel->init( myKernel->getLowerBound(), myKernel->getUpperBound(), myH );
+  myDigKernel->init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
   Domain neighborhood( Point::diagonal(-1), Point::diagonal(1) );
   unsigned int n = BasicMathFunctions::power( (unsigned int) 3, Space::dimension );
   myKernels = std::vector< PairIterators > ( n );
@@ -234,7 +234,7 @@ init
       EuclideanMinus* current = new EuclideanMinus( *myKernel, *kernelShifted );
       DigitalShape digCurrent;
       digCurrent.attach( *current );
-      digCurrent.init( myKernel->getLowerBound(), myKernel->getUpperBound(), myH );
+      digCurrent.init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
       
       myKernelsSet[ offset ] = new DigitalSet( digCurrent.getDomain() );
       Shapes< Domain>::digitalShaper ( *(myKernelsSet[ offset ]), digCurrent );
