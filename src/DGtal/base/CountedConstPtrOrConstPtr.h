@@ -58,7 +58,7 @@ namespace DGtal
    * \brief Aim: Smart or simple const pointer on \c T. It can be a
    * smart pointer based on reference counts or a simple pointer on \c
    * T depending of a boolean value. This is useful when instantiating
-   * from a ConstAlias<T> object, letting the user specify if it uses
+   * from a ConstAlias<T> object, letting the user specifies if it uses
    * smart pointers or simply pointers. This class should be used as a
    * meta-type for data members, when the programmer wants to hold a
    * const-reference to some object during some period, but also wants
