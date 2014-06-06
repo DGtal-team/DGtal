@@ -75,7 +75,7 @@ bool testBallQuad()
   typedef ImplicitDigitalBall3<Point> ImplicitDigitalBall;
   typedef ImplicitDigitalSurface<KSpace,ImplicitDigitalBall> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
-  typedef Boundary::Tracker Tracker;
+  // typedef Boundary::Tracker Tracker;
   typedef Boundary::Surfel Surfel;
   Point p1( -10, -10, -10 );
   Point p2( 10, 10, 10 );
