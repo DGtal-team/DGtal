@@ -59,6 +59,7 @@
 #include "DGtal/arithmetic/ModuloComputer.h"
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/CConstSinglePassRange.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -671,7 +672,7 @@ public:
      * @param max_y (returns) the maximal y-coordinate.
      */
     void computeBoundingBox( TInteger & min_x, TInteger& min_y,
-           TInteger& max_x, TInteger& max_y ) const;
+                             TInteger& max_x, TInteger& max_y ) const;
 
     /**
      * Finds a quadrant change in 'this' Freeman chain and returns the
@@ -876,15 +877,38 @@ public:
     static void readFromPointsRange( const TRange& aRange, FreemanChain & c );
     
     /**
-     * Return a vector containing all the interger points of the freemanchain.
+     * Return a vector containing all the integer points of the freemanchain.
      *
      * @param fc the FreemanChain
      * @param aVContour (returns) the vector containing all the integer contour points.
      */
     static void getContourPoints(const FreemanChain & fc, 
-        std::vector<Point> & aVContour );
+                                 std::vector<Point> & aVContour );
+    
 
+    /**
+     * Return a set containing all the linels (given as Signed SCell
+     * in a KhalimskySpaceND) of a FreemanChain (given Z2). Since by
+     * definition the interpixel elements cannot be represented in Z2,
+     * we use a proper KhalimskySpaceND with a shift defined by
+     * convention to (-0.5, 0.5).  Notes that this shift is the same
+     * that the one used to display FreemanChain object in interpixel
+     * mode.
+     *     
+     * @param aKSpace the KSpace
+     * @param fc the FreemanChain
+     * @param aSCellContour (returns) the set containing all the linels of the inter-pixels contour.
+     * @param aFlagForAppend if set to true the resulting set is appended to initial set.  
+     */
 
+    static void getInterPixelLinels(const KhalimskySpaceND<2,  TInteger> & aKSpace, 
+                                    const FreemanChain & fc, 
+                                    typename KhalimskySpaceND<2, TInteger>::SCellSet & aSCellContour,
+                                    bool aFlagForAppend=false);
+    
+
+    
+    
     /**
      * Translate a point by the displacement given a code from a FreemanChain
      *

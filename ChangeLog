@@ -46,7 +46,21 @@
 *Geometry Package*
     - random-access iterators in ArithmeticalDSL
 
+    - Various geometric predicates are now available in order to
+      test the orientation of three points in the planes. Most classes 
+      are template classes parametrized by a type for the points (or its 
+      coordinates) and an integral type for the computations. They always 
+      return an exact value (or sign), provided that the integral type 
+      used for the computations is well chosen with respect to the coordinates 
+      of the points. Some implementations do not increase the size of the input
+      integers during the computations.	
+
+   - Bug fix in PowerMap construction.
 	
+*Math package*
+
+    - Simple Linear Regression tool added (backport from imagene).
+
 
 === DGtal 0.7 ===
 
