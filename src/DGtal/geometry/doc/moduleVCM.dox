@@ -64,9 +64,10 @@ information extracted from the covariance matrix such as normals or
 principal directions are \b stable with respect to \b Hausdorff
 \b perturbation.
 
-\advanced Remark that this definition matches the definition introduced in
-\cite{Merigot_2011-tvcg}: when \f$\chi\f$ is the indicatrix of a ball, one recovers a
-notion similar to the convolved VCM.
+\advanced Remark that this definition matches the definition
+introduced in \cite{Merigot_2011-tvcg}: when \f$\chi\f$ is the
+characteristic function of a ball, one recovers a notion similar to
+the convolved VCM.
 
 
 
@@ -75,7 +76,7 @@ notion similar to the convolved VCM.
 Let \a K be some point set. In this case, the computation of the VCM
 can be split into isolated calculations in each Voronoi cell of \a
 K. In the digital setting, the Voronoi cells can be efficiently
-computed by repeated scanning of the domain (see \ref
+computed by repeated scans of the domain (see \ref
 moduleVolumetric). That's exactly how is computed the VCM. The
 computational complexity of the VCM is thus the computational
 complexity of the Voronoi map in nD. The templated class
@@ -198,7 +199,7 @@ surface \c surface.
 \snippet geometry/surfaces/dvcm-3d.cpp DVCM3D-typedefs
 \snippet geometry/surfaces/dvcm-3d.cpp DVCM3D-instantiation
 
-The whole VCM computation is done in this constructor. Once this is
+The whole VCM computation is done in the constructor. Once this is
 done, you may access to the whole VCM tensor information with the
 methods:
 
@@ -242,7 +243,7 @@ The class VCMDigitalSurfaceLocalEstimator adapts a
 VoronoiCovarianceMeasureOnDigitalSurface to be a model of
 CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b Covariance \b
 Measure to estimate geometric quantities. The template type \b
-TVCMGeometricFunctor specifies which is the estimated quantity.  For
+TVCMGeometricFunctor specifies what is the estimated quantity.  For
 instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the
 estimated VCM surface \b outward normal for given surfels,
 VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor returns the absolute
@@ -271,13 +272,13 @@ can be instantiated in several ways:
 
 - it can be \b constructed \b from \b a \b
   VoronoiCovarianceMeasureOnDigitalSurface \b object. In this case,
-  the object is directly valid. You may called
+  the object is directly valid. You may call
   VCMDigitalSurfaceLocalEstimator::init directly.
 
-Once a VCMDigitalSurfaceLocalEstimator is instantiated, you have to called
+Once a VCMDigitalSurfaceLocalEstimator is instantiated, you have to call
 its \a init method like all estimators
 (VCMDigitalSurfaceLocalEstimator::init). Note that for the VCM this method
-does nothing (except checking the object is valid). Indeed, the VCM is
+does nothing (except checking that the object is valid). Indeed, the VCM is
 necessarily computed for the whole surface, since it depends on a 
 global distance transform. 
 

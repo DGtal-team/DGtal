@@ -210,7 +210,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing VCM mean curvatures." );
-  typedef VCMGeometricFunctors::VCMAbsoluteMeanCurvature3DFunctor<VCMOnSurface> VCMCurvatureFunctor;
+  typedef VCMGeometricFunctors::VCMMeanAbsoluteCurvatures3DFunctor<VCMOnSurface> VCMCurvatureFunctor;
   typedef VCMDigitalSurfaceLocalEstimator<SurfaceContainer,Metric,
                                           KernelFunction, VCMCurvatureFunctor> VCMCurvatureEstimator;
   VCMCurvatureEstimator vcm_curv_estimator( vcm_surface );

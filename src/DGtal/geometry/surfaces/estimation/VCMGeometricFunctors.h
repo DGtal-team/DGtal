@@ -316,14 +316,14 @@ namespace DGtal
 
 
    /**
-     * Description of template class 'VCMMeanCurvature3DFunctor' <p> 
-     * \brief Aim: A functor Surfel -> Quantity that returns the absolute mean curvature at
+     * Description of template class 'VCMMeanAbsoluteCurvatures3DFunctor' <p> 
+     * \brief Aim: A functor Surfel -> Quantity that returns the mean of absolute curvatures at
      * given surfel: (abs(k1)+abs(k2))/2. This class has meaning only in 3D.
      *
      * @tparam TVCMOnDigitalSurface any concrete type of VoronoiCovarianceMeasureOnDigitalSurface
      */
     template <typename TVCMOnDigitalSurface>
-    struct VCMAbsoluteMeanCurvature3DFunctor {
+    struct VCMMeanAbsoluteCurvatures3DFunctor {
       typedef TVCMOnDigitalSurface VCMOnDigitalSurface;
       typedef typename VCMOnDigitalSurface::KSpace KSpace;
       typedef typename VCMOnDigitalSurface::Surfel Surfel;
@@ -339,7 +339,7 @@ namespace DGtal
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMAbsoluteMeanCurvature3DFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
+      VCMMeanAbsoluteCurvatures3DFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
         : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
@@ -358,7 +358,7 @@ namespace DGtal
       }
 
       /**
-         Map operator Surfel -> Scalar giving the absolute curvature estimated by the VCM object.
+         Map operator Surfel -> Scalar giving the mean of absolute curvatures estimated by the VCM object.
          Complexity is \f$ O(log n) \f$, if \a n is the number of surfels of the surface.
 
          @param s any surfel of the shape.
