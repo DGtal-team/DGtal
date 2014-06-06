@@ -59,13 +59,10 @@ int main( int argc, char** argv )
 
   typedef Z3i::Space Space;
   typedef Z3i::KSpace KSpace;
-  // typedef Z3i::Vector Vector;
   typedef Z3i::Point Point;
   typedef Z3i::RealPoint RealPoint;
   typedef Z3i::RealVector RealVector;
   typedef HyperRectDomain<Space> Domain;
-  // typedef EigenDecomposition<2,double> LinearAlgebraTool;
-  // typedef LinearAlgebraTool::Matrix Matrix;
   typedef KSpace::Surfel Surfel;
   typedef KSpace::Cell Cell;
 

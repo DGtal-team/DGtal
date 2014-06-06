@@ -49,7 +49,6 @@ using namespace DGtal;
 int main( int /* argc */, char** /* argv */ )
 {
   typedef Z2i::Space Space;
-  // typedef Z2i::Vector Vector;
   typedef Z2i::Point Point;
   typedef Z2i::RealPoint RealPoint;
   typedef Z2i::RealVector RealVector;
