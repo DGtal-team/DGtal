@@ -159,14 +159,15 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
     }
   else
     {
-      typename occulter_list::iterator iter;
+      typename occulter_list::iterator iter, next;
       iter = myOcculters.begin();
       while(iter!=myOcculters.end())
       	{
 	  pi = Point(*(iter->first));
 	  v = p-pi;
-	  erase = false;
 	  
+	  next = iter;
+	  next++;
 	  // pi is after p for all directions -> p is not an occulter
 	  if(ic.dotProduct(v,u1) < 0 && ic.dotProduct(v,u2) <0)
 	  {
@@ -178,11 +179,10 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 	    // anymore, p is a new occulter.
 	    if(ic.dotProduct(v,u1) > 0 && ic.dotProduct(v,u2) > 0)
 	      {
-		iter = myOcculters.erase(iter);
+		myOcculters.erase(iter);
 		occ = true;
 		angle_min = 0;
 		angle_max = M_PI_4;
-		erase = true;
 	      }
 	    else
 	      // p is after pi on [0,alpha], before pi on [alpha,pi/4]
@@ -204,11 +204,10 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		    if(alpha > iter->second.angle_max)
 		      {
 			//pi is not an occulter anymore 
-			iter = myOcculters.erase(iter);
+			myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
 			angle_max = M_PI_4;
-			erase = true;
 		      }
 		  // if alpha < iter->second.angle_min, pi does not
 		  // change, p may be an occulter -> do nothing
@@ -232,18 +231,16 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		    if(alpha < iter->second.angle_min)
 		      {
 			//pi is not an occulter anymore 
-			iter = myOcculters.erase(iter);
+			myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
 			angle_max = M_PI_4;
-			erase = true;
 		      }
 		  // if(alpha > iter->second.angle_max), pi does not
 		  // change, p may be an occulter -> do nothing
 		  
 		}
-	  if(!erase)
-	  iter++;
+	  iter = next;
 	}
     }
   
