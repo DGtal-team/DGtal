@@ -35,19 +35,19 @@ The Poisson equation can be viewed as the heat equation when permanent regime is
 Here we choose \f$f\f$ to be a Dirac delta function \f$\delta\f$ to simulate a punctual heating on the structure.
 
 Depending on border conditions, \f$\Delta\f$ may have some null eigen values.
-In order to make in solvable, we use a regulazarised version of the Laplace operator \f$\Delta_\mathrm{reg}\f$, defined below
+In order to make in solvable, we use a regularized version of the Laplace operator \f$\Delta_\mathrm{reg}\f$, defined below
 
 \f[ \Delta_\mathrm{reg} = \Delta + \lambda I \f]
 
-where \f$I\f$ is the identity operator and \f$\lambda\f$ is the regularization scalar, choosen small with respect to \f$\Delta\f$ eigen values.
-Linear regularizated solution are the same solution as least square problem solution of the non regularized problem. 
+where \f$I\f$ is the identity operator and \f$\lambda\f$ is the regularization scalar, chosen small with respect to \f$\Delta\f$ eigen values.
+Linear regularized solution are the same solution as least square problem solution of the non regularized problem. 
 \f$I\f$ is generated using DiscreteExteriorCalculus.identity. 
 
 One can use the general Laplace operator definition.
 
 \f[ \Delta = \star d \star d \f]
 
-However, for convinience DiscreteExteriorCalculus provides a method to get the Laplace operator directly. 
+However, for convenience DiscreteExteriorCalculus provides a method to get the Laplace operator directly. 
 
 \section sectDECPoisson1D 1D Poisson resolution
 
@@ -84,7 +84,7 @@ Now the problem is fully defined and there one thing left to do: solving it.
 The resolution is done by DiscreteExteriorCalculusSolver.
 This class takes the actual linear solver used as the second template parameter.
 Any class that validates the CLinearAlgebraSolver concept can be wrapped by DiscreteExteriorCalculusSolver.
-If DGtal was compiled with eigen support enabled as decribed in \ref sectDECLinearSolver,
+If DGtal was compiled with eigen support enabled as described in \ref sectDECLinearSolver,
 some solvers will be available in the EigenLinearAlgebraBackend.
 Here, we will use the EigenLinearAlgebraBackend::SolverSparseQR solver.
 Once created the solver is given the operator using DiscreteExteriorCalculusSolver.compute.
@@ -117,7 +117,7 @@ Laplace operator need to be rebuild, even if the code doesn't change.
 \snippet testLinearStructure.cpp dirichlet-laplace-definition
 
 Solving the problem is achieved by using the same code as for the Neumann case.
-This time the analytical solution is piece-wise linear and take a constant null value at the border of the structure, as expect from the Dirichlet boundary condition.
+This time the analytic solution is piece-wise linear and take a constant null value at the border of the structure, as expect from the Dirichlet boundary condition.
 
 \snippet testLinearStructure.cpp dirichlet-solve
 

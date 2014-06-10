@@ -10,3 +10,4 @@ qtcreatorbuild/
 install
 *~
 *.swp
+*.bak
