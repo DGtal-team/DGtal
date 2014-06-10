@@ -27,7 +27,7 @@ It is possible to insert cell manually into the DEC structure using DiscreteExte
 Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
 Therefore the DEC structure shouldn't be modified once DEC operators are created.
 
-\section sectDECHelmoltzIntro Helmoltz decomposition
+\section sectDECHelmoltzProblem Helmoltz decomposition
 
 In this example, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
 Helmoltz decomposition states that every vector field or 1-form \f$\omega\f$ can be uniquely expressed as the sum of three terms.
