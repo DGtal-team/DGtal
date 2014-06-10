@@ -40,6 +40,7 @@ Each pair of primal and dual k-cells holds a size ratio used to define the Hodge
 Associated primal k-cell and dual k'-cell don't have the same dimension.
 In general, \f$k' = n - k\f$ where \f$n\f$ is the dimension of the DEC structure.
 
+\anchor one
 \image html grille_cubique.png "Primal (solid lines and filled dots) and dual (dashed lines and hollow dots) k-cells sets defining a 3D DEC structure."
 
 \subsection sectDECIntroductionObjects Scalar field, k-form and vector field
@@ -63,6 +64,8 @@ Two compatible fields or differential forms can therefore be added, substracted 
 
 Finally, it is important to note that non empty k-forms space exists only for \f$ 0 \leq k \leq n \f$.
 Knowing that base k-forms can be construcured for k 1-forms wedged together, it can be easily proven that if \f$ k > n \f$ the base vanishes due the antisymmetric nature of wedge product and the limited choice of linearly independant 1-forms.
+K-forms are represented using KForm class.
+Vector fields are represented using the VectorField class.
 
 \subsection sectDECOperators Discrete linear operators
 
@@ -74,7 +77,9 @@ The following figure shows all available linear operators for a 3D structure, wh
 K-cells associated with k-forms are highlighted in red next to the k-form spaces.
 As for DEC objects, operators come also in both primal and dual flavor.
 Dual stuff have a prime and primal stuff stay pristine.
+Linear operators between k-forms are represented by LinearOperator class.
 
+\anchor two
 \image html operators_3d.png "DEC operators with definition cells for a 3D rectangular grid."
 
 \subsubsection sectDECOperatorHodge  Hodge duality operator
@@ -117,9 +122,20 @@ See <a href="https://en.wikipedia.org/wiki/Exterior_derivative">wikipedia page</
 
 \subsubsection sectDECoperatorMusical Sharp and flat
 
-\subsubsection sectDECOperatorLaplace Classical vector analysis and Laplace operators
+Sharp \f$\sharp\f$ and flat \f$\flat\f$, called <em>musical isomorphism</em> in \cite goes2013digital, transform 1-form into vector field and the other way around.
+In the continuous world, these two operators cancel each other exactly.
 
-Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be easily expressed with those operators:
+\f[ (x ^\sharp) ^\flat = x, (y ^\flat) ^\sharp = y\f]
+
+where \f$x\f$ is a 1-form and \f$y\f$ is a vector field of the same duality.
+The bijectivity of these operators is slightly altered byt the discretization.
+Therefore application of sharp and flat will induce a small divergence from the origin.
+This is especially visible along borders of the structure.
+In the DEC package and contrary to Hodge operators and exterior derivative, sharp and flat operators don't exists as stand alone object, but rather get applied by the DEC struture directly through DiscreteExteriorCalculus.sharp and DiscreteExteriorCalculus.flat.
+
+\subsubsection sectDECOperatorClassical Classical vector analysis
+
+Classical vector analysis operators such as gradient \f$\nabla\f$, divergence \f$\nabla\cdot\f$, curl \f$\nabla\wedge\f$ and Laplace operator \f$\Delta\f$ can be expressed with basic DEc operators, \f$\star\f$, \f$d\f$, \f$\sharp\f$ and \f$\flat\f$.
 
 \f[\nabla x = ( d x )^\sharp \f]
 
@@ -129,15 +145,29 @@ Classical vector analysis operator such as gradient \f$\nabla\f$, divergence \f$
 
 \f[\Delta x = \star d \star d x \f]
 
-Using the DEC package in 2D, one can define the primal 2D Laplace operator using Hodge duality operators \f$\star\f$ and exterior derivative operators \f$d\f$.
+Note that each basic specific operators change with the dimension of the structure \f$n\f$ and duality of the input k-form vector space.
+
+\subsubsection sectDECOperatorLaplace Laplace operators
+
+In order to find the right operators to use, one could draw a figure similiar to Figure \ref two.
+Using this figure together with the definition of vector analysis operators provided in the above section, the order and duality of each operator become easy to figure out.
+For example, one can easily figure out the precise definition of the primal Laplace operator \f$\Delta\f$ and the dual Laplace operator \f$\Delta'\f$ in 3D dimension.
+Paths taken by those oeprators are highlighted in Figure \ref three.
+
+\f[ \Delta = \star_3' d_2' \star_1 d_0 \f]
+
+\f[ \Delta' = \star_3 d_2 \star_1' d_0' \f]
+
+\anchor three
+\image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted primal Laplace operator (green), dual Laplace operator (blue) together with its contintuting basic DEC operators (red)."
+
+If the dimension of the DEC structure changes, the definition of the primal Laplace operator changess slightly.
+For example, here is the definition of the primal Laplace operator in 2D.
 
 \f[ \Delta = \star_2' d_1' \star_1 d_0 \f]
 
-3D dual Laplace
-
-\f[ \Delta = \star_3 d_2 \star_1' d_0' \f]
-
-\image html operators_3d_laplace.png "DEC operators with definition cells for a rectangular grid. Highlighted dual laplace operator."
+Note that DiscreteExteriorCalculus provides two DiscreteExteriorCalculus.primalLaplace and DiscreteExteriorCalculus.dualLaplace to conviniently compute Laplace operators.
+Of course, one could still built Laplace operator of basic Hodge and derivative (see \ref sectDECHelmoltz2D).
 
 \subsection sectDECIntroduction1 DEC linear problem
 
@@ -146,7 +176,6 @@ Using the DEC package, one can solve any equation of the type:
 \f[ f(x) = y \f]
 
 where \f$x\f$ and \f$y\f$ are k-forms, with potentially different orders and dualities, and \f$f\f$ is a linear operator between k-forms.
-k-forms are represented using KForm class and linear operators are represented by LinearOperator class.
 One can create linear operators by manually filling LinearOperator.myContainer, but it's often easier to combine derivative \f$d\f$ and duality operators \f$\star\f$ computed by DiscreteExteriorCalculus.derivative, DiscreteExteriorCalculus.primalHodge and DiscreteExteriorCalculus.dualHodge.
 
 Recall that \f$\flat\f$ and \f$\sharp\f$ are operators that turn a vector field into a 1-form and the other way around.
