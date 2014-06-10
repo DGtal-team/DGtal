@@ -539,7 +539,7 @@ namespace DGtal
      *
      */
 
-    void addLine(const RealPoint &p1, const RealPoint &p2, double width=0.03);
+    void addLine(const RealPoint &p1, const RealPoint &p2, const double width=0.03);
 
 
     /**
