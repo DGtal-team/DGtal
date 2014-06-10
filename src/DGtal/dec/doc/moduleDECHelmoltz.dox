@@ -22,69 +22,99 @@ namespace DGtal {
 
 [TOC]
 
-Sometime one doesn't want to create DEC structure from higher order cells using the set constructor of \ref DiscreteExteriorCalculus.
-It is possible to insert cell manually into the DEC structure using DiscreteExteriorCalculus.insertSCell.
-Inserting a new cell invalidate all previously created k-forms, linear operators and vector fields.
-Therefore the DEC structure shouldn't be modified once DEC operators are created.
-
 \section sectDECHelmoltzProblem Helmoltz decomposition
 
-In this example, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
-Helmoltz decomposition states that every vector field or 1-form \f$\omega\f$ can be uniquely expressed as the sum of three terms.
+Helmoltz decomposition states that any 1-form \f$\omega\f$ can be uniquely expressed as the sum of three terms.
 
 \f[ \omega = d\alpha + \delta\beta + \gamma \f]
 
-where \f$\alpha\f$ is a 0-form scalar potential, \f$\beta\f$ is a 2-form vector potential and \f$\gamma\f$ is left over 1-form harmonic part.
-Recall that \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \star d \star \f$ is the exterior anti-derivative from 2-form to 1-form.
+where \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \star d \star \f$ is the exterior anti-derivative from 2-form to 1-form.
+\f$\alpha\f$ is a 0-form scalar potential and \f$d\alpha\f$ is the curl free term.
+
+\f[ \nabla \wedge (d \alpha) = ( \star d d \alpha )^\sharp = 0 \f]
+
+\f$\beta\f$ is a 2-form vector potential and \f$\delta\beta\f$ is the divergence free term.
+
+\f[ \nabla \cdot (\delta \beta) = \star d \star \delta \beta = \delta \delta \beta = 0 \f]
+
+The remaining part \f$\gamma\f$ is the 1-form harmonic part.
 \f$\gamma\f$ has null anti-derivative and null derivative since if they where not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
 
 \f[ \delta \gamma = d \gamma = 0 \f]
 
-By differentiating \f$\omega\f$ definition, one can isolate DEC solvable expressions for \f$\alpha\f$ and \f$\beta\f$.
+By differentiating \f$\omega\f$, one can isolate DEC solvable expressions for \f$\alpha\f$ and \f$\beta\f$.
 
 \f[ d \delta \beta = d \omega \f]
 \f[ \delta \omega = \delta d \alpha \f]
 
 The harmonic component \f$\gamma\f$ is computed by substracting \f$d\alpha\f$ and \f$\delta\beta\f$ from \f$\omega\f$.
+The interest of the Helmoltz decomposition is that \f$\gamma\f$ has a strong connection with the topology of the structure.
 
 \section sectDECHelmoltz2D 2D Helmoltz decomposition
 
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_input_field_definition
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_input_field_definition
+In this example, we compute primal and dual Helmoltz decomposition of an arbitrary vector field on a 2D double ring shape.
 
+Here is the definition of objects used during the primal decomposition.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_input_field_definition
 \image html solve_2d_primal_decomposition_calculus.png "Primal Helmoltz decomposition. Primal input vector field and 1-form."
+
+And here are very similar objects used during the dual decomposition.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_input_field_definition
 \image html solve_2d_dual_decomposition_calculus.png "Dual Helmoltz decomposition. Dual input vector field and 1-form."
 
+Definition of useful operators for primal decomposition.
+
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_operator_definition
+
+Definition of useful operators for dual decomposition.
+
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_operator_definition
 
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_curl_free_solve
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_curl_free_solve
+Resolution of the curl-free component \f$d\alpha\f$ for primal decomposition.
 
-\image html solve_2d_primal_decomposition_curl_free.png "Primal Helmoltz decomposition curl-free component."
-\image html solve_2d_dual_decomposition_curl_free.png "Dual Helmoltz decomposition curl-free component."
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_curl_free_solve
+\image html solve_2d_primal_decomposition_curl_free.png "Primal Helmoltz decomposition curl-free component and scalar potential field."
+
+Resolution of the curl-free component \f$d\alpha\f$ for dual decomposition.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_curl_free_solve
+\image html solve_2d_dual_decomposition_curl_free.png "Dual Helmoltz decomposition curl-free component and scalar potential field."
+
+Resolution of the div-free component \f$\delta\beta\f$ for primal decomposition.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_div_free_solve
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_div_free_solve
+\image html solve_2d_primal_decomposition_div_free.png "Primal Helmoltz decomposition divergence-free component and vector potential field."
 
-\image html solve_2d_primal_decomposition_div_free.png "Primal Helmoltz decomposition divergence-free component."
-\image html solve_2d_dual_decomposition_div_free.png "Dual Helmoltz decomposition divergence-free component."
+Resolution of the div-free component \f$\delta\beta\f$ for dual decomposition.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_div_free_solve
+\image html solve_2d_dual_decomposition_div_free.png "Dual Helmoltz decomposition divergence-free component and vector potential field."
+
+Computation of the primal harmonic component \f$\omega\f$.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_primal_decomposition_solution
-\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_solution
-
 \image html solve_2d_primal_decomposition_harmonic.png "Primal Helmoltz decomposition harmonic component."
+
+Computation of the dual harmonic component \f$\omega\f$.
+
+\snippet exampleDiscreteExteriorCalculusSolve.cpp 2d_dual_decomposition_solution
 \image html solve_2d_dual_decomposition_harmonic.png "Dual Helmoltz decomposition harmonic component."
 
 \section sectDECHelmoltz3D 3D Helmoltz decomposition
 
-The calculus struture is filled mannually with 0-, 1- and 2-cells to create a torus structure.
+In this example, we show how to compute the Helmoltz decompostion of a primal vector field defined on a 2D toroidal surface embedded in 3D.
+
+First the calculus structure is filled mannually with 0-, 1- and 2-cells to create a torus structure.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_structure
 
-The primal input vector field is then filled and the associated input 1-form \f$\omega\f$ is computed using DiscreteExteriorCalculus.flat.
+The primal input vector field is then filled and the associated input 1-form is computed using DiscreteExteriorCalculus.flat.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp 3d_decomposition_input_field_definition
+
+Harmonic vector fields are aligned with natural map direction on the structure.
 
 \image html helmoltz_3d_structure.png "Manually created tore structure and input vector field."
 

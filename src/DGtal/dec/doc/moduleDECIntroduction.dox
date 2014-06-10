@@ -125,7 +125,8 @@ See <a href="https://en.wikipedia.org/wiki/Exterior_derivative">wikipedia page</
 Sharp \f$\sharp\f$ and flat \f$\flat\f$, called <em>musical isomorphism</em> in \cite goes2013digital, transform 1-form into vector field and the other way around.
 In the continuous world, these two operators cancel each other exactly.
 
-\f[ (x ^\sharp) ^\flat = x, (y ^\flat) ^\sharp = y\f]
+\f[ (x ^\sharp) ^\flat = x \f]
+\f[ (y ^\flat) ^\sharp = y \f]
 
 where \f$x\f$ is a 1-form and \f$y\f$ is a vector field of the same duality.
 The bijectivity of these operators is slightly altered byt the discretization.
