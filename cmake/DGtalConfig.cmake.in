@@ -6,7 +6,7 @@
 #  DGTAL_VERSION      - version of the DGtal library
 
 # Tell the user project where to find our headers and libraries
-set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@")
+set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@;@DGtalLibInc@")
 set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
 set(DGTAL_VERSION "@DGTAL_VERSION@")
 
