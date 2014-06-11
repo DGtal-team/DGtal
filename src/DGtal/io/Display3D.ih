@@ -234,7 +234,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center, double size)
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addLine(const RealPoint &p1, const RealPoint &p2, double width)
+DGtal::Display3D< Space ,KSpace >::addLine(const RealPoint &p1, const RealPoint &p2, const double width)
 {
   updateBoundingBox(p1);
   updateBoundingBox(p2);
@@ -1354,6 +1354,14 @@ DGtal::Display3D< Space ,KSpace >::clear()
   myQuadSetNameList.clear();
   myTriangleSetNameList.clear();
   myPolygonSetNameList.clear();
+
+  //Bounding box reset
+  myBoundingPtEmptyTag = true;
+  for (unsigned int i=0; i< 3; i++)
+    {
+      myBoundingPtUp[i] = 0.0;
+      myBoundingPtLow[i] = 0.0;
+    }
 }
 
 
