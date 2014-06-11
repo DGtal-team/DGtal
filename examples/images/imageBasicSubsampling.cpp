@@ -50,7 +50,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   
   //! [imageBasicSubsamplingType2D]
