@@ -33,8 +33,11 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 
+//! [imageBasicSubsamplingHeaders]
 #include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/images/ConstImageAdapter.h"
+//! [imageBasicSubsamplingHeaders]
+
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
 #include "DGtal/io/readers/GenericReader.h"
