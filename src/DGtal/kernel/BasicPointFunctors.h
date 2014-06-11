@@ -587,7 +587,7 @@ namespace DGtal
                                                      myGridSize(aGridSize)
     {
       Point domainUpperBound;
-      for (Dimension dim=0; dim<= Space::dimension; dim++){
+      for (Dimension dim=0; dim< Space::dimension; dim++){
         Dimension sizeInDim = (aSourceDomain.upperBound()[dim] - 
                                aSourceDomain.lowerBound()[dim]+1)/aGridSize[dim]-1;
         domainUpperBound[dim]=sizeInDim;
@@ -624,7 +624,7 @@ namespace DGtal
         return ptRes;
       }
 
-      for (Dimension dim=0; dim<= Space::dimension; dim++){
+      for (Dimension dim=0; dim< Space::dimension; dim++){
         ptRes[dim] = aPoint[dim]* myGridSize[dim]; 
       }
       ptRes +=myGridShift;

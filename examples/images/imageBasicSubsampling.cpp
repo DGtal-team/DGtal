@@ -49,19 +49,23 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
+  
   //! [imageBasicSubsamplingType2D]
-  typedef ImageContainerBySTLVector < Z3i::Domain, unsigned char> Image3D;
   typedef ImageContainerBySTLVector < Z2i::Domain, unsigned char> Image2D;
   typedef ConstImageAdapter<Image2D,  Image2D::Domain, 
                             BasicDomainSubSampler<Image2D::Domain>,  
                             Image2D::Value, 
-                            DGtal::DefaultFunctor > ConstImageAdapterForZoom;
+                            DGtal::DefaultFunctor > ConstImageAdapterForSubSampling;
+  //! [imageBasicSubsamplingType2D]
+
+  //! [imageBasicSubsamplingType3D]
+  typedef ImageContainerBySTLVector < Z3i::Domain, unsigned char> Image3D;
   typedef ConstImageAdapter<Image3D,  Image3D::Domain, 
                             BasicDomainSubSampler<Image3D::Domain>,  
                             Image3D::Value, 
-                            DGtal::DefaultFunctor > ConstImageAdapterForZoom3D;
+                            DGtal::DefaultFunctor > ConstImageAdapterForSubSampling3D;
+  //! [imageBasicSubsamplingType3D]
 
-  //! [imageBasicSubsamplingType]
 
   trace.beginBlock ( "Example imageBasicSubsampling" );
 
@@ -74,14 +78,23 @@ int main( int argc, char** argv )
     std::vector<Z2i::Domain::Size> aGridSize2D;
     aGridSize2D.push_back(i);
     aGridSize2D.push_back(i);
-    
+    // Construction of the functor for the 2D domain subsampling from a given grid size and shift.
+    //! [imageBasicSubsamplingSubSampler2D]
     BasicDomainSubSampler<Image2D::Domain> subSampler2D(image2D.domain(), aGridSize2D, Z2i::Point(0 ,0));
+    //! [imageBasicSubsamplingSubSampler2D]
+
     DGtal::DefaultFunctor df;
+    // Get the new domain produces from the subsampler and define the ConstImageAdapter:
+    //! [imageBasicSubsamplingConstImageAdapterSubSampling2D]
     Image2D::Domain subSampledDomain2D  = subSampler2D.getSubSampledDomain();
-    ConstImageAdapterForZoom imageZoom2D (image2D, subSampledDomain2D, subSampler2D, df);
+    ConstImageAdapterForSubSampling subsampledImage2D (image2D, subSampledDomain2D, subSampler2D, df);
+    //! [imageBasicSubsamplingConstImageAdapterSubSampling2D]
+
     stringstream outputname; 
     outputname << "subSampledImage"<< i<< "x"<< i << ".pgm" ;
-    GenericWriter<ConstImageAdapterForZoom>::exportFile(outputname.str(), imageZoom2D );
+    //! [imageBasicSubsamplingExport2D]
+    GenericWriter<ConstImageAdapterForSubSampling>::exportFile(outputname.str(), subsampledImage2D );
+    //! [imageBasicSubsamplingExport2D]
     trace.info() << "Exporting 2D subsampled image by grid size :" << i << "x"<< i<< " in "<< outputname.str() << std::endl;
   } 
 
@@ -90,14 +103,24 @@ int main( int argc, char** argv )
     aGridSize3D.push_back(i);
     aGridSize3D.push_back(i);
     aGridSize3D.push_back(i);
-    
+
+        // Construction of the functor for the 3D domain subsampling from a given grid size and shift.
+    //! [imageBasicSubsamplingSubSampler3D]
     BasicDomainSubSampler<Image3D::Domain> subSampler3D(image3D.domain(), aGridSize3D, Z3i::Point(0 ,0, 0));
+    //! [imageBasicSubsamplingSubSampler3D]
+
     DGtal::DefaultFunctor df;
+    // Get the new domain produces from the subsampler and define the ConstImageAdapter:
+    //! [imageBasicSubsamplingConstImageAdapterSubSampling3D]
     Image3D::Domain subSampledDomain3D  = subSampler3D.getSubSampledDomain();
-    ConstImageAdapterForZoom3D imageZoom3D (image3D, subSampledDomain3D, subSampler3D, df);
+    ConstImageAdapterForSubSampling3D subsampledImage3D (image3D, subSampledDomain3D, subSampler3D, df);
+    //! [imageBasicSubsamplingConstImageAdapterSubSampling3D]
+
     stringstream outputname3D; 
     outputname3D << "subSampledImage3D"<< i<< "x"<< i << ".vol" ;
-    GenericWriter<ConstImageAdapterForZoom3D>::exportFile(outputname3D.str(), imageZoom3D );
+    //! [imageBasicSubsamplingExport3D]
+    GenericWriter<ConstImageAdapterForSubSampling3D>::exportFile(outputname3D.str(), subsampledImage3D );
+    //! [imageBasicSubsamplingExport3D]
     trace.info() << "Exporting 3D subsampled image by grid size :" << i << "x"<< i<< "x"<< i<< " in "<< outputname3D.str() << std::endl;
   }
 
