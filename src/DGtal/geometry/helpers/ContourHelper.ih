@@ -46,12 +46,12 @@ inline
 TPoint
 DGtal::ContourHelper::getMeanPoint(const std::vector<TPoint> & aContour){
   TPoint ptMean;
-  for(unsigned int i =0; i<contour.size(); i++){
-    ptMean[0]+=contour.at(i)[0];
-    ptMean[1]+=contour.at(i)[1];
+  for(unsigned int i =0; i<aContour.size(); i++){
+    ptMean[0]+=aContour.at(i)[0];
+    ptMean[1]+=aContour.at(i)[1];
   }
-  ptMean[0] /= contour.size();
-  ptMean[1] /= contour.size();
+  ptMean[0] /= aContour.size();
+  ptMean[1] /= aContour.size();
   return ptMean; 
 }
 
