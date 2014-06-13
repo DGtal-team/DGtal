@@ -52,6 +52,9 @@ namespace DGtal
     /**
      * @brief Functor that returns the position of any point/vector 
      * with respect to a digital straight line of shift @a myShift. 
+     * We recall that the shift vector is a vector translating a point 
+     * of remainder \f$ r \f$ to a point of remainder \f$ r + \omega \f$. 
+     * See @ref moduleArithDSSReco for further details.
      * @tparam Vector a model of 2d vector
      * @tparam TPosition a model of integer used to locate the 
      * points of a DSL
