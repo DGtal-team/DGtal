@@ -87,8 +87,8 @@ smartCH(const PointVector& aFirstPoint,
 
   //----------------- init --------------------//
   //functors
-  StrictFloorFunctor<Coordinate> sFloor; 
-  LargeFloorFunctor<Coordinate> lFloor; 
+  StrictTruncationFunctor<Coordinate> sTruncation; 
+  LargeTruncationFunctor<Coordinate> lTruncation; 
 
   PointVector L, U, V; //point/vectors
   Coordinate rL, rU, rV; //remainders of the above point/vectors
@@ -118,7 +118,7 @@ smartCH(const PointVector& aFirstPoint,
 				   aRemainderBound,  
 				   L, rL, U, rU, V, rV, 
 				   lIto, aPositionFunctor,  
-				   sFloor, lFloor); 
+				   sTruncation, lTruncation); 
 	}
       else
 	{ //if (rV < 0)
@@ -127,7 +127,7 @@ smartCH(const PointVector& aFirstPoint,
 				   aRemainderBound,
 				   U, rU, L, rL, V, rV, 
 				   uIto, aPositionFunctor, 
-				   lFloor, sFloor); 
+				   lTruncation, sTruncation); 
 	}
 
       ASSERT( (V[0]*(L-U)[1] - V[1]*(L-U)[0]) == 1 ); //eq. 6 
@@ -145,7 +145,7 @@ smartCH(const PointVector& aFirstPoint,
 template<typename Position, typename Coordinate, typename PointVector, 
 	 typename OutputIterator,
 	 typename PositionFunctor,
-	 typename FloorFunctor1, typename FloorFunctor2>
+	 typename TruncationFunctor1, typename TruncationFunctor2>
 inline
 bool
 DGtal::ArithmeticalDSSConvexHull::
@@ -159,8 +159,8 @@ smartCHNextVertex(const Position& positionBound,
 		  Coordinate& rV,
 		  OutputIterator ito,
 		  const PositionFunctor& pos, 
-		  const FloorFunctor1& f1, 
-		  const FloorFunctor2& f2)
+		  const TruncationFunctor1& f1, 
+		  const TruncationFunctor2& f2)
 {
   ASSERT( positionBound > NumberTraits<Position>::ZERO ); 
   ASSERT( rV != NumberTraits<Coordinate>::ZERO ); 

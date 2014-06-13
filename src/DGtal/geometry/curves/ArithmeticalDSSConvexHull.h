@@ -95,7 +95,7 @@ namespace DGtal
      * @tparam Integer a model of integer used to store a and b
      */
     template <typename Integer>
-    struct LargeFloorFunctor
+    struct LargeTruncationFunctor
     {
     public: 
       /**
@@ -122,7 +122,7 @@ namespace DGtal
      * @tparam Integer a model of integer used to store a and b
      */
     template <typename Integer>
-    struct StrictFloorFunctor
+    struct StrictTruncationFunctor
     {
     public: 
       /**
@@ -178,13 +178,13 @@ namespace DGtal
      * @tparam Coordinate a model of integer for the coordinates of the point/vector 
      * @tparam OutputIterator a model of output iterator
      * @tparam PositionFunctor a model of unary functor that returns the position of a point/vector
-     * @tparam FloorFunctor1 a model of unary functor that implements an integer division
-     * @tparam FloorFunctor2 a model of unary functor that implements an integer division
+     * @tparam TruncationFunctor1 a model of unary functor that implements an integer division
+     * @tparam TruncationFunctor2 a model of unary functor that implements an integer division
      */
     template<typename Position, typename Coordinate, typename PointVector, 
 	     typename OutputIterator,
 	     typename PositionFunctor,
-	     typename FloorFunctor1, typename FloorFunctor2>
+	     typename TruncationFunctor1, typename TruncationFunctor2>
     inline
     bool
     smartCHNextVertex(const Position& positionBound,
@@ -197,8 +197,8 @@ namespace DGtal
 		      Coordinate& rV,
 		      OutputIterator ito,
 		      const PositionFunctor& pos, 
-		      const FloorFunctor1& f1, 
-		      const FloorFunctor2& f2); 
+		      const TruncationFunctor1& f1, 
+		      const TruncationFunctor2& f2); 
 
     /**
      * @brief Procedure that computes the lower and upper left hull of 
