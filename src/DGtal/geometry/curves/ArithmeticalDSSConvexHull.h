@@ -92,6 +92,9 @@ namespace DGtal
      * @brief Binary functor that returns the algebraic quotient i of a/b 
      * with any fractional part discarded (truncation toward zero).  
      * Note that \f$ |i| \leq |a/b| \f$. 
+     *
+     * (For a truncation toward negative infinity, see IntegerComputer::floorDiv)
+     *
      * @tparam Integer a model of integer used to store a and b
      */
     template <typename Integer>
@@ -119,6 +122,8 @@ namespace DGtal
      * and that returns i+1 (resp. i-1) if a is negative (resp. positive)
      * if b divides a. 
      * Since we assume that a is not equal to 0, we have \f$ |i| < |a/b| \f$. 
+     * See also LargeTruncationFunctor. 
+     *
      * @tparam Integer a model of integer used to store a and b
      */
     template <typename Integer>
