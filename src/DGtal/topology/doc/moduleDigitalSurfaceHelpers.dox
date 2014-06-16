@@ -151,7 +151,7 @@ namespace DGtal {
 
 
 
-   @section dgtal_helpsurf_sec3 Extracting surface connected components
+   @section dgtal_helpsurf_sec3 Extracting surface of connected components
 
    The class \ref Surfaces provides other useful function to extract
    connected boundary surfels from a digital set and given a surfel
@@ -221,7 +221,24 @@ and you will get the resulting cell display:
 @image html KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND."
 @image latex KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND." width=0.5\textwidth
 
+
+
+
+ @section dgtal_helpsurf_fillingContour  Filling oriented digital contours
+
+ 
+
+
+
 */
+
+
+
+
+
+
+
+
 
 /**
    A simple example illustrating the extraction of the sequence of
