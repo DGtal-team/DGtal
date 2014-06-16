@@ -234,7 +234,7 @@ DGtal::Display3D< Space ,KSpace >::addBall(const RealPoint &center, double size)
 template < typename Space ,typename KSpace >
 inline
 void
-DGtal::Display3D< Space ,KSpace >::addLine(const RealPoint &p1, const RealPoint &p2, double width)
+DGtal::Display3D< Space ,KSpace >::addLine(const RealPoint &p1, const RealPoint &p2, const double width)
 {
   updateBoundingBox(p1);
   updateBoundingBox(p2);
@@ -258,38 +258,101 @@ void
 DGtal::Display3D< Space ,KSpace >::addQuad(const RealPoint &p1, const RealPoint &p2,
 					   const RealPoint &p3, const RealPoint &p4)
 {
-  if(myQuadSetList.size() == 0 )
-    {
-      createNewQuadList("quad");
-    }
-  QuadD3D aQuad;
-  updateBoundingBox(p1);
-  updateBoundingBox(p2);
-  updateBoundingBox(p3);
-  updateBoundingBox(p4);
+
   double u[3]; double v [3]; double n [3];
   u[0]=p2[0]-p1[0]; u[1]=p2[1]-p1[1]; u[2]=p2[2]-p1[2];
   v[0]=p3[0]-p1[0]; v[1]=p3[1]-p1[1]; v[2]=p3[2]-p1[2];
   cross(n, u, v );
   normalize(n);
+  addQuadWithNormal(p1, p2, p3, p4, RealPoint(n[0], n[1], n[2]), false);
+}
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
+                                                     const RealPoint &p3, const RealPoint &p4,
+                                                     const RealPoint &n,
+                                                     const bool enableReorientation,
+                                                     const bool enableDoubleFace)
+{
+  if(myQuadSetList.size() == 0 )
+    {
+      createNewQuadList("quad");
+    }
+  QuadD3D aQuad,aQuad2;
+  updateBoundingBox(p1);
+  updateBoundingBox(p2);
+  updateBoundingBox(p3);
+  updateBoundingBox(p4);
+  double u[3];
+  u[0]=p2[0]-p1[0]; u[1]=p2[1]-p1[1]; u[2]=p2[2]-p1[2];
+  double v[3];
+  v[0]=p3[0]-p2[0]; v[1]=p3[1]-p2[1]; v[2]=p3[2]-p2[2];
+  double crossprod[3];
+  cross(crossprod, u,v);
+  double epsilon = 0.0001;
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0)
     {
       trace.warning()<< "Warning quad not added due to identical vertex... "<<std::endl;
       return;
     }
-  aQuad.point1=p1;
-  aQuad.point2=p2;
-  aQuad.point3=p3;
-  aQuad.point4=p4;
-  aQuad.nx= n[0];
-  aQuad.ny= n[1];
-  aQuad.nz= n[2];
-  aQuad.color= getFillColor();
+
+  if ((enableReorientation) 
+      && ((crossprod[0]*n[0] + crossprod[1]*n[1] +crossprod[2]*n[2])  <0.0))
+    {
+      aQuad.point1=p1;
+      aQuad.point2=p4;
+      aQuad.point3=p3;
+      aQuad.point4=p2;
+      aQuad.nx= n[0];
+      aQuad.ny= n[1];
+      aQuad.nz= n[2];
+      aQuad.color= getFillColor();
+      
+      if (enableDoubleFace)
+        {
+          aQuad2.point1= (p1 - epsilon*n);
+          aQuad2.point2= (p2 - epsilon*n);
+          aQuad2.point3= (p3 - epsilon*n);
+          aQuad2.point4= (p4 - epsilon*n);
+          aQuad2.nx= -n[0];
+          aQuad2.ny= -n[1];
+          aQuad2.nz= -n[2];
+          aQuad2.color= getFillColor();
+        }
+    }
+  else
+    {
+      aQuad.point1=p1;
+      aQuad.point2=p2;
+      aQuad.point3=p3;
+      aQuad.point4=p4;
+      aQuad.nx= n[0];
+      aQuad.ny= n[1];
+      aQuad.nz= n[2];
+      aQuad.color= getFillColor();
+      
+      if (enableDoubleFace)
+        {
+          aQuad2.point1=(p1 - epsilon*n);
+          aQuad2.point2=(p4 - epsilon*n);
+          aQuad2.point3=(p3 - epsilon*n);
+          aQuad2.point4=(p2 - epsilon*n);
+          aQuad2.nx= -n[0];
+          aQuad2.ny= -n[1];
+          aQuad2.nz= -n[2];
+          aQuad2.color= getFillColor();
+        }
+    }
+  
+  
   if (myQuadSetList.size()== 0)
     createNewQuadList("Quad Root");
 
   (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad);
+  if (enableDoubleFace)
+    (myQuadSetList.at(myQuadSetList.size()-1)).push_back(aQuad2);
 }
 
 
@@ -400,7 +463,7 @@ DGtal::Display3D< Space ,KSpace >::addPrism(const RealPoint &baseQuadCenter,
   double x5, y5, z5, x6, y6, z6, x7, y7, z7, x8, y8, z8;
   double dx, dy, dz;
 
-  
+
   ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
@@ -556,14 +619,14 @@ DGtal::Display3D< Space ,KSpace >::addPrism(const RealPoint &baseQuadCenter,
 
 template < typename Space ,typename KSpace >
 inline
-void 
+void
 DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenter(const RealPoint &baseQuadCenter,
                                                            bool xSurfel, bool ySurfel, bool zSurfel)
 {
   updateBoundingBox(baseQuadCenter);
   ASSERT( xSurfel || ySurfel || zSurfel );
   double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
-  
+
   ASSERT( xSurfel || ySurfel || zSurfel );
 
   if(zSurfel)
@@ -587,9 +650,65 @@ DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenter(const RealPoint &base
       x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]+0.5;
       x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
     }
+
+  addQuad(RealPoint(x1, y1, z1), RealPoint(x2 ,y2, z2),
+          RealPoint(x3, y3, z3), RealPoint(x4, y4, z4));
+}
+
+
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter,
+                                                                     bool xSurfel, bool ySurfel, bool zSurfel,
+                                                                     const RealVector &aNormal,
+                                                                     const bool enableReorientation,
+                                                                     const bool sign,
+                                                                     const bool enableDoubleFace )
+{
+  updateBoundingBox(baseQuadCenter);
+  ASSERT( xSurfel || ySurfel || zSurfel );
+  double x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
+
+  ASSERT( xSurfel || ySurfel || zSurfel );
+
+  if(zSurfel)
+    {
+      x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+      x2= baseQuadCenter[0]+0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]-0.5;
+      x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]-0.5;
+      x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]+0.5; z4= baseQuadCenter[2]-0.5;
+    }
+  else
+    if(ySurfel)
+      {
+        x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+        x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+0.5;
+        x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+0.5;
+        x4= baseQuadCenter[0]+0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-0.5;
+      }
+    else
+      {
+        x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
+        x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+0.5; z2= baseQuadCenter[2]-0.5;
+        x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]+0.5;
+        x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
+      }
   
-  addQuad(RealPoint(x1, y1, z1), RealPoint(x2 ,y2, z2), 
-          RealPoint(x3, y3, z3), RealPoint(x4, y4, z4));    
+  //If we need to use the surfel sign and if it is negative, we
+  //reorder the points (see drawOriented... vs drawUnoriented methods
+  //in Display3DFactory).
+  if ((!enableReorientation) && (!sign))
+    addQuadWithNormal(RealPoint(x1, y1, z1),RealPoint(x4, y4, z4),
+                      RealPoint(x3, y3, z3),
+                      RealPoint(x2 ,y2, z2),  aNormal,
+                      enableReorientation,
+                      enableDoubleFace);
+  else
+    addQuadWithNormal(RealPoint(x1, y1, z1), RealPoint(x2 ,y2, z2),
+                      RealPoint(x3, y3, z3), RealPoint(x4, y4, z4), aNormal,
+                      enableReorientation,
+                      enableDoubleFace);
 }
 
 
@@ -994,7 +1113,7 @@ DGtal::Display3D< Space ,KSpace >::updateBoundingBox(const RealPoint &p)
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicEmbedder<Space>::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embed( const typename Space::Point & dp ) const
 {
   ASSERT( myEmbedder->isValid());
@@ -1003,7 +1122,7 @@ DGtal::Display3D< Space ,KSpace >::embed( const typename Space::Point & dp ) con
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell ) const
 {
   ASSERT( mySCellEmbedder->isValid());
@@ -1012,7 +1131,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const typename KSpace::SCell & scell
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicSCellEmbedder<KSpace >::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedPrism & aTrans ) const
 {
   ASSERT( mySCellEmbedder->isValid());
@@ -1022,7 +1141,7 @@ DGtal::Display3D< Space ,KSpace >::embedKS( const TransformedPrism & aTrans ) co
 
 template < typename Space ,typename KSpace >
 inline
-typename DGtal::CanonicCellEmbedder<KSpace >::RealPoint
+typename DGtal::Display3D< Space ,KSpace >::RealPoint
 DGtal::Display3D< Space ,KSpace >::embedK( const typename KSpace::Cell & cell ) const
 {
   ASSERT( myCellEmbedder->isValid());
@@ -1214,7 +1333,36 @@ DGtal::Display3D< Space ,KSpace >::normalize (double vec[3])
   vec[2] /= sqrt (squaredLen);
 }
 
+template < typename Space ,typename KSpace >
+inline
+void
+DGtal::Display3D< Space ,KSpace >::clear()
+{
+  myCubeSetList.clear();
+  myLineSetList.clear();
+  myBallSetList.clear();
+  myClippingPlaneList.clear();
+  myPrismList.clear();
+  myQuadSetList.clear();
+  myTriangleSetList.clear();
+  myPolygonSetList.clear();
+  myCubeSetNameList.clear();
+  myLineSetNameList.clear();
+  myBallSetNameList.clear();
+  myClippingPlaneNameList.clear();
+  myPrismNameList.clear();
+  myQuadSetNameList.clear();
+  myTriangleSetNameList.clear();
+  myPolygonSetNameList.clear();
 
+  //Bounding box reset
+  myBoundingPtEmptyTag = true;
+  for (unsigned int i=0; i< 3; i++)
+    {
+      myBoundingPtUp[i] = 0.0;
+      myBoundingPtLow[i] = 0.0;
+    }
+}
 
 
 

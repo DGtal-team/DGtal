@@ -3,8 +3,18 @@
 *IO Package*
 
     - Better handling of materials in Board3D and OBJ exports.
-    - New 'basic' display mode for surfels (oriented or not), useful for large digital surface displays (quads instead of 3D prism)
 
+    - New 'basic' display mode for surfels (oriented or not), useful
+      for large digital surface displays (quads instead of 3D prism)
+
+    - New clear() method to subclasses of Display3D (Viewer3D and
+      Board3D) to clear the current drawning buffer.
+
+    - New draw() method for 3D display models (Viewer3D and Board3D)
+      to display surfels with prescribed normal vectors.
+
+    - When exporting an 3D visualization to OBJ, a new option will
+      rescale the geometry to fit in [-1/2,1/2]^3.
 
 *For Developpers*
 
@@ -14,7 +24,21 @@
 *Geometry Package*
     - random-access iterators in ArithmeticalDSL
 
+    - Various geometric predicates are now available in order to
+      test the orientation of three points in the planes. Most classes 
+      are template classes parametrized by a type for the points (or its 
+      coordinates) and an integral type for the computations. They always 
+      return an exact value (or sign), provided that the integral type 
+      used for the computations is well chosen with respect to the coordinates 
+      of the points. Some implementations do not increase the size of the input
+      integers during the computations.	
+
+   - Bug fix in PowerMap construction.
 	
+*Math package*
+
+    - Simple Linear Regression tool added (backport from imagene).
+
 
 === DGtal 0.7 ===
 
