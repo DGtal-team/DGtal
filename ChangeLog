@@ -24,6 +24,10 @@
 *Geometry Package*
     - random-access iterators in ArithmeticalDSL
 
+    - logarithmic construction of an arithmetical DSS of minimal
+      parameters from a bounding DSL and two end points (ctor of
+      ArithmeticalDSS)
+
     - Various geometric predicates are now available in order to
       test the orientation of three points in the planes. Most classes 
       are template classes parametrized by a type for the points (or its 

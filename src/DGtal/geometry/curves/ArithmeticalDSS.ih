@@ -55,6 +55,7 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 {
 }
 
+//-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
@@ -68,6 +69,21 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
   myF(aF), myL(aL),
   myUf(aUf), myUl(aUl), myLf(aLf), myLl(aLl),
   myDSL( aA, aB, aLowerBound, aUpperBound, aSteps, aShift )
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::ArithmeticalDSS(const DSL& aDSL, 
+		  const Point& aF, const Point& aL,
+		  const Point& aUf, const Point& aUl,
+		  const Point& aLf, const Point& aLl)
+  :
+  myF(aF), myL(aL),
+  myUf(aUf), myUl(aUl), myLf(aLf), myLl(aLl),
+  myDSL( aDSL )
 {
 }
 
@@ -92,7 +108,7 @@ inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Point& aF, const Point& aL, 
 		  const bool& areOnTheUpperLine)
-  : myDSL( NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO, NumberTraits<TInteger>::ZERO )
+  : myDSL( NumberTraits<Coordinate>::ZERO, NumberTraits<Coordinate>::ZERO, NumberTraits<Integer>::ZERO )
 {
   typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory; 
 
@@ -104,11 +120,22 @@ DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
+::ArithmeticalDSS(const DSL& aDSL, const Point& aF, const Point& aL)
+  : myDSL( NumberTraits<Coordinate>::ZERO, NumberTraits<Coordinate>::ZERO, NumberTraits<Integer>::ZERO )
+{
+  typedef DGtal::ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency> Factory; 
+  *this = Factory::createSubsegment(aDSL, aF, aL); 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 template <typename Iterator>
 inline
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>
 ::ArithmeticalDSS(const Iterator& aItb, const Iterator& aIte)  throw( InputException )
-  : myDSL( NumberTraits<TCoordinate>::ZERO, NumberTraits<TCoordinate>::ZERO, NumberTraits<TInteger>::ZERO )
+  : myDSL( NumberTraits<Coordinate>::ZERO, NumberTraits<Coordinate>::ZERO, NumberTraits<Integer>::ZERO )
 {
   if (aItb != aIte)
     {
@@ -886,6 +913,15 @@ StandardDSS4(const typename Super::Point& aF, const typename Super::Point& aL,
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger>
+inline
+DGtal::StandardDSS4<TCoordinate, TInteger>::
+StandardDSS4(const typename Super::DSL& aDSL, 
+	     const typename Super::Point& aF, const typename Super::Point& aL)
+  : Super(aDSL, aF, aL) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger>
 template<typename Iterator>
 inline
 DGtal::StandardDSS4<TCoordinate, TInteger>::
@@ -931,6 +967,15 @@ DGtal::NaiveDSS8<TCoordinate, TInteger>::
 NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL, 
 	  const bool& isOnTheUpperLine)
   : Super(aF, aL, isOnTheUpperLine) 
+{}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger>
+inline
+DGtal::NaiveDSS8<TCoordinate, TInteger>::
+NaiveDSS8(const typename Super::DSL& aDSL,
+	  const typename Super::Point& aF, const typename Super::Point& aL)
+  : Super(aDSL, aF, aL) 
 {}
 
 //-----------------------------------------------------------------------------
