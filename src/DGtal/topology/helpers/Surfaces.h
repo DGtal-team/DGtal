@@ -784,7 +784,7 @@ namespace DGtal
      * @param bdry the digital Jordan surface.
      * @param interiorCellSet the resutling CellSet containing the interior cells.
      * @param empty_is_inside when 'true', an empty line is considered
-     * interior, otherwise exterior.
+     * interior, otherwise exterior (set by default to false).
      *
      */
     template < typename SCellSet, typename CellSet> 
@@ -793,7 +793,28 @@ namespace DGtal
     uComputeInterior( const KSpace & aKSpace, 
                       const SCellSet & bdry,
                       CellSet & interiorCellSet,
-                      bool empty_is_inside );
+                      bool empty_is_inside=false );
+
+
+    /**
+     * Given a boundary surface [bdry] in [ks], compute its exterior as a
+     * set of unoriented spels.  The technique is to fill line by line and
+     * tests the intersection with the surface.
+     *
+     * @param aKSpace the digital space.
+     * @param bdry the digital Jordan surface.
+     * @param interiorCellSet the resutling CellSet containing the interior cells.
+     * @param empty_is_outside when 'true', an empty line is considered
+     * exterior, otherwise interior.
+     *
+     */
+    template < typename SCellSet, typename CellSet> 
+    void
+    static
+    uComputeExterior( const KSpace & aKSpace, 
+                      const SCellSet & bdry,
+                      CellSet & interiorCellSet,
+                      bool empty_is_outside=true );
     
     
 
