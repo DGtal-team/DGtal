@@ -73,11 +73,12 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
+    typedef FunctorOnCells<TFunctorOnPoints, TKSpace> Self;
     typedef TFunctorOnPoints FunctorOnPoints;
+    typedef TKSpace KSpace;
     typedef int Quantity;
     typedef typename FunctorOnPoints::Point Point;
     typedef typename FunctorOnPoints::Value Value;
-    typedef TKSpace KSpace;
     typedef typename KSpace::SCell Cell;
 
     BOOST_CONCEPT_ASSERT(( CPointFunctor< FunctorOnPoints > ));
@@ -87,11 +88,19 @@ namespace DGtal
       * Constructor.
       *
       * @param[in] functor a functor on digital points.
-      * @param[in] space Khalimsky space in which the shape is defined.
+      * @param[in] kspace Khalimsky space in which the shape is defined.
       */
-    FunctorOnCells (  Alias< FunctorOnPoints > functor, ConstAlias< KSpace > space )
+    FunctorOnCells (  Alias< FunctorOnPoints > functor, ConstAlias< KSpace > kspace )
       : f(&functor),
-        myKSpace(&space)
+        myKSpace(&kspace)
+    {}
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    FunctorOnCells ( const FunctorOnCells & other )
+      : f( other.f ), myKSpace( other.myKSpace )
     {}
 
     /**
@@ -141,6 +150,14 @@ namespace DGtal
       return *this;
     }
 
+    /**
+    * @return the cellular grid space in which cells are defined.
+    */
+    const KSpace& space() const
+    {
+      return *myKSpace;
+    }
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -161,15 +178,6 @@ namespace DGtal
     FunctorOnCells();
 
   private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    FunctorOnCells ( const FunctorOnCells & other );
-
-
 
     // ------------------------- Internals ------------------------------------
   private:

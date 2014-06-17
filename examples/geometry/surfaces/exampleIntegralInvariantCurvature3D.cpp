@@ -32,12 +32,11 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-// Shape constructors
+// Shape construction
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
-#include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/images/ImageHelper.h"
@@ -45,9 +44,9 @@
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 
-// Integral Invariant includes
-#include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
+/// Estimator
+#include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 
 // Drawing
 #include "DGtal/io/viewers/Viewer3D.h"
@@ -80,9 +79,8 @@ int main( int argc, char** argv )
     unsigned int threshold = std::atoi( argv[ 2 ] );
 
     /// Construction of the shape from vol file
-    typedef ImageSelector< Z3i::Domain, unsigned int >::Type Image;
+    typedef ImageSelector< Z3i::Domain, bool >::Type Image;
     typedef SimpleThresholdForegroundPredicate< Image > ImagePredicate;
-    typedef Z3i::KSpace::Surfel Surfel;
     typedef LightImplicitDigitalSurface< Z3i::KSpace, ImagePredicate > MyLightImplicitDigitalSurface;
     typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
 
@@ -102,7 +100,7 @@ int main( int argc, char** argv )
     }
 
     SurfelAdjacency< Z3i::KSpace::dimension > SAdj( true );
-    Surfel bel = Surfaces< Z3i::KSpace >::findABel( KSpaceShape, predicate, 100000 );
+    Z3i::KSpace::Surfel bel = Surfaces< Z3i::KSpace >::findABel( KSpaceShape, predicate, 100000 );
     MyLightImplicitDigitalSurface LightImplDigSurf( KSpaceShape, predicate, SAdj, bel );
     MyDigitalSurface digSurf( LightImplDigSurf );
 
@@ -114,28 +112,30 @@ int main( int argc, char** argv )
     SurfelConstIterator abegin = range.begin();
     SurfelConstIterator aend = range.end();
 
-    typedef ImageToConstantFunctor< Image, ImagePredicate > MyPointFunctor;
-    MyPointFunctor pointFunctor( &image, &predicate, 1 );
-
     /// Integral Invariant stuff
     //! [IntegralInvariantUsage]
     double re_convolution_kernel = std::atof(argv[3]);
 
-    typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
+    typedef IIGeometricFunctors::IIMeanCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+    typedef IntegralInvariantVolumeEstimator< Z3i::KSpace, ImagePredicate, MyIICurvatureFunctor > MyIICurvatureEstimator;
+    typedef MyIICurvatureFunctor::Value Value;
 
-    MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
-    MyCurvatureEstimator estimator ( KSpaceShape, functor );
-    estimator.init( h, re_convolution_kernel ); // Initialisation for a given Euclidean radius of convolution kernel
-    std::vector< double > results;
-    back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariante curvature computation
-    estimator.eval ( abegin, aend, resultsIterator ); // Computation
+    MyIICurvatureFunctor curvatureFunctor; /// Functor used to convert volume -> curvature
+    curvatureFunctor.init( h, re_convolution_kernel ); // Initialisation for a grid step and a given Euclidean radius of convolution kernel
+
+    MyIICurvatureEstimator curvatureEstimator( curvatureFunctor ); 
+    curvatureEstimator.attach( KSpaceShape, predicate ); /// Setting a KSpace and a predicate on the object to evaluate
+    curvatureEstimator.setParams( re_convolution_kernel/h ); /// Setting the digital radius of the convolution kernel
+    curvatureEstimator.init( h, abegin, aend ); /// Initialisation for a given h
+
+    std::vector< Value > results;
+    std::back_insert_iterator< std::vector< Value > > resultsIt( results ); /// output iterator for results of Integral Invariant curvature computation
+    curvatureEstimator.eval( abegin, aend, resultsIt ); /// Computation
     //! [IntegralInvariantUsage]
 
     /// Drawing results
-    typedef MyCurvatureEstimator::Quantity Quantity;
-    Quantity min = numeric_limits < Quantity >::max();
-    Quantity max = numeric_limits < Quantity >::min();
+    Value min = numeric_limits < Value >::max();
+    Value max = numeric_limits < Value >::min();
     for ( unsigned int i = 0; i < results.size(); ++i )
     {
         if ( results[ i ] < min )
@@ -154,7 +154,7 @@ int main( int argc, char** argv )
     viewer.setWindowTitle("example Integral Invariant 3D");
     viewer.show();
 
-    typedef GradientColorMap< Quantity > Gradient;
+    typedef GradientColorMap< Value > Gradient;
     Gradient cmap_grad( min, max );
     cmap_grad.addColor( Color( 50, 50, 255 ) );
     cmap_grad.addColor( Color( 255, 0, 0 ) );
@@ -163,10 +163,13 @@ int main( int argc, char** argv )
     VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
     abegin = range2.begin();
 
+    Z3i::KSpace::Cell dummy_cell;
+    viewer << SetMode3D( dummy_cell.className(), "Basic" );
+
     for ( unsigned int i = 0; i < results.size(); ++i )
     {
         viewer << CustomColors3D( Color::Black, cmap_grad( results[ i ] ))
-               << *abegin;
+               << KSpaceShape.unsigns( *abegin );
         ++abegin;
     }
 

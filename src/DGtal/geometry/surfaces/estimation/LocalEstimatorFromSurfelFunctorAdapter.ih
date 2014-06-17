@@ -112,16 +112,17 @@ eval( const SurfelConstIterator& it ) const
   MetricToPoint metricToPoint( *myMetric, myEmbedder( *it ));
   VertexFunctor vfunctor( myEmbedder, metricToPoint);
   Visitor visitor( *mySurface, vfunctor, *it);
-  Value currentDistance = 0;
-  
-  while ( (currentDistance < myRadius) && (! visitor.finished() ))
-  {
-    typename Visitor::Node node = visitor.current();
-    currentDistance = node.second;
-    myFunctor->pushSurfel( node.first , myConvFunctor->operator()((myRadius - currentDistance)/myRadius));
-    visitor.expand();
+  ASSERT( ! visitor.finished() );
+  double currentDistance = 0.0;
+  while ( (! visitor.finished() ) && (currentDistance < myRadius) )
+   {
+     typename Visitor::Node node = visitor.current();
+     currentDistance = node.second;
+     if ( currentDistance < myRadius )
+       myFunctor->pushSurfel( node.first , myConvFunctor->operator()((myRadius - currentDistance)/myRadius));
+     else break;
+     visitor.expand();
   }
-
   Quantity val = myFunctor->eval();
   myFunctor->reset();
   return val;
