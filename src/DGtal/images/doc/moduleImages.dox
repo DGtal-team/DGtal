@@ -419,12 +419,12 @@ from point functors or other images: imageFromFunctor and imageFromImage.
 \subsection SubSampleFct Subsampling functor 
 
 In association with ConstImageAdapter or ImageAdapter you can apply
-image subsampling by using a domain subsampler (BasicDomainSubSampler from the BasicPointFunctors class). The example
+image subsampling using a domain subsampler (BasicDomainSubSampler from the BasicPointFunctors class). The example
 \ref imageBasicSubsampling.cpp illustrates such a simple image subsampling  (in 2D and
 3D).
 
-To apply the subsampling, you have first to import the headers
-associated to the ConstImageAdapter and to the BasicDomainSubSampler: 
+To apply the subsampling, you first have to import the headers
+associated with the ConstImageAdapter and to the BasicDomainSubSampler: 
 
 
 @snippet images/imageBasicSubsampling.cpp imageBasicSubsamplingHeaders

@@ -572,7 +572,7 @@ namespace DGtal
 
     /** 
      * Constructor.
-     * Construct the functor from an source domain, a grid size, and a shift vector.
+     * Construct the functor from a source domain, a grid size, and a shift vector.
      * The points of the resulting domain are defined as the upper left of the sampling grid.
      *
      * @param aSourceDomain  the source domain. 
@@ -606,9 +606,9 @@ namespace DGtal
      * The operator computes the coordinates of the point in the
      * subsampled domain.  By default it returns the first lower point
      * of the window associated to the sampling grid. If the resulting
-     * point is outside the source domain it scan this windows and
+     * point is outside the source domain it scans this window and
      * returns a point belonging to the source domain. If such a point
-     * do not exits it return the point with null coordinates.
+     * does not exits it return the point with null coordinates.
      *
      * @param aPoint a point which should  elong to the new domain.  
      * @return the point to be taken in the * subsampled domain.
