@@ -39,6 +39,10 @@
 
     - Simple Linear Regression tool added (backport from imagene).
 
+ *Topology Package*
+
+    - New methods to fill the interior/exterior of digital contours (in the Surface class of topology/helpers).
+
 
 === DGtal 0.7 ===
 

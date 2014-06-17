@@ -224,12 +224,69 @@ and you will get the resulting cell display:
 
 
 
- @section dgtal_helpsurf_fillingContour  Filling oriented digital contours
+ @section dgtal_helpsurf_sec4 Filling oriented digital contours
 
+
+ The helper class Surface also proposes some methods to fill the
+ interior/exterior of a digital set of 1-SCell which can be defined from
+ an oriented FreemanChain. These methods can be usefull in particular
+ to reconstruct images (as given for instance in the tool of
+ freeman2pgm given in DGtalTools). 
+ 
+ The example ctopo-fillContours.cpp illustrates a basic filling with a
+ shape containing a hole. The main steps to fill a contour
+ represented by a FreemanChain are the following:
+
+ First we construct two FreemanChain to illustrate the fill with two
+ different orientations:
+ 
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursInit
+
+
+
+
+To construct the set of signed SCell, we exploit the method getInterPixelLinels of FreemanChain class:
+
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursGetSCells
+
+@note The that the resulting Cell orientation are defined by
+convention such that a contour defined in the direct orientation will
+generate the fill of the interior of the shape (with the
+uComputeInterior method) while the indirection orientation should be
+used to define a hole (see example below). 
  
 
+Afterwards the region associated to the direct oriented contour (fc1)
+can be filled by using the method uComputeInterior with the parameter
+empty_is_inside set to false. This parameter choice is justified since
+here a line which does not contain any boundary element is necessary at the
+outside of the contour.
+
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursFillRegion
+            
+ The interior Cell obtained from such a contour are illustrated here:
+
+ 
+ @image html  ctopo-fillContours0.png  "Filling interior of direct oriented contour."
+
+ 
+ We can also reconstruct region with hole by using a contour in the indirect direction. For instance we can define 
+
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursGetSCellsHole
+
+ And after adding it to the previous set boundarySCell you will obtain such a display:
+
+  @image html  ctopo-fillContours1.png  "Filling interior of direct oriented contour."
+ 
+@note From an indirect oriented contour you can also fill both the interior and exterior:
+@snippet topology/ctopo-fillContours.cpp ctopoFillContoursFillRegionHoles
+For the interior region, the parameter empty_is_inside parameter is set to true since a line without boundary element will correspond to the interior of the shape (since the contour is given the indirect orientation). In the same way, the parameter empty_is_outside is set to false.
+You will obtain such a representation:
+ @image html  ctopo-fillContours3.png  "Filling interior (lightgray) and exterior (dark gray) of indirect oriented contour." 
 
 
+
+ 
 */
 
 
@@ -275,6 +332,16 @@ and you will get the resulting cell display:
    
    @image html KSurfelsConnectedOrientExt.png 
    \example  topology/3dKSSurfaceExtraction.cpp
+*/
+
+
+/**
+   A simple example illustrating the filling of the interior/exterior of a given 2D contour. This program outputs these images:
+
+   @see \ref dgtal_helpsurf_sec4
+   
+   @image html ctopo-fillContours.png 
+   \example  topology/ctopo-fillContours.cpp
 */
 
 }
