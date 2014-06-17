@@ -27,11 +27,10 @@
  * Header file for module IntegralInvariantGaussianCurvatureEstimator.ih
  *
  * @brief Compute Gaussian curvature on border of shapes of n-dimension, based on integral invariant.
+ * 
+ * @warning This class is *deprecated*. Please use instead IntegralInvariantCovarianceEstimator
  *
- * @see related article:
- *       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
- *       Estimators in Digital Geometry. DGCI 2013. Retrieved from
- *       https://liris.cnrs.fr/publis/?id=5866
+ * @cite Coeurjo-CVIU-2014
  *
  * This file is part of the DGtal library.
  */
@@ -66,6 +65,9 @@
 namespace DGtal
 {
 
+namespace deprecated
+{
+
 struct CurvatureInformations
 {
   typedef double Value;
@@ -76,7 +78,6 @@ struct CurvatureInformations
   Vector3 values;
   Matrix3x3 vectors;
 
-  friend std::ostream& operator <<(std::ostream&, const CurvatureInformations&);
   bool operator ==( const CurvatureInformations& other)
   {
     return ( k1 == other.k1 && k2 == other.k2 && values == other.values && vectors == other.vectors );
@@ -276,10 +277,7 @@ private:
 * Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
 * \brief Aim: This class implement a Integral Invariant Gaussian curvature estimation.
 *
-* @see related article:
-*       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
-*       Estimators in Digital Geometry. DGCI 2013. Retrieved from
-*       https://liris.cnrs.fr/publis/?id=5866
+* @cite Coeurjo-CVIU-2014
 *
 * The algorithm we propose uses covariance matrix to approximate Gaussian curvature.
 * To compute the covariance matrix on each surfel of the surface, we convolve a kernel (ImplicitBall) around
@@ -290,7 +288,7 @@ private:
 * with hypothesis about the shape geometry and the convolution kernel radius.
 * Experimental results showed a multigrid convergence for principal curvatures.
 *
-* Some optimization is available when we set a range of 0-adjacent surfels to the estimator.
+* Optimization is available when we set a range of 0-adjacent surfels to the estimator.
 *
 * @tparam TKSpace space in which the shape is defined.
 * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
@@ -870,6 +868,7 @@ private:
 
 
 
+} // namespace deprecated
 
 
 
@@ -882,15 +881,19 @@ private:
 */
 template <typename TKS, typename TSF, Dimension dimension>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, dimension> & object );
+operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, dimension> & object );
 
 template <typename TKS, typename TSF>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, 2> & object );
+operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, 2> & object );
 
 template <typename TKS, typename TSF>
 std::ostream&
-operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, 3> & object );
+operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, 3> & object );
+
+
+std::ostream&
+operator<< ( std::ostream & out, const DGtal::deprecated::CurvatureInformations & object );
 
 } // namespace DGtal
 

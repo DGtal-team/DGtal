@@ -70,6 +70,8 @@ namespace DGtal
      * @param exponent the exponent
      * @tparam T scalar value type (must have '*' operator).
      * @return aVal^exponent
+     *
+     * @see square, cube
      */
     template<typename T>
     T power(const T&aVal, const unsigned int exponent)
@@ -123,6 +125,28 @@ namespace DGtal
       else
 	return a;
     }
+
+    /**
+       Returns the value x * x
+       @tparam T a type with the multiply operator.
+       @param x any value
+       @return the value x * x
+    */
+    template <typename T>
+    inline
+    T square( T x )
+    { return x * x; }
+
+    /**
+       Returns the value x * x * x
+       @tparam T a type with the multiply operator.
+       @param x any value
+       @return the value x * x * x
+    */
+    template <typename T>
+    inline
+    T cube( T x )
+    { return x * x * x; }
 
   }  // namespace BasicMathFunctions
 } // namespace DGTal
