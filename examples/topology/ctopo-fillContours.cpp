@@ -44,7 +44,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   trace.beginBlock ( "Example ctopo-fillContours" );
   DGtal::KhalimskySpaceND< 2, int > K; 
