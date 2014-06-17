@@ -90,7 +90,7 @@ DGtal::Dimension
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 ::orthDir() const
 {
-  return myNeighborhood().orthDir();
+  return myNeighborhood.orthDir();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>

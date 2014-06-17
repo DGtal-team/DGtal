@@ -112,7 +112,6 @@ void draw( const TIterator& itb, const TIterator& ite, const int& size, std::str
 {
   typedef typename std::iterator_traits<TIterator>::value_type Pair; 
   typedef typename Pair::first_type Point; 
-  typedef typename Pair::second_type Value; 
   HueShadeColorMap<unsigned char, 2> colorMap(0,3*size);
 
   Board2D b; 
