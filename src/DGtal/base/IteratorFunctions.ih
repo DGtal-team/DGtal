@@ -53,6 +53,7 @@ bool DGtal::isNotEmpty( const IC& itb, const IC& ite )
 template< typename IC > 
 bool DGtal::detail::isNotEmpty( const IC& itb, const IC& ite, IteratorType ) 
 {
+  trace.info() << "IteratorType = " << std::endl;
   return (itb != ite);
 }
 
