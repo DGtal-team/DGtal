@@ -231,7 +231,7 @@ and you will get the resulting cell display:
  interior/exterior of a digital set of 1-SCell which can be defined from
  an oriented FreemanChain. These methods can be usefull in particular
  to reconstruct images (as given for instance in the tool of
- freeman2pgm given in DGtalTools). 
+ freeman2pgm given in  <a  href="https://github.com/DGtal-team/DGtalTools">DGtalTools</a>.). 
  
  The example ctopo-fillContours.cpp illustrates a basic filling with a
  shape containing a hole. The main steps to fill a contour

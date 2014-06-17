@@ -33,7 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGTal/geometry/curves/FreemanChain.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/io/boards/Board2D.h"
 
 
