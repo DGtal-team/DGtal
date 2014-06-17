@@ -145,9 +145,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
   
   double angle_min=0;
   double angle_max=M_PI_4;
-  bool ok = true;
   bool occ = false;
-  bool erase = false;
   
   IntegerComputer<TInteger> ic;
 
@@ -160,6 +158,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
   else
     {
       typename occulter_list::iterator iter, next;
+      bool ok = true;
       iter = myOcculters.begin();
       while(iter!=myOcculters.end())
       	{
