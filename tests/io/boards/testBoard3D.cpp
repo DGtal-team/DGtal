@@ -134,6 +134,56 @@ bool testQuadNorm()
   return nbok == nb;
 }
 
+
+bool testNormaliation()
+{
+  trace.beginBlock ( "Testing normalization ..." );
+
+  Point p1( 0, 0, 0 );
+  Point p2( 0, 10 , 0);
+  Point p3( 10, 10, 0);
+  Point p4(10, 0, 100 );
+  Point p5( 20, 0 , 0);
+  Point p6( 20, 10, 0);
+  
+  KSpace k;
+
+  k.init(Point(2,2,2), Point(4,4,4), true);
+
+  Board3D<Space,KSpace> board(k);
+  
+  board << p1<<p2<<p3<<p4; 
+
+  board.saveOBJ("dgtalBoard3D-norm.obj", true);
+  board.saveOBJ("dgtalBoard3D-wonorm.obj");
+
+  trace.endBlock();
+
+  return true;
+}
+
+
+bool testShapes()
+{
+ trace.beginBlock ( "Testing shapes ..." );
+
+  RealPoint p1( 0, 0, 0 );
+  RealPoint p2(10, 10, 0);
+
+  Board3D<Space,KSpace> board;
+
+  board.setLineColor(Color::Red);
+  board.addLine(p1,p2, 0.5);
+  
+  board.saveOBJ("dgtalBoard3D-line.obj");
+
+  trace.endBlock();
+
+  return true;
+}
+
+  
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -145,7 +195,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testBoard3D() && testQuadNorm(); // && ... other tests
+bool res = testBoard3D() && testQuadNorm()
+                  && testNormaliation()
+                  && testShapes(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
