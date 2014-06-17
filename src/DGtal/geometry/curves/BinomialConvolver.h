@@ -312,7 +312,7 @@ namespace DGtal
      Description of template class 'BinomialConvolverEstimator' <p>
      \brief Aim: This class encapsulates a BinomialConvolver and a
      functor on BinomialConvolver so as to be a model of
-     CLocalGeometricEstimator.
+     CCurveLocalGeometricEstimator.
 
      @tparam TBinomialConvolver any BinomialConvolver.
 
@@ -343,7 +343,7 @@ namespace DGtal
     void init( const double h,
          const ConstIterator & itb,
          const ConstIterator & ite,
-         const bool isClosed);
+         const bool isClosed = true );
 
     /**
      * @return the estimated quantity at *it
