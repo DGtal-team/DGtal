@@ -30,14 +30,58 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 
-#include "DGtal/geometry/curves/ArithmeticalDSL.h"
-#include "DGtal/geometry/curves/ArithmeticalDSLKernel.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSConvexHull.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/base/OneItemOutputIterator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
+DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::
+createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
+{
+  ASSERT( aDSL.isInDSL( aF ) ); 
+  ASSERT( aDSL.isInDSL( aL ) ); 
+  ASSERT( aDSL.beforeOrEqual(aF, aL) ); 
+
+  //specific case: DSS of one point
+  if (aF == aL)
+    {
+      return DSS( aF );      
+    }
+  //otherwise
+  else 
+    {
+
+      //running smartCH
+      OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
+      using namespace ArithmeticalDSSConvexHull; 
+      Vector v = smartCH( aDSL, aF, ( aDSL.position(aL) - aDSL.position(aF) ),
+			  lastUpperVertex, lastLowerVertex );
+
+      //DSS construction
+      Point U = lastUpperVertex.get(); 
+      DSL dsl( v[1], v[0], DSL::remainder(v[1], v[0], U) ); 
+      Point L = lastLowerVertex.get() + dsl.shift();
+      //NB: U (resp. L) can be the first or the last upper (resp. lower) leaning point 
+      // of the DSS according to the relative order of their position. 
+      Position qUForward = ( dsl.position(aL) - dsl.position(U) ) / dsl.position(v);  
+      Position qLForward = ( dsl.position(aL) - dsl.position(L) ) / dsl.position(v); 
+      Position qUBackward = ( dsl.position(U) - dsl.position(aF) ) / dsl.position(v);  
+      Position qLBackward = ( dsl.position(L) - dsl.position(aF) ) / dsl.position(v); 
+      return DSS( v[1], v[0], dsl.mu(), DSL::remainder(v[1], v[0], L), aF, aL,  
+		  (U - qUBackward * v), (U + qUForward * v ), 
+		  (L - qLBackward * v), (L + qLForward * v ), 
+		  dsl.steps(), dsl.shift() );
+
+    }
+}
 
 //-----------------------------------------------------------------------------
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
@@ -49,7 +93,7 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(con
   //specific case: a and b are both null
   if (aF == aL)
     {
-      return DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>( aF );      
+      return DSS( aF );      
     }
   //otherwise
   else 
@@ -69,10 +113,10 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(con
       Vector u = Vector(u2[0]/gcd, u2[1]/gcd);
 
       //intercept
-      Integer mu = DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::remainder(u[1], u[0], Uf); 
+      Integer mu = DSL::remainder(u[1], u[0], Uf); 
 
       //DSL
-      DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency> dsl(u[1], u[0], mu); 
+      DSL dsl(u[1], u[0], mu); 
 
       //lower leaning points
       if ( dsl.steps().second == Vector(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO) )
@@ -82,10 +126,10 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(con
 	  Lf = Uf;  
 	  Ll = Ul;  
 
-	  return DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>(dsl.a(), dsl.b(), 
-						   mu, mu, aF, aL, 
-						   Uf, Ul, Lf, Ll, 
-						   dsl.steps(), dsl.shift());
+	  return DSS(dsl.a(), dsl.b(), 
+		     mu, mu, aF, aL, 
+		     Uf, Ul, Lf, Ll, 
+		     dsl.steps(), dsl.shift());
 	}
       else 
 	{ //otherwise
@@ -94,12 +138,11 @@ DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(con
 	  Lf = Uf + v - dsl.shift()*signedUnity; 
 	  Ll = Uf + u*(gcd-1) + v - dsl.shift()*signedUnity; 
 
-	  Integer mu2 = DGtal::ArithmeticalDSL<TCoordinate,TInteger,adjacency>::remainder(u[1], u[0], Lf);
- 
-	  return DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>(dsl.a(), dsl.b(), 
-						   mu, mu2, aF, aL, 
-						   Uf, Ul, Lf, Ll, 
-						   dsl.steps(), dsl.shift());
+	  return DSS(dsl.a(), dsl.b(), 
+		     mu, DSL::remainder(u[1], u[0], Lf), 
+		     aF, aL, 
+		     Uf, Ul, Lf, Ll, 
+		     dsl.steps(), dsl.shift());
 	}
     }
 }
