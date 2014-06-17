@@ -2,7 +2,8 @@
 
 *Base Package*
 
-    - Add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
+    - Fixing issue on Circulator/IteratorFunctions (related to #770 on MacOS). 
+	 - Add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
 
 *Geometry Package*
 
@@ -45,6 +46,7 @@
      of the points. Some implementations do not increase the size of the input
      integers during the computations.
 
+	
 *IO Package*
 
     - Better handling of materials in Board3D and OBJ exports.
