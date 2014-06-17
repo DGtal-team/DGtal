@@ -47,6 +47,7 @@
 #include "DGtal/geometry/curves/ArithmeticalDSL.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSCheck.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSFactory.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSConvexHull.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -192,6 +193,26 @@ namespace DGtal
 
     /**
      * Constructor.
+     * The user gives all the (redondant) parameters and 
+     * should be sure that the resulting DSS is valid. 
+     *
+     * @see isValid
+     *
+     * @param aDSL bounding DSL
+     * @param aF the first point
+     * @param aL the last point
+     * @param aUf the first upper point
+     * @param aUl the last upper point
+     * @param aLf the first lower point
+     * @param aLl the last lower point
+     */
+    ArithmeticalDSS(const DSL& aDSL, 
+		    const Point& aF, const Point& aL,
+		    const Point& aUf, const Point& aUl,
+		    const Point& aLf, const Point& aLl);
+
+    /**
+     * Constructor.
      * Minimal set of parameters to build the DSS
      * in constant time. 
      * The user should be sure that the slope is
@@ -231,6 +252,18 @@ namespace DGtal
      */
     ArithmeticalDSS(const Point& aF, const Point& aL, 
 		    const bool& areOnTheUpperLine = true);
+
+    /**
+     * Construction as the subsegment of minimal parameters of a given DSL. 
+     *
+     * @param aDSL bounding DSL
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses smartCH algorithm. 
+     */
+    ArithmeticalDSS(const DSL& aDSL, const Point& aF, const Point& aL);
 
     /**
      * Construction from a range of iterator on points. 
@@ -785,6 +818,19 @@ namespace DGtal
 		 const bool& isOnTheUpperLine = true);
 
     /**
+     * Construction as the subsegment of minimal parameters of a given DSL. 
+     *
+     * @param aDSL bounding DSL
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses smartCH algorithm. 
+     */
+    StandardDSS4(const typename Super::DSL& aDSL, 
+		 const typename Super::Point& aF, const typename Super::Point& aL);
+
+    /**
      * Construction from a range of iterators on points. 
      *
      * @param aItb begin iterator
@@ -892,6 +938,19 @@ namespace DGtal
      */
     NaiveDSS8(const typename Super::Point& aF, const typename Super::Point& aL,
 	      const bool& isOnTheUpperLine = true);
+
+    /**
+     * Construction as the subsegment of minimal parameters of a given DSL. 
+     *
+     * @param aDSL bounding DSL
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses smartCH algorithm. 
+     */
+    NaiveDSS8(const typename Super::DSL& aDSL, 
+	      const typename Super::Point& aF, const typename Super::Point& aL);
 
     /**
      * Construction from a range of iterators on points. 
