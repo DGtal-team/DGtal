@@ -51,7 +51,6 @@ int main( int /*argc*/, char** /*argv*/ )
 {
   //! [extract2DImagesFrom3DType]
    typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
-   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
    typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
    				   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
    //! [extract2DImagesFrom3DType]
