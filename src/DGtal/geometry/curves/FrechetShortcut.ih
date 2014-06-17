@@ -160,7 +160,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
       typename occulter_list::iterator iter, next;
       bool ok = true;
       iter = myOcculters.begin();
-      while(iter!=myOcculters.end())
+      while(iter!=myOcculters.end() && ok)
       	{
 	  pi = Point(*(iter->first));
 	  v = p-pi;
