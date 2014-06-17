@@ -120,7 +120,6 @@ int main( int argc, char** argv )
   Domain domain1( Point( -diameter, -diameter, -diameter ),
                   Point(  diameter,  diameter,  diameter ) );
   
-  typedef BigInteger Integer;
   typedef COBAGenericStandardPlaneComputer<Z3, BigInteger> PlaneComputer;
   typedef PlaneComputer::Primitive Primitive;
   PlaneComputer plane;

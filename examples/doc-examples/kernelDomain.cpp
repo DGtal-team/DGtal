@@ -46,10 +46,6 @@ int main()
 {
   trace.beginBlock ( "Example kernelDomain" );
   
-#ifdef WITH_BIGINTEGER
-  typedef DGtal::SpaceND<3, DGtal::BigInteger> MySpaceBIGINTEGER;
-#endif
-
   typedef DGtal::Z2i::Space MySpace; 
   
   //Point lying in the Z2i::Space
