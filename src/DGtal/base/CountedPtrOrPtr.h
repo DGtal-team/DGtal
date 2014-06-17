@@ -59,10 +59,33 @@ namespace DGtal
    * on reference counts or a simple pointer on \c T depending of a
    * boolean value. This is useful when instantiating from an Alias<T>
    * object, letting the user specify if it uses smart pointers or
-   * simply pointers.
+   * simply pointers. This class should be used as a
+   * meta-type for data members, when the programmer wants to hold a
+   * reference to some object during some period, but also wants
+   * to let the user decides whether the class should keep a smart
+   * reference or non-smart reference to the object. How and where to
+   * use such smart pointers is explained in \ref
+   * moduleCloneAndReference_sec23.
+   *
+   * \code
+   * struct B {};
+   * struct A {
+   *   CountedPtrOrPtr<B> myPtrB;
+   *   A( Alias<B> someB ) : myPtrB( B ) {}
+   * };
+   * int main() {
+   *   B b1;
+   *   A a1( b1 ); // a1.myPtrB points to b1, classic pointer
+   *   B* b2 = new B;
+   *   A a2( b2 ); // a2.myPtrB acquires b2 (and will take care of freeing it)
+   *   CountedPtr<B> b3 = CountedPtr<B>( new B ); // smart pointer
+   *   A a3( b3 ); // a3.myPtrB smart points to b3.
+   * \endcode
+   *
    *
    * @tparam T any type.
    * @see CountedPtr
+   * @see Alias
    */
   template <typename T>
   class CountedPtrOrPtr
@@ -77,9 +100,16 @@ namespace DGtal
     typedef typename CountedPtr<T>::Counter Counter;
 
     /**
-       allocate a new counter (smart if isCountedPtr==true)
+       Allocate a new counter (smart if isCountedPtr==true).
+       
+       @param p is a pointer to some object T. If \a isCountedPtr is
+       true, then \a p should point to some dynamically allocated
+       object T.
+       
+       @param isCountedPtr when 'true', stores \a p as a smart
+       (counted) pointer, otherwise stores \a p directly.
     */
-    inline explicit CountedPtrOrPtr( T* p = 0, bool isCountedPtr = true )
+     inline explicit CountedPtrOrPtr( T* p = 0, bool isCountedPtr = true )
       : myAny(0), myIsCountedPtr( isCountedPtr )
     { 
       if ( isCountedPtr ) {
@@ -126,6 +156,28 @@ namespace DGtal
 	myIsCountedPtr = true;
       }
       return *this;
+    }
+
+    /**
+       Equality operator ==
+       
+       @param other any other pointer.
+       @return 'true' if pointed address is equal to \a other.
+    */
+    bool operator==( const T* other ) const
+    {
+      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) == other : ptr() == other;
+    }
+
+    /**
+       Inequality operator !=
+       
+       @param other any other pointer.
+       @return 'true' if pointed address is different from \a other.
+    */
+    bool operator!=( const T* other ) const
+    {
+      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) != other : ptr() != other;
     }
 
     T& operator*()  const throw()   { return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); }
