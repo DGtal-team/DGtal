@@ -145,7 +145,6 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
   
   double angle_min=0;
   double angle_max=M_PI_4;
-  bool ok = true;
   bool occ = false;
   
   IntegerComputer<TInteger> ic;
@@ -158,18 +157,21 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
     }
   else
     {
-      typename occulter_list::iterator iter;
-      
-      for(iter = myOcculters.begin();ok && iter!=myOcculters.end() ;++iter)	
-	{
+      typename occulter_list::iterator iter, next;
+      bool ok = true;
+      iter = myOcculters.begin();
+      while(iter!=myOcculters.end() && ok)
+      	{
 	  pi = Point(*(iter->first));
 	  v = p-pi;
 	  
+	  next = iter;
+	  next++;
 	  // pi is after p for all directions -> p is not an occulter
 	  if(ic.dotProduct(v,u1) < 0 && ic.dotProduct(v,u2) <0)
 	  {
-	      ok = false; 
-	      occ = false;
+	    ok = false; 
+	    occ = false;
 	    }
 	  else
 	    // p is after pi for all directions -> pi is not an occulter
@@ -237,6 +239,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		  // change, p may be an occulter -> do nothing
 		  
 		}
+	  iter = next;
 	}
     }
   
