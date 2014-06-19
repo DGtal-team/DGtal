@@ -13,10 +13,10 @@ This tutorial shows you how to construct a polyhedron (polyhedral
 surface) from a digital object. It uses several ingredients of DGtal:
 
 - readers: to read an ".obj" file into memory (class VolReader)
-- images: to store the ".obj" file into memory (class ImageContainerBySTLVector, class SimpleThresholdForegroundPredicate)
-- predicate: to represent the characteristic function of the digital object
-- cellular space: the cellular digital space in which the boundary of the digital object is well defined
-- digital surface: to connect all boundary elements of the digital object as a graph
+- images: to store the ".obj" file into memory (class ImageContainerBySTLVector)
+- predicate: to represent the characteristic function of the digital object (class SimpleThresholdForegroundPredicate)
+- cellular space: the cellular digital space in which the boundary of the digital object is well defined (class KhalimskySpaceND)
+- digital surface: to connect all boundary elements of the digital object as a graph (class DigitalSurface)
 - graph visitor: to define neighborhoods on the digital object boundary
 - digital plane computer: to recognize points of the boundary that belongs to the same plane
 - umbrellas: to decompose the digital surface into cells
@@ -91,8 +91,47 @@ around the image and only references the image.
 
 \section tutoPolyhedralisation_sec3 Wrapping a surface around the boundary of the digital object
 
+Up to now, the digital object is just a characteristic function,
+without any structure nor boundary. Digital surfaces are defined as
+inter voxel elemnts between face adjacent voxels, such that one is
+inside and the other is outside the digital object. It is thus natural
+to enrich the usual digital space \f$ \mathbb{Z}^d \f$ with lower
+dimensional cells. That is exactly the purpose of class
+KhalimskySpaceND. That kind of space allows to represent cells of
+arbitary dimension (see moduleCellularTopology). By convention, \a
+voxels are cells of maximal dimension `d`, \a surfels are `d`-1
+dimensional cells, etc. Note also that surfels are oriented. It is
+because a surfel indicates not only a boundary element, but also in
+which direction is the inside.
 
+\code
+KSpace ks; // defined in namespace Z3i, alias of KhalimskySpaceND<3,int>
+ks.init( image.domain().lowerBound(), image.domain().upperBound(), true ); // can be checked if ok.
+\endcode
 
+There are several kinds of digital surfaces (see also \ref
+moduleDigitalSurfaces). To address this diversity, the class
+DigitalSurface is templated by a model of
+CDigitalSurfaceContainer. Here we wish to define a digital surface as
+the boundary of a characteristic function (a model of
+CPointPredicate). We choose in our case the container \ref
+ImplicitDigitalSurface, which does exactly this but around one
+boundary component only. You must provide one starting surfel for the
+implicitly defined surface, which indicates the component of the
+boundary that it is representing. Use Surfaces::findABel to get a
+first surfel element. Part of the code is given below
+
+\code
+  typedef KSpace::Surfel Surfel;
+  typedef ImplicitDigitalSurface< KSpace, DigitalObject > MyContainer;
+  typedef DigitalSurface< MyContainer > MyDigitalSurface;
+  MyContainer container( ks, digitalObject, surfAdj, start_surfel );
+  MyDigitalSurface digSurf( container );
+  trace.info() << "Digital surface has " << digSurf.size() << " surfels."
+               << std::endl;
+\endcode
+
+If everything is fine, you should have a non-null digital surface !
 
 */
 
