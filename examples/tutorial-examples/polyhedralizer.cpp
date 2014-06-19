@@ -35,6 +35,8 @@
 #include <queue>
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
+
 //! [polyhedralisation-includes-readvol]
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
@@ -55,7 +57,9 @@
 #include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 #include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 #include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h"
-#include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/EigenDecomposition.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -78,6 +82,54 @@ struct PairSorted2nd
   T1 first;
   T2 second;
 };
+
+template <typename T1, typename T2, typename T3>
+struct Triple
+{
+  T1 first;
+  T2 second;
+  T3 third;
+  Triple( T1 t1 = T1(), T2 t2 = T2(), T3 t3 = T3() )
+    : first( t1 ), second( t2 ), third( t3 )
+  {}
+};
+
+template <typename RealVector,
+          typename ConstIterator>
+double LSF( RealVector& N, ConstIterator itB, ConstIterator itE )
+{
+  typedef typename RealVector::Component Component;
+  typedef SimpleMatrix<Component,3,3> Matrix;
+  Matrix A; A.clear();
+  unsigned int nb = 0;
+  RealVector G = RealVector::zero; // centre de gravite.
+  for ( ConstIterator it = itB; it != itE; ++it )
+    {
+      G += RealVector( (*it)[ 0 ], (*it)[ 1 ], (*it)[ 2 ] );
+      ++nb;
+    }
+  G /= nb;
+  for ( ConstIterator it = itB; it != itE; ++it )
+    {
+      RealVector p( (*it)[ 0 ], (*it)[ 1 ], (*it)[ 2 ] );
+      p -= G;
+      for ( Dimension i = 0; i < 3; ++i )
+        for ( Dimension j = 0; j < 3; ++j )
+          A.setComponent( i, j, A( i, j ) + p[ i ] * p[ j ] );
+    }
+  // A matrice de Gram
+  // On cherche V tq V^t A V / |V|^2 est minimum. C'est la première valeur propre.
+  Matrix V;
+  RealVector values;
+  EigenDecomposition<3,Component>::getEigenDecomposition( A, V, values );
+  N = V.column( 0 ); // first eigenvector;
+  // N /= N.norm();
+  double mu = 0.0;
+  for ( ConstIterator it = itB; it != itE; ++it )
+    mu += N.dot( *it );
+  trace.info() << N << " " << (mu/(double)nb) << " " << nb << std::endl;
+  return mu/(double)nb;
+}
 
 
 int main( int argc, char** argv )
@@ -137,7 +189,7 @@ int main( int argc, char** argv )
   // First pass to find biggest planes.
   trace.beginBlock( "1) Segmentation first pass. Computes all planes so as to sort vertices by the plane size." );
   typedef DGtal::int64_t InternalInteger;
-  //  typedef ChordNaivePlaneComputer<Z3, Z3::Point, InternalInteger> NaivePlaneComputer;
+  //typedef ChordNaivePlaneComputer<Z3, Z3::Point, InternalInteger> NaivePlaneComputer;
   typedef ChordGenericNaivePlaneComputer<Z3,Z3::Point, InternalInteger> NaivePlaneComputer;
   typedef MyDigitalSurface::ConstIterator ConstIterator;
   // Initialisation
@@ -207,8 +259,7 @@ int main( int argc, char** argv )
   //! [polyhedralisation-segment]
   // Segmentation into planes
   trace.beginBlock( "2) Segmentation second pass. Visits vertices from the one with biggest plane to the one with smallest plane." );
-
-  typedef std::pair<NaivePlaneComputer, Color> SegmentedPlane;
+  typedef Triple<NaivePlaneComputer, Color, RealVector> SegmentedPlane;
   std::set<Surfel> processedVertices;
   std::vector<SegmentedPlane*> segmentedPlanes;
   std::map<Surfel,SegmentedPlane*> v2plane;
@@ -225,6 +276,8 @@ int main( int argc, char** argv )
       segmentedPlanes.push_back( ptrSegment ); // to delete them afterwards.
       v2plane[ v ] = ptrSegment;
       ptrSegment->first.init( widthNum, widthDen );
+      ptrSegment->second = Color( 255, 0, 0, 255 );
+      ptrSegment->third = RealVector::zero;
       // The visitor takes care of all the breadth-first traversal.
       Visitor visitor( digSurf, v );
       layer.clear();
@@ -234,11 +287,6 @@ int main( int argc, char** argv )
         {
           Visitor::Node node = visitor.current();
           v = node.first;
-          if ( processedVertices.find( v ) != processedVertices.end() ) {
-            // surfel is already in some plane.
-            visitor.ignore();
-            continue;
-          }
           Dimension axis = ks.sOrthDir( v );
           Point p = ks.sCoords( ks.sDirectIncident( v, axis ) );
           if ( node.second != currentSize )
@@ -249,8 +297,13 @@ int main( int argc, char** argv )
                   for ( std::vector<Surfel>::const_iterator it_layer = layer_surfel.begin(), 
                           it_layer_end = layer_surfel.end(); it_layer != it_layer_end; ++it_layer )
                     {
+                      Surfel s = *it_layer;
+                      Dimension k = ks.sOrthDir( s );
+                      Vector tn = ks.sCoords( ks.sIndirectIncident( s, k ) ) - ks.sCoords( ks.sDirectIncident( s, k ) );
+                      ptrSegment->third += RealVector( tn[ 0 ], tn[ 1 ], tn[ 2 ] );
                       processedVertices.insert( *it_layer );
-                      v2plane[ *it_layer ] = ptrSegment;
+                      if ( v2plane.find( *it_layer ) == v2plane.end() )
+                        v2plane[ *it_layer ] = ptrSegment;
                     }
                   layer.clear();
                   layer_surfel.clear();
@@ -260,7 +313,26 @@ int main( int argc, char** argv )
             }
           layer_surfel.push_back( v );
           layer.push_back( p );
-          visitor.expand();
+          if ( processedVertices.find( v ) != processedVertices.end() )
+            // surfel is already in some plane.
+            visitor.ignore();
+          else
+            visitor.expand();
+        }
+      if ( visitor.finished() ) 
+        {
+          trace.warning() << "Visitor finished." << std::endl;
+          for ( std::vector<Surfel>::const_iterator it_layer = layer_surfel.begin(), 
+                  it_layer_end = layer_surfel.end(); it_layer != it_layer_end; ++it_layer )
+            {
+              Surfel s = *it_layer;
+              Dimension k = ks.sOrthDir( s );
+              Vector tn = ks.sCoords( ks.sIndirectIncident( s, k ) ) - ks.sCoords( ks.sDirectIncident( s, k ) );
+              ptrSegment->third += RealVector( tn[ 0 ], tn[ 1 ], tn[ 2 ] );
+              processedVertices.insert( *it_layer );
+              if ( v2plane.find( *it_layer ) == v2plane.end() )
+                v2plane[ *it_layer ] = ptrSegment;
+            }
         }
       // Assign random color for each plane.
       ptrSegment->second = Color( random() % 192 + 64, random() % 192 + 64, random() % 192 + 64, 255 );
@@ -268,6 +340,12 @@ int main( int argc, char** argv )
   trace.endBlock();
   //! [polyhedralisation-segment]
 
+  for ( ConstIterator it = digSurf.begin(), itE= digSurf.end(); it != itE; ++it )
+    {
+      Surfel s = *it;
+      if ( v2plane.find( s ) == v2plane.end() )
+        trace.warning() << "Surfel " << s << " not found in v2plane." << std::endl;
+    }
   //! [polyhedralisation-visualization]
   typedef Viewer3D<Space,KSpace> MyViewer3D;
   typedef Display3DFactory<Space,KSpace> MyDisplay3DFactory;
@@ -281,18 +359,98 @@ int main( int argc, char** argv )
       viewer << CustomColors3D( it->second->second, it->second->second );
       RealVector normal;
       it->second->first.getUnitNormal( normal );
-      Surfel v = it->first;
-      int axis = ks.sOrthDir( v );
-      Vector trivial = ks.sCoords( ks.sIndirectIncident( v, axis ) ) - 
-        ks.sCoords( ks.sDirectIncident( v, axis ) );
-      RealVector rtrivial( trivial[ 0 ], trivial[ 1 ], trivial[ 2 ] );
-      if ( rtrivial.dot( normal ) < 0.0 ) normal = -normal;
+      if ( it->second->third.dot( normal ) < 0.0 ) normal = -normal;
       MyDisplay3DFactory::drawOrientedSurfelWithNormal( viewer, it->first, normal, false );
       viewer << it->first;
     }
   viewer << MyViewer3D::updateDisplay;
   application.exec();
   //! [polyhedralisation-visualization]
+
+  //! [polyhedralisation-MakeMesh]
+  typedef unsigned int Number;
+  typedef Mesh<RealPoint> MyMesh;
+  typedef MyMesh::MeshFace MeshFace;
+  typedef MyDigitalSurface::FaceSet FaceSet;
+  typedef MyDigitalSurface::VertexRange VertexRange;
+  // Numbers all vertices.
+  std::map<Surfel, Number> index;
+  Number nbv = 0;
+  for ( ConstIterator it = digSurf.begin(), itE= digSurf.end(); it != itE; ++it )
+    index[ *it ] = nbv++;
+  MyMesh polyhedron( true );
+  // Project all vertices onto their plane
+  typedef NaivePlaneComputer::Primitive Primitive;
+  double maxl = (double)widthNum/(double)widthDen;
+  for ( ConstIterator it = digSurf.begin(), itE= digSurf.end(); it != itE; ++it )
+    {
+      //Point p = ks.sCoords( ks.sDirectIncident( *it, ks.sOrthDir( *it ) ) );
+      Point p = ks.sKCoords( *it );
+      RealPoint rp( (double)p[ 0 ]/2.0, (double)p[ 1 ]/2.0, (double)p[ 2 ]/2.0 );
+      // Check neighbors
+      VertexRange neighbors;
+      std::back_insert_iterator<VertexRange> writeIt = std::back_inserter( neighbors );
+      digSurf.writeNeighbors( writeIt, *it );
+      std::set<SegmentedPlane*> segPlanes;
+      segPlanes.insert( v2plane[ *it ] );
+      for ( VertexRange::const_iterator itn = neighbors.begin(), itnE = neighbors.end(); itn != itnE; ++itn )
+        segPlanes.insert( v2plane[ *itn ] );
+      RealPoint rq;
+      if (true) //( segPlanes.size() == 1 )
+        {
+          NaivePlaneComputer& computer = v2plane[ *it ]->first;
+          RealVector normal;
+          double mu = LSF( normal, computer.begin(), computer.end() );
+          double lambda = mu - rp.dot( normal );
+          rq = rp + lambda*normal;
+          // Primitive PS = v2plane[ *it ]->first.primitive();
+          // RealVector normal = PS.normal();
+          // double lambda = PS.mu() + PS.nu()/2.0 - rp.dot( normal );
+          // rq = rp + lambda*normal;
+        }
+      else
+        {
+          typedef SimpleMatrix<double,3,3> Matrix;
+          Matrix A; A.identity();
+          RealVector B = rp;
+          for ( std::set<SegmentedPlane*>::const_iterator itp = segPlanes.begin(), itpE = segPlanes.end();
+                itp != itpE; ++itp )
+            {
+              Primitive PS = (*itp)->first.primitive();
+              RealVector normal = PS.normal();
+              for ( Dimension i = 0; i < 3; ++i )
+                for ( Dimension j = 0; j < 3; ++j )
+                  {
+                    double val = A( i, j ) + normal[ i ] * normal[ j ];
+                    A.setComponent( i, j, val );
+                  }
+              B += (PS.mu() + PS.nu()/2.0) * normal;
+            }
+          rq = A.inverse() * B;
+        }
+      polyhedron.addVertex( rq );
+    }
+  // Define faces of the mesh.
+  // Outputs closed faces.
+  FaceSet faces = digSurf.allClosedFaces();
+  for ( typename FaceSet::const_iterator itf = faces.begin(), itf_end = faces.end();
+        itf != itf_end; ++itf )
+    {
+      MeshFace mface( itf->nbVertices );
+      VertexRange vtcs = digSurf.verticesAroundFace( *itf );
+      int i = 0;
+      for ( typename VertexRange::const_iterator itv = vtcs.begin(), itv_end = vtcs.end();
+            itv != itv_end; ++itv )
+        mface[ i++ ] = index[ *itv ];
+      polyhedron.addFace( mface, Color( 255, 243, 150, 255 ) ); //v2plane[ *vtcs.begin() ]->second );
+    }
+  viewer.clear();
+  viewer.show();
+  viewer << polyhedron;
+  viewer << MyViewer3D::updateDisplay;
+  application.exec();
+  //! [polyhedralisation-visualization]
+
 
   //! [polyhedralisation-freeMemory]
   for ( std::vector<SegmentedPlane*>::iterator 
