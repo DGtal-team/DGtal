@@ -175,7 +175,6 @@ int main( int argc, char** argv )
   typedef KSpace::SCell SCell;
   typedef KSpace::Surfel Surfel;
   Surfel start_surfel = Surfaces<KSpace>::findABel( ks, digitalObject, 100000 );
-  typedef KSpace::SurfelSet SurfelSet;
   typedef ImplicitDigitalSurface< KSpace, DigitalObject > MyContainer;
   typedef DigitalSurface< MyContainer > MyDigitalSurface;
   MyContainer container( ks, digitalObject, surfAdj, start_surfel );
