@@ -72,22 +72,39 @@ of the newly added point.
 \subsection sectmoduleFMM11 Data structures
 
 The class FMM, which implements the fast marching method, is based on two external data structures 
-and one internal structure: 
+and one internal data structure: 
  
 - External data structures: 
 
   - an instance of a model of CDigitalSet for the accepted point set.  
   - an instance of a model of CImage, which stores the distance values.
 
+In practice, you can choose either ImageContainerBySTLVector and DigitalSetBySTLSet 
+if you work on the whole domain: 
+
+\code
+  typedef ImageContainerBySTLVector<Domain,double> DistanceImage; 
+  typedef DigitalSetBySTLSet<Domain> AcceptedPointSet; 
+\endcode
+
+or ImageContainerBySTLMap and DigitalSetFromMap if you work on a small 
+fraction of the domain: 
+
+\code
+  typedef ImageContainerBySTLMap<Domain,double> DistanceImage; 
+  typedef DigitalSetFromMap<DistanceImage> AcceptedPointSet; 
+\endcode
+
 - Internal data structure: 
   - a data structure for the candidate point set. Three operations are required: 
 
-    - insertion of a new point, 
-    - search of a given point, read or update its tentative value if found, 
-    - search of the point of smallest tentative value, 
+    - insert a new point with its distance value, 
+    - find a given point, read or update its tentative value if found, 
+    - get the point of smallest tentative value, 
    
     This data structure is currently a STL set of pairs - point, tentative value -, 
-    but it is usually a min-heap data structure (see \cite Sethian1998). 
+    but it is usually a min-heap data structure with back pointers from the grid
+    to the min-heap (see \cite Sethian1998). 
 
 
 \subsection sectmoduleFMM13 Computing distances
@@ -119,11 +136,12 @@ Obviously, if the distance value \f$ d' \f$ of only one 1-neighbor is available,
 (\f$ + \f$ for positive distance values, \f$ - \f$ for negative ones).  
 If the distance values of two (or more than two in nD) 1-neighbors are available, the previous 
 quadratic equation should have two solutions and we take the larger one for \f$ d \f$.  
-The numerical approach implemented in L2FirstOrderLocalDistance::operator() to compute \f$ d \f$ 
-even with poor initial data or with numerical errors is detailed in \cite OsherFedkiw2003 [p. 72-73]. 
-Note that if \f$ h \f$ is the lattice spacing, the approximation error tends to zero in \f$ O(h) \f$. 
+The numerical approach implemented in L2FirstOrderLocalDistance::operator() to compute \f$ d \f$, 
+even with poor initial data or with numerical errors, is detailed in \cite OsherFedkiw2003 [p. 72-73]. 
+Note that if \f$ h \f$ is the lattice spacing, the approximation error tends to zero in \f$ O(h) \f$
+(first-order convergence). 
 
-@note This class deal with positive or negative distance values
+@note This class deals with positive or negative distance values
 (0 is arbitrarily considered as a positive value, ie. starting with
 a seed of null value, you must get positive values). 
 However, the behavior is undefined when there are both positive
@@ -160,7 +178,7 @@ In this example, we start from one point whose distance value is zero:
 
 @snippet geometry/volumes/distance/exampleFMM2D.cpp FMMSimpleInit
 
-We now constructs a FMM instance as follows: 
+We now construct a FMM instance as follows: 
 
 @snippet geometry/volumes/distance/exampleFMM2D.cpp FMMSimpleCtor
   
@@ -268,9 +286,7 @@ The computation is limited to a narrow band around the digital surface:
 each point of the band are located at a distance less than @e maximalDistance 
 to the digital surface.  
 
-The result is displayed below. Positive distance values are depicted by green colors whereas
-negative distance values are depicted by red colors. The digital surface is located between the
-green and red regions.  
+The result is displayed below. 
 
 @image html exampleFMM3D.png "Signed distance field computed in a narrow band around a digital surface. "
 @image latex exampleFMM3D.png "Signed distance field computed in a narrow band around a digital surface. " width=5cm
