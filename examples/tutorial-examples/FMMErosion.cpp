@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file FMMOpening.cpp
+ * @file FMMErosion.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2014/06/19
  *
- * An example file named FMMOpening.
+ * An example file named FMMErosion.
  *
  * This file is part of the DGtal library.
  */
@@ -63,7 +63,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example FMMOpening" );
+  trace.beginBlock ( "Example FMMErosion" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -71,19 +71,19 @@ int main( int argc, char** argv )
 
   DGtal::trace.beginBlock("image reading..."); 
 
-  //! [FMMOpeningImageReading]
+  //! [FMMErosionImageReading]
   string imageFileName = examplesPath + "samples/cat10.vol"; 
   trace.info() << imageFileName <<std::endl; 
   typedef ImageContainerBySTLVector<Domain, bool> BinaryImage; 
   BinaryImage binaryImage = VolReader<BinaryImage>::importVol( imageFileName);
-  //! [FMMOpeningImageReading]
+  //! [FMMErosionImageReading]
 
   DGtal::trace.endBlock(); 
 
   DGtal::trace.beginBlock("Search for a bel..."); 
 
   //space and starting bel
-  //! [FMMOpeningStartingBel]
+  //! [FMMErosionStartingBel]
   KSpace ks;
   Domain domain = binaryImage.domain(); 
   ks.init( domain.lowerBound(), domain.upperBound(), true ); 
@@ -98,14 +98,14 @@ int main( int argc, char** argv )
     trace.emphase() << "starting bel not found" << std::endl; 
     return 0; 
   }
-  //! [FMMOpeningStartingBel]
+  //! [FMMErosionStartingBel]
 
   DGtal::trace.endBlock(); 
 
   DGtal::trace.beginBlock("Implicit frontier..."); 
 
   //implicit frontier 
-  //! [FMMOpeningTracking]
+  //! [FMMErosionTracking]
   typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
   SCellToIncidentPoints<KSpace> toIncidentPoints( ks );
@@ -115,7 +115,7 @@ int main( int argc, char** argv )
 				   binaryImage( bpair.second ) );  
   Frontier frontier( ks, surfelPredicate, 
 		     SurfelAdjacency<KSpace::dimension>( true ), bel ); 
-  //! [FMMOpeningTracking]
+  //! [FMMErosionTracking]
 
   DGtal::trace.endBlock();
 
@@ -123,13 +123,13 @@ int main( int argc, char** argv )
 
   DGtal::trace.beginBlock("FMM..."); 
 
-  //! [FMMOpeningFMMTypes]
+  //! [FMMErosionFMMTypes]
   typedef ImageContainerBySTLMap<Domain,double> DistanceImage; 
   typedef DigitalSetFromMap<DistanceImage> AcceptedPointSet; 
   typedef FMM<DistanceImage, AcceptedPointSet, BinaryImage > FMM;
-  //! [FMMOpeningFMMTypes]
+  //! [FMMErosionFMMTypes]
 
-  //! [FMMOpeningFMMInit]
+  //! [FMMErosionFMMInit]
   DistanceImage imageDistance( domain, 0.0 );
   AcceptedPointSet pointSet( imageDistance );
   SCellToInnerPoint<KSpace> toInnerPoint( ks );
@@ -139,37 +139,37 @@ int main( int argc, char** argv )
       pointSet.insert( toInnerPoint(*it) ); 
       imageDistance.setValue( toInnerPoint(*it), 0.5 ); 
     }
-  //! [FMMOpeningFMMInit]
+  //! [FMMErosionFMMInit]
 
-  //! [FMMOpeningFMM]
+  //! [FMMErosionFMM]
   FMM fmm( imageDistance, pointSet, binaryImage,
 	   domain.size(), maximalDistance );
   fmm.compute(); 
   trace.info() << fmm << std::endl;  
-  //! [FMMOpeningFMM]
+  //! [FMMErosionFMM]
 
   DGtal::trace.endBlock();
 
   DGtal::trace.beginBlock("Erosion"); 
   trace.info() << "Erosion of radius: " << maximalDistance << std::endl;
 
-  //! [FMMOpeningErosion]
+  //! [FMMErosionErosion]
   for (AcceptedPointSet::ConstIterator it = pointSet.begin(), itEnd = pointSet.end(); 
        it != itEnd; ++it) 
     {
       binaryImage.setValue(*it, 0); 
     }
-  //! [FMMOpeningErosion]
+  //! [FMMErosionErosion]
 
   DGtal::trace.endBlock();
 
   DGtal::trace.beginBlock("image writing..."); 
 
-  //! [FMMOpeningImageWriting]
+  //! [FMMErosionImageWriting]
   string outputFileName = "eroded.vol"; 
   trace.info() << "to " << outputFileName << std::endl; 
   VolWriter<BinaryImage,CastFunctor<unsigned char> >::exportVol(outputFileName, binaryImage);
-  //! [FMMOpeningImageWriting]
+  //! [FMMErosionImageWriting]
 
   DGtal::trace.endBlock(); 
 

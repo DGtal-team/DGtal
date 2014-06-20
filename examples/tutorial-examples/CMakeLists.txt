@@ -5,7 +5,7 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   imageGridCurveEstimator
   shapeGridCurveEstimator
   freemanChainFromImage
-  FMMOpening
+  FMMErosion
 )
 
 
