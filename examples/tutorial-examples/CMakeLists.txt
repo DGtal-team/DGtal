@@ -1,9 +1,11 @@
+
 SET(DGTAL_TUTO_EXAMPLES_SRC
   imageSetDT
   fileGridCurveRanges
   imageGridCurveEstimator
   shapeGridCurveEstimator
   freemanChainFromImage
+  FMMOpening
 )
 
 
