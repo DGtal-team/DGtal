@@ -4,7 +4,8 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   imageGridCurveEstimator
   shapeGridCurveEstimator
   freemanChainFromImage
-)
+  volDTGranulo
+  )
 
 
 FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
