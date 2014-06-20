@@ -131,15 +131,18 @@ dilation, are left as an exercise.
 Your challenge is to code: 
 
 1. a local morphological dilation, 
-2. a local morphological opening in a tool that you will submit to the DGtalTools project. The vol file and the radius of 
+2. a local morphological opening, 
+3. a tool that performs a local morphological opening on all connected components. The vol file and the radius of 
    the structural element must be program options. 
 
 \subsection subsecttutoFMMErosion32  Hints
 
 The dilation operation will look like the erosion operation. There are however three small differences: 
 
-- The computation must be limited to the background. You may adapt the binary image, used as a point predicate in FMMErosion.cpp, 
-  with NotPointPredicate defined in BasicPointPredicates.h. 
+- The computation must be limited to the background, within the domain. You may adapt the binary image, 
+  used as a point predicate in FMMErosion.cpp, with NotPointPredicate. Moreover, you may use BinaryPointPredicate
+  to combine this point predicate with the domain predicate. Note that most point predicate adapters
+  are defined in BasicPointPredicates.h. 
 
 - You must initialize the accepted point set from the outer points of the digital surface. You may use SCellToOuterPoint defined 
   in SCellsFunctors.h instead of SCellToInnerPoint.  
@@ -147,9 +150,6 @@ The dilation operation will look like the erosion operation. There are however t
 - Obviously, after the computation, you must flip the points of the accepted point set from the background to the volume in order to 
   complete the dilation operation. 
 
-\subsection subsecttutoFMMErosion33  Winner
-
-Your name will appear in this section if you are the first developer to complete and submit the tool. Hurry up! 
 
 */
 
