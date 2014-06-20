@@ -1,0 +1,94 @@
+/**
+ * @file tutoVolDTGranulometry.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/10/11
+ *
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page tutoVolDTGranulometry   Tutorial Volmuetric analysis and Granulometry
+@author David Coeurjolly
+
+
+The objective of this tutorial is to perform some elementary
+volumetric analysis of 3D objects. With this tutorial, you will
+experiment the following DGtal features
+
+- Import/export of a volumetric image (VolReader/VolWriter)
+
+- Distance transformation computation (DistanceTransformation)
+
+- Visualization of volumetric data using Viewer3D
+ 
+- Implicit/parametric shape construction 
+ 
+- Shape analysis using granulometry function 
+
+[TOC]
+
+@section tutosectIntroGranulo Introduction
+
+When analyzing 3D porous material, the granulometry function plays an
+important role for shape description. For short, given a shape @f$
+\mathcal{X}@f$, the granulometry function at a point @f$ x\in \mathcal{X}@f$ is given by:
+@f[ 
+ g (x) = \max \{ r~|~ x\in B(c,r)\text{ and }\forall B(c,r)\subseteq \mathcal{X}\}
+@f]
+@f$ B(c,r)@f$ being an Euclidean ball with center @f$ c@f$ and radius
+ @f$ r@f$.
+
+To compute the granulometry function, a classical approach is to first
+consider the medial axis of @f$ \mathcal{X}@f$ (the medial axis can be roughly
+defined as the set of maximal balls contained in the shape).
+
+
+In this tutorial, we will implement a first naive approach from
+distance transformation  values. Indeed, the distance transformation
+is a function defined by 
+@f[ 
+ DT (x) = \min \{ d(x,\hat{x}~|~ x\in\mathcal{X}\text{ and }\hat{x}\in \mathbb{R}^n\setminus \mathcal{X}\}
+@f]
+for some metric @f$ d@f$.
+
+Hence, instead of all Euclidean balls inside @f$ \mathcal{X}@f$, we
+can just consider the digital balls @f$ B(x, DT(x))@f$ for all @f$
+x\in\mathcal{X}@f$ (in this case, @f$ d @f$ is the @f$l_2@f$ Euclidean norm).
+
+
+
+@section tutosectLoadVol Import volumetric image an visualization 
+
+Let start with volumetric image loading. First of all, create a source
+file with the following includes:
+
+
+
+
+
+
+@section tutosecDT Distance Transformation
+
+@section tutosecShape Granulometric analysis of porous material
+
+@subsection tutoGsubsec1 Problem description
+
+@subsection tutoGsubsec2 Implicit/Parametric shapes
+
+@subsection tutoGsubsec3 Granulometry function export
+
+
+
+
+*/
+
+}
