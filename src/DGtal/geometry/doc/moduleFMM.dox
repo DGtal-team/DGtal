@@ -99,12 +99,14 @@ fraction of the domain:
   - a data structure for the candidate point set. Three operations are required: 
 
     - insert a new point with its distance value, 
-    - find a given point, read or update its tentative value if found, 
+    - find a given point, update its tentative value if found, 
     - get the point of smallest tentative value, 
    
-    This data structure is currently a STL set of pairs - point, tentative value -, 
-    but it is usually a min-heap data structure with back pointers from the grid
-    to the min-heap (see \cite Sethian1998). 
+    This data structure is usually a min-heap data structure with back pointers from the lattice
+    to the min-heap (see \cite Sethian1998). The memory cost of such solution is however high. 
+    That is why, we implemented the candidate point set as a STL set of pairs <point, tentative value>. 
+    Instead of updating the tentative values, we insert a new pair <point, tentative value>. This 
+    solution is less memory consumming and experimentally (nearly) as efficient as the former one.  
 
 
 \subsection sectmoduleFMM13 Computing distances

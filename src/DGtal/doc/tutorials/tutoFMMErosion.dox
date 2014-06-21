@@ -139,10 +139,30 @@ Your challenge is to code:
 
 The dilation operation will look like the erosion operation. There are however three small differences: 
 
-- The computation must be limited to the background, within the domain. You may adapt the binary image, 
-  used as a point predicate in FMMErosion.cpp, with NotPointPredicate. Moreover, you may use BinaryPointPredicate
-  to combine this point predicate with the domain predicate. Note that most point predicate adapters
-  are defined in BasicPointPredicates.h. 
+- Contrary to the erosion operation that is bounded by the volume, the dilation operation must be limited 
+  to the background, but inside the domain. On one hand, you may adapt the binary image, 
+  used as a point predicate in FMMErosion.cpp, with NotPointPredicate in order to bound the computation to the background. 
+  On the other hand, you may adapt the domain with DomainPredicate in order to limit the computation to the domain. 
+  Finally, you may use BinaryPointPredicate to combine these two point predicates. Thus, you may define
+  the following types: 
+
+\code
+    typedef NotPointPredicate<BinaryImage> BackgroundPredicate; 
+    typedef BinaryPointPredicate<
+      BackgroundPredicate, 
+      DomainPredicate<Domain> > Predicate; 	      
+\endcode
+
+Once these types are defined, you can construct your new point predicate as follows: 
+
+\code
+    BackgroundPredicate backgroundPredicate( binaryImage );
+    DomainPredicate<Domain> domainPredicate( domain );
+    Predicate pred( backgroundPredicate, domainPredicate, andBF2 ); 
+\endcode
+
+  Note that most point predicate adapters are defined in BasicPointPredicates.h. Moreover, andBF2 is a binary functor 
+  defined in BasicBoolFunctions.h 
 
 - You must initialize the accepted point set from the outer points of the digital surface. You may use SCellToOuterPoint defined 
   in SCellsFunctors.h instead of SCellToInnerPoint.  
