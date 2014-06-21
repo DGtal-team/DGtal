@@ -83,7 +83,7 @@ namespace DGtal
        *
        * @return true if a < b but false otherwise
        */
-      bool operator()(const T& a, const T& b) 
+      bool operator()(const T& a, const T& b) const
       {
 	if ( std::abs(a.second) == std::abs(b.second) ) 
 	  { //point comparison
