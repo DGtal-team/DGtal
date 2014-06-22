@@ -328,7 +328,6 @@ use the FreemanChain method getInterPixelLinels (step 2).
       imageResult.setValue(ks.uCoords(*it), 255);
    \endcode
 
-
 - To identify the holes of step (4) you have to exploit the contour orientation. For
   this purpose you can use the method ccwLoops of the FreemanChain
   class. 
