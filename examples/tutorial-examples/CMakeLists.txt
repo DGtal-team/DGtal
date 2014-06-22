@@ -1,3 +1,4 @@
+
 SET(DGTAL_TUTO_EXAMPLES_SRC
   imageSetDT
   fileGridCurveRanges
@@ -5,7 +6,8 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   shapeGridCurveEstimator
   freemanChainFromImage
   volDTGranulo
-  )
+  FMMErosion
+)
 
 
 FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
