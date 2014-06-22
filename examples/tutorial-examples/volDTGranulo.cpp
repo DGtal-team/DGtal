@@ -34,7 +34,6 @@
 #include <algorithm>
 ///////////////////////////////////////////////////////////////////////////////
 
-//! [volGranulo-basicIncludes]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
@@ -47,13 +46,10 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/base/BasicFunctors.h"
-//! [volGranulo-basicIncludes]
 
-//! [volGranulo-viewerIncludes]
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-//! [volGranulo-viewerIncludes]
 
 using namespace DGtal;
 
