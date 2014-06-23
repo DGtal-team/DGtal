@@ -12,7 +12,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page tutoAreaSurface   Tutorial Surface area estimation
+@page tutoAreaSurface   Tutorial: Surface area estimation
 @author Jeremy Levallois
 
 
@@ -48,7 +48,7 @@ where @f$ \textbf{n_e}(x) @f$ denotes the normal vector estimated at position @f
 @section tutosectLoadVol Import volumetric image an visualization 
 
 Let start with shape construction. First of all, create a source
-file with the following includes (or copy the volDTGranulo-tempate.cpp
+file with the following includes (or copy the AreaSurfaceEstimation-template.cpp
 source file):
 
 @snippet tutorial-examples/AreaSurfaceEstimation-template.cpp areaSurface-basicIncludes
