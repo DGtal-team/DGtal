@@ -16,7 +16,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page tutoVolDTGranulometry   Tutorial Volmuetric analysis and Granulometry
+@page tutoVolDTGranulometry   Tutorial Volumetric analysis and Granulometry
 @author David Coeurjolly
 
 
@@ -44,7 +44,7 @@ When analyzing 3D porous material, the granulometric function plays an
 important role for shape description. For short, given a shape @f$
 \mathcal{X}@f$, the granulometric function at a point @f$ x\in \mathcal{X}@f$ is given by:
 @f[ 
- g (x) = \max \{ r~|~ x\in B(c,r)\text{ and }\forall B(c,r)\subseteq \mathcal{X}\}
+ g (x) = \max \{ r~|~ \forall c\in\mathcal{X}, x\in B(c,r)\text{ and }\forall B(c,r)\subseteq \mathcal{X}\}
 @f]
 @f$ B(c,r)@f$ being an Euclidean ball with center @f$ c@f$ and radius
  @f$ r@f$.
@@ -69,14 +69,14 @@ defined as the set of maximal balls contained in the shape).
 
 
 In this tutorial, we will implement a first naive approach from
-distance transformation  values. Indeed, the distance transformation
+distance transformation  values. The distance transformation
 is a function defined by 
 @f[ 
  DT (x) = \min \{ d(x,\hat{x}~|~ x\in\mathcal{X}\text{ and }\hat{x}\in \mathbb{R}^n\setminus \mathcal{X}\}
 @f]
 for some metric @f$ d@f$.
 
-Hence, instead of all Euclidean balls inside @f$ \mathcal{X}@f$, we
+Hence, instead of checking all Euclidean balls inside @f$ \mathcal{X}@f$, we
 can just consider the digital balls @f$ B(x, DT(x))@f$ for all @f$
 x\in\mathcal{X}@f$ (in this case, @f$ d @f$ is the @f$l_2@f$ Euclidean norm).
 
@@ -97,7 +97,7 @@ source file):
 previously defined image type.
 
 
-Once you have loaded the volumetric file, you can check its geometry
+Once you have imported the volumetric file, you can check its geometry
 with the internal Viewer3D visualization tool. First of all, create a
 new viewer instance using the following code:
 
@@ -111,7 +111,6 @@ positive values.
 
 
 @section tutosecDT Distance Transformation
-
 
 
 3. First of all, have a look to the DistanceTransformation class and
@@ -180,7 +179,7 @@ storing the @f$g @f$ map):
 
 
 
-12. What is the computational cost of this naive approach ?
+12. What is the computational cost of this naive approach for a shape defined in a @f$N^3@f$ domain ?
 
 
 @section volDTSecCCL Conclusion
