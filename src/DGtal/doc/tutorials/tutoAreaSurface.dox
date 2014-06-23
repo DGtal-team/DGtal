@@ -79,14 +79,21 @@ an instance.
 @section tutosecEstimation Normal estimation
 
 
-As discussed in the introduction, we will use a normal vector estimator to compute the surface area of our object. We will use IntegralInvarianceCovarianceEstimator (II) who, with the good functor (can be found in IIGeometricFunctors namespace/file ). DGtal offers also some other normal vector estimators, so feel free to use wich one you want.
+As discussed in the introduction, we will use a normal vector
+estimator to compute the surface area of our object. We will use
+IntegralInvarianceCovarianceEstimator (II) who, with the good functor
+(can be found in IIGeometricFunctors namespace/file ). DGtal offers
+also some other normal vector estimators, so feel free to use wich one
+you want.
 
-The main idea is to choose the functor you want (IIGeometricFunctors::IINormalDirectionFunctor on this case) and use the II estimator on all the digital surface:
+The main idea is to choose the functor you want
+(IIGeometricFunctors::IINormalDirectionFunctor on this case) and use
+the II estimator on all the digital surface:
 
 - Initialize the functor
 - Initialize the covariance estimator ( constructor(functor), attach(), setParams(), init() )
 - Evaluate the estimator on all surfel of the border of the shape
-- Compute for all surfel the dot product of the estimated euclidean normal vector (result of the estimator) and the surfel normal vectox	r (see below)
+- Compute for all surfel the dot product of the estimated euclidean normal vector (result of the estimator) and the surfel normal vector (see below)
 
 To extract the surfel normal vector, we need to use some method from the KSpace (see KhalimskySpaceND for all methods avalaible):
 
@@ -95,8 +102,10 @@ To extract the surfel normal vector, we need to use some method from the KSpace 
 - sKCoords( surfel ) returns a vector of coordinates (of KhalimskySpace)
 
 
-6. Is the area surface estimation convergent ?
-As you can see at the begining of the file, we set the gridstep @f$ h @f$ to 1. If you change this value @f$ h \le 1 @f$, how the estimation of the surface area changes ?
+6. Is the surface area estimation multigrid convergent ? As you can
+see at the begining of the file, we set the gridstep @f$ h @f$ to
+1. If you change this value @f$ h \le 1 @f$, how the estimation of the
+surface area changes ?
 
 
 @section areaSurfaceCCL Conclusion
@@ -104,7 +113,12 @@ As you can see at the begining of the file, we set the gridstep @f$ h @f$ to 1. 
 You can check AreaSurfaceEstimation-final.cpp to get some answers to the above
 mentioned questions.
 
-Several optimizations can be developed. For example, instead of evaluate for all surface element separately, we can estimate all surfels in one call of eval(). This uses some optimization of II estimator and can be see in overall computation time. Some others normal vector estimators can be used, as VoronoiCovarianceMeasureLocalEstimator.
+Several optimizations can be developed. For example, instead of
+evaluate for all surface element separately, we can estimate all
+surfels in one call of eval(). This uses some optimization of II
+estimator and can be see in overall computation time. Some others
+normal vector estimators can be used, as
+VoronoiCovarianceMeasureLocalEstimator.
 
 
 */
