@@ -16,7 +16,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page tutoVolDTGranulometry   Tutorial Volumetric analysis and Granulometry
+@page tutoVolDTGranulometry   Tutorial: Volumetric analysis and Granulometry
 @author David Coeurjolly
 
 
