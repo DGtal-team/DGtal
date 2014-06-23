@@ -21,7 +21,7 @@ if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_TUTO_EXAMPLES_QGL_SRC
    shapeDTViewer
    volDTGranulo
-   
+   polyhedralizer
    )
   FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
