@@ -39,10 +39,10 @@ important role for shape description. A way to estimate the area of a surface is
 Given a shape @f$
 \mathcal{X}@f$, the surface area function can be estimated with :
 @f[ 
- \hat{AreaSurface (X)} = \sum_x ( n_e(x) . n_s(\hat{x}) )
+ \hat{AreaSurface (X)} = \sum_x ( \textbf{n_e}(x) . \textbf{n_s}(\hat{x}) )
 @f]
-where @f$ n_e(x) @f$ denotes the normal vector estimated at position @f$ x \in \mathcal{X} @f$,
-@f$ n_s(\hat{x}) @f$ the normal vector of surface element (surfel) @f$ \hat(x)  \in Dig_h{\mathcal{X}} @f$, and @f$ . @f$ the dot product.
+where @f$ \textbf{n_e}(x) @f$ denotes the normal vector estimated at position @f$ x \in \mathcal{X} @f$,
+@f$ \textbf{n_s}(\hat{x}) @f$ the normal vector of surface element (surfel) @f$ \hat{x}  \in Dig_h{\mathcal{X}} @f$, and @f$ . @f$ the dot product.
 
 
 @section tutosectLoadVol Import volumetric image an visualization 
@@ -79,14 +79,14 @@ an instance.
 @section tutosecEstimation Normal estimation
 
 
-As discussed in the introduction, we will use a normal vector estimator to compute the surface area of our object. We will use IntegralInvarianceCovarianceEstimator (II) who, with the goof functor (can be found in IIGeometricFunctors namespace/file ). DGtal offers also some other normal vector estimators, so feel free to use wich one you want.
+As discussed in the introduction, we will use a normal vector estimator to compute the surface area of our object. We will use IntegralInvarianceCovarianceEstimator (II) who, with the good functor (can be found in IIGeometricFunctors namespace/file ). DGtal offers also some other normal vector estimators, so feel free to use wich one you want.
 
 The main idea is to choose the functor you want (IIGeometricFunctors::IINormalDirectionFunctor on this case) and use the II estimator on all the digital surface:
 
 - Initialize the functor
 - Initialize the covariance estimator ( constructor(functor), attach(), setParams(), init() )
 - Evaluate the estimator on all surfel of the border of the shape
-- Compute for all surfel the dot product of the estimated euclidean normal vector (result of the estimator) and the surfel normal vector (see below)
+- Compute for all surfel the dot product of the estimated euclidean normal vector (result of the estimator) and the surfel normal vectox	r (see below)
 
 To extract the surfel normal vector, we need to use some method from the KSpace (see KhalimskySpaceND for all methods avalaible):
 
@@ -94,11 +94,9 @@ To extract the surfel normal vector, we need to use some method from the KSpace 
 - sDirectIncident( surfel, orthDir ) returns the direct incident surfel of a given surfel and a direction
 - sKCoords( surfel ) returns a vector of coordinates (of KhalimskySpace)
 
-kspace.sKCoords( kspace.sDirectIncident( v_border[i_position], kspace.sOrthDir( v_border[i_position] ))) - kspace.sKCoords( v_border[i_position] ); 
 
-
-12. Is the area surface estimation convergent ?
-As you can see at the begining of the file, we set the gridstep @f$ h @f$ to 1. If you change this value @f$ h \in \] 0, 1 \] @f$, how the estimation of the surface area change ?
+6. Is the area surface estimation convergent ?
+As you can see at the begining of the file, we set the gridstep @f$ h @f$ to 1. If you change this value @f$ h \le 1 @f$, how the estimation of the surface area changes ?
 
 
 @section areaSurfaceCCL Conclusion
@@ -106,7 +104,7 @@ As you can see at the begining of the file, we set the gridstep @f$ h @f$ to 1. 
 You can check AreaSurfaceEstimation-final.cpp to get some answers to the above
 mentioned questions.
 
-Several optimizations can be developed. For example, instead of eval for all surface element separately, we can estimate for all in one eval and use some optimization of II estimator.
+Several optimizations can be developed. For example, instead of evaluate for all surface element separately, we can estimate all surfels in one call of eval(). This uses some optimization of II estimator and can be see in overall computation time. Some others normal vector estimators can be used, as VoronoiCovarianceMeasureLocalEstimator.
 
 
 */
