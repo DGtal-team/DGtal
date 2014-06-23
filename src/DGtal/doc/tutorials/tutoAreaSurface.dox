@@ -39,10 +39,10 @@ important role for shape description. A way to estimate the area of a surface is
 Given a shape @f$
 \mathcal{X}@f$, the surface area function can be estimated with :
 @f[ 
- \hat{AreaSurface (X)} = \sum_x ( n_e(x) . n_s(\hat{x}) )
+ \hat{AreaSurface (X)} = \sum_x ( \textbf{n_e}(x) . \textbf{n_s}(\hat{x}) )
 @f]
-where @f$ n_e(x) @f$ denotes the normal vector estimated at position @f$ x \in \mathcal{X} @f$,
-@f$ n_s(\hat{x}) @f$ the normal vector of surface element (surfel) @f$ \hat(x)  \in Dig_h{\mathcal{X}} @f$, and @f$ . @f$ the dot product.
+where @f$ \textbf{n_e}(x) @f$ denotes the normal vector estimated at position @f$ x \in \mathcal{X} @f$,
+@f$ \textbf{n_s}(\hat{x}) @f$ the normal vector of surface element (surfel) @f$ \hat{x}  \in Dig_h{\mathcal{X}} @f$, and @f$ . @f$ the dot product.
 
 
 @section tutosectLoadVol Import volumetric image an visualization 
