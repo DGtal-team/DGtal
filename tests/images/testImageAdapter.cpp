@@ -36,6 +36,7 @@
 //#define DEBUG_VERBOSE
 
 #include "DGtal/images/ImageAdapter.h"
+#include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -157,14 +158,14 @@ bool test_g_f_fm1()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, ConstValueFunctor<VImage::Value>, DefaultFunctor > MyImageAdapter;
-    BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
+    typedef ConstImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, ConstValueFunctor<VImage::Value> > MyImageAdapter;
+    BOOST_CONCEPT_ASSERT(( CConstImage< MyImageAdapter > ));
     
     DefaultFunctor idD;
     ConstValueFunctor<VImage::Value> idV(3);
     DefaultFunctor idVm1;
     
-    MyImageAdapter restimage(image, domain, idD, idV, idVm1);
+    MyImageAdapter restimage(image, domain, idD, idV);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
 
     nbok += (restimage(Z2i::Point(3,3)) == 3) ? 1 : 0;
@@ -173,11 +174,12 @@ bool test_g_f_fm1()
     << " read access on restricted Image" << endl;
     
     //! [ImageAdapterConstruction]
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, bool, DefaultFunctor, Thresholder<VImage::Value> > MyImageAdapter2;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, bool, Thresholder<VImage::Value>, CastFunctor<VImage::Value>  > MyImageAdapter2;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter2 > ));
     
-    DefaultFunctor idD_2, idV_2;
-    Thresholder<VImage::Value> idVm1_2( 4 );
+    DefaultFunctor idD_2;
+    Thresholder<VImage::Value>  idV_2(4);
+    CastFunctor<VImage::Value>  idVm1_2;
     
     MyImageAdapter2 restimage2(image, domain, idD_2, idV_2, idVm1_2);
     //! [ImageAdapterConstruction]
