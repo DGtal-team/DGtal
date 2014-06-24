@@ -163,7 +163,6 @@ bool test_g_f_fm1()
     
     DefaultFunctor idD;
     ConstValueFunctor<VImage::Value> idV(3);
-    DefaultFunctor idVm1;
     
     MyImageAdapter restimage(image, domain, idD, idV);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
