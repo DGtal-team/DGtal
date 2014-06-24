@@ -58,7 +58,7 @@ namespace DGtal
    *
    * This class is a model of CPointPredicate.
    *
-   * @tparam Image an model of CImageContainer concept. 
+   * @tparam Image an model of CConstImage concept. 
    */
   template <typename Image>
   class SimpleThresholdForegroundPredicate
