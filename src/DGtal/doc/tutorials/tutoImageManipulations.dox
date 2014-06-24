@@ -201,6 +201,14 @@ You should obtain the following 2D image:
 
 
 
+@subsection subsect3ColorIntroTutoImageManipulations Create image with color Functor
+
+By using the HueShadeColorMap as functor in the exportPPM method (of
+PPMWriter), transform a grayscale image into color. For instance with
+the previous image you should obtain:
+
+\image html  imageNGinColor.png  "Color image from HueShadeColorMap functor. "
+
 
 
 
