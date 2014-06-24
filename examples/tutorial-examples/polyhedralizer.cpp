@@ -136,7 +136,7 @@ double LSF( RealVector& N, ConstIterator itB, ConstIterator itE )
 int main( int argc, char** argv )
 {
   QApplication application(argc,argv);
-  string inputFilename = examplesPath+"/samples/Al.100.vol";
+  string inputFilename = argc > 1 ? argv[ 1 ] : examplesPath+"/samples/Al.100.vol";
   int threshold = argc > 2 ? atoi( argv[ 2 ] ) : 0;
   int widthNum = argc > 3 ? atoi( argv[ 3 ] ) : 2;
   int widthDen = argc > 4 ? atoi( argv[ 4 ] ) : 1;
