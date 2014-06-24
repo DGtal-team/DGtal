@@ -454,10 +454,10 @@ normal vector `N` and the offset `mu` into the `RoundPlane`.
           it = roundPlanes.begin(), itE = roundPlanes.end(); 
         it != itE; ++it )
     {
-      NaivePlaneComputer& computer = v2plane[ *it ]->first;
+      NaivePlaneComputer& computer = (*it)->first;
       RealVector normal;
       double mu = LSF( normal, computer.begin(), computer.end() );
-      v2plane[ *it ]->third = std::make_pair( normal, mu );
+      (*it)->third = make_pair( normal, mu );
     }
 \endcode
 
