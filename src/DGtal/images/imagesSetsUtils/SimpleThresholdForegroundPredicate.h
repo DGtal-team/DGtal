@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/ConstImage.h"
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
