@@ -183,17 +183,18 @@ bool test_g_f_fm1()
     MyImageAdapter2 restimage2(image, domain, idD_2, idV_2, idVm1_2);
     //! [ImageAdapterConstruction]
 
-    restimage2.setValue(Z2i::Point(2,2), 3);
-    nbok += (restimage2(Z2i::Point(2,2)) == 1) ? 1 : 0;
+    restimage2.setValue(Z2i::Point(2,2), true);
+    nbok += (restimage2(Z2i::Point(2,2)) == true) ? 1 : 0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ") "
     << " write on restricted Image 2"  << endl;
     
-    trace.warning()<< "Restricted image 2 at (2,2) = "<< (restimage2)(Z2i::Point(2,2)) << std::endl;
-    trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
+    trace.warning()<< "Restricted image 2 at (2,2) = "<< (int)(restimage2)(Z2i::Point(2,2)) << std::endl;
+    trace.warning()<< "Original image at (2,2) = "<< (int)(image)(Z2i::Point(2,2)) << std::endl;
     
-    restimage2.setValue(Z2i::Point(2,2), 5);
-    nbok += (restimage2(Z2i::Point(2,2)) == 0) ? 1 : 0;
+    restimage2.setValue(Z2i::Point(2,2), false);
+    trace.warning()<< "Restricted image 2 at (2,2) = "<< (int)(restimage2)(Z2i::Point(2,2)) << std::endl;
+    nbok += (restimage2(Z2i::Point(2,2)) == false) ? 1 : 0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ") "
     << " write on restricted Image 2"  << endl;
