@@ -354,7 +354,7 @@ namespace DGtal
     template  <typename TSpace>
     class IIPrincipalDirectionsFunctor
     {
-      // ----------------------- Standard services ------------------------------***********************************************
+      // ----------------------- Standard services ------------------------------
     public:
       typedef IIPrincipalDirectionsFunctor<TSpace> Self;
       typedef TSpace Space;
