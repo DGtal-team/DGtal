@@ -17,50 +17,50 @@
 #pragma once
 
 /**
- * @file CBidirectionalOutputRangeFromPoint.h
+ * @file CBidirectionalRangeWithWritableIteratorFromPoint.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/03/27
  *
- * Header file for concept CBidirectionalOutputRangeFromPoint.cpp
+ * Header file for concept CBidirectionalRangeWithWritableIteratorFromPoint.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CBidirectionalOutputRangeFromPoint_RECURSES)
-#error Recursive header files inclusion detected in CBidirectionalOutputRangeFromPoint.h
-#else // defined(CBidirectionalOutputRangeFromPoint_RECURSES)
+#if defined(CBidirectionalRangeWithWritableIteratorFromPoint_RECURSES)
+#error Recursive header files inclusion detected in CBidirectionalRangeWithWritableIteratorFromPoint.h
+#else // defined(CBidirectionalRangeWithWritableIteratorFromPoint_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CBidirectionalOutputRangeFromPoint_RECURSES
+#define CBidirectionalRangeWithWritableIteratorFromPoint_RECURSES
 
-#if !defined CBidirectionalOutputRangeFromPoint_h
+#if !defined CBidirectionalRangeWithWritableIteratorFromPoint_h
 /** Prevents repeated inclusion of headers. */
-#define CBidirectionalOutputRangeFromPoint_h
+#define CBidirectionalRangeWithWritableIteratorFromPoint_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CBidirectionalOutputRange.h"
+#include "DGtal/base/CBidirectionalRangeWithWritableIterator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CBidirectionalOutputRangeFromPoint
+  // class CBidirectionalRangeWithWritableIteratorFromPoint
   /**
-DescriptionDescription of \b concept '\b CBidirectionalOutputRangeFromPoint' <p>
+DescriptionDescription of \b concept '\b CBidirectionalRangeWithWritableIteratorFromPoint' <p>
 @ingroup Concepts
 @brief Aim: refined concept of  single pass range with an routputIterator() method from a point.
 
-### Refinement of CBidirectionalOutputRange
+### Refinement of CBidirectionalRangeWithWritableIterator
 
 ### Associated types :
 
 ### Notation
-- X : A type that is a model of CBidirectionalOutputRangeFromPoint
+- X : A type that is a model of CBidirectionalRangeWithWritableIteratorFromPoint
 - x,  y : object of type X
 - Point: A type of Point
 
@@ -82,12 +82,12 @@ ImageContainerBySTLVector::Range
 
 ### Notes
 
-@tparam T the type that should be a model of CBidirectionalOutputRangeFromPoint.
+@tparam T the type that should be a model of CBidirectionalRangeWithWritableIteratorFromPoint.
 @tparam Value the type of object t in (*it) = t.
       */
   template <typename T, typename Value>
-  struct CBidirectionalOutputRangeFromPoint:
-    CBidirectionalOutputRange<T,Value>
+  struct CBidirectionalRangeWithWritableIteratorFromPoint:
+    CBidirectionalRangeWithWritableIterator<T,Value>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -96,7 +96,7 @@ ImageContainerBySTLVector::Range
     typedef typename T::ReverseOutputIterator ReverseOutputIterator;
 
     // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CBidirectionalOutputRangeFromPoint )
+    BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIteratorFromPoint )
     {
        ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
     }
@@ -110,14 +110,14 @@ ImageContainerBySTLVector::Range
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CBidirectionalOutputRangeFromPoint
+  }; // end of concept CBidirectionalRangeWithWritableIteratorFromPoint
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CBidirectionalOutputRangeFromPoint_h
+#endif // !defined CBidirectionalRangeWithWritableIteratorFromPoint_h
 
-#undef CBidirectionalOutputRangeFromPoint_RECURSES
-#endif // else defined(CBidirectionalOutputRangeFromPoint_RECURSES)
+#undef CBidirectionalRangeWithWritableIteratorFromPoint_RECURSES
+#endif // else defined(CBidirectionalRangeWithWritableIteratorFromPoint_RECURSES)
