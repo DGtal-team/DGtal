@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CSinglePassOutputRange.h
+ * @file CSinglePassRangeWithWritableIterator.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -27,15 +27,15 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(CSinglePassOutputRange_RECURSES)
-#error Recursive header files inclusion detected in CSinglePassOutputRange.h
-#else // defined(CSinglePassOutputRange_RECURSES)
+#if defined(CSinglePassRangeWithWritableIterator_RECURSES)
+#error Recursive header files inclusion detected in CSinglePassRangeWithWritableIterator.h
+#else // defined(CSinglePassRangeWithWritableIterator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CSinglePassOutputRange_RECURSES
+#define CSinglePassRangeWithWritableIterator_RECURSES
 
-#if !defined CSinglePassOutputRange_h
+#if !defined CSinglePassRangeWithWritableIterator_h
 /** Prevents repeated inclusion of headers. */
-#define CSinglePassOutputRange_h
+#define CSinglePassRangeWithWritableIterator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,9 +48,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CSinglePassOutputRange
+  // class CSinglePassRangeWithWritableIterator
   /**
-     Description of \b concept '\b CSinglePassOutputRange' <p>
+     Description of \b concept '\b CSinglePassRangeWithWritableIterator' <p>
      @ingroup Concepts
      @brief Aim: refined concept of const single pass range which require that an output iterator exists.
 
@@ -60,7 +60,7 @@ namespace DGtal
      - OutputIterator: type of output iterator on the range.
 
      ###  Notation
-     - \a X : A type that is a model of CSinglePassOutputRange
+     - \a X : A type that is a model of CSinglePassRangeWithWritableIterator
      - \a x, \a y : object of type X
 
      ###  Definitions
@@ -77,11 +77,11 @@ namespace DGtal
 
      ###  Notes
 
-     @tparam T the type that should be a model of CSinglePassOutputRange.
+     @tparam T the type that should be a model of CSinglePassRangeWithWritableIterator.
      @tparam Value the type of object t in (*it) = t.
    */
   template <typename T, typename Value>
-  struct CSinglePassOutputRange : CConstSinglePassRange<T>
+  struct CSinglePassRangeWithWritableIterator : CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -91,7 +91,7 @@ namespace DGtal
     // possibly check these types so as to satisfy a concept with
     BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Value> ));
 
-    BOOST_CONCEPT_USAGE( CSinglePassOutputRange )
+    BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIterator )
     {
       ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
     }
@@ -103,14 +103,14 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CSinglePassOutputRange
+  }; // end of concept CSinglePassRangeWithWritableIterator
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CSinglePassOutputRange_h
+#endif // !defined CSinglePassRangeWithWritableIterator_h
 
-#undef CSinglePassOutputRange_RECURSES
-#endif // else defined(CSinglePassOutputRange_RECURSES)
+#undef CSinglePassRangeWithWritableIterator_RECURSES
+#endif // else defined(CSinglePassRangeWithWritableIterator_RECURSES)
