@@ -3,6 +3,8 @@
 
 SET(QGLVIEWER_TESTS_SRC
   testViewer3D
+  testViewerQuad
+  testBallQuadViewer
   testPolygon3D
   test3DImageView
   test3DImageViewEmbedder
@@ -20,6 +22,3 @@ if (  WITH_VISU3D_QGLVIEWER )
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )
-
-
-

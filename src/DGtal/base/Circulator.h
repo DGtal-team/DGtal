@@ -303,20 +303,32 @@ namespace DGtal
     //'false' otherwise
     bool operator==( const Self& other) const 
     { 
-        return ( ( (myBeginIt == other.begin())
-                 &&(myEndIt == other.end())
-                 &&(myCurrentIt == other.base()) ) 
-               ||( (!isValid())&&(!other.isValid()) ) ); 
+      return ( ( (!isValid())&&(!other.isValid()) )
+               || 
+               ( ( isValid() && other.isValid())
+                 &&
+                 ( (myBeginIt == other.begin())
+                   &&(myEndIt == other.end())
+                   &&(myCurrentIt == other.base())
+                   )
+                 )
+               ); 
     }
     bool operator!=( const Self& other) const { return !(*this == other); }
 
     template<typename OtherIterator>
     bool operator==( const OtherIterator& other) const 
     { 
-        return ( ( (myBeginIt == other.begin())
-                 &&(myEndIt == other.end())
-                 &&(myCurrentIt == other.base()) ) 
-               ||( (!isValid())&&(!other.isValid()) ) ); 
+      return ( ( (!isValid())&&(!other.isValid()) )
+               || 
+               ( ( isValid() && other.isValid())
+                 &&
+                 ( (myBeginIt == other.begin())
+                   &&(myEndIt == other.end())
+                   &&(myCurrentIt == other.base())
+                   )
+                 )
+               ); 
     }
     template<typename OtherIterator>
     bool operator!=( const OtherIterator& other) const { return !(*this == other); }

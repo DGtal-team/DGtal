@@ -125,15 +125,13 @@ DGtal::Board3D<Space, KSpace>::isValid() const
  */
 template < typename Space, typename KSpace>
 inline
-void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
+void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename, const bool normalization)
 {
 
   size_t k, j; //id of each elements and sub elements of a list for the .OBJ identification
-  double sizePixel = 0.003 ;  // size of one pixel (depending on resolution )
   std::ofstream outOBJ; //OBJ file where to write
   std::ofstream outMTL; //MTL file where to write
 
-  //WARNING quand deux obj ont le meme nom ils fusionnent (danger deux sets differents fusionnes)
 
   std::string noExt(filename.substr(0, filename.find_first_of("."))); //the filename withoutOBJ any extention
   std::stringstream nameOBJ;
@@ -162,8 +160,39 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
       }
   }
 
+  // normalization -----------------------------------------------------------------------
+  double scale = 1.0;
+  typename Space::RealPoint shift(0.0,0.0,0.0); 
+  if (normalization)
+    {
+      //We center  the shape W.r.t. its bounding box
+      for(unsigned int i=0; i < 3; i++)
+        shift[i] = (this->myBoundingPtUp[i] + this->myBoundingPtLow[i])/2.0;
+      
+      //We compute the scale of the largest direction so that it fits
+      //in [-1/2,1/2] interval
+      double tmpwidth;
+      
+      int i =0;
+      while ((i<3) && (this->myBoundingPtUp[i]  - this->myBoundingPtLow[i] == 0))
+        i++;
+      ASSERT_MSG(i < 3, "Error when computing the scale from the bounding box. The Bbox seems to be empty.");
+   
+      scale = 1.0/(this->myBoundingPtUp[i]  - this->myBoundingPtLow[i]);
+      for( ; i < 3; i++)
+        {
+          tmpwidth =  (this->myBoundingPtUp[i]  - this->myBoundingPtLow[i]);
+          if ((tmpwidth != 0.0) && (scale  > 1.0/tmpwidth))
+            scale = 1.0/tmpwidth;
+        }  
+      outOBJ << "# Normalization was used. Scale= "<< scale << " and Shift= "<<shift<< std::endl;
+    }
+  
   // Draw the shapes -----------------------------------------------------------------------
 
+  ///Temporary variables
+  typename Space::RealPoint apoint, apoint1, apoint2, apoint3, apoint4; 
+  
   // myBallSetList++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   {
     k=0;//id of each BallSetList for the .OBJ identification
@@ -186,7 +215,8 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
               }
             if (notCut)
               {
-                tmpStream << "v " << (*s_it)[0] << " " << (*s_it)[1] << " " << (*s_it)[2] << std::endl;
+                apoint = ((s_it->center)-shift)*scale;
+                tmpStream << "v " << apoint[0] << " " << apoint[1] << " " << apoint[2] << std::endl;
                 tmpStream << "f " << "-1" << " " << "-1" << " "<< "-1" << std::endl;
               }
           }
@@ -226,6 +256,7 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
             //test if a clipping plane do not cut it
             bool notCut =true;
+            double width = s_it->width;
             typename std::vector< typename Board3D<Space, KSpace>::ClippingPlaneD3D>::const_iterator itClip = Board3D<Space, KSpace>::myClippingPlaneList.begin();
             while (itClip !=Board3D<Space, KSpace>::myClippingPlaneList.end() && notCut )
               {
@@ -234,21 +265,21 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
                 double c = itClip->c;
                 double d = itClip->d;
                 double d2 ;
-                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] -sizePixel)) + ( c * s_it->point1[2] ) + d;
+                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] -width)) + ( c * s_it->point1[2] ) + d;
                 notCut = ( d2 >= 0);
-                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] +sizePixel)) + ( c * s_it->point1[2] ) + d;
+                d2 = ( a * s_it->point1[0]) + (b * (s_it->point1[1] +width)) + ( c * s_it->point1[2] ) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] +sizePixel)) + ( c * s_it->point2[2] ) + d;
+                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] +width)) + ( c * s_it->point2[2] ) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] -sizePixel)) + ( c * s_it->point2[2] ) + d;
+                d2 = ( a * s_it->point2[0]) + (b * (s_it->point2[1] -width)) + ( c * s_it->point2[2] ) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] -sizePixel )) + d;
+                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] -width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] +sizePixel )) + d;
+                d2 = ( a * s_it->point1[0]) + (b * s_it->point1[1]) + ( c * (s_it->point1[2] +width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] +sizePixel )) + d;
+                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] +width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
-                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] -sizePixel )) + d;
+                d2 = ( a * s_it->point2[0]) + (b * s_it->point2[1]) + ( c * (s_it->point2[2] -width )) + d;
                 notCut = ( notCut  && ( d2 >= 0) );
 
                 itClip ++;
@@ -256,15 +287,20 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
 
             if (notCut)
               {
-                // OBJ dont know how to draw lines, have to make a cuboid with a depth and height of a pixel width
-                tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1] -sizePixel << " " << s_it->point1[2] << std::endl;
-                tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1] +sizePixel << " " << s_it->point1[2] << std::endl;
-                tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1] +sizePixel << " " << s_it->point2[2] << std::endl;
-                tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1] -sizePixel << " " << s_it->point2[2] << std::endl;
-                tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]     << " " << s_it->point1[2] -sizePixel << std::endl;
-                tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]     << " " << s_it->point1[2] +sizePixel<< std::endl;
-                tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]     << " " << s_it->point2[2] +sizePixel<< std::endl;
-                tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]     << " " << s_it->point2[2] -sizePixel<< std::endl;
+                // OBJ dont know how to draw lines, have to make a
+                // cuboid with a depth and height of a pixel width
+                
+                apoint1 = ((s_it->point1) - shift)*scale;
+                apoint2 = ((s_it->point2) - shift)*scale;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1] -width << " " << apoint1[2] << std::endl;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1] +width << " " << apoint1[2] << std::endl;               
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1]     << " " << apoint2[2] +width<< std::endl;
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1]     << " " << apoint2[2] -width<< std::endl;
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1] +width << " " << apoint2[2] << std::endl;
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1] -width << " " << apoint2[2] << std::endl;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1]     << " " << apoint1[2] -width << std::endl;
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1]     << " " << apoint1[2] +width<< std::endl;
+        
 
                 tmpStream  << "vn " <<  "-1"  << " " << "0" << " " << "0" << std::endl;//left
                 tmpStream  << "vn " <<  "0"  << " " << "0" << " " << "-1" << std::endl;//front
@@ -363,6 +399,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
             if (notCut)
               {
                 // this version is  one cube with (x,y,z) the center of it and wid its distance between it and its faces
+                
+                x1 = (x1-shift[0])*scale;
+                y1 = (y1-shift[1])*scale;
+                z1 = (z1-shift[2])*scale;
+                x2 = (x2-shift[0])*scale;
+                y2 = (y2-shift[1])*scale;
+                z2 = (z2-shift[2])*scale;
+
                 tmpStream  << "v " << x1   << " " << y1 << " " << z2 << std::endl;
                 tmpStream  << "v " << x2   << " " << y1 << " " << z2 << std::endl;
                 tmpStream  << "v " << x1   << " " << y1 << " " << z1 << std::endl;
@@ -425,12 +469,18 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
              s_it != it->end(); ++s_it)
           {
             //test if a clipping plane do not cut it
-            tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]      << " " << s_it->point1[2] << std::endl;
-            tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
-            tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
-            tmpStream << "v " << s_it->point4[0]     << " " << s_it->point4[1]      << " " << s_it->point4[2] << std::endl;
+            apoint1 = (s_it->point1 -shift)*scale;
+            apoint2 = (s_it->point2 -shift)*scale;
+            apoint3 = (s_it->point3 -shift)*scale;
+            apoint4 = (s_it->point4 -shift)*scale;
+            
+            tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
+            tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
+            tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
+            tmpStream << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << std::endl;
+            tmpStream << "vn " << s_it->nx     << " " << s_it->ny      << " " << s_it->nz << std::endl;
 
-            tmpStream << "f " << "-4" << " " << "-3" << " " << "-2"<< " " << "-1"<< std::endl;
+            tmpStream << "f " << "-4//-1" << " " << "-3//-1" << " " << "-2//-1"<< " " << "-1//-1"<< std::endl;
           }
         if (tmpStream.str() != "")
           {
@@ -486,9 +536,14 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
               }
             if (notCut)
               {
-                tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]      << " " << s_it->point1[2] << std::endl;
-                tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
-                tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
+                apoint1 = (s_it->point1 - shift)*scale;
+                apoint2 = (s_it->point2 - shift)*scale;
+                apoint3 = (s_it->point3 - shift)*scale;
+               
+
+                tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
+                tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
+                tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
 
                 tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
 
@@ -551,10 +606,15 @@ void DGtal::Board3D<Space, KSpace>::saveOBJ(const std::string & filename)
           }
         if (notCut)
           {
-            tmpStream << "v " << s_it->point1[0]     << " " << s_it->point1[1]      << " " << s_it->point1[2] << std::endl;
-            tmpStream << "v " << s_it->point2[0]     << " " << s_it->point2[1]      << " " << s_it->point2[2] << std::endl;
-            tmpStream << "v " << s_it->point3[0]     << " " << s_it->point3[1]      << " " << s_it->point3[2] << std::endl;
-            tmpStream << "v " << s_it->point4[0]     << " " << s_it->point4[1]      << " " << s_it->point4[2] << std::endl;
+            apoint1 = (s_it->point1 -shift)*scale;
+            apoint2 = (s_it->point2 -shift)*scale;
+            apoint3 = (s_it->point3 -shift)*scale;
+            apoint4 = (s_it->point4 -shift)*scale;
+        
+            tmpStream << "v " << apoint1[0]     << " " << apoint1[1]      << " " << apoint1[2] << std::endl;
+            tmpStream << "v " << apoint2[0]     << " " << apoint2[1]      << " " << apoint2[2] << std::endl;
+            tmpStream << "v " << apoint3[0]     << " " << apoint3[1]      << " " << apoint3[2] << std::endl;
+            tmpStream << "v " << apoint4[0]     << " " << apoint4[1]      << " " << apoint4[2] << std::endl;
 
             tmpStream << "vn " << s_it->nx    << " " << s_it->ny     << " " << s_it->nz << std::endl;
 

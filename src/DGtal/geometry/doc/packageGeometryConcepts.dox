@@ -86,6 +86,7 @@ subgraph cluster_concepts_2 {
     CPrimitiveComputer [ URL="\ref CPrimitiveComputer" ];
     CIncrementalPrimitiveComputer [ URL="\ref CIncrementalPrimitiveComputer" ];
     CAdditivePrimitiveComputer [ URL="\ref CAdditivePrimitiveComputer" ];
+    CDigitalSurfaceLocalEstimator [ URL="\ref CDigitalSurfaceLocalEstimator" ];
 
     CAdditivePrimitiveComputer -> CIncrementalPrimitiveComputer -> CPrimitiveComputer;
     label="geometry/surfaces (main concepts)";
@@ -116,6 +117,8 @@ subgraph cluster_concepts_2 {
      ChordNaivePlaneComputer [ URL="\ref ChordNaivePlaneComputer" ];
      ChordGenericNaivePlaneComputer [ URL="\ref ChordGenericNaivePlaneComputer" ];
      ChordGenericStandardPlaneComputer [ URL="\ref ChordGenericStandardPlaneComputer" ];
+     TrueDigitalSurfaceLocalEstimator [ URL="\ref TrueDigitalSurfaceLocalEstimator" ];
+     VCMDigitalSurfaceLocalEstimator [ URL="\ref VCMDigitalSurfaceLocalEstimator" ];
   }
 
   subgraph cluster_models_vol {
@@ -144,6 +147,12 @@ subgraph cluster_concepts_2 {
   ChordNaivePlaneComputer -> CAdditivePrimitiveComputer;
   ChordGenericStandardPlaneComputer -> CAdditivePrimitiveComputer;
   ChordGenericStandardPlaneComputer -> ChordNaivePlaneComputer [label="use",style=dashed];
+
+  TrueDigitalSurfaceLocalEstimator -> CDigitalSurfaceLocalEstimator
+  VCMDigitalSurfaceLocalEstimator -> CDigitalSurfaceLocalEstimator
+  CDigitalSurfaceLocalEstimator -> boost_DefaultConstructible;
+  CDigitalSurfaceLocalEstimator -> boost_CopyConstructible;
+  CDigitalSurfaceLocalEstimator -> boost_Assignable;
  }
 @enddot
 

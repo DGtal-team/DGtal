@@ -539,6 +539,130 @@ namespace DGtal
 
   };
 
+
+
+
+
+
+
+  /**
+   * Description of template class 'BasicDomainSubSampler' <p> \brief
+   * Aim: Functor that subsamples an initial domain by given a grid
+   * size and a shift vector. By this way, for a given point
+   * considered in a new domain, it allows to recover the point
+   * coordinates in the source domain.  Such functor can be usefull to
+   * apply basic image subsampling in any dimensions by using
+   * ImageAdapter class.
+   *
+   *
+   * @see tests/kernel/testBasicPointFunctors.cpp 
+   * @tparam TDomain the type of the domain. 
+   * @tparam TInteger specifies the integer number type used to define the space. 
+   *
+   */
+
+ template <typename TDomain, typename TInteger =  DGtal::int32_t >
+ class BasicDomainSubSampler
+  {
+  public:        
+    typedef typename TDomain::Space  Space;
+    typedef typename TDomain::Size Size; 
+    typedef typename Space::Dimension Dimension; 
+    typedef typename Space::Point Point; 
+
+    /** 
+     * Constructor.
+     * Construct the functor from a source domain, a grid size, and a shift vector.
+     * The points of the resulting domain are defined as the upper left of the sampling grid.
+     *
+     * @param aSourceDomain  the source domain. 
+     * @param aGridSize the subsampling grid size. 
+     * @param aGridShift the shift applied to the sampling grid. 
+     *
+     */
+    
+    BasicDomainSubSampler(const TDomain &aSourceDomain, const std::vector<Size> &aGridSize,
+                          const Point  &aGridShift): mySourceDomain(aSourceDomain), 
+                                                     myGridShift(aGridShift),
+                                                     myGridSize(aGridSize)
+    {
+      Point domainUpperBound;
+      for (Dimension dim=0; dim< Space::dimension; dim++){
+        Dimension sizeInDim = (aSourceDomain.upperBound()[dim] - 
+                               aSourceDomain.lowerBound()[dim]+1)/aGridSize[dim]-1;
+        domainUpperBound[dim]=sizeInDim;
+      }
+      domainUpperBound + aSourceDomain.lowerBound();
+      myNewDomain = TDomain(aSourceDomain.lowerBound(), 
+                            domainUpperBound);
+      Point upperGrid;
+      for (Dimension dim=0; dim < Space::dimension; dim++)
+        upperGrid[dim] = myGridSize[dim];
+      myGridSampleDomain = TDomain(Point::diagonal(0), upperGrid);
+    };    
+    
+
+    /** 
+     * The operator computes the coordinates of the point in the
+     * subsampled domain.  By default it returns the first lower point
+     * of the window associated to the sampling grid. If the resulting
+     * point is outside the source domain it scans this window and
+     * returns a point belonging to the source domain. If such a point
+     * does not exits it return the point with null coordinates.
+     *
+     * @param aPoint a point which should  elong to the new domain.  
+     * @return the point to be taken in the * subsampled domain.
+     *
+     */
+    
+    inline
+    Point  operator()(const Point& aPoint) const
+    {
+      Point ptRes = Point::diagonal(0);
+      if(!myNewDomain.isInside(aPoint)){
+        trace.error() << " The point is not in the source domain: "<<  aPoint << std::endl;
+        return ptRes;
+      }
+
+      for (Dimension dim=0; dim< Space::dimension; dim++){
+        ptRes[dim] = aPoint[dim]* myGridSize[dim]; 
+      }
+      ptRes +=myGridShift;
+      
+      if(!mySourceDomain.isInside(ptRes)){
+        // we are looking for a point inside the domain
+        for(typename TDomain::ConstIterator it = myGridSampleDomain.begin();
+            it!= myGridSampleDomain.end(); it++){
+          if (mySourceDomain.isInside(*it))
+            return *it;
+        }
+      }
+      return ptRes;
+    }
+    
+    /** 
+     * This method can be usefull to directely recover the new domain
+     * associated to the resulting subsampled domain.
+     * @return the new subsampled domain.
+     */
+    
+    inline
+    TDomain getSubSampledDomain(){
+      return myNewDomain;
+    } 
+    
+  private:
+    TDomain mySourceDomain;
+    TDomain myNewDomain;    
+    // used to search a point when the resulting point is outside the source domain.
+    TDomain myGridSampleDomain;     
+    Point myGridShift;
+    std::vector<Size> myGridSize;    
+ };
+
+
+
+
 } // namespace dgtal
 
 

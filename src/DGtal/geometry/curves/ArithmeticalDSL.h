@@ -46,6 +46,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CSignedNumber.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
@@ -56,6 +57,7 @@
 
 namespace DGtal
 {
+
   //forward declaration of ArithmeticalDSS for the friendship
   template <typename TCoordinate,
 	    typename TInteger,
@@ -414,8 +416,15 @@ namespace DGtal
 
     /**
      * @return the arithmetical thickness \f$ \omega \f$
+     * @see patternLength
      */
     Integer omega() const;
+
+    /**
+     * @return the pattern length (equal to \f$ omega \f$)
+     * @see omega
+     */
+    Position patternLength() const;
 
     /**
      * @return the shift vector (translating a point
@@ -437,8 +446,8 @@ namespace DGtal
      * @param aPoint any point
      * @return remainder of @a aPoint
      */
-    static Integer remainder(const Integer& aA,
-			     const Integer& aB,
+    static Integer remainder(const Coordinate& aA,
+			     const Coordinate& aB,
 			     const Point& aPoint);
 
     /**
@@ -467,6 +476,13 @@ namespace DGtal
      * @return the position
      */
     Position position(const Point& aPoint) const;
+
+    /**
+     * Returns the unique point of the DSL located at position zero
+     * in O(1). 
+     * @return the point of the DSL located at position zero
+     */
+    Point getPoint() const;
 
     /**
      * Returns the unique point of the DSL located at position @a aPosition
@@ -549,6 +565,10 @@ namespace DGtal
      */
     ConstReverseIterator rend(const Point& aPoint) const;
 
+
+    // ------------------------- Other services ------------------------------
+  public:
+    static Coordinate toCoordinate(const Integer& aI); 
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -741,6 +761,68 @@ namespace DGtal
   };
 } // namespace DGtal
 
+///////////////////////////////////////////////////////////////////////////////
+// Tools
+namespace DGtal
+{
+  namespace detail {
+    
+    /**
+     * Description of template class 'CastFunctorForSignedIntegers' <p>
+     * \brief Aim: Define a simple functor that can cast 
+     * a signed integer (possibly a DGtal::BigInteger) into another.
+     *
+     * @tparam TInput type of the input value
+     * @tparam TOutput type of the return value
+     */
+    template <typename TInput, typename TOutput >
+    struct toCoordinateImpl
+    {
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TInput> ));
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TInput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
+      /**
+       * cast operator
+       * @return the conversion of @a aInput into an object of type TOutput.
+       */
+      inline
+      static TOutput cast(const TInput& aInput) 
+      {
+	return static_cast<TOutput>(aInput);
+      }
+    };
+#ifdef WITH_BIGINTEGER
+    //specialized versions for DGtal::BigInteger
+    template <typename TOutput>
+    struct toCoordinateImpl<DGtal::BigInteger, TOutput>
+    {
+      BOOST_CONCEPT_ASSERT(( CSignedNumber<TOutput> ));
+      BOOST_CONCEPT_ASSERT(( CInteger<TOutput> ));
+
+      inline
+      static TOutput cast(const DGtal::BigInteger& aInput)
+      {
+	ASSERT( (aInput <= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::max())) &&
+		(aInput >= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::min())) ); 
+	return static_cast<TOutput>(aInput.get_si()); 
+      }
+    };
+    template <>
+    struct toCoordinateImpl<DGtal::BigInteger, DGtal::BigInteger>
+    {
+
+      inline
+      static DGtal::BigInteger cast(const DGtal::BigInteger& aInput)
+      {
+	return aInput; 
+      }
+    };
+#endif
+
+  } //namespace detail
+
+} // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
