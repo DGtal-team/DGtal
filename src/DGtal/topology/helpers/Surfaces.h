@@ -122,6 +122,8 @@ namespace DGtal
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
+       @pre we must have x1 < x2 (lexicographic order).
+
        @param K any cellular grid space.
 
        @param pp an instance of a model of CPointPredicate, for
@@ -142,8 +144,8 @@ namespace DGtal
     template <typename PointPredicate>
     static
     SCell findABel( const KSpace & K,
-        const PointPredicate & pp,
-        Point x1, Point x2 );
+                    const PointPredicate & pp,
+                    Point x1, Point x2 );
 
     /**
        Function that extracts the boundary of a nD digital shape
