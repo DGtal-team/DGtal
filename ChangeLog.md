@@ -1,19 +1,38 @@
-=== DGtal 0.8 ===
+# DGtal 0.8 
 
+
+## New Features
+
+- Add digital nD Voronoi Covariance Measure support, as well as
+  digital geometric estimators based on it. Add tests and examples
+      of feature detection with VCM.
+
+## Changes
+
+- *Base Package*
+ - Add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
+
+- *Geometry Package*
+ - Fix and add concept of CSurfelLocalEstimator and related ground
+  truth estimators for implicit polynomial shapes
+  (TrueDigitalSurfaceLocalEstimator).
+
+## Bug Fixes
+
+
+- *Base Package*
+
+  - Fixing issue on Circulator/IteratorFunctions (related to #770 on MacOS). 
+
+
+	
+	
 *Base Package*
 
-    - Fixing issue on Circulator/IteratorFunctions (related to #770 on MacOS). 
-	 - Add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
-
+ 
 *Geometry Package*
 
-    - Add digital nD Voronoi Covariance Measure support, as well as
-      digital geometric estimators based on it. Add tests and examples of feature
-      detection with VCM.
 
-    - Fix and add concept of CSurfelLocalEstimator and related ground truth
-      estimators for implicit polynomial shapes
-      (TrueDigitalSurfaceLocalEstimator).
 
     - Add Integral Invariant estimators so that they meet the concept
       of surface local estimator. Add geometric functors to define
