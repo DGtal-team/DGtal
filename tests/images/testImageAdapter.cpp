@@ -157,16 +157,14 @@ bool test_g_f_fm1()
 
     trace.info() << "Original image: " << image << endl;
 
+    //ConstAdapter
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
     typedef ConstImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, ConstValueFunctor<VImage::Value> > MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CConstImage< MyImageAdapter > ));
-    
     DefaultFunctor idD;
-    ConstValueFunctor<VImage::Value> idV(3);
-    
+    ConstValueFunctor<VImage::Value> idV(3);   
     MyImageAdapter restimage(image, domain, idD, idV);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
-
     nbok += (restimage(Z2i::Point(3,3)) == 3) ? 1 : 0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ") "
@@ -190,11 +188,12 @@ bool test_g_f_fm1()
     << " write on restricted Image 2"  << endl;
     
     trace.warning()<< "Restricted image 2 at (2,2) = "<< (int)(restimage2)(Z2i::Point(2,2)) << std::endl;
-    trace.warning()<< "Original image at (2,2) = "<< (int)(image)(Z2i::Point(2,2)) << std::endl;
+    trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
+    trace.warning()<< "Original image at (3,3) = "<< (image)(Z2i::Point(3,3)) << std::endl;
     
     restimage2.setValue(Z2i::Point(2,2), false);
-    trace.warning()<< "Restricted image 2 at (2,2) = "<< (int)(restimage2)(Z2i::Point(2,2)) << std::endl;
-    nbok += (restimage2(Z2i::Point(2,2)) == false) ? 1 : 0;
+    trace.warning()<< "Restricted image with false at (2,2) = "<< (int)(restimage2)(Z2i::Point(2,2)) << std::endl;
+    nbok += (restimage2(Z2i::Point(2,2)) == true) ? 1 : 0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ") "
     << " write on restricted Image 2"  << endl;
