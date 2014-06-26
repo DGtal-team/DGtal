@@ -100,7 +100,8 @@
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
     [#835](https://github.com/DGtal-team/DGtal/pull/835))
-  - Fixing image thresholders which require CConstImage instead of
+  - Fixing image thresholders (SimpleThresholdForegroundPredicate and
+    IntervalForegroundPredicate) which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
 
