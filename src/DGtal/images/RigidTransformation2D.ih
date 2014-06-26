@@ -1,0 +1,116 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file RigidTransformation2D.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ * @date 2014/06/26
+ *
+ * Implementation of inline methods defined in RigidTransformation2D.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <cmath>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Destructor.
+ */
+template <typename Image>
+inline
+DGtal::RigidTransformation2D<Image>::~RigidTransformation2D()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename Image>
+inline
+void
+DGtal::RigidTransformation2D<Image>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[RigidTransformation2D]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename Image>
+inline
+bool
+DGtal::RigidTransformation2D<Image>::isValid() const
+{
+    return true;
+}
+
+template <typename Image>
+typename Image::Point DGtal::RigidTransformation2D<Image>::transform ( typename Image::Point & point )
+{
+  typename Image::Point p;
+  p[0] = std::floor ( ( ( t_cos * point[0] - t_sin * point[1] ) + translation[0] ) + 0.5 );
+  p[1] = std::floor ( ( ( t_sin * point[0] + t_cos * point[1] ) + translation[1] ) + 0.5 );
+}
+
+template <typename Image>
+typename Image::Point DGtal::RigidTransformation2D<Image>::transformInverted ( typename Image::Point & point )
+{
+  typename Image::Point p;
+  p[0] = std::floor ( ( ( t_cos * point[0] + t_sin * point[1] ) + translation[0] ) + 0.5 );
+  p[1] = std::floor ( ( ( -t_sin * point[0] + t_cos * point[1] ) + translation[1] ) + 0.5 );
+}
+
+template <typename Image>
+Image DGtal::RigidTransformation2D<Image>::allocate ( typename Image::Domain & domain )
+{
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename Image>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const RigidTransformation2D<Image> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
