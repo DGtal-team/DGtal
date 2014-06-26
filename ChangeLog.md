@@ -3,9 +3,10 @@
 
 ## New Features
 
-- *Base*
+- *General*
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
+ - The DGtal main website is now http://dgtal.org
 
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
