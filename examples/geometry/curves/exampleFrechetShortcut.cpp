@@ -59,8 +59,14 @@ int main( int argc, char** argv )
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
-  
-  double error = atof(argv[1]);
+  double error;
+  if(argc < 3)
+    {
+      trace.info() << "Maximum error not specified. Use default value (3).\n";
+      error = 3;
+    }
+  else
+    error = atof(argv[1]);
   trace.info() << error << endl;
   
   Curve c; //grid curve

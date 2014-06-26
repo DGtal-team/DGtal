@@ -80,7 +80,7 @@ namespace DGtal
 
     typedef TSurfel Surfel;
     typedef TEmbedder SCellEmbedder;
-    typedef CurvatureInformations Quantity;
+    typedef deprecated::CurvatureInformations Quantity;
     typedef typename SCellEmbedder::RealPoint RealPoint;
 
     typedef CGAL::Cartesian<double> CGALKernel;

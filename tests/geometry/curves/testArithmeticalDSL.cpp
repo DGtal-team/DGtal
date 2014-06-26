@@ -52,7 +52,6 @@ bool mainTest()
   BOOST_CONCEPT_ASSERT(( CPointPredicate<DSL> ));
   
   typedef typename DSL::Point Point; 
-  typedef typename DSL::Vector Vector; 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -170,7 +169,8 @@ bool mainTest()
   	       << std::endl;
 
   trace.info() << "shift" << std::endl; 
-  if (dsl.remainder(dsl.shift()) == dsl.omega())
+  if ( (dsl.remainder(dsl.shift()) == dsl.omega()) 
+       && (DSL::toCoordinate(dsl.omega()) == dsl.patternLength()) )
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -201,7 +201,7 @@ bool rangeTest(const DSL& dsl)
   trace.beginBlock ( "Range/Iterator services..." );
   trace.info() << dsl << std::endl; 
 
-  Point first = dsl.getPoint(0); 
+  Point first = dsl.getPoint(); 
   Point last = Point(first[0]+dsl.b(), first[1]+dsl.a()); 
   trace.info() << "from " << first << " to " << last << std::endl; 
 
@@ -215,7 +215,7 @@ bool rangeTest(const DSL& dsl)
   {//forward pass  
     typedef typename DSL::ConstIterator I; 
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<I> )); 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<I> ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<I> ));
     bool res = true; 
     int c = 0; 
     for (I it = dsl.begin(first), itEnd = dsl.end(last); 
@@ -377,6 +377,20 @@ int main( int argc, char** argv )
       ;
   }
 
+#ifdef WITH_BIGINTEGER
+  {
+    typedef DGtal::ArithmeticalDSL<DGtal::int32_t, DGtal::BigInteger, 4> DSL; 
+    res = res && rangeTest( DSL(5, 8, -26) ) && rangeTest( DSL(5, 8, 13) )
+      && rangeTest( DSL(5, 8, -17) ) && rangeTest( DSL(5, 8, 11313) ); 
+  }
+  // Warning: BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<I> )); 
+  // does not accept DGtal::BigInteger as a difference type for random access iterators
+  // because it uses methods is_signed and is_integer of std::numeric_limits
+  // { //does not compile 
+  //   typedef DGtal::ArithmeticalDSL<DGtal::BigInteger, DGtal::BigInteger, 4> DSL; 
+  //   res = res && rangeTest( DSL(5, 8, 123654) ); 
+  // }
+#endif
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

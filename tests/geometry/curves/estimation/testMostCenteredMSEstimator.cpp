@@ -49,6 +49,7 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
+#include "DGtal/geometry/curves/estimation/CCurveLocalGeometricEstimator.h"
 
 
 #include "ConfigTest.h"
@@ -75,7 +76,7 @@ bool test(const I& itb, const I& ite)
   typedef TangentVectorFromDSSEstimator<SegmentComputer> SCEstimator; //functor
   typedef typename SCEstimator::Quantity Value; //value
   typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> Estimator;//estimator
-
+  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< Estimator > ));
   SegmentComputer sc;
   SCEstimator f; 
 

@@ -64,7 +64,6 @@ int main( int argc, char** argv )
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef int Integer;
   typedef ChordNaivePlaneComputer<Z3, Z3::Point, int> PlaneComputer;
   typedef PlaneComputer::Primitive Primitive;
 

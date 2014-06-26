@@ -323,7 +323,7 @@ leaning and ending points to the parameters of the minimal bounding DSL.
 - function ArithmeticalDSSCheck::checkPointsPosition compares the position of the 
 leaning and ending points to the parameters of the minimal bounding DSL.
 
-There are three extra ways of constructing an instance of ArithmeticalDSS:
+There are four extra ways of constructing an instance of ArithmeticalDSS:
 - from the minimal set of data members required to build the DSS in constant time.  
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorParam
 - from two points, considered either as two upper or two lower leaning points. 
@@ -331,6 +331,9 @@ The construction runs in logarithmic-time (because of the computation of the irr
 and the computation of the opposite leaning points). 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorUpperPoints
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorLowerPoints
+- as a subsegment of a given DSL. The construction is based on the smartCH algorithm 
+and runs in logarithmic-time [Roussillon 2014 : \cite RoussillonDGCI2014]. 
+@snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSNaiveCtorDSL 
 - from a sequence of simply connected points. The construction runs in linear-time, 
 using the recognition algorithm of [Debled and Reveilles, 1995 : \cite Debled_1995_ijprai], 
 which is detailed in the next section. 
