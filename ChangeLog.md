@@ -55,7 +55,8 @@
 - *IO Package*
   - Better handling of materials in Board3D and OBJ exports. (David Coeurjolly, #784)
   - New 'basic' display mode for surfels (oriented or not), useful
-    for large digital surface displays (quads instead of 3D prism) (Bertrand Kerautret)
+    for large digital surface displays (quads instead of 3D prism)
+    (Bertrand Kerautret, #783)
   - New clear() method to subclasses of Display3D (Viewer3D and
     Board3D) to clear the current drawning buffer. (Kacper Pluta, #807)
   - New draw() method for 3D display models (Viewer3D and Board3D)
