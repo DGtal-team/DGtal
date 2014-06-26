@@ -776,45 +776,54 @@ namespace DGtal
 
 
     /**
-     * Given a boundary surface [bdry] in [ks], compute its interior as a
-     * set of unoriented spels.  The technique is to fill line by line and
-     * tests the intersection with the surface.
-     *
+     * Given a boundary surface [bdry] in [ks] (given as
+     * SurfelPredicate), fill its interior in a given value. The
+     * technique is to fill line by line and tests the intersection
+     * with the surface. Note that the set of the surfel of the
+     * boundary has to be a closed surface.
+     * 
+     * 
      * @param aKSpace the digital space.
      * @param bdry the digital Jordan surface.
-     * @param interiorCellSet the resutling CellSet containing the interior cells.
+     * @param anImage the image to be filled.
+     * @param aValue the value to fill the image.
      * @param empty_is_inside when 'true', an empty line is considered
      * interior, otherwise exterior (set by default to false).
-     *
+     * @return the number of cells filled in the image.
      */
-    template < typename SCellSet, typename CellSet> 
-    void
+    template < typename TSurfelPredicate, typename TImageContainer> 
+    unsigned int
     static
-    uComputeInterior( const KSpace & aKSpace, 
-                      const SCellSet & bdry,
-                      CellSet & interiorCellSet,
-                      bool empty_is_inside=false );
+    uFillInterior( const KSpace & aKSpace, 
+                   const TSurfelPredicate & bdry,
+                   TImageContainer & anImage,
+                   const typename TImageContainer::Value & aValue,
+                   bool empty_is_inside=false );
 
 
     /**
-     * Given a boundary surface [bdry] in [ks], compute its exterior as a
-     * set of unoriented spels.  The technique is to fill line by line and
-     * tests the intersection with the surface.
+     * Given a boundary surface [bdry] in [ks] (given as
+     * SurfelPredicate), fill its exterior in a given image by a given
+     * value.  The technique is to fill line by line and tests the
+     * intersection with the surface. Note that the set of the surfel
+     * of the boundary has to be a closed surface.
      *
      * @param aKSpace the digital space.
      * @param bdry the digital Jordan surface.
-     * @param interiorCellSet the resutling CellSet containing the interior cells.
+     * @param anImage the image to be filled.
+     * @param aValue the value to fill the image.
      * @param empty_is_outside when 'true', an empty line is considered
      * exterior, otherwise interior.
-     *
+     * @return the number of cells filled in the image.
      */
-    template < typename SCellSet, typename CellSet> 
-    void
+    template < typename SurfelPredicate, typename TImageContainer> 
+    unsigned int
     static
-    uComputeExterior( const KSpace & aKSpace, 
-                      const SCellSet & bdry,
-                      CellSet & interiorCellSet,
-                      bool empty_is_outside=true );
+    uFillExterior( const KSpace & aKSpace, 
+                   const SurfelPredicate & bdry,
+                   TImageContainer & anImage,
+                   const typename TImageContainer::Value & aValue,
+                   bool empty_is_outside=true );
     
     
 
