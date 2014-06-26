@@ -32,11 +32,15 @@
 
     - New classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition).
       Add tests. (Jacques-Olivier Lachaud, #803)
-    - Simple Linear Regression tool added (backport from imagene). (David Coeurjolly,[#794](https://github.com/DGtal-team/DGtal/pull/794))
+    - Simple Linear Regression tool added (backport from
+      imagene). (David
+      Coeurjolly,[#794](https://github.com/DGtal-team/DGtal/pull/794))
 
 - *For developpers*
      - Google Benchmark can be enabled to allow micro-benchmarking in
-         some DGtal unit tests (https://github.com/google/benchmark) (David Coeurjolly, [#790](https://github.com/DGtal-team/DGtal/pull/790))
+         some DGtal unit tests (https://github.com/google/benchmark)
+         (David Coeurjolly,
+         [#790](https://github.com/DGtal-team/DGtal/pull/790))
 
 
 ## Changes
@@ -95,7 +99,7 @@
 
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
-    [#835](https://github.com/DGtal-team/DGtal/pull/835)
+    [#835](https://github.com/DGtal-team/DGtal/pull/835))
   - Fixing image thresholders which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
