@@ -33,6 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/topology/SurfelSetPredicate.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/io/boards/Board2D.h"
 
@@ -41,17 +42,6 @@
 
 using namespace std;
 using namespace DGtal;
-
-typedef  KhalimskySpaceND<2, int>::SCell SCell;
-struct SurfelSetPredicate{
-  SurfelSetPredicate(ConstAlias< std::set<SCell> > surfelSet): mySurfelSet(surfelSet){
-  }
-  inline 
-  bool operator()(const SCell & s) const{
-    return mySurfelSet->find(s)!=mySurfelSet->end();
-  }
-  ConstAlias< std::set<SCell> > mySurfelSet;
-} ;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -74,12 +64,15 @@ int main( int /*argc*/, char** /*argv*/ )
     
   //From the FreemanChain we can get a vector of SCell wrapped in a SurfelSetPredicate with sign defined from the FreemanChain orientation:
   //! [ctopoFillContoursGetSCells]
+  
+  typedef  KhalimskySpaceND<2, int>::SCell SCell;
   std::set<DGtal::KhalimskySpaceND< 2, int >::SCell> boundarySCell;
   FreemanChain<int>::getInterPixelLinels(K, fc1, boundarySCell, false); 
   //! [ctopoFillContoursGetSCells]
   
   aBoard << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Red, DGtal::Color::Red) );
-  for( std::set<DGtal::KhalimskySpaceND< 2, int >::SCell>::const_iterator it= boundarySCell.begin();  it!= boundarySCell.end(); it++){
+  for( std::set<DGtal::KhalimskySpaceND< 2, int >::SCell>::const_iterator it= boundarySCell.begin();  
+       it!= boundarySCell.end(); it++){
     aBoard << *it;
   }
   
@@ -93,44 +86,61 @@ int main( int /*argc*/, char** /*argv*/ )
   aBoard << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Blue, DGtal::Color::Blue) );
   aBoard2 << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Blue, DGtal::Color::Blue) );
   
-  for( std::set<DGtal::KhalimskySpaceND< 2, int >::SCell>::const_iterator it= boundarySCellhole.begin();  it!= boundarySCellhole.end(); it++){
+ 
+  
+   for( std::set<DGtal::KhalimskySpaceND< 2, int >::SCell>::const_iterator it= boundarySCellhole.begin();  it!= boundarySCellhole.end(); it++){
     aBoard << *it;
     aBoard2 << *it;
     boundarySCell.insert(*it);
   }
-
   
   
   // Now we can compute the unsigned cell associated to interior pixels: 
 
   //! [ctopoFillContoursFillRegion]
-  std::set< DGtal::KhalimskySpaceND< 2, int >::Cell> interiorCell;
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, SurfelSetPredicate(boundarySCell), interiorCell, false);  
+  typedef ImageContainerBySTLMap< Z2i::Domain, bool> BoolImage2D;
+  BoolImage2D interiorCellImage(BoolImage2D::Domain(Z2i::Point(0,10), Z2i::Point(20,30) ));
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, SurfelSetPredicate<std::set<SCell>,SCell>(boundarySCell), 
+                                                              interiorCellImage, 1, false);  
   //! [ctopoFillContoursFillRegion]
 
-  aBoard << CustomStyle((*interiorCell.begin()).className(),  new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );
-  for(std::set<DGtal::KhalimskySpaceND< 2, int >::Cell>::const_iterator it = interiorCell.begin(); it!=interiorCell.end(); it++){
-    aBoard << *it;
+  aBoard << CustomStyle(K.uSpel(Z2i::Point(0,0)).className(),  new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );
+  for(BoolImage2D::Domain::ConstIterator it = interiorCellImage.domain().begin(); 
+      it!=interiorCellImage.domain().end(); it++){
+    if(interiorCellImage(*it)){
+      aBoard << K.uSpel(*it);
+    }
   }
   
   
   // We can also compute the unsigned cell associated to interior and exterior pixels: 
   //! [ctopoFillContoursFillRegionHoles]
-  std::set< DGtal::KhalimskySpaceND< 2, int >::Cell> interiorCellHole;
-  std::set< DGtal::KhalimskySpaceND< 2, int >::Cell> exteriorCellHole;
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, SurfelSetPredicate(boundarySCellhole), interiorCellHole, true);  
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeExterior(K, SurfelSetPredicate(boundarySCellhole), exteriorCellHole, false);  
+  BoolImage2D interiorCellHoleImage(BoolImage2D::Domain(Z2i::Point(0,10), Z2i::Point(20,30) ));
+  BoolImage2D exteriorCellHoleImage(BoolImage2D::Domain(Z2i::Point(0,10), Z2i::Point(20,30) ));
+
+  
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, SurfelSetPredicate<std::set<SCell>, SCell>(boundarySCellhole), 
+                                                              interiorCellHoleImage, 1, true);  
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(K, SurfelSetPredicate<std::set<SCell>, SCell>(boundarySCellhole), 
+                                                              exteriorCellHoleImage, 1,  false);  
   //! [ctopoFillContoursFillRegionHoles]  
 
-  aBoard2 << CustomStyle((*interiorCellHole.begin()).className(),  new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );
-  for(std::set<DGtal::KhalimskySpaceND< 2, int >::Cell>::const_iterator it = interiorCellHole.begin(); it!=interiorCellHole.end(); it++){
-    aBoard2 << *it;
+  aBoard2 << CustomStyle(K.uSpel(Z2i::Point(0,0)).className(),  
+                          new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );
+  for(BoolImage2D::Domain::ConstIterator it = interiorCellHoleImage.domain().begin();
+      it!=interiorCellHoleImage.domain().end(); it++){
+    if(interiorCellHoleImage(*it)){
+      aBoard2 << K.uSpel(*it);
+    }
   }
-  aBoard2 << CustomStyle((*exteriorCellHole.begin()).className(),  new CustomColors(DGtal::Color::None, Color(100, 100, 100)) );
-  for(std::set<DGtal::KhalimskySpaceND< 2, int >::Cell>::const_iterator it = exteriorCellHole.begin(); it!=exteriorCellHole.end(); it++){
-    aBoard2 << *it;
+  aBoard2 << CustomStyle(K.uSpel(Z2i::Point(0,0)).className(),  
+                         new CustomColors(DGtal::Color::None, Color(100, 100, 100)) );
+  for(BoolImage2D::Domain::ConstIterator it = exteriorCellHoleImage.domain().begin(); 
+      it!=exteriorCellHoleImage.domain().end(); it++){
+    if(exteriorCellHoleImage(*it)){
+      aBoard2 << K.uSpel(*it);
+    }
   }
-  
   
   aBoard.saveEPS("example_ctopo-fillContours.eps");
   aBoard.saveFIG("example_ctopo-fillContours.fig");
