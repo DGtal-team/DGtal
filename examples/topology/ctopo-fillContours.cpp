@@ -42,6 +42,17 @@
 using namespace std;
 using namespace DGtal;
 
+typedef  KhalimskySpaceND<2, int>::SCell SCell;
+struct SurfelSetPredicate{
+  SurfelSetPredicate(ConstAlias< std::set<SCell> > surfelSet): mySurfelSet(surfelSet){
+  }
+  inline 
+  bool operator()(const SCell & s) const{
+    return mySurfelSet->find(s)!=mySurfelSet->end();
+  }
+  ConstAlias< std::set<SCell> > mySurfelSet;
+} ;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int /*argc*/, char** /*argv*/ )
@@ -61,7 +72,7 @@ int main( int /*argc*/, char** /*argv*/ )
   aBoard << K.lowerBound() << K.upperBound() ;
   aBoard2 << K.lowerBound() << K.upperBound() ;
     
-  //From the FreemanChain we can get a vector of SCell with sign defined from the FreemanChain orientation:
+  //From the FreemanChain we can get a vector of SCell wrapped in a SurfelSetPredicate with sign defined from the FreemanChain orientation:
   //! [ctopoFillContoursGetSCells]
   std::set<DGtal::KhalimskySpaceND< 2, int >::SCell> boundarySCell;
   FreemanChain<int>::getInterPixelLinels(K, fc1, boundarySCell, false); 
@@ -77,7 +88,8 @@ int main( int /*argc*/, char** /*argv*/ )
   std::set<DGtal::KhalimskySpaceND< 2, int >::SCell> boundarySCellhole;
   FreemanChain<int>::getInterPixelLinels(K, fc2, boundarySCellhole, false); 
   //! [ctopoFillContoursGetSCellsHole]
-    
+  
+  
   aBoard << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Blue, DGtal::Color::Blue) );
   aBoard2 << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Blue, DGtal::Color::Blue) );
   
@@ -93,7 +105,7 @@ int main( int /*argc*/, char** /*argv*/ )
 
   //! [ctopoFillContoursFillRegion]
   std::set< DGtal::KhalimskySpaceND< 2, int >::Cell> interiorCell;
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, boundarySCell, interiorCell, false);  
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, SurfelSetPredicate(boundarySCell), interiorCell, false);  
   //! [ctopoFillContoursFillRegion]
 
   aBoard << CustomStyle((*interiorCell.begin()).className(),  new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );
@@ -106,8 +118,8 @@ int main( int /*argc*/, char** /*argv*/ )
   //! [ctopoFillContoursFillRegionHoles]
   std::set< DGtal::KhalimskySpaceND< 2, int >::Cell> interiorCellHole;
   std::set< DGtal::KhalimskySpaceND< 2, int >::Cell> exteriorCellHole;
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, boundarySCellhole, interiorCellHole, true);  
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeExterior(K, boundarySCellhole, exteriorCellHole, false);  
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, SurfelSetPredicate(boundarySCellhole), interiorCellHole, true);  
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeExterior(K, SurfelSetPredicate(boundarySCellhole), exteriorCellHole, false);  
   //! [ctopoFillContoursFillRegionHoles]  
 
   aBoard2 << CustomStyle((*interiorCellHole.begin()).className(),  new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );

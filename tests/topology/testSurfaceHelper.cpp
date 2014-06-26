@@ -36,7 +36,9 @@
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/topology/SurfelSetPredicate.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/base/ConstAlias.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -51,12 +53,15 @@ using namespace DGtal;
  */
 
 
+
 bool testComputeInterior()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef  KhalimskySpaceND<2, int>::Cell Cell;
   typedef  KhalimskySpaceND<2, int>::SCell SCell;
+  typedef ImageContainerBySTLMap< Z2i::Domain, bool> BoolImage2D;
+  
 
   trace.beginBlock ( "Testing computation of interior from a freeman chain ..." );
   std::string freemanChainFilename = testPath + "samples/contourS.fc";
@@ -76,13 +81,15 @@ bool testComputeInterior()
   trace.info() << "Domain defined by :" << Z2i::Point(minx-5,miny-5) << " " << Z2i::Point(maxx+5, maxy+5) << std::endl;
   K.init(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5), false);
   FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K, fc, boundaryCell ); 
-  std::set<Cell> interiorCell;
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K, boundaryCell, interiorCell, false);
-  trace.info() << "Interior size: " << interiorCell.size() << " (awaited:  3082)" <<  std::endl;
+  BoolImage2D interiorImage(BoolImage2D::Domain(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5)));
+  unsigned int nbInt = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, SurfelSetPredicate<std::set<SCell>, SCell>(boundaryCell), 
+                                                                                   interiorImage, 1, false);
+  trace.info() << "Interior size: " << nbInt << " (awaited:  3082)" <<  std::endl;
 
-  std::set<Cell> exteriorCell;
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeExterior(K, boundaryCell, exteriorCell, true);
-  trace.info() << "Exterior size: " << exteriorCell.size() << " (awaited:   9182)" <<  std::endl;
+  BoolImage2D exteriorImage(BoolImage2D::Domain(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5)));
+  unsigned int nbExt = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(K ,SurfelSetPredicate<std::set<SCell>, SCell>(boundaryCell), 
+                                                                                     exteriorImage, 1, true);
+  trace.info() << "Exterior size: " << nbExt << " (awaited:   9182)" <<  std::endl;
   
 
   DGtal::KhalimskySpaceND< 2, int > K2; 
@@ -90,22 +97,30 @@ bool testComputeInterior()
   fc2.computeBoundingBox(minx2, miny2, maxx2, maxy2); 
   K2.init(Z2i::Point(minx2-5,miny2-5), Z2i::Point(maxx2+5, maxy2+5), false);
   FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K2, fc2, boundaryCell2 ); 
-  std::set<Cell> interiorCell2;
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uComputeInterior(K2, boundaryCell2, interiorCell2, false);
-  trace.info() << "Interior size2: " << interiorCell2.size() << " (awaited:  196316)" <<  std::endl;
+
+  BoolImage2D interiorImage2(BoolImage2D::Domain(Z2i::Point(minx2-5,miny2-5), Z2i::Point(maxx2+5, maxy2+5)));
+  unsigned int nbInt2 = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K2, SurfelSetPredicate<std::set<SCell>,SCell>(boundaryCell2), 
+                                                                                    interiorImage2, 1, false);
+ trace.info() << "Interior size2: " << nbInt2 << " (awaited:  196316)" <<  std::endl;
   
   // Displaying interiorCell
   Board2D aBoard, aBoard2, aBoard3;  
-  for( std::set<Cell>::const_iterator it=interiorCell.begin();  it!= interiorCell.end(); it++){
-    aBoard << K.uCoords (*it); 
+  for( BoolImage2D::Domain::ConstIterator it = interiorImage.domain().begin();  it!= interiorImage.domain().end(); it++){
+    if(interiorImage(*it)){
+      aBoard << *it; 
+    }
   }
-  for( std::set<Cell>::const_iterator it=exteriorCell.begin();  it!= exteriorCell.end(); it++){
-    aBoard3 << K.uCoords (*it); 
+  for( BoolImage2D::Domain::ConstIterator it = exteriorImage.domain().begin();  it!= exteriorImage.domain().end(); it++){
+    if(exteriorImage(*it)){
+      aBoard3 << *it; 
+    }
   }
-  for( std::set<Cell>::const_iterator it=interiorCell2.begin();  it!= interiorCell2.end(); it++){
-    aBoard2 << K.uCoords (*it); 
+  for( BoolImage2D::Domain::ConstIterator it = interiorImage2.domain().begin();  it!= interiorImage2.domain().end(); it++){
+    if(interiorImage2(*it)){
+      aBoard2 << *it; 
+    }
   }
-
+ 
   aBoard<< CustomStyle( (*(boundaryCell.begin())).className(), 
                         new CustomColors(  Color::Red,  Color::None ) );          
   aBoard3<< CustomStyle( (*(boundaryCell.begin())).className(), 
@@ -135,11 +150,11 @@ bool testComputeInterior()
   aBoard.saveEPS("testSurfaceHelperComputeInterior.eps");
   aBoard3.saveEPS("testSurfaceHelperComputeExterior.eps");
   aBoard2.saveEPS("testSurfaceHelperComputeInterior2.eps");
-  nbok += (interiorCell.size()== 3082 && interiorCell2.size()== 196316 && exteriorCell.size()== 9182)? 1 : 0; 
+  nbok += (nbInt == 3082 && nbInt2 == 196316 && nbExt== 9182)? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << interiorCell.size() << " (interiorCell.size()) == 3014 and "
-               << interiorCell2.size() << " (interiorCell2.size()) == 60196 "
+	       << nbInt << " (interiorCell.size()) == 3014 and "
+               << nbInt2 << " (interiorCell2.size()) == 60196 "
                << std::endl;
   trace.endBlock();
   

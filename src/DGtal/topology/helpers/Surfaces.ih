@@ -990,13 +990,15 @@ sWriteBoundary( OutputIterator & out_it,
 }
 
 template <typename TKSpace>
-template <typename SCellSet, typename CellSet>
-void 
-DGtal::Surfaces<TKSpace>::uComputeInterior( const KSpace & aKSpace, 
-                                            const SCellSet & bdry,
-                                            CellSet & interiorCellSet,
-                                            bool empty_is_inside )
+template <typename SurfelPredicate, typename TImageContainer>
+unsigned int
+DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace, 
+                                         const SurfelPredicate & bdry,
+                                         TImageContainer & anImage,
+                                         const typename TImageContainer::Value & aValue,
+                                         bool empty_is_inside )
 {
+  unsigned int numberCellFilled = 0;
   std::deque<Cell> pixels;      
   Cell p =  aKSpace.uFirst(aKSpace.uCell(Point(1,1)));  
   bool in_mode = empty_is_inside;   
@@ -1006,16 +1008,17 @@ DGtal::Surfaces<TKSpace>::uComputeInterior( const KSpace & aKSpace,
         { 
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
-          if ( bdry.find( b ) !=bdry.end() )
+          if ( bdry( b )  )
             {
               while ( ! pixels.empty() )
                 {
-                  interiorCellSet.insert(pixels.front());
+                  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
                   pixels.pop_front();
+                  numberCellFilled++;
                 }
               in_mode = false;
             }
-          else if ( bdry.find( aKSpace.sOpp( b ) ) != bdry.end() )
+          else if ( bdry( aKSpace.sOpp( b ) )  )
             {
                pixels.clear();
               in_mode = true;
@@ -1029,8 +1032,9 @@ DGtal::Surfaces<TKSpace>::uComputeInterior( const KSpace & aKSpace,
 	    {
 	      while ( ! pixels.empty() )
 		{
-		  interiorCellSet.insert( pixels.front() );
+		  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
 		  pixels.pop_front();
+                  numberCellFilled++;
 		}
 	    }
 	  else
@@ -1038,20 +1042,23 @@ DGtal::Surfaces<TKSpace>::uComputeInterior( const KSpace & aKSpace,
 	  in_mode = empty_is_inside;
 	}
     }  while ( aKSpace.uNext(p, aKSpace.lowerCell(), aKSpace.upperCell())  );
-  
+
+  return numberCellFilled;
 }
 
 
 
 
 template <typename TKSpace>
-template <typename SCellSet, typename CellSet>
-void 
-DGtal::Surfaces<TKSpace>::uComputeExterior( const KSpace & aKSpace, 
-                                            const SCellSet & bdry,
-                                            CellSet & interiorCellSet,
+template <typename SurfelPredicate, typename TImageContainer>
+unsigned int 
+DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace, 
+                                            const SurfelPredicate & bdry,
+                                            TImageContainer & anImage,
+                                            const typename TImageContainer::Value & aValue,
                                             bool empty_is_outside )
 {
+  unsigned int numberCellFilled=0;
   std::deque<Cell> pixels;      
   Cell p =  aKSpace.uFirst(aKSpace.uCell(Point(1,1)));  
   bool in_mode = empty_is_outside;   
@@ -1061,17 +1068,18 @@ DGtal::Surfaces<TKSpace>::uComputeExterior( const KSpace & aKSpace,
         { 
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
-          if ( bdry.find( b ) !=bdry.end() )
+          if ( bdry( b ) )
             {
               pixels.clear();
               in_mode = true;
             }
-          else if ( bdry.find( aKSpace.sOpp( b ) ) != bdry.end() )
+          else if ( bdry( aKSpace.sOpp( b ) )  )
             {
               while ( ! pixels.empty() )
                 {
-                  interiorCellSet.insert(pixels.front());
+                  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
                   pixels.pop_front();
+                  numberCellFilled++;
                 }
               in_mode = false;
             }
@@ -1083,16 +1091,17 @@ DGtal::Surfaces<TKSpace>::uComputeExterior( const KSpace & aKSpace,
 	    {
 	      while ( ! pixels.empty() )
 		{
-		  interiorCellSet.insert( pixels.front() );
-		  pixels.pop_front();
-		}
+                  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
+                  pixels.pop_front();
+                  numberCellFilled++;
+                }
 	    }
 	  else
 	    pixels.clear();
 	  in_mode = empty_is_outside;
 	}
     }  while ( aKSpace.uNext(p, aKSpace.lowerCell(), aKSpace.upperCell())  );
-  
+  return numberCellFilled;
 }
 
 
