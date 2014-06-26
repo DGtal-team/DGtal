@@ -101,6 +101,13 @@ namespace DGtal
       {
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
+
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
+        {
+          ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
+        }
+
         return eigenVectors.column( 0 ); // normal vector is associated to smallest eigenvalue.      
       }
 
@@ -164,6 +171,13 @@ namespace DGtal
       {
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
+
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
+        {
+          ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
+        }
+
         return eigenVectors.column( 1 ); // tangent vector is associated to greatest eigenvalue.      
       }
 
@@ -225,6 +239,13 @@ namespace DGtal
       {
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
+
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
+        {
+          ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
+        }
+
         return eigenVectors.column( Space::dimension - 1 ); // first principal curvature direction is associated to greatest eigenvalue.      
       }
 
@@ -292,6 +313,13 @@ namespace DGtal
       {
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
+
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
+        {
+          ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
+        }
+
         return eigenVectors.column( Space::dimension - 2 ); // second principal curvature direction is associated to greatest eigenvalue.      
       }
 
@@ -308,6 +336,81 @@ namespace DGtal
       mutable RealVector eigenValues;
     }; // end of class IISecondPrincipalDirectionFunctor
 
+    /////////////////////////////////////////////////////////////////////////////
+    // template class IIPrincipalDirectionsFunctor
+    /**
+    * Description of template class
+    * 'IIPrincipalDirectionsFunctor' <p> \brief Aim: A functor
+    * Matrix -> std::pair<RealVector,RealVector> that returns the first and
+    * the second principal curvature directions by diagonalizing the given
+    * covariance matrix. This functor is valid starting from 3D space.
+    * Note that by second we mean the direction with second greatest curvature
+    * in absolute value.
+    *
+    * @tparam TSpace a model of CSpace, for instance SpaceND.
+    *
+    * @see IntegralInvariantCovarianceEstimator
+    */
+    template  <typename TSpace>
+    class IIPrincipalDirectionsFunctor
+    {
+      // ----------------------- Standard services ------------------------------***********************************************
+    public:
+      typedef IIPrincipalDirectionsFunctor<TSpace> Self;
+      typedef TSpace Space;
+      typedef typename Space::RealVector RealVector;
+      typedef typename RealVector::Component Component;
+      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef Matrix Argument;
+      typedef std::pair<RealVector,RealVector> Quantity;
+      typedef Quantity Value;
+
+      BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
+
+      /// Default constructor.
+      IIPrincipalDirectionsFunctor() {}
+      /// Copy constructor. Nothing to do.
+      IIPrincipalDirectionsFunctor( const Self& /* other */ ) {}
+      /// Assignment. Nothing to do.
+      /// @return itself
+      Self& operator=( const Self& /* other */ ) { return *this; }
+      /**
+      * Apply operator.
+      * @param arg any symmetric positive matrix (covariance matrix
+      *
+      * @return the first and the second principal curvature direction in
+      * a std::pair for the II covariance matrix, which is the eigenvector 
+      * associated with the highest eigenvalues.
+      */
+      Value operator()( const Argument& arg ) const
+      {
+        EigenDecomposition<Space::dimension, Component>
+          ::getEigenDecomposition( arg, eigenVectors, eigenValues );
+
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
+        {
+          ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
+        }
+
+        return Value(
+                eigenVectors.column( Space::dimension - 1 ),
+                eigenVectors.column( Space::dimension - 2 )
+                );   
+      }
+
+      /**
+      * Initializes the functor with the gridstep and the ball
+      * Euclidean radius. Not used for this estimator.
+      */
+      void init( Component /* h */, Component /* r */ ) {}
+
+    private:
+      /// A data member only used for temporary calculations.
+      mutable Matrix eigenVectors;
+      /// A data member only used for temporary calculations.
+      mutable RealVector eigenValues;
+    }; // end of class IIPrincipalDirectionsFunctor
 
     /////////////////////////////////////////////////////////////////////////////
     // template class IICurvatureFunctor
@@ -475,8 +578,12 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        Value k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
-        Value k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+              && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
+
+        Value k1 = d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r;
+        Value k2 = d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r;
         return k1 * k2;
       }
 
@@ -551,7 +658,12 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        return d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+              && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
+
+
+        return d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r;
       }
 
       /**
@@ -625,7 +737,11 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        return d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+              && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
+
+        return d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r;
       }
 
       /**
@@ -655,6 +771,87 @@ namespace DGtal
       mutable RealVector eigenValues;
     }; // end of class IISecondPrincipalCurvature3DFunctor
 
+
+    /////////////////////////////////////////////////////////////////////////////
+    // template class IIPrincipalCurvatures3DFunctor
+    /**
+    * Description of template class 'IIPrincipalCurvatures3DFunctor' <p> \brief
+    * Aim: A functor Matrix -> std::pair<Real,Real> that returns the first and 
+    * the second principal curvature value by diagonalizing the given covariance
+    * matrix. This functor is valid starting from 3D space. Note that by first 
+    * we mean the value with first greatest curvature in absolute value.
+    *
+    * @tparam TSpace a model of CSpace, for instance SpaceND.
+    *
+    * @see IntegralInvariantCovarianceEstimator
+    */
+    template  <typename TSpace>
+    struct IIPrincipalCurvatures3DFunctor
+    {
+      // ----------------------- Standard services ------------------------------
+    public:
+      typedef IIPrincipalCurvatures3DFunctor<TSpace> Self;
+      typedef TSpace Space;
+      typedef typename Space::RealVector RealVector;
+      typedef typename RealVector::Component Component;
+      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef Matrix Argument;
+      typedef std::pair<Component, Component> Quantity;
+      typedef Quantity Value;
+
+      BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
+
+      /**
+      * Apply operator.
+      * @param arg any symmetric positive matrix (covariance matrix
+      *
+      * @return the first and the second principal curvature value in a 
+      * std::pair for the II covariance matrix, which are the first and the
+      * second highest eigenvalue.
+      */
+      Value operator()( const Argument& arg ) const
+      {
+        Argument cp_arg = arg;
+        cp_arg *= dh5;
+        EigenDecomposition<Space::dimension, Component>
+          ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
+
+        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
+              && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
+
+        return Value( 
+                d6_PIr6 * ( eigenValues[2] - ( 3.0 * eigenValues[1] )) + d8_5r,
+                d6_PIr6 * ( eigenValues[1] - ( 3.0 * eigenValues[2] )) + d8_5r
+               );
+      }
+
+      /**
+      * Initializes the functor with the gridstep and the ball Euclidean radius.
+      *
+      * @param h the gridstep
+      * @param r the ball radius
+      */
+      void init( Component h, Component r )
+      {
+        double r3 = r * r * r;
+        double r6 = r3 * r3;
+        d6_PIr6 = 6.0 / ( M_PI * r6 );
+        d8_5r = 8.0 / ( 5.0 * r );
+        double h2 = h * h;
+        dh5 = h2 * h2 * h;
+      }
+
+    private:
+      double dh5;
+      double d6_PIr6;
+      double d8_5r;
+
+      /// A data member only used for temporary calculations.
+      mutable Matrix eigenVectors;
+      /// A data member only used for temporary calculations.
+      mutable RealVector eigenValues;
+    }; // end of class IIPrincipalCurvatures3DFunctor
   } // namespace IIGeometricFunctors 
 
 } // namespace DGtal
