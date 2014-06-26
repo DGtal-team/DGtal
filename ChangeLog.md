@@ -48,7 +48,8 @@
 - *Base Package*
  - Add comparison operators in variants of CountedPtr. Improve coverage of these classes
    and fix compilation problem (Jacques-Olivier Lachaud)
-
+ - XXXOutputRangeYYY classes are now called XXXRangeWithWritableIteratorYYY
+   (Tristan Roussillon, [#850](https://github.com/DGtal-team/DGtal/pull/850)). 
 
 - *Geometry Package*
  - Fix and add concept of CSurfelLocalEstimator and related ground
