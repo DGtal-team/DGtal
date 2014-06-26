@@ -1,82 +1,109 @@
-=== DGtal 0.8 ===
+# DGtal 0.8
 
-*Base Package*
 
-    - Fixing issue on Circulator/IteratorFunctions (related to #770 on MacOS). 
-	 - Add comparison operators in variants of CountedPtr. Improve coverage of these classes and fix compilation problem.
+## New Features
 
-*Geometry Package*
+- *Base*
+ - This Changelog has been ported to MarkDown (David Coeurjolly,
+   [#846](https://github.com/DGtal-team/DGtal/pull/846))
 
-    - Add digital nD Voronoi Covariance Measure support, as well as
-      digital geometric estimators based on it. Add tests and examples of feature
-      detection with VCM.
+- *Geometry Package*
+ - Add digital nD Voronoi Covariance Measure support, as well as
+  digital geometric estimators based on it. Add tests and examples of
+  feature detection with VCM. (Jacques-Olivier Lachaud,
+  [#803](https://github.com/DGtal-team/DGtal/pull/803))
 
-    - Fix and add concept of CSurfelLocalEstimator and related ground truth
-      estimators for implicit polynomial shapes
-      (TrueDigitalSurfaceLocalEstimator).
+ - Various geometric predicates are now available in order to test the
+  orientation of three points in the planes. Most classes are template
+  classes parametrized by a type for the points (or its coordinates)
+  and an integral type for the computations. They always return an
+  exact value (or sign), provided that the integral type used for the
+  computations is well chosen with respect to the coordinates of the
+  points. Some implementations do not increase the size of the input
+  integers during the computations. (Tristan Roussillon,
+  [#755](https://github.com/DGtal-team/DGtal/pull/755))
 
-    - Add Integral Invariant estimators so that they meet the concept
-      of surface local estimator. Add geometric functors to define
-      easily all the geometric estimators that can be built from the
-      volume and coariance matrix.
+  - Logarithmic construction of an arithmetical DSS of minimal
+    parameters from a bounding DSL and two end points (ctor of
+    ArithmeticalDSS) (Tristan Roussillon,
+    [#819](https://github.com/DGtal-team/DGtal/pull/819))
 
-    - random-access iterators in ArithmeticalDSL
+- *Math Package*
 
-    - Various geometric predicates are now available in order to
-      test the orientation of three points in the planes. Most classes
-      are template classes parametrized by a type for the points (or its
-      coordinates) and an integral type for the computations. They always
-      return an exact value (or sign), provided that the integral type
-      used for the computations is well chosen with respect to the coordinates
-      of the points. Some implementations do not increase the size of the input
-      integers during the computations.
+    - New classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition).
+      Add tests. (Jacques-Olivier Lachaud, #803)
+    - Simple Linear Regression tool added (backport from
+      imagene). (David
+      Coeurjolly,[#794](https://github.com/DGtal-team/DGtal/pull/794))
 
-   - Bug fix in PowerMap construction.
-
-   - logarithmic construction of an arithmetical DSS of minimal
-     parameters from a bounding DSL and two end points (ctor of
-     ArithmeticalDSS)
-
-   - Various geometric predicates are now available in order to
-     test the orientation of three points in the planes. Most classes
-     are template classes parametrized by a type for the points (or its
-     coordinates) and an integral type for the computations. They always
-     return an exact value (or sign), provided that the integral type
-     used for the computations is well chosen with respect to the coordinates
-     of the points. Some implementations do not increase the size of the input
-     integers during the computations.
-
-	
-*IO Package*
-
-    - Better handling of materials in Board3D and OBJ exports.
-
-    - New 'basic' display mode for surfels (oriented or not), useful
-      for large digital surface displays (quads instead of 3D prism)
-
-    - New clear() method to subclasses of Display3D (Viewer3D and
-      Board3D) to clear the current drawning buffer.
-
-    - New draw() method for 3D display models (Viewer3D and Board3D)
-      to display surfels with prescribed normal vectors.
-
-    - When exporting an 3D visualization to OBJ, a new option will
-      rescale the geometry to fit in [-1/2,1/2]^3.
-
-*Topology Package*
-
-    - small fix in ImplicitDigitalSurface.
-
-*Math Package*
-
-    - add classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition). Add tests.
-
-    - Simple Linear Regression tool added (backport from imagene).
-
-*For Developpers*
-
+- *For developpers*
      - Google Benchmark can be enabled to allow micro-benchmarking in
-       some DGtal unit tests (https://github.com/google/benchmark)
+         some DGtal unit tests (https://github.com/google/benchmark)
+         (David Coeurjolly,
+         [#790](https://github.com/DGtal-team/DGtal/pull/790))
+
+
+## Changes
+
+- *Base Package*
+ - Add comparison operators in variants of CountedPtr. Improve coverage of these classes
+   and fix compilation problem (Jacques-Olivier Lachaud)
+ - XXXOutputRangeYYY classes are now called XXXRangeWithWritableIteratorYYY
+   (Tristan Roussillon, [#850](https://github.com/DGtal-team/DGtal/pull/850)). 
+
+- *Geometry Package*
+ - Fix and add concept of CSurfelLocalEstimator and related ground
+  truth estimators for implicit polynomial shapes
+  (TrueDigitalSurfaceLocalEstimator). (Jacques-Olivier Lachaud,
+  [#803](https://github.com/DGtal-team/DGtal/pull/803))
+ - Add Integral Invariant estimators so that they meet the concept of
+  surface local estimator. Add geometric functors to define easily all
+  the geometric estimators that can be built from the volume and
+  coariance matrix. (Jeremy Levallois, Jacques-Olivier Lachaud,
+  [#803](https://github.com/DGtal-team/DGtal/pull/803))
+ - Random-access iterators added in ArithmeticalDSL. (Tristan
+   Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
+
+- *IO Package*
+  - Better handling of materials in Board3D and OBJ exports. (David
+    Coeurjolly,
+    [#784](https://github.com/DGtal-team/DGtal/pull/784))
+  - New 'basic' display mode for surfels (oriented or not), useful for
+    large digital surface displays (quads instead of 3D prism)
+    (Bertrand Kerautret,
+    [#783](https://github.com/DGtal-team/DGtal/pull/783))
+  - New clear() method to subclasses of Display3D (Viewer3D and
+    Board3D) to clear the current drawning buffer. (Kacper Pluta,
+    [#807](https://github.com/DGtal-team/DGtal/pull/807))
+  - New draw() method for 3D display models (Viewer3D and Board3D) to
+    display surfels with prescribed normal vectors (David Coeurjolly,
+    [#802](https://github.com/DGtal-team/DGtal/pull/802)).
+  - When exporting an 3D visualization to OBJ, a new option will
+    rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
+    [#820](https://github.com/DGtal-team/DGtal/pull/820))
+
+## Bug Fixes
+
+
+- *Base Package*
+
+  - Fixing issue on Circulator/IteratorFunctions (related to #770 on
+    MacOS).
+
+- *Geometry Package*
+  - Bug fix in PowerMap construction. (David Coeurjolly,
+    [#814](https://github.com/DGtal-team/DGtal/pull/814))
+
+- *Topology Package*
+  - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
+    [#803](https://github.com/DGtal-team/DGtal/pull/803))
+
+- *Image Package*
+  - Fixing template types in ImageAdapter (David Coeurjolly,
+    [#835](https://github.com/DGtal-team/DGtal/pull/835))
+  - Fixing image thresholders which require CConstImage instead of
+    CImage (David Coeurjolly,
+    [#843](https://github.com/DGtal-team/DGtal/pull/843))
 
 
 === DGtal 0.7 ===
