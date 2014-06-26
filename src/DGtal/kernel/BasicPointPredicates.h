@@ -260,6 +260,11 @@ namespace DGtal
    * Aim: The predicate returns true when the given binary functor
    * returns true for the two PointPredicates given at construction.
    *
+   * Note that this class is specialized for DGtal::AndBoolFct2 and 
+   * DGtal::OrBoolFct2 in order to guarantee that the second computation
+   * is not performed when the first point predicate return false (resp. true)
+   * with DGtal::AndBoolFct2 (resp. DGtal::OrBoolFct2). 
+   *
    * @tparam TPointPredicate1 the left predicate type.
    * @tparam TPointPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
@@ -299,6 +304,54 @@ namespace DGtal
     const PointPredicate2* myPred2;
     /// aliasing pointer to the binary functor.
     const TBinaryFunctor* myBoolFunctor;
+  };
+
+  /**
+   * Specialization of BinaryPointPredicate for AndBoolFct2
+   */
+  template <typename TPointPredicate1, typename TPointPredicate2>
+  struct BinaryPointPredicate<TPointPredicate1, TPointPredicate2, AndBoolFct2>
+  {
+    typedef TPointPredicate1 PointPredicate1;
+    typedef TPointPredicate2 PointPredicate2;
+    typedef typename PointPredicate1::Point Point;
+    typedef typename PointPredicate2::Point Point2;
+
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
+
+    BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<AndBoolFct2> boolFunctor );
+
+    bool operator()( const Point & p ) const;
+
+    const PointPredicate1* myPred1;
+    const PointPredicate2* myPred2;
+    const AndBoolFct2* myBoolFunctor;
+  };
+
+  /**
+   * Specialization of BinaryPointPredicate for OrBoolFct2
+   */
+  template <typename TPointPredicate1, typename TPointPredicate2>
+  struct BinaryPointPredicate<TPointPredicate1, TPointPredicate2, OrBoolFct2>
+  {
+    typedef TPointPredicate1 PointPredicate1;
+    typedef TPointPredicate2 PointPredicate2;
+    typedef typename PointPredicate1::Point Point;
+    typedef typename PointPredicate2::Point Point2;
+
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
+
+    BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<OrBoolFct2> boolFunctor );
+
+    bool operator()( const Point & p ) const;
+
+    const PointPredicate1* myPred1;
+    const PointPredicate2* myPred2;
+    const OrBoolFct2* myBoolFunctor;
   };
 
   /////////////////////////////////////////////////////////////////////////////
