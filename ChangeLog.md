@@ -1,7 +1,7 @@
 # DGtal 0.8
 
 
-## New Features
+## New Features / Critical Changes
 
 - *Base*
  - This Changelog has been ported to MarkDown (David Coeurjolly,

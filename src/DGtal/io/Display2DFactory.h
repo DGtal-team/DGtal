@@ -203,7 +203,7 @@ static void drawFill( DGtal::Board2D & aBoard, const GridCurve<TKSpace> & object
 // SCellsRange
 template <typename TIterator, typename TSCell>
 static void draw( DGtal::Board2D & aBoard, 
-           const ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> & object );
+                  const ConstRangeAdapter<TIterator, functors::DefaultFunctor, TSCell> & object );
 // SCellsRange
     
 // PointsRange

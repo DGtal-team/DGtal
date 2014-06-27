@@ -84,7 +84,7 @@ namespace DGtal
    * @see testVolReader.cpp
    */
   template <typename TImageContainer,  
-	    typename TFunctor = CastFunctor< typename TImageContainer::Value > >
+	    typename TFunctor = functors::CastFunctor< typename TImageContainer::Value > >
   struct VolReader
   {
     // ----------------------- Standard services ------------------------------
