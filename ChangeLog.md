@@ -108,7 +108,9 @@
 - *IO*
   - Bug fix for reading PGM(P2) 3D. (Kacper Pluta,
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
-
+  - Renaming BasicColorToScalarFunctors namespace to functors:: (David
+    Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
+    
 === DGtal 0.7 ===
 
 *General*
