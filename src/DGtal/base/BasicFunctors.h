@@ -167,14 +167,14 @@ namespace functors
   };
 
   /**
-   * Description of template class 'ConstValueFunctor' <p>
+   * Description of template class 'ConstValue' <p>
    * \brief Aim: Define a simple functor that returns
    * a constant value (0 by default).
    *
    * @tparam TValue type of the value
    */
   template <typename TValue>
-  class ConstValueFunctor : std::unary_function <TValue,TValue>
+  class ConstValue : std::unary_function <TValue,TValue>
   {
   public:
     typedef TValue Value;
@@ -183,7 +183,7 @@ namespace functors
      * Constructor.
      * @param aValue  the constant value.
      */
-    ConstValueFunctor(const Value& aValue = 0)
+    ConstValue(const Value& aValue = 0)
       :myValue(aValue) {};
 
     /**
@@ -209,7 +209,7 @@ namespace functors
   };
 
   /**
-   * Description of template class 'ConstValueCellFunctor' <p>
+   * Description of template class 'ConstValueCell' <p>
    * \brief Aim: Define a simple functor that returns
    * a constant quantity (0 by default).
    *
@@ -217,7 +217,7 @@ namespace functors
    * @tparam TCell type of the cell
    */
   template <typename TQuantity, typename TCell>
-  class ConstValueCellFunctor : std::unary_function <TQuantity,TQuantity>
+  class ConstValueCell : std::unary_function <TQuantity,TQuantity>
   {
   public:
     typedef TCell Cell;
@@ -227,7 +227,7 @@ namespace functors
      * Constructor.
      * @param aQuantity  the constant quantity.
      */
-    ConstValueCellFunctor(const Quantity& aQuantity = 0)
+    ConstValueCell(const Quantity& aQuantity = 0)
       :myQuantity(aQuantity) {}
 
     /**
@@ -811,20 +811,20 @@ private:
 
 
   /**
-   * Description of  class 'GaussianKernelFunctor' <p>
+   * Description of  class 'GaussianKernel' <p>
    * \brief Aim: defines a functor on double number which correspond
    * to a Gaussian convolution kernel.
    * This functor acts from [0,1] to [0,1]
    *
    */
-  struct GaussianKernelFunctor
+  struct GaussianKernel
   {
     /**
      * Constructor
      *
      * @param [in] aSigma the sigma parameter of the Gaussian function.
      */
-    GaussianKernelFunctor(const double aSigma) :mySigma(aSigma)
+    GaussianKernel(const double aSigma) :mySigma(aSigma)
     {
       myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
       myCoef2 = 1.0/(2.0*M_PI);

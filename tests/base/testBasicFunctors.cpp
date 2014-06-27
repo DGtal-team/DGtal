@@ -71,7 +71,7 @@ bool testBasicFunctors()
 
   {//constant functor
     const int v = -1;
-    DGtal::functors::ConstValueFunctor<int> f(v);
+    DGtal::functors::ConstValue<int> f(v);
     char c = 'a'; 
     nbok += ( f(c) == v ) ? 1 : 0; 
     nb++;
@@ -178,10 +178,10 @@ int main( int argc, char** argv )
 
   //concept checking
   basicFunctorsConceptChecking<functors::Identity,int,int>(); 
-  basicFunctorsConceptChecking<DGtal::functors::ConstValueFunctor<int>,int,int >();
+  basicFunctorsConceptChecking<DGtal::functors::ConstValue<int>,int,int >();
   basicFunctorsConceptChecking<functors::Cast<int>,short,int >();
   basicFunctorsConceptChecking<DGtal::functors::Thresholder<int>,int,bool >();
-  basicFunctorsConceptChecking<functors::Composer<functors::ConstValueFunctor<double>,functors::Cast<int>,int>,char,int >();
+  basicFunctorsConceptChecking<functors::Composer<functors::ConstValue<double>,functors::Cast<int>,int>,char,int >();
 
 
   //run-time tests
