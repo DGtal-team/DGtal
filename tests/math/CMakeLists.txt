@@ -6,8 +6,7 @@ SET(DGTAL_TESTS_SRC_MATH
        testHistogram
        testMPolynomial
        testAngleLinearMinimizer
-       testBasicMathFunctions
-       testEigenDecomposition )
+       testBasicMathFunctions )
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})

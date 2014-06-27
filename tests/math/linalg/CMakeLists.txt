@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC_MATH_LINALG
-       testSimpleMatrix)
+       testSimpleMatrix
+       testEigenDecomposition )
 
 if (WITH_EIGEN)
     set(DGTAL_TESTS_SRC_MATH_LINALG "${DGTAL_TESTS_SRC_MATH_LINALG}"
