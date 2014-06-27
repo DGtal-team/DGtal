@@ -124,6 +124,7 @@ And then visualize the resulting obj and mtl file by using for instance blender:
 
 \image html   dgtalBoard3D-1-points.png "Visualisation of exported OBJ file with blender."
 
+@advanced By setting a second paramter to true when calling the saveOBJ, the geometrical objects will be scaled so that they fit in a [-1/2, 1/2]^3 domain.
 
 
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
@@ -292,6 +293,26 @@ You will obtain such type of illustration (obtained from the example <a href="io
  \image latex  view3D-4bis-illustrationMode.png "Illustration of the \"Illustration\" KhalimskyCell mode."
 
 
+@advanced There exists a specific method to display surfels (Khalimsky
+cells of dimension 2 in a space of dimension 3) as quadrilaterals
+where the user can prescribe a unitary normal vector. In Viewer3D, the
+normal vector is used in the rendering process (useful to check the
+geometrical consistency of a normal vector field). Basic usage is:
+
+@code
+ Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( aViewer, aSurfel, theSurfelSign, aNormalVector);
+@endcode
+or if the surfel is not oriented (unsigned khalimsky cell).
+@code
+ Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( aViewer, aSurfel, aNormalVector);
+@endcode
+
+In the later case, the quadrilateral vertices are oriented such that
+the dot product between the normal vector and the quad canonical
+normal vector is positive. Finally, these two methods accept a last
+boolean parameter such that if true, the quad is geometrically
+duplicated with opposite normal vector (double-quad rendering).
+
 
 
 
@@ -400,7 +421,7 @@ and by changing the "BoundingBox" mode by "InterGrid" you will obtain the follow
 See more details on this example io/viewers/viewer3D-8-2DSliceImages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer.
 
 
-\subsection DGtalGLV_ImagesEmbedded Adding 2D images (from any embedding) 
+\subsection DGtalGLV_ImagesEmbedded Adding 2D images (from any embedding)
 
 The slice images are not the only way to display 2D images in 3D. A
 2D image can also be extracted and embedded in 3D by using a single
@@ -411,7 +432,7 @@ io/viewers/viewer3D-8bis-2Dimages.cpp illustrates such a display.
 First we  need to add the header file associated with the  Point2DEmbedderIn3D:
 @snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceHeader
 
-Then, the type definition of ConstImageAdapter is added: 
+Then, the type definition of ConstImageAdapter is added:
 @snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceType
 
 The resulting 2D domain can be deduced from the width used in the functor:
@@ -443,7 +464,7 @@ See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp
 
 
 
-\section DGtalGLV_Images3Dcustom Customizing Slice Image visualization 
+\section DGtalGLV_Images3Dcustom Customizing Slice Image visualization
 
 By default an image is displayed in gray scale levels from its scalar
 values. However it is possible to display color texture image by using
@@ -606,7 +627,7 @@ Khalimsky Signed Cell Visualization (with Board3DTo2D)
 */
 
 /**
- *  Example of 2D image display in 3D by 3D embedding. 
+ *  Example of 2D image display in 3D by 3D embedding.
  *
  * \image html viewer3D-8bis.png "Illustration of multiple 2D image extraction and visualisation  from 3D embedding"
  * \example io/viewers/viewer3D-8bis-2Dimages.cpp

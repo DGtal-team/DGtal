@@ -163,7 +163,7 @@ template <typename Point>
 static void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, bool anOrientation = true);
     
 template <typename Point>
-static void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, const double& w = 1.0, bool anOrientation = true);
+static void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, bool anOrientation = true, const double& w = 1.0);
     
 template <typename Point>
 static void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, bool anOrientation = true);

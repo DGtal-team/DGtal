@@ -54,15 +54,37 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class CountedConstPtrOrConstPtr
   /**
-   * Description of template class 'CountedConstPtrOrConstPtr' <p> \brief Aim:
-   * Smart or simple const pointer on \c T. It can be a smart pointer based
-   * on reference counts or a simple pointer on \c T depending of a
-   * boolean value. This is useful when instantiating from a ConstAlias<T>
-   * object, letting the user specify if it uses smart pointers or
-   * simply pointers.
+   * Description of template class 'CountedConstPtrOrConstPtr' <p>
+   * \brief Aim: Smart or simple const pointer on \c T. It can be a
+   * smart pointer based on reference counts or a simple pointer on \c
+   * T depending of a boolean value. This is useful when instantiating
+   * from a ConstAlias<T> object, letting the user specifies if it uses
+   * smart pointers or simply pointers. This class should be used as a
+   * meta-type for data members, when the programmer wants to hold a
+   * const-reference to some object during some period, but also wants
+   * to let the user decides whether the class should keep a smart
+   * reference or non-smart reference to the object. How and where to
+   * use such smart pointers is explained in \ref
+   * moduleCloneAndReference_sec24.
+   *
+   * \code
+   * struct B {};
+   * struct A {
+   *   CountedConstPtrOrConstPtr<B> myPtrB;
+   *   A( ConstAlias<B> someB ) : myPtrB( B ) {}
+   * };
+   * int main() {
+   *   B b1;
+   *   A a1( b1 ); // a1.myPtrB points to b1, classic pointer
+   *   B* b2 = new B;
+   *   A a2( b2 ); // a2.myPtrB acquires b2 (and will take care of freeing it)
+   *   CountedPtr<B> b3 = CountedPtr<B>( new B ); // smart pointer
+   *   A a3( b3 ); // a3.myPtrB smart points to b3.
+   * \endcode
    *
    * @tparam T any type.
    * @see CountedPtr
+   * @see ConstAlias
    */
   template <typename T>
   class CountedConstPtrOrConstPtr
@@ -78,7 +100,14 @@ namespace DGtal
     typedef typename CountedPtr<T>::Counter Counter;
 
     /**
-       allocate a new counter (smart if isCountedPtr==true)
+       Allocate a new counter (smart if isCountedPtr==true).
+
+       @param p is a pointer to some object T. If \a isCountedPtr is
+       true, then \a p should point to some dynamically allocated
+       object T.
+
+       @param isCountedPtr when 'true', stores \a p as a smart
+       (counted) pointer, otherwise stores \a p directly.
     */
     inline explicit CountedConstPtrOrConstPtr( const T* p = 0, bool isCountedPtr = true )
       : myAny(0), myIsCountedPtr( isCountedPtr )
@@ -121,7 +150,7 @@ namespace DGtal
     {
       if ( this != & r ) {
 	if ( myIsCountedPtr ) release();
-	if ( r.myIsCountedPtr ) acquire( r.myCounter );
+	if ( r.myIsCountedPtr ) acquire( static_cast<Counter*>( r.myAny ) );
 	else myAny = r.myAny;
 	myIsCountedPtr = r.myIsCountedPtr;
       }
@@ -132,7 +161,7 @@ namespace DGtal
     {
       if ( this != & r ) {
 	if ( myIsCountedPtr ) release();
-	if ( r.myIsCountedPtr ) acquire( r.myCounter );
+	if ( r.myIsCountedPtr ) acquire( static_cast<Counter*>( r.myAny ) );
 	else myAny = r.myAny;
 	myIsCountedPtr = r.myIsCountedPtr;
       }
@@ -147,6 +176,28 @@ namespace DGtal
 	myIsCountedPtr = true;
       }
       return *this;
+    }
+
+    /**
+       Equality operator ==
+       
+       @param other any other pointer.
+       @return 'true' if pointed address is equal to \a other.
+    */
+    bool operator==( const T* other ) const
+    {
+      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) == other : ptr() == other;
+    }
+
+    /**
+       Inequality operator !=
+       
+       @param other any other pointer.
+       @return 'true' if pointed address is different from \a other.
+    */
+    bool operator!=( const T* other ) const
+    {
+      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) != other : ptr() != other;
     }
 
     const T& operator*()  const throw()   { return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); }

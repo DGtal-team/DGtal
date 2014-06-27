@@ -59,7 +59,7 @@ namespace DGtal
 
   /**
    * @brief Aim: model of CConstBidirectionalRangeFromPoint and 
-   * CBidirectionalOutputRangeFromPoint that adapts the domain 
+   * CBidirectionalRangeWithWritableIteratorFromPoint that adapts the domain 
    * of an image in order to iterate over the values associated
    * to its domain points
    * (in a read-only as well as a write-only manner).  

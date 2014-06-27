@@ -92,7 +92,7 @@ Moreover, in addition to the ConstRange, images must have
 the following inner type: 
 
   - Range, a model of CConstBidirectionalRangeFromPoint, like ConstRange,
-and a model of CBidirectionalOutputRangeFromPoint, which must provide 
+and a model of CBidirectionalRangeWithWritableIteratorFromPoint, which must provide 
 output iterators for incrementally updating a (sub)range of values.   
 
 Obviously, you can get an instance of this type using the following method: 
@@ -172,7 +172,7 @@ must be equal to the `end` (resp. `rend`) methods.
 
 Images provide in addition to a constant range, a richer range returned by the `range` method.
 This range is not only a model of CBidirectionalRangeFromPoint, but also a model 
-of CBidirectionalOutputRangeFromPoint. That is why, it must have two methods:   
+of CBidirectionalRangeWithWritableIteratorFromPoint. That is why, it must have two methods:   
 `outputIterator` and `routputIterator` returning output iterators. Moreover, 
 it must have overloaded versions of these methods taking a point as input argument. 
 Thus, these output iterators are useful in order to incrementaly fill (a part of) an image. 
@@ -416,6 +416,41 @@ from point functors or other images: imageFromFunctor and imageFromImage.
 4. Lastly, some functor like the Projector from BasicPointFunctors can be useful to manipulate domain points and permits to extract N-1 images from ND images (see example \ref extract2DImagesFrom3D.cpp).  
 
 
+\subsection SubSampleFct Subsampling functor 
+
+In association with ConstImageAdapter or ImageAdapter you can apply
+image subsampling using a domain subsampler (BasicDomainSubSampler from the BasicPointFunctors class). The example
+\ref imageBasicSubsampling.cpp illustrates such a simple image subsampling  (in 2D and
+3D).
+
+To apply the subsampling, you first have to import the headers
+associated with the ConstImageAdapter and to the BasicDomainSubSampler: 
+
+
+@snippet images/imageBasicSubsampling.cpp imageBasicSubsamplingHeaders
+
+
+Then you can define some image types including the ConstImageAdapter:
+
+@snippet images/imageBasicSubsampling.cpp imageBasicSubsamplingType2D
+
+A subsampling functor can be constructed from a given grid size and a shift vector:
+
+@snippet images/imageBasicSubsampling.cpp imageBasicSubsamplingSubSampler2D
+
+Afterwards the ConstImageAdapter can be defined as follows:
+
+@snippet images/imageBasicSubsampling.cpp imageBasicSubsamplingConstImageAdapterSubSampling2D
+
+The resulting image can be exported with the GenericWriter class:
+
+@snippet  images/imageBasicSubsampling.cpp imageBasicSubsamplingExport2D
+
+
+You will obtain such a result (with also the result on 3D images):
+ \image html imageBasicSubsamplingExample.png "Illustration of the resulting subsampling given by the imageBasicSubsampling.cpp example".
+
+
 */
 }
 
@@ -442,6 +477,16 @@ from point functors or other images: imageFromFunctor and imageFromImage.
    \image html lobsterVisu3DSlicesZ.png   "Example of 3D visualisation of 2D slices images of the sample/lobster.vol file."
 
 * \example images/extract2DImagesFrom3DandVisu.cpp
+**/
+
+
+
+/**
+ * Examples of 2D and 3D basic image subsampling.
+
+ \image html imageBasicSubsamplingExample.png "Illustration of the resulting subsampling produced by this example."
+
+* \example images/imageBasicSubsampling.cpp
 **/
 
 

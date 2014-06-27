@@ -23,7 +23,7 @@
  *
  * @date 2012/11/28
  *
- * Functions for testing class IntegralInvariantCurvatureEstimator2D.
+ * Functions for testing class IntegralInvariantVolumeEstimator and IICurvatureFunctor.
  *
  * This file is part of the DGtal library.
  */
@@ -32,16 +32,20 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
+/// Shape
+#include "DGtal/shapes/implicit/ImplicitBall.h"
+
+/// Digitization
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
-#include "DGtal/kernel/BasicPointFunctors.h"
-#include "DGtal/shapes/implicit/ImplicitBall.h"
+
+/// Estimator
+#include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,17 +53,11 @@
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class IntegralInvariantCurvatureEstimator2D.
+// Functions for testing class IntegralInvariantVolumeEstimator and IICurvatureFunctor.
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
+
 bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 {
-  typedef Z2i::Space::RealPoint RealPoint;
-  typedef Z2i::KSpace::Surfel Surfel;
-  typedef Z2i::Domain Domain;
   typedef ImplicitBall<Z2i::Space> ImplicitShape;
   typedef GaussDigitizer<Z2i::Space, ImplicitShape> DigitalShape;
   typedef LightImplicitDigitalSurface<Z2i::KSpace,DigitalShape> Boundary;
@@ -67,21 +65,21 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator VisitorConstIterator;
-  typedef PointFunctorFromPointPredicateAndDomain< DigitalShape, Z2i::Domain, unsigned int > MyPointFunctor;
-  typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MySpelFunctor;
-  typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MySpelFunctor > MyIIMeanEstimator;
-  typedef MyIIMeanEstimator::Quantity Quantity;
+
+  typedef IIGeometricFunctors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
+  typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
+  typedef MyIICurvatureFunctor::Value Value;
 
   double re = 10;
   double radius = 15;
   double realValue = 1.0/radius;
 
-  trace.beginBlock ( "Initialisation of shape ..." );
+  trace.beginBlock( "Shape initialisation ..." );
 
-  ImplicitShape ishape( RealPoint( 0, 0 ), radius );
+  ImplicitShape ishape( Z2i::RealPoint( 0, 0 ), radius );
   DigitalShape dshape;
   dshape.attach( ishape );
-  dshape.init( RealPoint( -20.0, -20.0 ), RealPoint( 20.0, 20.0 ), h );
+  dshape.init( Z2i::RealPoint( -20.0, -20.0 ), Z2i::RealPoint( 20.0, 20.0 ), h );
 
   Z2i::KSpace K;
   if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
@@ -90,33 +88,33 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
     return false;
   }
 
-  Surfel bel = Surfaces<Z2i::KSpace>::findABel( K, dshape, 10000 );
+  Z2i::KSpace::Surfel bel = Surfaces<Z2i::KSpace>::findABel( K, dshape, 10000 );
   Boundary boundary( K, dshape, SurfelAdjacency<Z2i::KSpace::dimension>( true ), bel );
   MyDigitalSurface surf ( boundary );
 
   trace.endBlock();
 
-  trace.beginBlock( "Initialisation of estimator ..." );
-
-  Domain domain = dshape.getDomain();
-  MyPointFunctor pointFunctor( dshape, domain, 1, 0 );
-  MySpelFunctor functor( pointFunctor, K );
-
-  MyIIMeanEstimator estimator( K, functor );
-  estimator.init( h, re );
-
-  trace.endBlock();
-
-  trace.beginBlock( "Eval estimator" );
-
-  std::vector< Quantity > results;
-  std::back_insert_iterator< std::vector< Quantity > > resultsIt( results );
-
+  trace.beginBlock( "Curvature estimator initialisation ...");
+  
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
 
-  estimator.eval( ibegin, iend, resultsIt );
+  MyIICurvatureFunctor curvatureFunctor;
+  curvatureFunctor.init( h, re );
+
+  MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
+  curvatureEstimator.attach( K, dshape );
+  curvatureEstimator.setParams( re/h );
+  curvatureEstimator.init( h, ibegin, iend );
+
+  trace.endBlock();
+
+  trace.beginBlock( "Curvature estimator evaluation ...");
+
+  std::vector< Value > results;
+  std::back_insert_iterator< std::vector< Value > > resultsIt( results );
+  curvatureEstimator.eval( ibegin, iend, resultsIt );
 
   trace.endBlock();
 
@@ -165,7 +163,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class IntegralInvariantCurvatureEstimator2D" );
+  trace.beginBlock ( "Testing class IntegralInvariantVolumeEstimator and IICurvatureFunctor" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];

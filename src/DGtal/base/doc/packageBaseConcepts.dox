@@ -41,15 +41,15 @@ digraph GBASE {
     CBidirectionalRangeFromPoint -> CConstBidirectionalRangeFromPoint;
     CConstBidirectionalRangeFromPoint -> CConstBidirectionalRange;
 
-    CBidirectionalOutputRange -> CSinglePassOutputRange;
-    CBidirectionalOutputRangeFromPoint -> CBidirectionalOutputRange;
+    CBidirectionalRangeWithWritableIterator -> CSinglePassRangeWithWritableIterator;
+    CBidirectionalRangeWithWritableIteratorFromPoint -> CBidirectionalRangeWithWritableIterator;
 
     CQuantity -> CLabel;
     CPredicate;
     label = "Base";
   }
 
-  "CSinglePassOutputRange" -> boost_OutputIterator [label="use", style=dashed];
+  "CSinglePassRangeWithWritableIterator" -> boost_OutputIterator [label="use", style=dashed];
   "CConstSinglePassRange" -> boost_SingePassIteratorConcept [label="use",style=dashed];
   "CSinglePassRange"->  boost_SingePassIteratorConcept [label="use",style=dashed] ;
   CPredicate -> boost_Assignable;

@@ -54,7 +54,6 @@ bool mainTest()
   BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
-  typedef typename DSS::Vector Vector;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -203,8 +202,6 @@ bool mainTest()
 template <typename DSS>
 bool rangeTest(const DSS& dss)
 {
-  typedef typename DSS::Point Point;
-
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
@@ -659,9 +656,6 @@ bool updateTest()
 template <typename DSS>
 bool compatibleStepsTest(const DSS& dss)
 {
-  typedef typename DSS::Point Point;
-  typedef typename DSS::Vector Vector;
-
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
@@ -747,7 +741,6 @@ bool constructorsTest()
   BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<DSS> ));
 
   typedef typename DSS::Point Point;
-  typedef typename DSS::Vector Vector;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -802,6 +795,101 @@ bool constructorsTest()
 
   return nbok == nb;
 }
+
+/**
+ * Computes the subsegment of minimal parameters 
+ * with the classical recognition algorithm, 
+ * implemented in ArithmeticalDSS. 
+ * @param aDSL DSL containing the subsegment
+ * @param x minimal position
+ * @param y maximal position
+ * @pre x != y
+ * @return the subsegment
+ * @tparam DSL an arithmetical DSL (either naive or standard)
+ */
+template <typename DSL>
+ArithmeticalDSS<typename DSL::Coordinate,typename DSL::Integer,DSL::foregroundAdjacency>
+trivialSubsegment(const DSL& aDSL, 
+		  typename DSL::Position x, typename DSL::Position y)
+{
+  ASSERT((y-x) > 0); 
+
+  typedef typename DSL::Point Point; 
+  typedef typename DSL::Vector Vector; 
+  typedef typename DSL::Coordinate Coordinate; 
+  typedef typename DSL::Integer Integer; 
+  typedef typename DSL::ConstIterator ConstIterator; 
+  typedef ArithmeticalDSS<Coordinate,Integer,DSL::foregroundAdjacency> DSS; 
+
+  Point startingPoint = aDSL.getPoint(x); 
+  ASSERT( aDSL(startingPoint) ); 
+  Point endingPoint = aDSL.getPoint(y); 
+  ASSERT( aDSL(endingPoint) ); 
+
+  DSS dss(aDSL.begin(startingPoint), aDSL.end(endingPoint)); 
+
+  return dss;  
+}
+
+/**
+ * Compares smartCH to the classical incremental recognition algorithm for 
+ * one subgement of a given DSL
+ * @param aDSL DSL containing the subsegment
+ * @param x minimal position
+ * @param y maximal position
+ * @return 'true' if results match, 'false' otherwise
+ * @tparam DSL an arithmetical DSL (either naive or standard)
+ */
+template <typename DSL>
+bool comparisonSubsegment(const DSL& aDSL, 
+			  typename DSL::Position x, typename DSL::Position y)
+{
+  typedef ArithmeticalDSS<typename DSL::Coordinate,typename DSL::Integer,DSL::foregroundAdjacency> DSS; 
+
+  DSS dsl1(aDSL, aDSL.getPoint(x), aDSL.getPoint(y)); 
+  DSS dsl2 = trivialSubsegment(aDSL, x, y); 
+
+  return (dsl1 == dsl2); 
+}
+
+/**
+ * Compares smartCH to the classical incremental recognition algorithm
+ * for various intercepts and lengths
+ * @param a numerator of the slope
+ * @param b denominator of the slope
+ * @return 'true' if the two algorithms return the same results, 
+ * 'false' otherwise
+ * @tparam DSL an arithmetical DSL (either naive or standard)
+ */
+template <typename DSL>
+bool comparisonSubsegment(typename DSL::Coordinate a, typename DSL::Coordinate b)
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Subsegment comparison ..." );
+
+  DSL aDSL(a, b, 0); 
+  for (typename DSL::Integer mu = 0; ( (mu-1 >= -aDSL.omega())&&(nbok == nb) ); --mu)
+    {
+      trace.info() << "mu=" << mu << std::endl; 
+
+      for (typename DSL::Position l = 1; ( (l <= 2*aDSL.patternLength())&&(nbok == nb) ); ++l)
+	{
+	  trace.info() << "l=" << l << std::endl; 
+
+	  if (comparisonSubsegment(DSL(a, b, mu), 0, l))
+	    nbok++;
+	  nb++; 
+	}
+
+    }
+
+  trace.endBlock(); 
+
+  return (nb == nbok); 
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -913,6 +1001,34 @@ int main( int argc, char** argv )
     && constructorsTest<DGtal::NaiveDSS8<DGtal::int32_t> >()
     && constructorsTest<DGtal::StandardDSS4<DGtal::int32_t> >()
     ;
+
+  {   //subsegment 
+  res = res 
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,13)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(12,29)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(29,70)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,5)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,5)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(5,-8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(8,-5)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-5,-8)
+    && comparisonSubsegment<NaiveDSL<DGtal::int32_t> >(-8,-5)
+
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,13)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(12,29)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(29,70)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,5)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,5)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(5,-8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,-5)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,-8)
+    && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,-5)
+      ;
+  }
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

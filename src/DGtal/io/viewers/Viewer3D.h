@@ -51,6 +51,8 @@
 #include <GL/glu.h>
 #endif
 
+#include <QtGui/qapplication.h>
+
 
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
@@ -975,7 +977,7 @@ namespace DGtal
           double norm = sqrt(vectNormal[0]*vectNormal[0]+vectNormal[1]*vectNormal[1]+vectNormal[2]*vectNormal[2]);
           vectNormal[0] /=norm; vectNormal[1] /=norm; vectNormal[2] /=norm;
         }
-        
+
         myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
         myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight);
 

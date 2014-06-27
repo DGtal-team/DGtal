@@ -48,7 +48,7 @@ digraph GIMAGE {
                  CPointFunctor [label="CPointFunctor" URL="@ref CPointFunctor"];   
 		 CDomain [label="CDomain" URL="@ref CDomain"]; 
 		 CConstBidirectionalRangeFromPoint [label="CConstBidirectionalRangeFromPoint" URL="@ref CConstBidirectionalRangeFromPoint"]; 
-		 CBidirectionalOutputRangeFromPoint [label="CBidirectionalOutputRangeFromPoint" URL="@ref CBidirectionalOutputRangeFromPoint"]; 
+		 CBidirectionalRangeWithWritableIteratorFromPoint [label="CBidirectionalRangeWithWritableIteratorFromPoint" URL="@ref CBidirectionalRangeWithWritableIteratorFromPoint"]; 
 		 }
 	 }
 
@@ -74,7 +74,7 @@ digraph GIMAGE {
   CTrivialConstImage -> CDomain [label="use",style=dashed] ;
   CConstImage -> CDomain [label="use",style=dashed] ;
   CConstImage -> CConstBidirectionalRangeFromPoint [label="use",style=dashed] ;
-  CImage -> CBidirectionalOutputRangeFromPoint [label="use",style=dashed] ;
+  CImage -> CBidirectionalRangeWithWritableIteratorFromPoint [label="use",style=dashed] ;
   CTrivialConstImage -> CPointFunctor;
 
  subgraph cluster_models {

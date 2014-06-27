@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CLocalGeometricEstimator.h
+ * @file CCurveLocalGeometricEstimator.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/06/21
  *
- * Header file for concept CLocalGeometricEstimator.cpp
+ * Header file for concept CCurveLocalGeometricEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CLocalGeometricEstimator_RECURSES)
-#error Recursive header files inclusion detected in CLocalGeometricEstimator.h
-#else // defined(CLocalGeometricEstimator_RECURSES)
+#if defined(CCurveLocalGeometricEstimator_RECURSES)
+#error Recursive header files inclusion detected in CCurveLocalGeometricEstimator.h
+#else // defined(CCurveLocalGeometricEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CLocalGeometricEstimator_RECURSES
+#define CCurveLocalGeometricEstimator_RECURSES
 
-#if !defined CLocalGeometricEstimator_h
+#if !defined CCurveLocalGeometricEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define CLocalGeometricEstimator_h
+#define CCurveLocalGeometricEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,9 +50,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CLocalGeometricEstimator
+  // class CCurveLocalGeometricEstimator
   /**
-     Description of \b concept '\b CLocalGeometricEstimator' <p>
+     Description of \b concept '\b CCurveLocalGeometricEstimator' <p>
      @ingroup Concepts
      @brief Aim: This concept describes an object that can process 
      a range so as to return one estimated quantity for each element 
@@ -66,7 +66,7 @@ namespace DGtal
      - Quantity
 
      ### Notation
-     - \e X : A type that is a model of CLocalGeometricEstimator
+     - \e X : A type that is a model of CCurveLocalGeometricEstimator
      - \e x : object of type X
      - \e h : double
      - \e itb, ite, it : objects of type ConstIterator
@@ -86,14 +86,15 @@ namespace DGtal
 
      ### Models
 
-     MostCenteredMaximalSegmentEstimator TrueLocalEstimatorOnPoints
+     - MostCenteredMaximalSegmentEstimator, TrueLocalEstimatorOnPoints, BinomialConvolverEstimator
+     - concept refined by CSegmentComputerEstimator
 
      ### Notes
 
-     @tparam T the type that should be a model of CLocalGeometricEstimator.
+     @tparam T the type that should be a model of CCurveLocalGeometricEstimator.
   */
   template <typename T>
-  struct CLocalGeometricEstimator: 
+  struct CCurveLocalGeometricEstimator: 
     boost::DefaultConstructible<T>
   {
 
@@ -108,7 +109,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
 
 
-    BOOST_CONCEPT_USAGE( CLocalGeometricEstimator )
+    BOOST_CONCEPT_USAGE( CCurveLocalGeometricEstimator )
     {
       //init method
       myX.init( myH, myItb, myIte ); 
@@ -131,14 +132,14 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CLocalGeometricEstimator
+  }; // end of concept CCurveLocalGeometricEstimator
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CLocalGeometricEstimator_h
+#endif // !defined CCurveLocalGeometricEstimator_h
 
-#undef CLocalGeometricEstimator_RECURSES
-#endif // else defined(CLocalGeometricEstimator_RECURSES)
+#undef CCurveLocalGeometricEstimator_RECURSES
+#endif // else defined(CCurveLocalGeometricEstimator_RECURSES)

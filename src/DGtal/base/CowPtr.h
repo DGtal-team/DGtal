@@ -94,6 +94,29 @@ public:
     T* get()                                {copy(); return myPtr.get();}
 
     /**
+       Equality operator ==
+       
+       @param other any other pointer.
+       @return 'true' if pointed address is equal to \a other.
+    */
+    bool operator==( const T* other ) const
+    {
+      return get() == other;
+    }
+
+    /**
+       Inequality operator !=
+       
+       @param other any other pointer.
+       @return 'true' if pointed address is different from \a other.
+    */
+    bool operator!=( const T* other ) const
+    {
+      return get() != other;
+    }
+
+
+    /**
      * For debug.
      */
     unsigned int count() const      {return myPtr.count();}

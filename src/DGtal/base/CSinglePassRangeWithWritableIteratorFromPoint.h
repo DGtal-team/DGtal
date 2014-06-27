@@ -17,32 +17,32 @@
 #pragma once
 
 /**
- * @file CSinglePassOutputRangeFromPoint.h
+ * @file CSinglePassRangeWithWritableIteratorFromPoint.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/03/27
  *
- * Header file for concept CSinglePassOutputRangeFromPoint.cpp
+ * Header file for concept CSinglePassRangeWithWritableIteratorFromPoint.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CSinglePassOutputRangeFromPoint_RECURSES)
-#error Recursive header files inclusion detected in CSinglePassOutputRangeFromPoint.h
-#else // defined(CSinglePassOutputRangeFromPoint_RECURSES)
+#if defined(CSinglePassRangeWithWritableIteratorFromPoint_RECURSES)
+#error Recursive header files inclusion detected in CSinglePassRangeWithWritableIteratorFromPoint.h
+#else // defined(CSinglePassRangeWithWritableIteratorFromPoint_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CSinglePassOutputRangeFromPoint_RECURSES
+#define CSinglePassRangeWithWritableIteratorFromPoint_RECURSES
 
-#if !defined CSinglePassOutputRangeFromPoint_h
+#if !defined CSinglePassRangeWithWritableIteratorFromPoint_h
 /** Prevents repeated inclusion of headers. */
-#define CSinglePassOutputRangeFromPoint_h
+#define CSinglePassRangeWithWritableIteratorFromPoint_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CSinglePassOutputRange.h"
+#include "DGtal/base/CSinglePassRangeWithWritableIterator.h"
 #include "DGtal/base/CConstSinglePassRangeFromPoint.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -50,18 +50,18 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CSinglePassOutputRangeFromPoint
+  // class CSinglePassRangeWithWritableIteratorFromPoint
   /**
-     Description of \b concept '\b CSinglePassOutputRangeFromPoint' <p>
+     Description of \b concept '\b CSinglePassRangeWithWritableIteratorFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of single pass range with a outputIterator() method from a point.
 
-     ### Refinement of CConstSinglePassRangeFromPoint and CSinglePassOutputRange
+     ### Refinement of CConstSinglePassRangeFromPoint and CSinglePassRangeWithWritableIterator
 
      ### Associated types :
 
      ### Notation
-     - X : A type that is a model of CSinglePassOutputRangeFromPoint
+     - X : A type that is a model of CSinglePassRangeWithWritableIteratorFromPoint
      - x,  y : object of type X
      - Point: A type of Point
 
@@ -80,14 +80,14 @@ namespace DGtal
 
      ### Notes
 
-     @tparam T the type that should be a model of CSinglePassOutputRangeFromPoint.
+     @tparam T the type that should be a model of CSinglePassRangeWithWritableIteratorFromPoint.
      @tparam Value the type of object t in (*it) = t.
 
    */
   template <typename T, typename Value>
-  struct CSinglePassOutputRangeFromPoint:
+  struct CSinglePassRangeWithWritableIteratorFromPoint:
     CConstSinglePassRangeFromPoint<T,Value>,
-    CSinglePassOutputRange<T,Value>
+    CSinglePassRangeWithWritableIterator<T,Value>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -96,7 +96,7 @@ namespace DGtal
     typedef typename T::Point Point;
 
     // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CSinglePassOutputRangeFromPoint )
+    BOOST_CONCEPT_USAGE( CSinglePassRangeWithWritableIteratorFromPoint )
     {
        ConceptUtils::sameType( myIt, myX.begin( myPoint ) );
     }
@@ -110,14 +110,14 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CSinglePassOutputRangeFromPoint
+  }; // end of concept CSinglePassRangeWithWritableIteratorFromPoint
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CSinglePassOutputRangeFromPoint_h
+#endif // !defined CSinglePassRangeWithWritableIteratorFromPoint_h
 
-#undef CSinglePassOutputRangeFromPoint_RECURSES
-#endif // else defined(CSinglePassOutputRangeFromPoint_RECURSES)
+#undef CSinglePassRangeWithWritableIteratorFromPoint_RECURSES
+#endif // else defined(CSinglePassRangeWithWritableIteratorFromPoint_RECURSES)
