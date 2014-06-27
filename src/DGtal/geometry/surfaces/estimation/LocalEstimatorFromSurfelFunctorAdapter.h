@@ -73,7 +73,7 @@ namespace DGtal
    *
    *
    * More precisely, this adapter needs a model of CMetric to define
-   * the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
+nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
    * to perform the local estimator computation. When sent to the
    * functor, the surfels are weighted using the distance from the
    * kernel boundary: weights are defined in [0,1] interval, 1 for the
@@ -84,8 +84,8 @@ namespace DGtal
    *
    * Models of TConvolutionFunctor could be for instance
    * functors::Identity (returns the distance itself),
-   * ConstValueFunctor (returns a constant value) or
-   * GaussianKernelFunctor (parametrized by a sigma).
+   * ConstValue (returns a constant value) or
+   * GaussianKernel (parametrized by a sigma).
    *
    * During the @e init() method, we thus specify the gridstep @e h
    * and the radius of the ball to consider to define the

@@ -9,8 +9,9 @@
 
  - Global refactoring of base functors (David Coeurjolly,
    [#861](https://github.com/DGtal-team/DGtal/pull/861))
-    - BasicFunctor functors have been moved to functors:: namespace
-    - DefaultFunctor has been renamed functors::Identity
+    - BasicFunctor functors have been moved to functors:: namespace.
+    - DefaultFunctor has been renamed functors::Identity.
+    - xxxFunctor have been renamed to xxx.
     
 
 - *Geometry Package*

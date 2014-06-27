@@ -159,10 +159,10 @@ bool test_g_f_fm1()
 
     //ConstAdapter
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ConstImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, DGtal::functors::ConstValueFunctor<VImage::Value> > MyImageAdapter;
+    typedef ConstImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, DGtal::functors::ConstValue<VImage::Value> > MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CConstImage< MyImageAdapter > ));
     functors::Identity idD;
-    DGtal::functors::ConstValueFunctor<VImage::Value> idV(3);
+    DGtal::functors::ConstValue<VImage::Value> idV(3);
     MyImageAdapter restimage(image, domain, idD, idV);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
     nbok += (restimage(Z2i::Point(3,3)) == 3) ? 1 : 0;
