@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <cmath>
+#include <vector>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -76,27 +77,84 @@ DGtal::RigidTransformation2D<Image>::isValid() const
 }
 
 template <typename Image>
+inline
 typename Image::Point DGtal::RigidTransformation2D<Image>::transform ( typename Image::Point & point )
 {
   typename Image::Point p;
-  p[0] = std::floor ( ( ( t_cos * point[0] - t_sin * point[1] ) + translation[0] ) + 0.5 );
-  p[1] = std::floor ( ( ( t_sin * point[0] + t_cos * point[1] ) + translation[1] ) + 0.5 );
+  p[0] = std::floor ( ( ( t_cos * ( point[0] - origin[0] ) -
+  t_sin * ( point[1] - origin[1] ) ) + translation[0] ) + 0.5 );
+  
+  p[1] = std::floor ( ( ( t_sin * ( point[0] - origin[0] ) +
+  t_cos * ( point[1] - origin[1] ) ) + translation[1] ) + 0.5 );
+  return p + origin;
 }
 
 template <typename Image>
-typename Image::Point DGtal::RigidTransformation2D<Image>::transformInverted ( typename Image::Point & point )
+inline
+typename Image::Point DGtal::RigidTransformation2D<Image>::inversedTransform ( typename Image::Point & point )
 {
   typename Image::Point p;
-  p[0] = std::floor ( ( ( t_cos * point[0] + t_sin * point[1] ) + translation[0] ) + 0.5 );
-  p[1] = std::floor ( ( ( -t_sin * point[0] + t_cos * point[1] ) + translation[1] ) + 0.5 );
+  p[0] = std::floor ( ( t_cos * (point[0] - translation[0] - origin[0] ) +
+  t_sin * ( point[1] - translation[1] - origin[1] ) ) + 0.5 );
+  
+  p[1] = std::floor ( ( -t_sin * ( point[0] - translation[0] - origin[0] ) 
+  + t_cos * ( point[1] - translation[1] - origin[1] ) ) + 0.5 );
+  return p + origin;
 }
 
 template <typename Image>
 Image DGtal::RigidTransformation2D<Image>::allocate ( typename Image::Domain & domain )
 {
+  Point start = domain.first();
+  Point end = domain.last();
+  std::vector < Point > points ( 4 );
   
+  points[0] = transform ( start - origin ) + origin;
+  points[1] = transform ( end - origin ) + origin;
+  points[2] = transform ( Point ( end[0], start[1] ) - origin ) + origin;
+  points[3] = transform ( Point ( start[0], end[1] ) - origin ) + origin;
+  
+  Point t_min ( INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN );
+  for ( typename std::vector < Point >::const_iterator it = points.begin(); it != points.end(); ++it )
+  {
+    if ( (*it)[0] < t_min[0] )
+      t_min[0] = (*it)[0]; 
+    if ( (*it)[1] < t_min[1] )
+      t_min[1] = (*it)[1];
+    
+     if ( (*it)[0] > t_max[0] )
+      t_max[0] = (*it)[0]; 
+    if ( (*it)[1] > t_max[1] )
+      t_max[1] = (*it)[1]; 
+  }
+  return Image ( Image::Domain ( t_min, t_max ) );
 }
 
+template <typename Image>
+inline
+Image DGtal::RigidTransformation2D<Image>::forwardTransformation ( Image & image )
+{
+  Image output = allocate ( image.domain() );
+  
+  for ( typename Image::Domain::ConstIterator it = image.domain().begin(); it != image.domain().end(); ++it )
+  {
+    output.setValue ( image ( transform ( *it ) ) );
+  }
+  return output;
+}
+
+template <typename Image>
+inline
+Image DGtal::RigidTransformation2D<Image>::backwardTransformation ( Image & image )
+{
+  Image output = allocate ( image.domain() );
+  
+  for ( typename Image::Domain::ConstIterator it = output.domain().begin(); it != output.domain().end(); ++it )
+  {
+    output.setValue ( image ( inversedTransform ( *it ) ) );
+  }
+  return output;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
