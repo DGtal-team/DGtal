@@ -353,7 +353,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
       Integer b2 = myYZalgo.b();
       Integer c2 = myYZalgo.a();
 
-      direction = Point3d(b1*a1,b1*b2,b2*c2);
+      direction = Point3d(b2*a1,b1*b2,b1*c2);
 
       Integer mu1 = myXYalgo.mu();
       Integer mu2 = myYZalgo.mu();
@@ -370,6 +370,8 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>
     } else {                  
 
       if (myYZalgo.a() != 0) {//YZ-plane, XZ-plane
+
+	std::cerr << "YZ-XZ" << std::endl; 
 
         Integer b2 = myYZalgo.b();
         Integer c2 = myYZalgo.a();
