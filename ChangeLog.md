@@ -30,8 +30,9 @@
 
 - *Math Package*
 
-    - New classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition).
-      Add tests. (Jacques-Olivier Lachaud, #803)
+    - New classes to compute nD eigen decomposition of symmetric
+      matrix (class EigenDecomposition).  Add tests. (Jacques-Olivier
+      Lachaud, #803)
     - Simple Linear Regression tool added (backport from
       imagene). (David
       Coeurjolly, [#794](https://github.com/DGtal-team/DGtal/pull/794))
@@ -52,10 +53,12 @@
 ## Changes
 
 - *Base Package*
- - Add comparison operators in variants of CountedPtr. Improve coverage of these classes
-   and fix compilation problem (Jacques-Olivier Lachaud)
- - XXXOutputRangeYYY classes are now called XXXRangeWithWritableIteratorYYY
-   (Tristan Roussillon, [#850](https://github.com/DGtal-team/DGtal/pull/850)). 
+ - Add comparison operators in variants of CountedPtr. Improve
+   coverage of these classes and fix compilation problem
+   (Jacques-Olivier Lachaud)
+ - XXXOutputRangeYYY classes are now called
+   XXXRangeWithWritableIteratorYYY (Tristan Roussillon,
+   [#850](https://github.com/DGtal-team/DGtal/pull/850)).
 
 - *Geometry Package*
  - Fix and add concept of CSurfelLocalEstimator and related ground
