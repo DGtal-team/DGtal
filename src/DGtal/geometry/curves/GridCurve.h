@@ -406,13 +406,13 @@ namespace DGtal
 
     ///////////////////////// SCellsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::IdentityFunctor, SCell >  SCellsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::Identity, SCell >  SCellsRange;
 
     /**
      * @return an instance of SCellsRange
      */
     SCellsRange getSCellsRange() const {
-      return SCellsRange(mySCells.begin(), mySCells.end(), new functors::IdentityFunctor() );
+      return SCellsRange(mySCells.begin(), mySCells.end(), new functors::Identity() );
     } 
 
     ///////////////////////// PointsRange

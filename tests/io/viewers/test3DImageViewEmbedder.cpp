@@ -64,7 +64,7 @@ int main( int argc, char** argv )
   
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z3i::Domain, unsigned int>  Image3D;
   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
-                                   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+  Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
 
  QApplication application(argc,argv);
  Viewer3D<> viewer;
@@ -96,7 +96,7 @@ int main( int argc, char** argv )
                                                            pcenterImg, Z3i::RealPoint(0, 0, 1 ), 
                                                            IMAGE_PATCH_WIDTH);
  
- DGtal::DefaultFunctor idV;
+ functors::Identity idV;
  ImageAdapterExtractor extractedImage(image, domainImage2D, embedder, idV);
  ImageAdapterExtractor extractedImage2(image, domainImage2D, embedder2, idV);
  ImageAdapterExtractor extractedImage3(image, domainImage2D, embedder3, idV);

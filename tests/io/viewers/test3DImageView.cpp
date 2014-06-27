@@ -111,11 +111,11 @@ int main( int argc, char** argv )
  imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
  imageCol image3 = DGtal::GenericReader<imageCol>::import(filename3); 
  hueFct huefct;
- DefaultFunctor defaultfunctor;
+  functors::Identity defaultfunctor;
  
  viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct , Z3i::Space, Z3i::KSpace>(image2, huefct, Viewer3D<>::RGBMode );
  viewer << image;
- viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  DefaultFunctor, Z3i::Space, Z3i::KSpace>(image3, defaultfunctor, Viewer3D<>::RGBMode );
+  viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  functors::Identity, Z3i::Space, Z3i::KSpace>(image3, defaultfunctor, Viewer3D<>::RGBMode );
  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection,  50, 50, 50 );
  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(2, Viewer3D<>::yDirection,  0, 0, 0);
  

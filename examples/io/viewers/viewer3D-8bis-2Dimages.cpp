@@ -53,7 +53,7 @@ int main( int argc, char** argv )
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,  unsigned char > Image3D;
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
-                                   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+                                   Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
   QApplication application(argc,argv);
   typedef Viewer3D<> MyViewer;
@@ -61,7 +61,7 @@ int main( int argc, char** argv )
   viewer.show();
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
-  DGtal::DefaultFunctor idV;
+  DGtal::functors::Identity idV;
   
  
 

@@ -768,7 +768,7 @@ namespace DGtal
   namespace detail {
     
     /**
-     * Description of template class 'CastFunctorForSignedIntegers' <p>
+     * Description of template class 'functors::CastForSignedIntegers' <p>
      * \brief Aim: Define a simple functor that can cast 
      * a signed integer (possibly a DGtal::BigInteger) into another.
      *

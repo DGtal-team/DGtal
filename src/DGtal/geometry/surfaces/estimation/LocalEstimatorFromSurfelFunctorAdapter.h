@@ -83,7 +83,7 @@ namespace DGtal
    * TConvolutionFunctor.
    *
    * Models of TConvolutionFunctor could be for instance
-   * DefaultFunctor (returns the distance itself),
+   * functors::Identity (returns the distance itself),
    * ConstValueFunctor (returns a constant value) or
    * GaussianKernelFunctor (parametrized by a sigma).
    *
@@ -138,7 +138,7 @@ namespace DGtal
     ///Embedded and type definitions
     typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
-    typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
+    typedef functors::Composer<Embedder, MetricToPoint, Value> VertexFunctor;
     typedef DistanceBreadthFirstVisitor< DigitalSurface< DigitalSurfaceContainer >, 
                                          VertexFunctor> Visitor;
 

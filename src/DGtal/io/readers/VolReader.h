@@ -80,11 +80,11 @@ namespace DGtal
    *
    * @tparam TImageContainer the image container to use. 
    *
-   * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>) .
+   * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
    * @see testVolReader.cpp
    */
   template <typename TImageContainer,  
-	    typename TFunctor = functors::CastFunctor< typename TImageContainer::Value > >
+	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   struct VolReader
   {
     // ----------------------- Standard services ------------------------------
@@ -105,7 +105,7 @@ namespace DGtal
      * @param filename the file name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to CastFunctor < TImageContainer::Value > .
+     * default set to functors::Cast < TImageContainer::Value > .
      *
  
      * @return an instance of the ImageContainer.
