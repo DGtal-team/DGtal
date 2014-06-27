@@ -65,6 +65,7 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
     enum Model { EULERIAN, LAGRANGIAN };
+    typedef typename Image::Point Point;
     
     // ----------------------- Standard services ------------------------------
   public:
@@ -75,10 +76,10 @@ namespace DGtal
     }
     
     // setters
-    //! \param center of rotation.
-    void setCenter ( Z2i::Point &center )
+    //! \param center of rotation. \todo maybe better to set as def. the center of domain
+    void setOrigin ( Z2i::Point &t_origin )
     {
-      t_center = center;
+	origin = t_origin;
     }
     //! \param angle in radians
     void setAngle ( double angle )
@@ -90,7 +91,10 @@ namespace DGtal
     {
       translation = vector;
     }
+    //! \todo think about better interface
     Image transform ( Image & image, Model model );
+    typename Image::Point transform ( typename Image::Point &point );
+    typename Image::Point inversedTransform ( typename Image::Point &point );
     // getters
     
     /**
@@ -118,7 +122,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     double t_sin, t_cos;
-    Z2i::Point t_center;
+    Z2i::Point origin;
     Z2i::RealVector translation;
 
     // ------------------------- Hidden services ------------------------------
@@ -144,10 +148,9 @@ namespace DGtal
   private:
    // Allocation of output image
     Image allocate ( typename Image::Domain & domain );
-    typename Image::Point transform ( typename Image::Point &point );
-    typename Image::Point transformInverted ( typename Image::Point &point );
-    void lagrangianTransformation ( Image & image ){}
-    void eulerianTransformation ( Image & image ){}
+    //! maybe better the model and transform?
+    Image forwardTransformation ( Image & image );
+    Image backwardTransformation ( Image & image );
   }; // end of class RigidTransformation2D
   
 
