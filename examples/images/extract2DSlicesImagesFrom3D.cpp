@@ -50,7 +50,7 @@ int main( )
    typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
    typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
    typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::Projector<Z3i::Space>,
-   				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+   				   Image3D::Value,  DGtal::functors::Identity >  SliceImageAdapter;
 
    DGtal::Projector<Z2i::Space >  proj(2);
 
@@ -59,7 +59,7 @@ int main( )
    Image3D image = VolReader<Image3D>::importVol( filename );
    DGtal::Z2i::Domain domain(proj(image.domain().lowerBound()),
 			     proj(image.domain().upperBound()));
-   DGtal::DefaultFunctor idV;
+   DGtal::functors::Identity idV;
 
    trace.beginBlock ( "Example extract2DImagesFrom3D" );
 

@@ -60,7 +60,7 @@ namespace functors
 /// Duplicated STL functors
 /////////////////////////////////////////////////////////////////////////////
   template<typename T>
-  struct MinFunctor : std::binary_function <T,T,T>
+  struct Min : std::binary_function <T,T,T>
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -68,7 +68,7 @@ namespace functors
   };
 
   template<typename T>
-  struct MaxFunctor : std::binary_function <T,T,T>
+  struct Max : std::binary_function <T,T,T>
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -79,7 +79,7 @@ namespace functors
    * Copy of the std::minus binary operator (not implemented on MS-VS)
    */
   template <class T>
-  struct MinusFunctor : std::binary_function <T,T,T>
+  struct Minus : std::binary_function <T,T,T>
   {
     T operator() (const T& x, const T& y) const
     {return x-y;}
@@ -89,7 +89,7 @@ namespace functors
    * Abs functor.
    */
   template <class T>
-  struct AbsFunctor : std::unary_function<T,T>
+  struct Abs : std::unary_function<T,T>
   {
     inline
     T operator() (const T &x) const
@@ -105,7 +105,7 @@ namespace functors
    * Unary minus functor.
    */
   template <class T>
-  struct UnaryMinusFunctor : std::unary_function<T,T>
+  struct UnaryMinus : std::unary_function<T,T>
   {
     /**
        @param x any value.
@@ -122,10 +122,10 @@ namespace functors
    * Unary minus functor.
    */
   template <class T>
-  struct MultiplicationByScalarFunctor : std::unary_function<T,T>
+  struct MultiplicationByScalar : std::unary_function<T,T>
   {
     inline
-    MultiplicationByScalarFunctor( const T & aValue )
+    MultiplicationByScalar( const T & aValue )
       : myValue( aValue )
     {}
 
@@ -146,12 +146,12 @@ namespace functors
 // Some basic unary functors that may be useful
 //////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of template class 'DefaultFunctor' <p>
+   * Description of template class 'functors::Identity' <p>
    * \brief Aim: Define a simple default functor that
    * just returns its argument
    *
    */
-  struct DefaultFunctor
+  struct Identity
   {
     /**
      * Operator
@@ -251,13 +251,13 @@ namespace functors
 
 
   /**
-   * Description of template class 'CastFunctor' <p>
+   * Description of template class 'Cast' <p>
    * \brief Aim: Define a simple functor using the static cast operator.
    *
    * @tparam TOutput type of the return value
    */
   template <typename TOutput >
-  struct CastFunctor
+  struct Cast
   {
     /**
      * Operator

@@ -62,10 +62,10 @@ bool testSliceImageFromFunctor()
   typedef  DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char>  Image3D;
 
   typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::Projector< DGtal::Z3i::Space>,
-				   Image3D::Value,  DGtal::DefaultFunctor >  MySliceImageAdapter;
+				   Image3D::Value,  DGtal::functors::Identity >  MySliceImageAdapter;
 
   typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int>,
-				   Image3D::Value,  DGtal::DefaultFunctor >  MyRotatorSliceImageAdapter;
+				   Image3D::Value,  DGtal::functors::Identity >  MyRotatorSliceImageAdapter;
 
 
   bool res= true;
@@ -76,7 +76,7 @@ bool testSliceImageFromFunctor()
 
   
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor(20); aSliceFunctor.initAddOneDim(0);
-  MySliceImageAdapter sliceImageX(image, domainX, aSliceFunctor, DGtal::DefaultFunctor());
+  MySliceImageAdapter sliceImageX(image, domainX, aSliceFunctor, DGtal::functors::Identity());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimX.pgm",sliceImageX);
   
    DGtal::Projector<DGtal::Z2i::Space>  projY(0); projY.initRemoveOneDim(1); 
@@ -84,7 +84,7 @@ bool testSliceImageFromFunctor()
 			     projY(image.domain().upperBound()));
 
    DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor2(20); aSliceFunctor2.initAddOneDim(1);
-   MySliceImageAdapter sliceImageY(image, domainY, aSliceFunctor2, DGtal::DefaultFunctor());
+   MySliceImageAdapter sliceImageY(image, domainY, aSliceFunctor2, DGtal::functors::Identity());
    res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimY.pgm",sliceImageY);
 
 
@@ -94,7 +94,7 @@ bool testSliceImageFromFunctor()
 
 
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor3(20); aSliceFunctor3.initAddOneDim(2);
-  MySliceImageAdapter sliceImageZ(image, domainZ, aSliceFunctor3, DGtal::DefaultFunctor());
+  MySliceImageAdapter sliceImageZ(image, domainZ, aSliceFunctor3, DGtal::functors::Identity());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimZ.pgm",sliceImageZ);
 
   
@@ -102,7 +102,7 @@ bool testSliceImageFromFunctor()
   DGtal::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, image.domain(), 20, 2, 0.5, center);
   
   
-  MyRotatorSliceImageAdapter sliceRotImageZ(image, domainZ, sliceRot, DGtal::DefaultFunctor());
+  MyRotatorSliceImageAdapter sliceRotImageZ(image, domainZ, sliceRot, DGtal::functors::Identity());
   res &= PGMWriter<MyRotatorSliceImageAdapter>::exportPGM("exportedRotSliceZ.pgm",sliceRotImageZ);
 
   
