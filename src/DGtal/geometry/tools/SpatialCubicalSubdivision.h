@@ -237,7 +237,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/tools/SpatialSpatialCubicalSubdivision.ih"
+#include "DGtal/geometry/tools/SpatialCubicalSubdivision.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
