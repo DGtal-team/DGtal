@@ -40,9 +40,9 @@ offer better colormap for scientific visualisation purposes.
 
 In some situations, we may have to convert colors into   scalar
 values (see below). In this case, basic conversion functors are
-available in the DGtal::BasicColorToScalarFunctors namespace. For
-example, you would find in this namespace a DGtal::BasicColorToScalarFunctors::RedChannel converter or a
-DGtal::BasicColorToScalarFunctors::MeanChannels converter. 
+available in the DGtal::functors namespace. For
+example, you would find in this namespace a DGtal::functors::RedChannel converter or a
+DGtal::functors::MeanChannels converter. 
 
 Hence, to implement a functor taking values and returning the red
 channel of a colormap, you just have to compose the two functors with
@@ -53,7 +53,7 @@ the help of the Composer:
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 
 typedef GradientColorMap<unsigned char, CMAP_JET > JetMap;
-typedef BasicColorToScalarFunctors::RedChannel RedChan;
+typedef functors::RedChannel RedChan;
 typedef Composer< JetMap, RedChan, unsigned char> RedFunctor;
 RedFunctor redFunctor( JetMap(0,255), RedChan() );
 
