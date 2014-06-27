@@ -62,7 +62,7 @@ bool testProjection()
   typedef std::vector<Point3>::iterator Iterator3;
 
   //projector
-  typedef Projector<SpaceND<2,int> > Projector2; 
+  typedef DGtal::functors::Projector<SpaceND<2,int> > Projector2; 
 
   typedef ConstIteratorAdapter<Iterator3,Projector2,Point2> Adapter; 
   BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Iterator3> ));
