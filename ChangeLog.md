@@ -7,6 +7,12 @@
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
 
+ - Global refactoring of base functors (David Coeurjolly,
+   [#861](https://github.com/DGtal-team/DGtal/pull/861))
+    - BasicFunctor functors have been moved to functors:: namespace
+    - DefaultFunctor has been renamed functors::Identity
+    
+
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
   digital geometric estimators based on it. Add tests and examples of
