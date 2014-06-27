@@ -162,22 +162,22 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
 
   typedef TImageType3D Image3D;
 
-  DGtal::Projector<DGtal::Z2i::Space> invFunctorY; invFunctorY.initRemoveOneDim(1);
+  functors::Projector<DGtal::Z2i::Space> invFunctorY; invFunctorY.initRemoveOneDim(1);
   DGtal::Z2i::Domain domainY(invFunctorY(anImage3D.domain().lowerBound()),
                              invFunctorY(anImage3D.domain().upperBound()));
-  DGtal::Projector<DGtal::Z2i::Space> invFunctorZ; invFunctorZ.initRemoveOneDim(2);
+  functors::Projector<DGtal::Z2i::Space> invFunctorZ; invFunctorZ.initRemoveOneDim(2);
   DGtal::Z2i::Domain domainZ(invFunctorZ(anImage3D.domain().lowerBound()),
                              invFunctorZ(anImage3D.domain().upperBound()));
-  DGtal::Projector<DGtal::Z2i::Space> invFunctorX; invFunctorX.initRemoveOneDim(0);
+  functors::Projector<DGtal::Z2i::Space> invFunctorX; invFunctorX.initRemoveOneDim(0);
   DGtal::Z2i::Domain domainX(invFunctorX(anImage3D.domain().lowerBound()),
                              invFunctorX(anImage3D.domain().upperBound()));
 
 
 
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::Projector< Z3i::Space>,
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, functors::Projector< Z3i::Space>,
                                    typename Image3D::Value, DGtal::DefaultFunctor > SliceImageAdapter;
   DGtal::DefaultFunctor idV;
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorY((int)(anImage3D.domain().lowerBound()[1]));
+  functors::Projector<DGtal::Z3i::Space> aSliceFunctorY((int)(anImage3D.domain().lowerBound()[1]));
   aSliceFunctorY.initAddOneDim(1);
   SliceImageAdapter sliceImageY(anImage3D, domainY, aSliceFunctorY, idV);
 
@@ -189,7 +189,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
                                                            anImage3D.domain().lowerBound()[1]-0.5,
                                                            anImage3D.domain().lowerBound()[2]);
 
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorX((int)(anImage3D.domain().lowerBound()[0]));
+  functors::Projector<DGtal::Z3i::Space> aSliceFunctorX((int)(anImage3D.domain().lowerBound()[0]));
   aSliceFunctorX.initAddOneDim(0);
   SliceImageAdapter sliceImageX(anImage3D, domainX, aSliceFunctorX, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor , Space, KSpace> (sliceImageX, aFunctor, aTextureMode );
@@ -198,7 +198,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
                                                             anImage3D.domain().lowerBound()[1],
                                                             anImage3D.domain().lowerBound()[2]);
 
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ((int)(anImage3D.domain().lowerBound()[2]));
+  functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ((int)(anImage3D.domain().lowerBound()[2]));
   aSliceFunctorZ.initAddOneDim(2);
   SliceImageAdapter sliceImageZ(anImage3D, domainZ, aSliceFunctorZ, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor , Space, KSpace>(sliceImageZ, aFunctor, aTextureMode );
@@ -209,7 +209,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
 
 
   // other symetrics faces
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorYl((int)(anImage3D.domain().upperBound()[1]));
+  functors::Projector<DGtal::Z3i::Space> aSliceFunctorYl((int)(anImage3D.domain().upperBound()[1]));
   aSliceFunctorYl.initAddOneDim(1);
   SliceImageAdapter sliceImageYl(anImage3D, domainY, aSliceFunctorYl, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor , Space, KSpace>(sliceImageYl, aFunctor , aTextureMode);
@@ -219,7 +219,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
                                                             anImage3D.domain().lowerBound()[2]);
 
 
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorXl((int)(anImage3D.domain().upperBound()[0]));
+  functors::Projector<DGtal::Z3i::Space> aSliceFunctorXl((int)(anImage3D.domain().upperBound()[0]));
   aSliceFunctorXl.initAddOneDim(0);
   SliceImageAdapter sliceImageXl(anImage3D, domainX, aSliceFunctorXl, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor, Space, KSpace>(sliceImageXl, aFunctor, aTextureMode );
@@ -228,7 +228,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
                                                             anImage3D.domain().lowerBound()[1],
                                                             anImage3D.domain().lowerBound()[2] );
 
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZl((int)(anImage3D.domain().upperBound()[2]));
+  functors::Projector<DGtal::Z3i::Space> aSliceFunctorZl((int)(anImage3D.domain().upperBound()[2]));
   aSliceFunctorZl.initAddOneDim(2);
   SliceImageAdapter sliceImageZl(anImage3D, domainZ, aSliceFunctorZl, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor, Space, KSpace>(sliceImageZl, aFunctor , aTextureMode);
