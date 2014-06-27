@@ -466,7 +466,7 @@ namespace DGtal
      */
     template < typename TIterator, typename TSCell>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::DefaultFunctor, TSCell> & anObject );
     // SCellsRange
 
     // PointsRange
