@@ -122,7 +122,8 @@ public:
     typedef TNewValue Value;
 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> ));
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorVm1, typename TImageContainer::Value, Value> ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value > ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorVm1, Value, typename TImageContainer::Value > ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
@@ -237,7 +238,7 @@ public:
      * @param aPoint the point.
      * @param aValue the value.
      */
-    void setValue(const Point &aPoint, const typename TImageContainer::Value &aValue)
+    void setValue(const Point &aPoint, const  Value &aValue)
     {
         ASSERT(this->domain().isInside(aPoint));
         

@@ -8,6 +8,7 @@ SET(DGTAL_TESTS_SRC
    testSimpleExpander
    testSCellsFunctor
    testUmbrellaComputer
+   testSurfaceHelper
  )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

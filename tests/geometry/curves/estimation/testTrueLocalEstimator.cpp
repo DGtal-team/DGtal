@@ -32,19 +32,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-
-#include "DGtal/shapes/Shapes.h"
-#include "DGtal/shapes/ShapeFactory.h"
-
-#include "DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/curves/estimation/TrueGlobalEstimatorOnPoints.h"
-
-#include "DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/curves/estimation/ParametricShapeTangentFunctor.h"
-#include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
-#include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
-
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
@@ -52,9 +39,19 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
 
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/GaussDigitizer.h"
-#include "DGtal/geometry/curves/GridCurve.h"
 
+#include "DGtal/geometry/curves/GridCurve.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+#include "DGtal/geometry/curves/estimation/CCurveLocalGeometricEstimator.h"
+#include "DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeTangentFunctor.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/curves/estimation/CompareLocalEstimators.h"
 
 
@@ -94,9 +91,15 @@ bool testTrueLocalEstimator(const std::string &filename)
   Shape ball(Z2i::Point(0,0), 30);
 
    
-  TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
-  TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  tangentEstimator;
-  TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  lengthEstimator;
+  typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  > TrueCurvatureEstimator;
+  typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  > TrueTangentEstimator;
+  typedef TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  TrueLengthEstimator;
+
+  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< TrueCurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( CCurveLocalGeometricEstimator< TrueTangentEstimator > ));
+  TrueCurvatureEstimator curvatureEstimator;
+  TrueTangentEstimator tangentEstimator;
+  TrueLengthEstimator lengthEstimator;
 
   curvatureEstimator.init( 1, r.begin(), r.end() );
   curvatureEstimator.attach( &ball );

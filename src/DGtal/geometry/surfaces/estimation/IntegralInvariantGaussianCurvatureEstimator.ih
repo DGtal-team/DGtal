@@ -41,21 +41,21 @@
 
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
     : myKernelFunctor(NumberTraits<Quantity>::ONE),
       myConvolver(shapeFunctor, myKernelFunctor, space)
 {}
 
 template <typename TKSpace, typename TShapeFunctor>
 inline
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
     : myKernelFunctor(NumberTraits<Quantity>::ONE),
       myConvolver(shapeFunctor, myKernelFunctor, space)
 {}
 
 template <typename TKSpace, typename TShapeFunctor>
 inline
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::IntegralInvariantGaussianCurvatureEstimator ( ConstAlias< KSpace > space, ConstAlias< ShapeSpelFunctor > shapeFunctor )
     : myKernelFunctor(NumberTraits<Quantity>::ONE),
       myConvolver(shapeFunctor, myKernelFunctor, space)
 {}
@@ -68,7 +68,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::I
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double re )
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double re )
 {
     trace.error() << "Not available yet.";
 }
@@ -76,7 +76,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimen
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double re )
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double re )
 {
     h = _h;
     radius = re;
@@ -134,7 +134,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double re )
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double re )
 {
     h = _h;
     radius = re;
@@ -200,8 +200,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename SurfelIterator>
 inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::Quantity
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::eval ( const SurfelIterator & it )
+typename DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::Quantity
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::eval ( const SurfelIterator & it )
 {
     Quantity measure(0);
     trace.error() << "IntegralInvariantGaussianCurvatureEstimator@eval() : Not available yet.";
@@ -211,8 +211,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimen
 template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator>
 inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::Quantity
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & it )
+typename DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::Quantity
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & it )
 {
     Quantity measure = myConvolver.eval( it );
     return gaussFunctor( measure );
@@ -221,8 +221,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::e
 template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator>
 inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::Quantity
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & it )
+typename DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::Quantity
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & it )
 {
     Matrix3x3 covarianceMatrix = myConvolver.evalCovarianceMatrix( it );
     return gaussFunctor( covarianceMatrix );
@@ -234,7 +234,7 @@ template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename SurfelIterator, typename OutputIterator>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::eval ( const SurfelIterator & itb,
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::eval ( const SurfelIterator & itb,
                                                                                               const SurfelIterator & ite,
                                                                                               OutputIterator & result )
 {
@@ -245,7 +245,7 @@ template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator, typename OutputIterator>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & itb,
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::eval ( const SurfelIterator & itb,
                                                                                       const SurfelIterator & ite,
                                                                                       OutputIterator & result )
 {
@@ -256,7 +256,7 @@ template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator, typename OutputIterator>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & itb,
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const SurfelIterator & itb,
                                                                                       const SurfelIterator & ite,
                                                                                       OutputIterator & result )
 {
@@ -269,8 +269,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename SurfelIterator>
 inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::PrincipalCurvatures
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::evalPrincipalCurvatures ( const SurfelIterator & it )
+typename DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::PrincipalCurvatures
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::evalPrincipalCurvatures ( const SurfelIterator & it )
 {
     PrincipalCurvatures measure;
     trace.error() << "IntegralInvariantGaussianCurvatureEstimator@eval() : Not available yet.";
@@ -280,8 +280,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimen
 template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator>
 inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::PrincipalCurvatures
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::evalPrincipalCurvatures ( const SurfelIterator & it )
+typename DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::PrincipalCurvatures
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::evalPrincipalCurvatures ( const SurfelIterator & it )
 {
     PrincipalCurvatures measure;
     trace.error() << "IntegralInvariantGaussianCurvatureEstimator@eval() : Not available yet.";
@@ -291,8 +291,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::e
 template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator>
 inline
-typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::PrincipalCurvatures
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::evalPrincipalCurvatures ( const SurfelIterator & it )
+typename DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::PrincipalCurvatures
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::evalPrincipalCurvatures ( const SurfelIterator & it )
 {
     Matrix3x3 covarianceMatrix = myConvolver.evalCovarianceMatrix( it );
     return princCurvFunctor( covarianceMatrix );
@@ -304,7 +304,7 @@ template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename SurfelIterator, typename OutputIterator>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::evalPrincipalCurvatures ( const SurfelIterator & itb,
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::evalPrincipalCurvatures ( const SurfelIterator & itb,
                                                                                               const SurfelIterator & ite,
                                                                                               OutputIterator & result )
 {
@@ -316,7 +316,7 @@ template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator, typename OutputIterator>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::evalPrincipalCurvatures ( const SurfelIterator & itb,
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::evalPrincipalCurvatures ( const SurfelIterator & itb,
                                                                                       const SurfelIterator & ite,
                                                                                       OutputIterator & result )
 {
@@ -328,7 +328,7 @@ template <typename TKSpace, typename TShapeFunctor>
 template <typename SurfelIterator, typename OutputIterator>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::evalPrincipalCurvatures ( const SurfelIterator & itb,
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::evalPrincipalCurvatures ( const SurfelIterator & itb,
                                                                                       const SurfelIterator & ite,
                                                                                       OutputIterator & result )
 {
@@ -341,7 +341,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::selfDisplay ( std::ostream & out ) const
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::selfDisplay ( std::ostream & out ) const
 {
     out << "[IntegralInvariantGaussianCurvatureEstimator]";
 }
@@ -349,7 +349,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimen
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::selfDisplay ( std::ostream & out ) const
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::selfDisplay ( std::ostream & out ) const
 {
     out << "[IntegralInvariantGaussianCurvatureEstimator]";
 }
@@ -357,7 +357,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::s
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::selfDisplay ( std::ostream & out ) const
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::selfDisplay ( std::ostream & out ) const
 {
     out << "[IntegralInvariantGaussianCurvatureEstimator]";
 }
@@ -370,7 +370,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::s
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 bool
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::isValid() const
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::isValid() const
 {
     return true;
 }
@@ -378,7 +378,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimen
 template <typename TKSpace, typename TShapeFunctor>
 inline
 bool
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::isValid() const
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::isValid() const
 {
     return true;
 }
@@ -386,7 +386,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
 template <typename TKSpace, typename TShapeFunctor>
 inline
 bool
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::isValid() const
+DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::isValid() const
 {
     return true;
 }
@@ -399,7 +399,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
 template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension> & object )
+DGtal::operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension> & object )
 {
     object.selfDisplay( out );
     return out;
@@ -408,7 +408,7 @@ DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvature
 template <typename TKSpace, typename TShapeFunctor>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2> & object )
+DGtal::operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2> & object )
 {
     object.selfDisplay( out );
     return out;
@@ -417,7 +417,7 @@ DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvature
 template <typename TKSpace, typename TShapeFunctor>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3> & object )
+DGtal::operator<< ( std::ostream & out, const DGtal::deprecated::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3> & object )
 {
     object.selfDisplay( out );
     return out;
@@ -426,7 +426,7 @@ DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvature
 
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, const CurvatureInformations & object)
+DGtal::operator<< ( std::ostream & out, const DGtal::deprecated::CurvatureInformations & object)
 {
     out << object.k1 << " " << object.k2;
     return out;

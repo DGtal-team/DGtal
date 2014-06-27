@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/curves/ArithmeticalDSL.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -76,16 +77,29 @@ namespace DGtal
   public:
 
     typedef TCoordinate Coordinate;
+    typedef Coordinate Position;
     typedef TInteger Integer;
-
     typedef DGtal::PointVector<2, Coordinate> Point;
     typedef Point Vector;
     typedef std::pair<Vector,Vector> Steps;
 
     typedef ArithmeticalDSS<TCoordinate,TInteger,adjacency> DSS;
+    typedef ArithmeticalDSL<TCoordinate,TInteger,adjacency> DSL;
 
     // ----------------------- Creation methods ------------------------------
   public:
+
+    /**
+     * Construction of the subsegment of minimal parameters of a given DSL. 
+     *
+     * @param aDSL bounding DSL
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses smartCH algorithm. 
+     */
+    static DSS createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL);
 
     /**
      * @brief Method that creates a DSS that is a pattern

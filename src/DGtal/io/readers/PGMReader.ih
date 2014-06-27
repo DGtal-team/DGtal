@@ -194,11 +194,13 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
     trace.error() << "PGMReader : can't read " << aFilename << std::endl;
     throw dgtalio;
   }
-  if ( str != "P3d" &&  str != "P3D"&&  str != "P2-3D" &&  str != "P5-3D" &&  str != "P5" &&  str != "P3" ){
-    trace.error() << "PGMReader : No P3d format in " << aFilename << std::endl;
+  
+  if ( str.compare( 0, 2, "P2" ) != 0  && str.compare( 0, 2, "P3" ) != 0 && str.compare( 0, 2, "P5" ) != 0 ){
+    trace.error() << "PGMReader : Wrong format in " << aFilename << std::endl;
     throw dgtalio;
   }
-  bool isASCIImode = (str=="P2-3D" || str=="P2" );
+
+  bool isASCIImode = ( str.compare( 0, 2, "P2" ) == 0 );
   if(!isASCIImode)
     infile >> std::noskipws;
   else
@@ -239,8 +241,7 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
     throw dgtalio;
   } 
   unsigned int nb_read = 0;
-
-  infile >> std::noskipws;
+  
   for(unsigned int z=0; z <e; z++){
     for(unsigned int y=0; y <h; y++){
       for(unsigned int x=0; x <w; x++){

@@ -51,7 +51,6 @@ int main( int argc, char** argv )
 {
 
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,  unsigned char > Image3D;
-  typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  unsigned char > Image2D;
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
                                    Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;

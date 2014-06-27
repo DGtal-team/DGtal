@@ -14,6 +14,7 @@ SET(TESTS_SURFACES_SRC
   testIntegralInvariantMeanCurvatureEstimator3D
   testIntegralInvariantGaussianCurvatureEstimator3D
   testLocalEstimatorFromFunctorAdapter
+  testVoronoiCovarianceMeasureOnSurface
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
@@ -43,6 +44,7 @@ if (  WITH_VISU3D_QGLVIEWER )
     target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
   ENDFOREACH(FILE)
 endif ( WITH_VISU3D_QGLVIEWER   )
+
 
 #-----------------------
 #GMP based tests

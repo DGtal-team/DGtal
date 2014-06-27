@@ -15,10 +15,10 @@ DGtal is an opensource free software written by researchers and students from th
 DGtal research community. We wish to keep an estimate of the number of persons 
 using the library. This is really important for us to justify the ressources spent 
 in developing this software. Please, take a few seconds to fill in the registration 
-form: http://libdgtal.org/registration/
+form: http://dgtal.org/registration/
 
 More Information
 ================
   
-* project homepage http://libdgtal.org
+* project homepage http://dgtal.org
 

@@ -52,7 +52,6 @@ bool mainTest()
   BOOST_CONCEPT_ASSERT(( CPointPredicate<DSL> ));
   
   typedef typename DSL::Point Point; 
-  typedef typename DSL::Vector Vector; 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -170,7 +169,8 @@ bool mainTest()
   	       << std::endl;
 
   trace.info() << "shift" << std::endl; 
-  if (dsl.remainder(dsl.shift()) == dsl.omega())
+  if ( (dsl.remainder(dsl.shift()) == dsl.omega()) 
+       && (DSL::toCoordinate(dsl.omega()) == dsl.patternLength()) )
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -193,7 +193,6 @@ bool mainTest()
 template <typename DSL>
 bool rangeTest(const DSL& dsl)
 {
-  ASSERT( dsl.mu() == 0 ); 
   typedef typename DSL::Point Point; 
 
   unsigned int nbok = 0;
@@ -202,8 +201,8 @@ bool rangeTest(const DSL& dsl)
   trace.beginBlock ( "Range/Iterator services..." );
   trace.info() << dsl << std::endl; 
 
-  Point first(0,0); 
-  Point last(dsl.b(), dsl.a()); 
+  Point first = dsl.getPoint(); 
+  Point last = Point(first[0]+dsl.b(), first[1]+dsl.a()); 
   trace.info() << "from " << first << " to " << last << std::endl; 
 
   if (dsl.isValid())
@@ -216,7 +215,7 @@ bool rangeTest(const DSL& dsl)
   {//forward pass  
     typedef typename DSL::ConstIterator I; 
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<I> )); 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<I> ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<I> ));
     bool res = true; 
     int c = 0; 
     for (I it = dsl.begin(first), itEnd = dsl.end(last); 
@@ -241,7 +240,7 @@ bool rangeTest(const DSL& dsl)
   {//backward pass
     typedef typename DSL::ConstReverseIterator I; 
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<I> )); 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<I> ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<I> ));
     bool res = true; 
     int c = 0; 
     for (I it = dsl.rbegin(last), itEnd = dsl.rend(first); 
@@ -262,6 +261,54 @@ bool rangeTest(const DSL& dsl)
     trace.info() << "(" << nbok << "/" << nb << ") "
 		 << std::endl;
   }
+
+  {//random access services  
+    typedef typename DSL::ConstIterator I; 
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<I> )); 
+    BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<I> ));
+    bool res = true; 
+    int c = 0; 
+    I itBegin = dsl.begin(first); 
+    for (I it = itBegin, itEnd = dsl.end(last); 
+	 ( (it != itEnd)&&(res)&&(c<100) ); 
+	 ++it, ++c)
+      {
+	trace.info() << "(" << it->operator[](0) << "," << it->operator[](1) << ") " << it.remainder() << ", ";  
+	I it2 = ( itBegin + c ); 
+	if ( (it != it2) || ((it2 - itBegin) != c) )
+	  res = false; 
+      }
+    int n = c; 
+    trace.info() << " : " << c << " points " << std::endl; 
+    trace.info() << std::endl; 
+
+    if (res) 
+      nbok++; 
+    nb++;
+
+    trace.info() << "(" << nbok << "/" << nb << ") "
+		 << std::endl;
+
+    --n; 
+    c = 0; 
+    for (I it = (itBegin+n), itEnd = itBegin; 
+	 ( (it!=itEnd)&&(res)&&(c < 100) );
+	 --it, ++c )
+      {
+	trace.info() << "(" << it->operator[](0) << "," << it->operator[](1) << ") " << it.remainder() << ", ";  
+	I it2 = ( (itBegin+n) - c ); 
+	if ( (it != it2) || (((itBegin+n) - it2) != c) )
+	  res = false; 
+      }
+
+    if (res) 
+      nbok++; 
+    nb++;
+
+    trace.info() << "(" << nbok << "/" << nb << ") "
+		 << std::endl;
+  }
+
 
   trace.endBlock();
   
@@ -291,22 +338,22 @@ int main( int argc, char** argv )
     typedef DGtal::ArithmeticalDSL<DGtal::int32_t> DSL; 
 
     res = res 
-      && rangeTest( DSL(5, 8, 0) )
-      && rangeTest( DSL(8, 5, 0) )
-      && rangeTest( DSL(5, -8, 0) )
-      && rangeTest( DSL(8, -5, 0) )
-      && rangeTest( DSL(-5, 8, 0) )
-      && rangeTest( DSL(-8, 5, 0) )
-      && rangeTest( DSL(-5, -8, 0) )
-      && rangeTest( DSL(-8, -5, 0) )
-      && rangeTest( DSL(1, 0, 0) )
-      && rangeTest( DSL(0, -1, 0) )
-      && rangeTest( DSL(0, 1, 0) )
-      && rangeTest( DSL(-1, 0, 0) )
-      && rangeTest( DSL(1, 1, 0) )
-      && rangeTest( DSL(1, -1, 0) )
-      && rangeTest( DSL(-1, 1, 0) )
-      && rangeTest( DSL(-1, -1, 0) )
+      && rangeTest( DSL(5, 8, 16) )
+      && rangeTest( DSL(8, 5, 14) )
+      && rangeTest( DSL(5, -8, 14) )
+      && rangeTest( DSL(8, -5, 14) )
+      && rangeTest( DSL(-5, 8, 14) )
+      && rangeTest( DSL(-8, 5, 14) )
+      && rangeTest( DSL(-5, -8, 14) )
+      && rangeTest( DSL(-8, -5, 14) )
+      && rangeTest( DSL(1, 0, 14) )
+      && rangeTest( DSL(0, -1, 14) )
+      && rangeTest( DSL(0, 1, 14) )
+      && rangeTest( DSL(-1, 0, 14) )
+      && rangeTest( DSL(1, 1, 14) )
+      && rangeTest( DSL(1, -1, 14) )
+      && rangeTest( DSL(-1, 1, 14) )
+      && rangeTest( DSL(-1, -1, 14) )
       ;
   }
 
@@ -315,21 +362,35 @@ int main( int argc, char** argv )
     typedef DGtal::ArithmeticalDSL<DGtal::int32_t, DGtal::int32_t, 4> DSL; 
     
     res = res 
-      && rangeTest( DSL(5, 8, 0) )
-      && rangeTest( DSL(8, 5, 0) )
-      && rangeTest( DSL(5, -8, 0) )
-      && rangeTest( DSL(8, -5, 0) )
-      && rangeTest( DSL(-5, 8, 0) )
-      && rangeTest( DSL(-8, 5, 0) )
-      && rangeTest( DSL(-5, -8, 0) )
-      && rangeTest( DSL(-8, -5, 0) )
-      && rangeTest( DSL(1, 0, 0) )
-      && rangeTest( DSL(0, -1, 0) )
-      && rangeTest( DSL(0, 1, 0) )
-      && rangeTest( DSL(-1, 0, 0) )
+      && rangeTest( DSL(5, 8, -16) )
+      && rangeTest( DSL(8, 5, -17) )
+      && rangeTest( DSL(5, -8, -17) )
+      && rangeTest( DSL(8, -5, -17) )
+      && rangeTest( DSL(-5, 8, -17) )
+      && rangeTest( DSL(-8, 5, -17) )
+      && rangeTest( DSL(-5, -8, -17) )
+      && rangeTest( DSL(-8, -5, -17) )
+      && rangeTest( DSL(1, 0, -17) )
+      && rangeTest( DSL(0, -1, -17) )
+      && rangeTest( DSL(0, 1, -17) )
+      && rangeTest( DSL(-1, 0, -17) )
       ;
   }
 
+#ifdef WITH_BIGINTEGER
+  {
+    typedef DGtal::ArithmeticalDSL<DGtal::int32_t, DGtal::BigInteger, 4> DSL; 
+    res = res && rangeTest( DSL(5, 8, -26) ) && rangeTest( DSL(5, 8, 13) )
+      && rangeTest( DSL(5, 8, -17) ) && rangeTest( DSL(5, 8, 11313) ); 
+  }
+  // Warning: BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<I> )); 
+  // does not accept DGtal::BigInteger as a difference type for random access iterators
+  // because it uses methods is_signed and is_integer of std::numeric_limits
+  // { //does not compile 
+  //   typedef DGtal::ArithmeticalDSL<DGtal::BigInteger, DGtal::BigInteger, 4> DSL; 
+  //   res = res && rangeTest( DSL(5, 8, 123654) ); 
+  // }
+#endif
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -102,8 +102,8 @@ static void BM_SetValue(benchmark::State& state)
           cpt++;
         }
     }
-  const int64_t items_processed =
-    static_cast<int64_t>(state.iterations())*state.range_x();
+  // const int64_t items_processed =
+    // static_cast<int64_t>(state.iterations())*state.range_x();
   state.SetItemsProcessed(cpt);
 }
 BENCHMARK_TEMPLATE(BM_SetValue, ImageVector2)->Range(1<<3 , 1 << 10);

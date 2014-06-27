@@ -988,7 +988,59 @@ sWriteBoundary( OutputIterator & out_it,
   //     while ( aKSpace.uNext( p, dir_low_uid, dir_up_uid ) );
   //   }
 }
-          
+
+template <typename TKSpace>
+template <typename SCellSet, typename CellSet>
+void 
+DGtal::Surfaces<TKSpace>::uComputeInterior( const KSpace & aKSpace, 
+                                            const SCellSet & bdry,
+                                            CellSet & interiorCellSet,
+                                            bool empty_is_inside )
+{
+  std::deque<Cell> pixels;      
+  Cell p =  aKSpace.uFirst(aKSpace.uCell(Point(1,1)));  
+  bool in_mode = empty_is_inside;   
+  do 
+    {
+      if ( p != aKSpace.uGetMax( p, 0 ) )
+        { 
+          pixels.push_front( p );
+          SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
+          if ( bdry.find( b ) !=bdry.end() )
+            {
+              pixels.clear();
+              in_mode = true;
+            }
+          else if ( bdry.find( aKSpace.sOpp( b ) ) != bdry.end() )
+            {
+              while ( ! pixels.empty() )
+                {
+                  interiorCellSet.insert(pixels.front());
+                  pixels.pop_front();
+                }
+              in_mode = false;
+            }
+        }
+      else
+	{
+	  pixels.push_front( p );
+	  if ( in_mode )
+	    {
+	      while ( ! pixels.empty() )
+		{
+		  interiorCellSet.insert( pixels.front() );
+		  pixels.pop_front();
+		}
+	    }
+	  else
+	    pixels.clear();
+	  in_mode = empty_is_inside;
+	}
+    }  while ( aKSpace.uNext(p, aKSpace.lowerCell(), aKSpace.upperCell())  );
+  
+}
+
+
 
 
 
