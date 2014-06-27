@@ -46,7 +46,7 @@
 #include "DGtal/images/ImageSelector.h"
 
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/helpers/StdDefs.h"
 
 #include "ConfigExamples.h"
