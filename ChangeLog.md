@@ -63,7 +63,9 @@
   [#803](https://github.com/DGtal-team/DGtal/pull/803))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
-
+ - CubicalSudivision has been renamed SpatialCubicalSubdivision and
+   moved to "geometry/tools" (David Coeurjolly, )
+ 
 - *IO Package*
   - Better handling of materials in Board3D and OBJ exports. (David
     Coeurjolly,
