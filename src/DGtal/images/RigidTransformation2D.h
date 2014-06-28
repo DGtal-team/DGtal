@@ -23,8 +23,6 @@
  *
  * @date 2014/06/26
  *
- * Header file for module RigidTransformation2D.cpp
- *
  * This file is part of the DGtal library.
  */
 
@@ -41,138 +39,155 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <cmath>
+#include <climits>
+#include <functional>
 #include "DGtal/base/Common.h"
 #include <DGtal/helpers/StdDefs.h>
-#include "DGtal/images/CImage.h"
+#include <DGtal/kernel/domains/CDomain.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class RigidTransformation2D
-  /**
-   * Description of template class 'RigidTransformation2D' <p>
-   * \brief Aim:
-   */
-  
-  // \todo discretization functor
-  template <typename Image>
-  class RigidTransformation2D
+  template <typename TPoint, typename TRealVector>
+  class ForwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
   {
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
-    
-    // ----------------------- Types ------------------------------
+   BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
+   BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
   public:
-    enum Model { EULERIAN, LAGRANGIAN };
-    typedef typename Image::Point Point;
-    
-    // ----------------------- Standard services ------------------------------
-  public:
-    RigidTransformation2D()
+    /**
+     * Constructor.
+     * @param aOrigin  the center of rotation.
+     */
+    ForwardRigidTransformation2D ( const TPoint& aOrigin, const double angle, const TRealVector & aTranslate )
+    :origin(aOrigin), translation(aTranslate) 
     {
-      t_sin = 0.;
-      t_cos = 1.;
-    }
-    
-    // setters
-    //! \param center of rotation. \todo maybe better to set as def. the center of domain
-    void setOrigin ( Z2i::Point &t_origin )
-    {
-	origin = t_origin;
-    }
-    //! \param angle in radians
-    void setAngle ( double angle )
-    {
-      t_cos = std::cos ( angle );
       t_sin = std::sin ( angle );
+      t_cos = std::cos ( angle );
     }
-    void setTranslation ( Z2i::RealVector & vector )
-    {
-      translation = vector;
-    }
-    //! \todo think about better interface
-    Image transform ( Image & image, Model model );
-    typename Image::Point transform ( typename Image::Point &point );
-    typename Image::Point inversedTransform ( typename Image::Point &point );
-    // getters
     
     /**
-     * Destructor.
+     * Operator
+     *
+     * @return the transformed point.
      */
-    ~RigidTransformation2D();
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    // ------------------------- Protected Datas ------------------------------
+    inline
+    TPoint operator()( const TPoint& aInput ) const
+    {
+      TPoint p;
+      p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
+      t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + 0.5 );
+      
+      p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
+      t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + 0.5 );
+      return p + origin;
+    }
+    
   private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-    double t_sin, t_cos;
-    Z2i::Point origin;
-    Z2i::RealVector translation;
-
-    // ------------------------- Hidden services ------------------------------
-
-  private:
-
     /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
+     * value
      */
-    RigidTransformation2D ( const RigidTransformation2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    RigidTransformation2D & operator= ( const RigidTransformation2D & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
-   // Allocation of output image
-    Image allocate ( typename Image::Domain & domain );
-    //! maybe better the model and transform?
-    Image forwardTransformation ( Image & image );
-    Image backwardTransformation ( Image & image );
-  }; // end of class RigidTransformation2D
+    TPoint origin;
+    double t_sin;
+    double t_cos;
+    TRealVector translation;
+  };
   
+  template <typename TPoint, typename TRealVector>
+  class BackwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
+  {
+   BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
+   BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
+  public:
+    /**
+     * Constructor.
+     * @param aOrigin the center of rotation.
+     */
+    BackwardRigidTransformation2D ( const TPoint& aOrigin, const double angle, const TRealVector & aTranslate )
+    :origin(aOrigin), translation(aTranslate) 
+    {
+      t_sin = std::sin ( angle );
+      t_cos = std::cos ( angle );
+    }
+    
+    /**
+     * Operator
+     *
+     * @return the transformed point.
+     */
+    inline
+    TPoint operator()( const TPoint& aInput ) const
+    {
+      TPoint p;
+      p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
+      t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
+      
+      p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) 
+      + t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
+      return p + origin;
+    }
+    
+  private:
+    /**
+     * value
+     */
+    TPoint origin;
+    double t_sin;
+    double t_cos;
+    TRealVector translation;
+  };
+  
+  template <typename TDomain, typename TRigidTransformFunctor >
+  class DomainRigidTransformation2D : std::unary_function <TDomain,TDomain>
+  {
+   BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
+   BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+  public:
+    /**
+     * Constructor.
+     * @param aOrigin  the center of rotation.
+     */
+    DomainRigidTransformation2D ( TRigidTransformFunctor & aRigidFunctor ) : transform ( aRigidFunctor ) {}
+    
+    /**
+     * Operator
+     *
+     * @return the transformed point.
+     */
+    inline
+    TDomain operator()( const TDomain & aInput ) const
+    {
+      typedef typename TDomain::Point Point;
+      std::vector < Point > points ( 4 );
+      points[0] = transform ( aInput.lowerBound() );
+      points[1] = transform ( aInput.upperBound() );
+      points[2] = transform ( Point ( aInput.upperBound()[0], aInput.lowerBound()[1] ) );
+      points[3] = transform ( Point ( aInput.lowerBound()[0], aInput.upperBound()[1] ) );
+      
+      Point t_min ( INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN );
+      for ( typename std::vector < Point >::const_iterator it = points.begin(); it != points.end(); ++it )
+      {
+	if ( (*it)[0] < t_min[0] )
+	  t_min[0] = (*it)[0]; 
+	if ( (*it)[1] < t_min[1] )
+	  t_min[1] = (*it)[1];
+	
+	if ( (*it)[0] > t_max[0] )
+	  t_max[0] = (*it)[0]; 
+	if ( (*it)[1] > t_max[1] )
+	  t_max[1] = (*it)[1]; 
+      }
+      return TDomain ( t_min, t_max );
+    }
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'RigidTransformation2D'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'RigidTransformation2D' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename T>
-  std::ostream&
-  operator<< ( std::ostream & out, const RigidTransformation2D<T> & object );
-
+  private:
+    /**
+     * value
+     */
+    TRigidTransformFunctor & transform;
+  }; 
+  
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/images/RigidTransformation2D.ih"
-
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined RigidTransformation2D_h
 
