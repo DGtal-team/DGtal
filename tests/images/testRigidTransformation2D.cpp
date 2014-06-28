@@ -34,11 +34,11 @@
 #include <DGtal/images/ImageContainerBySTLVector.h>
 #include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/Board2D.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/RigidTransformation2D.h"
-#include "DGtal/io/colormaps/GrayscaleColorMap.h"
+#include "DGtal/io/readers/PGMReader.h"
+#include "DGtal/io/writers/GenericWriter.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -55,62 +55,69 @@ using namespace Z2i;
 
 class testRigidTransformation2D
 {
-  typedef ImageSelector<Domain, int >::Type Image;
+  typedef ImageSelector<Domain, unsigned char >::Type Image;
   typedef ForwardRigidTransformation2D < Point, RealVector > ForwardTrans;
   typedef BackwardRigidTransformation2D < Point, RealVector > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, ForwardTrans, Image::Value, DefaultFunctor > MyImageForwardAdapter;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
 private:
   Image binary;
+  Image gray;
   ForwardTrans forwardTrans;
   BackwardTrans backwardTrans;
-  typedef GrayscaleColorMap<unsigned char> Gray;
   DefaultFunctor idD;
-  Board2D aBoard;
-  DomainRigidTransformation2D < Domain, ForwardTrans > domainTrans;
+  DomainRigidTransformation2D < Domain, ForwardTrans > domainForwardTrans;
 public:
   // Setup part
   testRigidTransformation2D() : 
   binary ( Domain ( Point ( 0,0 ), Point ( 10, 10 ) ) ),
+  gray ( PGMReader<Image>::importPGM ( testPath + "samples/church-small.pgm" ) ),
   forwardTrans ( Point ( 5, 5 ), M_PI_2/2, RealVector() ),
-    backwardTrans ( Point ( 5, 5 ), M_PI_2/2, RealVector() ),
-    domainTrans ( forwardTrans )
+  backwardTrans ( Point ( 5, 5 ), M_PI_2/2, RealVector() ),
+  domainForwardTrans ( forwardTrans )
     {
       binary.setValue ( Point ( 3,3 ), 255 );
       binary.setValue ( Point ( 3,4 ), 255 );
       binary.setValue ( Point ( 4,3 ), 255 );
       binary.setValue ( Point ( 4,4 ), 255 );
+      
+      binary >> "binary.pgm";
+      gray >> "gray.pgm";
     }
     
     bool forwardTransformationBinary ()
     {
-      Display2DFactory::drawImage<Gray>(aBoard, binary, (unsigned char)0, (unsigned char)255);
-      aBoard.saveSVG( "forward_before.svg" );
-      
-      Image transformed ( domainTrans ( binary.domain() ) );
+      Image transformed ( domainForwardTrans ( binary.domain() ) );
       for ( Domain::ConstIterator it = binary.domain().begin(); it != binary.domain().end(); ++it )
       {
-	if ( binary(*it) == 255 )
-	{
-	  transformed.setValue ( forwardTrans ( *it ), 255 );
-	}
-	else
-	{
-	  transformed.setValue ( forwardTrans ( *it ), 0 );
-	}
+	transformed.setValue ( forwardTrans ( *it ), binary ( *it ) );
       }
-      Display2DFactory::drawImage<Gray>(aBoard, transformed, (unsigned char)0, (unsigned char)255);
-      aBoard.saveSVG( "forward_after.svg" );
+      transformed >> "binary_after_forward.pgm";
       return true;
     }
     
     bool backwardTransformationBinary ()
     {
-      MyImageBackwardAdapter adapter ( binary, domainTrans ( binary.domain() ), backwardTrans, idD );
-      Display2DFactory::drawImage<Gray>(aBoard, binary, (unsigned char)0, (unsigned char)255);
-      aBoard.saveSVG( "backward_before.svg" );
-      Display2DFactory::drawImage<Gray>(aBoard, adapter, (unsigned char)0, (unsigned char)255);
-      aBoard.saveSVG( "backward_after.svg" );
+      MyImageBackwardAdapter adapter ( binary, domainForwardTrans ( binary.domain() ), backwardTrans, idD );
+      binary >> "binary_after_backward.pgm";
+      return true;
+    }
+    
+    bool backwardTransformationGray ()
+    {
+      MyImageBackwardAdapter adapter ( gray, domainForwardTrans ( gray.domain() ), backwardTrans, idD );
+      adapter >> "gray_after_backward.pgm";
+      return true;
+    }
+    
+    bool forwardTransformationGray ()
+    {
+      Image transformed ( domainForwardTrans ( gray.domain() ) );
+      for ( Domain::ConstIterator it = gray.domain().begin(); it != gray.domain().end(); ++it )
+      {
+	transformed.setValue ( forwardTrans ( *it ), gray ( *it ) );
+      }
+      transformed >> "binary_after_forward.pgm";
       return true;
     }
 };
@@ -125,6 +132,8 @@ int main( int, char** )
   testRigidTransformation2D testRigid;
   res &= testRigid.forwardTransformationBinary();
   res &= testRigid.backwardTransformationBinary();
+  res &= testRigid.forwardTransformationGray();
+  res &= testRigid.backwardTransformationGray();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
