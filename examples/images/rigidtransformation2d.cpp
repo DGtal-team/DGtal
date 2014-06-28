@@ -55,6 +55,7 @@ int main( int , char** )
   typedef BackwardRigidTransformation2D < Point, RealVector > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
   typedef DomainRigidTransformation2D < Domain, ForwardTrans > MyTransformedDomain;
+  typedef MyTransformedDomain::Bounds Bounds;
   
   trace.beginBlock ( "Example rigidtransformation2d" );
 
@@ -65,17 +66,19 @@ int main( int , char** )
     Image image = PGMReader<Image>::importPGM ( examplesPath + "samples/church.pgm" ); 
   
     trace.beginBlock ( "Backward - Eulerian model" );
-      MyImageBackwardAdapter adapter ( image, domainForwardTrans ( image.domain() ), backwardTrans, idD );
-      adapter >> "backward_transform.pgm";
+      Bounds bounds = domainForwardTrans ( image.domain() );
+      Domain transformedDomain ( bounds.first, bounds.second );
+      MyImageBackwardAdapter backwardImageAdapter ( image, transformedDomain , backwardTrans, idD );
+      backwardImageAdapter >> "backward_transform.pgm";
     trace.endBlock();
     
     trace.beginBlock( "Forward - Lagrangian model" );
-      Image transformed ( domainForwardTrans ( image.domain() ) );
+      Image forwardTransformedImage ( transformedDomain );
       for ( Domain::ConstIterator it = image.domain().begin(); it != image.domain().end(); ++it )
       {
-	transformed.setValue ( forwardTrans ( *it ), image ( *it ) );
+	forwardTransformedImage.setValue ( forwardTrans ( *it ), image ( *it ) );
       }
-      transformed >> "forward_transform.pgm";
+      forwardTransformedImage >> "forward_transform.pgm";
     trace.endBlock();
   trace.endBlock();
   return 0;

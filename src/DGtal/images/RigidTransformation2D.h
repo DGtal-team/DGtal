@@ -41,6 +41,7 @@
 #include <iostream>
 #include <cmath>
 #include <climits>
+#include <utility>
 #include <functional>
 #include "DGtal/base/Common.h"
 #include <DGtal/helpers/StdDefs.h>
@@ -140,10 +141,16 @@ namespace DGtal
     };
     
     template <typename TDomain, typename TRigidTransformFunctor >
-    class DomainRigidTransformation2D : std::unary_function <TDomain,TDomain>
+    class DomainRigidTransformation2D : 
+    std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
     {
       BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
       BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+      
+    // ----------------------- Types ------------------------------
+    public:
+     typedef std::pair < typename TDomain::Space::Point, typename TDomain::Space::Point > Bounds;
+     
     public:
       /**
        * Constructor.
@@ -157,7 +164,7 @@ namespace DGtal
        * @return the transformed domain.
        */
       inline
-      TDomain operator()( const TDomain & aInput ) const
+      Bounds operator()( const TDomain & aInput ) const
       {
 	typedef typename TDomain::Point Point;
 	Point points[4];
@@ -179,7 +186,11 @@ namespace DGtal
 	  if ( points[i][1] > t_max[1] )
 	    t_max[1] = points[i][1]; 
 	}
-	return TDomain ( t_min, t_max );
+	
+	Bounds bounds;
+	bounds.first = t_min;
+	bounds.second = t_max;
+	return bounds;
       }
       
     private:

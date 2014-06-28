@@ -60,13 +60,15 @@ class testRigidTransformation2D
   typedef ForwardRigidTransformation2D < Point, RealVector > ForwardTrans;
   typedef BackwardRigidTransformation2D < Point, RealVector > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
+  typedef DomainRigidTransformation2D < Domain, ForwardTrans > DomainTrans;
+  typedef DomainTrans::Bounds Bounds;
 private:
   Image binary;
   Image gray;
   ForwardTrans forwardTrans;
   BackwardTrans backwardTrans;
   DefaultFunctor idD;
-  DomainRigidTransformation2D < Domain, ForwardTrans > domainForwardTrans;
+  DomainTrans domainForwardTrans;
 public:
   // Setup part
   testRigidTransformation2D() : 
@@ -87,7 +89,8 @@ public:
     
     bool forwardTransformationBinary ()
     {
-      Image transformed ( domainForwardTrans ( binary.domain() ) );
+      Bounds bounds = domainForwardTrans ( binary.domain() );
+      Image transformed ( Domain ( bounds.first, bounds.second ) );
       for ( Domain::ConstIterator it = binary.domain().begin(); it != binary.domain().end(); ++it )
       {
 	transformed.setValue ( forwardTrans ( *it ), binary ( *it ) );
@@ -98,21 +101,24 @@ public:
     
     bool backwardTransformationBinary ()
     {
-      MyImageBackwardAdapter adapter ( binary, domainForwardTrans ( binary.domain() ), backwardTrans, idD );
+      Bounds bounds = domainForwardTrans ( binary.domain() );
+      MyImageBackwardAdapter adapter ( binary,  Domain ( bounds.first, bounds.second ) , backwardTrans, idD );
       adapter >> "binary_after_backward.pgm";
       return true;
     }
     
     bool backwardTransformationGray ()
     {
-      MyImageBackwardAdapter adapter ( gray, domainForwardTrans ( gray.domain() ), backwardTrans, idD );
+      Bounds bounds = domainForwardTrans ( gray.domain() );
+      MyImageBackwardAdapter adapter ( gray, Domain ( bounds.first, bounds.second ) , backwardTrans, idD );
       adapter >> "gray_after_backward.pgm";
       return true;
     }
     
     bool forwardTransformationGray ()
     {
-      Image transformed ( domainForwardTrans ( gray.domain() ) );
+      Bounds bounds = domainForwardTrans ( gray.domain() );
+      Image transformed ( Domain ( bounds.first, bounds.second ) );
       for ( Domain::ConstIterator it = gray.domain().begin(); it != gray.domain().end(); ++it )
       {
 	transformed.setValue ( forwardTrans ( *it ), gray ( *it ) );
