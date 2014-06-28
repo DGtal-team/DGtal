@@ -104,7 +104,10 @@
   - Fixing image thresholders which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
-
+    
+- *IO*
+  - Bug fix for reading PGM(P2) 3D. (Kacper Pluta,
+   [#853](https://github.com/DGtal-team/DGtal/pull/853))
 
 === DGtal 0.7 ===
 
