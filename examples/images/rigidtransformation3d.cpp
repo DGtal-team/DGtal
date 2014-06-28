@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file rigidtransformation2d.cpp
+ * @file rigidtransformation3d.cpp
  * @ingroup Examples
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
  *
  * @date 2014/06/28
  *
- * An example file named rigidtransformation2d.
+ * An example file named rigidtransformation3d.
  *
  * This file is part of the DGtal library.
  */
@@ -36,46 +36,46 @@
 #include "ConfigExamples.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/PGMReader.h"
+#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
-#include "DGtal/images/RigidTransformation2D.h"
+#include "DGtal/images/RigidTransformation3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 using namespace functors;
-using namespace Z2i;
+using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int , char** )
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
-  typedef ForwardRigidTransformation2D < Point, RealVector > ForwardTrans;
-  typedef BackwardRigidTransformation2D < Point, RealVector > BackwardTrans;
+  typedef ForwardRigidTransformation3D < Point, RealVector > ForwardTrans;
+  typedef BackwardRigidTransformation3D < Point, RealVector > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
-  typedef DomainRigidTransformation2D < Domain, ForwardTrans > MyTransformedDomain;
+  typedef DomainRigidTransformation3D < Domain, ForwardTrans > MyTransformedDomain;
   
-  trace.beginBlock ( "Example rigidtransformation2d" );
-
-    ForwardTrans forwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
-    BackwardTrans backwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
+  trace.beginBlock ( "Example rigidtransformation3d" );
+  
+    ForwardTrans forwardTrans( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector( 3, -3, 3 ) );
+    BackwardTrans backwardTrans( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector( 3, -3, 3 ) );
     MyTransformedDomain domainForwardTrans ( forwardTrans );
     DefaultFunctor idD;
-    Image image = PGMReader<Image>::importPGM ( examplesPath + "samples/church.pgm" ); 
+    Image image = VolReader<Image>::importVol ( examplesPath + "samples/cat10.vol" ); 
   
     trace.beginBlock ( "Backward - Eulerian model" );
       MyImageBackwardAdapter adapter ( image, domainForwardTrans ( image.domain() ), backwardTrans, idD );
-      adapter >> "backward_transform.pgm";
+      adapter >> "backward_transform.vol";
     trace.endBlock();
-    
+  
     trace.beginBlock( "Forward - Lagrangian model" );
       Image transformed ( domainForwardTrans ( image.domain() ) );
       for ( Domain::ConstIterator it = image.domain().begin(); it != image.domain().end(); ++it )
       {
 	transformed.setValue ( forwardTrans ( *it ), image ( *it ) );
       }
-      transformed >> "forward_transform.pgm";
+      transformed >> "forward_transform.vol";
     trace.endBlock();
   trace.endBlock();
   return 0;
