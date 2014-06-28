@@ -49,145 +49,148 @@
 
 namespace DGtal
 {
-  template <typename TPoint, typename TRealVector>
-  class ForwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
+  namespace functors
   {
-   BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
-   BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
-  public:
-    /**
-     * Constructor.
-     * @param aOrigin  the center of rotation.
-     */
-    ForwardRigidTransformation2D ( const TPoint& aOrigin, const double angle, const TRealVector & aTranslate )
-    :origin(aOrigin), translation(aTranslate) 
+    template <typename TPoint, typename TRealVector>
+    class ForwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
     {
-      t_sin = std::sin ( angle );
-      t_cos = std::cos ( angle );
-    }
-    
-    /**
-     * Operator
-     *
-     * @return the transformed point.
-     */
-    inline
-    TPoint operator()( const TPoint& aInput ) const
-    {
-      TPoint p;
-      p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
-      t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + 0.5 );
-      
-      p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
-      t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + 0.5 );
-      return p + origin;
-    }
-    
-  private:
-    /**
-     * value
-     */
-    TPoint origin;
-    double t_sin;
-    double t_cos;
-    TRealVector translation;
-  };
-  
-  template <typename TPoint, typename TRealVector>
-  class BackwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
-  {
-   BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
-   BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
-  public:
-    /**
-     * Constructor.
-     * @param aOrigin the center of rotation.
-     */
-    BackwardRigidTransformation2D ( const TPoint& aOrigin, const double angle, const TRealVector & aTranslate )
-    :origin(aOrigin), translation(aTranslate) 
-    {
-      t_sin = std::sin ( angle );
-      t_cos = std::cos ( angle );
-    }
-    
-    /**
-     * Operator
-     *
-     * @return the transformed point.
-     */
-    inline
-    TPoint operator()( const TPoint& aInput ) const
-    {
-      TPoint p;
-      p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
-      t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
-      
-      p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) 
-      + t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
-      return p + origin;
-    }
-    
-  private:
-    /**
-     * value
-     */
-    TPoint origin;
-    double t_sin;
-    double t_cos;
-    TRealVector translation;
-  };
-  
-  template <typename TDomain, typename TRigidTransformFunctor >
-  class DomainRigidTransformation2D : std::unary_function <TDomain,TDomain>
-  {
-   BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
-   BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-  public:
-    /**
-     * Constructor.
-     * @param aOrigin  the center of rotation.
-     */
-    DomainRigidTransformation2D ( TRigidTransformFunctor & aRigidFunctor ) : transform ( aRigidFunctor ) {}
-    
-    /**
-     * Operator
-     *
-     * @return the transformed point.
-     */
-    inline
-    TDomain operator()( const TDomain & aInput ) const
-    {
-      typedef typename TDomain::Point Point;
-      Point points[4];
-      points[0] = transform ( aInput.lowerBound() );
-      points[1] = transform ( aInput.upperBound() );
-      points[2] = transform ( Point ( aInput.upperBound()[0], aInput.lowerBound()[1] ) );
-      points[3] = transform ( Point ( aInput.lowerBound()[0], aInput.upperBound()[1] ) );
-      
-      Point t_min ( INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN );
-      for ( unsigned int i = 0; i < 4 ; i++ )
+      BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
+      BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
+    public:
+      /**
+       * Constructor.
+       * @param aOrigin  the center of rotation.
+       */
+      ForwardRigidTransformation2D ( const TPoint & aOrigin, const double & angle, const TRealVector & aTranslate )
+      :origin(aOrigin), translation(aTranslate) 
       {
-	if ( points[i][0] < t_min[0] )
-	  t_min[0] = points[i][0]; 
-	if ( points[i][1] < t_min[1] )
-	  t_min[1] = points[i][1];
-	
-	if ( points[i][0] > t_max[0] )
-	  t_max[0] = points[i][0]; 
-	if ( points[i][1] > t_max[1] )
-	  t_max[1] = points[i][1]; 
+	t_sin = std::sin ( angle );
+	t_cos = std::cos ( angle );
       }
-      return TDomain ( t_min, t_max );
-    }
-
-  private:
-    /**
-     * value
-     */
-    TRigidTransformFunctor & transform;
-  }; 
-  
-} // namespace DGtal
+      
+      /**
+       * Operator
+       *
+       * @return the transformed point.
+       */
+      inline
+      TPoint operator()( const TPoint& aInput ) const
+      {
+	TPoint p;
+	p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
+	t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + 0.5 );
+	
+	p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
+	t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + 0.5 );
+	return p + origin;
+      }
+      
+    private:
+      /**
+       * value
+       */
+      TPoint origin;
+      double t_sin;
+      double t_cos;
+      TRealVector translation;
+    };
+    
+    template <typename TPoint, typename TRealVector>
+    class BackwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
+    {
+      BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
+      BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
+    public:
+      /**
+       * Constructor.
+       * @param aOrigin the center of rotation.
+       */
+      BackwardRigidTransformation2D ( const TPoint& aOrigin, const double & angle, const TRealVector & aTranslate )
+      :origin(aOrigin), translation(aTranslate) 
+      {
+	t_sin = std::sin ( angle );
+	t_cos = std::cos ( angle );
+      }
+      
+      /**
+       * Operator
+       *
+       * @return the transformed point.
+       */
+      inline
+      TPoint operator()( const TPoint& aInput ) const
+      {
+	TPoint p;
+	p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
+	t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
+	
+	p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) 
+	+ t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
+	return p + origin;
+      }
+      
+    private:
+      /**
+       * value
+       */
+      TPoint origin;
+      double t_sin;
+      double t_cos;
+      TRealVector translation;
+    };
+    
+    template <typename TDomain, typename TRigidTransformFunctor >
+    class DomainRigidTransformation2D : std::unary_function <TDomain,TDomain>
+    {
+      BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
+      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+    public:
+      /**
+       * Constructor.
+       * @param aRigidFunctor  - functor to rigid transformation.
+       */
+      DomainRigidTransformation2D ( TRigidTransformFunctor & aRigidFunctor ) : transform ( aRigidFunctor ) {}
+      
+      /**
+       * Operator
+       *
+       * @return the transformed domain.
+       */
+      inline
+      TDomain operator()( const TDomain & aInput ) const
+      {
+	typedef typename TDomain::Point Point;
+	Point points[4];
+	points[0] = transform ( aInput.lowerBound() );
+	points[1] = transform ( aInput.upperBound() );
+	points[2] = transform ( Point ( aInput.upperBound()[0], aInput.lowerBound()[1] ) );
+	points[3] = transform ( Point ( aInput.lowerBound()[0], aInput.upperBound()[1] ) );
+	
+	Point t_min ( INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN );
+	for ( unsigned int i = 0; i < 4 ; i++ )
+	{
+	  if ( points[i][0] < t_min[0] )
+	    t_min[0] = points[i][0]; 
+	  if ( points[i][1] < t_min[1] )
+	    t_min[1] = points[i][1];
+	  
+	  if ( points[i][0] > t_max[0] )
+	    t_max[0] = points[i][0]; 
+	  if ( points[i][1] > t_max[1] )
+	    t_max[1] = points[i][1]; 
+	}
+	return TDomain ( t_min, t_max );
+      }
+      
+    private:
+      /**
+       * value
+       */
+      TRigidTransformFunctor & transform;
+    }; 
+    
+  }// namespace DGtal::functors
+}// namespace DGtal
 
 #endif // !defined RigidTransformation2D_h
 
