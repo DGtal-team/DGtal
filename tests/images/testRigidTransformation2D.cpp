@@ -127,13 +127,13 @@ public:
 
 int main( int, char** )
 {
-  trace.beginBlock ( "Testing RigidTransformation2D" );
   bool res = true;
-  testRigidTransformation2D testRigid;
-  res &= testRigid.forwardTransformationBinary();
-  res &= testRigid.backwardTransformationBinary();
-  res &= testRigid.forwardTransformationGray();
-  res &= testRigid.backwardTransformationGray();
+  testRigidTransformation2D rigidTest;
+  trace.beginBlock ( "Testing RigidTransformation2D" );
+    res &= rigidTest.forwardTransformationBinary();
+    res &= rigidTest.backwardTransformationBinary();
+    res &= rigidTest.forwardTransformationGray();
+    res &= rigidTest.backwardTransformationGray();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
