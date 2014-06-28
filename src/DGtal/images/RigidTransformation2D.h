@@ -158,24 +158,24 @@ namespace DGtal
     TDomain operator()( const TDomain & aInput ) const
     {
       typedef typename TDomain::Point Point;
-      std::vector < Point > points ( 4 );
+      Point points[4];
       points[0] = transform ( aInput.lowerBound() );
       points[1] = transform ( aInput.upperBound() );
       points[2] = transform ( Point ( aInput.upperBound()[0], aInput.lowerBound()[1] ) );
       points[3] = transform ( Point ( aInput.lowerBound()[0], aInput.upperBound()[1] ) );
       
       Point t_min ( INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN );
-      for ( typename std::vector < Point >::const_iterator it = points.begin(); it != points.end(); ++it )
+      for ( unsigned int i = 0; i < 4 ; i++ )
       {
-	if ( (*it)[0] < t_min[0] )
-	  t_min[0] = (*it)[0]; 
-	if ( (*it)[1] < t_min[1] )
-	  t_min[1] = (*it)[1];
+	if ( points[i][0] < t_min[0] )
+	  t_min[0] = points[i][0]; 
+	if ( points[i][1] < t_min[1] )
+	  t_min[1] = points[i][1];
 	
-	if ( (*it)[0] > t_max[0] )
-	  t_max[0] = (*it)[0]; 
-	if ( (*it)[1] > t_max[1] )
-	  t_max[1] = (*it)[1]; 
+	if ( points[i][0] > t_max[0] )
+	  t_max[0] = points[i][0]; 
+	if ( points[i][1] > t_max[1] )
+	  t_max[1] = points[i][1]; 
       }
       return TDomain ( t_min, t_max );
     }
