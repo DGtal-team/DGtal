@@ -63,11 +63,12 @@ int main( int , char** )
     BackwardTrans backwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
     MyTransformedDomain domainForwardTrans ( forwardTrans );
     DefaultFunctor idD;
+    
     Image image = PGMReader<Image>::importPGM ( examplesPath + "samples/church.pgm" ); 
-  
+    Bounds bounds = domainForwardTrans ( image.domain() );
+    Domain transformedDomain ( bounds.first, bounds.second );
+    
     trace.beginBlock ( "Backward - Eulerian model" );
-      Bounds bounds = domainForwardTrans ( image.domain() );
-      Domain transformedDomain ( bounds.first, bounds.second );
       MyImageBackwardAdapter backwardImageAdapter ( image, transformedDomain , backwardTrans, idD );
       backwardImageAdapter >> "backward_transform.pgm";
     trace.endBlock();

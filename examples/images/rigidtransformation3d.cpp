@@ -55,6 +55,7 @@ int main( int , char** )
   typedef BackwardRigidTransformation3D < Point, RealVector > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > MyTransformedDomain;
+  typedef MyTransformedDomain::Bounds Bounds;
   
   trace.beginBlock ( "Example rigidtransformation3d" );
   
@@ -62,15 +63,18 @@ int main( int , char** )
     BackwardTrans backwardTrans( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector( 3, -3, 3 ) );
     MyTransformedDomain domainForwardTrans ( forwardTrans );
     DefaultFunctor idD;
-    Image image = VolReader<Image>::importVol ( examplesPath + "samples/cat10.vol" ); 
+    
+    Image image = VolReader<Image>::importVol ( examplesPath + "samples/cat10.vol" );
+    Bounds bounds = domainForwardTrans ( image.domain() );
+    Domain transformedDomain ( bounds.first, bounds.second );
   
     trace.beginBlock ( "Backward - Eulerian model" );
-      MyImageBackwardAdapter adapter ( image, domainForwardTrans ( image.domain() ), backwardTrans, idD );
+      MyImageBackwardAdapter adapter ( image, transformedDomain, backwardTrans, idD );
       adapter >> "backward_transform.vol";
     trace.endBlock();
   
     trace.beginBlock( "Forward - Lagrangian model" );
-      Image transformed ( domainForwardTrans ( image.domain() ) );
+      Image transformed ( transformedDomain );
       for ( Domain::ConstIterator it = image.domain().begin(); it != image.domain().end(); ++it )
       {
 	transformed.setValue ( forwardTrans ( *it ), image ( *it ) );
