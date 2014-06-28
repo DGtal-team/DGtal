@@ -72,8 +72,8 @@ public:
   testRigidTransformation2D() : 
   binary ( Domain ( Point ( 0,0 ), Point ( 10, 10 ) ) ),
   gray ( PGMReader<Image>::importPGM ( testPath + "samples/church-small.pgm" ) ),
-  forwardTrans ( Point ( 5, 5 ), M_PI_2/2, RealVector() ),
-  backwardTrans ( Point ( 5, 5 ), M_PI_2/2, RealVector() ),
+  forwardTrans ( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) ),
+  backwardTrans ( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) ),
   domainForwardTrans ( forwardTrans )
     {
       binary.setValue ( Point ( 3,3 ), 255 );
@@ -99,7 +99,7 @@ public:
     bool backwardTransformationBinary ()
     {
       MyImageBackwardAdapter adapter ( binary, domainForwardTrans ( binary.domain() ), backwardTrans, idD );
-      binary >> "binary_after_backward.pgm";
+      adapter >> "binary_after_backward.pgm";
       return true;
     }
     
@@ -117,7 +117,7 @@ public:
       {
 	transformed.setValue ( forwardTrans ( *it ), gray ( *it ) );
       }
-      transformed >> "binary_after_forward.pgm";
+      transformed >> "gray_after_forward.pgm";
       return true;
     }
 };
