@@ -52,18 +52,35 @@ namespace DGtal
 {
   namespace functors
   {
+    /////////////////////////////////////////////////////////////////////////////
+    // Template class ForwardRigidTransformation2D
+    /**
+     * Description of template functor like class 'ForwardRigidTransformation2D' <p>
+     * \brief Aim: implements forward rigid transformation of point in the 2D integer space.
+     * Warring: This version uses closest neighbor interpolation.
+     *
+     * @tparam TPoint a 2 dimensional integer point.
+     * @tparam TRealVector a 2 dimensional real vector.
+     * 
+     * @see exampleRigidtransformation2d.cpp
+     */
     template <typename TPoint, typename TRealVector>
     class ForwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
     {
+      ///Checking concepts
       BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
       BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
+      
+    // ----------------------- Interface --------------------------------------
     public:
       /**
        * Constructor.
        * @param aOrigin  the center of rotation.
+       * @param angle  the angle given in radians.
+       * @param aTranslate  the 2D dimensional vector which represents translation.
        */
       ForwardRigidTransformation2D ( const TPoint & aOrigin, const double & angle, const TRealVector & aTranslate )
-      :origin(aOrigin), translation(aTranslate) 
+      :origin(aOrigin), translation(aTranslate)
       {
 	t_sin = std::sin ( angle );
 	t_cos = std::cos ( angle );
@@ -86,25 +103,40 @@ namespace DGtal
 	return p + origin;
       }
       
-    private:
-      /**
-       * value
-       */
+    // ------------------------- Protected Datas ------------------------------
+    protected:
       TPoint origin;
       double t_sin;
       double t_cos;
       TRealVector translation;
     };
-    
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Template class BackwardRigidTransformation2D
+    /**
+     * Description of template functor like class 'BackwardRigidTransformation2D' <p>
+     * \brief Aim: implements backward rigid transformation of point in the 2D integer space.
+     * Warring: This version uses closest neighbor interpolation.
+     *
+     * @tparam TPoint a 2 dimensional integer point.
+     * @tparam TRealVector a 2 dimensional real vector.
+     * 
+     * @see exampleRigidtransformation2d.cpp
+     */
     template <typename TPoint, typename TRealVector>
     class BackwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
     {
+      ///Checking concepts
       BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
       BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
+
+    // ----------------------- Interface --------------------------------------
     public:
       /**
        * Constructor.
-       * @param aOrigin the center of rotation.
+       * @param aOrigin  the center of rotation.
+       * @param angle  the angle given in radians.
+       * @param aTranslate  the 2D dimensional vector which represents translation.
        */
       BackwardRigidTransformation2D ( const TPoint& aOrigin, const double & angle, const TRealVector & aTranslate )
       :origin(aOrigin), translation(aTranslate) 
@@ -116,7 +148,7 @@ namespace DGtal
       /**
        * Operator
        *
-       * @return the transformed point.
+       * @return transformed point.
        */
       inline
       TPoint operator()( const TPoint& aInput ) const
@@ -130,20 +162,30 @@ namespace DGtal
 	return p + origin;
       }
       
-    private:
-      /**
-       * value
-       */
+    // ------------------------- Protected Datas ------------------------------
+    protected:
       TPoint origin;
       double t_sin;
       double t_cos;
       TRealVector translation;
     };
-    
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Template class DomainRigidTransformation2D
+    /**
+     * Description of template functor like class 'DomainRigidTransformation2D' <p>
+     * \brief Aim: implements bounds of transformed domain.
+     *
+     * @tparam TDomain a 2 dimensional domain.
+     * @tparam TRigidTransformFunctor a functor which represent two dimensional rigid transformation.
+     * 
+     * @see exampleRigidtransformation2d.cpp
+     */
     template <typename TDomain, typename TRigidTransformFunctor >
     class DomainRigidTransformation2D : 
     std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
     {
+      ///Checking concepts
       BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
       BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
       
@@ -151,17 +193,18 @@ namespace DGtal
     public:
      typedef std::pair < typename TDomain::Space::Point, typename TDomain::Space::Point > Bounds;
      
+    // ----------------------- Interface --------------------------------------
     public:
       /**
        * Constructor.
-       * @param aRigidFunctor  - functor to rigid transformation.
+       * @param aRigidFunctor  - rigid transformation functor.
        */
       DomainRigidTransformation2D ( TRigidTransformFunctor & aRigidFunctor ) : transform ( aRigidFunctor ) {}
       
       /**
        * Operator
        *
-       * @return the transformed domain.
+       * @return bounds of the transformed domain.
        */
       inline
       Bounds operator()( const TDomain & aInput ) const
@@ -192,11 +235,9 @@ namespace DGtal
 	bounds.second = t_max;
 	return bounds;
       }
-      
-    private:
-      /**
-       * value
-       */
+
+    // ------------------------- Protected Datas ------------------------------
+    protected:
       TRigidTransformFunctor & transform;
     }; 
     
