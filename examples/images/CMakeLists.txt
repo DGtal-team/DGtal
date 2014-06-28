@@ -24,6 +24,7 @@ SET(DGTAL_EXAMPLES_SRC
   extract2DImagesFrom3D
   extract2DSlicesImagesFrom3D
   imageBasicSubsampling
+  rigidtransformation2d
 )
 
 if( WITH_HDF5 )
