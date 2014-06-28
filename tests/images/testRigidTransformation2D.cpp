@@ -43,6 +43,7 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace functors;
 using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,7 +59,6 @@ class testRigidTransformation2D
   typedef ImageSelector<Domain, unsigned char >::Type Image;
   typedef ForwardRigidTransformation2D < Point, RealVector > ForwardTrans;
   typedef BackwardRigidTransformation2D < Point, RealVector > BackwardTrans;
-  typedef ConstImageAdapter<Image, Domain, ForwardTrans, Image::Value, DefaultFunctor > MyImageForwardAdapter;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
 private:
   Image binary;

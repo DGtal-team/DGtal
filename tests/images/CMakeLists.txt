@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
   testSliceImageFromFunctor
 #  testImageContainerByHashTree
   testRigidTransformation2D
+  testRigidTransformation3D
   )
 
 if( WITH_HDF5 )
