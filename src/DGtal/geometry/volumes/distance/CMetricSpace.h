@@ -59,7 +59,7 @@ Description of \b concept '\b CMetricSpace' <p>
 @brief Aim: defines the concept of metric spaces.
 
 Models of metric spaces must satsify metric space conditions as
-described in @href moduleMetrics. For short, models must have a 
+described in @ref moduleMetrics. For short, models must have a 
 @e Point inner type and a distance @a Value type.
  
 In addition, CMetricSpace models should implement a distance function
