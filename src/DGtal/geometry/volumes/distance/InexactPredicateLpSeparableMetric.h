@@ -84,7 +84,7 @@ namespace DGtal
     ///Copy the space type
     typedef TSpace Space;
 
-BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
 
     ///Type for points
     typedef typename Space::Point Point;
@@ -94,7 +94,9 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
     typedef typename Space::Vector Vector;
     ///Type for distance values
     typedef double Value;
-
+    ///Type for raw distance values
+    typedef double RawValue;
+    
     /**
      * Constructor.
      */
@@ -139,6 +141,16 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
      * @return the distance between aP and aQ.
      */
     Value operator()(const Point & aP, const Point &aQ) const;
+
+    /**
+     * Compute the raw distance between @a aP and @a aQ.
+     *
+     * @param aP a first point.
+     * @param aQ a second point.
+     *
+     * @return the distance between aP and aQ.
+     */
+    RawValue rawDistance(const Point & aP, const Point &aQ) const;
 
     /**
      * Given an origin and two points, this method decides which one

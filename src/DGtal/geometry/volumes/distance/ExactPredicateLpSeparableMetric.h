@@ -78,12 +78,12 @@ namespace DGtal
    * @tparam TSpace the model of CSpace on which the metric is
    * defined.
    * @tparam p the exponent of the metric (static DGtal::uint32_t)
-   * @taparm TPromoted model of CSignedInteger used to store power @a
+   * @taparm TRawValue model of CSignedInteger used to store power @a
    * p sums (default: DGtal::int64_t)
    *
    */
   template <typename TSpace, DGtal::uint32_t p,
-            typename TPromoted=DGtal::int64_t>
+            typename TRawValue=DGtal::int64_t>
   class ExactPredicateLpSeparableMetric
     : public std::binary_function< typename TSpace::Point, typename TSpace::Point, double >
   {
@@ -106,14 +106,14 @@ namespace DGtal
     typedef typename Space::Vector Vector;
 
     ///Type for internal distance values
-    typedef TPromoted Promoted;
-    BOOST_CONCEPT_ASSERT(( CInteger<Promoted> ));
+    typedef TRawValue RawValue;
+    BOOST_CONCEPT_ASSERT(( CInteger<RawValue> ));
 
     ///Type for distance values
     typedef double Value;
 
     ///Self type
-    typedef ExactPredicateLpSeparableMetric<TSpace,p,TPromoted> Self;
+    typedef ExactPredicateLpSeparableMetric<TSpace,p,RawValue> Self;
 
     /**
      * Constructor.
@@ -147,7 +147,7 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
-    // ----------------------- CMetric --------------------------------------
+    // ----------------------- CMetricSpace --------------------------------------
     /**
      * Compute the distance between @a aP and @a aQ.
      *
@@ -172,6 +172,16 @@ namespace DGtal
     Closest closest(const Point &origin,
 		    const Point &first,
 		    const Point &second) const;
+
+    /**
+     * Compute the raw distance between @a aP and @a aQ.
+     * (i.e. @f$ \sum_{i=1}^n |x_i-y_i |^p\f$).
+     * @param aP a first point.
+     * @param aQ a second point.
+     *
+     * @return the distance between aP and aQ.
+     */
+    RawValue rawDistance(const Point & aP, const Point &aQ) const;
 
       // ----------------------- CSeparableMetric --------------------------------------
     /**
@@ -237,25 +247,10 @@ namespace DGtal
      */
     Abscissa binarySearchHidden(const Abscissa &udim,
                                 const Abscissa &vdim,
-                                const Promoted &nu,
-                                const Promoted &nv,
+                                const RawValue &nu,
+                                const RawValue &nv,
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
-
-    // ------------------------- Private methods ------------------------------
-    private:
-
-    /**
-     * Compute the Lp distance without the computation of the power
-     * 1/p. I.e. only @f$ \sum |p_i- q_i|^p@f$ is given.
-     *
-     * UNUSED_PARAM aP a first point
-     * UNUSED_PARAM aQ a second point
-     *
-     * @return the power p of the l_p distance between aP and aQ.
-     */
-    Promoted exactDistanceRepresentation(const Point & UNUSED(aP), const Point &UNUSED(aQ)) const;
-
 
   }; // end of class ExactPredicateLpSeparableMetric
 
@@ -266,8 +261,8 @@ namespace DGtal
 
 
  template <typename TSpace,
-           typename TPromoted>
- class ExactPredicateLpSeparableMetric<TSpace, 2, TPromoted>
+           typename TRawValue>
+ class ExactPredicateLpSeparableMetric<TSpace, 2, TRawValue>
    : public std::binary_function< typename TSpace::Point, typename TSpace::Point, double >
   {
     // ----------------------- Standard services ------------------------------
@@ -283,13 +278,13 @@ namespace DGtal
     typedef typename Space::Vector Vector;
 
     ///Type for internal distance values
-    typedef TPromoted Promoted;
+    typedef TRawValue RawValue;
 
     ///Type for distance values
     typedef double Value;
 
     ///Self type
-    typedef ExactPredicateLpSeparableMetric<TSpace,2,TPromoted> Self;
+    typedef ExactPredicateLpSeparableMetric<TSpace,2,TRawValue> Self;
 
     /**
      * Constructor.
@@ -370,7 +365,7 @@ namespace DGtal
      *
      * @return the power p of the l_p distance between aP and aQ.
      */
-    Promoted exactDistanceRepresentation(const Point &aP, const Point &aQ) const;
+    RawValue rawDistance(const Point &aP, const Point &aQ) const;
 
     // ----------------------- CSeparableMetric --------------------------------------
     /**
@@ -433,8 +428,8 @@ namespace DGtal
      */
     Abscissa binarySearchHidden(const Abscissa &udim,
                                 const Abscissa &vdim,
-                                const Promoted &nu,
-                                const Promoted &nv,
+                                const RawValue &nu,
+                                const RawValue &nv,
                                 const Abscissa &lower,
                                 const Abscissa &upper) const;
 
