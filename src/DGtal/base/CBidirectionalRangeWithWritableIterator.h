@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CBidirectionalOutputRange.h
+ * @file CBidirectionalRangeWithWritableIterator.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -27,41 +27,41 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(CBidirectionalOutputRange_RECURSES)
-#error Recursive header files inclusion detected in CBidirectionalOutputRange.h
-#else // defined(CBidirectionalOutputRange_RECURSES)
+#if defined(CBidirectionalRangeWithWritableIterator_RECURSES)
+#error Recursive header files inclusion detected in CBidirectionalRangeWithWritableIterator.h
+#else // defined(CBidirectionalRangeWithWritableIterator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CBidirectionalOutputRange_RECURSES
+#define CBidirectionalRangeWithWritableIterator_RECURSES
 
-#if !defined CBidirectionalOutputRange_h
+#if !defined CBidirectionalRangeWithWritableIterator_h
 /** Prevents repeated inclusion of headers. */
-#define CBidirectionalOutputRange_h
+#define CBidirectionalRangeWithWritableIterator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CSinglePassOutputRange.h"
+#include "DGtal/base/CSinglePassRangeWithWritableIterator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CBidirectionalOutputRange
+  // class CBidirectionalRangeWithWritableIterator
   /**
-Description of \b concept '\b CBidirectionalOutputRange'
+Description of \b concept '\b CBidirectionalRangeWithWritableIterator'
      @ingroup Concepts
      @brief Aim: refined concept of bidirectional range which require that a reverse output iterator exists.
 
 
-### Refinement of CSinglePassOutputRange
+### Refinement of CSinglePassRangeWithWritableIterator
 
 ### Associated types :
 - OutputIterator: type of output iterator on the range.
 
 ### Notation
-- \a X : A type that is a model of CBidirectionalOutputRange
+- \a X : A type that is a model of CBidirectionalRangeWithWritableIterator
 - \a x, \a y : object of type X
 
 
@@ -82,12 +82,12 @@ ImageContainerBySTLVector::Range
 
 ### Notes###
 
-@tparam T the type that should be a model of CBidirectionalOutputRange.
+@tparam T the type that should be a model of CBidirectionalRangeWithWritableIterator.
 @tparam Value the type of object t in (*it) = t.
 
    */
   template <typename T, typename Value>
-  struct CBidirectionalOutputRange : CSinglePassOutputRange<T, Value>
+  struct CBidirectionalRangeWithWritableIterator : CSinglePassRangeWithWritableIterator<T, Value>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -96,7 +96,7 @@ ImageContainerBySTLVector::Range
     // possibly check these types so as to satisfy a concept with
     //BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
 
-    BOOST_CONCEPT_USAGE( CBidirectionalOutputRange )
+    BOOST_CONCEPT_USAGE( CBidirectionalRangeWithWritableIterator )
     {
       ConceptUtils::sameType( myOutput, myX.routputIterator( ) );
     }
@@ -108,14 +108,14 @@ ImageContainerBySTLVector::Range
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CBidirectionalOutputRange
+  }; // end of concept CBidirectionalRangeWithWritableIterator
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CBidirectionalOutputRange_h
+#endif // !defined CBidirectionalRangeWithWritableIterator_h
 
-#undef CBidirectionalOutputRange_RECURSES
-#endif // else defined(CBidirectionalOutputRange_RECURSES)
+#undef CBidirectionalRangeWithWritableIterator_RECURSES
+#endif // else defined(CBidirectionalRangeWithWritableIterator_RECURSES)

@@ -158,10 +158,10 @@ DGtal::SimpleMatrixSpecializations<M,3,3>::minorDeterminant(const Matrix &aM,
           }
 
         if (indexR==3-1)
-          return determinant(mat);
+          return mat.determinant(); //DGtal::SimpleMatrixSpecializations<M,2,2>::determinant(mat);
       }
  
-  return determinant(mat);
+  return mat.determinant(); //DGtal::SimpleMatrixSpecializations<M,2,2>::determinant(mat);
 }
 
 template <typename M>

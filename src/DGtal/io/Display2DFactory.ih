@@ -315,7 +315,8 @@ void DGtal::Display2DFactory::drawSector(Board2D & aBoard, const DGtal::CircleFr
 
 template <typename Point>
 inline
-void DGtal::Display2DFactory::drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w, bool anOrientation)
+void DGtal::Display2DFactory::drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, 
+					  const Point& aPoint1, const Point& aPoint2, bool anOrientation, const double& w)
 {
   typedef typename Point::Coordinate Coordinate;
   typedef Point Vector;

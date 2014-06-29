@@ -1467,6 +1467,16 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
+    /**
+       Used by uFaces for computing incident faces.
+    */
+    void uAddFaces( Cells& faces, const Cell& c, Dimension axis ) const;
+
+    /**
+       Used by uCoFaces for computing incident cofaces.
+    */
+    void uAddCoFaces( Cells& cofaces, const Cell& c, Dimension axis ) const;
+
 
   }; // end of class KhalimskySpaceND
 

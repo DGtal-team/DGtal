@@ -133,7 +133,6 @@ bool testLatticePolytope2D()
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
   typedef typename CIP::Iterator Iterator;
-  typedef typename CIP::SizeCouple SizeCouple;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
 
   CIP cip;

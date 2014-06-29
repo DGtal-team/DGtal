@@ -83,7 +83,7 @@ namespace DGtal
        *
        * @return true if a < b but false otherwise
        */
-      bool operator()(const T& a, const T& b) 
+      bool operator()(const T& a, const T& b) const
       {
 	if ( std::abs(a.second) == std::abs(b.second) ) 
 	  { //point comparison
@@ -116,7 +116,6 @@ namespace DGtal
    * However, you are free to use L2SecondOrderLocalDistance, which provides
    * more accurate distance values, L1LocalDistance and 
    * LInfLocalDistance for other norms. 
-   * @see FMMPointFunctors.h
    *
    * Then the point of smallest tentative value is added to the set of
    * accepted points. The tentative values of the candidates adjacent 
@@ -133,10 +132,13 @@ namespace DGtal
    * used to compute the new distance value
    *
    * You can define the FMM type as follows: 
-   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMDef
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMSimpleTypeDef3D
    *
-   * You can run the algorithm as follows (d is a domain): 
-   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage
+   * You can construct and initialize the external data structures as follows: 
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMSimpleInit3D
+   *
+   * Then, the algorithm is ran as follows: 
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage3D
    *
    * @see exampleFMM2D.cpp
    * @see exampleFMM3D.cpp

@@ -71,7 +71,7 @@ namespace DGtal
    * The computed value is such that the upwind gradient of the 
    * distance map is one, ie. it is the minimum solution \f$ \Phi \f$ 
    * over all quadrants, verifying the following quadratic equation:
-   * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 \f$
+   * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 = 1 \f$
    * where \f$ \Phi_i \f$ is the distance value of the point preceeding
    * or following p along the \f$ i \f$ axis. 
    *
