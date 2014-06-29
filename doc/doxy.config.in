@@ -195,7 +195,8 @@ TAB_SIZE               = 8
 # will result in a user-defined paragraph with heading "Side Effects:".
 # You can put \n's in the value part of an alias to insert newlines.
 
-ALIASES                = "advanced=\par Advanced:\n" \
+ALIASES                = "definition=\par Definition:\n" \
+                         "advanced=\par Advanced:\n" \
                          "writers=\par Author(s) of this documentation:\n" \
                          "managers=\par Package managers:\n"
 

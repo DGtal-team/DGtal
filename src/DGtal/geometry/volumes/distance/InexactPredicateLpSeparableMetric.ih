@@ -53,8 +53,8 @@ DGtal::InexactPredicateLpSeparableMetric<T>::~InexactPredicateLpSeparableMetric(
 template <typename T>
 inline
 double
-DGtal::InexactPredicateLpSeparableMetric<T>::distanceLp (const Point &aP,
-                                                         const Point &aQ) const
+DGtal::InexactPredicateLpSeparableMetric<T>::rawDistance (const Point &aP,
+                                                          const Point &aQ) const
 {
   double res= 0.0;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -70,7 +70,7 @@ typename DGtal::InexactPredicateLpSeparableMetric<T>::Value
 DGtal::InexactPredicateLpSeparableMetric<T>::operator() (const Point &aP,
                                                        const Point &aQ) const
 {
-  return std::pow( distanceLp(aP,aQ) , 1.0/myExponent);
+  return std::pow( rawDistance(aP,aQ) , 1.0/myExponent);
 }
 //------------------------------------------------------------------------------
 template <typename T>
@@ -82,8 +82,8 @@ DGtal::InexactPredicateLpSeparableMetric<T>::closest (const Point &origin,
 {
   double a=0.0, b=0.0;
 
-  a = distanceLp(origin,first);
-  b = distanceLp(origin,second);
+  a = rawDistance(origin,first);
+  b = rawDistance(origin,second);
 
   if (a<b)
     return ClosestFIRST;
