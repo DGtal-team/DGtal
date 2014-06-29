@@ -1,0 +1,53 @@
+/**
+* @file moduleMesh.dox
+*
+* @author Bertrand Kerautret (\c kerautre@loria.fr )
+* LORIA (CNRS, UMR 7503), University of Nancy, France
+
+* @date 2014/06/27
+*
+* Documentation file for feature moduleMesh
+*
+* This file is part of the DGtal library.
+*/
+
+/* 
+* Useful to avoid writing DGtal:: in front of every class.
+* Do not forget to add an entry in src/DGtal/base/Config.h.in !
+*/
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleMesh
+@author Bertrand Kerautret
+
+[TOC]
+
+\section sectmoduleMesh1 Simple Mesh Class 
+
+
+The aim of this class is to handle basic simple mesh mainly for the
+task of export/display of digital surface. This class is able to deal
+with triangulated or quad faces and can include specific color to display
+faces. 
+
+
+\subsection subsect2moduleMesh Mesh construction
+
+The Mesh construction is very simple, you can start for instance to
+construct an empty mesh input and specify if you want to store or not
+the vertex colors in the mesh.
+
+
+\subsection subsect2moduleMesh 
+
+
+
+
+
+
+}
+
+
+
+
