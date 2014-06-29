@@ -1,11 +1,13 @@
 SET(DGTAL_TESTS_SRC_MATH
+       testSimpleRegression
        testMeasure
-       testSignal 
-       testStatistics 
+       testSignal
+       testStatistics
        testHistogram
        testMPolynomial
        testAngleLinearMinimizer
-       testBasicMathFunctions)
+       testBasicMathFunctions
+       testEigenDecomposition )
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
