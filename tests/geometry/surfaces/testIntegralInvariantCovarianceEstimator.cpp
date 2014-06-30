@@ -174,7 +174,6 @@ bool testPrincipalCurvatures3d( double h )
 
   double re = 5.0;
   double radius = 5.0;
-  double realValue = 1.0/(radius * radius);
 
   trace.beginBlock( "Shape initialisation ..." );
 
@@ -255,7 +254,7 @@ bool testPrincipalCurvatures3d( double h )
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   trace.beginBlock ( "Testing class IntegralInvariantCovarianceEstimator and 3d functors" );
     bool res = testGaussianCurvature3d( 0.6, 0.007 ) && testPrincipalCurvatures3d( 0.6 );
