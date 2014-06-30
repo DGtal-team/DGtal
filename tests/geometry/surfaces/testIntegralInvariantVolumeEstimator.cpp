@@ -264,7 +264,7 @@ bool testMeanCurvature3d( double h, double delta )
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   trace.beginBlock ( "Testing class IntegralInvariantVolumeEstimator and 2d/3d mean curvature functors" );
     bool res = testCurvature2d( 0.05, 0.002 ) && testMeanCurvature3d( 0.6, 0.008 );
