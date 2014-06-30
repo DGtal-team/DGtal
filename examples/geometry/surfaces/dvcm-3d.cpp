@@ -33,7 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
