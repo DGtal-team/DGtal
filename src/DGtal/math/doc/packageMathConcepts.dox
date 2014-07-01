@@ -39,8 +39,8 @@ digraph GMath {
                  node [style=filled,color=white];
                  label="kernel";
 
-		 CCommutativeRing [ label="CCommutativeRing" URL="\ref CCommutativeRing" ];
-		 CEuclideanRing [ label="CEuclideanRing" URL="\ref CEuclideanRing" ];
+		 CCommutativeRing [ label="CCommutativeRing" URL="\ref concepts::CCommutativeRing" ];
+		 CEuclideanRing [ label="CEuclideanRing" URL="\ref concepts::CEuclideanRing" ];
         }
         subgraph cluster_io {
                  style=filled;
@@ -80,15 +80,15 @@ digraph GMath {
                  node [style=filled,color=white];
                  label="math/linalg";
 
-                 CVectorSpace [ label="CVectorSpace" URL="\ref CVectorSpace" ];
+                 CVectorSpace [ label="CVectorSpace" URL="\ref concepts::CVectorSpace" ];
                  CMatrix [ label="CMatrix" URL="\ref CMatrix" ];
-                 CStaticMatrix [ label="CStaticMatrix" URL="\ref CStaticMatrix" ];
-                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref CDynamicMatrix" ];
+                 CStaticMatrix [ label="CStaticMatrix" URL="\ref concepts::CStaticMatrix" ];
+                 CDynamicMatrix [ label="CDynamicMatrix" URL="\ref concepts::CDynamicMatrix" ];
                  CVector [ label="CVector" URL="\ref CVector" ];
-                 CStaticVector [ label="CStaticVector" URL="\ref CStaticVector" ];
-                 CDynamicVector [ label="CDynamicVector" URL="\ref CDynamicVector" ];
-                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref CLinearAlgebra" ];
-                 CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref CLinearAlgebraSolver" ];
+                 CStaticVector [ label="CStaticVector" URL="\ref concepts::CStaticVector" ];
+                 CDynamicVector [ label="CDynamicVector" URL="\ref concepts::CDynamicVector" ];
+                 CLinearAlgebra [ label="CLinearAlgebra" URL="\ref concepts::CLinearAlgebra" ];
+                 CLinearAlgebraSolver [ label="CLinearAlgebraSolver" URL="\ref concepts::CLinearAlgebraSolver" ];
         }
 
         CVector -> CVectorSpace;

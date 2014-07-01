@@ -51,12 +51,12 @@ bool testEigenSolverConcepts()
     typedef EigenLinearAlgebraBackend LAB;
     typedef LAB::DenseVector Vector;
     typedef LAB::SparseMatrix Matrix;
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverBiCGSTAB, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSparseLU, Vector, Matrix> ));
-    BOOST_CONCEPT_ASSERT(( CLinearAlgebraSolver<LAB::SolverSparseQR, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLLT, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSimplicialLDLT, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverConjugateGradient, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverBiCGSTAB, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSparseLU, Vector, Matrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebraSolver<LAB::SolverSparseQR, Vector, Matrix> ));
 
     return true;
 }
