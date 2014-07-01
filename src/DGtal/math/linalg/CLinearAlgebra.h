@@ -48,7 +48,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // class CLinearAlgebra
 /**
@@ -117,7 +118,7 @@ private:
 private:
 
 }; // end of concept CLinearAlgebra
-
+}
 } // namespace DGtal
 
 //                                                                           //

@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // class CMatrix
 /**
@@ -116,7 +117,7 @@ private:
 private:
 
 }; // end of concept CMatrix
-
+}
 } // namespace DGtal
 
 //                                                                           //

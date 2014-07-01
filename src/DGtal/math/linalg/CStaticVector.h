@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // class CStaticVector
 /**
@@ -104,7 +105,7 @@ private:
 private:
 
 }; // end of concept CStaticVector
-
+}
 } // namespace DGtal
 
 //                                                                           //
