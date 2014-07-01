@@ -30,11 +30,17 @@
 
 - *Math Package*
 
-    - New classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition).
-      Add tests. (Jacques-Olivier Lachaud, #803)
+    - New classes to compute nD eigen decomposition of symmetric
+      matrix (class EigenDecomposition).  Add tests. (Jacques-Olivier
+      Lachaud, #803)
     - Simple Linear Regression tool added (backport from
       imagene). (David
-      Coeurjolly,[#794](https://github.com/DGtal-team/DGtal/pull/794))
+      Coeurjolly, [#794](https://github.com/DGtal-team/DGtal/pull/794))
+
+- *Kernel package*
+  - BasicPointFunctors functors have been moved in the functors::
+    namespace (David Coeurjolly,
+    [#863](https://github.com/DGtal-team/DGtal/pull/863))
 
 - *For developpers*
      - Google Benchmark can be enabled to allow micro-benchmarking in
@@ -43,13 +49,16 @@
          [#790](https://github.com/DGtal-team/DGtal/pull/790))
 
 
+
 ## Changes
 
 - *Base Package*
- - Add comparison operators in variants of CountedPtr. Improve coverage of these classes
-   and fix compilation problem (Jacques-Olivier Lachaud)
- - XXXOutputRangeYYY classes are now called XXXRangeWithWritableIteratorYYY
-   (Tristan Roussillon, [#850](https://github.com/DGtal-team/DGtal/pull/850)). 
+ - Add comparison operators in variants of CountedPtr. Improve
+   coverage of these classes and fix compilation problem
+   (Jacques-Olivier Lachaud)
+ - XXXOutputRangeYYY classes are now called
+   XXXRangeWithWritableIteratorYYY (Tristan Roussillon,
+   [#850](https://github.com/DGtal-team/DGtal/pull/850)).
 
 - *Geometry Package*
  - Fix and add concept of CSurfelLocalEstimator and related ground
