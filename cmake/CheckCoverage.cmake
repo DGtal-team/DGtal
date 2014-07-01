@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 ADD_CUSTOM_TARGET(lcov)
 OPTION(WITH_COVERAGE "Enable lcov code coverage." OFF)
-IF (WITH_COVERAGE)
+IF ((WITH_COVERAGE) and  ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"))
   MESSAGE(STATUS "Code coverage enabled")
   message(STATUS "-------------------------------------------------------------------------------")
   ADD_CUSTOM_COMMAND(TARGET lcov
@@ -30,4 +30,4 @@ IF (WITH_COVERAGE)
     COMMAND echo "Open ${CMAKE_BINARY_DIR}/coverage/index.html to view the coverage analysis results."
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
-ENDIF()nig
+ENDIF()
