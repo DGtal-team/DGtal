@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 ADD_CUSTOM_TARGET(lcov)
 OPTION(WITH_COVERAGE "Enable lcov code coverage." OFF)
-IF ((WITH_COVERAGE) and  ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"))
+IF (WITH_COVERAGE) 
   MESSAGE(STATUS "Code coverage enabled")
   message(STATUS "-------------------------------------------------------------------------------")
   ADD_CUSTOM_COMMAND(TARGET lcov
