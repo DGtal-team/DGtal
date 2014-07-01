@@ -15,10 +15,6 @@ IF (WITH_COVERAGE)
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
   ADD_CUSTOM_COMMAND(TARGET lcov
-    COMMAND make test
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-  ADD_CUSTOM_COMMAND(TARGET lcov
     COMMAND lcov --directory . --capture --output-file ./coverage/stap_all.info --no-checksum
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
@@ -34,4 +30,4 @@ IF (WITH_COVERAGE)
     COMMAND echo "Open ${CMAKE_BINARY_DIR}/coverage/index.html to view the coverage analysis results."
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
-ENDIF()
+ENDIF()nig
