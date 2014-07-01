@@ -209,27 +209,14 @@ public:
     {
         ASSERT(this->domain().isInside(aPoint));
 	
-	if ( myImagePtr->domain().isInside ( myFD->operator()( aPoint ) ) )
-	  return myFV->operator()(myImagePtr->operator()(myFD->operator()(aPoint)));
+	typename TImageContainer::Point point = myFD->operator()(aPoint);
+	if (myImagePtr->domain().isInside(point))
+	  return myFV->operator()(myImagePtr->operator()(point));
 	else
 	  return defaultValue;
     }
-    
-    /**
-     * Allows to define a default value returned when point 
-     * transformed by domain functor does not belongs to 
-     * image domain.
-     */
-    void setDefaultValue ( Value aValue )
-    {
-      defaultValue = aValue;
-    }
-    
-    Value getDefaultValue () const
-    {
-      return defaultValue;
-    }
 
+    
     /////////////////// API //////////////////
 
     /**
@@ -261,6 +248,21 @@ public:
     const ImageContainer * getPointer() const
     {
         return myImagePtr;
+    }
+    
+    /**
+     * Allows to define a default value returned when point 
+     * transformed by domain functor does not belongs to 
+     * image domain.
+     */
+    void setDefaultValue ( Value aValue )
+    {
+      defaultValue = aValue;
+    }
+    
+    Value getDefaultValue () const
+    {
+      return defaultValue;
     }
 
     // ------------------------- Protected Datas ------------------------------
