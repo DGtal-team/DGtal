@@ -23,5 +23,4 @@ script:
   - cd examples && make &&  cd ../tests &&  make &&  cd ..&&  make test
 
 after_script:
-  - make lcov
-  - coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info
+  - make lcov && coveralls-lcov --source-encoding=ISO-8859-1 coverage/stap.info
