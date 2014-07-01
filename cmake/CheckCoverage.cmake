@@ -11,10 +11,6 @@ IF (WITH_COVERAGE)
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
   ADD_CUSTOM_COMMAND(TARGET lcov
-    COMMAND lcov --directory . --zerocounters
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-  ADD_CUSTOM_COMMAND(TARGET lcov
     COMMAND lcov --directory . --capture --output-file ./coverage/stap_all.info --no-checksum
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
