@@ -2,8 +2,10 @@
 # Coverage brute-froce discovery
 # -----------------------------------------------------------------------------
 ADD_CUSTOM_TARGET(lcov)
-OPTION(WITH_COVERAGE "Enable lcov code coverage." ON)
+OPTION(WITH_COVERAGE "Enable lcov code coverage." OFF)
 IF (WITH_COVERAGE)
+  MESSAGE(STATUS "Code coverage enabled")
+  message(STATUS "-------------------------------------------------------------------------------")
   ADD_CUSTOM_COMMAND(TARGET lcov
     COMMAND mkdir -p coverage
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
