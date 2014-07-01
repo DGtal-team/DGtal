@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // class CLinearAlgebraSolver
 /**
@@ -129,7 +130,7 @@ private:
 private:
 
 }; // end of concept CLinearAlgebraSolver
-
+}
 } // namespace DGtal
 
 //                                                                           //

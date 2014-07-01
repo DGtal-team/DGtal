@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // class CStaticMatrix
 /**
@@ -104,7 +105,7 @@ private:
 private:
 
 }; // end of concept CStaticMatrix
-
+}
 } // namespace DGtal
 
 //                                                                           //

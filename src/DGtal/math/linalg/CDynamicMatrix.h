@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+namespace concepts
+{
 /////////////////////////////////////////////////////////////////////////////
 // class CDynamicMatrix
 /**
@@ -102,7 +103,7 @@ private:
 private:
 
 }; // end of concept CDynamicMatrix
-
+}
 } // namespace DGtal
 
 //                                                                           //

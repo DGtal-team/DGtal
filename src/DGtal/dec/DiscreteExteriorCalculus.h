@@ -90,11 +90,11 @@ namespace DGtal
     typedef typename LinearAlgebraBackend::DenseMatrix DenseMatrix;
     typedef typename LinearAlgebraBackend::SparseMatrix SparseMatrix;
 
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicVector<DenseVector> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<DenseMatrix> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CDynamicMatrix<SparseMatrix> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<DenseVector, SparseMatrix> ));
-    BOOST_CONCEPT_ASSERT(( DGtal::CLinearAlgebra<DenseVector, DenseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicVector<DenseVector> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<DenseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDynamicMatrix<SparseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, SparseMatrix> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CLinearAlgebra<DenseVector, DenseMatrix> ));
 
     BOOST_STATIC_ASSERT(( boost::is_same<Dimension, Order>::value ));
 
