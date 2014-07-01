@@ -270,74 +270,74 @@ test_concepts()
 
     { // 2d
         typedef DiscreteExteriorCalculus<2, LinearAlgebraBackend> Calculus;
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
     }
 
     { // 3d
         typedef DiscreteExteriorCalculus<3, LinearAlgebraBackend> Calculus;
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm3> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm3> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalForm3> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualForm3> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalVectorField> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualVectorField> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalDerivative2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualDerivative2> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge3> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge3> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalHodge3> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualHodge3> ));
 
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity3> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
-        BOOST_CONCEPT_ASSERT(( CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity3> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::PrimalIdentity3> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity0> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity1> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity2> ));
+        BOOST_CONCEPT_ASSERT(( concepts::CDiscreteExteriorCalculusVectorSpace<typename Calculus::DualIdentity3> ));
     }
 
     trace.endBlock();
