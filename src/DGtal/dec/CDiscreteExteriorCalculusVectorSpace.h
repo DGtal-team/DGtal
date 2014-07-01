@@ -47,6 +47,8 @@
 
 namespace DGtal
 {
+  namespace concepts
+  {
 /////////////////////////////////////////////////////////////////////////////
 // class CDiscreteExteriorCalculusVectorSpace
 /**
@@ -105,7 +107,7 @@ private:
 private:
 
 }; // end of concept CDiscreteExteriorCalculusVectorSpace
-
+  }
 } // namespace DGtal
 
 //                                                                           //
