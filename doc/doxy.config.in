@@ -1029,7 +1029,7 @@ DOCSET_BUNDLE_ID       = org.dgtal
 # identify the documentation publisher. This should be a reverse domain-name
 # style string, e.g. com.mycompany.MyDocSet.documentation.
 
-DOCSET_PUBLISHER_ID    = org.doxygen.DGtal-team
+DOCSET_PUBLISHER_ID    = org.dgtal.DGtal-team
 
 # The GENERATE_PUBLISHER_NAME tag identifies the documentation publisher.
 
