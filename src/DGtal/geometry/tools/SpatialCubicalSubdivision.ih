@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file CubicalSubdivision.ih
+ * @file SpatialCubicalSubdivision.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2014/02/11
  *
- * Implementation of inline methods defined in CubicalSubdivision.h
+ * Implementation of inline methods defined in SpatialCubicalSubdivision.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,8 +41,8 @@
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-DGtal::CubicalSubdivision<TSpace>::
-~CubicalSubdivision()
+DGtal::SpatialCubicalSubdivision<TSpace>::
+~SpatialCubicalSubdivision()
 {
   BinConstRange range = myArray.constRange();
   for ( typename BinConstRange::ConstIterator it = range.begin(), itE = range.end();
@@ -55,8 +55,8 @@ DGtal::CubicalSubdivision<TSpace>::
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-DGtal::CubicalSubdivision<TSpace>::
-CubicalSubdivision( const CubicalSubdivision& other )
+DGtal::SpatialCubicalSubdivision<TSpace>::
+SpatialCubicalSubdivision( const SpatialCubicalSubdivision& other )
   : myDomain( other.myDomain ), mySize( other.mySize ), 
     myArray( other.binDomain() ), myDiag( other.myDiag )
 {
@@ -74,8 +74,8 @@ CubicalSubdivision( const CubicalSubdivision& other )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-DGtal::CubicalSubdivision<TSpace>::
-CubicalSubdivision( Point lo, Point up, Coordinate size )
+DGtal::SpatialCubicalSubdivision<TSpace>::
+SpatialCubicalSubdivision( Point lo, Point up, Coordinate size )
   : myDomain( lo, up ), mySize( size ), myArray( myDomain )
 {
   Point dimensions = myDomain.upperBound() - myDomain.lowerBound();
@@ -89,8 +89,8 @@ CubicalSubdivision( Point lo, Point up, Coordinate size )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-const typename DGtal::CubicalSubdivision<TSpace>::Domain &
-DGtal::CubicalSubdivision<TSpace>::
+const typename DGtal::SpatialCubicalSubdivision<TSpace>::Domain &
+DGtal::SpatialCubicalSubdivision<TSpace>::
 domain() const
 {
   return myDomain;
@@ -98,8 +98,8 @@ domain() const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-const typename DGtal::CubicalSubdivision<TSpace>::Domain &
-DGtal::CubicalSubdivision<TSpace>::
+const typename DGtal::SpatialCubicalSubdivision<TSpace>::Domain &
+DGtal::SpatialCubicalSubdivision<TSpace>::
 binDomain() const
 {
   return myArray.domain();
@@ -108,8 +108,8 @@ binDomain() const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-typename DGtal::CubicalSubdivision<TSpace>::Point
-DGtal::CubicalSubdivision<TSpace>::
+typename DGtal::SpatialCubicalSubdivision<TSpace>::Point
+DGtal::SpatialCubicalSubdivision<TSpace>::
 bin( Point p ) const
 {
   p -= myDomain.lowerBound();
@@ -119,8 +119,8 @@ bin( Point p ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-typename DGtal::CubicalSubdivision<TSpace>::Point
-DGtal::CubicalSubdivision<TSpace>::
+typename DGtal::SpatialCubicalSubdivision<TSpace>::Point
+DGtal::SpatialCubicalSubdivision<TSpace>::
 lowest( Point b ) const
 {
   b *= mySize;
@@ -130,8 +130,8 @@ lowest( Point b ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-typename DGtal::CubicalSubdivision<TSpace>::Point
-DGtal::CubicalSubdivision<TSpace>::
+typename DGtal::SpatialCubicalSubdivision<TSpace>::Point
+DGtal::SpatialCubicalSubdivision<TSpace>::
 uppermost( Point b ) const
 {
   b *= mySize;
@@ -142,7 +142,7 @@ uppermost( Point b ) const
 template <typename TSpace>
 inline
 void
-DGtal::CubicalSubdivision<TSpace>::
+DGtal::SpatialCubicalSubdivision<TSpace>::
 push( const Point& p ) 
 {
   Point b = bin( p );
@@ -160,7 +160,7 @@ template <typename TSpace>
 template <typename PointConstIterator>
 inline
 void
-DGtal::CubicalSubdivision<TSpace>::
+DGtal::SpatialCubicalSubdivision<TSpace>::
 push( PointConstIterator it, PointConstIterator itE )
 {
   for ( ; it != itE; ++it )
@@ -172,7 +172,7 @@ template <typename TSpace>
 template <typename PointPredicate>
 inline
 void
-DGtal::CubicalSubdivision<TSpace>::
+DGtal::SpatialCubicalSubdivision<TSpace>::
 getPoints( std::vector<Point> & pts, 
            Point bin_lo, Point bin_up, const PointPredicate & pred ) const
 {
@@ -191,7 +191,7 @@ getPoints( std::vector<Point> & pts,
 template <typename TSpace>
 inline
 void
-DGtal::CubicalSubdivision<TSpace>::
+DGtal::SpatialCubicalSubdivision<TSpace>::
 getPoints( std::vector<Point> & pts, 
            Point bin_lo, Point bin_up ) const
 {
@@ -218,9 +218,9 @@ getPoints( std::vector<Point> & pts,
 template <typename TSpace>
 inline
 void
-DGtal::CubicalSubdivision<TSpace>::selfDisplay ( std::ostream & out ) const
+DGtal::SpatialCubicalSubdivision<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[CubicalSubdivision domain=" << domain() 
+  out << "[SpatialCubicalSubdivision domain=" << domain() 
       << " binDomain=" << binDomain()
       << " binSize=" << mySize
       << "]";
@@ -233,7 +233,7 @@ DGtal::CubicalSubdivision<TSpace>::selfDisplay ( std::ostream & out ) const
 template <typename TSpace>
 inline
 bool
-DGtal::CubicalSubdivision<TSpace>::isValid() const
+DGtal::SpatialCubicalSubdivision<TSpace>::isValid() const
 {
     return true;
 }
@@ -247,7 +247,7 @@ template <typename TSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const CubicalSubdivision<TSpace> & object )
+		  const SpatialCubicalSubdivision<TSpace> & object )
 {
   object.selfDisplay( out );
   return out;
