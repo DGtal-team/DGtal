@@ -73,6 +73,9 @@ can be considered.
 In DGtal, we have chosen to implement such volumetric tools such
 that the underlying metric could be specified independently.
 
+For a complete discussion of metric concepts in DGtal, please refer to @ref moduleMetrics.
+
+
 \section voronoiSect Digital Voronoi Diagram Computation
 
 The generic distance transformation is based on a prior Voronoi map
@@ -270,8 +273,8 @@ remaps the PowerMap vectors to map the power metric to the closest
 weighted site.
 
 As a consequence, for the Euclidean @f$ l_2 @f$ metric, if we consider
-a set of balls @f$ B_i(p_i,r_i) @f$ and if we create an WiehgtImage
-whose domain would be the set of points @f$\{ p_i \}@f$ and with
+a set of balls @f$ B_i(p_i,r_i) @f$ and if we create an WeightImage
+whose domain contains points @f$\{ p_i \}@f$ and with
 values @f$ r_i^2@f$, negative (strictly) values of the
 ReverseDistanceTransformation will correspond to digital points
 belonging to the union @f$ \bigcup \{B_i\}@f$ (see @cite dcoeurjo_pami_RDMA).
@@ -286,7 +289,7 @@ for the same metric/power metric, returns the input binary shape.
 
 @note Power separable metrics are formalized in CPowerMetric and
 CSeparablePowerMetric concepts whose main concept is
-ExactLpPowerSeparableMetric.
+ExactLpPowerSeparableMetric, see @ref moduleMetrics
 
 
 */

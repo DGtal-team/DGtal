@@ -108,9 +108,7 @@ squares of Point::Coordiante values.
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | distance computation | x(aPoint,anotherPoint) | @a aPoint and @a anotherPoint of type @a Point  |  a value of type @a Value   |              |  compute the distance between two points  |                |    -        |
-| raw distance computation | x.rawDistance(aPoint,anotherPoint) | @a
-aPoint and @a anotherPoint of type @a Point  |  a value of type @a
-RawValue   |              |  compute the raw representation of the distance between two points  |                |    -        |
+| raw distance computation | x.rawDistance(aPoint,anotherPoint) | @a aPoint and @a anotherPoint of type @a Point  |  a value of type @a RawValue   |              |  compute the raw representation of the distance between two points  |                |    -        |
 | closest point test | closest(aOrigin, aP, aQ) | @a aOrigin, @a aP,@a aQ of type @a aPoint |   a value of type Closest | | decide between @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
 
 
@@ -131,7 +129,6 @@ struct CMetricSpace:  boost::CopyConstructible<T>, boost::Assignable<T>
 public:
   typedef typename T::Point Point;
   typedef typename T::Space Space;
-  typedef typename T::Vector Vector;
   typedef typename T::Value Value;
   typedef typename T::RawValue RawValue;
 

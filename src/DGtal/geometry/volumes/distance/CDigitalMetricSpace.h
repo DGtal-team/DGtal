@@ -42,8 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CSpace.h"
-#include "DGtal/base/CQuantity.h"
+#include "DGtal/kernel/CInteger.h"
+#include "DGtal/geometry/volumes/distance/CMetricSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -95,13 +95,12 @@ CInteger).
 @tparam T the type that should be a model of CDigitalMetricSpace.
  */
     template <typename T>
-    struct CDigitalMetricSpace: CMetricSpace<T>
+    struct CDigitalMetricSpace: concepts::CMetricSpace<T>
     {
       // ----------------------- Concept checks ------------------------------
     public:
       typedef typename T::Point Point;
       typedef typename T::Space Space;
-      typedef typename T::Vector Vector;
       typedef typename T::Value Value;
       typedef typename T::RawValue RawValue;
 
