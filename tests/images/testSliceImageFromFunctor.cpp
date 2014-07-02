@@ -61,10 +61,10 @@ bool testSliceImageFromFunctor()
   trace.beginBlock ( "Testing block ..." );
   typedef  DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char>  Image3D;
 
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::functors::Projector< DGtal::Z3i::Space>,
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, functors::Projector< DGtal::Z3i::Space>,
 				   Image3D::Value,  DGtal::functors::Identity >  MySliceImageAdapter;
 
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int>,
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, functors::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int>,
 				   Image3D::Value,  DGtal::functors::Identity >  MyRotatorSliceImageAdapter;
 
   bool res= true;
@@ -75,7 +75,7 @@ bool testSliceImageFromFunctor()
 
  
   DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctor(20); aSliceFunctor.initAddOneDim(0);
-  MySliceImageAdapter sliceImageX(image, domainX, aSliceFunctor, DGtal::functors::Indentity());
+  MySliceImageAdapter sliceImageX(image, domainX, aSliceFunctor, DGtal::functors::Identity());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimX.pgm",sliceImageX);
   
    DGtal::functors::Projector<DGtal::Z2i::Space>  projY(0); projY.initRemoveOneDim(1); 

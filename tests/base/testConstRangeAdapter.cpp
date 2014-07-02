@@ -174,8 +174,8 @@ int main( int argc, char** argv )
   typedef S::Point Point2; 
   SCellToInnerPoint<K> f(ks); 
 
-  DGtal::functors::Projector<S> p;
-  Composer<functors::SCellToInnerPoint<K>,functors::Projector<S>,Point2> c(f,p);
+  ::functors::Projector<S> p;
+  functors::Composer<SCellToInnerPoint<K>,functors::Projector<S>,Point2> c(f,p);
 
   typedef ConstRangeAdapter<std::vector<K::SCell>::iterator, 
                             functors::Composer<SCellToInnerPoint<K>,functors::Projector<S>,Point2>, Point2 > PointRange;
