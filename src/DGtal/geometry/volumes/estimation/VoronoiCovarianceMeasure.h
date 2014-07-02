@@ -49,7 +49,7 @@
 #include "DGtal/kernel/SimpleMatrix.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
-#include "DGtal/geometry/volumes/CubicalSubdivision.h"
+#include "DGtal/geometry/tools/SpatialCubicalSubdivision.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -191,7 +191,7 @@ namespace DGtal
     typedef typename Space::Integer Integer;      ///< the type of each digital point coordinate, some integral type
     typedef DGtal::HyperRectDomain<Space> Domain; ///< the type of rectangular domain of the VCM.
     typedef DGtal::ImageContainerBySTLVector<Domain,bool> CharacteristicSet; ///< the type of a binary image that is the characteristic function of K.
-    typedef DGtal::CubicalSubdivision<Space> ProximityStructure; ///< the structure used for proximity queries.
+    typedef DGtal::SpatialCubicalSubdivision<Space> ProximityStructure; ///< the structure used for proximity queries.
 
     /**
        A predicate that returns 'true' whenever the given binary image contains 'true'.
