@@ -63,7 +63,7 @@ namespace DGtal
    * This class is thus a model of CDigitalMetricSpace
    *
    * @tparam TMetric any model of concepts::CMetricSpace.
-   * @tparam TIngeger any model of concepts::CInteger to be used as
+   * @tparam TInteger any model of concepts::CInteger to be used as
    * value type. By default, it corresponds to the Integer type of the
    * digital space in which the TMetric is defined.
    */
@@ -104,7 +104,7 @@ namespace DGtal
     /** 
      * Copy Constructor
      * 
-     * @param another the digital metric adapter to copy.
+     * @param anotherMetric the digital metric adapter to copy.
      */
     DigitalMetricAdapter(const DigitalMetricAdapter &anotherMetric)
     {
