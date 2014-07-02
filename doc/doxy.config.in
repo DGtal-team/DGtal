@@ -1023,17 +1023,17 @@ DOCSET_FEEDNAME        = "DGtal generated docs"
 # reverse domain-name style string, e.g. com.mycompany.MyDocSet. Doxygen
 # will append .docset to the name.
 
-DOCSET_BUNDLE_ID       = org.doxygen.Project
+DOCSET_BUNDLE_ID       = org.dgtal
 
 # When GENERATE_PUBLISHER_ID tag specifies a string that should uniquely
 # identify the documentation publisher. This should be a reverse domain-name
 # style string, e.g. com.mycompany.MyDocSet.documentation.
 
-DOCSET_PUBLISHER_ID    = org.doxygen.Publisher
+DOCSET_PUBLISHER_ID    = org.doxygen.DGtal-team
 
 # The GENERATE_PUBLISHER_NAME tag identifies the documentation publisher.
 
-DOCSET_PUBLISHER_NAME  = Publisher
+DOCSET_PUBLISHER_NAME  = DGtal-team
 
 # If the GENERATE_HTMLHELP tag is set to YES, additional index files
 # will be generated that can be used as input for tools like the
