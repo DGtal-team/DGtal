@@ -66,7 +66,7 @@
  - Updates in Metric concepts: better and simpler concept structure
    and a new adapter to adapt any euclidean metric to a digital one
    (with values on Z) (David Coeurjolly,
-   [#860](https://github.com/DGtal-team/DGtal/pull/860)
+   [#870](https://github.com/DGtal-team/DGtal/pull/870)
 
 - *IO Package*
   - Better handling of materials in Board3D and OBJ exports. (David
