@@ -63,8 +63,8 @@ int main( int argc, char** argv )
 {
   
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z3i::Domain, unsigned int>  Image3D;
-  typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
-  Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
+  typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
+                                   Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
 
  QApplication application(argc,argv);
  Viewer3D<> viewer;
@@ -83,16 +83,16 @@ int main( int argc, char** argv )
  DGtal::Z2i::Domain domainImage2D (DGtal::Z2i::Point(0,0), 
                                    DGtal::Z2i::Point(IMAGE_PATCH_WIDTH, IMAGE_PATCH_WIDTH)); 
   
- DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(image.domain(), 
+ DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(image.domain(),
                                                            pcenterImg, Z3i::RealPoint(1, 1, 1), 
                                                            IMAGE_PATCH_WIDTH);
- DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder2(image.domain(), 
+ DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder2(image.domain(),
                                                            pcenterImg, Z3i::RealPoint(1, 0, 0), 
                                                            IMAGE_PATCH_WIDTH);
- DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder3(image.domain(), 
+  DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder3(image.domain(),
                                                            pcenterImg, Z3i::RealPoint(0, 1, 0 ), 
                                                            IMAGE_PATCH_WIDTH);
- DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder4(image.domain(), 
+  DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder4(image.domain(),
                                                            pcenterImg, Z3i::RealPoint(0, 0, 1 ), 
                                                            IMAGE_PATCH_WIDTH);
  

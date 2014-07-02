@@ -812,8 +812,8 @@ namespace DGtal
       bool operator() ( typename Viewer3D<Space,KSpace>::PolygonD3D q1,
                         typename Viewer3D<Space,KSpace>::PolygonD3D q2 )
       {
-        double c1x, c1y, c1z=0.0;
-        double c2x, c2y, c2z=0.0;
+        double c1x=0.0, c1y=0.0, c1z=0.0;
+        double c2x=0.0, c2y=0.0, c2z=0.0;
         for(unsigned int i=0; i< q1.vertices.size(); i++){
           c1x+=q1.vertices.at(i)[0];
           c1y+=q1.vertices.at(i)[1];

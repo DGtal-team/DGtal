@@ -173,11 +173,12 @@ int main( int argc, char** argv )
   typedef SpaceND<2> S;
   typedef S::Point Point2; 
   SCellToInnerPoint<K> f(ks); 
-  Projector<S> p; 
-  functors::Composer<SCellToInnerPoint<K>,Projector<S>,Point2> c(f,p);
+
+  DGtal::functors::Projector<S> p;
+  Composer<functors::SCellToInnerPoint<K>,functors::Projector<S>,Point2> c(f,p);
 
   typedef ConstRangeAdapter<std::vector<K::SCell>::iterator, 
-  functors::Composer<SCellToInnerPoint<K>,Projector<S>,Point2>, Point2 > PointRange;
+                            functors::Composer<SCellToInnerPoint<K>,functors::Projector<S>,Point2>, Point2 > PointRange;
   PointRange r3(v3.begin(), v3.end(), c); 
  
   /////////// concept checking
