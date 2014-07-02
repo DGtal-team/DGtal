@@ -115,7 +115,7 @@ int main( int argc, char** argv )
  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::functors::Projector< Z3i::Space>,
                                   Image3D::Value,  functors::Identity >  SliceImageAdapter;
  functors::Identity idV;
- DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ(5); aSliceFunctorZ.initAddOneDim(2);
+ functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ(5); aSliceFunctorZ.initAddOneDim(2);
  
  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
 

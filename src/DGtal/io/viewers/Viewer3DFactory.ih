@@ -177,7 +177,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
   typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::functors::Projector< Z3i::Space>,
                                    typename Image3D::Value, DGtal::functors::Identity > SliceImageAdapter;
   DGtal::functors::Identity idV;
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorY((int)(anImage3D.domain().lowerBound()[1]));
+  DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorY((int)(anImage3D.domain().lowerBound()[1]));
 
   aSliceFunctorY.initAddOneDim(1);
   SliceImageAdapter sliceImageY(anImage3D, domainY, aSliceFunctorY, idV);
