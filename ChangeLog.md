@@ -94,6 +94,11 @@
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
 
+- *Shapes Package*
+  - Shape concepts have been moved to concepts:: namespace (David
+  Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
+
+
 ## Bug Fixes
 
 
