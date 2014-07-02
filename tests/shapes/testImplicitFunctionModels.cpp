@@ -64,17 +64,17 @@ bool testImplicitFunctionModels()
   typedef ImplicitRoundedHyperCube<Z2i::Space> _ImplicitRoundedHyperCube2D;
   typedef ImplicitRoundedHyperCube<Z3i::Space> _ImplicitRoundedHyperCube3D;
   typedef ImplicitPolynomial3Shape<Z3i::Space> _ImplicitPolynomial3Shape;
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitBall2D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitBall3D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitNorm1Ball2D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitNorm1Ball3D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitHyperCube2D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitHyperCube3D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitRoundedHyperCube2D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitRoundedHyperCube3D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitPolynomial3Shape > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitBall2D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitBall3D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitNorm1Ball2D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitNorm1Ball3D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitHyperCube2D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitHyperCube3D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitRoundedHyperCube2D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitRoundedHyperCube3D > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< _ImplicitPolynomial3Shape > ));
   //BOOST_CONCEPT_ASSERT(( CImplicitFunctionDiff1< _ImplicitBall2D > ));
-  BOOST_CONCEPT_ASSERT(( CImplicitFunctionDiff1< _ImplicitPolynomial3Shape > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunctionDiff1< _ImplicitPolynomial3Shape > ));
   return true;
 }
 
