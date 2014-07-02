@@ -63,6 +63,10 @@
   [#803](https://github.com/DGtal-team/DGtal/pull/803))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
+ - Updates in Metric concepts: better and simpler concept structure
+   and a new adapter to adapt any euclidean metric to a digital one
+   (with values on Z) (David Coeurjolly,
+   [#860](https://github.com/DGtal-team/DGtal/pull/860)
 
 - *IO Package*
   - Better handling of materials in Board3D and OBJ exports. (David
