@@ -7,8 +7,8 @@ compiler:
 cache: apt
 
 env:
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug  -DWITH_CAIRO=true  -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON"
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true  -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true  -DBUILD_TESTING=ON  -DWARNING_AS_ERROR=ON -DWITH_COVERAGE=true"
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DBUILD_TESTING=ON -DWARNING_AS_ERROR=OFF"
 
 before_script:
   - sudo apt-get -qq update
@@ -20,7 +20,7 @@ script:
   - cmake . $BTYPE
   - make DGtal
   - make DGtalIO
-  - cd examples && make &&  cd ../tests &&  make &&  cd ..&&  make test
+  - cd examples && make &&  cd ../tests &&  make -j 3 &&  cd ..&&  make test
 
 after_script:
   - make lcov

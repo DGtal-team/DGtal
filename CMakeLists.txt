@@ -45,6 +45,11 @@ INCLUDE(CheckDGtalOptionalDependencies)
 INCLUDE(CpackCtest)
 
 # -----------------------------------------------------------------------------
+# Code coverage
+# -----------------------------------------------------------------------------
+INCLUDE(CheckCoverage)
+
+# -----------------------------------------------------------------------------
 # Custom command/targets depending on the cmake generator
 # -----------------------------------------------------------------------------
 INCLUDE(GeneratorSpecific)
