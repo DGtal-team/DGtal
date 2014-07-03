@@ -102,6 +102,13 @@
   - Fixing issue on Circulator/IteratorFunctions (related to #770 on
     MacOS).
 
+- *Kernel Package*
+  - BinaryPointPredicate is now specialized for DGtal::AndBoolFct2 and
+    DGtal::OrBoolFct2 in order to guarantee that the second computation
+    is not performed when the first point predicate return false (resp. true)
+    with DGtal::AndBoolFct2 (resp. DGtal::OrBoolFct2) (Tristan Roussillon
+    [#852](https://github.com/DGtal-team/DGtal/pull/852)).
+
 - *Geometry Package*
   - Bug fix in PowerMap construction. (David Coeurjolly,
     [#814](https://github.com/DGtal-team/DGtal/pull/814))
