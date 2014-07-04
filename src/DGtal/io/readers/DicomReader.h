@@ -86,7 +86,7 @@ namespace DGtal
 
 
   template <typename TImageContainer,
-		typename TFunctor = CastFunctor< typename TImageContainer::Value > >
+		typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   struct DicomReader
   {
 	// ----------------------- Standard services ------------------------------
@@ -108,7 +108,7 @@ namespace DGtal
 	 * @param aFilename one file of the serie to import.
 	 * @param aFunctor the functor used to import and cast the source
 	 * image values into the type of the image container value (by
-	 * default set to CastFunctor < TImageContainer::Value >.
+	 * default set to functors::Cast < TImageContainer::Value >.
 	 *
 	 * @return an instance of the ImageContainer.
 	 */
