@@ -56,9 +56,10 @@ int main( int /*argc*/, char** /*argv*/ )
   //! [imageBasicSubsamplingType2D]
   typedef ImageContainerBySTLVector < Z2i::Domain, unsigned char> Image2D;
   typedef ConstImageAdapter<Image2D,  Image2D::Domain, 
-                            DGtal::functors::BasicDomainSubSampler<Image2D::Domain>,
-                            Image2D::Value, 
-                            DGtal::DefaultFunctor > ConstImageAdapterForSubSampling;
+                            functors::BasicDomainSubSampler<Image2D::Domain>,  
+                            Image2D::Value,
+                            functors::Identity > ConstImageAdapterForSubSampling;
+
   //! [imageBasicSubsamplingType2D]
 
   //! [imageBasicSubsamplingType3D]
@@ -66,7 +67,7 @@ int main( int /*argc*/, char** /*argv*/ )
   typedef ConstImageAdapter<Image3D,  Image3D::Domain, 
                             functors::BasicDomainSubSampler<Image3D::Domain>,
                             Image3D::Value, 
-                            DGtal::DefaultFunctor > ConstImageAdapterForSubSampling3D;
+                            functors::Identity > ConstImageAdapterForSubSampling3D;
   //! [imageBasicSubsamplingType3D]
 
 
@@ -86,7 +87,7 @@ int main( int /*argc*/, char** /*argv*/ )
     DGtal::functors::BasicDomainSubSampler<Image2D::Domain> subSampler2D(image2D.domain(), aGridSize2D, Z2i::Point(0 ,0));
     //! [imageBasicSubsamplingSubSampler2D]
 
-    DGtal::DefaultFunctor df;
+    functors::Identity df;
     // Get the new domain produces from the subsampler and define the ConstImageAdapter:
     //! [imageBasicSubsamplingConstImageAdapterSubSampling2D]
     Image2D::Domain subSampledDomain2D  = subSampler2D.getSubSampledDomain();
@@ -112,7 +113,7 @@ int main( int /*argc*/, char** /*argv*/ )
     DGtal::functors::BasicDomainSubSampler<Image3D::Domain> subSampler3D(image3D.domain(), aGridSize3D, Z3i::Point(0 ,0, 0));
     //! [imageBasicSubsamplingSubSampler3D]
 
-    DGtal::DefaultFunctor df;
+    DGtal::functors::Identity df;
     // Get the new domain produces from the subsampler and define the ConstImageAdapter:
     //! [imageBasicSubsamplingConstImageAdapterSubSampling3D]
     Image3D::Domain subSampledDomain3D  = subSampler3D.getSubSampledDomain();

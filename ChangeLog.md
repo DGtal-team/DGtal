@@ -1,11 +1,18 @@
 # DGtal 0.8
 
 
-## New Features
+## New Features / Critical Changes
 
 - *Base*
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
+
+ - Global refactoring of base functors (David Coeurjolly,
+   [#861](https://github.com/DGtal-team/DGtal/pull/861))
+    - BasicFunctor functors have been moved to functors:: namespace.
+    - DefaultFunctor has been renamed functors::Identity.
+    - xxxFunctor have been renamed to xxx.
+    
 
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
@@ -127,7 +134,9 @@
 - *IO*
   - Bug fix for reading PGM(P2) 3D. (Kacper Pluta,
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
-
+  - Renaming BasicColorToScalarFunctors namespace to functors:: (David
+    Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
+    
 === DGtal 0.7 ===
 
 *General*

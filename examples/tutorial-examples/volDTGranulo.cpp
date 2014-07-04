@@ -151,7 +151,7 @@ int main(int argc, char ** argv)
     }
 
   trace.info() << "Granulometry ok nbBalls="<<cpt<< std::endl;
-  VolWriter<Image, CastFunctor<unsigned char> >::exportVol("granulo.vol", imageGranulo);      
+  VolWriter<Image, functors::Cast<unsigned char> >::exportVol("granulo.vol", imageGranulo);      
   trace.info() << "Save OK"<< std::endl;
 
 

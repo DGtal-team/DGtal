@@ -1254,9 +1254,9 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TSCell>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
-						  const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & object )
+						  const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & object )
 {
-  typedef DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> Range;
+  typedef DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );

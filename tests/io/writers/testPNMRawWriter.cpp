@@ -93,8 +93,8 @@ bool testPNMWriter()
   PPMWriter<Image,RedShade2>::exportPPM("export-red2.ppm",image,RedShade2(0,255));
 
   //TestingFunctor
-  typedef Composer< Jet, BasicColorToScalarFunctors::RedChannel, unsigned char> RedFunctor;
-  RedFunctor redFunctor( Jet(0,255), BasicColorToScalarFunctors::RedChannel() ) ;
+  typedef DGtal::functors::Composer< Jet, functors::RedChannel, unsigned char> RedFunctor;
+  RedFunctor redFunctor( Jet(0,255), functors::RedChannel() ) ;
   PGMWriter<Image, RedFunctor>::exportPGM("export-jet-red.pgm",image, redFunctor);
   
 
