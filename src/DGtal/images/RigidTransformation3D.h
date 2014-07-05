@@ -89,7 +89,7 @@ namespace DGtal
       
       
       {
-	if ( axis.norm() == 0. )
+	if ( axis.norm() < 0.000001 )
 	  throw std::runtime_error ( "Axis of rotation can not be set as a vector of length 0!" );
 	
 	t_sin = std::sin ( angle );
@@ -164,7 +164,7 @@ namespace DGtal
 				      const double & angle, const TRealVector & aTranslate )
       : axis(aAxis.getNormalized()), origin(aOrigin), trans(aTranslate) 
       {	
-	if ( axis.norm() == 0. )
+	if ( axis.norm() < 0.000001 )
 	  throw std::runtime_error ( "Axis of rotation can not be set as a vector of length 0!" );
 	
 	t_sin = std::sin ( angle );
