@@ -359,7 +359,7 @@ namespace DGtal
    * possibility to translate it (optional).
    *
    */
-  template<typename TImageType, typename TFunctor= CastFunctor<unsigned int> >
+  template<typename TImageType, typename TFunctor= functors::Cast<unsigned int> >
   struct UpdateImageData : public DrawWithViewer3DModifier
   {
 

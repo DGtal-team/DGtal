@@ -60,7 +60,8 @@
 
 namespace DGtal
 {
-
+namespace functors
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class Projector
   /**
@@ -102,26 +103,14 @@ namespace DGtal
    *
    * @tparam S type for the space where must lie the projected point
    */
-
-
-
-   
-
-
-
   template <typename S = SpaceND< 2, DGtal::int32_t > >
   struct Projector
   {
-
-    
-    typedef S Space; 
+    typedef S Space;
     typedef typename Space::Dimension Dimension;
     BOOST_STATIC_CONSTANT( Dimension, dimension = Space::dimension );
     typedef typename Space::Integer Integer; 
     typedef typename Space::Point Point; 
-
-
-
 
     /**
      * Default constructor
@@ -540,11 +529,6 @@ namespace DGtal
   };
 
 
-
-
-
-
-
   /**
    * Description of template class 'BasicDomainSubSampler' <p> \brief
    * Aim: Functor that subsamples an initial domain by given a grid
@@ -662,7 +646,7 @@ namespace DGtal
 
 
 
-
+  }//namespace functors
 } // namespace dgtal
 
 

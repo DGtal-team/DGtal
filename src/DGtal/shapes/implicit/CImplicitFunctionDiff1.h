@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CImplicitFunctionDiff1
   /**
@@ -114,7 +115,7 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
     RealVector myB;
     
   }; // end of concept CImplicitFunctionDiff1
-  
+  }
 } // namespace DGtal
 
 //                                                                           //

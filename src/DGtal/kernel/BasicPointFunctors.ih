@@ -36,7 +36,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 template <typename S>
 inline
-DGtal::Projector<S>::Projector(const Integer& aDefaultInteger)
+DGtal::functors::Projector<S>::Projector(const Integer& aDefaultInteger)
  : myDims(), myDefaultInteger(aDefaultInteger)
 { //default projection
   Dimension k = 0; 
@@ -51,7 +51,7 @@ template <typename S>
 template <typename TIterator>
 inline
 void
-DGtal::Projector<S>::init( const TIterator& itb, const TIterator& ite )
+DGtal::functors::Projector<S>::init( const TIterator& itb, const TIterator& ite )
 {
   BOOST_STATIC_ASSERT ((boost::is_same< Dimension, 
    typename std::iterator_traits<TIterator>::value_type >::value)); 
@@ -72,7 +72,7 @@ DGtal::Projector<S>::init( const TIterator& itb, const TIterator& ite )
 template <typename S>
 inline
 void
-DGtal::Projector<S>::initRemoveOneDim(const Dimension &dimRemoved)
+DGtal::functors::Projector<S>::initRemoveOneDim(const Dimension &dimRemoved)
 { 
   std::vector<Dimension> vectDims;
   Dimension aCurrentPos = 0;
@@ -93,7 +93,7 @@ DGtal::Projector<S>::initRemoveOneDim(const Dimension &dimRemoved)
 template <typename S>
 inline
 void
-DGtal::Projector<S>::initAddOneDim( const Dimension &newDim)
+DGtal::functors::Projector<S>::initAddOneDim( const Dimension &newDim)
 { 
   std::vector<Dimension> vectDims;
   Dimension maxIndex = dimension; 
@@ -116,8 +116,8 @@ DGtal::Projector<S>::initAddOneDim( const Dimension &newDim)
 template <typename S>
 template <typename TInputPoint>
 inline
-typename DGtal::Projector<S>::Point
-DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
+typename DGtal::functors::Projector<S>::Point
+DGtal::functors::Projector<S>::operator()( const TInputPoint& aPoint ) const
 {
  	BOOST_STATIC_ASSERT ((boost::is_same< typename TInputPoint::Coordinate, 
    Integer >::value));
@@ -148,7 +148,7 @@ DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
 
 template< typename TP, typename TD, typename TV >
 inline
-DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain
+DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain
 ( ConstAlias< PointPredicate > aPtrPredicate,
   ConstAlias< Domain > aDomain,
   const Value aTrueValue,
@@ -160,15 +160,15 @@ DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPo
 
 template< typename TP, typename TD, typename TV >
 inline
-DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other )
+DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::PointFunctorFromPointPredicateAndDomain( const PointFunctorFromPointPredicateAndDomain & other )
     : myPtrPredicate( other.myPtrPredicate ), myDomain( other.myDomain), myTrueValue( other.myTrueValue ), myFalseValue( other.myFalseValue )
 {
 }
 
 template< typename TP, typename TD, typename TV >
 inline
-typename DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::Value
-DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::operator()( const Point& aPoint ) const
+typename DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::Value
+DGtal::functors::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::operator()( const Point& aPoint ) const
 {
     if( myDomain->isInside( aPoint ))
     {
@@ -182,8 +182,8 @@ DGtal::PointFunctorFromPointPredicateAndDomain< TP, TD, TV >::operator()( const 
 
 template <typename TP, typename TD, typename TV>
 inline
-DGtal::PointFunctorFromPointPredicateAndDomain<TP,TD, TV> &
-DGtal::PointFunctorFromPointPredicateAndDomain<TP,TD, TV>::operator=( const PointFunctorFromPointPredicateAndDomain<TP,TD,TV> &other)
+DGtal::functors::PointFunctorFromPointPredicateAndDomain<TP,TD, TV> &
+DGtal::functors::PointFunctorFromPointPredicateAndDomain<TP,TD, TV>::operator=( const PointFunctorFromPointPredicateAndDomain<TP,TD,TV> &other)
 {
   ASSERT( ( myDomain->lowerBound() <= other.myDomain->lowerBound() )
     && ( myDomain->upperBound() >= other.myDomain->upperBound() )
