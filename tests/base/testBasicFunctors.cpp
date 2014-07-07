@@ -63,7 +63,7 @@ bool testBasicFunctors()
   
   //default functor
   {
-    DefaultFunctor f; 
+    functors::Identity f; 
     int a = 5; 
     nbok += ( f(a) == 5 ) ? 1 : 0; 
     nb++;
@@ -71,7 +71,7 @@ bool testBasicFunctors()
 
   {//constant functor
     const int v = -1;
-    ConstValueFunctor<int> f(v);
+    DGtal::functors::ConstValue<int> f(v);
     char c = 'a'; 
     nbok += ( f(c) == v ) ? 1 : 0; 
     nb++;
@@ -82,7 +82,7 @@ bool testBasicFunctors()
 
   //cast functor
   {
-    CastFunctor<int> f; 
+    functors::Cast<int> f;
     char c = 'a'; 
     nbok += ( f(c) == 97 ) ? 1 : 0; 
     nb++;
@@ -95,11 +95,11 @@ bool testBasicFunctors()
     //std::pointer_to_unary_function<double, double> 
     std::pointer_to_unary_function<double, double> f(std::floor); 
     std::pointer_to_unary_function<double, double> c(std::ceil); 
-    CastFunctor<int> o; 
+    functors::Cast<int> o;
 
     //composer
-    typedef Composer< std::pointer_to_unary_function<double, double>, 
-      CastFunctor<int>, int > Quantizer;
+    typedef DGtal::functors::Composer< std::pointer_to_unary_function<double, double>, 
+    functors::Cast<int>, int > Quantizer;
     double d = 5.2; 
 
     Quantizer q(f, o); 
@@ -126,19 +126,19 @@ bool testBasicFunctors()
 
   {//thresholder
     int i = -3; 
-    Thresholder< int > t;
+    DGtal::functors::Thresholder< int > t;
     nbok += ( t(i) == true ) ? 1 : 0; 
     nb++;    
-    Thresholder< int, true, true > t1;
+    DGtal::functors::Thresholder< int, true, true > t1;
     nbok += ( t1(i) == true ) ? 1 : 0; 
     nb++;    
-    Thresholder< int, true, false > t2;
+    DGtal::functors::Thresholder< int, true, false > t2;
     nbok += ( t2(0) == false ) ? 1 : 0; 
     nb++;    
-    Thresholder< int, false, true > t3;
+    DGtal::functors::Thresholder< int, false, true > t3;
     nbok += ( t3(i) == false ) ? 1 : 0; 
     nb++;    
-    Thresholder< int, false, false > t4;
+    DGtal::functors::Thresholder< int, false, false > t4;
     nbok += ( t4(i) == false ) ? 1 : 0; 
     nb++;    
   }
@@ -146,7 +146,7 @@ bool testBasicFunctors()
   {//interval thresholder
     const int low = 1;
     const int up = 5; 
-    IntervalThresholder< int > t(low, up);
+    DGtal::functors::IntervalThresholder< int > t(low, up);
     nbok += ( t(0) == false ) ? 1 : 0; 
     nb++;    
     for (int i = low; i <= up; ++i)
@@ -177,11 +177,11 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   //concept checking
-  basicFunctorsConceptChecking<DefaultFunctor,int,int>(); 
-  basicFunctorsConceptChecking<ConstValueFunctor<int>,int,int >(); 
-  basicFunctorsConceptChecking<CastFunctor<int>,short,int >(); 
-  basicFunctorsConceptChecking<Thresholder<int>,int,bool >(); 
-  basicFunctorsConceptChecking<Composer<ConstValueFunctor<double>,CastFunctor<int>,int>,char,int >(); 
+  basicFunctorsConceptChecking<functors::Identity,int,int>(); 
+  basicFunctorsConceptChecking<DGtal::functors::ConstValue<int>,int,int >();
+  basicFunctorsConceptChecking<functors::Cast<int>,short,int >();
+  basicFunctorsConceptChecking<DGtal::functors::Thresholder<int>,int,bool >();
+  basicFunctorsConceptChecking<functors::Composer<functors::ConstValue<double>,functors::Cast<int>,int>,char,int >();
 
 
   //run-time tests

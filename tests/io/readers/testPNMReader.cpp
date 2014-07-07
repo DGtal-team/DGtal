@@ -124,6 +124,28 @@ bool testPNM3DReader()
   return nbok == nb;
 }
 
+bool testPNM3DASCIIReader()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
+    trace.beginBlock ( "Testing P2 pgm3D reader ..." );
+    nbok += true ? 1 : 0;
+    nb++;
+    std::string filename = testPath + "samples/ascii_ball.pgm3d";
+
+    trace.info() << "Loading filename: "<< filename<<std::endl;
+
+    typedef ImageSelector < Z3i::Domain, unsigned int>::Type Image;
+    Image image = PGMReader<Image>::importPGM3D( filename );
+
+    trace.info() << "Image 3D = "<<image<<std::endl;
+
+    trace.info() << "(" << nbok << "/" << nb << ") "
+           << "true == true" << std::endl;
+    trace.endBlock();
+    return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -135,7 +157,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testPNMReader() && testPNM3DReader(); // && ... other tests
+  bool res = testPNMReader() && testPNM3DReader() && testPNM3DASCIIReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -47,11 +47,7 @@
 
 namespace DGtal
 {
-  
-  /*! @namespace DGtal::BasicColorToScalarFunctors
-   *  @brief Contains basic functors to convert DGtal::Color to scalar values.
-   */
-  namespace BasicColorToScalarFunctors
+  namespace functors
   {
     /** 
      * Basic color to scalar functor which returns the red channel.
@@ -63,7 +59,7 @@ namespace DGtal
       inline
       unsigned char operator() (const Color &aCol) const
       {
-	return aCol.red(); 
+        return aCol.red(); 
       }
     };
 
@@ -77,7 +73,7 @@ namespace DGtal
       inline
       unsigned char operator() (const Color &aCol) const
       {
-	return aCol.blue(); 
+        return aCol.blue(); 
       }
     };
 
@@ -91,7 +87,7 @@ namespace DGtal
       inline
       unsigned char operator() (const Color &aCol) const
       {
-	return aCol.green(); 
+        return aCol.green(); 
       }
     };
 
@@ -105,7 +101,7 @@ namespace DGtal
       inline
       unsigned char operator() (const Color &aCol) const
       {
-	return static_cast<unsigned char>(  ((int)aCol.green() + (int)aCol.blue() + (int)aCol.red()) / 3); 
+        return static_cast<unsigned char>(  ((int)aCol.green() + (int)aCol.blue() + (int)aCol.red()) / 3); 
       }
     };
 
@@ -121,20 +117,15 @@ namespace DGtal
       inline
       Value operator() (const Color &aCol) const
       {
-	return static_cast<Value> (aCol.getRGB()); 
+        return static_cast<Value> (aCol.getRGB()); 
       }
     };
     
-
-
-
-    
-
-  } //namespace BasicColorToScalarFunctors  
+  } //namespace functors
 } // namespace DGtal
 
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+  //                                                                           //
+  ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined ColorToScalarFunctors_h
 
