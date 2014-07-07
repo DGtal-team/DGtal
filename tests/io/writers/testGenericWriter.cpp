@@ -53,7 +53,16 @@ bool testGenericWriter()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char > Image3D;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned int > Image3D32bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  unsigned char > Image2D;
+  Image3D32bits an32bitsImage (DGtal::Z3i::Domain(DGtal::Z3i::Point(0,0,0),  DGtal::Z3i::Point(255,255,255)));
+  for(unsigned int i =0; i< 255; i++){
+    for(unsigned int j =0; j< 255; j++){
+      for(unsigned int k =0; k< 255; k++){
+        an32bitsImage.setValue(DGtal::Z3i::Point(i,j,k), k);
+      }
+    }
+  }
   trace.beginBlock ( "Testing block ..." );
   std::string filenameImage1 = testPath + "samples/cat10.pgm3d";    
   trace.info() << "Reading 3D image  ... ";  
@@ -95,10 +104,12 @@ bool testGenericWriter()
   trace.info() << "Testing writing raw ... ";  
   bool ok5 = anImportedImage2 >> "testGenericWriter.raw";
   trace.info() <<"[done]"  << std::endl;
+  bool ok6 = DGtal::GenericWriter<Image3D32bits>::exportFile( "testGenericWriter32bits.raw", an32bitsImage);
+  trace.info() <<"[done]"  << std::endl;
 
 
 
-  nbok += ok1 && okh5 && okh5bis && ok2 && ok3 && ok3bis && ok4 & ok5  ? 1 : 0; 
+  nbok += ok1 && okh5 && okh5bis && ok2 && ok3 && ok3bis && ok4 & ok5 & ok6  ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
