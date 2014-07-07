@@ -53,7 +53,7 @@ int main( int , char** )
   typedef ImageSelector<Domain, unsigned char >::Type Image;
   typedef ForwardRigidTransformation3D < Point, RealVector > ForwardTrans;
   typedef BackwardRigidTransformation3D < Point, RealVector > BackwardTrans;
-  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
+  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;
   
@@ -62,7 +62,7 @@ int main( int , char** )
     ForwardTrans forwardTrans( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector( 3, -3, 3 ) );
     BackwardTrans backwardTrans( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector( 3, -3, 3 ) );
     MyTransformedDomain domainForwardTrans ( forwardTrans );
-    DefaultFunctor idD;
+    Identity idD;
     
     Image image = VolReader<Image>::importVol ( examplesPath + "samples/cat10.vol" );
     Bounds bounds = domainForwardTrans ( image.domain() );
