@@ -131,12 +131,12 @@ bool testLocalEstimatorFromFunctorAdapter()
 
   trace.beginBlock("Creating  adapter");
   typedef DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
-  typedef ConstValueFunctor< double > ConvFunctor;
+  typedef DGtal::functors::ConstValue< double > ConvFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, 
                                                  Functor, ConvFunctor> Reporter;
 
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, 
-                                                 Functor, GaussianKernelFunctor> ReporterGaussian;
+                                                 Functor, DGtal::functors::GaussianKernel> ReporterGaussian;
 
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   Functor estimator(embedder, 1);
@@ -145,7 +145,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   Reporter reporter(surface, l2Metric, estimator , convFunc);
 
   //We just test the init for Gaussian
-  GaussianKernelFunctor gaussKernelFunc(1.0);
+  DGtal::functors::GaussianKernel gaussKernelFunc(1.0);
   ReporterGaussian reporterGaussian(surface, l2Metric, estimator , gaussKernelFunc);
   reporterGaussian.init(1,5);
 

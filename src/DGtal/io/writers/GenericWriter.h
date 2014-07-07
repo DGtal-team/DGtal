@@ -81,12 +81,12 @@ namespace DGtal
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
    * @tparam TValue the value type of data contained in the image (by default given by the container) 
-   * @tparam TFunctor a functor type to apply image transformation before saving the image (by default set to DefaultFunctor).
+   * @tparam TFunctor a functor type to apply image transformation before saving the image (by default set to functors::Identity).
    *
    *
    */
 
-  template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TValue = typename TContainer::Value, typename TFunctor = DefaultFunctor >
+  template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TValue = typename TContainer::Value, typename TFunctor = functors::Identity >
   struct GenericWriter
   {
     BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
