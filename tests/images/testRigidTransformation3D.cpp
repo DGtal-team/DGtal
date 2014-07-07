@@ -59,14 +59,14 @@ class testRigidTransformation3D
   typedef ImageSelector<Domain, unsigned char >::Type Image;
   typedef ForwardRigidTransformation3D < Point, RealVector > ForwardTrans;
   typedef BackwardRigidTransformation3D < Point, RealVector > BackwardTrans;
-  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
+  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > DomainTrans;
   typedef DomainTrans::Bounds Bounds;
 private:
   Image binary;
   ForwardTrans forwardTrans;
   BackwardTrans backwardTrans;
-  DefaultFunctor idD;
+  Identity idD;
   DomainTrans domainForwardTrans;
 public:
   // Setup part
