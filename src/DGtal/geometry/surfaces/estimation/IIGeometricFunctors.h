@@ -48,6 +48,8 @@
 namespace DGtal
 {
 
+  namespace functors
+  {
   /**
   * This namespace gathers functors transforming the integral
   * invariant covariance matrix into some geometric quantity: normal
@@ -82,6 +84,8 @@ namespace DGtal
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+
       /// Default constructor.
       IINormalDirectionFunctor() {}
       /// Copy constructor. Nothing to do.
@@ -102,11 +106,13 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+#ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
           ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
         }
+#endif
 
         return eigenVectors.column( 0 ); // normal vector is associated to smallest eigenvalue.      
       }
@@ -150,6 +156,7 @@ namespace DGtal
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 2 ));
 
       /// Default constructor.
@@ -172,11 +179,13 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+#ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
           ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
         }
+#endif
 
         return eigenVectors.column( 1 ); // tangent vector is associated to greatest eigenvalue.      
       }
@@ -218,6 +227,7 @@ namespace DGtal
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 2 ));
 
       /// Default constructor.
@@ -240,11 +250,13 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+#ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
           ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
         }
+#endif
 
         return eigenVectors.column( Space::dimension - 1 ); // first principal curvature direction is associated to greatest eigenvalue.      
       }
@@ -292,6 +304,7 @@ namespace DGtal
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
       /// Default constructor.
@@ -314,11 +327,13 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+#ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
           ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
         }
+#endif
 
         return eigenVectors.column( Space::dimension - 2 ); // second principal curvature direction is associated to greatest eigenvalue.      
       }
@@ -365,6 +380,7 @@ namespace DGtal
       typedef std::pair<RealVector,RealVector> Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
       /// Default constructor.
@@ -387,11 +403,13 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+#ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
           ASSERT ( std::abs(eigenValues[i_dim - 1]) <= std::abs(eigenValues[i_dim]) );
         }
+#endif
 
         return Value(
                 eigenVectors.column( Space::dimension - 1 ),
@@ -437,6 +455,7 @@ namespace DGtal
       typedef Component Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 2 ));
 
       /**
@@ -499,6 +518,7 @@ namespace DGtal
       typedef Component Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -562,6 +582,7 @@ namespace DGtal
       typedef Component Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -578,7 +599,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
@@ -642,6 +663,7 @@ namespace DGtal
       typedef Component Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -658,7 +680,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
@@ -721,6 +743,7 @@ namespace DGtal
       typedef Component Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -737,7 +760,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
@@ -799,6 +822,7 @@ namespace DGtal
       typedef std::pair<Component, Component> Quantity;
       typedef Quantity Value;
 
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
       /**
@@ -816,7 +840,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( eigenValues[0] == eigenValues[0] ); // NaN
+        ASSERT ( !isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
@@ -853,6 +877,8 @@ namespace DGtal
       mutable RealVector eigenValues;
     }; // end of class IIPrincipalCurvatures3DFunctor
   } // namespace IIGeometricFunctors 
+
+} // namespace functors
 
 } // namespace DGtal
 
