@@ -67,10 +67,11 @@ namespace DGtal
     * direction by diagonalizing the given covariance matrix.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IINormalDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -79,11 +80,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
 
       /// Default constructor.
@@ -103,7 +105,7 @@ namespace DGtal
       */
       Value operator()( const Argument& arg ) const
       {
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -139,10 +141,11 @@ namespace DGtal
     * direction by diagonalizing the given covariance matrix. This functor is valid only in 2D space.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IITangentDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -151,11 +154,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 2 ));
 
@@ -176,7 +180,7 @@ namespace DGtal
       */
       Value operator()( const Argument& arg ) const
       {
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -210,10 +214,11 @@ namespace DGtal
     * value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IIFirstPrincipalDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -222,11 +227,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 2 ));
 
@@ -247,7 +253,7 @@ namespace DGtal
       */
       Value operator()( const Argument& arg ) const
       {
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -287,10 +293,11 @@ namespace DGtal
     * value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IISecondPrincipalDirectionFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -299,11 +306,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef RealVector Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
@@ -324,7 +332,7 @@ namespace DGtal
       */
       Value operator()( const Argument& arg ) const
       {
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -363,10 +371,11 @@ namespace DGtal
     * in absolute value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     class IIPrincipalDirectionsFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -375,11 +384,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef std::pair<RealVector,RealVector> Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension >= 3 ));
 
@@ -400,7 +410,7 @@ namespace DGtal
       */
       Value operator()( const Argument& arg ) const
       {
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -565,10 +575,11 @@ namespace DGtal
     * value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IIGaussianCurvature3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -577,11 +588,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef Component Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
@@ -596,7 +608,7 @@ namespace DGtal
       {
         Argument cp_arg = arg;
         cp_arg *= dh5;
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -646,10 +658,11 @@ namespace DGtal
     * value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IIFirstPrincipalCurvature3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -658,11 +671,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef Component Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
@@ -677,7 +691,7 @@ namespace DGtal
       {
         Argument cp_arg = arg;
         cp_arg *= dh5;
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -726,10 +740,11 @@ namespace DGtal
     * value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IISecondPrincipalCurvature3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -738,11 +753,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef Component Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
@@ -757,7 +773,7 @@ namespace DGtal
       {
         Argument cp_arg = arg;
         cp_arg *= dh5;
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
@@ -805,10 +821,11 @@ namespace DGtal
     * we mean the value with first greatest curvature in absolute value.
     *
     * @tparam TSpace a model of CSpace, for instance SpaceND.
+    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
     *
     * @see IntegralInvariantCovarianceEstimator
     */
-    template  <typename TSpace>
+    template  <typename TSpace, typename TMatrix=SimpleMatrix< typename TSpace::RealVector::Component, TSpace::dimension, TSpace::dimension> >
     struct IIPrincipalCurvatures3DFunctor
     {
       // ----------------------- Standard services ------------------------------
@@ -817,11 +834,12 @@ namespace DGtal
       typedef TSpace Space;
       typedef typename Space::RealVector RealVector;
       typedef typename RealVector::Component Component;
-      typedef SimpleMatrix<Component,Space::dimension,Space::dimension> Matrix;
+      typedef TMatrix Matrix;
       typedef Matrix Argument;
       typedef std::pair<Component, Component> Quantity;
       typedef Quantity Value;
 
+      // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
       BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
       BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
 
@@ -837,7 +855,7 @@ namespace DGtal
       {
         Argument cp_arg = arg;
         cp_arg *= dh5;
-        EigenDecomposition<Space::dimension, Component>
+        EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
         ASSERT ( !isnan(eigenValues[0]) ); // NaN
