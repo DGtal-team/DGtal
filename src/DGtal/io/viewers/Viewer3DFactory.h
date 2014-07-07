@@ -465,7 +465,7 @@ namespace DGtal
      */
     template < typename TIterator, typename TSCell>
     static void draw( DGtal::Viewer3D<Space, KSpace> & viewer,
-                      const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter );
+                      const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & aRangeAdapter );
     // SCellsRange
 
     // PointsRange

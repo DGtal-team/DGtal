@@ -49,7 +49,7 @@
 #include "ConfigExamples.h"
 
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
-#include "DGtal/geometry/curves/SaturatedSegmentation.h"
+#include "DGtal/geometry/curves/GreedySegmentation.h"
 
 
 using namespace std;
@@ -66,7 +66,7 @@ int main( int argc, char** argv )
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
   typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;  
-  typedef SaturatedSegmentation<SegmentComputer> Decomposition;
+  typedef GreedySegmentation<SegmentComputer> Decomposition;
 
   string inputFilename = examplesPath + "samples/sinus.dat"; 
   vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
@@ -83,13 +83,13 @@ int main( int argc, char** argv )
 #ifdef WITH_VISU3D_QGLVIEWER
 
   QApplication application(argc,argv);
-  Viewer3D viewer;
+  Viewer3D<> viewer;
   viewer.show();
   viewer  << SetMode3D(p.className(), "Grid");
 
 #endif
 #ifdef WITH_CAIRO
-  Board3DTo2D boardViewer;
+  Board3DTo2D<> boardViewer;
   boardViewer  << SetMode3D(p.className(), "Grid"); 
   boardViewer << CameraPosition(-23.500000, 12.500000, 42.078199)
        << CameraDirection(0.7200000, -0.280000, -0.620000)
@@ -120,13 +120,12 @@ int main( int argc, char** argv )
   
   
   #ifdef WITH_VISU3D_QGLVIEWER
-    viewer << Viewer3D::updateDisplay;
+    viewer << Viewer3D<>::updateDisplay;
     flag = application.exec();
   #endif
 
   #ifdef WITH_CAIRO
-    boardViewer.saveCairo("exampleArithDSS3d.pdf", Board3DTo2D::CairoPDF, 600*2, 400*2);
-
+    boardViewer.saveCairo("exampleArithDSS3d.pdf", Board3DTo2D<>::CairoPDF, 600*2, 400*2);
   #endif
 
   return flag;

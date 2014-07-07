@@ -91,7 +91,7 @@ namespace DGtal
     // JOL: GaussDigitizer do not need a bounded shape.
     // BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
     
-    BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanOrientedShape<TEuclideanShape> ));
 
     
     /**

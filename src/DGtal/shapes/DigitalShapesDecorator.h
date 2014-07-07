@@ -64,10 +64,10 @@ class DigitalShapesUnion
 {
   // ----------------------- Standard services ------------------------------
 public:
-  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeB > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
   typedef typename ShapeA::Space Space;
   typedef typename ShapeA::Point Point;
@@ -202,10 +202,10 @@ class DigitalShapesIntersection
 {
   // ----------------------- Standard services ------------------------------
 public:
-  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeB > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
   typedef typename ShapeA::Space Space;
   typedef typename ShapeA::Point Point;
@@ -346,10 +346,10 @@ class DigitalShapesMinus
 {
   // ----------------------- Standard services ------------------------------
 public:
-  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeA > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeB > ));
-  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalBoundedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CDigitalOrientedShape< ShapeB > ));
 
   typedef typename ShapeA::Space Space;
   typedef typename ShapeA::Point Point;
