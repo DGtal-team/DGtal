@@ -768,7 +768,7 @@ private:
   };
 
   /**
-   * Description of template class 'RescalingFunctor' <p>
+   * Description of template class 'Rescaling' <p>
    * \brief Aim: Functor allowing to rescale a value.
    * Values of the initial scale [initMin,initMax] are rescaled to the new scale [newMin,newMax].
    *
@@ -776,7 +776,7 @@ private:
    * @tparam TOutputType the type of values on the new scale.
    */
   template<typename TInputType, typename TOutputType>
-  struct RescalingFunctor
+  struct Rescaling
   {
       TInputType myInitMin;
       TInputType myInitMax;
@@ -794,7 +794,7 @@ private:
        * @param newMin the minimum value of the new scale.
        * @param newMax the maximum value of the new scale.
        */
-      RescalingFunctor( const TInputType &initMin, const TInputType &initMax, const TOutputType &newMin, const TOutputType &newMax ) :
+      Rescaling( const TInputType &initMin, const TInputType &initMax, const TOutputType &newMin, const TOutputType &newMax ) :
                           myInitMin(initMin), myInitMax(initMax), myInitRange(initMax-initMin), myNewMin(newMin), myNewMax(newMax), myNewRange(newMax-newMin) {}
       /**
        * Operator.
