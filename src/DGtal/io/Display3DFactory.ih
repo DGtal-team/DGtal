@@ -260,50 +260,49 @@ DGtal::Display3DFactory<Space,KSpace>::drawAsBoundingBox( Display & display,
     PointD3d pf = PointD3d( mu[0] - ( (m1+df)*u[0] )/n,
                             mu[1] - ( (m1+df)*u[1] )/n,
                             mu[2] - ( (m1+df)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpf = display.embed( pf );
     PointD3d pl = PointD3d( mu[0] - ( (m1+dl)*u[0] )/n,
                             mu[1] - ( (m1+dl)*u[1] )/n,
                             mu[2] - ( (m1+dl)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpl = display.embed( pl );
 
-    display.addLine(rpf, rpl);
+    display.addLine(pf, pl);
 
     PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n,
                             (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n,
                             (mu[2]+omega1[2]) - ( (m2+df)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpf2 = display.embed( pf2 );
     PointD3d pl2 = PointD3d((mu[0]+omega1[0]) - ( (m2+dl)*u[0] )/n,
                             (mu[1]+omega1[1]) - ( (m2+dl)*u[1] )/n,
                             (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpl2 = display.embed( pl2 );
 
-    display.addLine(rpf2, rpl2);
+    display.addLine(pf2, pl2);
 
     PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n,
                             (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n,
                             (mu[2]+omega2[2]) - ( (m3+df)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpf3 = display.embed( pf3 );
     PointD3d pl3 = PointD3d((mu[0]+omega2[0]) - ( (m3+dl)*u[0] )/n,
                             (mu[1]+omega2[1]) - ( (m3+dl)*u[1] )/n,
                             (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpl3 = display.embed( pl3 );
 
-    display.addLine(rpf3, rpl3);
+    display.addLine(pf3, pl3);
 
     PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n,
                             (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n,
                             (mu[2]+omega[2]) - ( (m4+df)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpf4 = display.embed( pf4 );
     PointD3d pl4 = PointD3d((mu[0]+omega[0]) - ( (m4+dl)*u[0] )/n,
                             (mu[1]+omega[1]) - ( (m4+dl)*u[1] )/n,
                             (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n );
-    DGtal::Z3i::RealPoint rpl4 = display.embed( pl4 );
 
-    display.addLine(rpf4, rpl4);
+    display.addLine(pf4, pl4);
 
     //two end facets
-    display.addQuad(rpf,rpf2,rpf4, rpf3);
-    display.addQuad(rpl, rpl2, rpl4,rpl3);
+    display.addLine(pf, pf2); 
+    display.addLine(pf2,pf4); 
+    display.addLine(pf4, pf3); 
+    display.addLine(pf3, pf); 
+
+    display.addLine(pl, pl2); 
+    display.addLine(pl2, pl4); 
+    display.addLine(pl4, pl3); 
+    display.addLine(pl3, pl); 
   }
 }
 
@@ -1254,9 +1253,9 @@ template <typename Space, typename KSpace>
 template <typename TIterator, typename TSCell>
 inline
 void DGtal::Display3DFactory<Space,KSpace>::draw( Display & display,
-						  const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & object )
+						  const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & object )
 {
-  typedef DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> Range;
+  typedef DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> Range;
   typedef typename Range::ConstIterator ConstIterator;
 
   ConstIterator it ( object.begin() );

@@ -46,7 +46,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CImplicitFunction
   /**
@@ -96,7 +97,7 @@ Description of \b concept '\b CImplicitFunction' <p>
     BOOST_CONCEPT_ASSERT(( boost::UnaryFunction< T, Value, RealPoint > ));
     
   }; // end of concept CImplicitFunction
-  
+  } 
 } // namespace DGtal
 
 //                                                                           //

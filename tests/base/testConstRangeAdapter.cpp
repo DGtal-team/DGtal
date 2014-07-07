@@ -150,14 +150,14 @@ int main( int argc, char** argv )
   for (int i = 1; i < n; ++i) 
       *ito++ = i;
 
-  typedef ConstRangeAdapter<std::vector<int>::iterator, DefaultFunctor, int > SimpleRange; 
-  DefaultFunctor df; 
+  typedef ConstRangeAdapter<std::vector<int>::iterator, functors::Identity, int > SimpleRange; 
+  functors::Identity df; 
   SimpleRange r1(v.begin(), v.end(), df); 
 
 
   //2) thresholded range of integers
-  typedef ConstRangeAdapter<std::vector<int>::iterator, Thresholder<int>, bool > BoolRange; 
-  Thresholder<int> t(n/2);  
+  typedef ConstRangeAdapter<std::vector<int>::iterator, DGtal::functors::Thresholder<int>, bool > BoolRange;
+  DGtal::functors::Thresholder<int> t(n/2);
   BoolRange r2(v.begin(), v.end(), t); 
 
   //3) range of signed cells...
@@ -173,11 +173,12 @@ int main( int argc, char** argv )
   typedef SpaceND<2> S;
   typedef S::Point Point2; 
   SCellToInnerPoint<K> f(ks); 
-  Projector<S> p; 
-  Composer<SCellToInnerPoint<K>,Projector<S>,Point2> c(f,p); 
+
+  ::functors::Projector<S> p;
+  functors::Composer<SCellToInnerPoint<K>,functors::Projector<S>,Point2> c(f,p);
 
   typedef ConstRangeAdapter<std::vector<K::SCell>::iterator, 
-    Composer<SCellToInnerPoint<K>,Projector<S>,Point2>, Point2 > PointRange; 
+                            functors::Composer<SCellToInnerPoint<K>,functors::Projector<S>,Point2>, Point2 > PointRange;
   PointRange r3(v3.begin(), v3.end(), c); 
  
   /////////// concept checking

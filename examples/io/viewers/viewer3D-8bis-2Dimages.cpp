@@ -52,8 +52,9 @@ int main( int argc, char** argv )
 
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,  unsigned char > Image3D;
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
-  typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
-                                   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+  typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
+                                   Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
+
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
   QApplication application(argc,argv);
   typedef Viewer3D<> MyViewer;
@@ -61,7 +62,7 @@ int main( int argc, char** argv )
   viewer.show();
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
-  DGtal::DefaultFunctor idV;
+  DGtal::functors::Identity idV;
   
  
 
@@ -79,7 +80,7 @@ int main( int argc, char** argv )
   for (double alpha = 0; alpha< 1.54; alpha+= 0.01){
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceExtract]
     // Extracting images from 3D embeder
-    DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(imageVol.domain(), 
+    DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(imageVol.domain(), 
                                                               ptCenter+DGtal::Z3i::RealPoint(200.0*cos(alpha),100.0*sin(alpha)), 
                                                               DGtal::Z3i::RealPoint(cos(alpha),sin(alpha),cos(2.0*alpha)), 
                                                               IMAGE_PATCH_WIDTH);
