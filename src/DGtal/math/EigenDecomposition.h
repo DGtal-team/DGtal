@@ -79,10 +79,14 @@ namespace DGtal
    *
    * @tparam TComponent the type of each component of the matrix. For
    * now, should be some double or float type.
+   * 
+   * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
    */
-  template  <DGtal::Dimension TN, typename TComponent>
+   
+  template  <DGtal::Dimension TN, typename TComponent, typename TMatrix=SimpleMatrix<TComponent, TN, TN> >
   class EigenDecomposition
   {
+    // BOOST_CONCEPT_ASSERT(( CMatrix<TMatrix> ));
     BOOST_CONCEPT_ASSERT(( CEuclideanRing<TComponent> ));
     BOOST_STATIC_ASSERT(TN > 0 );
 
@@ -95,7 +99,7 @@ namespace DGtal
     typedef PointVector<N,Component>    RowVector;   ///< the type for row vectors (1xN)
     typedef PointVector<M,Component>    ColumnVector;///< the type for column vectors (Nx1)
     typedef ColumnVector                Vector;      ///< an alias for column vectors (Nx1)
-    typedef SimpleMatrix<Component,N,N> Matrix;      ///< the type for matrices (NxN)
+    typedef TMatrix Matrix;      ///< the type for matrices (NxN)
 
  
     // ----------------------- Static constants ------------------------------
