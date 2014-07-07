@@ -119,6 +119,8 @@
 - *Geometry Package*
   - Bug fix in PowerMap construction. (David Coeurjolly,
     [#814](https://github.com/DGtal-team/DGtal/pull/814))
+  - Bug fix in 3d display of StandardDSS6Computer (Tristan Roussillon
+    [#854](https://github.com/DGtal-team/DGtal/pull/854))
 
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
