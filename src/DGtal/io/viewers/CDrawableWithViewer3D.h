@@ -94,8 +94,6 @@ An object x satisfying this concept may then be used as:
     @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */  
   
-  template <class S, class KS> class Viewer3D;
-  class DrawableWithViewer3D;
   
   template <typename T, typename S, typename KS>
   struct CDrawableWithViewer3D  : public CDrawableWithDisplay3D<T, S, KS>
@@ -106,9 +104,6 @@ An object x satisfying this concept may then be used as:
       //Drawable model should have a className() returning a string
       ConceptUtils::sameType( myS, myT.className() );
 
-      //Drawable model should be associated to global functions draw and defaultStyle.
-      //draw(myD3D, myT);
-      //ConceptUtils::sameType( myD, defaultStyle( myT) );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -117,7 +112,6 @@ An object x satisfying this concept may then be used as:
     T myT; //! the drawable class
     DrawableWithViewer3D *myD;
 
-    Viewer3D<S, KS> myD3D;
     std::string myS;
 
     // ------------------------- Internals ------------------------------------
