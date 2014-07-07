@@ -74,13 +74,13 @@ namespace DGtal
  *
  *  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char > Image3D;
  *  string filename = "test.dcm";
- *  Image3D image = DicomReader< Image3D, RescalingFunctor<int32_t,Image3D::Value> >::importDicom(
- * 								filename, RescalingFunctor<int32_t,Image3D::Value>(-900,530,0,255) );
+ *  Image3D image = DicomReader< Image3D, Rescaling<int32_t,Image3D::Value> >::importDicom(
+ * 								filename, Rescaling<int32_t,Image3D::Value>(-900,530,0,255) );
  *  @endcode
  *
  * @tparam TImageContainer the type of the image container
  *
- * @tparam TFunctor the type of functor used in the import (you can use the RescalingFunctor as in the example above).
+ * @tparam TFunctor the type of functor used in the import (you can use the Rescaling as in the example above).
  *
  */
 
