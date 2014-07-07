@@ -79,9 +79,9 @@ bool testPairs()
   {//test output iterator
   trace.beginBlock ( "OutputIteratorAdapter..." );
 
-  typedef OutputIteratorAdapter<Map::iterator, Pair2ndMutator<string>, string> Adapter; 
+  typedef OutputIteratorAdapter<Map::iterator, DGtal::functors::Pair2ndMutator<string>, string> Adapter;
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<Adapter, string> ));
-  Pair2ndMutator<string> f; 
+  functors::Pair2ndMutator<string> f;
   Adapter  a( m.begin(), f ); 
 
   copy(v.begin(), v.end(), a); 
@@ -98,9 +98,9 @@ bool testPairs()
   {//test iterator
   trace.beginBlock ( "IteratorAdapter..." );
 
-  Pair2ndMutator<string> f; 
+    functors::Pair2ndMutator<string> f;
 
-  typedef IteratorAdapter<Map::iterator, Pair2ndMutator<string>, string> Adapter; 
+    typedef IteratorAdapter<Map::iterator, functors::Pair2ndMutator<string>, string> Adapter;
   BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Adapter> ));
 
   //writting

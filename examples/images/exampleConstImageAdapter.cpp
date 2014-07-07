@@ -76,7 +76,7 @@ int main( /*int argc, char** argv*/ )
   typedef HueShadeColorMap<double> HueShadeDouble;      // a simple HueShadeColorMap varying on 'double' values
   typedef GrayscaleColorMap<unsigned char> Gray;        // a simple GrayscaleColorMap varying on 'unsigned char' values
   
-  DefaultFunctor df;                                    // a simple functor that just returns its argument
+  functors::Identity df;                                    // a simple functor that just returns its argument
 //! [def]
 
   trace.beginBlock("image");
@@ -102,7 +102,7 @@ int main( /*int argc, char** argv*/ )
   trace.beginBlock("subImage");
   
 //! [ConstImageAdapterForSubImage_creation]
-  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, Image::Value, DefaultFunctor > ConstImageAdapterForSubImage;
+  typedef ConstImageAdapter<Image, Domain, functors::Identity, Image::Value, functors::Identity > ConstImageAdapterForSubImage;
   Domain subDomain(Point(1,1), Point(8,8));
   ConstImageAdapterForSubImage subImage(image, subDomain, df, df);
 //! [ConstImageAdapterForSubImage_creation]
@@ -126,7 +126,7 @@ int main( /*int argc, char** argv*/ )
 //! [specificDomain_creation]
 
 //! [ConstImageAdapterForSpecificImage_creation]
-  typedef ConstImageAdapter<Image, DigitalSetDomain<DigitalSet>, DefaultFunctor, Image::Value, DefaultFunctor > ConstImageAdapterForSpecificImage;
+  typedef ConstImageAdapter<Image, DigitalSetDomain<DigitalSet>, functors::Identity, Image::Value, functors::Identity > ConstImageAdapterForSpecificImage;
   ConstImageAdapterForSpecificImage specificImage(image, specificDomain, df, df);
 //! [ConstImageAdapterForSpecificImage_creation]
   
@@ -139,8 +139,8 @@ int main( /*int argc, char** argv*/ )
   trace.beginBlock("thresholderImage");
   
 //! [ConstImageAdapterForThresholderImage_creation]
-  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> > ConstImageAdapterForThresholderImage;
-  Thresholder<Image::Value> t(127);
+  typedef ConstImageAdapter<Image, Domain, functors::Identity, bool, DGtal::functors::Thresholder<Image::Value> > ConstImageAdapterForThresholderImage;
+  DGtal::functors::Thresholder<Image::Value> t(127);
   ConstImageAdapterForThresholderImage thresholderImage(image, domain, df, t);
 //! [ConstImageAdapterForThresholderImage_creation]
   
@@ -153,7 +153,7 @@ int main( /*int argc, char** argv*/ )
   trace.beginBlock("logImage");
   
 //! [ConstImageAdapterForLogScale_creation]
-  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, double, LogScaleFunctor<Image::Value> > ConstImageAdapterForLogScale;
+  typedef ConstImageAdapter<Image, Domain, functors::Identity, double, LogScaleFunctor<Image::Value> > ConstImageAdapterForLogScale;
   LogScaleFunctor<Image::Value> logScale;
   ConstImageAdapterForLogScale logImage(image, domain, df, logScale);
 //! [ConstImageAdapterForLogScale_creation]

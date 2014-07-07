@@ -610,7 +610,7 @@ defaultStyle(const DGtal::GridCurve<TKSpace> & /*object*/,
 // SCellsRange
 template <typename TIterator, typename TSCell>
 DGtal::DrawableWithBoard2D* 
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & /*object*/, 
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & /*object*/, 
              std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
