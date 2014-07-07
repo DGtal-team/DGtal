@@ -28,11 +28,12 @@ namespace DGtal {
 
 \section sectOverview Overview
 
-The algorithm implemented in the class IntegralInvariantVolumeEstimator and IntegralInvariantCovarianceEstimator are detailed in the article 
+The algorithm implemented in the class IntegralInvariantVolumeEstimator and 
+IntegralInvariantCovarianceEstimator are detailed in the article 
 @cite Coeurjo-CVIU-2014 .
 
 In geometry processing, interesting mathematical tools have been developed to 
-design differential estimators on smooth surfaces based on integral invariants 
+design differential estimators on smooth surfaces based on Integral Invariant 
 @cite Pottmann2007 @cite Pottmann2009 .
 The principle is simple: we move a convolution kernel along the shape surface 
 and we compute integrals on the intersection between the shape and the 
@@ -52,7 +53,7 @@ orange color on the following figure).
 @image html notations_integral.png "Notations."
 @image latex notations_integral.png "Notations." width=5cm
 
-\subsection subsectIntegralInvariant Integral Invariants for curvature computation
+\subsection subsectIntegralInvariant Integral Invariant for curvature computation
 
 In @cite Coeurjo2013 , we have demonstrated that some digital integral 
 quantities provide curvature information when the kernel size tends to zero for 
@@ -118,155 +119,73 @@ The user part is rather simple by using only IntegralInvariantVolumeEstimator or
 Since <b>2d curvature</b> and <b>3d mean curvature</b> are related to the volume 
 between the shape and a ball centered on the border of the shape, we need to 
 estimate this volume and use this value to get the curvature information. Then 
-we will paramatrized our volume estimator IntegralInvariantVolumeEstimator with 
-a functor to compute the curvature (in 2d: IIGeometricFunctors::IICurvatureFunctor 
-and in 3d for the mean curvature: IIGeometricFunctors::IIMeanCurvature3DFunctor )
+we parametrize our volume estimator IntegralInvariantVolumeEstimator by 
+a functor to compute the curvature (in 2d: functors::IIGeometricFunctors::IICurvatureFunctor 
+and in 3d for the mean curvature: functors::IIGeometricFunctors::IIMeanCurvature3DFunctor )
 
 In 3d we can also compute the covariance matrix of the intersection between the 
 shape and the ball centered on the border of the shape using 
-IntegralInvariantCovarianceEstimator. This offer us the possibility to extract 
+IntegralInvariantCovarianceEstimator. This offers us the possibility to extract 
 many differential quantities as: <b>3d Gaussian curvature</b>, <b>first</b> and 
 <b>second principal curvatures</b>, as well <b>first and second principal 
 curvature directions</b>, <b>normal vector</b> or <b>tangeant vector</b> 
-(IIGeometricFunctors::IIGaussianCurvature3DFunctor, etc. See IIGeometricFunctors 
-for the entire list).
+(functors::IIGeometricFunctors::IIGaussianCurvature3DFunctor, etc. See 
+functors::IIGeometricFunctors for the entire list).
 
-\subsubsection subsubsectFunctors Integral Invariants functors
+\subsubsection subsubsectFunctors Integral Invariant functors
 
-All IIGeometricFunctors have the same inititialization process: you need to use 
-the default constructor, and initialize them with <tt>init()</tt> method. They 
-will ask for a grid step (@f$ h @f$) and the <b>Euclidean radius</b> of the 
-kernel ball (@f$ r @f$).
+All functors::IIGeometricFunctors have the same inititialization process: you 
+need to use the default constructor, and initialize them with <tt>init()</tt> 
+method. They will ask for a grid step (@f$ h @f$) and the <b>Euclidean radius</b> 
+of the kernel ball (@f$ r @f$).
 
-\subsubsection subsubsectEstimators Integral Invariants estimators
+\subsubsection subsubsectEstimators Integral Invariant estimators
 
 As described below, this parameter @f$ r_e @f$ determines
 the level of feature detected by the estimator
 Since IntegralInvariantVolumeEstimator and (resp.) 
 IntegralInvariantCovarianceEstimator are models of CSurfelLocalEstimator, they 
 will follow rules inferred by it (init(), eval(), etc.). But some particular 
-consideration are introduce. The following steps are the general usage of 
+considerations are introduce. The following steps are the general usage of 
 Integral Invariant estimators:
 
 - First, you need to give them a functor on Volume (resp. Covariance matrix) on 
-the constructor of the class (see above). Below rules are the same for all 
-Integral Invariant estimators.
+the constructor of the class (see above).
 	- You can also give them the cellular grid space model of CCellularGridSpaceND 
   in which the shape is defined (Z3i::KSpace for example in 3d) and a point 
   predicate model of CPointPredicate (the digital shape of interest, used to 
   know if a point of the domain is inside or outside the shape), either in the 
   constructor, or in the <tt>attach()</tt> method.
 
-- Integral Invariants estimators need to know which size of ball you want to 
+- Integral Invariant estimators need to know which size of ball you want to 
 convolve around the shape boundary, so we need to call the <tt>setParams(double)</tt> 
 method with the <b>digital radius</b> of the ball (@f$ \frac{r}{h} @f$).
 	- \warning II functors need the Euclidean radius of the ball, and II 
   estimators the digital radius.
 
 - Then, we can initialize our estimator, by calling <tt>init()</tt> method. It 
-require the grid step of the shape @f$ h @f$, a begin and a end surfel iterator 
-of the shape. This method will precomputed all requirements for II estimator, 
-as displacement masks optimization (see Technical details part below).
+requires the grid step of the shape @f$ h @f$, a begin and a end surfel iterator 
+of the shape. This method will precompute all internal parameters for II 
+estimator, as displacement masks optimization (see Technical details part below).
 
 - Finally, you can evaluate the estimator in two way: 
-	- for a given (iterator of a) surface element (surfel) : <tt>eval(it_surfel)</tt>
-	- for a range of (iterator of) surface elements : <tt>eval(it_begin, it_end, output)</tt>. 
+	- at a given (iterator of a) surface element (surfel) : <tt>eval(it_surfel)</tt>
+	- for a range of (iterators of) surface elements : <tt>eval(it_begin, it_end, output)</tt>. 
   Here <tt>output</tt> is an output iterator where results are given 
   (std::back_insert_iterator for example).
 
-If you want to eval on a range of surfels, we recommend you to choose the second 
-way. Indeed, some optimizations are available when the range of surfels is gived 
+If you want to evaluate on a range of surfels, we recommend you to choose the second 
+way. Indeed, some optimizations are available when the range of surfels is given 
 with a 0-adjacency. Then, when you extract the digital surface of your shape, 
 it's recommended to use a <b>depth-first search</b> (see DepthFirstVisitor for 
-example). If not, none optimization are perform (it will be visible in 
-computation time for big shape).
-
-\subsection subsectDetails Technical details
-
-\warning The following instruction gave the general idea on how Integral 
-Invariant estimators are built in DGtal. If you want only use these estimators, 
-the below part is not necessary to read.
-
-To sum up, we need a convolution ball (kernel) which will be integrated along a 
-digitized shape boundary.
-At initialization, we first create a convolution kernel (ImplicitBall) of 
-Euclidean radius @f$ r @f$ and digitized at the grid step @f$ h @f$. 
-DigitalSurfaceConvolver is in charge of centering the convolution kernel
-on the surfel on the digitized shape border. Its objective is to compute 
-@f$ B_{r/h}(\frac{1}{h} \cdot x ) \cap Z @f$ and 
-@f$ B_{r/h} (\frac{1}{h} \cdot x ) \cap Z' @f$ from previous equation.
-
-At evaluation, it will place the convolution kernel in order to lie his center 
-with the cell to estimate. After, it will iterate on all spels of the kernel, 
-and compute the integral:
-
-@f[
-        V(x) = \sum_{spel \in B_{r/h}(\frac{1}{h} \cdot x ) \cap Z}f(x)g(s-x)
-@f]
-
-where @f$ x @f$ is the current spel, @f$ f @f$ is the shape functor (set by 
-user), @f$ g @f$ is the kernel functor (return 1 on all spels from the kernel).
-IntegralInvariantVolumeEstimator uses this result to get 
-@f$ \widehat{Area}(B_{r/h}(\frac{1}{h} \cdot x ) \cap Z, h) @f$
-in 2d and @f$ \widehat{Vol}(B_{r/h}(\frac{1}{h} \cdot x ) \cap Z', h) @f$ in 3d.
-
-The given functor will use this estimation of volume with equation defined 
-previously, and returns curvature quantities. Using this approach, we obtain a 
-computation cost in @f$ O((r/h)^d) @f$ per surface element.
-
-For IntegralInvariantCovarianceEstimator, the initialization is the same but the 
-evaluation of DigitalSurfaceConvolver computes a covariance matrix of 
-@f$ B_{r/h}(\frac{1}{h} \cdot x ) \cap Z' @f$. 
-
-Functors given will analyse the eigenvectors and eigenvalues of this covariance 
-matrix to extract Gaussian curvature/principal curvatures/direction, etc. 
-information.
-
-When we move the convolution kernel to 0-adjacent cells, we see that only few 
-cells need to be updated from the previous convolution.
-
-@image html MovingKernel.png "Illustration of a displacement of a full kernel from @f$ x @f$ to @f$ x+\vec{\delta} @f$ "
-@image latex MovingKernel.png "Illustration of a displacement of a full kernel from @f$ x @f$ to @f$ x+\vec{\delta} @f$ " width=5cm
-
-As seen on this illustration, only the green and the red part are interesting, 
-the grey part is the same from the previous result. This effect can produce a 
-lot of computations, so we only need to remove the green part, and add the red 
-one (by additivity of the convolution).
-
-@f[
-  \widehat{Area}(B_{r/h}(\frac{1}{h} \cdot x + \vec{\delta} ) \cap Z, h) 
-  = \widehat{Area}(B_{r/h}(\frac{1}{h} \cdot x ) \cap Z, h)
-  - \widehat{Area}(B1_{r/h}(\frac{1}{h} \cdot x ) \cap Z, h)
-  + \widehat{Area}(B2_{r/h}(\frac{1}{h} \cdot x + \vec{\delta} ) \cap Z, h).
-  \label{eq:eqmasks}
-@f]
-
-where @f$ \vec{\delta} @f$ is a translation vector in 0-adjacency, 
-@f$ B1_{r/h} @f$ is the mask to remove, and @f$ B2_{r/h} @f$ the mask to add 
-(both depending to @f$ \vec{\delta} @f$).
-
-@image html IntegralInvariantCurvatureEstimator-FullMask.png "Full kernel support"
-@image latex IntegralInvariantCurvatureEstimator-FullMask.png "Full kernel support" width=5cm
-@image html IntegralInvariantCurvatureEstimator-PartialMask.png "0-adjacent 2d partial displacement masks of kernel support"
-@image latex IntegralInvariantCurvatureEstimator-PartialMask.png "0-adjacent 2d partial displacement masks of kernel support" width=5cm
-
-We pre-compute at initialization of estimators a set a displacement masks from 
-the full convolution kernel as shown above.
-At evaluation, we use the full kernel for the first computation. If the next 
-surfel is adjacent to the previous one, we use a pair of masks (depending to 
-the shift) to remove/add interested quantities to the last. In the worst case, 
-all surfels set by user to the estimator are not adjacent and it will compute 
-the curvature always with the full convolution kernel, which means no 
-optimizations. The computation cost per surface element can be reduced from 
-@f$ O((r/h)^{d}) @f$ (size of the complete kernel) to @f$ O((r/h)^{d-1}) @f$, 
-and the extra-cost of pre-computing displacement masks is meaningless: for 
-example, with a full 2d kernel support size of 91893, the optimization built 8 
-supplementary masks of size @f$ \approx @f$ 450.
+example). If none, no optimization are perform (it will be visible in 
+performances for big shape).
 
 \section sectImplementation Example code
 
-It is important to consider connected range when evaluating with the Integral 
-Invariant Curvature estimators in order to benefit the kernel optimization.
+It is important to consider a range of connected surfels when evaluating with 
+Integral Invariant Curvature estimators in order to benefit the kernel 
+optimization.
 Note that the methodology is the same with both IntegralInvariantVolumeEstimator 
 and IntegralInvariantCovarianceEstimator.
 The only change is on the typedef of Functor/Estimator (see below):
