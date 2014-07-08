@@ -59,7 +59,7 @@ bool testGenericWriter()
   for(unsigned int i =0; i< 255; i++){
     for(unsigned int j =0; j< 255; j++){
       for(unsigned int k =0; k< 255; k++){
-        an32bitsImage.setValue(DGtal::Z3i::Point(i,j,k), k);
+        an32bitsImage.setValue(DGtal::Z3i::Point(k,j,i), i*i*i);
       }
     }
   }
