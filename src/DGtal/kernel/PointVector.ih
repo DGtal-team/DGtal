@@ -297,7 +297,7 @@ DGtal::operator*( TComponent coeff,
 		  const PointVector<dim, TComponent,TContainer> & aVector )
 {
   return PointVector<dim, TComponent,TContainer>
-    ( aVector, MultiplicationByScalarFunctor<TComponent>( coeff ) );
+    ( aVector, functors::MultiplicationByScalar<TComponent>( coeff ) );
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -543,7 +543,7 @@ inline
 DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::operator- ( const Self& v ) const
 {
-  return Self(*this, v, MinusFunctor<Component>());
+  return Self(*this, v, functors::Minus<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -551,7 +551,7 @@ inline
 DGtal::PointVector<dim, TComponent,TContainer>
 DGtal::PointVector<dim, TComponent,TContainer>::operator-() const
 {
-  return Self(*this, UnaryMinusFunctor<Component>());
+  return Self(*this, functors::UnaryMinus<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -568,7 +568,7 @@ inline
 DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::inf( const Self& apoint ) const
 {
-  return Self(*this, apoint, MinFunctor<Component>());
+  return Self(*this, apoint, functors::Min<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -576,7 +576,7 @@ inline
 DGtal::PointVector<dim, TComponent, TContainer>
 DGtal::PointVector<dim, TComponent, TContainer>::sup( const Self& apoint ) const
 {
-  return Self(*this, apoint, MaxFunctor<Component>());
+  return Self(*this, apoint, functors::Max<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
