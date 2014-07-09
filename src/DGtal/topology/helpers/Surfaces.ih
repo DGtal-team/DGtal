@@ -993,10 +993,11 @@ template <typename TKSpace>
 template <typename SurfelPredicate, typename TImageContainer>
 unsigned int
 DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace, 
-                                         const SurfelPredicate & bdry,
+                                         const SurfelPredicate & aSurfPred,
                                          TImageContainer & anImage,
                                          const typename TImageContainer::Value & aValue,
-                                         bool empty_is_inside )
+                                         bool empty_is_inside, 
+                                         bool incrementMode)
 {
   unsigned int numberCellFilled = 0;
   std::deque<Cell> pixels;      
@@ -1008,17 +1009,18 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
         { 
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
-          if ( bdry( b )  )
+          if ( aSurfPred( b )  )
             {
               while ( ! pixels.empty() )
                 {
-                  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
                   pixels.pop_front();
                   numberCellFilled++;
                 }
               in_mode = false;
             }
-          else if ( bdry( aKSpace.sOpp( b ) )  )
+          else if ( aSurfPred( aKSpace.sOpp( b ) )  )
             {
                pixels.clear();
               in_mode = true;
@@ -1032,7 +1034,8 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
 	    {
 	      while ( ! pixels.empty() )
 		{
-		  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
 		  pixels.pop_front();
                   numberCellFilled++;
 		}
@@ -1053,10 +1056,11 @@ template <typename TKSpace>
 template <typename SurfelPredicate, typename TImageContainer>
 unsigned int 
 DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace, 
-                                            const SurfelPredicate & bdry,
-                                            TImageContainer & anImage,
-                                            const typename TImageContainer::Value & aValue,
-                                            bool empty_is_outside )
+                                         const SurfelPredicate & aSurfPred,
+                                         TImageContainer & anImage,
+                                         const typename TImageContainer::Value & aValue,
+                                         bool empty_is_outside, 
+                                         bool incrementMode)
 {
   unsigned int numberCellFilled=0;
   std::deque<Cell> pixels;      
@@ -1068,16 +1072,17 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
         { 
           pixels.push_front( p );
           SCell b = aKSpace.sIncident( aKSpace.signs( p, KSpace::POS ), 0, true );
-          if ( bdry( b ) )
+          if ( aSurfPred( b ) )
             {
               pixels.clear();
               in_mode = true;
             }
-          else if ( bdry( aKSpace.sOpp( b ) )  )
+          else if ( aSurfPred( aKSpace.sOpp( b ) )  )
             {
               while ( ! pixels.empty() )
                 {
-                  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
                   pixels.pop_front();
                   numberCellFilled++;
                 }
@@ -1091,7 +1096,8 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
 	    {
 	      while ( ! pixels.empty() )
 		{
-                  anImage.setValue(aKSpace.uCoords(pixels.front()), aValue);
+                  Point aPoint = aKSpace.uCoords(pixels.front());
+                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
                   pixels.pop_front();
                   numberCellFilled++;
                 }

@@ -776,11 +776,13 @@ namespace DGtal
 
 
     /**
-     * Given a boundary surface [bdry] in [ks] (given as
-     * SurfelPredicate), fill its interior in a given value. The
-     * technique is to fill line by line and tests the intersection
-     * with the surface. Note that the set of the surfel of the
-     * boundary has to be a closed surface.
+     * Given a boundary surface [aSurfPred] in [aKSpace] (given as
+     * SurfelPredicate), fills its interior in a given image [anImage]
+     * by a specific value [aValue] (considered as increment if
+     * [incrementMode] is set to true). The technique is to fill line
+     * by line and tests the intersection with the surface. Note that
+     * the set of the surfel of the boundary has to be a closed
+     * surface.
      * 
      * 
      * @param aKSpace the digital space.
@@ -789,24 +791,28 @@ namespace DGtal
      * @param aValue the value to fill the image.
      * @param empty_is_inside when 'true', an empty line is considered
      * interior, otherwise exterior (set by default to false).
+     * @param incrementMode if set to 'true' the image value is incremented by [aValue] instead to be set to [aValue]  (default).
      * @return the number of cells filled in the image.
      */
     template < typename TSurfelPredicate, typename TImageContainer> 
     unsigned int
     static
     uFillInterior( const KSpace & aKSpace, 
-                   const TSurfelPredicate & bdry,
+                   const TSurfelPredicate & aSurfPred,
                    TImageContainer & anImage,
                    const typename TImageContainer::Value & aValue,
-                   bool empty_is_inside=false );
+                   bool empty_is_inside=false,
+                   bool incrementMode=true );
 
 
     /**
-     * Given a boundary surface [bdry] in [ks] (given as
-     * SurfelPredicate), fill its exterior in a given image by a given
-     * value.  The technique is to fill line by line and tests the
-     * intersection with the surface. Note that the set of the surfel
-     * of the boundary has to be a closed surface.
+     * Given a boundary surface [aSurfPred] in [aKSpace] (given as
+     * SurfelPredicate), fills its exterior in a given image [anImage]
+     * by a specific value [aValue] (considered as increment if
+     * [incrementMode] is set to true). The technique is to fill line
+     * by line and tests the intersection with the surface. Note that
+     * the set of the surfel of the boundary has to be a closed
+     * surface.
      *
      * @param aKSpace the digital space.
      * @param bdry the digital Jordan surface.
@@ -814,16 +820,19 @@ namespace DGtal
      * @param aValue the value to fill the image.
      * @param empty_is_outside when 'true', an empty line is considered
      * exterior, otherwise interior.
+     * @param incrementMode if set to 'true' the image value is incremented by [aValue] instead to be set to [aValue]  (default).
      * @return the number of cells filled in the image.
      */
     template < typename SurfelPredicate, typename TImageContainer> 
     unsigned int
     static
     uFillExterior( const KSpace & aKSpace, 
-                   const SurfelPredicate & bdry,
+                   const SurfelPredicate & aSurfPred,
                    TImageContainer & anImage,
                    const typename TImageContainer::Value & aValue,
-                   bool empty_is_outside=true );
+                   bool empty_is_outside=true,
+                   bool incrementMode=true );
+
     
     
 
