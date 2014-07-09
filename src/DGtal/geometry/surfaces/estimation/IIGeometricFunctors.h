@@ -108,7 +108,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
 #ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
@@ -183,7 +183,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
 #ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
@@ -256,7 +256,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
 #ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
@@ -335,7 +335,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
 #ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
@@ -413,7 +413,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
 #ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < Space::dimension; ++i_dim )
         {
@@ -611,7 +611,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
@@ -694,7 +694,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
@@ -776,7 +776,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
@@ -858,7 +858,7 @@ namespace DGtal
         EigenDecomposition<Space::dimension, Component, Matrix>
           ::getEigenDecomposition( cp_arg, eigenVectors, eigenValues );
 
-        ASSERT ( !isnan(eigenValues[0]) ); // NaN
+        ASSERT ( !std::isnan(eigenValues[0]) ); // NaN
         ASSERT ( (std::abs(eigenValues[0]) <= std::abs(eigenValues[1])) 
               && (std::abs(eigenValues[1]) <= std::abs(eigenValues[2])) );
 
