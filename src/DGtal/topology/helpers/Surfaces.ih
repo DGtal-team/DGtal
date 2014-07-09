@@ -1014,7 +1014,7 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
               while ( ! pixels.empty() )
                 {
                   Point aPoint = aKSpace.uCoords(pixels.front());
-                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
                   pixels.pop_front();
                   numberCellFilled++;
                 }
@@ -1035,7 +1035,7 @@ DGtal::Surfaces<TKSpace>::uFillInterior( const KSpace & aKSpace,
 	      while ( ! pixels.empty() )
 		{
                   Point aPoint = aKSpace.uCoords(pixels.front());
-                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
 		  pixels.pop_front();
                   numberCellFilled++;
 		}
@@ -1082,7 +1082,7 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
               while ( ! pixels.empty() )
                 {
                   Point aPoint = aKSpace.uCoords(pixels.front());
-                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
                   pixels.pop_front();
                   numberCellFilled++;
                 }
@@ -1097,7 +1097,7 @@ DGtal::Surfaces<TKSpace>::uFillExterior( const KSpace & aKSpace,
 	      while ( ! pixels.empty() )
 		{
                   Point aPoint = aKSpace.uCoords(pixels.front());
-                  anImage.setValue(aPoint, aValue + incrementMode ? anImage(aPoint) :0);
+                  anImage.setValue(aPoint, aValue + (incrementMode ? anImage(aPoint) :0));
                   pixels.pop_front();
                   numberCellFilled++;
                 }
