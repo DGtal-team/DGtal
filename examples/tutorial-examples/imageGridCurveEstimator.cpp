@@ -74,7 +74,7 @@ int main()
 
   //! [imageGridCurveEstimator-predicate] 
   //predicate from the image
-  typedef IntervalThresholder<Image::Value> Binarizer; 
+  typedef DGtal::functors::IntervalThresholder<Image::Value> Binarizer;
   Binarizer b(1, 135); 
   PointFunctorPredicate<Image,Binarizer> predicate(image, b); 
   //! [imageGridCurveEstimator-predicate]

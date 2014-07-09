@@ -66,12 +66,12 @@ bool testSimple()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor > MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, functors::Identity, functors::Identity > MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
     
-    DefaultFunctor idD;
-    DefaultFunctor idV;
-    DefaultFunctor idVm1;
+    functors::Identity idD;
+    functors::Identity idV;
+    functors::Identity idVm1;
     
     MyImageAdapter restimage(image, domain, idD, idV, idVm1);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
@@ -159,10 +159,10 @@ bool test_g_f_fm1()
 
     //ConstAdapter
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ConstImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, ConstValueFunctor<VImage::Value> > MyImageAdapter;
+    typedef ConstImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, DGtal::functors::ConstValue<VImage::Value> > MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CConstImage< MyImageAdapter > ));
-    DefaultFunctor idD;
-    ConstValueFunctor<VImage::Value> idV(3);   
+    functors::Identity idD;
+    DGtal::functors::ConstValue<VImage::Value> idV(3);
     MyImageAdapter restimage(image, domain, idD, idV);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
     nbok += (restimage(Z2i::Point(3,3)) == 3) ? 1 : 0;
@@ -171,12 +171,12 @@ bool test_g_f_fm1()
     << " read access on restricted Image" << endl;
     
     //! [ImageAdapterConstruction]
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, bool, Thresholder<VImage::Value>, CastFunctor<VImage::Value>  > MyImageAdapter2;
+  typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, bool, functors::Thresholder<VImage::Value>, functors::Cast<VImage::Value>  > MyImageAdapter2;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter2 > ));
     
-    DefaultFunctor idD_2;
-    Thresholder<VImage::Value>  idV_2(4);
-    CastFunctor<VImage::Value>  idVm1_2;
+    functors::Identity idD_2;
+    DGtal::functors::Thresholder<VImage::Value>  idV_2(4);
+    functors::Cast<VImage::Value>  idVm1_2;
     
     MyImageAdapter2 restimage2(image, domain, idD_2, idV_2, idVm1_2);
     //! [ImageAdapterConstruction]
@@ -201,12 +201,12 @@ bool test_g_f_fm1()
     trace.warning()<< "Restricted image 2 at (2,2) = "<< (restimage2)(Z2i::Point(2,2)) << std::endl;
     trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
     
-    typedef ImageAdapter<VImage, Z2i::Domain, MyTransValueFunctor<Z2i::Point>, VImage::Value, DefaultFunctor, DefaultFunctor > MyImageAdapter3;
+    typedef ImageAdapter<VImage, Z2i::Domain, MyTransValueFunctor<Z2i::Point>, VImage::Value, functors::Identity, functors::Identity > MyImageAdapter3;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter3 > ));
     
     MyTransValueFunctor<Z2i::Point> idD_3(Z2i::Point(2,2));
-    DefaultFunctor idV_3;
-    DefaultFunctor idVm1_3;
+    functors::Identity idV_3;
+    functors::Identity idVm1_3;
     
     MyImageAdapter3 restimage3(image, domain, idD_3, idV_3, idVm1_3);
     
@@ -241,12 +241,12 @@ bool test_range_constRange()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor > MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, functors::Identity, functors::Identity > MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
     
-    DefaultFunctor idD;
-    DefaultFunctor idV;
-    DefaultFunctor idVm1;
+    functors::Identity idD;
+    functors::Identity idV;
+    functors::Identity idVm1;
     
     MyImageAdapter restimage(image, domain, idD, idV, idVm1);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
@@ -307,7 +307,7 @@ bool testImageAdapter()
     aBoard.saveCairo("church.png", Board2D::CairoPNG);
 #endif
 
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor> MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, functors::Identity, VImage::Value, functors::Identity, functors::Identity> MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
 
     nbok += true ? 1 : 0;
@@ -319,7 +319,7 @@ bool testImageAdapter()
     Z2i::Point p2( 73, 177 );
     Z2i::Domain domain_bell_tower( p1, p2 );
 
-    DefaultFunctor idbtD, idbtV, idbtVm1;
+    functors::Identity idbtD, idbtV, idbtVm1;
     MyImageAdapter bell_tower(image, domain_bell_tower, idbtD, idbtV, idbtVm1);
     //! [ImageAdapterWithSubdomain]
 
@@ -340,9 +340,9 @@ bool testImageAdapter()
     Z2i::Point p4( 58, 72 );
     Z2i::Domain domain_cars( p3, p4 );
     
-    DefaultFunctor idcD;
-    DefaultFunctor idcV;
-    DefaultFunctor idcVm1;
+    functors::Identity idcD;
+    functors::Identity idcV;
+    functors::Identity idcVm1;
     MyImageAdapter cars(image, domain_cars, idcD, idcV, idcVm1);
 
     trace.info() << "ImageAdapter: " << cars << "  " << cars.domain() << std::endl;
@@ -409,10 +409,10 @@ bool testImageAdapter()
     // --- DigitalSetDomain
     
 
-    typedef ImageAdapter<VImage, DigitalSetDomain<Z2i::DigitalSet>, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor> MyImageAdapter2;
+    typedef ImageAdapter<VImage, DigitalSetDomain<Z2i::DigitalSet>, functors::Identity, VImage::Value, functors::Identity, functors::Identity> MyImageAdapter2;
     // BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter2 > )); // pb here
 
-    DefaultFunctor idflD, idflV, idflVm1;
+    functors::Identity idflD, idflV, idflVm1;
     MyImageAdapter2 floor_lamp(image, my_specific_domain_floor_lamp, idflD, idflV, idflVm1);
     //! [ImageAdapterWithSpecificDomain]
 

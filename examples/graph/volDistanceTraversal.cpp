@@ -114,7 +114,7 @@ int main( int argc, char** argv )
   typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
 
   typedef std::binder1st< Distance > DistanceToPoint; 
-  typedef Composer<SCellEmbedder, DistanceToPoint, Scalar> VertexFunctor;
+  typedef DGtal::functors::Composer<SCellEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceBreadthFirstVisitor< MyDigitalSurface, VertexFunctor, std::set<SCell> > 
     MyDistanceVisitor;
   typedef MyDistanceVisitor::Node MyNode;

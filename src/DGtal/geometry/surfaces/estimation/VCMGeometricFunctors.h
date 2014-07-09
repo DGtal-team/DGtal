@@ -47,6 +47,8 @@
 namespace DGtal
 {
 
+  namespace functors
+  {
   namespace VCMGeometricFunctors 
   {
 
@@ -391,6 +393,7 @@ namespace DGtal
 
     
   } // namespace VCMGeometricFunctors 
+  } //namespace functors
 } // namespace DGtal
 
 

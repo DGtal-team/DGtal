@@ -33,7 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/estimation/VoronoiCovarianceMeasure.h"
-#include "DGtal/geometry/volumes/CubicalSubdivision.h"
+#include "DGtal/geometry/tools/SpatialCubicalSubdivision.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

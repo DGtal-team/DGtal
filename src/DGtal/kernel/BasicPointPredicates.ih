@@ -151,6 +151,40 @@ DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
             myPred2->operator()( p ) );
 }
 //------------------------------------------------------------------------------
+template <typename TPointPredicate1, typename TPointPredicate2>
+inline
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::AndBoolFct2>
+::BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<DGtal::AndBoolFct2> boolFunctor )
+  : myPred1( &pred1 ), myPred2( &pred2 ), myBoolFunctor( &boolFunctor )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TPointPredicate1, typename TPointPredicate2>
+inline
+bool
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::AndBoolFct2>
+::operator()( const Point & p ) const
+{
+  return ( (myPred1->operator()( p )) &&  (myPred2->operator()( p )) );  
+}
+//------------------------------------------------------------------------------
+template <typename TPointPredicate1, typename TPointPredicate2>
+inline
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::OrBoolFct2>
+::BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<DGtal::OrBoolFct2> boolFunctor )
+  : myPred1( &pred1 ), myPred2( &pred2 ), myBoolFunctor( &boolFunctor )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TPointPredicate1, typename TPointPredicate2>
+inline
+bool
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::OrBoolFct2>
+::operator()( const Point & p ) const
+{
+  return ( (myPred1->operator()( p )) ||  (myPred2->operator()( p )) );  
+}
+//------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
 DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>

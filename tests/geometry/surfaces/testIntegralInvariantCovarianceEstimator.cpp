@@ -15,15 +15,15 @@
  **/
 
 /**
- * @file testIntegralInvariantMeanCurvatureEstimator3D.cpp
+ * @file testIntegralInvariantCovarianceEstimator.cpp
  * @ingroup Tests
  * @author Jérémy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
  * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
  *
- * @date 2012/11/28
+ * @date 2014/06/26
  *
- * Functions for testing class IntegralInvariantVolumeEstimator and IIMeanCurvature3DFunctor.
+ * Functions for testing class IntegralInvariantCovarianceEstimator and IIGeometricFunctor.
  *
  * This file is part of the DGtal library.
  */
@@ -44,7 +44,7 @@
 
 /// Estimator
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -53,10 +53,10 @@
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class IntegralInvariantVolumeEstimator and IIMeanCurvature3DFunctor.
+// Functions for testing class IntegralInvariantCovarianceEstimator and IIGeometricFunctor.
 ///////////////////////////////////////////////////////////////////////////////
 
-bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
+bool testGaussianCurvature3d( double h, double delta )
 {
   typedef ImplicitBall<Z3i::Space> ImplicitShape;
   typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
@@ -66,13 +66,13 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator VisitorConstIterator;
 
-  typedef IIGeometricFunctors::IIMeanCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
-  typedef IntegralInvariantVolumeEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
+  typedef functors::IIGeometricFunctors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+  typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
   typedef MyIICurvatureFunctor::Value Value;
 
-  double re = 5;
-  double radius = 5;
-  double realValue = 1.0/radius;
+  double re = 5.0;
+  double radius = 5.0;
+  double realValue = 1.0/(radius * radius);
 
   trace.beginBlock( "Shape initialisation ..." );
 
@@ -118,7 +118,7 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
 
   trace.endBlock();
 
-  trace.beginBlock ( "Comparing results of integral invariant 3D mean curvature ..." );
+  trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
 
   double mean = 0.0;
   unsigned int rsize = results.size();
@@ -149,29 +149,116 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   trace.warning() << "Mean value: " << mean << std::endl;
   trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
 
-  if ( v > delta )
+  if( v > delta )
   {
     trace.endBlock();
     return false;
   }
+  trace.endBlock();
+  return true;
+}
+
+bool testPrincipalCurvatures3d( double h )
+{
+  typedef ImplicitBall<Z3i::Space> ImplicitShape;
+  typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
+  typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
+  typedef DigitalSurface< Boundary > MyDigitalSurface;
+  typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+  typedef GraphVisitorRange< Visitor > VisitorRange;
+  typedef VisitorRange::ConstIterator VisitorConstIterator;
+
+  typedef functors::IIGeometricFunctors::IIPrincipalCurvatures3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+  typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
+  typedef MyIICurvatureFunctor::Value Value;
+
+  double re = 5.0;
+  double radius = 5.0;
+
+  trace.beginBlock( "Shape initialisation ..." );
+
+  ImplicitShape ishape( Z3i::RealPoint( 0, 0, 0 ), radius );
+  DigitalShape dshape;
+  dshape.attach( ishape );
+  dshape.init( Z3i::RealPoint( -10.0, -10.0, -10.0 ), Z3i::RealPoint( 10.0, 10.0, 10.0 ), h );
+
+  Z3i::KSpace K;
+  if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
+  {
+    trace.error() << "Problem with Khalimsky space" << std::endl;
+    return false;
+  }
+
+  Z3i::KSpace::Surfel bel = Surfaces<Z3i::KSpace>::findABel( K, dshape, 10000 );
+  Boundary boundary( K, dshape, SurfelAdjacency<Z3i::KSpace::dimension>( true ), bel );
+  MyDigitalSurface surf ( boundary );
 
   trace.endBlock();
+
+  trace.beginBlock( "Curvature estimator initialisation ...");
+  
+  VisitorRange range( new Visitor( surf, *surf.begin() ));
+  VisitorConstIterator ibegin = range.begin();
+  VisitorConstIterator iend = range.end();
+
+  MyIICurvatureFunctor curvatureFunctor;
+  curvatureFunctor.init( h, re );
+
+  MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
+  curvatureEstimator.attach( K, dshape );
+  curvatureEstimator.setParams( re/h );
+  curvatureEstimator.init( h, ibegin, iend );
+
+  trace.endBlock();
+
+  trace.beginBlock( "Curvature estimator evaluation ...");
+
+  std::vector< Value > results;
+  std::back_insert_iterator< std::vector< Value > > resultsIt( results );
+  curvatureEstimator.eval( ibegin, iend, resultsIt );
+
+  trace.endBlock();
+
+  trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
+
+  unsigned int error_order = 0;
+  unsigned int rsize = results.size();
+
+  if( rsize == 0 )
+  {
+    trace.error() << "ERROR: surface is empty" << std::endl;
+    trace.endBlock();
+    return false;
+  }
+
+  for ( unsigned int i = 0; i < rsize; ++i )
+  {
+    if( std::abs(results[i].first) < std::abs(results[i].second) )
+    {
+      ++error_order;
+    }
+  }
+
+  trace.warning() << "Error order: " << error_order << std::endl;
+  trace.warning() << "If not equals to 0, something is wrong..." << std::endl;
+
+  trace.endBlock();
+
+  if( error_order != 0 )
+  {
+    return false;
+  }
   return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
-  trace.beginBlock ( "Testing class IntegralInvariantVolumeEstimator and IIMeanCurvature3DFunctor" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << std::endl;
-
-  bool res = testIntegralInvariantMeanCurvatureEstimator3D( 0.6, 0.008 ); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
+  trace.beginBlock ( "Testing class IntegralInvariantCovarianceEstimator and 3d functors" );
+    bool res = testGaussianCurvature3d( 0.6, 0.007 ) && testPrincipalCurvatures3d( 0.6 );
+    trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;
 }
