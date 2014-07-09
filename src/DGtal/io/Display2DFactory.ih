@@ -904,17 +904,17 @@ void DGtal::Display2DFactory::drawFill( DGtal::Board2D & aBoard,
 
 // SCellsRange
 template <typename TIterator, typename TSCell>
-void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
-           const ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> & object )
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, functors::Identity, TSCell> & object )
 {
-    typedef ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> Range;
-    typedef typename Range::ConstIterator ConstIterator;
+    typedef ConstRangeAdapter<TIterator, functors::Identity, TSCell> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
 
     ConstIterator it ( object.begin() );
     ConstIterator itEnd ( object.end() );
     for( ; it != itEnd; ++it)
       {
-  aBoard << *it;
+        aBoard << *it;
       }
 }
 // SCellsRange

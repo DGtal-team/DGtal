@@ -1,11 +1,18 @@
 # DGtal 0.8
 
 
-## New Features
+## New Features / Critical Changes
 
 - *Base*
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
+
+ - Global refactoring of base functors (David Coeurjolly,
+   [#861](https://github.com/DGtal-team/DGtal/pull/861))
+    - BasicFunctor functors have been moved to functors:: namespace.
+    - DefaultFunctor has been renamed functors::Identity.
+    - xxxFunctor have been renamed to xxx.
+    
 
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
@@ -30,11 +37,17 @@
 
 - *Math Package*
 
-    - New classes to compute nD eigen decomposition of symmetric matrix (class EigenDecomposition).
-      Add tests. (Jacques-Olivier Lachaud, #803)
+    - New classes to compute nD eigen decomposition of symmetric
+      matrix (class EigenDecomposition).  Add tests. (Jacques-Olivier
+      Lachaud, #803)
     - Simple Linear Regression tool added (backport from
       imagene). (David
-      Coeurjolly,[#794](https://github.com/DGtal-team/DGtal/pull/794))
+      Coeurjolly, [#794](https://github.com/DGtal-team/DGtal/pull/794))
+
+- *Kernel package*
+  - BasicPointFunctors functors have been moved in the functors::
+    namespace (David Coeurjolly,
+    [#863](https://github.com/DGtal-team/DGtal/pull/863))
 
 - *For developpers*
      - Google Benchmark can be enabled to allow micro-benchmarking in
@@ -43,13 +56,16 @@
          [#790](https://github.com/DGtal-team/DGtal/pull/790))
 
 
+
 ## Changes
 
 - *Base Package*
- - Add comparison operators in variants of CountedPtr. Improve coverage of these classes
-   and fix compilation problem (Jacques-Olivier Lachaud)
- - XXXOutputRangeYYY classes are now called XXXRangeWithWritableIteratorYYY
-   (Tristan Roussillon, [#850](https://github.com/DGtal-team/DGtal/pull/850)). 
+ - Add comparison operators in variants of CountedPtr. Improve
+   coverage of these classes and fix compilation problem
+   (Jacques-Olivier Lachaud)
+ - XXXOutputRangeYYY classes are now called
+   XXXRangeWithWritableIteratorYYY (Tristan Roussillon,
+   [#850](https://github.com/DGtal-team/DGtal/pull/850)).
 
 - *Geometry Package*
  - Fix and add concept of CSurfelLocalEstimator and related ground
@@ -60,10 +76,13 @@
   surface local estimator. Add geometric functors to define easily all
   the geometric estimators that can be built from the volume and
   coariance matrix. (Jeremy Levallois, Jacques-Olivier Lachaud,
-  [#803](https://github.com/DGtal-team/DGtal/pull/803))
+  [#803](https://github.com/DGtal-team/DGtal/pull/803) [#856](https://github.com/DGtal-team/DGtal/pull/856))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
-
+ - CubicalSudivision has been renamed SpatialCubicalSubdivision and
+   moved to "geometry/tools" (David Coeurjolly,
+   [#862](https://github.com/DGtal-team/DGtal/pull/862))
+ 
 - *IO Package*
   - Better handling of materials in Board3D and OBJ exports. (David
     Coeurjolly,
@@ -82,6 +101,11 @@
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
 
+- *Shapes Package*
+  - Shape concepts have been moved to concepts:: namespace (David
+  Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
+
+
 ## Bug Fixes
 
 
@@ -90,9 +114,18 @@
   - Fixing issue on Circulator/IteratorFunctions (related to #770 on
     MacOS).
 
+- *Kernel Package*
+  - BinaryPointPredicate is now specialized for DGtal::AndBoolFct2 and
+    DGtal::OrBoolFct2 in order to guarantee that the second computation
+    is not performed when the first point predicate return false (resp. true)
+    with DGtal::AndBoolFct2 (resp. DGtal::OrBoolFct2) (Tristan Roussillon
+    [#852](https://github.com/DGtal-team/DGtal/pull/852)).
+
 - *Geometry Package*
   - Bug fix in PowerMap construction. (David Coeurjolly,
     [#814](https://github.com/DGtal-team/DGtal/pull/814))
+  - Bug fix in 3d display of StandardDSS6Computer (Tristan Roussillon
+    [#854](https://github.com/DGtal-team/DGtal/pull/854))
 
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
@@ -108,7 +141,9 @@
 - *IO*
   - Bug fix for reading PGM(P2) 3D. (Kacper Pluta,
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
-
+  - Renaming BasicColorToScalarFunctors namespace to functors:: (David
+    Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
+    
 === DGtal 0.7 ===
 
 *General*

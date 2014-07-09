@@ -168,7 +168,7 @@ int main( int argc, char** argv )
   //! [FMMErosionImageWriting]
   string outputFileName = "eroded.vol"; 
   trace.info() << "to " << outputFileName << std::endl; 
-  VolWriter<BinaryImage,CastFunctor<unsigned char> >::exportVol(outputFileName, binaryImage);
+  VolWriter<BinaryImage,functors::Cast<unsigned char> >::exportVol(outputFileName, binaryImage);
   //! [FMMErosionImageWriting]
 
   DGtal::trace.endBlock(); 

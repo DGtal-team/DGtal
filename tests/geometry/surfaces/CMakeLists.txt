@@ -10,9 +10,8 @@ ENDFOREACH(FILE)
 
 SET(TESTS_SURFACES_SRC
   testNormalVectorEstimatorEmbedder
-  testIntegralInvariantCurvatureEstimator2D
-  testIntegralInvariantMeanCurvatureEstimator3D
-  testIntegralInvariantGaussianCurvatureEstimator3D
+  testIntegralInvariantVolumeEstimator
+  testIntegralInvariantCovarianceEstimator
   testLocalEstimatorFromFunctorAdapter
   testVoronoiCovarianceMeasureOnSurface
   )

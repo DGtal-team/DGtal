@@ -94,7 +94,7 @@ namespace DGtal
  *  
  */
   template <typename TImageContainer, 
-	    typename TFunctor=BasicColorToScalarFunctors::ColorRGBEncoder<typename TImageContainer::Value> >
+	    typename TFunctor=functors::ColorRGBEncoder<typename TImageContainer::Value> >
   struct PPMReader
   {
     // ----------------------- Standard services ------------------------------
@@ -126,7 +126,7 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     static  ImageContainer importPPM(const std::string & aFilename, 
-                                     const Functor & aFunctor =  BasicColorToScalarFunctors::ColorRGBEncoder<Value>(), 
+                                     const Functor & aFunctor =  functors::ColorRGBEncoder<Value>(), 
 				     bool topbotomOrder = true) throw(DGtal::IOException);
 
 

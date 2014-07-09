@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CubicalSubdivision.h
+ * @file SpatialCubicalSubdivision.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2014/02/11
  *
- * Header file for module CubicalSubdivision.cpp
+ * Header file for module SpatialCubicalSubdivision.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CubicalSubdivision_RECURSES)
-#error Recursive header files inclusion detected in CubicalSubdivision.h
-#else // defined(CubicalSubdivision_RECURSES)
+#if defined(SpatialCubicalSubdivision_RECURSES)
+#error Recursive header files inclusion detected in SpatialCubicalSubdivision.h
+#else // defined(SpatialCubicalSubdivision_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CubicalSubdivision_RECURSES
+#define SpatialCubicalSubdivision_RECURSES
 
-#if !defined CubicalSubdivision_h
+#if !defined SpatialCubicalSubdivision_h
 /** Prevents repeated inclusion of headers. */
-#define CubicalSubdivision_h
+#define SpatialCubicalSubdivision_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,9 +51,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class CubicalSubdivision
+  // template class SpatialCubicalSubdivision
   /**
-     Description of template class 'CubicalSubdivision' <p> \brief
+     Description of template class 'SpatialCubicalSubdivision' <p> \brief
      Aim: This class is a data structure that subdivides a rectangular
      domains into cubical domains of size \f$ r^n \f$ in order to
      store points into different bins (each cubical domain is a bin,
@@ -69,7 +69,7 @@ namespace DGtal
      Model of CopyConstructible
    */
   template <typename TSpace>
-  class CubicalSubdivision
+  class SpatialCubicalSubdivision
   {
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
   public:
@@ -88,13 +88,13 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~CubicalSubdivision();
+    ~SpatialCubicalSubdivision();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    CubicalSubdivision ( const CubicalSubdivision & other );
+    SpatialCubicalSubdivision ( const SpatialCubicalSubdivision & other );
 
     /**
        Constructor from rectangular domain given by lowest and uppermost point.
@@ -103,7 +103,7 @@ namespace DGtal
        @param up the uppermost point of the domain of interest.
        @param size the edge size of each cubical bin (an integer >= 2 ).
     */
-    CubicalSubdivision( Point lo, Point up, Coordinate size );
+    SpatialCubicalSubdivision( Point lo, Point up, Coordinate size );
 
     /// @return the rectangular domain of interest
     const Domain& domain() const;
@@ -217,32 +217,32 @@ namespace DGtal
      * @return a reference on 'this'.
      * forbidden.
      */
-    CubicalSubdivision & operator= ( const CubicalSubdivision & other );
+    SpatialCubicalSubdivision & operator= ( const SpatialCubicalSubdivision & other );
 
-  }; // end of class CubicalSubdivision
+  }; // end of class SpatialCubicalSubdivision
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'CubicalSubdivision'.
+   * Overloads 'operator<<' for displaying objects of class 'SpatialCubicalSubdivision'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'CubicalSubdivision' to write.
+   * @param object the object of class 'SpatialCubicalSubdivision' to write.
    * @return the output stream after the writing.
    */
   template <typename TSpace>
   std::ostream&
-  operator<< ( std::ostream & out, const CubicalSubdivision<TSpace> & object );
+  operator<< ( std::ostream & out, const SpatialCubicalSubdivision<TSpace> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/volumes/CubicalSubdivision.ih"
+#include "DGtal/geometry/tools/SpatialCubicalSubdivision.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CubicalSubdivision_h
+#endif // !defined SpatialCubicalSubdivision_h
 
-#undef CubicalSubdivision_RECURSES
-#endif // else defined(CubicalSubdivision_RECURSES)
+#undef SpatialCubicalSubdivision_RECURSES
+#endif // else defined(SpatialCubicalSubdivision_RECURSES)
