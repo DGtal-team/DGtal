@@ -107,7 +107,7 @@ int main(  )
   typedef LinearLeastSquareFittingNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalLeast;
 
   //constant convolution functor
-  typedef ConstValueFunctor<double> ConstFunctor;
+  typedef functors::ConstValue<double> ConstFunctor;
 
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorGaussian, ConstFunctor> ReporterK;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, FunctorMean, ConstFunctor> ReporterH;
@@ -119,7 +119,7 @@ int main(  )
   ///kernel from the BasicFunctors.h file
   typedef ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormalElem;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric,
-                                                 FunctorNormalElem, GaussianKernelFunctor> ReporterNormalElem;
+                                                 FunctorNormalElem, DGtal::functors::GaussianKernel> ReporterNormalElem;
   //! [SurfelFunctorsType]
 
 
@@ -141,7 +141,7 @@ int main(  )
 
   FunctorNormalElem estimatorNormalElem(CanonicSCellEmbedder<KSpace>(surface.container().space()),1.0);
   ///sigma = 2.0 for the gaussian smoothing
-  GaussianKernelFunctor gaussian(2.0);
+  DGtal::functors::GaussianKernel gaussian(2.0);
   ReporterNormalElem reporterElem(surface, l2Metric,
                                   estimatorNormalElem, gaussian);
   //! [SurfelFunctorsInstances]

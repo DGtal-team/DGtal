@@ -65,7 +65,7 @@ namespace DGtal
    *
    * @see testLongvol.cpp
    */
-  template <typename TImage, typename TFunctor = DefaultFunctor>
+  template <typename TImage, typename TFunctor = functors::Identity>
   struct LongvolWriter
   {
     // ----------------------- Standard services ------------------------------

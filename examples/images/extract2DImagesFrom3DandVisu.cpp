@@ -63,27 +63,27 @@ int main( int argc, char** argv )
 
   typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
-  typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::Projector< Z3i::Space>,
-   				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+  typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::functors::Projector< Z3i::Space>,
+   				   Image3D::Value,  DGtal::functors::Identity >  SliceImageAdapter;
   
-  typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
-   				   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+  typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
+   				   Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
 
-  DGtal::Projector<DGtal::Z2i::Space>  invFunctor(2);
+  DGtal::functors::Projector<DGtal::Z2i::Space>  invFunctor(2);
   // Importing a 3D image 
   std::string filename = examplesPath + "samples/lobster.vol";
   Image3D image = VolReader<Image3D>::importVol( filename ); 
     
   DGtal::Z2i::Domain domain(invFunctor(image.domain().lowerBound()), 
 			    invFunctor(image.domain().upperBound()));
-  DGtal::DefaultFunctor idV;
+  DGtal::functors::Identity idV;
     
   trace.beginBlock ( "Example extract2DImagesFrom3D" );
    
   // Extracting 2D slices ... and visualisation on 3DViewer
   unsigned int pos=0;
   for (unsigned int i=0; i<30; i+=5){
-    DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
+    DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
     SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
     viewer << sliceImageZ; 
     viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(pos, Viewer3D<>::zDirection,  i*20, i*20, i*20 );
@@ -99,7 +99,7 @@ int main( int argc, char** argv )
                                     DGtal::Z2i::Point(IMAGE_PATCH_WIDTH, IMAGE_PATCH_WIDTH)); 
   
 
-  DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(image.domain(), ptCenter, 
+  DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(image.domain(), ptCenter, 
                                                             DGtal::Z3i::RealPoint(1,-1,1), 
                                                             IMAGE_PATCH_WIDTH);
   

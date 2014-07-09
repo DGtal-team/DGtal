@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CEuclideanOrientedShape
   /**
@@ -109,7 +110,7 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
   private:
     
   }; // end of concept CEuclideanOrientedShape
-  
+  }
 } // namespace DGtal
 
 //                                                                           //
