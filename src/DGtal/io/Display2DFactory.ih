@@ -51,7 +51,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::DiscreteExteri
     for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const CalculusSCell& cell = ci->first;
-        ASSERT(cell.myPositive == true);
+        ASSERT(calculus.myKSpace.sSign(cell) == Calculus::KSpace::POS);
 
         const bool& flipped = calculus.isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
@@ -111,7 +111,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D& board, const DGtal::KForm<TCalculu
         return;
     }
 
-    // FIXME add other colomaps
+    // @todo FIXME add other colomaps
     if (cmap_repeat < 1)
     {
         typedef typename DGtal::GradientColorMap<Scalar, DGtal::CMAP_HOT> ColorMap;
@@ -137,7 +137,7 @@ DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KF
     for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
     {
         const SCell& cell = kform.myCalculus->getSCell(order, duality, index);
-        ASSERT(cell.myPositive == true);
+        ASSERT(calculus.myKSpace.sSign(cell) == TCalculus::KSpace::POS);
 
         const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
         SCell displayed_cell = cell;

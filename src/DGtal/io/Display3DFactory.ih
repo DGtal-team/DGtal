@@ -56,7 +56,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const CalculusSCell& cell = ci->first;
-        ASSERT(cell.myPositive == true);
+        ASSERT(calculus.myKSpace.sSign(cell) == TCalculus::KSpace::POS);
 
         const bool& flipped = calculus.isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
@@ -100,7 +100,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
     {
         const SCell& cell = kform.myCalculus->getSCell(order, duality, index);
-        ASSERT(cell.myPositive == true);
+        ASSERT(kform.myCalculus->myKSpace.sSign(cell) == TCalculus::KSpace::POS);
 
         const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
         SCell displayed_cell = cell;
@@ -134,7 +134,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     for (typename Calculus::Index index=0; index<vector_field.myCalculus->kFormLength(0, duality); index++)
     {
         const typename Calculus::SCell& cell = vector_field.myCalculus->getSCell(0, duality, index);
-        DGtal::Z3i::RealPoint origin = cell.myCoordinates/2.;
+        DGtal::Z3i::RealPoint origin = vector_field.myCalculus->myKSpace.sKCoords(cell)/2.;
         if (duality == PRIMAL)
             origin -= DGtal::Z3i::RealPoint(.5,.5,.5);
 

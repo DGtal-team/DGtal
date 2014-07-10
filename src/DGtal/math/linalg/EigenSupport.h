@@ -81,6 +81,7 @@ namespace DGtal
  *  - EigenLinearAlgebraBackend::SolverBiCGSTAB
  *  - EigenLinearAlgebraBackend::SolverSparseLU
  *  - EigenLinearAlgebraBackend::SolverSparseQR
+ * Eigen solvers documentation <a href="http://eigen.tuxfamily.org/dox/group__TopicSparseSystems.html">here</a>
  */
 struct EigenLinearAlgebraBackend
 {
