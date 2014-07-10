@@ -42,10 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/dec/Duality.h"
-#include "DGtal/dec/KForm.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/dec/Duality.h"
+#include "DGtal/dec/KForm.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -166,6 +166,8 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
 
   /**
    * Overloads 'operator+' for adding objects of class 'LinearOperator'.
+   * @param linear_operator_a left operant
+   * @param linear_operator_b right operant
    * @return linear_operator_a + linear_operator_b.
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
@@ -175,6 +177,8 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
 
   /**
    * Overloads 'operator-' for substracting objects of class 'LinearOperator'.
+   * @param linear_operator_a left operant
+   * @param linear_operator_b right operant
    * @return linear_operator_a - linear_operator_b.
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
@@ -184,6 +188,8 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
 
   /**
    * Overloads 'operator*' for scalar multiplication of objects of class 'LinearOperator'.
+   * @param scalar left operant
+   * @param linear_operator right operant
    * @return scalar * linear_operator.
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
@@ -193,7 +199,9 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
 
   /**
    * Overloads 'operator*' for internal multiplication of objects of class 'LinearOperator'.
-   * @return linear_operator_left * linear_operator_right.
+   * @param operator_left left operant
+   * @param operator_right right operant
+   * @return operator_left * operator_right.
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_fold, Duality duality_fold, Order order_out, Duality duality_out>
   LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>
@@ -202,7 +210,9 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
 
   /**
    * Overloads 'operator*' for application of objects of class 'LinearOperator' on objects of class 'KForm'.
-   * @return linear_operator_left * linear_operator_right.
+   * @param linear_operator left operant
+   * @param input_form right operant
+   * @return linear_operator * input_form.
    */
   template <typename Calculus, Order order_in, Duality duality_in, Order order_out, Duality duality_out>
   KForm<Calculus, order_out, duality_out>

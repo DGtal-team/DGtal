@@ -42,9 +42,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/dec/Duality.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/dec/Duality.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -73,6 +73,7 @@ namespace DGtal
 
     typedef typename Calculus::DenseVector Container;
     typedef typename Calculus::Scalar Scalar;
+    typedef typename Calculus::SCell SCell;
 
     /**
      * Constructor.
@@ -126,9 +127,9 @@ namespace DGtal
     /**
      * Get k-cell from index.
      * @param index the index.
-		 * @return associated Khalimsky signed cell.
+     * @return associated Khalimsky signed cell.
      */
-    typename Calculus::SCell getSCell(const typename Calculus::Index& index) const;
+    SCell getSCell(const typename Calculus::Index& index) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -165,6 +166,8 @@ namespace DGtal
 
   /**
    * Overloads 'operator+' for adding objects of class 'KForm'.
+   * @param form_a left operant
+   * @param form_b right operant
    * @return form_a + form_b.
    */
   template <typename Calculus, Order order, Duality duality>
@@ -173,6 +176,8 @@ namespace DGtal
 
   /**
    * Overloads 'operator-' for substracting objects of class 'KForm'.
+   * @param form_a left operant
+   * @param form_b right operant
    * @return form_a - form_b.
    */
   template <typename Calculus, Order order, Duality duality>
@@ -181,6 +186,8 @@ namespace DGtal
 
   /**
    * Overloads 'operator*' for scalar multiplication of objects of class 'KForm'.
+   * @param scalar left operant
+   * @param form right operant
    * @return scalar * form.
    */
   template <typename Calculus, Order order, Duality duality>
