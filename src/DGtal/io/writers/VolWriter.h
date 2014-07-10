@@ -70,7 +70,6 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
     typedef TImage Image;
     typedef typename TImage::Value Value;
-    typedef typename TImage::Domain::Point Point;
     typedef TFunctor Functor;
     
     BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
