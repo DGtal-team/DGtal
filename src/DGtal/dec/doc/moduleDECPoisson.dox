@@ -30,12 +30,12 @@ The Poisson equation can be written as:
 \f[ \Delta \phi = f \f]
 
 where \f$\Delta\f$ is the Laplace operator, \f$\phi\f$ the solution of the problem and \f$f\f$ the input of the problem.
-The Poisson equation can be viewed as the heat equation when permanent regime is reached.
-\f$f\f$ is then the constant spatial heating power applied to the structure and \f$\phi\f$ is the temperature reached in permanent regime (up to a spatial constant).
+The Poisson equation can be viewed as the heat equation when steady state is reached.
+\f$f\f$ is then the constant spatial heating power applied to the structure and \f$\phi\f$ is the temperature reached in steady state (up to a spatial constant).
 Here we choose \f$f\f$ to be a Dirac delta function \f$\delta\f$ to simulate a punctual heating on the structure.
 
 Depending on border conditions, \f$\Delta\f$ may have some null eigen values.
-In order to make in solvable, we use a regularized version of the Laplace operator \f$\Delta_\mathrm{reg}\f$, defined below
+In order to make it solvable, we use a regularized version of the Laplace operator \f$\Delta_\mathrm{reg}\f$, defined below
 
 \f[ \Delta_\mathrm{reg} = \Delta + \lambda I \f]
 
@@ -55,7 +55,7 @@ In this example, we create an 1D linear structure embedded in a 2D space and we 
 
 Boundary conditions effect are illustrated for the two classical boundary conditions.
 - Neumann boundary condition forces the derivative to be null along the border of the structure. Here, this means that heat can't flow out the start and the end of the linear structure.
-- Dirichlet boundary condition connects borders of the structure to null potential. With own heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
+- Dirichlet boundary condition connects borders of the structure to null potential. With our heat analogy, this means that the start and the end of the linear structure are connected to thermostat, which are given the null temperature.
 
 Boundary conditions are changed from Neumann to Dirichlet conditions by adding dangling 1-cells at the beginning and at the end of the structure.
 
@@ -69,7 +69,7 @@ Moreover some 1-cells are inserted as negative cells to match their orientation 
 
 \snippet testLinearStructure.cpp neumann-creation
 
-The input heat vector \f$f\f$, which is primal 0-form in the DEC formulation, is then created and is given values of a Dirac pulse shifted at the right position.
+The input heat vector \f$f\f$, which is a primal 0-form in the DEC formulation, is then created and is given values of a Dirac pulse shifted at the right position.
 
 \snippet testLinearStructure.cpp input-dirac
 
@@ -102,7 +102,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 
 \subsection sectDECPoisson1DDirichlet Dirichlet boundary condition
 
-Dirichlet boundary condition fix value of 0-forms to zero along borders of the structure.
+Dirichlet boundary condition fixes value of 0-forms to zero along borders of the structure.
 Two dangling 1-cells are added at each end of the Neumann structure to switch to Dirichlet boundary condition.
 Since those 1-cells are not connected to a 0-cell on one of their border, this will simulate the presence of zero-valued 0-cell in those places through enforcing Dirichlet boundary conditions.
 
@@ -129,7 +129,7 @@ Numerical values of the solution fit analytic values with at least a relative pr
 
 \section sectDECPoisson2D 2D Poisson problem
 
-In this example, we create an 2D ring structure and we solve a regularized Poisson equation on this structure.
+In this example, we create a 2D ring structure and we solve a regularized Poisson equation on this structure.
 First the structure is created from a digital set.
 
 \snippet exampleDiscreteExteriorCalculusSolve.cpp calculus_creation
