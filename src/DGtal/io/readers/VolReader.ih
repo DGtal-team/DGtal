@@ -301,6 +301,6 @@ DGtal::VolReader<T,  TFunctor>::getHeaderValueAsInt( const char *type, int *dest
   if ( i == -1 )
     return 1;
 
-  return sscanf( header[i].value, "%d", dest ) != 0;
+  return sscanf( header[i].value, "%d", dest ) == 0;
 }
 
