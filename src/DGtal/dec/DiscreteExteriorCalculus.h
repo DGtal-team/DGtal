@@ -70,7 +70,7 @@ namespace DGtal
    * \brief Aim:
    * DiscreteExteriorCalculus represents a calculus in the dec package.
    * This is the main structure in the dec package.
-   * This is used to describe the space on wich the dec is build and to compute various operators.
+   * This is used to describe the space on which the dec is build and to compute various operators.
    * Once operators or kforms are created, this structure should not be modified.
    *
    * @tparam dim dimension of underlying space.
@@ -218,7 +218,7 @@ namespace DGtal
   public:
 
     /**
-     * Associated Khalimski space.
+     * Associated Khalimsky space.
      */
     const KSpace myKSpace;
 
@@ -252,7 +252,8 @@ namespace DGtal
     eraseSCell(const SCell& cell);
 
     /**
-     * Get cell properties.
+     * Get all cells properties.
+     * @return associative container from SCell to Property.
      */
     Properties
     getProperties() const;
@@ -261,6 +262,7 @@ namespace DGtal
      * Identity operator from order-forms to order-forms.
      * @tparam order input and output order of identity operator.
      * @tparam duality input and output duality of identity operator.
+     * @return identity operator.
      */
     template <Order order, Duality duality>
     LinearOperator<DiscreteExteriorCalculus, order, duality, order, duality>
@@ -270,19 +272,22 @@ namespace DGtal
      * Exterior derivative operator from order-forms to (order+1)-forms.
      * @tparam order order of input k-form.
      * @tparam duality duality of input k-form.
+     * @return derivative operator.
      */
     template <Order order, Duality duality>
     LinearOperator<DiscreteExteriorCalculus, order, duality, order+1, duality>
     derivative() const;
 
     /**
-     * Dual Laplace operator form dual 0-forms to dual 0-forms.
+     * Primal Laplace operator form dual 0-forms to dual 0-forms.
+     * @return primal Laplace operator.
      */
     PrimalIdentity0
     primalLaplace() const;
 
     /**
      * Dual Laplace operator form dual 0-forms to dual 0-forms.
+     * @return dual Laplace operator.
      */
     DualIdentity0
     dualLaplace() const;
@@ -290,6 +295,7 @@ namespace DGtal
     /**
      * Primal hodge duality operator from primal order-forms to dual (dim-order)-forms.
      * @tparam order order of input primal k-form.
+     * @return primal hodge operator.
      */
     template <Order order>
     LinearOperator<DiscreteExteriorCalculus, order, PRIMAL, dim-order, DUAL>
@@ -298,6 +304,7 @@ namespace DGtal
     /**
      * Dual hodge duality operator from primal order-forms to dual (dim-order)-forms.
      * @tparam order order of input dual k-form.
+     * @return dual hodge operator.
      */
     template <Order order>
     LinearOperator<DiscreteExteriorCalculus, order, DUAL, dim-order, PRIMAL>
@@ -422,7 +429,7 @@ namespace DGtal
     boost::array<boost::array<SparseMatrix, dim>, 2> sharp_operator_matrixes;
 
     /**
-     * Cached operators genration flag
+     * Cached operators generation flag
      */
     bool cached_operators_modified;
 
@@ -435,14 +442,6 @@ namespace DGtal
      * Forbidden by default.
      */
     DiscreteExteriorCalculus(const DiscreteExteriorCalculus& other);
-
-    ///**
-    // * Assignment.
-    // * @param other the object to copy.
-    // * @return a reference on 'this'.
-    // * Forbidden by default.
-    // */
-    //DiscreteExteriorCalculus& operator=(const DiscreteExteriorCalculus& other);
 
     // ------------------------- Internals ------------------------------------
   private:
