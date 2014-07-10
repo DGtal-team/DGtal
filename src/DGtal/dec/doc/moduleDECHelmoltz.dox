@@ -38,7 +38,7 @@ where \f$d\f$ is the exterior derivative from 0-form to 1-form and \f$\delta = \
 \f[ \nabla \cdot (\delta \beta) = \star d \star \delta \beta = \delta \delta \beta = 0 \f]
 
 The remaining part \f$\gamma\f$ is the 1-form harmonic part.
-\f$\gamma\f$ has null anti-derivative and null derivative since if they where not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
+\f$\gamma\f$ has null anti-derivative and null derivative since if they were not null, they would be part of \f$d\alpha\f$ and \f$\delta\beta\f$.
 
 \f[ \delta \gamma = d \gamma = 0 \f]
 
