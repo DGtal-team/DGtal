@@ -42,10 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/dec/Duality.h"
 #include "DGtal/dec/KForm.h"
-#include "DGtal/base/ConstAlias.h"
-#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -145,6 +145,7 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Return the normalized vector field.
+		 * Scale vector field to norm 1 at each point.
      * @param epsilon vectors with norm lower than epsilon are set to zero.
      */
     VectorField<TCalculus, duality> normalized(const Scalar& epsilon = 0) const;
@@ -186,27 +187,33 @@ template <typename TCalculus, Duality duality>
 
   /**
    * Overloads 'operator+' for adding objects of class 'VectorField'.
+   * @param vector_field_a left operant
+   * @param vector_field_b right operant
    * @return vector_field_a + vector_field_b.
    */
   template <typename Calculus, Duality duality>
   VectorField<Calculus, duality>
-  operator+(const VectorField<Calculus, duality>& _vector_field_a, const VectorField<Calculus, duality>& _vector_field_b);
+  operator+(const VectorField<Calculus, duality>& vector_field_a, const VectorField<Calculus, duality>& vector_field_b);
 
   /**
    * Overloads 'operator-' for substracting objects of class 'VectorField'.
+   * @param vector_field_a left operant
+   * @param vector_field_b right operant
    * @return vector_field_a - vector_field_b.
    */
   template <typename Calculus, Duality duality>
   VectorField<Calculus, duality>
-  operator-(const VectorField<Calculus, duality>& _vector_field_a, const VectorField<Calculus, duality>& _vector_field_b);
+  operator-(const VectorField<Calculus, duality>& vector_field_a, const VectorField<Calculus, duality>& vector_field_b);
 
   /**
    * Overloads 'operator*' for scalar multiplication of objects of class 'VectorField'.
+   * @param scalar left operant
+   * @param vector_field right operant
    * @return scalar * vector_field.
    */
   template <typename Calculus, Duality duality>
   VectorField<Calculus, duality>
-  operator*(const typename Calculus::Scalar& _scalar, const VectorField<Calculus, duality>& _vector_field);
+  operator*(const typename Calculus::Scalar& scalar, const VectorField<Calculus, duality>& vector_field);
 
 } // namespace DGtal
 
