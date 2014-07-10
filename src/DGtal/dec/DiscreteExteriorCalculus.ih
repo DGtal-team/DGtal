@@ -190,11 +190,9 @@ template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TIntege
 void
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::selfDisplay(std::ostream & os) const
 {
-    typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Calculus;
-
     os << "[DiscreteExteriorCalculus";
-    for (DGtal::Order order=0; order<=Calculus::dimension; order++)
-        os << " | primal " << order << "-cells <-> dual " << Calculus::dimension-order << "-cells (" << kFormLength(order, PRIMAL) << ")";
+    for (DGtal::Order order=0; order<=Self::dimension; order++)
+        os << " | primal " << order << "-cells <-> dual " << Self::dimension-order << "-cells (" << kFormLength(order, PRIMAL) << ")";
     os << "]";
 }
 
@@ -203,8 +201,7 @@ template <DGtal::Order order, DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, order, duality, order, duality>
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::identity() const
 {
-
-    typedef LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, order, duality, order, duality> Operator;
+    typedef LinearOperator<Self, order, duality, order, duality> Operator;
     Operator id(*this);
     id.myContainer.setIdentity();
     return id;
@@ -215,9 +212,9 @@ DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::primalLaplace() const
 {
     const PrimalDerivative0 d0 = derivative<0, PRIMAL>();
-    const LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, dimension-1, DUAL, dimension, DUAL> d1p = derivative<dimension-1, DUAL>();
+    const LinearOperator<Self, dimension-1, DUAL, dimension, DUAL> d1p = derivative<dimension-1, DUAL>();
     const PrimalHodge1 h1 = primalHodge<1>();
-    const LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, dimension, DUAL, 0, PRIMAL> h2p = dualHodge<dimension>();
+    const LinearOperator<Self, dimension, DUAL, 0, PRIMAL> h2p = dualHodge<dimension>();
     return h2p * d1p * h1 * d0;
 }
 
@@ -226,9 +223,9 @@ DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::dualLaplace() const
 {
     const DualDerivative0 d0 = derivative<0, DUAL>();
-    const LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, dimension-1, PRIMAL, dimension, PRIMAL> d1p = derivative<dimension-1, PRIMAL>();
+    const LinearOperator<Self, dimension-1, PRIMAL, dimension, PRIMAL> d1p = derivative<dimension-1, PRIMAL>();
     const DualHodge1 h1 = dualHodge<1>();
-    const LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, dimension, PRIMAL, 0, DUAL> h2p = primalHodge<dimension>();
+    const LinearOperator<Self, dimension, PRIMAL, 0, DUAL> h2p = primalHodge<dimension>();
     return h2p * d1p * h1 * d0;
 }
 
@@ -240,7 +237,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order < dimension ));
 
-    typedef LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, order, duality, order+1, duality> Derivative;
+    typedef LinearOperator<Self, order, duality, order+1, duality> Derivative;
     Derivative _derivative(*this);
     ASSERT( _derivative.myContainer.rows() == kFormLength(order+1, duality) );
     ASSERT( _derivative.myContainer.cols() == kFormLength(order, duality) );
@@ -295,7 +292,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::primalHod
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= dimension ));
 
-    typedef LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, order, PRIMAL, dimension-order, DUAL> PrimalHodge;
+    typedef LinearOperator<Self, order, PRIMAL, dimension-order, DUAL> PrimalHodge;
     PrimalHodge primal_hodge(*this);
     ASSERT( primal_hodge.myContainer.rows() == primal_hodge.myContainer.cols() );
     ASSERT( primal_hodge.myContainer.rows() == kFormLength(order, PRIMAL) );
@@ -321,7 +318,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::dualHodge
     BOOST_STATIC_ASSERT(( order >= 0 ));
     BOOST_STATIC_ASSERT(( order <= dimension ));
 
-    typedef LinearOperator<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, order, DUAL, dim-order, PRIMAL> DualHodge;
+    typedef LinearOperator<Self, order, DUAL, dim-order, PRIMAL> DualHodge;
     DualHodge dual_hodge(*this);
     ASSERT( dual_hodge.myContainer.rows() == dual_hodge.myContainer.cols() );
     ASSERT( dual_hodge.myContainer.rows() == kFormLength(order, DUAL) );
@@ -342,13 +339,13 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::dualHodge
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, duality>
-DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, 1, duality>& one_form) const
+DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::sharp(const DGtal::KForm<Self, 1, duality>& one_form) const
 {
-    const_cast<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>*>(this)->updateCachedOperators();
+    const_cast<Self*>(this)->updateCachedOperators();
 
     const boost::array<SparseMatrix, dim>& sharp_operator_matrix = sharp_operator_matrixes[static_cast<int>(duality)];
 
-    typedef VectorField<DiscreteExteriorCalculus, duality> Field;
+    typedef VectorField<Self, duality> Field;
     Field field(*this);
     ASSERT( field.myCoordinates.cols() == dimension);
     ASSERT( field.myCoordinates.rows() == kFormLength(0, duality));
@@ -418,13 +415,13 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSha
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 DGtal::KForm<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, 1, duality>
-DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>, duality>& vector_field) const
+DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::flat(const DGtal::VectorField<Self, duality>& vector_field) const
 {
-    const_cast<DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>*>(this)->updateCachedOperators();
+    const_cast<Self*>(this)->updateCachedOperators();
 
     const boost::array<SparseMatrix, dim>& flat_operator_matrix = flat_operator_matrixes[static_cast<int>(duality)];
 
-    typedef KForm<DiscreteExteriorCalculus, 1, duality> OneForm;
+    typedef KForm<Self, 1, duality> OneForm;
     OneForm one_form(*this);
     for (DGtal::Dimension direction=0; direction<dim; direction++)
         one_form.myContainer += flat_operator_matrix[direction]*vector_field.myCoordinates.col(direction);
