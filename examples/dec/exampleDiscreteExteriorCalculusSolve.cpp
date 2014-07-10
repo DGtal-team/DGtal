@@ -1,19 +1,20 @@
 #include <string>
-using namespace std;
+
+#include <QApplication>
 
 #include "common.h"
 
-
+// always include EigenSupport.h before any other Eigen headers
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
-
-#include <QApplication>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/GenericReader.h"
+
 using namespace DGtal;
+using namespace std;
 
 void solve2d_laplace()
 {
@@ -451,23 +452,18 @@ void solve3d_decomposition()
         for (int ll=4; ll<=36; ll++)
         {
             Calculus::SCell cell;
-            Calculus::Scalar weight;
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,4,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,36,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
 
             cell = calculus.myKSpace.sCell(Z3i::Point(4,ll,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
 
             cell = calculus.myKSpace.sCell(Z3i::Point(36,ll,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
         }
 
     // inner ring
@@ -475,23 +471,18 @@ void solve3d_decomposition()
         for (int ll=16; ll<=24; ll++)
         {
             Calculus::SCell cell;
-            Calculus::Scalar weight;
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,16,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,24,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
 
             cell = calculus.myKSpace.sCell(Z3i::Point(16,ll,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
 
             cell = calculus.myKSpace.sCell(Z3i::Point(24,ll,kk));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
         }
 
     // top and bottom
@@ -499,23 +490,18 @@ void solve3d_decomposition()
         for (int ll=0; ll<=12; ll++)
         {
             Calculus::SCell cell;
-            Calculus::Scalar weight;
 
             cell = calculus.myKSpace.sCell(Z3i::Point(4+ll,kk,2));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
 
             cell = calculus.myKSpace.sCell(Z3i::Point(4+ll,kk,18));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
 
             cell = calculus.myKSpace.sCell(Z3i::Point(24+ll,kk,2));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
 
             cell = calculus.myKSpace.sCell(Z3i::Point(24+ll,kk,18));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
         }
 
     // top and bottom
@@ -523,23 +509,18 @@ void solve3d_decomposition()
         for (int ll=16; ll<=24; ll++)
         {
             Calculus::SCell cell;
-            Calculus::Scalar weight;
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,4+kk,2));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,4+kk,18));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,24+kk,2));
-            weight = 1;
-            calculus.insertSCell( cell, weight ); // may be flipped
+            calculus.insertSCell(cell); // may be flipped
 
             cell = calculus.myKSpace.sCell(Z3i::Point(ll,24+kk,18));
-            weight = 1;
-            calculus.insertSCell( cell, weight );
+            calculus.insertSCell(cell);
         }
     //! [3d_decomposition_structure]
 
