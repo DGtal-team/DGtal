@@ -42,9 +42,10 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::DiscreteE
 
     // init khalimsky space
     // FIXME borders are removed from set => better not initialize kspace
-    // FIXME should be open or closed?
-    //bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(myDomain.lowerBound(), myDomain.upperBound(), false);
-    //ASSERT(kspace_init_ok);
+    // FIXME should be open or closed? => closed
+    const typename TDigitalSet::Domain set_domain = _set.domain();
+    const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(set_domain.lowerBound(), set_domain.upperBound(), true);
+    ASSERT(kspace_init_ok);
 
     // compute raw cell size
     typedef std::map<SCell, Scalar> Accum;
@@ -56,7 +57,8 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::DiscreteE
 
         typedef DGtal::SpaceND<dim, TInteger> Space;
         typedef DGtal::HyperRectDomain<Space> Neighborbood;
-        const Neighborbood neighborhood(cell_point.myCoordinates-Point::diagonal(1), cell_point.myCoordinates+Point::diagonal(1));
+        const Point cell_coords = myKSpace.sKCoords(cell_point);
+        const Neighborbood neighborhood(cell_coords-Point::diagonal(1), cell_coords+Point::diagonal(1));
         for (typename Neighborbood::ConstIterator pi=neighborhood.begin(), pie=neighborhood.end(); pi!=pie; pi++)
         {
             const SCell cell = myKSpace.sCell(*pi, KSpace::POS);
@@ -90,7 +92,6 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::DiscreteE
         const SCell& cell = csi->first;
         const DGtal::Dimension cell_dim = myKSpace.sDim(cell);
         ASSERT( myKSpace.sSign(cell) == KSpace::POS );
-        ASSERT( cell.myPositive == true );
 
         csi->second.index = index_cells[cell_dim].size();
         index_cells[cell_dim].push_back(cell);
@@ -147,7 +148,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::insertSCe
     property.size_ratio = _primal_size;
     property.display_flipped = false;
 
-    if (!abs_cell.myPositive)
+    if (myKSpace.sSign(abs_cell) == KSpace::NEG)
     {
         abs_cell = myKSpace.sOpp(abs_cell);
         //property.size_ratio = -property.size_ratio;
@@ -247,7 +248,6 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
     {
         const SCell& cell = index_cells[actualOrder(order+1, duality)][index_output];
         ASSERT( myKSpace.sSign(cell) == KSpace::POS );
-        ASSERT( cell.myPositive == true );
 
         // find hodge sign
         Scalar sign = 1;
@@ -272,7 +272,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::derivativ
             const Index index_input = iter_property->second.index;
             ASSERT( index_input < _derivative.myContainer.cols() );
 
-            Scalar proper_sign = sign * (cell_border.myPositive ? -1 : 1);
+            Scalar proper_sign = sign * (myKSpace.sSign(cell_border) == KSpace::POS ? -1 : 1);
             if (duality == DUAL) proper_sign *= hodgeSign(absoluteSCell(cell_border), PRIMAL);
 
             // fill container with cell sign
@@ -370,7 +370,6 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateSha
     {
         const SCell& cell = index_cells[actualOrder(0, duality)][kk];
         ASSERT( myKSpace.sSign(cell) == KSpace::POS );
-        ASSERT( cell.myPositive == true );
 
         typedef typename KSpace::SCells Edges;
         Edges edges;
@@ -444,7 +443,6 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFla
     {
         const SCell& cell = index_cells[actualOrder(1, duality)][kk];
         ASSERT( myKSpace.sSign(cell) == KSpace::POS );
-        ASSERT( cell.myPositive == true );
 
         const DGtal::Dimension& direction = edgeDirection(cell, duality);
 
@@ -569,7 +567,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::hodgeSign
 {
     const DGtal::Dimension& primal_dim = myKSpace.sDim(cell);
     const bool apply_sign = ((dimension-primal_dim)*primal_dim % 2 == 1);
-    if (!apply_sign) return cell.myPositive ? 1 : -1;
+    if (!apply_sign) return myKSpace.sSign(cell) == KSpace::POS ? 1 : -1;
 
     typename KSpace::DirIterator di = myKSpace.sDirs(cell);
 
@@ -585,14 +583,14 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::hodgeSign
     if (duality == DUAL) span_count++;
 
     const Scalar sign = pow(-1, span_count);
-    return cell.myPositive ? sign : -sign;
+    return myKSpace.sSign(cell) == KSpace::POS ? sign : -sign;
 }
 
 template <DGtal::Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
 typename DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::SCell
 DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::absoluteSCell(const SCell& cell) const
 {
-    if (cell.myPositive) return cell;
+    if (myKSpace.sSign(cell) == KSpace::POS) return cell;
     return myKSpace.sOpp(cell);
 }
 
