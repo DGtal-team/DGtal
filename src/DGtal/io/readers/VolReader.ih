@@ -181,7 +181,7 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     }
 
     // We should have a useless \n in the file at this point
-    char tmp='';
+    char tmp;
     count = (long)fread( &tmp, sizeof( char ), 1, fin );
 
     if ( count != 1 || tmp != '\n' )
