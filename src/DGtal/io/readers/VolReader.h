@@ -91,7 +91,6 @@ namespace DGtal
 
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Value Value;
-    typedef typename TImageContainer::Domain::Point Point; 
     typedef TFunctor Functor;
     
     BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
