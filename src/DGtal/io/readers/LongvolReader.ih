@@ -289,6 +289,6 @@ DGtal::LongvolReader<T, TFunctor>::getHeaderValueAsInt( const char *type, int *d
   if ( i == -1 )
     return 1;
 
-  return sscanf( header[i].value, "%d", dest ) != 0;
+  return sscanf( header[i].value, "%d", dest ) == 0;
 }
 
