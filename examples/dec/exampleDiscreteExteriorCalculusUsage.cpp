@@ -1,14 +1,16 @@
 #include <string>
-using namespace std;
 
 #include "common.h"
 
+// always include EigenSupport.h before any other Eigen headers
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/GenericReader.h"
+
+using namespace std;
 using namespace DGtal;
 
 void usage2d()
@@ -60,7 +62,7 @@ void usage2d()
     {
         trace.info() << "primal path" << endl;
 
-        // create primal 0-form and fill it with eucledian metric
+        // create primal 0-form and fill it with euclidian metric
         //! [usage_primal_fill_zero_form]
         Calculus::PrimalForm0 primal_zero_form(calculus);
         for (Calculus::Index index=0; index<primal_zero_form.myContainer.rows(); index++)
@@ -136,7 +138,7 @@ void usage2d()
     {
         trace.info() << "dual path" << endl;
 
-        // create dual 0-form and fill it with eucledian metric
+        // create dual 0-form and fill it with euclidian metric
         Calculus::DualForm0 dual_zero_form(calculus);
         for (Calculus::Index index=0; index<dual_zero_form.myContainer.rows(); index++)
         {

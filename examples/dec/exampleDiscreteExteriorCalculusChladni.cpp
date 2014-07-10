@@ -1,8 +1,10 @@
 #include <sstream>
 #include <string>
-using namespace std;
 
+// always include EigenSupport.h before any other Eigen headers
 #include "DGtal/math/linalg/EigenSupport.h"
+#include <Eigen/Eigenvalues>
+
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
@@ -12,11 +14,12 @@ using namespace std;
 #include "DGtal/math/linalg/EigenSupport.h"
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
+
+using namespace std;
 using namespace DGtal;
+using namespace Eigen;
 
-#include <Eigen/Eigenvalues>
-
-double standard_deviation(const Eigen::VectorXd& xx)
+double standard_deviation(const VectorXd& xx)
 {
     const double mean = xx.mean();
     double accum = 0;
@@ -71,16 +74,16 @@ int main(int argc, char* argv[])
 
     trace.beginBlock("finding laplace eigen vectors");
 
-    typedef Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> EigenSolverMatrix;
+    typedef SelfAdjointEigenSolver<MatrixXd> EigenSolverMatrix;
     const EigenSolverMatrix eigen_solver(laplace.myContainer);
 
-    const Eigen::VectorXd eigen_values = eigen_solver.eigenvalues();
-    const Eigen::MatrixXd eigen_vectors = eigen_solver.eigenvectors();
+    const VectorXd eigen_values = eigen_solver.eigenvalues();
+    const MatrixXd eigen_vectors = eigen_solver.eigenvectors();
     for (int kk=0; kk<laplace.myContainer.rows(); kk++)
     {
         Calculus::Scalar eigen_value = eigen_values(kk, 0);
 
-        const Eigen::VectorXd eigen_vector = eigen_vectors.col(kk);
+        const VectorXd eigen_vector = eigen_vectors.col(kk);
         const Calculus::DualForm0 eigen_form = Calculus::DualForm0(calculus, eigen_vector);
         std::stringstream ss;
         ss << "chladni_eigen_" << kk << ".svg";
