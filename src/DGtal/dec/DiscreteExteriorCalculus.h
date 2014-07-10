@@ -83,6 +83,8 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
+    typedef DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger> Self;
+
     typedef TLinearAlgebraBackend LinearAlgebraBackend;
     typedef typename LinearAlgebraBackend::DenseVector::Index Index;
     typedef typename LinearAlgebraBackend::DenseVector::Scalar Scalar;
@@ -132,54 +134,54 @@ namespace DGtal
     /**
      * Vector field typedefs.
      */
-    typedef VectorField<DiscreteExteriorCalculus, PRIMAL> PrimalVectorField;
-    typedef VectorField<DiscreteExteriorCalculus, DUAL> DualVectorField;
+    typedef VectorField<Self, PRIMAL> PrimalVectorField;
+    typedef VectorField<Self, DUAL> DualVectorField;
 
     /**
      * KForms typedefs.
      */
-    typedef KForm<DiscreteExteriorCalculus, 0, PRIMAL> PrimalForm0;
-    typedef KForm<DiscreteExteriorCalculus, 1, PRIMAL> PrimalForm1;
-    typedef KForm<DiscreteExteriorCalculus, 2, PRIMAL> PrimalForm2;
-    typedef KForm<DiscreteExteriorCalculus, 3, PRIMAL> PrimalForm3;
-    typedef KForm<DiscreteExteriorCalculus, 0, DUAL> DualForm0;
-    typedef KForm<DiscreteExteriorCalculus, 1, DUAL> DualForm1;
-    typedef KForm<DiscreteExteriorCalculus, 2, DUAL> DualForm2;
-    typedef KForm<DiscreteExteriorCalculus, 3, DUAL> DualForm3;
+    typedef KForm<Self, 0, PRIMAL> PrimalForm0;
+    typedef KForm<Self, 1, PRIMAL> PrimalForm1;
+    typedef KForm<Self, 2, PRIMAL> PrimalForm2;
+    typedef KForm<Self, 3, PRIMAL> PrimalForm3;
+    typedef KForm<Self, 0, DUAL> DualForm0;
+    typedef KForm<Self, 1, DUAL> DualForm1;
+    typedef KForm<Self, 2, DUAL> DualForm2;
+    typedef KForm<Self, 3, DUAL> DualForm3;
 
     /**
      * Derivative linear operator typedefs.
      */
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, PRIMAL, 1, PRIMAL> PrimalDerivative0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, PRIMAL, 2, PRIMAL> PrimalDerivative1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, PRIMAL, 3, PRIMAL> PrimalDerivative2;
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, DUAL, 1, DUAL> DualDerivative0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, DUAL, 2, DUAL> DualDerivative1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, DUAL, 3, DUAL> DualDerivative2;
+    typedef LinearOperator<Self, 0, PRIMAL, 1, PRIMAL> PrimalDerivative0;
+    typedef LinearOperator<Self, 1, PRIMAL, 2, PRIMAL> PrimalDerivative1;
+    typedef LinearOperator<Self, 2, PRIMAL, 3, PRIMAL> PrimalDerivative2;
+    typedef LinearOperator<Self, 0, DUAL, 1, DUAL> DualDerivative0;
+    typedef LinearOperator<Self, 1, DUAL, 2, DUAL> DualDerivative1;
+    typedef LinearOperator<Self, 2, DUAL, 3, DUAL> DualDerivative2;
 
     /**
      * Hodge duality linear operator typedefs.
      */
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, PRIMAL, dim-0, DUAL> PrimalHodge0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, PRIMAL, dim-1, DUAL> PrimalHodge1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, PRIMAL, dim-2, DUAL> PrimalHodge2;
-    typedef LinearOperator<DiscreteExteriorCalculus, 3, PRIMAL, dim-3, DUAL> PrimalHodge3;
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, DUAL, dim-0, PRIMAL> DualHodge0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, DUAL, dim-1, PRIMAL> DualHodge1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, DUAL, dim-2, PRIMAL> DualHodge2;
-    typedef LinearOperator<DiscreteExteriorCalculus, 3, DUAL, dim-3, PRIMAL> DualHodge3;
+    typedef LinearOperator<Self, 0, PRIMAL, dim-0, DUAL> PrimalHodge0;
+    typedef LinearOperator<Self, 1, PRIMAL, dim-1, DUAL> PrimalHodge1;
+    typedef LinearOperator<Self, 2, PRIMAL, dim-2, DUAL> PrimalHodge2;
+    typedef LinearOperator<Self, 3, PRIMAL, dim-3, DUAL> PrimalHodge3;
+    typedef LinearOperator<Self, 0, DUAL, dim-0, PRIMAL> DualHodge0;
+    typedef LinearOperator<Self, 1, DUAL, dim-1, PRIMAL> DualHodge1;
+    typedef LinearOperator<Self, 2, DUAL, dim-2, PRIMAL> DualHodge2;
+    typedef LinearOperator<Self, 3, DUAL, dim-3, PRIMAL> DualHodge3;
 
     /**
      * Identity linear operator typedefs.
      */
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, PRIMAL, 0, PRIMAL> PrimalIdentity0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, PRIMAL, 1, PRIMAL> PrimalIdentity1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, PRIMAL, 2, PRIMAL> PrimalIdentity2;
-    typedef LinearOperator<DiscreteExteriorCalculus, 3, PRIMAL, 3, PRIMAL> PrimalIdentity3;
-    typedef LinearOperator<DiscreteExteriorCalculus, 0, DUAL, 0, DUAL> DualIdentity0;
-    typedef LinearOperator<DiscreteExteriorCalculus, 1, DUAL, 1, DUAL> DualIdentity1;
-    typedef LinearOperator<DiscreteExteriorCalculus, 2, DUAL, 2, DUAL> DualIdentity2;
-    typedef LinearOperator<DiscreteExteriorCalculus, 3, DUAL, 3, DUAL> DualIdentity3;
+    typedef LinearOperator<Self, 0, PRIMAL, 0, PRIMAL> PrimalIdentity0;
+    typedef LinearOperator<Self, 1, PRIMAL, 1, PRIMAL> PrimalIdentity1;
+    typedef LinearOperator<Self, 2, PRIMAL, 2, PRIMAL> PrimalIdentity2;
+    typedef LinearOperator<Self, 3, PRIMAL, 3, PRIMAL> PrimalIdentity3;
+    typedef LinearOperator<Self, 0, DUAL, 0, DUAL> DualIdentity0;
+    typedef LinearOperator<Self, 1, DUAL, 1, DUAL> DualIdentity1;
+    typedef LinearOperator<Self, 2, DUAL, 2, DUAL> DualIdentity2;
+    typedef LinearOperator<Self, 3, DUAL, 3, DUAL> DualIdentity3;
 
     /**
      * Constructor.
@@ -265,7 +267,7 @@ namespace DGtal
      * @return identity operator.
      */
     template <Order order, Duality duality>
-    LinearOperator<DiscreteExteriorCalculus, order, duality, order, duality>
+    LinearOperator<Self, order, duality, order, duality>
     identity() const;
 
     /**
@@ -275,7 +277,7 @@ namespace DGtal
      * @return derivative operator.
      */
     template <Order order, Duality duality>
-    LinearOperator<DiscreteExteriorCalculus, order, duality, order+1, duality>
+    LinearOperator<Self, order, duality, order+1, duality>
     derivative() const;
 
     /**
@@ -298,7 +300,7 @@ namespace DGtal
      * @return primal hodge operator.
      */
     template <Order order>
-    LinearOperator<DiscreteExteriorCalculus, order, PRIMAL, dim-order, DUAL>
+    LinearOperator<Self, order, PRIMAL, dim-order, DUAL>
     primalHodge() const;
 
     /**
@@ -307,7 +309,7 @@ namespace DGtal
      * @return dual hodge operator.
      */
     template <Order order>
-    LinearOperator<DiscreteExteriorCalculus, order, DUAL, dim-order, PRIMAL>
+    LinearOperator<Self, order, DUAL, dim-order, PRIMAL>
     dualHodge() const;
 
     /**
@@ -317,8 +319,8 @@ namespace DGtal
      * @return 1-form.
      */
     template <Duality duality>
-    KForm<DiscreteExteriorCalculus, 1, duality>
-    flat(const VectorField<DiscreteExteriorCalculus, duality>& vector_field) const;
+    KForm<Self, 1, duality>
+    flat(const VectorField<Self, duality>& vector_field) const;
 
     /**
      * Construct vector field from 1-form.
@@ -327,8 +329,8 @@ namespace DGtal
      * @return vector field.
      */
     template <Duality duality>
-    VectorField<DiscreteExteriorCalculus, duality>
-    sharp(const KForm<DiscreteExteriorCalculus, 1, duality>& one_form) const;
+    VectorField<Self, duality>
+    sharp(const KForm<Self, 1, duality>& one_form) const;
 
     /**
      * Get cell from k-form index.
