@@ -42,10 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/dec/KForm.h"
-#include "DGtal/dec/LinearOperator.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/LinearOperator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,7 +56,7 @@ namespace DGtal
   /**
    * Description of template class 'DiscreteExteriorCalculusSolver' <p>
    * \brief Aim:
-   * This wraps a linear algebra solver into the dec package.
+   * This wraps a linear algebra solver around a discrete exterior calculus.
    *
    * @tparam TCalculus should be DiscreteExteriorCalculus.
    * @tparam TLinearAlgebraSolver should be a model of CLinearAlgebraSolver.
@@ -70,6 +70,11 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
+    BOOST_STATIC_ASSERT(( order_in  >= 0 ));
+    BOOST_STATIC_ASSERT(( order_in  <= TCalculus::dimension ));
+    BOOST_STATIC_ASSERT(( order_out >= 0 ));
+    BOOST_STATIC_ASSERT(( order_out <= TCalculus::dimension ));
+
     typedef TCalculus Calculus;
     typedef TLinearAlgebraSolver LinearAlgebraSolver;
 
