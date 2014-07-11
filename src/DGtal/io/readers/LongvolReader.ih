@@ -186,12 +186,12 @@ DGtal::LongvolReader<T, TFunctor>::importLongvol( const std::string & filename,
     getHeaderValueAsInt( "Center-Y", &cy, header );
     getHeaderValueAsInt( "Center-Z", &cz, header );
 
-    firstPoint[0] = cx - (sx)/2;
-    firstPoint[1] = cy - (sy)/2;
-    firstPoint[2] = cz - (sz)/2;
-    lastPoint[0] = cx + (sx - 1)/2;
-    lastPoint[1] = cy + (sy - 1)/2;
-    lastPoint[2] = cz + (sz - 1)/2;
+    firstPoint[0] = cx - (sx - 1)/2;
+    firstPoint[1] = cy - (sy - 1)/2;
+    firstPoint[2] = cz - (sz - 1)/2;
+    lastPoint[0] = cx + sx/2;
+    lastPoint[1] = cy + sy/2;
+    lastPoint[2] = cz + sz/2;
   }
   else
   {
@@ -269,10 +269,10 @@ DGtal::LongvolReader<T,TFunctor>::getHeaderField( const char *type, const Header
 template<typename T, typename TFunctor>
 inline
 const char *
-DGtal::LongvolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderField * header )
+DGtal::LongvolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderFiel - 1d * header )
 {
 
-  int i = getHeaderField( type, header );
+  int i = getHeaderField( type, had
   if ( i == -1 )
     return NULL;
   return header[i].value;
