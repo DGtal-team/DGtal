@@ -56,7 +56,7 @@ DGtal::Display3DFactory<Space, KSpace>::draw(Display3D<Space, KSpace>& display, 
     for (CalculusConstIterator ci=calculus.begin(), cie=calculus.end(); ci!=cie; ci++)
     {
         const CalculusSCell& cell = ci->first;
-        ASSERT(calculus.myKSpace.sSign(cell) == TCalculus::KSpace::POS);
+        ASSERT(calculus.myKSpace.sSign(cell) == Calculus::KSpace::POS);
 
         const bool& flipped = calculus.isSCellFlipped(cell);
         CalculusSCell displayed_cell = cell;
