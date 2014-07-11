@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file test_Image.cpp
+ * @file testDiscreteExteriorCalculus.cpp
  * @ingroup Tests
  * @author Pierre Gueth (\c pierre.gueth@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -30,11 +30,11 @@
 int
 main(int argc, char* argv[])
 {
-    trace.beginBlock("testing sparse eigen backend");
-    test_backend<EigenLinearAlgebraBackend>(1, 3);
-    const double sparse_eigen_time = trace.endBlock();
+    DGtal::trace.beginBlock("testing sparse eigen backend");
+    test_backend<DGtal::EigenLinearAlgebraBackend>(1, 3);
+    const double sparse_eigen_time = DGtal::trace.endBlock();
 
-    trace.info() << "sparse_eigen_time=" << sparse_eigen_time << endl;
+    DGtal::trace.info() << "sparse_eigen_time=" << sparse_eigen_time << std::endl;
 
     return 0;
 }
