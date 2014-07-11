@@ -64,8 +64,7 @@ where \e a type is a model of CMatrix and \e x, \e y type is a model of CVector.
 Matrix and vector types should be a model of CLinearAlgebra.
 
 ### Refinement of
- - boost::EqualitityComparable<I>
- - boost::Assignable<S>
+ - boost::DefaultConstructible<S>
  - CLinearAlgebra<V, M>
 
 ### Associated types
