@@ -198,12 +198,12 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     getHeaderValueAsInt( "Center-Y", &cy, header );
     getHeaderValueAsInt( "Center-Z", &cz, header );
 
-    firstPoint[0] = cx - (sx)/2;
-    firstPoint[1] = cy - (sy)/2;
-    firstPoint[2] = cz - (sz)/2;
-    lastPoint[0] = cx + (sx - 1)/2;
-    lastPoint[1] = cy + (sy - 1)/2;
-    lastPoint[2] = cz + (sz - 1)/2;
+    firstPoint[0] = cx - (sx - 1)/2;
+    firstPoint[1] = cy - (sy - 1)/2;
+    firstPoint[2] = cz - (sz - 1)/2;
+    lastPoint[0] = cx + sx/2;
+    lastPoint[1] = cy + sy/2;
+    lastPoint[2] = cz + sz/2;
   }
   else
   {

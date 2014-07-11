@@ -102,7 +102,7 @@ bool testVolReader()
 
 bool testIOException()
 {
-   unsigned int nbok = 0;
+  unsigned int nbok = 0;
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing VolReader ..." );
@@ -136,21 +136,58 @@ bool testIOException()
   return nbok == nb;
 }
 
+bool testConsistence()
+{
+  trace.beginBlock ( "Testing VolWriter ..." );
+
+  typedef SpaceND<3> Space4Type;
+  typedef HyperRectDomain<Space4Type> TDomain;
+  typedef TDomain::Point Point;
+  
+  //Default image selector = STLVector
+  typedef ImageSelector<TDomain, unsigned char>::Type Image;
+  TDomain domain(Point(-17,-14,-13), Point(5,7,11));
+  Image image(domain);
+  trace.info() << image.domain() <<endl;
+
+  VolWriter<Image>::exportVol("testConsistence.vol",image);
+  
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing VolReader ..." );
+
+  Image image2 = VolReader<Image>::importVol( "testConsistence.vol" );
+  
+  trace.info() << image2.domain() <<endl;
+  trace.endBlock();
+
+  if( image.domain().lowerBound() != image2.domain().lowerBound() 
+    || image.domain().upperBound() != image2.domain().upperBound() )
+  {
+    return false;
+  }
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
 {
+  int aaaaa = 21/2;
+  std::cout << aaaaa << std::endl;
+  
   trace.beginBlock ( "Testing class VolReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testVolReader() && testIOException(); // && ... other tests
+  bool res = testVolReader() && testIOException() && testConsistence(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
