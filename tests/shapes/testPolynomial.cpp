@@ -164,23 +164,20 @@ int main( int argc, char** argv )
     A = ishape.nearestPoint (A,0.01,200,0.1*step);
     double a = ishape.meanCurvature( A );
 //    double a=ishape.gaussianCurvature(A);
-    if ( boost::math::isnan( a ))
+    if ( !boost::math::isnan( a ))
     {
-      a = 0;
-    }
-    else
-    {
-      if ( a > maxCurv )
+      
+     if ( a > maxCurv )
       {
         maxCurv = a;
       }
-      else if ( a < minCurv )
-      {
+      else
+        if ( a < minCurv )
+        {
           minCurv = a;
-      }
+        }
     }
   }
-
   trace.info() << " Min = " << minCurv << std::endl;
   trace.info() << " Max = " << maxCurv << std::endl;
 
