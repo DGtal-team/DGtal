@@ -272,7 +272,7 @@ const char *
 DGtal::LongvolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderFiel - 1d * header )
 {
 
-  int i = getHeaderField( type, had
+  int i = getHeaderField( type, header );
   if ( i == -1 )
     return NULL;
   return header[i].value;
