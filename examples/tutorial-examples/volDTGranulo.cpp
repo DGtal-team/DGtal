@@ -114,7 +114,7 @@ int main(int argc, char ** argv)
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
   viewer2 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer2  launched..."<<std::endl;
-  res = application2.exec();
+  res = res && application2.exec();
 
   //Granulo
   Image imageGranulo ( image.domain() );
@@ -181,8 +181,10 @@ int main(int argc, char ** argv)
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
   viewer3 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer3  launched..."<<std::endl;
-  res = application3.exec();
+  res = res&& application3.exec();
 
-  
-  return 0;
+  if (res)
+    return 0;
+  else
+    return 1;
 }
