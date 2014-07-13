@@ -269,7 +269,7 @@ DGtal::LongvolReader<T,TFunctor>::getHeaderField( const char *type, const Header
 template<typename T, typename TFunctor>
 inline
 const char *
-DGtal::LongvolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderFiel - 1d * header )
+DGtal::LongvolReader<T, TFunctor>::getHeaderValue( const char *type, const HeaderField * header )
 {
 
   int i = getHeaderField( type, header );
