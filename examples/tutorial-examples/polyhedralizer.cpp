@@ -199,7 +199,6 @@ int main( int argc, char** argv )
     {
       if ( ( (++j) % 50 == 0 ) || ( j == nb ) ) trace.progressBar( j, nb );
       Surfel v = *it;
-      int axis = ks.sOrthDir( v );
       planeComputer.init( widthNum, widthDen );
       // The visitor takes care of all the breadth-first traversal.
       Visitor visitor( digSurf, v );
@@ -411,5 +410,8 @@ int main( int argc, char** argv )
     delete *it;
   //! [polyhedralizer-freeMemory]
 
-  return 0;
+  if (isOK && isOK2)
+    return 0;
+  else
+    return 1;
 }
