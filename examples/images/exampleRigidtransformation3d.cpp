@@ -51,8 +51,8 @@ using namespace Z3i;
 int main( int , char** )
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
-  typedef ForwardRigidTransformation3D < Point, RealVector > ForwardTrans;
-  typedef BackwardRigidTransformation3D < Point, RealVector > BackwardTrans;
+  typedef ForwardRigidTransformation3D < Space > ForwardTrans;
+  typedef BackwardRigidTransformation3D < Space > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;

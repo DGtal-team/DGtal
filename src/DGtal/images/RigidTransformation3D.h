@@ -62,19 +62,24 @@ namespace DGtal
      * <a href="http://mathworld.wolfram.com/RodriguesRotationFormula.html">Rodrigues' rotation formula</a>.
      * Warring: This version uses closest neighbor interpolation.
      *
-     * @tparam TPoint a 3 dimensional integer point.
-     * @tparam TRealVector a 3 dimensional real vector.
+     * @tparam TSpace a 3 dimensional space.
      * 
      * @see exampleRigidtransformation3d.cpp
      */
-    template <typename TPoint, typename TRealVector>
-    class ForwardRigidTransformation3D : std::unary_function <TPoint,TPoint>
+    template <typename TSpace>
+    class ForwardRigidTransformation3D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
     {
       ///Checking concepts
-      BOOST_STATIC_ASSERT(( TPoint::dimension == 3 ));
-      BOOST_STATIC_ASSERT(( TRealVector::dimension == 3 ));
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
       
-    // ----------------------- Interface --------------------------------------
+      // ----------------------- Types ------------------------------
+    public:
+      typedef typename TSpace::Point Point;
+      typedef typename TSpace::RealPoint RealPoint;
+      typedef typename TSpace::RealVector RealVector;
+      
+      // ----------------------- Interface --------------------------------------
     public:
       /**
        * Constructor.
@@ -83,8 +88,8 @@ namespace DGtal
        * @param angle  the angle given in radians.
        * @param aTranslate  the 3D dimensional vector which represents translation.
        */
-      ForwardRigidTransformation3D ( const TPoint & aOrigin, const TRealVector & aAxis,
-				     const double & angle, const TRealVector & aTranslate )
+      ForwardRigidTransformation3D ( const RealPoint & aOrigin, const RealVector & aAxis,
+				     const double & angle, const RealVector & aTranslate )
       : axis(aAxis.getNormalized()), origin(aOrigin), trans(aTranslate)
       
       
@@ -102,9 +107,9 @@ namespace DGtal
        * @return the transformed point.
        */
       inline
-      TPoint operator()( const TPoint& aInput ) const
+      Point operator()( const Point& aInput ) const
       {
-	TPoint p;
+	Point p;
 	
 	p[0] = std::floor ( ( ( ( ( t_cos + ( axis[0] * axis[0] ) * ( 1. - t_cos ) ) * ( aInput[0] - origin[0] ) )
 	+ ( ( axis[0] * axis[1] * ( 1. - t_cos ) - axis[2] * t_sin ) * ( aInput[1] - origin[1] ) )
@@ -123,11 +128,11 @@ namespace DGtal
       
     // ------------------------- Protected Datas ------------------------------
     protected:
-      TRealVector axis;
-      TPoint origin;
+      RealVector axis;
+      RealPoint origin;
       double t_sin;
       double t_cos;
-      TRealVector trans;
+      RealVector trans;
     };
     
     /////////////////////////////////////////////////////////////////////////////
@@ -139,19 +144,24 @@ namespace DGtal
      * <a href="http://mathworld.wolfram.com/RodriguesRotationFormula.html">Rodrigues' rotation formula</a>.
      * Warring: This version uses closest neighbor interpolation.
      *
-     * @tparam TPoint a 3 dimensional integer point.
-     * @tparam TRealVector a 3 dimensional real vector.
+     * @tparam TSpace a 3 dimensional space.
      * 
      * @see exampleRigidtransformation3d.cpp
      */
-    template <typename TPoint, typename TRealVector>
-    class BackwardRigidTransformation3D : std::unary_function <TPoint,TPoint>
+    template <typename TSpace>
+    class BackwardRigidTransformation3D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
     {
       ///Checking concepts
-      BOOST_STATIC_ASSERT(( TPoint::dimension == 3 ));
-      BOOST_STATIC_ASSERT(( TRealVector::dimension == 3 ));
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
       
-    // ----------------------- Interface --------------------------------------
+      // ----------------------- Types ------------------------------
+    public:
+      typedef typename TSpace::Point Point;
+      typedef typename TSpace::RealPoint RealPoint;
+      typedef typename TSpace::RealVector RealVector;
+      
+      // ----------------------- Interface --------------------------------------
     public:
       /**
        * Constructor.
@@ -160,8 +170,8 @@ namespace DGtal
        * @param angle  the angle given in radians.
        * @param aTranslate  the 3D dimensional vector which represents translation.
        */
-      BackwardRigidTransformation3D ( const TPoint & aOrigin, const TRealVector & aAxis,
-				      const double & angle, const TRealVector & aTranslate )
+      BackwardRigidTransformation3D ( const RealPoint & aOrigin, const RealVector & aAxis,
+				      const double & angle, const RealVector & aTranslate )
       : axis(aAxis.getNormalized()), origin(aOrigin), trans(aTranslate) 
       {	
 	if ( axis.norm() < 0.000001 )
@@ -177,9 +187,9 @@ namespace DGtal
        * @return the transformed point.
        */
       inline
-      TPoint operator()( const TPoint& aInput ) const
+      Point operator()( const Point& aInput ) const
       {
-	TPoint p;
+	Point p;
 	
 	p[0] = std::floor ( ( ( ( ( t_cos + ( axis[0] * axis[0] ) * ( 1. - t_cos ) ) * ( aInput[0] - trans[0] - origin[0] ) )
 	+ ( ( axis[2] * t_sin + axis[0] * axis[1] * ( 1. - t_cos ) ) * ( aInput[1] - trans[1] - origin[1] ) )
@@ -197,11 +207,11 @@ namespace DGtal
       
     // ------------------------- Protected Datas ------------------------------
     private:
-      TRealVector axis;
-      TPoint origin;
+      RealVector axis;
+      RealPoint origin;
       double t_sin;
       double t_cos;
-      TRealVector trans;
+      RealVector trans;
     };
     
     /////////////////////////////////////////////////////////////////////////////
