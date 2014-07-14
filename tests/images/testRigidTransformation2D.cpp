@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testtestRigidTransformation2D.cpp
+ * @file testRigidTransformation2D.cpp
  * @ingroup Tests
  * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France

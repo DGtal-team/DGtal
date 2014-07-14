@@ -51,8 +51,8 @@ using namespace Z2i;
 int main( int , char** )
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
-  typedef ForwardRigidTransformation2D < Point, RealVector > ForwardTrans;
-  typedef BackwardRigidTransformation2D < Point, RealVector > BackwardTrans;
+  typedef ForwardRigidTransformation2D < Space > ForwardTrans;
+  typedef BackwardRigidTransformation2D < Space > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
   typedef DomainRigidTransformation2D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;

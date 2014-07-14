@@ -46,6 +46,7 @@
 #include "DGtal/base/Common.h"
 #include <DGtal/helpers/StdDefs.h>
 #include <DGtal/kernel/domains/CDomain.h>
+#include <DGtal/kernel/CSpace.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -59,17 +60,22 @@ namespace DGtal
      * \brief Aim: implements forward rigid transformation of point in the 2D integer space.
      * Warring: This version uses closest neighbor interpolation.
      *
-     * @tparam TPoint a 2 dimensional integer point.
-     * @tparam TRealVector a 2 dimensional real vector.
+     * @tparam TSpace a 2 dimensional space.
      * 
      * @see exampleRigidtransformation2d.cpp
      */
-    template <typename TPoint, typename TRealVector>
-    class ForwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
+    template <typename TSpace>
+    class ForwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
     {
       ///Checking concepts
-      BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
-      BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+      
+      // ----------------------- Types ------------------------------
+    public:
+       typedef typename TSpace::Point Point;
+       typedef typename TSpace::RealPoint RealPoint;
+       typedef typename TSpace::RealVector RealVector;
       
     // ----------------------- Interface --------------------------------------
     public:
@@ -79,7 +85,7 @@ namespace DGtal
        * @param angle  the angle given in radians.
        * @param aTranslate  the 2D dimensional vector which represents translation.
        */
-      ForwardRigidTransformation2D ( const TPoint & aOrigin, const double & angle, const TRealVector & aTranslate )
+      ForwardRigidTransformation2D ( const RealPoint & aOrigin, const double & angle, const RealVector & aTranslate )
       :origin(aOrigin), translation(aTranslate)
       {
 	t_sin = std::sin ( angle );
@@ -92,9 +98,9 @@ namespace DGtal
        * @return the transformed point.
        */
       inline
-      TPoint operator()( const TPoint& aInput ) const
+      Point operator()( const Point& aInput ) const
       {
-	TPoint p;
+	Point p;
 	p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
 	t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + 0.5 );
 	
@@ -105,10 +111,10 @@ namespace DGtal
       
     // ------------------------- Protected Datas ------------------------------
     protected:
-      TPoint origin;
+      RealPoint origin;
       double t_sin;
       double t_cos;
-      TRealVector translation;
+      RealVector translation;
     };
 
     /////////////////////////////////////////////////////////////////////////////
@@ -118,19 +124,24 @@ namespace DGtal
      * \brief Aim: implements backward rigid transformation of point in the 2D integer space.
      * Warring: This version uses closest neighbor interpolation.
      *
-     * @tparam TPoint a 2 dimensional integer point.
-     * @tparam TRealVector a 2 dimensional real vector.
+     * @tparam TSpace a 2 dimensional space.
      * 
      * @see exampleRigidtransformation2d.cpp
      */
-    template <typename TPoint, typename TRealVector>
-    class BackwardRigidTransformation2D : std::unary_function <TPoint,TPoint>
+    template <typename TSpace>
+    class BackwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
     {
       ///Checking concepts
-      BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
-      BOOST_STATIC_ASSERT(( TRealVector::dimension == 2 ));
-
-    // ----------------------- Interface --------------------------------------
+      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+      BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+      
+      // ----------------------- Types ------------------------------
+    public:
+      typedef typename TSpace::Point Point;
+      typedef typename TSpace::RealPoint RealPoint;
+      typedef typename TSpace::RealVector RealVector;
+      
+      // ----------------------- Interface --------------------------------------
     public:
       /**
        * Constructor.
@@ -138,7 +149,7 @@ namespace DGtal
        * @param angle  the angle given in radians.
        * @param aTranslate  the 2D dimensional vector which represents translation.
        */
-      BackwardRigidTransformation2D ( const TPoint& aOrigin, const double & angle, const TRealVector & aTranslate )
+      BackwardRigidTransformation2D ( const RealPoint& aOrigin, const double & angle, const RealVector & aTranslate )
       :origin(aOrigin), translation(aTranslate) 
       {
 	t_sin = std::sin ( angle );
@@ -151,9 +162,9 @@ namespace DGtal
        * @return transformed point.
        */
       inline
-      TPoint operator()( const TPoint& aInput ) const
+      Point operator()( const Point& aInput ) const
       {
-	TPoint p;
+	Point p;
 	p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
 	t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
 	
@@ -164,10 +175,10 @@ namespace DGtal
       
     // ------------------------- Protected Datas ------------------------------
     protected:
-      TPoint origin;
+      RealPoint origin;
       double t_sin;
       double t_cos;
-      TRealVector translation;
+      RealVector translation;
     };
 
     /////////////////////////////////////////////////////////////////////////////
