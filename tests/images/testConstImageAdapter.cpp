@@ -103,16 +103,16 @@ int main( int argc, char** argv )
   trace.beginBlock("Implicit thresholding");
 
   //! [ConstImageAdapterConstruction]
-  DefaultFunctor g;
-  Thresholder<Image::Value> t( thresholdValue );
-  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> > MyConstImageAdapter;
+  functors::Identity g;
+  DGtal::functors::Thresholder<Image::Value> t( thresholdValue );
+  typedef ConstImageAdapter<Image, Domain, functors::Identity, bool, DGtal::functors::Thresholder<Image::Value> > MyConstImageAdapter;
   BOOST_CONCEPT_ASSERT(( CConstImage< MyConstImageAdapter > ));
   MyConstImageAdapter a(img, d, g, t); 
   //! [ConstImageAdapterConstruction]
 
   //display values 
   //! [ConstImageAdapterRange]
-  ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> >::ConstRange 
+  ConstImageAdapter<Image, Domain, functors::Identity, bool, DGtal::functors::Thresholder<Image::Value> >::ConstRange 
     ra = a.constRange(); 
   std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") );
   cout << endl;

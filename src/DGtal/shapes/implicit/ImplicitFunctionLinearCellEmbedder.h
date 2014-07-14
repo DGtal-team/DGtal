@@ -68,7 +68,7 @@ namespace DGtal
              typename TEmbedder >
   class ImplicitFunctionLinearCellEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( CImplicitFunction< TImplicitFunction > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CImplicitFunction< TImplicitFunction > ));
 
   public:
     typedef TKSpace KSpace;

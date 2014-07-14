@@ -97,7 +97,7 @@ namespace DGtal
      * Type of the thresholder, which compares the result
      * of the functor to zero
      */
-    typedef Thresholder<typename Functor::Value, acceptNeg, acceptZero> MyThresholder; 
+    typedef functors::Thresholder<typename Functor::Value, acceptNeg, acceptZero> MyThresholder; 
 
     // ----------------------- Standard services ------------------------------
   public:

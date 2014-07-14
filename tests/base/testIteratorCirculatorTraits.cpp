@@ -205,8 +205,8 @@ bool testIteratorCirculatorTraitsAndAdapters()
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   //const adapter
   trace.info() << "ConstIteratorAdapter" << std::endl;
-  typedef ConstIteratorAdapter< int*, DefaultFunctor, int > IA1; 
-  IA1 at1( t, DefaultFunctor() ); 
+  typedef ConstIteratorAdapter< int*, functors::Identity, int > IA1; 
+  IA1 at1( t, functors::Identity() ); 
   if ( compareType( at1, IteratorType() ) )
     nbok++; 
   nb++; 
@@ -217,8 +217,8 @@ bool testIteratorCirculatorTraitsAndAdapters()
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   //adapter
   trace.info() << "IteratorAdapter" << std::endl;
-  typedef IteratorAdapter< int*, DefaultFunctor, int > IA2; 
-  IA2 at2( t, DefaultFunctor() ); 
+  typedef IteratorAdapter< int*, functors::Identity, int > IA2; 
+  IA2 at2( t, functors::Identity() ); 
   if ( compareType( at2, IteratorType() ) )
     nbok++; 
   nb++; 
@@ -254,7 +254,7 @@ bool testIteratorCirculatorTraitsAndAdapters()
 
   //const iterator adapter circ, circ const iterator adapter
   trace.info() << "ConstIteratorAdapter of Circulator and Circulator of ConstIteratorAdapter" << std::endl; 
-  Circulator< IA1 > cat1( at1, at1, IA1(t+5, DefaultFunctor()) ); 
+  Circulator< IA1 > cat1( at1, at1, IA1(t+5, functors::Identity()) ); 
   if ( compareType( cat1, CirculatorType() ) )
     nbok++; 
   nb++; 
@@ -263,7 +263,7 @@ bool testIteratorCirculatorTraitsAndAdapters()
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  ConstIteratorAdapter< CI, DefaultFunctor, int > a1ct( CI(t+5, t, t+5), DefaultFunctor() ); 
+  ConstIteratorAdapter< CI, functors::Identity, int > a1ct( CI(t+5, t, t+5), functors::Identity() ); 
   if ( compareType( a1ct, CirculatorType() ) )
     nbok++; 
   nb++; 
@@ -275,7 +275,7 @@ bool testIteratorCirculatorTraitsAndAdapters()
 
   //iterator adapter circ, circ iterator adapter
   trace.info() << "IteratorAdapter of Circulator and Circulator of IteratorAdapter" << std::endl; 
-  Circulator< IA2 > cat2( at2, at2, IA2(t+5, DefaultFunctor()) ); 
+  Circulator< IA2 > cat2( at2, at2, IA2(t+5, functors::Identity()) ); 
   if ( compareType( cat2, CirculatorType() ) )
     nbok++; 
   nb++; 
@@ -284,7 +284,7 @@ bool testIteratorCirculatorTraitsAndAdapters()
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  ConstIteratorAdapter< CI, DefaultFunctor, int > a2ct( CI(t+5, t, t+5), DefaultFunctor() ); 
+  ConstIteratorAdapter< CI, functors::Identity, int > a2ct( CI(t+5, t, t+5), functors::Identity() ); 
   if ( compareType( a2ct, CirculatorType() ) )
     nbok++; 
   nb++; 

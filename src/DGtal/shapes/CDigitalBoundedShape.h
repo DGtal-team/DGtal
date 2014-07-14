@@ -50,7 +50,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalBoundedShape
   /**
@@ -107,7 +108,7 @@ DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
     Point myP;
     
   }; // end of concept CDigitalBoundedShape
-  
+  }
 } // namespace DGtal
 
 

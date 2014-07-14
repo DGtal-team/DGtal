@@ -80,7 +80,7 @@ int main( int argc, char** argv )
   // image binarization and surface extraction
   //types
   typedef ImageContainerBySTLVector<Domain,short int> LabelImage; 
-  typedef ConstImageAdapter<LabelImage, Domain, DefaultFunctor, bool, Thresholder<LabelImage::Value> > BinaryImage;
+  typedef ConstImageAdapter<LabelImage, Domain, functors::Identity, bool, DGtal::functors::Thresholder<LabelImage::Value> > BinaryImage;
   typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
   
@@ -94,8 +94,8 @@ int main( int argc, char** argv )
 
   DGtal::trace.beginBlock("binarization..."); 
 
-  DefaultFunctor g;
-  Thresholder<LabelImage::Value> thresholder( t ); 
+  functors::Identity g;
+  DGtal::functors::Thresholder<LabelImage::Value> thresholder( t ); 
   BinaryImage binaryImage(labelImage, labelImage.domain(), g, thresholder);
   trace.info() << "threshold: "
 	       << t

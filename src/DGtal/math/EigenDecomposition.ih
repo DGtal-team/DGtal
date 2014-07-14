@@ -39,9 +39,9 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template  <DGtal::Dimension TN, typename TComponent>
+template  <DGtal::Dimension TN, typename TComponent, typename TMatrix>
 void
-DGtal::EigenDecomposition<TN,TComponent>::
+DGtal::EigenDecomposition<TN,TComponent,TMatrix>::
 tridiagonalize( Matrix& V, Vector& d, Vector& e )
 {
   for( Dimension j = 0; j < dimension; ++j )
@@ -187,9 +187,9 @@ tridiagonalize( Matrix& V, Vector& d, Vector& e )
 }
 
 //-----------------------------------------------------------------------------
-template  <DGtal::Dimension TN, typename TComponent>
+template  <DGtal::Dimension TN, typename TComponent, typename TMatrix>
 void
-DGtal::EigenDecomposition<TN,TComponent>::
+DGtal::EigenDecomposition<TN,TComponent,TMatrix>::
 decomposeQL( Matrix& V, Vector& d, Vector e )
 {
   for ( Dimension i = 1; i < dimension; ++i )
@@ -302,9 +302,9 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
     }
 }
 //-----------------------------------------------------------------------------
-template  <DGtal::Dimension TN, typename TComponent>
+template  <DGtal::Dimension TN, typename TComponent, typename TMatrix>
 void
-DGtal::EigenDecomposition<TN,TComponent>::
+DGtal::EigenDecomposition<TN,TComponent,TMatrix>::
 getEigenDecomposition( const Matrix& matrix, Matrix& eigenVectors, Vector& eigenValues )
 {
   Vector e;              // Default constructor sets to zero vector;

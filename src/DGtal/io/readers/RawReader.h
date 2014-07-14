@@ -79,12 +79,12 @@ namespace DGtal
    *
    * @tparam TImageContainer the image container to use. 
    *
-   * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>) .
+   * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
    *
    * @see testRawReader.cpp
    */
   template <typename TImageContainer,
-	    typename TFunctor = CastFunctor< typename TImageContainer::Value > >
+	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   struct RawReader
   {
     // ----------------------- Standard services ------------------------------
@@ -110,7 +110,7 @@ namespace DGtal
      * @param extent the size of the raw data set.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to CastFunctor < TImageContainer::Value > .
+     * default set to functors::Cast < TImageContainer::Value > .
      *
  
      * @return an instance of the ImageContainer.

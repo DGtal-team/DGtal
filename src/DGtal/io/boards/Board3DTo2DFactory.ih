@@ -485,7 +485,7 @@ template < typename TIterator, typename TSCell>
 inline
 void
 DGtal::Board3DTo2DFactory<Space,KSpace>::draw( DGtal::Board3DTo2D<Space, KSpace> & board,
-                  const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter )
+                  const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & aRangeAdapter )
 {
   DGtal::Display3DFactory<Space,KSpace>::draw( board, aRangeAdapter);
 }

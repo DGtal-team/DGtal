@@ -500,7 +500,7 @@ namespace DGtal
   template < typename TIterator, typename TSCell>
   static void
   draw( Board3DTo2D<Space, KSpace> & board,
-        const ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & aRangeAdapter );
+        const ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & aRangeAdapter );
   // SCellsRange
 
   // PointsRange

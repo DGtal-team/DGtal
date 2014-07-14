@@ -61,9 +61,9 @@ DGtal::setFromPointsRangeAndFunctor(const I& itb, const I& ite, const O& ito,
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename F::Point> ));
 
-  typedef Thresholder<typename F::Value,false,false> T; 
+  typedef functors::Thresholder<typename F::Value,false,false> T; 
   T t( aThreshold ); 
-  Composer<F, T, bool> aPred(aFunctor, t); 
+  functors::Composer<F, T, bool> aPred(aFunctor, t); 
   std::remove_copy_if(itb, ite, ito, aPred); 
 }
 
@@ -93,13 +93,13 @@ DGtal::setFromImage(const I& aImg, const O& ito,
   //domain
   typename I::Domain d = aImg.domain(); 
   //predicate from two thresholders and an image
-  typedef Thresholder<typename I::Value,true,false> T1; 
+  typedef functors::Thresholder<typename I::Value,true,false> T1; 
   T1 t1( low ); 
-  typedef Thresholder<typename I::Value,false,false> T2; 
+  typedef functors::Thresholder<typename I::Value,false,false> T2; 
   T2 t2( up ); 
-  typedef PredicateCombiner<T1,T2,OrBoolFct2 > P; 
+  typedef functors::PredicateCombiner<T1,T2,OrBoolFct2 > P; 
   P p( t1, t2, OrBoolFct2() ); 
-  Composer<I, P, bool> aPred(aImg, p); 
+  functors::Composer<I, P, bool> aPred(aImg, p); 
   //call
   std::remove_copy_if(d.begin(), d.end(), ito, aPred); 
 }
