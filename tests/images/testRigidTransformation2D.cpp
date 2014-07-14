@@ -57,9 +57,9 @@ using namespace Z2i;
 class testRigidTransformation2D
 {
   typedef ImageSelector<Domain, unsigned char >::Type Image;
-  typedef ForwardRigidTransformation2D < Point, RealVector > ForwardTrans;
-  typedef BackwardRigidTransformation2D < Point, RealVector > BackwardTrans;
-  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
+  typedef ForwardRigidTransformation2D < Space > ForwardTrans;
+  typedef BackwardRigidTransformation2D < Space > BackwardTrans;
+  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation2D < Domain, ForwardTrans > DomainTrans;
   typedef DomainTrans::Bounds Bounds;
 private:
@@ -67,7 +67,7 @@ private:
   Image gray;
   ForwardTrans forwardTrans;
   BackwardTrans backwardTrans;
-  DefaultFunctor idD;
+  Identity idD;
   DomainTrans domainForwardTrans;
 public:
   // Setup part
