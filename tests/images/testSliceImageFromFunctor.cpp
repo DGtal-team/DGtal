@@ -61,48 +61,47 @@ bool testSliceImageFromFunctor()
   trace.beginBlock ( "Testing block ..." );
   typedef  DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char>  Image3D;
 
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::Projector< DGtal::Z3i::Space>,
-				   Image3D::Value,  DGtal::DefaultFunctor >  MySliceImageAdapter;
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, functors::Projector< DGtal::Z3i::Space>,
+				   Image3D::Value,  DGtal::functors::Identity >  MySliceImageAdapter;
 
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int>,
-				   Image3D::Value,  DGtal::DefaultFunctor >  MyRotatorSliceImageAdapter;
-
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, functors::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int>,
+				   Image3D::Value,  DGtal::functors::Identity >  MyRotatorSliceImageAdapter;
 
   bool res= true;
   Image3D image = VolReader<Image3D>::importVol( filename ); 
-  DGtal::Projector<DGtal::Z2i::Space>  projX(0); projX.initRemoveOneDim(0); 
+  DGtal::functors::Projector<DGtal::Z2i::Space>  projX(0); projX.initRemoveOneDim(0);
   DGtal::Z2i::Domain domainX(projX(image.domain().lowerBound()), 
 			     projX(image.domain().upperBound()));
 
-  
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor(20); aSliceFunctor.initAddOneDim(0);
-  MySliceImageAdapter sliceImageX(image, domainX, aSliceFunctor, DGtal::DefaultFunctor());
+ 
+  DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctor(0); aSliceFunctor.initAddOneDim(0);
+  MySliceImageAdapter sliceImageX(image, domainX, aSliceFunctor, DGtal::functors::Identity());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimX.pgm",sliceImageX);
   
-   DGtal::Projector<DGtal::Z2i::Space>  projY(0); projY.initRemoveOneDim(1); 
+   DGtal::functors::Projector<DGtal::Z2i::Space>  projY(0); projY.initRemoveOneDim(1); 
   DGtal::Z2i::Domain domainY(projY(image.domain().lowerBound()), 
 			     projY(image.domain().upperBound()));
 
-   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor2(20); aSliceFunctor2.initAddOneDim(1);
-   MySliceImageAdapter sliceImageY(image, domainY, aSliceFunctor2, DGtal::DefaultFunctor());
-   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimY.pgm",sliceImageY);
+  DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctor2(0); aSliceFunctor2.initAddOneDim(1);
+   MySliceImageAdapter sliceImageY(image, domainY, aSliceFunctor2, DGtal::functors::Identity());
+  res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimY.pgm",sliceImageY);
 
 
-  DGtal::Projector<DGtal::Z2i::Space>  projZ(0); projZ.initRemoveOneDim(2); 
+  DGtal::functors::Projector<DGtal::Z2i::Space>  projZ(0); projZ.initRemoveOneDim(2);
   DGtal::Z2i::Domain domainZ(projZ(image.domain().lowerBound()), 
 			     projZ(image.domain().upperBound()));
 
 
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor3(20); aSliceFunctor3.initAddOneDim(2);
-  MySliceImageAdapter sliceImageZ(image, domainZ, aSliceFunctor3, DGtal::DefaultFunctor());
+  DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctor3(0); aSliceFunctor3.initAddOneDim(2);
+  MySliceImageAdapter sliceImageZ(image, domainZ, aSliceFunctor3, DGtal::functors::Identity());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimZ.pgm",sliceImageZ);
 
   
   PointVector<3, int> center(0,0,0);  
-  DGtal::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, image.domain(), 20, 2, 0.5, center);
+  DGtal::functors::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, image.domain(), 0, 2, M_PI/4.0, center);
   
   
-  MyRotatorSliceImageAdapter sliceRotImageZ(image, domainZ, sliceRot, DGtal::DefaultFunctor());
+  MyRotatorSliceImageAdapter sliceRotImageZ(image, domainZ, sliceRot, DGtal::functors::Identity());
   res &= PGMWriter<MyRotatorSliceImageAdapter>::exportPGM("exportedRotSliceZ.pgm",sliceRotImageZ);
 
   

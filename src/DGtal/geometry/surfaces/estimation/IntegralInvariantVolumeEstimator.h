@@ -139,13 +139,13 @@ public:
 
   /// A wrapper around point predicate (functor Point -> bool) that
   /// transforms it into a functor Point -> uint (0 or 1).
-  typedef PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
+  typedef functors::PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
   /// Adapts the a functor Point -> uint (0 or 1) to a functor Cell ->
   /// uint (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
   typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
 
 
-  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Space> KernelSupport;
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Space, KernelSupport > DigitalShapeKernel;

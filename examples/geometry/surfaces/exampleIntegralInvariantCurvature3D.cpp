@@ -64,7 +64,7 @@ int main( int argc, char** argv )
     if ( argc != 4 )
     {
         trace.error() << "Usage: " << argv[0]
-                               << " <fileName.vol> <threshold> <re_convolution_kernel>" << std::endl;
+                               << " <fileName.vol> <threshold> <radius>" << std::endl;
         trace.error() << "Example : "<< argv[0] << " Al.150.vol 0 7" << std::endl;
         return 0;
     }
@@ -114,23 +114,29 @@ int main( int argc, char** argv )
 
     /// Integral Invariant stuff
     //! [IntegralInvariantUsage]
-    double re_convolution_kernel = std::atof(argv[3]);
+    double radius = std::atof(argv[3]);
 
-    typedef IIGeometricFunctors::IIMeanCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+    typedef functors::IIGeometricFunctors::IIMeanCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
     typedef IntegralInvariantVolumeEstimator< Z3i::KSpace, ImagePredicate, MyIICurvatureFunctor > MyIICurvatureEstimator;
+    
+    // For computing Gaussian curvature instead, for example, change the two typedef above by : 
+    // typedef IIGeometricFunctors::IIGaussianCurvature3DFunctor<Z3i::Space> MyIICurvatureFunctor;
+    // typedef IntegralInvariantCovarianceEstimator< Z3i::KSpace, ImagePredicate, MyIICurvatureFunctor > MyIICurvatureEstimator;
+    // and it's done. The following part is exactly the same.
+
     typedef MyIICurvatureFunctor::Value Value;
 
-    MyIICurvatureFunctor curvatureFunctor; /// Functor used to convert volume -> curvature
-    curvatureFunctor.init( h, re_convolution_kernel ); // Initialisation for a grid step and a given Euclidean radius of convolution kernel
+    MyIICurvatureFunctor curvatureFunctor; // Functor used to convert volume -> curvature
+    curvatureFunctor.init( h, radius ); // Initialisation for a grid step and a given Euclidean radius of convolution kernel
 
     MyIICurvatureEstimator curvatureEstimator( curvatureFunctor ); 
-    curvatureEstimator.attach( KSpaceShape, predicate ); /// Setting a KSpace and a predicate on the object to evaluate
-    curvatureEstimator.setParams( re_convolution_kernel/h ); /// Setting the digital radius of the convolution kernel
-    curvatureEstimator.init( h, abegin, aend ); /// Initialisation for a given h
+    curvatureEstimator.attach( KSpaceShape, predicate ); // Setting a KSpace and a predicate on the object to evaluate
+    curvatureEstimator.setParams( radius / h ); // Setting the digital radius of the convolution kernel
+    curvatureEstimator.init( h, abegin, aend ); // Initialisation for a given h, and a range of surfels
 
     std::vector< Value > results;
-    std::back_insert_iterator< std::vector< Value > > resultsIt( results ); /// output iterator for results of Integral Invariant curvature computation
-    curvatureEstimator.eval( abegin, aend, resultsIt ); /// Computation
+    std::back_insert_iterator< std::vector< Value > > resultsIt( results ); // output iterator for results of Integral Invariant curvature computation
+    curvatureEstimator.eval( abegin, aend, resultsIt ); // Computation
     //! [IntegralInvariantUsage]
 
     /// Drawing results

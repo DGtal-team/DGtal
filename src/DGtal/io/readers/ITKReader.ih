@@ -63,8 +63,8 @@ namespace DGtal {
     const DGtalITKImage dgtal_itk_image(itk_image);
     const Domain& domain = dgtal_itk_image.domain();
 
-    typedef ConstImageAdapter<DGtalITKImage, Domain, DefaultFunctor, Value, Functor> AdaptedImage;
-    const AdaptedImage adapted(dgtal_itk_image, domain, DefaultFunctor(), aFunctor);
+    typedef ConstImageAdapter<DGtalITKImage, Domain, functors::Identity, Value, Functor> AdaptedImage;
+    const AdaptedImage adapted(dgtal_itk_image, domain, functors::Identity(), aFunctor);
 
     Image image(domain);
     std::copy(adapted.constRange().begin(), adapted.constRange().end(), image.range().outputIterator());

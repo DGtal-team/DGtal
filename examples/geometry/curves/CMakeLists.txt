@@ -45,7 +45,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      exampleArithDSS3d
    )
    endif(WITH_CAIRO)
-  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
+  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC} ${DGTAL_EXAMPLES_QGL_CAIRO_SRC}) 
    add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE} DGtalIO DGtal)   
   ENDFOREACH(FILE)

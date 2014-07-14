@@ -74,19 +74,19 @@ namespace DGtal
  *
  *  typedef ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char > Image3D;
  *  string filename = "test.dcm";
- *  Image3D image = DicomReader< Image3D, RescalingFunctor<int32_t,Image3D::Value> >::importDicom(
- * 								filename, RescalingFunctor<int32_t,Image3D::Value>(-900,530,0,255) );
+ *  Image3D image = DicomReader< Image3D, Rescaling<int32_t,Image3D::Value> >::importDicom(
+ * 								filename, Rescaling<int32_t,Image3D::Value>(-900,530,0,255) );
  *  @endcode
  *
  * @tparam TImageContainer the type of the image container
  *
- * @tparam TFunctor the type of functor used in the import (you can use the RescalingFunctor as in the example above).
+ * @tparam TFunctor the type of functor used in the import (you can use the Rescaling as in the example above).
  *
  */
 
 
   template <typename TImageContainer,
-		typename TFunctor = CastFunctor< typename TImageContainer::Value > >
+		typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   struct DicomReader
   {
 	// ----------------------- Standard services ------------------------------
@@ -108,7 +108,7 @@ namespace DGtal
 	 * @param aFilename one file of the serie to import.
 	 * @param aFunctor the functor used to import and cast the source
 	 * image values into the type of the image container value (by
-	 * default set to CastFunctor < TImageContainer::Value >.
+	 * default set to functors::Cast < TImageContainer::Value >.
 	 *
 	 * @return an instance of the ImageContainer.
 	 */
