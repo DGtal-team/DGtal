@@ -60,7 +60,7 @@ bool testProjector()
   PointVector<3,int> p(0,1,2); 
 
   //projectors
-  typedef Projector<SpaceND<2,int> > Projector2D; 
+  typedef DGtal::functors::Projector<SpaceND<2,int> > Projector2D;
   std::vector<Dimension> v1, v2; 
   v1.push_back(0);   v1.push_back(2); 
   v2.push_back(2);   v2.push_back(1);
@@ -92,7 +92,7 @@ bool testProjector()
   PointVector<2,int> p(5,2); 
 
   //projectors
-  typedef Projector<SpaceND<3,int> > Projector3D; 
+  typedef DGtal::functors::Projector<SpaceND<3,int> > Projector3D;
   std::vector<Dimension> v1, v2, v4; 
   v1.push_back(0);   v1.push_back(2); v1.push_back(1);  
   v2.push_back(1);   v2.push_back(0);
@@ -107,8 +107,8 @@ bool testProjector()
   PointVector<3, int> pt1(0,0, 0);
   PointVector<3, int> pt2(10,10, 10);
   HyperRectDomain<SpaceND<3, int> >  domain (pt1, pt2);
-  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, domain, 6, 1,  pt1, 0.1);
-  SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
+  DGtal::functors::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot(2, domain, 6, 1,  pt1, 0.1);
+  DGtal::functors::SliceRotator2D< HyperRectDomain<SpaceND<3, int> >, int> sliceRot2(2, domain, 7, 2, 3.14);
   PointVector<2, int> pt(5,5);  
   PointVector<2, int> pt_2(10, 9);  
   PointVector<3, int> ptR(4,5,6);  
@@ -124,7 +124,7 @@ bool testProjector()
 
   //Point2DEmbedderIn3D
   PointVector<3,int> ptOrigin3D(3,3,3);
-  Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder(domain,
+  DGtal::functors::Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder(domain,
 									ptOrigin3D,
 									PointVector<3,int>(6,6,3),
 									PointVector<3,int>(3,3,5),
@@ -141,7 +141,7 @@ bool testProjector()
 
   //Point2DEmbedderIn3D (constructor from normal point)
   PointVector<3,int> pt2Origin3D(5,5,3);
-  Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder2(domain,
+  DGtal::functors::Point2DEmbedderIn3D< HyperRectDomain<SpaceND<3, int> >, int> embedder2(domain,
                                                                          pt2Origin3D,
                                                                          PointVector<3,int>(0,0,3),
 									 4); 
@@ -189,7 +189,7 @@ bool testProjector()
     aGridSize.push_back(5);
     aGridSize.push_back(5);  
     PointVector<2,int> shiftVector(0 ,0);
-    BasicDomainSubSampler< HyperRectDomain<SpaceND<2, int> > > subSampler(domainSource, 
+    DGtal::functors::BasicDomainSubSampler< HyperRectDomain<SpaceND<2, int> > > subSampler(domainSource,
                                                                           aGridSize,  shiftVector);
     trace.info()<< "Subsampling functor on 2D domain " << domainSource <<" with grid size " 
                 << aGridSize[0] << " " << aGridSize[1] << " and shift vector "<< shiftVector <<std::endl ;
@@ -207,7 +207,7 @@ bool testProjector()
     aGridSize3D.push_back(3);  
     aGridSize3D.push_back(1);  
     PointVector<3,int> shiftVector3D(0 ,1, -1);
-    BasicDomainSubSampler< HyperRectDomain<SpaceND<3, int> > > subSampler3D(domainSource3D, 
+    functors::BasicDomainSubSampler< HyperRectDomain<SpaceND<3, int> > > subSampler3D(domainSource3D,
                                                                           aGridSize3D,  shiftVector3D);
     trace.info()<< "Subsampling functor on 3D domain " << domainSource3D <<" with grid size " 
                 << aGridSize3D[0] << " " << aGridSize3D[1]<< " " << aGridSize3D[2] << " and shift vector "<< shiftVector3D <<std::endl ;
@@ -233,7 +233,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
 
-  checkingConcepts<Projector<SpaceND<2,int> >, PointVector<6,int>, PointVector<2,int> >(); 
+  checkingConcepts<functors::Projector<SpaceND<2,int> >, PointVector<6,int>, PointVector<2,int> >();
   //for instance, this does not compile because 
   //the point of dim 6 is projected on a point of dim 2 (and not 3)
   //checkingConcepts<Projector<SpaceND<2,int> >, PointVector<6,int>, PointVector<3,int> >(); 

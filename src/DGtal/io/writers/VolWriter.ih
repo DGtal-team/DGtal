@@ -47,14 +47,13 @@ namespace DGtal {
     DGtal::IOException dgtalio;
   
     std::ofstream out;
-    typename I::Domain::Vector size;
-    const typename I::Domain::Point &upBound = aImage.domain().upperBound();
-    const typename I::Domain::Point &lowBound = aImage.domain().lowerBound();
-    size[0]=upBound[0]-lowBound[0]+1;
-    size[1]=upBound[1]-lowBound[1]+1;
-    size[2]=upBound[2]-lowBound[2]+1;
-
     typename I::Domain domain = aImage.domain();
+    const typename I::Domain::Point &upBound = domain.upperBound();
+    const typename I::Domain::Point &lowBound = domain.lowerBound();
+    typename I::Domain::Point p = I::Domain::Point::diagonal(1);
+    typename I::Domain::Vector size = (upBound - lowBound) + p;
+    typename I::Domain::Vector center = lowBound + ((upBound - lowBound)/2);
+
     typename I::Value val;
     
     try
@@ -62,6 +61,9 @@ namespace DGtal {
 	out.open(filename.c_str());
 
 	//Vol format
+	out << "Center-X: " << center[0] <<std::endl;
+	out << "Center-Y: " << center[1] <<std::endl;
+	out << "Center-Z: " << center[2] <<std::endl;
 	out << "X: "<< size[0]<<std::endl;
 	out << "Y: "<< size[1]<<std::endl;
 	out << "Z: "<< size[2]<<std::endl;
