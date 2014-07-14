@@ -53,7 +53,7 @@ int main( int , char** )
   typedef ImageSelector<Domain, unsigned char >::Type Image;
   typedef ForwardRigidTransformation2D < Space > ForwardTrans;
   typedef BackwardRigidTransformation2D < Space > BackwardTrans;
-  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, DefaultFunctor > MyImageBackwardAdapter;
+  typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation2D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;
   
@@ -62,7 +62,7 @@ int main( int , char** )
     ForwardTrans forwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
     BackwardTrans backwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
     MyTransformedDomain domainForwardTrans ( forwardTrans );
-    DefaultFunctor idD;
+    Identity idD;
     
     Image image = PGMReader<Image>::importPGM ( examplesPath + "samples/church.pgm" ); 
     Bounds bounds = domainForwardTrans ( image.domain() );
