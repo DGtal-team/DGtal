@@ -786,7 +786,7 @@ namespace DGtal
      * 
      * 
      * @param aKSpace the digital space.
-     * @param bdry the digital Jordan surface.
+     * @param aSurfPred the digital Jordan surface.
      * @param anImage the image to be filled.
      * @param aValue the value to fill the image.
      * @param empty_is_inside when 'true', an empty line is considered
@@ -815,7 +815,7 @@ namespace DGtal
      * surface.
      *
      * @param aKSpace the digital space.
-     * @param bdry the digital Jordan surface.
+     * @param aSurfPred the digital Jordan surface.
      * @param anImage the image to be filled.
      * @param aValue the value to fill the image.
      * @param empty_is_outside when 'true', an empty line is considered
