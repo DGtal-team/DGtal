@@ -35,6 +35,12 @@
     ArithmeticalDSS) (Tristan Roussillon,
     [#819](https://github.com/DGtal-team/DGtal/pull/819))
 
+- *IO Package*
+  - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
+   usage of Center-(X,Y,Z) parameters, as described in Vol file 
+   specification. (Jérémy Levallois, 
+   [#879](https://github.com/DGtal-team/DGtal/pull/879))
+
 - *Math Package*
 
     - New classes to compute nD eigen decomposition of symmetric
