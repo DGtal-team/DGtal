@@ -59,9 +59,9 @@ namespace DGtal
    *
    *
    * @tparam TImageContainer the image container to use. 
-   * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>) .
+   * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
    */
-  template <typename TImageContainer, typename TFunctor=  CastFunctor< typename TImageContainer::Value > >
+  template <typename TImageContainer, typename TFunctor=  functors::Cast< typename TImageContainer::Value > >
   struct MagickReader
   {
     // ----------------------- Standard services ------------------------------
@@ -81,7 +81,7 @@ namespace DGtal
      * @param filename the file name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
-     * default set to CastFunctor < TImageContainer::Value > .
+     * default set to functors::Cast < TImageContainer::Value > .
      * @param topbotomOrder if true, the point of coordinate (0,0) will be the bottom left corner image point (default) else the center of image coordinate will be the top left of the image (not usual).  
      * @return an instance of the ImageContainer.
      */

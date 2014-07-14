@@ -51,8 +51,8 @@ int main( int /*argc*/, char** /*argv*/ )
 {
   //! [extract2DImagesFrom3DType]
    typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
-   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
-   				   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
+                                    Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
    //! [extract2DImagesFrom3DType]
 
    //! [extract2DImagesFrom3DOrigin3D]
@@ -72,7 +72,7 @@ int main( int /*argc*/, char** /*argv*/ )
    std::string filename = examplesPath + "samples/lobster.vol";
    Image3D image = VolReader<Image3D>::importVol( filename );
    DGtal::Z3i::Domain domainImage3D = image.domain();
-   DGtal::DefaultFunctor idV;
+   DGtal::functors::Identity idV;
 
    trace.beginBlock ( "Example extract2DImagesFrom3D" );
 
@@ -84,7 +84,7 @@ int main( int /*argc*/, char** /*argv*/ )
      name2 << "lobsterExtracted_"  << i << "V2.pgm";
 
      //! [extract2DImagesFrom3DOExtract]
-     DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(domainImage3D, origin+DGtal::Z3i::Point(i,i,0),
+     DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(domainImage3D, origin+DGtal::Z3i::Point(i,i,0),
 							       ptUpper1+DGtal::Z3i::Point(i,i,0),
 							       ptUpper2+DGtal::Z3i::Point(i,i,0));
 
@@ -92,7 +92,7 @@ int main( int /*argc*/, char** /*argv*/ )
      //! [extract2DImagesFrom3DOExtract]
 
      //! [extract2DImagesFrom3DOExtract2]
-     DGtal::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder2(domainImage3D, ptCenter+DGtal::Z3i::Point(i,i,0),
+     DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder2(domainImage3D, ptCenter+DGtal::Z3i::Point(i,i,0),
 								DGtal::Z3i::RealPoint(1,-1,0),
 								IMAGE_PATCH_WIDTH);
      ImageAdapterExtractor extractedImage2(image, domainImage2D2, embedder2, idV);

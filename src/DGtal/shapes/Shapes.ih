@@ -201,8 +201,8 @@ DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
 {
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   
-  BOOST_CONCEPT_ASSERT((CDigitalBoundedShape<ShapeFunctor>));
-  BOOST_CONCEPT_ASSERT((CDigitalOrientedShape<ShapeFunctor>));
+  BOOST_CONCEPT_ASSERT((concepts::CDigitalBoundedShape<ShapeFunctor>));
+  BOOST_CONCEPT_ASSERT((concepts::CDigitalOrientedShape<ShapeFunctor>));
  
 
   Point pLow = aFunctor.getLowerBound();
@@ -227,8 +227,8 @@ DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
                                          const double h)
 {
   
-  BOOST_CONCEPT_ASSERT((CEuclideanBoundedShape<ShapeFunctor>));
-  BOOST_CONCEPT_ASSERT((CEuclideanOrientedShape<ShapeFunctor>));
+  BOOST_CONCEPT_ASSERT((concepts::CEuclideanBoundedShape<ShapeFunctor>));
+  BOOST_CONCEPT_ASSERT((concepts::CEuclideanOrientedShape<ShapeFunctor>));
 
   RealPoint pLow = aFunctor.getLowerBound();
   RealPoint pUpp = aFunctor.getUpperBound();
