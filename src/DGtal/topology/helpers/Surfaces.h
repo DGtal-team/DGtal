@@ -297,8 +297,9 @@ namespace DGtal
     /**
        Function that extracts the boundary of a 2D shape (specified by
        a predicate on point) in a 2D KSpace. The boundary is returned
-       as a vector of surfels. The surfels are guaranteed to be in the
-       direct orientation ordering.
+       as a set of surfels given in a [TContainer] (typically a
+       std::vector or std::set). The surfels are guaranteed to be in
+       the direct orientation ordering.
 
        Creates a vector of signed surfels whose elements represents a
        2D boundary component of a digital shape described by a
@@ -306,11 +307,13 @@ namespace DGtal
        of the shape by starting from the given [start_surfel]. It only
        tracks the boundary of a 2D shape.
        
+       @tparam TContainer the container to represent the surfel boundary.
+
        @tparam PointPredicate a model of CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
-       @param aSCellContour2D (modified) a vector of cells (which are
+       @param aSCellContour2D (modified) a [TContainer] of cells (which are
        all surfels), containing the ordered list of the boundary
        component of [spelset] which touches [start_surfel].
        
@@ -326,9 +329,9 @@ namespace DGtal
        @param start_surfel a signed surfel which should be between an
        element of [shape] and an element not in [shape].
     */
-    template <typename PointPredicate >
+    template <typename PointPredicate, template<class, class> class TContainer >
     static 
-    void track2DBoundary( std::vector<SCell> & aSCellContour2D,
+    void track2DBoundary(TContainer<SCell, std::allocator<SCell> >  & aSCellContour2D,
         const KSpace & K,
         const SurfelAdjacency<KSpace::dimension> & surfel_adj,
         const PointPredicate & pp,
@@ -339,8 +342,9 @@ namespace DGtal
     /**
        Function that extracts a 2D slice of the boundary of a nD shape
        (specified by a predicate on point) in a nD KSpace. The
-       boundary is returned as a vector of surfels. The surfels are
-       guaranteed to be in the direct orientation ordering.
+       boundary is returned as a [TContainer] of surfels (typically a
+       std::vector or std::set). The surfels are guaranteed to be in
+       the direct orientation ordering.
 
        Creates a vector of signed surfels whose elements represents a
        2D boundary component of a digital shape described by a
@@ -351,11 +355,13 @@ namespace DGtal
        directions [trackDir] and the orthogonal direction of
        [start_surfel].
        
+       @tparam TContainer the container to represent the 2D slice.
+       
        @tparam PointPredicate a model of CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
-       @param aSCellContour2D (modified) a vector of cells (which are
+       @param aSCellContour2D (modified) a [TContainer] of cells (which are
        all surfels), containing the ordered list of the boundary
        component of [spelset] which touches [start_surfel].
        
@@ -375,9 +381,9 @@ namespace DGtal
        @param start_surfel a signed surfel which should be between an
        element of [shape] and an element not in [shape].
     */
-    template <typename PointPredicate>
+    template <typename PointPredicate, template<class, class> class TContainer >
     static 
-    void track2DSliceBoundary( std::vector<SCell> & aSCellContour2D,
+    void track2DSliceBoundary(  TContainer<SCell, std::allocator<SCell> > & aSCellContour2D,
 			       const KSpace & K, 
 			       const Dimension & trackDir,
 			       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
@@ -387,11 +393,12 @@ namespace DGtal
 
     /**
        Function that extracts a 1d-contour (specified by a predicate
-       on surfel) in a 2D KSpace. The boundary is returned as a vector
-       of surfels. The surfels are guaranteed to be in the direct
+       on surfel) in a 2D KSpace. The boundary is returned as a
+       [TContainer] of surfels (typically a std::vector or
+       std::set of surfels). The surfels are guaranteed to be in the direct
        orientation ordering.
 
-       Creates a vector of signed surfels whose elements represents a
+       Creates a set of signed surfels whose elements represents a
        component of a digital surface described by a
        SurfelPredicate. The algorithm tracks surfels along the surface
        by starting from the given \a start_surfel. All surfels are
@@ -400,12 +407,14 @@ namespace DGtal
        extremity) while the last surfel is at the other
        extremity. Otherwise, the first surfel is \a start_surfel.
        
+       @tparam TContainer the container to represent the contour.
+       
        @tparam SurfelPredicate a model of CSurfelPredicate, meaning a
        functor taking a Surfel (SCell) and returning 'true' whenever
        the surfel belongs to the digital surface. Models include
        FrontierPredicate and BoundaryPredicate.
        
-       @param aSCellContour (modified) a vector of cells (which are
+       @param aSCellContour (modified) a [TContainer] of cells (which are
        all surfels), containing the ordered list of surfels that forms
        the connected component containing surfel [start_surfel].
        
@@ -418,9 +427,9 @@ namespace DGtal
 
        @param start_surfel a signed surfel such that sp(start_surfel) is true.
     */
-    template <typename SurfelPredicate >
+    template <typename SurfelPredicate, template<class, class> class TContainer >
     static 
-    void track2DSurface( std::vector<SCell> & aSCellContour,
+    void track2DSurface( TContainer<SCell, std::allocator<SCell> > & aSCellContour,
 			 const KSpace & K,
 			 const SurfelAdjacency<KSpace::dimension> & surfel_adj,
 			 const SurfelPredicate & sp,
@@ -431,9 +440,9 @@ namespace DGtal
     /**
        Function that extracts a 2D slice of a n-1 digital surface
        (specified by a predicate on surfel) in a nD KSpace. The
-       boundary is returned as a vector of surfels. The surfels (of
-       dimension n-1) are guaranteed to be in the direct orientation
-       ordering.
+       boundary is returned as a [TContainer] of surfels (typically a
+       std::vector or std::set of surfels). The surfels (of dimension
+       n-1) are guaranteed to be in the direct orientation ordering.
 
        Creates a vector of signed surfels whose elements represents a
        component of a slice of digital surface described by a
@@ -446,12 +455,15 @@ namespace DGtal
        is at the other extremity. Otherwise, the first surfel is \a
        start_surfel.
 
+       @tparam TContainer the container to represent the contour.
+
+
        @tparam SurfelPredicate a model of CSurfelPredicate, meaning a
        functor taking a Surfel (SCell) and returning 'true' whenever
        the surfel belongs to the digital surface.  Models include
        FrontierPredicate and BoundaryPredicate.
        
-       @param aSCellContour (modified) a vector of cells (which are
+       @param aSCellContour (modified) a [TContainer]  of cells (which are
        all surfels), containing the ordered list of surfels that forms
        the connected component of the digital surface slice containing
        surfel \a start_surfel and the direction \a trackDir.
@@ -469,9 +481,9 @@ namespace DGtal
 
        @param start_surfel a signed surfel such that sp(start_surfel) is true.
     */
-    template <typename SurfelPredicate>
+    template <typename SurfelPredicate,  template<class, class> class TContainer>
     static 
-    void track2DSliceSurface( std::vector<SCell> & aSCellContour,
+    void track2DSliceSurface(  TContainer<SCell, std::allocator<SCell>  > & aSCellContour,
 			       const KSpace & K, 
 			       const Dimension & trackDir,
 			       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
@@ -483,14 +495,18 @@ namespace DGtal
     /**
        Function that extracts the boundary of a 2D shape (specified by
        a predicate on point) in a 2D KSpace. The boundary is returned
-       as a vector of points.
+       as a [TContainer] of points (typically a std::vector or
+       std::set).
        
        This method uses random tries to find a first linel separating
        an interior pixel from an exterior one. It then follows direct
        orientations to extract the 4-connected set of points.
 
-       @param aVectorOfPoints (returns) the sequence of points of the
-       boundary component of the digitized shape containing [start_surfel].
+       @tparam TContainer the container to represent the contour.
+
+       @param aSetOfPoints (returns) a [TContainer] containing the
+       sequence of points of the boundary component of the digitized
+       shape containing [start_surfel].
 
        @param K any space of dimension 2.
 
@@ -504,10 +520,10 @@ namespace DGtal
        @param start_surfel a signed surfel which should be between an
        element of [shape] and an element not in [shape].
     */
-    template <typename PointPredicate>
+    template <typename PointPredicate,  template<class, class> class TContainer >
     static
     void 
-    track2DBoundaryPoints( std::vector<Point> & aVectorOfPoints,
+    track2DBoundaryPoints(  TContainer<Point, std::allocator<Point> > & aSetOfPoints,
          const KSpace & K, 
          const SurfelAdjacency<KSpace::dimension> & surfel_adj,
          const PointPredicate & pp,
@@ -517,19 +533,22 @@ namespace DGtal
     /**
        Function that extracts all the boundaries of a 2D shape
        (specified by a predicate on point) in a 2D KSpace. The
-       boundaries are returned as a vector of vector of points.
+       boundaries are returned as a vector of contours. 
 
-       Extract all 4-connected contours as a vector containing the sequence
-       of contour Points.  Each contour is represented by a vector of
-       points defined by the sequence of pointels extracted from the
-       boundary surfels. Calls extractAll2DSCellContours.
+       Extract all 4-connected contours as a vector containing the
+       sequence of contour Points.  Each contour are represented in a
+       [TContainer] of points (typically a std::vector or
+       std::set) defined by the sequence of pointels extracted from
+       the boundary surfels. Calls extractAll2DSCellContours.
+       
+       @tparam   TContainer the container to represent the contour. 
        
        @tparam PointPredicate a model of CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
        @param aVectPointContour2D (modified) a vector of contour represented
-       by a vector of cells (which are all surfels), containing the
+       by a [TContainer]  of cells (which are all surfels), containing the
        ordered list of the boundary component of [pp].
        
        @param aKSpace any space.
@@ -540,10 +559,10 @@ namespace DGtal
        @param aSAdj the surfel adjacency chosen for the tracking.
 
     */
-    template <typename PointPredicate>
+    template <typename PointPredicate,  template<class, class> class TContainer>
     static 
     void extractAllPointContours4C
-    ( std::vector< std::vector< Point > > & aVectPointContour2D,
+    ( std::vector<  TContainer<Point, std::allocator<Point> > > & aVectPointContour2D,
       const KSpace & aKSpace,
       const PointPredicate & pp,
       const SurfelAdjacency<2> &aSAdj );
@@ -552,17 +571,20 @@ namespace DGtal
 
     /**
        Extract all contours as a vector containing the set of contours
-       composed of SCell.  Each contour is represented by a vector of
-       signed surfels whose elements represents a boundary component of
-       a digital shape defined by the predicate [pp]. The algorithms
-       tracks surfels along the boundary of the shape.
+       composed of SCell.  Each contour is represented by a container
+       (template [TContainer] typically a std::vector or std::set)
+       of signed surfels whose elements represents a boundary
+       component of a digital shape defined by the predicate [pp]. The
+       algorithms tracks surfels along the boundary of the shape.
        
        @tparam PointPredicate a model of CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
        
+       @tparam TContainer the container to represent the contour.
+
        @param aVectSCellContour2D (modified) a vector of contour represented
-       by a vector of cells (which are all surfels), containing the
+       by a [TContainer] of cells (which are all surfels), containing the
        ordered list of the boundary component of [spelset].
        
        @param aKSpace any space.
@@ -572,10 +594,10 @@ namespace DGtal
        @param pp an instance of a model of CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
     */
-    template <typename PointPredicate>
+    template <typename PointPredicate, template<class, class> class TContainer  >
     static 
     void extractAll2DSCellContours
-    ( std::vector< std::vector<SCell> > & aVectSCellContour2D,
+    ( std::vector<  TContainer<SCell, std::allocator<SCell> > > & aVectSCellContour2D,
       const KSpace & aKSpace,
       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
       const PointPredicate & pp );
@@ -584,16 +606,20 @@ namespace DGtal
     /**
        Extract all surfel elements associated to each connected
        components of the given DigitalSet. The connected surfel set
-       are given as result in a vector containing all components. The
-       orientation of the resulting SCell indicates the exterior
-       orientation according the positive axis.
+       are given as result in a container (template
+       [TCComponentContainer] typically a std::vector or std::set) vector
+       containing all components. The orientation of the resulting
+       SCell indicates the exterior orientation according the positive
+       axis.
        
+       @tparam TCComponentContainer the container to represent the contour.
+        
        @tparam PointPredicate a model of CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
        @param aVectConnectedSCell (modified) a vector containing for
-       each connected components a vector of the sequence of connected
+       each connected components a [TContainer] of the sequence of connected
        SCells.
        
        @param aKSpace any space.
@@ -608,10 +634,10 @@ namespace DGtal
        exterior (default =false). This is used only for displaying
        cells with Viewer3D. This mechanism should evolve shortly.
     */
-    template <typename PointPredicate >
+    template <typename PointPredicate, template<class, class> class TContainer >
     static 
     void extractAllConnectedSCell
-    ( std::vector< std::vector<SCell> > & aVectConnectedSCell,
+    ( std::vector<  TContainer<SCell, std::allocator<SCell> > > & aVectConnectedSCell,
       const KSpace & aKSpace,
       const SurfelAdjacency<KSpace::dimension> & aSurfelAdj,
       const PointPredicate & pp,
@@ -630,12 +656,14 @@ namespace DGtal
        order to get the direction of shape exterior (default
        =false). This is used only for displaying cells with
        Viewer3D. This mechanism should evolve shortly.
+       
+       @tparam TContainer the container to represent the set of SCell.
 
        @tparam PointPredicate a model of CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
-       @param aVectOfSCell (modified) a vector containing the SCell to
+       @param aSetOfSCell (modified) a TContainer containing the SCell to
        be oriented positively in the direction of the exterior.
        
        @param aKSpace any space.
@@ -644,9 +672,9 @@ namespace DGtal
        instance a SetPredicate for a digital set representing a shape.
        
     */
-    template <typename PointPredicate>
+    template <typename PointPredicate, template<class, class> class TContainer>
     static 
-    void orientSCellExterior(std::vector<SCell> & aVectOfSCell,  
+    void orientSCellExterior(TContainer<SCell, std::allocator<SCell> > & aSetOfSCell,  
            const KSpace & aKSpace, 
            const PointPredicate & pp  );
 
