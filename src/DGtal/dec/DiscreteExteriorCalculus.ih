@@ -42,7 +42,7 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::DiscreteE
 
     // init khalimsky space
     // FIXME borders are removed from set => better not initialize kspace
-    // FIXME should be open or closed? => closed
+    // FIXME should be open or closed? => closed = true
     const typename TDigitalSet::Domain set_domain = _set.domain();
     const bool kspace_init_ok = const_cast<KSpace&>(myKSpace).init(set_domain.lowerBound(), set_domain.upperBound(), true);
     ASSERT(kspace_init_ok);
@@ -452,7 +452,6 @@ DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>::updateFla
         else points = myKSpace.sUpperIncident(cell);
 
         // project vector field along edge from neighboring points
-        ASSERT( points.size() == 2 );
         typedef std::list<Index> BorderIndexes;
         BorderIndexes border_indexes;
         for (typename Points::const_iterator pi=points.begin(), pie=points.end(); pi!=pie; pi++)
