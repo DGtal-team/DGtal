@@ -137,7 +137,7 @@ DGtal::Display2DFactory::drawWithColorMap(DGtal::Board2D& board, const DGtal::KF
     for (typename TCalculus::Index index=0; index<kform.myCalculus->kFormLength(order, duality); index++)
     {
         const SCell& cell = kform.myCalculus->getSCell(order, duality, index);
-        ASSERT(kform.myCalculus.myKSpace.sSign(cell) == TCalculus::KSpace::POS);
+        ASSERT(kform.myCalculus->myKSpace.sSign(cell) == TCalculus::KSpace::POS);
 
         const bool& flipped = kform.myCalculus->isSCellFlipped(cell);
         SCell displayed_cell = cell;
