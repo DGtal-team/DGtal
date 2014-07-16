@@ -72,8 +72,8 @@ public:
   // Setup part
   testRigidTransformation3D() : 
   binary ( PGMReader<Image>::importPGM3D ( testPath + "samples/cat10.pgm3d" ) ),
-  forwardTrans ( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector ( 3, -3, 3 ) ),
-  backwardTrans ( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector ( 3, -3, 3 ) ),
+  forwardTrans( Point ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) );
+  backwardTrans( Point ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) );
   domainForwardTrans(forwardTrans)
   {}
   

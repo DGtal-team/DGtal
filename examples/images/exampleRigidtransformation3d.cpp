@@ -60,8 +60,8 @@ int main( int , char** )
   
   trace.beginBlock ( "Example rigidtransformation3d" );
   
-    ForwardTrans forwardTrans( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector( 3, -3, 3 ) );
-    BackwardTrans backwardTrans( RealVector ( 1, 0, 1 ), Point ( 5, 5, 5 ), M_PI_4, RealVector( 3, -3, 3 ) );
+    ForwardTrans forwardTrans( Point ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) );
+    BackwardTrans backwardTrans( Point ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) );
     MyTransformedDomain domainForwardTrans ( forwardTrans );
     Identity idD;
     
@@ -71,7 +71,7 @@ int main( int , char** )
   
     trace.beginBlock ( "Backward - Eulerian model" );
       MyImageBackwardAdapter adapter ( image, transformedDomain, backwardTrans, idD );
-      adapter >> "backward_transform.vol";
+      adapter >> "backward_transform.pgm3d";
     trace.endBlock();
   
     trace.beginBlock( "Forward - Lagrangian model" );
@@ -80,7 +80,7 @@ int main( int , char** )
       {
 	transformed.setValue ( forwardTrans ( *it ), image ( *it ) );
       }
-      transformed >> "forward_transform.vol";
+      transformed >> "forward_transform.pgm3d";
     trace.endBlock();
   trace.endBlock();
   return 0;
