@@ -102,11 +102,11 @@ namespace DGtal
       {
 	Point p;
 	p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
-	t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + 0.5 );
+	t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + origin[0] + 0.5 );
 	
 	p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
-	t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + 0.5 );
-	return p + origin;
+	t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + origin[1] + 0.5 );
+	return p;
       }
       
     // ------------------------- Protected Datas ------------------------------
@@ -166,11 +166,11 @@ namespace DGtal
       {
 	Point p;
 	p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
-	t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
+	t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + origin[0] + 0.5 );
 	
 	p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) 
-	+ t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + 0.5 );
-	return p + origin;
+	+ t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + origin[1] + 0.5 );
+	return p;
       }
       
     // ------------------------- Protected Datas ------------------------------
