@@ -192,7 +192,7 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
      * Attach a digital surface. After this call, the object is then
      * invalid and the user must called \ref setParams.
      *
-     * @param surface the digital surface that is aliased in this. The
+     * @param aSurface the digital surface that is aliased in this. The
      * user can \b secure the aliasing by passing a
      * CountedConstPtrOrConstPtr.
      */
@@ -215,7 +215,7 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
 
     /**
      * Initialisation of estimator parameters.
-     * @param [in] h grid size (must be >0).
+     * @param [in] _h grid size (must be >0).
      * @param [in] radius radius of the ball kernel.
      *
      */
