@@ -3,9 +3,10 @@
 
 ## New Features / Critical Changes
 
-- *Base*
+- *General*
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
+ - The DGtal main website is now http://dgtal.org
 
  - Global refactoring of base functors (David Coeurjolly,
    [#861](https://github.com/DGtal-team/DGtal/pull/861))
@@ -140,7 +141,8 @@
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
     [#835](https://github.com/DGtal-team/DGtal/pull/835))
-  - Fixing image thresholders which require CConstImage instead of
+  - Fixing image thresholders (SimpleThresholdForegroundPredicate and
+    IntervalForegroundPredicate) which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
     
