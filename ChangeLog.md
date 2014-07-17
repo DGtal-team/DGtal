@@ -112,6 +112,10 @@
   - Shape concepts have been moved to concepts:: namespace (David
   Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
 
+- *Topology Package*
+  - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
 
 ## Bug Fixes
 
@@ -137,6 +141,12 @@
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
+  - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
+- *Graph Package*
+  - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
 
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
