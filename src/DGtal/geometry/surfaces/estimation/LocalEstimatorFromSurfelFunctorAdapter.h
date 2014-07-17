@@ -63,7 +63,7 @@ namespace DGtal
   /**
    * Description of template class 'LocalEstimatorFromSurfelFunctorAdapter' <p>
    * \brief Aim: this class adapts any local functor on digital surface element to define
-   * a local estimator.
+   * a local estimator. This class is model of CDigitalSurfaceLocalEstimator.
    *
    * When we evaluate the adapted estimator at a surfel @a s, we first
    * identify the set of neighboring around @a s using a
@@ -115,7 +115,7 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
 
-    ///Digital surface type
+    ///Digital surface container type
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
 
     ///Metric type
@@ -133,17 +133,28 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     ///Quantity type
     typedef typename TFunctorOnSurfel::Quantity Quantity;
 
+    ///The "real number" type
+    typedef double Scalar;
+
+    ///Digital surface type
+    typedef DigitalSurface< DigitalSurfaceContainer > Surface;
+
   private:
 
     ///Embedded and type definitions
     typedef typename FunctorOnSurfel::SCellEmbedder Embedder;
     typedef std::binder1st<Metric> MetricToPoint;
     typedef functors::Composer<Embedder, MetricToPoint, Value> VertexFunctor;
-    typedef DistanceBreadthFirstVisitor< DigitalSurface< DigitalSurfaceContainer >, 
+    typedef DistanceBreadthFirstVisitor< Surface, 
                                          VertexFunctor> Visitor;
 
 
   public:
+
+    /**
+     * Default constructor.
+     */
+    LocalEstimatorFromSurfelFunctorAdapter ();
 
     /**
      * Constructor.
@@ -158,7 +169,7 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
      * function of the distance to the surfel.
      */
     LocalEstimatorFromSurfelFunctorAdapter
-    ( ConstAlias< DigitalSurface< DigitalSurfaceContainer > >  aSurface,
+    ( ConstAlias< Surface >  aSurface,
       ConstAlias<TMetric> aMetric,
       Alias<FunctorOnSurfel>  aFunctor,
       ConstAlias<ConvolutionFunctor> aConvolutionFunctor );
@@ -171,14 +182,44 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     // ----------------------- Interface --------------------------------------
   public:
 
+    /**
+     @return the gridstep. 
+     @pre must be called after init
+    */
+    Scalar h() const;
+
+    /**
+     * Attach a digital surface. After this call, the object is then
+     * invalid and the user must called \ref setParams.
+     *
+     * @param aSurface the digital surface that is aliased in this. The
+     * user can \b secure the aliasing by passing a
+     * CountedConstPtrOrConstPtr.
+     */
+    void attach( ConstAlias<Surface> aSurface );
+
+    /**
+     * Initialisation of estimator specific parameters.
+     *
+     * @param aMetric the metric
+     *
+     * @param aFunctor a functor on digital surface elements (e.g. the
+     * normal or the curvature estimation)
+     *
+     * @param aConvolutionFunctor a functor giving the weight as a
+     * function of the distance to the surfel.
+     */
+    void setParams( ConstAlias<TMetric> aMetric,
+      Alias<FunctorOnSurfel>  aFunctor,
+      ConstAlias<ConvolutionFunctor> aConvolutionFunctor );
 
     /**
      * Initialisation of estimator parameters.
-     * @param [in] h grid size (must be >0).
+     * @param [in] _h grid size (must be >0).
      * @param [in] radius radius of the ball kernel.
      *
      */
-    void init(const double h,
+    void init(const double _h,
               const Value radius);
 
 
@@ -215,13 +256,6 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     bool isValid() const;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    LocalEstimatorFromSurfelFunctorAdapter();
 
   private:
 
@@ -244,13 +278,13 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
   private:
 
     ///Digital surface member
-    const DigitalSurface< DigitalSurfaceContainer > * mySurface;
+    CountedConstPtrOrConstPtr<Surface> mySurface;
 
     ///Functor member
-    FunctorOnSurfel * myFunctor;
+    FunctorOnSurfel* myFunctor;
 
     ///Distance functor
-    const Metric * myMetric;
+    CountedConstPtrOrConstPtr<Metric> myMetric;
 
     ///Grid step
     double myH;
@@ -259,10 +293,10 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     bool myInit;
 
     ///Embedder object
-    const Embedder myEmbedder;
+    Embedder myEmbedder;
 
     ///Convolution functor
-    const ConvolutionFunctor *myConvFunctor;
+    CountedConstPtrOrConstPtr<ConvolutionFunctor> myConvFunctor;
 
     ///Ball radius
     Value myRadius;
