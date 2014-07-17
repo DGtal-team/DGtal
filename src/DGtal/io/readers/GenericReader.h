@@ -95,7 +95,7 @@ namespace DGtal
    * @tparam Tdim the dimension of the container (by default given by the container).
    *
    */
-  template <typename TContainer, int Tdim=TContainer::Point::dimension >
+  template <typename TContainer, int Tdim=TContainer::Point::dimension,  typename TValue = typename TContainer::Value>
   struct GenericReader
   {
     BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;
@@ -117,8 +117,8 @@ namespace DGtal
    * GenericReader
    * Template partial specialisation for volume images of dimension 3
    **/
-  template <typename TContainer>
-  struct GenericReader<TContainer, 3 >
+  template <typename TContainer, typename TValue>
+  struct GenericReader<TContainer, 3 , TValue>
   {
     BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;
     /**
@@ -193,8 +193,8 @@ namespace DGtal
    * GenericReader
    * Template partial specialisation for volume images of dimension 2
    **/
-  template <typename TContainer>
-  struct GenericReader<TContainer, 2>
+  template <typename TContainer, typename TValue>
+  struct GenericReader<TContainer, 2, TValue>
   {
     BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;
 
