@@ -114,6 +114,7 @@ namespace DGtal
     SCell findABel( const KSpace & K,
         const PointPredicate & pp,
         unsigned int nbtries = 1000 ) throw (DGtal::InputException);
+
     /**
        Find a bel in some digital set given two hints (one point
        inside, one point outside).
@@ -122,7 +123,8 @@ namespace DGtal
        the inside of a digital shape, meaning a functor taking a Point
        and returning 'true' whenever the point belongs to the shape.
 
-       @pre we must have x1 < x2 (lexicographic order).
+       @pre we must have pp( x1 ) != pp( x2 ), i.e. one point should
+       satisfy the predicate while the other not.
 
        @param K any cellular grid space.
 
@@ -138,8 +140,7 @@ namespace DGtal
        != pp( x2 ).
 
        @return a signed surfel separating a digital point in [dset]
-       from a face adjacent digital point outside [dset] or throws an
-       InputException if none was found after [nbtries] iterations.
+       from a face adjacent digital point outside [dset].
     */
     template <typename PointPredicate>
     static
