@@ -82,6 +82,10 @@
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
 
+- *Topology Package*
+  - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
 ## Bug Fixes
 
 
@@ -97,7 +101,11 @@
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
-  - documentation of Surfaces.findABell (David Coeurjolly,
+  - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
+- *Graph Package*
+  - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
 
 - *Image Package*
