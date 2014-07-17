@@ -120,7 +120,7 @@ int main( int argc, char** argv )
   typedef MyDistanceVisitor::Node MyNode;
   typedef MyDistanceVisitor::Scalar MySize;
 
-  SCellEmbedder embedder;
+  SCellEmbedder embedder( ks );
   Distance distance;
   DistanceToPoint distanceToPoint = std::bind1st( distance, embedder( bel ) );
   VertexFunctor vfunctor( embedder, distanceToPoint );
@@ -141,12 +141,13 @@ int main( int argc, char** argv )
   //! [volDistanceTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
   QApplication application(argc,argv);
-  Viewer3D<> viewer;
+  Viewer3D<> viewer( ks );
   viewer.show(); 
   HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
   MyDistanceVisitor visitor2( digSurf, vfunctor, bel );
+  viewer << SetMode3D( bel.className(), "Basic" );
   viewer << CustomColors3D( Color::Black, Color::White )
-         << ks.unsigns( bel );
+         << bel;
   visitor2.expand();
   std::vector< MyDistanceVisitor::Node > layer;
   while ( ! visitor2.finished() )
@@ -154,7 +155,7 @@ int main( int argc, char** argv )
       MyNode n = visitor2.current(); 
       Color c = hueShade( n.second );
       viewer << CustomColors3D( Color::Red, c )
-             << ks.unsigns( n.first );
+             << n.first;
       visitor2.expand();
     }
   viewer << Viewer3D<>::updateDisplay;
