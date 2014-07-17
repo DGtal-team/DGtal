@@ -123,13 +123,13 @@ namespace DGtal
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
     
   };
-
+  
   /**
    * GenericWriter
-   * Template partial specialisation for volume images of dimension 3 and unsigned int value type (which allows to export raw file format).
+   * Template partial specialisation for volume images of dimension 3 and DGtal::uint32_t value type (which allows to export raw file format).
    **/
   template <typename TContainer, typename TFunctor>
-  struct GenericWriter<TContainer, 3 , unsigned int,  TFunctor>
+  struct GenericWriter<TContainer, 3 , DGtal::uint32_t,  TFunctor>
   {
     BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned int> )) ;    
     BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
