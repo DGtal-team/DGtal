@@ -226,6 +226,26 @@ DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::exportFile(const s
 }
 
 
+template <typename TContainer, typename TFunctor >
+inline
+bool
+DGtal::GenericWriter<TContainer, 2, DGtal::uint32_t, TFunctor>::exportFile(const std::string &filename,
+                                                                           const TContainer &anImage,
+                                                                           const TFunctor & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  //Getting image extension
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+ if(extension=="raw"){
+    return RawWriter<TContainer, TFunctor>::exportRaw32(filename, anImage, aFunctor);
+  } else{
+    trace.error() << "Extension " << extension<< " not yet implemented in generic writer." << std::endl;
+    throw dgtalio;
+  }
+
+  return true;
+}
+
+
 
 
 

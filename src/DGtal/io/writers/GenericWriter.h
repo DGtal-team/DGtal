@@ -263,6 +263,28 @@ namespace DGtal
 
 
   /**
+   * GenericWriter Template partial specialisation for images of
+   * dimension 2 and DGtal::uint32_tvalue type (which allows to export
+   * raw 32 bits file format ).
+   **/
+  template <typename TContainer,  typename TFunctor>
+  struct GenericWriter<TContainer, 2, DGtal::uint32_t, TFunctor>
+  {
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    /**
+     * Export the 2D image file.  
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
+    static bool exportFile(const std::string &filename, const TContainer &anImage,
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+
+  }; 
+
+
+  /**
    *  'operator>>' for exporting an ImageContainer.
    *  This operator automatically selects the best method according to
    *  the filename extension (pgm, pgm3D, raw, vol).
