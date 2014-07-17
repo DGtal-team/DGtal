@@ -87,8 +87,7 @@ namespace DGtal
 			   const Functor & aFunctor = Functor());
     
     /** 
-     * Export an Image to  Raw format (32bits, DGtal::uint32_t).
-     *
+     * Export an Image to  Raw format (32bits, DGtal::uint32_t, binary format in little-endian).
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor functor used to cast image values
