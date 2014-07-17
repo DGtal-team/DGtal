@@ -115,7 +115,7 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
 
-    ///Digital surface type
+    ///Digital surface container type
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
 
     ///Metric type
@@ -133,10 +133,10 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     ///Quantity type
     typedef typename TFunctorOnSurfel::Quantity Quantity;
 
-    typedef typename TDigitalSurfaceContainer::KSpace KSpace;
-
+    ///The "real number" type
     typedef double Scalar;
 
+    ///Digital surface type
     typedef DigitalSurface< DigitalSurfaceContainer > Surface;
 
   private:
