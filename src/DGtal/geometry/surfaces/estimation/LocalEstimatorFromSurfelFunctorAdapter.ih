@@ -41,6 +41,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric,
                                               TFunctorOnSurfel, TConvolutionFunctor>::
 LocalEstimatorFromSurfelFunctorAdapter()
 {
+  myInit = false;
 }
 
 template <typename TDigitalSurfaceContainer, typename TMetric, 
@@ -49,12 +50,12 @@ inline
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
                                               TFunctorOnSurfel, TConvolutionFunctor>::
 LocalEstimatorFromSurfelFunctorAdapter
-( ConstAlias< DigitalSurface< DigitalSurfaceContainer > > aSurf,
+( ConstAlias< Surface > aSurf,
   ConstAlias< Metric> aMetric,
   Alias< FunctorOnSurfel > aFunctor,
   ConstAlias< ConvolutionFunctor > aConvolutionFunctor)
-  : mySurface(&aSurf), myFunctor(&aFunctor), myMetric(&aMetric),
-    myEmbedder(Embedder( mySurface->container().space())), myConvFunctor(&aConvolutionFunctor)
+  : mySurface(aSurf), myFunctor(&aFunctor), myMetric(aMetric),
+    myEmbedder(Embedder( mySurface->container().space())), myConvFunctor(aConvolutionFunctor)
 {
   myInit = false;
 }
@@ -116,7 +117,7 @@ setParams( ConstAlias<TMetric> aMetric,
            Alias<FunctorOnSurfel> aFunctor,
            ConstAlias<ConvolutionFunctor> aConvolutionFunctor )
 {
-  myFunctor = aFunctor;
+  myFunctor = &aFunctor;
   myMetric = aMetric;
   myConvFunctor = aConvolutionFunctor;
 }
