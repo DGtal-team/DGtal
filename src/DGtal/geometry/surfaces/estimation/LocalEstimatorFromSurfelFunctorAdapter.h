@@ -278,13 +278,13 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
   private:
 
     ///Digital surface member
-    const DigitalSurface< DigitalSurfaceContainer > * mySurface;
+    CountedConstPtrOrConstPtr<Surface> mySurface;
 
     ///Functor member
-    FunctorOnSurfel * myFunctor;
+    FunctorOnSurfel* myFunctor;
 
     ///Distance functor
-    const Metric * myMetric;
+    CountedConstPtrOrConstPtr<Metric> myMetric;
 
     ///Grid step
     double myH;
@@ -293,10 +293,10 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
     bool myInit;
 
     ///Embedder object
-    const Embedder myEmbedder;
+    Embedder myEmbedder;
 
     ///Convolution functor
-    const ConvolutionFunctor *myConvFunctor;
+    CountedConstPtrOrConstPtr<ConvolutionFunctor> myConvFunctor;
 
     ///Ball radius
     Value myRadius;
