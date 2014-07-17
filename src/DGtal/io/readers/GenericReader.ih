@@ -38,10 +38,10 @@
 
 
 
-template <typename TContainer, int TDim>
+template <typename TContainer, int TDim, typename TValue>
 inline
 TContainer
-DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename,
+DGtal::GenericReader<TContainer, TDim, TValue>::import(const std::string &filename,
                                                std::vector<unsigned int> dimSpace)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -63,11 +63,11 @@ DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename,
 
 
 
-template <typename TContainer>
+template <typename TContainer, typename TValue>
 inline
 TContainer
-DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
-                                            unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException)
+DGtal::GenericReader<TContainer, 3, TValue>::import(const std::string &filename,
+                                                    unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
@@ -99,10 +99,10 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
 
 
 
-template <typename TContainer>
+template <typename TContainer, typename TValue>
 inline
 TContainer
-DGtal::GenericReader<TContainer, 2>::import(const std::string &filename)  throw(DGtal::IOException)
+DGtal::GenericReader<TContainer, 2, TValue>::import(const std::string &filename)  throw(DGtal::IOException)
 {
   DGtal::IOException dgtalio;
   //Getting image extension
