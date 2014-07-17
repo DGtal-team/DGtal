@@ -89,3 +89,59 @@ DGtal::RawReader<T, TFunctor >::importRaw8 (const std::string & filename, const 
     return image;
 }
 
+
+template <typename T, typename TFunctor>
+inline
+T 
+DGtal::RawReader<T, TFunctor >::importRaw32 (const std::string & filename, const Vector & extent, 
+                                             const Functor & aFunctor ) throw(DGtal::IOException)
+{
+  FILE * fin;
+  DGtal::IOException dgtalerror;
+
+  fin = fopen( filename.c_str() , "r" );
+
+  if (fin == NULL) 
+    trace.error() << "RawReader : can't open "<< filename<<std::endl;
+  
+  
+  typename T::Point firstPoint;
+  typename T::Point lastPoint;
+      
+  firstPoint = T::Point::zero;
+  lastPoint = extent;
+  unsigned int size=1;
+  for(unsigned int i=0; i < T::Domain::dimension; i++)
+    {
+      size *= lastPoint[i];      
+      lastPoint[i]--;
+    }
+
+    
+  typename T::Domain domain(firstPoint,lastPoint);
+  T image(domain);
+  typename T::Value val;
+
+  //We scan the Raw file
+  typename T::Domain::ConstIterator it = domain.begin(),itend=domain.end();
+  unsigned int count=0;
+
+  while ((fin) && (it != itend))
+    {
+      read_word(fin , val);
+      image.setValue(( *it ), aFunctor(val) );
+      it++;
+      count++;
+    }
+  
+  fclose( fin );
+  
+  if (count != size )
+    {
+      trace.error() << "RawReader: error while opening file "<<filename<<std::endl;
+      throw dgtalerror;
+    }
+  else
+    return image;
+}
+
