@@ -38,7 +38,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
+//! [include]
 #include "DGtal/images/RigidTransformation2D.h"
+//! [include]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -50,35 +52,45 @@ using namespace Z2i;
 
 int main( int , char** )
 {
+  //! [def]
   typedef ImageSelector<Domain, unsigned char >::Type Image;
   typedef ForwardRigidTransformation2D < Space > ForwardTrans;
   typedef BackwardRigidTransformation2D < Space > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation2D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;
-  
+  //! [def]
   trace.beginBlock ( "Example rigidtransformation2d" );
-
+    //! [trans]
     ForwardTrans forwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
     BackwardTrans backwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
+    //! [trans]
+    //![init_domain_helper]
     MyTransformedDomain domainForwardTrans ( forwardTrans );
+    //![init_domain_helper]
     Identity idD;
-    
-    Image image = PGMReader<Image>::importPGM ( examplesPath + "samples/church.pgm" ); 
+
+    Image image = PGMReader<Image>::importPGM ( examplesPath + "samples/church.pgm" );
+    //! [domain]
     Bounds bounds = domainForwardTrans ( image.domain() );
     Domain transformedDomain ( bounds.first, bounds.second );
+    //! [domain]
     
     trace.beginBlock ( "Backward - Eulerian model" );
+    //! [backward]
       MyImageBackwardAdapter backwardImageAdapter ( image, transformedDomain , backwardTrans, idD );
+    //! [backward]
       backwardImageAdapter >> "backward_transform.pgm";
     trace.endBlock();
     
     trace.beginBlock( "Forward - Lagrangian model" );
       Image forwardTransformedImage ( transformedDomain );
+     //! [forward]
       for ( Domain::ConstIterator it = image.domain().begin(); it != image.domain().end(); ++it )
       {
 	forwardTransformedImage.setValue ( forwardTrans ( *it ), image ( *it ) );
       }
+     //! [forward]
       forwardTransformedImage >> "forward_transform.pgm";
     trace.endBlock();
   trace.endBlock();

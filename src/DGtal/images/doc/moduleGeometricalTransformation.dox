@@ -1,0 +1,105 @@
+/**
+ * @file modulemoduleGeometricTransform.dox
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ * @date 2014/07/17
+ *
+ * @brief Doccumentation file for geometrical transformations in DGtal.
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleGeometricTransform Geometric transformations
+@writers Kacper Pluta
+@date 2014/07/17
+
+[TOC]
+
+\section sectmoduleGeometricTransform1 Overview
+
+This module gather classes which represent geometric transformations.
+
+\section subsecRigid2D Rigid transformations
+
+Rigid transformations in \f$\mathbb{R}^n\f$ are isometries which preserve in particular the distance and angles between every pair and triples of points respectively. The set of rigid transformations includes rotations, translations and 
+reflections(excluded from the image processing applications from practical reasons), or combinations of those. Also an inverse of
+rigid transformation is rigid transformation therefore rigid transformation are bijective.
+
+In general rigid transformation can be written like:
+
+\f$
+\begin{array}{l l}
+    \mathcal{U}: \mathbb{R}^n & \to \mathbb{R}^n \\
+    \mathbf{x} & \mapsto \mathbf{R . x} + \mathbf{t}
+\end{array}
+\f$
+
+where \f$\textbf{R}\f$ denotes rotation matrix and \f$\textbf{t}\f$ translation vector.
+
+Discrete rigid transformation are defined as follows:
+
+\f$
+  U = \mathcal{D} \circ \mathcal{U}_{| \mathbb{Z}^n}
+\f$
+
+\f$
+  T = \mathcal{D} \circ \mathcal{T}_{| \mathbb{Z}^n} = \mathcal{D} \circ (\mathcal{U}^{-1})_{| \mathbb{Z}^n}
+\f$
+
+where \f$\mathcal{D}\f$ is a standard round function.(Another interpolation method are for this moment not implemented in DGtal)
+Unfortunately when rigid transformation are applied in \f$\mathbb{Z}^n\f$ they are nighter isometries nor bijective.
+From above difficulties we can consider two models called forward or Lagrangian and backward or Eulerian. First of them
+consists on computing \f$U\f$ and second on \f$T\f$ but from perspective of transformed space therefore all its points have defined value.
+
+\subsection secRigid2D Rigid transformations in 2D discrete space
+In DGtal they are implemented two from above models of discrete rigid transformations and below snippets of code present how to
+apply them for a 2D image.
+
+ In order to illustrate how to use rigid transformation we are going to a) add those includes: 
+@snippet ../examples/images/exampleRigidtransformation2d.cpp include
+
+b) define these types:
+@snippet ../examples/images/exampleRigidtransformation2d.cpp def
+where MyTransformedDomain is a helper functor which returns lower and upper bound of transformed domain.
+
+c) create transformation by providing information about origin, angle, and translation:
+
+@snippet ../examples/images/exampleRigidtransformation2d.cpp trans
+
+d) if needed create a transformed domain eg:
+
+@snippet ../examples/images/exampleRigidtransformation2d.cpp init_domain_helper
+@snippet ../examples/images/exampleRigidtransformation2d.cpp domain
+
+e1) Apply rigid transformation to image with forward model:
+
+@snippet ../examples/images/exampleRigidtransformation2d.cpp forward
+
+e2) or with backward:
+
+@snippet ../examples/images/exampleRigidtransformation2d.cpp backward
+
+Below image presents result for froward model and image "Church.pgm"
+\image html church_forward.jpg
+\image latex church_forward.jpg
+
+and for backward as well:
+\image html church_backward.jpg
+\image latex church_backward.jpg
+
+
+\subsection secRigid3D Rigid transformations in 3D discrete space
+TODO
+
+
+*/
+
+ }
