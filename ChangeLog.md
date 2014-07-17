@@ -3,9 +3,10 @@
 
 ## New Features / Critical Changes
 
-- *Base*
+- *General*
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
+ - The DGtal main website is now http://dgtal.org
 
  - Global refactoring of base functors (David Coeurjolly,
    [#861](https://github.com/DGtal-team/DGtal/pull/861))
@@ -111,6 +112,10 @@
   - Shape concepts have been moved to concepts:: namespace (David
   Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
 
+- *Topology Package*
+  - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
 
 ## Bug Fixes
 
@@ -136,11 +141,18 @@
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
+  - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
+- *Graph Package*
+  - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
 
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
     [#835](https://github.com/DGtal-team/DGtal/pull/835))
-  - Fixing image thresholders which require CConstImage instead of
+  - Fixing image thresholders (SimpleThresholdForegroundPredicate and
+    IntervalForegroundPredicate) which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
     

@@ -34,7 +34,7 @@
 
 //! [Voro2D-header]
 #include "DGtal/kernel/BasicPointPredicates.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
