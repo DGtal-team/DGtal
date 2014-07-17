@@ -612,7 +612,7 @@ namespace functors
       }
 
       for (Dimension dim=0; dim< Space::dimension; dim++){
-        ptRes[dim] = (TInteger)(aPoint[dim]*myGridSize[dim]); 
+        ptRes[dim] = static_cast<TInteger>(aPoint[dim]*myGridSize[dim]); 
       }
       ptRes +=myGridShift;
       
