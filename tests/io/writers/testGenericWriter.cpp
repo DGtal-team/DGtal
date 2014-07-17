@@ -55,14 +55,23 @@ bool testGenericWriter()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char > Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned int > Image3D32bits;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  unsigned char > Image2D;
-  Image3D32bits an32bitsImage (DGtal::Z3i::Domain(DGtal::Z3i::Point(0,0,0),  DGtal::Z3i::Point(4,4,4)));
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain,  unsigned int > Image2D32bits;
+
+  Image3D32bits an32bitsImage3D (DGtal::Z3i::Domain(DGtal::Z3i::Point(0,0,0),  DGtal::Z3i::Point(4,4,4)));
   for(unsigned int i =0; i< 5; i++){
     for(unsigned int j =0; j< 5; j++){
       for(unsigned int k =0; k< 5; k++){
-        an32bitsImage.setValue(DGtal::Z3i::Point(k,j,i), 250000*i*j*k);
+        an32bitsImage3D.setValue(DGtal::Z3i::Point(k,j,i), 250000*i*j*k);
       }
     }
   }
+  Image2D32bits an32bitsImage2D (DGtal::Z2i::Domain(DGtal::Z2i::Point(0,0),  DGtal::Z2i::Point(4,4)));
+  for(unsigned int i =0; i< 5; i++){
+    for(unsigned int j =0; j< 5; j++){
+      an32bitsImage2D.setValue(DGtal::Z2i::Point(j,i), 250000*i*j*4);
+    }
+  }
+  
   trace.beginBlock ( "Testing block ..." );
   std::string filenameImage1 = testPath + "samples/cat10.pgm3d";    
   trace.info() << "Reading 3D image  ... ";  
@@ -104,7 +113,9 @@ bool testGenericWriter()
   trace.info() << "Testing writing raw ... ";  
   bool ok5 = anImportedImage2 >> "testGenericWriter.raw";
   trace.info() <<"[done]"  << std::endl;
-  bool ok6 = DGtal::GenericWriter<Image3D32bits>::exportFile( "testGenericWriter32bits.raw", an32bitsImage);
+  bool ok6 = DGtal::GenericWriter<Image3D32bits>::exportFile( "testGenericWriter32bits3D.raw", an32bitsImage3D);
+  trace.info() <<"[done]"  << std::endl;
+  bool ok7 = DGtal::GenericWriter<Image2D32bits>::exportFile( "testGenericWriter32bits2D.raw", an32bitsImage2D);
   trace.info() <<"[done]"  << std::endl;
 
 

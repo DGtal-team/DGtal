@@ -115,7 +115,7 @@ DGtal::GenericReader<TContainer, 3, DGtal::uint32_t>::import(const std::string &
     {
       ASSERT(x!=0 && y!=0 && z!=0);
       typename TContainer::Point pt (x,y,z);
-      return RawReader< TContainer >::importRaw8 ( filename, pt  );
+      return RawReader< TContainer >::importRaw32 ( filename, pt  );
     }
 
 
