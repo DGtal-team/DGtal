@@ -36,6 +36,7 @@
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -130,6 +131,58 @@ bool testComputeInterior()
   return nbok == nb;
 }
 
+/**
+* Checks that method Surfaces::findABel can take in argument any pair
+* of points (one inside, one outside) to determine a boundary surfel
+* by dichotomy. 
+*/
+template <typename KSpace3D>
+bool testFindABel()
+{
+  typedef KSpace3D                   KSpace;
+  typedef typename KSpace::Space     Space;
+  typedef typename KSpace::Point     Point;
+  typedef typename KSpace::SCell     SCell;
+  typedef HyperRectDomain<Space>     Domain;
+  typedef DigitalSetBySTLSet<Domain> DigitalSet;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing Surfaces::findABel." );
+  Point pts[ 8 ];  
+  Point p1( -5, -5, -5 );
+  Point p2(  5,  5,  5 );
+  pts[ 0 ] = p1;
+  pts[ 1 ] = p2;
+  pts[ 2 ] = Point(  5, -5, -5 );
+  pts[ 3 ] = Point( -5,  5, -5 );
+  pts[ 4 ] = Point(  5,  5, -5 );
+  pts[ 5 ] = Point( -5, -5,  5 );
+  pts[ 6 ] = Point(  5, -5,  5 );
+  pts[ 7 ] = Point( -5,  5,  5 );
+  KSpace K; K.init( p1, p2, true );
+  Domain domain( p1, p2 );
+  DigitalSet aSet( domain );
+  Shapes<Domain>::addNorm2Ball( aSet, Point::zero, 2 );
+  for ( unsigned int i = 0; i < 8; ++i )
+    {
+      SCell bel = Surfaces<KSpace>::findABel( K, aSet, pts[ i ], Point::zero );
+      trace.info() << "- Exterior point is " << pts[ i ] << std::endl;
+      trace.info() << "  - Found bel = " << bel << std::endl;
+      ++nb, nbok += K.sDim( bel ) == 2;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << " K.sDim( bel ) == " <<  K.sDim( bel ) << " (should be 2)" << std::endl;
+      SCell vox_in = K.sDirectIncident( bel, K.sOrthDir( bel ) ); 
+      SCell vox_out = K.sIndirectIncident( bel, K.sOrthDir( bel ) ); 
+      ++nb, nbok += aSet( K.sCoords( vox_in ) ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << " vox_in should be inside the shape." << std::endl;
+      ++nb, nbok += aSet( K.sCoords( vox_out ) ) ? 0 : 1;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << " vox_out should be outside the shape." << std::endl;
+    }
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -141,7 +194,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testComputeInterior(); // && ... other tests
+  bool res = testComputeInterior()
+    && testFindABel< KhalimskySpaceND<3,int> >();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

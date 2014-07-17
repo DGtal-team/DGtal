@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CImage.h"
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -58,13 +58,13 @@ namespace DGtal
    *
    * This class is a model of CPointPredicate.
    *
-   * @tparam Image an model of CImageContainer concept. 
+   * @tparam Image an model of CConstImage concept. 
    */
   template <typename Image>
   class SimpleThresholdForegroundPredicate
   {
   public:
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CConstImage<Image> ));
     
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;
@@ -93,14 +93,6 @@ namespace DGtal
     bool operator()(const typename Image::Domain::ConstIterator &it) const
     {
       return ( (*myImage)(*it) > myVal);
-    }
-
-    /**
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::Range::Iterator &it) const
-    {
-      return ( (*it) > myVal);
     }
 
     /** 

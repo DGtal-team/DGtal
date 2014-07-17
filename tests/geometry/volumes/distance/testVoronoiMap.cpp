@@ -467,7 +467,7 @@ bool testSimpleRandom2D()
       Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
       sites.insert( p );
     }
-  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"random-dense");
+  ok = ok && testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"random-dense");
   trace.endBlock();
 
   return ok;

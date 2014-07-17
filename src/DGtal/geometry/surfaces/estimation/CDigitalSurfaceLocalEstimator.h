@@ -88,6 +88,9 @@ namespace DGtal
   *  ### Models
   *
   *  - VCMDigitalSurfaceLocalEstimator.
+  *  - LocalEstimatorFromSurfelFunctorAdapter.
+  *  - IntegralInvariantVolumeEstimator.
+  *  - IntegralInvariantCovarianceEstimator.
   *
   *  ### Notes
   *  - A surface must be attached to \e x before the call to \c init and \c eval.
