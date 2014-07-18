@@ -217,6 +217,20 @@ bool testProjector()
                  << pointInSourceDomain3D << " == " << PointVector<3,int>(0, 4, 1) << std::endl; 
     nb++;
     nbok += (pointInSourceDomain3D== PointVector<3,int>(0, 4, 1));
+
+
+
+    // FlipDomainAxis
+    std::vector<unsigned int> vectFlip; 
+    vectFlip.push_back(1); 
+    vectFlip.push_back(2);     
+    functors::FlipDomainAxis<HyperRectDomain<SpaceND<3, int> > > flipFunctorAxis12(domainSource3D, vectFlip);
+    trace.info() << "Flip point of coordinate "<< pointTest3D << ", =>  fliped coordinates with axis 1 and 2:" 
+                 << flipFunctorAxis12(pointTest3D) << " == " << PointVector<3,int>(0, 9, 8) << std::endl; 
+    nb++;
+    nbok += (flipFunctorAxis12(pointTest3D)== PointVector<3,int>(0, 9, 8));
+
+
   }
   return nbok == nb;
 }

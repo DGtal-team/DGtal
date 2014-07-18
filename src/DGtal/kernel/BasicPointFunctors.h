@@ -646,6 +646,86 @@ namespace functors
 
 
 
+
+
+
+
+
+
+
+  /**
+   * Description of template class 'FlipDomainAxis' <p> \brief Aim:
+   * Functor that flip the domain coordinate system from some selected
+   * axis.  Such functor can be usefull to apply basic image flip from
+   * some specific axis directions.
+   *
+   *
+   * @see tests/kernel/testBasicPointFunctors.cpp 
+   *
+   * @tparam TDomain the type of the domain. 
+   * @tparam TInteger specifies the integer number type used to define the space. 
+   *
+   */
+
+ template <typename TDomain>
+ class FlipDomainAxis
+  {
+  public:        
+    typedef typename TDomain::Space  Space;
+    typedef typename TDomain::Size Size; 
+    typedef typename Space::Dimension Dimension; 
+    typedef typename Space::Point Point; 
+
+    /** 
+     * Constructor.
+     * Construct the functor from a source domain, a grid size, and a shift vector.
+     * The points of the resulting domain are defined as the upper left of the sampling grid.
+     *
+     * @param aSourceDomain  the source domain. 
+     * @param axisFlipped a vector containing  the index of the dimension to be flipped. 
+     *
+     */
+    
+    FlipDomainAxis(const TDomain &aSourceDomain, const std::vector<Size> & axisFlipped): mySourceDomain(aSourceDomain), 
+                                                                                         myAxisFlipped(axisFlipped){      
+    };    
+    
+
+    /** 
+     * The operator computes the coordinates of the point in the
+     * flipped domain.  
+     *
+     * @param aPoint a source point.
+     * @return the point with flipped coordinates according the source domain.
+     *
+     */
+    
+    inline
+    Point  operator()(const Point& aPoint) const
+    {
+      Point ptRes;
+      for (Dimension dim=0; dim< Space::dimension; dim++){
+        ptRes[dim] = aPoint[dim]; 
+      }
+      for(Dimension i = 0; i< myAxisFlipped.size(); i++){
+        ptRes[myAxisFlipped[i]] = mySourceDomain.upperBound()[myAxisFlipped[i]]-aPoint[myAxisFlipped[i]];
+      }      
+      return ptRes;
+    }
+    
+  private:
+    TDomain mySourceDomain;
+    std::vector<Size> myAxisFlipped;    
+ };
+
+
+
+
+
+
+
+
+
   }//namespace functors
 } // namespace dgtal
 
