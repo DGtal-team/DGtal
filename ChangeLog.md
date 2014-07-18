@@ -108,9 +108,19 @@
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
 
+- *Kernel Package*
+
+  - New functor DomainSubSampler allowing to apply different
+    sampling with larger or smaller size on N dimensionsal domain. New tests
+    and examples are given applied on 2D and 3D images.(Bertrand Kerautret)
+    [825](https://github.com/DGtal-team/DGtal/pull/825) and
+    [882](https://github.com/DGtal-team/DGtal/pull/882).
+
+
 - *Shapes Package*
   - Shape concepts have been moved to concepts:: namespace (David
   Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
+
 
 
 ## Bug Fixes
