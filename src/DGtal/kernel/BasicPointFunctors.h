@@ -543,9 +543,12 @@ namespace functors
    * @tparam TDomain the type of the domain. 
    * @tparam TInteger specifies the integer number type used to define the space. 
    *
+   * @tparam TValue specify the type of the value which define the
+   * grid size (generally type int (default) when subsampling with large grid size
+   * and double to re sampling with grid size less than 1).
    */
 
- template <typename TDomain, typename TInteger =  DGtal::int32_t >
+ template <typename TDomain, typename TInteger =  DGtal::int32_t, typename TValue = DGtal::uint32_t >
  class BasicDomainSubSampler
   {
   public:        
@@ -565,7 +568,7 @@ namespace functors
      *
      */
     
-    BasicDomainSubSampler(const TDomain &aSourceDomain, const std::vector<Size> &aGridSize,
+    BasicDomainSubSampler(const TDomain &aSourceDomain, const std::vector<TValue> &aGridSize,
                           const Point  &aGridShift): mySourceDomain(aSourceDomain), 
                                                      myGridShift(aGridShift),
                                                      myGridSize(aGridSize)
@@ -609,7 +612,8 @@ namespace functors
       }
 
       for (Dimension dim=0; dim< Space::dimension; dim++){
-        ptRes[dim] = aPoint[dim]* myGridSize[dim]; 
+        ptRes[dim] = static_cast<TInteger>(floor(NumberTraits<TInteger>::castToDouble(aPoint[dim])*
+                                                 NumberTraits<TValue>::castToDouble(myGridSize[dim]))); 
       }
       ptRes +=myGridShift;
       
@@ -641,7 +645,7 @@ namespace functors
     // used to search a point when the resulting point is outside the source domain.
     TDomain myGridSampleDomain;     
     Point myGridShift;
-    std::vector<Size> myGridSize;    
+    std::vector<TValue> myGridSize;    
  };
 
 
