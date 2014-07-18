@@ -51,208 +51,208 @@
 
 namespace DGtal
 {
-  namespace functors
-  {
-    /////////////////////////////////////////////////////////////////////////////
-    // Template class ForwardRigidTransformation2D
-    /**
+namespace functors
+{
+/////////////////////////////////////////////////////////////////////////////
+// Template class ForwardRigidTransformation2D
+/**
      * Description of template functor like class 'ForwardRigidTransformation2D' <p>
      * \brief Aim: implements forward rigid transformation of point in the 2D integer space.
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 2 dimensional space.
-     * 
+     *
      * @see exampleRigidtransformation2d.cpp
      */
-    template <typename TSpace>
-    class ForwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
-    {
-      ///Checking concepts
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
-      BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
-      
-      // ----------------------- Types ------------------------------
-    public:
-       typedef typename TSpace::Point Point;
-       typedef typename TSpace::RealPoint RealPoint;
-       typedef typename TSpace::RealVector RealVector;
-      
+template <typename TSpace>
+class ForwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
+{
+    ///Checking concepts
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+
+    // ----------------------- Types ------------------------------
+public:
+    typedef typename TSpace::Point Point;
+    typedef typename TSpace::RealPoint RealPoint;
+    typedef typename TSpace::RealVector RealVector;
+
     // ----------------------- Interface --------------------------------------
-    public:
-      /**
+public:
+    /**
        * Constructor.
        * @param aOrigin  the center of rotation.
        * @param angle  the angle given in radians.
        * @param aTranslate  the 2D dimensional vector which represents translation.
        */
-      ForwardRigidTransformation2D ( const RealPoint & aOrigin, const double & angle, const RealVector & aTranslate )
-      :origin(aOrigin), translation(aTranslate)
-      {
-	t_sin = std::sin ( angle );
-	t_cos = std::cos ( angle );
-      }
-      
-      /**
+    ForwardRigidTransformation2D ( const RealPoint & aOrigin, const double & angle, const RealVector & aTranslate )
+        :origin(aOrigin), translation(aTranslate)
+    {
+        t_sin = std::sin ( angle );
+        t_cos = std::cos ( angle );
+    }
+
+    /**
        * Operator
        *
        * @return the transformed point.
        */
-      inline
-      Point operator()( const Point& aInput ) const
-      {
-	Point p;
-	p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
-	t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + origin[0] + 0.5 );
-	
-	p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
-	t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + origin[1] + 0.5 );
-	return p;
-      }
-      
-    // ------------------------- Protected Datas ------------------------------
-    protected:
-      RealPoint origin;
-      double t_sin;
-      double t_cos;
-      RealVector translation;
-    };
+    inline
+    Point operator()( const Point& aInput ) const
+    {
+        Point p;
+        p[0] = std::floor ( ( ( t_cos * ( aInput[0] - origin[0] ) -
+               t_sin * ( aInput[1] - origin[1] ) ) + translation[0] ) + origin[0] + 0.5 );
 
-    /////////////////////////////////////////////////////////////////////////////
-    // Template class BackwardRigidTransformation2D
-    /**
+        p[1] = std::floor ( ( ( t_sin * ( aInput[0] - origin[0] ) +
+               t_cos * ( aInput[1] - origin[1] ) ) + translation[1] ) + origin[1] + 0.5 );
+        return p;
+    }
+
+    // ------------------------- Protected Datas ------------------------------
+protected:
+    RealPoint origin;
+    double t_sin;
+    double t_cos;
+    RealVector translation;
+};
+
+/////////////////////////////////////////////////////////////////////////////
+// Template class BackwardRigidTransformation2D
+/**
      * Description of template functor like class 'BackwardRigidTransformation2D' <p>
      * \brief Aim: implements backward rigid transformation of point in the 2D integer space.
      * Warring: This version uses closest neighbor interpolation.
      *
      * @tparam TSpace a 2 dimensional space.
-     * 
+     *
      * @see exampleRigidtransformation2d.cpp
      */
-    template <typename TSpace>
-    class BackwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
-    {
-      ///Checking concepts
-      BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
-      BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
-      
-      // ----------------------- Types ------------------------------
-    public:
-      typedef typename TSpace::Point Point;
-      typedef typename TSpace::RealPoint RealPoint;
-      typedef typename TSpace::RealVector RealVector;
-      
-      // ----------------------- Interface --------------------------------------
-    public:
-      /**
+template <typename TSpace>
+class BackwardRigidTransformation2D : std::unary_function <typename TSpace::Point, typename TSpace::Point>
+{
+    ///Checking concepts
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
+
+    // ----------------------- Types ------------------------------
+public:
+    typedef typename TSpace::Point Point;
+    typedef typename TSpace::RealPoint RealPoint;
+    typedef typename TSpace::RealVector RealVector;
+
+    // ----------------------- Interface --------------------------------------
+public:
+    /**
        * Constructor.
        * @param aOrigin  the center of rotation.
        * @param angle  the angle given in radians.
        * @param aTranslate  the 2D dimensional vector which represents translation.
        */
-      BackwardRigidTransformation2D ( const RealPoint& aOrigin, const double & angle, const RealVector & aTranslate )
-      :origin(aOrigin), translation(aTranslate) 
-      {
-	t_sin = std::sin ( angle );
-	t_cos = std::cos ( angle );
-      }
-      
-      /**
+    BackwardRigidTransformation2D ( const RealPoint& aOrigin, const double & angle, const RealVector & aTranslate )
+        :origin(aOrigin), translation(aTranslate)
+    {
+        t_sin = std::sin ( angle );
+        t_cos = std::cos ( angle );
+    }
+
+    /**
        * Operator
        *
        * @return transformed point.
        */
-      inline
-      Point operator()( const Point& aInput ) const
-      {
-	Point p;
-	p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
-	t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + origin[0] + 0.5 );
-	
-	p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) 
-	+ t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + origin[1] + 0.5 );
-	return p;
-      }
-      
-    // ------------------------- Protected Datas ------------------------------
-    protected:
-      RealPoint origin;
-      double t_sin;
-      double t_cos;
-      RealVector translation;
-    };
+    inline
+    Point operator()( const Point& aInput ) const
+    {
+        Point p;
+        p[0] = std::floor ( ( t_cos * (aInput[0] - translation[0] - origin[0] ) +
+               t_sin * ( aInput[1] - translation[1] - origin[1] ) ) + origin[0] + 0.5 );
 
-    /////////////////////////////////////////////////////////////////////////////
-    // Template class DomainRigidTransformation2D
-    /**
+        p[1] = std::floor ( ( -t_sin * ( aInput[0] - translation[0] - origin[0] ) +
+               t_cos * ( aInput[1] - translation[1] - origin[1] ) ) + origin[1] + 0.5 );
+        return p;
+    }
+
+    // ------------------------- Protected Datas ------------------------------
+protected:
+    RealPoint origin;
+    double t_sin;
+    double t_cos;
+    RealVector translation;
+};
+
+/////////////////////////////////////////////////////////////////////////////
+// Template class DomainRigidTransformation2D
+/**
      * Description of template functor like class 'DomainRigidTransformation2D' <p>
      * \brief Aim: implements bounds of transformed domain.
      *
      * @tparam TDomain a 2 dimensional domain.
      * @tparam TRigidTransformFunctor a functor which represent two dimensional rigid transformation.
-     * 
+     *
      * @see exampleRigidtransformation2d.cpp
      */
-    template <typename TDomain, typename TRigidTransformFunctor >
-    class DomainRigidTransformation2D : 
-    std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
-    {
-      ///Checking concepts
-      BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
-      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-      
+template <typename TDomain, typename TRigidTransformFunctor >
+class DomainRigidTransformation2D :
+        std::unary_function < std::pair < typename TDomain::Point, typename TDomain::Point >, TDomain>
+{
+    ///Checking concepts
+    BOOST_STATIC_ASSERT(( TDomain::dimension == 2 ));
+    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+
     // ----------------------- Types ------------------------------
-    public:
-     typedef std::pair < typename TDomain::Space::Point, typename TDomain::Space::Point > Bounds;
-     
+public:
+    typedef std::pair < typename TDomain::Space::Point, typename TDomain::Space::Point > Bounds;
+
     // ----------------------- Interface --------------------------------------
-    public:
-      /**
+public:
+    /**
        * Constructor.
        * @param aRigidFunctor  - rigid transformation functor.
        */
-      DomainRigidTransformation2D ( TRigidTransformFunctor & aRigidFunctor ) : transform ( aRigidFunctor ) {}
-      
-      /**
+    DomainRigidTransformation2D ( TRigidTransformFunctor & aRigidFunctor ) : transform ( aRigidFunctor ) {}
+
+    /**
        * Operator
        *
        * @return bounds of the transformed domain.
        */
-      inline
-      Bounds operator()( const TDomain & aInput ) const
-      {
-	typedef typename TDomain::Point Point;
-	Point points[4];
-	points[0] = transform ( aInput.lowerBound() );
-	points[1] = transform ( aInput.upperBound() );
-	points[2] = transform ( Point ( aInput.upperBound()[0], aInput.lowerBound()[1] ) );
-	points[3] = transform ( Point ( aInput.lowerBound()[0], aInput.upperBound()[1] ) );
-	
-	Point t_min ( INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN );
-	for ( unsigned int i = 0; i < 4 ; i++ )
-	{
-	  if ( points[i][0] < t_min[0] )
-	    t_min[0] = points[i][0]; 
-	  if ( points[i][1] < t_min[1] )
-	    t_min[1] = points[i][1];
-	  
-	  if ( points[i][0] > t_max[0] )
-	    t_max[0] = points[i][0]; 
-	  if ( points[i][1] > t_max[1] )
-	    t_max[1] = points[i][1]; 
-	}
-	
-	Bounds bounds;
-	bounds.first = t_min;
-	bounds.second = t_max;
-	return bounds;
-      }
+    inline
+    Bounds operator()( const TDomain & aInput ) const
+    {
+        typedef typename TDomain::Point Point;
+        Point points[4];
+        points[0] = transform ( aInput.lowerBound() );
+        points[1] = transform ( aInput.upperBound() );
+        points[2] = transform ( Point ( aInput.upperBound()[0], aInput.lowerBound()[1] ) );
+        points[3] = transform ( Point ( aInput.lowerBound()[0], aInput.upperBound()[1] ) );
+
+        Point t_min ( INT_MAX, INT_MAX ), t_max ( INT_MIN, INT_MIN );
+        for ( unsigned int i = 0; i < 4 ; i++ )
+        {
+            if ( points[i][0] < t_min[0] )
+                t_min[0] = points[i][0];
+            if ( points[i][1] < t_min[1] )
+                t_min[1] = points[i][1];
+
+            if ( points[i][0] > t_max[0] )
+                t_max[0] = points[i][0];
+            if ( points[i][1] > t_max[1] )
+                t_max[1] = points[i][1];
+        }
+
+        Bounds bounds;
+        bounds.first = t_min;
+        bounds.second = t_max;
+        return bounds;
+    }
 
     // ------------------------- Protected Datas ------------------------------
-    protected:
-      TRigidTransformFunctor & transform;
-    }; 
-    
-  }// namespace DGtal::functors
+protected:
+    TRigidTransformFunctor & transform;
+};
+
+}// namespace DGtal::functors
 }// namespace DGtal
 
 #endif // !defined RigidTransformation2D_h
