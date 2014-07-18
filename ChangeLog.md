@@ -111,10 +111,10 @@
 - *Kernel Package*
 
   - New functor DomainSubSampler allowing to apply different
-    sampling with larger or smaller size on N dimensionsal domain. New tests
-    and examples are given applied on 2D and 3D images.(Bertrand Kerautret)
+    samplings with larger or smaller size on N dimensional domain. New tests
+    and examples are given on 2D and 3D images (Bertrand Kerautret,
     [825](https://github.com/DGtal-team/DGtal/pull/825) and
-    [882](https://github.com/DGtal-team/DGtal/pull/882).
+    [882](https://github.com/DGtal-team/DGtal/pull/882)).
 
 
 - *Shapes Package*
