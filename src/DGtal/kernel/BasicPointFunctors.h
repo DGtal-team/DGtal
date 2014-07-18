@@ -613,7 +613,7 @@ namespace functors
 
       for (Dimension dim=0; dim< Space::dimension; dim++){
         ptRes[dim] = static_cast<TInteger>(floor(NumberTraits<TInteger>::castToDouble(aPoint[dim])*
-                                                 NumberTraits<TInteger>::castToDouble(myGridSize[dim]))); 
+                                                 NumberTraits<TValue>::castToDouble(myGridSize[dim]))); 
       }
       ptRes +=myGridShift;
       
