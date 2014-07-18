@@ -52,27 +52,27 @@ using namespace Z2i;
 
 int main( int , char** )
 {
-  //! [def]
   typedef ImageSelector<Domain, unsigned char >::Type Image;
+  //! [def]
   typedef ForwardRigidTransformation2D < Space > ForwardTrans;
   typedef BackwardRigidTransformation2D < Space > BackwardTrans;
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
-  typedef DomainRigidTransformation2D < Domain, ForwardTrans > MyTransformedDomain;
-  typedef MyTransformedDomain::Bounds Bounds;
+  typedef DomainRigidTransformation2D < Domain, ForwardTrans > MyDomainTransformer;
+  typedef MyDomainTransformer::Bounds Bounds;
   //! [def]
   trace.beginBlock ( "Example rigidtransformation2d" );
     //! [trans]
-    ForwardTrans forwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
-    BackwardTrans backwardTrans( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
+    ForwardTrans forwardTrans( RealPoint ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
+    BackwardTrans backwardTrans( RealPoint ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) );
     //! [trans]
     //![init_domain_helper]
-    MyTransformedDomain domainForwardTrans ( forwardTrans );
+    MyDomainTransformer domainTransformer ( forwardTrans );
     //![init_domain_helper]
     Identity idD;
 
     Image image = PGMReader<Image>::importPGM ( examplesPath + "samples/church.pgm" );
     //! [domain]
-    Bounds bounds = domainForwardTrans ( image.domain() );
+    Bounds bounds = domainTransformer ( image.domain() );
     Domain transformedDomain ( bounds.first, bounds.second );
     //! [domain]
     
