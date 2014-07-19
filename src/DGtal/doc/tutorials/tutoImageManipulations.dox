@@ -109,8 +109,8 @@ different functors.
 @subsection subsectCropIntroTutoImageManipulations Image cropping 
 
 The ImageAdapter and ConstImageAdapter can be very efficient to define
-for instance an cropped image (see documentation given in the @ref
-moduleImages module). To apply a simple crop you can apply the following steps:
+for instance a cropped image (see documentation given in the @ref
+moduleImages module). To persform a simple crop you can apply the following steps:
 
 - Load the  source image to be cropped.
 - Define type associated to the ConstImageAdapter.
@@ -124,8 +124,8 @@ domain, you should obtain the following image:
 
 
 Complements:
-- Add options to define the input/output files and regions bounds.
-- Apply the same cropping on 3D images.
+- Add options to define the input/output files and region bounds.
+- Apply the same cropping to 3D images.
 
 
 
