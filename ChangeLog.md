@@ -112,7 +112,7 @@
 
   - New functor DomainSubSampler allowing to apply different
     samplings with larger or smaller size on N dimensional domain. New tests
-    and examples are given on 2D and 3D images (Bertrand Kerautret,
+    and examples are given for 2D and 3D images (Bertrand Kerautret,
     [825](https://github.com/DGtal-team/DGtal/pull/825) and
     [882](https://github.com/DGtal-team/DGtal/pull/882)).
 
