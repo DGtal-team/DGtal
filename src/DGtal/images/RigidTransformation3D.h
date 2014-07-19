@@ -96,7 +96,6 @@ public:
     {
         if ( std::isnan( axis.norm() ) )
             throw std::runtime_error ( "Axis of rotation can not be set as a vector of length 0!" );
-        std::cout << axis.norm() << std::endl;
         t_sin = std::sin ( angle );
         t_cos = std::cos ( angle );
     }
