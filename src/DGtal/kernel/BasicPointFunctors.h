@@ -667,7 +667,6 @@ namespace functors
    * @see tests/kernel/testBasicPointFunctors.cpp 
    *
    * @tparam TDomain the type of the domain. 
-   * @tparam TInteger specifies the integer number type used to define the space. 
    *
    */
 
