@@ -90,7 +90,7 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
 
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Value Value;    
+    typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
     
     BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    

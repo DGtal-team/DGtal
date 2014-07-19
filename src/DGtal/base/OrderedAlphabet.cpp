@@ -201,7 +201,10 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
     }
   len = j >= i ? (size_t) ( j - i )
     : (size_t) ( j + modulo - i );
-  nb = ( (size_t) ( ( j + modulo - s ) % modulo ) ) / len;
+  if (len == 0)
+    nb = 0;
+  else
+    nb = ( (size_t) ( ( j + modulo - s ) % modulo ) ) / len;
 }
 
 

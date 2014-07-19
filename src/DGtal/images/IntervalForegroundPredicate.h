@@ -17,32 +17,32 @@
 #pragma once
 
 /**
- * @file SimpleThresholdForegroundPredicate.h
+ * @file IntervalForegroundPredicate.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/26
  *
- * Header file for module SimpleThresholdForegroundPredicate.cpp
+ * Header file for module IntervalForegroundPredicate.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(SimpleThresholdForegroundPredicate_RECURSES)
-#error Recursive header files inclusion detected in SimpleThresholdForegroundPredicate.h
-#else // defined(SimpleThresholdForegroundPredicate_RECURSES)
+#if defined(IntervalForegroundPredicate_RECURSES)
+#error Recursive header files inclusion detected in IntervalForegroundPredicate.h
+#else // defined(IntervalForegroundPredicate_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define SimpleThresholdForegroundPredicate_RECURSES
+#define IntervalForegroundPredicate_RECURSES
 
-#if !defined SimpleThresholdForegroundPredicate_h
+#if !defined IntervalForegroundPredicate_h
 /** Prevents repeated inclusion of headers. */
-#define SimpleThresholdForegroundPredicate_h
+#define IntervalForegroundPredicate_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CImage.h"
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -50,74 +50,60 @@ namespace DGtal
 {
 
   /**
-   * Description of template class 'SimpleThresholdForegroundPredicate' <p>
+   * Description of template class 'IntervalForegroundPredicate' <p>
    * \brief Aim: Define a simple Foreground predicate thresholding
-   * image values  given a single thresold.
-   * More precisely, the functor operator() returns true if the value
-   * is greater than a given threshold.
+   * image values  between two constant values (the first one being
+   * excluded).
    *
    * This class is a model of CPointPredicate.
    *
    * @tparam Image an model of CImageContainer concept. 
    */
   template <typename Image>
-  class SimpleThresholdForegroundPredicate
+  class IntervalForegroundPredicate
   {
   public:
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CConstImage<Image> ));
     
     typedef typename Image::Value Value;
-    typedef typename Image::Point Point;
+    typedef typename Image::Point Point; 
 
     /** 
      * Constructor. This functor can be used to threshold image values
-     * greater (>) than @a value.
+     * in the interval ]minVal,maxVal].
      * 
-     * @param value  the threshold value.
+     * @param minVal the minimum value (first value excluded).
+     * @param maxVal the maximum value (last value considered).
      */
-    SimpleThresholdForegroundPredicate(ConstAlias<Image> aImage,
-				       const Value value):
-      myImage(&aImage), myVal(value) {};
+    IntervalForegroundPredicate(ConstAlias<Image> aImage,
+                                const Value minVal, 
+                                const Value maxVal): 
+      myImage(&aImage), myMaxVal(maxVal), myMinVal(minVal) {};
     
     /** 
      * @return True if the point belongs to the value interval.
      */
     bool operator()(const typename Image::Point &aPoint) const
     {
-      return ((*myImage)(aPoint) > myVal);
+      return ((*myImage)(aPoint) > myMinVal) && ((*myImage)(aPoint) <= myMaxVal);
     }
     
-    /**
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::Domain::ConstIterator &it) const
-    {
-      return ( (*myImage)(*it) > myVal);
-    }
-
-    /**
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::Range::Iterator &it) const
-    {
-      return ( (*it) > myVal);
-    }
-
     /** 
      * @return True if the point belongs to the value interval.
      */
     bool operator()(const typename Image::ConstRange::ConstIterator &it) const
     {
-      return ((*it) > myVal);
+      return ((*it) > myMinVal) && ((*it) <= myMaxVal);
     }
-    
 
+  
   private:
-    const Image *  myImage;
-    Value myVal;
+    const Image* myImage;
+    Value myMaxVal;
+    Value myMinVal;
     
   protected:
-    SimpleThresholdForegroundPredicate();
+    IntervalForegroundPredicate();
     
   };
 
@@ -127,7 +113,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined SimpleThresholdForegroundPredicate_h
+#endif // !defined IntervalForegroundPredicate_h
 
-#undef SimpleThresholdForegroundPredicate_RECURSES
-#endif // else defined(SimpleThresholdForegroundPredicate_RECURSES)
+#undef IntervalForegroundPredicate_RECURSES
+#endif // else defined(IntervalForegroundPredicate_RECURSES)
