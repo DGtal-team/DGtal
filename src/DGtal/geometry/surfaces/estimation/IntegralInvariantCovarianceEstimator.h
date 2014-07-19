@@ -109,7 +109,7 @@ namespace DGtal
 * parameterized by a point predicate instead of a functor spel ->
 * {0,1}. The two latter classes should evolve as this one in a further release.
 *
-* @see testVoronoiCovarianceMeasureOnSurface.cpp
+* @see testIntegralInvariantCovarianceEstimator.cpp
 */
 template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
 class IntegralInvariantCovarianceEstimator

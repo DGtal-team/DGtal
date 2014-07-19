@@ -3,9 +3,10 @@
 
 ## New Features / Critical Changes
 
-- *Base*
+- *General*
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
+ - The DGtal main website is now http://dgtal.org
 
  - Global refactoring of base functors (David Coeurjolly,
    [#861](https://github.com/DGtal-team/DGtal/pull/861))
@@ -34,6 +35,12 @@
     parameters from a bounding DSL and two end points (ctor of
     ArithmeticalDSS) (Tristan Roussillon,
     [#819](https://github.com/DGtal-team/DGtal/pull/819))
+
+- *IO Package*
+  - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
+   usage of Center-(X,Y,Z) parameters, as described in Vol file 
+   specification. (Jérémy Levallois, 
+   [#879](https://github.com/DGtal-team/DGtal/pull/879))
 
 - *Math Package*
 
@@ -76,7 +83,7 @@
   surface local estimator. Add geometric functors to define easily all
   the geometric estimators that can be built from the volume and
   coariance matrix. (Jeremy Levallois, Jacques-Olivier Lachaud,
-  [#803](https://github.com/DGtal-team/DGtal/pull/803))
+  [#803](https://github.com/DGtal-team/DGtal/pull/803) [#856](https://github.com/DGtal-team/DGtal/pull/856))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
  - CubicalSudivision has been renamed SpatialCubicalSubdivision and
@@ -103,9 +110,23 @@
   - New raw import/export for 32 bits images (Bertrand Kerautret,
 	[#877](https://github.com/DGtal-team/DGtal/pull/876))
 
+- *Kernel Package*
+
+  - New functor DomainSubSampler allowing to apply different
+    samplings with larger or smaller size on N dimensional domain. New tests
+    and examples are given for 2D and 3D images (Bertrand Kerautret,
+    [825](https://github.com/DGtal-team/DGtal/pull/825) and
+    [882](https://github.com/DGtal-team/DGtal/pull/882)).
+
+
 - *Shapes Package*
   - Shape concepts have been moved to concepts:: namespace (David
   Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
+
+- *Topology Package*
+  - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
 
 
 ## Bug Fixes
@@ -132,11 +153,18 @@
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
+  - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
+- *Graph Package*
+  - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
 
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
     [#835](https://github.com/DGtal-team/DGtal/pull/835))
-  - Fixing image thresholders which require CConstImage instead of
+  - Fixing image thresholders (SimpleThresholdForegroundPredicate and
+    IntervalForegroundPredicate) which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
     

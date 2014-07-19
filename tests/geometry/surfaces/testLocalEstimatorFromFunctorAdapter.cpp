@@ -142,11 +142,15 @@ bool testLocalEstimatorFromFunctorAdapter()
   Functor estimator(embedder, 1);
 
   ConvFunctor convFunc(1.0);
-  Reporter reporter(surface, l2Metric, estimator , convFunc);
+  Reporter reporter;//(surface,l2Metric,estimator,convFunc);
+  reporter.attach(surface);
+  reporter.setParams(l2Metric,estimator,convFunc);
 
   //We just test the init for Gaussian
   DGtal::functors::GaussianKernel gaussKernelFunc(1.0);
-  ReporterGaussian reporterGaussian(surface, l2Metric, estimator , gaussKernelFunc);
+  ReporterGaussian reporterGaussian;
+  reporterGaussian.attach(surface);
+  reporterGaussian.setParams(l2Metric,estimator,gaussKernelFunc);
   reporterGaussian.init(1,5);
 
   reporter.init(1.0, 5.0);
