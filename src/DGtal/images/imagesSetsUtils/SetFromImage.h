@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+#include "DGtal/images/IntervalForegroundPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

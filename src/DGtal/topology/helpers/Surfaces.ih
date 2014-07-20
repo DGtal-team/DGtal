@@ -142,12 +142,8 @@ findABel
   // (3) Check result.
   for ( Dimension i = 0; i < K.dimension; ++i )
     {
-      if ( ( i == d ) && ( x1[ i ] == x2[ i ] ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 1a along " 
-                  << i << std::endl;
-      if ( ( i != d ) && ( x1[ i ] != x2[ i ] ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 1b along "
-                  << i << std::endl;
+      ASSERT( ! ( ( i == d ) && ( x1[ i ] == x2[ i ] ) ) && "[DGtal::Surfaces::findABel] Same position on the main axis." ); 
+      ASSERT( ! ( ( i != d ) && ( x1[ i ] != x2[ i ] ) ) && "[DGtal::Surfaces::findABel] Different position on other axis." );
     }
   
   // (4) Dichotomy
@@ -167,21 +163,15 @@ findABel
   // (5) Check result.
   for ( Dimension i = 0; i < K.dimension; ++i )
     {
-      // std::cerr << "i=" << i << " x1=" << x1[ i ] << " x2=" << x2[ i ]
-      //     << std::endl;
-      if ( ( i == d ) && ( x1[ i ] != x2[ i ] - 1 ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 2a along " 
-                  << i << std::endl;
-      if ( ( i != d ) && ( x1[ i ] != x2[ i ] ) )
-        std::cerr << "[DGtal::Surfaces::findABel] Error 2a along "
-                  << i << std::endl;
+      ASSERT( ! ( ( i == d ) && ( x1[ i ] != x2[ i ] - 1 ) && ( x1[ i ] != x2[ i ] + 1 ) )
+              && "[DGtal::Surfaces::findABel] Points should be adjacent on main axis." );
+      ASSERT( ! ( ( i != d ) && ( x1[ i ] != x2[ i ] ) ) 
+              && "[DGtal::Surfaces::findABel] Points should have the same coordinates on other axes." );
     }
 
   // (6) Computes bel.
-  if ( val_v1 )
-    return K.sIncident( K.sSpel( x1, K.POS ), d, true );
-  else
-    return K.sIncident( K.sSpel( x1, K.NEG ), d, true );
+  SCell spel1 = K.sSpel( x1, val_v1 ? K.POS : K.NEG );
+  return K.sIncident( spel1, d, ( x1[ d ] == x2[ d ] - 1 ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

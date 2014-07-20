@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testRawReader.cpp
+ * @file testContourHelper.cpp
  * @ingroup Tests
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2010/07/29
+ * @date 2014/06/11
  *
- * Functions for testing class RawReader.
+ * Functions for testing class ContourHelper.
  *
  * This file is part of the DGtal library.
  */
@@ -30,75 +30,52 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/writers/PGMWriter.h"
-#include "DGtal/io/readers/RawReader.h"
-
 #include "ConfigTest.h"
-
-
+#include "DGtal/geometry/helpers/ContourHelper.h"
+#include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class RawReader.
+// Functions for testing class ContourHelper.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testRawReader2D()
+bool testContourHelper()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing Raw reader ..." );
-  
-  typedef SpaceND<2> Space2;
-  typedef HyperRectDomain<Space2> TDomain;
-  typedef TDomain::Vector Vector;
+  trace.beginBlock ( "Test Contour Helper" );
+  std::vector<Z2i::Point> aContour; 
+  aContour.push_back(Z2i::Point(0,0));
+  aContour.push_back(Z2i::Point(10,0));
+  aContour.push_back(Z2i::Point(10,4));
+  aContour.push_back(Z2i::Point(0,4));
+  Z2i::Point midPoint = ContourHelper::getMeanPoint(aContour);   
 
-  typedef SpaceND<3> Space3;
-  typedef HyperRectDomain<Space3> TDomain3;
-  typedef TDomain3::Vector Vector3;
-  
-  //Default image selector = STLVector
-  typedef ImageSelector<TDomain, unsigned char>::Type Image;
-  typedef ImageSelector<TDomain3, unsigned int>::Type Image32;
-  
-  std::string filename = testPath + "samples/raw2D-64x64.raw";
-  
-  Vector ext(16,16);
-  
-  Image image = RawReader<Image>::importRaw8( filename , ext);
+  std::vector<Z2i::Point> aContour2; 
+  aContour2.push_back(Z2i::Point(0,0));
+  aContour2.push_back(Z2i::Point(0,10));
+  aContour2.push_back(Z2i::Point(5,10));
 
-  ///FIXME: check io errors
-  trace.info() << image <<endl;
-
-  //export
-  PGMWriter<Image>::exportPGM("export-raw-reader.pgm",image);
-  
-  /// @todo re-import the PGM and compare with raw2D-64x64
-
-  std::string filename2 = testPath + "samples/raw32bits5x5x5.raw";
-  Vector3 ext2(5,5,5);
-  Image32 image2 = RawReader<Image32>::importRaw32( filename2, ext2 );
-  TDomain3::Point pointA(2,3,4);
-  
-  trace.info() << "Value of point " << pointA <<  " value :"  << image2(pointA) << std::endl;
-  
-  
-  nbok += image2(pointA)== 250000*2*3*4 ? 1 : 0; 
+  nbok += midPoint==Z2i::Point(5,2) ? 1 : 0; 
   nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
+  nbok += ContourHelper::isCounterClockWise(aContour) ? 1 : 0; 
+  nb++;
+  nbok += ContourHelper::isCounterClockWise(aContour2) ? 0 : 1; 
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   
+
+  
+ 
+  trace.endBlock();
   return nbok == nb;
 }
 
@@ -107,13 +84,13 @@ bool testRawReader2D()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class RawReader" );
+  trace.beginBlock ( "Testing class ContourHelper" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testRawReader2D(); // && ... other tests
+  bool res = testContourHelper(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -517,7 +517,7 @@ namespace DGtal
      *
      * @param kp an integer point (Khalimsky coordinates of cell).
      * @param sign the sign of the cell (either POS or NEG).
-     * @return the unsigned cell.
+     * @return the signed cell.
      */
     SCell sCell( const Point & kp, Sign sign = POS ) const;
 

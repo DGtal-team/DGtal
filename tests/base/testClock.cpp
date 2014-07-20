@@ -102,7 +102,7 @@ bool test_MultipleLoop()
 /// Test restart
 bool test_RestartClock()
 {
-  double tmp;
+  double tmp = 0.0;
   double tick_total=0., tick_accum=0.;
   Clock c_total, c_accum;
 
