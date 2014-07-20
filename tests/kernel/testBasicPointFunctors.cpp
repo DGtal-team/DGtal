@@ -190,7 +190,7 @@ bool testProjector()
     aGridSize.push_back(5);  
     PointVector<2,int> shiftVector(0 ,0);
     DGtal::functors::BasicDomainSubSampler< HyperRectDomain<SpaceND<2, int> > > subSampler(domainSource,
-                                                                          aGridSize,  shiftVector);
+                                                                                           aGridSize,  shiftVector);
     trace.info()<< "Subsampling functor on 2D domain " << domainSource <<" with grid size " 
                 << aGridSize[0] << " " << aGridSize[1] << " and shift vector "<< shiftVector <<std::endl ;
     PointVector<2,int> pointTest(1,0);
@@ -217,6 +217,27 @@ bool testProjector()
                  << pointInSourceDomain3D << " == " << PointVector<3,int>(0, 4, 1) << std::endl; 
     nb++;
     nbok += (pointInSourceDomain3D== PointVector<3,int>(0, 4, 1));
+
+
+    // BasicDomainReSampler 2D
+    std::vector<  double > aGridSizeReSample;
+    aGridSizeReSample.push_back(0.25);
+    aGridSizeReSample.push_back(0.5);  
+    DGtal::functors::BasicDomainSubSampler< HyperRectDomain<SpaceND<2, int> >,  
+                                            DGtal::int32_t, double > reSampler(domainSource,
+                                                                               aGridSizeReSample,  shiftVector);
+
+    trace.info()<< "Resampling functor on 2D domain " << domainSource <<" with grid size " 
+                << aGridSizeReSample[0] << " " << aGridSizeReSample[1] << " and shift vector "<< shiftVector <<std::endl ;
+    PointVector<2,int> pointTestRS(9,4);
+    PointVector<2,int> pointInSourceDomainRS = reSampler(pointTestRS);
+    trace.info() << "Sampling point of coordinate "<< pointTestRS << ", => coordinates in source domain:" 
+                 << pointInSourceDomainRS << " == " << PointVector<2,int>(2,2) << std::endl; 
+    nb++;
+    nbok += (pointInSourceDomainRS== PointVector<2,int>(2,2));
+    
+
+
   }
   return nbok == nb;
 }
