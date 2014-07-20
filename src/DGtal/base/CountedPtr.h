@@ -66,8 +66,8 @@ namespace DGtal
    *
    * @code
    * struct A{};
-   * CountedPtr<A> smart_p1 = CountedPtr<A>( new A ); 
-   * CountedPtr<A> smart_p2 = CountedPtr<A>( new A ); 
+   * CountedPtr<A> smart_p1( new A );
+   * CountedPtr<A> smart_p2( new A );
    * smart_p2 = smart_p1;  // second object is freed, first object is now shared.
    * @endcode
    *
