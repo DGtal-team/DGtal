@@ -62,9 +62,14 @@ bool testRawReader2D()
   typedef SpaceND<2> Space2;
   typedef HyperRectDomain<Space2> TDomain;
   typedef TDomain::Vector Vector;
+
+  typedef SpaceND<3> Space3;
+  typedef HyperRectDomain<Space3> TDomain3;
+  typedef TDomain3::Vector Vector3;
   
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
+  typedef ImageSelector<TDomain3, unsigned int>::Type Image32;
   
   std::string filename = testPath + "samples/raw2D-64x64.raw";
   
@@ -77,10 +82,18 @@ bool testRawReader2D()
 
   //export
   PGMWriter<Image>::exportPGM("export-raw-reader.pgm",image);
-
-  /// @todo re-import the PGM and compare with raw2D-64x64
   
-  nbok += true ? 1 : 0; 
+  /// @todo re-import the PGM and compare with raw2D-64x64
+
+  std::string filename2 = testPath + "samples/raw32bits5x5x5.raw";
+  Vector3 ext2(5,5,5);
+  Image32 image2 = RawReader<Image32>::importRaw32( filename2, ext2 );
+  TDomain3::Point pointA(2,3,4);
+  
+  trace.info() << "Value of point " << pointA <<  " value :"  << image2(pointA) << std::endl;
+  
+  
+  nbok += image2(pointA)== 250000*2*3*4 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;

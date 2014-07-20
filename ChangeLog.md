@@ -107,6 +107,8 @@
   - When exporting an 3D visualization to OBJ, a new option will
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
+  - New raw import/export for 32 bits images (Bertrand Kerautret,
+	[#877](https://github.com/DGtal-team/DGtal/pull/876))
 
 - *Kernel Package*
 

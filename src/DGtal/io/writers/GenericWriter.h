@@ -126,6 +126,29 @@ namespace DGtal
   
   /**
    * GenericWriter
+   * Template partial specialisation for volume images of dimension 3 and DGtal::uint32_t value type (which allows to export raw file format).
+   **/
+  template <typename TContainer, typename TFunctor>
+  struct GenericWriter<TContainer, 3 , DGtal::uint32_t,  TFunctor>
+  {
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned int> )) ;    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    
+    /**
+     * Export a volume image.
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param datasetName the dataset name to export.
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
+    static bool exportFile(const std::string &filename,  const TContainer &anImage, const std::string &datasetName="UInt32Array3D",
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+    
+  };
+  
+  /**
+   * GenericWriter
    * Template partial specialisation for volume images of dimension 3 and DGtal::uint64_t value type (which allows to export longvol file format).
    **/
   template <typename TContainer, typename TFunctor>
@@ -224,6 +247,28 @@ namespace DGtal
    **/
   template <typename TContainer,  typename TFunctor>
   struct GenericWriter<TContainer, 2, unsigned char, TFunctor>
+  {
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
+    /**
+     * Export the 2D image file.  
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved.
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
+    static bool exportFile(const std::string &filename, const TContainer &anImage,
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+
+  }; 
+
+
+  /**
+   * GenericWriter Template partial specialisation for images of
+   * dimension 2 and DGtal::uint32_tvalue type (which allows to export
+   * raw 32 bits file format ).
+   **/
+  template <typename TContainer,  typename TFunctor>
+  struct GenericWriter<TContainer, 2, DGtal::uint32_t, TFunctor>
   {
     BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
     /**
