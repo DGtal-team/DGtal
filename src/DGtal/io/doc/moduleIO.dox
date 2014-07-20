@@ -185,8 +185,8 @@ class is templated with an image container type, a dimension value
 (given by default by the image container dimension), a value type,
 (also given by default by the image container). Note that the reader
 choice between 8 bits or 32 bits is automatically done according to
-the templated image container type. So you can have a reading error if
-you try to read a pgm image from an unsigned int image type (choose an
+the templated image container type. So you can have an DGtal::IOException if
+you try to read a 8 bits raw image from an unsigned int image type (choose an
 8 bits type like unsigned char or explicitly call the specific reader
 RawReader::importRaw8).
 

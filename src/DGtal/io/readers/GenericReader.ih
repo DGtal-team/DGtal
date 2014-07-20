@@ -181,6 +181,9 @@ DGtal::GenericReader<TContainer, 2, DGtal::uint32_t>::import(const std::string &
   if(extension=="ppm")
     return PPMReader<TContainer>::importPPM(filename);
 
+  if(extension=="pgm")
+    return PGMReader<TContainer>::importPGM(filename);
+
   if(extension=="raw"){
     ASSERT(x!=0 && y!=0);
     typename TContainer::Point pt (x,y);
@@ -197,7 +200,7 @@ DGtal::GenericReader<TContainer, 2, DGtal::uint32_t>::import(const std::string &
       throw dgtalio;
 #endif
     }
-  
+
    trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
    throw dgtalio;
 }
