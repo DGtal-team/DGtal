@@ -107,6 +107,17 @@
   - When exporting an 3D visualization to OBJ, a new option will
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
+  - New raw import/export for 32 bits images (Bertrand Kerautret,
+	[#877](https://github.com/DGtal-team/DGtal/pull/876))
+
+- *Kernel Package*
+
+  - New functor DomainSubSampler allowing to apply different
+    samplings with larger or smaller size on N dimensional domain. New tests
+    and examples are given for 2D and 3D images (Bertrand Kerautret,
+    [825](https://github.com/DGtal-team/DGtal/pull/825) and
+    [882](https://github.com/DGtal-team/DGtal/pull/882)).
+
 
 - *Shapes Package*
   - Shape concepts have been moved to concepts:: namespace (David
@@ -115,6 +126,7 @@
 - *Topology Package*
   - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
 
 
 ## Bug Fixes
