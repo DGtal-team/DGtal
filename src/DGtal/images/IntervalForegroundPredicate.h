@@ -96,14 +96,7 @@ namespace DGtal
       return ((*it) > myMinVal) && ((*it) <= myMaxVal);
     }
 
-    /**
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::Range::Iterator &it) const
-    {
-      return ((*it) > myMinVal) && ((*it) <= myMaxVal);
-    }
-
+  
   private:
     const Image* myImage;
     Value myMaxVal;
