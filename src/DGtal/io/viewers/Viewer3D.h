@@ -712,23 +712,6 @@ namespace DGtal
     void updateList ( bool needToUpdateBoundingBox=true );
 
 
-    /**
-     * Draw a linel by using the [gluCylinder] primitive.
-     * @param aLinel the linel to draw
-     **/
-    void glDrawGLLinel ( typename Viewer3D<Space,KSpace>::LineD3D aLinel );
-
-
-
-
-    /**
-     * Draw a linel by using the [gluCShere] primitive.
-     * @param pointel the pointel to draw
-     */
-    void glDrawGLPointel ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
-
-
-
 
     /**
      * Used to manage new key event (wich are added from the default
