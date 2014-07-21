@@ -729,7 +729,14 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList ( GLuint ( myListToAff+nbListOfPrimitives+6 ) );
     }
 
-
+  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
+	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
+    {
+      for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
+        {
+          glDrawGLBall ( *it_s );
+        }
+    }
 
   for(unsigned int j=0; j< myVectTextureImage.size(); j++)
     {
@@ -798,6 +805,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myGLScaleFactorX=1.0;
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
+  myBallDisplayPrecision=10;
 
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
@@ -1380,7 +1388,34 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 }
 
 
-
+template< typename Space, typename KSpace>
+void
+DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>::BallD3D aBall )
+{
+  double thetaResolution = myBallDisplayPrecision;
+  double thetaStep= (2.0*M_PI)/thetaResolution;
+  double phiResolution = myBallDisplayPrecision;
+  double phiStep= M_PI/phiResolution;
+  
+  double radius = aBall.size;
+  double xCenter = aBall.center[0];
+  double yCenter = aBall.center[1];
+  double zCenter = aBall.center[2];
+  
+  for(unsigned int j =0; j < phiResolution; j++){
+    double phi0 = M_PI/2.0-j*phiStep;
+    double phi1 = M_PI/2.0-(j+1)*phiStep;
+    glBegin(GL_QUAD_STRIP);
+    for(unsigned int i =0; i <= thetaResolution; i++){
+      double theta0 =  i * thetaStep;
+      glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
+      glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);      
+      glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));
+      glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);      
+    }
+     glEnd();
+  }  
+}
 
 
 template< typename Space, typename KSpace>
