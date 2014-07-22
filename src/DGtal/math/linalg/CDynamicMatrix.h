@@ -93,7 +93,7 @@ public:
 
     BOOST_CONCEPT_USAGE( CDynamicMatrix )
     {
-        T x(i, j);
+        T xx(i, j);
     }
     // ------------------------- Private Datas --------------------------------
 private:

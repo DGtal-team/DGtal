@@ -28,7 +28,7 @@ double standard_deviation(const VectorXd& xx)
     return sqrt(accum)/(xx.size()-1);
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     trace.beginBlock("building calculus");
 

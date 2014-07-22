@@ -201,7 +201,7 @@ void usage2d()
     trace.endBlock();
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     usage2d();
 
