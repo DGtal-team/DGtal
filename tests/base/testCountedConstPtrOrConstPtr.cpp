@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testCountedPtrOrPtr.cpp
+ * @file testCountedConstPtrOrConstPtr.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2014/07/22
  *
- * Functions for testing class CountedPtrOrPtr.
+ * Functions for testing class CountedConstPtrOrConstPtr.
  *
  * This file is part of the DGtal library.
  */
@@ -30,14 +30,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CountedPtrOrPtr.h"
+#include "DGtal/base/CountedConstPtrOrConstPtr.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class CountedPtrOrPtr.
+// Functions for testing class CountedConstPtrOrConstPtr.
 ///////////////////////////////////////////////////////////////////////////////
 
 struct A {
@@ -69,27 +69,27 @@ struct A {
 
 int A::nb = 0;
 
-bool testCountedPtrOrPtrMemory()
+bool testCountedConstPtrOrConstPtrMemory()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  trace.beginBlock ( "Testing CountedPtrOrPtr memory managment..." );
+  trace.beginBlock ( "Testing CountedConstPtrOrConstPtr memory managment..." );
 
-  trace.beginBlock ( "An invalid CountedPtrOrPtr does not create any instance." );
+  trace.beginBlock ( "An invalid CountedConstPtrOrConstPtr does not create any instance." );
   {
-    CountedPtrOrPtr<A> cptr;
+    CountedConstPtrOrConstPtr<A> cptr;
   }
   ++nb, nbok += A::nb == 0 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "A CountedPtrOrPtr can be used as a simple pointer on an object without acquiring it." );
+  trace.beginBlock ( "A CountedConstPtrOrConstPtr can be used as a simple pointer on an object without acquiring it." );
   {
     A a( 17 );
     ++nb, nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
     {
-      CountedPtrOrPtr<A> cptr( &a, false );
+      CountedConstPtrOrConstPtr<A> cptr( &a, false );
       ++nb, nbok += A::nb == 1 ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
       ++nb, nbok += cptr.isSimple() ? 1 : 0;
@@ -102,9 +102,9 @@ bool testCountedPtrOrPtrMemory()
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "CountedPtrOrPtr can be used as a smart pointer with acquisition and automatic deallocation." );
+  trace.beginBlock ( "CountedConstPtrOrConstPtr can be used as a smart pointer with acquisition and automatic deallocation." );
   {
-    CountedPtrOrPtr<A> cptr( new A( 10 ) );
+    CountedConstPtrOrConstPtr<A> cptr( new A( 10 ) );
     ++nb, nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
     ++nb, nbok += cptr.isSmart() ? 1 : 0;
@@ -114,9 +114,9 @@ bool testCountedPtrOrPtrMemory()
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "CountedPtrOrPtr can be initialized with = CountedPtrOrPtr<A>( pointer )." );
+  trace.beginBlock ( "CountedConstPtrOrConstPtr can be initialized with = CountedConstPtrOrConstPtr<A>( pointer )." );
   {
-    CountedPtrOrPtr<A> cptr =  CountedPtrOrPtr<A>( new A( 5 ) );
+    CountedConstPtrOrConstPtr<A> cptr =  CountedConstPtrOrConstPtr<A>( new A( 5 ) );
     ++nb, nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
     ++nb, nbok += cptr.isSmart() ? 1 : 0;
@@ -126,9 +126,9 @@ bool testCountedPtrOrPtrMemory()
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "CountedPtrOrPtr can be initialized with = CountedPtr<A>( pointer )." );
+  trace.beginBlock ( "CountedConstPtrOrConstPtr can be initialized with = CountedPtr<A>( pointer )." );
   {
-    CountedPtrOrPtr<A> cptr =  CountedPtr<A>( new A( 5 ) );
+    CountedConstPtrOrConstPtr<A> cptr =  CountedPtr<A>( new A( 5 ) );
     ++nb, nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
     ++nb, nbok += cptr.isSmart() ? 1 : 0;
@@ -138,10 +138,10 @@ bool testCountedPtrOrPtrMemory()
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "CountedPtrOrPtr allows to share objects." );
+  trace.beginBlock ( "CountedConstPtrOrConstPtr allows to share objects." );
   {
-    CountedPtrOrPtr<A> cptr( new A( 7 ) );
-    CountedPtrOrPtr<A> cptr2 = cptr;
+    CountedConstPtrOrConstPtr<A> cptr( new A( 7 ) );
+    CountedConstPtrOrConstPtr<A> cptr2 = cptr;
     ++nb, nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
     ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
@@ -155,10 +155,10 @@ bool testCountedPtrOrPtrMemory()
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "CountedPtrOrPtr allows to share objects with CountedPtr." );
+  trace.beginBlock ( "CountedConstPtrOrConstPtr allows to share objects with CountedPtr." );
   {
     CountedPtr<A> cptr( new A( 7 ) );
-    CountedPtrOrPtr<A> cptr2 = cptr;
+    CountedConstPtrOrConstPtr<A> cptr2 = cptr;
     ++nb, nbok += A::nb == 1 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
     ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
@@ -172,9 +172,75 @@ bool testCountedPtrOrPtrMemory()
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "CountedPtrOrPtr are smart wrt assignment." );
+  trace.beginBlock ( "CountedConstPtrOrConstPtr allows to share objects with CountedPtrOrPtr." );
   {
-    CountedPtrOrPtr<A> cptr( new A( 3 ) );
+    CountedPtrOrPtr<A> cptr( new A( 7 ) );
+    CountedConstPtrOrConstPtr<A> cptr2 = cptr;
+    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
+    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
+    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
+    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
+  }
+  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "CountedConstPtrOrConstPtr are smart wrt assignment." );
+  {
+    CountedConstPtrOrConstPtr<A> cptr( new A( 3 ) );
+    CountedConstPtrOrConstPtr<A> cptr2( new A( 12 ) );
+    ++nb, nbok += A::nb == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 2" << std::endl;
+    ++nb, nbok += cptr.get() != cptr2.get() ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() != cptr2.get()" << std::endl;
+    cptr = cptr2;
+    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
+    ++nb, nbok += cptr.get()->a == 12 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get()->a == 12" << std::endl;
+    // cptr.get()->a = 5; // does not compile.
+    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
+    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
+    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
+  }
+  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "CountedConstPtrOrConstPtr and CountedPtr are smart wrt assignment." );
+  {
+    CountedConstPtrOrConstPtr<A> cptr( new A( 3 ) );
+    CountedPtr<A> cptr2( new A( 12 ) );
+    ++nb, nbok += A::nb == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 2" << std::endl;
+    ++nb, nbok += cptr.get() != cptr2.get() ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() != cptr2.get()" << std::endl;
+    cptr = cptr2;
+    ++nb, nbok += A::nb == 1 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
+    ++nb, nbok += cptr.get()->a == 12 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get()->a == 12" << std::endl;
+    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
+    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
+    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
+  }
+  ++nb, nbok += A::nb == 0 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "CountedConstPtrOrConstPtr and CountedPtrOrPtr are smart wrt assignment." );
+  {
+    CountedConstPtrOrConstPtr<A> cptr( new A( 3 ) );
     CountedPtrOrPtr<A> cptr2( new A( 12 ) );
     ++nb, nbok += A::nb == 2 ? 1 : 0;
     trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 2" << std::endl;
@@ -196,33 +262,6 @@ bool testCountedPtrOrPtrMemory()
   trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "CountedPtrOrPtr and CountedPtr are smart wrt assignment." );
-  {
-    CountedPtrOrPtr<A> cptr( new A( 3 ) );
-    CountedPtr<A> cptr2( new A( 12 ) );
-    ++nb, nbok += A::nb == 2 ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 2" << std::endl;
-    ++nb, nbok += cptr.get() != cptr2.get() ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() != cptr2.get()" << std::endl;
-    cptr = cptr2;
-    ++nb, nbok += A::nb == 1 ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 1" << std::endl;
-    ++nb, nbok += cptr.get()->a == 12 ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get()->a == 12" << std::endl;
-    ++nb, nbok += cptr.get() == cptr2.get() ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get() == cptr2.get()" << std::endl;
-    cptr.get()->a = 5; // does compile.
-    ++nb, nbok += cptr.get()->a == 5 ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.get()->a == 5" << std::endl;
-    ++nb, nbok += cptr.count() == 2 ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr.count() == 2" << std::endl;
-    ++nb, nbok += cptr2.count() == 2 ? 1 : 0;
-    trace.info() << "(" << nbok << "/" << nb << ") " << "cptr2.count() == 2" << std::endl;
-  }
-  ++nb, nbok += A::nb == 0 ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") " << "A::nb == 0" << std::endl;
-  trace.endBlock();
-
   trace.endBlock();
   return nb == nbok;
 }
@@ -233,13 +272,13 @@ bool testCountedPtrOrPtrMemory()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class CountedPtrOrPtr" );
+  trace.beginBlock ( "Testing class CountedConstPtrOrConstPtr" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testCountedPtrOrPtrMemory();
+  bool res = testCountedConstPtrOrConstPtrMemory();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

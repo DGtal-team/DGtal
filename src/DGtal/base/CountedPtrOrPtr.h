@@ -56,8 +56,8 @@ namespace DGtal
   /**
    * Description of template class 'CountedPtrOrPtr' <p> \brief Aim:
    * Smart or simple pointer on \a T. It can be a smart pointer based
-   * on reference counts or a simple pointer on \a T depending, on a
-   * boolean value given at construction or on the constructor
+   * on reference counts or a simple pointer on \a T depending either
+   * on a boolean value given at construction or on the constructor
    * used. In the first case, we will call this pointer object \b
    * smart, otherwise we will call it \b simple.
    *
@@ -135,7 +135,9 @@ namespace DGtal
      * destructor does nothing.
      */ 
     ~CountedPtrOrPtr()
-    { if ( myIsCountedPtr ) release(); }
+    { 
+      if ( myIsCountedPtr ) release(); 
+    }
 
     /**
      * Constructor from smart pointer (CountedPtr) \a r. In this case,
@@ -256,7 +258,8 @@ namespace DGtal
      * @pre 'isValid()' is true
      */
     T& operator*()  const throw()
-    { 
+    {
+      ASSERT( isValid() );
       return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); 
     }
 
@@ -271,6 +274,7 @@ namespace DGtal
      */
     T* operator->() const throw()
     {
+      ASSERT( isValid() );
       return myIsCountedPtr ? counterPtr()->ptr : ptr(); 
     }
 
@@ -297,7 +301,7 @@ namespace DGtal
 	? ( myAny ? counterPtr()->count == 1 : true )
 	: true;
     }
-
+    
     /**
      * @note For debug.
      *
@@ -305,7 +309,10 @@ namespace DGtal
      * smart pointers pointing to the same object as 'this', or 0 if
      * 'this' object is \b simple.
      */
-    unsigned int count() const      { return myIsCountedPtr ? counterPtr()->count : 0; }
+    unsigned int count() const
+    {
+      return myIsCountedPtr ? counterPtr()->count : 0; 
+    }
 
     /**
      * Gives back the pointer without deleting him. Deletes only the
