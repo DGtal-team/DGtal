@@ -165,6 +165,9 @@ namespace DGtal
     ///Copy of the static dimension of the Point/Vector.
     static const Dimension dimension = dim;
 
+		///Types needed by CLinearAlgebraContainer
+		typedef Component Scalar;
+		typedef Dimension Index;
 
     ///Copy of the container type
     typedef TContainer Container;
@@ -408,9 +411,9 @@ namespace DGtal
     /**
      * Returns the size of the vector (i.e. the number of its
      * coefficients).
-     * Same as getDimension
      */
     static Dimension size();
+		inline Dimension rows() const { return dim; }
 
     /**
      * Returns the  @a i-th coefficient of the vector.
@@ -420,6 +423,7 @@ namespace DGtal
      * @param i is the index of the retrieved coefficient.
      */
     const Component& operator[]( Dimension i ) const;
+    inline const Component& operator()( Dimension i ) const { return (*this)[i]; }
 
     /**
      * Returns a non-const reference to the @a i-th element of the
@@ -430,6 +434,7 @@ namespace DGtal
      * @param i is the index of the retrieved coefficient.
      */
     Component& operator[](Dimension i );
+    Component& operator()(Dimension i ) { return (*this)[i]; }
 
     // ----------------------- Comparison operations --------------------------
   public:
@@ -577,7 +582,7 @@ namespace DGtal
      * @param coeff is the factor @a *this get divided by.
      * @return the component division of *this by coeff.
      */
-    Self operator/ ( const Component coeff );
+    Self operator/ ( const Component coeff ) const;
     
     /**
      * Divides @a *this by the @a coeff scalar number.
@@ -603,6 +608,11 @@ namespace DGtal
      * Resets all the values to zero.
      */
     void reset();
+
+    /**
+     * Resets all the values to zero. Needed by CLinearAlgebraContainer.
+     */
+		inline void clear() { reset(); }
 
     /**
      * Implements the infimum (or greatest lower bound). It means the

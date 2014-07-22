@@ -449,8 +449,8 @@ namespace DGtal
       {
         BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
         BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
-        assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth &&
-                 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
+        assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== static_cast<int>(myImageWidth) &&
+                 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== static_cast<int>(myImageHeight));
 
         point1[0] += xTranslation; point1[1] += yTranslation; point1[2] += zTranslation;
         point2[0] += xTranslation; point2[1] +=yTranslation; point2[2] += zTranslation;

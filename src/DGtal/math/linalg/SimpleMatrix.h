@@ -81,17 +81,21 @@ namespace DGtal
     typedef TComponent Component;
     static const DGtal::Dimension M = TM;
     static const DGtal::Dimension N = TN;
-    
+
     typedef PointVector<N,Component> RowVector;
     typedef PointVector<M,Component> ColumnVector;
 
     typedef SimpleMatrix<Component,TM,TN> Self;
 
+		///Types needed by CLinearAlgebraContainer
+		typedef Dimension Index;
+		typedef Component Scalar;
+
     BOOST_CONCEPT_ASSERT(( CEuclideanRing<TComponent> ));
     BOOST_STATIC_ASSERT(TM > 0 );
     BOOST_STATIC_ASSERT(TM > 0 );
-    
-    /** 
+
+    /**
      * Create a static mxn matrix.
      *
      * SimpleMatrix values are all set to the zero value associated to
@@ -108,240 +112,262 @@ namespace DGtal
 
     // ----------------------- Standard services ------------------------------
 
-    /** 
+    /**
      * Clear matrix values
-     * 
+     *
      */
     void clear();
 
 
-    /** 
+    /**
      * Set a constant scalar to each matrix component.
-     * 
+     *
      * @param aScalar the scalar
      */
     void constant(const Component &aScalar);
 
-    /** 
+    /**
      * Set values to create identity matrix
      *
      * @pre the matrix is a square one.
      */
     void identity();
+    inline void setIdentity() { identity(); }
 
-    /** 
+    /**
      * Get row vector.
-     * 
+     *
      * @param i the row index
      * @return the i-th row
      */
     RowVector row(const DGtal::Dimension i) const;
 
-    /** 
+    /**
+     * Get number of rows.
+     *
+     */
+		inline Index rows() const { return M; }
+
+    /**
      * Get column vector.
-     * 
+     *
      * @param j the column index.
      * @return the j-th column
      */
     ColumnVector column(const DGtal::Dimension j) const;
 
-    /** 
+    /**
+     * Get number of columns.
+     *
+     */
+		inline Index cols() const { return N; }
+
+    /**
      * Set a value at position (i,j).
      *
      * @param i row index
      * @param j column index
      * @param aValue a component
-     * 
+     *
      */
     void setComponent(const DGtal::Dimension i, const DGtal::Dimension j,
                       const Component & aValue);
 
-    /** 
+    /**
      * Get a value at position (i,j).
      *
      * @param i row index
      * @param j column index
-     * 
+     *
      */
     Component operator()(const DGtal::Dimension i, const DGtal::Dimension j) const;
+
+    /**
+     * Get a reference to the value at position (i,j).
+     *
+     * @param i row index
+     * @param j column index
+     *
+     */
+    Component& operator()(const DGtal::Dimension i, const DGtal::Dimension j);
 
     // ----------------------- SimpleMatrix computations ------------------------------
 
 
-    /** 
+    /**
      * SimpleMatrix comparison.
-     * 
+     *
      * @param aMatrix another matrix.
      * @return true if aMatrix equals this
      */
     bool operator==(const Self & aMatrix) const;
 
-    /** 
+    /**
      * Assignment operator from another matrix.
      * Note: a static_cast from TComponentOther to Component is performed.
-     * 
+     *
      * @tparam TComponentOther another Component type.
      * @param aMatrix the matrix to copy.
-     * 
+     *
      * @return reference on the matrix
      */
     template<typename TComponentOther>
     Self & operator=(const SimpleMatrix<TComponentOther, M, N>& aMatrix);
 
-    /** 
+    /**
      * Addition between the matrix 'this' and @a aMatrix.
-     * 
+     *
      * @param aMatrix the matrix to add to self.
-     * 
+     *
      * @return the summed matrix
      */
     Self  operator+(const Self & aMatrix) const;
 
-    /** 
+    /**
      * Addition and assignment between the matrix 'this' and @a aMatrix.
-     * 
+     *
      * @param aMatrix the matrix to add to self.
-     * 
+     *
      * @return a reference to the result
      */
     Self & operator+=(const Self & aMatrix);
 
 
-    /** 
+    /**
      * Substract between the matrix 'this' and @a aMatrix.
-     * 
+     *
      * @param aMatrix the matrix to substract to self.
-     * 
+     *
      * @return the difference matrix
      */
     Self  operator-(const Self & aMatrix) const;
 
-    /** 
+    /**
      * Substract and assignment between the matrix 'this' and @a aMatrix.
-     * 
+     *
      * @param aMatrix the matrix to substract to self.
-     * 
+     *
      * @return a reference to the result
      */
     Self & operator-=(const Self & aMatrix);
 
-    /** 
+    /**
      * Product between the matrix 'this' and a scalar
-     * 
+     *
      * @param aScalar the scalar coefficient
-     * 
+     *
      * @return the resulting matrix
      */
     Self  operator*(const Component & aScalar) const;
- 
-    /** 
+
+    /**
      * Product between the matrix 'this' and a scalar
-     * 
+     *
      * @param aScalar the scalar coefficient
-     * 
+     *
      * @return the resulting a reference to the matrix
      */
     Self & operator*=(const Component & aScalar);
- 
-    /** 
+
+    /**
      * Division of a matrix by a scalar.
-     * 
+     *
      * @param aScalar the scalar value
-     * 
+     *
      * @return the resulting matrix
      */
     Self  operator/(const Component & aScalar) const;
 
-    /** 
+    /**
      * Division of a matrix by a scalar.
-     * 
+     *
      * @param aScalar the scalar value
-     * 
+     *
      * @return a reference to the updated matrix
      */
     Self & operator/=(const Component & aScalar) ;
-    
-    /** 
+
+    /**
      * Product between the matrix 'this' and @a aMatrix.
      * @note the product is O(N^3) for NxN matrices.
      *
      * @param aMatrix the NxM matrix to multiply
-     * 
-     * @return the product MxM matrix 
+     *
+     * @return the product MxM matrix
      */
-    SimpleMatrix<Component,TM,TM>  
+    SimpleMatrix<Component,TM,TM>
     operator*(const SimpleMatrix<Component,N,M> & aMatrix) const;
-    
-   
-    /** 
+
+
+    /**
      * Product between the matrix and a Column vector.
      * @note the product is O(N^3) for NxN matrices.
      *
      * @param aVector the vector to multiply
-     * 
-     * @return the product MxM matrix 
+     *
+     * @return the product MxM matrix
      */
     ColumnVector  operator*(const RowVector & aVector) const;
-    
-   
-    /** 
+
+
+    /**
      * Transpose the  matrix.
      *
-     * @return the transposted NxM matrix 
+     * @return the transposted NxM matrix
      */
     SimpleMatrix<Component,TN,TM> transpose() const;
 
 
-    /** 
+    /**
      * Cofactor of the matrix at position (i,j).
      * @pre the matrix is a square one.
-     * 
+     *
      * @return the cofactor at (i,j).
      */
     Component cofactor(const DGtal::Dimension i,
                        const DGtal::Dimension j) const;
-    
-    
-    /** 
+
+
+    /**
      * Cofactor matrix computation.
      * @pre the matrix is a square one.
-     * 
+     *
      * @return the cofactor matrix.
      */
     Self cofactor() const;
-     
-    /** 
+
+    /**
      * Return the minor determinant (i,j) of the current matrix
-     * 
+     *
      *
      * Specialized methods exist for 2x2 and 3x3 matrices.
      * @pre the matrix is a square one.
      *
      * @param i row index
      * @param j column index
-     * 
+     *
      * @return the minor (i,j)
      */
-    Component minorDeterminant(const DGtal::Dimension i, 
+    Component minorDeterminant(const DGtal::Dimension i,
 			       const DGtal::Dimension j) const;
 
-   
-    /** 
+
+    /**
      * Returns the determinant of square matrix.
      * Slow method for large matrices.
      * @pre this must be NxN
-     * 
+     *
      * Specialized methods exist for 2x2 and 3x3 matrices.
      *
      * @return the determinant.
      */
     Component determinant() const;
-    
-    /** 
+
+    /**
      * Compute the inverse of the matrix.
      *
      * @pre the matrix is a square one.
-     * @return the inverse  matrix. 
+     * @return the inverse  matrix.
      */
     SimpleMatrix<Component,TM,TN> inverse() const;
 
@@ -368,24 +394,24 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   private:
- 
-    
+
+
     // ------------------------- Private Datas --------------------------------
   private:
-    
+
 #ifdef CPP11_ARRAY
     ///Matrix values containers.
     std::array< Component, M*N>  myValues;
 
     ///Static computation of cofactor coefficients
-    /// @todo should be static 
+    /// @todo should be static
     std::array< Component, M*N>  myCofactorCoefs;
 #else
     ///Matrix values containers.
     boost::array< Component, M*N>  myValues;
 
     ///Static computation of cofactor coefficients
-    /// @todo should be static 
+    /// @todo should be static
     boost::array< Component, M*N>  myCofactorCoefs;
 #endif
     // ------------------------- Hidden services ------------------------------
@@ -403,13 +429,21 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const SimpleMatrix<T,M,N> & object );
 
+
+  /**
+   * External scalar multiplication
+   */
+  template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
+  SimpleMatrix<TComponent, TM, TN>
+  operator* ( const TComponent& scalar, const SimpleMatrix<TComponent, TM, TN>& matrix);
+
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/SimpleMatrixSpecializations.h"
-#include "DGtal/kernel/SimpleMatrix.ih"
+#include "DGtal/math/linalg/SimpleMatrixSpecializations.h"
+#include "DGtal/math/linalg/SimpleMatrix.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

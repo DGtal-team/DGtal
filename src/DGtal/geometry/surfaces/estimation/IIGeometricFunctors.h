@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
