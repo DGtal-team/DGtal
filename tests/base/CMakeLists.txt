@@ -11,6 +11,7 @@ SET(DGTAL_TESTS_SRC
    testTrace
    testcpp11
    testCountedPtr
+   testCountedPtrOrPtr
    testBits
    testIndexedListWithBlocks
    testLabels
