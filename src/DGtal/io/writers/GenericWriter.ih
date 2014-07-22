@@ -147,6 +147,26 @@ DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const s
 
 
 
+template <typename TContainer, typename TFunctor>
+inline
+bool
+DGtal::GenericWriter<TContainer, 3, unsigned int, TFunctor>::exportFile(const std::string &filename,
+                                                                         const TContainer &anImage, const std::string & UNUSED(datasetName),
+                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+ if(extension=="raw"){
+   trace.info() << "export raw 32 bits"  << std::endl;
+    return RawWriter< TContainer, TFunctor >::exportRaw32(filename, anImage, aFunctor);
+  } else {
+    trace.error() << "Extension " << extension<< " not yet implemented in DGtal with 32 bit format." << std::endl;
+    throw dgtalio;
+  }
+  return false;
+}
+
+
+
 template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
@@ -204,6 +224,27 @@ DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::exportFile(const s
 
   return true;
 }
+
+
+template <typename TContainer, typename TFunctor >
+inline
+bool
+DGtal::GenericWriter<TContainer, 2, DGtal::uint32_t, TFunctor>::exportFile(const std::string &filename,
+                                                                           const TContainer &anImage,
+                                                                           const TFunctor & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  //Getting image extension
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+ if(extension=="raw"){
+    return RawWriter<TContainer, TFunctor>::exportRaw32(filename, anImage, aFunctor);
+  } else{
+    trace.error() << "Extension " << extension<< " not yet implemented in generic writer." << std::endl;
+    throw dgtalio;
+  }
+
+  return true;
+}
+
 
 
 

@@ -47,7 +47,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalOrientedShape
   /**
@@ -108,7 +109,7 @@ Description of \b concept '\b CDigitalOrientedShape' <p>
   private:
     
   }; // end of concept CDigitalOrientedShape
-  
+  } 
 } // namespace DGtal
 
 //                                                                           //

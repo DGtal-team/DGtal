@@ -73,7 +73,6 @@ ELSE(WITH_EIGEN)
 message(STATUS "      WITH_EIGEN        false   (Eigen3)")
 ENDIF(WITH_EIGEN)
 
-
 IF(WITH_CGAL)
 SET (LIST_OPTION ${LIST_OPTION} [CGAL]\ )
 message(STATUS "      WITH_CGAL         true    (cgal)")

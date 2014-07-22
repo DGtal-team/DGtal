@@ -54,8 +54,8 @@ template <typename Value>
 struct ITKIOTrait
 {
 		typedef Value ValueOut; // Associated ITK image value type
-		typedef CastFunctor<ValueOut> DefaultWriteFunctor; // Default functor used by ITKWriter
-		typedef CastFunctor<Value> DefaultReadFunctor; // Default functor used by ITKReader
+		typedef functors::Cast<ValueOut> DefaultWriteFunctor; // Default functor used by ITKWriter
+		typedef functors::Cast<Value> DefaultReadFunctor; // Default functor used by ITKReader
 
 private:
 
@@ -75,8 +75,8 @@ template <>
 struct ITKIOTrait<bool>
 {
 		typedef unsigned char ValueOut;
-		typedef CastFunctor<unsigned char> DefaultWriteFunctor;
-		typedef CastFunctor<bool> DefaultReadFunctor;
+		typedef functors::Cast<unsigned char> DefaultWriteFunctor;
+		typedef functors::Cast<bool> DefaultReadFunctor;
 };
 
 } // namespace DGtal

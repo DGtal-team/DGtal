@@ -112,11 +112,12 @@ int main( int argc, char** argv )
  DGtal::Z2i::Domain domain2D(invFunctor(image3d.domain().lowerBound()),
 			     invFunctor(image3d.domain().upperBound()));
   
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::functors::Projector< Z3i::Space>,
-				    Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
-  DGtal::DefaultFunctor idV;
-  DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ(5); aSliceFunctorZ.initAddOneDim(2);
-  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
+ typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::functors::Projector< Z3i::Space>,
+                                  Image3D::Value,  functors::Identity >  SliceImageAdapter;
+ functors::Identity idV;
+ functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ(5); aSliceFunctorZ.initAddOneDim(2);
+ 
+ SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
 
   viewer << sliceImageZ;
   viewer <<  DGtal::UpdateImagePosition<Space, KSpace>(6, Viewer3D<>::zDirection, 0.0, 0.0, -10.0);

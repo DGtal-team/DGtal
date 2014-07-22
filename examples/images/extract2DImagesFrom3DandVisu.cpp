@@ -64,10 +64,10 @@ int main( int argc, char** argv )
   typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::functors::Projector< Z3i::Space>,
-   				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+   				   Image3D::Value,  DGtal::functors::Identity >  SliceImageAdapter;
   
   typedef DGtal::ConstImageAdapter<Image3D, Z2i::Domain, DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain>,
-   				   Image3D::Value,  DGtal::DefaultFunctor >  ImageAdapterExtractor;
+   				   Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
 
   DGtal::functors::Projector<DGtal::Z2i::Space>  invFunctor(2);
   // Importing a 3D image 
@@ -76,7 +76,7 @@ int main( int argc, char** argv )
     
   DGtal::Z2i::Domain domain(invFunctor(image.domain().lowerBound()), 
 			    invFunctor(image.domain().upperBound()));
-  DGtal::DefaultFunctor idV;
+  DGtal::functors::Identity idV;
     
   trace.beginBlock ( "Example extract2DImagesFrom3D" );
    

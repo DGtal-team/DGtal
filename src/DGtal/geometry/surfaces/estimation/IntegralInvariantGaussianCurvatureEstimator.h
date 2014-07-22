@@ -58,7 +58,7 @@
 
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 
-#include "DGtal/math/EigenValues3D.h"
+#include "DGtal/math/linalg/EigenValues3D.h"
 #include "DGtal/kernel/CCellFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -311,7 +311,7 @@ public:
   typedef int Value;
 
   typedef TShapeFunctor ShapeSpelFunctor;
-  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Z2i::Space> KernelSupport;
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
@@ -501,7 +501,7 @@ public:
   typedef int Value;
 
   typedef TShapeFunctor ShapeSpelFunctor;
-  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Z2i::Space> KernelSupport;
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Z2i::Space, KernelSupport > DigitalShapeKernel;
@@ -690,7 +690,7 @@ public:
   typedef int Value;
 
   typedef TShapeFunctor ShapeSpelFunctor;
-  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Z3i::Space> KernelSupport;
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Z3i::Space, KernelSupport > DigitalShapeKernel;

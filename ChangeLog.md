@@ -1,11 +1,27 @@
 # DGtal 0.8
 
 
-## New Features
+## New Features / Critical Changes
 
-- *Base*
+- *General*
  - This Changelog has been ported to MarkDown (David Coeurjolly,
    [#846](https://github.com/DGtal-team/DGtal/pull/846))
+ - The DGtal main website is now http://dgtal.org
+
+ - Global refactoring of base functors (David Coeurjolly,
+   [#861](https://github.com/DGtal-team/DGtal/pull/861))
+    - BasicFunctor functors have been moved to functors:: namespace.
+    - DefaultFunctor has been renamed functors::Identity.
+    - xxxFunctor have been renamed to xxx.
+    
+- *DEC Package*
+ - DGtal 0.8 contains the first release of the Discrete Exterior
+   Calculus Package. DEC provides an easy and efficient way to
+   describe linear operator over various structure. Basic operators,
+   such as Hodge duality operator or exterior derivative, can be
+   combined to create classical vector analysis operator such as
+   gradient, curl and divergence. (Pierre Gueth,
+   [#877](https://github.com/DGtal-team/DGtal/pull/877))
 
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
@@ -27,6 +43,12 @@
     parameters from a bounding DSL and two end points (ctor of
     ArithmeticalDSS) (Tristan Roussillon,
     [#819](https://github.com/DGtal-team/DGtal/pull/819))
+
+- *IO Package*
+  - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
+   usage of Center-(X,Y,Z) parameters, as described in Vol file 
+   specification. (Jérémy Levallois, 
+   [#879](https://github.com/DGtal-team/DGtal/pull/879))
 
 - *Math Package*
 
@@ -69,7 +91,7 @@
   surface local estimator. Add geometric functors to define easily all
   the geometric estimators that can be built from the volume and
   coariance matrix. (Jeremy Levallois, Jacques-Olivier Lachaud,
-  [#803](https://github.com/DGtal-team/DGtal/pull/803))
+  [#803](https://github.com/DGtal-team/DGtal/pull/803) [#856](https://github.com/DGtal-team/DGtal/pull/856))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
  - Updates in Metric concepts: better and simpler concept structure
@@ -97,6 +119,27 @@
   - When exporting an 3D visualization to OBJ, a new option will
     rescale the geometry to fit in [-1/2,1/2]^3. (David Coeurjolly,
     [#820](https://github.com/DGtal-team/DGtal/pull/820))
+  - New raw import/export for 32 bits images (Bertrand Kerautret,
+	[#877](https://github.com/DGtal-team/DGtal/pull/876))
+
+- *Kernel Package*
+
+  - New functor DomainSubSampler allowing to apply different
+    samplings with larger or smaller size on N dimensional domain. New tests
+    and examples are given for 2D and 3D images (Bertrand Kerautret,
+    [825](https://github.com/DGtal-team/DGtal/pull/825) and
+    [882](https://github.com/DGtal-team/DGtal/pull/882)).
+
+
+- *Shapes Package*
+  - Shape concepts have been moved to concepts:: namespace (David
+  Coeurjolly, [#871](https://github.com/DGtal-team/DGtal/pull/871))
+
+- *Topology Package*
+  - Surfaces::findABell accepts now arbitrary pair of points (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
+
 
 ## Bug Fixes
 
@@ -106,24 +149,43 @@
   - Fixing issue on Circulator/IteratorFunctions (related to #770 on
     MacOS).
 
+- *Kernel Package*
+  - BinaryPointPredicate is now specialized for DGtal::AndBoolFct2 and
+    DGtal::OrBoolFct2 in order to guarantee that the second computation
+    is not performed when the first point predicate return false (resp. true)
+    with DGtal::AndBoolFct2 (resp. DGtal::OrBoolFct2) (Tristan Roussillon
+    [#852](https://github.com/DGtal-team/DGtal/pull/852)).
+
 - *Geometry Package*
   - Bug fix in PowerMap construction. (David Coeurjolly,
     [#814](https://github.com/DGtal-team/DGtal/pull/814))
+  - Bug fix in 3d display of StandardDSS6Computer (Tristan Roussillon
+    [#854](https://github.com/DGtal-team/DGtal/pull/854))
 
 - *Topology Package*
   - small fix in ImplicitDigitalSurface. (Jacques-Olivier Lachaud,
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
+  - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
+
+- *Graph Package*
+  - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
+    [#851](https://github.com/DGtal-team/DGtal/pull/851))
 
 - *Image Package*
   - Fixing template types in ImageAdapter (David Coeurjolly,
     [#835](https://github.com/DGtal-team/DGtal/pull/835))
-  - Fixing image thresholders which require CConstImage instead of
+  - Fixing image thresholders (SimpleThresholdForegroundPredicate and
+    IntervalForegroundPredicate) which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
-    
+
 - *IO*
   - Bug fix for reading PGM(P2) 3D. (Kacper Pluta,
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
+  - Renaming BasicColorToScalarFunctors namespace to functors:: (David
+    Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
+  - Fix OpenGL warnings by redefining openGL primitive (glSphere) (Bertrand Kerautret [#981] https://github.com/DGtal-team/DGtal/pull/891)
 
 === DGtal 0.7 ===
 

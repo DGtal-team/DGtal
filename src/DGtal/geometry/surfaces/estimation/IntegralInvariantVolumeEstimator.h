@@ -107,7 +107,7 @@ namespace DGtal
 * parameterized by a point predicate instead of a functor spel ->
 * {0,1}. The two latter classes should evolve as this one in a further release.
 *
-* @see testVoronoiCovarianceMeasureOnSurface.cpp
+* @see testIntegralInvariantVolumeEstimator.cpp
 */
 template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 class IntegralInvariantVolumeEstimator
@@ -145,7 +145,7 @@ public:
   typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
 
 
-  typedef ConstValueCellFunctor<Value, Spel> KernelSpelFunctor;
+  typedef functors::ConstValueCell<Value, Spel> KernelSpelFunctor;
   typedef ImplicitBall<Space> KernelSupport;
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanMinus;
   typedef GaussDigitizer< Space, KernelSupport > DigitalShapeKernel;
