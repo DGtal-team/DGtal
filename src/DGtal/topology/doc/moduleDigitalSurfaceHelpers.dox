@@ -245,18 +245,18 @@ and you will get the resulting cell display:
 
 
 
-To construct the set of signed SCell, we exploit the method getInterPixelLinels of FreemanChain class:
+To construct the set of signed SCell, we use the method getInterPixelLinels of FreemanChain class:
 
  @snippet topology/ctopo-fillContours.cpp ctopoFillContoursGetSCells
 
-@note The that the resulting Cell orientation are defined by
+@note The that the resulting Cell orientation is defined by
 convention such that a contour defined in the direct orientation will
 generate the fill of the interior of the shape (with the
-uComputeInterior method) while the indirection orientation should be
+uComputeInterior method) while the indirect orientation should be
 used to define a hole (see example below). 
  
 
-Afterwards the region associated to the direct oriented contour (fc1)
+Afterwards the region associated with the direct oriented contour (fc1)
 can be filled by using the method uComputeInterior with the parameter
 empty_is_inside set to false. This parameter choice is justified since
 here a line which does not contain any boundary element is necessary at the
@@ -264,7 +264,7 @@ outside of the contour.
 
  @snippet topology/ctopo-fillContours.cpp ctopoFillContoursFillRegion
             
- The interior Cell obtained from such a contour are illustrated here:
+ The interior Cells obtained from such a contour are illustrated here:
 
  
  @image html  ctopo-fillContours0.png  "Filling interior of direct oriented contour."
