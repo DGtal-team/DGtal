@@ -14,6 +14,14 @@
     - DefaultFunctor has been renamed functors::Identity.
     - xxxFunctor have been renamed to xxx.
     
+- *DEC Package*
+ - DGtal 0.8 contains the first release of the Discrete Exterior
+   Calculus Package. DEC provides an easy and efficient way to
+   describe linear operator over various structure. Basic operators,
+   such as Hodge duality operator or exterior derivative, can be
+   combined to create classical vector analysis operator such as
+   gradient, curl and divergence. (Pierre Gueth,
+   [#877](https://github.com/DGtal-team/DGtal/pull/877))
 
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
