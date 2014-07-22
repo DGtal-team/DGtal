@@ -29,6 +29,16 @@
   feature detection with VCM. (Jacques-Olivier Lachaud,
   [#803](https://github.com/DGtal-team/DGtal/pull/803))
 
+ - Add Integral Invariant estimators so that they meet the concept of
+  surface local estimator. Add geometric functors to define easily all
+  the geometric estimators that can be built from the volume and
+  coariance matrix. Previous estimators (IntegralInvariantMeanCurvatureEstimator
+  and IntegralInvariantGaussianCurvatureEstimator) are removed. Please use
+  the new ones instead. (Jeremy Levallois, Jacques-Olivier Lachaud,
+  [#803](https://github.com/DGtal-team/DGtal/pull/803) 
+  [#856](https://github.com/DGtal-team/DGtal/pull/856)
+  [#893](https://github.com/DGtal-team/DGtal/pull/893))
+
  - Various geometric predicates are now available in order to test the
   orientation of three points in the planes. Most classes are template
   classes parametrized by a type for the points (or its coordinates)
@@ -87,11 +97,6 @@
   truth estimators for implicit polynomial shapes
   (TrueDigitalSurfaceLocalEstimator). (Jacques-Olivier Lachaud,
   [#803](https://github.com/DGtal-team/DGtal/pull/803))
- - Add Integral Invariant estimators so that they meet the concept of
-  surface local estimator. Add geometric functors to define easily all
-  the geometric estimators that can be built from the volume and
-  coariance matrix. (Jeremy Levallois, Jacques-Olivier Lachaud,
-  [#803](https://github.com/DGtal-team/DGtal/pull/803) [#856](https://github.com/DGtal-team/DGtal/pull/856))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
  - CubicalSudivision has been renamed SpatialCubicalSubdivision and
