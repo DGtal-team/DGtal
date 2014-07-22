@@ -729,7 +729,8 @@ EXCLUDE_SYMBOLS        =
 # directories that contain example code fragments that are included (see
 # the \include command).
 
-EXAMPLE_PATH           = @top_srcdir@/examples
+EXAMPLE_PATH           = @top_srcdir@/examples \
+                         @top_srcdir@/tests
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp
@@ -758,6 +759,7 @@ IMAGE_PATH             = @top_srcdir@/src/DGtal/doc/images \
                          @top_srcdir@/src/DGtal/base/doc/images \
                          @top_srcdir@/src/DGtal/kernel/doc/images \
                          @top_srcdir@/src/DGtal/graph/doc/images \
+                         @top_srcdir@/src/DGtal/dec/doc/images \
                          @top_srcdir@/src/DGtal/io/doc/images \
                          @top_srcdir@/src/DGtal/arithmetic/doc/images \
                          @top_srcdir@/src/DGtal/images/doc/images \

@@ -370,6 +370,17 @@ DGtal::SimpleMatrix<T, TM, TN>::operator()(const DGtal::Dimension i,
   ASSERT(j<N);  
   return myValues[i*N + j];
 }
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+T&
+DGtal::SimpleMatrix<T, TM, TN>::operator()(const DGtal::Dimension i, 
+					   const DGtal::Dimension j)
+{
+  ASSERT(i<M);
+  ASSERT(j<N);  
+  return myValues[i*N + j];
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -423,3 +434,10 @@ DGtal::operator<< ( std::ostream & out,
   return out;
 }
 
+template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+DGtal::SimpleMatrix<TComponent, TM, TN>
+operator* ( const TComponent& scalar, const DGtal::SimpleMatrix<TComponent, TM, TN>& matrix)
+{
+		return matrix * scalar;
+}

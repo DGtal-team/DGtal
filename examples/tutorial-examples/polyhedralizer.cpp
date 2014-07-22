@@ -61,8 +61,8 @@
 #include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 #include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h"
 
-#include "DGtal/kernel/SimpleMatrix.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

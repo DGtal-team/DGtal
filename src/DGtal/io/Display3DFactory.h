@@ -55,6 +55,7 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/shapes/Mesh.h"
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/CColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -63,6 +64,9 @@
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/dec/VectorField.h"
+#include "DGtal/dec/KForm.h"
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -85,6 +89,27 @@ namespace DGtal
     typedef Display3D<Space, KSpace> Display;
     typedef typename Display::RealPoint RealPoint;
     typedef typename Display::RealVector RealVector;
+
+    // DiscreteExteriorCalculus
+    template <Dimension dim, typename TLinearAlgebraBackend, typename TInteger>
+    static
+    void
+    draw(Display3D<Space, KSpace>& display, const DGtal::DiscreteExteriorCalculus<dim, TLinearAlgebraBackend, TInteger>& calculus);
+    // DiscreteExteriorCalculus
+
+    // KForm
+    template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+    static
+    void
+    draw(Display3D<Space, KSpace>& display, const DGtal::KForm<Calculus, order, duality>& kform, double cmap_min = 0, double cmap_max = 0);
+    // KForm
+
+    // VectorField
+    template <typename Calculus, DGtal::Duality duality>
+    static
+    void
+    draw(Display3D<Space, KSpace>& display, const DGtal::VectorField<Calculus, duality>& vector_field, const double& scale = 0.5, const double& epsilon = 1e-8);
+    // VectorField
 
     // SphericalAccumulator
     /**
