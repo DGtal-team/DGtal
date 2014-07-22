@@ -98,20 +98,22 @@ public:
 
     BOOST_CONCEPT_USAGE( CVector )
     {
-        Scalar& a_ref = z(i);
-        checkConstConstraints();
+      Scalar &aa =  z(i);
+      aa = aa;//to avoid compiler warning
+      checkConstConstraints();
     }
 
     void checkConstConstraints() const
     {
-        Scalar a = z(i);
+	Scalar aa =z(i);
+	aa = aa;//to avoid compiler warning
         ConceptUtils::sameType(i, z.rows());
     }
 
     // ------------------------- Private Datas --------------------------------
 private:
-    T z;
-    Index i;
+  T z;
+  Index i;
 
     // ------------------------- Internals ------------------------------------
 private:

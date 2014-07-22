@@ -534,7 +534,7 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DiscreteExteriorCalculus<d
 // KForm
 template <typename TCalculus, DGtal::Order order, DGtal::Duality duality>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KForm<TCalculus, order, duality>& object, std::string /*mode*/ = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::KForm<TCalculus, order, duality>& UNUSED(object), std::string /*mode*/ = "" )
 {
   return new DGtal::KFormStyle2D();
 }
