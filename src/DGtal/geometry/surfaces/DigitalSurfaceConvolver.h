@@ -47,7 +47,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
