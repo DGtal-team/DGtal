@@ -42,14 +42,14 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
- 
+
   /////////////////////////////////////////////////////////////////////////////
   // template class SimpleMatrixSpecializations
   /**
@@ -68,32 +68,32 @@ namespace DGtal
   struct SimpleMatrixSpecializations
   {
     // ----------------------- Standard services ------------------------------
-    
+
     ///Matrix componenets type
     typedef typename TMatrix::Component Component;
     ///Matrix type
     typedef TMatrix Matrix;
-        
+
     BOOST_STATIC_ASSERT( TM == TMatrix::M );
     BOOST_STATIC_ASSERT( TN == TMatrix::N );
 
-    /** 
+    /**
      * Return the minor determinant (i,j) of the current matrix
-     * 
+     *
      * @param i row index
      * @param j column index
-     * 
+     *
      * @return the minor (i,j)
      */
     static Component minorDeterminant(const Matrix &M,
-                                      const DGtal::Dimension i, 
+                                      const DGtal::Dimension i,
                                       const DGtal::Dimension j);
-    
-    /** 
+
+    /**
      * Returns the determinant of square matrix.
      * Slow method for large matrices.
      * @pre this must be NxN
-     * 
+     *
      * @return the determinant.
      */
     static Component determinant(const Matrix &M);
@@ -112,30 +112,30 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     typedef typename TMatrix::Component Component;
     typedef TMatrix Matrix;
-   
+
     BOOST_STATIC_ASSERT( 2 == TMatrix::M );
     BOOST_STATIC_ASSERT( 2 == TMatrix::N );
- 
-    /** 
+
+    /**
      * Return the minor determinant (i,j) of the current matrix
-     * 
+     *
      * @param i row index
      * @param j column index
-     * 
+     *
      * @return the minor (i,j)
      */
     static Component minorDeterminant(const Matrix &aM,
-                                      const DGtal::Dimension i, 
+                                      const DGtal::Dimension i,
                                       const DGtal::Dimension j);
-    
-    /** 
+
+    /**
      * Returns the determinant of square matrix.
      * Slow method for large matrices.
      * @pre this must be NxN
-     * 
+     *
      * @return the determinant.
      */
     static Component determinant(const Matrix &aM);
@@ -153,30 +153,30 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     typedef typename TMatrix::Component Component;
     typedef TMatrix Matrix;
-   
+
     BOOST_STATIC_ASSERT( 1 == TMatrix::M );
     BOOST_STATIC_ASSERT( 1 == TMatrix::N );
- 
-    /** 
+
+    /**
      * Return the minor determinant (i,j) of the current matrix
-     * 
+     *
      * @param i row index
      * @param j column index
-     * 
+     *
      * @return the minor (i,j)
      */
     static Component minorDeterminant(const Matrix &aM,
-                                      const DGtal::Dimension i, 
+                                      const DGtal::Dimension i,
                                       const DGtal::Dimension j);
-    
-    /** 
+
+    /**
      * Returns the determinant of square matrix.
      * Slow method for large matrices.
      * @pre this must be NxN
-     * 
+     *
      * @return the determinant.
      */
     static Component determinant(const Matrix &aM);
@@ -195,30 +195,30 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     typedef typename TMatrix::Component Component;
     typedef TMatrix Matrix;
-    
+
     BOOST_STATIC_ASSERT( 3 == TMatrix::M );
     BOOST_STATIC_ASSERT( 3 == TMatrix::N );
 
-    /** 
+    /**
      * Return the minor determinant (i,j) of the current matrix
-     * 
+     *
      * @param i row index
      * @param j column index
-     * 
+     *
      * @return the minor (i,j)
      */
     static Component minorDeterminant(const Matrix &M,
-                                      const DGtal::Dimension i, 
+                                      const DGtal::Dimension i,
                                       const DGtal::Dimension j);
-    
-    /** 
+
+    /**
      * Returns the determinant of square matrix.
      * Slow method for large matrices.
      * @pre this must be NxN
-     * 
+     *
      * @return the determinant.
      */
     static Component determinant(const Matrix &M);
@@ -231,7 +231,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/SimpleMatrixSpecializations.ih"
+#include "DGtal/math/linalg/SimpleMatrixSpecializations.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

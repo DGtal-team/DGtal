@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedConstPtrOrConstPtr.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"

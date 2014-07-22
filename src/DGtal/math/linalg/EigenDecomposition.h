@@ -52,7 +52,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -186,7 +186,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/EigenDecomposition.ih"
+#include "DGtal/math/linalg/EigenDecomposition.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
