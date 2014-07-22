@@ -42,7 +42,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/VolWriter.h"
 
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/base/BasicFunctors.h"
@@ -114,7 +114,7 @@ int main(int argc, char ** argv)
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
   viewer2 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer2  launched..."<<std::endl;
-  res = application2.exec();
+  res = res && application2.exec();
 
   //Granulo
   Image imageGranulo ( image.domain() );
@@ -151,7 +151,7 @@ int main(int argc, char ** argv)
     }
 
   trace.info() << "Granulometry ok nbBalls="<<cpt<< std::endl;
-  VolWriter<Image, CastFunctor<unsigned char> >::exportVol("granulo.vol", imageGranulo);      
+  VolWriter<Image, functors::Cast<unsigned char> >::exportVol("granulo.vol", imageGranulo);      
   trace.info() << "Save OK"<< std::endl;
 
 
@@ -181,8 +181,10 @@ int main(int argc, char ** argv)
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
   viewer3 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer3  launched..."<<std::endl;
-  res = application3.exec();
+  res = res&& application3.exec();
 
-  
-  return 0;
+  if (res)
+    return 0;
+  else
+    return 1;
 }

@@ -39,7 +39,7 @@
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 
 //DT
 #include "DGtal/images/ImageSelector.h"
