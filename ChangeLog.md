@@ -167,13 +167,14 @@
     IntervalForegroundPredicate) which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
-    
+
 - *IO*
   - Bug fix for reading PGM(P2) 3D. (Kacper Pluta,
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
   - Renaming BasicColorToScalarFunctors namespace to functors:: (David
     Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
-    
+  - Fix OpenGL warnings by redefining openGL primitive (glSphere) (Bertrand Kerautret [#981] https://github.com/DGtal-team/DGtal/pull/891)
+
 === DGtal 0.7 ===
 
 *General*

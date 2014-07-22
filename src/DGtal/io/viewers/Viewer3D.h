@@ -713,22 +713,12 @@ namespace DGtal
 
 
     /**
-     * Draw a linel by using the [gluCylinder] primitive.
-     * @param aLinel the linel to draw
-     **/
-    void glDrawGLLinel ( typename Viewer3D<Space,KSpace>::LineD3D aLinel );
-
-
-
-
-    /**
      * Draw a linel by using the [gluCShere] primitive.
      * @param pointel the pointel to draw
      */
-    void glDrawGLPointel ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
-
-
-
+    void glDrawGLBall ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
+    
+ 
 
     /**
      * Used to manage new key event (wich are added from the default
@@ -1112,6 +1102,7 @@ namespace DGtal
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
 
+    unsigned int myBallDisplayPrecision;
 
   }; // end of class Viewer3D
 
