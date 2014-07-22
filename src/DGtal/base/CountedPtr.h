@@ -108,8 +108,6 @@ namespace DGtal
     };
 
 
-    typedef T element_type;
-
     /**
      * Default Constructor and constructor from pointer.
      *
@@ -189,7 +187,7 @@ namespace DGtal
     }
 
     /**
-     * Protected Member access operator. 
+     * Secured member access operator. 
      *
      * @return a pointer on the object that is pointed by the smart
      * pointer or 0 if the object is not valid ('isValid()' is false).
@@ -231,7 +229,8 @@ namespace DGtal
     }
 
     /**
-     * For debug.
+     * @note For debug.
+     *
      * @return the number of smart pointers pointing to the same object as 'this'.
      */
     unsigned int count() const      
@@ -245,11 +244,13 @@ namespace DGtal
      *
      * @return the address that was pointed by this smart pointer
      * @note Use with care.
+     * @pre 'isValid()' and 'unique()'.
      */
     inline T* drop() 
     { 
+      ASSERT( isValid() );
+      ASSERT( unique() );
       T* tmp = myCounter->ptr;
-      ASSERT( myCounter->count == 1 );
       delete myCounter;
       myCounter = 0; 
       return tmp;
