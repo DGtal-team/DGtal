@@ -259,7 +259,8 @@ namespace DGtal
      */
     T& operator*()  const throw()
     {
-      ASSERT( isValid() );
+      // Travis is too slow in Debug mode with this ASSERT.
+      // ASSERT( isValid() );
       return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); 
     }
 
@@ -274,7 +275,8 @@ namespace DGtal
      */
     T* operator->() const throw()
     {
-      ASSERT( isValid() );
+      // Travis is too slow in Debug mode with this ASSERT.
+      // ASSERT( isValid() );
       return myIsCountedPtr ? counterPtr()->ptr : ptr(); 
     }
 
@@ -353,7 +355,8 @@ private:
      */
     inline Counter* counterPtr() const
     { 
-      ASSERT( myIsCountedPtr );
+      // Travis is too slow in Debug mode with this ASSERT.
+      // ASSERT( myIsCountedPtr );
       return static_cast<Counter*>( myAny ); 
     }
     
@@ -364,7 +367,8 @@ private:
      */
     inline T* ptr() const
     { 
-      ASSERT( ! myIsCountedPtr );
+      // Travis is too slow in Debug mode with this ASSERT.
+      // ASSERT( ! myIsCountedPtr );
       return static_cast<T*>( myAny ); 
     }
 
@@ -377,7 +381,8 @@ private:
      */
     inline void acquire(Counter* c) throw()
     { // increment the count
-      ASSERT( myIsCountedPtr );
+      // Travis is too slow in Debug mode with this ASSERT.
+      // ASSERT( myIsCountedPtr );
       myAny = static_cast<void*>( c );
       if (c) ++c->count;
     }
@@ -392,7 +397,8 @@ private:
      */
     void release()
     { // decrement the count, delete if it is 0
-      ASSERT( myIsCountedPtr );
+      // Travis is too slow in Debug mode with this ASSERT.
+      // ASSERT( myIsCountedPtr );
       if (myAny) {
         Counter * counter = counterPtr();
         if (--counter->count == 0) {
