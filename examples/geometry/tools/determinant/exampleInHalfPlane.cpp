@@ -109,6 +109,8 @@ advice()
   typedef PointVector<2, DGtal::int32_t> Point; 
   typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor; 
   //! [FunctorDefinition30]
+  Functor *a = new Functor();
+  BOOST_VERIFY(a);
   }
 
   {
@@ -119,6 +121,8 @@ advice()
   typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
   typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> Functor; 
   //! [FunctorDefinition52]
+  Functor *a = new Functor();
+  BOOST_VERIFY(a);
   //NB. using double as coordinate type is slightly faster than using DGtal::int64_t
   //typedef PointVector<2, double> Point;  
   }
@@ -130,6 +134,8 @@ advice()
   typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
   typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor; 
   //! [FunctorDefinition62]
+  Functor *a= new Functor();
+  BOOST_VERIFY( a);
   }
 
   {
@@ -140,6 +146,8 @@ advice()
   typedef AvnaimEtAl2x2DetSignComputer<long double> DetComputer; 
   typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
   typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> Functor; 
+  Functor *a = new Functor();
+  BOOST_VERIFY(a == a);
   //! [FunctorDefinition62bis]
   }
 
@@ -150,6 +158,8 @@ advice()
   typedef PointVector<2, DGtal::BigInteger> Point; 
   typedef Simple2x2DetComputer<DGtal::BigInteger> DetComputer; 
   typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor; 
+  Functor *a= new Functor();
+  BOOST_VERIFY( a);
   //! [FunctorDefinition62plus]
   }
 #endif
