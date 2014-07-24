@@ -90,10 +90,10 @@ struct HodgeTester
 template <typename Calculus>
 struct HodgeTester<Calculus, -1>
 {
-    static bool test(const Calculus& calculus)
-    {
-        return true;
-    }
+  static bool test(const Calculus& UNUSED(calculus))
+  {
+    return true;
+  }
 };
 
 template <typename DigitalSet, typename LinearAlgebraBackend>
@@ -216,7 +216,7 @@ struct DerivativeTester
 template <typename Calculus>
 struct DerivativeTester<Calculus, -1>
 {
-    static bool test(const Calculus& calculus)
+    static bool test(const Calculus& )
     {
         return true;
     }

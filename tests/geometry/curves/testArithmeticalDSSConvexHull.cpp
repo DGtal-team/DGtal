@@ -199,7 +199,6 @@ bool comparisonLeftHull(typename DSL::Coordinate a, typename DSL::Coordinate b)
   typedef typename DSL::Point Point; 
   typedef typename DSL::Vector Vector; 
   typedef typename DSL::Coordinate Coordinate; 
-  typedef typename DSL::Integer Integer; 
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -357,7 +356,6 @@ DSL trivialSubsegment(const DSL& aDSL,
   ASSERT((y-x) > 0); 
 
   typedef typename DSL::Point Point; 
-  typedef typename DSL::Vector Vector; 
   typedef typename DSL::Coordinate Coordinate; 
   typedef typename DSL::Integer Integer; 
   typedef typename DSL::ConstIterator ConstIterator; 
