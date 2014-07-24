@@ -18,9 +18,9 @@ before_script:
 
 script:
   - cmake . $BTYPE
-  - make DGtal
-  - make DGtalIO
-  - cd examples && make &&  cd ../tests &&  make -j 3 &&  cd ..&&  make test
+  - make DGtal && make DGtalIO
+  - cd examples && make -j 3 
+  - cd ../tests &&  make -j 3 &&  cd ..&& make test
 
 after_script:
   - make lcov
