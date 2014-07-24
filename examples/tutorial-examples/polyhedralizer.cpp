@@ -169,7 +169,6 @@ int main( int argc, char** argv )
 
   //! [polyhedralizer-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by tracking the surface. " );
-  typedef KSpace::SCell SCell;
   typedef KSpace::Surfel Surfel;
   Surfel start_surfel = Surfaces<KSpace>::findABel( ks, digitalObject, 100000 );
   typedef ImplicitDigitalSurface< KSpace, DigitalObject > MyContainer;
