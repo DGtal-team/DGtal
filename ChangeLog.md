@@ -80,7 +80,10 @@
          (David Coeurjolly,
          [#790](https://github.com/DGtal-team/DGtal/pull/790))
 
-
+- *Images*
+   - Classes to perform rigid transformations of 2D and 3D images
+     (Kacper Pluta,
+     [#869](https://github.com/DGtal-team/DGtal/pull/869))
 
 ## Changes
 
