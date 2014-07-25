@@ -54,7 +54,8 @@
     ArithmeticalDSS) (Tristan Roussillon,
     [#819](https://github.com/DGtal-team/DGtal/pull/819))
 
- - Feature extraction algorithm from Tensor Voting.(David Coeurjolly,
+ - Feature extraction algorithm from Tensor Voting.(Jérémy Levallois,
+   David Coeurjolly,
    [#895](https://github.com/DGtal-team/DGtal/pull/895))
 
 

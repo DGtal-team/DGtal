@@ -190,9 +190,9 @@ bool testCube()
     {
       if (K.sKCoords(*it) == KSpace::Point(11,-12,1))
         {
-            typename FunctorVoting::Quantity val = reporter.eval(it );
-            trace.info() << "probing at "<< *it<<std::endl;
-            trace.info() << "Voting = "<<val <<std::endl;
+          FunctorVoting::Quantity val = reporter.eval(it );
+          trace.info() << "probing at "<< *it<<std::endl;
+          trace.info() << "Voting = "<<val <<std::endl;
         }
     }
   trace.endBlock();
