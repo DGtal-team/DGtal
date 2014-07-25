@@ -49,6 +49,7 @@ This package aims to implement Image models and data-structures.
 @b Modules
  - \ref moduleImages (Tristan Roussillon, David Coeurjolly, Martial Tola)
  - \ref moduleBigImages (Martial Tola, David Coeurjolly)
+ - \ref moduleGeometricTransform (Kacper Pluta)
 
  @b Package @b Concepts @b Overview
  - \ref packageImageConcepts
