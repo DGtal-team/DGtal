@@ -13,7 +13,7 @@
     - BasicFunctor functors have been moved to functors:: namespace.
     - DefaultFunctor has been renamed functors::Identity.
     - xxxFunctor have been renamed to xxx.
-    
+
 
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
