@@ -10,7 +10,6 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testImagesSetsUtilities
    testBasicPointFunctors
    testEmbedder
-   testSimpleMatrix
    testPointPredicateConcepts
    )
 
@@ -27,7 +26,7 @@ ENDFOREACH(FILE)
 #----------------------
 IF(GMP_FOUND)
   SET(DGTAL_TESTS_GMP_SRC testDGtalGMP)
-  
+
   FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
     add_executable(${FILE} ${FILE})
     target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})

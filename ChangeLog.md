@@ -13,6 +13,15 @@
     - BasicFunctor functors have been moved to functors:: namespace.
     - DefaultFunctor has been renamed functors::Identity.
     - xxxFunctor have been renamed to xxx.
+    
+- *DEC Package*
+ - DGtal 0.8 contains the first release of the Discrete Exterior
+   Calculus Package. DEC provides an easy and efficient way to
+   describe linear operator over various structure. Basic operators,
+   such as Hodge duality operator or exterior derivative, can be
+   combined to create classical vector analysis operator such as
+   gradient, curl and divergence. (Pierre Gueth,
+   [#877](https://github.com/DGtal-team/DGtal/pull/877))
 
 
 - *Geometry Package*
@@ -20,6 +29,16 @@
   digital geometric estimators based on it. Add tests and examples of
   feature detection with VCM. (Jacques-Olivier Lachaud,
   [#803](https://github.com/DGtal-team/DGtal/pull/803))
+
+ - Add Integral Invariant estimators so that they meet the concept of
+  surface local estimator. Add geometric functors to define easily all
+  the geometric estimators that can be built from the volume and
+  coariance matrix. Previous estimators (IntegralInvariantMeanCurvatureEstimator
+  and IntegralInvariantGaussianCurvatureEstimator) are removed. Please use
+  the new ones instead. (Jeremy Levallois, Jacques-Olivier Lachaud,
+  [#803](https://github.com/DGtal-team/DGtal/pull/803) 
+  [#856](https://github.com/DGtal-team/DGtal/pull/856)
+  [#893](https://github.com/DGtal-team/DGtal/pull/893))
 
  - Various geometric predicates are now available in order to test the
   orientation of three points in the planes. Most classes are template
@@ -62,7 +81,10 @@
          (David Coeurjolly,
          [#790](https://github.com/DGtal-team/DGtal/pull/790))
 
-
+- *Images*
+   - Classes to perform rigid transformations of 2D and 3D images
+     (Kacper Pluta,
+     [#869](https://github.com/DGtal-team/DGtal/pull/869))
 
 ## Changes
 
@@ -79,11 +101,6 @@
   truth estimators for implicit polynomial shapes
   (TrueDigitalSurfaceLocalEstimator). (Jacques-Olivier Lachaud,
   [#803](https://github.com/DGtal-team/DGtal/pull/803))
- - Add Integral Invariant estimators so that they meet the concept of
-  surface local estimator. Add geometric functors to define easily all
-  the geometric estimators that can be built from the volume and
-  coariance matrix. (Jeremy Levallois, Jacques-Olivier Lachaud,
-  [#803](https://github.com/DGtal-team/DGtal/pull/803) [#856](https://github.com/DGtal-team/DGtal/pull/856))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
  - CubicalSudivision has been renamed SpatialCubicalSubdivision and
@@ -169,13 +186,14 @@
     IntervalForegroundPredicate) which require CConstImage instead of
     CImage (David Coeurjolly,
     [#843](https://github.com/DGtal-team/DGtal/pull/843))
-    
+
 - *IO*
   - Bug fix for reading PGM(P2) 3D. (Kacper Pluta,
    [#853](https://github.com/DGtal-team/DGtal/pull/853))
   - Renaming BasicColorToScalarFunctors namespace to functors:: (David
     Coeurjolly,  [#857](https://github.com/DGtal-team/DGtal/pull/857))
-    
+  - Fix OpenGL warnings by redefining openGL primitive (glSphere) (Bertrand Kerautret [#981] https://github.com/DGtal-team/DGtal/pull/891)
+
 === DGtal 0.7 ===
 
 *General*

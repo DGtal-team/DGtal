@@ -449,8 +449,8 @@ namespace DGtal
       {
         BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
         BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;
-        assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth &&
-                 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
+        assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== static_cast<int>(myImageWidth) &&
+                 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== static_cast<int>(myImageHeight));
 
         point1[0] += xTranslation; point1[1] += yTranslation; point1[2] += zTranslation;
         point2[0] += xTranslation; point2[1] +=yTranslation; point2[2] += zTranslation;
@@ -713,22 +713,12 @@ namespace DGtal
 
 
     /**
-     * Draw a linel by using the [gluCylinder] primitive.
-     * @param aLinel the linel to draw
-     **/
-    void glDrawGLLinel ( typename Viewer3D<Space,KSpace>::LineD3D aLinel );
-
-
-
-
-    /**
      * Draw a linel by using the [gluCShere] primitive.
      * @param pointel the pointel to draw
      */
-    void glDrawGLPointel ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
-
-
-
+    void glDrawGLBall ( typename Viewer3D<Space,KSpace>::BallD3D pointel );
+    
+ 
 
     /**
      * Used to manage new key event (wich are added from the default
@@ -1112,6 +1102,7 @@ namespace DGtal
     /// Used to store all the domains
     std::vector<Image2DDomainD3D> myImageDomainList;
 
+    unsigned int myBallDisplayPrecision;
 
   }; // end of class Viewer3D
 

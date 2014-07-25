@@ -46,7 +46,7 @@
 #include "DGtal/math/BasicMathFunctions.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
 #include "DGtal/geometry/tools/SpatialCubicalSubdivision.h"
