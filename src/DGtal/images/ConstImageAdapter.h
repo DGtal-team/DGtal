@@ -133,6 +133,7 @@ public:
     ConstImageAdapter(const ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV):
             myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV)
     {
+      defaultValue = 0;
 #ifdef DEBUG_VERBOSE
         trace.warning() << "ConstImageAdapter Ctor fromRef " << std::endl;
 #endif
@@ -154,6 +155,7 @@ public:
             mySubDomainPtr = other.mySubDomainPtr;
             myFD = other.myFD;
             myFV = other.myFV;
+	    defaultValue = other.defaultValue;
         }
         return *this;
     }
@@ -206,11 +208,15 @@ public:
     Value operator()(const Point & aPoint) const
     {
         ASSERT(this->domain().isInside(aPoint));
-
-        return myFV->operator()(myImagePtr->operator()(myFD->operator()(aPoint)));
+	
+	typename TImageContainer::Point point = myFD->operator()(aPoint);
+	if (myImagePtr->domain().isInside(point))
+	  return myFV->operator()(myImagePtr->operator()(point));
+	else
+	  return defaultValue;
     }
 
-
+    
     /////////////////// API //////////////////
 
     /**
@@ -242,6 +248,21 @@ public:
     const ImageContainer * getPointer() const
     {
         return myImagePtr;
+    }
+    
+    /**
+     * Allows to define a default value returned when point 
+     * transformed by domain functor does not belongs to 
+     * image domain.
+     */
+    void setDefaultValue ( Value aValue )
+    {
+      defaultValue = aValue;
+    }
+    
+    Value getDefaultValue () const
+    {
+      return defaultValue;
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -275,6 +296,12 @@ protected:
      * Aliasing pointer on the underlying Value functor
      */
     const TFunctorV* myFV;
+    
+    /**
+     *  Default value returned when point transformed by image functor does not belongs to image.
+     *  Initial value is 0.
+     */
+    Value defaultValue;
 
 private:
 
