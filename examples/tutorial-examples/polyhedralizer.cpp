@@ -61,8 +61,8 @@
 #include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
 #include "DGtal/geometry/surfaces/ChordGenericNaivePlaneComputer.h"
 
-#include "DGtal/kernel/SimpleMatrix.h"
-#include "DGtal/math/EigenDecomposition.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/math/linalg/EigenDecomposition.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -169,7 +169,6 @@ int main( int argc, char** argv )
 
   //! [polyhedralizer-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by tracking the surface. " );
-  typedef KSpace::SCell SCell;
   typedef KSpace::Surfel Surfel;
   Surfel start_surfel = Surfaces<KSpace>::findABel( ks, digitalObject, 100000 );
   typedef ImplicitDigitalSurface< KSpace, DigitalObject > MyContainer;

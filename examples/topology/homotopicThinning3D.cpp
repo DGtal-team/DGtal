@@ -104,11 +104,11 @@ int main( int argc, char** argv )
       nb_simple = 0;
       while ( ! Q.empty() )
 	{
-	  DigitalSet::Iterator it = Q.front();
+	  DigitalSet::Iterator itt = Q.front();
 	  Q.pop();
-	  if ( shape.isSimple( *it ) )
+	  if ( shape.isSimple( *itt ) )
 	    {
-	      S.erase( *it );
+	      S.erase( *itt );
 	      ++nb_simple;
 	    }
 	}
