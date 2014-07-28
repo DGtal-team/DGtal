@@ -102,6 +102,10 @@
   [#803](https://github.com/DGtal-team/DGtal/pull/803))
  - Random-access iterators added in ArithmeticalDSL. (Tristan
    Roussillon, [#801](https://github.com/DGtal-team/DGtal/pull/801))
+ - Updates in Metric concepts: better and simpler concept structure
+   and a new adapter to adapt any euclidean metric to a digital one
+   (with values on Z) (David Coeurjolly,
+   [#870](https://github.com/DGtal-team/DGtal/pull/870)
  - CubicalSudivision has been renamed SpatialCubicalSubdivision and
    moved to "geometry/tools" (David Coeurjolly,
    [#862](https://github.com/DGtal-team/DGtal/pull/862))

@@ -54,7 +54,7 @@ namespace DGtal
   // template class ChamferNorm2D
   /**
    * Description of template class 'ChamferNorm2D' <p>
-   * \brief Aim: implements a 
+   * \brief Aim: implements a CSeparableMetricx
    *
    *
    */
@@ -79,9 +79,11 @@ namespace DGtal
     typedef std::vector< Vector > Directions;
     typedef typename Directions::const_iterator ConstIterator;
 
-    //ValueType for being model of CMetric
-    typedef typename Space::Integer Value;
-    
+    //Value type for embedded distance evaluation
+    typedef double Value;
+    //Value type for exact distance evaluation
+    typedef typename Space::Integer RawValue;
+
     //Vector components type
     typedef typename Vector::Component Abscissa;
     
@@ -97,16 +99,17 @@ namespace DGtal
      *
      * @param aDirectionSet the set of vectors (1st quadrant) of the chamfer norm mask.
      * @param aNormalDirectionSet for each cone, the associated normal vector.
+     * @param [in] norm the normalization factor associated with th
+     * mask  (default is 1.0)
      */
     ChamferNorm2D(const Directions &aDirectionSet,
-                  const Directions &aNormalDirectionSet);
-    
+                  const Directions &aNormalDirectionSet,
+                  const Value norm = 1.0 );   
     
     /**
      * Destructor.
      */
     ~ChamferNorm2D();
-
 
     /****
      * @brief Vector comparator (1st quadrant)
@@ -197,8 +200,7 @@ namespace DGtal
      **/
     Vector canonicalRay(const Vector &aRay) const;
     
-    // ----------------------- CMetric concept -----------------------------------
-
+    // ----------------------- CMetricSpace concept -----------------------------------
     /**
      * Returns the distance for the chamfer norm between P and Q.
      *
@@ -208,20 +210,19 @@ namespace DGtal
      * @return the distance between P and Q.
      */
     Value operator()(const Point &P, const Point &Q) const;
-
     
     /**
-     * Returns the distance for the chamfer norm between P and P+aDir.
+     * Returns the raw distance for the chamfer norm between P and Q.
+     * For chamfer norm, it corresponds to un-normalized distance
+     * value.
      *
      * @param P a point
-     * @param aDir a direction
+     * @param Q a point
      *
-     * @return the distance between P and P+aDir.
+     * @return the distance between P and Q.
      */
-    Value local(const Point &P, const Vector &aDir) const
-    {
-      return this->operator()(P,P+aDir);
-    }
+    RawValue rawDistance(const Point &P, const Point &Q) const;
+
     
     /**
      * Given an origin and two points, this method decides which one
@@ -467,17 +468,20 @@ namespace DGtal
    // ------------------------- Internals ------------------------------------
   private:
 
-    //Mask container
+    ///Mask container
     Directions myDirections;
 
-    //Normal to cone container
+    ///Normal to cone container
     Directions myNormals;
 
-    //Instance of comparator functor
+    ///Instance of comparator functor
     static LessThanAngular myLessThanAngular;
 
+    ///Static constant
     BOOST_STATIC_CONSTANT(Abscissa, myInfinity = 32562);
     
+    ///Normalization factor
+    Value myNorm;
     
   }; // end of class ChamferNorm2D
 

@@ -35,7 +35,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/ChamferNorm2D.h"
-#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/geometry/volumes/distance/CMetricSpace.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,8 +51,8 @@ using namespace Z2i;
 
 bool checkCMetricConcept()
 {
-  BOOST_CONCEPT_ASSERT(( CMetric<experimental::ChamferNorm2D<Z2i::Space > > ));
-  BOOST_CONCEPT_ASSERT(( CSeparableMetric<experimental::ChamferNorm2D<Z2i::Space > > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<experimental::ChamferNorm2D<Z2i::Space > > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<experimental::ChamferNorm2D<Z2i::Space > > ));
   return true;
 }
 

@@ -47,6 +47,7 @@ template <typename TSpace>
 inline
 DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const unsigned int N)
 {
+  myNorm = 1.0;
   myDirections.reserve(N);
   myNormals.reserve(N);
   int NN = N;
@@ -90,8 +91,9 @@ DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const unsigned int N)
 template <typename TSpace>
 inline
 DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const Directions &aDirSet,
-                                            const Directions &aNormalDirSet):
-myDirections(aDirSet), myNormals(aNormalDirSet)
+                                                          const Directions &aNormalDirSet,
+                                                          const Value norm):
+  myDirections(aDirSet), myNormals(aNormalDirSet), myNorm(norm)
 {
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -203,7 +205,6 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getUpperRayIntersection(const Vector
       else
         return -myInfinity;
     }
-
     
     return static_cast<Abscissa>( ceil(x));
   }
@@ -229,9 +230,9 @@ DGtal::experimental::ChamferNorm2D<TSpace>::canonicalRay(const Vector &aRay) con
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TSpace>
 inline
-typename DGtal::experimental::ChamferNorm2D<TSpace>::Value
-DGtal::experimental::ChamferNorm2D<TSpace>::operator()(const Point &P,
-                                         const Point &Q) const
+typename DGtal::experimental::ChamferNorm2D<TSpace>::RawValue
+DGtal::experimental::ChamferNorm2D<TSpace>::rawDistance(const Point &P,
+                                                        const Point &Q) const
 {
   Vector ray = canonicalRay(Q - P);
   
@@ -242,6 +243,15 @@ DGtal::experimental::ChamferNorm2D<TSpace>::operator()(const Point &P,
   Vector normalDir = getNormalFromCone(it);
   //distance as the scalar product with the associated normal
   return ray[0]*normalDir[0] + ray[1]*normalDir[1];
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename TSpace>
+inline
+typename DGtal::experimental::ChamferNorm2D<TSpace>::Value
+DGtal::experimental::ChamferNorm2D<TSpace>::operator()(const Point &P,
+                                                       const Point &Q) const
+{
+  return this->rawDistance(P,Q)/myNorm;
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TSpace>
@@ -283,18 +293,17 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
     nextMidPoint[aDimension] = lowerNext;
     
     //Distances w.r.t. Q, O(log(n)) per distance
-    double dmidQ = this->operator()(aQ, midPoint);
-    double dnextmidQ = this->operator()(aQ, nextMidPoint);
+    RawValue dmidQ = this->rawDistance(aQ, midPoint);
+    RawValue dnextmidQ = this->rawDistance(aQ, nextMidPoint);
 
     
     //Distance w.r.t. P, O(1) per distance
     Vector normalDir = getNormalFromCone(mid);
     
-    double dmidP = (midPoint[0]-aP[0])*normalDir[0] + (midPoint[1]-aP[1])*normalDir[1];
+    RawValue dmidP = (midPoint[0]-aP[0])*normalDir[0] + (midPoint[1]-aP[1])*normalDir[1];
     normalDir = getNormalFromCone(mid);
-    double dnextmidP = (nextMidPoint[0]-aP[0])*normalDir[0] + (nextMidPoint[1]-aP[1])*normalDir[1];
+    RawValue dnextmidP = (nextMidPoint[0]-aP[0])*normalDir[0] + (nextMidPoint[1]-aP[1])*normalDir[1];
     
-    //  trace.info() << "Instersections  mid="<<midPoint<<"  and mid+1="<< nextMidPoint << std::endl;
     bool PcloserMid = (dmidP < dmidQ);
     bool PcloserNextMid = (dnextmidP < dnextmidQ);
        
@@ -311,7 +320,6 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
       {
         //Recurse up
         ConstIterator c = shrinkPSubMask(mid,aEnd,aP, aQ, Lmin, Lmax, aDimension, midPoint, nextMidPoint);
-        //   trace.endBlock();
         return c;
       }
       else
@@ -372,8 +380,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkP(ConstIterator aBegin,
   }
   
   Point P,Q, Lm, LM;
-  ConstIterator c;
-  
+  ConstIterator c;  
   P = aP;
   Q = aQ;
   Lm = Lmin;
@@ -481,8 +488,8 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
         return midPointP[1];
       }
 
-      double dpm = this->operator()(P, midPointP);
-      double dqm = this->operator()(Q, midPointQ);//
+      RawValue dpm = this->rawDistance(P, midPointP);
+      RawValue dqm = this->rawDistance(Q, midPointQ);//
       //same cone, Voro edge should be on cone extermities
       //SPECIAL NORMAL CONE CASE
       if (dpm == dqm)
@@ -492,7 +499,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
       
     }
     else
-       voroAbscissa = static_cast<Abscissa>(floor((double) (P[1]*normalP[1] - Q[1]*normalQ[1] - (startingPoint[0] - P[0])*normalP[0] + (startingPoint[0] - Q[0])*normalQ[0])  /(normalP[1] - normalQ[1] )  ));
+       voroAbscissa = static_cast<Abscissa>(floor((double) (P[1]*normalP[1] - Q[1]*normalQ[1] - (startingPoint[0] - P[0])*normalP[0] + (startingPoint[0] - Q[0])*normalQ[0])  /(double)(normalP[1] - normalQ[1] )  ));
   }
   else
   {
@@ -515,14 +522,14 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
     if (normalP[0] == normalQ[0])
     {
       //same cone, Voro edge should be on cone extermities
-      double dpm = this->operator()(P, midPointP);
-      double dqm = this->operator()(Q, midPointQ);
+      RawValue dpm = this->rawDistance(P, midPointP);
+      RawValue dqm = this->rawDistance(Q, midPointQ);
       if (dpm == dqm)
         return midPointP[0];
       else return nextMidPointP[0];
       
     }
-    else voroAbscissa = static_cast<Abscissa>(floor((double) (P[0]*normalP[0] - Q[0]*normalQ[0] - (startingPoint[1] - P[1])*normalP[1] + (startingPoint[1] - Q[1])*normalQ[1])  /(normalP[0] - normalQ[0])  ));
+    else voroAbscissa = static_cast<Abscissa>(floor((double) (P[0]*normalP[0] - Q[0]*normalQ[0] - (startingPoint[1] - P[1])*normalP[1] + (startingPoint[1] - Q[1])*normalQ[1])  /(double)(normalP[0] - normalQ[0])  ));
   }
   return voroAbscissa;
 }
