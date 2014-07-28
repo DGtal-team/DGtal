@@ -225,7 +225,7 @@ of the separable metrics can be summarized as follows:
 | ExactPredicateLpPowerSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
 | ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
 | SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(mlog(n)) @f$ | relies on aMetric(p,q) computations |
-| experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(n)) @f$ | Exact computations, @cite dcoeurjo_metric14|
+| experimental::ChamferNorm2D | @f$ O(log(p)) @f$ | @f$ O(log^2(n)) @f$ | @cite dcoeurjo_metric14|
 
 
 Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:
