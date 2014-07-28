@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
   testSeparableMetricAdapter
   testChamferDT
   testChamferVoro
+  testDigitalMetricAdapter
   )
 
 

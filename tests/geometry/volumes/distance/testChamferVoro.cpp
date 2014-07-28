@@ -35,7 +35,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/ChamferNorm2D.h"
-#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/geometry/volumes/distance/CMetricSpace.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
@@ -73,8 +73,6 @@ void saveVoroMap(const std::string &filename,const VoroMap &output)
       it != itend; ++it)
   {
     typename VoroMap::Value point = output(*it);
-    //   board << CustomStyle( (*it).className(), new CustomColors( hue(mynorm(point- (*it),p)),
-    //                                                         hue(mynorm(point- (*it),p))))
     board << (*it);
   }
   
@@ -88,7 +86,7 @@ bool testChamferVoro()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  trace.beginBlock ( "Testing VoronoiMap...");
+  trace.beginBlock ( "Testing VoronoiMap with chamfer norm...");
   
   //5-7-11 metic
   typedef experimental::ChamferNorm2D<Z2i::Space> Metric;

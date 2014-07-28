@@ -50,7 +50,7 @@
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
-#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/geometry/volumes/distance/CMetricSpace.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/CLocalEstimatorFromSurfelFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
   public:
 
     ///Concept Checks
-    BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
+    BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<TMetric>));
     BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
