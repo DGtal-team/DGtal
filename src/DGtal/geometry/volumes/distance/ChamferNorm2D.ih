@@ -77,10 +77,14 @@ DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const unsigned int N)
   //Sorting
   std::sort(myDirections.begin(), myDirections.end(), myLessThanAngular);
 
+#ifdef DEBUG_VERBOSE
   //Display
-  // std::copy( myDirections.begin(), myDirections.end(), std::ostream_iterator<Vector>(std::cout, "\n"));
-  //trace.info()<<std::endl;
-  //std::copy( myNormals.begin(), myNormals.end(), std::ostream_iterator<Vector>(std::cout, "\n"));
+  trace.info()<< "Constructing mask: "<<std::endl;
+  std::copy( myDirections.begin(), myDirections.end(), std::ostream_iterator<Vector>(std::cout, "\n"));
+  trace.info()<<std::endl;
+  std::copy( myNormals.begin(), myNormals.end(), std::ostream_iterator<Vector>(std::cout, "\n"));
+#endif
+
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TSpace>
@@ -117,7 +121,6 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerRayIntersection(const Vector
   ASSERT(Lmin[aDimension] < Lmax[aDimension]);
   ASSERT(Lmin[(aDimension+1) %2] == Lmax[(aDimension+1)%2]);
   
-  //trace.info() <<"     Computing intersection ("<<aP<<" ," <<aQ << ")  "<<std::endl;
   double slope, y;
   if (aDimension == 1)
   {
@@ -132,13 +135,6 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerRayIntersection(const Vector
     y=0.0;
     
     y = slope * Lmin[0] + aP[1] - slope*aP[0];
-    //trace.info()<<"y="<<y<<" ";
-    /*if ( y < NumberTraits<Abscissa>::castToDouble(Lmin[1]))
-     return Lmin[1];
-     if ( y > NumberTraits<Abscissa>::castToDouble(Lmax[1]))
-     return Lmax[1];
-     */
-    
     return static_cast<Abscissa>( floor(y));
   }
   else
@@ -155,12 +151,6 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerRayIntersection(const Vector
         return -myInfinity;
     }
     
-    //trace.info()<<"y="<<y<<" ";
-    /*  if ( x < NumberTraits<Abscissa>::castToDouble(Lmin[0]))
-     return Lmin[0];
-     if ( x > NumberTraits<Abscissa>::castToDouble(Lmax[0]))
-     return Lmax[0];
-     */
     return static_cast<Abscissa>( floor(x));
   }
 }
@@ -184,7 +174,6 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getUpperRayIntersection(const Vector
   ASSERT(Lmin[aDimension] < Lmax[aDimension]);
   ASSERT(Lmin[(aDimension+1) %2] == Lmax[(aDimension+1)%2]);
 
-  // trace.info() <<"     Computing intersection ("<<aP<<" ," <<aQ << ")  "<<std::endl;
   double slope, y;
   if (aDimension == 1)
   {
@@ -272,17 +261,15 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
   ASSERT(aDimension == 1);
   ASSERT(aP[aDimension] != aQ[aDimension]);
   
-  //trace.beginBlock();
-  //trace.info()<<"Checking "<<*aBegin<<" -- "<< *aEnd << "  adimension="<<aDimension << " P="<<aP<<" Q="<<aQ<<std::endl;
-  
+#ifdef DEBUG_VERBOSE
+  trace.info()<<"Checking "<<*aBegin<<" -- "<< *aEnd << "  adimension="<<aDimension << " P="<<aP<<" Q="<<aQ<<std::endl;
+#endif
+
   if ((aEnd - aBegin) > 1)
-  {
+    {
     //Mid
     ConstIterator mid = aBegin + (aEnd - aBegin) / 2;
-    
-    // trace.info() << "Mid direction= "<<*mid<<std::endl;
-    // trace.info() << "Mid+1 direction= "<<*(mid+1)<<std::endl;
-    
+       
     //beginPoint, endPoint
     Abscissa upperMid,lowerNext;
     midPoint = aP + (*mid);
@@ -310,14 +297,10 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
     //  trace.info() << "Instersections  mid="<<midPoint<<"  and mid+1="<< nextMidPoint << std::endl;
     bool PcloserMid = (dmidP < dmidQ);
     bool PcloserNextMid = (dnextmidP < dnextmidQ);
-    
-    // trace.info() << "Distances : P->("<<dmidP<<","<<dnextmidP<<")   Q->("<<dmidQ<<","<<dnextmidQ<<")" << std::endl;
-    //trace.info() << " mid in "<< (PcloserMid ? "P":"Q") <<"  and mid+1 in "<< (PcloserNextMid ? "P":"Q")<<std::endl;
-    
+       
     //We have localized the cone
     if (PcloserMid != PcloserNextMid)
     {
-      //     trace.endBlock();
       return mid;
     }
     
@@ -326,16 +309,15 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
     {
       if (aP[aDimension] < aQ[aDimension])
       {
-        //trace.info()<<"Recurse up"<<std::endl;
+        //Recurse up
         ConstIterator c = shrinkPSubMask(mid,aEnd,aP, aQ, Lmin, Lmax, aDimension, midPoint, nextMidPoint);
         //   trace.endBlock();
         return c;
       }
       else
       {
-        // trace.info()<<"Recurse down"<<std::endl;
+        //Recurse down
         ConstIterator c = shrinkPSubMask(aBegin, mid, aP, aQ, Lmin, Lmax, aDimension, midPoint, nextMidPoint);
-        //    trace.endBlock();
         return c;
       }
     }
@@ -344,34 +326,18 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
       // mid and next in Q
       if (aP[aDimension] < aQ[aDimension])
       {
-        //trace.info()<<"Recurse down"<<std::endl;
+        //Recurse down
         ConstIterator c = shrinkPSubMask(aBegin, mid, aP, aQ, Lmin, Lmax, aDimension, midPoint, nextMidPoint);
-        //     trace.endBlock();
         return c;
       }
       else
       {
-        //trace.info()<<"Recurse up"<<std::endl;
+        //Recurse up
         ConstIterator c = shrinkPSubMask(mid,aEnd,aP, aQ, Lmin, Lmax, aDimension, midPoint, nextMidPoint);
-        //   trace.endBlock();
         return c;
       }
     }
   }
-  //Distance w.r.t. P, O(1) per distance
-  
- /* double dmidP = this->operator()(aP, midPoint);
-  double dnextmidP =  this->operator()(aP,nextMidPoint);
-  double dmidQ = this->operator()(aQ, midPoint);
-  double dnextmidQ =  this->operator()(aQ,nextMidPoint);
-  */
-  //  trace.info() << "Instersections  mid="<<midPoint<<"  and mid+1="<< nextMidPoint << std::endl;
-  // bool PcloserMid = (dmidP < dmidQ);
-  //bool PcloserNextMid = (dnextmidP < dnextmidQ);
-  //trace.info() << "Distances : P->("<<dmidP<<","<<dnextmidP<<")   Q->("<<dmidQ<<","<<dnextmidQ<<")" << std::endl;
-  //trace.info() << " mid in "<< (PcloserMid ? "P":"Q") <<"  and mid+1 in "<< (PcloserNextMid ? "P":"Q")<<std::endl;
-  
-  //trace.endBlock();
   return aBegin;
 }
   ///////////////////////////////////////////////////////////////////////////////
@@ -392,7 +358,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkP(ConstIterator aBegin,
   //Special case P in L
   if (aP[(aDimension +1)%2] == Lmin[(aDimension+1)%2])
   {
-    //  trace.emphase() << "Special Case P on L"<<std::endl;
+    //Special Case P on L
     midPoint = aP;
     nextMidPoint = aP;
     if (aP[aDimension] > aQ[aDimension])
@@ -428,7 +394,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkP(ConstIterator aBegin,
     P[0] = aP[1] ; P[1] = aP[0];
     Lm[0] = Lmin[1] ; Lm[1] = Lmin[0];
     LM[0] = Lmax[1] ; LM[1] = Lmax[0];
-    // trace.info() << "       swapping x<->y"<<std::endl;
+    //Swapping x<->y
     if (P[0] > Lm[0])
     {
       P[0] = Lm[0] - (P[0] - Lm[0]);
@@ -438,7 +404,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkP(ConstIterator aBegin,
     c = shrinkPSubMask(aBegin, aEnd, P, Q, Lm, LM, 1,midPoint, nextMidPoint);
     
     //Setting back the midpoint
-    // trace.warning()<<"transform back"<<std::endl;
+    //Transform back
     Point mmid = midPoint;
     midPoint[0] = mmid[1] ; midPoint[1] = mmid[0];
     Point nextmid = nextMidPoint;
@@ -465,28 +431,13 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
   ConstIterator itBeg = myDirections.begin();
   ConstIterator itEnd = myDirections.end();
   ConstIterator coneP = shrinkP(itBeg, itEnd, P, Q, startingPoint, endPoint, aDimension, midPointP, nextMidPointP);
-  //trace.info()<< "       CONEP DONE "<< *coneP<<std::endl;
-  
   
   ConstIterator coneQ = shrinkP(itBeg, itEnd, Q, P, startingPoint,endPoint,aDimension, midPointQ, nextMidPointQ);
-  //trace.info()<< "       CONE -Q DONE"<<std::endl;
 
   
   Abscissa voroAbscissa;
   Vector normalP = getNormalFromCone(coneP);
   Vector normalQ = getNormalFromCone(coneQ);
-  
-  //if ((aDimension == 1) && (startingPoint[0]==11))
-  {
- /* trace.warning() << "midPoint P"<< midPointP<<" next = "<<nextMidPointP<<" coneP="<<*coneP<<std::endl;
-  trace.warning() << "dist midPoint P"<< this->operator()(P,midPointP)<<" next = "<<this->operator()(P,nextMidPointP)<<std::endl;
-  
-  trace.warning() << "midPoint Q"<< midPointQ<<" next = "<<nextMidPointQ<<" coneQ="<<*coneQ<<std::endl;
-  trace.warning() << "dist midPoint Q"<< this->operator()(Q,midPointQ)<<" next = "<<this->operator()(Q,nextMidPointQ)<<std::endl;
-
-  trace.warning() << "normal P="<<normalP<<"   normal   Q="<<normalQ<<std::endl;
- */
-  }
   
   if (aDimension == 1)
   {
@@ -503,33 +454,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
       Abscissa upperMid,lowerNext;
       Point midPointPP, nextMidPointPP;
       Point midPointQQ, nextMidPointQQ;
-     /*
-      midPointPP = P + (*coneP);
-      nextMidPointPP = P + *(coneP+1);
-      upperMid = getUpperRayIntersection(P, midPointPP, startingPoint, endPoint, aDimension);
-      lowerNext = getLowerRayIntersection(P, nextMidPointPP, startingPoint, endPoint, aDimension);
-      midPointPP = startingPoint;
-      midPointPP[aDimension] = upperMid;
-      nextMidPointPP = startingPoint;
-      nextMidPointPP[aDimension] = lowerNext;
-      
-      midPointQQ = Q + (*coneQ);
-      nextMidPointQQ = Q + *(coneQ+1);
-      upperMid = getUpperRayIntersection(Q, midPointQQ, startingPoint, endPoint, aDimension);
-      lowerNext = getLowerRayIntersection(Q, nextMidPointQQ, startingPoint, endPoint, aDimension);
-      midPointQQ = startingPoint;
-      midPointQQ[aDimension] = upperMid;
-      nextMidPointQQ = startingPoint;
-      nextMidPointQQ[aDimension] = lowerNext;
-*/
-   /*   trace.info()<< "SPECIAL NORMAL CONE CASE "<<std::endl;
-      trace.info()<< "    CONEP = "<<midPointP<<" ("<< this->operator()(P,midPointP)<<")"<<"("<< this->operator()(Q,midPointP)<<") -  "
-                  << nextMidPointP<<" ("<< this->operator()(P,nextMidPointP)<<")"<<"("<< this->operator()(Q,nextMidPointP)<<") "<<std::endl;
-   
-      trace.info()<< "    CONEQ = "<<midPointQ<<" ("<< this->operator()(P,midPointQ)<<") "<<"("<< this->operator()(Q,midPointQ)<<") - "
-                  <<nextMidPointQ<<" ("<< this->operator()(P,nextMidPointQ)<<")"<<"("<< this->operator()(Q,nextMidPointQ)<<") "<<std::endl;
-      
-     */
+
       if (coneP == itBeg)  // and thus coneQ=itBeg
       {
         //Return lowest valid cone abscissa
@@ -550,15 +475,16 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
         
         if (midPointP == P)
         {
-          //trace.info()<< " midPointP===P trick"<<std::endl;
+          //midPointP===P trick
         return midPointQ[1];
         }
         return midPointP[1];
       }
 
-      double dpm = this->operator()(P, midPointP);//, dpn = this->operator()(P,nextMidPointP);
-      double dqm = this->operator()(Q, midPointQ);//   //same cone, Voro edge should be on cone extermities
-                                                  //  trace.info()<< "SPECIAL NORMAL CONE CASE "<< dpm<<"  " <<dqm<<std::endl;
+      double dpm = this->operator()(P, midPointP);
+      double dqm = this->operator()(Q, midPointQ);//
+      //same cone, Voro edge should be on cone extermities
+      //SPECIAL NORMAL CONE CASE
       if (dpm == dqm)
         return midPointP[1];
       else
@@ -589,8 +515,8 @@ DGtal::experimental::ChamferNorm2D<TSpace>::getLowerVoronoiEdgeAbscissa(const Po
     if (normalP[0] == normalQ[0])
     {
       //same cone, Voro edge should be on cone extermities
-      double dpm = this->operator()(P, midPointP);//, dpn = this->operator()(P,nextMidPointP);
-      double dqm = this->operator()(Q, midPointQ);//, dqn = this->operator()(Q,nextMidPointQ);
+      double dpm = this->operator()(P, midPointP);
+      double dqm = this->operator()(Q, midPointQ);
       if (dpm == dqm)
         return midPointP[0];
       else return nextMidPointP[0];
@@ -611,33 +537,23 @@ DGtal::experimental::ChamferNorm2D<TSpace>::hiddenBy(const Point &u, const Point
   ASSERT( u[aDimension] < v[aDimension]);
   ASSERT( u[aDimension] < w[aDimension]);
   ASSERT( v[aDimension] < w[aDimension]);
-  
-  
-  // trace.info()<<" HiddenBy: "<<u<< " -- "<< v<<" -- "<<w<< " ["<<startingPoint<<" - "<<endPoint<<"]"<<std::endl;
-  
+   
   Abscissa x_uv = getLowerVoronoiEdgeAbscissa(u, v, startingPoint, endPoint, aDimension);
-  // trace.warning() << "x_uv=="<<x_uv<<std::endl;
   
   if ((x_uv > endPoint[aDimension]))
   {
-    //    trace.info() <<" ==> outside1 ==> true"<<std::endl;
+    // outside1 ==> true
     return true;
   }
   
   Abscissa x_vw = getLowerVoronoiEdgeAbscissa(v, w, startingPoint, endPoint, aDimension);
-  //trace.warning() << "x_vw=="<<x_vw<<std::endl;
   if ((x_vw < startingPoint[aDimension]))
   {
-    //   trace.info() <<" ==> outside ==> true"<<std::endl;
+    //outside ==> true
     return true;
   }
   
- /* if (x_uv > x_vw)
-      trace.info() <<" ==> true"<<std::endl;
-  else
-    trace.info() << " ===> false"<<std::endl;
-  */return (x_uv > x_vw);
-
+  return (x_uv > x_vw);
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
