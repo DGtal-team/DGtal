@@ -57,7 +57,7 @@
  - Proof-of-concept that path-based norms can be implemented in a
    separable approach using logarithmic cost predicates
    (experimental::ChamferNorm2D). (David Coeurjolly,
-   [#xxx](https://github.com/DGtal-team/DGtal/pull/xxx))
+   [#898](https://github.com/DGtal-team/DGtal/pull/898))
 
 
 - *IO Package*
