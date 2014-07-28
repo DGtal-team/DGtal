@@ -49,10 +49,16 @@
   integers during the computations. (Tristan Roussillon,
   [#755](https://github.com/DGtal-team/DGtal/pull/755))
 
-  - Logarithmic construction of an arithmetical DSS of minimal
-    parameters from a bounding DSL and two end points (ctor of
-    ArithmeticalDSS) (Tristan Roussillon,
-    [#819](https://github.com/DGtal-team/DGtal/pull/819))
+ - Logarithmic construction of an arithmetical DSS of minimal
+   parameters from a bounding DSL and two end points (ctor of
+   ArithmeticalDSS) (Tristan Roussillon,
+   [#819](https://github.com/DGtal-team/DGtal/pull/819))
+
+ - Proof-of-concept that path-based norms can be implemented in a
+   separable approach using logarithmic cost predicates
+   (experimental::ChamferNorm2D). (David Coeurjolly,
+   [#xxx](https://github.com/DGtal-team/DGtal/pull/xxx))
+
 
 - *IO Package*
   - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
@@ -137,7 +143,6 @@
     and examples are given for 2D and 3D images (Bertrand Kerautret,
     [825](https://github.com/DGtal-team/DGtal/pull/825) and
     [882](https://github.com/DGtal-team/DGtal/pull/882)).
-
 
 - *Shapes Package*
   - Shape concepts have been moved to concepts:: namespace (David
