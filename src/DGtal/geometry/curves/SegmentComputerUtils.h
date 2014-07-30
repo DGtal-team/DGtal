@@ -266,7 +266,7 @@ bool maximalSymmetricExtension(SC& s,
  */
 template <typename SC>
 bool maximalSymmetricExtension(SC& s, 
-                               const typename SC::ConstIterator& begin, 
+                               const typename SC::ConstIterator& UNUSED(begin), 
                                const typename SC::ConstIterator& UNUSED(end), 
                                CirculatorType ) {
 
