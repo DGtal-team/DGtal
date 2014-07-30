@@ -1402,10 +1402,9 @@ namespace DGtal
 
       /**
        * Unique estimation 
-       * @param it any iterator 
        * @return the estimated quantity
        */
-      Quantity eval(const ConstIterator& it)
+      Quantity eval(const ConstIterator& /*it*/)
       {
 	ASSERT( isValid() ); 
 
