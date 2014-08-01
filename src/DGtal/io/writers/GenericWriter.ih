@@ -123,11 +123,13 @@ inline
 bool
 #ifdef WITH_HDF5
 DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename,
-                                                                         const TContainer &anImage, const std::string &datasetName,
+                                                                         const TContainer &anImage, 
+                                                                         const std::string &datasetName,
                                                                          const TFunctor & aFunctor )  throw(DGtal::IOException)
 #else
 DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename,
-                                                                         const TContainer &anImage, const std::string &UNUSED(datasetName),
+                                                                         const TContainer &anImage,
+                                                                         const std::string &UNUSED(datasetName),
                                                                          const TFunctor & aFunctor )  throw(DGtal::IOException)
 #endif
 {
