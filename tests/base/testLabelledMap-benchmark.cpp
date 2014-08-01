@@ -142,7 +142,7 @@ public:
     return nb;
   }
   inline 
-  void display ( ostream & out, unsigned int l, unsigned int x, unsigned int y )
+  void display ( ostream & , unsigned int , unsigned int , unsigned int  )
   {}
 
   inline
