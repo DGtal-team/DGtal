@@ -294,9 +294,10 @@ namespace DGtal
      **/
     template<typename TFunctor>
     static TContainer importWithColorFunctor(const std::string &filename,
-                                             const  TFunctor &aFunctor, unsigned int x=0,
-                                             unsigned int y=0)  throw(DGtal::IOException){
-
+                                             const  TFunctor &aFunctor, 
+                                             unsigned int x=0,
+                                             unsigned int y=0)  throw(DGtal::IOException)
+    {
       BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::Color> )) ;
       DGtal::IOException dgtalio;
       //Getting image extension
@@ -304,6 +305,13 @@ namespace DGtal
 
       if(extension=="ppm")
         return PPMReader<TContainer>::importPPM(filename, aFunctor);
+
+      if(extension=="raw"){
+        ASSERT(x!=0 && y!=0);
+        typename TContainer::Point pt (x,y);
+        return RawReader< TContainer >::importRaw8 ( filename, pt , aFunctor);
+      }
+
 
       if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp")
         {
@@ -403,7 +411,11 @@ namespace DGtal
     template<typename TFunctor>
     static TContainer importWithColorFunctor(const std::string &filename,
                                              const  TFunctor &aFunctor, unsigned int x=0,
-                                             unsigned int y=0)  throw(DGtal::IOException){
+                                             unsigned int y=0)  throw(DGtal::IOException)
+{
+  //warnings
+  BOOST_VERIFY(x==x);
+  BOOST_VERIFY(y==y);
 
       BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::Color> )) ;
       DGtal::IOException dgtalio;
