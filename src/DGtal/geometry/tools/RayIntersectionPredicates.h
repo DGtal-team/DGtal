@@ -231,13 +231,15 @@ namespace DGtal
           x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
         }
       
+      trace.info() << "Surfel quad = "<<Point(x1, y1, z1)<<" "<< Point(x2 ,y2, z2)<<" "
+                   << Point(x3, y3, z3)<<" " << Point(x4, y4, z4)<< std::endl;
       return this->operator()(Point(x1, y1, z1), Point(x2 ,y2, z2),
                               Point(x3, y3, z3), Point(x4, y4, z4)); 
     }
     
     Point myOrigin;
     Point myDest;
-
+    
   }; 
 
  
