@@ -519,6 +519,14 @@ namespace DGtal
     Component dot( const Self &v) const;
 
     /**
+     * cross product with a PointVector
+     *
+     * @param v a vector that is cross-producted to *this.
+     * @return the cross product product 
+     */
+    Self crossProduct( const Self &v) const;
+
+    /**
      * Addition operator with assignement.
      *
      * @param v is the Point that gets added to @a *this.
