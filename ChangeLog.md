@@ -56,8 +56,8 @@
 
  - Ray shooting intersection predicates (ray-triangle, ray-quad,
    ray-surfel) added in geometry/tools (David Coeurjolly,
-   [#819](https://github.com/DGtal-team/DGtal/pull/819))
-   
+   [#904](https://github.com/DGtal-team/DGtal/pull/904))
+       
 
 - *IO Package*
   - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 

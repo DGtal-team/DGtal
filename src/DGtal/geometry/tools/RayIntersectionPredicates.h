@@ -66,6 +66,14 @@ namespace DGtal
    * coordinates (i,j,k) with i being even, is associated to the quad
    * (i,j+/-1,k+/-1).
    *
+   * For the later case, this predicate is useful to get the surfel
+   * (an iterator on a surfel) of a digital surface intersected by the
+   * ray using for instance: 
+   *
+   * @code
+   *   Surface::ConstIterator it = std::find_if(surface.begin(), surface.end(), rayPredicateInstance);
+   * @endcode
+   *
    * @tparam TPoint type of points.  
    *
    */
