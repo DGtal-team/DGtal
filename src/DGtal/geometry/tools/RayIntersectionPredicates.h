@@ -42,15 +42,40 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/topology/CanonicSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+
+  /**
+   * @brief This class implements various intersection predicates between a
+   * ray and a triangle, a quad or a surfel in dimension 3.
+   *
+   * Few details:
+   *
+   * - Ray-Triangle intersection only uses '+', '*' and '<' operators
+   * on Point::Coordinate numbers. It implements "Fast, Minimum
+   * Storage Ray/Triangle Intersection", Möller & Trumbore. Journal of
+   * Graphics Tools, 1997.
+   *
+   * - Ray-Quad uses two ray-triangle tests (some redundant
+       computations could have been factorized).
+   *
+   * - Ray-Surfel intersection is performed in KhalmislySpace
+   * coordinates for exact computations. For example, a surfel with
+   * coordinates (i,j,k) with i being even, is associated to the quad
+   * (i,j+/-1,k+/-1).
+   *
+   * @tparam TPoint type of points.  
+   *
+   */
   template <typename TPoint>
   struct RayIntersectionPredicate
   {
-    
+
+    ///Only in dimension 3
+    BOOST_STATIC_ASSERT( TPoint::dimension == 3);
+
     ///Type of point
     typedef TPoint Point;
     
@@ -66,7 +91,7 @@ namespace DGtal
      * @pre dest vector must be not null.
      * 
      * @param origin Origin of the ray 
-     * @param dest vector indicating the direction of the ray
+     * @param dest vector to represent the direction of the ray
      * 
      */    
     RayIntersectionPredicate( const Point &origin, 
@@ -77,17 +102,18 @@ namespace DGtal
     }
 
     /** 
-     * Ray-Triangle intersection predicate
+     * Ray-Triangle intersection predicate (no back-face culling test,
+     * i.e., the order of vertices does not matter).
      * 
      * @param v1 first vertex of the triangle
      * @param v2 second vertex of the triangle
      * @param v3 third vertex of the triangle
      *
-     * @return  true if the ray intersects the triangle (v1,v2,v3)
+     * @return  true if the ray intersects the closed triangle (v1,v2,v3)
      */
     bool operator()(const Point &v1, 
                     const Point &v2,
-                    const Point &v3)
+                    const Point &v3) const
     {
       Point e1, e2;  //Edge1, Edge2
       Point P, Q, T;
@@ -177,7 +203,7 @@ namespace DGtal
     bool operator()(const Point &v1, 
                     const Point &v2,
                     const Point &v3,
-                    const Point &v4)
+                    const Point &v4) const
     {
       return (this->operator()(v1,v2,v3) ||
               this->operator()(v1,v4,v3) );
@@ -187,59 +213,59 @@ namespace DGtal
      * Ray-Surfel intersection predicate
      * (calls two ray-triangle intersections).
      * 
-     * @warning The point type @a Point must be defined on "double"
-     * coordinate type.
+     * @warning Ray intersection is performed in KhalimskySpace
+     * coordinate system. The type @a Point of the
+     * RayIntersectionPredicate class must be the same as the 
+     * @a Surfel::Point type.
      *
      * @param aSurfel a Khalimsky surfel
-     * @param kspace a Kspace defining the surfel
      *
      * @return  true if the ray intersects the surfel @a aSurfel
      */
-    template < typename KSpace >
-    bool operator()(const typename KSpace::Surfel &aSurfel,
-                    const KSpace &kspace)
+    template < typename Surfel >
+    bool operator()(const Surfel &aSurfel) const
     {
-      double x1,x2,x3,x4;
-      double y1,y2,y3,y4;
-      double z1,z2,z3,z4;
+      Component x1,x2,x3,x4;
+      Component y1,y2,y3,y4;
+      Component z1,z2,z3,z4;
+      Component ONE = NumberTraits<Component>::ONE;
       
-      Point baseQuadCenter = CanonicSCellEmbedder<KSpace>(kspace).embed( aSurfel );
+      Point baseQuadCenter =  aSurfel.myCoordinates;
       
-      bool xodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(aSurfel.myCoordinates[ 0 ]) & 1 );
-      bool yodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(aSurfel.myCoordinates[ 1 ]) & 1 );
-      bool zodd = ( NumberTraits<typename KSpace::Integer>::castToInt64_t(aSurfel.myCoordinates[ 2 ]) & 1 ); 
+      bool xodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 0 ]) & 1 );
+      bool yodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 1 ]) & 1 );
+      bool zodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 2 ]) & 1 ); 
       
       if(!zodd)
         {
-          x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
-          x2= baseQuadCenter[0]+0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]-0.5;
-          x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]-0.5;
-          x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]+0.5; z4= baseQuadCenter[2]-0.5;
+          //zsurfel
+          x1= baseQuadCenter[0]-ONE; y1= baseQuadCenter[1]-ONE; z1= baseQuadCenter[2];
+          x2= baseQuadCenter[0]+ONE; y2= baseQuadCenter[1]-ONE; z2= baseQuadCenter[2];
+          x3= baseQuadCenter[0]+ONE; y3= baseQuadCenter[1]+ONE; z3= baseQuadCenter[2];
+          x4= baseQuadCenter[0]-ONE; y4= baseQuadCenter[1]+ONE; z4= baseQuadCenter[2];
         }
       else if(!yodd)
         {
-          x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
-          x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]-0.5; z2= baseQuadCenter[2]+0.5;
-          x3= baseQuadCenter[0]+0.5; y3= baseQuadCenter[1]-0.5; z3= baseQuadCenter[2]+0.5;
-          x4= baseQuadCenter[0]+0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]-0.5;
+          //ysurfel
+          x1= baseQuadCenter[0]-ONE; y1= baseQuadCenter[1]; z1= baseQuadCenter[2]-ONE;
+          x2= baseQuadCenter[0]-ONE; y2= baseQuadCenter[1]; z2= baseQuadCenter[2]+ONE;
+          x3= baseQuadCenter[0]+ONE; y3= baseQuadCenter[1]; z3= baseQuadCenter[2]+ONE;
+          x4= baseQuadCenter[0]+ONE; y4= baseQuadCenter[1]; z4= baseQuadCenter[2]-ONE;
         }
       else
         {
-          x1= baseQuadCenter[0]-0.5; y1= baseQuadCenter[1]-0.5; z1= baseQuadCenter[2]-0.5;
-          x2= baseQuadCenter[0]-0.5; y2= baseQuadCenter[1]+0.5; z2= baseQuadCenter[2]-0.5;
-          x3= baseQuadCenter[0]-0.5; y3= baseQuadCenter[1]+0.5; z3= baseQuadCenter[2]+0.5;
-          x4= baseQuadCenter[0]-0.5; y4= baseQuadCenter[1]-0.5; z4= baseQuadCenter[2]+0.5;
+          //xsurfel
+          x1= baseQuadCenter[0]; y1= baseQuadCenter[1]-ONE; z1= baseQuadCenter[2]-ONE;
+          x2= baseQuadCenter[0]; y2= baseQuadCenter[1]+ONE; z2= baseQuadCenter[2]-ONE;
+          x3= baseQuadCenter[0]; y3= baseQuadCenter[1]+ONE; z3= baseQuadCenter[2]+ONE;
+          x4= baseQuadCenter[0]; y4= baseQuadCenter[1]-ONE; z4= baseQuadCenter[2]+ONE;
         }
-      
-      trace.info() << "Surfel quad = "<<Point(x1, y1, z1)<<" "<< Point(x2 ,y2, z2)<<" "
-                   << Point(x3, y3, z3)<<" " << Point(x4, y4, z4)<< std::endl;
       return this->operator()(Point(x1, y1, z1), Point(x2 ,y2, z2),
                               Point(x3, y3, z3), Point(x4, y4, z4)); 
     }
     
     Point myOrigin;
-    Point myDest;
-    
+    Point myDest;    
   }; 
 
  
