@@ -106,7 +106,7 @@ namespace DGtal
                               const Vector &dest)
       : myOrigin(origin), myDest(dest) 
     {
-      ASSERT_MSG( dest.norm1() != NumberTraits<Component>::ZERO, "Direction must be non-null vector"); 
+      ASSERT_MSG( dest.norm1() != NumberTraits<UnsignedComponent>::ZERO, "Direction must be non-null vector"); 
     }
 
     /** 
