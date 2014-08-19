@@ -240,7 +240,6 @@ namespace DGtal
       
       Point baseQuadCenter =  aSurfel.myCoordinates;
       
-      bool xodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 0 ]) & 1 );
       bool yodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 1 ]) & 1 );
       bool zodd = ( NumberTraits<Component>::castToInt64_t(aSurfel.myCoordinates[ 2 ]) & 1 ); 
       
