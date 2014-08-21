@@ -23,6 +23,7 @@
    gradient, curl and divergence. (Pierre Gueth,
    [#877](https://github.com/DGtal-team/DGtal/pull/877))
 
+
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
   digital geometric estimators based on it. Add tests and examples of
@@ -171,6 +172,8 @@
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
   - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
+  - New methods to fill the interior/exterior of digital contours (in the Surface class of topology/helpers).     [#827](https://github.com/DGtal-team/DGtal/pull/827))
+
 
 - *Graph Package*
   - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
