@@ -151,7 +151,7 @@ namespace DGtal {
 
 
 
-   @section dgtal_helpsurf_sec3 Extracting surface connected components
+   @section dgtal_helpsurf_sec3 Extracting surface of connected components
 
    The class \ref Surfaces provides other useful function to extract
    connected boundary surfels from a digital set and given a surfel
@@ -221,7 +221,144 @@ and you will get the resulting cell display:
 @image html KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND."
 @image latex KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND." width=0.5\textwidth
 
+
+
+
+ @section dgtal_helpsurf_sec4 Filling oriented digital contours
+
+
+ The helper class Surface also proposes some methods to fill the
+ interior/exterior of a digital set of 1-SCell which can be defined from
+ an oriented FreemanChain. These methods can be usefull in particular
+ to reconstruct images (as given for instance in the tool of
+ freeman2pgm given in  <a  href="https://github.com/DGtal-team/DGtalTools">DGtalTools</a>.). 
+ 
+ The example ctopo-fillContours.cpp illustrates a basic filling with a
+ shape containing a hole. The main steps to fill a contour
+ represented by a FreemanChain are the following:
+
+ First we construct two FreemanChain to illustrate the fill with two
+ different orientations:
+ 
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursInit
+
+
+
+
+To construct the set of signed SCell, we use the method getInterPixelLinels of FreemanChain class:
+
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursGetSCells
+
+@note The that the resulting Cell orientation is defined by
+convention such that a contour defined in the direct orientation will
+generate the fill of the interior of the shape (with the
+uComputeInterior method) while the indirect orientation should be
+used to define a hole (see example below). 
+ 
+
+Afterwards the region associated with the direct oriented contour (fc1)
+can be filled by using the method uComputeInterior with the parameter
+empty_is_inside set to false. This parameter choice is justified since
+here a line which does not contain any boundary element is necessary at the
+outside of the contour.
+
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursFillRegion
+            
+ The interior Cells obtained from such a contour are illustrated here:
+
+ 
+ @image html  ctopo-fillContours0.png  "Filling interior of direct oriented contour."
+
+ 
+ We can also reconstruct region with hole by using a contour in the indirect direction. For instance we can define 
+
+ @snippet topology/ctopo-fillContours.cpp ctopoFillContoursGetSCellsHole
+
+ And after adding it to the previous set boundarySCell you will obtain such a display:
+
+  @image html  ctopo-fillContours1.png  "Filling interior of direct oriented contour."
+ 
+@note From an indirect oriented contour you can also fill both the interior and exterior:
+@snippet topology/ctopo-fillContours.cpp ctopoFillContoursFillRegionHoles
+For the interior region, the parameter empty_is_inside parameter is set to true since a line without boundary element will correspond to the interior of the shape (since the contour is given the indirect orientation). In the same way, the parameter empty_is_outside is set to false.
+You will obtain such a representation:
+ @image html  ctopo-fillContours3.png  "Filling interior (lightgray) and exterior (dark gray) of indirect oriented contour." 
+
+
+@section dgtal_helpsurf_challenge Your challenge
+
+Now you are able both to extract a set of contours and to fill
+contours. The exercise is now to reconstruct an image from a given set
+of contours. 
+
+
+@subsection dgtal_helpsurf_challenge_exercice Exercise
+
+You challenge is to code:
+
+   1. The load the set of all the Freeman Chains given in a text file. 
+   2. Transform Freeman Chains into signed cells of KhalimskySpaceND (SCell).
+   3. Reconstruct an image associated to its Freeman Chains by filling.
+   4. Identify image hole and fill it with specific gray level.
+   5. Exporting resulting image in pgm format.
+
+
+@subsection dgtal_helpsurf_challenge_hints Hints
+
+- The class PointListReader contains various method to read input from text file. In particular you can use the method getFreemanChainsFromFile  (step 1).
+  To reconstruct the image you can first define some types from KhalimskySpaceND with also the resulting image:
+  \code
+  typedef KhalimskySpaceND<2, int>::Cell Cell;
+  typedef KhalimskySpaceND<2, int>::SCell SCell;
+  typedef DGtal::KhalimskySpaceND< 2, int > KSpace;
+  typedef DGtal::ImageContainerBySTLVector<Z2i::Domain, unsigned char> Image2D ; 
+  \endcode
+  @note To apply the reconstruction, you can use the following file given in this path: DGtal/examples/samples/contourS2.fc
+
+- Then you will also need to transform the freeman chain into signed
+cells (SCell) given in the KhalimskySpaceND. For this purpose you can
+use the FreemanChain method getInterPixelLinels (step 2).
+
+- For the step (3) you have first to save on cell by exploiting the
+  filling described in the previous section. Then you can update the
+  resulting image in particular with the method uCoords from
+  KhalimskySpaceND which allows you to recover the coordinate in image domain.
+  For instance to set to 255 the image pixel associated to the Cell c, you can do:
+  \code
+      imageResult.setValue(ks.uCoords(*it), 255);
+   \endcode
+
+- To identify the holes of step (4) you have to exploit the contour orientation. For
+  this purpose you can use the method ccwLoops of the FreemanChain
+  class. 
+@note We recall that by convention holes are oriented in the CW direction (or indirect order). 
+
+- Finally you can export the result just by including the GenericWriter and the flux operator:
+  \code
+  #include "DGtal/io/writers/GenericWriter.h"
+   ...
+  yourImage >> "yourImageName.pgm";
+  \endcode
+
+@subsection dgtal_helpsurf_challenge_results Result
+
+
+If you succeed the exercise you will obtain the following pgm image:
+
+  @image html resulExerciceHelpSurface.png "Awaited result of exercice with the main region filled in white and holes represented in gray."
+
+ 
+
+
 */
+
+
+
+
+
+
+
+
 
 /**
    A simple example illustrating the extraction of the sequence of
@@ -258,6 +395,16 @@ and you will get the resulting cell display:
    
    @image html KSurfelsConnectedOrientExt.png 
    \example  topology/3dKSSurfaceExtraction.cpp
+*/
+
+
+/**
+   A simple example illustrating the filling of the interior/exterior of a given 2D contour. This program outputs these images:
+
+   @see \ref dgtal_helpsurf_sec4
+   
+   @image html ctopo-fillContours.png 
+   \example  topology/ctopo-fillContours.cpp
 */
 
 }
