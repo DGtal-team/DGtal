@@ -59,7 +59,6 @@ bool testComputeInterior()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  typedef  KhalimskySpaceND<2, int>::Cell Cell;
   typedef  KhalimskySpaceND<2, int>::SCell SCell;
   typedef ImageContainerBySTLMap< Z2i::Domain, bool> BoolImage2D;
   
@@ -78,16 +77,19 @@ bool testComputeInterior()
   std::set<SCell> boundaryCell2;
   DGtal::KhalimskySpaceND< 2, int > K; 
   int minx, miny, maxx, maxy; 
-  fc.computeBoundingBox(minx, miny, maxx, maxy); 
-  trace.info() << "Domain defined by :" << Z2i::Point(minx-5,miny-5) << " " << Z2i::Point(maxx+5, maxy+5) << std::endl;
-  K.init(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5), false);
-  FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K, fc, boundaryCell ); 
-  BoolImage2D interiorImage(BoolImage2D::Domain(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5)));
+  fc.computeBoundingBox(minx, miny, maxx, maxy);
+
+  BoolImage2D::Domain dom(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5));
+  trace.info() << "Domain defined by :" << dom.lowerBound() << " " << dom.upperBound() << std::endl;
+  K.init(dom.lowerBound(), dom.upperBound(), false);
+  FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K, fc, boundaryCell );
+
+  BoolImage2D interiorImage(dom);
   unsigned int nbInt = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, SurfelSetPredicate<std::set<SCell>, SCell>(boundaryCell), 
                                                                                    interiorImage, 1, false);
   trace.info() << "Interior size: " << nbInt << " (awaited:  3082)" <<  std::endl;
 
-  BoolImage2D exteriorImage(BoolImage2D::Domain(Z2i::Point(minx-5,miny-5), Z2i::Point(maxx+5, maxy+5)));
+  BoolImage2D exteriorImage(dom);
   unsigned int nbExt = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(K ,SurfelSetPredicate<std::set<SCell>, SCell>(boundaryCell), 
                                                                                      exteriorImage, 1, true);
   trace.info() << "Exterior size: " << nbExt << " (awaited:   9182)" <<  std::endl;
@@ -96,26 +98,30 @@ bool testComputeInterior()
   DGtal::KhalimskySpaceND< 2, int > K2; 
   int minx2, miny2, maxx2, maxy2; 
   fc2.computeBoundingBox(minx2, miny2, maxx2, maxy2); 
-  K2.init(Z2i::Point(minx2-5,miny2-5), Z2i::Point(maxx2+5, maxy2+5), false);
+  BoolImage2D::Domain dom2(Z2i::Point(minx2-5,miny2-5), Z2i::Point(maxx2+5, maxy2+5));
+  K2.init(dom2.lowerBound(), dom2.upperBound(), false);
   FreemanChain<Z2i::Space::Integer>::getInterPixelLinels(K2, fc2, boundaryCell2 ); 
 
-  BoolImage2D interiorImage2(BoolImage2D::Domain(Z2i::Point(minx2-5,miny2-5), Z2i::Point(maxx2+5, maxy2+5)));
+  BoolImage2D interiorImage2(dom2);
   unsigned int nbInt2 = Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K2, SurfelSetPredicate<std::set<SCell>,SCell>(boundaryCell2), 
                                                                                     interiorImage2, 1, false);
  trace.info() << "Interior size2: " << nbInt2 << " (awaited:  196316)" <<  std::endl;
   
   // Displaying interiorCell
-  Board2D aBoard, aBoard2, aBoard3;  
-  for( BoolImage2D::Domain::ConstIterator it = interiorImage.domain().begin();  it!= interiorImage.domain().end(); it++){
+  Board2D aBoard, aBoard2, aBoard3; 
+
+  for( BoolImage2D::Domain::ConstIterator it = interiorImage.domain().begin();  it!= interiorImage.domain().end(); ++it){
     if(interiorImage(*it)){
-      aBoard << *it; 
+      aBoard << *it;
     }
   }
+
   for( BoolImage2D::Domain::ConstIterator it = exteriorImage.domain().begin();  it!= exteriorImage.domain().end(); it++){
     if(exteriorImage(*it)){
       aBoard3 << *it; 
     }
   }
+
   for( BoolImage2D::Domain::ConstIterator it = interiorImage2.domain().begin();  it!= interiorImage2.domain().end(); it++){
     if(interiorImage2(*it)){
       aBoard2 << *it; 
@@ -132,9 +138,11 @@ bool testComputeInterior()
     aBoard << *it;
     aBoard3 << *it;
   }
+
   for( std::set<SCell>::const_iterator it= boundaryCell2.begin();  it!= boundaryCell2.end(); it++){
     aBoard2 << *it;
   }
+
   aBoard << CustomStyle( fc.className(), 
                         new CustomColors(  Color::Red,  Color::None ) );        
   aBoard3 << CustomStyle( fc.className(), 
