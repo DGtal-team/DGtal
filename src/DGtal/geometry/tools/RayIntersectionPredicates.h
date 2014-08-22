@@ -61,7 +61,7 @@ namespace DGtal
    * - Ray-Quad uses two ray-triangle tests (some redundant
        computations could have been factorized).
    *
-   * - Ray-Surfel intersection is performed in KhalmislySpace
+   * - Ray-Surfel intersection is performed in KhalmiskySpace
    * coordinates for exact computations. For example, a surfel with
    * coordinates (i,j,k) with i being even, is associated to the quad
    * (i,j+/-1,k+/-1).
@@ -114,6 +114,8 @@ namespace DGtal
      * Ray-Triangle intersection predicate (no back-face culling test,
      * i.e., the order of vertices does not matter).
      * 
+     * @pre the triangle must be non-degenerate.
+     *
      * @param v1 first vertex of the triangle
      * @param v2 second vertex of the triangle
      * @param v3 third vertex of the triangle
@@ -124,6 +126,9 @@ namespace DGtal
                     const Point &v2,
                     const Point &v3) const
     {
+      
+      ASSERT((v1 != v2 ) && (v1 != v3) && (v2 != v3));
+
       Point e1, e2;  //Edge1, Edge2
       Point P, Q, T;
       Component det, u, v;
