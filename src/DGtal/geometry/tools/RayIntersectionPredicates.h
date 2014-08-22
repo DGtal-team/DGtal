@@ -61,7 +61,7 @@ namespace DGtal
    * - Ray-Quad uses two ray-triangle tests (some redundant
        computations could have been factorized).
    *
-   * - Ray-Surfel intersection is performed in KhalmiskySpace
+   * - Ray-Surfel intersection is performed in KhalimskySpace
    * coordinates for exact computations. For example, a surfel with
    * coordinates (i,j,k) with i being even, is associated to the quad
    * (i,j+/-1,k+/-1).
