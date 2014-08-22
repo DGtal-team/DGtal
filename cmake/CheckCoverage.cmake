@@ -6,12 +6,13 @@ OPTION(WITH_COVERAGE "Enable lcov code coverage." OFF)
 IF (WITH_COVERAGE) 
   MESSAGE(STATUS "Code coverage enabled")
   message(STATUS "-------------------------------------------------------------------------------")
+  SET(REMOVE_PATTERN "*/src/Board/*")
   ADD_CUSTOM_COMMAND(TARGET lcov
     COMMAND mkdir -p coverage
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
   ADD_CUSTOM_COMMAND(TARGET lcov
-    COMMAND lcov --directory . --capture --output-file ./coverage/stap_all.info --no-checksum
+    COMMAND lcov --directory . --capture --output-file ./coverage/stap_all.info --no-checksum --no-external
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
   ADD_CUSTOM_COMMAND(TARGET lcov
