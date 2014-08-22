@@ -6,8 +6,7 @@ OPTION(WITH_COVERAGE "Enable lcov code coverage." OFF)
 IF (WITH_COVERAGE) 
   MESSAGE(STATUS "Code coverage enabled")
   message(STATUS "-------------------------------------------------------------------------------")
-  SET(REMOVE_PATTERN "*/src/Board/*")
-  SET(REMOVE_PATTERN2 "/usr/*")
+  SET(DGTAL_PATTERN "*/src/DGtal/*")
   ADD_CUSTOM_COMMAND(TARGET lcov
     COMMAND mkdir -p coverage
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -17,19 +16,7 @@ IF (WITH_COVERAGE)
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
   ADD_CUSTOM_COMMAND(TARGET lcov
-    COMMAND lcov --directory . -r ./coverage/stap_all.info ${REMOVE_PATTERN} --output-file ./coverage/stap2.info
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-  ADD_CUSTOM_COMMAND(TARGET lcov
-    COMMAND lcov --directory . -r ./coverage/stap2.info ${REMOVE_PATTERN2} --output-file ./coverage/stap.info
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-  ADD_CUSTOM_COMMAND(TARGET lcov
-    COMMAND genhtml -o ./coverage --title "Code Coverage" --legend --show-details --demangle-cpp ./coverage/stap.info
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-  ADD_CUSTOM_COMMAND(TARGET lcov
-    COMMAND echo "Open ${CMAKE_BINARY_DIR}/coverage/index.html to view the coverage analysis results."
+    COMMAND lcov --directory . --extract ./coverage/stap_all.info ${DGTAL_PATTERN} --output-file ./coverage/stap.info
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 ENDIF()
