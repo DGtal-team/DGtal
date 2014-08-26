@@ -138,7 +138,7 @@ namespace DGtal
      *
      * I.e. (l_1+l_2)/l_3 of the tensor eigenvalues (l_1<l_2<l_3).
      *
-     * @return the feture score
+     * @return the feature score
      */
     Quantity eval( )
     {

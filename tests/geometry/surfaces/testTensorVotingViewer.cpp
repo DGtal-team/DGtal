@@ -128,7 +128,7 @@ bool testLocalEstimatorFromFunctorAdapter(int argc, char **argv)
   QApplication application( argc, argv );
   typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
   Viewer viewer( K );
-  viewer.setWindowTitle("example Integral Invariant 3D");
+  viewer.setWindowTitle("Features from Tensor Voting");
   viewer.show();
 
   typedef GradientColorMap< double > Gradient;
