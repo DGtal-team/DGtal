@@ -121,9 +121,16 @@ DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exportFile(const
 template <typename TContainer, typename TFunctor>
 inline
 bool
+#ifdef WITH_HDF5
 DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename,
-                                                                         const TContainer &anImage, const std::string & UNUSED(datasetName),
-                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException){
+                                                                         const TContainer &anImage, const std::string &datasetName,
+                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException)
+#else
+DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename,
+                                                                         const TContainer &anImage, const std::string &UNUSED(datasetName),
+                                                                         const TFunctor & aFunctor )  throw(DGtal::IOException)
+#endif
+{
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 

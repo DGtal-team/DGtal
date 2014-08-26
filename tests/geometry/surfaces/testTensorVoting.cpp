@@ -74,8 +74,6 @@ bool testLocalEstimatorFromFunctorAdapter()
 
   typedef LightImplicitDigitalSurface<KSpace,Gauss> SurfaceContainer;
   typedef DigitalSurface<SurfaceContainer> Surface;
-  //typedef Surface::SurfelConstIterator ConstIterator;
-  //typedef Surface::Tracker Tracker;
   typedef typename Surface::Surfel Surfel;
 
 
@@ -145,8 +143,6 @@ bool testCube()
 
   typedef LightImplicitDigitalSurface<KSpace,Gauss> SurfaceContainer;
   typedef DigitalSurface<SurfaceContainer> Surface;
-  //typedef Surface::SurfelConstIterator ConstIterator;
-  //typedef Surface::Tracker Tracker;
   typedef  Surface::Surfel Surfel;
 
 

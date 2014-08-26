@@ -23,6 +23,7 @@
    gradient, curl and divergence. (Pierre Gueth,
    [#877](https://github.com/DGtal-team/DGtal/pull/877))
 
+
 - *Geometry Package*
  - Add digital nD Voronoi Covariance Measure support, as well as
   digital geometric estimators based on it. Add tests and examples of
@@ -58,6 +59,10 @@
    David Coeurjolly,
    [#895](https://github.com/DGtal-team/DGtal/pull/895))
 
+ - Ray shooting intersection predicates (ray-triangle, ray-quad,
+   ray-surfel) added in geometry/tools (David Coeurjolly,
+   [#904](https://github.com/DGtal-team/DGtal/pull/904))
+       
 
 - *IO Package*
   - Now VolReader/VolWriter and LongvolReader/LongvolWriter support the 
@@ -85,7 +90,10 @@
          (David Coeurjolly,
          [#790](https://github.com/DGtal-team/DGtal/pull/790))
 
-
+- *Images*
+   - Classes to perform rigid transformations of 2D and 3D images
+     (Kacper Pluta,
+     [#869](https://github.com/DGtal-team/DGtal/pull/869))
 
 ## Changes
 
@@ -173,6 +181,8 @@
     [#803](https://github.com/DGtal-team/DGtal/pull/803))
   - fix examples volTrackBoundary and volScanBoundary for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,
     [#851](https://github.com/DGtal-team/DGtal/pull/851))
+  - New methods to fill the interior/exterior of digital contours (in the Surface class of topology/helpers).     [#827](https://github.com/DGtal-team/DGtal/pull/827))
+
 
 - *Graph Package*
   - fix examples volDistanceTraversal for DEBUG mode (Jacques-Olivier Lachaud, David Coeurjolly,

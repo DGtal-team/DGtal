@@ -310,7 +310,7 @@ void test_laplace_operator()
 
 
 int
-main(int argc, char* argv[])
+main()
 {
     test_linear_structure();
     test_laplace_operator();

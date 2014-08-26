@@ -93,7 +93,7 @@ public:
 
     BOOST_CONCEPT_USAGE( CDynamicVector )
     {
-				T z(i);
+      T zz(i);
     }
     // ------------------------- Private Datas --------------------------------
 private:
