@@ -14,6 +14,7 @@ SET(TESTS_SURFACES_SRC
   testIntegralInvariantCovarianceEstimator
   testLocalEstimatorFromFunctorAdapter
   testVoronoiCovarianceMeasureOnSurface
+  testTensorVoting
   )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
@@ -36,7 +37,8 @@ endif ( WITH_CGAL )
 
 if (  WITH_VISU3D_QGLVIEWER )
   SET(QGLVIEWER_TESTS_SRC
-    testLocalConvolutionNormalVectorEstimator )
+    testLocalConvolutionNormalVectorEstimator
+    testTensorVotingViewer)
 
   FOREACH(FILE ${QGLVIEWER_TESTS_SRC})
     add_executable(${FILE} ${FILE})

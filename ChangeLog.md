@@ -50,10 +50,14 @@
   integers during the computations. (Tristan Roussillon,
   [#755](https://github.com/DGtal-team/DGtal/pull/755))
 
-  - Logarithmic construction of an arithmetical DSS of minimal
-    parameters from a bounding DSL and two end points (ctor of
+ - Logarithmic construction of an arithmetical DSS of minimal
+   parameters from a bounding DSL and two end points (ctor of
     ArithmeticalDSS) (Tristan Roussillon,
     [#819](https://github.com/DGtal-team/DGtal/pull/819))
+
+ - Feature extraction algorithm from Tensor Voting.(Jérémy Levallois,
+   David Coeurjolly,
+   [#895](https://github.com/DGtal-team/DGtal/pull/895))
 
  - Ray shooting intersection predicates (ray-triangle, ray-quad,
    ray-surfel) added in geometry/tools (David Coeurjolly,
