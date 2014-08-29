@@ -209,6 +209,27 @@ namespace functors
     typedef typename Space::Dimension Dimension; 
     typedef typename Space::Point Point; 
     typedef typename Space::Integer Integer; 
+    /** 
+     * Constructor.
+     * (default point is defined from lower point of the domain)
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param rotationAngle the angle of rotation (in radians).
+     */
+    
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, 
+                    const Integer &sliceIndex,  const Dimension &dimRotated,
+                    double rotationAngle):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (aDomain3DImg.lowerBound())
+    {
+      myCenter[0] = aDomain3DImg.lowerBound()[0]+((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
+      myCenter[1] = aDomain3DImg.lowerBound()[1]+((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
+      myCenter[2] = aDomain3DImg.lowerBound()[2]+((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
+      myCenter[dimAdded]=sliceIndex;
+    };
     
     /** 
      * Constructor.
@@ -217,20 +238,21 @@ namespace functors
      * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
      * @param dimRotated the index of the rotation axis.
      * @param rotationAngle the angle of rotation (in radians).
-     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     * @param defaultPoint the point given when the resulting point is outside the domain.
      */
     
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, 
                     const Integer &sliceIndex,  const Dimension &dimRotated,
-                    double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+                    double rotationAngle,  const Point &defaultPoint):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defautPoint)
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defaultPoint)
     {
-      myCenter[0] = ((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
-      myCenter[1] = ((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
-      myCenter[2] = ((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
+      myCenter[0] = aDomain3DImg.lowerBound()[0]+((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;  
+      myCenter[1] = aDomain3DImg.lowerBound()[1]+((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;  
+      myCenter[2] = aDomain3DImg.lowerBound()[2]+((aDomain3DImg.upperBound())[2]-(aDomain3DImg.lowerBound())[2])/2.0;  
       myCenter[dimAdded]=sliceIndex;
     };
+
     /** 
      * Constructor.
      * @param dimAdded  the index of the new dimension inserted.
@@ -239,15 +261,32 @@ namespace functors
      * @param dimRotated the index of the rotation axis.
      * @param ptCenter the rotation center.
      * @param rotationAngle the angle of rotation (in radians).
-     * @param defautPoint the point given when the resulting point is outside the domain (default Point(0,0,0)).
+     * @param defaultPoint the point given when the resulting point is outside the domain.
      */
     
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
-                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defautPoint = Point(0,0,0)):
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defaultPoint):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defautPoint)
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defaultPoint)
     {
-      myDefaultPoint = Point(0,0,0);
+    };
+
+    /** 
+     * Constructor.
+     * (default point is defined from lower point of the domain)
+     * @param dimAdded  the index of the new dimension inserted.
+     * @param aDomain3DImg the 3D domain used to keep the resulting point in the domain. 
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     * @param dimRotated the index of the rotation axis.
+     * @param ptCenter the rotation center.
+     * @param rotationAngle the angle of rotation (in radians).
+     */
+    
+    SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle):
+      myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg), 
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (aDomain3DImg.lowerBound())
+    {
     };
     
     /** 

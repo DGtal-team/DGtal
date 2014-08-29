@@ -57,6 +57,7 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref packageGeometry
   - \ref packageShapes
   - \ref packageTopology
+  - \ref packageDEC
   - \ref packageGraph
   - \ref packageMath
   - \ref packageImage

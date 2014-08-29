@@ -45,7 +45,7 @@
 
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
-#include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

@@ -2,11 +2,11 @@
 #--- Headers for IDE Generators
 #
 # The following lines add fake targets to register the .h and .ih files in the
-# overall project. 
-# For IDE generators (Xcode, ...), all H and IH will be recognized as project 
+# overall project.
+# For IDE generators (Xcode, ...), all H and IH will be recognized as project
 # headers and will thus be parsed and analyzed correctly (e.g. follow declaration
 #/implementation, ...)
-# 
+#
 #------------------------------------------------------------------------------
 FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/DGtal//base/*h)
 add_custom_target(_base SOURCES ${DGTAL_MYHEADERS})
@@ -41,5 +41,6 @@ SET(DGTAL_MYHEADERS "")
 FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/DGtal//helpers/*h)
 add_custom_target(_helpers SOURCES ${DGTAL_MYHEADERS})
 SET(DGTAL_MYHEADERS "")
-
-
+FILE(GLOB_RECURSE DGTAL_MYHEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/DGtal//dec/*h)
+add_custom_target(_dec SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")

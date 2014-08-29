@@ -118,6 +118,47 @@ namespace DGtal
     static ImageContainer importRaw8(const std::string & filename,
 				     const Vector & extent,
 				     const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+
+
+    /** 
+     * Main method to import a Raw (32bits) into an instance of the 
+     * template parameter ImageContainer.
+     * 
+     * @param filename the file name to import.
+     * @param extent the size of the raw data set.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to functors::Cast < TImageContainer::Value > .
+     *
+ 
+     * @return an instance of the ImageContainer.
+     */
+    static ImageContainer importRaw32(const std::string & filename,
+				     const Vector & extent,
+				     const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
+
+
+    
+  private:
+
+    /** 
+     * Generic read word (binary mode) in little-endian mode.
+     * 
+     * @param fin input FILE.
+     * @param aValue value to write.
+     * 
+     * @return modified stream.
+     */
+    template <typename Word>
+    static
+    FILE* read_word( FILE* fin, Word& aValue )
+    {
+      aValue = 0;
+      for (unsigned size = 0; size < sizeof( Word ); ++size)
+	aValue |= getc(fin) << (8 * size);
+      return fin;
+    }
+
     
   }; // end of class RawReader
 
