@@ -152,7 +152,7 @@ bool testLocalEstimatorFromFunctorAdapter()
 
 
   trace.info() << "Gaussian = "<<valK <<std::endl;
-  trace.info() << "k1 = " << valk1k2.k1 << " , k2 = " << valk1k2.k2 <<std::endl;
+  trace.info() << "k1 = " << valk1k2.first << " , k2 = " << valk1k2.second <<std::endl;
   trace.info() << "Mean = "<<valH<< std::endl;
   trace.info() << "Normal Vector (from Monge form) = "<<valN<< std::endl;
   trace.info() << "Normal Vector (linear least square) = "<<valL<< std::endl;

@@ -44,6 +44,7 @@ bool
 RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
 			   const Functor & aFunctor)
 {
+  BOOST_CONCEPT_ASSERT((  CUnaryFunctor<Functor, typename I::Value, unsigned char> )) ;    
   std::ofstream out;
   
 
@@ -59,6 +60,35 @@ RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
     {
       val = aImage( (*it) );
       out.put( static_cast<unsigned char>(aFunctor (val) ) );
+    }
+  
+  out.close(); 
+
+  ///@todo catch IOerror excpetion
+  return true;
+}
+
+
+template<typename I,typename C>
+bool
+RawWriter<I,C>::exportRaw32(const std::string & filename, const I & aImage,
+			   const Functor & aFunctor)
+{
+
+  BOOST_CONCEPT_ASSERT((  CUnaryFunctor<Functor, typename I::Value, unsigned int> )) ;    
+  std::ofstream out;  
+  typename I::Domain domain = aImage.domain();
+  typename I::Value val;
+
+  out.open(filename.c_str(), std::ios_base::binary);
+  
+  //We scan the domain 
+  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+      it!=itend;
+      ++it)
+    {
+      val = aImage( (*it) );
+      write_word(out,aFunctor(val));
     }
   
   out.close(); 

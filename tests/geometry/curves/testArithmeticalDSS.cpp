@@ -815,10 +815,8 @@ trivialSubsegment(const DSL& aDSL,
   ASSERT((y-x) > 0); 
 
   typedef typename DSL::Point Point; 
-  typedef typename DSL::Vector Vector; 
   typedef typename DSL::Coordinate Coordinate; 
   typedef typename DSL::Integer Integer; 
-  typedef typename DSL::ConstIterator ConstIterator; 
   typedef ArithmeticalDSS<Coordinate,Integer,DSL::foregroundAdjacency> DSS; 
 
   Point startingPoint = aDSL.getPoint(x); 
