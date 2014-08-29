@@ -698,9 +698,13 @@ namespace functors
 
   /**
    * Description of template class 'FlipDomainAxis' <p> \brief Aim:
-   * Functor that flip the domain coordinate system from some selected
-   * axis.  Such functor can be usefull to apply basic image flip from
-   * some specific axis directions.
+   * Functor that flip the domain coordinate system from some 
+   * selected axis.  For instance, if a flip on the y axis is applied
+   * on a domain of bounds (0, 0, 0) (MaxX, MaxY, MaxZ), then the
+   * coordinate of P(x,y,z) will transformed in P(x, MaxY-y, z).
+   *
+   * Such functor can be useful to apply basic image
+   * flip from some specific axis directions.
    *
    *
    * @see tests/kernel/testBasicPointFunctors.cpp 
@@ -720,8 +724,10 @@ namespace functors
 
     /** 
      * Constructor.
-     * Construct the functor from a source domain, a grid size, and a shift vector.
-     * The points of the resulting domain are defined as the upper left of the sampling grid.
+     * Construct the functor from a source domain and a vector defining the axis being flipped.
+     * Such a vector should contain the dimension number associated to the axis to be flipped. 
+     * For instance to flip the x and z axis of a given 3d domain you have to give a vector 
+     * containing 1 and 2. 
      *
      * @param aSourceDomain  the source domain. 
      * @param axisFlipped a vector containing  the index of the dimension to be flipped. 
