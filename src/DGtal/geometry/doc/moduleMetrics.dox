@@ -30,14 +30,14 @@ functions play an important role in volumetric analysis of shapes
 (distance transformation, Voronoi maps, medial axis,...).  We
 formalize here the concepts related to such function. First of all,
 let us start with main definitions:
-
 @definition @f$(E, F, d)@f$ is  a @a metric @a space if @f$d@f$ is a
 map from @f$E@f$ to a sub-group @f$F@f$ of @f$\mathbb{R}@f$ such that
 @f$\forall a,b,c\in E@f$, 
 
 - (@e non-negative) @f$ d(a,b)\geq 0@f$ 
 - (@e identity @e of @e indiscernibles) @f$ d(a,b)= 0 \Leftrightarrow
-a=b@f$ - (@e symmetry) @f$d(a,b)=d(b,a)@f$ 
+a=b@f$
+- (@e symmetry) @f$d(a,b)=d(b,a)@f$ 
 - (@e triangular @e inequality) @f$d(a,c) \leq d(a,b) + d(b,c)@f$
 
 When performing some geometry processing, one may consider 
@@ -51,12 +51,12 @@ additional requirements on the metric and thus norms:
 -   (@e triangular @e inequality) @f$g(\vec{x}+\vec{y}) \leq
     g(\vec{x}) + g(\vec{y})@f$
 -    (@e homogeneity) @f$ \forall \lambda\in\mathbb{R}, \quad
-    g(\lambda\cdot\vec{x}) = |\lambda|\cdot g(\cdot\vec{x})@f$
+    g(\lambda\cdot\vec{x}) = |\lambda|\cdot g(\vec{x})@f$
 
 @f$d(a,b):= g(b-a)@f$ is the metric induced by the norm @f$g@f$.
 
 In the following, we restrict our attention to metric spaces even if
-some of them are induced by norms).
+some of them are induced by norms.
 
 
 
@@ -73,8 +73,8 @@ example,
  @f$p>1@f$
 
  - DigitalMetricAdapter which adapts any metric (model of
-   concepts::CMetricSpace) to digital space using the ceil function is
-   a digital metric (note that the ceil function preserves the
+   concepts::CMetricSpace) to digital space using the ceil function. This induces
+   a digital metric (ceil function preserves the
    triangular inequality).
  
 
@@ -99,7 +99,7 @@ digraph metric_concepts_2_vor {
 
 For instance, CMetricSpace requires to have a binary operator to compute the
 distance between any two points of the digital space. Furthermore, it
-requires to have a method he @a closest(p,q) which returns the closest
+requires to have a method he @a closest(origin,p,q) which returns the closest
 point from @a p and @a q to the origin. Such closest method can be
 easily implemented from the binary distance operator. However, for
 some metric, more efficient implementation can be obtained to answer
@@ -121,11 +121,12 @@ an  integer DGtal::int64_t (default type), i.e. @f$ \sum_{i=1}^n |x_i-y_i |^p\f$
 
 
 
-Similarly to metric models,  @a Power @a Metrics are important for
+Similarly to metric models, @a Power @a Metrics are important for
 reverse distance reconstruction and medial axis extraction.  For @f$
-l_2@f$ metric, the power distance between a point @f$ x@f$  and a ball @f$(y,w)@f$ is defined by
+l_2@f$ metric, the power distance between a point @f$ x@f$ and a ball
+@f$(y,r)@f$ with centger @f$y@f$ and radius @f$r@f$, is defined by
 
-@f[ pow(x,y) = \| x - y\|_2^2  - w @f]
+@f[ pow(x,y) = \| x - y\|_2^2  - r @f]
 
 Power function are no more positive but the geometry of the distance
 (convex unit balls,...) are relevant in volumetric analysis.
@@ -134,14 +135,15 @@ Power function are no more positive but the geometry of the distance
 
 @section subSepMetrics SeparableMetric Concept
 
-We performing volumatric analysis using separable approaches (see @ref
+We perform volumetric analysis using separable approaches (see @ref
 moduleVolumetric), additional properties are required for the model of
-metrics (see @cite Maurer2003PAMI, @cite Hirata1996, @cite
-dcoeurjo_metric14). Such properties are realted to a @e monotonicity
-property of the metric.  In dimension 2, consider two points @f$
-p(x,y)@f$, @f$q(x',y')@f$ with @f$x<x'@f$. Let @f$r( x'',0)@f$ be a
-point on the x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$
-be another point on the x-axis. A metric @f$ d@f$ is @e monotonic if
+metrics (see @cite Maurer2003PAMI, @cite Hirata1996, @cite dcoeurjo_metric14).
+
+Such properties are related to a @e monotonicity property of the
+metric.  In dimension 2, consider two points @f$ p(x,y)@f$,
+@f$q(x',y')@f$ with @f$x<x'@f$. Let @f$r( x'',0)@f$ be a point on the
+x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$ be another
+point on the x-axis. A metric @f$ d@f$ is @e monotonic if
 
 @f[     u < x'' \implies d(p,s) \leq d(q,s) @f]
 and
@@ -197,13 +199,13 @@ computational costs.
 Main models of concepts::CSeparableMetric and
 concepts::CPowerSeparableMetric are:
 
- - ExactPredicateLpSeparableMetric: main class for @f$ l_p$ metrics
+ - ExactPredicateLpSeparableMetric: main class for @f$ l_p@f$ metrics
   (with exact predicates)
- - InexactPredicateLpSeparableMetric: main class for @f$ l_p$ metrics
+ - InexactPredicateLpSeparableMetric: main class for @f$ l_p@f$ metrics
   (with approximated predicates)
  - SeparableMetricAdapter: adapts any model of concepts::CMetricSpace (with
  - monotonicity property) to concepts::CSeparableMetric
- - ExactPredicateLpPowerSeparableMetric:  main class for power @f$
+ - ExactPredicateLpPowerSeparableMetric:  main class for power @f@f$
   l_p@f$ functions (with exact predicates).
 
 
