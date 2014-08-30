@@ -111,7 +111,7 @@ nc* the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
 
     ///Concept Checks
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
-    BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
+    BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TConvolutionFunctor,double,double> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<TDigitalSurfaceContainer> ));
 
