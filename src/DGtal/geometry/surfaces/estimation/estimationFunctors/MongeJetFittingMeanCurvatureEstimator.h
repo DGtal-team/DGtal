@@ -119,7 +119,7 @@ namespace DGtal
      * Add the geometrical embedding of a surfel to the point list
      *
      * @param aSurf a surfel to add
-     * @param distance of aSurf to the neighborhood boundary
+     * @param aDistance of aSurf to the neighborhood boundary
      */
     void pushSurfel(const Surfel & aSurf,
                     const double aDistance)

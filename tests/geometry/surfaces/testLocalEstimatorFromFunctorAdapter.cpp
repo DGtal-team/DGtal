@@ -182,14 +182,14 @@ bool testConcepts()
   typedef Z3i::KSpace::Surfel Surfel;
   typedef CanonicSCellEmbedder<Z3i::KSpace> Embedder;
   trace.beginBlock("Checking concepts");
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< functors::DummyEstimatorFromSurfels<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::DummyEstimatorFromSurfels<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
 
 #ifdef WITH_CGAL
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >));
-  BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor< functors::LinearLeastSquareFittingNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >));
+  BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::LinearLeastSquareFittingNormalVectorEstimator<Surfel,Embedder > >));
 #endif
 
   trace.endBlock();
