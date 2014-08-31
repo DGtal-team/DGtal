@@ -47,6 +47,8 @@
 
 namespace DGtal
 {
+  namespace concepts
+  {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CPowerSeparableMetric
@@ -113,7 +115,7 @@ ExactPredicateLpPowerSeparableMetric,
   private:
 
   }; // end of concept CPowerSeparableMetric
-
+  }
 } // namespace DGtal
 
 //                                                                           //

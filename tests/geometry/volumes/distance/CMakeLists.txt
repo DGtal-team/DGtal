@@ -10,6 +10,7 @@ SET(DGTAL_TESTS_SRC
   testPowerMap
   testReducedMedialAxis
   testSeparableMetricAdapter
+  testDigitalMetricAdapter
   )
 
 
