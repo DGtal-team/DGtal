@@ -84,7 +84,7 @@ namespace DGtal
             typename TKernelFunction>
   class VoronoiCovarianceMeasureOnDigitalSurface
   {
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
     // ----------------------- public types ------------------------------
   public:

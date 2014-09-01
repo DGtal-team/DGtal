@@ -65,7 +65,7 @@ namespace DGtal
   {
   public:
     typedef CanonicCellEmbedder<TKSpace> Self;
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<TKSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND<TKSpace> ));
 
     typedef TKSpace KSpace;
     typedef typename KSpace::Cell Cell;

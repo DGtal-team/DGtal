@@ -107,7 +107,7 @@ namespace DGtal
 
     typedef typename T::Surface Surface;
     typedef typename Surface::DigitalSurfaceContainer DigitalSurfaceContainer;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
     typedef typename T::Surfel Surfel;
     BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Surfel, typename Surface::Surfel >::value ));
     BOOST_CONCEPT_USAGE( CDigitalSurfaceLocalEstimator )
