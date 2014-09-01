@@ -57,7 +57,6 @@
 
 namespace DGtal
 {
-
   /////////////////////////////////////////////////////////////////////////////
   // template class EigenDecomposition
   /**
@@ -179,7 +178,6 @@ namespace DGtal
   private:
 
   }; // end of class EigenDecomposition
-
 
 } // namespace DGtal
 
