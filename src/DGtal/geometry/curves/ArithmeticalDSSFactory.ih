@@ -61,7 +61,7 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
 
       //running smartCH
       OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
-      using namespace ArithmeticalDSSConvexHull; 
+      using namespace functions; 
       Vector v = smartCH( aDSL, aF, ( aDSL.position(aL) - aDSL.position(aF) ),
 			  lastUpperVertex, lastLowerVertex );
 

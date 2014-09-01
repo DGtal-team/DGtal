@@ -47,7 +47,7 @@
 namespace DGtal
 {
 
-  namespace ArithmeticalDSSConvexHull {
+  namespace functors {
 
     /**
      * @brief Functor that returns the position of any point/vector 
@@ -156,6 +156,10 @@ namespace DGtal
       } 
     }; 
 
+  } // namespace functors
+
+
+  namespace functions {
 
     /**
      * @brief Procedure that computes the next (lower or upper) vertex of 
@@ -269,7 +273,7 @@ namespace DGtal
 				 OutputIterator uIto, OutputIterator lIto); 
 
 
-  } // namespace ArithmeticalDSSConvexHull
+  } // namespace functions
 
 
 } // namespace DGtal
