@@ -128,8 +128,8 @@ You may then access to the following elements:
 
 - the \f$ \chi \f$ VCM is returned by method
   VoronoiCovarianceMeasure::measure, where a kernel function must be
-  specified. The type of the kernel function can be \ref HatPointFunction
-  or \ref BallConstantPointFunction, but you may define your own.
+  specified. The type of the kernel function can be \ref functors::HatPointFunction
+  or \ref functors::BallConstantPointFunction, but you may define your own.
 
 Example geometry/volumes/dvcm-2d.cpp gives the full code for computing the \f$ \chi
 \f$-VCM of an arbitrary set of digital points, and then estimating the
@@ -162,8 +162,8 @@ following types:
    DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
 
 - \b TKernelFunction the type of the kernel function \f$ \chi \f$ used
-   for integrating the VCM, a map: Point -> Scalar, e.g. \ref HatPointFunction
-   or \ref BallConstantPointFunction, but you may define your own.
+   for integrating the VCM, a map: Point -> Scalar, e.g. \ref functors::HatPointFunction
+  or \ref functors::BallConstantPointFunction, but you may define your own.
 
 At instanciation, you have to precise several parameters:
 
