@@ -214,3 +214,153 @@ smartCHNextVertex(const Position& positionBound,
 
   return stop; 
 }
+
+
+//----------------------------------------------------------------------------
+template<typename DSS, typename OutputIterator>
+inline
+typename DSS::Vector 
+DGtal::functions::
+reverseSmartCH(const DSS& aDSS, 
+	       const typename DSS::Position& aPositionBound, 
+	       OutputIterator uIto, OutputIterator lIto)
+{
+  ASSERT( aDSS.position(aDSS.back()) <= aPositionBound ); 
+
+  typedef typename DSS::Vector Vector; 
+  typedef typename DSS::Position Position; 
+      
+  //position functor
+  functors::PositionFunctorFrom2DPoint<Vector,Position> position(aDSS.dsl().shift());     
+  //direction vector
+  Vector v(aDSS.b(), aDSS.a());
+ 
+  return reverseSmartCH( aDSS.Uf(), aDSS.Lf()-aDSS.dsl().shift(), v, 
+			 aPositionBound, 
+			 uIto, lIto, position ); 
+} 
+
+
+//----------------------------------------------------------------------------
+template<typename PointVector, typename Position, 
+	 typename OutputIterator, typename PositionFunctor>
+inline
+PointVector 
+DGtal::functions::
+reverseSmartCH(PointVector U, PointVector L, PointVector V, 
+	       Position aBound, 
+	       OutputIterator uIto, OutputIterator lIto, 
+	       PositionFunctor position)
+{
+  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Position, typename PositionFunctor::Position>::value )); 
+  BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
+  BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
+  typedef typename PointVector::Coordinate Coordinate; 
+  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Coordinate, typename PointVector::Coordinate>::value )); 
+
+  ASSERT( (V[0]*(L-U)[1] - V[1]*(L-U)[0]) == NumberTraits<Coordinate>::ONE ); //eq. 6 
+
+  //functors
+  functors::StrictTruncationFunctor<Coordinate> sTruncation; 
+  functors::LargeTruncationFunctor<Coordinate> lTruncation; 
+
+  //----------------- init --------------------//
+  *lIto++ = L; 
+  *uIto++ = U; 
+  bool stop = false; 
+  if (position(L) >= position(U))
+    {
+      if ((position(U)+position(V)) <= aBound)
+	stop = true; 
+    }
+  else 
+    {
+      if ((position(L)+position(V)) <= aBound)
+	stop = true; 	
+    }	
+
+  //----------------- main --------------------//
+  while ( (position(L) != position(U)) && (!stop) )
+    {  
+      if (position(L) > position(U))
+	{
+	  stop = smartCHPreviousVertex(L, U, V, aBound, lIto, sTruncation, lTruncation, position); 
+	}
+      else
+	{
+	  stop = smartCHPreviousVertex(U, L, V, aBound, uIto, sTruncation, lTruncation, position); 
+	}
+    }
+
+  return V; 
+}
+
+//----------------------------------------------------------------------------
+template<typename PointVector, typename Position, 
+	 typename OutputIterator, 
+	 typename TruncationFunctor1, typename TruncationFunctor2, 
+	 typename PositionFunctor>
+inline
+bool 
+DGtal::functions::
+smartCHPreviousVertex(PointVector& X, const PointVector& Y, PointVector& V, const Position& aBound, 
+		      OutputIterator ito, 
+		      const TruncationFunctor1& f1, 
+		      const TruncationFunctor2& f2, 
+		      const PositionFunctor& position)
+{
+  BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
+  BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,PointVector> ));
+  typedef PointVector Vector; 
+
+  //pre-conditions
+  ASSERT(position(X) > position(Y)); 
+  ASSERT(position(X) < position(V)); //eq 10
+  ASSERT(position(Y) < position(V)); //eq 10
+
+  bool stop = false; 
+
+  //update V
+  Vector XY = X-Y; 
+  Position q = f1( (position(V)-position(Y)), position(XY) ); 
+  ASSERT(q > 0); 
+  V -= q * XY; 
+  ASSERT(position(V) <= position(X)); //eq 9 (NB: equality at position 0)
+  if (position(Y) + position(V) >= aBound)
+    {
+      //update X
+      q = f2(position(X), position(V)); 
+      ASSERT(q >= 0); 
+      X -= q * V; 
+      ASSERT(position(X) < position(V)); //eq 10
+	
+      if (position(X) + position(V) < aBound)
+	{
+	  stop = true; 
+	  q = (aBound - (position(X) + position(V))) / position(V); 
+	  X += q * V; 
+	}
+      *ito++ = X; 
+    }
+  else
+    {
+      stop = true;
+      //update V
+      q = ( aBound - (position(Y) + position(V)) ) / position(XY);  
+      ASSERT(q >= 0); 
+      V += q * XY;
+      //update X
+      q = f2( (position(X) - aBound), position(V) ); 
+      if (q >= 0) 
+	{
+	  X -= (q+1) * V; 
+	  *ito++ = X;
+	}
+      //there is nothing else to do
+      ASSERT(position(X) <= aBound); 
+      ASSERT(position(Y) <= aBound); 
+      ASSERT(position(Y) + position(V) <= aBound); 
+    }
+
+  return stop; 
+}
