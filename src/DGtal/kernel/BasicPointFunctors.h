@@ -698,7 +698,7 @@ namespace functors
 
   /**
    * Description of template class 'FlipDomainAxis' <p> \brief Aim:
-   * Functor that flip the domain coordinate system from some 
+   * Functor that flips the domain coordinate system from some 
    * selected axis.  For instance, if a flip on the y axis is applied
    * on a domain of bounds (0, 0, 0) (MaxX, MaxY, MaxZ), then the
    * coordinate of P(x,y,z) will transformed in P(x, MaxY-y, z).
@@ -730,7 +730,7 @@ namespace functors
      * containing 1 and 2. 
      *
      * @param aSourceDomain  the source domain. 
-     * @param axisFlipped a vector containing  the index of the dimension to be flipped. 
+     * @param axisFlipped a vector containing  the indices of the dimension to be flipped. 
      *
      */
     
