@@ -267,6 +267,18 @@ namespace DGtal
     ArithmeticalDSS(const DSL& aDSL, const Point& aF, const Point& aL);
 
     /**
+     * Construction as the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reverseSmartCH algorithm. 
+     */
+    ArithmeticalDSS(const ArithmeticalDSS& aDSS, const Point& aF, const Point& aL);
+
+    /**
      * Construction from a range of iterator on points. 
      *
      * @param aItb begin iterator

@@ -86,6 +86,30 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
 template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 inline
 DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
+DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::
+createSubsegment(const DSS& aDSS, const Point& aF, const Point& aL)
+{
+  ASSERT( aDSS.dsl().isInDSL( aF ) ); 
+  ASSERT( aDSS.dsl().isInDSL( aL ) ); 
+  ASSERT( aDSS.dsl().beforeOrEqual(aF, aL) ); 
+
+  //specific case: DSS of one point
+  if (aF == aL)
+    {
+      return DSS( aF );      
+    }
+  //otherwise
+  else 
+    {
+      std::cerr << "TODO" << std::endl; 
+      return DSS( aF ); 
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TCoordinate, typename TInteger, unsigned short adjacency>
+inline
+DGtal::ArithmeticalDSS<TCoordinate,TInteger,adjacency>
 DGtal::ArithmeticalDSSFactory<TCoordinate,TInteger,adjacency>::createPattern(const Point& aF, const Point& aL)
 {
 

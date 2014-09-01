@@ -102,6 +102,18 @@ namespace DGtal
     static DSS createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL);
 
     /**
+     * Construction of the subsegment of minimal parameters of a greater DSS. 
+     *
+     * @param aDSS bounding DSS
+     * @param aF first point of the subsegment
+     * @param aL last point of the subsegment
+     *
+     * NB: logarithmic-time in the greatest component of the direction vector
+     * of the subsegment. Uses reverseSmartCH algorithm. 
+     */
+    static DSS createSubsegment(const DSS& aDSS, const Point& aF, const Point& aL);
+
+    /**
      * @brief Method that creates a DSS that is a pattern
      * or a repetition of a pattern from two input digital points,
      * viewed as upper leaning points.

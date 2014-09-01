@@ -273,6 +273,94 @@ namespace DGtal
 				 OutputIterator uIto, OutputIterator lIto); 
 
 
+    /**
+     * @brief Procedure that computes the previous vertex of the 
+     * left hull of a DSS of main direction vector @a V , 
+     * first upper leaning point @a U and first positive Bezout 
+     * point @a L. The computation stops as soon as a computed vertex
+     * is located before @a aBound.  
+     *
+     * @param X (returned) first vertex of the left hull on the considered side
+     * @param Y first vertex of the left hull on the opposite side
+     * @param V (returned) previous direction vector
+     * @param aBound position of the last point of the left subsegment. It bounds 
+     * the computation. 
+     * @param ito output iterator used to store the vertices of the left hull
+     * lying on the same side as @a X
+     * @param f1 integer divisor for the direction vector update
+     * @param f2 integer divisor for the vertex update
+     * @param position position functor 
+     *
+     * @tparam PointVector a model of couple of coordinates
+     * @tparam Position a model of integer for the position of the points
+     * @tparam OutputIterator a model of output iterator
+     * @tparam FloorFunctor1 a model of functor for the integer division
+     * @tparam FloorFunctor2 a model of functor for the integer division
+     * @tparam PositionFunctor a model of functor returning the position of a point
+     *
+     * @return 'true' if constraint
+     * 'false' otherwise
+     */
+    template<typename PointVector, typename Position, 
+	     typename OutputIterator, 
+	     typename TruncationFunctor1, typename TruncationFunctor2, 
+	     typename PositionFunctor>
+    inline
+    bool smartCHPreviousVertex(PointVector& X, const PointVector& Y, PointVector& V, const Position& aBound, 
+			       OutputIterator ito, 
+			       const TruncationFunctor1& f1, 
+			       const TruncationFunctor2& f2, 
+			       const PositionFunctor& position); 
+
+    /**
+     * @brief Procedure that computes the lower and upper left hull of 
+     * the left subsegment of a greater DSS characterized by the first 
+     * upper leaning point @a U, the first positive Bezout point @a L 
+     * and its direction vector @a V. Note that the so-called left 
+     * subsegment is bounded on the one hand by the first point of @a aDSS and 
+     * on the other hand by the point located at position @a aBound. 
+     *
+     * @return last direction vector, ie. the minimal parameters of the subsegment
+     *
+     * @param U last upper convex hull vertex
+     * @param L last lower convex hull vertex
+     * @param V last valid Bezout vector (main direction vector)
+     * @param aLength length of the subsegment
+     * @param uIto output iterator used to store the vertices of the upper convex hull
+     * @param lIto output iterator used to store the vertices of the lower convex hull
+     *
+     * @tparam Position a model of integer
+     * @tparam OutputIterator a model of output iterator
+     */
+    template<typename PointVector, typename Position, typename OutputIterator, typename PositionFunctor>
+    inline
+    PointVector reverseSmartCH(PointVector U, PointVector L, PointVector V, Position aBound, 
+			       OutputIterator uIto, OutputIterator lIto, 
+			       PositionFunctor position); 
+
+    /**
+     * @brief Procedure that computes the lower and upper left hull of 
+     * the left subsegment of a greater DSS @a aDSS. Note that the so-called left 
+     * subsegment is bounded on the one hand by the first point of @a aDSS and 
+     * on the other hand by the point located at position @a aPositionBound. 
+     *
+     * @param aDSS bounding DSS
+     * @param aPositionBound position of the last point of the subsegment 
+     * (should be located after the first point of @a aDSS).
+     * @param uIto output iterator used to store the vertices of the upper convex hull
+     * @param lIto output iterator used to store the vertices of the lower convex hull
+     *
+     * @return last direction vector, ie. the minimal parameters of the subsegment
+     *
+     * @tparam DSS a model of arithmetical DSS 
+     * @tparam OutputIterator a model of output iterator
+     */
+    template<typename DSS, typename OutputIterator>
+    inline
+    typename DSS::Vector reverseSmartCH(const DSS& aDSS, 
+					const typename DSS::Position& aPositionBound, 
+					OutputIterator uIto, OutputIterator lIto); 
+
   } // namespace functions
 
 
