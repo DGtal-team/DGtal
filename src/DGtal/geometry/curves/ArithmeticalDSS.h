@@ -92,6 +92,7 @@ namespace DGtal
 	    unsigned short adjacency = 8>
   class ArithmeticalDSS
   {
+    friend class ArithmeticalDSSFactory<TCoordinate, TInteger, adjacency>; 
 
     // ----------------------- static members -----------------------------------
   public:
