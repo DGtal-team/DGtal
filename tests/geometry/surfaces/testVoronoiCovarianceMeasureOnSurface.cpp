@@ -76,8 +76,8 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef Surface::ConstIterator ConstIterator;
   typedef SurfaceContainer::Surfel Surfel;
   typedef ExactPredicateLpSeparableMetric<Space,2> Metric;
-  // typedef HatPointFunction<Point,double> KernelFunction;
-  typedef BallConstantPointFunction<Point,double> KernelFunction;
+  // typedef functors::HatPointFunction<Point,double> KernelFunction;
+  typedef functors::BallConstantPointFunction<Point,double> KernelFunction;
   typedef VoronoiCovarianceMeasureOnDigitalSurface<SurfaceContainer,Metric,KernelFunction> VCMOnSurface;
   trace.beginBlock("Creating Surface");
   // std::string poly_str = "1.0-0.16*x^2+0.22*y^2+0.3*z^2";
