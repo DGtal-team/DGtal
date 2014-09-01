@@ -34,17 +34,17 @@ namespace DGtal {
    they are two different concepts for graphs:
 
    - locally finite graphs satisfy concept
-     CUndirectedSimpleLocalGraph. There is no way to iterate through
+     concepts::CUndirectedSimpleLocalGraph. There is no way to iterate through
      all vertices of that kind of graph (since they can be
      infinite). Edges of this graph are given through an adjacency
      list for each vertex.
 
      - Notable models: MetricAdjacency
 
-     - Notable refinements: CAdjacency, CUndirectedSimpleGraph
+     - Notable refinements: concepts::CAdjacency, concepts::CUndirectedSimpleGraph
 
-   - finite graphs satisfy concept CUndirectedSimpleGraph, a
-     refinement of CUndirectedSimpleLocalGraph. Such graphs provide
+   - finite graphs satisfy concept concepts::CUndirectedSimpleGraph, a
+     refinement of concepts::CUndirectedSimpleLocalGraph. Such graphs provide
      vertex iterators to enumerate all the vertices of the graph. Such
      iterators may only be single pass input iterators.
 
@@ -107,7 +107,7 @@ namespace DGtal {
    Sometimes it is more convenient to traverse in a specific order,
    and not in the arbitrary order given by vertex enumeration. That is
    exactly the purpose of visitors, specified by concept
-   CGraphVisitor. Visitors traverse the graph or only subparts of the
+   concepts::CGraphVisitor. Visitors traverse the graph or only subparts of the
    graph by adjacencies. In some sense, they trace a tree from the
    initial seed. A vertex is visited at most once. Data may be
    associated to each visited vertex, like its distance to the initial
