@@ -48,8 +48,8 @@
 #include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// In DGtal::concepts
+namespace DGtal { namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CGraphVisitor
@@ -161,6 +161,7 @@ private:
 
 }; // end of concept CGraphVisitor
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

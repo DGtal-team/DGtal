@@ -75,7 +75,7 @@ namespace DGtal
   public:
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < TDigitalSurfaceEmbedder, TNormalVectorEstimator > Self;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
 
     typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
     typedef TNormalVectorEstimator NormalVectorEstimator;
@@ -217,7 +217,7 @@ namespace DGtal
   {
   public:
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder,TNormalVectorEstimator> Self;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
 
     typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
     typedef TNormalVectorEstimator NormalVectorEstimator;

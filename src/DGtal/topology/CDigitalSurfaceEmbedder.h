@@ -46,8 +46,9 @@
 #include "DGtal/topology/CSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CDigitalSurfaceEmbedder
@@ -131,6 +132,7 @@ private:
 
 }; // end of concept CDigitalSurfaceEmbedder
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

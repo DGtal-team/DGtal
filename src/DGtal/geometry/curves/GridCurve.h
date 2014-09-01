@@ -173,7 +173,7 @@ namespace DGtal
 
   public: 
     typedef TKSpace KSpace; 
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > )); 
   
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Point Vector;

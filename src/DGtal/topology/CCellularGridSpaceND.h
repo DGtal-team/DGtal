@@ -49,8 +49,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CCellularGridSpaceND
@@ -505,6 +506,7 @@ private:
 
 }; // end of concept CCellularGridSpaceND
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //
