@@ -59,7 +59,7 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
   else 
     {
 
-      //running smartCH
+      //running smartCH to compute the minimal characteristics AND the leaning points
       OneItemOutputIterator<Point> lastUpperVertex, lastLowerVertex;
       using namespace functions; 
       Vector v = smartCH( aDSL, aF, ( aDSL.position(aL) - aDSL.position(aF) ),
@@ -79,7 +79,6 @@ createSubsegment(const DSL& aDSL, const Point& aF, const Point& aL)
 		  (U - qUBackward * v), (U + qUForward * v ), 
 		  (L - qLBackward * v), (L + qLForward * v ), 
 		  dsl.steps(), dsl.shift() );
-
     }
 }
 
