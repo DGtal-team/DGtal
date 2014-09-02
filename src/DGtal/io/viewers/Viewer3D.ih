@@ -729,25 +729,15 @@ DGtal::Viewer3D<Space, KSpace>::draw()
       glCallList ( GLuint ( myListToAff+nbListOfPrimitives+6 ) );
     }
 
-  // Drawing all Khalimsky Space Cells
-
   for ( typename vector<vector< typename Viewer3D<Space, KSpace>::BallD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myBallSetList.begin();
 	itb != Viewer3D<Space, KSpace>::myBallSetList.end(); itb++ )
     {
       for ( typename vector< typename Viewer3D<Space, KSpace>::BallD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
         {
-          glDrawGLPointel ( *it_s );
+          glDrawGLBall ( *it_s );
         }
     }
 
-  for ( typename vector<vector< typename Viewer3D<Space, KSpace>::LineD3D> >::const_iterator itb= Viewer3D<Space, KSpace>::myLineSetList.begin();
-	itb != Viewer3D<Space, KSpace>::myLineSetList.end(); itb++ )
-    {
-      for ( typename vector< typename Viewer3D<Space, KSpace>::LineD3D>::const_iterator it_s = itb->begin(); it_s !=itb->end() ; it_s ++)
-        {
-          glDrawGLLinel (*it_s );
-        }
-    }
   for(unsigned int j=0; j< myVectTextureImage.size(); j++)
     {
       GLTextureImage &textureImg = myVectTextureImage.at(j);
@@ -815,6 +805,7 @@ DGtal::Viewer3D<Space, KSpace>::init()
   myGLScaleFactorX=1.0;
   myGLScaleFactorY=1.0;
   myGLScaleFactorZ=1.0;
+  myBallDisplayPrecision=10;
 
   myIsDoubleFaceRendering=true;
   Viewer3D<Space, KSpace>::createNewCubeList ( );
@@ -1399,76 +1390,33 @@ DGtal::Viewer3D<Space, KSpace>::updateList ( bool needToUpdateBoundingBox )
 
 template< typename Space, typename KSpace>
 void
-DGtal::Viewer3D<Space, KSpace>::glDrawGLLinel ( typename Viewer3D<Space, KSpace>::LineD3D aLinel )
+DGtal::Viewer3D<Space, KSpace>::glDrawGLBall ( typename Viewer3D<Space, KSpace>::BallD3D aBall )
 {
-  glPushMatrix();
-  glTranslatef ( aLinel.point1[0], aLinel.point1[1], aLinel.point1[2] );
-  Vec dir ( aLinel.point2[0]-aLinel.point1[0], aLinel.point2[1]-aLinel.point1[1], aLinel.point2[2]-aLinel.point1[2] );
-  glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
-  GLUquadric* quadric = gluNewQuadric();
-  glColor4ub ( aLinel.color.red(), aLinel.color.green(), aLinel.color.blue(), aLinel.color.alpha() );
-
-  gluCylinder ( quadric, ( aLinel.signPos || !aLinel.isSigned ) ? aLinel.width :0 ,
-                ( aLinel.signPos && aLinel.isSigned ) ? 0 :aLinel.width ,
-                dir.norm(),10, 4 );
-  glPopMatrix();
-}
-
-
-template< typename Space, typename KSpace>
-void
-DGtal::Viewer3D<Space, KSpace>::glDrawGLPointel ( typename Viewer3D<Space, KSpace>::BallD3D ballel )
-{
-
-  if ( !ballel.isSigned )
-    {
-      glPushMatrix();
-      glTranslatef ( ballel.center[0], ballel.center[1], ballel.center[2] );
-      GLUquadric* quadric = gluNewQuadric();
-      glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
-      gluSphere ( quadric, ballel.size, 10, 10 );
-      glPopMatrix();
+  double thetaResolution = myBallDisplayPrecision;
+  double thetaStep= (2.0*M_PI)/thetaResolution;
+  double phiResolution = myBallDisplayPrecision;
+  double phiStep= M_PI/phiResolution;
+  
+  double radius = aBall.size;
+  double xCenter = aBall.center[0];
+  double yCenter = aBall.center[1];
+  double zCenter = aBall.center[2];
+  
+  for(unsigned int j =0; j < phiResolution; j++){
+    double phi0 = M_PI/2.0-j*phiStep;
+    double phi1 = M_PI/2.0-(j+1)*phiStep;
+    glBegin(GL_QUAD_STRIP);
+    for(unsigned int i =0; i <= thetaResolution; i++){
+      double theta0 =  i * thetaStep;
+      glColor4ub ( aBall.color.red(), aBall.color.green(), aBall.color.blue(), aBall.color.alpha() );
+      glNormal3f(cos(phi0)*cos(theta0), cos(phi0)*sin(theta0), sin(phi0));
+      glVertex3f(xCenter+cos(phi0)*cos(theta0)*radius,yCenter+ cos(phi0)*sin(theta0)*radius, zCenter+ sin(phi0)*radius);      
+      glNormal3f(cos(phi1)*cos(theta0), cos(phi1)*sin(theta0), sin(phi1));
+      glVertex3f(xCenter+cos(phi1)*cos(theta0)*radius,yCenter+ cos(phi1)*sin(theta0)*radius, zCenter+ sin(phi1)*radius);      
     }
-  else
-    {
-      // a small "+" is drawn with cylinder
-      if ( ballel.signPos )
-        {
-          glPushMatrix();
-          glTranslatef ( ballel.center[0]-0.07, ballel.center[1]-0.07, ballel.center[2] );
-          Vec dir ( 0.14, 0.14, 0 );
-          glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
-          GLUquadric* quadric = gluNewQuadric();
-          glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
-          gluCylinder ( quadric, ballel.size/3.0 , ballel.size/3.0,
-                        dir.norm(),10, 4 );
-          glPopMatrix();
-          glPushMatrix();
-	  glTranslatef ( ballel.center[0]-0.07, ballel.center[1]+0.07, ballel.center[2] );
-
-          dir=Vec ( 0.14, -0.14, 0 );
-          glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
-          quadric = gluNewQuadric();
-          glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
-          gluCylinder ( quadric, ballel.size/3.0 , ballel.size/3.0,
-                        dir.norm(),10, 4 );
-          glPopMatrix();
-        }
-      else
-        {
-          glPushMatrix();
-          glTranslatef ( ballel.center[0], ballel.center[1]+0.07, ballel.center[2]-0.07 );
-          Vec dir ( 0.0, -0.14, 0.14 );
-          glMultMatrixd ( Quaternion ( Vec ( 0,0,1 ), dir ).matrix() );
-          GLUquadric* quadric = gluNewQuadric();
-          glColor4ub ( ballel.color.red(), ballel.color.green(), ballel.color.blue(), ballel.color.alpha() );
-          gluCylinder ( quadric, ballel.size/4.0 , ballel.size/4.0,
-                        dir.norm(),10, 4 );
-          glPopMatrix();
-        }
-    }
+     glEnd();
+  }  
 }
-
 
 
 template< typename Space, typename KSpace>
