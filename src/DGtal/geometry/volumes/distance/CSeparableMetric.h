@@ -42,10 +42,12 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/geometry/volumes/distance/CMetricSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
+{
+namespace concepts
 {
 /////////////////////////////////////////////////////////////////////////////
 // class CSeparableMetric
@@ -67,7 +69,7 @@ and
  
 
 ### Refinement of 
-  - CMetric.
+  - CMetricSpace.
 
 ### Associated types :
 
@@ -96,7 +98,7 @@ ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
 @tparam T the type that should be a model of CSeparableMetric.
  */
 template <typename T>
-struct CSeparableMetric: CMetric<T>
+struct CSeparableMetric: CMetricSpace<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
@@ -122,7 +124,7 @@ private:
 private:
 
 }; // end of concept CSeparableMetric
-
+}
 } // namespace DGtal
 
 //                                                                           //

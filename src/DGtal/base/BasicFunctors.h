@@ -811,10 +811,10 @@ private:
 
 
   /**
-   * Description of  class 'GaussianKernel' <p>
-   * \brief Aim: defines a functor on double number which correspond
-   * to a Gaussian convolution kernel.
-   * This functor acts from [0,1] to [0,1]
+   * Description of class 'GaussianKernel' <p>
+   * \brief Aim: defines a
+   * functor on double numbers which corresponds to a Gaussian
+   * convolution kernel.  This functor acts from [0,1] to [0,1]
    *
    */
   struct GaussianKernel
@@ -846,6 +846,7 @@ private:
 
     ///Temporary variable
     double myCoef;
+  private: 
     ///Temporary variable
     double myCoef2;
   };

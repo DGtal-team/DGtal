@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="120mm" height="120mm" 
+     viewBox="0 0 340.158 340.158" 
+     xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" >
+<desc>output.svg, created with the Board library (Copyleft) 2007 Sebastien Fourey</desc>
+<line x1="14.17" y1="340.16" x2="14.17" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="42.52" y1="340.16" x2="42.52" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="70.87" y1="340.16" x2="70.87" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="99.21" y1="340.16" x2="99.21" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="127.56" y1="340.16" x2="127.56" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="155.91" y1="340.16" x2="155.91" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="184.25" y1="340.16" x2="184.25" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="212.6" y1="340.16" x2="212.6" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="240.94" y1="340.16" x2="240.94" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="269.29" y1="340.16" x2="269.29" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="297.64" y1="340.16" x2="297.64" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="325.98" y1="340.16" x2="325.98" y2="0" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="325.98" x2="340.16" y2="325.98" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="297.64" x2="340.16" y2="297.64" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="269.29" x2="340.16" y2="269.29" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="240.94" x2="340.16" y2="240.94" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="212.6" x2="340.16" y2="212.6" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="184.25" x2="340.16" y2="184.25" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="155.91" x2="340.16" y2="155.91" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="127.56" x2="340.16" y2="127.56" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="99.21" x2="340.16" y2="99.21" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="70.87" x2="340.16" y2="70.87" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="42.52" x2="340.16" y2="42.52" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<line x1="0" y1="14.17" x2="340.16" y2="14.17" fill="none" stroke="rgb(160,160,160)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:1,1;stroke-dashoffset:0" />
+<circle cx="14.17" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="14.17" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="42.52" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="70.87" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="99.21" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="127.56" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="155.91" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="184.25" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="212.6" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="240.94" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="269.29" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="297.64" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="325.98" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="297.64" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="269.29" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="240.94" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="212.6" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="184.25" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="155.91" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="127.56" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="99.21" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="70.87" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="42.52" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<circle cx="325.98" cy="14.17" r="2.83" fill="rgb(160,160,160)" stroke="none" stroke-width="0" style="stroke-linecap:round;stroke-linejoin:round;" />
+<rect x="26.93" y="310.39" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="284.88" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="282.05" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="256.54" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="253.7" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="228.19" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="225.35" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="199.84" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="197.01" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="171.5" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="168.66" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="143.15" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="140.31" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="114.8" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="111.97" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="86.46" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="83.62" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="58.11" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="55.28" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="29.76" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="26.93" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="29.76" y="310.39" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="55.28" y="310.39" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="58.11" y="310.39" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="83.62" y="310.39" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="86.46" y="310.39" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="111.97" y="310.39" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="114.8" y="310.39" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="310.39" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="168.66" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="143.15" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="140.31" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="114.8" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="111.97" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="86.46" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="83.62" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="58.11" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="55.28" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="29.76" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="26.93" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="310.39" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="168.66" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="26.93" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="310.39" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="284.88" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="282.05" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="256.54" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="253.7" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="228.19" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="225.35" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="199.84" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="197.01" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="171.5" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="168.66" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="26.93" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="171.5" y="26.93" width="25.51" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="310.39" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="284.88" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="282.05" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="256.54" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="253.7" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="228.19" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="225.35" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="199.84" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="197.01" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="171.5" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="168.66" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="143.15" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="140.31" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="114.8" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="111.97" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="86.46" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="83.62" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="58.11" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="55.28" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="29.76" width="2.83" height="25.51" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="26.93" width="2.83" height="2.83" fill="rgb(80,80,80)" stroke="rgb(50,50,50)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="29.76" width="2.83" height="25.51" fill="rgb(255,160,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="58.11" width="2.83" height="25.51" fill="rgb(255,145,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="86.46" width="2.83" height="25.51" fill="rgb(255,129,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="114.8" width="2.83" height="25.51" fill="rgb(255,111,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="143.15" width="2.83" height="25.51" fill="rgb(255,93,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="171.5" width="2.83" height="25.51" fill="rgb(255,75,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="199.84" width="2.83" height="25.51" fill="rgb(255,57,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="228.19" width="2.83" height="25.51" fill="rgb(255,39,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="256.54" width="2.83" height="25.51" fill="rgb(255,21,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="26.93" y="284.88" width="2.83" height="25.51" fill="rgb(255,3,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="29.76" y="310.39" width="25.51" height="2.83" fill="rgb(242,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="58.11" y="310.39" width="25.51" height="2.83" fill="rgb(226,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="86.46" y="310.39" width="25.51" height="2.83" fill="rgb(210,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="114.8" y="310.39" width="25.51" height="2.83" fill="rgb(195,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="310.39" width="25.51" height="2.83" fill="rgb(179,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="284.88" width="2.83" height="25.51" fill="rgb(163,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="256.54" width="2.83" height="25.51" fill="rgb(147,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="228.19" width="2.83" height="25.51" fill="rgb(0,0,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="199.84" width="2.83" height="25.51" fill="rgb(0,32,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="168.66" y="171.5" width="2.83" height="25.51" fill="rgb(0,65,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="168.66" width="25.51" height="2.83" fill="rgb(0,98,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="143.15" width="2.83" height="25.51" fill="rgb(0,130,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="114.8" width="2.83" height="25.51" fill="rgb(0,163,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="86.46" width="2.83" height="25.51" fill="rgb(0,196,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="58.11" width="2.83" height="25.51" fill="rgb(0,228,255)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="140.31" y="29.76" width="2.83" height="25.51" fill="rgb(6,255,248)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="143.15" y="26.93" width="25.51" height="2.83" fill="rgb(39,255,215)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="171.5" y="26.93" width="25.51" height="2.83" fill="rgb(71,255,183)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="29.76" width="2.83" height="25.51" fill="rgb(104,255,150)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="58.11" width="2.83" height="25.51" fill="rgb(137,255,117)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="86.46" width="2.83" height="25.51" fill="rgb(169,255,85)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="114.8" width="2.83" height="25.51" fill="rgb(202,255,52)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="143.15" width="2.83" height="25.51" fill="rgb(235,255,19)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="171.5" width="2.83" height="25.51" fill="rgb(255,249,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="199.84" width="2.83" height="25.51" fill="rgb(255,234,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="228.19" width="2.83" height="25.51" fill="rgb(255,219,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="256.54" width="2.83" height="25.51" fill="rgb(255,204,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<rect x="197.01" y="284.88" width="2.83" height="25.51" fill="rgb(255,190,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" />
+<g>
+ <path d="M 28.35 28.35 L 28.35 18.92 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,18.92 28.35,28.47 31.31,18.92 25.39,18.92" />
+</g>
+<g>
+ <path d="M 28.35 56.69 L 28.35 47.32 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,47.33 28.35,56.88 31.31,47.33 25.39,47.33" />
+</g>
+<g>
+ <path d="M 28.35 85.04 L 28.35 75.79 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,75.8 28.35,85.35 31.31,75.8 25.39,75.8" />
+</g>
+<g>
+ <path d="M 28.35 113.39 L 28.35 104.26 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,104.27 28.35,113.82 31.31,104.27 25.39,104.27" />
+</g>
+<g>
+ <path d="M 28.35 141.73 L 28.35 132.73 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,132.73 28.35,142.28 31.31,132.73 25.39,132.73" />
+</g>
+<g>
+ <path d="M 28.35 170.08 L 28.35 161.2 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,161.2 28.35,170.75 31.31,161.2 25.39,161.2" />
+</g>
+<g>
+ <path d="M 28.35 198.43 L 28.35 189.67 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,189.67 28.35,199.22 31.31,189.67 25.39,189.67" />
+</g>
+<g>
+ <path d="M 28.35 226.77 L 28.35 218.14 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,218.14 28.35,227.69 31.31,218.14 25.39,218.14" />
+</g>
+<g>
+ <path d="M 28.35 255.12 L 28.35 246.61 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,246.61 28.35,256.16 31.31,246.61 25.39,246.61" />
+</g>
+<g>
+ <path d="M 28.35 283.46 L 28.35 275.08 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="25.39,275.08 28.35,284.63 31.31,275.08 25.39,275.08" />
+</g>
+<g>
+ <path d="M 28.35 311.81 L 22.63 306.61 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="20.64,308.8 29.7,313.04 24.62,304.43 20.64,308.8" />
+</g>
+<g>
+ <path d="M 56.69 311.81 L 48.55 311.81 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="48.55,314.77 58.1,311.81 48.55,308.85 48.55,314.77" />
+</g>
+<g>
+ <path d="M 85.04 311.81 L 77.02 311.81 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="77.02,314.77 86.57,311.81 77.02,308.85 77.02,314.77" />
+</g>
+<g>
+ <path d="M 113.39 311.81 L 105.49 311.81 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="105.49,314.77 115.04,311.81 105.49,308.85 105.49,314.77" />
+</g>
+<g>
+ <path d="M 141.73 311.81 L 133.96 311.81 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="133.96,314.77 143.51,311.81 133.96,308.85 133.96,314.77" />
+</g>
+<g>
+ <path d="M 170.08 311.81 L 165.39 316.82 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="167.54,318.84 171.92,309.85 163.23,314.8 167.54,318.84" />
+</g>
+<g>
+ <path d="M 170.08 283.46 L 170.08 290.99 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="173.04,290.99 170.08,281.44 167.12,290.99 173.04,290.99" />
+</g>
+<g>
+ <path d="M 170.08 255.12 L 170.08 245.81 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="167.12,245.81 170.08,255.36 173.04,245.81 167.12,245.81" />
+</g>
+<g>
+ <path d="M 170.08 226.77 L 170.08 219.73 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="167.12,219.74 170.08,229.29 173.04,219.74 167.12,219.74" />
+</g>
+<g>
+ <path d="M 170.08 198.43 L 170.08 191.26 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="167.12,191.27 170.08,200.82 173.04,191.27 167.12,191.27" />
+</g>
+<g>
+ <path d="M 170.08 170.08 L 165.72 165.47 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="163.57,167.51 172.29,172.41 167.87,163.44 163.57,167.51" />
+</g>
+<g>
+ <path d="M 141.73 170.08 L 137 165.61 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="134.97,167.75 143.94,172.16 139.02,163.45 134.97,167.75" />
+</g>
+<g>
+ <path d="M 141.73 141.73 L 141.73 134.2 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="138.77,134.21 141.73,143.76 144.69,134.21 138.77,134.21" />
+</g>
+<g>
+ <path d="M 141.73 113.39 L 141.73 105.73 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="138.77,105.74 141.73,115.29 144.69,105.74 138.77,105.74" />
+</g>
+<g>
+ <path d="M 141.73 85.04 L 141.73 77.27 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="138.77,77.27 141.73,86.82 144.69,77.27 138.77,77.27" />
+</g>
+<g>
+ <path d="M 141.73 56.69 L 141.73 48.8 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="138.77,48.8 141.73,58.35 144.69,48.8 138.77,48.8" />
+</g>
+<g>
+ <path d="M 141.73 28.35 L 146.74 22.92 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="144.57,20.92 140.26,29.94 148.91,24.92 144.57,20.92" />
+</g>
+<g>
+ <path d="M 170.08 28.35 L 178.22 28.35 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="178.22,25.39 168.67,28.35 178.22,31.31 178.22,25.39" />
+</g>
+<g>
+ <path d="M 198.43 28.35 L 204.14 33.55 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="206.14,31.36 197.08,27.12 202.16,35.73 206.14,31.36" />
+</g>
+<g>
+ <path d="M 198.43 56.69 L 198.43 65.08 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,65.08 198.43,55.53 195.47,65.08 201.39,65.08" />
+</g>
+<g>
+ <path d="M 198.43 85.04 L 198.43 93.55 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,93.55 198.43,84 195.47,93.55 201.39,93.55" />
+</g>
+<g>
+ <path d="M 198.43 113.39 L 198.43 122.02 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,122.02 198.43,112.47 195.47,122.02 201.39,122.02" />
+</g>
+<g>
+ <path d="M 198.43 141.73 L 198.43 150.49 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,150.48 198.43,140.93 195.47,150.48 201.39,150.48" />
+</g>
+<g>
+ <path d="M 198.43 170.08 L 198.43 178.96 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,178.95 198.43,169.4 195.47,178.95 201.39,178.95" />
+</g>
+<g>
+ <path d="M 198.43 198.43 L 198.43 207.43 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,207.42 198.43,197.87 195.47,207.42 201.39,207.42" />
+</g>
+<g>
+ <path d="M 198.43 226.77 L 198.43 235.9 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,235.89 198.43,226.34 195.47,235.89 201.39,235.89" />
+</g>
+<g>
+ <path d="M 198.43 255.12 L 198.43 264.36 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,264.36 198.43,254.81 195.47,264.36 201.39,264.36" />
+</g>
+<g>
+ <path d="M 198.43 283.46 L 198.43 292.83 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,292.83 198.43,283.28 195.47,292.83 201.39,292.83" />
+</g>
+<g>
+ <path d="M 198.43 311.81 L 198.43 321.24 z" fill="none" stroke="rgb(0,0,0)" stroke-width="0.353mm" /> <polygon fill="rgb(0,0,0)" stroke="rgb(0,0,0)" stroke-width="0.353mm" style="stroke-linecap:butt;stroke-linejoin:miter" points="201.39,321.24 198.43,311.69 195.47,321.24 201.39,321.24" />
+</g>
+</svg>
