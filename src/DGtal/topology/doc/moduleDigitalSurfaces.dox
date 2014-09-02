@@ -422,7 +422,7 @@ digital surface takes almost no time, since the chosen container
 @subsection dgtal_digsurf_sec3_4  A digital surface is a graph, example of breadth-first traversal
 
 Any DigitalSurface is a model of concepts::CUndirectedSimpleGraph (a
-refinement of concepts::CUndirectedLocalSimpleGraph). Essentially, you have
+refinement of concepts::CUndirectedSimpleLocalGraph). Essentially, you have
 methods DigitalSurface::begin() and DigitalSurface::end() to visit
 all the vertices, and for each vertex, you obtain its neighbors
 with DigitalSurface::writeNeighbors. You may thus for instance use
@@ -459,7 +459,7 @@ by itself. Therefere, you may use a simple begin() and end() to get
 the vertices in this order, when \b your \b container \b is \b a \b
 LightImplicitDigitalSurface.
 
-@todo The concepts concepts::CUndirectedLocalSimpleGraph and
+@todo The concepts concepts::CUndirectedSimpleLocalGraph and
 concepts::CUndirectedSimpleGraph are susceptible to evolve to meet other
 standards.
 
