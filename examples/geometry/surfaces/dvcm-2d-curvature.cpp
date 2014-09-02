@@ -62,7 +62,7 @@ int main( int /* argc */, char** /* argv */ )
   typedef DigitalSurface<DigitalSurfaceContainer> Surface;
   typedef functors::BallConstantPointFunction<Point,double> KernelFunction;
   typedef VoronoiCovarianceMeasureOnDigitalSurface<DigitalSurfaceContainer,Metric,KernelFunction> VCMOnSurface;
-  typedef functors::VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor<VCMOnSurface> CurvatureFunctor;
+  typedef functors::VCMAbsoluteCurvatureFunctor<VCMOnSurface> CurvatureFunctor;
   typedef VCMDigitalSurfaceLocalEstimator<DigitalSurfaceContainer,Metric,
                                           KernelFunction, CurvatureFunctor> VCMCurvatureEstimator;
 
