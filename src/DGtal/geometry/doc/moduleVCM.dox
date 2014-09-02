@@ -155,9 +155,9 @@ The class VoronoiCovarianceMeasureOnDigitalSurface is templated by the
 following types:
 
 - \b TDigitalSurfaceContainer the type of digital surface container
-  (model of CDigitalSurfaceContainer), e.g. an ImplicitDigitalSurface.
+  (model of concepts::CDigitalSurfaceContainer), e.g. an ImplicitDigitalSurface.
 
-- \b TSeparableMetric a model of CSeparableMetric used for
+- \b TSeparableMetric a model of concepts::CSeparableMetric used for
    computing the Voronoi map (e.g. Euclidean metric is
    DGtal::ExactPredicateLpSeparableMetric<TSpace, 2> )
 
@@ -241,12 +241,12 @@ is a small piece of code that extracts the VCM normal for each surfel.
 
 The class VCMDigitalSurfaceLocalEstimator adapts a
 VoronoiCovarianceMeasureOnDigitalSurface to be a model of
-CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b Covariance \b
+concepts::CDigitalSurfaceLocalEstimator. It uses the \b Voronoi \b Covariance \b
 Measure to estimate geometric quantities. The template type \b
 TVCMGeometricFunctor specifies what is the estimated quantity.  For
-instance, VCMGeometricFunctors::VCMNormalVectorFunctor returns the
+instance, functors::VCMGeometricFunctors::VCMNormalVectorFunctor returns the
 estimated VCM surface \b outward normal for given surfels,
-VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor returns the absolute
+functors::VCMGeometricFunctors::VCMAbsoluteCurvatureFunctor returns the absolute
 curvature (see namespace VCMGeometricFunctors).
 
 In order to fulfill concept requirements, a VCMDigitalSurfaceLocalEstimator

@@ -46,8 +46,9 @@
 #include "DGtal/base/CQuantity.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CSurfelLocalEstimator
@@ -145,6 +146,7 @@ namespace DGtal
 
   }; // end of concept CSurfelLocalEstimator
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

@@ -46,8 +46,9 @@
 #include "DGtal/geometry/surfaces/estimation/CSurfelLocalEstimator.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSurfaceLocalEstimator
@@ -125,6 +126,7 @@ namespace DGtal
 
   }; // end of concept CDigitalSurfaceLocalEstimator
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

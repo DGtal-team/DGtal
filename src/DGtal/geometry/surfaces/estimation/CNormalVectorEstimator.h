@@ -46,8 +46,9 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
 // class CNormalVectorEstimator
@@ -126,6 +127,7 @@ private:
 
 }; // end of concept CNormalVectorEstimator
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

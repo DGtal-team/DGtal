@@ -119,7 +119,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
     typedef deprecated::LocalConvolutionNormalVectorEstimator
       < MyDigitalSurface,
         deprecated::ConstantConvolutionWeights<MyDigitalSurface::Size> > MyConstantEstimator;
-    BOOST_CONCEPT_ASSERT ( ( CNormalVectorEstimator< MyConstantEstimator > ) );
+    BOOST_CONCEPT_ASSERT ( ( concepts::CNormalVectorEstimator< MyConstantEstimator > ) );
     MyConstantEstimator myNormalEstimator ( digSurf, kernel );
 
     // Embedder definition
@@ -150,7 +150,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
     //Estimator definition
     typedef deprecated::LocalConvolutionNormalVectorEstimator  < MyDigitalSurface,
                                                                  deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size>  > MyGaussianEstimator;
-    BOOST_CONCEPT_ASSERT ( ( CNormalVectorEstimator< MyGaussianEstimator > ) );
+    BOOST_CONCEPT_ASSERT ( ( concepts::CNormalVectorEstimator< MyGaussianEstimator > ) );
     MyGaussianEstimator myNormalEstimatorG ( digSurf, Gkernel );
 
     // Embedder definition

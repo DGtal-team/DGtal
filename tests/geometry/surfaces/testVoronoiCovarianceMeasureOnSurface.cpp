@@ -141,9 +141,9 @@ bool testVoronoiCovarianceMeasureOnSurface()
   typedef ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
   
-  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< IINormalEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< VCMNormalEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< TrueNormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< IINormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceLocalEstimator< VCMNormalEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< TrueNormalEstimator > ));
 
   TrueNormalEstimator true_estimator;
   true_estimator.setParams( K, NormalFunctor() );
@@ -227,9 +227,9 @@ bool testVoronoiCovarianceMeasureOnSurface()
   true_curv_estimator.init( 1.0, ptrSurface->begin(), ptrSurface->end() );
   trace.endBlock();
 
-  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< IICurvatureEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceLocalEstimator< VCMCurvatureEstimator > ));
-  BOOST_CONCEPT_ASSERT(( CSurfelLocalEstimator< TrueCurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< IICurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceLocalEstimator< VCMCurvatureEstimator > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< TrueCurvatureEstimator > ));
 
   
   trace.beginBlock("Evaluating curvatures." );
