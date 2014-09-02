@@ -46,51 +46,51 @@
 #include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::concepts
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CPrimitiveComputer
   /**
-Description of \b concept '\b CPrimitiveComputer' <p>
-     @ingroup Concepts
-     @brief Aim: Defines the concept describing an object that
-     computes some primitive from input points, while keeping some
-     internal state. At any moment, the object is supposed to store at
-     least one valid primitive for the formerly given input points. A
-     primitive is an informal word that describes some family of
-     objects that share common characteristics. Often, the primitives
-     are geometric, e.g. digital planes.
+  Description of \b concept '\b CPrimitiveComputer' <p>
+  @ingroup Concepts
+  @brief Aim: Defines the concept describing an object that
+  computes some primitive from input points, while keeping some
+  internal state. At any moment, the object is supposed to store at
+  least one valid primitive for the formerly given input points. A
+  primitive is an informal word that describes some family of
+  objects that share common characteristics. Often, the primitives
+  are geometric, e.g. digital planes.
+  
+  ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
+  
+  ### Associated types :
+  - \t Space, the type that defines the digital space.
+  - \t Primitive, the type that defines the primitive.
+  
+  ### Notation
+  - \t X : A type that is a model of CPrimitiveComputer
+  - \t x : object of type X
 
- ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-
- ### Associated types :
-    - \t Space, the type that defines the digital space.
-    - \t Primitive, the type that defines the primitive.
-
- ### Notation
-     - \t X : A type that is a model of CPrimitiveComputer
-     - \t x : object of type X
-
- ### Valid expressions and semantics
-
-
-| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|access to primitive | x.primitive() |             | \t Primitive|                  |returns a primitive that represents the current solution| | O(1)|
-     
-
- ### Invariants###
-
- ### Models###
-
-- COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
-
- ### Notes###
+  ### Valid expressions and semantics
 
 
-@tparam T the type that should be a model of CPrimitiveComputer.
-   */
+  | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+  |access to primitive | x.primitive() |             | \t Primitive|                  |returns a primitive that represents the current solution| | O(1)|
+  
+  
+  ### Invariants###
+  
+  ### Models###
+  
+  - COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
+  
+  ### Notes###
+  
+  @tparam T the type that should be a model of CPrimitiveComputer.
+  */
   template <typename T>
   struct CPrimitiveComputer : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
   {
@@ -119,6 +119,7 @@ Description of \b concept '\b CPrimitiveComputer' <p>
 
   }; // end of concept CPrimitiveComputer
 
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //
