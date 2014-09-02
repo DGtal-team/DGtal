@@ -181,7 +181,7 @@ namespace DGtal
   class VoronoiCovarianceMeasure
   {
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
   public:
     typedef TSpace Space;                         ///< the type of digital space

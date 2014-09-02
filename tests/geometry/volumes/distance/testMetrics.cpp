@@ -287,7 +287,7 @@ bool testBinarySearch()
   unsigned int nb = 0;
  
   trace.beginBlock ( "Testing binary search of Voronoi abscissa..." );
-  ExactPredicateLpSeparableMetric<Z2i::Space, 1>::Promoted partialA, partialB;
+  ExactPredicateLpSeparableMetric<Z2i::Space, 1>::RawValue partialA, partialB;
   ExactPredicateLpSeparableMetric<Z2i::Space, 1> metric;
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 1>::Abscissa Abscissa;
   
@@ -467,9 +467,9 @@ bool testSpecialCasesL2()
 
 bool testConcepts()
 {
-  BOOST_CONCEPT_ASSERT(( CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > ));
-  BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> > ));
-  BOOST_CONCEPT_ASSERT(( CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > ));  
+  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<ExactPredicateLpSeparableMetric<Z2i::Space, 2> > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPowerSeparableMetric<ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<InexactPredicateLpSeparableMetric<Z2i::Space> > ));  
   return true;
 }
 
