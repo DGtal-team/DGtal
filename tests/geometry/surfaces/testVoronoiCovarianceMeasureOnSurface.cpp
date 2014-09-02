@@ -121,7 +121,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Wrapping normal estimator." );
-  typedef functors::VCMGeometricFunctors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
+  typedef functors::VCMNormalVectorFunctor<VCMOnSurface> NormalVectorFunctor;
   typedef VCMDigitalSurfaceLocalEstimator<SurfaceContainer,Metric,
                                           KernelFunction, NormalVectorFunctor> VCMNormalEstimator;
   VCMNormalEstimator estimator( vcm_surface );
@@ -129,7 +129,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing II normals on surfels of volume." );
-  typedef functors::IIGeometricFunctors::IINormalDirectionFunctor<Space> IINormalFunctor;
+  typedef functors::IINormalDirectionFunctor<Space> IINormalFunctor;
   typedef IntegralInvariantCovarianceEstimator<KSpace, ImplicitDigitalShape,
                                                IINormalFunctor> IINormalEstimator;
   IINormalEstimator ii_estimator( K, *dshape );
@@ -201,7 +201,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing II mean curvatures." );
-  typedef functors::IIGeometricFunctors::IIMeanCurvature3DFunctor<Space> IICurvatureFunctor;
+  typedef functors::IIMeanCurvature3DFunctor<Space> IICurvatureFunctor;
   typedef IntegralInvariantVolumeEstimator<KSpace, ImplicitDigitalShape,
                                            IICurvatureFunctor> IICurvatureEstimator;
   IICurvatureEstimator ii_curv_estimator( K, *dshape );
@@ -210,7 +210,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.endBlock();
 
   trace.beginBlock("Computing VCM mean curvatures." );
-  typedef functors::VCMGeometricFunctors::VCMMeanAbsoluteCurvatures3DFunctor<VCMOnSurface> VCMCurvatureFunctor;
+  typedef functors::VCMMeanAbsoluteCurvatures3DFunctor<VCMOnSurface> VCMCurvatureFunctor;
   typedef VCMDigitalSurfaceLocalEstimator<SurfaceContainer,Metric,
                                           KernelFunction, VCMCurvatureFunctor> VCMCurvatureEstimator;
   VCMCurvatureEstimator vcm_curv_estimator( vcm_surface );

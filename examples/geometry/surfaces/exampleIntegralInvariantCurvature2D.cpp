@@ -106,7 +106,7 @@ int main( int argc, char** argv )
     //! [IntegralInvariantUsage]
     double re_convolution_kernel = 4.5; // Euclidean radius of the convolution kernel. Set by user.
 
-    typedef functors::IIGeometricFunctors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
+    typedef functors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
     typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, MyGaussDigitizer, MyIICurvatureFunctor > MyIICurvatureEstimator;
     typedef MyIICurvatureFunctor::Value Value;
 
