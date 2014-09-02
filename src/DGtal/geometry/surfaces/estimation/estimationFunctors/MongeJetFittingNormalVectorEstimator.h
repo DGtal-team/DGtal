@@ -56,6 +56,8 @@
 
 namespace DGtal
 {
+  namespace functors
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class MongeJetFittingNormalVectorEstimator
   /**
@@ -163,7 +165,7 @@ namespace DGtal
     unsigned int myD;
 
   }; // end of class MongeJetFittingNormalVectorEstimator
-
+  }
 } // namespace DGtal
 
 

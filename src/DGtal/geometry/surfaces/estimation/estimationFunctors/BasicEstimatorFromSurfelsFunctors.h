@@ -48,7 +48,8 @@
 
 namespace DGtal
 {
-
+  namespace functors
+  {
   template<typename TSurfel, typename TSCellEmbedder>
   struct DummyEstimatorFromSurfels
   {
@@ -125,7 +126,7 @@ namespace DGtal
     ///Grid step
     double myH;
   };
-
+  }
 
 } // namespace DGtal
 
