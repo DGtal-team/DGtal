@@ -48,7 +48,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
 /////////////////////////////////////////////////////////////////////////////
 // class CLocalEstimatorFromSurfelFunctor
 /**
@@ -133,7 +134,7 @@ private:
 private:
 
 }; // end of concept CLocalEstimatorFromSurfelFunctor
-
+  }
 } // namespace DGtal
 
 //                                                                           //
