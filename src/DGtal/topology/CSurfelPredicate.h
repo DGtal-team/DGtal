@@ -45,7 +45,7 @@
 #include "DGtal/base/CPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
-// In DGtal::concepts
+// @since 0.8 In DGtal::concepts
 namespace DGtal {
   namespace concepts {
 

@@ -48,8 +48,9 @@
 #include "DGtal/base/BasicBoolFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+// @since 0.8 In DGtal::functors
+namespace DGtal {
+  namespace functors {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class SCellToPoint
@@ -616,7 +617,7 @@ namespace DGtal
       
   }; // end of class SCellToCode
 
-
+} // namespace functors
 } // namespace DGtal
 
 

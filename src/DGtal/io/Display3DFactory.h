@@ -502,7 +502,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToPoint<KSpace>, typename TKSpace::Point> & anObject );
     // PointsRange
 
     // MidPointsRange
@@ -525,7 +525,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<KSpace>,
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToArrow<KSpace>,
                       std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & anObject );
     // ArrowsRange
 
@@ -537,7 +537,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToInnerPoint<KSpace>, typename TKSpace::Point> & anObject );
     // InnerPointsRange
 
     // OuterPointsRange
@@ -548,7 +548,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<KSpace>, typename TKSpace::Point> & anObject );
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToOuterPoint<KSpace>, typename TKSpace::Point> & anObject );
     // OuterPointsRange
 
     // IncidentPointsRange
@@ -559,7 +559,7 @@ namespace DGtal
      */
     template <typename TIterator>
     static void draw( Display & display,
-                      const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<KSpace>,
+                      const DGtal::ConstRangeAdapter<TIterator, functors::SCellToIncidentPoints<KSpace>,
                       std::pair<typename TKSpace::Point, typename TKSpace::Point > > & anObject );
     // IncidentPointsRange
 
