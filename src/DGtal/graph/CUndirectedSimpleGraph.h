@@ -46,7 +46,7 @@
 #include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
-// In DGtal::concepts
+// @since 0.8 In DGtal::concepts
 namespace DGtal { 
   namespace concepts {
 
