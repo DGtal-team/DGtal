@@ -101,6 +101,10 @@
  - Add comparison operators in variants of CountedPtr. Improve
    coverage of these classes and fix compilation problem
    (Jacques-Olivier Lachaud)
+ - Update doc of CountedPtr, CountedPtrOrPtr and
+   CountedConstPtrOrConstPtr. Add asserts. Add tests. Fix issue 773
+   (https://github.com/DGtal-team/DGtal/issues/773). (Jacques-Olivier
+   Lachaud, [#894](https://github.com/DGtal-team/DGtal/pull/894)).
  - XXXOutputRangeYYY classes are now called
    XXXRangeWithWritableIteratorYYY (Tristan Roussillon,
    [#850](https://github.com/DGtal-team/DGtal/pull/850)).
