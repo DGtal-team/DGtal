@@ -37,7 +37,7 @@
 template<typename DSL, typename OutputIterator>
 inline
 typename DSL::Vector 
-DGtal::ArithmeticalDSSConvexHull::
+DGtal::functions::
 smartCH(const DSL& aDSL, 
 	const typename DSL::Point& aFirstPoint, 
 	const typename DSL::Position& aLength, 
@@ -48,7 +48,7 @@ smartCH(const DSL& aDSL,
   typedef typename DSL::Coordinate Coordinate; 
 
   //position functor
-  PositionFunctorFrom2DPoint<Vector,Position> position(aDSL.shift());     
+  functors::PositionFunctorFrom2DPoint<Vector,Position> position(aDSL.shift());     
 
   //steps
   Vector step = aDSL.steps().first; 
@@ -68,7 +68,7 @@ template<typename PointVector, typename Coordinate, typename Position,
 	 typename PositionFunctor, typename OutputIterator>
 inline
 PointVector
-DGtal::ArithmeticalDSSConvexHull::
+DGtal::functions::
 smartCH(const PointVector& aFirstPoint, 
 	const Coordinate& aRemainderBound, 
 	const Position& aPositionBound, 
@@ -87,8 +87,8 @@ smartCH(const PointVector& aFirstPoint,
 
   //----------------- init --------------------//
   //functors
-  StrictTruncationFunctor<Coordinate> sTruncation; 
-  LargeTruncationFunctor<Coordinate> lTruncation; 
+  functors::StrictTruncationFunctor<Coordinate> sTruncation; 
+  functors::LargeTruncationFunctor<Coordinate> lTruncation; 
 
   PointVector L, U, V; //point/vectors
   Coordinate rL, rU, rV; //remainders of the above point/vectors
@@ -148,7 +148,7 @@ template<typename Position, typename Coordinate, typename PointVector,
 	 typename TruncationFunctor1, typename TruncationFunctor2>
 inline
 bool
-DGtal::ArithmeticalDSSConvexHull::
+DGtal::functions::
 smartCHNextVertex(const Position& positionBound,
 		  const Coordinate& remainderBound,
 		  PointVector& X,

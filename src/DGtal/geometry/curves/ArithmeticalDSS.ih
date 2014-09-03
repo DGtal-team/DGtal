@@ -247,7 +247,7 @@ inline
 bool
 DGtal::ArithmeticalDSS<TCoordinate, TInteger, adjacency>::isValid() const
 {
-  return ArithmeticalDSSCheck::checkAll(*this); 
+  return functions::checkAll(*this); 
 }
 
 //-----------------------------------------------------------------------------

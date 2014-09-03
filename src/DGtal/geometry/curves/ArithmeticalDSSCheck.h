@@ -54,7 +54,7 @@ namespace DGtal
 	    unsigned short adjacency>
   class ArithmeticalDSS; 
 
-  namespace ArithmeticalDSSCheck {
+  namespace functions {
 
     /**
      * Checks the validity of the DSS when it contains only one point.
@@ -112,7 +112,7 @@ namespace DGtal
 	      unsigned short adjacency>
     bool checkAll(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS);
 
-  } //end namespace ArithmeticalDSSCheck
+  } //end namespace functions
 
 } // end namespace DGtal
 
