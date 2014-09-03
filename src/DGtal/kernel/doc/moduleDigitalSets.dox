@@ -129,7 +129,7 @@ Other methods may be found in the concept definition of digital sets (CDigitalSe
 
 @section digital_sets_4 Digital sets and point predicates
 
-Since 0.6, any digital set is also a model of CPointPredicate. You may
+Since 0.6, any digital set is also a model of concepts::CPointPredicate. You may
 thus use a digital set directly in functions and methods requiring a
 predicate on points. However, the class SetPredicate, which builds a
 predicate on points around a digital set, is deprecated since 0.6. You

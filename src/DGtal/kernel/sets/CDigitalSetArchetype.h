@@ -250,7 +250,7 @@ namespace DGtal
     ( const CDigitalSetArchetype<Domain> & aSet )
     { return *this; }
 
-    // ----------------------- Model of CPointPredicate -----------------------------
+    // ----------------------- Model of concepts::CPointPredicate -----------------------------
   public:
 
     /**

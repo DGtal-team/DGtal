@@ -77,7 +77,7 @@ namespace DGtal
    * mutable). It is iterable (inner type ConstIterator, begin(),
    * end()). You may clear() it.
 
-   * It is also a model of CPointPredicate (returns 'true' iff a point
+   * It is also a model of concepts::CPointPredicate (returns 'true' iff a point
    * is within the current bounds).
 
    * Note on complexity: See COBAStandardPlaneComputer. Although it uses four
@@ -114,7 +114,7 @@ namespace DGtal
 
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer,
-   * CAdditivePrimitiveComputer, CPointPredicate.
+   * concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
 
    * @advanced All accepted inserted points are stored in the
    * different naive plane computers, but they are stored
@@ -336,13 +336,13 @@ namespace DGtal
     Size maxSize() const;
 
 
-    //-------------------- model of CPointPredicate -----------------------------
+    //-------------------- model of concepts::CPointPredicate -----------------------------
   public:
 
     /**
      * Checks if the point \a p is in the current digital
      * plane. Therefore, a COBAGenericStandardPlaneComputer is a model of
-     * CPointPredicate.
+     * concepts::CPointPredicate.
      *
      * @param p any 3D point.
      *

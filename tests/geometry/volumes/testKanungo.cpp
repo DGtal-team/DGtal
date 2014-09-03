@@ -95,7 +95,7 @@ bool testKanungo2D()
 
 bool CheckingConcept()
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate < KanungoNoise<Z2i::DigitalSet, Z2i::Domain> > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate < KanungoNoise<Z2i::DigitalSet, Z2i::Domain> > ));
   return true;
 }
 

@@ -528,7 +528,7 @@ namespace functors
       typedef TValue Value;
       typedef typename Domain::Point Point;
 
-      BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+      BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
       BOOST_CONCEPT_ASSERT(( CDomain< Domain > ));
       BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
 

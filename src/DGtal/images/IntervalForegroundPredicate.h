@@ -55,7 +55,7 @@ namespace DGtal
    * image values  between two constant values (the first one being
    * excluded).
    *
-   * This class is a model of CPointPredicate.
+   * This class is a model of concepts::CPointPredicate.
    *
    * @tparam Image an model of CImageContainer concept. 
    */

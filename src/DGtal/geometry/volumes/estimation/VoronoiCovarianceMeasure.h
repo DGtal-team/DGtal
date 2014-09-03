@@ -93,7 +93,7 @@ namespace DGtal
 
     /**
        A predicate that returns 'true' whenever the given binary image contains 'true'.
-       Model of CPointPredicate.
+       Model of concepts::CPointPredicate.
        @note Internal use.
     */
     struct CharacteristicSetPredicate {

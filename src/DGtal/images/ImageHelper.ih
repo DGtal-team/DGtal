@@ -42,7 +42,7 @@ inline
 void 
 DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred)
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<P> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<P> )); 
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename P::Point> ));
 

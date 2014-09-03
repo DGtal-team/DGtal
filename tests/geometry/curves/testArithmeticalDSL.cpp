@@ -49,7 +49,7 @@ using namespace DGtal;
 template <typename DSL>
 bool mainTest()
 {
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<DSL> ));
+  BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<DSL> ));
   
   typedef typename DSL::Point Point; 
 

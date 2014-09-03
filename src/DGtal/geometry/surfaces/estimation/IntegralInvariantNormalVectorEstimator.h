@@ -91,7 +91,7 @@ namespace deprecated
 * Optimization is available when we give a range of 0-adjacent surfels to the estimator.
 *
 * @tparam TKSpace a model of CCellularGridSpaceND, the cellular space in which the shape is defined.
-* @tparam TPointPredicate a model of CPointPredicate, a predicate Point -> bool that defines a digital shape as a characteristic function.
+* @tparam TPointPredicate a model of concepts::CPointPredicate, a predicate Point -> bool that defines a digital shape as a characteristic function.
 *
 * @note In opposition to IntegralInvariantMeanCurvatureEstimator and
 * IntegralInvariantGaussianCurvatureEstimator, this class is
