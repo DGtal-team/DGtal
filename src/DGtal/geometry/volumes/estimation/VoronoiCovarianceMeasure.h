@@ -78,7 +78,7 @@ namespace DGtal
   template <typename TSpace, typename TSeparableMetric>
   class VoronoiCovarianceMeasure
   {
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
   public:

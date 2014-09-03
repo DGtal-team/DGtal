@@ -55,7 +55,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class CDigitalSetArchetype
   /**
@@ -308,7 +309,7 @@ namespace DGtal
 
 
   }; // end of class CDigitalSetArchetype
-
+  }
 } // namespace DGtal
 
 

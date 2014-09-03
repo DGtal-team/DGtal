@@ -68,7 +68,7 @@ template < typename  Space = Z3i::Space, typename KSpace = Z3i::KSpace>
 class Board3DTo2D : public Display3D<Space, KSpace>
 {
 
-  BOOST_CONCEPT_ASSERT((CSpace<Space>));
+  BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
 public:
     /**
      * Cairo type for save files.

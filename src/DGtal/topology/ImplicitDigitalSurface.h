@@ -162,7 +162,7 @@ namespace DGtal
     typedef TPointPredicate PointPredicate;
     
     // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
 
     // -------------------- specific types ------------------------------
     typedef typename std::vector<Surfel> SurfelStorage;

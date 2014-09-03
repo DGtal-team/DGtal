@@ -122,7 +122,7 @@ namespace DGtal
   class Viewer3D : public QGLViewer, public Display3D<Space, KSpace>
   {
 
-    BOOST_CONCEPT_ASSERT((CSpace<Space>));
+    BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
 
     //---------------overwritting some functions of Display3D -------------------
 
@@ -265,7 +265,7 @@ namespace DGtal
       Image2DDomainD3D( TDomain aDomain, Viewer3D::ImageDirection normalDir=zDirection,
                         double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox")
       {
-        BOOST_CONCEPT_ASSERT(( CDomain < TDomain >));
+        BOOST_CONCEPT_ASSERT(( concepts::CDomain < TDomain >));
         myMode = mode;
         myDirection=normalDir;
         myDomainWidth = (aDomain.upperBound())[0]-(aDomain.lowerBound())[0]+1;

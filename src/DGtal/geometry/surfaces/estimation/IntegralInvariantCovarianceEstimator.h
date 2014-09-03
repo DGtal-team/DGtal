@@ -121,7 +121,7 @@ public:
   typedef TCovarianceMatrixFunctor CovarianceMatrixFunctor;
 
   BOOST_CONCEPT_ASSERT (( concepts::CCellularGridSpaceND< KSpace > ));
-  BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate > ));
 
   typedef typename KSpace::Space Space;
   typedef HyperRectDomain<Space> Domain;
@@ -159,7 +159,7 @@ public:
   typedef typename Convolver::CovarianceMatrix Matrix;
   typedef typename Matrix::Component Component;
   typedef double Scalar;
-  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeSpelFunctor > ));
+  BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
   BOOST_CONCEPT_ASSERT (( CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity > ));
   BOOST_STATIC_ASSERT (( ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 
                                                  typename CovarianceMatrixFunctor::Argument >::value ));

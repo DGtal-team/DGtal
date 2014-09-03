@@ -137,8 +137,8 @@ namespace DGtal
        * Check that Number type verifies the Euclidean Rign concept and
        * Integer type verifies the Integer concept
        */
-      BOOST_CONCEPT_ASSERT((CEuclideanRing<Number>));
-      BOOST_CONCEPT_ASSERT((CInteger<Integer>));
+      BOOST_CONCEPT_ASSERT((concepts::CEuclideanRing<Number>));
+      BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
 
   protected:
       /**

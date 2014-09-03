@@ -62,7 +62,7 @@ namespace DGtal
   {
 
     //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
     typedef TInteger Integer;
@@ -147,7 +147,7 @@ namespace DGtal
   struct SignedKhalimskyCell
   {
     //Integer must be a model of the concept CInteger.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
     typedef TInteger Integer;
@@ -335,7 +335,7 @@ namespace DGtal
   class KhalimskySpaceND
   {
     //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
 
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.

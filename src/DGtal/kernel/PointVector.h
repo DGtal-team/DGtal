@@ -142,7 +142,7 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
     
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<TEuclideanRing> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<TEuclideanRing> ) );
     
     ///We cannot check the TContainer since boost::array is not a
     ///model of boost::RandomAccessContainer

@@ -93,7 +93,7 @@ namespace DGtal
   {
   public:
 
-    BOOST_CONCEPT_ASSERT((CSpace<Space>));
+    BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
   public:
 
     typedef Display3D<Space,KSpace> Self;

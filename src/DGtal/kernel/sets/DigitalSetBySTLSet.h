@@ -94,7 +94,7 @@ namespace DGtal
     typedef typename std::set<Point>::const_iterator ConstIterator;
 
     ///Concept checks
-    BOOST_CONCEPT_ASSERT(( CDomain< TDomain > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
 
     // ----------------------- Standard services ------------------------------
   public:

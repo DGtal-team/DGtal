@@ -96,7 +96,7 @@ namespace DGtal
 
     ///Copy the space type
     typedef TSpace Space;
-    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
 
     ///Type for points
     typedef typename Space::Point Point;
@@ -107,7 +107,7 @@ namespace DGtal
 
     ///Type for internal distance values
     typedef TRawValue RawValue;
-    BOOST_CONCEPT_ASSERT(( CInteger<RawValue> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<RawValue> ));
 
     ///Type for distance values
     typedef double Value;

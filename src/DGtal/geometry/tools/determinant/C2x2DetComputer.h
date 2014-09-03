@@ -109,10 +109,10 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::ArgumentInteger ArgumentType;
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing< ArgumentType > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing< ArgumentType > ));
 
     typedef typename T::ResultInteger ResultType;
-    BOOST_CONCEPT_ASSERT(( CSignedNumber< ResultType > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< ResultType > ));
 
     BOOST_CONCEPT_USAGE( C2x2DetComputer )
     {

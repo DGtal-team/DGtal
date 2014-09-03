@@ -206,7 +206,7 @@ namespace DGtal
   struct NotPointPredicate
   {
     typedef TPointPredicate PointPredicate;
-    BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate<PointPredicate> ));
     typedef typename PointPredicate::Point Point;
 
     /**
@@ -278,8 +278,8 @@ namespace DGtal
     typedef typename PointPredicate1::Point Point;
     typedef typename PointPredicate2::Point Point2;
 
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate2 > ));
     BOOST_CONCEPT_ASSERT (( boost::BinaryFunction< TBinaryFunctor, bool, bool, bool > ));
     BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
 
@@ -317,8 +317,8 @@ namespace DGtal
     typedef typename PointPredicate1::Point Point;
     typedef typename PointPredicate2::Point Point2;
 
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate2 > ));
     BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
 
     BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<AndBoolFct2> boolFunctor );
@@ -341,8 +341,8 @@ namespace DGtal
     typedef typename PointPredicate1::Point Point;
     typedef typename PointPredicate2::Point Point2;
 
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate1 > ));
-    BOOST_CONCEPT_ASSERT (( CPointPredicate< PointPredicate2 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate1 > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointPredicate< PointPredicate2 > ));
     BOOST_STATIC_ASSERT (( boost::is_same< Point, Point2 >::value ));
 
     BinaryPointPredicate( ConstAlias<PointPredicate1> pred1, ConstAlias<PointPredicate2> pred2, ConstAlias<OrBoolFct2> boolFunctor );
@@ -368,7 +368,7 @@ namespace DGtal
   template <typename TPointFunctor, typename TPredicate>
   struct PointFunctorPredicate
   {
-    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));
+    BOOST_CONCEPT_ASSERT (( concepts::CPointFunctor< TPointFunctor > ));
     BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));
 
     typedef TPointFunctor PointFunctor;

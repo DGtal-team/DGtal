@@ -87,9 +87,9 @@ namespace DGtal
   public:
 
     ///Concept checks
-    BOOST_CONCEPT_ASSERT(( CDomain< TDomain > ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CDigitalSet<TDigitalSetContainer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSetContainer> ));
     
     ///Object type
     typedef TPointPredicate PointPredicate;

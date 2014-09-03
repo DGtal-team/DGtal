@@ -50,7 +50,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CBoundedNumber
   /**
@@ -113,7 +114,7 @@ uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
   private:
 
   }; // end of concept CBoundedNumber
-
+  }
 } // namespace DGtal
 
 //                                                                           //

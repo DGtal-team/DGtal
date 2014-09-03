@@ -48,7 +48,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
 /////////////////////////////////////////////////////////////////////////////
 // class CPointEmbedder
 /**
@@ -125,7 +126,7 @@ private:
 private:
 
 }; // end of concept CPointEmbedder
-
+  }
 } // namespace DGtal
 
 //                                                                           //

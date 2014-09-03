@@ -529,7 +529,7 @@ void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
 getIncludedDigitalPoints( DigitalSet & aSet ) const
 {
-  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSet > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   typedef typename DigitalSet::Domain DigitalSetDomain;
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< DigitalSetDomain, Domain >::value ));
   typedef typename DigitalSetDomain::ConstIterator DomainConstIterator;

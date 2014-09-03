@@ -108,12 +108,12 @@ namespace DGtal
      * and the slope parameters. 
      */
     typedef TCoordinate Coordinate;
-    BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Coordinate> )); 
     /**
      * Type used for the intercepts and the remainders. 
      */
     typedef TInteger Integer; 
-    BOOST_CONCEPT_ASSERT(( CInteger<Integer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ));
 
     /**
      * Type of the bounding DSL. 

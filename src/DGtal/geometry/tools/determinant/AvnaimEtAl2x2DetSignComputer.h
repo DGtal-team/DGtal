@@ -78,7 +78,7 @@ namespace DGtal
        */
       static TNumber compute(const TNumber& a, const TNumber& b)
       {
-	BOOST_CONCEPT_ASSERT(( CInteger<TNumber> )); 
+	BOOST_CONCEPT_ASSERT(( concepts::CInteger<TNumber> )); 
 	return a / b; 
       }
     }; 
@@ -149,8 +149,8 @@ namespace DGtal
      * Type of integer for the input coefficients of the 2x2 matrix
      */
     typedef TInteger ArgumentInteger; 
-    BOOST_CONCEPT_ASSERT(( CEuclideanRing<ArgumentInteger> )); 
-    BOOST_CONCEPT_ASSERT(( CBoundedNumber<ArgumentInteger> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CBoundedNumber<ArgumentInteger> )); 
 
     /**
      * DGtal alias of type ArgumentInteger

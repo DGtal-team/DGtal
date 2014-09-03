@@ -114,8 +114,8 @@ namespace DGtal
   {
 
   public:
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CSeparableMetric<TSeparableMetric> ));
 
     ///Both Space points and PointPredicate points must be the same.

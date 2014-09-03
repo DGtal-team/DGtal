@@ -72,7 +72,7 @@ namespace DGtal
     // ----------------------- public types -----------------------------------
   public:
     typedef TQuantity Quantity;
-    BOOST_CONCEPT_ASSERT(( CCommutativeRing<Quantity> ) );
+    BOOST_CONCEPT_ASSERT(( concepts::CCommutativeRing<Quantity> ) );
     typedef std::vector< Quantity > Container;
     typedef typename Container::const_iterator ConstIterator;
     

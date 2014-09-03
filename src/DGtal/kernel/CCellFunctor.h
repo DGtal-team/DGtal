@@ -49,7 +49,8 @@
 
 namespace DGtal
 {
-
+  namespace concepts
+  {
   /////////////////////////////////////////////////////////////////////////////
   // class CCellFunctor
   /**
@@ -93,7 +94,7 @@ Description of \b concept '\b CCellFunctor' <p>
     typedef typename T::Quantity Quantity;
 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Cell,Quantity> ));
-
+    
     BOOST_CONCEPT_USAGE( CCellFunctor )
     {
       check_const_constraints();
@@ -108,7 +109,7 @@ Description of \b concept '\b CCellFunctor' <p>
   private:
     T myT;
   }; // end of concept CCellFunctor
-  
+  }
 } // namespace DGtal
 
 //                                                                           //
