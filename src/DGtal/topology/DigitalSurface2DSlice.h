@@ -93,7 +93,7 @@ namespace DGtal
   {
   public:
     typedef TDigitalSurfaceTracker DigitalSurfaceTracker;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
 
     typedef DigitalSurface2DSlice<DigitalSurfaceTracker> Self;
     typedef typename DigitalSurfaceTracker::DigitalSurfaceContainer DigitalSurfaceContainer;

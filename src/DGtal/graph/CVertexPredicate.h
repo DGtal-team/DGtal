@@ -45,36 +45,36 @@
 #include "DGtal/base/CPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal
-{
+namespace DGtal {
+  namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
   // class CVertexPredicate
   /**
-Description of \b concept '\b CVertexPredicate' <p>
-     @ingroup Concepts
-@brief Aim: Defines a predicate on a vertex.
+  Description of \b concept '\b CVertexPredicate' <p>
+  @ingroup Concepts
+  @brief Aim: Defines a predicate on a vertex.
 
-Associates a boolean to vertices.
+  Associates a boolean to vertices.
 
- ### Refinement of 
-        CPredicate< T, T::Vertex >.
+  ### Refinement of CPredicate< T, T::Vertex >.
     
- ### Associated types:
-       - Vertex : specifies the type for an element of the domain (inner
-       type).
+  ### Associated types:
+  - Vertex : specifies the type for an element of the domain (inner
+  type).
 
-     @see CPredicate
+  @see CPredicate
 
- ### Models###
+  ### Models###
         
- ### Notes###
-   */
+  ### Notes###
+  */
   template <typename T>
   struct CVertexPredicate : CPredicate< T, typename T::Vertex> 
   {
   }; // end of concept CVertexPredicate
   
+} // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

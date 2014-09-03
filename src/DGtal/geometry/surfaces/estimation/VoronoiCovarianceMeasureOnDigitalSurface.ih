@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/math/ScalarFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
 
@@ -96,7 +97,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
   if ( verbose ) trace.endBlock();
 
   if ( verbose ) trace.beginBlock ( "Computing average orientation for each surfel." );
-  typedef HatFunction<Scalar> Functor;
+  typedef functors::HatFunction<Scalar> Functor;
   Functor fct( 1.0, myRadiusTrivial );
   typedef ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> > 
     SurfelFunctor;

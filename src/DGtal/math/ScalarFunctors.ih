@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file CowPtr.ih
+ * @file ScalarFunctors.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2010/07/08
+ * @date 2014/09/01
  *
- * Implementation of inline methods defined in CowPtr.h
+ * Implementation of inline methods defined in ScalarFunctors.h
  *
  * This file is part of the DGtal library.
  */
@@ -35,51 +35,9 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////
-// ----------------------- Standard services ------------------------------
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Interface - public :
-
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template <typename T>
-inline
-void
-DGtal::CowPtr<T>::selfDisplay ( std::ostream & out ) const
-{
-  out << "[CowPtr " << myPtr << " ]";
-}
-
-/**
- * Checks the validity/consistency of the object.
- * @return 'true' if the object is valid, 'false' otherwise.
- */
-template <typename T>
-inline
-bool
-DGtal::CowPtr<T>::isValid() const
-{
-    return myPtr.isValid();
-}
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
-
-template <typename T>
-inline
-std::ostream&
-DGtal::operator<< ( std::ostream & out,
-      const CowPtr<T> & object )
-{
-  object.selfDisplay( out );
-  return out;
-}
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

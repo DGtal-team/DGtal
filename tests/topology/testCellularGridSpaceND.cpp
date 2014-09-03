@@ -505,9 +505,9 @@ int main( int argc, char** argv )
   typedef KhalimskySpaceND<2> K2;
   typedef KhalimskySpaceND<3> K3;
   typedef KhalimskySpaceND<4> K4;
-  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< K2 > ));
-  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< K3 > ));
-  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< K4 > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< K2 > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< K3 > ));
+  BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< K4 > ));
 
   bool res = testCellularGridSpaceND<K2>()
     && testCellularGridSpaceND<K3>()

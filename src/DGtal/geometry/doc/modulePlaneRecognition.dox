@@ -372,7 +372,7 @@ and viewer3D-7bis-stdplane.cpp.
 
 \subsection modulePlaneRecognition_sec31 Incremental plane recognition
 
-These six classes are models of CIncrementalPrimitiveComputer. They
+These six classes are models of concepts::CIncrementalPrimitiveComputer. They
 all have an internal state that store a current parallel strip that
 contains all points previously inserted. Furthermore, they provide
 methods \b extend( \a p ) and \b isExtendable( \a p ) to insert a
@@ -422,7 +422,7 @@ extend directly whenever possible.
 
 \subsection modulePlaneRecognition_sec32 Additive plane recognition
 
-These six classes are models of CAdditivePrimitiveComputer. They all
+These six classes are models of concepts::CAdditivePrimitiveComputer. They all
 have an internal state that store a current parallel strip that
 contains all points previously inserted. Furthermore, they provide
 templated methods \b extend( \a it, \a itE ) and \b isExtendable( \a
